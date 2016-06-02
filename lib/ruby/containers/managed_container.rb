@@ -127,7 +127,7 @@ class ManagedContainer < Container
   
    self.instance_variables.each_with_object({}) do |var, hash|
      v =  self.instance_variable_get(var) 
-     v = v.to_h if v.is_a?(EnvironmentVariable)
+     v = v.attributes if v.is_a?(EnvironmentVariable)
      hash[var.to_s.delete("@")] = v 
   end
     
