@@ -1,15 +1,10 @@
-#/containers/engine/container_name
-#/containers/engine/container_name/recreate
-#/containers/engine/container_name/stop
-#/containers/engine/container_name/start
-#/containers/engine/container_name/pause
-#/containers/engine/container_name/unpause
-#/containers/engine/container_name/destroy
-#/containers/engine/container_name/delete_image
-#/containers/engine/container_name/reinstall
-#/containers/engine/container_name/create
-#/containers/engine/container_name/restart
-#
+
+# @!group /containers/engine/:engine_name/
+# @method create_engine
+# @overload get '/v0/containers/engine/:engine_name/create'
+# create and start the engine from the engine image
+# the local engine image is updated prior to the container creation
+# @return [true]
 get '/v0/containers/engine/:engine_name/create' do
   engine = get_engine(params[:engine_name])
   return log_error(request, engine, params) if engine.is_a?(EnginesError)
@@ -22,6 +17,12 @@ get '/v0/containers/engine/:engine_name/create' do
   end
 end
 
+# @method recreate_engine
+# @overload  get '/v0/containers/engine/:engine_name/recreate'
+#  The engine must be stopped first.
+# Recreate the engines container from the engine image and start the engine
+#  The local engine image is updated prior to the container creation
+# @return [true]
 get '/v0/containers/engine/:engine_name/recreate' do
   engine = get_engine(params[:engine_name])
   return log_error(request, engine, params) if engine.is_a?(EnginesError)
@@ -32,7 +33,10 @@ get '/v0/containers/engine/:engine_name/recreate' do
     return log_error(request, r, engine.last_error)
   end
 end
-
+# @method stop_engine
+# @overload get '/v0/containers/engine/:engine_name/stop'
+# stop the engine
+# @return [true]
 get '/v0/containers/engine/:engine_name/stop' do
   engine = get_engine(params[:engine_name])
   return log_error(request, engine, params) if engine.is_a?(EnginesError)
@@ -43,7 +47,10 @@ get '/v0/containers/engine/:engine_name/stop' do
     return log_error(request, r, engine.last_error)
   end
 end
-
+# @method start_engine
+# @overload get '/v0/containers/engine/:engine_name/start'
+# start the engine
+# @return [true]
 get '/v0/containers/engine/:engine_name/start' do
   engine = get_engine(params[:engine_name])
   return log_error(request, engine, params) if engine.is_a?(EnginesError)
@@ -54,7 +61,10 @@ get '/v0/containers/engine/:engine_name/start' do
     return log_error(request, r, engine.last_error)
   end
 end
-
+# @method restart_engine
+# @overload get '/v0/containers/engine/:engine_name/restart'
+# restart the engine
+# @return [true]
 get '/v0/containers/engine/:engine_name/restart' do
   engine = get_engine(params[:engine_name])
   return log_error(request, engine, params) if engine.is_a?(EnginesError)
@@ -65,7 +75,10 @@ get '/v0/containers/engine/:engine_name/restart' do
     return log_error(request, r, engine.last_error)
   end
 end
-
+# @method pause_engine
+# @overload get '/v0/containers/engine/:engine_name/pause'
+# pause the engine
+# @return [true]
 get '/v0/containers/engine/:engine_name/pause' do
   engine = get_engine(params[:engine_name])
   return log_error(request, engine, params) if engine.is_a?(EnginesError)
@@ -76,7 +89,10 @@ get '/v0/containers/engine/:engine_name/pause' do
     return log_error(request, r, engine.last_error)
   end
 end
-
+# @method unpause_engine
+# @overload get '/v0/containers/engine/:engine_name/unpause'
+# unpause the engine
+# @return [true]
 get '/v0/containers/engine/:engine_name/unpause' do
   engine = get_engine(params[:engine_name])
   return log_error(request, engine, params) if engine.is_a?(EnginesError)
@@ -88,6 +104,10 @@ get '/v0/containers/engine/:engine_name/unpause' do
   end
 end
 
+# @method reinstall_engine
+# @overload get '/v0/containers/engine/:engine_name/reinstall'
+# reinstall the engine 
+# @return [true]
 get '/v0/containers/engine/:engine_name/reinstall' do
   engine = get_engine(params[:engine_name])
   return log_error(request, engine, params) if engine.is_a?(EnginesError)
@@ -99,6 +119,10 @@ get '/v0/containers/engine/:engine_name/reinstall' do
   end
 end
 
+# @method destroy_engine
+# @overload get '/v0/containers/engine/:engine_name/destroy'
+# destroy the engine container
+# @return [true]
 delete '/v0/containers/engine/:engine_name/destroy' do
   engine = get_engine(params[:engine_name])
   return log_error(request, engine, params) if engine.is_a?(EnginesError)
@@ -109,7 +133,11 @@ delete '/v0/containers/engine/:engine_name/destroy' do
     return log_error(request, r,  engine.last_error)
   end
 end
-
+# @method delete_engine
+# @overload get '/v0/containers/engine/:engine_name/delete/:remove_data'
+# delete the engine image
+# @param remove_data all|none
+# @return [true]
 delete '/v0/containers/engine/:engine_name/delete/*' do
 
   rparams = {}
@@ -130,3 +158,5 @@ else
   end
 
 end
+
+# @!endgroup

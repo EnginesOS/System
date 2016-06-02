@@ -1,3 +1,4 @@
+# @!group /containers/engine/:engine_name/services/persistent/
 
 get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/export' do
   content_type 'application/octet-stream'
@@ -45,6 +46,11 @@ post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace
   end
 end
 
+
+# @method get_engine_persistent_services
+# @overload get '/v0/containers/engine/:sengine_name/services/persistent/'
+# Return the persistent services registered to the engine (which this engine consumes)
+# @return [Array]
 
 get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*' do
   

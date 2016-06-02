@@ -1,3 +1,9 @@
+# @!group /containers/engine/:engine_name/actions/
+
+# @method get_engine_actions
+# @overload get '/v0/containers/engine/:engine_name/actions/'
+# return an of the registered action Hashes
+# @return [Array] Hash
 get '/v0/containers/engine/:engine_name/actions/' do
   engine = get_engine(params[:engine_name])
   return log_error(request, engine, params) if engine.is_a?(FalseClass)
@@ -8,6 +14,11 @@ get '/v0/containers/engine/:engine_name/actions/' do
     return log_error(request, list, engine.last_error)
   end
 end
+
+# @method get_engine_action
+# @overload get '/v0/containers/engine/:engine_name/action/:action_name'
+# return engine action 
+# @return [Hash] 
 
 get '/v0/containers/engine/:engine_name/action/:action_name' do
   engine = get_engine(params[:engine_name])
@@ -20,6 +31,12 @@ get '/v0/containers/engine/:engine_name/action/:action_name' do
   end
 end 
 
+# @method preform_engine_action
+# @overload post '/v0/containers/engine/:engine_name/action/:action_name'
+# preform engine action
+#  post params to include action specific parameters
+# @param action specific keys
+# @return [Hash] action specific keys
 post '/v0/containers/engine/:engine_name/action/:action_name' do
   engine = get_engine(params[:engine_name])
   return log_error(request, engine, params) if engine.is_a?(FalseClass)

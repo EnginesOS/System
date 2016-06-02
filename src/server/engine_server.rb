@@ -70,6 +70,7 @@ begin
   end
 
   def log_error(request, error_object, *args)
+   # return EnginesError.new(msg.to_s,:error)
     p :ERROR
     p args
     error_mesg = {}

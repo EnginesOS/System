@@ -1554,7 +1554,7 @@ Do not use the ”from“ key.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_all_rphan_services-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/service_manager/orphan_services/&#39;) </a>
+      <a href="top-level-namespace.html#get_all_orphan_services-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/service_manager/orphan_services/&#39;) </a>
     
 
     
@@ -1618,6 +1618,135 @@ Do not use the ”from“ key.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Orphan Service Hashes.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
+      /containers/engine/:engine_name
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#get_engine_blueprint-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/blueprint&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>get engine blueprint.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#get_engine_build_report-instance_method" title="#get (instance method)">- (String) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/build_report&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>get engine build_report.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#get_engine_state-instance_method" title="#get (instance method)">- (String) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/state&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>get engine state.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#get_engine_status-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/status&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>get engine status.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#resolve_engine_template-instance_method" title="#post (instance method)">- (String) <strong>post</strong>(&#39;/v0/containers/engine/:engine_name/template&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Resolve Template string for engine :engine_name.</p>
 </div></span>
   
 </li>
@@ -1815,6 +1944,87 @@ configured engines.</p>
     </ul>
   
     <h2>
+      /containers/engine/:engine_name/actions/
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#get_engine_action-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/action/:action_name&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>return engine action.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#get_engine_actions-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/actions/&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>return an of the registered action Hashes.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#preform_engine_action-instance_method" title="#post (instance method)">- (Hash) <strong>post</strong>(&#39;/v0/containers/engine/:engine_name/action/:action_name&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>preform engine action  post params to include action specific parameters.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
       /containers/service/:service_name/metrics
       <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
     </h2>
@@ -1945,39 +2155,6 @@ configured engines.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>preform service action  post params to include action specific parameters.</p>
-</div></span>
-  
-</li>
-
-      
-    </ul>
-  
-    <h2>
-      /containers/engine/:engine_name
-      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
-    </h2>
-
-    <ul class="summary">
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#resolve_engine_template-instance_method" title="#post (instance method)">- (String) <strong>post</strong>(&#39;/v0/containers/engine/:engine_name/template&#39;) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Resolve Template string for engine :engine_name.</p>
 </div></span>
   
 </li>
@@ -2577,6 +2754,257 @@ false &gt; no udpdate available  EnginesError &gt; an error occurred.</p>
     </ul>
   
     <h2>
+      /containers/engine/:engine_name/
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#create_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/create&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>create and start the engine from the engine image the local engine image is
+updated prior to the container creation.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#delete_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/delete/:remove_data&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>delete the engine image.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#destroy_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/destroy&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>destroy the engine container.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#pause_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/pause&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>pause the engine.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#recreate_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/recreate&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Recreate the engines container from the engine image and start the engine 
+The local engine image is updated prior to the container creation.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#reinstall_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/reinstall&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>reinstall the engine.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#restart_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/restart&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>restart the engine.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#start_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/start&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>start the engine.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#stop_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/stop&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>stop the engine.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#unpause_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/unpause&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>unpause the engine.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
       /containers/service/:service_name/configurations/
       <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
     </h2>
@@ -3028,6 +3456,40 @@ creation.</p>
     </ul>
   
     <h2>
+      /containers/engine/:engine_name/services/persistent/
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#get_engine_persistent_services-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/containers/engine/:sengine_name/services/persistent/&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Return the persistent services registered to the engine (which this engine
+consumes).</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
       /containers/service/:service_name/service/persistent/
       <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
     </h2>
@@ -3193,7 +3655,7 @@ service consumes).</p>
     </ul>
   
     <h2>
-      /containers/service/:service_name/service/non_persistent/
+      /containers/engine/:engine_name/service/non_persistent/
       <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
     </h2>
 
@@ -3202,7 +3664,7 @@ service consumes).</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#force_deregister_non_persistent_service-instance_method" title="#get (instance method)">- (true|false) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/deregister&#39;) </a>
+      <a href="top-level-namespace.html#engine_force_deregister_non_persistent_service-instance_method" title="#get (instance method)">- (true|false) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/deregister&#39;) </a>
     
 
     
@@ -3226,7 +3688,7 @@ service consumes).</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#force_register_non_persistent_service-instance_method" title="#get (instance method)">- (true|false) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/register&#39;) </a>
+      <a href="top-level-namespace.html#engine_force_register_non_persistent_service-instance_method" title="#get (instance method)">- (true|false) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/register&#39;) </a>
     
 
     
@@ -3250,7 +3712,7 @@ service consumes).</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#force_reregister_non_persistent_service-instance_method" title="#get (instance method)">- (true|false) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/reregister&#39;) </a>
+      <a href="top-level-namespace.html#engine_force_reregister_non_persistent_service-instance_method" title="#get (instance method)">- (true|false) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/reregister&#39;) </a>
     
 
     
@@ -3274,7 +3736,7 @@ service consumes).</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_non_persistent_service-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle&#39;) </a>
+      <a href="top-level-namespace.html#engine_get_non_persistent_service-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle&#39;) </a>
     
 
     
@@ -3289,6 +3751,168 @@ service consumes).</p>
 
   
     <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
+      /containers/service/:service_name/service/non_persistent/
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#service_force_deregister_non_persistent_service-instance_method" title="#get (instance method)">- (true|false) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/deregister&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>force deregister the non persistent service.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#service_force_register_non_persistent_service-instance_method" title="#get (instance method)">- (true|false) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/register&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>force register the non persistent service.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#service_force_reregister_non_persistent_service-instance_method" title="#get (instance method)">- (true|false) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/reregister&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>force reregister the non persistent service.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#service_get_non_persistent_service-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
+      /containers/engine/:engine_name/services/non_persistent/
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#get_engine_non_persistent_services-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/services/non_persistent/&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Return the non persistent services registered to the engine (which this
+engine consumes).</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#get_engine_non_persistent_services_by_type-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/services/non_persistent/&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Return the non persistent services matchedin the :publisher_namespace and
+:type_path registered to the engine (which this engine consumes).</p>
+</div></span>
   
 </li>
 
@@ -3827,6 +4451,79 @@ return to set state error set if failed</p>
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="create_engine-instance_method">
+  
+    - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/create&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>create and start the engine from the engine image the local engine image is
+updated prior to the container creation</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>true</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/engine_actions.rb', line 8</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/create</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_create_container'>create_container</span>
+
+  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="create_service-instance_method">
   
     - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/create&#39;) 
@@ -4107,6 +4804,116 @@ is updated prior to the container creation</p>
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="delete_engine-instance_method">
+  
+    - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/delete/:remove_data&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>delete the engine image</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>remove_data</span>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>all|none</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>true</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/engine_actions.rb', line 141</span>
+
+<span class='id identifier rubyid_delete'>delete</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/delete/*</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+
+  <span class='id identifier rubyid_rparams'>rparams</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+  <span class='id identifier rubyid_rparams'>rparams</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_splats'>splats</span> <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>splat</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>  
+  <span class='kw'>unless</span> <span class='id identifier rubyid_splats'>splats</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>||</span> <span class='id identifier rubyid_splats'>splats</span><span class='period'>.</span><span class='id identifier rubyid_count'>count</span> <span class='op'>==</span> <span class='int'>0</span>
+    <span class='id identifier rubyid_rparams'>rparams</span><span class='lbracket'>[</span><span class='symbol'>:remove_all_data</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>true</span>  <span class='kw'>if</span> <span class='id identifier rubyid_splats'>splats</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>all</span><span class='tstring_end'>&#39;</span></span>
+    <span class='id identifier rubyid_rparams'>rparams</span><span class='lbracket'>[</span><span class='symbol'>:remove_all_data</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>false</span>  <span class='kw'>if</span> <span class='id identifier rubyid_splats'>splats</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>none</span><span class='tstring_end'>&#39;</span></span>
+<span class='kw'>else</span>
+    <span class='id identifier rubyid_rparams'>rparams</span><span class='lbracket'>[</span><span class='symbol'>:remove_all_data</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>false</span> 
+    <span class='kw'>end</span> 
+    
+  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span>  <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_delete_engine'>delete_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_rparams'>rparams</span><span class='rparen'>)</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>delete_image</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="delete_orphan_service-instance_method">
   
     - (<tt>true</tt>) <strong>delete</strong>(&#39;/v0/service_manager/orphan_service/:publisher_namespace/:type_path:/:parent_engine/:service_handle&#39;) 
@@ -4257,6 +5064,76 @@ fresh persistent services, no data is preserved beyond this point</p>
     <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
 
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="destroy_engine-instance_method">
+  
+    - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/destroy&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>destroy the engine container</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>true</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/engine_actions.rb', line 126</span>
+
+<span class='id identifier rubyid_delete'>delete</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/destroy</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_destroy_container'>destroy_container</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span>  <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_last_error'>last_error</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -4803,6 +5680,321 @@ fresh persistent services, no data is preserved beyond this point</p>
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="engine_force_deregister_non_persistent_service-instance_method">
+  
+    - (<tt>true|false</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/deregister&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>force deregister the non persistent service</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>true|false</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/service/non_persistent_service.rb', line 44</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/*/deregister</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  
+  <span class='id identifier rubyid_hash'>hash</span> <span class='op'>=</span> <span class='const'>Utils</span><span class='op'>::</span><span class='const'>ServiceHash</span><span class='period'>.</span><span class='id identifier rubyid_engine_service_hash_from_params'>engine_service_hash_from_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+  
+ <span class='id identifier rubyid_service_hash'>service_hash</span> <span class='op'>=</span>  <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_find_engine_service_hash'>find_engine_service_hash</span><span class='lparen'>(</span><span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_service_hash'>service_hash</span> <span class='kw'>if</span> <span class='id identifier rubyid_service_hash'>service_hash</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+ <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_force_deregister_attached_service'>force_deregister_attached_service</span><span class='lparen'>(</span><span class='id identifier rubyid_service_hash'>service_hash</span><span class='rparen'>)</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="engine_force_register_non_persistent_service-instance_method">
+  
+    - (<tt>true|false</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/register&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>force register the non persistent service</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>true|false</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/service/non_persistent_service.rb', line 8</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/*/register</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  
+  <span class='id identifier rubyid_hash'>hash</span> <span class='op'>=</span> <span class='const'>Utils</span><span class='op'>::</span><span class='const'>ServiceHash</span><span class='period'>.</span><span class='id identifier rubyid_engine_service_hash_from_params'>engine_service_hash_from_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+  
+ <span class='id identifier rubyid_service_hash'>service_hash</span> <span class='op'>=</span>  <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_find_engine_service_hash'>find_engine_service_hash</span><span class='lparen'>(</span><span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_service_hash'>service_hash</span>  <span class='kw'>if</span> <span class='id identifier rubyid_service_hash'>service_hash</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_force_register_attached_service'>force_register_attached_service</span><span class='lparen'>(</span><span class='id identifier rubyid_service_hash'>service_hash</span><span class='rparen'>)</span>
+
+  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="engine_force_reregister_non_persistent_service-instance_method">
+  
+    - (<tt>true|false</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/reregister&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>force reregister the non persistent service</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>true|false</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/service/non_persistent_service.rb', line 26</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/*/reregister</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  
+  <span class='id identifier rubyid_hash'>hash</span> <span class='op'>=</span> <span class='const'>Utils</span><span class='op'>::</span><span class='const'>ServiceHash</span><span class='period'>.</span><span class='id identifier rubyid_engine_service_hash_from_params'>engine_service_hash_from_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+  
+ <span class='id identifier rubyid_service_hash'>service_hash</span> <span class='op'>=</span>  <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_find_engine_service_hash'>find_engine_service_hash</span><span class='lparen'>(</span><span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_service_hash'>service_hash</span> <span class='kw'>if</span> <span class='id identifier rubyid_service_hash'>service_hash</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_force_reregister_attached_service'>force_reregister_attached_service</span><span class='lparen'>(</span><span class='id identifier rubyid_service_hash'>service_hash</span><span class='rparen'>)</span>
+
+  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="engine_get_non_persistent_service-instance_method">
+  
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/service/non_persistent_service.rb', line 61</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/*</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  
+  <span class='id identifier rubyid_hash'>hash</span> <span class='op'>=</span> <span class='const'>Utils</span><span class='op'>::</span><span class='const'>ServiceHash</span><span class='period'>.</span><span class='id identifier rubyid_engine_service_hash_from_params'>engine_service_hash_from_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+  
+ 
+  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_find_engine_service_hash'>find_engine_service_hash</span><span class='lparen'>(</span><span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span>
+
+  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="export_persistent_service-instance_method">
   
     - (<tt>Binary</tt>) <strong>get</strong>(&#39;/v0/containers/servic/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle/export&#39;) 
@@ -5009,234 +6201,6 @@ fresh persistent services, no data is preserved beyond this point</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="force_deregister_non_persistent_service-instance_method">
-  
-    - (<tt>true|false</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/deregister&#39;) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>force deregister the non persistent service</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-  
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>true|false</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/containers/service/service/non_persistent_service.rb', line 43</span>
-
-<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/*/deregister</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
-  
-  <span class='id identifier rubyid_hash'>hash</span> <span class='op'>=</span> <span class='const'>Utils</span><span class='op'>::</span><span class='const'>ServiceHash</span><span class='period'>.</span><span class='id identifier rubyid_service_service_hash_from_params'>service_service_hash_from_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_service_hash'>service_hash</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_find_service_service_hash'>find_service_service_hash</span><span class='lparen'>(</span><span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='id identifier rubyid_service_hash'>service_hash</span>  <span class='kw'>if</span> <span class='id identifier rubyid_service_hash'>service_hash</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
- <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_force_deregister_attached_service'>force_deregister_attached_service</span><span class='lparen'>(</span><span class='id identifier rubyid_service_hash'>service_hash</span><span class='rparen'>)</span>
-  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
-    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
-  <span class='kw'>else</span>
-    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span>
-  <span class='kw'>end</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="force_register_non_persistent_service-instance_method">
-  
-    - (<tt>true|false</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/register&#39;) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>force register the non persistent service</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-  
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>true|false</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/containers/service/service/non_persistent_service.rb', line 8</span>
-
-<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/*/register</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
-  
-  <span class='id identifier rubyid_hash'>hash</span> <span class='op'>=</span> <span class='const'>Utils</span><span class='op'>::</span><span class='const'>ServiceHash</span><span class='period'>.</span><span class='id identifier rubyid_service_service_hash_from_params'>service_service_hash_from_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
-  
- <span class='id identifier rubyid_service_hash'>service_hash</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_find_service_service_hash'>find_service_service_hash</span><span class='lparen'>(</span><span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Service not found</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_service_hash'>service_hash</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_force_register_attached_service'>force_register_attached_service</span><span class='lparen'>(</span><span class='id identifier rubyid_service_hash'>service_hash</span><span class='rparen'>)</span>
-
-  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
-    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
-  <span class='kw'>else</span>
-    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span>
-  <span class='kw'>end</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="force_reregister_non_persistent_service-instance_method">
-  
-    - (<tt>true|false</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/reregister&#39;) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>force reregister the non persistent service</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-  
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>true|false</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/containers/service/service/non_persistent_service.rb', line 26</span>
-
-<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/*/reregister</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
-  
-  <span class='id identifier rubyid_hash'>hash</span> <span class='op'>=</span> <span class='const'>Utils</span><span class='op'>::</span><span class='const'>ServiceHash</span><span class='period'>.</span><span class='id identifier rubyid_service_service_hash_from_params'>service_service_hash_from_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_service_hash'>service_hash</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_find_service_service_hash'>find_service_service_hash</span><span class='lparen'>(</span><span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='id identifier rubyid_service_hash'>service_hash</span> <span class='kw'>if</span> <span class='id identifier rubyid_service_hash'>service_hash</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_force_reregister_attached_service'>force_reregister_attached_service</span><span class='lparen'>(</span><span class='id identifier rubyid_service_hash'>service_hash</span><span class='rparen'>)</span>
-
-  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
-    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
-  <span class='kw'>else</span>
-    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span>
-  <span class='kw'>end</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
   <h3 class="signature " id="generate_user_key-instance_method">
   
     - (<tt>String</tt>) <strong>get</strong>(&#39;/v0/system/keys/user/:user_name/generate&#39;) 
@@ -5385,7 +6349,7 @@ fresh persistent services, no data is preserved beyond this point</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="get_all_rphan_services-instance_method">
+  <h3 class="signature " id="get_all_orphan_services-instance_method">
   
     - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/service_manager/orphan_services/&#39;) 
   
@@ -5443,7 +6407,7 @@ fresh persistent services, no data is preserved beyond this point</p>
       <pre class="code"><span class="info file"># File 'src/server/api/service_manager/orphans.rb', line 6</span>
 
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/service_manager/orphan_services/</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
-  <span class='id identifier rubyid_orphans'>orphans</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_get_orphaned_services'>get_orphaned_services</span>
+  <span class='id identifier rubyid_orphans'>orphans</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_get_orphaned_services'>get_orphaned_services</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
   <span class='kw'>unless</span> <span class='id identifier rubyid_orphans'>orphans</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
     <span class='kw'>return</span> <span class='id identifier rubyid_orphans'>orphans</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
   <span class='kw'>else</span>
@@ -6030,6 +6994,287 @@ to client  stream is in the format
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="get_engine_action-instance_method">
+  
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/action/:action_name&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>return engine action</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/actions.rb', line 23</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/action/:action_name</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>FalseClass</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_action'>action</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_get_engine_actionator'>get_engine_actionator</span><span class='lparen'>(</span><span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:action_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+    <span class='kw'>unless</span> <span class='id identifier rubyid_action'>action</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span> 
+      <span class='id identifier rubyid_action'>action</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_action'>action</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_last_error'>last_error</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_engine_actions-instance_method">
+  
+    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/actions/&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>return an of the registered action Hashes</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Hash</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/actions.rb', line 7</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/actions/</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>FalseClass</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_list'>list</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_list_engine_actionators'>list_engine_actionators</span><span class='lparen'>(</span><span class='id identifier rubyid_engine'>engine</span><span class='rparen'>)</span>
+    <span class='kw'>unless</span> <span class='id identifier rubyid_list'>list</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_list'>list</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_list'>list</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_last_error'>last_error</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_engine_blueprint-instance_method">
+  
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/blueprint&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>get engine blueprint</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/engine.rb', line 50</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/blueprint</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_load_blueprint'>load_blueprint</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_last_error'>last_error</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_engine_build_report-instance_method">
+  
+    - (<tt>String</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/build_report&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>get engine build_report</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+64
+65
+66
+67
+68
+69
+70
+71</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/engine.rb', line 64</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/build_report</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_get_build_report'>get_build_report</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="get_engine_metrics_memory-instance_method">
   
     - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/metrics/memory&#39;) 
@@ -6179,6 +7424,375 @@ to client  stream is in the format
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="get_engine_non_persistent_services-instance_method">
+  
+    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/services/non_persistent/&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Return the non persistent services registered to the engine (which this
+engine consumes)</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/services/non_persistent_services.rb', line 7</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/services/non_persistent/</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_list_non_persistent_services'>list_non_persistent_services</span><span class='lparen'>(</span><span class='id identifier rubyid_engine'>engine</span><span class='rparen'>)</span>
+
+  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span>  <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_last_error'>last_error</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_engine_non_persistent_services_by_type-instance_method">
+  
+    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/services/non_persistent/&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Return the non persistent services matchedin the :publisher_namespace and
+:type_path registered to the engine (which this engine consumes)</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/services/non_persistent_services.rb', line 24</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/*</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_hash'>hash</span> <span class='op'>=</span> <span class='const'>Utils</span><span class='op'>::</span><span class='const'>ServiceHash</span><span class='period'>.</span><span class='id identifier rubyid_engine_service_hash_from_params'>engine_service_hash_from_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='kw'>true</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_find_engine_service_hashes'>find_engine_service_hashes</span><span class='lparen'>(</span><span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span> <span class='comment'>#find_engine_services_hashes(hash)
+</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span>  <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_engine_persistent_services-instance_method">
+  
+    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:sengine_name/services/persistent/&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Return the persistent services registered to the engine (which this engine
+consumes)</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/service/persistent_service.rb', line 55</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  
+  <span class='id identifier rubyid_hash'>hash</span> <span class='op'>=</span> <span class='const'>Utils</span><span class='op'>::</span><span class='const'>ServiceHash</span><span class='period'>.</span><span class='id identifier rubyid_engine_service_hash_from_params'>engine_service_hash_from_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_find_engine_service_hash'>find_engine_service_hash</span><span class='lparen'>(</span><span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span>
+
+  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_engine_state-instance_method">
+  
+    - (<tt>String</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/state&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>get engine state</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>engine state</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/engine.rb', line 36</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/state</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_read_state'>read_state</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_last_error'>last_error</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_engine_status-instance_method">
+  
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/status&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>get engine status</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>:state :set_state :progress_to :error</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/engine.rb', line 22</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/status</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_status'>status</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_last_error'>last_error</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="get_engines-instance_method">
   
     - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/containers/engines/&#39;) 
@@ -6239,7 +7853,7 @@ to client  stream is in the format
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engines/</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_engines'>engines</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_getManagedEngines'>getManagedEngines</span>
   <span class='kw'>unless</span> <span class='id identifier rubyid_engines'>engines</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
-    <span class='kw'>return</span> <span class='id identifier rubyid_engines'>engines</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+    <span class='id identifier rubyid_managed_containers_to_json'>managed_containers_to_json</span><span class='lparen'>(</span><span class='id identifier rubyid_engines'>engines</span><span class='rparen'>)</span>   
   <span class='kw'>else</span>
     <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_engines'>engines</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
@@ -6817,109 +8431,6 @@ configured engines</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="get_non_persistent_service-instance_method">
-  
-    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle&#39;) 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-
-  </div>
-</div>
-<div class="tags">
-  
-  <div class="docstring">
-  <div class="discussion">
-    
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Hash</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-</div>
-
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79
-80</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/containers/service/service/non_persistent_service.rb', line 58</span>
-
-<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/*</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
-  <span class='comment'>#splats = params[&#39;splat&#39;]
-</span>    <span class='id identifier rubyid_p'>p</span> <span class='symbol'>:raw_params</span>
-    <span class='id identifier rubyid_p'>p</span> <span class='id identifier rubyid_params'>params</span>
-  <span class='id identifier rubyid_hash'>hash</span> <span class='op'>=</span> <span class='const'>Utils</span><span class='op'>::</span><span class='const'>ServiceHash</span><span class='period'>.</span><span class='id identifier rubyid_service_service_hash_from_params'>service_service_hash_from_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
-
-<span class='comment'>#hash = {}
-</span><span class='comment'>#        hash[:publisher_namespace] = params[:publisher_namespace]
-</span>        
- <span class='comment'>#       hash[:type_path] = splats[0]
-</span><span class='comment'>#          p :compute_hah    
-</span><span class='comment'>#p hash
-</span> 
-  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_find_service_service_hash'>find_service_service_hash</span><span class='lparen'>(</span><span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span> <span class='comment'>#find_engine_services_hashes(hash)
-</span>
-  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
-    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
-  <span class='kw'>else</span>
-    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>service not found</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span>
-  <span class='kw'>end</span>
-  
-  
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
   <h3 class="signature " id="get_orphan_service-instance_method">
   
     - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/service_manager/orphan_service/:publisher_namespace/:type_path:/:parent_engine/:service_handle&#39;) 
@@ -7343,6 +8854,7 @@ configured engines</p>
       <pre class="lines">
 
 
+8
 9
 10
 11
@@ -7353,14 +8865,15 @@ configured engines</p>
 16</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/containers/service/service.rb', line 9</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/engine.rb', line 8</span>
 
-<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/service/:service_name</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
-  <span class='id identifier rubyid_service'>service</span> <span class='op'>=</span> <span class='id identifier rubyid_get_service'>get_service</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:service_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-  <span class='kw'>unless</span> <span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
-    <span class='kw'>return</span> <span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='const'>STDERR</span><span class='period'>.</span><span class='id identifier rubyid_puts'>puts</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>got </span><span class='tstring_end'>&#39;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span><span class='rparen'>)</span>
+    <span class='kw'>return</span>  <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_to_h'>to_h</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
   <span class='kw'>else</span>
-    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_service'>service</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span><span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -8254,14 +9767,7 @@ service consumes)</p>
 32
 33
 34
-35
-36
-37
-38
-39
-40
-41
-42</pre>
+35</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'src/server/api/containers/service/services/non_persistent_services.rb', line 24</span>
@@ -8269,14 +9775,7 @@ service consumes)</p>
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/service/:service_name/services/non_persistent/:publisher_namespace/*</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   
     
-  <span class='id identifier rubyid_hash'>hash</span> <span class='op'>=</span> <span class='const'>Utils</span><span class='op'>::</span><span class='const'>ServiceHash</span><span class='period'>.</span><span class='id identifier rubyid_service_service_hash_from_params'>service_service_hash_from_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='kw'>true</span><span class='rparen'>)</span>
-<span class='comment'>#hash = {}
-</span><span class='comment'>#        hash[:publisher_namespace] = params[:publisher_namespace]
-</span><span class='comment'>#        hash[:parent_engine] = params[:service_name]
-</span><span class='comment'>#        hash[:type_path] = splats[0]    
-</span>       <span class='comment'>#   p :np_services_splat
-</span><span class='comment'>#p hash
-</span>          
+  <span class='id identifier rubyid_hash'>hash</span> <span class='op'>=</span> <span class='const'>Utils</span><span class='op'>::</span><span class='const'>ServiceHash</span><span class='period'>.</span><span class='id identifier rubyid_service_service_hash_from_params'>service_service_hash_from_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='kw'>true</span><span class='rparen'>)</span> 
   <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_find_engine_service_hashes'>find_engine_service_hashes</span><span class='lparen'>(</span><span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span> <span class='comment'>#find_engine_services_hashes(hash)
 </span>
   <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
@@ -8414,14 +9913,7 @@ service consumes)</p>
 31
 32
 33
-34
-35
-36
-37
-38
-39
-40
-41</pre>
+34</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'src/server/api/containers/service/services/persistent_services.rb', line 23</span>
@@ -8429,14 +9921,7 @@ service consumes)</p>
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/service/:service_name/services/persistent/:publisher_namespace/*</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
 
     
-  <span class='id identifier rubyid_hash'>hash</span> <span class='op'>=</span> <span class='const'>Utils</span><span class='op'>::</span><span class='const'>ServiceHash</span><span class='period'>.</span><span class='id identifier rubyid_service_service_hash_from_params'>service_service_hash_from_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='kw'>true</span><span class='rparen'>)</span>
-<span class='comment'>#hash = {}
-</span><span class='comment'>#        hash[:publisher_namespace] = params[:publisher_namespace]
-</span><span class='comment'>#        hash[:parent_engine] = params[:service_name]
-</span><span class='comment'>#        hash[:type_path] = splats[0]    
-</span><span class='comment'>#        hash[:ctype] = &#39;service&#39;    
-</span><span class='id identifier rubyid_p'>p</span> <span class='id identifier rubyid_hash'>hash</span>
-          
+  <span class='id identifier rubyid_hash'>hash</span> <span class='op'>=</span> <span class='const'>Utils</span><span class='op'>::</span><span class='const'>ServiceHash</span><span class='period'>.</span><span class='id identifier rubyid_service_service_hash_from_params'>service_service_hash_from_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='kw'>true</span><span class='rparen'>)</span>     
   <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_find_engine_service_hashes'>find_engine_service_hashes</span><span class='lparen'>(</span><span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span> <span class='comment'>#find_engine_services_hashes(hash)
 </span>
   <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
@@ -8661,7 +10146,7 @@ service consumes)</p>
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/services/</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_engines'>engines</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_getManagedServices'>getManagedServices</span>
   <span class='kw'>unless</span> <span class='id identifier rubyid_engines'>engines</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
-    <span class='kw'>return</span> <span class='id identifier rubyid_engines'>engines</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+    <span class='kw'>return</span>  <span class='id identifier rubyid_managed_containers_to_json'>managed_containers_to_json</span><span class='lparen'>(</span><span class='id identifier rubyid_engines'>engines</span><span class='rparen'>)</span>   
   <span class='kw'>else</span>
     <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span><span class='id identifier rubyid_engines'>engines</span> <span class='rparen'>)</span>
   <span class='kw'>end</span>
@@ -10574,6 +12059,76 @@ created/uploaded against</p>
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="pause_engine-instance_method">
+  
+    - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/pause&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>pause the engine</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>true</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/engine_actions.rb', line 82</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/pause</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_pause_container'>pause_container</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_last_error'>last_error</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="pause_service-instance_method">
   
     - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/pause&#39;) 
@@ -10636,6 +12191,108 @@ created/uploaded against</p>
     <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
   <span class='kw'>else</span>
     <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_last_error'>last_error</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="preform_engine_action-instance_method">
+  
+    - (<tt>Hash</tt>) <strong>post</strong>(&#39;/v0/containers/engine/:engine_name/action/:action_name&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>preform engine action</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_post'>post</span> <span class='id identifier rubyid_params'>params</span> <span class='id identifier rubyid_to'>to</span> <span class='id identifier rubyid_include'>include</span> <span class='id identifier rubyid_action'>action</span> <span class='id identifier rubyid_specific'>specific</span> <span class='id identifier rubyid_parameters'>parameters</span>
+</code></pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>action</span>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>specific keys</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>action specific keys</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/actions.rb', line 40</span>
+
+<span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/action/:action_name</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>FalseClass</span><span class='rparen'>)</span>
+   
+  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='symbol'>:all</span><span class='rparen'>)</span>
+   <span class='id identifier rubyid_action'>action</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_perform_engine_action'>perform_engine_action</span><span class='lparen'>(</span><span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:action_name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_cparams'>cparams</span><span class='rparen'>)</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_action'>action</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span> 
+      <span class='id identifier rubyid_action'>action</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_action'>action</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_last_error'>last_error</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -10736,6 +12393,90 @@ created/uploaded against</p>
       <span class='id identifier rubyid_action'>action</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
   <span class='kw'>else</span>
     <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_action'>action</span><span class='comma'>,</span> <span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_last_error'>last_error</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="recreate_engine-instance_method">
+  
+    - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/recreate&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Recreate the engines container from the engine image and start the engine</p>
+
+<pre class="code ruby"><code class="ruby"><span class='const'>The</span> <span class='id identifier rubyid_local'>local</span> <span class='id identifier rubyid_engine'>engine</span> <span class='id identifier rubyid_image'>image</span> <span class='id identifier rubyid_is'>is</span> <span class='id identifier rubyid_updated'>updated</span> <span class='id identifier rubyid_prior'>prior</span> <span class='id identifier rubyid_to'>to</span> <span class='id identifier rubyid_the'>the</span> <span class='id identifier rubyid_container'>container</span> <span class='id identifier rubyid_creation'>creation</span>
+</code></pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="docstring">
+  <div class="discussion">
+    
+<p>The engine must be stopped first.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>true</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/engine_actions.rb', line 26</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/recreate</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_recreate_container'>recreate_container</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_last_error'>last_error</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -10898,6 +12639,76 @@ service</p>
     <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
   <span class='kw'>else</span>
     <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_last_error'>last_error</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="reinstall_engine-instance_method">
+  
+    - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/reinstall&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>reinstall the engine</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>true</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/engine_actions.rb', line 111</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/reinstall</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_reinstall_engine'>reinstall_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_engine'>engine</span><span class='rparen'>)</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -11325,6 +13136,76 @@ service</p>
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="restart_engine-instance_method">
+  
+    - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/restart&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>restart the engine</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>true</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/engine_actions.rb', line 68</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/restart</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_restart_container'>restart_container</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_last_error'>last_error</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="restart_engines_system-instance_method">
   
     - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/system/control/engines_system/restart&#39;) 
@@ -11533,6 +13414,337 @@ service</p>
   <span class='kw'>else</span>
     <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_last_error'>last_error</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="service_force_deregister_non_persistent_service-instance_method">
+  
+    - (<tt>true|false</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/deregister&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>force deregister the non persistent service</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>true|false</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/service/service/non_persistent_service.rb', line 43</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/*/deregister</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  
+  <span class='id identifier rubyid_hash'>hash</span> <span class='op'>=</span> <span class='const'>Utils</span><span class='op'>::</span><span class='const'>ServiceHash</span><span class='period'>.</span><span class='id identifier rubyid_service_service_hash_from_params'>service_service_hash_from_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_service_hash'>service_hash</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_find_service_service_hash'>find_service_service_hash</span><span class='lparen'>(</span><span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_service_hash'>service_hash</span>  <span class='kw'>if</span> <span class='id identifier rubyid_service_hash'>service_hash</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+ <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_force_deregister_attached_service'>force_deregister_attached_service</span><span class='lparen'>(</span><span class='id identifier rubyid_service_hash'>service_hash</span><span class='rparen'>)</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="service_force_register_non_persistent_service-instance_method">
+  
+    - (<tt>true|false</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/register&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>force register the non persistent service</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>true|false</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/service/service/non_persistent_service.rb', line 8</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/*/register</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  
+  <span class='id identifier rubyid_hash'>hash</span> <span class='op'>=</span> <span class='const'>Utils</span><span class='op'>::</span><span class='const'>ServiceHash</span><span class='period'>.</span><span class='id identifier rubyid_service_service_hash_from_params'>service_service_hash_from_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+  
+ <span class='id identifier rubyid_service_hash'>service_hash</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_find_service_service_hash'>find_service_service_hash</span><span class='lparen'>(</span><span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Service not found</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_service_hash'>service_hash</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_force_register_attached_service'>force_register_attached_service</span><span class='lparen'>(</span><span class='id identifier rubyid_service_hash'>service_hash</span><span class='rparen'>)</span>
+
+  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="service_force_reregister_non_persistent_service-instance_method">
+  
+    - (<tt>true|false</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/reregister&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>force reregister the non persistent service</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>true|false</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/service/service/non_persistent_service.rb', line 26</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/*/reregister</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  
+  <span class='id identifier rubyid_hash'>hash</span> <span class='op'>=</span> <span class='const'>Utils</span><span class='op'>::</span><span class='const'>ServiceHash</span><span class='period'>.</span><span class='id identifier rubyid_service_service_hash_from_params'>service_service_hash_from_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_service_hash'>service_hash</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_find_service_service_hash'>find_service_service_hash</span><span class='lparen'>(</span><span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_service_hash'>service_hash</span> <span class='kw'>if</span> <span class='id identifier rubyid_service_hash'>service_hash</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_force_reregister_attached_service'>force_reregister_attached_service</span><span class='lparen'>(</span><span class='id identifier rubyid_service_hash'>service_hash</span><span class='rparen'>)</span>
+
+  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="service_get_non_persistent_service-instance_method">
+  
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/service/service/non_persistent_service.rb', line 58</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/*</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='comment'>#splats = params[&#39;splat&#39;]
+</span>    <span class='id identifier rubyid_p'>p</span> <span class='symbol'>:raw_params</span>
+    <span class='id identifier rubyid_p'>p</span> <span class='id identifier rubyid_params'>params</span>
+  <span class='id identifier rubyid_hash'>hash</span> <span class='op'>=</span> <span class='const'>Utils</span><span class='op'>::</span><span class='const'>ServiceHash</span><span class='period'>.</span><span class='id identifier rubyid_service_service_hash_from_params'>service_service_hash_from_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
+
+<span class='comment'>#hash = {}
+</span><span class='comment'>#        hash[:publisher_namespace] = params[:publisher_namespace]
+</span>        
+ <span class='comment'>#       hash[:type_path] = splats[0]
+</span><span class='comment'>#          p :compute_hah    
+</span><span class='comment'>#p hash
+</span> 
+  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_find_service_service_hash'>find_service_service_hash</span><span class='lparen'>(</span><span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span> <span class='comment'>#find_engine_services_hashes(hash)
+</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>service not found</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+  
+  
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -12408,6 +14620,76 @@ service</p>
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="start_engine-instance_method">
+  
+    - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/start&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>start the engine</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>true</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/engine_actions.rb', line 54</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/start</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_start_container'>start_container</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_last_error'>last_error</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="start_service-instance_method">
   
     - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/start&#39;) 
@@ -12470,6 +14752,76 @@ service</p>
     <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
   <span class='kw'>else</span>
     <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_last_error'>last_error</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="stop_engine-instance_method">
+  
+    - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/stop&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>stop the engine</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>true</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/engine_actions.rb', line 40</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/stop</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_stop_container'>stop_container</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_last_error'>last_error</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -12611,6 +14963,76 @@ service</p>
     <span class='kw'>return</span> <span class='id identifier rubyid_system_ca'>system_ca</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
   <span class='kw'>else</span>
     <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_system_ca'>system_ca</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="unpause_engine-instance_method">
+  
+    - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/unpause&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>unpause the engine</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>true</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/engine_actions.rb', line 96</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/unpause</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_unpause_container'>unpause_container</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_last_error'>last_error</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -13285,7 +15707,7 @@ EnginesError &gt; an error occurred</code></pre>
 </div>
 
     <div id="footer">
-  Generated on Wed Jun  1 11:25:53 2016 by
+  Generated on Thu Jun  2 12:55:17 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.3).
 </div>

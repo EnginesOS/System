@@ -1,7 +1,7 @@
 # @!group /containers/service/:service_name/service/non_persistent/
 
 
-# @method force_register_non_persistent_service
+# @method service_force_register_non_persistent_service
 # @overload get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/register' 
 # force register the non persistent service  
 # @return [true|false]
@@ -19,7 +19,7 @@ get '/v0/containers/service/:service_name/service/non_persistent/:publisher_name
     return log_error(request, r, hash)
   end
 end
-# @method force_reregister_non_persistent_service
+# @method service_force_reregister_non_persistent_service
 # @overload get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/reregister' 
 # force reregister the non persistent service  
 # @return [true|false]
@@ -36,7 +36,7 @@ get '/v0/containers/service/:service_name/service/non_persistent/:publisher_name
     return log_error(request, r, hash)
   end
 end
-# @method force_deregister_non_persistent_service
+# @method service_force_deregister_non_persistent_service
 # @overload get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/deregister'
 # force deregister the non persistent service  
 # @return [true|false]
@@ -52,7 +52,7 @@ get '/v0/containers/service/:service_name/service/non_persistent/:publisher_name
     return log_error(request, r, hash)
   end
 end
-# @method get_non_persistent_service
+# @method service_get_non_persistent_service
 # @overload get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle'
 #  @return [Hash]
 get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/*' do

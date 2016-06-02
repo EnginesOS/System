@@ -24,14 +24,7 @@ end
 get '/v0/containers/service/:service_name/services/non_persistent/:publisher_namespace/*' do
   
     
-  hash = Utils::ServiceHash.service_service_hash_from_params(params, true)
-#hash = {}
-#        hash[:publisher_namespace] = params[:publisher_namespace]
-#        hash[:parent_engine] = params[:service_name]
-#        hash[:type_path] = splats[0]    
-       #   p :np_services_splat
-#p hash
-          
+  hash = Utils::ServiceHash.service_service_hash_from_params(params, true) 
   r = engines_api.find_engine_service_hashes(hash) #find_engine_services_hashes(hash)
 
   unless r.is_a?(EnginesError)
