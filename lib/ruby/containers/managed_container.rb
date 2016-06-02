@@ -123,8 +123,11 @@ class ManagedContainer < Container
 #  def to_s
 #    "#{@container_name.to_s}, #{@ctype}, #{@memory}, #{@hostname}, #{@conf_self_start}, #{@environments}, #{@image}, #{@volumes}, #{@web_port}, #{@mapped_ports}  \n"
 #  end
-
-
+  def to_h
+  
+   self.instance_variables.each_with_object({}) { |var, hash| hash[var.to_s.delete("@")] = self.instance_variable_get(var) }
+    
+end
   def lock_values
     @conf_self_start.freeze
     @container_name.freeze
