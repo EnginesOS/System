@@ -90,10 +90,10 @@ begin
 
   def get_engine(engine_name)
     eng = engines_api.loadManagedEngine(engine_name)
-#    return eng if eng.is_a?(ManagedEngine)
-#    log_error('Load failed !!!' + engine_name)
+    return eng if eng.is_a?(ManagedEngine)
+    log_error('Load failed !!!', eng, eng.class.name, engine_name)
 
-    return eng
+#    return eng
   end
 
   
