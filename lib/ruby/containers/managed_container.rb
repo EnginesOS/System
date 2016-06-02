@@ -4,9 +4,10 @@ require_relative 'ManagedContainerObjects.rb'
 
 #require 'objspace' ??
 require_relative 'container.rb'
-require 'yajl'
-class ManagedContainer < Container
 
+class ManagedContainer < Container
+  require 'yajl'
+  require 'json'
   require_relative 'managed_container/task_at_hand.rb'
   include TaskAtHand
   require_relative 'managed_container/managed_container_controls.rb'
@@ -123,9 +124,7 @@ class ManagedContainer < Container
     "#{@container_name.to_s}, #{@ctype}, #{@memory}, #{@hostname}, #{@conf_self_start}, #{@environments}, #{@image}, #{@volumes}, #{@web_port}, #{@mapped_ports}  \n"
   end
 
-  def to_json
-    self.to_h.to_json
-  end
+
   def lock_values
     @conf_self_start.freeze
     @container_name.freeze
