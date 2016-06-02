@@ -1,5 +1,5 @@
 
-# @!group /containers/engine/:engine_name/
+# @!group /containers/engine/:engine_name
 # @method create_engine
 # @overload get '/v0/containers/engine/:engine_name/create'
 # create and start the engine from the engine image

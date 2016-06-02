@@ -70,7 +70,7 @@ get '/v0/system/metrics/disks' do
 end
 
 # @method get_system_metrics_network
-# @overload get '/v0/system/metrics/network'T
+# @overload get '/v0/system/metrics/network'
 # @return [Hash] :tx :rx
 #  
 get '/v0/system/metrics/network' do

@@ -1,6 +1,6 @@
 # @!group /system/domains/
 # @method get_domain_name
-# @overload get '/v0/system/domains/get_domain_name'
+# @overload get '/v0/system/domains/:domain_name'
 # get the details for :domain_name
 # @return  [Hash] :domain_name :self_hosted :internal_only
 get '/v0/system/domains/:domain_name' do

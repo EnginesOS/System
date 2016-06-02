@@ -370,7 +370,7 @@ created/uploaded against.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_domain_name-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/system/domains/get_domain_name&#39;) </a>
+      <a href="top-level-namespace.html#get_domain_name-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/system/domains/:domain_name&#39;) </a>
     
 
     
@@ -961,7 +961,7 @@ processes.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_system_metrics_network-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/system/metrics/network&#39;T) </a>
+      <a href="top-level-namespace.html#get_system_metrics_network-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/system/metrics/network&#39;) </a>
     
 
     
@@ -1635,6 +1635,79 @@ Do not use the ”from“ key.</p>
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="top-level-namespace.html#create_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/create&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>create and start the engine from the engine image the local engine image is
+updated prior to the container creation.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#delete_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/delete/:remove_data&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>delete the engine image.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#destroy_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/destroy&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>destroy the engine container.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="top-level-namespace.html#get_engine-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name&#39;) </a>
     
 
@@ -1755,6 +1828,79 @@ Do not use the ”from“ key.</p>
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="top-level-namespace.html#pause_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/pause&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>pause the engine.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#recreate_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/recreate&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Recreate the engines container from the engine image and start the engine 
+The local engine image is updated prior to the container creation.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#reinstall_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/reinstall&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>reinstall the engine.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="top-level-namespace.html#resolve_engine_template-instance_method" title="#post (instance method)">- (String) <strong>post</strong>(&#39;/v0/containers/engine/:engine_name/template&#39;) </a>
     
 
@@ -1771,6 +1917,102 @@ Do not use the ”from“ key.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>Resolve Template string for engine :engine_name.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#restart_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/restart&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>restart the engine.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#start_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/start&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>start the engine.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#stop_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/stop&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>stop the engine.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#unpause_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/unpause&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>unpause the engine.</p>
 </div></span>
   
 </li>
@@ -2771,257 +3013,6 @@ false &gt; no udpdate available  EnginesError &gt; an error occurred.</p>
 
   
     <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-    </ul>
-  
-    <h2>
-      /containers/engine/:engine_name/
-      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
-    </h2>
-
-    <ul class="summary">
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#create_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/create&#39;) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>create and start the engine from the engine image the local engine image is
-updated prior to the container creation.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#delete_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/delete/:remove_data&#39;) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>delete the engine image.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#destroy_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/destroy&#39;) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>destroy the engine container.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#pause_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/pause&#39;) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>pause the engine.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#recreate_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/recreate&#39;) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Recreate the engines container from the engine image and start the engine 
-The local engine image is updated prior to the container creation.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#reinstall_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/reinstall&#39;) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>reinstall the engine.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#restart_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/restart&#39;) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>restart the engine.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#start_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/start&#39;) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>start the engine.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#stop_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/stop&#39;) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>stop the engine.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#unpause_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/unpause&#39;) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>unpause the engine.</p>
-</div></span>
   
 </li>
 
@@ -6947,7 +6938,7 @@ to client  stream is in the format
       <div class="method_details ">
   <h3 class="signature " id="get_domain_name-instance_method">
   
-    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/system/domains/get_domain_name&#39;) 
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/system/domains/:domain_name&#39;) 
   
 
   
@@ -10912,7 +10903,7 @@ container_name: Hash [:maximum, :current, :limit]</code></pre>
       <div class="method_details ">
   <h3 class="signature " id="get_system_metrics_network-instance_method">
   
-    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/system/metrics/network&#39;T) 
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/system/metrics/network&#39;) 
   
 
   
@@ -15797,7 +15788,7 @@ EnginesError &gt; an error occurred</code></pre>
 </div>
 
     <div id="footer">
-  Generated on Thu Jun  2 12:58:26 2016 by
+  Generated on Thu Jun  2 13:25:09 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.3).
 </div>
