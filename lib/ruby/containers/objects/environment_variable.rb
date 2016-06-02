@@ -52,7 +52,7 @@ class EnvironmentVariable
   end
   def to_h
     self.attributes
-    self.STDERR.puts('to hash ENVASDASD')
+    STDERR.puts('to hash ENVASDASD')
    
 end
   def self.find_env_in(new_env,dest)
