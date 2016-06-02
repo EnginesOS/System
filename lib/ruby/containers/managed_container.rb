@@ -125,7 +125,11 @@ class ManagedContainer < Container
 #  end
   def to_h
   
-   self.instance_variables.each_with_object({}) { |var, hash| hash[var.to_s.delete("@")] = self.instance_variable_get(var) }
+   self.instance_variables.each_with_object({}) do |var, hash|
+     v =  self.instance_variable_get(var) 
+     v = v.to_h if v.is_a?(EnvironmentVariable)
+     hash[var.to_s.delete("@")] = v 
+  end
     
 end
   def lock_values

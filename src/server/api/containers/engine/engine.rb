@@ -9,7 +9,7 @@ get '/v0/containers/engine/:engine_name' do
   engine = get_engine(params[:engine_name])
   unless engine.is_a?(EnginesError)
     STDERR.puts('got ' + engine.class.name)
-    return  engine.to_h.to_json
+    return  managed_container_as_json(engine)
   else
     return log_error(request,engine, params[:engine_name])
   end
