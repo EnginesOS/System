@@ -4,7 +4,7 @@ get '/v0/containers/engine/:engine_name' do
   engine = get_engine(params[:engine_name])
   unless engine.is_a?(EnginesError)
     STDERR.puts('as Hash ' + engine.to_h.to_s)
-    return  engine.to_json
+    return  engine.to_h.to_json
   else
     return log_error(request,engine, params[:engine_name])
   end

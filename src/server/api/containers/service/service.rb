@@ -9,7 +9,7 @@
 get '/v0/containers/service/:service_name' do
   service = get_service(params[:service_name])
   unless service.is_a?(EnginesError)
-    return service.to_json
+    return service..to_h.to_json
   else
     return log_error(request, service)
   end
