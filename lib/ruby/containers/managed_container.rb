@@ -125,17 +125,18 @@ class ManagedContainer < Container
 #  end
   def to_h
   s = self.dup
-  s.environments.each do |env|
-    
-    enva = env.to_h
-    s.environments.delete(env)
-    s.environments.push(enva)
+  envs = []
+  s.environments.each do |env|    
+    envs.push(env.to_h)
   end
-  
+    s.environments = envs
+    
    s.instance_variables.each_with_object({}) do |var, hash|
+    next if var.to_s.delete("@") == 'container_api'
      hash[var.to_s.delete("@")] = s.instance_variable_get(var) 
   end
     
+ 
 end
   def lock_values
     @conf_self_start.freeze
