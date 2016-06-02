@@ -51,9 +51,9 @@ class EnvironmentVariable
     return dest
   end
   def to_h
-    self.attributes
-    STDERR.puts('to hash ENVASDASD')
    
+    STDERR.puts('to hash ENVASDASD')
+    self.attributes
 end
   def self.find_env_in(new_env,dest)
     dest.each do  |env|
