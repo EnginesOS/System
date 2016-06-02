@@ -1635,6 +1635,30 @@ Do not use the ”from“ key.</p>
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="top-level-namespace.html#get_engine-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>get engine.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="top-level-namespace.html#get_engine_blueprint-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/blueprint&#39;) </a>
     
 
@@ -6994,6 +7018,74 @@ to client  stream is in the format
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="get_engine-instance_method">
+  
+    - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>get engine</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+8
+9
+10
+11
+12
+13
+14
+15
+16</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/engine.rb', line 8</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='const'>STDERR</span><span class='period'>.</span><span class='id identifier rubyid_puts'>puts</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>got </span><span class='tstring_end'>&#39;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span><span class='rparen'>)</span>
+    <span class='kw'>return</span>  <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_to_h'>to_h</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span><span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="get_engine_action-instance_method">
   
     - (<tt>Hash</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/action/:action_name&#39;) 
@@ -8854,7 +8946,6 @@ configured engines</p>
       <pre class="lines">
 
 
-8
 9
 10
 11
@@ -8865,15 +8956,14 @@ configured engines</p>
 16</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/engine.rb', line 8</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/service/service.rb', line 9</span>
 
-<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
-  <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-  <span class='kw'>unless</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
-    <span class='const'>STDERR</span><span class='period'>.</span><span class='id identifier rubyid_puts'>puts</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>got </span><span class='tstring_end'>&#39;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span><span class='rparen'>)</span>
-    <span class='kw'>return</span>  <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_to_h'>to_h</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/service/:service_name</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_service'>service</span> <span class='op'>=</span> <span class='id identifier rubyid_get_service'>get_service</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:service_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_service'>service</span><span class='op'>..</span><span class='id identifier rubyid_to_h'>to_h</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
   <span class='kw'>else</span>
-    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span><span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_service'>service</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -15707,7 +15797,7 @@ EnginesError &gt; an error occurred</code></pre>
 </div>
 
     <div id="footer">
-  Generated on Thu Jun  2 12:55:17 2016 by
+  Generated on Thu Jun  2 12:58:26 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.3).
 </div>

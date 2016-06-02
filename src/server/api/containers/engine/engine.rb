@@ -1,7 +1,7 @@
 
 # @!group /containers/engine/:engine_name
 
-# @method get_service
+# @method get_engine
 # @overload get '/v0/containers/engine/:engine_name' 
 # get engine
 # @return [Hash]
