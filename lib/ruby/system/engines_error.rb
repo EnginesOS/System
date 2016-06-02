@@ -18,7 +18,7 @@ def to_h
     
 end
   def to_json(opt)
-  return self.to_h.to_json
+  return self.to_h.to_json(opt)
 end
 end
 
