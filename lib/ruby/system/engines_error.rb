@@ -12,10 +12,13 @@ class EnginesError # < FalseClass
 
   end
   
- 
+def to_h
+  
+   self.instance_variables.each_with_object({}) { |var, hash| hash[var.to_s.delete("@")] = self.instance_variable_get(var) }
+    
+end
   def to_json(opt)
-#FixMe this is a kludge
-    '{"error_type":"' + @error_type.to_s + '","error_mesg":"' + @error_mesg.to_s + '","sub_system":"' + @sub_system.to_s + '","source":' + @source.to_s + '}'
+  return self.to_h.to_json
 end
 end
 
