@@ -120,7 +120,7 @@ get '/v0/containers/engine/:engine_name/reinstall' do
 end
 
 # @method destroy_engine
-# @overload get '/v0/containers/engine/:engine_name/destroy'
+# @overload delete '/v0/containers/engine/:engine_name/destroy'
 # destroy the engine container
 # @return [true]
 delete '/v0/containers/engine/:engine_name/destroy' do
@@ -134,7 +134,7 @@ delete '/v0/containers/engine/:engine_name/destroy' do
   end
 end
 # @method delete_engine
-# @overload get '/v0/containers/engine/:engine_name/delete/:remove_data'
+# @overload delete '/v0/containers/engine/:engine_name/delete/:remove_data'
 # delete the engine image
 # @param remove_data all|none
 # @return [true]

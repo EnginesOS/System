@@ -1,4 +1,4 @@
-# @!group /containers/service/:service_name/
+# @!group /containers/service/:service_name
 # @method create_service
 # @overload get '/v0/containers/service/:service_name/create'
 # create and start the service from the service image
@@ -104,7 +104,7 @@ end
 
 
 # @method destroy_service
-# @overload get '/v0/containers/service/:service_name/destroy'
+# @overload deletet '/v0/containers/service/:service_name/destroy'
 # destroy the service container
 # @return [true]
 delete '/v0/containers/service/:service_name/destroy' do
@@ -119,7 +119,7 @@ delete '/v0/containers/service/:service_name/destroy' do
 end
 
 # @method delete_service
-# @overload get '/v0/containers/service/:service_name/delete'
+# @overload delete '/v0/containers/service/:service_name/delete'
 # delete the service from the system 
 # the service can be created again with fresh persistent services, no data is preserved beyond this point
 # @return [true]

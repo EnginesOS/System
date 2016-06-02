@@ -1660,7 +1660,7 @@ updated prior to the container creation.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#delete_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/delete/:remove_data&#39;) </a>
+      <a href="top-level-namespace.html#delete_engine-instance_method" title="#delete (instance method)">- (true) <strong>delete</strong>(&#39;/v0/containers/engine/:engine_name/delete/:remove_data&#39;) </a>
     
 
     
@@ -1684,7 +1684,7 @@ updated prior to the container creation.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#destroy_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/destroy&#39;) </a>
+      <a href="top-level-namespace.html#destroy_engine-instance_method" title="#delete (instance method)">- (true) <strong>delete</strong>(&#39;/v0/containers/engine/:engine_name/destroy&#39;) </a>
     
 
     
@@ -2438,6 +2438,80 @@ configured engines.</p>
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="top-level-namespace.html#create_service-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/service/:service_name/create&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>create and start the service from the service image the local service image
+is updated prior to the container creation.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#delete_service-instance_method" title="#delete (instance method)">- (true) <strong>delete</strong>(&#39;/v0/containers/service/:service_name/delete&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>delete the service from the system  the service can be created again with
+fresh persistent services, no data is preserved beyond this point.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#destroy_service-instance_method" title="#deletet (instance method)">- (true) <strong>deletet</strong>(&#39;/v0/containers/service/:service_name/destroy&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>destroy the service container.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="top-level-namespace.html#get_service-instance_method" title="#get (instance method)">- (Hash) <strong>get</strong>(&#39;/v0/containers/service/:service_name&#39;) </a>
     
 
@@ -2502,6 +2576,152 @@ configured engines.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>get service status.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#pause_service-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/service/:service_name/pause&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>pause the service.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#recreate_service-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/service/:service_name/recreate&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Recreate the services container from the service image and start the
+service  The local service image is updated prior to the container
+creation.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#restart_service-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/service/:service_name/restart&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>restart the service.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#start_service-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/service/:service_name/start&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>start the service.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#stop_service-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/service/:service_name/stop&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>stop the service.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#unpause_service-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/service/:service_name/unpause&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>unpause the service.</p>
 </div></span>
   
 </li>
@@ -3101,235 +3321,6 @@ false &gt; no udpdate available  EnginesError &gt; an error occurred.</p>
     </ul>
   
     <h2>
-      /containers/service/:service_name/
-      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
-    </h2>
-
-    <ul class="summary">
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#create_service-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/service/:service_name/create&#39;) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>create and start the service from the service image the local service image
-is updated prior to the container creation.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#delete_service-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/service/:service_name/delete&#39;) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>delete the service from the system  the service can be created again with
-fresh persistent services, no data is preserved beyond this point.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#destroy_service-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/service/:service_name/destroy&#39;) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>destroy the service container.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#pause_service-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/service/:service_name/pause&#39;) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>pause the service.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#recreate_service-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/service/:service_name/recreate&#39;) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Recreate the services container from the service image and start the
-service  The local service image is updated prior to the container
-creation.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#restart_service-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/service/:service_name/restart&#39;) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>restart the service.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#start_service-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/service/:service_name/start&#39;) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>start the service.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#stop_service-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/service/:service_name/stop&#39;) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>stop the service.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="top-level-namespace.html#unpause_service-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/service/:service_name/unpause&#39;) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>unpause the service.</p>
-</div></span>
-  
-</li>
-
-      
-    </ul>
-  
-    <h2>
       /service_manager/
       <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
     </h2>
@@ -3480,7 +3471,7 @@ creation.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_engine_persistent_services-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/containers/engine/:sengine_name/services/persistent/&#39;) </a>
+      <a href="top-level-namespace.html#get_engine_persistent_services-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/services/persistent/&#39;) </a>
     
 
     
@@ -3497,6 +3488,31 @@ creation.</p>
     <span class="summary_desc"><div class='inline'>
 <p>Return the persistent services registered to the engine (which this engine
 consumes).</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#get_engine_persistent_services_by_type-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/services/persistent/:publisher_namespace/:type_path&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Return the persistent services matchedin the :publisher_namespace and
+:type_path registered to the engine (which this engine consumes).</p>
 </div></span>
   
 </li>
@@ -3645,7 +3661,7 @@ service consumes).</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_service_persistent_services_by_type-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/persistent/&#39;) </a>
+      <a href="top-level-namespace.html#get_service_persistent_services_by_type-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/persistent/:publisher_namespace/:type_path&#39;) </a>
     
 
     
@@ -3910,7 +3926,7 @@ engine consumes).</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_engine_non_persistent_services_by_type-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/services/non_persistent/&#39;) </a>
+      <a href="top-level-namespace.html#get_engine_non_persistent_services_by_type-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/:type_path&#39;) </a>
     
 
     
@@ -3969,7 +3985,7 @@ service consumes).</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_service_non_persistent_services_by_type-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/non_persistent/&#39;) </a>
+      <a href="top-level-namespace.html#get_service_non_persistent_services_by_type-instance_method" title="#get (instance method)">- (Array) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/non_persistent/:publisher_namespace/:type_path&#39;) </a>
     
 
     
@@ -4821,7 +4837,7 @@ is updated prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="delete_engine-instance_method">
   
-    - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/delete/:remove_data&#39;) 
+    - (<tt>true</tt>) <strong>delete</strong>(&#39;/v0/containers/engine/:engine_name/delete/:remove_data&#39;) 
   
 
   
@@ -5019,7 +5035,7 @@ is updated prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="delete_service-instance_method">
   
-    - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/delete&#39;) 
+    - (<tt>true</tt>) <strong>delete</strong>(&#39;/v0/containers/service/:service_name/delete&#39;) 
   
 
   
@@ -5088,7 +5104,7 @@ fresh persistent services, no data is preserved beyond this point</p>
       <div class="method_details ">
   <h3 class="signature " id="destroy_engine-instance_method">
   
-    - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/destroy&#39;) 
+    - (<tt>true</tt>) <strong>delete</strong>(&#39;/v0/containers/engine/:engine_name/destroy&#39;) 
   
 
   
@@ -5158,7 +5174,7 @@ fresh persistent services, no data is preserved beyond this point</p>
       <div class="method_details ">
   <h3 class="signature " id="destroy_service-instance_method">
   
-    - (<tt>true</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/destroy&#39;) 
+    - (<tt>true</tt>) <strong>deletet</strong>(&#39;/v0/containers/service/:service_name/destroy&#39;) 
   
 
   
@@ -7582,7 +7598,7 @@ engine consumes)</p>
       <div class="method_details ">
   <h3 class="signature " id="get_engine_non_persistent_services_by_type-instance_method">
   
-    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/services/non_persistent/&#39;) 
+    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/:type_path&#39;) 
   
 
   
@@ -7653,7 +7669,7 @@ engine consumes)</p>
       <div class="method_details ">
   <h3 class="signature " id="get_engine_persistent_services-instance_method">
   
-    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:sengine_name/services/persistent/&#39;) 
+    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/services/persistent/&#39;) 
   
 
   
@@ -7714,6 +7730,83 @@ consumes)</p>
 
   <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_find_engine_service_hash'>find_engine_service_hash</span><span class='lparen'>(</span><span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span>
 
+  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="get_engine_persistent_services_by_type-instance_method">
+  
+    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/services/persistent/:publisher_namespace/:type_path&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Return the persistent services matchedin the :publisher_namespace and
+:type_path registered to the engine (which this engine consumes)</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/services/persistent_services.rb', line 24</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/services/persistent/:publisher_namespace/*</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+
+    
+  <span class='id identifier rubyid_hash'>hash</span> <span class='op'>=</span> <span class='const'>Utils</span><span class='op'>::</span><span class='const'>ServiceHash</span><span class='period'>.</span><span class='id identifier rubyid_engine_service_hash_from_params'>engine_service_hash_from_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='kw'>true</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_find_engine_service_hashes'>find_engine_service_hashes</span><span class='lparen'>(</span><span class='id identifier rubyid_hash'>hash</span><span class='rparen'>)</span> <span class='comment'>#find_engine_services_hashes(hash)
+</span>
   <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
     <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
   <span class='kw'>else</span>
@@ -9798,7 +9891,7 @@ service consumes)</p>
       <div class="method_details ">
   <h3 class="signature " id="get_service_non_persistent_services_by_type-instance_method">
   
-    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/non_persistent/&#39;) 
+    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/non_persistent/:publisher_namespace/:type_path&#39;) 
   
 
   
@@ -9944,7 +10037,7 @@ service consumes)</p>
       <div class="method_details ">
   <h3 class="signature " id="get_service_persistent_services_by_type-instance_method">
   
-    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/persistent/&#39;) 
+    - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/services/persistent/:publisher_namespace/:type_path&#39;) 
   
 
   
@@ -15788,7 +15881,7 @@ EnginesError &gt; an error occurred</code></pre>
 </div>
 
     <div id="footer">
-  Generated on Thu Jun  2 13:25:09 2016 by
+  Generated on Thu Jun  2 13:48:59 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.3).
 </div>

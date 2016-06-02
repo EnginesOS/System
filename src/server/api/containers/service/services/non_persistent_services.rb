@@ -17,7 +17,7 @@ get '/v0/containers/service/:service_name/services/non_persistent/' do
 end
 
 # @method get_service_non_persistent_services_by_type
-# @overload get '/v0/containers/service/:service_name/services/non_persistent/'
+# @overload get '/v0/containers/service/:service_name/services/non_persistent/:publisher_namespace/:type_path'
 # Return the non persistent services matchedin the :publisher_namespace and :type_path registered to the service (which this service consumes)
 # @return [Array]
 
