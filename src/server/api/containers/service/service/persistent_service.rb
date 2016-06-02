@@ -1,6 +1,6 @@
 # @!group /containers/service/:service_name/service/persistent/
-# @method export_persistent_service
-# @overload get '/v0/containers/servic/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle/export'
+# @method service_export_persistent_service
+# @overload get '/v0/containers/service/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle/export'
 # exports the service data as a gzip
 # @return [Binary]
 get '/v0/containers/service/:service_name/service/persistent/:publisher_namespace/*/export' do
@@ -18,9 +18,10 @@ get '/v0/containers/service/:service_name/service/persistent/:publisher_namespac
     return log_error(request, r, service.last_error)
   end
 end
-# @method import_persistent_service
+# @method service_import_persistent_service
 # @overload get '/v0/containers/service/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle/import'
 # import the service data gzip optional 
+# @param :data data to import
 # @return [true]
 get '/v0/containers/service/:service_name/service/persistent/:publisher_namespace/*/import' do
   
@@ -37,9 +38,10 @@ get '/v0/containers/service/:service_name/service/persistent/:publisher_namespac
     return log_error(request, r, service.last_error)
   end
 end
-# @method replace_persistent_service
+# @method service_replace_persistent_service
 # @overload get '/v0/containers/service/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle/replace'
 # import the service data gzip optional after dropping/deleting existing data
+# @param :data data to import
 # @return [true]
 get '/v0/containers/engine/:service_name/service/persistent/:publisher_namespace/*/replace' do
   
@@ -58,8 +60,8 @@ get '/v0/containers/engine/:service_name/service/persistent/:publisher_namespace
   end
 end
 
-# @method get_persistent_service
-# @overload get '/v0/containers/engine/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle'
+# @method service_get_persistent_service
+# @overload get '/v0/containers/service/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle'
 # get the service
 # @return [Hash]
 get '/v0/containers/service/:service_name/service/persistent/:publisher_namespace/*' do

@@ -104,7 +104,7 @@ end
 
 
 # @method destroy_service
-# @overload deletet '/v0/containers/service/:service_name/destroy'
+# @overload delete '/v0/containers/service/:service_name/destroy'
 # destroy the service container
 # @return [true]
 delete '/v0/containers/service/:service_name/destroy' do

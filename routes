@@ -83,9 +83,9 @@ get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namesp
 get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/*/reregister'
 get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/*/deregister'
 get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/*' 
-get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/export'  -Missing doc
-post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/import'  -Missing doc
-post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/replace'  -Missing doc
+get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/export'  
+post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/import'  
+post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/replace' 
 get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*'  -Missing doc
 get '/v0/containers/services/'
 get '/v0/containers/services/container_name'

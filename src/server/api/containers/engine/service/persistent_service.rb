@@ -1,5 +1,9 @@
 # @!group /containers/engine/:engine_name/services/persistent/
 
+# @method engine_export_persistent_service
+# @overload get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/:type_path/:service_handle/export'
+# exports the service data as a gzip
+# @return [Binary]
 get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/export' do
   content_type 'application/octet-stream'
   hash = Utils::ServiceHash.engine_service_hash_from_params(params)
@@ -14,9 +18,13 @@ get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/
     return log_error(request, r, engine.last_error)
   end
 end
-
+# @method engine_import_persistent_service
+# @overload post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/:type_path/:service_handle/import'
+# import the service data gzip optional 
+# @param :data data to import
+# @return [true]
 post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/import' do
-  p params
+
   hash = {}
   hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
   engine = get_engine(params[:engine_name])
@@ -29,9 +37,12 @@ post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace
     return log_error(request, r, engine.last_error)
   end
 end
-
+# @method engine_replace_persistent_service
+# @overload post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/:type_path/:service_handle/replace'
+# import the service data gzip optional after dropping/deleting existing data
+# @param :data data to import
+# @return [true]
 post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/replace' do
-  p params
   hash = {}
    hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
    engine = get_engine(params[:engine_name])
@@ -47,7 +58,7 @@ post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace
 end
 
 
-# @method get_engine_persistent_services
+# @method get_engine_persistent_service
 # @overload get '/v0/containers/engine/:sengine_name/services/persistent/'
 # Return the persistent services registered to the engine (which this engine consumes)
 # @return [Array]
@@ -64,3 +75,4 @@ get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/
     return log_error(request, r, hash)
   end
 end
+# @!endgroup
