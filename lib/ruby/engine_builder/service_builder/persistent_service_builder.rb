@@ -10,7 +10,7 @@ module PersistantServiceBuilder
       return log_error_mesg('no matching service definition',self) if service_def.nil?
       if service_def[:persistent]
         service_hash[:persistent] = true
-        return r unless (r = process_persistent_service(service_hash, environ, use_existing))
+        return r if (r = process_persistent_service(service_hash, environ, use_existing)).is_a?(EnginesError)
       end
     end
     return true
@@ -52,7 +52,7 @@ module PersistantServiceBuilder
     environ.concat(SoftwareServiceDefinition.service_environments(service_hash))
     SystemDebug.debug(SystemDebug.builder, :with_env, service_hash)
     # FIXME: release orphan should happen latter unless use reoprhan on rebuild failure
-    if @core_api.create_and_register_service(service_hash)
+    unless @core_api.create_and_register_service(service_hash).is_a?(EnginesError)
       @attached_services.push(service_hash)
     else
       return log_error_mesg('Core Failed to attach Service ' , service_hash)

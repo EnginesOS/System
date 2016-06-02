@@ -26,6 +26,8 @@ module Params
 
   def self.required_params(params, keys)
     mparams = params['api_vars']
+    p :pre_SYM
+    p  m_params 
     m_params = Utils.symbolize_keys(mparams)
     p :POST_SYM
     p  m_params 
