@@ -1,5 +1,6 @@
 module PersistantServiceBuilder
   def create_persistent_services(services, environ, use_existing)
+    r = ''
     SystemDebug.debug(SystemDebug.builder,:services ,services)
     STDERR.puts('Match persisten sevi3e' + use_existing.to_s)
     services.each do | service_hash |
