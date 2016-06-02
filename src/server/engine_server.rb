@@ -113,7 +113,21 @@ begin
 
 require_relative 'api/routes.rb'
   
-  
+def managed_containers_to_json(containers)
+  if containers.is_a?(Array)
+    res = []
+    containers.each do |container|
+      res.push(managed_container_as_json(container))
+    end
+    return res
+  end
+  return managed_container_as_json(containers)
+end
+
+def managed_container_as_json(container)
+  container.to_h.json
+end
+
 #  post '/v0/login/' do
 #    u = User.new(:username => params[:username], :password => params[:password])
 #    u.save

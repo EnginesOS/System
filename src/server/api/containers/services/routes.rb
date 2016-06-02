@@ -8,7 +8,7 @@
 get '/v0/containers/services/' do
   engines = engines_api.getManagedServices
   unless engines.is_a?(EnginesError)
-    return engines.to_json
+    return  managed_containers_to_json(engines)   
   else
     return log_error(request,engines )
   end
