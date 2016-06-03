@@ -21,8 +21,10 @@ end
 # @param :internal_only optional
 # @return  [true]
 post '/v0/system/domains/:domain_name' do
-
-  params.merge(post_params(request))
+ post_ = post_params(request)
+ 
+ STDERR.puts(' post ' + post_s.to_s + ' params ' + params.to_s)
+  params.merge(post)
   p params
   cparams =  Utils::Params.assemble_params(params, [:domain_name], :all)
   r = engines_api.update_domain(cparams)
