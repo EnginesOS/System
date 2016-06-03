@@ -230,7 +230,7 @@ def rest_get(path,params=nil)
   begin
     retry_count = 0
     # STDERR.puts('Get Path:' + path.to_s + ' Params:' + params.to_s)
-    params = add_access(params)
+   # params = add_access(params)
     r = RestClient.get(@base_url + path, params, {  :access_token => load_token})
 
     return r
@@ -239,7 +239,7 @@ def rest_get(path,params=nil)
   rescue StandardError => e
 
     STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
-
+    STDERR.puts e.backtrace.to_s
   end
 end
 
