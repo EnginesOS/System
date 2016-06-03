@@ -13,7 +13,7 @@
 # @param :domain_name a-z,.,0-9
 # @param :attached_services Array of Hash :publisher_namespace :type_path :create_type :parent_engine :service_handle
 # @return [true] 
-post '/v0/containers/engines/build/:data', :provides => :json  do
+post '/v0/containers/engines/build/?', :provides => :json  do
   STDERR.puts('Build params at Server ROTUe ' + params.to_s)
   jdata = params[:data]
   cparams =  Utils::Params.assemble_params(JSON.parse(jdata), [], :all)
