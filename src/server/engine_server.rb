@@ -163,8 +163,7 @@ end
           # Your actual access token should be generated using one of the several great libraries
           # for this purpose and stored in a database, this is just to show how Warden should be
           # set up.
-        #  access_granted = (request.env["HTTP_ACCESS_TOKEN"] == 'test_token')
-        STDERR.puts(' auth screte ' + $token.to_s + ' ' + ' env ' + request.env["HTTP_ACCESS_TOKEN"].to_s)
+    
         access_granted = (params['access_token'] == $token  || request.env["HTTP_ACCESS_TOKEN"] == $token)
           !access_granted ? fail!('Could not log in') : success!(access_granted)
       end
