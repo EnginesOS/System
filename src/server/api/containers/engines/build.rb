@@ -14,9 +14,8 @@
 # @param :attached_services Array of Hash :publisher_namespace :type_path :create_type :parent_engine :service_handle
 # @return [true] 
 post '/v0/containers/engines/build' do
- # STDERR.puts('Build params at Server ROTUe ' + params.to_s)
- # jdata = params[:data]
-  params = JSON.parse(request.env["rack.input"].read)
+params = post_params(request)
+
   cparams =  Utils::Params.assemble_params(params, [], :all)
   r = engines_api.build_engine(cparams)
   

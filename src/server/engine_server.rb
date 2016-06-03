@@ -171,6 +171,10 @@ end
   end
 
   end
+  
+  def post_params(request)
+     JSON.parse(request.env["rack.input"].read)
+  end
 
 rescue StandardError => e
   #log_error(e)

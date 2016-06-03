@@ -20,6 +20,7 @@
 # @param :dynamic_dns_password when :networking = dynamic_dns
 # @return [true]
 post '/v0/system/do_first_run' do
+  params = post_params(request)
   cparams =  Utils::Params.assemble_params(params, [], :all)
     r = engines_api.set_first_run_parameters(cparams)
   unless r.is_a?(EnginesError)
