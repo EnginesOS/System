@@ -273,7 +273,7 @@ def rest_post(path, params, content_type )
       # STDERR.puts  "no_ct"
       r = RestClient.post(@base_url + path, params)
     end
-
+    STDERR.puts(params)
     write_response(r)
     exit
   rescue RestClient::ExceptionWithResponse => e
