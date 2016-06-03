@@ -141,7 +141,7 @@ def perform_get
   exit
 end
 
-def perform_post(params=nil, content_type=nil)
+def perform_post(params=nil, content_type=:json)
   post_params = {}
   post_params[:api_vars] = params
   add_access(post_params)
