@@ -30,7 +30,7 @@ module DomainOperations
 
   def domain_name(domain_name)
     domains = DNSHosting.load_domains
-       domains[domain_name] 
+    domains[domain_name.to_sym] 
   end
  
 
