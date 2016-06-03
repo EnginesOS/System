@@ -4488,12 +4488,14 @@ service consumes).</p>
 19
 20
 21
-22</pre>
+22
+23</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'src/server/api/containers/engines/build.rb', line 16</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engines/build</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='const'>STDERR</span><span class='period'>.</span><span class='id identifier rubyid_puts'>puts</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Build params at Server ROTUe </span><span class='tstring_end'>&#39;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_params'>params</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='symbol'>:all</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_build_engine'>build_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_cparams'>cparams</span><span class='rparen'>)</span>
   
@@ -7374,7 +7376,7 @@ to client  stream is in the format
   <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='kw'>unless</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
     <span class='const'>STDERR</span><span class='period'>.</span><span class='id identifier rubyid_puts'>puts</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>got </span><span class='tstring_end'>&#39;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span><span class='rparen'>)</span>
-    <span class='kw'>return</span>  <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_to_h'>to_h</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+    <span class='kw'>return</span>  <span class='id identifier rubyid_managed_container_as_json'>managed_container_as_json</span><span class='lparen'>(</span><span class='id identifier rubyid_engine'>engine</span><span class='rparen'>)</span>
   <span class='kw'>else</span>
     <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span><span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
@@ -9334,7 +9336,7 @@ configured engines</p>
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/service/:service_name</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_service'>service</span> <span class='op'>=</span> <span class='id identifier rubyid_get_service'>get_service</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:service_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='kw'>unless</span> <span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
-    <span class='kw'>return</span> <span class='id identifier rubyid_service'>service</span><span class='op'>..</span><span class='id identifier rubyid_to_h'>to_h</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_managed_container_as_json'>managed_container_as_json</span><span class='lparen'>(</span><span class='id identifier rubyid_service'>service</span><span class='rparen'>)</span>
   <span class='kw'>else</span>
     <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_service'>service</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
@@ -16364,7 +16366,7 @@ EnginesError &gt; an error occurred</code></pre>
 </div>
 
     <div id="footer">
-  Generated on Thu Jun  2 14:19:33 2016 by
+  Generated on Fri Jun  3 12:17:21 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.3).
 </div>

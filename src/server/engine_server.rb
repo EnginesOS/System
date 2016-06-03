@@ -164,7 +164,8 @@ end
           # for this purpose and stored in a database, this is just to show how Warden should be
           # set up.
         #  access_granted = (request.env["HTTP_ACCESS_TOKEN"] == 'test_token')
-        access_granted = (params['access_token'] == $token  || request.env["Access-Token"] == $token)
+        STDERR.puts(' auth screte ' + $token.to_s + ' ' + ' env ' + request.env["ACCESS_TOKEN"])
+        access_granted = (params['access_token'] == $token  || request.env["ACCESS_TOKEN"] == $token)
           !access_granted ? fail!('Could not log in') : success!(access_granted)
       end
   end
