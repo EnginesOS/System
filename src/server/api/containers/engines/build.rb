@@ -13,10 +13,11 @@
 # @param :domain_name a-z,.,0-9
 # @param :attached_services Array of Hash :publisher_namespace :type_path :create_type :parent_engine :service_handle
 # @return [true] 
-post '/v0/containers/engines/build/?', :provides => :json  do
-  STDERR.puts('Build params at Server ROTUe ' + params.to_s)
-  jdata = params[:data]
-  cparams =  Utils::Params.assemble_params(JSON.parse(jdata), [], :all)
+post '/v0/containers/engines/build/' do
+ # STDERR.puts('Build params at Server ROTUe ' + params.to_s)
+ # jdata = params[:data]
+  params = JSON.parse(request.env["rack.input"].read)
+  cparams =  Utils::Params.assemble_params(params, [], :all)
   r = engines_api.build_engine(cparams)
   
   return log_error(request, r, cparams) if r.is_a?(EnginesError)
