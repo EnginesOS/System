@@ -262,10 +262,10 @@ end
 def rest_post(path, params, content_type )
 
   begin
-
+     
     params = add_access(params)
     #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
-    r = RestClient.post(@base_url + path, params, :content_type => content_type )
+    r = RestClient.post(@base_url + path, params, {:content_type => content_type, :accept => content_type} )
 #    unless content_type.nil?
 #      #  STDERR.puts  'ct ' + content_type
 #      #   r = RestClient.post(@base_url + path, params[:api_vars][:data], :content_type => content_type )
