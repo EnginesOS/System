@@ -144,7 +144,7 @@ end
 def perform_post(params, content_type=:json)
   post_params = {}
   post_params[:api_vars] = params
-  # add_access(post_params)
+   add_access(post_params)
   #  STDERR.puts  @route
 
   rest_post(@route,post_params, content_type)
@@ -265,7 +265,7 @@ def rest_post(path, params, content_type )
      
     params = add_access(params)
     #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
-    r = RestClient.post(@base_url + path, params.to_json, {:content_type => content_type, :accept => content_type} )
+    r = RestClient.post(@base_url + path, params, {:content_type => content_type, :accept => content_type} )
 #    unless content_type.nil?
 #      #  STDERR.puts  'ct ' + content_type
 #      #   r = RestClient.post(@base_url + path, params[:api_vars][:data], :content_type => content_type )
