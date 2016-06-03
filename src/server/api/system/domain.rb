@@ -5,6 +5,7 @@
 # @return  [Hash] :domain_name :self_hosted :internal_only
 get '/v0/system/domains/:domain_name' do
   domain_name = engines_api.domain_name(params[:domain_name])
+    STDERR.puts('domain_name ' + domain_name.to_s + ' 4 ' +  params[:domain_name].to_s)
   unless domain_name.is_a?(EnginesError)
     status(202)
     return domain_name.to_json
