@@ -14,6 +14,7 @@
 # @param :attached_services Array of Hash :publisher_namespace :type_path :create_type :parent_engine :service_handle
 # @return [true] 
 post '/v0/containers/engines/build' do
+  STDERR.puts('build params in server ' + param.to_s)
   cparams =  Utils::Params.assemble_params(params, [], :all)
   r = engines_api.build_engine(cparams)
   
