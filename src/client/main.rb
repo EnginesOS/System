@@ -230,8 +230,8 @@ def rest_get(path,params=nil)
   begin
     retry_count = 0
     # STDERR.puts('Get Path:' + path.to_s + ' Params:' + params.to_s)
-   # params = add_access(params)
-    r = RestClient.get(@base_url + path, params, {  :access_token => load_token})
+    params = add_access(params)
+    r = RestClient.get(@base_url + path, params) #, { :access_token => load_token})
 
     return r
   rescue RestClient::ExceptionWithResponse => e
@@ -288,10 +288,10 @@ def rest_post(path, params, content_type )
 end
 
 def rest_delete(path, params=nil)
- # params = add_access(params)
+  params = add_access(params)
   begin
     #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
-    r = RestClient.delete(@base_url + path, params, {  :access_token => load_token} )
+    r = RestClient.delete(@base_url + path, params) #, {  :access_token => load_token} )
     write_response(r)
     exit
   rescue RestClient::ExceptionWithResponse => e
