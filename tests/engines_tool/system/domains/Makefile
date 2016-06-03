@@ -12,7 +12,7 @@ list:
 	
 	
 view:
-	engines_tool system domain view testdomain.com | engines_test_expects json domain_name testdomain.com
+	engines_tool system domains view testdomain.com | engines_test_expects json domain_name testdomain.com
 
 update:
 	cat update_domain.json | engines_tool system domains update testdomain.com | engines_test_expects bool true

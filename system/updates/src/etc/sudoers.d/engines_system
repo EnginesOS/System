@@ -6,7 +6,7 @@ engines ALL = (root) NOPASSWD: /opt/engines/system/scripts/ssh/sudo/_remove_cert
 engines ALL = (root) NOPASSWD: /opt/engines/system/scripts/ssh/sudo/_restart_system.sh
 engines ALL = (root) NOPASSWD: /opt/engines/system/scripts/ssh/sudo/_update_base_os.sh
 engines ALL = (root) NOPASSWD: /opt/engines/system/scripts/ssh/sudo/_update_engines_console_password.sh
-
+engines ALL = (root) NOPASSWD: /opt/engines/system/scripts/ssh/sudo/_rotate_container_log.sh
 
 
 
