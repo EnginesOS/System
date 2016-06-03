@@ -16,6 +16,7 @@ module PublicApiEngines
   end
    
   def  build_engine(params)
+    STDERR.puts('build parram ' + params.to_s)
     @core_api.build_engine(params)
       end
       
