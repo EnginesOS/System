@@ -266,14 +266,14 @@ def rest_post(path, params, content_type )
     params = add_access(params)
     #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
     unless content_type.nil?
-        STDERR.puts  'ct ' + content_type
+      #  STDERR.puts  'ct ' + content_type
       #   r = RestClient.post(@base_url + path, params[:api_vars][:data], :content_type => content_type )
       r = RestClient.post(@base_url + path, params, :content_type => content_type )
     else
       # STDERR.puts  "no_ct"
       r = RestClient.post(@base_url + path, params,  :content_type =>  :json)
     end
-    STDERR.puts(params)
+  
     write_response(r)
     exit
   rescue RestClient::ExceptionWithResponse => e
