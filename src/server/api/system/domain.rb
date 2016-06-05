@@ -23,7 +23,7 @@ end
 post '/v0/system/domains/:domain_name' do
  post_s = post_params(request)
   post_s[:domain_name] = params['domain_name']
-p 'update domain ' + post_s
+
   cparams =  Utils::Params.assemble_params(post_s, [:domain_name], :all)
   r = engines_api.update_domain(cparams)
   unless r.is_a?(EnginesError)
