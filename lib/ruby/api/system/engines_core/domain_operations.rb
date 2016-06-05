@@ -61,7 +61,7 @@ module DomainOperations
   def update_domain(params)
     r = ''
     old_domain_name = params[:original_domain_name]
-    return r unless ( r = DNSHosting.update_domain(old_domain_name, params))
+    return r if ( r = DNSHosting.update_domain(old_domain_name, params)).is_a?(EnginesError)
     return true unless params[:self_hosted]
     service_hash =  {}
     service_hash[:parent_engine] = 'system'
