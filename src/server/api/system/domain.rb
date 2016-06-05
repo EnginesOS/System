@@ -5,7 +5,7 @@
 # @return  [Hash] :domain_name :self_hosted :internal_only
 get '/v0/system/domains/:domain_name' do
   domain_name = engines_api.domain_name(params[:domain_name])
-    STDERR.puts('domain_name ' + domain_name.to_s + ' 4 ' +  params[:domain_name].to_s)
+   
   unless domain_name.is_a?(EnginesError)
     status(202)
     return domain_name.to_json
@@ -23,9 +23,7 @@ end
 post '/v0/system/domains/:domain_name' do
  post_s = post_params(request)
   post_s[:domain_name] = params['domain_name']
- STDERR.puts(' post ' + post_s.to_s + ' params ' + params.to_s)
- # params.merge(post_s)
-  #p params
+
   cparams =  Utils::Params.assemble_params(post_s, [:domain_name], :all)
   r = engines_api.update_domain(cparams)
   unless r.is_a?(EnginesError)
