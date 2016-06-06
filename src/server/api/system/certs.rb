@@ -1,19 +1,5 @@
 # @!group /system/certs/
-# @method get certificate
-# @overload get '/v0/system/certs/:cert_name'
-# @return [String] PEM encoded Public certificate
-get '/v0/system/certs/:cert_name' do
-  if params[:cert_name] == 'system_ca'
-    cert = engines_api.get_system_ca
-  else
-    cert = engines_api.get_cert(params[:cert_name])
-  end
-  unless cert.is_a?(EnginesError)
-    return cert.to_json
-  else
-    return log_error(request, cert)
-  end
-end
+
 # @method system_ca
 # @overload get '/v0/system/certs/system_ca'
 # @return [String] PEM encoded Public certificate
@@ -26,6 +12,19 @@ get '/v0/system/certs/system_ca' do
     return log_error(request, system_ca)
   end
 end
+
+# @method get certificate
+# @overload get '/v0/system/certs/:cert_name'
+# @return [String] PEM encoded Public certificate
+get '/v0/system/certs/:cert_name' do
+    cert = engines_api.get_cert(params[:cert_name])
+  unless cert.is_a?(EnginesError)
+    return cert.to_json
+  else
+    return log_error(request, cert)
+  end
+end
+
 # @method default_certificate
 # @overload get '/v0/system/certs/default'
 # @return [String] PEM encoded Public certificate
