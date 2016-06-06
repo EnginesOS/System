@@ -10,7 +10,7 @@ view:
 	engines_tool system certs engines | engines_test_expects regex "[-].*BEGIN CERTIFICATE*"
 	
 add:
-	engines_tool system add testingcert.com testcert.crt testkey.key | engines_test_expects bool true	
+	engines_tool system certs add testingcert.com testcert.crt testkey.key | engines_test_expects bool true	
 	echo -n " Checking:"
 	engines_tool system cert testingcert.com | engines_test_expects regex "[-].*BEGIN CERTIFICATE*"
 	

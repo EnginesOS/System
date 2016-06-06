@@ -4,7 +4,7 @@ module DockerContainerActions
   def create_container(container)
     clear_error
     commandargs = DockerCmdOptions.container_commandline_args(container)
-    commandargs = 'docker run  -d ' + commandargs
+    commandargs = 'docker run  -d ' + commandargs.to_s
 
     SystemDebug.debug(SystemDebug.docker,'create cont', commandargs)
      docker_cmd_w(commandargs, container)       
