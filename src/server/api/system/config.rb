@@ -20,7 +20,9 @@ end
 # @param :default_domain
 # @return  [true]
 post '/v0/system/config/default_domain' do
-  cparams =  Utils::Params.assemble_params(params, [], [:default_domain])
+  post_s = post_params(request)
+
+  cparams =  Utils::Params.assemble_params(post_s, [], [:default_domain])
   default_domain = cparams[:default_domain]
     r = engines_api.set_default_domain(default_domain)
     if r
@@ -52,7 +54,8 @@ end
 # @param :default_site
 # @return  [true]
 post '/v0/system/config/default_site' do
-  cparams =  Utils::Params.assemble_params(params, [], [:default_site])
+  post_s = post_params(request)
+  cparams =  Utils::Params.assemble_params(post_s, [], [:default_site])
   default_site = cparams[:default_site]
     r = engines_api.set_default_site(default_site)
   if r
@@ -68,6 +71,7 @@ end
 # @param :host_name
 # @return [true]
 post '/v0/system/config/hostname' do
+  post_s = post_params(request)
   cparams =  Utils::Params.assemble_params(params, [], [:host_name])
   hostname = cparams[:host_name]
     r = engines_api.set_hostname(hostname)
