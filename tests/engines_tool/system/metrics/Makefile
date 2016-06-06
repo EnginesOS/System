@@ -13,4 +13,4 @@ mem_stats:
 	engines_tool system metrics mem_stats |engines_test_expects json containers
 
 disk:
-	engines_tool system metrics disk |engines_test_expects json
+	engines_tool system metrics disks |engines_test_expects json
