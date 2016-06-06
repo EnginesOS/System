@@ -39,10 +39,10 @@ module Certificates
         log_exception(e)
   end
   
-  def get_cert(domain)
-    
-    return log_error_mesg('Certificate file not found ' + domain.to_s) unless File.exist?(SystemConfig.CertificatesDir + '/' + domain.to_s + '.crt')
-    File.read(SystemConfig.CertificatesDir + '/' + domain.to_s + '.crt')
+  def get_cert(domain_name)
+    domain_name = 'engines' if domain_name == 'default'
+    return log_error_mesg('Certificate file not found ' + domain_name.to_s) unless File.exist?(SystemConfig.CertificatesDir + '/' + domain_name.to_s + '.crt')
+    File.read(SystemConfig.CertificatesDir + '/' + domain_name.to_s + '.crt')
     rescue StandardError =>e     
            log_exception(e)
 
