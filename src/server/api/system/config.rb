@@ -72,7 +72,7 @@ end
 # @return [true]
 post '/v0/system/config/hostname' do
   post_s = post_params(request)
-  cparams =  Utils::Params.assemble_params(params, [], [:host_name])
+  cparams =  Utils::Params.assemble_params(post_s, [], [:host_name])
   hostname = cparams[:host_name]
     r = engines_api.set_hostname(hostname)
   if r

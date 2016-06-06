@@ -70,7 +70,8 @@ end
 # @param :password - optional
 # @return [true]
 post '/v0/system/certs/default' do
-  cparams =  Utils::Params.assemble_params(params, [], :all)
+  post_s = post_params(request)
+  cparams =  Utils::Params.assemble_params(post_s, [], :all)
  
   cparams[:set_as_default] = true
     r = engines_api.upload_ssl_certificate(cparams)
@@ -90,7 +91,8 @@ end
 # @param :password - optional
 # @return [true]
 post '/v0/system/certs/' do
-  cparams =  Utils::Params.assemble_params(params, [], :all)
+  post_s = post_params(request)
+  cparams =  Utils::Params.assemble_params(post_s, [], :all)
     r = engines_api.upload_ssl_certificate(cparams)
   if r
        status(202)
