@@ -56,8 +56,8 @@ end
 
 # @method get_system_metrics_disk
 # @overload get '/v0/system/metrics/disks'
-# NOT YET
-# @return [Hash] :device :mount :size :used :free 
+#    1k blocks
+# @return [Hash]  :device_name = [Hash]  :type :blocks :used :available :usage :mount
 #  
 get '/v0/system/metrics/disks' do
   disk_statistics = engines_api.get_disk_statistics

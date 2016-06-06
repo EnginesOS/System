@@ -876,7 +876,7 @@ created/uploaded against.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>NOT YET.</p>
+<p>1k blocks.</p>
 </div></span>
   
 </li>
@@ -4237,13 +4237,17 @@ service consumes).</p>
 15
 16
 17
-18</pre>
+18
+19
+20</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'src/server/api/system/domains.rb', line 9</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/domains/</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
-  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='symbol'>:all</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_p_params'>p_params</span> <span class='op'>=</span> <span class='id identifier rubyid_post_params'>post_params</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='rparen'>)</span>
+  
+  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_p_params'>p_params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='symbol'>:all</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_add_domain'>add_domain</span><span class='lparen'>(</span><span class='id identifier rubyid_cparams'>cparams</span><span class='rparen'>)</span>
   <span class='kw'>unless</span>  <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_status'>status</span><span class='lparen'>(</span><span class='int'>202</span><span class='rparen'>)</span>
@@ -4489,14 +4493,16 @@ service consumes).</p>
 20
 21
 22
-23</pre>
+23
+24</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'src/server/api/containers/engines/build.rb', line 16</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engines/build</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
-  <span class='const'>STDERR</span><span class='period'>.</span><span class='id identifier rubyid_puts'>puts</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Build params at Server ROTUe </span><span class='tstring_end'>&#39;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_params'>params</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='symbol'>:all</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_p_params'>p_params</span> <span class='op'>=</span> <span class='id identifier rubyid_post_params'>post_params</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_p_params'>p_params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='symbol'>:all</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_build_engine'>build_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_cparams'>cparams</span><span class='rparen'>)</span>
   
   <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_cparams'>cparams</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
@@ -4773,17 +4779,17 @@ is updated prior to the container creation</p>
       <pre class="lines">
 
 
+31
 32
 33
 34
 35
 36
 37
-38
-39</pre>
+38</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/system/certs.rb', line 32</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/certs.rb', line 31</span>
 
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/certs/default</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_cert'>cert</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_get_cert'>get_cert</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>engines</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
@@ -4839,6 +4845,7 @@ is updated prior to the container creation</p>
       <pre class="lines">
 
 
+53
 54
 55
 56
@@ -4846,11 +4853,10 @@ is updated prior to the container creation</p>
 58
 59
 60
-61
-62</pre>
+61</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/system/certs.rb', line 54</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/certs.rb', line 53</span>
 
 <span class='id identifier rubyid_delete'>delete</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/certs/:cert_name</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_remove_cert'>remove_cert</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:cert_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -4907,18 +4913,18 @@ is updated prior to the container creation</p>
       <pre class="lines">
 
 
-23
-24
 25
 26
 27
 28
 29
 30
-31</pre>
+31
+32
+33</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/system/domains.rb', line 23</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/domains.rb', line 25</span>
 
 <span class='id identifier rubyid_delete'>delete</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/domains/:domain_name</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_remove_domain'>remove_domain</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:domain_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -5382,19 +5388,19 @@ fresh persistent services, no data is preserved beyond this point</p>
       <pre class="lines">
 
 
-113
-114
-115
-116
 117
 118
 119
 120
 121
-122</pre>
+122
+123
+124
+125
+126</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/system/config.rb', line 113</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/config.rb', line 117</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/config/remote_exception_logging/disable</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_disable_remote_exception_logging'>disable_remote_exception_logging</span>
@@ -5639,12 +5645,14 @@ fresh persistent services, no data is preserved beyond this point</p>
 28
 29
 30
-31</pre>
+31
+32</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'src/server/api/system/do_first_run.rb', line 22</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/do_first_run</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='id identifier rubyid_post_params'>post_params</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='symbol'>:all</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_set_first_run_parameters'>set_first_run_parameters</span><span class='lparen'>(</span><span class='id identifier rubyid_cparams'>cparams</span><span class='rparen'>)</span>
   <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
@@ -5781,19 +5789,19 @@ fresh persistent services, no data is preserved beyond this point</p>
       <pre class="lines">
 
 
-99
-100
-101
-102
 103
 104
 105
 106
 107
-108</pre>
+108
+109
+110
+111
+112</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/system/config.rb', line 99</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/config.rb', line 103</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/config/remote_exception_logging/enable</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_enable_remote_exception_logging'>enable_remote_exception_logging</span>
@@ -6283,7 +6291,7 @@ fresh persistent services, no data is preserved beyond this point</p>
       <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/service/persistent_service.rb', line 26</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/import</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
-
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='id identifier rubyid_post_params'>post_params</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_hash'>hash</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
   <span class='id identifier rubyid_hash'>hash</span><span class='lbracket'>[</span><span class='symbol'>:service_connection</span><span class='rbracket'>]</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>ServiceHash</span><span class='period'>.</span><span class='id identifier rubyid_engine_service_hash_from_params'>engine_service_hash_from_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -6640,28 +6648,20 @@ fresh persistent services, no data is preserved beyond this point</p>
       <pre class="lines">
 
 
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16</pre>
+19
+20
+21
+22
+23
+24
+25
+26</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/system/certs.rb', line 5</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/certs.rb', line 19</span>
 
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/certs/:cert_name</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:cert_name</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>system_ca</span><span class='tstring_end'>&#39;</span></span>
-    <span class='id identifier rubyid_cert'>cert</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_get_system_ca'>get_system_ca</span>
-  <span class='kw'>else</span>
     <span class='id identifier rubyid_cert'>cert</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_get_cert'>get_cert</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:cert_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-  <span class='kw'>end</span>
   <span class='kw'>unless</span> <span class='id identifier rubyid_cert'>cert</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
     <span class='kw'>return</span> <span class='id identifier rubyid_cert'>cert</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
   <span class='kw'>else</span>
@@ -7216,8 +7216,6 @@ to client  stream is in the format
       <pre class="lines">
 
 
-39
-40
 41
 42
 43
@@ -7225,10 +7223,12 @@ to client  stream is in the format
 45
 46
 47
-48</pre>
+48
+49
+50</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/system/config.rb', line 39</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/config.rb', line 41</span>
 
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/config/default_site</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_default_site'>default_site</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_get_default_site'>get_default_site</span>
@@ -7299,13 +7299,15 @@ to client  stream is in the format
 11
 12
 13
-14</pre>
+14
+15</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'src/server/api/system/domain.rb', line 6</span>
 
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/domains/:domain_name</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_domain_name'>domain_name</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_domain_name'>domain_name</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:domain_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+   
   <span class='kw'>unless</span> <span class='id identifier rubyid_domain_name'>domain_name</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_status'>status</span><span class='lparen'>(</span><span class='int'>202</span><span class='rparen'>)</span>
     <span class='kw'>return</span> <span class='id identifier rubyid_domain_name'>domain_name</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
@@ -8665,19 +8667,19 @@ configured engines</p>
       <pre class="lines">
 
 
-85
-86
-87
-88
 89
 90
 91
 92
 93
-94</pre>
+94
+95
+96
+97
+98</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/system/config.rb', line 85</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/config.rb', line 89</span>
 
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/config/hostname</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_hostname'>hostname</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_system_hostname'>system_hostname</span>
@@ -9251,19 +9253,19 @@ configured engines</p>
       <pre class="lines">
 
 
-127
-128
-129
-130
 131
 132
 133
 134
 135
-136</pre>
+136
+137
+138
+139
+140</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/system/config.rb', line 127</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/config.rb', line 131</span>
 
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/config/remote_exception_logging</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_remote_exception_logging'>remote_exception_logging</span> <span class='op'>=</span> <span class='const'>SystemStatus</span><span class='period'>.</span><span class='id identifier rubyid_is_remote_exception_logging?'>is_remote_exception_logging?</span>
@@ -11009,14 +11011,25 @@ configured services</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>NOT YET</p>
+<p>Returns :device_name = [Hash]  :type :blocks :used :available :usage :mount</p>
 
 
   </div>
 </div>
 <div class="tags">
   
+  <div class="docstring">
+  <div class="discussion">
+    
+<p>1k blocks</p>
+
+
+  </div>
+</div>
+<div class="tags">
   
+
+</div>
 
 <p class="tag_title">Returns:</p>
 <ul class="return">
@@ -11030,7 +11043,7 @@ configured services</p>
       
         &mdash;
         <div class='inline'>
-<p>:device :mount :size :used :free</p>
+<p>:device_name = [Hash]  :type :blocks :used :available :usage :mount</p>
 </div>
       
     </li>
@@ -12281,14 +12294,14 @@ created/uploaded against</p>
       <pre class="lines">
 
 
+44
 45
 46
 47
-48
-49</pre>
+48</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/system/certs.rb', line 45</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/certs.rb', line 44</span>
 
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/certs/</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_certs'>certs</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_list_certs'>list_certs</span>
@@ -12357,15 +12370,15 @@ created/uploaded against</p>
       <pre class="lines">
 
 
-36
-37
 38
 39
 40
-41</pre>
+41
+42
+43</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/system/domains.rb', line 36</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/domains.rb', line 38</span>
 
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/domains/</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_domains'>domains</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_list_domains'>list_domains</span><span class='lparen'>(</span><span class='rparen'>)</span>
@@ -13342,14 +13355,16 @@ service</p>
 14
 15
 16
-17</pre>
+17
+18</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'src/server/api/system/template.rb', line 9</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/template</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
  <span class='comment'># engine = get_engine(params[:engine_name])
-</span>  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span>  <span class='symbol'>:string</span><span class='rparen'>)</span> 
+</span>  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='id identifier rubyid_post_params'>post_params</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span>  <span class='symbol'>:string</span><span class='rparen'>)</span> 
   <span class='id identifier rubyid_resolved_string'>resolved_string</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_get_resolved_string'>get_resolved_string</span><span class='lparen'>(</span><span class='id identifier rubyid_cparams'>cparams</span><span class='lbracket'>[</span><span class='symbol'>:string</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_resolved_string'>resolved_string</span><span class='comma'>,</span> <span class='id identifier rubyid_cparams'>cparams</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_resolved_string'>resolved_string</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_status'>status</span><span class='lparen'>(</span><span class='int'>202</span><span class='rparen'>)</span>
@@ -14476,13 +14491,17 @@ service</p>
 29
 30
 31
-32</pre>
+32
+33
+34</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'src/server/api/system/config.rb', line 22</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/config/default_domain</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
-  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:default_domain</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_post_s'>post_s</span> <span class='op'>=</span> <span class='id identifier rubyid_post_params'>post_params</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_post_s'>post_s</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:default_domain</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_default_domain'>default_domain</span> <span class='op'>=</span> <span class='id identifier rubyid_cparams'>cparams</span><span class='lbracket'>[</span><span class='symbol'>:default_domain</span><span class='rbracket'>]</span>
     <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_set_default_domain'>set_default_domain</span><span class='lparen'>(</span><span class='id identifier rubyid_default_domain'>default_domain</span><span class='rparen'>)</span>
     <span class='kw'>if</span> <span class='id identifier rubyid_r'>r</span>
@@ -14553,8 +14572,6 @@ service</p>
       <pre class="lines">
 
 
-54
-55
 56
 57
 58
@@ -14563,13 +14580,17 @@ service</p>
 61
 62
 63
-64</pre>
+64
+65
+66
+67</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/system/config.rb', line 54</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/config.rb', line 56</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/config/default_site</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
-  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:default_site</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_post_s'>post_s</span> <span class='op'>=</span> <span class='id identifier rubyid_post_params'>post_params</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_post_s'>post_s</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:default_site</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_default_site'>default_site</span> <span class='op'>=</span> <span class='id identifier rubyid_cparams'>cparams</span><span class='lbracket'>[</span><span class='symbol'>:default_site</span><span class='rbracket'>]</span>
     <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_set_default_site'>set_default_site</span><span class='lparen'>(</span><span class='id identifier rubyid_default_site'>default_site</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_r'>r</span>
@@ -14853,9 +14874,6 @@ service</p>
       <pre class="lines">
 
 
-70
-71
-72
 73
 74
 75
@@ -14863,13 +14881,18 @@ service</p>
 77
 78
 79
-80</pre>
+80
+81
+82
+83
+84</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/system/config.rb', line 70</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/config.rb', line 73</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/config/hostname</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
-  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:host_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_post_s'>post_s</span> <span class='op'>=</span> <span class='id identifier rubyid_post_params'>post_params</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_post_s'>post_s</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:host_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_hostname'>hostname</span> <span class='op'>=</span> <span class='id identifier rubyid_cparams'>cparams</span><span class='lbracket'>[</span><span class='symbol'>:host_name</span><span class='rbracket'>]</span>
     <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_set_hostname'>set_hostname</span><span class='lparen'>(</span><span class='id identifier rubyid_hostname'>hostname</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_r'>r</span>
@@ -15604,17 +15627,17 @@ service</p>
       <pre class="lines">
 
 
-21
-22
-23
-24
-25
-26
-27
-28</pre>
+7
+8
+9
+10
+11
+12
+13
+14</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/system/certs.rb', line 21</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/certs.rb', line 7</span>
 
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/certs/system_ca</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_system_ca'>system_ca</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_get_system_ca'>get_system_ca</span>
@@ -15920,7 +15943,6 @@ service</p>
       <pre class="lines">
 
 
-22
 23
 24
 25
@@ -15929,13 +15951,20 @@ service</p>
 28
 29
 30
-31</pre>
+31
+32
+33
+34
+35</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/system/domain.rb', line 22</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/domain.rb', line 23</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/domains/:domain_name</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
-  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:domain_name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='symbol'>:all</span><span class='rparen'>)</span>
+ <span class='id identifier rubyid_post_s'>post_s</span> <span class='op'>=</span> <span class='id identifier rubyid_post_params'>post_params</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_post_s'>post_s</span><span class='lbracket'>[</span><span class='symbol'>:domain_name</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>domain_name</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
+
+  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_post_s'>post_s</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:domain_name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='symbol'>:all</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_update_domain'>update_domain</span><span class='lparen'>(</span><span class='id identifier rubyid_cparams'>cparams</span><span class='rparen'>)</span>
   <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_status'>status</span><span class='lparen'>(</span><span class='int'>202</span><span class='rparen'>)</span>
@@ -16125,13 +16154,15 @@ EnginesError &gt; an error occurred</code></pre>
 98
 99
 100
-101</pre>
+101
+102</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'src/server/api/system/certs.rb', line 92</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/certs/</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
-  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='symbol'>:all</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_post_s'>post_s</span> <span class='op'>=</span> <span class='id identifier rubyid_post_params'>post_params</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_post_s'>post_s</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='symbol'>:all</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_upload_ssl_certificate'>upload_ssl_certificate</span><span class='lparen'>(</span><span class='id identifier rubyid_cparams'>cparams</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_r'>r</span>
        <span class='id identifier rubyid_status'>status</span><span class='lparen'>(</span><span class='int'>202</span><span class='rparen'>)</span>
@@ -16240,6 +16271,7 @@ EnginesError &gt; an error occurred</code></pre>
       <pre class="lines">
 
 
+71
 72
 73
 74
@@ -16254,10 +16286,11 @@ EnginesError &gt; an error occurred</code></pre>
 83</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/system/certs.rb', line 72</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/certs.rb', line 71</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/certs/default</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
-  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='symbol'>:all</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_post_s'>post_s</span> <span class='op'>=</span> <span class='id identifier rubyid_post_params'>post_params</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_post_s'>post_s</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='symbol'>:all</span><span class='rparen'>)</span>
  
   <span class='id identifier rubyid_cparams'>cparams</span><span class='lbracket'>[</span><span class='symbol'>:set_as_default</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>true</span>
     <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_upload_ssl_certificate'>upload_ssl_certificate</span><span class='lparen'>(</span><span class='id identifier rubyid_cparams'>cparams</span><span class='rparen'>)</span>
@@ -16366,7 +16399,7 @@ EnginesError &gt; an error occurred</code></pre>
 </div>
 
     <div id="footer">
-  Generated on Fri Jun  3 12:17:21 2016 by
+  Generated on Mon Jun  6 17:03:36 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.3).
 </div>
