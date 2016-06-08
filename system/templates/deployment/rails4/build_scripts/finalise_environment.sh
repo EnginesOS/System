@@ -4,7 +4,10 @@ for dir in /home/app/tmp/ /home/app/public/cache/ /home/app/public/assets /run/a
  do
 	if ! test -d $dir
 		then
-			mkdir -p $dir
+		if ! test -h $dir
+			then
+				mkdir -p $dir
+			fi
 		fi
 done 
 	
