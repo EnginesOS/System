@@ -8,7 +8,7 @@ module ApiActionators
         args = '\'' + params.to_json + '\''        
     end    
     inter=''
-    inter='-it ' unless data.nil?
+    inter='-i ' unless data.nil?
     cmd = 'docker exec ' + inter  +  c.container_name + ' /home/actionators/' + actionator_name + '.sh ' + args.to_s
       result = {}
       begin
@@ -38,7 +38,7 @@ module ApiActionators
           begin
           return JSON.parse( result[:stdout], :create_additons => true )
         rescue
-          return true if result[:stdout].start_with?('true') || result[:stdout].start_with?('"true')
+          return true if result[:stdout].start_with?('true') || result[:stdout].start_with?('"true') 
           return result[:stdout]
           end
         end

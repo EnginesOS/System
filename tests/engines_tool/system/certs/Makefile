@@ -4,7 +4,7 @@ tests:
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 	
 list:
-	engines_tool system certs  | engines_test_expects array engines
+	engines_tool system certs  | engines_test_expects json
 	
 view:
 	engines_tool system certs engines | engines_test_expects regex "[-].*BEGIN CERTIFICATE*"
