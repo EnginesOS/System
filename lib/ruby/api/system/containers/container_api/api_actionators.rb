@@ -8,7 +8,7 @@ module ApiActionators
         args = '\'' + params.to_json + '\''        
     end    
     inter=''
-    inter='-i ' unless data.nil?
+    inter='-it ' unless data.nil?
     cmd = 'docker exec ' + inter  +  c.container_name + ' /home/actionators/' + actionator_name + '.sh ' + args.to_s
       result = {}
       begin
