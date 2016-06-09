@@ -1,7 +1,5 @@
 module ApiActionators
   @@action_timeout = 20
-  
-
 
   def perform_action(c,actionator_name, params, data=nil)
     if params.nil? || params.is_a?(String)
@@ -17,6 +15,7 @@ module ApiActionators
             if data.nil?
             result = SystemUtils.execute_command(cmd)
             else
+              STDERR.puts("DATA " + cmd.to_s)
               result = SystemUtils.execute_command(cmd, false, data)
             end 
           end
