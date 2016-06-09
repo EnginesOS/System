@@ -18,17 +18,11 @@ module ApiActionators
             if data.nil?
             result = SystemUtils.execute_command(cmd)
             else
-              STDERR.puts("DATA " + cmd.to_s + ' ' + data.to_s)
-              #cmd = ' echo \'' + data.to_s + '\' > /tmp/.t ; cat /tmp/.t | ' + cmd # + ' ; rm /tmp/.t'
-              #result = SystemUtils.execute_command(cmd)
               result = SystemUtils.execute_command(cmd, false, data)
             end 
        
           rescue StandardError =>e
-               p :params
-               p params
-               p :data
-               p data
+
                 log_exception(e)
           end
             end
@@ -42,13 +36,9 @@ module ApiActionators
       if result[:result] == 0
         if result[:stdout].start_with?('{') || result[:stdout].start_with?('"{') 
           begin
-            
-          p :as_json_ac
           return JSON.parse( result[:stdout], :create_additons => true )
         rescue
           return true if result[:stdout].start_with?('true') || result[:stdout].start_with?('"true')
-                    p :restult
-                    p result[:stdout].to_s
           return result[:stdout]
           end
         end
@@ -56,10 +46,6 @@ module ApiActionators
       end
     return  log_error_mesg('Error on performing action ' + c.container_name.to_s + ':' + actionator_name.to_s + result[:stderr] ,result)
     rescue StandardError =>e
-      p :params
-      p params
-      p :data
-      p data
        log_exception(e)
   
     end

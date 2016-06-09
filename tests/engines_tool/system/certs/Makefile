@@ -16,10 +16,10 @@ add:
 	
 		
 set_default:
-	engines_tool system certs default testcert.crt testkey.key  | engines_test_expects bool true	
+	engines_tool system certs default defaultdomain.com testcert.crt testkey.key  | engines_test_expects bool true	
 	
 default:
-	engines_tool system certs default | engines_test_expects regex "[-].*BEGIN CERTIFICATE*"
+	engines_tool system cert default | engines_test_expects regex "[-].*BEGIN CERTIFICATE*"
 	
 remove:
 	engines_tool system certs remove testingcert.com  | engines_test_expects bool true	
@@ -27,6 +27,6 @@ remove:
 		engines_tool system certs testingcert.com | engines_test_expects json error_object
 
 system_ca:
-	engines_tool system certs system_ca | engines_test_expects regex "[-].*BEGIN CERTIFICATE*"
+	engines_tool system cert system_ca | engines_test_expects regex "[-].*BEGIN CERTIFICATE*"
 
 	
