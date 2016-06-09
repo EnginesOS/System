@@ -1,18 +1,26 @@
 module Certificates
   def upload_ssl_certificate(params)
 
-    cert_file = File.new('/home/app/tmp/' + params[:domain_name] + '.cert','w+')
-    cert_file.write(params[:certificate])
-    cert_file.close
-    key_file = File.new('/home/app/tmp/' + params[:domain_name] + '.key','w+')
-    key_file.write(params[:key])
-    key_file.close
-    flag = ''
-    flag = ' -d ' if params[:set_as_default] == true
-    res = SystemUtils.execute_command('/opt/engines/system/scripts/ssh/install_cert.sh ' + flag  + params[:domain_name]  )
-    return true if res[:result] == 0
-    @last_error = res[:stderr]
-    return log_error_mesg(res[:stderr])
+    certs_service = loadManagedService('cert_auth')
+    return certs_service if certs_service.is_a?(EnginesError)
+    
+    certs_service.perform_action('import_cert',params[:domain_name], params[:certificate] + params[:key])
+    
+#    
+#    cert_file = File.new('/home/app/tmp/' + params[:domain_name] + '.cert','w+')
+#    cert_file.write(params[:certificate])
+#    cert_file.close
+#    key_file = File.new('/home/app/tmp/' + params[:domain_name] + '.key','w+')
+#    key_file.write(params[:key])
+#    key_file.close
+#    flag = ''
+#    flag = ' -d ' if params[:set_as_default] == true
+#    res = SystemUtils.execute_command('/opt/engines/system/scripts/ssh/install_cert.sh ' + flag  + params[:domain_name]  )
+#    return true if res[:result] == 0
+#    @last_error = res[:stderr]
+#    return log_error_mesg(res[:stderr])
+    rescue StandardError =>e
+        log_exception(e)
   end
 
   def remove_cert(domain)
@@ -57,6 +65,8 @@ module Certificates
     certs_service = loadManagedService('cert_auth')
     return certs_service if certs_service.is_a?(EnginesError)
     certs_service.perform_action('system_ca',nil)
+    rescue StandardError =>e
+        log_exception(e)
   end
 
   def get_cert(domain_name) 
