@@ -50,8 +50,8 @@ end
 # @overload delete '/v0/system/certs/:cert_name'
 # delete certificate :cert_name
 # @return [true]
-delete '/v0/system/certs/:cert_name' do
-  r = engines_api.remove_cert(params[:cert_name])
+delete '/v0/system/certs/:cert_name' do |cert_name|
+  r = engines_api.remove_cert(cert_name)
   unless r.is_a?(EnginesError)
      status(202)
      return r.to_json
