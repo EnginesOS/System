@@ -15,7 +15,7 @@ module DockerCmdOptions
     port_options + \
     ' --cidfile ' + SystemConfig.CidDir + '/' + container.container_name + '.cid ' + \
     '--name ' + container.container_name + \
-    '  -t ' + container.image + ' ' + \
+    '  ' + container.image + ' ' + \
     start_cmd +\
     arguments.to_s
 
