@@ -37,12 +37,12 @@ module ApiActionators
         if result[:stdout].start_with?('{') || result[:stdout].start_with?('"{') 
           begin
           return JSON.parse( result[:stdout], :create_additons => true )
-        rescue
-          puts '____' + result[:stdout].to_s + '____________'
-          return true if result[:stdout].start_with?('true') || result[:stdout].start_with?('"true') 
+        rescue         
           return result[:stdout]
           end
         end
+        STDERR.puts '____' + result[:stdout].to_s + '____________'
+                 return true if result[:stdout].start_with?('true') || result[:stdout].start_with?('"true') 
         return result[:stdout]
       end
     return  log_error_mesg('Error on performing action ' + c.container_name.to_s + ':' + actionator_name.to_s + result[:stderr] ,result)
