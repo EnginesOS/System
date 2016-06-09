@@ -23,11 +23,11 @@ module Certificates
         log_exception(e)
   end
 
-  def remove_cert(domain)
+  def remove_cert(domain_name)
     certs_service = loadManagedService('cert_auth')
         return certs_service if certs_service.is_a?(EnginesError)
         
-        certs_service.perform_action('remove_cert',params[:domain_name])
+        certs_service.perform_action('remove_cert',domain_name)
   end
 #    res = SystemUtils.execute_command('/opt/engines/system/scripts/ssh/remove_cert.sh ' + domain )
 #    return true if res[:result] == 0
