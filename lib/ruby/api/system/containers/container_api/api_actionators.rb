@@ -17,7 +17,9 @@ module ApiActionators
             result = SystemUtils.execute_command(cmd)
             else
               STDERR.puts("DATA " + cmd.to_s)
-              result = SystemUtils.execute_command(cmd, false, data)
+              cmd = ' echo ' + data.to_s + ' | ' + cmd
+              result = SystemUtils.execute_command(cmd)
+            #  result = SystemUtils.execute_command(cmd, false, data)
             end 
        
           rescue StandardError =>e
