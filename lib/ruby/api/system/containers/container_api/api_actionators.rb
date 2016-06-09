@@ -28,7 +28,7 @@ module ApiActionators
       end
   
       if result[:result] == 0
-        if result[:stdout].begin_with('{') || result[:stdout].begin_with('"{') 
+        if result[:stdout].start_with?('{') || result[:stdout].start_with?('"{') 
           begin
           return JSON.parse( result[:stdout], :create_additons => true )
         rescue
