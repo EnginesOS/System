@@ -113,15 +113,19 @@ class SystemUtils
     retval[:stdout] = ''
     retval[:stderr] = ''
     retval[:result] = -1
-
-    unless data.is_a?(FalseClass)
-         t = File.new('/tmp/import','w+')
-         t.write(data)
-         t.close
-         cmd = 'cat /tmp/import | ' + cmd
-  
-         end
+    retval[:command] = cmd
+      
+  #  unless data.is_a?(FalseClass)
+#         t = File.new('/tmp/import','w+')
+#         t.write(data)
+#         t.close
+#         cmd = 'cat /tmp/import | ' + cmd
+#  
+      
+#         end
     Open3.popen3(cmd)  do |_stdin, stdout, stderr, th|
+      _stdin.write(data) unless data.is_a?(FalseClass) 
+      
       oline = ''
       stderr_is_open = true
       begin

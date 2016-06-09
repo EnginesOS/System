@@ -3,17 +3,23 @@ module ApiActionators
   
 
 
-  def perform_action(c,actionator_name, params)
+  def perform_action(c,actionator_name, args, data=nil)
       # cmd = 'docker exec -u ' + c.cont_userid + ' ' +  c.container_name + ' /home/configurators/read_' + params[:configurator_name].to_s + '.sh '
-      cmd = 'docker exec  ' +  c.container_name + ' /home/actionators/' + actionator_name + '.sh \'' + params.to_json + '\''
+      cmd = 'docker exec  ' +  c.container_name + ' /home/actionators/' + actionator_name + '.sh \'' + args.to_json + '\''
       result = {}
       begin
         Timeout.timeout(@@action_timeout) do
-          thr = Thread.new { result = SystemUtils.execute_command(cmd) }
+          thr = Thread.new do
+            if data.nil?
+            result = SystemUtils.execute_command(cmd)
+            else
+              result = SystemUtils.execute_command(cmd, false, data)
+            end 
+          end
           thr.join
         end
       rescue Timeout::Error
-        return  log_error_mesg('Timeout on Running Action ',cmd)
+        return  log_error_mesg('Timeout on Running Action ', cmd)
        
       end
   
@@ -23,7 +29,7 @@ module ApiActionators
 #        params[:variables] = SystemUtils.symbolize_keys(variables_hash)      
         return result[:stdout]
       end
-    return  log_error_mesg('Error on retrieving Configuration ' + result[:stderr] ,result)
+    return  log_error_mesg('Error on performing action ' + c.container_name.to_s + ':' + actionator_name.to_s + result[:stderr] ,result)
    
     end
 
