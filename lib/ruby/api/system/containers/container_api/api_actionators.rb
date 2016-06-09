@@ -28,7 +28,7 @@ module ApiActionators
       end
   
       if result[:result] == 0
-        if result[:result].begin_with('{') || result[:result].begin_with('"{') 
+        if result[:stdout].begin_with('{') || result[:stdout].begin_with('"{') 
           begin
           return JSON.parse( result[:stdout], :create_additons => true )
         rescue
@@ -38,7 +38,9 @@ module ApiActionators
         return result[:stdout]
       end
     return  log_error_mesg('Error on performing action ' + c.container_name.to_s + ':' + actionator_name.to_s + result[:stderr] ,result)
-   
+    rescue StandardError =>e
+       log_exception(e)
+  
     end
 
 
