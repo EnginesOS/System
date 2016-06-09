@@ -4,10 +4,10 @@ module ApiActionators
 
 
   def perform_action(c,actionator_name, params, data=nil)
-    if args.nil? || args.is_a?(String)
+    if params.nil? || params.is_a?(String)
       args = params
     else 
-        args = '\'' + args.to_json + '\''        
+        args = '\'' + params.to_json + '\''        
     end    
     cmd = 'docker exec  ' +  c.container_name + ' /home/actionators/' + actionator_name + '.sh ' + args.to_s
       result = {}
