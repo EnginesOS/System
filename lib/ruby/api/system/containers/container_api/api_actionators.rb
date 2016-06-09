@@ -3,9 +3,14 @@ module ApiActionators
   
 
 
-  def perform_action(c,actionator_name, args, data=nil)
-      # cmd = 'docker exec -u ' + c.cont_userid + ' ' +  c.container_name + ' /home/configurators/read_' + params[:configurator_name].to_s + '.sh '
-      cmd = 'docker exec  ' +  c.container_name + ' /home/actionators/' + actionator_name + '.sh \'' + args.to_json + '\''
+  def perform_action(c,actionator_name, params, data=nil)
+    if args.nil? || args.is_a?(String)
+      args = params
+    else 
+        args = '\'' + args.to_json + '\''        
+    end
+      # cmd = 'docker exec -u ' + c.cont_userid + ' ' +  c.container_name + ' /home/configurators/read_' + params[:configurator_name].to_s + '.sh '    
+    cmd = 'docker exec  ' +  c.container_name + ' /home/actionators/' + actionator_name + '.sh ' + args.to_s
       result = {}
       begin
         Timeout.timeout(@@action_timeout) do
@@ -24,6 +29,13 @@ module ApiActionators
       end
   
       if result[:result] == 0
+        if result[:result].begin_with('{')
+          begin
+          return JSON.parse( result[:stdout], :create_additons => true )
+        rescue
+          return result[:stdout]
+          end
+        end
         #variables = SystemUtils.hash_string_to_hash(result[:stdout])
 #        variables_hash = JSON.parse( result[:stdout], :create_additons => true )
 #        params[:variables] = SystemUtils.symbolize_keys(variables_hash)      
