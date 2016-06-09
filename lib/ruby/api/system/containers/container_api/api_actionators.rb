@@ -39,6 +39,10 @@ module ApiActionators
       end
     return  log_error_mesg('Error on performing action ' + c.container_name.to_s + ':' + actionator_name.to_s + result[:stderr] ,result)
     rescue StandardError =>e
+      p :params
+      p params
+      p :data
+      p data
        log_exception(e)
   
     end
