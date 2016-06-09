@@ -156,15 +156,15 @@ class SystemUtils
           retval[:stderr] += stderr.read_nonblock(1000)
         end
       end
-      File.delete('/tmp/import') if File.exist?('/tmp/import')
+     # File.delete('/tmp/import') if File.exist?('/tmp/import')
  
       return retval
     end
-    File.delete('/tmp/import') if File.exist?('/tmp/import')
+   # File.delete('/tmp/import') if File.exist?('/tmp/import')
 
     return retval
   rescue Exception=>e
-    File.delete('/tmp/import') if File.exist?('/tmp/import')
+  #  File.delete('/tmp/import') if File.exist?('/tmp/import')
     SystemUtils.log_exception(e)
     SystemUtils.log_error_mesg('Exception Error in SystemUtils.execute_command(+ ' + cmd +'): ', retval)
     retval[:stderr] += 'Exception Error in SystemUtils.run_system(' + cmd + '): ' + e.to_s
