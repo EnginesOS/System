@@ -59,7 +59,9 @@ module Certificates
     certs_service.perform_action('system_ca',nil)
   end
 
-  def get_cert(domain_name) certs_service = loadManagedService('cert_auth')
+  def get_cert(domain_name) 
+    certs_service = loadManagedService('cert_auth')
+
     return certs_service if certs_service.is_a?(EnginesError)
 
     domain_name = 'engines' if domain_name == 'default'
