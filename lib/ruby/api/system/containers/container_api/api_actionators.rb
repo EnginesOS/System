@@ -7,7 +7,9 @@ module ApiActionators
     else 
         args = '\'' + params.to_json + '\''        
     end    
-    cmd = 'docker exec  ' +  c.container_name + ' /home/actionators/' + actionator_name + '.sh ' + args.to_s
+    inter=''
+    inter='-i ' unless data.nil?
+    cmd = 'docker exec ' + inter  +  c.container_name + ' /home/actionators/' + actionator_name + '.sh ' + args.to_s
       result = {}
       begin
         Timeout.timeout(@@action_timeout) do
@@ -16,10 +18,10 @@ module ApiActionators
             if data.nil?
             result = SystemUtils.execute_command(cmd)
             else
-              STDERR.puts("DATA " + cmd.to_s)
-              cmd = ' echo \'' + data.to_s + '\' > /tmp/.t ; cat /tmp/.t | ' + cmd # + ' ; rm /tmp/.t'
-              result = SystemUtils.execute_command(cmd)
-            #  result = SystemUtils.execute_command(cmd, false, data)
+              STDERR.puts("DATA " + cmd.to_s + ' ' + data.to_s)
+              #cmd = ' echo \'' + data.to_s + '\' > /tmp/.t ; cat /tmp/.t | ' + cmd # + ' ; rm /tmp/.t'
+              #result = SystemUtils.execute_command(cmd)
+              result = SystemUtils.execute_command(cmd, false, data)
             end 
        
           rescue StandardError =>e

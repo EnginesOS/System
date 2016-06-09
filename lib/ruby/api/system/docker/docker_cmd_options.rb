@@ -22,7 +22,6 @@ module DockerCmdOptions
     return commandargs
   rescue StandardError => e
       return SystemUtils.log_exception(e)
-
   end
 
   def self.get_networking_args(container)
