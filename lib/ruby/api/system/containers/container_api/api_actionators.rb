@@ -12,14 +12,23 @@ module ApiActionators
       begin
         Timeout.timeout(@@action_timeout) do
           thr = Thread.new do
+            begin
             if data.nil?
             result = SystemUtils.execute_command(cmd)
             else
               STDERR.puts("DATA " + cmd.to_s)
               result = SystemUtils.execute_command(cmd, false, data)
             end 
+       
+          rescue StandardError =>e
+               p :params
+               p params
+               p :data
+               p data
+                log_exception(e)
           end
-          thr.join
+            end
+                   thr.join
         end
       rescue Timeout::Error
         return  log_error_mesg('Timeout on Running Action ', cmd)
