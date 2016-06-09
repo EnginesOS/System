@@ -17,7 +17,7 @@ module ApiActionators
             result = SystemUtils.execute_command(cmd)
             else
               STDERR.puts("DATA " + cmd.to_s)
-              cmd = ' echo ' + data.to_s + ' > /tmp/.t ; cat /tmp/.t | ' + cmd + ' ; rm /tmp/.t'
+              cmd = ' echo ' + data.to_s + ' > /tmp/.t ; cat /tmp/.t | ' + cmd # + ' ; rm /tmp/.t'
               result = SystemUtils.execute_command(cmd)
             #  result = SystemUtils.execute_command(cmd, false, data)
             end 
