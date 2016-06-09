@@ -38,6 +38,7 @@ module ApiActionators
           begin
           return JSON.parse( result[:stdout], :create_additons => true )
         rescue
+          puts '____' + result[:stdout].to_s + '____________'
           return true if result[:stdout].start_with?('true') || result[:stdout].start_with?('"true') 
           return result[:stdout]
           end

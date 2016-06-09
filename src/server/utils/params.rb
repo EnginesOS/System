@@ -26,10 +26,10 @@ module Params
 
   def self.required_params(params, keys)
     mparams = params['api_vars']
-    p :pre_SYM
-    p  mparams 
+  #  p :pre_SYM
+   # p  mparams 
     m_params = Utils.symbolize_keys(mparams)
-    p :POST_SYM
+   # p :POST_SYM
     p  m_params 
     return nil if m_params.nil?
     self.match_params(m_params, keys, true)
