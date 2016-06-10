@@ -1,7 +1,6 @@
 require_relative 'container_statistics.rb'
 require_relative 'ManagedContainerObjects.rb'
 
-
 #require 'objspace' ??
 require_relative 'container.rb'
 
@@ -25,18 +24,18 @@ class ManagedContainer < Container
   require_relative 'managed_container/managed_container_api.rb'
   include ManagedContainerApi
   require_relative 'managed_container/persistent_services.rb'
-    include PersistantServices
+  include PersistantServices
   require_relative 'managed_container/managed_container_actionators.rb'
-     include ManagedContainerActionators
+  include ManagedContainerActionators
   require_relative 'managed_container/managed_container_environment.rb'
   include ManagedContainerEnvironment
-    
+
   require_relative 'managed_container/managed_container_export_import_service.rb'
   include ManagedContainerExportImportService
-  
+
   require_relative 'managed_container/managed_container_on_action.rb'
   include ManagedContainerOnAction
-  
+
   @conf_self_start = false
   @conf_zero_conf=false
   @restart_required = false
@@ -49,20 +48,20 @@ class ManagedContainer < Container
     @status = {}
     init_task_at_hand
   end
-  
+
   # Note desired state is teh next step and not the final result desired state is stepped through
   def log_error_mesg(msg, *objects)
     #task_failed(msg)
     super
   end
-  
+
   def set_state
-      @setState  
-    end
-    
-   def status
-     @status = {} if @status.nil?
-    
+    @setState
+  end
+
+  def status
+    @status = {} if @status.nil?
+
     @status[:state] = read_state
     @status[:set_state] = @setState
     @status[:progress_to] = task_at_hand
@@ -70,12 +69,12 @@ class ManagedContainer < Container
       @status[:error] = true
     else
       @status[:error] = false
-      end    
-    
+    end
+
     @status
-    
-   end
-   
+
+  end
+
   def post_load
     i = @container_id
     super
@@ -83,12 +82,12 @@ class ManagedContainer < Container
       save_state
     end
   end
-  
+
   def container_id
-    return @container_id unless @container_id == -1 
+    return @container_id unless @container_id == -1
     return @container_id if setState == 'noncontainer'
     @container_id = read_container_id
-    return @container_id  
+    return @container_id
   end
 
   def repo
@@ -120,28 +119,29 @@ class ManagedContainer < Container
     return @environments
   end
 
-#  def to_s
-#    "#{@container_name.to_s}, #{@ctype}, #{@memory}, #{@hostname}, #{@conf_self_start}, #{@environments}, #{@image}, #{@volumes}, #{@web_port}, #{@mapped_ports}  \n"
-#  end
+  #  def to_s
+  #    "#{@container_name.to_s}, #{@ctype}, #{@memory}, #{@hostname}, #{@conf_self_start}, #{@environments}, #{@image}, #{@volumes}, #{@web_port}, #{@mapped_ports}  \n"
+  #  end
   def to_h
-  s = self.dup
-  envs = []
-  s.environments.each do |env|    
-    envs.push(env.to_h)
-  end
+    s = self.dup
+    envs = []
+    s.environments.each do |env|
+      envs.push(env.to_h)
+    end
     s.environments = envs
 
     s.volumes.each_key do | key|
       s.volumes[key] = s.volumes[key].to_h
     end
- 
-   s.instance_variables.each_with_object({}) do |var, hash|
-    next if var.to_s.delete("@") == 'container_api'
-     hash[var.to_s.delete("@")] = s.instance_variable_get(var) 
+
+    s.instance_variables.each_with_object({}) do |var, hash|
+      next if var.to_s.delete("@") == 'container_api'
+      hash[var.to_s.delete("@")] = s.instance_variable_get(var)
+    end
+  rescue StandardError => e
+    log_exception(e, @container_name)
   end
-    
- 
-end
+
   def lock_values
     @conf_self_start.freeze
     @container_name.freeze
