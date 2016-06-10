@@ -4,13 +4,13 @@ tests:
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 	
 engines:
-	engines_tool engines |engines_test_expects array
+	engines_tool engines |engines_test_expects json
 	
 state:
 	engines_tool engines state|engines_test_expects json
 	
 container_name:
-	engines_tool engines container_name |engines_test_expects array
+	engines_tool engines container_name |engines_test_expects json
 	
 build_plain:
 	cat build_test_engine_minimum_args.json  | engines_tool engines build  |engines_test_expects bool true
