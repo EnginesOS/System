@@ -1,4 +1,4 @@
-require_relative 'engines_core_error.rb'
+require_relative 'service_builder_error.rb'
 module ServiceBuilderErrors
 
 def log_warn_mesg(mesg,*objs)
