@@ -6,5 +6,5 @@ tests:
 		
 	
 running:
-	@$(foreach service,$(SERVICES), echo -n $(service):; engines service status | engines_test_expects json state running)
+	$(foreach service,$(SERVICES), echo -n $(service):; engines service $(service) status | engines_test_expects json state running)
 	
