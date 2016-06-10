@@ -120,7 +120,7 @@ def managed_containers_to_json(containers)
     containers.each do |container|
       res.push(managed_container_as_json(container))
     end
-    return res
+    return res.to_json
   end
   return managed_container_as_json(containers)
 end

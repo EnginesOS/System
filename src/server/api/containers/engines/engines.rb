@@ -5,7 +5,7 @@
 get '/v0/containers/engines/' do
   engines = engines_api.getManagedEngines
   unless engines.is_a?(EnginesError)
-    managed_containers_to_json(engines)   
+    managed_containers_to_json(engines)  
   else
     return log_error(request, engines)
   end
