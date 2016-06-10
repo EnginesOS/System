@@ -33,9 +33,7 @@ module ManagedServiceConsumers
     service_params[:type_path] = @type_path
     service_params[:parent_engine] = params[:parent_engine]
     service_params[:service_handle] = params[:service_handle] if params.key?(:service_handle)
-    p :service_params
-    p service_params
-    p params
+
     @container_api.get_registered_consumer(service_params)
   end
 
@@ -44,7 +42,7 @@ module ManagedServiceConsumers
     return log_error_mesg('Cant register consumers as not running ',self)  if is_running? == false
     registered_hashes = registered_consumers
    # return true if registered_hashes.nil? 
-    return true if registered_hashes.is_a?(EnginesError)
+    return true unless registered_hashes.is_a?(EnginesError)
     
     registered_hashes.each do |service_hash|
       add_consumer_to_service(service_hash) if service_hash[:persistent] == false
