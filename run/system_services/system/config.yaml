@@ -86,11 +86,6 @@ mapped_ports:
   port: 22
   publicFacing: true
   external: 6122
-- !ruby/object:WorkPort
-  name: yard
-  port: 8808
-  publicFacing: true
-  external: 8808
 repo: na
 last_result: 
 setState: running
