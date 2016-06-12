@@ -17,3 +17,4 @@ memory_stats
 load_avgs
 disk_stats
 check_engines_system_update_status
+rotate_container_log

@@ -1,98 +1,41 @@
 --- !ruby/object:ManagedService
 container_name: mgmt
 ctype: service
-publisher_namespace: EnginesSystem
-type_path: mgmt
+persistent: true
 last_error: 
-memory: '512'
-hostname: 'mgmt'
-no_ca_map: true
-domain_name: 
-environments:
-- !ruby/object:EnvironmentVariable
- name: BUG_REPORTS_SERVER
- value: http://buglog.prod.engines.org
- setatrun: false
-- !ruby/object:EnvironmentVariable
- name: ContUser
- value: engines
- setatrun: false 
-image: engines/mgmt:_Engines_System(release)
-volumes:
- icons_dir: !ruby/object:Volume
-  name: icons_dir
-  remotepath: "/home/app/public/system/"
-  localpath: "/var/lib/engines/mgmt/public/system/"
-  mapping_permissions: rw
- socket: !ruby/object:Volume
-  name: socket
-  remotepath: "/var/run/docker.sock"
-  localpath: "/var/run/docker.sock"
-  mapping_permissions: rw
- build_dirs: !ruby/object:Volume
-  name: build_dirs
-  remotepath: "/home/engines/deployment"
-  localpath: "/home/engines/deployment"
-  mapping_permissions: rw
- ssh_key_dir: !ruby/object:Volume
-  name: ssh_key_dir
-  remotepath: "/home/engines/.ssh/mgmt/"
-  localpath: "/home/engines/.ssh/mgmt/"
-  mapping_permissions: rw 
- sqlite: !ruby/object:Volume
-  name: sqlite
-  remotepath: "/home/app/db/production.sqlite3"
-  localpath: "/home/engines/db/production.sqlite3"
-  mapping_permissions: rw
- docker_bin: !ruby/object:Volume
-  name: docker_bin
-  remotepath: "/usr/bin/docker"
-  localpath: "/usr/bin/docker"
-  mapping_permissions: ro
- engines_system: !ruby/object:Volume
-  name: engines_system
-  remotepath: "/opt/engines"
-  localpath: "/opt/engines"
-  mapping_permissions: rw
- engines_fs: !ruby/object:Volume
-  name: engines_fs
-  remotepath: "/var/lib/engines/fs"
-  localpath: "/var/lib/engines/fs"
-  mapping_permissions: rw
- engines_logs: !ruby/object:Volume
-  name: engineslogs
-  remotepath: "/var/log/engines"
-  localpath: "/var/log/engines"
-  mapping_permissions: rw
- engines_sys: !ruby/object:Volume
-  name: engines_sys
-  remotepath: "/sys"
-  localpath: "/sys"
-  mapping_permissions: ro 
- engines_ca: !ruby/object:Volume
-  name: engines_ca
-  remotepath: "/opt/engines/etc/ssl/"
-  localpath: "/var/lib/engines/cert_auth/public/"
-  mapping_permissions: rw
-port: 
+memory: '290'
+hostname: mgmt
+publisher_namespace: EnginesSystem
+type_path: control
+port: 10443
+environments: []
+volumes: []
 mapped_ports:
 - !ruby/object:WorkPort
   name: web
   port: 8000
   publicFacing: true
   external: 10443
-- !ruby/object:WorkPort
-  name: ssh
-  port: 22
-  publicFacing: true
-  external: 828
+environments:
+- !ruby/object:EnvironmentVariable
+ name: SYSTEM_API_URL
+ value: http://control.engines.internal:4567/v0/
+ has_changed: true 
+ build_time_only: false
+ name: SYSTEM_RELEASE
+ value: _Engines_System(release)
+ has_changed: true 
+ build_time_only: false
+image: engines/control:_Engines_System(release)
+mapped_ports:
 repo: na
 last_result: 
-setState: running
+setState: nocontainer
 nginxored: false
-conf_register_site: false
+conf_register_site: true
 conf_register_dns: true
-conf_zero_conf: true
 conf_self_start: true
 dependant_on:
 - "dns"
+- "nginx"
+- "syslog"

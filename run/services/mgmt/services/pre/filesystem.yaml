@@ -1,0 +1,9 @@
+publisher_namespace: "EnginesSystem"
+type_path: "filesystem/local/filesystem"
+variables:
+ user: "_Engines_Builder(data_uid)" 
+ group: "_Engines_Builder(data_gid)" 
+ service_name: "_Engines_Builder(engine_name)"
+ volume_src: "" 
+ engine_path: "persistent"
+ permissions: "rw"
