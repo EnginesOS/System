@@ -10,12 +10,12 @@ type_path: control
 port: 10443
 environments: []
 volumes: 
-- cert_key: !ruby/object:Volume
+ cert_key: !ruby/object:Volume
   name: cert_key
   remotepath: "/opt/engines/etc/ssl/keys/engines.key"
   localpath: " /var/lib/engines/cert_auth/public/keys/engines.key"
   mapping_permissions: "ro"
-- cert: !ruby/object:Volume
+ cert: !ruby/object:Volume
   name: cert
   remotepath: "/opt/engines/etc/ssl/certs/engines.crt"
   localpath: " /var/lib/engines/cert_auth/public/certs/engines.crt"
