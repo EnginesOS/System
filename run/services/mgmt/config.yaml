@@ -26,6 +26,7 @@ mapped_ports:
   port: 8001
   publicFacing: true
   external: 10443
+  proto_type: tcp
 environments:
 - !ruby/object:EnvironmentVariable
  name: SYSTEM_API_URL
