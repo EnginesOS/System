@@ -23,7 +23,7 @@ volumes:
 mapped_ports:
 - !ruby/object:WorkPort
   name: web
-  port: 8000
+  port: 8001
   publicFacing: true
   external: 10443
 environments:
