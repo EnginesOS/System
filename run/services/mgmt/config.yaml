@@ -3,7 +3,7 @@ container_name: mgmt
 ctype: service
 persistent: true
 last_error: 
-memory: '290'
+memory: '390'
 hostname: mgmt
 publisher_namespace: EnginesSystem
 type_path: control
