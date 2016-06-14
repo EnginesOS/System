@@ -149,8 +149,12 @@ module DockerCmdOptions
     SystemDebug.debug(SystemDebug.services, 'volumes',      container.volumes)
     if container.volumes.is_a?(Hash)
       container.volumes.each_value do |volume|        
+        unless volume.nil? 
+          
+        #FIXME Why need this for some reason symbs as converted
+      volume = SystemUtils.symbolize_keys(volume) if volume.key?('localpath')
         SystemDebug.debug(SystemDebug.services, 'volume', volume)
-        unless volume.nil?
+
           unless volume[:localpath].nil?
             volume_option = volume_option.to_s + ' -v ' + volume[:localpath].to_s + ':/' + volume[:remotepath].to_s + ':' + volume[:mapping_permissions].to_s
           end
