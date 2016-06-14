@@ -132,11 +132,13 @@ end
       end
       
           rescue Timeout::Error
+            STDERR.puts('Timeout on Running Server Script ' + script_name )
             return  log_error_mesg('Timeout on Running Server Script ' + script_name , script_name)
     #system('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/restart_mgmt engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/restart_mgmt.sh')
   rescue StandardError => e
-    log_exception(e)
-    return -1
+    STDERR.puts( 'Except ' + e.to_s + ' ' + e.backtrace.to_s) 
+    return log_exception(e)
+
   end
 
 end
