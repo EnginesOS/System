@@ -83,7 +83,7 @@ module DockerCmdOptions
   def self.get_port_options(container)
     return  ' '  if container.on_host_net? == true
     eportoption = ''
-    if container.mapped_ports
+    if container.mapped_ports.is_a?(Hash)
       container.mapped_ports.each_value do |eport|
         unless eport.nil?
           if eport[:external].nil? == false && eport.external > 0

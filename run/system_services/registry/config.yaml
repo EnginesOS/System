@@ -18,7 +18,7 @@ volumes:
   localpath: "/var/lib/engines/registry"
   mapping_permissions: rw
 port: 
-eports:
+mapped_ports: 
 repo: na
 last_result: 
 setState: running
