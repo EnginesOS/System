@@ -101,6 +101,7 @@ module DockerCmdOptions
         end
       end
     end
+    STDERR.puts('ports' + eportoption.to_s + ' from ' +  container.mapped_ports.to_s )
     return eportoption
   rescue StandardError => e
     SystemUtils.log_exception(e)
