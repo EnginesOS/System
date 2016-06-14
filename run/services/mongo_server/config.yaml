@@ -11,7 +11,7 @@ domain_name:
 environments: []
 image: engines/mongo:_Engines_System(release)
 volumes:
- mg_database: !ruby/object:Volume
+ mg_database: 
   name: mg_database
   remotepath: "/data/db/"
   localpath: "/var/lib/engines/mongo"

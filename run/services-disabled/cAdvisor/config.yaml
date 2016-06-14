@@ -7,17 +7,17 @@ hostname: cadvisor
 environments: []
 image: google/cadvisor:latest
 volumes:
- var_run: !ruby/object:Volume
+ var_run: 
   name: var_run
   remotepath: "/var/run"
   localpath: "/var/run"
   mapping_permissions: "rw"
- lib_docker: !ruby/object:Volume
+ lib_docker: 
   name: lib_docker
   remotepath: "/var/lib/docker"
   localpath: "/var/lib/docker"
   vol_permissions: "rw"
- system_path: !ruby/object:Volume
+ system_path: 
   name: system_path
   remotepath: "/sys/"
   localpath: "/sys/"

@@ -12,22 +12,22 @@ domain_name:
 environments: []
 image: engines/logview:_Engines_System(release)
 volumes:
- syslog: !ruby/object:Volume
+ syslog: 
   name: syslog
   remotepath: "/var/log/engines/syslog/"
   localpath: "/var/lib/engines/syslog/rmt/"
   mapping_permissions: ro
- engines: !ruby/object:Volume
+ engines: 
   name: engines
   remotepath: "/var/log/engines/engines/"
   localpath: "/var/log/engines/containers/"
   mapping_permissions: ro
- services: !ruby/object:Volume
+ services: 
   name: services
   remotepath: "/var/log/engines/services/"
   localpath: "/var/log/engines/services/"
   mapping_permissions: ro
- system_services: !ruby/object:Volume
+ system_services: 
   name: system_services
   remotepath: "/var/log/engines/system_services/"
   localpath: "/var/log/engines/system_services/"

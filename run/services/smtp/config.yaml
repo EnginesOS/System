@@ -11,7 +11,7 @@ domain_name:
 environments: []
 image: engines/smtp:_Engines_System(release)
 volumes: 
- ssl_dir: !ruby/object:Volume
+ ssl_dir: 
   name: ssl_dir
   remotepath: "/etc/ssl"
   localpath: "/opt/engines/etc/smtp/ssl"

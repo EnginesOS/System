@@ -10,7 +10,7 @@ type_path: email
 port: 8000
 environments: []
 volumes:
- ssl_dir: !ruby/object:Volume
+ ssl_dir: 
   name: ssl_dir
   remotepath: "/etc/ssl"
   localpath: "/opt/engines/etc/email/ssl"

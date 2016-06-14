@@ -12,12 +12,12 @@ domain_name:
 environments: []
 image: engines/cron:_Engines_System(release)
 volumes:
- socket: !ruby/object:Volume
+ socket: 
   name: socket
   remotepath: "/var/run/docker.sock"
   localpath: "/var/run/docker.sock"
   mapping_permissions: rw
- docker_bin: !ruby/object:Volume
+ docker_bin: 
   name: docker_bin
   remotepath: "/usr/bin/docker"
   localpath: "/usr/bin/docker"

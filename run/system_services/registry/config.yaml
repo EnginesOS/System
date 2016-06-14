@@ -12,7 +12,7 @@ domain_name:
 environments: []
 image: engines/registry:_Engines_System(release)
 volumes:
- docker_bin: !ruby/object:Volume
+ docker_bin: 
   name: registry_dir
   remotepath: "/opt/engines/run/service_manager/"
   localpath: "/var/lib/engines/registry"

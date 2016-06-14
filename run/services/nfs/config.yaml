@@ -11,18 +11,18 @@ domain_name:
 environments: []
 image: engines/nfs:_Engines_System(release)
 volumes:
- ssl_certs: !ruby/object:Volume
- fs_rw: !ruby/object:Volume
+ ssl_certs: 
+ fs_rw: 
   name: fs_rw
   remotepath: "/nfs/rw/"
   localpath: "/var/lib/engines/fs/"
   mapping_permissions: "rw"
- fs_ro: !ruby/object:Volume
+ fs_ro: 
   name: fs_ro
   remotepath: "/nfs/ro/"
   localpath: "/var/lib/engines/fs/"
   mapping_permissions: "rw"
- cgroup: !ruby/object:Volume
+ cgroup: 
   name: cgroup
   remotepath: "/sys/fs/cgroup"
   localpath: "/sys/fs/cgroup"

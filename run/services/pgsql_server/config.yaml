@@ -11,12 +11,12 @@ domain_name:
 environments: []
 image: engines/pgsql:_Engines_System(release)
 volumes:
- pg_database: !ruby/object:Volume
+ pg_database: 
   name: pg_database
   remotepath: "/var/lib/postgresql/"
   localpath: "/var/lib/engines/pgsql"
   mapping_permissions: "rw"
- sslcerts: !ruby/object:Volume
+ sslcerts: 
   name: sslcerts
   remotepath: "/etc/ssl/"
   localpath: "/opt/engines/etc/pgsql/ssl/"

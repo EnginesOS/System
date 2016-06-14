@@ -11,12 +11,12 @@ domain_name:
 environments: []
 image: engines/syslog:_Engines_System(release)
 volumes:
- config: !ruby/object:Volume
+ config: 
   name: config
   remotepath: "/etc/syslog-ng/conf.d/"
   localpath: "/opt/engines/etc/syslog/conf/"
   mapping_permissions: rw
- logs: !ruby/object:Volume
+ logs: 
   name: config
   remotepath: "/var/log/rmt/"
   localpath: "/var/lib/engines/syslog/rmt/"

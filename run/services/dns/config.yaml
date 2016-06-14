@@ -12,17 +12,17 @@ domain_name:
 environments: []
 image: engines/dns:_Engines_System(release)
 volumes: 
- ip_details: !ruby/object:Volume
+ ip_details: 
   name: ip_details
   remotepath: "/opt/engines/etc/net/"
   localpath: "/opt/engines/etc/net/"
   mapping_permissions: "ro"
- configuration: !ruby/object:Volume
+ configuration: 
   name: configuration
   remotepath: "/etc/bind/engines"
   localpath: "/opt/engines/etc/dns/config"
   mapping_permissions: "ro"
- var_run: !ruby/object:Volume
+ var_run: 
   name: "var_run"
   remotepath: "/var/run/"
   localpath: "/opt/engines/run/services/dns/run/dns"

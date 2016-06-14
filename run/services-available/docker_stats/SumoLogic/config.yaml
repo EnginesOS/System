@@ -13,7 +13,7 @@ image: engines/sumologic-dockerstats:_Engines_System(release)
 arguments:
 port: 
 volumes:
- socket: !ruby/object:Volume
+ socket: 
   name: socket
   remotepath: "/var/run/docker.sock"
   localpath: "/var/run/docker.sock"
