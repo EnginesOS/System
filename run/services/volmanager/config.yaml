@@ -1,4 +1,4 @@
---- Service
+--- !ruby/object:ManagedService
 publisher_namespace: EnginesSystem
 type_path: filesystem/local/filesystem
 container_name: volmanager
