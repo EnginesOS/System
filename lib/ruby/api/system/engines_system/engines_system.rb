@@ -44,6 +44,8 @@ class SystemApi < ErrorsApi
   require_relative 'engines_server_host.rb'
   include EnginesServerHost
   
+  @@server_script_timeout = 10
+  
   def initialize(api)
     @engines_api = api
     @engines_conf_cache = {}
