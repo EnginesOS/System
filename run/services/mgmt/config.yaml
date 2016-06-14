@@ -13,12 +13,12 @@ volumes:
  cert_key: 
   name: cert_key
   remotepath: "/opt/engines/etc/ssl/keys/engines.key"
-  localpath: " /var/lib/engines/cert_auth/public/keys/engines.key"
+  localpath: "/var/lib/engines/cert_auth/public/keys/engines.key"
   mapping_permissions: "ro"
  cert: 
   name: cert
   remotepath: "/opt/engines/etc/ssl/certs/engines.crt"
-  localpath: " /var/lib/engines/cert_auth/public/certs/engines.crt"
+  localpath: "/var/lib/engines/cert_auth/public/certs/engines.crt"
   mapping_permissions: "ro"  
 mapped_ports:
 - !ruby/object:WorkPort
