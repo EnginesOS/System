@@ -146,8 +146,10 @@ module DockerCmdOptions
       volume_option += ' -v ' + SystemConfig.EnginesTemp + '/' + temp_dir_name + ':/tmp/big:rw '
       SystemUtils.execute_command('/opt/engines/system/scripts/system/make_big_temp.sh ' + temp_dir_name)
     end
+    SystemDebug.debug(SystemDebug.services, 'volumes',      container.volumes)
     if container.volumes.is_a?(Hash)
-      container.volumes.each_value do |volume|
+      container.volumes.each_value do |volume|        
+        SystemDebug.debug(SystemDebug.services, 'volume', volume)
         unless volume.nil?
           unless volume[:localpath].nil?
             volume_option = volume_option.to_s + ' -v ' + volume[:localpath].to_s + ':/' + volume[:remotepath].to_s + ':' + volume[:mapping_permissions].to_s
