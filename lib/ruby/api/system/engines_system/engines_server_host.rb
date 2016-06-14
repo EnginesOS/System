@@ -1,4 +1,7 @@
 module EnginesServerHost
+  
+  @@server_script_timeout = 10
+  
   def system_image_free_space
     result =   run_server_script('free_docker_lib_space')
     return -1 if result[:result] != 0
