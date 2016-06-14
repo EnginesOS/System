@@ -57,8 +57,8 @@ end
     volume_option += ' -v ' + log_dir + ':/client/log:rw '
     unless container.volumes.nil?
       container.volumes.each_value do |vol|
-        SystemDebug.debug(SystemDebug.services,'build vol maps ' +  vol.name.to_s , vol)
-        volume_option += ' -v ' + vol.localpath.to_s + ':/dest/fs/' + vol.name + ':rw'
+        SystemDebug.debug(SystemDebug.services,'build vol maps ' +  vol[:volume_name].to_s , vol)
+        volume_option += ' -v ' + vol[:localpath].to_s + ':/dest/fs/' + vol.name + ':rw'
       end
     end
     volume_option += ' --volumes-from ' + container.container_name

@@ -149,8 +149,8 @@ module DockerCmdOptions
     if container.volumes.is_a?(Hash)
       container.volumes.each_value do |volume|
         unless volume.nil?
-          unless volume.localpath.nil?
-            volume_option = volume_option.to_s + ' -v ' + volume.localpath.to_s + ':/' + volume.remotepath.to_s + ':' + volume.mapping_permissions.to_s
+          unless volume[:localpath].nil?
+            volume_option = volume_option.to_s + ' -v ' + volume[:localpath].to_s + ':/' + volume[:remotepath].to_s + ':' + volume[:mapping_permissions].to_s
           end
         end
       end

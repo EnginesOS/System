@@ -202,7 +202,7 @@ class DockerFileBuilder
     write_line('#File Service')
     if  @builder.volumes.count >0
       @builder.volumes.each_value do |vol|
-        dest = File.basename(vol.remotepath)
+        dest = File.basename(vol[:remotepath])
         write_line('#FS Env')
         # write_line('RUN mkdir -p $CONTFSVolHome/' + dest)
         # write_line('RUN mkdir -p $CONTFSVolHome/$VOLDIR' )
