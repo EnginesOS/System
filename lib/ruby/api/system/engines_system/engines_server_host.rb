@@ -1,7 +1,6 @@
 module EnginesServerHost
-  
+
   @@server_script_timeout = 10
-  
   def system_image_free_space
     result =   run_server_script('free_docker_lib_space')
     return -1 if result[:result] != 0
@@ -24,14 +23,14 @@ module EnginesServerHost
     res = Thread.new { run_server_script('halt_system') }
   end
 
-   def available_ram    
-     mem_stats = get_system_memory_info
-        swp = 0 
-        swp = mem_stats[:swap_free] unless mem_stats[:swap_free].nil? 
-        swp /= 2 unless swp == 0 
-        (mem_stats[:free] + mem_stats[:file_cache] + swp ) /1024
-   end
-   
+  def available_ram
+    mem_stats = get_system_memory_info
+    swp = 0
+    swp = mem_stats[:swap_free] unless mem_stats[:swap_free].nil?
+    swp /= 2 unless swp == 0
+    (mem_stats[:free] + mem_stats[:file_cache] + swp ) /1024
+  end
+
   def get_system_memory_info
     ret_val = {}
     proc_mem_info = run_server_script('memory_stats')[:stdout]
@@ -109,37 +108,37 @@ module EnginesServerHost
     return r
   end
 
-def get_disk_statistics
-  stats = run_server_script('disk_stats')[:stdout]
-  lines = stats.split("\n")
-  r = {}
-  lines.each do |line|
-    values = line.split(' ')
-    if values.is_a?(Array)     
-      r[values[0]] = {}
-      r[values[0]][:type] = values[1]
-      r[values[0]][:blocks] = values[2]
-      r[values[0]][:used] = values[3]
-      r[values[0]][:available] = values[4]
-      r[values[0]][:usage] = values[5]
-      r[values[0]][:mount] = values[6]
+  def get_disk_statistics
+    stats = run_server_script('disk_stats')[:stdout]
+    lines = stats.split("\n")
+    r = {}
+    lines.each do |line|
+      values = line.split(' ')
+      if values.is_a?(Array)
+        r[values[0]] = {}
+        r[values[0]][:type] = values[1]
+        r[values[0]][:blocks] = values[2]
+        r[values[0]][:used] = values[3]
+        r[values[0]][:available] = values[4]
+        r[values[0]][:usage] = values[5]
+        r[values[0]][:mount] = values[6]
+      end
     end
+    return r
   end
-  return r
-end
+
   def run_server_script(script_name , script_data=false)
 
     cmd = 'ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/' + script_name + ' engines@' + SystemStatus.get_base_host_ip + '  /opt/engines/system/scripts/ssh/' + script_name + '.sh'
     Timeout.timeout(@@server_script_timeout) do
-    return SystemUtils.execute_command(cmd, false, script_data)
-      end
-      
-          rescue Timeout::Error
-            STDERR.puts('Timeout on Running Server Script ' + script_name )
-            return  log_error_mesg('Timeout on Running Server Script ' + script_name , script_name)
+      return SystemUtils.execute_command(cmd, false, script_data)
+    end
+  rescue Timeout::Error
+    STDERR.puts('Timeout on Running Server Script ' + script_name )
+    return  log_error_mesg('Timeout on Running Server Script ' + script_name , script_name)
     #system('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/restart_mgmt engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/restart_mgmt.sh')
   rescue StandardError => e
-    STDERR.puts( 'Except ' + e.to_s + ' ' + e.backtrace.to_s) 
+    STDERR.puts( 'Except ' + e.to_s + ' ' + e.backtrace.to_s)
     return log_exception(e)
 
   end
