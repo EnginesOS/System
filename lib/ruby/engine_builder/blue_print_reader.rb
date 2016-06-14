@@ -348,7 +348,7 @@ class BluePrintReader
       type = 'both' if type == 'TCP and UDP'
       # FIXME: when public ports supported
       SystemDebug.debug(SystemDebug.builder, 'Port ' + portnum.to_s + ':' + external.to_s)
-      @mapped_ports.push(WorkPort.new(name, portnum, external, false, type))
+      @mapped_ports.push(WorkPort.work_port_hash(name, portnum, external, false, type))
     end 
     return true
   rescue StandardError => e

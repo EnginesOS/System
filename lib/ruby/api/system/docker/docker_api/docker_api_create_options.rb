@@ -14,15 +14,15 @@ module DockerApiCreateOptions
   end
 
   def get_protocol_str(port)
-    return  'tcp'  if port.proto_type.nil?
-    return  'both' if eport.proto_type.downcase.include?('and')
-    port.proto_type
+    return  'tcp'  if port[:proto_type].nil?
+    return  'both' if port[:proto_type].downcase.include?('and')
+    port[:proto_type]
   end
 
   def exposed_ports(container)
     eports = {}
     container.ports.each do |port|
-      eports[port.to_s + '/' + get_protocol_str(port)] = {}
+      eports[port[:port].to_s + '/' + get_protocol_str(port)] = {}
     end
     eports
   end
@@ -107,10 +107,10 @@ module DockerApiCreateOptions
   def port_bindings(container)
     bindings = {}
     container.ports.each do |port|
-      local_side =     port.port.to_s + '/' + get_protocol_str(port)
+      local_side =     port[:port].to_s + '/' + get_protocol_str(port)
       remote_side = []
       remote_side[0] = {}
-      remote_side[0]['HostPort'] = port.external.to_s
+      remote_side[0]['HostPort'] = port[:external].to_s
       bindings[local_side] = remote_side
     end
     bindings

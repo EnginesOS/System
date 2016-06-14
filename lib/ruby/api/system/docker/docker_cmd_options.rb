@@ -151,7 +151,7 @@ module DockerCmdOptions
       container.volumes.each_value do |volume|        
         unless volume.nil? 
           
-        #FIXME Why need this for some reason symbs as converted
+        #FIXME Why need this for some reason symbs as converted to str
       volume = SystemUtils.symbolize_keys(volume) if volume.key?('localpath')
         SystemDebug.debug(SystemDebug.services, 'volume', volume)
 
