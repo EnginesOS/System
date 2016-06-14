@@ -48,7 +48,7 @@ volumes:
   localpath: "/opt/engines/etc/backup/keys/"
   mapping_permissions: "rw"
 port: 
-mapped_ports: []
+mapped_ports: 
 last_result:
 setState: running
 nginxored: false
