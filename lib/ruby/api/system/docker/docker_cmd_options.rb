@@ -83,6 +83,8 @@ module DockerCmdOptions
   def self.get_port_options(container)
     return  ' '  if container.on_host_net? == true
     eportoption = ''
+    STDERR.puts('---MAPPED ports ' + @mapped_ports.to_s)
+    STDERR.puts('---MAPPED ports is' + @mapped_ports.class.name)
     if container.mapped_ports.is_a?(Hash)
       container.mapped_ports.each_value do |eport|
         unless eport.nil?
