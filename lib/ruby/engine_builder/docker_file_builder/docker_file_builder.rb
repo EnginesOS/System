@@ -371,12 +371,12 @@ class DockerFileBuilder
     wports = ''
     n = 0
     return false if @blueprint_reader.mapped_ports.nil?
-    @blueprint_reader.mapped_ports.each do |port|
+    @blueprint_reader.mapped_ports.each_value do |port|
       if n < 0
         wports += ' '
       end
-      write_line('EXPOSE ' + port.port.to_s)
-      wports += port.port.to_s + ' '
+      write_line('EXPOSE ' + port[:port].to_s)
+      wports += port[:port].to_s + ' '
       n += 1
     end
     if wports.length > 0

@@ -21,7 +21,7 @@ module DockerApiCreateOptions
 
   def exposed_ports(container)
     eports = {}
-    container.ports.each_value do |port|
+    container.mapped_ports.each_value do |port|
       eports[port[:port].to_s + '/' + get_protocol_str(port)] = {}
     end
     eports
@@ -106,7 +106,7 @@ module DockerApiCreateOptions
 
   def port_bindings(container)
     bindings = {}
-    container.ports.each_value do |port|
+    container.mapped_ports.each_value do |port|
       local_side =     port[:port].to_s + '/' + get_protocol_str(port)
       remote_side = []
       remote_side[0] = {}
