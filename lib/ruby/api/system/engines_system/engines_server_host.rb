@@ -128,8 +128,9 @@ end
 
     cmd = 'ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/' + script_name + ' engines@' + SystemStatus.get_base_host_ip + '  /opt/engines/system/scripts/ssh/' + script_name + '.sh'
     Timeout.timeout(@@server_script_timeout) do
-    SystemUtils.execute_command(cmd, false, script_data)
+    return SystemUtils.execute_command(cmd, false, script_data)
       end
+      
           rescue Timeout::Error
             return  log_error_mesg('Timeout on Running Server Script ' + script_name , script_name)
     #system('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/restart_mgmt engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/restart_mgmt.sh')
