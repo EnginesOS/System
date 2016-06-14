@@ -243,8 +243,8 @@ class DockerFileBuilder
     end
     # FIXME: Wrong spot
     return false if @blueprint_reader.mapped_ports.nil?
-    @blueprint_reader.mapped_ports.each do |port|
-      write_line('EXPOSE ' + port.port.to_s)
+    @blueprint_reader.mapped_ports.each_value do |port|
+      write_line('EXPOSE ' + port[:port].to_s)
     end
   rescue Exception => e
     SystemUtils.log_exception(e)

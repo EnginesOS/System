@@ -84,18 +84,18 @@ module DockerCmdOptions
     return  ' '  if container.on_host_net? == true
     eportoption = ''
     if container.mapped_ports
-      container.mapped_ports.each do |eport|
+      container.mapped_ports.each_value do |eport|
         unless eport.nil?
-          if eport.external.nil? == false && eport.external > 0
+          if eport[:external].nil? == false && eport.external > 0
             eportoption += ' -p '
-            eportoption += eport.external.to_s + ':'
-            eportoption += eport.port.to_s
-            if eport.proto_type.nil?
-              eport.proto_type = 'tcp'
-            elsif eport.proto_type == 'both'
-              eportoption += '/tcp -p ' + eport.external.to_s + ':' + eport.port.to_s + '/udp '
+            eportoption += eport[:external].to_s + ':'
+            eportoption += eport[:port].to_s
+            if eport[:proto_type].nil?
+              eport[:proto_type] = 'tcp'
+            elsif eport[:proto_type] == 'both'
+              eportoption += '/tcp -p ' + eport[:external].to_s + ':' + eport[:port].to_s + '/udp '
             else
-              eportoption += '/' + eport.proto_type + ' '
+              eportoption += '/' + eport[:proto_type] + ' '
             end
           end
         end
