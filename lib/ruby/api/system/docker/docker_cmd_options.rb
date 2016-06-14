@@ -91,7 +91,7 @@ module DockerCmdOptions
       container.mapped_ports.each_value do |eport|
         unless eport.nil?
           eport = SystemUtils.symbolize_keys(eport) if eport.key?('external')
-          if eport[:external].nil? == false && eport.external > 0
+          if eport[:external].nil? == false && eport[:external] > 0
             eportoption += ' -p '
             eportoption += eport[:external].to_s + ':'
             eportoption += eport[:port].to_s
