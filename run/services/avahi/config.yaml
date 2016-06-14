@@ -20,7 +20,7 @@ volumes:
   localpath: "/opt/engines/etc/net/"
   mapping_permissions: "ro"
 mapped_ports:
-- !ruby/object:WorkPort
+ mdns:
   name: mdns
   port: 5353
   publicFacing: true

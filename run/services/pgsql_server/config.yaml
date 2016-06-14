@@ -23,7 +23,7 @@ volumes:
   mapping_permissions: "ro"
 port: 
 mapped_ports:
-- !ruby/object:WorkPort
+ pgsql: 
   name: pgsql
   port: 3306
   publicFacing: false

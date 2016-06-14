@@ -18,12 +18,12 @@ volumes:
   mapping_permissions: "rw"
 port: 
 mapped_ports:
-- !ruby/object:WorkPort
+ mongo: 
   name: mongo
   port: 27017
   publicFacing: false
   external: 0
-- !ruby/object:WorkPort
+ mongoweb: 
   name: mongoweb
   port: 28017
   publicFacing: false

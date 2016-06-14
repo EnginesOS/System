@@ -23,7 +23,7 @@ volumes:
   mapping_permissions: "rw"  
 port: 
 mapped_ports:
-- !ruby/object:WorkPort
+ mysql: 
   name: mysql
   port: 3306
   publicFacing: false

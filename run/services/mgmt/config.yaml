@@ -21,7 +21,7 @@ volumes:
   localpath: "/var/lib/engines/cert_auth/public/certs/engines.crt"
   mapping_permissions: "ro"  
 mapped_ports:
-- !ruby/object:WorkPort
+ web:
   name: web
   port: 8001
   publicFacing: true

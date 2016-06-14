@@ -28,7 +28,7 @@ volumes:
   localpath: "/opt/engines/run/services/dns/run/dns"
   mapping_permissions: "rw" 
 mapped_ports:
-- !ruby/object:WorkPort
+ dns:
   name: dns
   port: 53
   publicFacing: true

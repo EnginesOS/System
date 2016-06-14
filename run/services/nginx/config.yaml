@@ -30,12 +30,12 @@ volumes:
   mapping_permissions: "ro"  
 port: 
 mapped_ports:
-- !ruby/object:WorkPort
+ https:
   name: https
   port: 4430
   publicFacing: true
   external: 443
-- !ruby/object:WorkPort
+ http: 
   name: http
   port: 8000
   publicFacing: true

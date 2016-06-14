@@ -18,12 +18,12 @@ volumes:
   mapping_permissions: "ro"
 port: 
 mapped_ports: 
-- !ruby/object:WorkPort
+ smtp: 
   name: smtp
   port: 465
   publicFacing: true
   external: 465
-- !ruby/object:WorkPort
+ subs_smtp: 
   name: subs_smtp
   port: 587
   publicFacing: true

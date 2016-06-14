@@ -28,27 +28,27 @@ volumes:
   mapping_permissions: "rw"
 port: 
 mapped_ports:
-- !ruby/object:WorkPort
+ ftp:
   name: ftp
   port: 21
   publicFacing: true
   external: 21
-- !ruby/object:WorkPort
+ ftp-data: 
   name: ftp-data
   port: 20
   publicFacing: true
   external: 20
-- !ruby/object:WorkPort
+ ftps:
   name: ftps
   port: 989
   publicFacing: true
   external: 989
-- !ruby/object:WorkPort
+ ftps-data: 
   name: ftps-data
   port: 990
   publicFacing: true
   external: 990
-- !ruby/object:WorkPort
+ sftp:
   name: sftp
   port: 115
   publicFacing: true

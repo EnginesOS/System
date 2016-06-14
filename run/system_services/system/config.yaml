@@ -76,12 +76,12 @@ volumes:
   mapping_permissions: rw
 port: 
 mapped_ports:
-- !ruby/object:WorkPort
+ access: 
   name: access
   port: 4567
   publicFacing: true
   external: 4567
-- !ruby/object:WorkPort
+ ssh:
   name: ssh
   port: 22
   publicFacing: true

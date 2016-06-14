@@ -29,17 +29,17 @@ volumes:
   mapping_permissions: "ro"
 port: 
 mapped_ports:
-- !ruby/object:WorkPort
+ rpc:
   name: rpc
   port: 111
   publicFacing: true
   external: 111
-- !ruby/object:WorkPort
+ mountd: 
   name: mountd
   port: 2049
   publicFacing: true
   external: 2049
-- !ruby/object:WorkPort
+ lockd: 
   name: lockd
   port: 32768
   publicFacing: true
