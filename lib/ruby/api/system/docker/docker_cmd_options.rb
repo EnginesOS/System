@@ -81,13 +81,16 @@ module DockerCmdOptions
   end
 
   def self.get_port_options(container)
+    STDERR.puts('---MAPPED get_port_options ' + container.mapped_ports.to_s)
+
     return  ' '  if container.on_host_net? == true
     eportoption = ''
-    STDERR.puts('---MAPPED ports ' + @mapped_ports.to_s)
-    STDERR.puts('---MAPPED ports is' + @mapped_ports.class.name)
+    STDERR.puts('---MAPPED ports ' + container.mapped_ports.to_s)
+    STDERR.puts('---MAPPED ports is' + container.mapped_ports.class.name)
     if container.mapped_ports.is_a?(Hash)
       container.mapped_ports.each_value do |eport|
         unless eport.nil?
+          eport = SystemUtils.symbolize_keys(eport) if eport.key?('external')
           if eport[:external].nil? == false && eport.external > 0
             eportoption += ' -p '
             eportoption += eport[:external].to_s + ':'
