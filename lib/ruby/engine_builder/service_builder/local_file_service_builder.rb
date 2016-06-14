@@ -40,7 +40,7 @@ module LocalFileServiceBuilder
     if service_hash[:share] == true
     @volumes[service_hash[:service_owner] + '_' + service_hash[:variables][:service_name]] = vol
   else
-    @volumes[service_hash[:variables][:service_name]] = Volume.new(service_hash)
+    @volumes[service_hash[:variables][:service_name]] = Volume.volume_hash(service_hash)
 end
     return true
   rescue StandardError => e
