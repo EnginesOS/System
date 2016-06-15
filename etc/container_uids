@@ -1,6 +1,6 @@
 #User		Group		UID	#keyname (used to pick up uid from contianername) must be _containername
 #services
-www-data		www-data	22671 _mgmt
+www-data		www-data	22050 _mgmt
 rma			rma			22001 
 postgres	postgres	22002 pq_sql _pgsql_server
 postfix		postfix		22003 _smtp
