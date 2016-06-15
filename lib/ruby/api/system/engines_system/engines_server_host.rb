@@ -3,6 +3,7 @@ module EnginesServerHost
   @@server_script_timeout = 10
   def system_image_free_space
     result =   run_server_script('free_docker_lib_space')
+    return result if result.is_a?(EnginesError)
     return -1 if result[:result] != 0
     return result[:stdout].to_i
   rescue StandardError => e
@@ -25,6 +26,7 @@ module EnginesServerHost
 
   def available_ram
     mem_stats = get_system_memory_info
+    return mem_stats if mem_stats.is_a?(EnginesError)  
     swp = 0
     swp = mem_stats[:swap_free] unless mem_stats[:swap_free].nil?
     swp /= 2 unless swp == 0
@@ -32,8 +34,11 @@ module EnginesServerHost
   end
 
   def get_system_memory_info
+
+    r = run_server_script('memory_stats')
+    return r if r.is_a?(EnginesError) 
     ret_val = {}
-    proc_mem_info = run_server_script('memory_stats')[:stdout]
+    proc_mem_info = r[:stdout]
     proc_mem_info.split("\n").each do |line|
       values = line.split(' ')
       case values[0]
@@ -71,7 +76,9 @@ module EnginesServerHost
 
   def get_system_load_info
     ret_val = {}
-    loadavg_info = run_server_script('load_avgs')[:stdout]
+      r = run_server_script('load_avgs')[:stdout]
+    return r if r.is_a?(EnginesError) 
+    loadavg_info =r[:stdout]
 
     values = loadavg_info.split(' ')
     ret_val[:one] = values[0]
@@ -94,7 +101,9 @@ module EnginesServerHost
   end
 
   def get_network_statistics
-    stats = run_server_script('network_stats')[:stdout]
+    r = run_server_script('network_stats')
+    return r if r.is_a?(EnginesError) 
+    stats = r[:stdout]
     lines = stats.split("\n")
     r = {}
     lines.each do |line|
@@ -109,7 +118,9 @@ module EnginesServerHost
   end
 
   def get_disk_statistics
-    stats = run_server_script('disk_stats')[:stdout]
+    r= run_server_script('disk_stats')
+    return r if r.is_a?(EnginesError) 
+    stats = r[:stdout]
     lines = stats.split("\n")
     r = {}
     lines.each do |line|
