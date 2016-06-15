@@ -1,6 +1,6 @@
 #!/bin/sh
 
- /opt/engines/scripts/_setup_service_key_dir.sh $1
+ /opt/engines/system/scripts/system/sudo/_setup_service_key_dir.sh $1
  mkdir -p /opt/engines/run/services/$1/run/flags
 chgrp containers -R /opt/engines/run/services/$1/run
 chmod g+w -R  /opt/engines/run/services/$1/run
