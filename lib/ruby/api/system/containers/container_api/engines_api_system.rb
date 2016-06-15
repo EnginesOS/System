@@ -23,6 +23,7 @@ module EnginesApiSystem
 
   def have_enough_ram?(container)
     free_ram = @system_api.available_ram
+    return free_ram if free_ram.is_a?(EnginesError)
     ram_needed = SystemConfig.MinimumFreeRam .to_i + container.memory.to_i * 0.7
     return true if  free_ram > ram_needed
     return false

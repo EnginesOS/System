@@ -56,7 +56,9 @@ module ContainerApiDockerActions
 
   def start_container(container)
     clear_error
-    return log_error_mesg("insuficient free memory to start",container) unless have_enough_ram?(container)
+    enough_ram = have_enough_ram?(container)
+    return enough_ram if enough_ram.is_a?(EnginesError)
+    return log_error_mesg("Insuficient free memory to start",container) unless have_enough
     start_dependancies(container) if container.dependant_on.is_a?(Array)
     @docker_api.start_container(container)
   end
