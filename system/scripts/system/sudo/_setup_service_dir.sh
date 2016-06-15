@@ -12,6 +12,6 @@ uid=`/opt/engines/system/scripts/system/get_service_uid.sh $1`
 
 mkdir -p /var/log/engines/services/$1
 chown -R $uid /var/log/engines/services/$1
-chown $uid /opt/engines/run/services/$1/run/f
+chown -R $uid /opt/engines/run/services/$1/run/
 #no error
 exit
