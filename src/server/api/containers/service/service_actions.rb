@@ -7,7 +7,7 @@
 get '/v0/containers/service/:service_name/create' do
   service = get_service(params[:service_name])
   return log_error(request, service, params) if service.is_a?(FalseClass)
-  r = service.create_container
+  r = service.create_service
  
   unless r.is_a?(EnginesError)
     return r.to_json
@@ -24,7 +24,7 @@ end
 get '/v0/containers/service/:service_name/recreate' do
   service = get_service(params[:service_name])
   return log_error(request, service, params) if service.is_a?(EnginesError)
-  r = service.recreate_container
+  r = service.recreate
   unless r.is_a?(EnginesError)
     return r.to_json
   else
