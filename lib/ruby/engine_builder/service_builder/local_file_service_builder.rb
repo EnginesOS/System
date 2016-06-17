@@ -58,7 +58,7 @@ end
     unless container.volumes.nil?
       container.volumes.each_value do |vol|
         SystemDebug.debug(SystemDebug.services,'build vol maps ' +  vol[:volume_name].to_s , vol)
-        volume_option += ' -v ' + vol[:localpath].to_s + ':/dest/fs/' + vol.name + ':rw'
+        volume_option += ' -v ' + vol[:localpath].to_s + ':/dest/fs/' + vol[:volume_name] + ':rw'
       end
     end
     volume_option += ' --volumes-from ' + container.container_name
