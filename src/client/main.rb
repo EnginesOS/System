@@ -315,6 +315,9 @@ def load_token
   ENV['access_token'].strip
 end
 
+def  process_args
+  
+end
 #ENV['access_token'] = 'test_token'
 @base_url = 'http://127.0.0.1:4567'
 @host = '127.0.0.1'
@@ -325,6 +328,9 @@ load_token
 
 login if ENV['access_token'].nil?
 
+ process_args
+  
+  
 require_relative 'commands/commands.rb'
 
 #require_relative 'rset.rb'

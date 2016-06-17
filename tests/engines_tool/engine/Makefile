@@ -57,17 +57,28 @@ properties_net:
 	cat network_properties.json | engines_tool engine testengine properties network | engines_test_expects bool true
 	echo -n " Checking:"
 	engines_tool engine testengine state  | engines_test_expects text is running
-	
-	
+
 properties_run:
+	make properties_memory
+	make properties_env
+	
+properties_memory:
 	engines_tool engine testengine stop | engines_test_expects bool true
-	cat runtime_properties.json | engines_tool engine testengine properties runtime | engines_test_expects bool true
+	cat runtime_properties_memory.json | engines_tool engine testengine properties runtime | engines_test_expects bool true
 	echo -n " Checking:"
 	engines_tool engine testengine state  | engines_test_expects text is running
 	echo -n " Checking:"
 	engines_tool engine testengine state  | engines_test_expects text 577
-	cat revert_runtime_properties.json | engines_tool engine testengine properties runtime | engines_test_expects bool true
+	cat revert_runtime_properties_memory.json | engines_tool engine testengine properties runtime | engines_test_expects bool true
 	
+properties_env:
+	engines_tool engine testengine stop | engines_test_expects bool true
+	cat runtime_properties_env.json | engines_tool engine testengine properties runtime | engines_test_expects bool true
+	echo -n " Checking:"
+	engines_tool engine testengine state  | engines_test_expects text is running
+	echo -n " Checking:"
+	engines_tool engine testengine   | engines_test_expects text valuewer32342342
+
 destroy:
 	engines_tool engine testengine stop  | engines_test_expects bool true
 	engines_tool engine testengine destroy  | engines_test_expects bool true

@@ -99,7 +99,6 @@ module EnginesOperations
         return EnginesCoreError.new('Error no Change in Memory Value', :warning)
       end
      return container.update_memory(params[:memory]) 
-
     end
     if params.key?(:environment_variables)
       new_variables = params[:environment_variables]
