@@ -59,7 +59,7 @@ module EnginesServerHost
         ret_val[:swap_total] = values[1].to_i
       when 'SwapFree:'
         ret_val[:swap_free] = values[1].to_i
-          break 
+        return ret_val
       end
     end
     return ret_val

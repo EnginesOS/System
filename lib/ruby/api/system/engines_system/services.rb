@@ -78,5 +78,8 @@ module Services
     end
     log_exception(e)
   end
-
+  def setup_service_dirs(container)
+    run_server_script('setup_service_dir' , container.container_name)
+  
+  end
 end

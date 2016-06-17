@@ -7,8 +7,9 @@ module ManagedServiceControls
   end
   
 def create_service()
-   SystemUtils.run_command('/opt/engines/system/scripts/system/setup_service_dir.sh ' + container_name)
+   #SystemUtils.run_command('/opt/engines/system/scripts/system/setup_service_dir.sh ' + container_name)
   setup_service_keys if @system_keys.is_a?(Array)
+  @container_api.setup_service_dirs(self)
   SystemDebug.debug(SystemDebug.containers, :keys_set,  @system_keys )
  
    
@@ -30,7 +31,7 @@ def create_service()
        @environments = envs
      end
    end
-  @container_api.setup_service_dirs(self)
+ 
 
      return true if create_container
      save_state()
