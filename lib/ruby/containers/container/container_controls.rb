@@ -33,7 +33,7 @@ module ContainerControls
     #expire_engine_info
     r = true
     return true if read_state == 'running'
-    return log_error_mesg('Can\'t  unpause as no paused', self) unless is_paused?
+    return log_error_mesg("Can\'t unpause as not paused", self) unless is_paused?
     r =  @container_api.unpause_container(self)
     expire_engine_info
     return r

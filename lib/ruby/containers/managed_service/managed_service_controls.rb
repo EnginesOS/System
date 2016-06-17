@@ -32,13 +32,10 @@ def create_service()
    end
   @container_api.setup_service_dirs(self)
 
-   if create_container
-     return true
-   else
-      save_state()
+     return true if create_container
+     save_state()
      return log_error_mesg('Failed to create service',last_error)
-   end
-    
+
 rescue StandardError =>e
   log_exception(e)
  end
