@@ -36,7 +36,7 @@ unpause:
 	engines_tool engine installtest state | engines_test_expects text is running
 	
 template:
-	engines_tool engine testengine template '_Engines_Builder(engine_name)' | engines_test_expects text is testengine
+	engines_tool engine installtest template '_Engines_Builder(engine_name)' | engines_test_expects text is installtest
 	
 mem_stat:
 	engines_tool engine installtest mem_stat | engines_test_expects json maximum
