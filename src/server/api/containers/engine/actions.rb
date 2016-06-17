@@ -38,11 +38,12 @@ end
 # @param action specific keys
 # @return [Hash] action specific keys
 post '/v0/containers/engine/:engine_name/action/:action_name' do
-  engine = get_engine(params[:engine_name])
-  return log_error(request, engine, params) if engine.is_a?(FalseClass)
+  p_params = post_params(request)
+  engine = get_engine(p_params[:engine_name])
+  return log_error(request, engine, p_params) if engine.is_a?(FalseClass)
    
-  cparams =  Utils::Params.assemble_params(params, [:engine_name], :all)
-   action = engines_api.perform_engine_action(engine, params[:action_name], cparams)
+  cparams =  Utils::Params.assemble_params(p_params, [:engine_name], :all)
+   action = engines_api.perform_engine_action(engine, p_params[:action_name], cparams)
   unless action.is_a?(EnginesError) 
       action.to_json
   else

@@ -43,6 +43,7 @@ end
 # @param :data data to import
 # @return [true]
 post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/replace' do
+  params = post_params(request)
   hash = {}
    hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
    engine = get_engine(params[:engine_name])

@@ -35,7 +35,8 @@ end
 # @param keys to match configurator definition
 # @return [true]  apply service configuration Hash
 post '/v0/containers/service/:service_name/configuration/:configurator_name' do
-  cparams =  Utils::Params.assemble_params(params, [:service_name, :configurator_name], [:variables])
+  p_params = post_params(request)
+  cparams =  Utils::Params.assemble_params(p_params, [:service_name, :configurator_name], [:variables])
 
    r = engines_api.update_service_configuration(cparams)
   unless r.is_a?(FalseClass) 

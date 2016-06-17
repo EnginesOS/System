@@ -22,6 +22,7 @@ end
 # @param :public_key
 # @return [true]
 post '/v0/system/keys/user/:user_name' do
+  params = post_params(request)
   cparams =  Utils::Params.assemble_params(params, [:user_name],  :public_key) 
   update_key = cparams[:public_key] #symbolize_keys(params)
     r = engines_api.update_public_key(update_key)

@@ -36,10 +36,11 @@ end
 # @param action specific keys
 # @return [Hash] action specific keys
 post '/v0/containers/service/:service_name/action/:action_name' do
-  service = get_service(params[:service_name])
-  return log_error(request, service, params) if service.is_a?(EnginesError)
-  cparams =  Utils::Params.assemble_params(params, [:service_name], :all)
-   action = engines_api.perform_service_action(service, params[:action_name], cparams)
+  p_params = post_params(request)
+  service = get_service(p_params[:service_name])
+  return log_error(request, service, p_params) if service.is_a?(EnginesError)
+  cparams =  Utils::Params.assemble_params(p_params, [:service_name], :all)
+   action = engines_api.perform_service_action(service, p_params[:action_name], cparams)
   unless action.is_a?(EnginesError) 
       action.to_json
   else
