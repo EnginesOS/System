@@ -9,6 +9,7 @@
 
 post '/v0/containers/service/:service_name/properties/network' do
   p_params = post_params(request)
+  p_params[:service_name] = params[:service_name]
   service = get_service(p_params[:service_name])
   p :LOADED
   return log_error(request, service, p_params) if service.is_a?(EnginesError)
@@ -26,6 +27,7 @@ end
 
 post '/v0/containers/service/:service_name/properties/runtime' do
   p_params = post_params(request)
+  p_params[:service_name] = params[:service_name]
   service = get_service(p_params[:service_name])
   return log_error(request, service, p_params) if service.is_a?(EnginesError)
   cparams =  Utils::Params.assemble_params(p_params, [:service_name],  :all) 
