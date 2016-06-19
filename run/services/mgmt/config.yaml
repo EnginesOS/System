@@ -33,9 +33,19 @@ environments:
  value: http://control.engines.internal:4567/v0/
  has_changed: true 
  build_time_only: false
+- !ruby/object:EnvironmentVariable
+ name: SYSTEM_API_URL
+ value: http://control.engines.internal:4567/v0/
+ has_changed: true 
+ build_time_only: false
 - !ruby/object:EnvironmentVariable 
- name: SYSTEM_RELEASE
- value: _Engines_System(release)
+ name: ACTION_CABLE_ALLOWED_REQUEST_ORIGINS
+ value: https://mgmt._Engines_System(default_domain):10443/
+ has_changed: true 
+ build_time_only: false
+- !ruby/object:EnvironmentVariable 
+ name: ACTION_CABLE_URL
+ value: wss://mgmt._Engines_System(default_domain):10443/
  has_changed: true 
  build_time_only: false
 image: engines/mgmt:_Engines_System(release)
