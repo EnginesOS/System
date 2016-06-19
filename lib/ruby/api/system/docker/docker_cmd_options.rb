@@ -9,7 +9,7 @@ module DockerCmdOptions
     start_cmd = ' '
     start_cmd = ' /bin/bash /home/start.bash' unless container.conf_self_start
     commandargs =  get_networking_args(container) \
-    + environment_options + \
+    + environment_options.to_s + \
     ' --memory=' + container.memory.to_s + 'm ' + \
     volume_option + ' ' + \
     port_options + \
@@ -63,6 +63,8 @@ module DockerCmdOptions
   def self.get_environment_options(container)
     e_option = ''
     if container.environments && container.environments.nil? == false
+    return  e_option unless container.environments.is_a?(Array)
+    
       container.environments.each do |environment|
         if environment.nil? == false \
         && environment.name.nil? == false \
