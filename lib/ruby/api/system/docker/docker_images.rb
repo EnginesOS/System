@@ -9,7 +9,7 @@ module DockerImages
     if result[:result] != 0
       return true if result[:stdout].include?('Status: Image is up to date for ' + image_name) == true
       @last_error += ':' + result[:stderr].to_s
-      return log_error('Failed to pull image ' + result[:stderr].to_s)
+      return log_error_mesg('Failed to pull image ' + result[:stderr].to_s)
     end
     return true if result[:stdout].include?('Status: Image is up to date for ' + image_name) == true
     @last_error += ':' + result[:stderr].to_s
