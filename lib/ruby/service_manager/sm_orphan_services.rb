@@ -11,7 +11,7 @@ def orphanate_service(params)
 
  ## ????
 def release_orphan(params)
-  remove_orphaned_service(params)
+  system_registry_client.release_orphan(params)
 end
 
   def rollback_orphaned_service(service_hash)
