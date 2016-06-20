@@ -1,7 +1,7 @@
 module FirstRunDNS
   def apply_hostname(params)
     config_hash = {}
-    config_hash[:service_name] = 'mgmt'
+    config_hash[:service_name] = 'system'
     config_hash[:configurator_name] = 'hostname'
     config_hash[:variables] = {}
     config_hash[:variables][:hostname] =  params[:hostname]

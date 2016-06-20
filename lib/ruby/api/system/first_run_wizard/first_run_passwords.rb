@@ -11,7 +11,7 @@ module FirstRunPasswords
 
   def console_password_configurator(password)
     service_param = {}
-    service_param[:service_name] = 'mgmt'
+    service_param[:service_name] = 'system'
     service_param[:configurator_name] = 'console_pass'
     service_param[:variables] = Hash.new
     service_param[:variables][:console_password] = password
@@ -29,7 +29,7 @@ module FirstRunPasswords
 
   def ssh_key_configurator(key)
     service_param = {}
-    service_param[:service_name] = 'mgmt'
+    service_param[:service_name] = 'system'
     service_param[:configurator_name] = 'ssh_master_key'
     service_param[:variables] = {}
     service_param[:variables][:ssh_master_key] = key
