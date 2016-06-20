@@ -75,8 +75,69 @@ class DockerConnection < ErrorsApi
     log_exception(e)
   end
 
+  def stop_container(container)
+    if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
+         return EnginesDockerApiError.new('Missing Container id', :warning)
+      else
+        request = '/containers/' + container.container_id.to_s + '/stop'
+      end
+      return make_request(request, container)
+    rescue StandardError => e
+      log_exception(e)
+  end
+def start_container(container)
+  if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
+           return EnginesDockerApiError.new('Missing Container id', :warning)
+    else
+      request = '/containers/' + container.container_id.to_s + '/start'
+    end
+    return make_request(request, container)
+  rescue StandardError => e
+    log_exception(e)
+ end
+def pause_container(container)
+  if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
+           return EnginesDockerApiError.new('Missing Container id', :warning)
+    else
+      request = '/containers/' + container.container_id.to_s + '/pause'
+    end
+    return make_request(request, container)
+  rescue StandardError => e
+    log_exception(e)
+ end
+def unpause_container(container)
+  if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
+           return EnginesDockerApiError.new('Missing Container id', :warning)
+    else
+      request = '/containers/' + container.container_id.to_s + '/unpause'
+    end
+    return make_request(request, container)
+  rescue StandardError => e
+    log_exception(e)
+
+ end
+ 
+def destroy_container(container)
+  if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
+           return EnginesDockerApiError.new('Missing Container id', :warning)
+    else
+      request = '/containers/' + container.container_id.to_s + '?v=1'
+    end
+    return make_del_request(request, container)
+  rescue StandardError => e
+    log_exception(e)
+ end
+  
   def make_request(uri, container)
     req = Net::HTTP::Get.new(uri)
+    perform_request(req, container)
+  end
+def make_del_request(uri, container)
+    req = Net::HTTP::Delete.new(uri)
+    perform_request(req, container)
+  end  
+  
+  def  perform_request(req, container)
     resp = docker_socket.request(req)
     #FIXMe check the value of resp.code
     #    chunks = ''
