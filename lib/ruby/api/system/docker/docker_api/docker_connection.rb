@@ -121,7 +121,7 @@ def destroy_container(container)
   if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
            return EnginesDockerApiError.new('Missing Container id', :warning)
     else
-      request = '/containers/' + container.container_id.to_s + '?v=1'
+      request = '/containers/' + container.container_id.to_s 
     end
     return make_del_request(request, container)
   rescue StandardError => e
@@ -129,6 +129,7 @@ def destroy_container(container)
  end
   
   def make_request(uri, container)
+    STDERR.puts('RESQUEST ' + uri.to_s)
     req = Net::HTTP::Get.new(uri)
     perform_request(req, container)
   end
