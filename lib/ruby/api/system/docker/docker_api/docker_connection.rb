@@ -81,7 +81,7 @@ class DockerConnection < ErrorsApi
       else
         request = '/containers/' + container.container_id.to_s + '/stop'
       end
-      return make_request(request, container)
+      return make_post_request(request, container)
     rescue StandardError => e
       log_exception(e)
   end
@@ -91,7 +91,7 @@ def start_container(container)
     else
       request = '/containers/' + container.container_id.to_s + '/start'
     end
-    return make_request(request, container)
+    return make_post_request(request, container)
   rescue StandardError => e
     log_exception(e)
  end
@@ -101,7 +101,7 @@ def pause_container(container)
     else
       request = '/containers/' + container.container_id.to_s + '/pause'
     end
-    return make_request(request, container)
+    return make_post_request(request, container)
   rescue StandardError => e
     log_exception(e)
  end
@@ -111,7 +111,7 @@ def unpause_container(container)
     else
       request = '/containers/' + container.container_id.to_s + '/unpause'
     end
-    return make_request(request, container)
+    return make_post_request(request, container)
   rescue StandardError => e
     log_exception(e)
 
@@ -127,7 +127,11 @@ def destroy_container(container)
   rescue StandardError => e
     log_exception(e)
  end
-  
+def make_post_request(uri, container)
+  STDERR.puts('RESQUEST ' + uri.to_s)
+  req = Net::HTTP::Post.new(uri)
+  perform_request(req, container)
+end 
   def make_request(uri, container)
     STDERR.puts('RESQUEST ' + uri.to_s)
     req = Net::HTTP::Get.new(uri)
