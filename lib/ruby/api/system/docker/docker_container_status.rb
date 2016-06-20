@@ -31,8 +31,8 @@ module DockerContainerStatus
     res = JSON.parse(result[:stdout], :create_additions => true)
     return res #SystemUtils.deal_with_jason(res)
   rescue StandardError => e
-    return false           
-   # log_exception(e,'No such Container' + result[:stdout].to_s)
+    return log_error_mesg('No such Container ', container.container_name)          
+  ## log_exception(e,'No such Container' + result[:stdout].to_s)
   end
 
 end
