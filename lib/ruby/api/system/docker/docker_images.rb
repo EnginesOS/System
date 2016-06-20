@@ -5,6 +5,7 @@ module DockerImages
     cmd = 'docker pull ' + image_name
     SystemDebug.debug(SystemDebug.docker,'Pull Image', cmd)
     result = SystemUtils.execute_command(cmd)
+    STDERR.puts(' docker pull IMAGE ' + cmd + ' ' + result.to_s)
     @last_error = result[:stdout]
     if result[:result] != 0
       return true if result[:stdout].include?('Status: Image is up to date for ' + image_name) == true
