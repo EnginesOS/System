@@ -78,7 +78,7 @@ module EnginesServerHost
 
   def get_system_load_info
     ret_val = {}
-      r = run_server_script('load_avgs')[:stdout]
+      r = run_server_script('load_avgs')
     return r if r.is_a?(EnginesError) 
     loadavg_info =r[:stdout]
 
