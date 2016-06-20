@@ -71,7 +71,12 @@ module EnginesOperations
     params[:reinstall] = true
     delete_engine(params)
     builder = BuildController.new(self)
-    engine.reinstall_engine(builder)
+    @build_thread = Thread.new {
+      engine.reinstall_engine(builder)
+       }
+       return true if @build_thread.alive?
+       return log_error(params[:engine_name], 'Build Failed to start')
+
 
   rescue  StandardError => e
     log_exception(e)
