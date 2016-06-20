@@ -69,3 +69,17 @@ get '/v0/containers/engine/:engine_name/build_report' do
     return log_error(request, r)
   end
 end
+# @method get_engine_websites
+# @overload   get '/v0/containers/engine/:engine_name/websites'
+# get engine build_report
+# @return [String] 
+get '/v0/containers/engine/:engine_name/websites' do
+  engine = get_engine(params[:engine_name])
+   return log_error(request, engine, params) if engine.is_a?(EnginesError)
+   r = engine.web_sites
+  unless r.is_a?(EnginesError)
+    return r.to_json
+  else
+    return log_error(request, r)
+  end
+end
