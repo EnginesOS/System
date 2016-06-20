@@ -71,7 +71,7 @@ get '/v0/containers/engine/:engine_name/build_report' do
 end
 # @method get_engine_websites
 # @overload   get '/v0/containers/engine/:engine_name/websites'
-# get engine build_report
+# get engine websites
 # @return [String] 
 get '/v0/containers/engine/:engine_name/websites' do
   engine = get_engine(params[:engine_name])

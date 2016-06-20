@@ -43,6 +43,21 @@ get '/v0/containers/service/:service_name/state' do
     return log_error(request, r)
   end
 end
+
+# @method get_service_websites
+# @overload   get '/v0/containers/service/:service_name/websites'
+# get service websites
+# @return [String] 
+get '/v0/containers/service/:service_name/websites' do
+  service = get_service(params[:service_name])
+   return log_error(request, service, params) if service.is_a?(EnginesError)
+   r = service.web_sites
+  unless r.is_a?(EnginesError)
+    return r.to_json
+  else
+    return log_error(request, r)
+  end
+end
 # @!endgroup
 
 

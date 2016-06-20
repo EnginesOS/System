@@ -1828,6 +1828,30 @@ updated prior to the container creation.</p>
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="top-level-namespace.html#get_engine_websites-instance_method" title="#get (instance method)">- (String) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/websites&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>get engine websites.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="top-level-namespace.html#pause_engine-instance_method" title="#get (instance method)">- (true) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/pause&#39;) </a>
     
 
@@ -2576,6 +2600,30 @@ fresh persistent services, no data is preserved beyond this point.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>get service status.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#get_service_websites-instance_method" title="#get (instance method)">- (String) <strong>get</strong>(&#39;/v0/containers/service/:service_name/websites&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>get service websites.</p>
 </div></span>
   
 </li>
@@ -4720,7 +4768,7 @@ is updated prior to the container creation</p>
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/service/:service_name/create</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_service'>service</span> <span class='op'>=</span> <span class='id identifier rubyid_get_service'>get_service</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:service_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_service'>service</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>FalseClass</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_create_container'>create_container</span>
+  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_create_service'>create_service</span>
  
   <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
     <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
@@ -4858,8 +4906,8 @@ is updated prior to the container creation</p>
     <td>
       <pre class="code"><span class="info file"># File 'src/server/api/system/certs.rb', line 53</span>
 
-<span class='id identifier rubyid_delete'>delete</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/certs/:cert_name</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
-  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_remove_cert'>remove_cert</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:cert_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_delete'>delete</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/certs/:cert_name</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_cert_name'>cert_name</span><span class='op'>|</span>
+  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_remove_cert'>remove_cert</span><span class='lparen'>(</span><span class='id identifier rubyid_cert_name'>cert_name</span><span class='rparen'>)</span>
   <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
      <span class='id identifier rubyid_status'>status</span><span class='lparen'>(</span><span class='int'>202</span><span class='rparen'>)</span>
      <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
@@ -6383,12 +6431,14 @@ fresh persistent services, no data is preserved beyond this point</p>
 55
 56
 57
-58</pre>
+58
+59</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/service/persistent_service.rb', line 45</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/replace</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='id identifier rubyid_post_params'>post_params</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_hash'>hash</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
    <span class='id identifier rubyid_hash'>hash</span><span class='lbracket'>[</span><span class='symbol'>:service_connection</span><span class='rbracket'>]</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>ServiceHash</span><span class='period'>.</span><span class='id identifier rubyid_engine_service_hash_from_params'>engine_service_hash_from_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span>
    <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -8004,7 +8054,6 @@ consumes)</p>
       <pre class="lines">
 
 
-66
 67
 68
 69
@@ -8015,10 +8064,11 @@ consumes)</p>
 74
 75
 76
-77</pre>
+77
+78</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/service/persistent_service.rb', line 66</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/service/persistent_service.rb', line 67</span>
 
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   
@@ -8336,6 +8386,76 @@ consumes)</p>
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="get_engine_websites-instance_method">
+  
+    - (<tt>String</tt>) <strong>get</strong>(&#39;/v0/containers/engine/:engine_name/websites&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>get engine websites</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/engine.rb', line 76</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/websites</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+   <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+   <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_web_sites'>web_sites</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="get_engines-instance_method">
   
     - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/containers/engines/&#39;) 
@@ -8396,7 +8516,7 @@ consumes)</p>
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engines/</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_engines'>engines</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_getManagedEngines'>getManagedEngines</span>
   <span class='kw'>unless</span> <span class='id identifier rubyid_engines'>engines</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_managed_containers_to_json'>managed_containers_to_json</span><span class='lparen'>(</span><span class='id identifier rubyid_engines'>engines</span><span class='rparen'>)</span>   
+    <span class='id identifier rubyid_managed_containers_to_json'>managed_containers_to_json</span><span class='lparen'>(</span><span class='id identifier rubyid_engines'>engines</span><span class='rparen'>)</span>  
   <span class='kw'>else</span>
     <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_engines'>engines</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
@@ -10553,6 +10673,76 @@ service consumes)</p>
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="get_service_websites-instance_method">
+  
+    - (<tt>String</tt>) <strong>get</strong>(&#39;/v0/containers/service/:service_name/websites&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>get service websites</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/service/service.rb', line 51</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/service/:service_name/websites</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_service'>service</span> <span class='op'>=</span> <span class='id identifier rubyid_get_service'>get_service</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:service_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+   <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_service'>service</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+   <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_web_sites'>web_sites</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+  <span class='kw'>else</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="get_services-instance_method">
   
     - (<tt>Array</tt>) <strong>get</strong>(&#39;/v0/containers/services/&#39;) 
@@ -12220,7 +12410,6 @@ container_name: Hash [:maximum, :current, :limit]</code></pre>
       <pre class="lines">
 
 
-40
 41
 42
 43
@@ -12228,10 +12417,11 @@ container_name: Hash [:maximum, :current, :limit]</code></pre>
 45
 46
 47
-48</pre>
+48
+49</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/system/keys/user.rb', line 40</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/keys/user.rb', line 41</span>
 
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/keys/user/:user_name</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_public_key'>public_key</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_get_public_key'>get_public_key</span>
@@ -12676,17 +12866,19 @@ created/uploaded against</p>
 48
 49
 50
-51</pre>
+51
+52</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/actions.rb', line 40</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/action/:action_name</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
-  <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>FalseClass</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_p_params'>p_params</span> <span class='op'>=</span> <span class='id identifier rubyid_post_params'>post_params</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_p_params'>p_params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_p_params'>p_params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>FalseClass</span><span class='rparen'>)</span>
    
-  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='symbol'>:all</span><span class='rparen'>)</span>
-   <span class='id identifier rubyid_action'>action</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_perform_engine_action'>perform_engine_action</span><span class='lparen'>(</span><span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:action_name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_cparams'>cparams</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_p_params'>p_params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='symbol'>:all</span><span class='rparen'>)</span>
+   <span class='id identifier rubyid_action'>action</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_perform_engine_action'>perform_engine_action</span><span class='lparen'>(</span><span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_p_params'>p_params</span><span class='lbracket'>[</span><span class='symbol'>:action_name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_cparams'>cparams</span><span class='rparen'>)</span>
   <span class='kw'>unless</span> <span class='id identifier rubyid_action'>action</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span> 
       <span class='id identifier rubyid_action'>action</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
   <span class='kw'>else</span>
@@ -12777,16 +12969,18 @@ created/uploaded against</p>
 45
 46
 47
-48</pre>
+48
+49</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'src/server/api/containers/service/actions.rb', line 38</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/service/:service_name/action/:action_name</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
-  <span class='id identifier rubyid_service'>service</span> <span class='op'>=</span> <span class='id identifier rubyid_get_service'>get_service</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:service_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_service'>service</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:service_name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='symbol'>:all</span><span class='rparen'>)</span>
-   <span class='id identifier rubyid_action'>action</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_perform_service_action'>perform_service_action</span><span class='lparen'>(</span><span class='id identifier rubyid_service'>service</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:action_name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_cparams'>cparams</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_p_params'>p_params</span> <span class='op'>=</span> <span class='id identifier rubyid_post_params'>post_params</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_service'>service</span> <span class='op'>=</span> <span class='id identifier rubyid_get_service'>get_service</span><span class='lparen'>(</span><span class='id identifier rubyid_p_params'>p_params</span><span class='lbracket'>[</span><span class='symbol'>:service_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_service'>service</span><span class='comma'>,</span> <span class='id identifier rubyid_p_params'>p_params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_p_params'>p_params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:service_name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='symbol'>:all</span><span class='rparen'>)</span>
+   <span class='id identifier rubyid_action'>action</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_perform_service_action'>perform_service_action</span><span class='lparen'>(</span><span class='id identifier rubyid_service'>service</span><span class='comma'>,</span> <span class='id identifier rubyid_p_params'>p_params</span><span class='lbracket'>[</span><span class='symbol'>:action_name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_cparams'>cparams</span><span class='rparen'>)</span>
   <span class='kw'>unless</span> <span class='id identifier rubyid_action'>action</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span> 
       <span class='id identifier rubyid_action'>action</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
   <span class='kw'>else</span>
@@ -13032,7 +13226,7 @@ service</p>
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/service/:service_name/recreate</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_service'>service</span> <span class='op'>=</span> <span class='id identifier rubyid_get_service'>get_service</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:service_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_service'>service</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_recreate_container'>recreate_container</span>
+  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_recreate'>recreate</span>
   <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
     <span class='kw'>return</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
   <span class='kw'>else</span>
@@ -13182,15 +13376,17 @@ service</p>
 12
 13
 14
-15</pre>
+15
+16</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/template.rb', line 8</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/template</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
-  <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='symbol'>:template_string</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_p_params'>p_params</span> <span class='op'>=</span> <span class='id identifier rubyid_post_params'>post_params</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_p_params'>p_params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_p_params'>p_params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_p_params'>p_params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='symbol'>:template_string</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_resolved_string'>resolved_string</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_get_resolved_engine_string'>get_resolved_engine_string</span><span class='lparen'>(</span><span class='id identifier rubyid_cparams'>cparams</span><span class='lbracket'>[</span><span class='symbol'>:template_string</span><span class='rbracket'>]</span><span class='comma'>,</span><span class='id identifier rubyid_engine'>engine</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_resolved_string'>resolved_string</span><span class='comma'>,</span> <span class='id identifier rubyid_cparams'>cparams</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_resolved_string'>resolved_string</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_resolved_string'>resolved_string</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
@@ -13268,15 +13464,17 @@ service</p>
 12
 13
 14
-15</pre>
+15
+16</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'src/server/api/containers/service/template.rb', line 8</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/service/:service_name/template</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_p_params'>p_params</span> <span class='op'>=</span> <span class='id identifier rubyid_post_params'>post_params</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_service'>service</span> <span class='op'>=</span> <span class='id identifier rubyid_get_service'>get_service</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:service_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
- <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_service'>service</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='symbol'>:service_name</span><span class='comma'>,</span>  <span class='symbol'>:template_string</span><span class='rparen'>)</span> 
+ <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_service'>service</span><span class='comma'>,</span>   <span class='id identifier rubyid_p_params'>p_params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span>  <span class='id identifier rubyid_p_params'>p_params</span><span class='comma'>,</span> <span class='symbol'>:service_name</span><span class='comma'>,</span>  <span class='symbol'>:template_string</span><span class='rparen'>)</span> 
   <span class='id identifier rubyid_resolved_string'>resolved_string</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_get_resolved_engine_string'>get_resolved_engine_string</span><span class='lparen'>(</span><span class='id identifier rubyid_cparams'>cparams</span><span class='lbracket'>[</span><span class='symbol'>:template_string</span><span class='rbracket'>]</span><span class='comma'>,</span><span class='id identifier rubyid_service'>service</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_resolved_string'>resolved_string</span><span class='comma'>,</span> <span class='id identifier rubyid_cparams'>cparams</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_resolved_string'>resolved_string</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_resolved_string'>resolved_string</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
@@ -14698,17 +14896,19 @@ service</p>
 18
 19
 20
-21</pre>
+21
+22</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/properties.rb', line 11</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/properties/network</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
-
-  <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_p_params'>p_params</span> <span class='op'>=</span> <span class='id identifier rubyid_post_params'>post_params</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_p_params'>p_params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span> 
+  <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_p_params'>p_params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span> <span class='comma'>,</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>failed to load </span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>ManagedEngine</span><span class='rparen'>)</span>
   
-  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='symbol'>:all</span><span class='rparen'>)</span> <span class='comment'># [:memory, :environment_variables]) 
+  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_p_params'>p_params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='symbol'>:all</span><span class='rparen'>)</span> <span class='comment'># [:memory, :environment_variables]) 
 </span>  <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_set_container_network_properties'>set_container_network_properties</span><span class='lparen'>(</span><span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_cparams'>cparams</span><span class='rparen'>)</span>
 
   <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span> <span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span><span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_last_error'>last_error</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
@@ -14791,7 +14991,6 @@ service</p>
       <pre class="lines">
 
 
-30
 31
 32
 33
@@ -14799,16 +14998,19 @@ service</p>
 35
 36
 37
-38</pre>
+38
+39
+40</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/properties.rb', line 30</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/engine/properties.rb', line 31</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/engine/:engine_name/properties/runtime</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
-
-  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:memory</span><span class='comma'>,</span> <span class='symbol'>:environment_variables</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='comment'># :all) 
-</span>  <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_p_params'>p_params</span> <span class='op'>=</span> <span class='id identifier rubyid_post_params'>post_params</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_p_params'>p_params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span> 
+  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_p_params'>p_params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:memory</span><span class='comma'>,</span> <span class='symbol'>:environment_variables</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='comment'># :all) 
+</span>  <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_engine'>get_engine</span><span class='lparen'>(</span><span class='id identifier rubyid_cparams'>cparams</span><span class='lbracket'>[</span><span class='symbol'>:engine_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_p_params'>p_params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_set_container_runtime_properties'>set_container_runtime_properties</span><span class='lparen'>(</span><span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_cparams'>cparams</span><span class='rparen'>)</span> <span class='comment'>#Utils.symbolize_keys(params))
 </span>  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span> <span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_cparams'>cparams</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
@@ -14982,13 +15184,15 @@ service</p>
 43
 44
 45
-46</pre>
+46
+47</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'src/server/api/containers/service/configurations.rb', line 37</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/service/:service_name/configuration/:configurator_name</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
-  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:service_name</span><span class='comma'>,</span> <span class='symbol'>:configurator_name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:variables</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_p_params'>p_params</span> <span class='op'>=</span> <span class='id identifier rubyid_post_params'>post_params</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_p_params'>p_params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:service_name</span><span class='comma'>,</span> <span class='symbol'>:configurator_name</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:variables</span><span class='rbracket'>]</span><span class='rparen'>)</span>
 
    <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_update_service_configuration'>update_service_configuration</span><span class='lparen'>(</span><span class='id identifier rubyid_cparams'>cparams</span><span class='rparen'>)</span>
   <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>FalseClass</span><span class='rparen'>)</span> 
@@ -15093,17 +15297,19 @@ service</p>
 17
 18
 19
-20</pre>
+20
+21</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'src/server/api/containers/service/properties.rb', line 10</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/service/:service_name/properties/network</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
-
-  <span class='id identifier rubyid_service'>service</span> <span class='op'>=</span> <span class='id identifier rubyid_get_service'>get_service</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:service_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_p_params'>p_params</span> <span class='op'>=</span> <span class='id identifier rubyid_post_params'>post_params</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_p_params'>p_params</span><span class='lbracket'>[</span><span class='symbol'>:service_name</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:service_name</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_service'>service</span> <span class='op'>=</span> <span class='id identifier rubyid_get_service'>get_service</span><span class='lparen'>(</span><span class='id identifier rubyid_p_params'>p_params</span><span class='lbracket'>[</span><span class='symbol'>:service_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_p'>p</span> <span class='symbol'>:LOADED</span>
-  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_service'>service</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:service_name</span><span class='rbracket'>]</span><span class='comma'>,</span>  <span class='symbol'>:all</span><span class='rparen'>)</span> 
+  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_service'>service</span><span class='comma'>,</span> <span class='id identifier rubyid_p_params'>p_params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_p_params'>p_params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:service_name</span><span class='rbracket'>]</span><span class='comma'>,</span>  <span class='symbol'>:all</span><span class='rparen'>)</span> 
   <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_set_container_network_properties'>set_container_network_properties</span><span class='lparen'>(</span><span class='id identifier rubyid_service'>service</span><span class='comma'>,</span> <span class='id identifier rubyid_cparams'>cparams</span><span class='rparen'>)</span>
 
   <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_cparams'>cparams</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
@@ -15184,22 +15390,26 @@ service</p>
       <pre class="lines">
 
 
-27
 28
 29
 30
 31
 32
 33
-34</pre>
+34
+35
+36
+37</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/containers/service/properties.rb', line 27</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/containers/service/properties.rb', line 28</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/service/:service_name/properties/runtime</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
-  <span class='id identifier rubyid_service'>service</span> <span class='op'>=</span> <span class='id identifier rubyid_get_service'>get_service</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:service_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_service'>service</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:service_name</span><span class='rbracket'>]</span><span class='comma'>,</span>  <span class='symbol'>:all</span><span class='rparen'>)</span> 
+  <span class='id identifier rubyid_p_params'>p_params</span> <span class='op'>=</span> <span class='id identifier rubyid_post_params'>post_params</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_p_params'>p_params</span><span class='lbracket'>[</span><span class='symbol'>:service_name</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:service_name</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_service'>service</span> <span class='op'>=</span> <span class='id identifier rubyid_get_service'>get_service</span><span class='lparen'>(</span><span class='id identifier rubyid_p_params'>p_params</span><span class='lbracket'>[</span><span class='symbol'>:service_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_service'>service</span><span class='comma'>,</span> <span class='id identifier rubyid_p_params'>p_params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_p_params'>p_params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:service_name</span><span class='rbracket'>]</span><span class='comma'>,</span>  <span class='symbol'>:all</span><span class='rparen'>)</span> 
   <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span>   <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_set_container_runtime_properties'>set_container_runtime_properties</span><span class='lparen'>(</span><span class='id identifier rubyid_service'>service</span><span class='comma'>,</span> <span class='id identifier rubyid_cparams'>cparams</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_r'>r</span><span class='comma'>,</span> <span class='id identifier rubyid_cparams'>cparams</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
@@ -15280,13 +15490,15 @@ service</p>
 29
 30
 31
-32</pre>
+32
+33</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'src/server/api/system/control/base_os.rb', line 22</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/control/base_os/shutdown</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
-  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span>  <span class='lbracket'>[</span><span class='symbol'>:reason</span><span class='rbracket'>]</span><span class='rparen'>)</span> 
+  <span class='id identifier rubyid_p_params'>p_params</span> <span class='op'>=</span> <span class='id identifier rubyid_post_params'>post_params</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_p_params'>p_params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span>  <span class='lbracket'>[</span><span class='symbol'>:reason</span><span class='rbracket'>]</span><span class='rparen'>)</span> 
   <span class='id identifier rubyid_shutdown'>shutdown</span> <span class='op'>=</span> <span class='id identifier rubyid_cparams'>cparams</span><span class='lbracket'>[</span><span class='symbol'>:reason</span><span class='rbracket'>]</span> <span class='comment'>#symbolize_keys(params)
 </span>    <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_shutdown'>shutdown</span><span class='lparen'>(</span><span class='id identifier rubyid_shutdown'>shutdown</span><span class='rparen'>)</span>
   <span class='kw'>unless</span> <span class='id identifier rubyid_r'>r</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
@@ -15833,7 +16045,6 @@ service</p>
       <pre class="lines">
 
 
-37
 38
 39
 40
@@ -15841,10 +16052,11 @@ service</p>
 42
 43
 44
-45</pre>
+45
+46</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/api/system/control/base_os.rb', line 37</span>
+      <pre class="code"><span class="info file"># File 'src/server/api/system/control/base_os.rb', line 38</span>
 
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/control/base_os/update</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_system_update'>system_update</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_system_update'>system_update</span>
@@ -16373,12 +16585,14 @@ EnginesError &gt; an error occurred</code></pre>
 31
 32
 33
-34</pre>
+34
+35</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'src/server/api/system/keys/user.rb', line 24</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/system/keys/user/:user_name</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_params'>params</span> <span class='op'>=</span> <span class='id identifier rubyid_post_params'>post_params</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_cparams'>cparams</span> <span class='op'>=</span>  <span class='const'>Utils</span><span class='op'>::</span><span class='const'>Params</span><span class='period'>.</span><span class='id identifier rubyid_assemble_params'>assemble_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='lbracket'>[</span><span class='symbol'>:user_name</span><span class='rbracket'>]</span><span class='comma'>,</span>  <span class='symbol'>:public_key</span><span class='rparen'>)</span> 
   <span class='id identifier rubyid_update_key'>update_key</span> <span class='op'>=</span> <span class='id identifier rubyid_cparams'>cparams</span><span class='lbracket'>[</span><span class='symbol'>:public_key</span><span class='rbracket'>]</span> <span class='comment'>#symbolize_keys(params)
 </span>    <span class='id identifier rubyid_r'>r</span> <span class='op'>=</span> <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_update_public_key'>update_public_key</span><span class='lparen'>(</span><span class='id identifier rubyid_update_key'>update_key</span><span class='rparen'>)</span>
@@ -16399,7 +16613,7 @@ EnginesError &gt; an error occurred</code></pre>
 </div>
 
     <div id="footer">
-  Generated on Mon Jun  6 17:03:36 2016 by
+  Generated on Mon Jun 20 16:43:39 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.3).
 </div>
