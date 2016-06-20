@@ -31,6 +31,7 @@ module DockerContainerStatus
     res = JSON.parse(result[:stdout], :create_additions => true)
     return res #SystemUtils.deal_with_jason(res)
   rescue StandardError => e
+    STDERR.puts(' inspect by name ex ' +container.container_name + ':' + result.to_s )
     log_exception(e,container.container_name + result[:stdout].to_s)
 
   end
