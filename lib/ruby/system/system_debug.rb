@@ -26,7 +26,7 @@ class SystemDebug
     @@debug_flags = 0
     require '/opt/engines/etc/debug/debug_flags.rb'
   else
-    @@debug_flags = @@builder | @@container_events|  @@server |@@templater| @@services | @@export_import |@@builder|@@execute|@@engine_tasks | @@containers
+    @@debug_flags = @@builder | @@container_events|  @@server |@@templater| @@services | @@export_import |@@builder|@@execute|@@engine_tasks | @@orphans
   end
   #end
   #
