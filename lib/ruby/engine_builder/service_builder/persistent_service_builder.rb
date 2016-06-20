@@ -33,6 +33,7 @@ module PersistantServiceBuilder
     elsif @core_api.match_orphan_service(service_hash) == true #auto orphan pick up
       service_hash = use_orphan(service_hash)
       @first_build = false
+      SystemDebug.debug(SystemDebug.builder, ' use orphan ', service_hash)
     elsif @core_api.service_is_registered?(service_hash) == false
       @first_build = true
       service_hash[:fresh] = true
