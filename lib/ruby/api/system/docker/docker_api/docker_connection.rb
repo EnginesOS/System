@@ -128,12 +128,10 @@ def destroy_container(container)
     log_exception(e)
  end
 def make_post_request(uri, container)
-  STDERR.puts('RESQUEST ' + uri.to_s)
   req = Net::HTTP::Post.new(uri)
   perform_request(req, container)
 end 
   def make_request(uri, container)
-    STDERR.puts('RESQUEST ' + uri.to_s)
     req = Net::HTTP::Get.new(uri)
     perform_request(req, container)
   end
@@ -171,7 +169,38 @@ def make_del_request(uri, container)
   rescue StandardError => e
     log_exception(e,@chunk)
   end
+  
+  
+  def pull_image(container)
+    unless @repository.nil? || @repository == ''
+      image_name = @repository + '/' + container.image_name
+    else
+      image_name = container.image_name
+    end
+    #    return @container_api.pull_image(image) if image.include?('/')
+    request = '/images/?' + image_name
+    r = make_request(request, container)
+    STDERR.puts(' pull result ' + r.to_s + ' from ' + request)
+    return true
+  end
 
+def  image_exist?(container)
+  request = '/images/' + container.image_name + '/json'
+     r =  make_request(request, container)
+     return true if r.is_a?(Hash) && r.key?('id')
+     STDERR.puts(' image_exist? res ' + r.to_s )
+     return  false
+   rescue StandardError => e
+     log_exception(e)
+  end
+  
+def destroy_container(container)
+      request = '/images/' + container.image_name
+    return make_del_request(request, container)
+  rescue StandardError => e
+    log_exception(e)
+ end
+  
   private
 
   def docker_socket
@@ -192,7 +221,7 @@ def make_del_request(uri, container)
   rescue StandardError => e
     log_exception(e)
   end
-  
+
   #now in sep module
 #def log_warn_mesg(mesg,*objs)
 #  return EnginesDockerApiError.new(e.to_s,:warning)
