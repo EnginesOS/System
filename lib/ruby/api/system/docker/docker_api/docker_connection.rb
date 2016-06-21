@@ -75,6 +75,18 @@ class DockerConnection < ErrorsApi
     log_exception(e)
   end
 
+  def container_exists?(container)
+    if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
+          # return inspect_container_by_name(container)
+          return EnginesDockerApiError.new('Missing Container id', :warning)
+        else
+          request = '/containers/' + container.container_id.to_s + '/json'
+        end
+        r = make_request(request, container)
+        STDERR.puts('container_exists ' + r.to_s)
+        return true if r.is_a?(Hash)
+        return false
+  end
   def stop_container(container)
     if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
          return EnginesDockerApiError.new('Missing Container id', :warning)

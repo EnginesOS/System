@@ -63,7 +63,7 @@ module DockerContainerActions
 #    unless run_docker_cmd(commandargs, container)
 #      log_error_mesg(container.last_error, container)
     @docker_comms.destroy_container(container)
-      return false if image_exist?(container.image)
+      return false if @docker_comms.container_exist?(container)
     #end
     clean_up_dangling_images
     return true
