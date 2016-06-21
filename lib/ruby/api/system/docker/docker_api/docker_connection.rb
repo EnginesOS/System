@@ -75,7 +75,7 @@ class DockerConnection < ErrorsApi
     log_exception(e)
   end
 
-  def container_exists?(container)
+  def container_exist?(container)
     if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
           # return inspect_container_by_name(container)
           return EnginesDockerApiError.new('Missing Container id', :warning)
