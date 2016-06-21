@@ -172,11 +172,12 @@ def make_del_request(uri, container)
   
   
   def pull_image(container)
-    unless @repository.nil? || @repository == ''
-      image_name = @repository + '/' + container.image_name
-    else
-      image_name = container.image_name
-    end
+#    unless @repository.nil? || @repository == ''
+#      image_name = @repository + '/' + container.image
+#    else
+#      image_name = container.image
+#    end
+    image_name = container.image
     #    return @container_api.pull_image(image) if image.include?('/')
     request = '/images/?' + image_name
     r = make_request(request, container)
@@ -185,7 +186,7 @@ def make_del_request(uri, container)
   end
 
 def  image_exist?(container)
-  request = '/images/' + container.image_name + '/json'
+  request = '/images/' + container.image + '/json'
      r =  make_request(request, container)
      return true if r.is_a?(Hash) && r.key?('id')
      STDERR.puts(' image_exist? res ' + r.to_s )
@@ -194,8 +195,8 @@ def  image_exist?(container)
      log_exception(e)
   end
   
-def destroy_container(container)
-      request = '/images/' + container.image_name
+def delete_container_image(container)
+      request = '/images/' + container.image
     return make_del_request(request, container)
   rescue StandardError => e
     log_exception(e)
