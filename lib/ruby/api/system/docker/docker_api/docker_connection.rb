@@ -86,6 +86,8 @@ class DockerConnection < ErrorsApi
         STDERR.puts('container_exists ' + r.to_s)
         return true if r.is_a?(Hash)
         return false
+    rescue StandardError => e
+    return false
   end
   def stop_container(container)
     if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
