@@ -178,8 +178,9 @@ class DockerConnection < ErrorsApi
     unless params.nil?
     initheader = {'Content-Type' =>'application/json'}
       req = Net::HTTP::Post.new(uri, initheader)
+      STDERR.puts('REQUEST ' + uri.to_s + '::' + req.body.to_s )
       req.body = params.to_json
-      STDERR.puts('REQUEST' + req.to_s)
+      STDERR.puts('REQUEST ' + req.body.to_s )
     else
       req = Net::HTTP::Post.new(uri)
     end
@@ -208,8 +209,9 @@ class DockerConnection < ErrorsApi
       clear_cid(container) if ! container.nil? && resp.read_body.start_with?('no such id: ')
       return log_error_mesg("no  such id response from docker", resp, resp.read_body)
     end
+    return true if resp.code  == '204' # nodata but all good
     STDERR.puts(' RESPOSE ' + resp.code.to_s + ' is a ' + resp.code.class.name )
-    return log_error_mesg("no OK response from docker", resp, resp.read_body)   unless resp.code  == '200'
+    return log_error_mesg("no OK response from docker", resp, resp.read_body)   unless resp.code  == '200' 
     @chunk = resp.read_body
     #     while @hashes.count > 0
     #        @hashes.delete_at(0)
