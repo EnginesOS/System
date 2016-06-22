@@ -6,12 +6,12 @@ class DockerConnection < ErrorsApi
 
   require_relative 'docker_api_errors.rb'
   include EnginesDockerApiErrors
-  
+
   attr_accessor :response_parser
 
   def initialize
     @response_parser = Yajl::Parser.new
-   
+
     #socket = UNIXSocket.new('/var/run/docker.sock')
 
     @docker_socket = docker_socket
@@ -35,7 +35,7 @@ class DockerConnection < ErrorsApi
       end
     end
     return -1
-  rescue StandardError => e    
+  rescue StandardError => e
     log_exception(e)
   end
 
@@ -77,51 +77,55 @@ class DockerConnection < ErrorsApi
 
   def container_exist?(container)
     if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
-          # return inspect_container_by_name(container)
-          return EnginesDockerApiError.new('Missing Container id', :warning)
-        else
-          request = '/containers/' + container.container_id.to_s + '/json'
-        end
-        r = make_request(request, container)
-        STDERR.puts('container_exists ' + r.to_s)
-        return true if r.is_a?(Hash)
-        return false
-    rescue StandardError => e
+      # return inspect_container_by_name(container)
+      return EnginesDockerApiError.new('Missing Container id', :warning)
+    else
+      request = '/containers/' + container.container_id.to_s + '/json'
+    end
+    r = make_request(request, container)
+    STDERR.puts('container_exists ' + r.to_s)
+    return true if r.is_a?(Hash)
+    return false
+  rescue StandardError => e
     return false
   end
+
   def stop_container(container)
     if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
-         return EnginesDockerApiError.new('Missing Container id', :warning)
-      else
-        request = '/containers/' + container.container_id.to_s + '/stop'
-      end
-      return make_post_request(request, container)
-    rescue StandardError => e
-      log_exception(e)
+      return EnginesDockerApiError.new('Missing Container id', :warning)
+    else
+      request = '/containers/' + container.container_id.to_s + '/stop'
+    end
+    return make_post_request(request, container)
+  rescue StandardError => e
+    log_exception(e)
   end
-def start_container(container)
-  if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
-           return EnginesDockerApiError.new('Missing Container id', :warning)
+
+  def start_container(container)
+    if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
+      return EnginesDockerApiError.new('Missing Container id', :warning)
     else
       request = '/containers/' + container.container_id.to_s + '/start'
     end
     return make_post_request(request, container)
   rescue StandardError => e
     log_exception(e)
- end
-def pause_container(container)
-  if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
-           return EnginesDockerApiError.new('Missing Container id', :warning)
+  end
+
+  def pause_container(container)
+    if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
+      return EnginesDockerApiError.new('Missing Container id', :warning)
     else
       request = '/containers/' + container.container_id.to_s + '/pause'
     end
     return make_post_request(request, container)
   rescue StandardError => e
     log_exception(e)
- end
-def unpause_container(container)
-  if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
-           return EnginesDockerApiError.new('Missing Container id', :warning)
+  end
+
+  def unpause_container(container)
+    if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
+      return EnginesDockerApiError.new('Missing Container id', :warning)
     else
       request = '/containers/' + container.container_id.to_s + '/unpause'
     end
@@ -129,31 +133,34 @@ def unpause_container(container)
   rescue StandardError => e
     log_exception(e)
 
- end
- 
-def destroy_container(container)
-  if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
-           return EnginesDockerApiError.new('Missing Container id', :warning)
+  end
+
+  def destroy_container(container)
+    if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
+      return EnginesDockerApiError.new('Missing Container id', :warning)
     else
-      request = '/containers/' + container.container_id.to_s 
+      request = '/containers/' + container.container_id.to_s
     end
     return make_del_request(request, container)
   rescue StandardError => e
     log_exception(e)
- end
-def make_post_request(uri, container)
-  req = Net::HTTP::Post.new(uri)
-  perform_request(req, container)
-end 
+  end
+
+  def make_post_request(uri, container)
+    req = Net::HTTP::Post.new(uri)
+    perform_request(req, container)
+  end
+
   def make_request(uri, container)
     req = Net::HTTP::Get.new(uri)
     perform_request(req, container)
   end
-def make_del_request(uri, container)
+
+  def make_del_request(uri, container)
     req = Net::HTTP::Delete.new(uri)
     perform_request(req, container)
-  end  
-  
+  end
+
   def  perform_request(req, container)
     resp = docker_socket.request(req)
     #FIXMe check the value of resp.code
@@ -161,21 +168,21 @@ def make_del_request(uri, container)
     #  puts resp.code       # => '200'
     #   puts resp.message    # => 'OK'
     #  SystemDebug.debug(SystemDebug.docker, 'resp  ' ,resp, ' from ', uri)
-    if  resp.code  == '404' 
+    if  resp.code  == '404'
       clear_cid(container) if resp.read_body.start_with?('no such id: ')
       return log_error_mesg("no  such id response from docker", resp, resp.read_body)
     end
     return log_error_mesg("no OK response from docker", resp, resp.read_body)   unless resp.code  == '200'
     @chunk = resp.read_body
-#     while @hashes.count > 0
-#        @hashes.delete_at(0)
-#      end
+    #     while @hashes.count > 0
+    #        @hashes.delete_at(0)
+    #      end
     hashes = []
     @chunk.gsub!(/\\\"/,'')
     #SystemDebug.debug(SystemDebug.docker, 'chunk',chunk)
     return clear_cid(container) if @chunk.start_with?('no such id: ')
     response_parser.parse(@chunk) do |hash |
-     hashes.push(hash)     
+      hashes.push(hash)
     end
 
     #   hashes[1] is a timestamp
@@ -183,15 +190,14 @@ def make_del_request(uri, container)
   rescue StandardError => e
     log_exception(e,@chunk)
   end
-  
-  
+
   def pull_image(container)
-#    unless @repository.nil? || @repository == ''
-#      image_name = @repository + '/' + container.image
-#    else
-#      image_name = container.image
-#    end
-   # image_name = container.image
+    #    unless @repository.nil? || @repository == ''
+    #      image_name = @repository + '/' + container.image
+    #    else
+    #      image_name = container.image
+    #    end
+    # image_name = container.image
     #    return @container_api.pull_image(image) if image.include?('/')
     request = '/images/?fromImage=' + container.image
     r = make_post_request(request, container)
@@ -199,35 +205,35 @@ def make_del_request(uri, container)
     return true
   end
 
-def  image_exist?(container)
-  request = '/images/' + container.image + '/json'
-     r =  make_request(request, container)
-     return true if r.is_a?(Hash) && r.key?('id')
-     STDERR.puts(' image_exist? res ' + r.to_s )
-     return  false
-   rescue StandardError => e
-     log_exception(e)
+  def  image_exist?(container)
+    request = '/images/' + container.image + '/json'
+    r =  make_request(request, container)
+    return true if r.is_a?(Hash) && r.key?('id')
+    STDERR.puts(' image_exist? res ' + r.to_s )
+    return  false
+  rescue StandardError => e
+    log_exception(e)
   end
-  
-def delete_container_image(container)
-      request = '/images/' + container.image
+
+  def delete_container_image(container)
+    request = '/images/' + container.image
     return make_del_request(request, container)
   rescue StandardError => e
     log_exception(e)
- end
-  
+  end
+
   private
 
   def docker_socket
     return @docker_socket unless @docker_socket.nil?
     @docker_socket = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
-        @docker_socket.continue_timeout = 60
-        @docker_socket.read_timeout = 60
-        return @docker_socket
-    rescue StandardError => e
-       log_exception(e,'Error opening unix:///var/run/docker.sock')
+    @docker_socket.continue_timeout = 60
+    @docker_socket.read_timeout = 60
+    return @docker_socket
+  rescue StandardError => e
+    log_exception(e,'Error opening unix:///var/run/docker.sock')
   end
-  
+
   def clear_cid(container)
     SystemDebug.debug(SystemDebug.docker, '++++++++++++++++++++++++++Cleared Cid')
 
@@ -238,17 +244,17 @@ def delete_container_image(container)
   end
 
   #now in sep module
-#def log_warn_mesg(mesg,*objs)
-#  return EnginesDockerApiError.new(e.to_s,:warning)
-#end
-#
-#  def log_error_mesg(mesg,*objs)
-#    super
-#    return EnginesDockerApiError.new(e.to_s,:failure)
-#  end
-#  
-#  def log_exception(e,*objs)
-#    super
-#    return EnginesDockerApiError.new(e.to_s,:exception)
-#  end
+  #def log_warn_mesg(mesg,*objs)
+  #  return EnginesDockerApiError.new(e.to_s,:warning)
+  #end
+  #
+  #  def log_error_mesg(mesg,*objs)
+  #    super
+  #    return EnginesDockerApiError.new(e.to_s,:failure)
+  #  end
+  #
+  #  def log_exception(e,*objs)
+  #    super
+  #    return EnginesDockerApiError.new(e.to_s,:exception)
+  #  end
 end
