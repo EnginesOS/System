@@ -191,7 +191,9 @@ class DockerConnection < ErrorsApi
       req = Net::HTTP::Post.new(uri)
     end
     
-    perform_request(req, container)
+    perform_request(req, container) 
+  rescue StandardError => e
+    log_exception(e)
   end
 
   def make_request(uri, container)
