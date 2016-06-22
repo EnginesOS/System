@@ -50,13 +50,8 @@ class DockerConnection < ErrorsApi
 
   def inspect_container_by_name(container)
 
-       # container.set_cont_id if container.container_id.to_s == '-1' || container.container_id.nil?
-       if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
-         # return inspect_container_by_name(container)
-         return EnginesDockerApiError.new('Missing Container id', :warning)
-       else
+       # container.set_cont_id if container.container_id.to_s == '-1' || container.container_id.nil?      
          request = '/containers/' + container.container_name.to_s + '/json'
-       end
        return make_request(request, container)
      rescue StandardError => e
        log_exception(e)
