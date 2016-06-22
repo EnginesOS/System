@@ -128,7 +128,9 @@ class DockerConnection < ErrorsApi
     if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
       return EnginesDockerApiError.new('Missing Container id', :warning)
     else
-      request = '/containers/' + container.container_id.to_s + '/stop'
+      stop_timeout = 25 
+      stop_timeout = container.stop_timeout unless container.stop_timeout.nil?
+      request = '/containers/' + container.container_id.to_s + '/stop?t=' + stop_timeout
     end
     return make_post_request(request, container)
   rescue StandardError => e

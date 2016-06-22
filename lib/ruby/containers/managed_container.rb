@@ -110,7 +110,8 @@ class ManagedContainer < Container
   :domain_name,\
   :ctype,
   :conf_self_start,
-  :large_temp
+  :large_temp,
+  :stop_timeout
 
   def engine_name
     @container_name
