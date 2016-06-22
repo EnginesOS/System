@@ -24,10 +24,11 @@ class DockerConnection < ErrorsApi
     request_params[ "DetachKeys"] =  "ctrl-p,ctrl-q"
     request_params["Tty"] =  false
     request_params[ "Cmd"] =  [ command ]
-    request = 
+    request = '/containers/'  + container.container_id + '/exec'
     r = make_post_request(request, container, request_params)    
      STDERR.puts ('DOCKER EXEC ' + r.to_s + ': for :' + container.container_name + ': with :' + request_params.to_s)
     rescue StandardError => e
+    STDERR.puts ('DOCKER EXECep  ' + container.container_name + ': with :' + request_params.to_s)
       log_exception(e) 
   end
 
