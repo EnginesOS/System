@@ -6,13 +6,13 @@ class VolumeService < ManagedService
   end
 
   def rm_consumer_from_service (service_hash)
-    return  rm_volume(service_hash)
+    return rm_volume(service_hash)
   end
 
   def add_volume(service_hash)
-    dest = SystemConfig.LocalFSVolHome() + '/' + service_hash[:parent_engine]   
+    dest = SystemConfig.LocalFSVolHome() + '/' + service_hash[:parent_engine]
     make_fs_root_dir(dest)  unless Dir.exist?(dest)
-    
+
     dest +=  '/' + service_hash[:service_handle]
     dest = service_hash[:variables][:volume_src]
     FileUtils.mkdir_p(dest) unless Dir.exist?(dest)
@@ -35,13 +35,14 @@ class VolumeService < ManagedService
   def reregister_consumers
 
   end
-  
-  private 
+
+  private
+
   def make_fs_root_dir(dest)
-    
-         FileUtils.mkdir_p(dest)
-         FileUtils.chmod('ug=wrx,o=rx',dest)
-         FileUtils.chown(nil,22020,dest)
-      
+
+    FileUtils.mkdir_p(dest)
+    FileUtils.chmod('ug=wrx,o=rx',dest)
+    FileUtils.chown(nil,22020,dest)
+
   end
 end
