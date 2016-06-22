@@ -356,7 +356,7 @@ class BluePrintReader
       # FIXME: when public ports supported
       SystemDebug.debug(SystemDebug.builder, 'Port ' + portnum.to_s + ':' + external.to_s)
      # @mapped_ports.push(WorkPort.work_port_hash(name, portnum, external, false, type))
-        @mapped_ports[:port_name] = WorkPort.work_port_hash(name, portnum, external, false, type)
+        @mapped_ports[name] = WorkPort.work_port_hash(name, portnum, external, false, type)
     end 
     return true
   rescue StandardError => e
