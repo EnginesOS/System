@@ -9,4 +9,9 @@ module DockerOperations
   def clean_up_dangling_images
     @docker_api.clean_up_dangling_images
   end
+  
+  def exec_in_container(container, commandline, log_error=false)
+    @docker_api.docker_exec(container, commandline, log_error)    
+  end
+  
 end
