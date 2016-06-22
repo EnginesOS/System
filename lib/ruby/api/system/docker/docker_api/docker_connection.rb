@@ -201,7 +201,7 @@ class DockerConnection < ErrorsApi
     #    return @container_api.pull_image(image) if image.include?('/')
     
     container.image_repo = 'registry-1.docker.io' if  container.image_repo.nil?
-    request = '/images/?fromImage=' + container.image
+    request = container.image_repo + '/images/?fromImage=' + container.image
     r = make_post_request(request, container)
     STDERR.puts(' pull result ' + r.to_s + ' from ' + request)
     return true
