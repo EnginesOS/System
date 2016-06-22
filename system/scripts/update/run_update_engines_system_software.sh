@@ -14,8 +14,8 @@ docker start registry
 sleep 15
 
 system_cont_id=`grep container_id /opt/engines/run/system_services/system/running.yaml |cut -f2 -d:`
-
-  /opt/engines/system/scripts/ssh/rotate_container_log.sh $system_cont_id
+echo "/opt/engines/system/scripts/ssh/rotate_container_log.sh $system_cont_id " >/tmp/clean.log
+  /opt/engines/system/scripts/ssh/rotate_container_log.sh $system_cont_id >/tmp/clean.log
 
 docker start system 
    
