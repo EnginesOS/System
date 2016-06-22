@@ -10,7 +10,6 @@ module DockerApiCreateOptions
     @top_level['ExposedPorts'] = exposed_ports(container)
     @top_level['HostConfig'] = host_config_options(container)
     return @top_level
-
   end
 
   def get_protocol_str(port)
