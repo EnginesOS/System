@@ -11,17 +11,29 @@ class DockerConnection < ErrorsApi
 
   def initialize
     @response_parser = Yajl::Parser.new
-
-    #socket = UNIXSocket.new('/var/run/docker.sock')
-
     @docker_socket = docker_socket
   rescue StandardError => e
     log_exception(e)
   end
+  
+  def docker_exec(container, command, log_error = true)
+    request_params = {}
+    request_params["AttachStdin"] = false
+    request_params[ "AttachStdout"] =  true
+    request_params[ "AttachStderr"] =  true
+    request_params[ "DetachKeys"] =  "ctrl-p,ctrl-q"
+    request_params["Tty"] =  false
+    request_params[ "Cmd"] =  [ command ]
+    request = 
+    r = make_post_request(request, container, request_params)    
+     STDERR.puts ('DOCKER EXEC ' + r.to_s + ': for :' + container.container_name + ': with :' + request_params.to_s)
+    rescue StandardError => e
+      log_exception(e) 
+  end
 
   def container_id_from_name(container)
     # request='/containers/json?son?all=false&name=/' + container.container_name
-    request='/containers/json' #?filter=Names=/' + container.container_name
+    request='/containers/' + container.container_name + '/json'
     containers_info = make_request(request, container)
     SystemDebug.debug(SystemDebug.containers, 'docker:container_id_from_name  ' ,container.container_name   )
     return -1 unless containers_info.is_a?(Array)
@@ -155,8 +167,9 @@ class DockerConnection < ErrorsApi
     log_exception(e)
   end
 
-  def make_post_request(uri, container)
-    req = Net::HTTP::Post.new(uri)
+  def make_post_request(uri, container, params = nil)
+    params = {} if params.nil?
+    req = Net::HTTP::Post.new(uri, params)
     perform_request(req, container)
   end
 
