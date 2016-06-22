@@ -25,16 +25,16 @@ class DockerConnection < ErrorsApi
     
     request_params = {}
     request_params["AttachStdin"] = false
-    request_params[ "AttachStdout"] =  true
-    request_params[ "AttachStderr"] =  true
+    request_params[ "AttachStdout"] =  false
+    request_params[ "AttachStderr"] =  false
     request_params[ "DetachKeys"] =  "ctrl-p,ctrl-q"
     request_params["Tty"] =  false
   #  request_params[ "Cmd"] =  commands.to_json
-      cmd = []
-        cmd[0] = 'ls'
-cmd[1] = '-la'
-cmd[2]='/'
- # request_params[ "Cmd"] =  ['ls','-la','/'].to_json
+#      cmd = []
+#        cmd[0] = 'ls'
+#cmd[1] = '-la'
+#cmd[2]='/'
+  request_params[ "Cmd"] =  ['ls','-la','/']
 request_params[ "Cmd"] = cmd
     request = '/containers/'  + container.container_id + '/exec'
     r = make_post_request(request, container, request_params.to_json)    
