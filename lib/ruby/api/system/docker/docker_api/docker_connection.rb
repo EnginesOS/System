@@ -194,7 +194,7 @@ def make_del_request(uri, container)
    # image_name = container.image
     #    return @container_api.pull_image(image) if image.include?('/')
     request = '/images/?fromImage=' + container.image
-    r = make_request(request, container)
+    r = make_post_request(request, container)
     STDERR.puts(' pull result ' + r.to_s + ' from ' + request)
     return true
   end
