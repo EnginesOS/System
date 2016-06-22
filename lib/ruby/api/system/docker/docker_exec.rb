@@ -28,7 +28,9 @@ def run_docker_cmd(cmdline, container, log_error = true)
 rescue StandardError => e
   log_exception(e)
 end
-
+def docker_exec(container, command, log_error = true)
+  @docker_comms.docker_exec(container, cmdline, log_error)
+end
 def docker_cmd_w(cmdline, container, log_error = true)
   @docker_comms.docker_exec(container, cmdline, log_error)
 #  result = SystemUtils.execute_command(cmdline)
