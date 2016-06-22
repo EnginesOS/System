@@ -15,7 +15,7 @@ sleep 15
 
 system_cont_id=`grep container_id /opt/engines/run/system_services/system/running.yaml |cut -f2 -d:`
 
-  /opt/engines/system/scripts/ssh/rotate_continer_log.sh $system_cont_id
+  /opt/engines/system/scripts/ssh/rotate_container_log.sh $system_cont_id
 
 docker start system 
    
