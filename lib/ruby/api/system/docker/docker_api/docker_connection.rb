@@ -177,8 +177,8 @@ class DockerConnection < ErrorsApi
   def make_post_request(uri, container, params = nil)
     unless params.nil?
     initheader = {'Content-Type' =>'application/json'}
-      req.body = params.to_json
       req = Net::HTTP::Post.new(uri, initheader)
+      req.body = params.to_json
     else
       req = Net::HTTP::Post.new(uri)
     end
