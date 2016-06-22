@@ -375,6 +375,7 @@ class DockerFileBuilder
       if n < 0
         wports += ' '
       end
+      STDERR.puts('mapping port ' + port.to_s)
       write_line('EXPOSE ' + port[:port].to_s)
       wports += port[:port].to_s + ' '
       n += 1
@@ -383,6 +384,7 @@ class DockerFileBuilder
       write_env('WorkerPorts', wports)
     end
   rescue Exception => e
+    STDERR.puts('mapped post ' + @blueprint_reader.mapped_ports.to_s)
     SystemUtils.log_exception(e)
   end
 
