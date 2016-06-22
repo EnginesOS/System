@@ -12,7 +12,7 @@ module DockerCmdOptions
     + environment_options.to_s + \
     ' --memory=' + container.memory.to_s + 'm ' + \
     volume_option + ' ' + \
-    port_options + \
+    port_options.to_s + \
     ' --cidfile ' + SystemConfig.CidDir + '/' + container.container_name + '.cid ' + \
     '--name ' + container.container_name + \
     '  ' + container.image + ' ' + \
