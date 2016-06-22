@@ -19,6 +19,6 @@ class DockerApi < ErrorsApi
   @docker_comms = DockerConnection.new
   end 
   def docker_exec(container, command, log_error = true)
-    @docker_comms.docker_exec(container, cmdline, log_error)
+    @docker_comms.docker_exec(container, command, log_error)
   end
 end
