@@ -27,6 +27,7 @@ module ServiceApiConsumers
       return log_error_mesg('Timeout on adding consumer to service ',cmd.to_s)
     end
     SystemDebug.debug(SystemDebug.services,  :add_consumer_to_service_res, result)
+    return result if result.is_a?(EnginesError)
     return true if result[:result] == 0
     log_error_mesg('Failed add_consumer_to_service',result)
   end
@@ -34,7 +35,7 @@ module ServiceApiConsumers
   def rm_consumer_from_service(c, service_hash)
 
 #    cmd = 'docker exec -u ' + c.cont_userid + ' ' + c.container_name + ' /home/rm_service.sh \'' + SystemUtils.hash_variables_as_json_str(service_hash) + '\''
-    cmd =  '/home/rm_service.sh \'' + SystemUtils.hash_variables_as_json_str(service_hash[:variables])  +'\''
+    cmd =  ['/home/rm_service.sh \'' , SystemUtils.hash_variables_as_json_str(service_hash[:variables])  +'\'']
     result = {}
     begin
       Timeout.timeout(@@consumer_timeout) do
