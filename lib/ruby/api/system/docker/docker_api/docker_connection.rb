@@ -17,18 +17,24 @@ class DockerConnection < ErrorsApi
   end
   
   def docker_exec(container, command, log_error = true)
+    if command.is_a?(Array)
+    commands = command 
+    else
+      commands = [command]
+  end
+    
     request_params = {}
     request_params["AttachStdin"] = false
     request_params[ "AttachStdout"] =  true
     request_params[ "AttachStderr"] =  true
     request_params[ "DetachKeys"] =  "ctrl-p,ctrl-q"
     request_params["Tty"] =  false
-    request_params[ "Cmd"] =  [ command ]
+    request_params[ "Cmd"] =  commands.to_json 
     request = '/containers/'  + container.container_id + '/exec'
     r = make_post_request(request, container, request_params)    
-     STDERR.puts ('DOCKER EXEC ' + r.to_s + ': for :' + container.container_name + ': with :' + request_params.to_s)
+     STDERR.puts('DOCKER EXEC ' + r.to_s + ': for :' + container.container_name + ': with :' + request_params.to_s)
     rescue StandardError => e
-    STDERR.puts ('DOCKER EXECep  ' + container.container_name + ': with :' + request_params.to_s)
+    STDERR.puts('DOCKER EXECep  ' + container.container_name + ': with :' + request_params.to_s)
       log_exception(e) 
   end
 
