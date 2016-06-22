@@ -49,17 +49,29 @@ class DockerConnection < ErrorsApi
   end
 
   def inspect_container_by_name(container)
-    id = container_id_from_name(container)
-    return EnginesDockerApiError.new('Missing Container id', :warning) if id == -1
-    request='/containers/' + id.to_s + '/json'
-    r =  make_request(request, container)
-    SystemDebug.debug(SystemDebug.containers,'inspect_container_by_name',container.container_name,r)
-    return r  if r.is_a?(EnginesError)
-    r = r[0] if r.is_a?(Array)
-    return EnginesDockerApiError.new('No Such Container', :warning) if r.key?('RepoTags') #No container by that name and it will return images by that name WTF
-    return r
-  rescue StandardError  => e
-    log_exception(e)
+
+       # container.set_cont_id if container.container_id.to_s == '-1' || container.container_id.nil?
+       if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
+         # return inspect_container_by_name(container)
+         return EnginesDockerApiError.new('Missing Container id', :warning)
+       else
+         request = '/containers/' + container.container_name.to_s + '/json'
+       end
+       return make_request(request, container)
+     rescue StandardError => e
+       log_exception(e)
+    
+#    id = container_id_from_name(container)
+#    return EnginesDockerApiError.new('Missing Container id', :warning) if id == -1
+#    request='/containers/' + id.to_s + '/json'
+#    r =  make_request(request, container)
+#    SystemDebug.debug(SystemDebug.containers,'inspect_container_by_name',container.container_name,r)
+#    return r  if r.is_a?(EnginesError)
+#    r = r[0] if r.is_a?(Array)
+#    return EnginesDockerApiError.new('No Such Container', :warning) if r.key?('RepoTags') #No container by that name and it will return images by that name WTF
+#    return r
+#  rescue StandardError  => e
+#    log_exception(e)
   end
 
   def inspect_container(container)
@@ -78,7 +90,9 @@ class DockerConnection < ErrorsApi
   def container_exist?(container)
     if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
       # return inspect_container_by_name(container)
-      return EnginesDockerApiError.new('Missing Container id', :warning)
+      r = @docker_comms.inspect_container_by_name(container)
+      return true if r.is_a?(Hash)
+         return false
     else
       request = '/containers/' + container.container_id.to_s + '/json'
     end
@@ -180,7 +194,7 @@ class DockerConnection < ErrorsApi
     hashes = []
     @chunk.gsub!(/\\\"/,'')
     #SystemDebug.debug(SystemDebug.docker, 'chunk',chunk)
-    return clear_cid(container) if @chunk.start_with?('no such id: ')
+    return clear_cid(container) if ! container.nil? && @chunk.start_with?('no such id: ')
     response_parser.parse(@chunk) do |hash |
       hashes.push(hash)
     end
@@ -226,7 +240,12 @@ class DockerConnection < ErrorsApi
   rescue StandardError => e
     log_exception(e)
   end
-
+    def delete_image(image_name)
+      request = '/images/' + image_name
+      return make_del_request(request, nil)
+    rescue StandardError => e
+      log_exception(e)
+    end
   private
 
   def docker_socket

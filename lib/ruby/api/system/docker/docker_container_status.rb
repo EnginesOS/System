@@ -26,10 +26,11 @@ module DockerContainerStatus
   end
 
   def inspect_container_by_name(container)
-    cmdline = 'docker inspect ' + container.container_name
-    result = SystemUtils.execute_command(cmdline)
-    res = JSON.parse(result[:stdout], :create_additions => true)
-    return res #SystemUtils.deal_with_jason(res)
+    @docker_comms.inspect_container_by_name(container)
+#    cmdline = 'docker inspect ' + container.container_name
+#    result = SystemUtils.execute_command(cmdline)
+#    res = JSON.parse(result[:stdout], :create_additions => true)
+#    return res #SystemUtils.deal_with_jason(res)
   rescue StandardError => e
     return log_error_mesg('No such Container ', container.container_name)          
   ## log_exception(e,'No such Container' + result[:stdout].to_s)
