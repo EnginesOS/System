@@ -179,6 +179,7 @@ class DockerConnection < ErrorsApi
     initheader = {'Content-Type' =>'application/json'}
       req = Net::HTTP::Post.new(uri, initheader)
       req.body = params.to_json
+      STDERR.puts('REQUEST' + req.to_s)
     else
       req = Net::HTTP::Post.new(uri)
     end
