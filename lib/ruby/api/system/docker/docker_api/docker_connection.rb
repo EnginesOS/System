@@ -55,7 +55,6 @@ class DockerConnection < ErrorsApi
       if info['Names'][0] == '/' + container.container_name
         SystemDebug.debug(SystemDebug.containers, 'MATCHED container_id_from_name  ' ,info['Names'][0],info['Id']    )
         id = info['Id']
-
         return id
       end
     end
