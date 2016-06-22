@@ -341,11 +341,18 @@ class BluePrintReader
     return true unless ports.is_a?(Array) # not an error just nada
     ports.each do |port|
       portnum = port[:port]
-      name = port[:name]
+        if port.key?(:name)
+          name = port[:name]
+        else
+          name = port[:port].to_s
+        end
+     
       external = port[:external]
       type = port[:protocol]
       type = 'tcp' if type.is_a?(String) == false || type.size == 0
       type = 'both' if type == 'TCP and UDP'
+      type.downcase!
+     
       # FIXME: when public ports supported
       SystemDebug.debug(SystemDebug.builder, 'Port ' + portnum.to_s + ':' + external.to_s)
      # @mapped_ports.push(WorkPort.work_port_hash(name, portnum, external, false, type))
