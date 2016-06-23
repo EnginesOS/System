@@ -101,10 +101,13 @@ class DockerConnection < ErrorsApi
     else
       dst = :stderr
     end
-    
+  STDERR.puts(' CONTENT ' + r.to_s)
     r = r[4..-1]
+    STDERR.puts(' R ' + r.to_s)
     size = r[0,3]
+STDERR.puts(' SIZE '  + size.to_s)
     length = size.unpack("N")
+STDERR.puts(' LENGTH '  + length.to_s)
     length = length[0]
     r = r[4..-1]
     STDERR.puts(' problem ' + r.to_s + ' has ' + r.length.to_s + ' bytes and length ' + length.to_s ) if r.length < length
