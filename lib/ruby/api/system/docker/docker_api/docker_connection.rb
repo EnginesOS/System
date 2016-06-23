@@ -404,7 +404,7 @@ class DockerConnection < ErrorsApi
     return @docker_socket unless @docker_socket.nil?
     #  @docker_socket = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
 
-    @docker_socket=  Net::HTTP.new('127.0.0.1', 2375)
+    @docker_socket=  Net::HTTP.new('172.17.0.1', 2375)
     @docker_socket.continue_timeout = 60
     @docker_socket.read_timeout = 60
     return @docker_socket
