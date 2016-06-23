@@ -37,8 +37,12 @@ class DockerConnection < ErrorsApi
   request_params[ "Cmd"] =  ['ls','-la','/']
 #request_params[ "Cmd"] = cmd
     request = '/containers/'  + container.container_id + '/exec'
-    r = make_post_request(request, container, request_params)    
+    r = make_post_request(request, container, request_params)        
      STDERR.puts('DOCKER EXEC ' + r.to_s + ': for :' + container.container_name + ': with :' + request_params.to_s)
+    
+     
+     
+       
     rescue StandardError => e
     STDERR.puts('DOCKER EXECep  ' + container.container_name + ': with :' + request_params.to_s)
       log_exception(e) 
@@ -224,7 +228,7 @@ class DockerConnection < ErrorsApi
     end
     return true if resp.code  == '204' # nodata but all good
     STDERR.puts(' RESPOSE ' + resp.code.to_s + ' is a ' + resp.code.class.name )
-    return log_error_mesg("no OK response from docker", resp, resp.read_body, resp.msg )   unless resp.code  == '200' 
+    return log_error_mesg("no OK response from docker", resp, resp.read_body, resp.msg )   unless resp.code  == '200' ||  resp.code  == '201' 
     @chunk = resp.read_body
     #     while @hashes.count > 0
     #        @hashes.delete_at(0)
