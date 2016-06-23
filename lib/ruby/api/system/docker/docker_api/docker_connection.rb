@@ -129,7 +129,7 @@ class DockerConnection < ErrorsApi
     else
       stop_timeout = 25 
       stop_timeout = container.stop_timeout unless container.stop_timeout.nil?
-      request = '/containers/' + container.container_id.to_s + '/stop?t=' + stop_timeout
+      request = '/containers/' + container.container_id.to_s + '/stop?t=' + stop_timeout.to_s
     end
     return make_post_request(request, container)
   rescue StandardError => e
