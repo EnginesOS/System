@@ -40,9 +40,16 @@ class DockerConnection < ErrorsApi
     r = make_post_request(request, container, request_params)        
      STDERR.puts('DOCKER EXEC ' + r.to_s + ': for :' + container.container_name + ': with :' + request_params.to_s)
     
+     return r unless r.is_a?(Hash)
      
-     
-       
+  exec_id = r['Id']
+  request_params = {}
+  request_params["Detach"] = false
+  request_params["Tty"] = false
+  request = '/exec/' + exec_id + '/start'
+  r = make_post_request(request, container, request_params)  
+          STDERR.puts('EXEC RESQU ' + r.to_s)
+          r
     rescue StandardError => e
     STDERR.puts('DOCKER EXECep  ' + container.container_name + ': with :' + request_params.to_s)
       log_exception(e) 
