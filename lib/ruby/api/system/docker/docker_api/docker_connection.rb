@@ -313,7 +313,7 @@ class DockerConnection < ErrorsApi
 rescue EOFError
     return r
   rescue StandardError => e
-   return log_exception(e,chunk) if tries > 2
+   return log_exception(e,r) if tries > 2
 
     tries += 1
     sleep 0.1
