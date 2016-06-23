@@ -279,11 +279,12 @@ class DockerConnection < ErrorsApi
     return true if resp.code  == '204' # nodata but all good
     STDERR.puts(' RESPOSE ' + resp.code.to_s )
     return log_error_mesg("no OK response from docker", resp, resp.read_body, resp.msg )   unless resp.code  == '200' ||  resp.code  == '201'
-    STDERR.puts(" CHUNK  " + resp.read_body.to_s + ' : ' + resp.msg )
+   # STDERR.puts(" CHUNK  " + resp.read_body.to_s + ' : ' + resp.msg )
     unless return_hash
       r = ''
       resp.read_body do |chunk|
               #hash = parser.parse(chunk) do |hash|
+        STDERR.puts(" CHUNK  " + chunk.to_s)
              r += chunk
               #end
             end
