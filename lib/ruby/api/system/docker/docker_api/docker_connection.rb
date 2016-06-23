@@ -44,9 +44,9 @@ class DockerConnection < ErrorsApi
   request = '/exec/' + exec_id + '/start'
   r = make_post_request(request, container, request_params, false)  
           STDERR.puts('EXEC RESQU ' + r.to_s)
-          h = []
+  h = {}
           h[:stdout] = r
-            h[:stderr] = ''
+          h[:stderr] = ''
             # FIX ME need to get correct error status and set :stderr if app
           h[:result] = 0
           h
