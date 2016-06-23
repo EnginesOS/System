@@ -29,12 +29,7 @@ class DockerConnection < ErrorsApi
     request_params[ "AttachStderr"] =  false
     request_params[ "DetachKeys"] =  "ctrl-p,ctrl-q"
     request_params["Tty"] =  false
-  #  request_params[ "Cmd"] =  commands.to_json
-#      cmd = []
-#        cmd[0] = 'ls'
-#cmd[1] = '-la'
-#cmd[2]='/'
-  request_params[ "Cmd"] =  ['ls','-la','/']
+    request_params[ "Cmd"] =  [ command ]
 #request_params[ "Cmd"] = cmd
     request = '/containers/'  + container.container_id.to_s + '/exec'
     r = make_post_request(request, container, request_params)        
@@ -224,22 +219,15 @@ class DockerConnection < ErrorsApi
 
   def  perform_request(req, container)
     resp = docker_socket.request(req)
-    #FIXMe check the value of resp.code
-    #    chunks = ''
-    #  puts resp.code       # => '200'
-    #   puts resp.message    # => 'OK'
-    #  SystemDebug.debug(SystemDebug.docker, 'resp  ' ,resp, ' from ', uri)
     if  resp.code  == '404'
       clear_cid(container) if ! container.nil? && resp.read_body.start_with?('no such id: ')
       return log_error_mesg("no  such id response from docker", resp, resp.read_body)
     end
     return true if resp.code  == '204' # nodata but all good
-    STDERR.puts(' RESPOSE ' + resp.code.to_s + ' is a ' + resp.code.class.name )
-    return log_error_mesg("no OK response from docker", resp, resp.read_body, resp.msg )   unless resp.code  == '200' ||  resp.code  == '201' 
+    STDERR.puts(' RESPOSE ' + resp.code.to_s )
+    return log_error_mesg("no OK response from docker", resp, resp.read_body, resp.msg )   unless resp.code  == '200' ||  resp.code  == '201'
+    STDERR.puts(" CHUNK  " + resp.read_body.to_s) 
     @chunk = resp.read_body
-    #     while @hashes.count > 0
-    #        @hashes.delete_at(0)
-    #      end
     hashes = []
     @chunk.gsub!(/\\\"/,'')
     #SystemDebug.debug(SystemDebug.docker, 'chunk',chunk)
