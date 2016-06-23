@@ -317,7 +317,7 @@ rescue EOFError
     return r
   rescue StandardError => e
    return log_exception(e,r) if tries > 2
-
+log_exception(e,r) 
     tries += 1
     sleep 0.1
     retry
