@@ -229,7 +229,7 @@ class DockerConnection < ErrorsApi
     STDERR.puts(" CHUNK  " + resp.read_body.to_s) 
     @chunk = resp.read_body
     hashes = []
-    @chunk.gsub!(/\\\"/,'')
+  #  @chunk.gsub!(/\\\"/,'')
     #SystemDebug.debug(SystemDebug.docker, 'chunk',chunk)
     return clear_cid(container) if ! container.nil? && @chunk.start_with?('no such id: ')
     response_parser.parse(@chunk) do |hash |
