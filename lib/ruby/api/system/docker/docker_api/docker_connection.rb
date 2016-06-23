@@ -42,9 +42,12 @@ class DockerConnection < ErrorsApi
   request_params["Detach"] = false
   request_params["Tty"] = false
   request = '/exec/' + exec_id + '/start'
-  r = make_post_request(request, container, request_params)  
+  r = make_post_request(request, container, request_params, false)  
           STDERR.puts('EXEC RESQU ' + r.to_s)
-          r
+          h = []
+          h[:stdout] = r
+          h[:result] = 0
+          h
     rescue StandardError => e
     STDERR.puts('DOCKER EXECep  ' + container.container_name + ': with :' + request_params.to_s)
       log_exception(e) 
@@ -217,7 +220,7 @@ class DockerConnection < ErrorsApi
     perform_request(req, container)
   end
 
-  def  perform_request(req, container)
+  def  perform_request(req, container, return_hash = true)
     resp = docker_socket.request(req)
     if  resp.code  == '404'
       clear_cid(container) if ! container.nil? && resp.read_body.start_with?('no such id: ')
@@ -226,8 +229,10 @@ class DockerConnection < ErrorsApi
     return true if resp.code  == '204' # nodata but all good
     STDERR.puts(' RESPOSE ' + resp.code.to_s )
     return log_error_mesg("no OK response from docker", resp, resp.read_body, resp.msg )   unless resp.code  == '200' ||  resp.code  == '201'
-    STDERR.puts(" CHUNK  " + resp.read_body.to_s + ' : ' + resp.msg ) 
+    STDERR.puts(" CHUNK  " + resp.read_body.to_s + ' : ' + resp.msg )
+    return  resp.read_body unless return_hash
     @chunk = resp.read_body
+    
     hashes = []
   #  @chunk.gsub!(/\\\"/,'')
     #SystemDebug.debug(SystemDebug.docker, 'chunk',chunk)
