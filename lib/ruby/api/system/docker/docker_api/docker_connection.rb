@@ -29,7 +29,7 @@ class DockerConnection < ErrorsApi
     request_params[ "AttachStderr"] =  false
     request_params[ "DetachKeys"] =  "ctrl-p,ctrl-q"
     request_params["Tty"] =  false
-    request_params[ "Cmd"] =  [ command ]
+    request_params[ "Cmd"] =  commands
 #request_params[ "Cmd"] = cmd
     request = '/containers/'  + container.container_id.to_s + '/exec'
     r = make_post_request(request, container, request_params)        
