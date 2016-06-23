@@ -302,16 +302,15 @@ class DockerConnection < ErrorsApi
   end
 
   def pull_image(container)
-    #    unless @repository.nil? || @repository == ''
-    #      image_name = @repository + '/' + container.image
-    #    else
-    #      image_name = container.image
-    #    end
-    # image_name = container.image
-    #    return @container_api.pull_image(image) if image.include?('/')
 
+    unless container.is_a?(String)
+    
     container.image_repo = 'registry.hub.docker.com' if  container.image_repo.nil?
-    request =  '/images/?fromImage=/' + container.image_repo  + '/' + container.image
+    request =  '/images/?fromImage=' + container.image_repo  + '/' + container.image
+    else
+      request =  '/images/?fromImage=' + container
+      container = nil
+    end
     STDERR.puts(' pull  ' + request.to_s)
     r = make_post_request(request, container)
     STDERR.puts(' pull result ' + r.to_s)
