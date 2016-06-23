@@ -91,9 +91,26 @@ class DockerConnection < ErrorsApi
     r = make_post_request(request, container, request_params, false , data)
 
     STDERR.puts('EXEC RESQU ' + r.to_s)
-    h = {}
-    h[:stdout] = r
-    h[:stderr] = ''
+  h = {}
+   h[:stdout] = ''
+   h[:stderr] = ''
+       
+   while r.count >0  
+    if r[0] == 1
+     dst = :stdout
+    else
+      dst = :stderr
+    end
+    
+    r = r[4..-1]
+    size = r[0,3]
+    length = size.unpack("N")
+    r = r[4..-1]
+    STDERR.puts(' problem ' + r.to_s + ' has ' + r.length.to_s + ' bytes and length ' + length.to_s ) if r.length < length
+    h[dst] += r[0..length-1]
+    r = r[length..-1]
+    end
+ 
     # FIXME need to get correct error status and set :stderr if app
     h[:result] = 0
     h
@@ -314,7 +331,7 @@ class DockerConnection < ErrorsApi
       #   hashes[1] is a timestamp
       return hashes[0]
 
-    rescue EOFError
+    rescue EOFError # also Bad file descriptor
       return r
     rescue StandardError => e
       return log_exception(e,r) if tries > 2
