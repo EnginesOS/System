@@ -95,7 +95,7 @@ class DockerConnection < ErrorsApi
    h[:stdout] = ''
    h[:stderr] = ''
        
-   while r.count >0  
+   while r.length >0  
     if r[0] == 1
      dst = :stdout
     else
