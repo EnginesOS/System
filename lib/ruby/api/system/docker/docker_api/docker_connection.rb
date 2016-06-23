@@ -271,7 +271,7 @@ class DockerConnection < ErrorsApi
 
   def  perform_request(req, container, return_hash = true)
     tries=0
-   
+    r = ''
     resp = docker_socket.request(req)
     if  resp.code  == '404'
       clear_cid(container) if ! container.nil? && resp.body.start_with?('no such id: ')
@@ -282,7 +282,7 @@ class DockerConnection < ErrorsApi
     return log_error_mesg("no OK response from docker", resp, resp.body, resp.msg )   unless resp.code  == '200' ||  resp.code  == '201'
     
 #    STDERR.puts(" CHUNK  " + resp.body.to_s + ' : ' + resp.msg )
-    r = true
+    
     unless return_hash == true
 #      begin
 #      r = ''
