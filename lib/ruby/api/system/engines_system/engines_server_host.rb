@@ -142,7 +142,9 @@ module EnginesServerHost
 
   def run_server_script(script_name , script_data=false)
 require '/opt/engines/lib/ruby/system/system_config.rb'
-    cmd = 'ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/' + script_name + ' engines@' + SystemStatus.get_base_host_ip + '  /opt/engines/system/scripts/ssh/' + script_name + '.sh'
+# FIxME
+# use SystemStatus.get_base_host_ip for IP 
+    cmd = 'ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/' + script_name + ' engines@' + ENV['control_ip'] + '  /opt/engines/system/scripts/ssh/' + script_name + '.sh'
     Timeout.timeout(@@server_script_timeout) do
       return SystemUtils.execute_command(cmd, false, script_data)
     end
