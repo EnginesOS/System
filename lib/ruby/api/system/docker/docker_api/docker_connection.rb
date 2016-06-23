@@ -280,9 +280,16 @@ class DockerConnection < ErrorsApi
     STDERR.puts(' RESPOSE ' + resp.code.to_s )
     return log_error_mesg("no OK response from docker", resp, resp.read_body, resp.msg )   unless resp.code  == '200' ||  resp.code  == '201'
     STDERR.puts(" CHUNK  " + resp.read_body.to_s + ' : ' + resp.msg )
-    return resp.read_body unless return_hash
+    unless return_hash
+      r = ''
+      resp.read_body do |chunk|
+              #hash = parser.parse(chunk) do |hash|
+             r += chunk
+              #end
+            end
+     return r
+    end
     chunk = resp.read_body
-
     hashes = []
     #  @chunk.gsub!(/\\\"/,'')
     #SystemDebug.debug(SystemDebug.docker, 'chunk',chunk)
