@@ -271,16 +271,18 @@ class DockerConnection < ErrorsApi
 
   def  perform_request(req, container, return_hash = true)
     tries=0
+   
     resp = docker_socket.request(req)
     if  resp.code  == '404'
-      clear_cid(container) if ! container.nil? && resp.read_body.start_with?('no such id: ')
-      return log_error_mesg("no such id response from docker", resp, resp.read_body)
+      clear_cid(container) if ! container.nil? && resp.body.start_with?('no such id: ')
+      return log_error_mesg("no such id response from docker", resp, resp.body)
     end
     return true if resp.code  == '204' # nodata but all good
     STDERR.puts(' RESPOSE ' + resp.code.to_s + ' : ' + resp.msg  )
-    return log_error_mesg("no OK response from docker", resp, resp.read_body, resp.msg )   unless resp.code  == '200' ||  resp.code  == '201'
+    return log_error_mesg("no OK response from docker", resp, resp.body, resp.msg )   unless resp.code  == '200' ||  resp.code  == '201'
     
-    STDERR.puts(" CHUNK  " + resp.read_body.to_s + ' : ' + resp.msg )
+    STDERR.puts(" CHUNK  " + resp.body.to_s + ' : ' + resp.msg )
+    r = true
     unless return_hash
 #      begin
 #      r = ''
@@ -296,7 +298,7 @@ class DockerConnection < ErrorsApi
 #      end 
       return resp.body
     end
-    chunk = resp.body
+    r = resp.body
     hashes = []
     #  @chunk.gsub!(/\\\"/,'')
     #SystemDebug.debug(SystemDebug.docker, 'chunk',chunk)
@@ -307,6 +309,8 @@ class DockerConnection < ErrorsApi
 
     #   hashes[1] is a timestamp
     return hashes[0]
+rescue EOFError
+    return r
   rescue StandardError => e
     log_exception(e,chunk) if tries > 2
 
