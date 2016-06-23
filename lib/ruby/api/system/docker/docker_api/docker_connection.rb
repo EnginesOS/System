@@ -240,7 +240,7 @@ class DockerConnection < ErrorsApi
   end
 
   def make_post_request(uri, container, params = nil, return_hash = true , data = nil)
-  
+
     unless params.nil?
       initheader = {'Content-Type' =>'application/json'}
       req = Net::HTTP::Post.new(uri, initheader)
@@ -275,62 +275,62 @@ class DockerConnection < ErrorsApi
   def  perform_request(req, container, return_hash = true)
     tries=0
     r = ''
-   begin
-    resp = docker_socket.request(req)
-    if  resp.code  == '404'
-      clear_cid(container) if ! container.nil? && resp.body.start_with?('no such id: ')
-      return log_error_mesg("no such id response from docker", resp, resp.body)
-    end
-    return true if resp.code  == '204' # nodata but all good
-    STDERR.puts(' RESPOSE ' + resp.code.to_s + ' : ' + resp.msg  )
-    return log_error_mesg("no OK response from docker", resp, resp.body, resp.msg )   unless resp.code  == '200' ||  resp.code  == '201'
-    
-#    STDERR.puts(" CHUNK  " + resp.body.to_s + ' : ' + resp.msg )
-    
-    unless return_hash == true
-#      begin
-#      r = ''
-#      resp.read_body do |chunk|
-#              #hash = parser.parse(chunk) do |hash|
-       STDERR.puts(" CHUNK  " + resp.body.to_s)
-#             r += chunk
-#              #end
-#            end
-#     return r
-#      rescue StandardError => e
-#        return r
-#      end 
-      return resp.body
-    end
-    r = resp.body
-    hashes = []
-    #  @chunk.gsub!(/\\\"/,'')
-    #SystemDebug.debug(SystemDebug.docker, 'chunk',chunk)
-    return clear_cid(container) if ! container.nil? && r.start_with?('no such id: ')
-    response_parser.parse(r) do |hash |
-      hashes.push(hash)
-    end
+    begin
+      resp = docker_socket.request(req)
+      if  resp.code  == '404'
+        clear_cid(container) if ! container.nil? && resp.body.start_with?('no such id: ')
+        return log_error_mesg("no such id response from docker", resp, resp.body)
+      end
+      return true if resp.code  == '204' # nodata but all good
+      STDERR.puts(' RESPOSE ' + resp.code.to_s + ' : ' + resp.msg  )
+      return log_error_mesg("no OK response from docker", resp, resp.body, resp.msg )   unless resp.code  == '200' ||  resp.code  == '201'
 
-    #   hashes[1] is a timestamp
-    return hashes[0]
-    
-rescue EOFError
-    return r
-  rescue StandardError => e
-   return log_exception(e,r) if tries > 2
-log_exception(e,r) 
-    tries += 1
-    sleep 0.1
-    retry
-end
+      #    STDERR.puts(" CHUNK  " + resp.body.to_s + ' : ' + resp.msg )
+
+      unless return_hash == true
+        #      begin
+        #      r = ''
+        #      resp.read_body do |chunk|
+        #              #hash = parser.parse(chunk) do |hash|
+        STDERR.puts(" CHUNK  " + resp.body.to_s)
+        #             r += chunk
+        #              #end
+        #            end
+        #     return r
+        #      rescue StandardError => e
+        #        return r
+        #      end
+        return resp.body
+      end
+      r = resp.body
+      hashes = []
+      #  @chunk.gsub!(/\\\"/,'')
+      #SystemDebug.debug(SystemDebug.docker, 'chunk',chunk)
+      return clear_cid(container) if ! container.nil? && r.start_with?('no such id: ')
+      response_parser.parse(r) do |hash |
+        hashes.push(hash)
+      end
+
+      #   hashes[1] is a timestamp
+      return hashes[0]
+
+    rescue EOFError
+      return r
+    rescue StandardError => e
+      return log_exception(e,r) if tries > 2
+      log_exception(e,r)
+      tries += 1
+      sleep 0.1
+      retry
+    end
   end
 
   def pull_image(container)
 
     unless container.is_a?(String)
-    
-    container.image_repo = 'registry.hub.docker.com' if  container.image_repo.nil?
-    request =  '/images/?fromImage=' + container.image_repo  + '/' + container.image
+
+      container.image_repo = 'registry.hub.docker.com' if  container.image_repo.nil?
+      request =  '/images/?fromImage=' + container.image_repo  + '/' + container.image
     else
       request =  '/images/?fromImage=' + container
       container = nil
