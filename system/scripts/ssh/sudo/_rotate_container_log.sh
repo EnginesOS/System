@@ -1,6 +1,6 @@
 #!/bin/bash
-src=/var/lib/docker/containers/$1/$1-json.log
-dest=/var/log/engines/raw/$1-json.last
+src=/var/lib/docker/containers/${1}/${1}-json.log
+dest=/var/log/engines/raw/${1}-json.last
 if test -f $dest
  then
  	rm $dest
