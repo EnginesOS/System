@@ -93,27 +93,27 @@ class DockerConnection < ErrorsApi
     STDERR.puts('EXEC RESQU ' + r.to_s)
   h = {}
    h[:stdout] = ''
-   h[:stderr] = ''
+   h[:stderr] =  r
        
-   while r.length >0  
-    if r[0] == 1
-     dst = :stdout
-    else
-      dst = :stderr
-    end
-  STDERR.puts(' CONTENT ' + r.to_s)
-    r = r[4..-1]
-    STDERR.puts(' R ' + r.to_s)
-    size = r[0,3]
-STDERR.puts(' SIZE '  + size.to_s)
-    length = size.unpack("N")
-STDERR.puts(' LENGTH '  + length.to_s)
-    length = length[0]
-    r = r[4..-1]
-    STDERR.puts(' problem ' + r.to_s + ' has ' + r.length.to_s + ' bytes and length ' + length.to_s ) if r.length < length
-    h[dst] += r[0..length-1]
-    r = r[length..-1]
-    end
+#   while r.length >0  
+#    if r[0] == 1
+#     dst = :stdout
+#    else
+#      dst = :stderr
+#    end
+#  STDERR.puts(' CONTENT ' + r.to_s)
+#    r = r[4..-1]
+#    STDERR.puts(' R ' + r.to_s)
+#    size = r[0,3]
+#STDERR.puts(' SIZE '  + size.to_s)
+#    length = size.unpack("N")
+#STDERR.puts(' LENGTH '  + length.to_s)
+#    length = length[0]
+#    r = r[4..-1]
+#    STDERR.puts(' problem ' + r.to_s + ' has ' + r.length.to_s + ' bytes and length ' + length.to_s ) if r.length < length
+#    h[dst] += r[0..length-1]
+#    r = r[length..-1]
+#    end
  
     # FIXME need to get correct error status and set :stderr if app
     h[:result] = 0
