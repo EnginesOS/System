@@ -51,8 +51,10 @@ module DockerContainerActions
 
   def signal_container_process(pid, signal, container)
     clear_error
-    commandargs = 'docker exec ' + container.container_name + ' kill -' + signal + ' ' + pid.to_s
-    execute_docker_cmd(commandargs, container)
+ #   commandargs = 'docker exec ' + container.container_name + ' kill -' + signal + ' ' + pid.to_s
+    cmds =['kill','-' + signal, pid]
+    #execute_docker_cmd(commandargs, container)
+    @docker_comms.docker_exec(container, cmds, false)
   rescue StandardError => e
     log_exception(e)
   end

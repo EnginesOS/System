@@ -15,44 +15,90 @@ class DockerConnection < ErrorsApi
   rescue StandardError => e
     log_exception(e)
   end
-  
-  def docker_exec(container, command, log_error = true)
+
+  class DataProducer
+    def initialize
+      @mutex = Mutex.new
+      @body = ''
+      @eof = false
+    end
+
+    def eof!()
+      @eof = true
+    end
+
+    def eof?()
+      @eof
+    end
+
+    def read(size)
+      @mutex.synchronize {
+        @body.slice!(0,size)
+      }
+    end
+
+    def produce(str)
+      if @body.empty? && @eof
+        nil
+      else
+        @mutex.synchronize { @body.slice!(0,size) }
+      end
+    end
+  end
+
+  def perform_data_request(req, container, return_hash, data)
+    producer = DataProducer.new
+#    req.content_type = "multipart/form-data; boundary=60079"
+#    req.content_length = data.length
+    req.body_stream = producer
+    t1 = Thread.new do
+          producer.produce(data)
+          producer.eof!
+        end
+    docker_socket.start {|http| http.request(req) }
+  end
+
+  def docker_exec(container, command, log_error = true, data=nil)
     if command.is_a?(Array)
-    commands = command 
+      commands = command
     else
       commands = [command]
-  end
-    
+    end
+
     request_params = {}
-    request_params["AttachStdin"] = false
+    if data.nil?
+      request_params["AttachStdin"] = false
+    else
+      request_params["AttachStdin"] = true
+    end
     request_params[ "AttachStdout"] =  false
     request_params[ "AttachStderr"] =  false
     request_params[ "DetachKeys"] =  "ctrl-p,ctrl-q"
     request_params["Tty"] =  false
     request_params[ "Cmd"] =  commands
-#request_params[ "Cmd"] = cmd
+    #request_params[ "Cmd"] = cmd
     request = '/containers/'  + container.container_id.to_s + '/exec'
-    r = make_post_request(request, container, request_params)        
-     STDERR.puts('DOCKER EXEC ' + r.to_s + ': for :' + container.container_name + ': with :' + request_params.to_s)
-    
-     return r unless r.is_a?(Hash)
-     
-  exec_id = r['Id']
-  request_params = {}
-  request_params["Detach"] = false
-  request_params["Tty"] = false
-  request = '/exec/' + exec_id + '/start'
-  r = make_post_request(request, container, request_params, false)  
-          STDERR.puts('EXEC RESQU ' + r.to_s)
-  h = {}
-          h[:stdout] = r
-          h[:stderr] = ''
-            # FIX ME need to get correct error status and set :stderr if app
-          h[:result] = 0
-          h
-    rescue StandardError => e
+    r = make_post_request(request, container, request_params)
+    STDERR.puts('DOCKER EXEC ' + r.to_s + ': for :' + container.container_name + ': with :' + request_params.to_s)
+
+    return r unless r.is_a?(Hash)
+
+    exec_id = r['Id']
+    request_params = {}
+    request_params["Detach"] = false
+    request_params["Tty"] = false
+    request = '/exec/' + exec_id + '/start'
+    r = make_post_data_request(request, container, request_params, false , data)
+    STDERR.puts('EXEC RESQU ' + r.to_s)
+    h = {}
+    h[:stdout] = r
+    h[:stderr] = ''
+    # FIXME need to get correct error status and set :stderr if app
+    h[:result] = 0
+    h
+  rescue StandardError => e
     STDERR.puts('DOCKER EXECep  ' + container.container_name + ': with :' + request_params.to_s)
-      log_exception(e) 
+    log_exception(e)
   end
 
   def container_id_from_name(container)
@@ -85,23 +131,23 @@ class DockerConnection < ErrorsApi
 
   def inspect_container_by_name(container)
 
-       # container.set_cont_id if container.container_id.to_s == '-1' || container.container_id.nil?      
-         request = '/containers/' + container.container_name.to_s + '/json'
-       return make_request(request, container)
-     rescue StandardError => e
-       log_exception(e)
-    
-#    id = container_id_from_name(container)
-#    return EnginesDockerApiError.new('Missing Container id', :warning) if id == -1
-#    request='/containers/' + id.to_s + '/json'
-#    r =  make_request(request, container)
-#    SystemDebug.debug(SystemDebug.containers,'inspect_container_by_name',container.container_name,r)
-#    return r  if r.is_a?(EnginesError)
-#    r = r[0] if r.is_a?(Array)
-#    return EnginesDockerApiError.new('No Such Container', :warning) if r.key?('RepoTags') #No container by that name and it will return images by that name WTF
-#    return r
-#  rescue StandardError  => e
-#    log_exception(e)
+    # container.set_cont_id if container.container_id.to_s == '-1' || container.container_id.nil?
+    request = '/containers/' + container.container_name.to_s + '/json'
+    return make_request(request, container)
+  rescue StandardError => e
+    log_exception(e)
+
+    #    id = container_id_from_name(container)
+    #    return EnginesDockerApiError.new('Missing Container id', :warning) if id == -1
+    #    request='/containers/' + id.to_s + '/json'
+    #    r =  make_request(request, container)
+    #    SystemDebug.debug(SystemDebug.containers,'inspect_container_by_name',container.container_name,r)
+    #    return r  if r.is_a?(EnginesError)
+    #    r = r[0] if r.is_a?(Array)
+    #    return EnginesDockerApiError.new('No Such Container', :warning) if r.key?('RepoTags') #No container by that name and it will return images by that name WTF
+    #    return r
+    #  rescue StandardError  => e
+    #    log_exception(e)
   end
 
   def inspect_container(container)
@@ -122,7 +168,7 @@ class DockerConnection < ErrorsApi
       # return inspect_container_by_name(container)
       r = @docker_comms.inspect_container_by_name(container)
       return true if r.is_a?(Hash)
-         return false
+      return false
     else
       request = '/containers/' + container.container_id.to_s + '/json'
     end
@@ -138,7 +184,7 @@ class DockerConnection < ErrorsApi
     if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
       return EnginesDockerApiError.new('Missing Container id', :warning)
     else
-      stop_timeout = 25 
+      stop_timeout = 25
       stop_timeout = container.stop_timeout unless container.stop_timeout.nil?
       request = '/containers/' + container.container_id.to_s + '/stop?t=' + stop_timeout.to_s
     end
@@ -192,22 +238,22 @@ class DockerConnection < ErrorsApi
     log_exception(e)
   end
 
-  def make_post_request(uri, container, params = nil, return_hash = true)
+  def make_post_request(uri, container, params = nil, return_hash = true , data = nil)
     unless params.nil?
-    initheader = {'Content-Type' =>'application/json'}
+      initheader = {'Content-Type' =>'application/json'}
       req = Net::HTTP::Post.new(uri, initheader)
       STDERR.puts('REQUEST ' + uri.to_s + '::' + req.body.to_s )
       req.body = params.to_json
 
-#      c.gsub!(/\\"/,'"')
-#      c.gsub!(/^"/,'')
-#      c.gsub!(/"$/,'')
+      #      c.gsub!(/\\"/,'"')
+      #      c.gsub!(/^"/,'')
+      #      c.gsub!(/"$/,'')
       STDERR.puts('REQUEST ' + req.body.to_s )
     else
       req = Net::HTTP::Post.new(uri)
     end
-    
-    perform_request(req, container, return_hash ) 
+    return perform_data_request(req, container, return_hash, data) unless data.nil?
+    perform_request(req, container, return_hash  )
   rescue StandardError => e
     log_exception(e)
   end
@@ -227,17 +273,17 @@ class DockerConnection < ErrorsApi
     resp = docker_socket.request(req)
     if  resp.code  == '404'
       clear_cid(container) if ! container.nil? && resp.read_body.start_with?('no such id: ')
-      return log_error_mesg("no  such id response from docker", resp, resp.read_body)
+      return log_error_mesg("no such id response from docker", resp, resp.read_body)
     end
     return true if resp.code  == '204' # nodata but all good
     STDERR.puts(' RESPOSE ' + resp.code.to_s )
     return log_error_mesg("no OK response from docker", resp, resp.read_body, resp.msg )   unless resp.code  == '200' ||  resp.code  == '201'
     STDERR.puts(" CHUNK  " + resp.read_body.to_s + ' : ' + resp.msg )
-    return  resp.read_body unless return_hash
+    return resp.read_body unless return_hash
     chunk = resp.read_body
-    
+
     hashes = []
-  #  @chunk.gsub!(/\\\"/,'')
+    #  @chunk.gsub!(/\\\"/,'')
     #SystemDebug.debug(SystemDebug.docker, 'chunk',chunk)
     return clear_cid(container) if ! container.nil? && chunk.start_with?('no such id: ')
     response_parser.parse(chunk) do |hash |
@@ -248,7 +294,7 @@ class DockerConnection < ErrorsApi
     return hashes[0]
   rescue StandardError => e
     log_exception(e,chunk) if tries > 2
-    
+
     tries += 1
     sleep 0.1
     retry
@@ -262,15 +308,15 @@ class DockerConnection < ErrorsApi
     #    end
     # image_name = container.image
     #    return @container_api.pull_image(image) if image.include?('/')
-    
+
     container.image_repo = 'registry.hub.docker.com' if  container.image_repo.nil?
     request =  '/images/?fromImage=/' + container.image_repo  + '/' + container.image
-      STDERR.puts(' pull  ' + request.to_s)
+    STDERR.puts(' pull  ' + request.to_s)
     r = make_post_request(request, container)
     STDERR.puts(' pull result ' + r.to_s)
     return true
-      rescue StandardError => e
-        log_exception(e)
+  rescue StandardError => e
+    log_exception(e)
   end
 
   def  image_exist?(container)
@@ -289,18 +335,19 @@ class DockerConnection < ErrorsApi
   rescue StandardError => e
     log_exception(e)
   end
-    def delete_image(image_name)
-      request = '/images/' + image_name
-      return make_del_request(request, nil)
-    rescue StandardError => e
-      log_exception(e)
-    end
+
+  def delete_image(image_name)
+    request = '/images/' + image_name
+    return make_del_request(request, nil)
+  rescue StandardError => e
+    log_exception(e)
+  end
   private
 
   def docker_socket
     return @docker_socket unless @docker_socket.nil?
-  #  @docker_socket = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
-  
+    #  @docker_socket = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
+
     @docker_socket=  Net::HTTP.new('172.17.0.1', 2375)
     @docker_socket.continue_timeout = 60
     @docker_socket.read_timeout = 60

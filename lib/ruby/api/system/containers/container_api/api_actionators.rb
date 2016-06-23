@@ -9,16 +9,19 @@ module ApiActionators
     end    
     inter=''
     inter='-i ' unless data.nil?
-    cmd = 'docker exec ' + inter  +  c.container_name + ' /home/actionators/' + actionator_name + '.sh ' + args.to_s
+    #cmd = 'docker exec ' + inter  +  c.container_name + ' /home/actionators/' + actionator_name + '.sh ' + args.to_s
+    cmds = ['/home/actionators/' + actionator_name + '.sh',args.to_s]
       result = {}
       begin
         Timeout.timeout(@@action_timeout) do
           thr = Thread.new do
             begin
             if data.nil?
-            result = SystemUtils.execute_command(cmd)
+              result = engines_core.exec_in_container(c, cmds, true)
+        #      result = SystemUtils.execute_command(cmd)
             else
-              result = SystemUtils.execute_command(cmd, false, data)
+              result = engines_core.exec_in_container(c, cmds, true, data)
+              # result = SystemUtils.execute_command(cmd, false, data)
             end 
        
           rescue StandardError =>e
@@ -29,7 +32,7 @@ module ApiActionators
                    thr.join
         end
       rescue Timeout::Error
-        return  log_error_mesg('Timeout on Running Action ', cmd)
+        return  log_error_mesg('Timeout on Running Action ', cmds.to_s)
        
       end
   
