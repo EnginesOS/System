@@ -188,7 +188,7 @@ class DockerConnection < ErrorsApi
       STDERR.puts('REQUEST ' + uri.to_s + '::' + req.body.to_s )
       c = params.to_json
       c.gsub!(/\\"/,'"')
-      req.body = c
+      req.body = '"' + c + '"'
       STDERR.puts('REQUEST ' + req.body.to_s )
     else
       req = Net::HTTP::Post.new(uri)
