@@ -71,8 +71,8 @@ class DockerConnection < ErrorsApi
     else
       request_params["AttachStdin"] = true
     end
-    request_params[ "AttachStdout"] =  false
-    request_params[ "AttachStderr"] =  false
+    request_params[ "AttachStdout"] =  true
+    request_params[ "AttachStderr"] =  true
     request_params[ "DetachKeys"] =  "ctrl-p,ctrl-q"
     request_params["Tty"] =  false
     request_params[ "Cmd"] =  commands
