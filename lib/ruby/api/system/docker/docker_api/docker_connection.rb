@@ -88,6 +88,7 @@ class DockerConnection < ErrorsApi
     request_params["Detach"] = false
     request_params["Tty"] = false
     request = '/exec/' + exec_id + '/start'
+  r = make_post_request(request, container, request_params, false , data) 
     r = make_post_data_request(request, container, request_params, false , data)
     STDERR.puts('EXEC RESQU ' + r.to_s)
     h = {}
