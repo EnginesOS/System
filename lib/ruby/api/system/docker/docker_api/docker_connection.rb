@@ -105,7 +105,7 @@ class DockerConnection < ErrorsApi
     r = r[4..-1]
     size = r[0,3]
     length = size.unpack("N")
-    length = length[1]
+    length = length[0]
     r = r[4..-1]
     STDERR.puts(' problem ' + r.to_s + ' has ' + r.length.to_s + ' bytes and length ' + length.to_s ) if r.length < length
     h[dst] += r[0..length-1]
