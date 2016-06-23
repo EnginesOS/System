@@ -6,6 +6,7 @@ class WorkPort
     r[:external] = external 
     r[:public_facing] = publicport # boolean
     r[:proto_type] = type # 'tcp' or 'udp' or both
+      r
   end
 
 
