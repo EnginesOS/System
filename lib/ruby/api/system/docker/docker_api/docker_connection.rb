@@ -48,13 +48,13 @@ class DockerConnection < ErrorsApi
 
   def perform_data_request(req, container, return_hash, data)
     producer = DataProducer.new
-#    req.content_type = "multipart/form-data; boundary=60079"
-#    req.content_length = data.length
+    #    req.content_type = "multipart/form-data; boundary=60079"
+    #    req.content_length = data.length
     req.body_stream = producer
     t1 = Thread.new do
-          producer.produce(data)
-          producer.eof!
-        end
+      producer.produce(data)
+      producer.eof!
+    end
     docker_socket.start {|http| http.request(req) }
   end
 
@@ -88,7 +88,7 @@ class DockerConnection < ErrorsApi
     request_params["Detach"] = false
     request_params["Tty"] = false
     request = '/exec/' + exec_id + '/start'
-  r = make_post_request(request, container, request_params, false , data) 
+    r = make_post_request(request, container, request_params, false , data)
 
     STDERR.puts('EXEC RESQU ' + r.to_s)
     h = {}
@@ -320,7 +320,18 @@ class DockerConnection < ErrorsApi
     log_exception(e)
   end
 
+  def image_exist_by_name?(image_name)
+    request = '/images/' + image_name.image + '/json'
+    r =  make_request(request, nil)
+    return true if r.is_a?(Hash) && r.key?('id')
+    STDERR.puts(' image_exist? res ' + r.to_s )
+    return  false
+  rescue StandardError => e
+    log_exception(e)
+  end
+
   def  image_exist?(container)
+    return image_exist_by_name?(container) if container.is_a?(String)
     request = '/images/' + container.image + '/json'
     r =  make_request(request, container)
     return true if r.is_a?(Hash) && r.key?('id')
