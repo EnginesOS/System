@@ -10,7 +10,7 @@ def execute_docker_cmd(cmdline, container)
 #  SystemDebug.debug(SystemDebug.docker, :docker_exec, cmdline)
 #  run_docker_cmd(cmdline, container)
 end
-def old_docker_cmd_w
+def old_docker_cmd_w(cmdline, container, log_error = true)
     result = SystemUtils.execute_command(cmdline)
     container.last_result = result[:stdout]
   
