@@ -52,6 +52,8 @@ module DockerEvents
   case event_hash['status']
       when 'start'
     inform_container_tracking(event_hash['container_name'] ,event_hash['container_type'] ,event_hash['status']) 
+    when 'oom'
+       inform_container_tracking(event_hash['container_name'] ,event_hash['container_type'] ,event_hash['status']) 
       when 'stop'
     inform_container_tracking(event_hash['container_name'] ,event_hash['container_type'] ,event_hash['status']) 
       when 'pause'  
