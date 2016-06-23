@@ -46,6 +46,8 @@ class DockerConnection < ErrorsApi
           STDERR.puts('EXEC RESQU ' + r.to_s)
           h = []
           h[:stdout] = r
+            h[:stderr] = ''
+            # FIX ME need to get correct error status and set :stderr if app
           h[:result] = 0
           h
     rescue StandardError => e
