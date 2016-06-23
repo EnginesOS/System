@@ -378,7 +378,7 @@ class DockerConnection < ErrorsApi
     return image_exist_by_name?(container) if container.is_a?(String)
     request = '/images/' + container.image + '/json'
     r =  make_request(request, container)
-    return true if r.is_a?(Hash) && r.key?('id')
+    return true if r.is_a?(Hash) && r.key?('Id')
     STDERR.puts(' image_exist? res ' + r.to_s )
     return  false
   rescue StandardError => e
