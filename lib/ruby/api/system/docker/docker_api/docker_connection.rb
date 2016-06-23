@@ -283,7 +283,7 @@ class DockerConnection < ErrorsApi
     
     STDERR.puts(" CHUNK  " + resp.body.to_s + ' : ' + resp.msg )
     r = true
-    unless return_hash
+    unless return_hash == true
 #      begin
 #      r = ''
 #      resp.read_body do |chunk|
@@ -303,12 +303,13 @@ class DockerConnection < ErrorsApi
     #  @chunk.gsub!(/\\\"/,'')
     #SystemDebug.debug(SystemDebug.docker, 'chunk',chunk)
     return clear_cid(container) if ! container.nil? && chunk.start_with?('no such id: ')
-    response_parser.parse(chunk) do |hash |
+    response_parser.parse(r) do |hash |
       hashes.push(hash)
     end
 
     #   hashes[1] is a timestamp
     return hashes[0]
+    
 rescue EOFError
     return r
   rescue StandardError => e
