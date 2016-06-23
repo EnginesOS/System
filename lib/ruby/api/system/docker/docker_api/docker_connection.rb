@@ -275,6 +275,7 @@ class DockerConnection < ErrorsApi
   def  perform_request(req, container, return_hash = true)
     tries=0
     r = ''
+   begin
     resp = docker_socket.request(req)
     if  resp.code  == '404'
       clear_cid(container) if ! container.nil? && resp.body.start_with?('no such id: ')
@@ -305,7 +306,7 @@ class DockerConnection < ErrorsApi
     hashes = []
     #  @chunk.gsub!(/\\\"/,'')
     #SystemDebug.debug(SystemDebug.docker, 'chunk',chunk)
-    return clear_cid(container) if ! container.nil? && chunk.start_with?('no such id: ')
+    return clear_cid(container) if ! container.nil? && r.start_with?('no such id: ')
     response_parser.parse(r) do |hash |
       hashes.push(hash)
     end
@@ -321,6 +322,7 @@ log_exception(e,r)
     tries += 1
     sleep 0.1
     retry
+end
   end
 
   def pull_image(container)
