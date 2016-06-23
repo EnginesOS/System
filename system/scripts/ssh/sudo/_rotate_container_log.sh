@@ -1,5 +1,11 @@
 #!/bin/bash
-echo mv /var/lib/docker/containers/$1/$1-json.log /var/log/engines/raw/$1-json.last  &>>/tmp/clean.log
-mv /var/lib/docker/containers/$1/$1-json.log /var/log/engines/raw/$1-json.last  &>>/tmp/clean.log
+src=/var/lib/docker/containers/$1/$1-json.log
+dest=/var/log/engines/raw/$1-json.last
+if test -f $dest
+ then
+ 	rm $dest
+ fi
+echo mv $src $dest  &>>/tmp/clean.log
+mv $src $dest  &>>/tmp/clean.log
 
 #exit
