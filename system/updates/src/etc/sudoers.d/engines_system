@@ -7,7 +7,7 @@ engines ALL = (root) NOPASSWD: /opt/engines/system/scripts/ssh/sudo/_restart_sys
 engines ALL = (root) NOPASSWD: /opt/engines/system/scripts/ssh/sudo/_update_base_os.sh
 engines ALL = (root) NOPASSWD: /opt/engines/system/scripts/ssh/sudo/_update_engines_console_password.sh
 engines ALL = (root) NOPASSWD: /opt/engines/system/scripts/ssh/sudo/_rotate_container_log.sh
-
+engines ALL = (root) NOPASSWD: /opt/engines/system/scripts/system/sudo/_rotate_system_log.sh
 
 
 #NEW
