@@ -192,7 +192,7 @@ class DockerConnection < ErrorsApi
     log_exception(e)
   end
 
-  def make_post_request(uri, container, params = nil)
+  def make_post_request(uri, container, params = nil, return_hash = true)
     unless params.nil?
     initheader = {'Content-Type' =>'application/json'}
       req = Net::HTTP::Post.new(uri, initheader)
@@ -207,7 +207,7 @@ class DockerConnection < ErrorsApi
       req = Net::HTTP::Post.new(uri)
     end
     
-    perform_request(req, container) 
+    perform_request(req, container, return_hash ) 
   rescue StandardError => e
     log_exception(e)
   end
