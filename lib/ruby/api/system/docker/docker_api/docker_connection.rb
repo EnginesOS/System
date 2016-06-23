@@ -321,7 +321,7 @@ class DockerConnection < ErrorsApi
   end
 
   def image_exist_by_name?(image_name)
-    request = '/images/' + image_name.image + '/json'
+    request = '/images/' + image_name + '/json'
     r =  make_request(request, nil)
     return true if r.is_a?(Hash) && r.key?('id')
     STDERR.puts(' image_exist? res ' + r.to_s )

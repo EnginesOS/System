@@ -340,6 +340,7 @@ class BluePrintReader
     ports = @blueprint[:software][:ports]
     return true unless ports.is_a?(Array) # not an error just nada
     ports.each do |port|
+      STDERR.puts("READINF PORT " + port.to_s )
       portnum = port[:port]
         if port.key?(:name)
           name = port[:name]
@@ -354,7 +355,7 @@ class BluePrintReader
       type.downcase!
      
       # FIXME: when public ports supported
-      SystemDebug.debug(SystemDebug.builder, 'Port ' + portnum.to_s + ':' + external.to_s)
+      SystemDebug.debug(SystemDebug.builder, 'Port ' + name + ':' + portnum.to_s + ':' + external.to_s + '/' + type)
      # @mapped_ports.push(WorkPort.work_port_hash(name, portnum, external, false, type))
         @mapped_ports[name] = WorkPort.work_port_hash(name, portnum, external, true, type)
     end 
