@@ -36,7 +36,7 @@ class DockerConnection < ErrorsApi
 #cmd[2]='/'
   request_params[ "Cmd"] =  ['ls','-la','/']
 #request_params[ "Cmd"] = cmd
-    request = '/containers/'  + container.container_id + '/exec'
+    request = '/containers/'  + container.container_id.to_s + '/exec'
     r = make_post_request(request, container, request_params)        
      STDERR.puts('DOCKER EXEC ' + r.to_s + ': for :' + container.container_name + ': with :' + request_params.to_s)
     
