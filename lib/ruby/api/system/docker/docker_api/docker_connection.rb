@@ -350,8 +350,8 @@ class DockerConnection < ErrorsApi
 
     unless container.is_a?(String)
 
-      container.image_repo = 'registry.hub.docker.com' if  container.image_repo.nil?
-      request =  '/images/?fromImage=' + container.image_repo  + '/' + container.image
+      #container.image_repo = 'registry.hub.docker.com' if  container.image_repo.nil?
+      request =  '/images/?fromImage=' + container.image_repo.to_s  + '/' + container.image
     else
       request =  '/images/?fromImage=' + container
       container = nil

@@ -9,10 +9,6 @@ module ManagedServiceOnAction
            @container_api.update_service_configuration(configuration)
          end
        end
-       
-      # register_with_dnsload_and_attach_post_services
-      # @container_api.load_and_attach_post_services(self)
-    #  @container_api.register_non_persistent_services(self)
        reregister_consumers
   SystemDebug.debug(SystemDebug.container_events,:ON_start_complete_MS,event_hash)    
   rescue StandardError => e

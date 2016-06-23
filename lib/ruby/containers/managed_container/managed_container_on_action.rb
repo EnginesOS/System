@@ -19,7 +19,7 @@ module ManagedContainerOnAction
       @had_out_memory =false
           save_state
        #return if what == 'create'
-        #register_with_dns # MUst register each time as IP Changes    
+        register_with_dns # MUst register each time as IP Changes    
         
        # @container_api.register_non_persistent_services(self)
     SystemDebug.debug(SystemDebug.container_events,:ON_Create_Finised,event_hash)    
@@ -32,7 +32,7 @@ module ManagedContainerOnAction
       @had_out_memory = @out_of_memory
       @out_of_memory = false
       save_state
-   #  deregister_with_dns # MUst register each time as IP Changes    
+     deregister_with_dns # MUst register each time as IP Changes    
       @container_api.deregister_non_persistent_services(self)
       rescue StandardError => e
          log_exception(e)
