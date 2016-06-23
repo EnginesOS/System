@@ -240,16 +240,17 @@ class DockerConnection < ErrorsApi
   end
 
   def make_post_request(uri, container, params = nil, return_hash = true , data = nil)
+  
     unless params.nil?
       initheader = {'Content-Type' =>'application/json'}
       req = Net::HTTP::Post.new(uri, initheader)
-      STDERR.puts('REQUEST ' + uri.to_s + '::' + req.body.to_s )
+      STDERR.puts('Post REQUEST ' + uri.to_s + '::' + req.body.to_s )
       req.body = params.to_json
 
       #      c.gsub!(/\\"/,'"')
       #      c.gsub!(/^"/,'')
       #      c.gsub!(/"$/,'')
-      STDERR.puts('REQUEST ' + req.body.to_s )
+      STDERR.puts('Post REQUEST ' + req.body.to_s )
     else
       req = Net::HTTP::Post.new(uri)
     end
@@ -261,11 +262,13 @@ class DockerConnection < ErrorsApi
 
   def make_request(uri, container)
     req = Net::HTTP::Get.new(uri)
+    STDERR.puts(' GET ' + uri.to_s)
     perform_request(req, container)
   end
 
   def make_del_request(uri, container)
     req = Net::HTTP::Delete.new(uri)
+    STDERR.puts(' Del ' + uri.to_s)
     perform_request(req, container)
   end
 
