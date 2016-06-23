@@ -37,7 +37,7 @@ class DockerConnection < ErrorsApi
   request_params[ "Cmd"] =  ['ls','-la','/']
 #request_params[ "Cmd"] = cmd
     request = '/containers/'  + container.container_id + '/exec'
-    r = make_post_request(request, container, request_params.to_json)    
+    r = make_post_request(request, container, request_params)    
      STDERR.puts('DOCKER EXEC ' + r.to_s + ': for :' + container.container_name + ': with :' + request_params.to_s)
     rescue StandardError => e
     STDERR.puts('DOCKER EXECep  ' + container.container_name + ': with :' + request_params.to_s)
@@ -187,9 +187,10 @@ class DockerConnection < ErrorsApi
       req = Net::HTTP::Post.new(uri, initheader)
       STDERR.puts('REQUEST ' + uri.to_s + '::' + req.body.to_s )
       c = params.to_json
-      c.gsub!(/\\"/,'"')
-      c.gsub!(/^"/,'')
-      c.gsub!(/"$/,'')
+
+#      c.gsub!(/\\"/,'"')
+#      c.gsub!(/^"/,'')
+#      c.gsub!(/"$/,'')
       STDERR.puts('REQUEST ' + req.body.to_s )
     else
       req = Net::HTTP::Post.new(uri)
