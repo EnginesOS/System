@@ -277,9 +277,9 @@ class DockerConnection < ErrorsApi
       return log_error_mesg("no such id response from docker", resp, resp.read_body)
     end
     return true if resp.code  == '204' # nodata but all good
-    STDERR.puts(' RESPOSE ' + resp.code.to_s )
+    STDERR.puts(' RESPOSE ' + resp.code.to_s + ' : ' + resp.msg  )
     return log_error_mesg("no OK response from docker", resp, resp.read_body, resp.msg )   unless resp.code  == '200' ||  resp.code  == '201'
-   # STDERR.puts(" CHUNK  " + resp.read_body.to_s + ' : ' + resp.msg )
+    STDERR.puts(" CHUNK  " + resp.read_body.to_s + ' : ' + resp.msg )
     unless return_hash
 #      r = ''
 #      resp.read_body do |chunk|
