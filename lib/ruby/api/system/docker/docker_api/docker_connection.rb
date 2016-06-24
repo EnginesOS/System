@@ -102,14 +102,20 @@ class DockerConnection < ErrorsApi
   def docker_stream_as_result(r)
 h = {}
   h[:stdout] = ''
-  h[:stderr] =  r
+  h[:stderr] =  ''
       
-   while r.length >0  
+   while r.length >0
+     unless r[1] == 0
+     h[:stdout] = r
+       break
+   end
     if r[0] == 1
      dst = :stdout
     else
       dst = :stderr
     end
+    
+    
   STDERR.puts(' CONTENT ' + r.to_s)
     r = r[4..-1]
     STDERR.puts(' R ' + r.to_s)
@@ -119,7 +125,12 @@ STDERR.puts(' SIZE '  + size.to_s)
 STDERR.puts(' LENGTH '  + length.to_s + ' cn:' + length[0].class.name)
     #length = length[0]
     r = r[4..-1]
-    length = r.index("\x00\x00\x00\x00") - 2
+    l = r.index("\x00\x00\x00\x00")
+    unless l.nil?
+    length =  l - 2
+    else
+      length = r.length
+    end
     STDERR.puts(' problem ' + r.to_s + ' has ' + r.length.to_s + ' bytes and length ' + length.to_s ) if r.length < length
     h[dst] += r[0..length-1]
     r = r[length..-1]
