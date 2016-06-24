@@ -1,10 +1,11 @@
-cacerts: 
- name: cacerts
- remotepath: /usr/local/share/ca-certificates/engines_internal_ca.crt
- localpath: /opt/engines/etc/ssl/ca/certs/system_CA.pem
- permissions: "ro"
-tz_map: 
- name: tz_map
- remotepath: /etc/localtime
- localpath: /etc/localtime
- permissions: "ro"  
+volumes:
+ cacerts: 
+  name: cacerts
+  remotepath: /usr/local/share/ca-certificates/engines_internal_ca.crt
+  localpath: /opt/engines/etc/ssl/ca/certs/system_CA.pem
+  permissions: "ro"
+ tz_map: 
+  name: tz_map
+  remotepath: /etc/localtime
+  localpath: /etc/localtime
+  permissions: "ro"  

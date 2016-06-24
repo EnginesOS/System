@@ -152,7 +152,7 @@ module DockerApiCreateOptions
     volumes = YAML::load(mounts_file)
     mounts_file.close
     
-    volumes.each do |volume|      
+    volumes.each_value do |volume|      
       mounts.push(mount_hash(volume))
     end
 
