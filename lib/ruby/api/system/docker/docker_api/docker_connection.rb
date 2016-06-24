@@ -57,14 +57,15 @@ class DockerConnection < ErrorsApi
     end
     docker_socket.start {|http| http.request(req) }
   end
+  
+  def format_commands(commands)
+    commands = [commands] unless commands.is_a?(Array)
+     commands
+  end
 
-  def docker_exec(container, command, log_error = true, data=nil)
-    if command.is_a?(Array)
-      commands = command
-    else
-      commands = [command]
-    end
-
+  def docker_exec(container, commands, log_error = true, data=nil)
+    commands = format_commands(commands)
+    
     request_params = {}
     if data.nil?
       request_params["AttachStdin"] = false
@@ -91,38 +92,44 @@ class DockerConnection < ErrorsApi
     r = make_post_request(request, container, request_params, false , data)
 
     STDERR.puts('EXEC RESQU ' + r.to_s)
-  h = {}
-   h[:stdout] = ''
-   h[:stderr] =  r
-       
-#   while r.length >0  
-#    if r[0] == 1
-#     dst = :stdout
-#    else
-#      dst = :stderr
-#    end
-#  STDERR.puts(' CONTENT ' + r.to_s)
-#    r = r[4..-1]
-#    STDERR.puts(' R ' + r.to_s)
-#    size = r[0,3]
-#STDERR.puts(' SIZE '  + size.to_s)
-#    length = size.unpack("N")
-#STDERR.puts(' LENGTH '  + length.to_s)
-#    length = length[0]
-#    r = r[4..-1]
-#    STDERR.puts(' problem ' + r.to_s + ' has ' + r.length.to_s + ' bytes and length ' + length.to_s ) if r.length < length
-#    h[dst] += r[0..length-1]
-#    r = r[length..-1]
-#    end
+    docker_stream_as_result(r)
  
-    # FIXME need to get correct error status and set :stderr if app
-    h[:result] = 0
-    h
   rescue StandardError => e
     STDERR.puts('DOCKER EXECep  ' + container.container_name + ': with :' + request_params.to_s)
     log_exception(e)
   end
+  
+  def docker_stream_as_result(r)
+h = {}
+  h[:stdout] = ''
+  h[:stderr] =  r
+      
+   while r.length >0  
+    if r[0] == 1
+     dst = :stdout
+    else
+      dst = :stderr
+    end
+  STDERR.puts(' CONTENT ' + r.to_s)
+    r = r[4..-1]
+    STDERR.puts(' R ' + r.to_s)
+    size = r[0,3]
+STDERR.puts(' SIZE '  + size.to_s)
+    length = size.unpack("N")
+STDERR.puts(' LENGTH '  + length.to_s + ' cn:' + length[0].class.name)
+    #length = length[0]
+    r = r[4..-1]
+    length = r.index("\x00\x00\x00\x00") - 1
+    STDERR.puts(' problem ' + r.to_s + ' has ' + r.length.to_s + ' bytes and length ' + length.to_s ) if r.length < length
+    h[dst] += r[0..length-1]
+    r = r[length..-1]
+    end
 
+   # FIXME need to get correct error status and set :stderr if app
+   h[:result] = 0
+   h
+  end
+  
   def container_id_from_name(container)
     # request='/containers/json?son?all=false&name=/' + container.container_name
     request='/containers/' + container.container_name + '/json'
