@@ -281,10 +281,10 @@ class DockerConnection < ErrorsApi
     log_exception(e)
   end
 
-  def make_request(uri, container)
+  def make_request(uri, container, return_hash = true)
     req = Net::HTTP::Get.new(uri)
     STDERR.puts(' GET ' + uri.to_s)
-    perform_request(req, container)
+    perform_request(req, container, return_hash)
   end
 
   def make_del_request(uri, container)
@@ -366,7 +366,9 @@ class DockerConnection < ErrorsApi
 
   def image_exist_by_name?(image_name)
     request = '/images/json?filter=' + image_name
-    r =  make_request(request, nil)
+    r =  make_request(request, nil,true)
+    return  false unless r.is_a?(Array)
+    r = r[0]
     return true if r.is_a?(Hash) && r.key?('id')
     STDERR.puts(' image_exist? res ' + r.to_s )
     return  false
@@ -376,11 +378,12 @@ class DockerConnection < ErrorsApi
 
   def  image_exist?(container)
     return image_exist_by_name?(container) if container.is_a?(String)
-    request = '/images/' + container.image + '/json'
-    r =  make_request(request, container)
-    return true if r.is_a?(Hash) && r.key?('Id')
-    STDERR.puts(' image_exist? res ' + r.to_s )
-    return  false
+    return image_exist_by_name?(container.image)
+#    request = '/images/' + container.image + '/json'
+#    r =  make_request(request, container,true)
+#    return true if r.is_a?(Hash) && r.key?('Id')
+#    STDERR.puts(' image_exist? res ' + r.to_s )
+#    return  false
   rescue StandardError => e
     log_exception(e)
   end
