@@ -155,7 +155,7 @@ class DockerConnection < ErrorsApi
 
     # container.set_cont_id if container.container_id.to_s == '-1' || container.container_id.nil?
     request = '/containers/' + container.container_name.to_s + '/json'
-    return make_request(request, container)
+    return make_request(request, container,true)
   rescue StandardError => e
     log_exception(e)
 
@@ -180,7 +180,7 @@ class DockerConnection < ErrorsApi
     else
       request = '/containers/' + container.container_id.to_s + '/json'
     end
-    return make_request(request, container)
+    return make_request(request, container,true)
   rescue StandardError => e
     log_exception(e)
   end

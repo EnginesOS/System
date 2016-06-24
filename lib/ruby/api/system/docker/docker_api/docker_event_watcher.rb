@@ -133,6 +133,7 @@ def state_from_status(status)
           @event_listeners.values.each do |listener |
 
             log_exeception(r) if (r = listener.trigger(hash)).is_a?(StandardError)
+              STDERR.puts(' TRigger returned ' + r.class.name + ':' + r.to_s)
           end
 
           # @system_api.container_event(hash) # if hash.key?('from')
