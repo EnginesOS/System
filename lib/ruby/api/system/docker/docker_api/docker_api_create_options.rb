@@ -39,8 +39,8 @@ module DockerApiCreateOptions
     mount_hash = {}
     mount_hash['Source'] = volume[:localpath]
     mount_hash['Destination'] = volume[:remotepath]
-    mount_hash['Mode'] = volume[:mapping_permissions] + ',Z'
-    if volume[:mapping_permissions] == 'rw'
+    mount_hash['Mode'] = volume[:permissions] + ',Z'
+    if volume[:permissions] == 'rw'
       mount_hash['RW'] = true
     else
       mount_hash['RW'] = false
