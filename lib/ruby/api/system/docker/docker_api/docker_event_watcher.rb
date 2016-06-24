@@ -145,6 +145,7 @@ def state_from_status(status)
   end
 
   def add_event_listener(listener, event_mask = nil)
+    STDERR.puts('ADDED listenter ' + listener.class.name)
     event = EventListener.new(listener,event_mask)
     @event_listeners[event.hash_name] = event
   rescue StandardError => e
