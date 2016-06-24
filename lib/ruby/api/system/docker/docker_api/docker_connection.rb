@@ -109,12 +109,15 @@ h = {}
      h[:stdout] = r
        break
    end
-    if r[0] == 1
+    if r[0].start_with?("\u0001\u0000\u0000\u0000")
      dst = :stdout
-    else
+    elsif r[0].start_with?("\u0002\u0000\u0000\u0000")
       dst = :stderr
+    else
+      STDERR.puts('START ' + r[0..4].to_s)
+     dst = :stdout
     end
-    
+#"\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u000b{\"certs\":[\n\u0001\u0000\u0000\u0000\u0000\u0000\u0000\n\"engines\"\n\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0003]}\n
     
   STDERR.puts(' CONTENT ' + r.to_s)
     r = r[4..-1]
@@ -125,7 +128,7 @@ STDERR.puts(' SIZE '  + size.to_s)
 STDERR.puts(' LENGTH '  + length.to_s + ' cn:' + length[0].class.name)
     #length = length[0]
     r = r[4..-1]
-    l = r.index("\x00\x00\x00\x00")
+    l = r.index("\u0000\u0000\u0000")
     unless l.nil?
     length =  l - 2
     else
