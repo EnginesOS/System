@@ -259,6 +259,9 @@ class DockerConnection < ErrorsApi
   rescue StandardError => e
     log_exception(e)
   end
+  
+require_relative 'docker_api_create_options.rb'  
+include DockerApiCreateOptions
   def create_container(container)
     params = create_options(container)
     request = '/containers/create'

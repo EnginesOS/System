@@ -2,8 +2,7 @@ module DockerApiCreateOptions
   def initialize
     @top_level = nil
   end
-  require_relative 'docker_api_create_options.rb'  
-  include DockerApiCreateOptions
+
   def create_options(container)
     @top_level = build_top_level(container)
     @top_level['Env'] = envs(container)
