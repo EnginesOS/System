@@ -2,6 +2,7 @@ module DockerEvents
   require '/opt/engines/lib/ruby/api/system/docker/docker_api/docker_event_watcher.rb'
 
   def container_event(event_hash)
+    return log_error_mesg('Nil event hash passed to container event') if event_hash.nil?
     STDERR.puts(event_hash.to_s)
 #    status = event_hash['status']
 #       s = status.split(':')
