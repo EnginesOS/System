@@ -184,7 +184,7 @@ module DockerApiCreateOptions
 
   def logdir_mount(container)
     logdir_mount_hash = {}
-    logdir_mount_hash['Source'] = container_log_dir(container)
+    logdir_mount_hash['Source'] = self::DockerApiCreateOptions.container_log_dir(container)
     logdir_mount_hash['Destination'] = incontainer_logdir
     logdir_mount_hash['Mode'] = 'rw,Z'
     logdir_mount_hash['RW'] = true
@@ -193,16 +193,16 @@ module DockerApiCreateOptions
 
   def state_mount(container)
     state_mount_hash = {}
-    state_mount_hash['Source'] = ContainerStateFiles.container_state_dir(container) + '/run'
+    state_mount_hash['Source'] = self::DockerApiCreateOptions.container_state_dir(container) + '/run'
     state_mount_hash['Destination'] = '/engines/var/run'
     state_mount_hash['Mode'] = 'rw,Z'
     state_mount_hash['RW'] = true
     state_mount_hash
   end
 
-#  def self.container_state_dir(container)
-#    ContainerStateFiles.container_state_dir(container)
-#  end
+  def self.container_state_dir(container)
+    ContainerStateFiles.container_state_dir(container)
+  end
 
   def self.container_log_dir(container)
     SystemConfig.SystemLogRoot + '/' + container.ctype + 's/' + container.container_name
