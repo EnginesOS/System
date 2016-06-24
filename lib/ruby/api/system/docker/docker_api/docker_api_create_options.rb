@@ -193,7 +193,7 @@ module DockerApiCreateOptions
 
   def state_mount(container)
     state_mount_hash = {}
-    state_mount_hash['Source'] = container_state_dir(container) + '/run'
+    state_mount_hash['Source'] = self.container_state_dir(container) + '/run'
     state_mount_hash['Destination'] = '/engines/var/run'
     state_mount_hash['Mode'] = 'rw,Z'
     state_mount_hash['RW'] = true
