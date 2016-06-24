@@ -158,7 +158,7 @@ module DockerApiCreateOptions
 
     mounts.push(state_mount(container))
     mounts.push(logdir_mount(container))
-    mounts.push(vlogdir_mount(container)) unless container_log_dir(container) == '/var/log' || container_log_dir(container) == '/var/log/'
+    mounts.push(vlogdir_mount(container)) unless in_container_log_dir(container) == '/var/log' || in_container_log_dir(container) == '/var/log/'
     mounts.push(ssh_keydir_mount(container))
 
     return mounts
@@ -175,7 +175,7 @@ module DockerApiCreateOptions
 
   def vlogdir_mount(container)
     vlogdir_mount_hash = {}
-    vlogdir_mount_hash['Source'] = container_log_dir(container)
+    vlogdir_mount_hash['Source'] = container_local_log_dir(container)
     vlogdir_mount_hash['Destination'] = '/var/log/'
     vlogdir_mount_hash['Mode'] = 'rw,Z'
     vlogdir_mount_hash['RW'] = true
@@ -184,8 +184,8 @@ module DockerApiCreateOptions
 
   def logdir_mount(container)
     logdir_mount_hash = {}
-    logdir_mount_hash['Source'] = container_log_dir(container)
-    logdir_mount_hash['Destination'] = container_log_dir
+    logdir_mount_hash['Source'] = container_local_log_dir(container) + subdir
+    logdir_mount_hash['Destination'] = in_container_log_dir(container)
     logdir_mount_hash['Mode'] = 'rw,Z'
     logdir_mount_hash['RW'] = true
     logdir_mount_hash
@@ -204,7 +204,7 @@ module DockerApiCreateOptions
     ContainerStateFiles.container_state_dir(container)
   end
 
-  def container_log_dir(container)
+  def container_local_log_dir(container)
     SystemConfig.SystemLogRoot + '/' + container.ctype + 's/' + container.container_name
   end
 
@@ -212,7 +212,7 @@ module DockerApiCreateOptions
     '/opt/engines/etc/ssh/keys/services/' + container.container_name
   end
 
-  def get_container_logdir(container)
+  def in_container_log_dir(container)
     return '/var/log' if container.framework.nil? || container.framework.length == 0
     container_logdetails_file_name = false
     framework_logdetails_file_name = SystemConfig.DeploymentTemplates + '/' + container.framework + '/home/LOG_DIR'
