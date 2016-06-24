@@ -38,6 +38,7 @@ module DockerApiCreateOptions
   end
 
   def mount_hash(volume)
+    volume = SystemUtils.symbolize_keys(volume)
     mount_hash = {}
     mount_hash['Source'] = volume[:localpath]
     mount_hash['Destination'] = volume[:remotepath]
@@ -151,8 +152,7 @@ module DockerApiCreateOptions
     volumes = YAML::load(mounts_file)
     mounts_file.close
     
-    volumes.each do |volume|
-      volume = SystemUtils.symbolize_keys(volume)
+    volumes.each do |volume|      
       mounts.push(mount_hash(volume))
     end
 
