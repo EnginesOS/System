@@ -178,6 +178,7 @@ class EngineBuilder < ErrorsApi
       return post_failed_build_clean_up
     else
       if @core_api.image_exist?(@build_params[:engine_name]) == false
+        log_build_errors('Built Image not found')
         @last_error = ' ' + tail_of_build_log
         return post_failed_build_clean_up
       end
