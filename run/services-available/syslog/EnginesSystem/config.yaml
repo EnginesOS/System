@@ -15,12 +15,12 @@ volumes:
   name: config
   remotepath: "/etc/syslog-ng/conf.d/"
   localpath: "/opt/engines/etc/syslog/conf/"
-  mapping_permissions: rw
+  permissions: rw
  logs: 
   name: config
   remotepath: "/var/log/rmt/"
   localpath: "/var/lib/engines/syslog/rmt/"
-  mapping_permissions: rw
+  permissions: rw
 port: 
 mapped_ports:
 repo: na

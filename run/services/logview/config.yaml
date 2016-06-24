@@ -16,22 +16,22 @@ volumes:
   name: syslog
   remotepath: "/var/log/engines/syslog/"
   localpath: "/var/lib/engines/syslog/rmt/"
-  mapping_permissions: ro
+  permissions: ro
  engines: 
   name: engines
   remotepath: "/var/log/engines/engines/"
   localpath: "/var/log/engines/containers/"
-  mapping_permissions: ro
+  permissions: ro
  services: 
   name: services
   remotepath: "/var/log/engines/services/"
   localpath: "/var/log/engines/services/"
-  mapping_permissions: ro
+  permissions: ro
  system_services: 
   name: system_services
   remotepath: "/var/log/engines/system_services/"
   localpath: "/var/log/engines/system_services/"
-  mapping_permissions: ro
+  permissions: ro
 port: 
 mapped_ports:
 repo: na

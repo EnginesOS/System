@@ -16,17 +16,17 @@ volumes:
   name: ip_details
   remotepath: "/opt/engines/etc/net/"
   localpath: "/opt/engines/etc/net/"
-  mapping_permissions: "ro"
+  permissions: "ro"
  configuration: 
   name: configuration
   remotepath: "/etc/bind/engines"
   localpath: "/opt/engines/etc/dns/config"
-  mapping_permissions: "ro"
+  permissions: "ro"
  var_run: 
   name: "var_run"
   remotepath: "/var/run/"
   localpath: "/opt/engines/run/services/dns/run/dns"
-  mapping_permissions: "rw" 
+  permissions: "rw" 
 mapped_ports:
  dns:
   name: dns

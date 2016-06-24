@@ -21,32 +21,32 @@ volumes:
   name: Volumes
   remotepath: "/backup_src/volumes/"
   localpath: "/var/lib/engines/"
-  mapping_permissions: "ro"
+  permissions: "ro"
  ServiceTypes: 
   name: ServiceTypes
   remotepath: "/opt/engines/etc/services/providers/"
   localpath: "/opt/engines/etc/services/providers/"
-  mapping_permissions: "ro"
+  permissions: "ro"
  Destinations: 
   name: Destinations
   remotepath: "/var/lib/engines/local_backup_dests/"
   localpath: "/var/lib/engines/backup_paths"
-  mapping_permissions: "rw"
+  permissions: "rw"
  BackupLogs: 
   name: BackupLogs
   remotepath: "/var/log/backup"
   localpath: "/var/log/engines/services/backup/"
-  mapping_permissions: "rw"
+  permissions: "rw"
  SystemLogs: 
   name: SystemLogs
   remotepath: "/backup_src/logs"
   localpath: "/var/log/engines/"
-  mapping_permissions: "ro"
+  permissions: "ro"
  BackupKeys: 
   name: BackupKeys
   remotepath: "/home/backup/.gnupg"
   localpath: "/opt/engines/etc/backup/keys/"
-  mapping_permissions: "rw"
+  permissions: "rw"
 port: 
 mapped_ports: 
 last_result:
