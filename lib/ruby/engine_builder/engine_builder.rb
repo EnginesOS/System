@@ -184,7 +184,10 @@ class EngineBuilder < ErrorsApi
       end
       log_build_output('Creating Deploy Image')
       mc = create_managed_container
-      return post_failed_build_clean_up if mc == false
+      if mc == false
+        log_build_errors('Failed to create Managed Container')
+      return post_failed_build_clean_up
+      end 
       @service_builder.create_non_persistent_services(@blueprint_reader.services)
     end
     @service_builder.release_orphans
