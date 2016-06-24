@@ -119,7 +119,7 @@ STDERR.puts(' SIZE '  + size.to_s)
 STDERR.puts(' LENGTH '  + length.to_s + ' cn:' + length[0].class.name)
     #length = length[0]
     r = r[4..-1]
-    length = r.index("\x00\x00\x00\x00") - 1
+    length = r.index("\x00\x00\x00\x00") - 2
     STDERR.puts(' problem ' + r.to_s + ' has ' + r.length.to_s + ' bytes and length ' + length.to_s ) if r.length < length
     h[dst] += r[0..length-1]
     r = r[length..-1]
