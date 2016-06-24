@@ -259,7 +259,13 @@ class DockerConnection < ErrorsApi
   rescue StandardError => e
     log_exception(e)
   end
+  def create_container(container)
+    params = create_options(container)
+    request = '/containers/create'
+       r = make_post_request(request, container, request_params)
+       STDERR.puts('DOCKER EXEC ' + r.to_s + ': for :' + container.container_name + ': with :' + request_params.to_s)
 
+  end
   def make_post_request(uri, container, params = nil, return_hash = true , data = nil)
 
     unless params.nil?

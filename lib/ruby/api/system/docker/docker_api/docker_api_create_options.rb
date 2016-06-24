@@ -131,7 +131,7 @@ module DockerApiCreateOptions
     top_level['StopSignal'] = 'SIGTERM'
     top_level['WorkingDir'] = ''
     top_level['Image']=  container.image
-    top_level['Entrypoint'] =  ' /bin/bash /home/start.bash' unless container.conf_self_start
+    top_level['Entrypoint'] =  ['/bin/bash' ,'/home/start.bash'] unless container.conf_self_start
     top_level
   end
 
