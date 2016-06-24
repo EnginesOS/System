@@ -184,7 +184,7 @@ module DockerApiCreateOptions
 
   def logdir_mount(container)
     logdir_mount_hash = {}
-    logdir_mount_hash['Source'] = container_local_log_dir(container) + subdir
+    logdir_mount_hash['Source'] = container_local_log_dir(container) 
     logdir_mount_hash['Destination'] = in_container_log_dir(container)
     logdir_mount_hash['Mode'] = 'rw,Z'
     logdir_mount_hash['RW'] = true
