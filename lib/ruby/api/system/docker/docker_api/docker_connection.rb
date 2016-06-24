@@ -366,12 +366,10 @@ class DockerConnection < ErrorsApi
 
   def image_exist_by_name?(image_name)
     request = '/images/json?filter=' + image_name
-    r =  make_request(request, nil,true)
-    STDERR.puts(' image_exist? res ' + r.to_s + ' is ' + r.class.name )
+    r =  make_request(request, nil,true) 
     return  false unless r.is_a?(Array)
     r = r[0]
-    STDERR.puts('  res ' + r.to_s + ' is ' + r.class.name )
-    return true if r.is_a?(Hash) && r.key?('id')
+    return true if r.is_a?(Hash) && r.key?('Id')
    
     return  false
   rescue StandardError => e
