@@ -1,4 +1,3 @@
-volumes:
  cacerts: 
   name: cacerts
   remotepath: /usr/local/share/ca-certificates/engines_internal_ca.crt
