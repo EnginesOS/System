@@ -230,7 +230,7 @@ module DockerApiCreateOptions
     envs = {}
     container.environments.each do |env|
       next if env.build_time_only
-      envs[env[:name]] = env[:value]
+      envs[env.name] = env.value
     end
     envs
   end
