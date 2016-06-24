@@ -5,8 +5,7 @@ class DockerApi  < ErrorsApi
   require_relative 'docker_api_errors.rb'
   include EnginesDockerApiErrors
   
-  require_relative 'docker_api_create_options.rb'  
-  include DockerApiCreateOptions
+
   
 def initialize
   @con = DockerConnection.new
@@ -20,12 +19,12 @@ end
      log_exception(e)
  end
 
- 
- def create_container(container)
-   params = create_options(container)
-   SystemDebug.debug(SystemDebug.containers,  params.to_s)
-    
-   
- end
+# 
+# def create_container(container)
+#   params = create_options(container)
+#   SystemDebug.debug(SystemDebug.containers,  params.to_s)
+#    
+#   
+# end
  
 end
