@@ -263,7 +263,7 @@ class DockerConnection < ErrorsApi
 require_relative 'docker_api_create_options.rb'  
 include DockerApiCreateOptions
   def create_container(container)
-    params = create_options(container)
+    request_params = create_options(container)
     request = '/containers/create'
        r = make_post_request(request, container, request_params)
        STDERR.puts('DOCKER EXEC ' + r.to_s + ': for :' + container.container_name + ': with :' + request_params.to_s)
