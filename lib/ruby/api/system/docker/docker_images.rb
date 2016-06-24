@@ -51,9 +51,17 @@ module DockerImages
   #  end
 
   def clean_up_dangling_images
-    cmd = 'docker rmi $( docker images -f \'dangling=true\' -q) &'
-    Thread.new { SystemUtils.execute_command(cmd) }
+  images =  @docker_comms.find_images('dangling=true')
+    images.each do |image|
+      next unless image.is_a?(Hash) && image.key?('Id')
+      @docker_comms.delete_image(image['Id'])
+    end
+#    cmd = 'docker rmi $( docker images -f \'dangling=true\' -q) &'
+#    Thread.new { SystemUtils.execute_command(cmd) }
     return true # often warning not error
+    rescue StandardError => e
+      container.last_error = ('Failed To Delete ' + e.to_s)
+      log_exception(e)
   end
 
 end

@@ -364,6 +364,13 @@ class DockerConnection < ErrorsApi
     log_exception(e)
   end
 
+  def find_images(search)
+    request = '/images/json?filter=' + search
+    r =  make_request(request, nil,true) 
+    return  false unless r.is_a?(Array)
+    r
+  end
+ 
   def image_exist_by_name?(image_name)
     request = '/images/json?filter=' + image_name
     r =  make_request(request, nil,true) 
