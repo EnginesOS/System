@@ -112,6 +112,7 @@ module DockerApiCreateOptions
 
   def port_bindings(container)
     bindings = {}
+      return bindings if container.mapped_ports.nil?
     container.mapped_ports.each_value do |port|
       local_side =     port[:port].to_s + '/' + get_protocol_str(port)
       remote_side = []
