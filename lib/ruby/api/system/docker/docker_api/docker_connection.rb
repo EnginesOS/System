@@ -371,6 +371,11 @@ class DockerConnection < ErrorsApi
     r
   end
  
+  def logs_container(container, count)
+#    GET /containers/4fa6e0f0c678/logs?stderr=1&stdout=1&timestamps=1&follow=1&tail=10&since=1428990821 HTTP/1.1
+    request = '/containers/' + container.container_id + '/logs?stderr=1&stdout=1&timestamps=1&follow=1&tail=' + count.to_s
+    make_request(request, nil,false) 
+  end
   def image_exist_by_name?(image_name)
     request = '/images/json?filter=' + image_name
     r =  make_request(request, nil,true) 

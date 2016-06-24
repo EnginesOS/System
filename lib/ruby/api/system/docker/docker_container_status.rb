@@ -7,11 +7,11 @@ module DockerContainerStatus
 
   end
 
-  def logs_container(container, count)
-    clear_error
-    cmdline = 'docker logs --tail=' + count.to_s + ' ' + container.container_name
-    result = SystemUtils.execute_command(cmdline)
-    return result[:stderr].to_s + ' ' + result[:stdout].to_s
+  def logs_container(container, count = 100)
+    @docker_comms.logs_container(container, count)
+#    cmdline = 'docker logs --tail=' + count.to_s + ' ' + container.container_name
+#    result = SystemUtils.execute_command(cmdline)
+#    return result[:stderr].to_s + ' ' + result[:stdout].to_s
   rescue StandardError => e
     log_exception(e)
    
