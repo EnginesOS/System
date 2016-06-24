@@ -10,6 +10,8 @@ module DockerApiCreateOptions
     @top_level['ExposedPorts'] = exposed_ports(container)
     @top_level['HostConfig'] = host_config_options(container)
     return @top_level
+    rescue StandardError => e
+      log_exception(e)
   end
 
   def get_protocol_str(port)
@@ -45,6 +47,9 @@ module DockerApiCreateOptions
     else
       mount_hash['RW'] = false
     end
+    rescue StandardError => e
+      STDERR.puts(' vol ' + volume.to_s)
+      log_exception(e, volume)
   end
 
   def get_dns_search
