@@ -22,6 +22,7 @@ module DockerApiCreateOptions
 
   def exposed_ports(container)
     eports = {}
+      return eports if container.mapped_ports.nil?
     container.mapped_ports.each_value do |port|
       eports[port[:port].to_s + '/' + get_protocol_str(port)] = {}
     end
