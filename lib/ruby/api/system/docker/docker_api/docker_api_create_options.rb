@@ -150,7 +150,9 @@ module DockerApiCreateOptions
     mounts_file = File.open(mounts_file_name,'r')
     volumes = YAML::load(mounts_file)
     mounts_file.close
+    
     volumes.each do |volume|
+      SystemUtils.symbolize_keys(volume)
       mounts.push(mount_hash(volume))
     end
 
