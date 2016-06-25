@@ -47,7 +47,7 @@ class DockerConnection < ErrorsApi
     end
 
     def produce()
-      
+      @body += '--60079--'
     end
   end
 
