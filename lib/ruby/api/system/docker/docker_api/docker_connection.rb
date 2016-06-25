@@ -31,6 +31,9 @@ class DockerConnection < ErrorsApi
       @eof
     end
 
+    def size
+      @body.size
+    end
     def read(size, offset)
       STDERR.puts(' READ PARAm ' + offset.to_s + ',' + size.to_s + ' from ' + @body )
       if @body.empty? && @eof
@@ -54,14 +57,13 @@ class DockerConnection < ErrorsApi
   def perform_data_request(req, container, return_hash, data)
     producer = DataProducer.new(data)
 
-#       req.content_type = "multipart/form-data; boundary=60079"
-#       req.content_length = data.length
-    req.body = data.to_json
-#    req.body_stream = producer
-#    t1 = Thread.new do
-#      producer.produce
-#      producer.eof!
-#    end
+       req.content_type = "multipart/form-data; boundary=60079"
+       req.content_length = data.length
+    req.body_stream = producer
+    t1 = Thread.new do
+      producer.produce
+      producer.eof!
+    end
     docker_socket.start {|http| http.request(req) }
   end
   
