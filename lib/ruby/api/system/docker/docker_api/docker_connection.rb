@@ -51,7 +51,7 @@ class DockerConnection < ErrorsApi
 
     def produce(data)
       @mutex.synchronize {
-      @body += data
+      @body << data
       }
     end
   end
@@ -67,7 +67,9 @@ class DockerConnection < ErrorsApi
       producer.produce(data)
       producer.eof!
     end
-    docker_socket.start {|http| http.request(req) }
+    docker_socket.start {|http| http.request(req) } 
+    rescue StandardError => e
+      log_exception(e)
   end
   
   def format_commands(commands)
