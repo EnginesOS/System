@@ -39,7 +39,7 @@ class DockerConnection < ErrorsApi
       @mutex.synchronize {
         size = -1 if size >= @body.length
         b = @body.slice!(0,size)
-        STDERR.puts(' write b ' + b.to_s)
+        STDERR.puts(' write b ' + b.to_s + ' of ' + size.to_s + ' bytes  remaining str ' + @body.to_s )
         return b
       }
       end
