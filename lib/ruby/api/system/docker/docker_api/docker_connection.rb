@@ -32,12 +32,13 @@ class DockerConnection < ErrorsApi
     end
 
     def read(size, offset)
-      STDERR.puts(' READ PARAm ' + offset.to_s + ',' + size.to_s )
+      STDERR.puts(' READ PARAm ' + offset.to_s + ',' + size.to_s + ' from ' + @body )
       if @body.empty? && @eof
              nil      
       else
       @mutex.synchronize {
         size = -1 if size >= @body.length
+        
         b = @body.slice!(0,size)
         STDERR.puts(' write b ' + b.to_s + ' of ' + size.to_s + ' bytes  remaining str ' + @body.to_s )
         return b
