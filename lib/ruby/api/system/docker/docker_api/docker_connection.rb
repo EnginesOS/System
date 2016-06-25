@@ -105,10 +105,7 @@ h = {}
   h[:stderr] =  ''
       
    while r.length >0
-     unless r[1] == 0
-     h[:stdout] = r
-       break
-   end
+
     if r[0].start_with?("\u0001\u0000\u0000\u0000")
      dst = :stdout
     elsif r[0].start_with?("\u0002\u0000\u0000\u0000")
