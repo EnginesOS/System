@@ -123,12 +123,12 @@ h = {}
     size = r[0,3]
 STDERR.puts(' SIZE '  + size.to_s)
     length = size.unpack("N")
-STDERR.puts(' LENGTH '  + length.to_s + ' cn:' + length[0].class.name)
+STDERR.puts(' LENGTH '  + size.to_s + ' cn:' + length[0].class.name)
     #length = length[0]
     r = r[4..-1]
     l = r.index("\u0000\u0000\u0000")
     unless l.nil?
-    length =  l - 2
+    length =  l - 1
     else
       length = r.length
     end
