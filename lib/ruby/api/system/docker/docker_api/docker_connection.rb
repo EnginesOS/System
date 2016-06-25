@@ -341,7 +341,7 @@ include DockerApiCreateOptions
         #      r = ''
         #      resp.read_body do |chunk|
         #              #hash = parser.parse(chunk) do |hash|
-        STDERR.puts(" CHUNK  " + resp.body.to_s)
+      #  STDERR.puts(" CHUNK  " + resp.body.to_s)
         #             r += chunk
         #              #end
         #            end

@@ -8,6 +8,7 @@ module ContainerSetup
     expire_engine_info
     set_cont_id
     set_running_user
+    domain_name = SystemConfig.internal_domain
     lock_values
   end
 end
