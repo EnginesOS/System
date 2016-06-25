@@ -31,7 +31,7 @@ class DockerConnection < ErrorsApi
       @eof
     end
 
-    def read(offset, size)
+    def read(size, offset)
       @mutex.synchronize {
         STDERR.puts(' READ PARAm ' + offset.to_s + ',' + size.to_s )
         @body.slice!(0,size)
