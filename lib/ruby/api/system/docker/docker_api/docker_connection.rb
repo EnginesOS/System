@@ -17,9 +17,9 @@ class DockerConnection < ErrorsApi
   end
 
   class DataProducer
-    def initialize(data)
+    def initialize()
       @mutex = Mutex.new
-      @body = data
+      @body = ''
       @eof = false
     end
 
@@ -49,19 +49,22 @@ class DockerConnection < ErrorsApi
       end
     end
 
-    def produce()
-      @body += '--60079--'
+    def produce(data)
+      @mutex.synchronize {
+      @body += data
+      }
     end
   end
 
   def perform_data_request(req, container, return_hash, data)
-    producer = DataProducer.new(data)
-
-       req.content_type = "multipart/form-data; boundary=60079"
+    producer = DataProducer.new()
+    #'Transfer-Encoding' => 'chunked', 'content-type' => 'text/plain'
+       req.content_type = "text/plain"
+       req['Transfer-Encoding'] = 'chunked'
        req.content_length = data.length
     req.body_stream = producer
     t1 = Thread.new do
-      producer.produce
+      producer.produce(data)
       producer.eof!
     end
     docker_socket.start {|http| http.request(req) }
