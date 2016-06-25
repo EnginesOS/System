@@ -17,9 +17,9 @@ class DockerConnection < ErrorsApi
   end
 
   class DataProducer
-    def initialize()
+    def initialize(data)
       @mutex = Mutex.new
-      @body = ''
+      @body = data
       @eof = false
     end
 
@@ -51,13 +51,13 @@ class DockerConnection < ErrorsApi
 
     def produce(data)
       @mutex.synchronize {
-      @body << data
+      @body = data
       }
     end
   end
 
   def perform_data_request(req, container, return_hash, data)
-    producer = DataProducer.new()
+    producer = DataProducer.new(data)
     #'Transfer-Encoding' => 'chunked', 'content-type' => 'text/plain'
        req.content_type = "text/plain"
        req['Transfer-Encoding'] = 'chunked'
