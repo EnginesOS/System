@@ -71,15 +71,16 @@ class DockerConnection < ErrorsApi
     request_params = {}
     if data.nil?
       request_params["AttachStdin"] = false
+      request_params["Tty"] =  false
     else
       request_params["AttachStdin"] = true
+      request_params["Tty"] =  true
     end
     request_params[ "AttachStdout"] =  true
     request_params[ "AttachStderr"] =  true
     request_params[ "DetachKeys"] =  "ctrl-p,ctrl-q"
-    request_params["Tty"] =  false
     request_params[ "Cmd"] =  commands
-    #request_params[ "Cmd"] = cmd
+
     request = '/containers/'  + container.container_id.to_s + '/exec'
     r = make_post_request(request, container, request_params)
     STDERR.puts('DOCKER EXEC ' + r.to_s + ': for :' + container.container_name + ': with :' + request_params.to_s)
