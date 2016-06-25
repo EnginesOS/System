@@ -17,9 +17,9 @@ class DockerConnection < ErrorsApi
   end
 
   class DataProducer
-    def initialize()
+    def initialize(data)
       @mutex = Mutex.new
-      @body = ''
+      @body = data
       @eof = false
     end
 
@@ -46,8 +46,8 @@ class DockerConnection < ErrorsApi
       end
     end
 
-    def produce(str)
-      @body = str
+    def produce()
+      
     end
   end
 
@@ -56,9 +56,9 @@ class DockerConnection < ErrorsApi
 
        req.content_type = "multipart/form-data; boundary=60079"
        req.content_length = data.length
-    req.body_stream = producer
+    req.body_stream = producer(data)
     t1 = Thread.new do
-      producer.produce(data)
+      producer.produce
       producer.eof!
     end
     docker_socket.start {|http| http.request(req) }
