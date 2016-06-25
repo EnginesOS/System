@@ -94,7 +94,7 @@ class DockerConnection < ErrorsApi
     exec_id = r['Id']
     request_params = {}
     request_params["Detach"] = false
-    request_params["Tty"] = false
+    request_params["Tty"] = true
     request = '/exec/' + exec_id + '/start'
     r = make_post_request(request, container, request_params, false , data)
 
