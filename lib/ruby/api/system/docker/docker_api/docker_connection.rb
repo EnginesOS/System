@@ -116,7 +116,8 @@ h = {}
     end
 #"\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u000b{\"certs\":[\n\u0001\u0000\u0000\u0000\u0000\u0000\u0000\n\"engines\"\n\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0003]}\n
     
-  STDERR.puts(' CONTENT ' + r.to_s)
+  STDERR.puts("CONTENT " + r.to_s)
+  p r
     r = r[4..-1]
     STDERR.puts(' R ' + r.to_s)
     size = r[0,3]
