@@ -32,9 +32,9 @@ class DockerConnection < ErrorsApi
     end
 
     def read(size, offset)
-      if @body.empty? && @eof
-             nil
       STDERR.puts(' READ PARAm ' + offset.to_s + ',' + size.to_s )
+      if @body.empty? && @eof
+             nil      
       else
       @mutex.synchronize {
         @body.slice!(0,size)
@@ -51,7 +51,7 @@ class DockerConnection < ErrorsApi
     producer = DataProducer.new
 
        req.content_type = "multipart/form-data; boundary=60079"
-       req.content_length = data.length
+       req.content_length = data.length.to_s
     req.body_stream = producer
     t1 = Thread.new do
       producer.produce(data)
