@@ -31,7 +31,7 @@ class DockerConnection < ErrorsApi
       @eof
     end
 
-    def read(size)
+    def read(offset, size)
       @mutex.synchronize {
         @body.slice!(0,size)
       }
