@@ -49,6 +49,7 @@ module DockerApiCreateOptions
     else
       mount_hash['RW'] = false
     end
+    mount_hash
     rescue StandardError => e
       STDERR.puts(' vol ' + volume.to_s)
       log_exception(e, volume)
@@ -72,7 +73,7 @@ module DockerApiCreateOptions
     host_config['PortBindings'] = port_bindings(container)
     #  host_config['LxcConf'] # {"lxc.utsname":"docker"},
     host_config['Memory'] = container.memory.to_s
-    host_config['MemorySwap'] = (container.memory * 2).to_s
+    host_config['MemorySwap'] = (container.memory.to_i * 2).to_s
     host_config['MemoryReservation'] # 0,
     # host_config['KernelMemory'] # 0,
     #  host_config['CpuShares'] # 512,
