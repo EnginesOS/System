@@ -17,9 +17,9 @@ class DockerConnection < ErrorsApi
   end
 
   class DataProducer
-    def initialize(data)
+    def initialize()
       @mutex = Mutex.new
-      @body = data
+      @body = ''
       @eof = false
     end
 
@@ -32,29 +32,29 @@ class DockerConnection < ErrorsApi
     end
 
     def read(size, offset)
+      if @body.empty? && @eof
+             nil
       STDERR.puts(' READ PARAm ' + offset.to_s + ',' + size.to_s )
+      else
       @mutex.synchronize {
         @body.slice!(0,size)
       }
+      end
     end
 
     def produce(str)
-      if @body.empty? && @eof
-        nil
-      else
-        @mutex.synchronize { @body.slice!(0,size) }
-      end
+      @body = str
     end
   end
 
   def perform_data_request(req, container, return_hash, data)
-    producer = DataProducer.new(data)
+    producer = DataProducer.new
 
        req.content_type = "multipart/form-data; boundary=60079"
        req.content_length = data.length
     req.body_stream = producer
     t1 = Thread.new do
-      producer.produce
+      producer.produce(data)
       producer.eof!
     end
     docker_socket.start {|http| http.request(req) }
