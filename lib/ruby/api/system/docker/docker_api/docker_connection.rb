@@ -37,7 +37,10 @@ class DockerConnection < ErrorsApi
              nil      
       else
       @mutex.synchronize {
-        @body.slice!(0,size)
+       
+        b = @body.slice!(0,size)
+        STDERR.puts(' write b ' + b.to_s)
+        return b
       }
       end
     end
@@ -51,7 +54,7 @@ class DockerConnection < ErrorsApi
     producer = DataProducer.new
 
        req.content_type = "multipart/form-data; boundary=60079"
-       req.content_length = data.length.to_s
+       req.content_length = data.length
     req.body_stream = producer
     t1 = Thread.new do
       producer.produce(data)
