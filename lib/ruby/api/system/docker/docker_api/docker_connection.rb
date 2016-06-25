@@ -56,12 +56,11 @@ class DockerConnection < ErrorsApi
 
        req.content_type = "multipart/form-data; boundary=60079"
        req.content_length = data.length
-    req.body = data
-#    req.body_stream = producer
-#    t1 = Thread.new do
-#      producer.produce
-#      producer.eof!
-#    end
+    req.body_stream = producer
+    t1 = Thread.new do
+      producer.produce
+      producer.eof!
+    end
     docker_socket.start {|http| http.request(req) }
   end
   
