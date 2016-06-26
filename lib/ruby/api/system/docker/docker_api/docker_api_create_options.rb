@@ -77,7 +77,7 @@ module DockerApiCreateOptions
   def host_config_options(container)
 
     host_config = {}
-    host_config['Binds'] = volumes_mounts(container)
+ #   host_config['Binds'] = volumes_mounts(container)
     host_config['PortBindings'] = port_bindings(container)
     host_config['Volumes'] = {}
     #  host_config['LxcConf'] # {"lxc.utsname":"docker"},
