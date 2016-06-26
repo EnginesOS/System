@@ -59,9 +59,11 @@ class DockerConnection < ErrorsApi
   def perform_data_request(req, container, return_hash, data)
     producer = DataProducer.new(data)
     #'Transfer-Encoding' => 'chunked', 'content-type' => 'text/plain'
-  #     req.content_type = "text/plain"
+  # 
+    
+    req.content_type = "text/plain"
    #    req['Transfer-Encoding'] = 'chunked'
-   #    req.content_length = data.length
+       req.content_length = data.length
     req.body_stream = producer
     t1 = Thread.new do
       producer.produce(data)
