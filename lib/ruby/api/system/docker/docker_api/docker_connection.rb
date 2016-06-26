@@ -20,7 +20,7 @@ class DockerConnection < ErrorsApi
   require_relative 'docker_api_container_ops.rb'
   include DockerApiContainerOps
   
- # attr_accessor :response_parser
+  attr_accessor :response_parser
 
   def initialize
     @response_parser = Yajl::Parser.new
