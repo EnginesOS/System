@@ -23,11 +23,6 @@ volumes:
   remotepath: "/var/run/nginx"
   localpath: "/opt/engines/run/services/nginx/run/nginx"
   mapping_permissions: "rw" 
- management: 
-  name: management
-  remotepath: "/opt/engines/etc/net/management"
-  localpath: "/opt/engines/etc/net/management"
-  mapping_permissions: "ro"  
 port: 
 mapped_ports:
  https:

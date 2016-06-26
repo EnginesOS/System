@@ -15,7 +15,9 @@ fi
 
 release=`cat /opt/engines/release`
 
-/opt/engines/system/scripts/startup/set_ip.sh  
+
+CONTROL_IP=`/opt/engines/bin/system_ip.sh`
+export CONTROL_IP
 
 sudo -n /opt/engines/system/scripts/startup/sudo/_check_local-kv.sh  
 
@@ -26,7 +28,6 @@ if test -f /opt/engines/system/startup/flags/replace_keys
  fi
 
 
- #chmod oug-w /opt/engines/etc/net/management  
 
 echo Clearing Flags
 cp /etc/os-release /opt/engines/etc/os-release-host 
@@ -46,24 +47,8 @@ rm -f /opt/engines/run/system/flags/update_engines_running
 	 		/opt/engines/system/scripts/refresh_local_hosted_domains.sh `/opt/engines/system/scripts/get_ip.sh` 
 	  fi
 
-docker_ip=`/sbin/ifconfig docker0 |grep "inet add" |cut -f2 -d: | cut -f1 -d" "`
-#rm -f /opt/engines/etc/net/management 
 
-#FIXME below is a kludge
 
-if test -z "$docker_ip"
- then
-   sleep 5 
-       docker_ip=`/sbin/ifconfig docker0 |grep "inet add" |cut -f2 -d: | cut -f1 -d" "`  
- fi
- 
- if test -z "$docker_ip"
- then
-  echo Panic no IP address on docker0
-  exit
-  else
-   echo -n $docker_ip  2>&1 /opt/engines/etc/net/management
-  fi
 
 
 if test -f /usr/bin/pulseaudio
