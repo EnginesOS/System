@@ -2,13 +2,13 @@ module DockerContainerActions
   require_relative 'docker_exec.rb'
   
   def create_container(container)
-   # @docker_comms.create_container(container)
-    clear_error
-    commandargs = DockerCmdOptions.container_commandline_args(container)
-    commandargs = 'docker run  -d ' + commandargs.to_s
-
-    SystemDebug.debug(SystemDebug.docker,'create cont', commandargs)
-     old_docker_cmd_w(commandargs, container)       
+   @docker_comms.create_container(container)
+#    clear_error
+#    commandargs = DockerCmdOptions.container_commandline_args(container)
+#    commandargs = 'docker run  -d ' + commandargs.to_s
+#
+#    SystemDebug.debug(SystemDebug.docker,'create cont', commandargs)
+#     old_docker_cmd_w(commandargs, container)       
   rescue StandardError => e
     container.last_error = ('Failed To Create ')
     log_exception(e)
