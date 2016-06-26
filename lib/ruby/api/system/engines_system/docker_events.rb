@@ -1,53 +1,13 @@
 module DockerEvents
-  require '/opt/engines/lib/ruby/api/system/docker/docker_api/docker_event_watcher.rb'
+  require '/opt/engines/lib/ruby/api/system/docker/docker_api/event_watcher/docker_event_watcher.rb'
 
   def container_event(event_hash)
     return log_error_mesg('Nil event hash passed to container event') if event_hash.nil?
     STDERR.puts(event_hash.to_s)
-#    status = event_hash['status']
-#       s = status.split(':')
-#       if s.count > 1
-#         event_name = s[0]
-#         data = status
-#       else
-#         event_name = status
-#         data = nil
-#       end
-#  SystemDebug.debug(SystemDebug.container_events, 'c name:',event_hash['from'],'event type:',event_name)    
-#       return false if event_name.nil?
-#       return true if event_name.start_with?('exec_')
-#       
-#   unless event_hash.key?('from')
-#    #p :container_event
-#    
-#    id = event_hash['id']
-#     c_name = container_name_from_id(id)
-#     SystemDebug.debug(SystemDebug.container_events, ' from looking up by id', c_name, event_hash)
-#   else   
-#        container_name = event_hash['from'].to_s
-#     if container_name.start_with?('engines/')    
-#       c_name = container_name.sub(/engines\//,'')
-#        c_name.sub!(/:.*/,'')
-#        ctype = 'service'
-#      else    
-#        ctype = 'container'
-#        c_name = container_name
-#      end 
-#    unless File.exist?(SystemConfig.RunDir + '/' + ctype + 's/' + c_name + '/running.yaml')
-#      id = event_hash['id']     
-#      c_name = container_name_from_id(id)
-#      SystemDebug.debug(SystemDebug.container_events, ' from looking up by id because no file', c_name, event_hash)
-#    end    
-#  end 
+
     event_hash['container_name'] = container_name_from_id(event_hash['id']) unless File.exist?(SystemConfig.RunDir + '/' + event_hash['container_type'] + 's/' + event_hash['container_name'] + '/running.yaml')
    return no_container(event_hash) unless File.exist?(SystemConfig.RunDir + '/' + event_hash['container_type'] + 's/' + event_hash['container_name'] + '/running.yaml')
-#  return false if c_name.nil?
-#  ctype = 'container' if ctype.nil?
-#   unless  File.exist?(SystemConfig.RunDir + '/' + ctype + 's/' + c_name + '/running.yaml')            
-#     SystemDebug.debug(SystemDebug.container_events, 'no container file',SystemConfig.RunDir + '/' + ctype + 's/' + c_name + '/running.yaml', event_hash)
-#     return false  # unless event_name == 'create'
-#   end
-#  tracked = true
+
   inform_container(event_hash['container_name'] ,event_hash['container_type'] ,event_hash['status'],event_hash)
   
   case event_hash['status']

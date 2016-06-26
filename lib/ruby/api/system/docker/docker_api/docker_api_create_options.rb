@@ -10,8 +10,8 @@ module DockerApiCreateOptions
     @top_level['ExposedPorts'] = exposed_ports(container)
     @top_level['HostConfig'] = host_config_options(container)
     return @top_level
-    rescue StandardError => e
-      log_exception(e)
+  rescue StandardError => e
+    log_exception(e)
   end
 
   def get_protocol_str(port)
@@ -22,7 +22,7 @@ module DockerApiCreateOptions
 
   def exposed_ports(container)
     eports = {}
-      return eports if container.mapped_ports.nil?
+    return eports if container.mapped_ports.nil?
     container.mapped_ports.each_value do |port|
       eports[port[:port].to_s + '/' + get_protocol_str(port)] = {}
     end
@@ -50,9 +50,9 @@ module DockerApiCreateOptions
       mount_hash['RW'] = false
     end
     mount_hash
-    rescue StandardError => e
-      STDERR.puts(' vol ' + volume.to_s)
-      log_exception(e, volume)
+  rescue StandardError => e
+    STDERR.puts(' vol ' + volume.to_s)
+    log_exception(e, volume)
   end
 
   def get_dns_search
@@ -113,7 +113,7 @@ module DockerApiCreateOptions
 
   def port_bindings(container)
     bindings = {}
-      return bindings if container.mapped_ports.nil?
+    return bindings if container.mapped_ports.nil?
     container.mapped_ports.each_value do |port|
       local_side =     port[:port].to_s + '/' + get_protocol_str(port)
       remote_side = []
@@ -154,8 +154,8 @@ module DockerApiCreateOptions
     mounts_file = File.open(mounts_file_name,'r')
     volumes = YAML::load(mounts_file)
     mounts_file.close
-    
-    volumes.each_value do |volume|      
+
+    volumes.each_value do |volume|
       mounts.push(mount_hash(volume))
     end
 
@@ -187,7 +187,7 @@ module DockerApiCreateOptions
 
   def logdir_mount(container)
     logdir_mount_hash = {}
-    logdir_mount_hash['Source'] = container_local_log_dir(container) 
+    logdir_mount_hash['Source'] = container_local_log_dir(container)
     logdir_mount_hash['Destination'] = in_container_log_dir(container)
     logdir_mount_hash['Mode'] = 'rw,Z'
     logdir_mount_hash['RW'] = true
