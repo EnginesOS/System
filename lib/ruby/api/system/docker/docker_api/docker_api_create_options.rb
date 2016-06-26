@@ -144,9 +144,9 @@ module DockerApiCreateOptions
     top_level['Tty'] = false
     top_level['OpenStdin'] = false
     top_level['StdinOnce'] = false
-    host_config['Labels'] = {}
+    top_level['Labels'] = {}
     top_level['WorkingDir'] = ''
-    host_config['User'] = ''
+    top_level['User'] = ''
     top_level['NetworkDisabled'] = false
     top_level['StopSignal'] = 'SIGTERM'
     top_level['Image']=  container.image
