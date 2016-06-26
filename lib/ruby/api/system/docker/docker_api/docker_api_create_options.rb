@@ -67,10 +67,10 @@ module DockerApiCreateOptions
     search.push(SystemConfig.internal_domain)
     search
   end
-
+  require '/opt/engines/lib/ruby/api/system/system_status.rb'
   def get_dns_servers
     servers = []
-    servers.push( SystemStatus.get_base_host_ip)
+    servers.push( SystemStatus.get_docker_ip)
     servers
   end
 

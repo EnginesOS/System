@@ -14,7 +14,8 @@ then
 fi 
 
 release=`cat /opt/engines/release`
-
+DOCKER_IP=`/opt/engines/bin/docker_ip.sh`
+export DOCKER_IP
 
 CONTROL_IP=`/opt/engines/bin/system_ip.sh`
 export CONTROL_IP

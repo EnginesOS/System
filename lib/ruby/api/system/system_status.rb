@@ -3,10 +3,16 @@ class SystemStatus
     File.exist?(SystemConfig.SystemUpdatingFlag)
   end
 
-  def SystemStatus.get_base_host_ip
-#   
+  # return [String] representing the address of public host interface (ie ifconfig eth0)
+  def SystemStatus.get_base_host_ip   
     return ENV['CONTROL_IP'] #'control.engines.internal'
   end
+  
+  # return [String] representing the address docker interface
+  def SystemStatus.get_docker_ip  
+    return ENV['DOCKER_IP'] #'control.engines.internal'
+  end
+  
 
   def self.is_rebooting?
     File.exist?(SystemConfig.SystemRebootingFlag)
