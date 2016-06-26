@@ -77,7 +77,7 @@ module DockerApiCreateOptions
   def host_config_options(container)
 
     host_config = {}
- #   host_config['Binds'] = volumes_mounts(container)
+    host_config['Binds'] = volumes_mounts(container)
     host_config['PortBindings'] = port_bindings(container)
     host_config['Volumes'] = {}
     #  host_config['LxcConf'] # {"lxc.utsname":"docker"},
@@ -114,9 +114,9 @@ module DockerApiCreateOptions
     #      host_config['Devices'] # [],
     #      host_config['Ulimits'] # [{}],
     #   host_config['LogConfig'] = Hash.new ( "Type": "json-file", "Config": {} )
-    host_config['SecurityOpt']= ""
-    host_config['CgroupParent'] = ""
-    host_config['VolumeDriver'] = ""
+#    host_config['SecurityOpt']= ""
+#    host_config['CgroupParent'] = ""
+#    host_config['VolumeDriver'] = ""
 
     host_config
   end
