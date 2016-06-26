@@ -62,7 +62,7 @@ class DockerConnection < ErrorsApi
   # 
     
     req.content_type = "application/octet-stream" #"text/plain"
-       #req['Transfer-Encoding'] = 'chunked'
+    req['Transfer-Encoding'] = 'chunked'
        req.content_length = data.length
     req.body_stream = producer
     t1 = Thread.new do
