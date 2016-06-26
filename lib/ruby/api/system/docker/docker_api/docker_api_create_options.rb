@@ -79,15 +79,11 @@ module DockerApiCreateOptions
     host_config = {}
     host_config['Binds'] = volumes_mounts(container)
     host_config['PortBindings'] = port_bindings(container)
-    host_config['User']=''
-    host_config['StdinOnce'] = false
-    host_config['Cmd'] = ''
     host_config['Volumes'] = {}
-    host_config['Labels'] = {}
     #  host_config['LxcConf'] # {"lxc.utsname":"docker"},
       memory = container.memory.to_i * 1024 * 1024
     host_config['Memory'] = memory
-    host_config['MemorySwap'] = (memory * 2  ).to_s
+    host_config['MemorySwap'] = memory * 2  
     host_config['MemoryReservation'] # 0,
     # host_config['KernelMemory'] # 0,
     #  host_config['CpuShares'] # 512,
@@ -148,7 +144,9 @@ module DockerApiCreateOptions
     top_level['Tty'] = false
     top_level['OpenStdin'] = false
     top_level['StdinOnce'] = false
+    host_config['Labels'] = {}
     top_level['WorkingDir'] = ''
+    host_config['User'] = ''
     top_level['NetworkDisabled'] = false
     top_level['StopSignal'] = 'SIGTERM'
     top_level['Image']=  container.image
