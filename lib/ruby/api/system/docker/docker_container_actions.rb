@@ -1,8 +1,10 @@
 module DockerContainerActions
   require_relative 'docker_exec.rb'
   
-  def create_container(container)
-   @docker_comms.create_container(container)
+  def create_container(container, create_only = false)
+   r = @docker_comms.create_container(container)
+   return r if create_only == true || r.is_a?(EnginesError) 
+    @docker_comms.start_container(container)
 #    clear_error
 #    commandargs = DockerCmdOptions.container_commandline_args(container)
 #    commandargs = 'docker run  -d ' + commandargs.to_s
