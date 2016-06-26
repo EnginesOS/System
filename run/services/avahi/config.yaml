@@ -18,7 +18,7 @@ volumes:
   name: ip_file
   remotepath: "/home/net/"
   localpath: "/opt/engines/etc/net/"
-  permissions: "ro"
+  mapping_permissions: "ro"
 mapped_ports:
  mdns:
   name: mdns

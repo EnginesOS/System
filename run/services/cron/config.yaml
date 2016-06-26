@@ -16,12 +16,12 @@ volumes:
   name: socket
   remotepath: "/var/run/docker.sock"
   localpath: "/var/run/docker.sock"
-  permissions: rw
+  mapping_permissions: rw
  docker_bin: 
   name: docker_bin
   remotepath: "/usr/bin/docker"
   localpath: "/usr/bin/docker"
-  permissions: ro
+  mapping_permissions: ro
 port: 
 mapped_ports:
 repo: na

@@ -16,7 +16,7 @@ volumes:
   name: store
   remotepath: "/var/lib/redis"
   localpath: "/var/lib/engines/redis"
-  permissions: rw
+  mapping_permissions: rw
 port: 
 mapped_ports:
 repo: na

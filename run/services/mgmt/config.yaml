@@ -14,12 +14,12 @@ volumes:
   volume_name: cert_key
   remotepath: "/opt/engines/etc/ssl/keys/engines.key"
   localpath: "/var/lib/engines/cert_auth/public/keys/engines.key"
-  permissions: "ro"
+  mapping_permissions: "ro"
  cert: 
   volume_name: cert
   remotepath: "/opt/engines/etc/ssl/certs/engines.crt"
   localpath: "/var/lib/engines/cert_auth/public/certs/engines.crt"
-  permissions: "ro"  
+  mapping_permissions: "ro"  
 mapped_ports:
  web:
   name: web

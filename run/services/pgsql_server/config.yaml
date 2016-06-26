@@ -15,12 +15,12 @@ volumes:
   name: pg_database
   remotepath: "/var/lib/postgresql/"
   localpath: "/var/lib/engines/pgsql"
-  permissions: "rw"
+  mapping_permissions: "rw"
  sslcerts: 
   name: sslcerts
   remotepath: "/etc/ssl/"
   localpath: "/opt/engines/etc/pgsql/ssl/"
-  permissions: "ro"
+  mapping_permissions: "ro"
 port: 
 mapped_ports:
  pgsql: 

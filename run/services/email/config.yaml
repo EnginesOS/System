@@ -14,7 +14,7 @@ volumes:
   name: ssl_dir
   remotepath: "/etc/ssl"
   localpath: "/opt/engines/etc/email/ssl"
-  permissions: "ro"
+  mapping_permissions: "ro"
 environments:
 - !ruby/object:EnvironmentVariable
  name: DEFAULT_DOMAIN

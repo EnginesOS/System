@@ -15,17 +15,17 @@ volumes:
   name: ssl_certs
   remotepath: "/etc/ssl/"
   localpath: "/opt/engines/etc/ftp/ssl/"
-  permissions: "ro"
+  mapping_permissions: "ro"
  fs_rw: 
   name: fs_rw
   remotepath: "/ftp/rw/"
   localpath: "/var/lib/engines/fs/"
-  permissions: "rw"
+  mapping_permissions: "rw"
  fs_ro: 
   name: fs_ro
   remotepath: "/ftp/ro/"
   localpath: "/var/lib/engines/fs/"
-  permissions: "rw"
+  mapping_permissions: "rw"
 port: 
 mapped_ports:
  ftp:

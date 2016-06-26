@@ -15,7 +15,7 @@ volumes:
   name: weblogs
   remotepath: "/var/log/www/"
   localpath: "/var/log/engines/services/nginx/nginx/"
-  permissions: ro
+  mapping_permissions: ro
 port: 
 mapped_ports:
 repo: na

@@ -15,7 +15,7 @@ volumes:
   name: ssl_dir
   remotepath: "/etc/ssl"
   localpath: "/opt/engines/etc/smtp/ssl"
-  permissions: "ro"
+  mapping_permissions: "ro"
 port: 
 mapped_ports: 
  smtp: 

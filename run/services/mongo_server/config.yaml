@@ -15,7 +15,7 @@ volumes:
   name: mg_database
   remotepath: "/data/db/"
   localpath: "/var/lib/engines/mongo"
-  permissions: "rw"
+  mapping_permissions: "rw"
 port: 
 mapped_ports:
  mongo: 
