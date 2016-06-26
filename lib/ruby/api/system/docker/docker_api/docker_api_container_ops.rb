@@ -9,7 +9,6 @@ module DockerApiContainerOps
       request = '/containers/' + container.container_id.to_s + '/json'
     end
     r = make_request(request, container)
-    STDERR.puts('container_exists ' + r.to_s)
     return true if r.is_a?(Hash)
     return false
   rescue StandardError => e
@@ -34,10 +33,5 @@ module DockerApiContainerOps
     request_params = create_options(container)
     request = '/containers/create?name=' + container.container_name
     make_post_request(request, container, request_params)
-   
-
   end
-
- 
-
 end
