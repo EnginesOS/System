@@ -50,5 +50,10 @@ class SystemAccess
     #       p rnd.byteslice(0,len)
     return rnd.byteslice(0,len)
   end
+  
+  def mgmt_host
+    # FixME read docker0 ip or cmd line option
+    '172.17.0.1'
+  end
 
 end
