@@ -20,7 +20,7 @@ class DockerConnection < ErrorsApi
   require_relative 'docker_api_container_ops.rb'
   include DockerApiContainerOps
   
-  attr_accessor :response_parser
+ # attr_accessor :response_parser
 
   def initialize
     @response_parser = Yajl::Parser.new
@@ -30,9 +30,9 @@ class DockerConnection < ErrorsApi
   end
 
   class DataProducer
-    def initialize(data)
+    def initialize()
       @mutex = Mutex.new
-      @body = data
+      @body = ''
       @eof = false
     end
 
@@ -71,7 +71,7 @@ class DockerConnection < ErrorsApi
   end
 
   def perform_data_request(req, container, return_hash, data)
-    producer = DataProducer.new(data)
+    producer = DataProducer.new
     #'Transfer-Encoding' => 'chunked', 'content-type' => 'text/plain'
     #
 
@@ -175,7 +175,16 @@ class DockerConnection < ErrorsApi
     end
   end
 
-  private
+private
+
+ def clear_cid(container)
+   SystemDebug.debug(SystemDebug.docker, '++++++++++++++++++++++++++Cleared Cid')
+
+   container.clear_cid
+   return false
+ rescue StandardError => e
+   log_exception(e)
+ end
 
   def docker_socket
     return @docker_socket unless @docker_socket.nil?

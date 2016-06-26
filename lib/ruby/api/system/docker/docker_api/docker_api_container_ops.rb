@@ -38,15 +38,6 @@ module DockerApiContainerOps
 
   end
 
-  private
-
-  def clear_cid(container)
-    SystemDebug.debug(SystemDebug.docker, '++++++++++++++++++++++++++Cleared Cid')
-
-    container.clear_cid
-    return false
-  rescue StandardError => e
-    log_exception(e)
-  end
+ 
 
 end

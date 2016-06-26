@@ -6,7 +6,7 @@ module DockerApiCreateOptions
   def create_options(container)
     @top_level = build_top_level(container)
     @top_level['Env'] = envs(container)
-    @top_level['Mounts'] = volumes_mounts(container)
+  #  @top_level['Mounts'] = volumes_mounts(container)
     @top_level['ExposedPorts'] = exposed_ports(container)
     @top_level['HostConfig'] = host_config_options(container)
     return @top_level
@@ -40,16 +40,22 @@ module DockerApiCreateOptions
 
   def mount_hash(volume)
     volume = SystemUtils.symbolize_keys(volume)
-    mount_hash = {}
-    mount_hash['Source'] = volume[:localpath]
-    mount_hash['Destination'] = volume[:remotepath]
-    mount_hash['Mode'] = volume[:permissions] + ',Z'
     if volume[:permissions] == 'rw'
-      mount_hash['RW'] = true
-    else
-      mount_hash['RW'] = false
-    end
-    mount_hash
+         perms = 'rw'
+        else
+          perms = 'ro'
+        end
+    volume[:localpath] + ':' + volume[:remotepath] + ':' + perms
+#    mount_hash = {}
+#    mount_hash['Source'] = volume[:localpath]
+#    mount_hash['Destination'] = volume[:remotepath]
+#    mount_hash['Mode'] = volume[:permissions] + ',Z'
+#    if volume[:permissions] == 'rw'
+#      mount_hash['RW'] = true
+#    else
+#      mount_hash['RW'] = false
+#    end
+#    mount_hash
   rescue StandardError => e
     STDERR.puts(' vol ' + volume.to_s)
     log_exception(e, volume)
@@ -70,6 +76,7 @@ module DockerApiCreateOptions
   def host_config_options(container)
 
     host_config = {}
+    host_config['Binds'] = volumes_mounts(container)
     host_config['PortBindings'] = port_bindings(container)
     #  host_config['LxcConf'] # {"lxc.utsname":"docker"},
     host_config['Memory'] = container.memory.to_s
@@ -237,10 +244,10 @@ module DockerApiCreateOptions
   end
 
   def envs(container)
-    envs = {}
+    envs = []
     container.environments.each do |env|
-      next if env.build_time_only
-      envs[env.name] = env.value
+      next if env.build_time_only   
+      envs.push(env.name.to_s + '=' + env.value.to_s)
     end
     envs
   end
