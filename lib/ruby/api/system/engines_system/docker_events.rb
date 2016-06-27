@@ -4,9 +4,11 @@ module DockerEvents
   def container_event(event_hash)
     return log_error_mesg('Nil event hash passed to container event','') if event_hash.nil?
     STDERR.puts(event_hash.to_s)
-    event_hash['container_name'] = container_name_from_id(event_hash['id']) unless event_hash.key?('container_name') && ! event_hash['container_name'].nil?
-    event_hash['container_name'] = container_name_from_id(event_hash['id']) unless File.exist?(SystemConfig.RunDir + '/' + event_hash['container_type'].to_s + 's/' + event_hash['container_name'].to_s + '/running.yaml')
-   return no_container(event_hash) unless File.exist?(SystemConfig.RunDir + '/' + event_hash['container_type'] + 's/' + event_hash['container_name'] + '/running.yaml')
+    event_hash['container_name'] = container_name_from_id(event_hash['id']) unless event_hash.key?('container_name') 
+    event_hash['container_name'] = container_name_from_id(event_hash['id']) if event_hash['container_name'].nil?
+    event_hash['container_name'] = container_name_from_id(event_hash['id']) unless File.exist?(SystemConfig.RunDir + '/' + event_hash['container_type'].to_s + 's/' + event_hash['container_name'].to_s + '/config.yaml')
+    return no_container(event_hash) if event_hash['container_name'].nil?
+   return no_container(event_hash) unless File.exist?(SystemConfig.RunDir + '/' + event_hash['container_type'] + 's/' + event_hash['container_name'] + '/config.yaml')
 
   inform_container(event_hash['container_name'] ,event_hash['container_type'] ,event_hash['status'],event_hash)
   
@@ -33,6 +35,7 @@ module DockerEvents
      end  
      
     rescue StandardError => e
+      
        log_exception(e, event_hash)
 
 end

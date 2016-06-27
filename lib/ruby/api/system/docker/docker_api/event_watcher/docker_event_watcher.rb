@@ -45,26 +45,26 @@ class DockerEventWatcher  < ErrorsApi
       STDERR.puts(e.to_s + ':' +  e.backtrace.to_s)
       return e
     end
-    
-def state_from_status(status)
-    case status
-    when 'stop'
-      return 'stopped'
-    when 'run'
-      return 'running'
-   when 'start'
+
+    def state_from_status(status)
+      case status
+      when 'stop'
+        return 'stopped'
+      when 'run'
         return 'running'
-    when 'pause'
-      return 'paused'
-    when 'unpause'
-      return 'running'
-    when 'delete'
-      return 'nocontainer'
-    else
-      return status
+      when 'start'
+        return 'running'
+      when 'pause'
+        return 'paused'
+      when 'unpause'
+        return 'running'
+      when 'delete'
+        return 'nocontainer'
+      else
+        return status
+      end
     end
-  end
-  
+
     def event_mask(event_hash)
       mask = 0
       if event_hash['Type'] = 'container'
@@ -102,7 +102,6 @@ def state_from_status(status)
 
       return mask
 
-
     end
   end
   require 'yajl'
@@ -133,7 +132,7 @@ def state_from_status(status)
           @event_listeners.values.each do |listener |
 
             log_exeception(r) if (r = listener.trigger(hash)).is_a?(StandardError)
-              STDERR.puts(' TRigger returned ' + r.class.name + ':' + r.to_s + ' on ' + hash.to_s + ' with ' +  listener.to_s)
+            STDERR.puts(' TRigger returned ' + r.class.name + ':' + r.to_s + ' on ' + hash.to_s + ' with ' +  listener.to_s)
           end
 
           # @system_api.container_event(hash) # if hash.key?('from')
@@ -155,8 +154,6 @@ def state_from_status(status)
   def rm_event_listener(listener)
     STDERR.puts('REMOVED listenter ' + listener.class.name)
     @event_listeners.delete(listener.object_id) if @event_listeners.key?(listener.object_id)
-
   end
 
-  
 end
