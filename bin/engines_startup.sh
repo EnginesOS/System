@@ -12,7 +12,7 @@ if test -f  ~/.complete_update
 then
    /opt/engines/system/scripts/update/finish_update.sh  
 fi 
-
+ /opt/engines/system/scripts/startup/set_ip.sh
 release=`cat /opt/engines/release`
 DOCKER_IP=`/opt/engines/bin/docker_ip.sh`
 export DOCKER_IP
@@ -45,11 +45,8 @@ rm -f /opt/engines/run/system/flags/update_engines_running
 	grep dhcp /etc/network/interfaces
 	 if test $? -eq 0
 	  then
-	 		/opt/engines/system/scripts/refresh_local_hosted_domains.sh `/opt/engines/system/scripts/get_ip.sh` 
+	 		/opt/engines/system/scripts/refresh_local_hosted_domains.sh `/opt/engines/bin/system_ip.sh` 
 	  fi
-
-
-
 
 
 if test -f /usr/bin/pulseaudio
@@ -57,8 +54,6 @@ if test -f /usr/bin/pulseaudio
  	/usr/bin/pulseaudio -D
  fi
  
- 	
-
 
 docker start registry
 #ruby /opt/engines/bin/system_service.rb registry start
