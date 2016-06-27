@@ -282,6 +282,7 @@ class EngineBuilder < ErrorsApi
 
   def build_init
     log_build_output('Building Image')
+    create_build_tar
     log_build_output('Cancelable:true')
     cmd = 'nohup /usr/bin/docker build --force-rm=true --tag=' + @build_params[:engine_name] + ' ' + basedir
     res = run_system(cmd)
@@ -292,6 +293,11 @@ class EngineBuilder < ErrorsApi
     log_exception(e)
   end
 
+  def create_build_tar
+    dest_file = SystemConfig.DeploymentDir + '/' + @build_name.to_s + '.tgz'
+    cmd = ' tar -czpf ' + dest_file + ' ' +  basedir
+    run_system(cmd)
+  end
   def launch_deploy(managed_container)
     log_build_output('Launching Engine')
     mc = managed_container.create_container
@@ -562,7 +568,7 @@ class EngineBuilder < ErrorsApi
   end
 
   def basedir
-    return SystemConfig.DeploymentDir + '/' + @build_name.to_s
+     SystemConfig.DeploymentDir + '/' + @build_name.to_s
   end
 
   private

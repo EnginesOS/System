@@ -4,7 +4,7 @@ module DockerEvents
   def container_event(event_hash)
     return log_error_mesg('Nil event hash passed to container event','') if event_hash.nil?
     STDERR.puts(event_hash.to_s)
-
+    event_hash['container_name'] = container_name_from_id(event_hash['id']) unless event_hash.key?('container_name') && ! event_hash['container_name'].nil?
     event_hash['container_name'] = container_name_from_id(event_hash['id']) unless File.exist?(SystemConfig.RunDir + '/' + event_hash['container_type'].to_s + 's/' + event_hash['container_name'].to_s + '/running.yaml')
    return no_container(event_hash) unless File.exist?(SystemConfig.RunDir + '/' + event_hash['container_type'] + 's/' + event_hash['container_name'] + '/running.yaml')
 

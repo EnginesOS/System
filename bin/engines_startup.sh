@@ -75,7 +75,7 @@ if test `/opt/engines/bin/system_service.rb system state` = \"nocontainer\"
   		  echo "ERROR failed to start system "
   		fi
   done 
- 
+ sleep 5
 /opt/engines/bin/engines_tool system login test test
   
   
