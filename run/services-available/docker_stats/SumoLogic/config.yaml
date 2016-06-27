@@ -17,7 +17,7 @@ volumes:
   name: socket
   remotepath: "/var/run/docker.sock"
   localpath: "/var/run/docker.sock"
-  mapping_permissions: ro
+  permissions: ro
 repo: na
 last_result: 
 setState: running

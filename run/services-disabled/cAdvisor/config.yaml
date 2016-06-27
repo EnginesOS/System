@@ -11,7 +11,7 @@ volumes:
   name: var_run
   remotepath: "/var/run"
   localpath: "/var/run"
-  mapping_permissions: "rw"
+  permissions: "rw"
  lib_docker: 
   name: lib_docker
   remotepath: "/var/lib/docker"
@@ -21,7 +21,7 @@ volumes:
   name: system_path
   remotepath: "/sys/"
   localpath: "/sys/"
-  mapping_permissions: "ro"
+  permissions: "ro"
 port: 8080
 eports: []
 repo: na

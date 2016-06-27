@@ -27,57 +27,57 @@ volumes:
   name: icons_dir
   remotepath: "/home/app/public/system/"
   localpath: "/var/lib/engines/mgmt/public/system/"
-  mapping_permissions: rw
+  permissions: rw
  socket: 
   name: socket
   remotepath: "/var/run/docker.sock"
   localpath: "/var/run/docker.sock"
-  mapping_permissions: rw
+  permissions: rw
  build_dirs: 
   name: build_dirs
   remotepath: "/home/engines/deployment"
   localpath: "/home/engines/deployment"
-  mapping_permissions: rw
+  permissions: rw
  ssh_key_dir: 
   name: ssh_key_dir
   remotepath: "/home/engines/.ssh/mgmt/"
   localpath: "/home/engines/.ssh/mgmt/"
-  mapping_permissions: rw 
+  permissions: rw 
  sqlite: 
   name: sqlite
   remotepath: "/home/app/db/production.sqlite3"
   localpath: "/home/engines/db/production.sqlite3"
-  mapping_permissions: rw
+  permissions: rw
  docker_bin: 
   name: docker_bin
   remotepath: "/usr/bin/docker"
   localpath: "/usr/bin/docker"
-  mapping_permissions: ro
+  permissions: ro
  engines_system: 
   name: engines_system
   remotepath: "/opt/engines"
   localpath: "/opt/engines"
-  mapping_permissions: rw
+  permissions: rw
  engines_fs: 
   name: engines_fs
   remotepath: "/var/lib/engines/fs"
   localpath: "/var/lib/engines/fs"
-  mapping_permissions: rw
+  permissions: rw
  engines_logs: 
   name: engineslogs
   remotepath: "/var/log/engines"
   localpath: "/var/log/engines"
-  mapping_permissions: rw
+  permissions: rw
  engines_sys: 
   name: engines_sys
   remotepath: "/sys"
   localpath: "/sys"
-  mapping_permissions: ro 
+  permissions: ro 
  engines_ca: 
   name: engines_ca
   remotepath: "/opt/engines/etc/ssl/"
   localpath: "/var/lib/engines/cert_auth/public/"
-  mapping_permissions: rw
+  permissions: rw
 port: 
 mapped_ports:
  access: 

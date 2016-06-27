@@ -16,7 +16,7 @@ volumes:
   name: registry_dir
   remotepath: "/opt/engines/run/service_manager/"
   localpath: "/var/lib/engines/registry"
-  mapping_permissions: rw
+  permissions: rw
 port: 
 mapped_ports: 
 repo: na

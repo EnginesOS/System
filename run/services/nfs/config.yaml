@@ -16,17 +16,17 @@ volumes:
   name: fs_rw
   remotepath: "/nfs/rw/"
   localpath: "/var/lib/engines/fs/"
-  mapping_permissions: "rw"
+  permissions: "rw"
  fs_ro: 
   name: fs_ro
   remotepath: "/nfs/ro/"
   localpath: "/var/lib/engines/fs/"
-  mapping_permissions: "rw"
+  permissions: "rw"
  cgroup: 
   name: cgroup
   remotepath: "/sys/fs/cgroup"
   localpath: "/sys/fs/cgroup"
-  mapping_permissions: "ro"
+  permissions: "ro"
 port: 
 mapped_ports:
  rpc:

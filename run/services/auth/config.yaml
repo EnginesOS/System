@@ -15,12 +15,12 @@ volumes:
   name: auth_static_store
   remotepath: "/home/auth/static/"
   localpath: "/opt/engines/etc/auth/"
-  mapping_permissions: "rw"
+  permissions: "rw"
  krdb: 
   name: krdb
   remotepath: "/etc/krb5kdc"
   localpath: "/var/lib/engines/auth/"
-  mapping_permissions: "rw"
+  permissions: "rw"
 image: engines/auth:_Engines_System(release)
 port: 
 mapped_ports:

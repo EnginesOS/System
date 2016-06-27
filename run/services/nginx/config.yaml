@@ -17,12 +17,12 @@ volumes:
   name: sslcerts
   remotepath: "/etc/nginx/ssl/"
   localpath: "/opt/engines/etc/nginx/ssl/"
-  mapping_permissions: "ro"
+  permissions: "ro"
  var_run: 
   name: var_run
   remotepath: "/var/run/nginx"
   localpath: "/opt/engines/run/services/nginx/run/nginx"
-  mapping_permissions: "rw" 
+  permissions: "rw" 
 port: 
 mapped_ports:
  https:
