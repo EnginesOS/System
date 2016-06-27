@@ -9,7 +9,7 @@ class EnginesError # < FalseClass
     @source[0] = caller[2].to_s 
     @source[1] = caller[3].to_s if caller.count >= 4
     @source[2] = caller[4].to_s if caller.count >= 5
-
+    @source[3] = caller[4].to_s if caller.count >= 5
   end
   
 def to_h
