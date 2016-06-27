@@ -108,6 +108,7 @@ class EngineBuilder < ErrorsApi
     SystemDebug.debug(SystemDebug.builder,  ' Starting build with params ',  @build_params)
     log_build_output('Checking Free space')
     space = @core_api.system_image_free_space
+    return build_failed('Failed to determine free space ') if space.is_a?(EnginesError)
     space /= 1024
     SystemDebug.debug(SystemDebug.builder,  ' free space /var/lib/docker only ' + space.to_s + 'MB')
     return build_failed('Not enough free space /var/lib/docker only ' + space.to_s + 'MB') if space < SystemConfig.MinimumFreeImageSpace  && space != -1
