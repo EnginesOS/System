@@ -42,7 +42,7 @@ module ManagedServiceConsumers
     return log_error_mesg('Cant register consumers as not running ',self)  if is_running? == false
     registered_hashes = registered_consumers
    # return true if registered_hashes.nil? 
-    return true unless registered_hashes.is_a?(EnginesRegistryError)
+    return true if registered_hashes.is_a?(EnginesRegistryError) # no consumers
     
     registered_hashes.each do |service_hash|
       add_consumer_to_service(service_hash) if service_hash[:persistent] == false
