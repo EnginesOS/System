@@ -28,7 +28,7 @@ module DockerApiCreateOptions
     STDERR.puts(' Mapped Ports to expose ' + container.mapped_ports.to_s)
     container.mapped_ports.each_value do |port|
       port = SystemUtils.symbolize_keys(port)
-      STDERR.puts(' exposing ' + port.to_s)
+      STDERR.puts(' exposing ' + port.to_s + '' + port[:port].to_s + '/' + get_protocol_str(port)) 
       eports[port[:port].to_s + '/' + get_protocol_str(port)] = {}
     end
     eports
@@ -135,6 +135,7 @@ module DockerApiCreateOptions
       remote_side[0] = {}
       remote_side[0]['HostPort'] = port[:external].to_s
       bindings[local_side] = remote_side
+      STDERR.puts( 'binding localside ' + local_side.to_s + '=' + bindings[local_side] .to_s )
     end
     bindings
   end
