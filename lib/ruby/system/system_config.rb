@@ -10,7 +10,9 @@ class SystemConfig
 
   require_relative 'system_config/engines_system_files.rb'
   extend EnginesSystemFiles
-
+  
+  require_relative 'system_config/system_version.rb'
+  extend SystemVersion
 
   @@RegistryPort = 21027
   @@default_webport = 8000
