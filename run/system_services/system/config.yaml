@@ -21,6 +21,7 @@ environments:
  name: CONTROL_IP
  value: _Engines_System(mgmt_host)
  setatrun: false  
+- !ruby/object:EnvironmentVariable 
  name: DOCKER_IP
  value: _Engines_System(docker_ip)
  setatrun: false   
