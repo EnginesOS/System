@@ -14,4 +14,7 @@ module DockerOperations
     @docker_api.docker_exec(container, commandline, log_error, data)    
   end
   
+  def  container_name_and_type_from_id(id)
+    @docker_api.container_name_and_type_from_id(id)
+  end
 end

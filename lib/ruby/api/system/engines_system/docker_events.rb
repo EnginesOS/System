@@ -2,7 +2,7 @@ module DockerEvents
   require '/opt/engines/lib/ruby/api/system/docker/docker_api/event_watcher/docker_event_watcher.rb'
 
   def  fill_in_event_system_values(event_hash)
-    cn_and_t = container_name_nad_type_from_id(event_hash['id'])
+    cn_and_t = @engines_api.container_name_and_type_from_id(event_hash['id'])
       return false if cn.nil?
     event_hash['container_name'] = cn_and_t[0]
     event_hash['container_type'] = cn_and_t[0]
