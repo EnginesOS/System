@@ -41,7 +41,16 @@ module DockerApiContainerStatus
     SystemDebug.debug(SystemDebug.containers,'ps_container',container.container_name,r)
     return r
   end
-
+  
+  def container_name_and_type_from_id(id)
+    request = '/containers/' + id.to_s + '/json'
+    r =  make_request(request, container)
+    return r if r.is_a?(EnginesError)
+    ret = []
+      ret[0] = r['labels']['container_name']
+      ret[1] = r['labels']['container_type']
+  end
+  
   def container_id_from_name(container)
     # request='/containers/json?son?all=false&name=/' + container.container_name
     request='/containers/' + container.container_name + '/json'

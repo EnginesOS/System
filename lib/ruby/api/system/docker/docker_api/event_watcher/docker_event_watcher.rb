@@ -143,6 +143,8 @@ class DockerEventWatcher  < ErrorsApi
     log_exception(e,chunk)
   end
 
+
+  
   def add_event_listener(listener, event_mask = nil)
     STDERR.puts('ADDED listenter ' + listener.class.name)
     event = EventListener.new(listener,event_mask)

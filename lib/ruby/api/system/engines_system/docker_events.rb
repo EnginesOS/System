@@ -1,10 +1,19 @@
 module DockerEvents
   require '/opt/engines/lib/ruby/api/system/docker/docker_api/event_watcher/docker_event_watcher.rb'
 
+  def  fill_in_event_system_values(event_hash)
+    cn_and_t = container_name_nad_type_from_id(event_hash['id'])
+      return false if cn.nil?
+    event_hash['container_name'] = cn_and_t[0]
+    event_hash['container_type'] = cn_and_t[0]
+    event_hash   
+  end
+  
   def container_event(event_hash)
     return log_error_mesg('Nil event hash passed to container event','') if event_hash.nil?
     STDERR.puts('1 CONTAINER EVENTS' + event_hash.to_s)
   
+    fill_in_event_system_values(event_hash)
 
     event_hash['container_name'] = container_name_from_id(event_hash['id']) unless event_hash.key?('container_name')
     STDERR.puts('2 CONTAINER EVENTS' + event_hash.to_s)

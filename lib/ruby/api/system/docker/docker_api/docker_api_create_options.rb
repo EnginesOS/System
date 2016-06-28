@@ -163,6 +163,7 @@ module DockerApiCreateOptions
   end
   def get_labels(container)
     labels = {}  
+    labels['container_name'] = container.container_name
     labels['container_type'] = container.ctype
       return labels
   end
