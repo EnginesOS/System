@@ -131,6 +131,7 @@ class DockerConnection < ErrorsApi
         clear_cid(container) if ! container.nil? && resp.body.start_with?('no such id: ')
         return log_error_mesg("no such id response from docker", resp, resp.body)
       end
+      return false if resp.code  == '409'
       return true if resp.code  == '204' # nodata but all good
       STDERR.puts(' RESPOSE ' + resp.code.to_s + ' : ' + resp.msg  )
       return log_error_mesg("no OK response from docker", resp, resp.body, resp.msg )   unless resp.code  == '200' ||  resp.code  == '201'
