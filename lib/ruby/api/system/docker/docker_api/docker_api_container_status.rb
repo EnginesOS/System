@@ -45,9 +45,14 @@ module DockerApiContainerStatus
   def container_name_and_type_from_id(id)
     request = '/containers/' + id.to_s + '/json'
     r =  make_request(request, nil)
+    if r.is_a?(FalseClass) # 409 conflict occurs if ask too soon ?
+      sleep 0.2
+      r =  make_request(request, nil)
+    end
     STDERR.puts(' container_name_and_type_from_id GOT ' + r.to_s)
     STDERR.puts(' container_name_and_type_from_id GOT ' + r['Config']['Labels'].to_s)
     return r if r.is_a?(EnginesError)
+    return log_error(' 409 twice for ' + request.to_s) if r == false
     return false unless r.key?('Config')
     return false unless r['Config'].key?('Labels')
     ret = []
