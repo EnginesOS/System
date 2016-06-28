@@ -16,6 +16,7 @@ class Container < ErrorsApi
   require_relative 'container/engines_api_access.rb'
   include EnginesApiAccess
   @conf_register_dns = true
+  
   def self.from_yaml(yaml, container_api)
     container = YAML::load(yaml)
     return SystemUtils.log_error_mesg(" Failed to Load yaml ", yaml, container_name) if container.nil?
@@ -42,10 +43,6 @@ class Container < ErrorsApi
   :container_id,
   :arguments
 
-  def eports
-    @mapped_ports
-  end
-
   def update_memory(new_memory)
     @memory = new_memory
   end
@@ -54,7 +51,5 @@ class Container < ErrorsApi
     return true if @host_network.is_a?(TrueClass)
     return false
   end
-
-  #   /#<[a-z,A-Z]:0x[0-9][a-f]>/
 
 end

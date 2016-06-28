@@ -7,7 +7,7 @@ module SmEngineServices
     test_registry_result(system_registry_client.find_engine_services_hashes(params))
   end
   #
-
+  
   def find_engine_service_hash(params)
     clear_error
     test_registry_result(system_registry_client.find_engine_service_hash(params))
@@ -38,7 +38,7 @@ module SmEngineServices
     params[:parent_engine] = engine.container_name
     params[:container_type] = engine.ctype
     services = get_engine_nonpersistent_services(params)
-    return false  unless services.is_a?(Array)
+    return services  unless services.is_a?(Array)
     services.each do |service_hash|
       test_registry_result(system_registry_client.remove_from_services_registry(service_hash))
       remove_from_managed_service(service_hash)
@@ -47,7 +47,30 @@ module SmEngineServices
   rescue StandardError => e
     log_exception(e)
   end
+  def list_persistent_services(engine)
+      clear_error
+      params = {}
+  params[:parent_engine] = engine.container_name
+  params[:container_type] = engine.ctype
 
+  services = get_engine_persistent_services(params)
+
+return services
+    rescue StandardError => e
+      log_exception(e)
+  end 
+  def list_non_persistent_services(engine)
+      clear_error
+      params = {}
+  params[:parent_engine] = engine.container_name
+  params[:container_type] = engine.ctype
+
+  services = get_engine_nonpersistent_services(params)
+
+return services
+    rescue StandardError => e
+      log_exception(e)
+  end
   #service manager get non persistent services for engine_name
   #for each servie_hash load_service_container and add hash
   #add to service registry even if container is down
@@ -57,7 +80,7 @@ module SmEngineServices
     params[:parent_engine] = engine.container_name
     params[:container_type] = engine.ctype
     services = get_engine_nonpersistent_services(params)
-    return log_error_mesg("No Services for " + params.to_s, services)  unless services.is_a?(Array)
+    return services  unless services.is_a?(Array)
     services.each do |service_hash|
       register_non_persistent_service(service_hash)
     end
@@ -83,14 +106,14 @@ module SmEngineServices
     services.each do | service |
       if params[:remove_all_data] && ! (service.key?(:shared) && service[:shared])
         service[:remove_all_data] = params[:remove_all_data]
-        unless delete_service(service)
-          log_error_mesg('Failed to remove service ',service)
-          next
+        if (r = delete_service(service)).is_a?(EnginesError)
+         return r
+        #  next
         end
       else
-        unless orphanate_service(service)
-          log_error_mesg('Failed to orphan service ',service)
-          next
+        unless (r = orphanate_service(service)).is_a?(EnginesError)
+          return r
+        #  next
         end
       end
       system_registry_client.remove_from_managed_engines_registry(service)

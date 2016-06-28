@@ -11,35 +11,35 @@ domain_name:
 environments: []
 image: engines/nfs:_Engines_System(release)
 volumes:
- ssl_certs: !ruby/object:Volume
- fs_rw: !ruby/object:Volume
+ ssl_certs: 
+ fs_rw: 
   name: fs_rw
   remotepath: "/nfs/rw/"
   localpath: "/var/lib/engines/fs/"
-  mapping_permissions: "rw"
- fs_ro: !ruby/object:Volume
+  permissions: "rw"
+ fs_ro: 
   name: fs_ro
   remotepath: "/nfs/ro/"
   localpath: "/var/lib/engines/fs/"
-  mapping_permissions: "rw"
- cgroup: !ruby/object:Volume
+  permissions: "rw"
+ cgroup: 
   name: cgroup
   remotepath: "/sys/fs/cgroup"
   localpath: "/sys/fs/cgroup"
-  mapping_permissions: "ro"
+  permissions: "ro"
 port: 
 mapped_ports:
-- !ruby/object:WorkPort
+ rpc:
   name: rpc
   port: 111
   publicFacing: true
   external: 111
-- !ruby/object:WorkPort
+ mountd: 
   name: mountd
   port: 2049
   publicFacing: true
   external: 2049
-- !ruby/object:WorkPort
+ lockd: 
   name: lockd
   port: 32768
   publicFacing: true

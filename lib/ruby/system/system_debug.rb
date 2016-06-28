@@ -17,8 +17,8 @@ class SystemDebug
   @@actions = 16384
   @@container_events = 32768
   @@export_import = 65536
- # @@events = 131072
-  @@all_debug_flags = @@container_events |@@execute  |@@engine_tasks |@@first_run |@@docker  |@@containers| @@services | @@orphans |@@environment |@@templater | @@builder |@@system  |@@cache |@@update|@@registry |@@actions
+  @@server = 131072
+  @@all_debug_flags = @@execute  |@@engine_tasks |@@first_run |@@docker  |@@containers|@@container_events| @@services | @@orphans |@@environment |@@templater | @@builder |@@system  |@@cache |@@update|@@registry |@@actions
   #if File.exist?(debug_flag)
   # require(debug_flags)
   #else
@@ -26,13 +26,13 @@ class SystemDebug
     @@debug_flags = 0
     require '/opt/engines/etc/debug/debug_flags.rb'
   else
-    @@debug_flags = @@templater| @@services | @@export_import |@@builder|@@containers |@@execute
+    @@debug_flags = @@builder | @@container_events|  @@server |@@templater| @@services | @@export_import |@@builder|@@execute|@@engine_tasks | @@orphans
   end
   #end
   #
-##  def self.events
- #    return @@events
- #  end
+  def self.server
+     return @@server
+   end
   def self.export_import
       return @@export_import
     end

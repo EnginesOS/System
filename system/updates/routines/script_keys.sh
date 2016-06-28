@@ -4,7 +4,7 @@ function create_mgmt_script_key {
 	script_name=$1
 	ssh-keygen -f ~/.ssh/mgmt/${script_name} -N ""
 	pubkey=`cat ~/.ssh/mgmt/${script_name}.pub`
-	echo "command=\"/opt/engines/bin/${script_name}.sh\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty  $pubkey " >  ~/.ssh/_${script_name}_authorized_keys
+	echo "command=\"/opt/engines/system/scripts/ssh/${script_name}.sh\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty  $pubkey " >  ~/.ssh/_${script_name}_authorized_keys
 	cat ~/.ssh/_${script_name}_authorized_keys >> ~/.ssh/authorized_keys.system
 	cp ~/.ssh/mgmt/${script_name} ~/.ssh/mgmt/${script_name}.pub /opt/engines/etc/ssh/keys/services/mgmt
 	echo cp ~/.ssh/mgmt/${script_name} ~/.ssh/mgmt/${script_name}.pub /opt/engines/etc/ssh/keys/services/mgmt
@@ -15,8 +15,13 @@ function regenerate_keys {
 for script_name in `cat /opt/engines/etc/ssh/key_names`
 	
 do			
+		if test -f ~/.ssh/mgmt/${script_name}
+			  then
+	 			rm -r ~/.ssh/mgmt/${script_name} ~/.ssh/mgmt/${script_name}.pub
+	 		  fi
+	 		  
 				create_mgmt_script_key  $script_name 
-
+echo create_mgmt_script_key  $script_name 
 		done 
 		
 if test -f ~/.ssh/authorized_keys.system
@@ -51,6 +56,10 @@ keys=""
 
 	for key in $keys
 		do
+			if test -f $key
+			  then
+	 			rm -f $key $key.pub
+	 		  fi
 		  ssh-keygen -q -N "" -f $key
 	      cat $key.pub | awk '{ print $1 " " $2}' >$key.p
 	      mv  $key.p $key.pub

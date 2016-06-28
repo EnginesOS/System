@@ -1,6 +1,7 @@
 module ServiceHashChecks
   def check_engine_hash(service_hash)
-    return false unless check_hash(service_hash)
+    r = ''  
+    return r unless (r = check_hash(service_hash))
     # FIXME: Kludge
     # Klugde to avoid gui bugss
     unless service_hash.key?(:parent_engine)
@@ -16,21 +17,23 @@ module ServiceHashChecks
   end
 
   def check_sub_service_hash(service_hash)
-    return false unless check_service_hash(service_hash)
+    r = ''
+    return  r unless (r = check_service_hash(service_hash))
     return log_error_mesg('No parent service', service_hash) unless service_hash.key?(:parent_service)
     return true
   end
 
   def check_engine_service_hash(service_hash)
-        
-    return false unless check_engine_service_query(service_hash)
+    r = ''        
+    return  r unless (r = check_engine_service_query(service_hash) )
     return log_error_mesg('No service variables', service_hash) unless service_hash.key?(:variables)
     return true
   end
 
   def check_engine_service_query(service_hash)
-    return false unless check_service_hash(service_hash)
-    return false unless check_engine_hash(service_hash)
+    r = '' 
+    return r unless (r = check_service_hash(service_hash))
+    return r unless (r = check_engine_hash(service_hash))
     return true
   end
 
@@ -41,7 +44,8 @@ module ServiceHashChecks
   end
 
   def check_service_hash(service_hash)
-    return false unless check_hash(service_hash)
+    r = ''  
+    return r unless (r = check_hash(service_hash))
     return log_error_mesg('No publisher name space', service_hash) unless service_hash.key?(:publisher_namespace)
     return log_error_mesg('nil publisher name space', service_hash) if service_hash[:publisher_namespace].nil? || service_hash[:publisher_namespace] == ''
     return log_error_mesg('No type path', service_hash) unless service_hash.key?(:type_path)

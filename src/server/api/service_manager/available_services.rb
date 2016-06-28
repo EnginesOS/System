@@ -1,0 +1,2 @@
+#/service_manager/available_services/object
+#/service_manager/available_services/object_name

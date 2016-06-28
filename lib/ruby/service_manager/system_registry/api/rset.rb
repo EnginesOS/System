@@ -5,8 +5,11 @@ def rest_get(path,params)
     retry_count = 0
    # STDERR.puts('Get Path:' + path.to_s + ' Params:' + params.to_s)
     parse_rest_response(RestClient.get(base_url + path, params))
-  rescue StandardError => e
-    STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
+   rescue RestClient::ExceptionWithResponse => e   
+     parse_error(e.response)
+  rescue StandardError => e       
+    log_exception(e, params)
+
   end
 end
 
@@ -14,8 +17,10 @@ def rest_post(path,params)
   begin
     #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
     parse_rest_response(RestClient.post(base_url + path, params))
+    rescue RestClient::ExceptionWithResponse => e   
+      parse_error(e.response)
   rescue StandardError => e
-    STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
+    log_exception(e, params)
   end
 end
 
@@ -23,8 +28,11 @@ def rest_put(path,params)
   begin
     #  STDERR.puts('Put Path:' + path.to_s + ' Params:' + params.to_s)
     parse_rest_response(RestClient.put(base_url + path, params))
+    rescue RestClient::ExceptionWithResponse => e
+      STDERR.puts(e.repsonse + ' ' + path.to_s + ' ' + params.to_s)   
+      parse_error(e.response)
   rescue StandardError => e
-    STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
+    log_exception(e, params)
   end
 end
 
@@ -32,15 +40,29 @@ def rest_delete(path,params)
   begin
     # STDERR.puts('Del Path:' + path.to_s + ' Params:' + params.to_s)
     parse_rest_response(RestClient.delete(base_url + path, params))
+    rescue RestClient::ExceptionWithResponse => e   
+      parse_error(e.response)
   rescue StandardError => e
-    STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
+    log_exception(e, params)
   end
 end
 
 private
 
+def parse_error(r)
+  STDERR.puts("RSPONSE",r.to_s)
+  res = JSON.parse(r, :create_additions => true)
+  EnginesRegistryError.new(res)
+  rescue  StandardError => e
+  STDERR.puts(r.to_s)
+  STDERR.puts(e.to_s)
+  return log_error_mesg("Parse Error on error response object ", r.to_s)
+  
+end
+
+
 def parse_rest_response(r)
-  return false if r.code > 399
+  return parse_error(r) if r.code > 399
   return true if r.to_s   == '' ||  r.to_s   == 'true'
   return false if r.to_s  == 'false'
   res = JSON.parse(r, :create_additions => true)
@@ -48,8 +70,9 @@ def parse_rest_response(r)
   return deal_with_jason(res)
 rescue  StandardError => e
   STDERR.puts e.to_s
-  STDERR.puts "Failed to parse rest response _" + res.to_s + "_"
-  return false
+  STDERR.puts e.backtrace
+  STDERR.puts "Failed to parse rest response _" + r.to_s + "_"
+  return log_exception(e, r)
 end
 
 def deal_with_jason(res)
@@ -59,7 +82,7 @@ def deal_with_jason(res)
   return boolean_if_true_false_str(res) if res.is_a?(String)
   return res
 rescue  StandardError => e
-  STDERR.puts e.to_s
+  log_exception(e, res)
 end
 
 def boolean_if_true_false_str(r)
@@ -70,7 +93,7 @@ def boolean_if_true_false_str(r)
   end
   return r
 rescue  StandardError => e
-  STDERR.puts e.to_s
+  log_exception(e, r)
 end
 
 def symbolize_keys(hash)
@@ -97,7 +120,7 @@ def symbolize_keys(hash)
     result
   }
 rescue  StandardError => e
-  STDERR.puts e.to_s
+log_exception(e, hash)
 end
 
 def symbolize_keys_array_members(array)
@@ -115,7 +138,7 @@ def symbolize_keys_array_members(array)
   return retval
 
 rescue  StandardError => e
-  STDERR.puts e.to_s
+log_exception(e)
 end
 
 def symbolize_tree(tree)
@@ -126,12 +149,12 @@ def symbolize_tree(tree)
   end
   return tree
 rescue  StandardError => e
-  STDERR.puts e.to_s
+  log_exception(e)
 end
 
 def base_url
   'http://' + @core_api.get_registry_ip + ':4567'
 rescue  StandardError => e
-  STDERR.puts e.to_s
+  log_exception(e)
 end
 

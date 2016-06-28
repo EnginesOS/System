@@ -3,6 +3,7 @@ module ManagedContainerStatus
     return true if @ctype == 'service'
     return false
   end
+  
   def read_state
     state = super
    

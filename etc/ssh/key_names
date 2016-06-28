@@ -2,6 +2,8 @@ set_hostname
 get_hostname
 restart_mgmt
 restart_system
+halt_system
+public_key
 deb_update_status
 update_system
 access_system
@@ -10,4 +12,9 @@ regen_private
 update_engines_system_software
 update_engines_console_password
 free_docker_lib_space
-
+network_stats
+memory_stats
+load_avgs
+disk_stats
+check_engines_system_update_status
+rotate_container_log

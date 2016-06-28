@@ -13,7 +13,7 @@ environments: []
 image: engines/dyndns:_Engines_System(release)
 volumes:
 port: 
-eports:
+mapped_ports: 
 repo: na
 last_result:
 setState: nocontainer

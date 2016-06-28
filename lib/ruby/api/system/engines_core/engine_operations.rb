@@ -5,18 +5,19 @@ module EnginesOperations
   #Retrieves all persistent service registered to :engine_name and destroys the underlying service (fs db etc)
   # They are removed from the tree if delete is sucessful
   def delete_engine(params)
+    r = ''
     SystemDebug.debug(SystemDebug.containers,:delete_engines,params)
    # return log_error_mesg('Failed to remove engine as has container ',params) if 
     params[:container_type] = 'container' # Force This
-    return log_error_mesg('Failed to remove engine Services',params) unless delete_image_dependancies(params)
+    return r unless (r = delete_image_dependancies(params) )
     engine_name = params[:engine_name]
     reinstall = false
     reinstall = params[:reinstall] = true if params.key?(:reinstall)
-    remove_engine(engine_name, reinstall)
-    return true
+    return remove_engine(engine_name, reinstall)   
   end
 
   def remove_engine(engine_name, reinstall = false)
+    r = ''
     engine = loadManagedEngine(engine_name)
     SystemDebug.debug(SystemDebug.containers,:delete_engines,engine_name,engine, :resinstall,reinstall)
     params = {}
@@ -29,8 +30,9 @@ module EnginesOperations
       return log_error_mesg('Failed to find Engine',params)
     end
    if reinstall == true 
-     return service_manager.remove_engine_from_managed_engines_registry(params) if service_manager.rm_remove_engine_services(params)
-     return log_error_mesg('Failed to remove Engine from engines registry ' +  service_manager.last_error.to_s,params)
+    
+     return service_manager.remove_engine_from_managed_engines_registry(params) if ( r = service_manager.rm_remove_engine_services(params))
+     return r
 #     
     end 
     
@@ -41,20 +43,19 @@ module EnginesOperations
     engine.delete_image if engine.has_image? == true 
 
       SystemDebug.debug(SystemDebug.containers,:engine_image_deleted,engine)
-    if service_manager.rm_remove_engine_services(params) #remove_engine_from_managed_engines_registry(params)
-      return  engine.delete_engine if service_manager.remove_engine_from_managed_engines_registry(params)
-      log_error_mesg('Failed to remove Engine from engines registry ' +  service_manager.last_error.to_s,params)
+    if(r =  service_manager.rm_remove_engine_services(params) ) #remove_engine_from_managed_engines_registry(params)
+      return engine.delete_engine if ( r = service_manager.remove_engine_from_managed_engines_registry(params))
+     return r
     end
-    log_error_mesg('Failed to rm_remove_engine_services',params)
-   
-
+   return r  
   end
 
   def delete_image_dependancies(params)
+    r = ''
     params[:parent_engine] = params[:engine_name]
     params[:container_type] = 'container'
     SystemDebug.debug(SystemDebug.containers,  :delete_image_dependancies, params)
-    return log_error_mesg('Failed to remove deleted Service',params) unless service_manager.rm_remove_engine_services(params)
+    return r unless (r = service_manager.rm_remove_engine_services(params))
     return true
   rescue StandardError => e
     log_exception(e)
@@ -63,47 +64,54 @@ module EnginesOperations
   #install from fresh copy of blueprint in repository
   def reinstall_engine(engine)
     clear_error
-    engine.destroy_container(true) if engine.has_container?
+    r =   engine.destroy_container(true) if engine.has_container?
+    return r if r.is_a?(EnginesError)
     params = {}
     params[:engine_name] = engine.container_name
     params[:reinstall] = true
     delete_engine(params)
     builder = BuildController.new(self)
-    engine.reinstall_engine(builder)
+    @build_thread = Thread.new {
+      engine.reinstall_engine(builder)
+       }
+       return true if @build_thread.alive?
+       return log_error(params[:engine_name], 'Build Failed to start')
+
 
   rescue  StandardError => e
-    @last_error = e.to_s
     log_exception(e)
   end
 
   def set_engine_runtime_properties(params)
-    engine_name = params[:engine_name]
-    engine = loadManagedEngine(engine_name)
-    if engine.is_a?(EnginesOSapiResult)
-      @last_error = engine.result_mesg
-      return false
-    end
-    if engine.is_active?
-      @last_error = 'Container is active'
-      return false
+     p :set_engine_runtime_properties 
+     p params
+     engine_name = params[:engine_name]
+    
+    container = loadManagedEngine(engine_name)
+     if container.is_a?(EnginesError)
+       return container
+     end
+    set_container_runtime_properties(container,params)
+  end
+  
+  def set_container_runtime_properties(container,params)
+     
+    if container.is_active?
+      return EnginesCoreError.new('Container is active', :warning)
     end
     if params.key?(:memory)
-      if params[:memory] == engine.memory
-        @last_error = 'No Change in Memory Value'
-        return false
+      if params[:memory] == container.memory
+        return EnginesCoreError.new('Error no Change in Memory Value', :warning)
       end
-      if engine.update_memory(params[:memory]) == false
-        @last_error = engine.last_error
-        return false
-      end
+     return container.update_memory(params[:memory]) 
     end
     if params.key?(:environment_variables)
       new_variables = params[:environment_variables]
      
-     engine.environments.each do |env|
+      container.environments.each do |env|
 #         new_variables.each do |new_env|
                new_variables.each_pair do |new_env_name, new_env_value|
-                 engine.update_environment(new_env_name, new_env_value)
+                 container.update_environment(new_env_name, new_env_value)
                end
      end
 #          if  env.name == new_env_name
@@ -114,17 +122,24 @@ module EnginesOperations
 #        end
 #      end
     end
-    if engine.has_container?
-      return log_error_mesg(engine.last_error,engine) if !engine.destroy_container
+    if container.has_container?
+      r = container.destroy_container
+      return r unless r == true
+      p :destroyed
     end
-    return log_error_mesg(engine.last_error,engine) if !engine.create_container
-    return true
+   container.create_container
+
   rescue StandardError => e
     log_exception(e)
   end
 
-  def set_engine_network_properties (engine, params)
-    test_system_api_result(@system_api.set_engine_network_properties(engine,params))
+  def set_engine_network_properties(container, params)
+    set_container_network_properties(container, params)
   end
+  def set_container_network_properties(container, params)
+     p :set_engine_network_properties
+     
+     @system_api.set_engine_network_properties(container,params)
+   end
 
 end

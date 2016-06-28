@@ -9,8 +9,8 @@ module SmServiceInfo
   end
 
   def is_service_running?(service_name)
-    service =  @core_api.loadManagedService(service_name)
-    return false unless service.is_a?(ManagedService)
+    service = @core_api.loadManagedService(service_name)
+    return service unless service.is_a?(ManagedService)
     return service.is_running?
   end
 

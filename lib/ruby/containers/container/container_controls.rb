@@ -4,10 +4,9 @@ module ContainerControls
     r = true
     return true if read_state == 'running'
     return log_error_mesg('Can\'t Start Container as ', self) unless read_state == 'stopped'
-    r  = false unless @container_api.start_container(self)
+    r  =  @container_api.start_container(self)
     expire_engine_info
-    return true if r
-    return log_error_mesg('Can\'t Start Container', @container_api.last_error)
+    return  r   
   end
 
   def stop_container
@@ -15,10 +14,9 @@ module ContainerControls
     r = true
     return true if read_state == 'stopped'
     return log_error_mesg('Can\'t Stop Container as ', self) unless read_state == 'running'
-    r = false  unless @container_api.stop_container(self)
+    r =  @container_api.stop_container(self)
     expire_engine_info
-    return true if r
-    return log_error_mesg('Can\'t Stop Container', @container_api.last_error)
+    return  r   
   end
 
   def pause_container
@@ -26,21 +24,19 @@ module ContainerControls
     r = true
     return true if read_state == 'paused'
     return log_error_mesg('Can\'t Pause Container as not running', self) unless is_running?
-    r  = false unless @container_api.pause_container(self)
+    r  =  @container_api.pause_container(self)
     expire_engine_info
-    return true if r
-    return log_error_mesg('Can\'t Pause Container', @container_api.last_error)
+    return r  
   end
 
   def unpause_container
     #expire_engine_info
     r = true
     return true if read_state == 'running'
-    return log_error_mesg('Can\'t  unpause as no paused', self) unless is_paused?
-    r = false unless @container_api.unpause_container(self)
+    return log_error_mesg("Can\'t unpause as not paused", self) unless is_paused?
+    r =  @container_api.unpause_container(self)
     expire_engine_info
-    return true if r
-    return log_error_mesg('Can\'t UnPause Container', @container_api.last_error)
+    return r
   end
 
   def destroy_container()
@@ -51,22 +47,19 @@ module ContainerControls
       return true
     end
     return  log_error_mesg('Cannot Destroy a container that is not stopped Please stop first', self) if is_active?
-    r = false unless @container_api.destroy_container(self)
+    r = @container_api.destroy_container(self)
     @container_id = '-1'
     expire_engine_info
-    return true if r
-    return log_error_mesg('Can\'t Destroy Container', @container_api.last_error)
+    return r   
   end
 
   def create_container
     expire_engine_info
     return log_error_mesg('Cannot create container as container exists ', self) if has_container?
     @container_id = -1
-    r = @container_api.create_container(self)
-    #
-    return true unless r.is_a?(FalseClass)
+  r = @container_api.create_container(self)
     SystemDebug.debug(SystemDebug.containers,  :create_container,:containerid,r)
-    return false
+    return r
     #    unless r == false
     #      expire_engine_info
     #      @container_id = r

@@ -1,0 +1,30 @@
+--- !ruby/object:ManagedService
+container_name: redis
+ctype: service
+conf_self_start: true
+persistent: true
+publisher_namespace: EnginesSystem
+type_path: redis
+last_error: 
+memory: '64'
+hostname: redis
+domain_name: 
+environments: []
+image: engines/redis:_Engines_System(release)
+volumes:
+ store: 
+  name: store
+  remotepath: "/var/lib/redis"
+  localpath: "/var/lib/engines/redis"
+  permissions: rw
+port: 
+mapped_ports:
+repo: na
+last_result: 
+setState: running
+nginxored: false
+conf_register_site: false
+conf_register_dns: true
+dependant_on:
+- "dns"
+- "syslog"

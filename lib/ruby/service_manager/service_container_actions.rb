@@ -5,14 +5,16 @@ def add_to_managed_service(service_hash)
   clear_error
   result = false
   service =  @core_api.load_software_service(service_hash)
-  return log_error_mesg('Failed to load service to add :' +  @core_api.last_error.to_s, service_hash) if service.nil? || service.is_a?(FalseClass)
-  return log_error_mesg('Cant add to service if service is stopped ',service_hash) unless (service.is_running? | service.is_soft_service?)
+  return service if service.is_a?(EnginesError)
+  return true if  service.is_soft_service? && !service.is_running?
+  return log_error_mesg('Cant add to service if service is stopped ',service_hash) unless service.is_running? 
+ 
   SystemDebug.debug(SystemDebug.services, :add_to_managed_service, service_hash)
   return log_error_mesg('Failed to add Consumser to Service, as service not running',service_hash) unless service.is_running?
   SystemDebug.debug(SystemDebug.services, :add_to_managed_service, service)
    result = service.add_consumer(service_hash) 
 
-  return log_error_mesg('Failed to add Consumser to Service :' +  @core_api.last_error.to_s + ':' + service.last_error.to_s,service_hash) unless result
+  
   return result
 rescue StandardError => e
   log_exception(e)
@@ -25,12 +27,10 @@ end
 def remove_from_managed_service(service_hash)
   clear_error
   service =  @core_api.load_software_service(service_hash)
-  unless service.is_a?(ManagedService)
-    return log_error_mesg('Failed to load service to remove + ' + @core_api.last_error.to_s + ' :service ' + service.to_s, service_hash)
-  end
+  return service unless service.is_a?(ManagedService)
+    
   if service.persistent == false || service.is_running?
-    return true if service.remove_consumer(service_hash)
-    return log_error_mesg('Failed to remove persistent service as consumer service ', service_hash)
+    return  service.remove_consumer(service_hash)   
   elsif service.persistent
     return log_error_mesg('Cant remove persistent service if service is stopped ', service_hash)
   else

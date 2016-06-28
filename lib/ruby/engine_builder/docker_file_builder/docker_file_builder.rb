@@ -202,7 +202,7 @@ class DockerFileBuilder
     write_line('#File Service')
     if  @builder.volumes.count >0
       @builder.volumes.each_value do |vol|
-        dest = File.basename(vol.remotepath)
+        dest = File.basename(vol[:remotepath])
         write_line('#FS Env')
         # write_line('RUN mkdir -p $CONTFSVolHome/' + dest)
         # write_line('RUN mkdir -p $CONTFSVolHome/$VOLDIR' )
@@ -243,8 +243,8 @@ class DockerFileBuilder
     end
     # FIXME: Wrong spot
     return false if @blueprint_reader.mapped_ports.nil?
-    @blueprint_reader.mapped_ports.each do |port|
-      write_line('EXPOSE ' + port.port.to_s)
+    @blueprint_reader.mapped_ports.each_value do |port|
+      write_line('EXPOSE ' + port[:port].to_s)
     end
   rescue Exception => e
     SystemUtils.log_exception(e)
@@ -322,7 +322,7 @@ class DockerFileBuilder
 
       # Destination can be /opt/ /home/app /home/fs/ /home/local/
       # If none of teh above then it is prefixed with /home/app
-      destination = '/home/app/' + destination.to_s  unless destination.starts_with?('/opt') || destination.starts_with?('/home/fs') || destination.starts_with?('/home/app') || destination.starts_with?('/home/local')
+      destination = '/home/app/' + destination.to_s  unless destination.start_with?('/opt') || destination.start_with?('/home/fs') || destination.start_with?('/home/app') || destination.start_with?('/home/local')
       destination = '/home/app' if destination.to_s == '/home/app/'  || destination == '/'  || destination == './'  || destination == ''
 
       path_to_extracted ='/' if path_to_extracted.nil? || path_to_extracted == ''
@@ -371,24 +371,30 @@ class DockerFileBuilder
     wports = ''
     n = 0
     return false if @blueprint_reader.mapped_ports.nil?
-    @blueprint_reader.mapped_ports.each do |port|
+    @blueprint_reader.mapped_ports.each_value do |port|
       if n < 0
         wports += ' '
       end
-      write_line('EXPOSE ' + port.port.to_s)
-      wports += port.port.to_s + ' '
+      STDERR.puts('mapping port ' + port.to_s)
+      write_line('EXPOSE ' + port[:port].to_s)
+      wports += port[:port].to_s + ' '
       n += 1
     end
     if wports.length > 0
       write_env('WorkerPorts', wports)
     end
   rescue Exception => e
+    STDERR.puts('mapped post ' + @blueprint_reader.mapped_ports.to_s)
     SystemUtils.log_exception(e)
   end
 
   def write_env(name,value, build_only = false)
-    write_line('ENV ' + name + ' \'' + value + '\'')
-    @env_file.puts(name + '=' + '\'' + value +'\'')
+    
+    STDERR.puts(' :nil_env_name ') if name.nil?
+    STDERR.puts( 'nil_env_value for ' + name.to_s ) if value.nil?
+    
+    write_line('ENV ' + name.to_s  + ' \'' + value.to_s + '\'')
+    @env_file.puts(name.to_s  + '=' + '\'' + value.to_s  + '\'')
   end
 
   def write_build_script(cmd)

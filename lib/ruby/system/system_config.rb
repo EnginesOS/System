@@ -10,9 +10,10 @@ class SystemConfig
 
   require_relative 'system_config/engines_system_files.rb'
   extend EnginesSystemFiles
+  
+  require_relative 'system_config/system_version.rb'
+  extend SystemVersion
 
-  @@api_version = '0.1'
-  @@engines_system_version = '0.1'
   @@RegistryPort = 21027
   @@default_webport = 8000
 
@@ -28,7 +29,7 @@ class SystemConfig
   #  @@ServiceMapTemplateDir = '/opt/engines/etc/services/mapping/'
   #  @@ServiceTemplateDir = '/opt/engines/etc/services/providers/'
 
-  #@@generate_ssh_private_keyfile = '/opt/engines/bin/new_engines_user_key.sh'
+
 
   @@SMTPHost = 'smtp.engines.internal'
   @@DBHost = 'mysql.engines.internal'
@@ -58,16 +59,6 @@ class SystemConfig
     return @@RegistryPort
   end
 
-  def SystemConfig.api_version
-    return @@api_version
-  end
-  @@api_version = '0.0'
-
-  @@engines_system_version = '0.0'
-
-  def SystemConfig.engines_system_version
-    return @@engines_system_version
-  end
 
   def SystemConfig.default_webport
     return @@default_webport

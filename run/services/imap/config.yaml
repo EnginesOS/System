@@ -16,33 +16,33 @@ environments:
 image: engines/imap:_Engines_System(release)
 port: 
 volumes:
- imap_data: !ruby/object:Volume
+ imap_data: 
   name: imap_data
   remotepath: "/var/lib/dovecot"
   localpath: "/var/lib/engines/imap/lib"
-  mapping_permissions: "rw"
- mail_dir: !ruby/object:Volume
+  permissions: "rw"
+ mail_dir: 
   name: mail_dir
   remotepath: "/var/mail"
   localpath: "/var/lib/engines/imap/mail"
-  mapping_permissions: "rw"
- ssl_dir: !ruby/object:Volume
+  permissions: "rw"
+ ssl_dir: 
   name: ssl_dir
   remotepath: "/etc/ssl"
   localpath: "/opt/engines/etc/imap/ssl"
-  mapping_permissions: "ro"
+  permissions: "ro"
 mapped_ports:
-- !ruby/object:WorkPort
+ imap: 
   name: imap
   port: 10143
   publicFacing: true
   external: 143
-- !ruby/object:WorkPort
+ pop3s: 
   name: pop3s
   port: 10995
   publicFacing: true
   external: 995
-- !ruby/object:WorkPort
+ imaps: 
   name: imaps
   port: 10993
   publicFacing: true

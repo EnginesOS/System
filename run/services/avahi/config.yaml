@@ -14,13 +14,13 @@ soft_service: true
 environments: []
 image: engines/avahi:_Engines_System(release)
 volumes: 
- configuration: !ruby/object:Volume
+ configuration: 
   name: ip_file
   remotepath: "/home/net/"
   localpath: "/opt/engines/etc/net/"
-  mapping_permissions: "ro"
+  permissions: "ro"
 mapped_ports:
-- !ruby/object:WorkPort
+ mdns:
   name: mdns
   port: 5353
   publicFacing: true

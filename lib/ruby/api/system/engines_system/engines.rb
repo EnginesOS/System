@@ -14,32 +14,51 @@ module Engines
 
   def set_engine_network_properties(engine, params)
     clear_error
-    return set_engine_hostname_details(engine, params) if set_engine_web_protocol_properties(engine, params)
-    return false
+    p :set_engine_network_properties
+    p engine.container_name
+    p params
+    r = ''
+    return set_engine_hostname_details(engine, params) if ( r = set_engine_web_protocol_properties(engine, params))
+    return r
   end
 
   def set_engine_web_protocol_properties(engine, params)
     clear_error
+    p :set_engine_web_protocol_properties
+    p engine.container_name
+    p params
     protocol = params[:http_protocol]
-    return false if protocol.nil?
+    return log_error_mesg('no protocol field') if protocol.nil?
+    protocol.downcase
+    protocol.gsub!(/ /,"_")
     SystemDebug.debug(SystemDebug.services,'Changing protocol to _', protocol)
-    if protocol.include?('HTTPS only')
+    if protocol.include?('https_only')
       engine.enable_https_only
-    elsif protocol.include?('HTTP only')
+    elsif protocol.include?('http_only')
       engine.enable_http_only
-    elsif protocol.include?('HTTPS and HTTP')
+    elsif protocol.include?('https_and_http')
       engine.enable_http_and_https
     end
+    return true
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
 
   def set_engine_hostname_details(container, params)
     clear_error
-
-    hostname = params[:host_name]
+    p :set_engine_network_properties
+    p container.container_name
+    p params
+    #FIXME [:hostname]  silly host_name from gui drop it
+    if params.key?(:host_name)
+      hostname = params[:host_name]
+    else
+      hostname = params[:hostname] 
+    end
+    
     domain_name = params[:domain_name]
     SystemDebug.debug(SystemDebug.services,'Changing Domainame to ', domain_name)
+    
     container.remove_nginx_service
     container.set_hostname_details(hostname, domain_name)
     save_container(container)
@@ -78,7 +97,7 @@ module Engines
     yaml_file = File.read(yam_file_name)
     ts = File.mtime(yam_file_name)
     managed_engine = ManagedEngine.from_yaml(yaml_file, @engines_api.container_api)
-    return false if managed_engine.nil? || managed_engine == false        
+    return engine if managed_engine.nil? || managed_engine.is_a?(EnginesError)
     cache_engine(managed_engine, ts)
     return managed_engine
   rescue StandardError => e

@@ -85,7 +85,7 @@ class RegistryHandler < ErrorsApi
       sleep 1
       wait += 1
       SystemDebug.debug(SystemDebug.registry, :recreate_wait)
-      return false if wait > 60
+      return log_error(' failed t o complkete startup in 90s') if wait > 90
     end
     return true
   end

@@ -8,11 +8,21 @@ module SshKeys
   end
 
   def update_public_key(key)
-    SystemUtils.execute_command('ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/update_system_access engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/update_system_access.sh ' + key)
+    p :update_public_key
+    run_server_script('update_system_access', key)[:stdout]
+    rescue StandardError => e
+        SystemUtils.log_exception(e)
   end
 
   def regen_system_ssh_key
-    SystemUtils.run_command('ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/regen_private engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/regen_private.sh ')
+    run_server_script('regen_private')[:stdout]
+  end
+  
+  def get_public_key
+    run_server_script('public_key')[:stdout]
+#/home/engines/.ssh/console_access.pub
+  rescue StandardError => e
+    log_exception(e)
   end
 
 end

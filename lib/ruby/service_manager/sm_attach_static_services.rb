@@ -5,13 +5,16 @@ module SmAttachStaticServices
     clear_error
     container.environments  = [] if container.environments .nil?
     curr_service_file = ''
+    SystemDebug.debug(SystemDebug.services,:Globbing,container.container_name,dirname + '/*.yaml')    
     Dir.glob(dirname + '/*.yaml').each do |service_file|
       curr_service_file = service_file
+      SystemDebug.debug(SystemDebug.services,:Service_dile,container.container_name,curr_service_file)    
+
       yaml = File.read(service_file)
       service_hash = YAML::load( yaml )
       service_hash = SystemUtils.symbolize_keys(service_hash)
       service_hash[:container_type] = container.ctype
-
+      SystemDebug.debug(SystemDebug.services, :loaded_service_hash, service_hash)
       ServiceDefinitions.set_top_level_service_params(service_hash, container.container_name)
       if service_hash.has_key?(:shared_service) == false || service_hash[:shared_service] == false
         templater =  Templater.new(SystemAccess.new,container)
@@ -44,7 +47,7 @@ module SmAttachStaticServices
       end
     end
     return true
-  rescue Exception=>e
+  rescue StandardError =>e
     puts e.message
     log_error_mesg('Parse error on ' + curr_service_file,container)
     log_exception(e)

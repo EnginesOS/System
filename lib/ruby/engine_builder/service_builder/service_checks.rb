@@ -11,6 +11,7 @@ module ServiceChecks
 
   def service_not_running(service_name)
     @last_error = service_name.to_s + ' Not Running please start/enable before installing this software'
+      p @last_error
     return false
   end
 end

@@ -1,4 +1,4 @@
---- !ruby/object:VolumeService
+--- !ruby/object:ManagedService
 publisher_namespace: EnginesSystem
 type_path: filesystem/local/filesystem
 container_name: volmanager
@@ -12,12 +12,12 @@ domain_name:
 environments: []
 image: engines/fs:_Engines_System(release)
 volumes: 
- fs_rw: !ruby/object:Volume
+ fs_rw: 
   name: fs_rw
   remotepath: "/var/fs/local/"
   localpath: "/var/lib/engines/fs/"
-  mapping_permissions: "rw"
-mapped_ports: []
+  permissions: "rw"
+mapped_ports: 
 repo: na
 last_result:
 setState: running

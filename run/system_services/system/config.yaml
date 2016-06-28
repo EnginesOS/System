@@ -1,0 +1,106 @@
+--- !ruby/object:ManagedService
+container_name: system
+ctype: system_service
+publisher_namespace: EnginesSystem
+type_path: system
+last_error: 
+memory: '385'
+hostname: 'system'
+no_ca_map: true
+domain_name: 
+environments:
+- !ruby/object:EnvironmentVariable
+ name: BUG_REPORTS_SERVER
+ value: http://buglog.prod.engines.org
+ setatrun: false
+- !ruby/object:EnvironmentVariable
+ name: ContUser
+ value: engines
+ setatrun: false 
+- !ruby/object:EnvironmentVariable
+ name: CONTROL_IP
+ value: _Engines_System(mgmt_host)
+ setatrun: false  
+- !ruby/object:EnvironmentVariable 
+ name: DOCKER_IP
+ value: _Engines_System(docker_ip)
+ setatrun: false   
+image: engines/system:_Engines_System(release)
+volumes:
+ icons_dir: 
+  name: icons_dir
+  remotepath: "/home/app/public/system/"
+  localpath: "/var/lib/engines/mgmt/public/system/"
+  permissions: rw
+ socket: 
+  name: socket
+  remotepath: "/var/run/docker.sock"
+  localpath: "/var/run/docker.sock"
+  permissions: rw
+ build_dirs: 
+  name: build_dirs
+  remotepath: "/home/engines/deployment"
+  localpath: "/home/engines/deployment"
+  permissions: rw
+ ssh_key_dir: 
+  name: ssh_key_dir
+  remotepath: "/home/engines/.ssh/mgmt/"
+  localpath: "/home/engines/.ssh/mgmt/"
+  permissions: rw 
+ sqlite: 
+  name: sqlite
+  remotepath: "/home/app/db/production.sqlite3"
+  localpath: "/home/engines/db/production.sqlite3"
+  permissions: rw
+ docker_bin: 
+  name: docker_bin
+  remotepath: "/usr/bin/docker"
+  localpath: "/usr/bin/docker"
+  permissions: ro
+ engines_system: 
+  name: engines_system
+  remotepath: "/opt/engines"
+  localpath: "/opt/engines"
+  permissions: rw
+ engines_fs: 
+  name: engines_fs
+  remotepath: "/var/lib/engines/fs"
+  localpath: "/var/lib/engines/fs"
+  permissions: rw
+ engines_logs: 
+  name: engineslogs
+  remotepath: "/var/log/engines"
+  localpath: "/var/log/engines"
+  permissions: rw
+ engines_sys: 
+  name: engines_sys
+  remotepath: "/sys"
+  localpath: "/sys"
+  permissions: ro 
+ engines_ca: 
+  name: engines_ca
+  remotepath: "/opt/engines/etc/ssl/"
+  localpath: "/var/lib/engines/cert_auth/public/"
+  permissions: rw
+port: 
+mapped_ports:
+ access: 
+  name: access
+  port: 4567
+  publicFacing: true
+  external: 4567
+ ssh:
+  name: ssh
+  port: 22
+  publicFacing: true
+  external: 6122
+repo: na
+last_result: 
+setState: running
+nginxored: false
+conf_register_site: false
+conf_register_dns: true
+conf_zero_conf: true
+conf_self_start: true
+dependant_on:
+- "dns"

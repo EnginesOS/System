@@ -4,17 +4,17 @@ module DockerContainerStatus
     @docker_comms.ps_container(container)
   rescue StandardError => e
     log_exception(e)
-    return "Error"
+
   end
 
-  def logs_container(container, count)
-    clear_error
-    cmdline = 'docker logs --tail=' + count.to_s + ' ' + container.container_name
-    result = SystemUtils.execute_command(cmdline)
-    return result[:stderr].to_s + ' ' + result[:stdout].to_s
+  def logs_container(container, count = 100)
+    @docker_comms.logs_container(container, count)
+#    cmdline = 'docker logs --tail=' + count.to_s + ' ' + container.container_name
+#    result = SystemUtils.execute_command(cmdline)
+#    return result[:stderr].to_s + ' ' + result[:stdout].to_s
   rescue StandardError => e
     log_exception(e)
-    return 'error retriving logs ' + e.to_s
+   
   end
 
   def inspect_container(container)
@@ -26,13 +26,14 @@ module DockerContainerStatus
   end
 
   def inspect_container_by_name(container)
-    cmdline = 'docker inspect ' + container.container_name
-    result = SystemUtils.execute_command(cmdline)
-    res = JSON.parse(result[:stdout], :create_additions => true)
-    return res #SystemUtils.deal_with_jason(res)
+    @docker_comms.inspect_container_by_name(container)
+#    cmdline = 'docker inspect ' + container.container_name
+#    result = SystemUtils.execute_command(cmdline)
+#    res = JSON.parse(result[:stdout], :create_additions => true)
+#    return res #SystemUtils.deal_with_jason(res)
   rescue StandardError => e
-    log_exception(e,container.container_)
-    return 'error inspect_container_by_name  ' + e.to_s
+    return log_error_mesg('No such Container ', container.container_name)          
+  ## log_exception(e,'No such Container' + result[:stdout].to_s)
   end
 
 end

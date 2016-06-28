@@ -73,7 +73,7 @@ module AvailableServices
       params = {}
       params[:engine_name] = engine.container_name
       persistent_services = get_engine_persistent_services(params)
-      return nil if persistent_services.is_a?(FalseClass)
+      return persistent_services if persistent_services.is_a?(EnginesError)
       persistent_services.each do |service|
         type_path = service[:type_path]
         retval[type_path] = load_avail_services_for_type(type_path)
@@ -81,16 +81,15 @@ module AvailableServices
     else
       p :load_avail_component_services_for_engine_got_a
       p engine.to_s
-      return nil
+      return EnginesCoreError.new('No Availble components', :warning)
     end
     return retval
   rescue StandardError => e
     log_exception(e)
-    return nil
   end
 
   def list_attached_services_for(objectName, identifier)
-    check_sm_result(service_manager.list_attached_services_for(objectName, identifier))
+    service_manager.list_attached_services_for(objectName, identifier)
   rescue StandardError => e
     log_exception(e)
   end
@@ -108,7 +107,7 @@ module AvailableServices
   end
 
   def load_software_service(params)
-    service_container = check_sm_result(ServiceDefinitions.get_software_service_container_name(params))
+    service_container = ServiceDefinitions.get_software_service_container_name(params)
     params[:service_container_name] = service_container
     loadManagedService(service_container)
   rescue StandardError => e

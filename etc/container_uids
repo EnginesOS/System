@@ -1,6 +1,6 @@
 #User		Group		UID	#keyname (used to pick up uid from contianername) must be _containername
 #services
-mgmt		engines	21000 _mgmt
+www-data		www-data	22050 _mgmt
 rma			rma			22001 
 postgres	postgres	22002 pq_sql _pgsql_server
 postfix		postfix		22003 _smtp
@@ -27,7 +27,10 @@ registry  registry	22023 _registry
 wwwstats	wwwstats	22024 _wwwstats
 dhcpd	 dhcpd	22025	_dhcpd
 avahi	 avahi	22026	_avahi
-logview logview 22027 _log_viewer
+logview logview 22027 _logview
+logrotate logrotate 22028	_logrotate
+redis redis 22029	_redis
+
 #Frameworks
 www-data	 www-data	22671
 ruby	 ruby			22672

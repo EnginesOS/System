@@ -9,20 +9,19 @@ module DockerCmdOptions
     start_cmd = ' '
     start_cmd = ' /bin/bash /home/start.bash' unless container.conf_self_start
     commandargs =  get_networking_args(container) \
-    + environment_options + \
+    + environment_options.to_s + \
     ' --memory=' + container.memory.to_s + 'm ' + \
     volume_option + ' ' + \
-    port_options + \
+    port_options.to_s + \
     ' --cidfile ' + SystemConfig.CidDir + '/' + container.container_name + '.cid ' + \
     '--name ' + container.container_name + \
-    '  -t ' + container.image + ' ' + \
+    '  ' + container.image + ' ' + \
     start_cmd +\
     arguments.to_s
 
     return commandargs
   rescue StandardError => e
-    SystemUtils.log_exception(e)
-    return e.to_s
+      return SystemUtils.log_exception(e)
   end
 
   def self.get_networking_args(container)
@@ -64,6 +63,8 @@ module DockerCmdOptions
   def self.get_environment_options(container)
     e_option = ''
     if container.environments && container.environments.nil? == false
+    return  e_option unless container.environments.is_a?(Array)
+    
       container.environments.each do |environment|
         if environment.nil? == false \
         && environment.name.nil? == false \
@@ -78,34 +79,40 @@ module DockerCmdOptions
     return e_option
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    return e.to_s
+  
   end
 
   def self.get_port_options(container)
+    STDERR.puts('---MAPPED get_port_options ' + container.mapped_ports.to_s)
+
     return  ' '  if container.on_host_net? == true
     eportoption = ''
-    if container.mapped_ports
-      container.mapped_ports.each do |eport|
+    STDERR.puts('---MAPPED ports ' + container.mapped_ports.to_s)
+    STDERR.puts('---MAPPED ports is' + container.mapped_ports.class.name)
+    if container.mapped_ports.is_a?(Hash)
+      container.mapped_ports.each_value do |eport|
         unless eport.nil?
-          if eport.external.nil? == false && eport.external > 0
+          eport = SystemUtils.symbolize_keys(eport) if eport.key?('external')
+          if eport[:external].nil? == false && eport[:external] > 0
             eportoption += ' -p '
-            eportoption += eport.external.to_s + ':'
-            eportoption += eport.port.to_s
-            if eport.proto_type.nil?
-              eport.proto_type = 'tcp'
-            elsif eport.proto_type == 'both'
-              eportoption += '/tcp -p ' + eport.external.to_s + ':' + eport.port.to_s + '/udp '
+            eportoption += eport[:external].to_s + ':'
+            eportoption += eport[:port].to_s
+            if eport[:proto_type].nil?
+              eport[:proto_type] = 'tcp'
+            elsif eport[:proto_type] == 'both'
+              eportoption += '/tcp -p ' + eport[:external].to_s + ':' + eport[:port].to_s + '/udp '
             else
-              eportoption += '/' + eport.proto_type + ' '
+              eportoption += '/' + eport[:proto_type] + ' '
             end
           end
         end
       end
     end
+    STDERR.puts('ports' + eportoption.to_s + ' from ' +  container.mapped_ports.to_s )
     return eportoption
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    return e.to_s
+
   end
 
   def self.get_container_logdir(container)
@@ -141,17 +148,23 @@ module DockerCmdOptions
       #FIXME use container for tmp to enforce a 1GB limit ?
       temp_dir_name =   container.ctype + '/' + container.container_name
       volume_option += ' -v ' + SystemConfig.EnginesTemp + '/' + temp_dir_name + ':/tmp:rw '
-      SystemUtils.execute_command('/opt/engines/scripts/make_big_temp.sh ' + temp_dir_name)    
+      SystemUtils.execute_command('/opt/engines/system/scripts/system/make_big_temp.sh ' + temp_dir_name)    
     else
       temp_dir_name =   container.ctype + '/' + container.container_name
       volume_option += ' -v ' + SystemConfig.EnginesTemp + '/' + temp_dir_name + ':/tmp/big:rw '
-      SystemUtils.execute_command('/opt/engines/scripts/make_big_temp.sh ' + temp_dir_name)
+      SystemUtils.execute_command('/opt/engines/system/scripts/system/make_big_temp.sh ' + temp_dir_name)
     end
+    SystemDebug.debug(SystemDebug.services, 'volumes',      container.volumes)
     if container.volumes.is_a?(Hash)
-      container.volumes.each_value do |volume|
-        unless volume.nil?
-          unless volume.localpath.nil?
-            volume_option = volume_option.to_s + ' -v ' + volume.localpath.to_s + ':/' + volume.remotepath.to_s + ':' + volume.mapping_permissions.to_s
+      container.volumes.each_value do |volume|        
+        unless volume.nil? 
+          
+        #FIXME Why need this for some reason symbs as converted to str
+      volume = SystemUtils.symbolize_keys(volume) if volume.key?('localpath')
+        SystemDebug.debug(SystemDebug.services, 'volume', volume)
+
+          unless volume[:localpath].nil?
+            volume_option = volume_option.to_s + ' -v ' + volume[:localpath].to_s + ':/' + volume[:remotepath].to_s + ':' + volume[:permissions].to_s
           end
         end
       end

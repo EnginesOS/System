@@ -3,16 +3,15 @@ module CoreServiceImportExport
     SystemDebug.debug(SystemDebug.export_import, :export_service,service_hash)
     #    return false unless service_hash.key?(:persistent)
     #    return false unless service_hash[:persistent] == true
-    return false unless service_hash.key?(:parent_engine) == true
+    return log_error_mesg('missing parent_engine key',service_hash) unless service_hash.key?(:parent_engine) == true
     ahash = service_manager.find_engine_service_hash(service_hash)
     return log_error_mesg("cannot import into share service",service_hash) if ahash[:shared] == true
     if service_hash[:container_type] == 'container'
       engine = loadManagedEngine(service_hash[:parent_engine])
     else
       engine = loadManagedService(service_hash[:parent_engine])
-
     end
-
+    return engine if engine.is_a?(EnginesError)
     engine.export_service_data(service_hash)
   rescue StandardError => e
     log_exception(e,'export service',service_hash)
@@ -33,11 +32,9 @@ module CoreServiceImportExport
     else
       engine = loadManagedService(service_hash[:parent_engine])
     end
-    return log_error_mesg("imported failed to load",service_hash[:parent_engine] ,  service_hash[:container_type]  ) if engine.nil?
+    return engine  if engine.is_a?(EnginesError)
      return engine.import_service_data(params)
 
-
-    return false
   rescue StandardError => e
     log_exception(e,'import service',params)
   end

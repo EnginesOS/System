@@ -17,7 +17,7 @@ module SystemExceptions
       elof.write(e_str)
       elof.close
       SystemUtils.log_exception_to_bugcatcher(e) unless File.exists?(SystemConfig.NoRemoteExceptionLoggingFlagFile)
-  
+  return EnginesError.new(e_str.to_s,:exception)
     end
   
     def SystemUtils.log_exception_to_bugcatcher(e)

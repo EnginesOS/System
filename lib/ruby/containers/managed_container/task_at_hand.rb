@@ -42,6 +42,8 @@ module TaskAtHand
 
     case action
     when :create
+              @steps = [:create,:start]
+             @steps_to_go = 2
       return desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
     when :stop
       return desired_state(step, final_state, curr_state) if curr_state== 'running'
@@ -100,25 +102,23 @@ module TaskAtHand
     log_exception(e)
   end
 
-  def process_container_event(action)
+  def process_container_event(event,event_hash)
     expire_engine_info
-    SystemDebug.debug(SystemDebug.container_events, :events, @container_name,  action)
-    return on_start(action) if action == 'create'
+    SystemDebug.debug(SystemDebug.container_events, :PROCESS_CONTAINER_vents, @container_name,  event,event_hash)
+    return on_create(event_hash) if event == 'create'
     
-    on_start('start') if action == 'start'
-    on_start('unpause') if action == 'unpause'
-    on_stop('die') if action == 'die'
-    on_stop('stop') if action == 'stop'
-    on_stop('pause') if action == 'pause'
-    out_of_mem('oom') if action == 'oom'
-    
-    
-    
-    task_at_hand_action(action)
-    
+    return  on_start('start') if event == 'start'
+    return on_start('unpause') if event == 'unpause'
+    return on_stop('die') if event == 'die'
+    return on_stop('die') if event == 'kill'
+    return on_stop('stop') if event == 'stop'
+    return  on_stop('pause') if event == 'pause'
+    return  out_of_mem('oom') if event == 'oom'
+    rescue StandardError => e
+       log_exception(e)
   end
   
-  def task_at_hand_action(action)
+  def task_complete(action)
     
     @steps_to_go = 0 if @steps_to_go.nil?
     SystemDebug.debug(SystemDebug.engine_tasks, :task_complete, ' ', action.to_s + ' as action for task ' +  task_at_hand.to_s + " " + @steps_to_go.to_s + '-1 stesp remaining step completed ',@steps)
@@ -207,8 +207,8 @@ module TaskAtHand
     return true unless File.exist?(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
   rescue StandardError => e
     return true unless File.exist?(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
-    log_exception(e)
-    return false
+  return  log_exception(e)
+  
   end
 
   def task_failed(msg)
@@ -230,7 +230,7 @@ module TaskAtHand
     while File.exist?(fn)
       sleep(0.5)
       loop += 1
-      return false if loop > timeout * 2
+      return log_error_mesg('timeout expire') if loop > timeout * 2
     end
     return true
   rescue StandardError => e

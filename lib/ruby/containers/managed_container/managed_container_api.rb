@@ -5,9 +5,9 @@ module ManagedContainerApi
     c.expire_engine_info
    # info = @docker_info_cache
   #  @docker_info_cache = false
-    @container_api.save_container(c)
+  @container_api.save_container(c)
   #  @docker_info_cache = info
-    return true
+   
   end
 
   def save_blueprint blueprint

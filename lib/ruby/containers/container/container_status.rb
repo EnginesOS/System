@@ -1,7 +1,7 @@
 module ContainerStatus
   def read_state
     info = docker_info
-
+    SystemDebug.debug(SystemDebug.containers, :info, info)
     return 'nocontainer' unless info.is_a?(Hash)
 
     if info.key?('State')
@@ -11,7 +11,7 @@ module ContainerStatus
         else
           return 'running'
         end
-      elsif info['State']['Running'] == false
+      elsif info['State']['Running'] == false        
         return 'stopped'
       elsif info['State']['Status'] == 'exited'
         return 'stopped'

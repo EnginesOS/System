@@ -24,7 +24,7 @@ module DNSHosting
     return true
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    return false
+
   end
 
   def self.load_domains
@@ -53,30 +53,27 @@ module DNSHosting
   rescue StandardError => e
     domains = {}
     p :error_listing_domains
-    SystemUtils.log_exception(e)
-    return domains
+    return  SystemUtils.log_exception(e)
   end
 
   def self.add_domain(params)
     domains = load_domains
     domains[params[:domain_name]] = params
-    return true if save_domains(domains)
-    p :failed_add_hosted_domains
-    return false
+    return save_domains(domains)
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
 
-  def self.rm_domain(params)
-    domain = params[:domain_name]
+  def self.rm_domain(domain)
+    r = ''
+  #  domain = params
+  #  domain = params[:domain_name] unless domain.is_a?(String)      
     domains = load_domains
     if domains.key?(domain)
-      domains.delete(domain)
-      save_domains(domains)
+      return r unless ( r = domains.delete(domain)) 
+      return save_domains(domains)
     else
-      p :failed_to_find_domain
-      p domain
-      p 'in ' + domains.to_s
+     return SystemUtils.log_error_mesg('failed_to_find_domain' + domain + 'in ' + domains.to_s)
     end
   end
 
@@ -88,6 +85,5 @@ module DNSHosting
     save_domains(domains)
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    return false
   end
 end

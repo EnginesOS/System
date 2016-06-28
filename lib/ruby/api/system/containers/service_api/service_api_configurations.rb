@@ -10,8 +10,7 @@ module ServiceApiConfigurations
         thr.join
       end
     rescue Timeout::Error
-      log_error_mesg('Timeout on retrieving Configuration',cmd)
-      return {}
+      return log_error_mesg('Timeout on retrieving Configuration',cmd)
     end
 
     if result[:result] == 0
@@ -20,11 +19,13 @@ module ServiceApiConfigurations
       params[:variables] = SystemUtils.symbolize_keys(variables_hash)      
       return params
     end
-    log_error_mesg('Error on retrieving Configuration',result)
-    return {}
+    return log_error_mesg('Error on retrieving Configuration',result)
+
   end
 
   def run_configurator(container, configurator_params)
+    p :configurator_params
+    p configurator_params
     cmd = 'docker exec ' +  container.container_name.to_s + ' /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh \'' + SystemUtils.hash_variables_as_json_str(configurator_params[:variables]).to_s + '\''
     #cmd = 'docker exec -u ' + container.cont_userid.to_s + ' ' +  container.container_name.to_s + ' /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh \'' + SystemUtils.hash_variables_as_json_str(configurator_params).to_s + '\''
     result = {}
@@ -34,8 +35,8 @@ module ServiceApiConfigurations
         thr.join
       end
     rescue Timeout::Error
-      log_error_mesg('Timeout on running configurator',cmd)
-      return {}
+     return log_error_mesg('Timeout on running configurator',cmd)
+     
     end
     @last_error = result[:stderr] # Dont log just set
     return result

@@ -4,7 +4,12 @@ class SystemApi < ErrorsApi
   require "/opt/engines/lib/ruby/containers/managed_engine.rb"
   require "/opt/engines/lib/ruby/containers/managed_service.rb"
   require "/opt/engines/lib/ruby/containers/system_service.rb"
-
+  
+  require '/opt/engines/lib/ruby/system/engines_error.rb'
+  require_relative 'engines_system_error.rb'
+  require_relative 'engines_system_errors.rb'
+  include EnginesSystemErrors
+  
   require_relative 'base_os_system.rb'
   include BaseOsSystem
   require_relative 'build_report.rb'
@@ -33,51 +38,66 @@ class SystemApi < ErrorsApi
   include  ContainerNetworkMetrics
   require_relative 'container_change_monitor.rb'
   include ContainerChangeMonitor
+  require_relative 'container_checks.rb'
+  include ContainerChecks
+  
+  require_relative 'engines_server_host.rb'
+  include EnginesServerHost
+  
+
   
   def initialize(api)
     @engines_api = api
     @engines_conf_cache = {}
-      start_docker_event_listener
+    @docker_event_listener = start_docker_event_listener
+    @docker_event_listener.add_event_listener([self,'container_event'.to_sym],16)
   end
   
+  def list_system_services
+  services = []
+    services.push('system')
+     services.push('registry')
+     return services
+  end
   
   def get_engines_states
     result = {}
-    engines = @engines_api.getManagedEngines #list_managed_engines
+    engines = getManagedEngines #list_managed_engines
     engines.each do |engine|
-      result[engine.container_name.to_sym] = engine.read_state.to_sym
+      result[engine.container_name] = engine.read_state
     end
 
     return result
   end
   
+def get_engines_status
+  result = {}
+  engines =  getManagedEngines # list_managed_services
+  engines.each do |engine|
+        result[engine.container_name] = engine.status
+      end
+      return result
+ end
+ 
+def get_services_status
+  result = {}
+  services =  getManagedServices # list_managed_services
+      services.each do |service|
+        result[service.container_name] = service.status
+      end
+
+      return result
+ end
+ 
   def get_services_states
     result = {}
-    services =  @engines_api.getManagedServices # list_managed_services
+    services =  getManagedServices # list_managed_services
         services.each do |service|
-          result[service.container_name.to_sym] = service.read_state.to_sym
+          result[service.container_name] = service.read_state
         end
 
         return result
    end
 
-  def system_image_free_space
-    result =  SystemUtils.execute_command('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/free_docker_lib_space engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/free_docker_lib_space.sh')
-    return -1 if result[:result] != 0
-    return result[:stdout].to_i
-  rescue StandardError => e
-    log_exception(e)
-    return -1
-  end
-
-  def restart_mgmt
-    res = Thread.new { system('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/restart_mgmt engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/restart_mgmt.sh') }
-    # FIXME: check a status flag after sudo side post ssh run ie when we know it's definititly happenging
-    return true if res.status == 'run'
-    return false
-  end
-
-  def api_shutdown
-    File.delete(SystemConfig.BuildRunningParamsFile) if File.exist?(SystemConfig.BuildRunningParamsFile)
-  end
+  
 end

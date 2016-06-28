@@ -52,7 +52,9 @@ class EngineBuilder < ErrorsApi
 
   def initialize(params, core_api)
     # {:engine_name=>'phpmyadmin5', :host_name=>'phpmyadmin5', :domain_name=>'engines.demo', :http_protocol=>'HTTPS and HTTP', :memory=>'96', :variables=>{}, :attached_services=>[{:publisher_namespace=>'EnginesSystem', :type_path=>'filesystem/local/filesystem', :create_type=>'active', :parent_engine=>'phpmyadmin4', :service_handle=>'phpmyadmin4'}, {:publisher_namespace=>'EnginesSystem', :type_path=>'database/sql/mysql', :create_type=>'active', :parent_engine=>'phpmyadmin4', :service_handle=>'phpmyadmin4'}], :repository_url=>'https://github.com/EnginesBlueprints/phpmyadmin.git'}
-    @core_api = core_api.dup
+  
+    #@core_api = core_api.dup WTF !
+    @core_api = core_api
     @mc = nil # Used in clean up only
     @build_params = params
     return log_error_mesg('empty container name', params) if @build_params[:engine_name].nil? || @build_params[:engine_name] == ''
@@ -74,7 +76,9 @@ class EngineBuilder < ErrorsApi
     @data_gid = '11111'
     @build_params[:data_uid] =  @data_uid
     @build_params[:data_gid] = @data_gid
+    SystemDebug.debug(SystemDebug.builder, :builder_init, params,@build_params)
     @service_builder = ServiceBuilder.new(@core_api, @templater, @build_params[:engine_name],  @attached_services)
+    SystemDebug.debug(SystemDebug.builder, :builder_init__service_builder, params,@build_params)
   rescue StandardError => e
     log_exception(e)
   end
@@ -104,12 +108,13 @@ class EngineBuilder < ErrorsApi
     SystemDebug.debug(SystemDebug.builder,  ' Starting build with params ',  @build_params)
     log_build_output('Checking Free space')
     space = @core_api.system_image_free_space
+    return build_failed('Failed to determine free space ') if space.is_a?(EnginesError)
     space /= 1024
     SystemDebug.debug(SystemDebug.builder,  ' free space /var/lib/docker only ' + space.to_s + 'MB')
     return build_failed('Not enough free space /var/lib/docker only ' + space.to_s + 'MB') if space < SystemConfig.MinimumFreeImageSpace  && space != -1
     log_build_output(space.to_s + 'MB free > ' +  SystemConfig.MinimumFreeImageSpace.to_s + ' required')
 
-    free_ram = MemoryStatistics.avaiable_ram
+    free_ram = @core_api.available_ram
     if @build_params[:memory].to_i < SystemConfig.MinimumBuildRam 
     ram_needed = SystemConfig.MinimumBuildRam 
     else
@@ -134,10 +139,10 @@ class EngineBuilder < ErrorsApi
 
     @build_params[:mapped_ports] =  @blueprint_reader.mapped_ports
     SystemDebug.debug(SystemDebug.builder,   :ports, @build_params[:mapped_ports])
-
+    SystemDebug.debug(SystemDebug.builder,   :attached_services, @build_params[:attached_services])
     return build_failed(@service_builder.last_error) unless @service_builder.required_services_are_running?
 
-    return build_failed(@service_builder.last_error) unless @service_builder.create_persistent_services(@blueprint_reader.services, @blueprint_reader.environments,@build_params[:attached_services])
+    return build_failed(@service_builder.last_error) if @service_builder.create_persistent_services(@blueprint_reader.services, @blueprint_reader.environments,@build_params[:attached_services]).is_a?(EnginesError)
    
     apply_templates_to_environments
     create_engines_config_files
@@ -174,12 +179,16 @@ class EngineBuilder < ErrorsApi
       return post_failed_build_clean_up
     else
       if @core_api.image_exist?(@build_params[:engine_name]) == false
+        log_build_errors('Built Image not found')
         @last_error = ' ' + tail_of_build_log
         return post_failed_build_clean_up
       end
       log_build_output('Creating Deploy Image')
       mc = create_managed_container
-      return post_failed_build_clean_up if mc == false
+      if mc == false
+        log_build_errors('Failed to create Managed Container')
+      return post_failed_build_clean_up
+      end 
       @service_builder.create_non_persistent_services(@blueprint_reader.services)
     end
     @service_builder.release_orphans
@@ -209,8 +218,8 @@ class EngineBuilder < ErrorsApi
     end
     log_build_output('') # force EOL to end the ...
     if mc.is_running? == false
-      log_build_output('Engine Stopped:', mc.logs_container)
-      @result_mesg = 'Engine Stopped!'
+      log_build_output('Engine Stopped:' + mc.logs_container.to_s)
+      @result_mesg = 'Engine Stopped! ' + mc.logs_container.to_s
     end
 
     close_all
@@ -273,6 +282,7 @@ class EngineBuilder < ErrorsApi
 
   def build_init
     log_build_output('Building Image')
+    create_build_tar
     log_build_output('Cancelable:true')
     cmd = 'nohup /usr/bin/docker build --force-rm=true --tag=' + @build_params[:engine_name] + ' ' + basedir
     res = run_system(cmd)
@@ -283,10 +293,15 @@ class EngineBuilder < ErrorsApi
     log_exception(e)
   end
 
+  def create_build_tar
+    dest_file = SystemConfig.DeploymentDir + '/' + @build_name.to_s + '.tgz'
+    cmd = ' tar -czpf ' + dest_file + ' ' +  basedir
+    run_system(cmd)
+  end
   def launch_deploy(managed_container)
     log_build_output('Launching Engine')
     mc = managed_container.create_container
-    return log_error_mesg('Failed to Launch ', mc) unless mc 
+    return log_error_mesg('Failed to Launch ', mc) if mc.is_a?(EnginesError) 
     save_engine_built_configuration(managed_container)
     return mc
   rescue StandardError => e
@@ -450,7 +465,7 @@ class EngineBuilder < ErrorsApi
     lines_count = lines.count - 1
     start = lines_count - 10
     for n in start..lines_count
-      retval += lines[n]
+      retval += lines[n].to_s
     end
     return retval
   end
@@ -553,7 +568,7 @@ class EngineBuilder < ErrorsApi
   end
 
   def basedir
-    return SystemConfig.DeploymentDir + '/' + @build_name.to_s
+     SystemConfig.DeploymentDir + '/' + @build_name.to_s
   end
 
   private
@@ -609,8 +624,6 @@ class EngineBuilder < ErrorsApi
   rescue StandardError => e
     log_exception(e)
   end
-
- 
 
   protected
 

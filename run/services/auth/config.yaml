@@ -11,16 +11,16 @@ hostname: auth
 domain_name: 
 environments: []
 volumes:
- auth_scripts: !ruby/object:Volume
+ auth_scripts: 
   name: auth_static_store
   remotepath: "/home/auth/static/"
   localpath: "/opt/engines/etc/auth/"
-  mapping_permissions: "rw"
- krdb: !ruby/object:Volume
+  permissions: "rw"
+ krdb: 
   name: krdb
   remotepath: "/etc/krb5kdc"
   localpath: "/var/lib/engines/auth/"
-  mapping_permissions: "rw"
+  permissions: "rw"
 image: engines/auth:_Engines_System(release)
 port: 
 mapped_ports:

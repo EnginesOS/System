@@ -7,11 +7,14 @@ require '/opt/engines/lib/ruby/containers/container.rb'
 require '/opt/engines/lib/ruby/containers/managed_container.rb'
 require '/opt/engines/lib/ruby/containers/managed_engine.rb'
 require '/opt/engines/lib/ruby/containers/managed_service.rb'
+require '/opt/engines/lib/ruby/containers/system_service.rb'
 require '/opt/engines/lib/ruby/managed_services/service_definitions/software_service_definition.rb'
 require '/opt/engines/lib/ruby/service_manager/service_definitions.rb'
 
 class EnginesCore < ErrorsApi
   require '/opt/engines/lib/ruby/containers/system_service.rb'
+  require_relative 'engines_core_errors.rb'
+ include EnginesCoreErrors
 
   # require_relative '../dns_api.rb'
 
@@ -63,8 +66,8 @@ class EnginesCore < ErrorsApi
   require_relative 'system_operations.rb'
   include SystemOperations
 
-  require_relative 'result_checks.rb'
-  include ResultChecks
+#  require_relative 'result_checks.rb'
+#  include ResultChecks
 
   require_relative 'domain_operations.rb'
   include DomainOperations
@@ -92,16 +95,22 @@ class EnginesCore < ErrorsApi
   
   require_relative 'actionators.rb'
    include Actionators
+   
+  require_relative 'engines_core_version.rb'
+  include EnginesCoreVersion
   
-  require_relative '../containers/container_api.rb'
-  require_relative '../containers/service_api.rb'
+  require_relative 'certificate_actions.rb'
+  include CertificateActions
+  
+  require_relative '../containers/container_api/container_api.rb'
+  require_relative '../containers/service_api/service_api.rb'
   require_relative '../docker/docker_api.rb'
   require_relative '../engines_system/engines_system.rb'
   require '/opt/engines/lib/ruby/service_manager/service_manager.rb'
   require_relative '../registry_handler.rb'
-  
+  require_relative 'engines_core_error.rb'
   def initialize
-    Signal.trap('HUP', proc { api_shutdown })
+    Signal.trap('HUP', proc { dump_stats })  #api_shutdown })
     Signal.trap('TERM', proc { api_shutdown })
     @docker_api = DockerApi.new
     @system_api = SystemApi.new(self)  # will change to to docker_api and not self
@@ -109,11 +118,14 @@ class EnginesCore < ErrorsApi
     @container_api = ContainerApi.new(@docker_api, @system_api, self)
     @service_api = ServiceApi.new(@docker_api, @system_api, self)
     @registry_handler.start
-    @service_manager = service_manager
+    @service_manager = ServiceManager.new(self) # create_service_manager
   end
 
   #why readers on these apis
-  attr_reader :container_api, :service_api
+#  attr_reader :container_api, :service_api
+  
+  attr_reader :system_api, :service_manager, :container_api, :service_api
+  
 
   def api_shutdown
     SystemDebug.debug(SystemDebug.system,  :BEING_SHUTDOWN)
@@ -121,10 +133,62 @@ class EnginesCore < ErrorsApi
     @registry_handler.api_shutdown
     
   end
+  
+  def dump_heap_stats
+    ObjectSpace.garbage_collect
+   # STDERR.puts('dumping heap')
+    file = File.open("/tmp/big/heap.dump", 'w')
+    ObjectSpace.dump_all(output: file)
+    file.close
+    return true
+  end
+  
+  def set_first_run_parameters(params_from_gui)
+    require_relative '../first_run_wizard/first_run_wizard.rb'
+     params = params_from_gui.dup
+     SystemDebug.debug(SystemDebug.first_run,params)
+     first_run = FirstRunWizard.new(params)
+     first_run.apply(self)
+     @last_error = first_run.last_error unless first_run.sucess
+     return first_run.sucess
+  end
+  
+  def reserved_engine_names
+    names = list_managed_engines
+    names.concat(list_managed_services)
+    names.concat(list_system_services)
+    names
+    rescue StandardError => e
+       SystemUtils.log_exception(e)
+    failed('Gui', 'reserved_engine_names', 'failed')
+    return []
+  end 
+  
+  
 
+  
+  def reserved_ports
+    ports = []
+     ports.push(443)
+    ports.push(10443)
+    ports.push(80)
+    ports.push(22)
+    ports.push(808)
+    ports
+  end
+ def  get_disk_statistics
+   'belum'
+ end
+  
+  def first_run_required?
+    require_relative '../first_run_wizard/first_run_wizard.rb'
+    FirstRunWizard.required?
+  end
+  
   def software_service_definition(params)
     clear_error
-    return false unless check_service_hash(params)
+    r = ''
+    return r unless (r = check_service_hash(params))
     return SoftwareServiceDefinition.find(params[:type_path],params[:publisher_namespace] )
   rescue StandardError => e
     p :error
@@ -138,14 +202,26 @@ class EnginesCore < ErrorsApi
   end
 
   def save_build_report(container,build_report)
-    test_system_api_result(@system_api.save_build_report(container,build_report))
+    @system_api.save_build_report(container,build_report)
   end
 
-  protected
+  def container_memory_stats(engine)
+ 
+  MemoryStatistics.container_memory_stats(engine)
+    end
+    
+  def build_engine(params)
+    @build_controller = BuildController.new(self)  unless @build_controller
+    @build_thread = Thread.new {
+      @build_controller.build_engine(params) 
+    }
+    return true if @build_thread.alive?
+    return log_error(params[:engine_name], 'Build Failed to start')
+  end
 
-  def shutdown
+  def shutdown(reason)
     # FIXME: @registry_handler.api_dissconnect
-    @system_api.api_shutdown
+    @system_api.api_shutdown(reason)
   end
-
+  protected
 end

@@ -6,7 +6,7 @@ module EnginesApiSystem
   def get_container_memory_stats(container)
     MemoryStatistics.get_container_memory_stats(container)
   end
-  
+
   def delete_engine(container)
     SystemDebug.debug(SystemDebug.containers,  :container_api_delete_engine,container)
     @system_api.delete_engine(container)
@@ -14,16 +14,18 @@ module EnginesApiSystem
   end
 
   def get_container_network_metrics(container)
-    test_system_api_result(@system_api.get_container_network_metrics(container.container_name))
+    @system_api.get_container_network_metrics(container.container_name)
   end
 
   def save_container(container)
-    test_system_api_result(@system_api.save_container(container))
+    @system_api.save_container(container)
   end
 
   def have_enough_ram?(container)
-    free_ram = MemoryStatistics.avaiable_ram
+    free_ram = @system_api.available_ram
+    return free_ram if free_ram.is_a?(EnginesError)
     ram_needed = SystemConfig.MinimumFreeRam .to_i + container.memory.to_i * 0.7
+    STDERR.puts('____RAM_________ ' + ram_needed.to_s + '/' + free_ram.to_s )
     return true if  free_ram > ram_needed
     return false
   end
@@ -36,10 +38,12 @@ module EnginesApiSystem
     start_dependancies(container) if container.dependant_on.is_a?(Hash)
     container.pull_image if container.ctype != 'container'
     r = @docker_api.create_container(container)
-    return log_error_mesg('Failed to Container ' + @docker_api.last_error, self) if r == false
-    return r if ContainerStateFiles.create_container_dirs(container)
+    STDERR.puts(' DOCKER api CREATE ' + r.to_s)
+    return r if r.is_a?(EnginesDockerError)
+
+    return true if ContainerStateFiles.create_container_dirs(container)
     log_error_mesg('Failed to create state files', self)
-    return r
+
   rescue StandardError => e
     container.last_error = ('Failed To Create ' + e.to_s)
     log_exception(e)

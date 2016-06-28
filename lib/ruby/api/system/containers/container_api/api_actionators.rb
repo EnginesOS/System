@@ -1,46 +1,57 @@
 module ApiActionators
   @@action_timeout = 20
-  
-# def perform_action(constainer, actionator_name, params)
-#   SystemDebug.debug(SystemDebug.actions,constainer.container_name, actionator_name, params)
-#  cmd ='docker exec /home/actionators/' + actionator_name.to_s + ' ' + list_params(params).to_s
-#
-#  if @docker_api.run_docker_cmd(cmd, constainer)
-#    SystemDebug.debug(SystemDebug.actions,'perform_action',cmd,container.last_result)
-#   return container.last_result
-#  else
-#    @last_error  = container.last_error 
-#    SystemDebug.debug(SystemDebug.actions,'perform_action',container.last_error)
-#    return false
-#  end
-#  
-#  
-#end
 
-
-  def perform_action(c,actionator_name, params)
-      # cmd = 'docker exec -u ' + c.cont_userid + ' ' +  c.container_name + ' /home/configurators/read_' + params[:configurator_name].to_s + '.sh '
-      cmd = 'docker exec  ' +  c.container_name + ' /home/actionators/' + actionator_name + '.sh \'' + params.to_json + '\''
+  def perform_action(c,actionator_name, params, data=nil)
+    if params.nil? || params.is_a?(String)
+      args = params
+    else 
+        args = '\'' + params.to_json + '\''        
+    end    
+    inter=''
+    inter='-i ' unless data.nil?
+    #cmd = 'docker exec ' + inter  +  c.container_name + ' /home/actionators/' + actionator_name + '.sh ' + args.to_s
+    cmds = ['/home/actionators/' + actionator_name + '.sh',args.to_s]
       result = {}
       begin
         Timeout.timeout(@@action_timeout) do
-          thr = Thread.new { result = SystemUtils.execute_command(cmd) }
-          thr.join
+          thr = Thread.new do
+            begin
+            if data.nil?
+              result = engines_core.exec_in_container(c, cmds, true)
+        #      result = SystemUtils.execute_command(cmd)
+            else
+              result = engines_core.exec_in_container(c, cmds, true, data)
+              # result = SystemUtils.execute_command(cmd, false, data)
+            end 
+       
+          rescue StandardError =>e
+
+                log_exception(e)
+          end
+            end
+                   thr.join
         end
       rescue Timeout::Error
-        log_error_mesg('Timeout on Running Action ',cmd)
-        return {}
+        return  log_error_mesg('Timeout on Running Action ', cmds.to_s)
+       
       end
   
       if result[:result] == 0
-        #variables = SystemUtils.hash_string_to_hash(result[:stdout])
-#        variables_hash = JSON.parse( result[:stdout], :create_additons => true )
-#        params[:variables] = SystemUtils.symbolize_keys(variables_hash)      
+        if result[:stdout].start_with?('{') || result[:stdout].start_with?('"{') 
+          begin
+          return JSON.parse( result[:stdout], :create_additons => true )
+        rescue         
+          return result[:stdout]
+          end
+        end
+        STDERR.puts '____' + result[:stdout].to_s + '____________'
+                 return true if result[:stdout].start_with?('true') || result[:stdout].start_with?('"true') 
         return result[:stdout]
       end
-      log_error_mesg('Error on retrieving Configuration',result)
-    @last_error = c.last_error 
-      return false
+    return  log_error_mesg('Error on performing action ' + c.container_name.to_s + ':' + actionator_name.to_s + result[:stderr] ,result)
+    rescue StandardError =>e
+       log_exception(e)
+  
     end
 
 

@@ -335,20 +335,29 @@ class BluePrintReader
   end
 
   def read_mapped_ports
-    @mapped_ports = []
+    @mapped_ports = {}
     log_build_output('Read Work Ports')
     ports = @blueprint[:software][:ports]
     return true unless ports.is_a?(Array) # not an error just nada
     ports.each do |port|
+      STDERR.puts("READINF PORT " + port.to_s )
       portnum = port[:port]
-      name = port[:name]
+        if port.key?(:name)
+          name = port[:name]
+        else
+          name = port[:port].to_s
+        end
+     
       external = port[:external]
       type = port[:protocol]
       type = 'tcp' if type.is_a?(String) == false || type.size == 0
       type = 'both' if type == 'TCP and UDP'
+      type.downcase!
+     
       # FIXME: when public ports supported
-      SystemDebug.debug(SystemDebug.builder, 'Port ' + portnum.to_s + ':' + external.to_s)
-      @mapped_ports.push(WorkPort.new(name, portnum, external, false, type))
+      SystemDebug.debug(SystemDebug.builder, 'Port ' + name + ':' + portnum.to_s + ':' + external.to_s + '/' + type)
+     # @mapped_ports.push(WorkPort.work_port_hash(name, portnum, external, false, type))
+        @mapped_ports[name] = WorkPort.work_port_hash(name, portnum, external, true, type)
     end 
     return true
   rescue StandardError => e

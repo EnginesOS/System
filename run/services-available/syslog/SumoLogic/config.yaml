@@ -12,13 +12,13 @@ environments: []
 image: engines/sumologic-syslog:_Engines_System(release)
 port: 
 mapped_ports:
-- !ruby/object:WorkPort
+- 
   name: syslog
   port: 514
   publicFacing: true
   proto_type: udp
   external: 514
-- !ruby/object:WorkPort
+- 
   name: syslog
   port: 514
   publicFacing: true

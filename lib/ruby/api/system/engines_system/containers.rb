@@ -1,5 +1,11 @@
 module Containers
- 
+  
+  # @param container_log file
+  # @param retentioncount
+def rotate_container_log(container_id, retention = 10)
+
+  run_server_script('rotate_container_log',container_id.to_s + ' ' + retention.to_s)   
+end
   
   def save_container(cont)
     clear_error
@@ -73,6 +79,13 @@ module Containers
   rescue StandardError => e
     log_exception(e)
   end
+  
+  def get_engine_actionator(container,action)
+    
+    actionators = load_engine_actionators(container)
+
+    return actionators[action.to_sym]
+  end
 
   def load_engine_actionators(container)
     SystemDebug.debug(SystemDebug.actions,container,ContainerStateFiles.actionator_dir(container) + '/actionators.yaml')
@@ -85,5 +98,7 @@ module Containers
   rescue StandardError => e
     log_exception(e)
   end
+
+ 
 
 end

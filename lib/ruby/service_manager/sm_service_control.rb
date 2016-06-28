@@ -6,6 +6,7 @@ module SmServiceControl
   # no_engien used by  service builder it ignore no engine error
   def create_and_register_service(service_hash, no_engine = false)
     clear_error
+    r = ''
     SystemDebug.debug(SystemDebug.services, :sm_create_and_register_service, service_hash)
     #register with Engine
     unless ServiceDefinitions.is_soft_service?(service_hash) 
@@ -17,12 +18,13 @@ module SmServiceControl
     # add to service and register with service
     if ServiceDefinitions.is_service_persistent?(service_hash)
       SystemDebug.debug(SystemDebug.services,  :create_and_register_service_persistr, service_hash)
-      return log_error_mesg('Failed to create persistent service ',service_hash) unless add_to_managed_service(service_hash)
-      return log_error_mesg('Failed to add service to managed service registry',service_hash) unless test_registry_result(system_registry_client.add_to_services_registry(service_hash))
+      return r if ( r = add_to_managed_service(service_hash)).is_a?(EnginesError)
+      return  test_registry_result(system_registry_client.add_to_services_registry(service_hash))
     else
       SystemDebug.debug(SystemDebug.services,  :create_and_register_service_nonpersistr, service_hash)
-      return log_error_mesg('Failed to create non persistent service ',service_hash) unless add_to_managed_service(service_hash)
-      return log_error_mesg('Failed to add service to managed service registry',service_hash) unless test_registry_result(system_registry_client.add_to_services_registry(service_hash))
+      r = add_to_managed_service(service_hash)
+      return r if r.is_a?(EnginesError)
+      return test_registry_result(system_registry_client.add_to_services_registry(service_hash))
     end
     return true
   rescue Exception=>e
@@ -34,31 +36,35 @@ module SmServiceControl
   #@return false
   def delete_service(service_query)
     clear_error
+    r = ''
     complete_service_query = ServiceDefinitions.set_top_level_service_params(service_query,service_query[:parent_engine])
     service_hash = system_registry_client.find_engine_service_hash(complete_service_query)
+    return service_hash unless service_hash.is_a?(Hash)
     return remove_shared_service_from_engine(service_query) if service_hash[:shared] == true
     
-    return log_error_mesg('Failed to match params to registered service',service_hash) unless service_hash
+   # return log_error_mesg('Failed to match params to registered service',service_hash) unless service_hash.is_a?(Hash)
     service_hash[:remove_all_data] = service_query[:remove_all_data]
-    return log_error_mesg('Failed to remove from managed service',service_hash) unless remove_from_managed_service(service_hash) || service_query.key?(:force)
-    return log_error_mesg('Failed to remove from managed service registry',service_hash) unless system_registry_client.remove_from_managed_engines_registry(service_hash)
-    return log_error_mesg('Failed to remove managed service from services registry', service_hash) unless test_registry_result(system_registry_client.remove_from_services_registry(service_hash))
-    return true
+    return r if (r = remove_from_managed_service(service_hash)).is_a?(EnginesError) && !service_query.key?(:force)
+    return r if ( r = system_registry_client.remove_from_managed_engines_registry(service_hash)).is_a?(EnginesError)
+    return test_registry_result(system_registry_client.remove_from_services_registry(service_hash))
+
   rescue StandardError => e
     log_exception(e)
   end
 
   def update_attached_service(params)
     clear_error
+    r = ''
     ServiceDefinitions.set_top_level_service_params(params,params[:parent_engine])
-    if test_registry_result(system_registry_client.update_attached_service(params))
-      return add_to_managed_service(params) if remove_from_managed_service(params)
+    if (r = test_registry_result(system_registry_client.update_attached_service(params)))
+      return add_to_managed_service(params) if ( r = remove_from_managed_service(params))
+        return r
       # this calls add_to_managed_service(params) plus adds to reg
       @last_error='Failed to remove ' + system_registry_client.last_error.to_s
     else
       @last_error = system_registry_client.last_error.to_s
     end
-    return false
+    return r
   rescue StandardError => e
     log_exception(e)
   end

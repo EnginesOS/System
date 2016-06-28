@@ -11,44 +11,44 @@ domain_name:
 environments: []
 image: engines/ftp:_Engines_System(release)
 volumes:
- ssl_certs: !ruby/object:Volume
+ ssl_certs: 
   name: ssl_certs
   remotepath: "/etc/ssl/"
   localpath: "/opt/engines/etc/ftp/ssl/"
-  mapping_permissions: "ro"
- fs_rw: !ruby/object:Volume
+  permissions: "ro"
+ fs_rw: 
   name: fs_rw
   remotepath: "/ftp/rw/"
   localpath: "/var/lib/engines/fs/"
-  mapping_permissions: "rw"
- fs_ro: !ruby/object:Volume
+  permissions: "rw"
+ fs_ro: 
   name: fs_ro
   remotepath: "/ftp/ro/"
   localpath: "/var/lib/engines/fs/"
-  mapping_permissions: "rw"
+  permissions: "rw"
 port: 
 mapped_ports:
-- !ruby/object:WorkPort
+ ftp:
   name: ftp
   port: 21
   publicFacing: true
   external: 21
-- !ruby/object:WorkPort
+ ftp-data: 
   name: ftp-data
   port: 20
   publicFacing: true
   external: 20
-- !ruby/object:WorkPort
+ ftps:
   name: ftps
   port: 989
   publicFacing: true
   external: 989
-- !ruby/object:WorkPort
+ ftps-data: 
   name: ftps-data
   port: 990
   publicFacing: true
   external: 990
-- !ruby/object:WorkPort
+ sftp:
   name: sftp
   port: 115
   publicFacing: true

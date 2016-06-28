@@ -12,12 +12,12 @@ no_ca_map: true
 domain_name: 
 environments: []
 image: engines/certs:_Engines_System(release)
-volumes:
- socket: !ruby/object:Volume
-  name: socket
-  remotepath: "/home/certs/store"
-  localpath: "/var/lib/engines/cert_auth"
-  mapping_permissions: rw
+volumes: 
+  certs_store: 
+   name: certs_store
+   remotepath: "/home/certs/store"
+   localpath: "/var/lib/engines/cert_auth"
+   permissions: rw
 port: 
 mapped_ports:
 repo: na

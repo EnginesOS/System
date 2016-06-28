@@ -11,11 +11,11 @@ domain_name:
 environments: []
 image: engines/wwwstats:_Engines_System(release)
 volumes:
- config: !ruby/object:Volume
+ config: 
   name: weblogs
   remotepath: "/var/log/www/"
   localpath: "/var/log/engines/services/nginx/nginx/"
-  mapping_permissions: ro
+  permissions: ro
 port: 
 mapped_ports:
 repo: na

@@ -1,0 +1,24 @@
+{
+	"engine_name": "aorphanengine",
+	"host_name": "aorphanengine",
+	"domain_name": "local",
+	"http_protocol": "http_https",
+	"memory": 64,
+	"repository_url":"https://github.com/EnginesBlueprints/phpmyadmin.git",	
+	"attached_services": [
+	{
+				"type_path": "database/sql/mysql",
+				"publisher_namespace": "EnginesSystem",
+				"create_type": "orphan",
+				"parent_engine": "installtest",
+				"service_handle": "installtest"
+			}, {
+				"type_path": "filesystem/local/filesystem",
+				"publisher_namespace": "EnginesSystem",
+				"create_type": "orphan",
+				"parent_engine":"installtest",
+				"service_handle":"installtest"
+				}
+				]		
+			 }
+			 

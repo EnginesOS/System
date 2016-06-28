@@ -1,6 +1,7 @@
 #require '/opt/engines/lib/ruby/containers/ManagedContainer.rb'
 require 'objspace'
-
+require '/opt/engines/lib/ruby/containers/container.rb'
+require '/opt/engines/lib/ruby/containers/managed_container.rb'
 class ManagedService < ManagedContainer
 
   require_relative 'managed_service/managed_service_configurations.rb'
@@ -15,7 +16,8 @@ class ManagedService < ManagedContainer
   include    ManagedServiceControls
   require_relative 'managed_service/managed_service_image_controls.rb'
   include    ManagedServiceImageControls
-
+  require_relative 'managed_service/managed_service_on_action.rb'
+  include ManagedServiceOnAction
   @ctype='service'
   @soft_service  = false
   def lock_values

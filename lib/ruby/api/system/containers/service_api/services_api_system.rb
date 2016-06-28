@@ -4,7 +4,9 @@ module ServiceApiSystem
     super
   end
   def setup_service_dirs(container)
-    SystemUtils.execute_command('/opt/engines/scripts/setup_service_dir.sh ' + container.container_name)
+    STDERR.puts(' SSEETTUUPP ' + container.container_name + ' with ' + '/opt/engines/system/scripts/system/setup_service_dir.sh ' + container.container_name) 
+   SystemUtils.execute_command('/opt/engines/system/scripts/system/setup_service_dir.sh ' + container.container_name)
+    SystemUtils.execute_command('ls -la /opt/engines/run/services/' + container.container_name + ' >> /tmp/perms')
   end 
   def container_services_dir(container)
     ContainerStateFiles.container_state_dir(container) + '/services/'

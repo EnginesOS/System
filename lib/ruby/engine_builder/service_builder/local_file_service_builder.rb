@@ -8,8 +8,8 @@ module LocalFileServiceBuilder
       SystemUtils.run_system(command)
       File.delete(SystemConfig.CidDir + '/volbuilder.cid')
     end
-    mapped_vols = get_volbuild_volmaps container
-    command = 'docker run --name volbuilder --memory=128m -e fw_user=' + username + ' -e data_gid=' + container.data_gid + '   --cidfile ' +SystemConfig.CidDir + 'volbuilder.cid ' + mapped_vols + ' -t engines/volbuilder:' + SystemUtils.system_release + ' /bin/sh /home/setup_vols.sh '
+    mapped_vols = get_volbuild_volmaps(container)
+    command = 'docker run --name volbuilder --memory=128m -e fw_user=' + username.to_s + ' -e data_gid=' + container.data_gid.to_s + '   --cidfile ' +SystemConfig.CidDir + 'volbuilder.cid ' + mapped_vols.to_s + ' -t engines/volbuilder:' + SystemUtils.system_release + ' /bin/sh /home/setup_vols.sh '
     SystemDebug.debug(SystemDebug.services,'Run volume builder',command)
 
     #run_system(command)
@@ -40,7 +40,7 @@ module LocalFileServiceBuilder
     if service_hash[:share] == true
     @volumes[service_hash[:service_owner] + '_' + service_hash[:variables][:service_name]] = vol
   else
-    @volumes[service_hash[:variables][:service_name]] = Volume.new(service_hash)
+    @volumes[service_hash[:variables][:service_name]] = Volume.volume_hash(service_hash)
 end
     return true
   rescue StandardError => e
@@ -57,8 +57,8 @@ end
     volume_option += ' -v ' + log_dir + ':/client/log:rw '
     unless container.volumes.nil?
       container.volumes.each_value do |vol|
-        SystemDebug.debug(SystemDebug.services,'build vol maps ' +  vol.name.to_s , vol)
-        volume_option += ' -v ' + vol.localpath.to_s + ':/dest/fs/' + vol.name + ':rw'
+        SystemDebug.debug(SystemDebug.services,'build vol maps ' +  vol[:volume_name].to_s , vol)
+        volume_option += ' -v ' + vol[:localpath].to_s + ':/dest/fs/' + vol[:volume_name] + ':rw'
       end
     end
     volume_option += ' --volumes-from ' + container.container_name

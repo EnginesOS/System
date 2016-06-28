@@ -6,23 +6,30 @@ module DockerApiCreateOptions
   def create_options(container)
     @top_level = build_top_level(container)
     @top_level['Env'] = envs(container)
-    @top_level['Mounts'] = volumes_mounts(container)
+  #  @top_level['Mounts'] = volumes_mounts(container)
     @top_level['ExposedPorts'] = exposed_ports(container)
     @top_level['HostConfig'] = host_config_options(container)
     return @top_level
-
+  rescue StandardError => e
+    log_exception(e)
   end
 
   def get_protocol_str(port)
-    return  'tcp'  if port.proto_type.nil?
-    return  'both' if eport.proto_type.downcase.include?('and')
-    port.proto_type
+    return  'tcp'  if port[:proto_type].nil?
+    return  'both' if port[:proto_type].downcase.include?('and')
+    port[:proto_type]
   end
 
   def exposed_ports(container)
     eports = {}
-    container.ports.each do |port|
-      eports[port.to_s + '/' + get_protocol_str(port)] = {}
+    
+    return eports if container.mapped_ports.nil?
+    
+    STDERR.puts(' Mapped Ports to expose ' + container.mapped_ports.to_s)
+    container.mapped_ports.each_value do |port|
+      port = SystemUtils.symbolize_keys(port)
+      STDERR.puts(' exposing ' + port.to_s + '' + port[:port].to_s + '/' + get_protocol_str(port)) 
+      eports[port[:port].to_s + '/' + get_protocol_str(port)] = {}
     end
     eports
   end
@@ -30,22 +37,34 @@ module DockerApiCreateOptions
   def volumes_mounts(container)
     mounts = []
     container.volumes.each_value do |volume|
-      mounts.push(mount_hash(volume))
+      mounts.push(mount_string(volume))
     end
     mounts.concat(system_mounts(container))
     mounts
   end
 
-  def mount_hash(volume)
-    mount_hash = {}
-    mount_hash['Source'] = volume.localpath
-    mount_hash['Destination'] = volume.remotepath
-    mount_hash['Mode'] = volume.mapping_permissions + ',Z'
-    if volume.mapping_permissions == 'rw'
-      mount_hash['RW'] = true
-    else
-      mount_hash['RW'] = false
-    end
+  def mount_string(volume)
+    volume = SystemUtils.symbolize_keys(volume)
+    perms = 'ro'
+    if volume[:permissions] == 'rw'
+         perms = 'rw'
+        else
+          perms = 'ro'
+        end
+    volume[:localpath] + ':' + volume[:remotepath] + ':' + perms
+#    mount_string = {}
+#    mount_string['Source'] = volume[:localpath]
+#    mount_string['Destination'] = volume[:remotepath]
+#    mount_string['Mode'] = volume[:permissions] + ',Z'
+#    if volume[:permissions] == 'rw'
+#      mount_string['RW'] = true
+#    else
+#      mount_string['RW'] = false
+#    end
+#    mount_string
+  rescue StandardError => e
+    STDERR.puts(' vol ' + volume.to_s)
+    log_exception(e, volume)
   end
 
   def get_dns_search
@@ -53,20 +72,23 @@ module DockerApiCreateOptions
     search.push(SystemConfig.internal_domain)
     search
   end
-
+  require '/opt/engines/lib/ruby/api/system/system_status.rb'
   def get_dns_servers
     servers = []
-    servers.push( SystemStatus.get_management_ip)
+    servers.push( SystemStatus.get_docker_ip)
     servers
   end
 
   def host_config_options(container)
 
     host_config = {}
+    host_config['Binds'] = volumes_mounts(container)
     host_config['PortBindings'] = port_bindings(container)
+    host_config['Volumes'] = {}
     #  host_config['LxcConf'] # {"lxc.utsname":"docker"},
-    host_config['Memory'] = container.memory.to_s
-    host_config['MemorySwap'] = (container.memory * 2).to_s
+      memory = container.memory.to_i * 1024 * 1024
+    host_config['Memory'] = memory
+    host_config['MemorySwap'] = memory * 2  
     host_config['MemoryReservation'] # 0,
     # host_config['KernelMemory'] # 0,
     #  host_config['CpuShares'] # 512,
@@ -97,21 +119,24 @@ module DockerApiCreateOptions
     #      host_config['Devices'] # [],
     #      host_config['Ulimits'] # [{}],
     #   host_config['LogConfig'] = Hash.new ( "Type": "json-file", "Config": {} )
-    host_config['SecurityOpt']= ""
-    host_config['CgroupParent'] = ""
-    host_config['VolumeDriver'] = ""
+#    host_config['SecurityOpt']= ""
+#    host_config['CgroupParent'] = ""
+#    host_config['VolumeDriver'] = ""
 
     host_config
   end
 
   def port_bindings(container)
     bindings = {}
-    container.ports.each do |port|
-      local_side =     port.port.to_s + '/' + get_protocol_str(port)
+    return bindings if container.mapped_ports.nil?
+    container.mapped_ports.each_value do |port|
+      port = SystemUtils.symbolize_keys(port)
+      local_side =     port[:port].to_s + '/' + get_protocol_str(port)
       remote_side = []
       remote_side[0] = {}
-      remote_side[0]['HostPort'] = port.external.to_s
+      remote_side[0]['HostPort'] = port[:external].to_s
       bindings[local_side] = remote_side
+      STDERR.puts( 'binding localside ' + local_side.to_s + '=' + bindings[local_side] .to_s )
     end
     bindings
   end
@@ -126,16 +151,22 @@ module DockerApiCreateOptions
     top_level['Tty'] = false
     top_level['OpenStdin'] = false
     top_level['StdinOnce'] = false
-
+    top_level['Labels'] = {}
     top_level['WorkingDir'] = ''
+    top_level['User'] = ''
+    top_level["Labels" ] = get_labels(container)
     top_level['NetworkDisabled'] = false
     top_level['StopSignal'] = 'SIGTERM'
-    top_level['WorkingDir'] = ''
     top_level['Image']=  container.image
-    top_level['Entrypoint'] =  ' /bin/bash /home/start.bash' unless container.conf_self_start
+    top_level['Entrypoint'] =  ['/bin/bash' ,'/home/start.bash'] unless container.conf_self_start
     top_level
   end
-
+  def get_labels(container)
+    labels = {}  
+    labels['container_name'] = container.container_name
+    labels['container_type'] = container.ctype
+      return labels
+  end
   def system_mounts(container)
     mounts = []
     if container.ctype == 'container'
@@ -146,67 +177,72 @@ module DockerApiCreateOptions
     mounts_file = File.open(mounts_file_name,'r')
     volumes = YAML::load(mounts_file)
     mounts_file.close
-    volumes.each do |volume|
-      mounts.push(mount_hash(volume))
+
+    volumes.each_value do |volume|
+      mounts.push(mount_string(volume))
     end
 
     mounts.push(state_mount(container))
     mounts.push(logdir_mount(container))
-    mounts.push(vlogdir_mount(container)) unless container_log_dir(container) == '/var/log' || container_log_dir(container) == '/var/log/'
+    mounts.push(vlogdir_mount(container)) unless in_container_log_dir(container) == '/var/log' || in_container_log_dir(container) == '/var/log/'
     mounts.push(ssh_keydir_mount(container))
 
     return mounts
   end
 
   def ssh_keydir_mount(container)
-    ssh_keydir_mount_hash = {}
-    ssh_keydir_mount_hash['Source'] = service_sshkey_container_dir(container)
-    ssh_keydir_mount_hash['Destination'] = '/home/.ssh'
-    ssh_keydir_mount_hash['Mode'] = 'rw,Z'
-    ssh_keydir_mount_hash['RW'] = true
-    ssh_keydir_mount_hash
+    service_sshkey_local_dir(container) + ':/home/.ssh:rw'
+#    ssh_keydir_mount_string = {}
+#    ssh_keydir_mount_string['Source'] = service_sshkey_local_dir(container)
+#    ssh_keydir_mount_string['Destination'] = '/home/.ssh'
+#    ssh_keydir_mount_string['Mode'] = 'rw,Z'
+#    ssh_keydir_mount_string['RW'] = true
+#    ssh_keydir_mount_string
   end
 
   def vlogdir_mount(container)
-    vlogdir_mount_hash = {}
-    vlogdir_mount_hash['Source'] = container_log_dir(container)
-    vlogdir_mount_hash['Destination'] = '/var/log/'
-    vlogdir_mount_hash['Mode'] = 'rw,Z'
-    vlogdir_mount_hash['RW'] = true
-    vlogdir_mount_hash
+    container_local_log_dir(container) + ':/var/log/:rw'
+#    vlogdir_mount_string = {}
+#    vlogdir_mount_string['Source'] = container_local_log_dir(container)
+#    vlogdir_mount_string['Destination'] = '/var/log/'
+#    vlogdir_mount_string['Mode'] = 'rw,Z'
+#    vlogdir_mount_string['RW'] = true
+#    vlogdir_mount_string
   end
 
   def logdir_mount(container)
-    logdir_mount_hash = {}
-    logdir_mount_hash['Source'] = container_log_dir(container)
-    logdir_mount_hash['Destination'] = incontainer_logdir
-    logdir_mount_hash['Mode'] = 'rw,Z'
-    logdir_mount_hash['RW'] = true
-    logdir_mount_hash
+    container_local_log_dir(container) + ':' + in_container_log_dir(container) + ':rw'
+#    logdir_mount_string = {}
+#    logdir_mount_string['Source'] = container_local_log_dir(container)
+#    logdir_mount_string['Destination'] = in_container_log_dir(container)
+#    logdir_mount_string['Mode'] = 'rw,Z'
+#    logdir_mount_string['RW'] = true
+#    logdir_mount_string
   end
 
   def state_mount(container)
-    state_mount_hash = {}
-    state_mount_hash['Source'] = container_state_dir(container) + '/run'
-    state_mount_hash['Destination'] = '/engines/var/run'
-    state_mount_hash['Mode'] = 'rw,Z'
-    state_mount_hash['RW'] = true
-    state_mount_hash
+    container_state_dir(container) + '/run:/engines/var/run:rw'
+#    state_mount_string = {}
+#    state_mount_string['Source'] = container_state_dir(container) + '/run'
+#    state_mount_string['Destination'] = '/engines/var/run'
+#    state_mount_string['Mode'] = 'rw,Z'
+#    state_mount_string['RW'] = true
+#    state_mount_string
   end
 
-  def self.container_state_dir(container)
+  def container_state_dir(container)
     ContainerStateFiles.container_state_dir(container)
   end
 
-  def self.container_log_dir(container)
+  def container_local_log_dir(container)
     SystemConfig.SystemLogRoot + '/' + container.ctype + 's/' + container.container_name
   end
 
-  def self.service_sshkey_local_dir(container)
+  def service_sshkey_local_dir(container)
     '/opt/engines/etc/ssh/keys/services/' + container.container_name
   end
 
-  def get_container_logdir(container)
+  def in_container_log_dir(container)
     return '/var/log' if container.framework.nil? || container.framework.length == 0
     container_logdetails_file_name = false
     framework_logdetails_file_name = SystemConfig.DeploymentTemplates + '/' + container.framework + '/home/LOG_DIR'
@@ -228,10 +264,10 @@ module DockerApiCreateOptions
   end
 
   def envs(container)
-    envs = {}
+    envs = []
     container.environments.each do |env|
-      next if env.build_time_only
-      envs[env.name] = env.value
+      next if env.build_time_only   
+      envs.push(env.name.to_s + '=' + env.value.to_s)
     end
     envs
   end

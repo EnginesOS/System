@@ -19,7 +19,7 @@ class SoftwareServiceDefinition
     begin
       # p yaml.path
       serviceDefinition = SystemUtils.symbolize_keys(YAML::load( yaml ))
-      serviceDefinition[:persistent] =  serviceDefinition[:persistant] unless serviceDefinition.key?(:persistent) 
+      serviceDefinition[:persistent] =  serviceDefinition[:persistent] unless serviceDefinition.key?(:persistent) 
       return serviceDefinition        
     rescue Exception=>e
       SystemUtils.log_error_mesg('Problem loading Yaml',yaml)
@@ -100,25 +100,24 @@ end
 
   end
 
-  def SoftwareServiceDefinition.find(service_type,provider)
+  def SoftwareServiceDefinition.find(service_type, provider)
     if service_type == nil  || provider == nil
-      return nil
+      return  SystemUtils.log_error_mesg('missing params:' +  provider.to_s  + '/' + service_type.to_s )
     end
     dir = SystemConfig.ServiceTemplateDir + '/' + provider
     if Dir.exist?(dir)
       service_def = SoftwareServiceDefinition.load_service_def(dir,service_type)
       if service_def == nil
-        SystemUtils.log_error_mesg('Nil Service type',provider.to_s + '/' + service_type.to_s )
-        return nil
+        return SystemUtils.log_error_mesg('Nil Service type',provider.to_s + '/' + service_type.to_s )
+
       end
       return service_def #.to_h
     end
-    SystemUtils.log_error_mesg('No Dir',dir)
-    return nil
+    return SystemUtils.log_error_mesg('No Dir',dir)   
   rescue Exception=>e
     SystemUtils.log_error_mesg('Error ' ,provider.to_s + '/' + service_type.to_s )
     SystemUtils.log_exception(e)
-    return nil
+   
   end
 
   def SoftwareServiceDefinition.load_service_def(dir,service_type)

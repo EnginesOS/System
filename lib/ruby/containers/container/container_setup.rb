@@ -4,9 +4,11 @@ module ContainerSetup
   end
 
   def post_load
-    expire_engine_info 
+    STDERR.puts('---MAPPED ports ' + @mapped_ports.to_s)
+    expire_engine_info
     set_cont_id
-    set_running_user   
+    set_running_user
+    domain_name = SystemConfig.internal_domain
     lock_values
   end
 end

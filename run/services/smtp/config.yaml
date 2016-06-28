@@ -11,19 +11,19 @@ domain_name:
 environments: []
 image: engines/smtp:_Engines_System(release)
 volumes: 
- ssl_dir: !ruby/object:Volume
+ ssl_dir: 
   name: ssl_dir
   remotepath: "/etc/ssl"
   localpath: "/opt/engines/etc/smtp/ssl"
-  mapping_permissions: "ro"
+  permissions: "ro"
 port: 
 mapped_ports: 
-- !ruby/object:WorkPort
+ smtp: 
   name: smtp
   port: 465
   publicFacing: true
   external: 465
-- !ruby/object:WorkPort
+ subs_smtp: 
   name: subs_smtp
   port: 587
   publicFacing: true

@@ -26,7 +26,6 @@ module ServiceApiReaders
 
   end
 rescue StandardError => e
-  log_exception(e)
-  return {}
+  return log_exception(e)
 
 end

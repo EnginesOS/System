@@ -1,6 +1,6 @@
 #require '/opt/engines/lib/ruby/containers/ManagedContainer.rb'
 
-#require '/opt/engines/lib/ruby/managed_services/ManagedService.rb'
+require '/opt/engines/lib/ruby/containers/managed_service.rb'
 class SystemService < ManagedService
   @ctype = 'system_service'
   def lock_values
@@ -37,7 +37,7 @@ class SystemService < ManagedService
   rescue StandardError => e
     log_exception(e)
   end
-
+ 
   def inspect_container
     SystemDebug.debug(SystemDebug.system,:system_service_inspect_container)
 

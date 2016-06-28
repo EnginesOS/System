@@ -3,12 +3,16 @@ class SystemStatus
     File.exist?(SystemConfig.SystemUpdatingFlag)
   end
 
-  def self.get_management_ip
-#    ip  = File.read('/opt/engines/etc/net/management') if File.exist?('/opt/engines/etc/net/management')
-#    return '172.17.42.1' if ip.nil?
-#    return ip
-    return 'control.engines.internal'
+  # return [String] representing the address of public host interface (ie ifconfig eth0)
+  def SystemStatus.get_base_host_ip   
+    return ENV['CONTROL_IP'] #'control.engines.internal'
   end
+  
+  # return [String] representing the address docker interface
+  def SystemStatus.get_docker_ip  
+    return ENV['DOCKER_IP'] #'control.engines.internal'
+  end
+  
 
   def self.is_rebooting?
     File.exist?(SystemConfig.SystemRebootingFlag)
@@ -73,7 +77,7 @@ class SystemStatus
     File.delete(SystemConfig.BuildBuiltFile) if File.exist?(SystemConfig.BuildBuiltFile)
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    return {}
+ 
   end
 
   def self.build_status
@@ -83,7 +87,7 @@ class SystemStatus
     return result
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    return {}
+
   end
 
   def self.get_engines_system_release
@@ -104,7 +108,7 @@ class SystemStatus
     return result
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    return {}
+
   end
 
   # called by per session and post update
@@ -118,7 +122,7 @@ class SystemStatus
     return result
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    return {}
+
   end
 
   def self.current_build_params
@@ -132,7 +136,7 @@ class SystemStatus
     return params
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    return {}
+
   end
 
   def self.last_build_params
@@ -146,7 +150,7 @@ class SystemStatus
     return params
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    return {}
+  
   end
 
   def self.last_build_failure_params
@@ -160,51 +164,53 @@ class SystemStatus
     return params
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    return {}
+
   end
 
   def self.is_remote_exception_logging?
-    return !File.exist?(SystemConfig.NoRemoteExceptionLoggingFlagFile)
+    return true unless File.exist?(SystemConfig.NoRemoteExceptionLoggingFlagFile)
+    return false
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
 
-  def self.get_system_load_info
-    ret_val = {}
-    loadavg_info = File.read('/proc/loadavg')
-    values = loadavg_info.split(' ')
-    ret_val[:one] = values[0]
-    ret_val[:five] = values[1]
-    ret_val[:fithteen] = values[2]
-    run_idle = values[3].split('/')
-    ret_val[:running] = run_idle[0]
-    ret_val[:idle] = run_idle[1]
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
-    ret_val[:one] = -1
-    ret_val[:five] = -1
-    ret_val[:fithteen] = -1
-    ret_val[:running] = -1
-    ret_val[:idle] = -1
-    return ret_val
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
-  end
+#  def self.get_system_load_info
+#    ret_val = {}
+#    loadavg_info = File.read('/proc/loadavg')
+#   
+#    values = loadavg_info.split(' ')
+#    ret_val[:one] = values[0]
+#    ret_val[:five] = values[1]
+#    ret_val[:fifteen] = values[2]
+#    run_idle = values[3].split('/')
+#    ret_val[:running] = run_idle[0]
+#    ret_val[:idle] = run_idle[1]
+#    ret_val
+#  rescue StandardError => e
+#    SystemUtils.log_exception(e)
+#    ret_val[:one] = -1
+#    ret_val[:five] = -1
+#    ret_val[:fifteen] = -1
+#    ret_val[:running] = -1
+#    ret_val[:idle] = -1
+#    return ret_val
+#  rescue StandardError => e
+#    SystemUtils.log_exception(e)
+#  end
 
   def self.is_base_system_upto_date?
     # FIX ME
     # in future check state of /opt/engines/run/system/flags/update_pending
-    result = SystemUtils.execute_command('/opt/engines/bin/engines_system_update_status.sh')
+    result = SystemUtils.execute_command('/opt/engines/system/scripts/system/engines_system_update_status.sh')
     return result[:stdout]
   rescue StandardError => e
-    SystemUtils.log_exception(e)
-    return result[:stderr] unless result.nil?
-    return false
+      SystemUtils.log_exception(e)
+  
   end
 
   def self.is_engines_system_upto_date?
     if self.get_engines_system_release == 'current'
-      result = SystemUtils.execute_command('/opt/engines/bin/engines_system_update_status.sh')
+      result = SystemUtils.execute_command('/opt/engines/system/scripts/system/engines_system_update_status.sh')
       return true if result[:stdout].include?('Up to Date')
       return false
     else
@@ -212,8 +218,6 @@ class SystemStatus
     end
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    return result[:stderr] unless result.nil?
-    return false
   end
 
 end
