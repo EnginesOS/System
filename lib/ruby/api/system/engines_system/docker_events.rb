@@ -15,7 +15,7 @@ module DockerEvents
   
     r = fill_in_event_system_values(event_hash)
     return r if r.is_a?(EnginesError) 
-
+    STDERR.puts('2 CONTAINER EVENTS' + event_hash.to_s)
 #    event_hash['container_name'] = container_name_from_id(event_hash['id']) unless event_hash.key?('container_name')
 #    STDERR.puts('2 CONTAINER EVENTS' + event_hash.to_s)
 #    event_hash['container_name'] = container_name_from_id(event_hash['id']) if event_hash['container_name'].nil?
