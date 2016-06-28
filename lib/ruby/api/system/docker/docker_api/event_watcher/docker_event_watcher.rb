@@ -31,13 +31,13 @@ class DockerEventWatcher  < ErrorsApi
     def trigger(hash)
       mask = event_mask(hash)
       return  if  @event_mask != 0 && mask & @event_mask == 0
-      unless mask & @@engine_target == 0
-        hash['container_type'] = 'container'
-        hash['container_name'] = hash['from'] if hash.key?('from')
-      else
-        hash['container_name'] = hash['from'].sub(/engines\//,'') if hash.key?('from')
-        hash['container_type'] = 'service'
-      end
+#      unless mask & @@engine_target == 0
+#        hash['container_type'] = 'container'
+#        hash['container_name'] = hash['from'] if hash.key?('from')
+#      else
+#        hash['container_name'] = hash['from'].sub(/engines\//,'') if hash.key?('from')
+#        hash['container_type'] = 'service'
+#      end
       hash['state'] = state_from_status( hash['status'] )
       STDERR.puts('fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
       return @object.method(@method).call(hash)
