@@ -154,13 +154,19 @@ module DockerApiCreateOptions
     top_level['Labels'] = {}
     top_level['WorkingDir'] = ''
     top_level['User'] = ''
+    top_level["Labels" ] = get_labels(container)
     top_level['NetworkDisabled'] = false
     top_level['StopSignal'] = 'SIGTERM'
     top_level['Image']=  container.image
     top_level['Entrypoint'] =  ['/bin/bash' ,'/home/start.bash'] unless container.conf_self_start
     top_level
   end
-
+  def get_labels(container)
+    labels = {}
+    labels['container_name'] = container.container_name
+    labels['container_type'] = container.ctype
+      return labels
+  end
   def system_mounts(container)
     mounts = []
     if container.ctype == 'container'
