@@ -162,8 +162,7 @@ module DockerApiCreateOptions
     top_level
   end
   def get_labels(container)
-    labels = {}
-    labels['container_name'] = container.container_name
+    labels = {}  
     labels['container_type'] = container.ctype
       return labels
   end
