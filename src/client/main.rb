@@ -320,7 +320,7 @@ def  process_args
 end
 #ENV['access_token'] = 'test_token'
 @base_url = 'http://' + ENV['CONTROL_IP'] + ':4567'
-@host = '127.0.0.1'
+@host = ENV['CONTROL_IP']
 @port = '4567'
 @route = "/v0"
 
