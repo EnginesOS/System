@@ -44,7 +44,7 @@ module DockerApiContainerStatus
   
   def container_name_and_type_from_id(id)
     request = '/containers/' + id.to_s + '/json'
-    r =  make_request(request, container)
+    r =  make_request(request, nil)
     STDERR.puts(' container_name_and_type_from_id GOT ' + r.to_s)
     return r if r.is_a?(EnginesError)
     ret = []
