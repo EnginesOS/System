@@ -48,6 +48,8 @@ module DockerApiContainerStatus
     STDERR.puts(' container_name_and_type_from_id GOT ' + r.to_s)
     STDERR.puts(' container_name_and_type_from_id GOT ' + r['Config']['Labels'].to_s)
     return r if r.is_a?(EnginesError)
+    return false unless r.key?('Config')
+    return false unless r['Config'].key?('Labels')
     ret = []
       ret[0] = r['Config']['Labels']['container_name']
       ret[1] = r['Config']['Labels']['container_type']
