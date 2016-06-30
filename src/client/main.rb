@@ -202,7 +202,7 @@ def get_stream(path)
     http.request(req) { |resp|
       resp.read_body do |chunk|
         #hash = parser.parse(chunk) do |hash|
-        p chunk
+        puts chunk
         #end
       end
     }
