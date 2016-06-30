@@ -1,3 +1,4 @@
+
 begin
   require 'sinatra'
   require 'json'
@@ -31,6 +32,7 @@ begin
   content_type 'application/json' unless  request.path.end_with?('stream')    
      pass if request.path.start_with?('/v0/system/login/')
     pass if request.path.start_with?('/v0/unauthenticated')    
+    pass if request.path.start_with?('/v0/system/do_first_run') && FirstRunWizard.required?
     env['warden'].authenticate!(:access_token)
    end
         
