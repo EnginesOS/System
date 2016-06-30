@@ -40,6 +40,8 @@ module DockerApiContainerStatus
     r =  make_request(request, container)
     SystemDebug.debug(SystemDebug.containers,'ps_container',container.container_name,r)
     return r
+    rescue StandardError => e
+      log_exception(e)
   end
   
   def container_name_and_type_from_id(id)
@@ -51,7 +53,7 @@ module DockerApiContainerStatus
       r =  make_request(request, nil)
     end
     STDERR.puts(' container_name_and_type_from_id GOT ' + r.to_s)
-    return log_error('no such engine') if r == true # happens on a destroy
+    return log_error_mesg('no such engine') if r == true # happens on a destroy
     return r if r.is_a?(EnginesError) 
     return log_error(' 409 twice for ' + request.to_s) if r == false
     STDERR.puts(' container_name_and_type_from_id GOT ' + r['Config']['Labels'].to_s)
@@ -62,6 +64,8 @@ module DockerApiContainerStatus
       ret[1] = r['Config']['Labels']['container_type']
 
         ret
+rescue StandardError => e
+  log_exception(e)
   end
   
   def container_id_from_name(container)
