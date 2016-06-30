@@ -1,3 +1,4 @@
+
 begin
   require 'sinatra'
   require 'json'
@@ -6,6 +7,8 @@ begin
   require '/opt/engines/lib/ruby/api/public/engines_api/engines_api.rb'
   
   require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
+  require '/opt/engines/lib/ruby/api/system/first_run_wizard/first_run_wizard.rb'
+  
   require 'warden'
 
   $token = 'test_token'
@@ -31,6 +34,7 @@ begin
   content_type 'application/json' unless  request.path.end_with?('stream')    
      pass if request.path.start_with?('/v0/system/login/')
     pass if request.path.start_with?('/v0/unauthenticated')    
+    pass if request.path.start_with?('/v0/system/do_first_run') && FirstRunWizard.required?
     env['warden'].authenticate!(:access_token)
    end
         

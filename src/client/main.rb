@@ -202,7 +202,7 @@ def get_stream(path)
     http.request(req) { |resp|
       resp.read_body do |chunk|
         #hash = parser.parse(chunk) do |hash|
-        p chunk
+        puts chunk
         #end
       end
     }
@@ -320,7 +320,7 @@ def  process_args
 end
 #ENV['access_token'] = 'test_token'
 @base_url = 'http://' + ENV['CONTROL_IP'] + ':4567'
-@host = '127.0.0.1'
+@host = ENV['CONTROL_IP']
 @port = '4567'
 @route = "/v0"
 

@@ -170,6 +170,7 @@ class DockerConnection < ErrorsApi
     rescue StandardError => e
       return log_exception(e,r) if tries > 2
       log_exception(e,r)
+      STDERR.puts(' RETRY RETRY ON ' + res.to_s + ' DUE to ' + e.to_s)
       tries += 1
       sleep 0.1
       retry
