@@ -7,6 +7,8 @@ begin
   require '/opt/engines/lib/ruby/api/public/engines_api/engines_api.rb'
   
   require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
+  require '/opt/engines/lib/ruby/api/system/first_run_wizard/first_run_wizard.rb'
+  
   require 'warden'
 
   $token = 'test_token'
