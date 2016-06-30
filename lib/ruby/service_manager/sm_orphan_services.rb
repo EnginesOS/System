@@ -3,7 +3,7 @@ require_relative 'service_container_actions.rb'
 module SmOrphanServices
 
 def orphanate_service(params)
-  SystemDebug.debug(SystemDebug.orphans, :Orphanate)
+  SystemDebug.debug(SystemDebug.orphans, :Orphanate, params)
    test_registry_result(system_registry_client.orphanate_service(params))   
   rescue StandardError => e
     log_exception(e)
@@ -11,16 +11,19 @@ def orphanate_service(params)
 
  ## ????
 def release_orphan(params)
+  SystemDebug.debug(SystemDebug.orphans, :release_orphan, params)
   system_registry_client.release_orphan(params)
 end
 
   def rollback_orphaned_service(service_hash)
+    SystemDebug.debug(SystemDebug.orphans, :rollback_orphaned_service, service_hash)
     test_registry_result(system_registry_client.rollback_orphaned_service(service_hash))   
   end
   
 #@returns [Hash] suitable for use  to attach as a service
   #nothing written to the tree
   def reparent_orphan(params)
+    SystemDebug.debug(SystemDebug.orphans, :reparent_orphan, params)
     test_registry_result(system_registry_client.reparent_orphan(params))   
     rescue StandardError => e
       log_exception(e)
@@ -41,6 +44,7 @@ end
   #@ removes underly service and remove entry from orphaned services
   #@returns boolean indicating success
   def remove_orphaned_service(service_query_hash)
+    SystemDebug.debug(SystemDebug.orphans, :remove_orphaned_service, service_query_hash)
     clear_error
     r = ''
     service_hash = retrieve_orphan(service_query_hash)
