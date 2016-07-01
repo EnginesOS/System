@@ -28,8 +28,14 @@ module DockerEvents
 #    STDERR.puts('4 CONTAINER EVENTS' + event_hash.to_s)
 #    event_hash['container_name'] = container_name_from_id(event_hash['id']) unless File.exist?(SystemConfig.RunDir + '/' + event_hash['container_type'].to_s + 's/' + event_hash['container_name'].to_s + '/config.yaml')
 #    STDERR.puts('5 CONTAINER EVENTS' + event_hash.to_s + ' ' + SystemConfig.RunDir + '/' + event_hash['container_type'].to_s + 's/' + event_hash['container_name'].to_s + '/config.yaml')
-#    return no_container(event_hash) if event_hash['container_name'].nil?  
-   return no_container(event_hash) unless File.exist?(SystemConfig.RunDir + '/' + event_hash['container_type'] + 's/' + event_hash['container_name'] + '/config.yaml')
+#    return no_container(event_hash) if event_hash['container_name'].nil?
+    if event_hash['container_type'] == 'service' ||  event_hash['container_type'] == 'system_service'
+      # Enable Cold load of service from config.yaml
+    return no_container(event_hash) unless File.exist?(SystemConfig.RunDir + '/' + event_hash['container_type'] + 's/' + event_hash['container_name'] + '/config.yaml') 
+    else
+      # engines always have a running.yaml
+   return no_container(event_hash) unless File.exist?(SystemConfig.RunDir + '/' + event_hash['container_type'] + 's/' + event_hash['container_name'] + '/running.yaml')
+    end
 
   inform_container(event_hash['container_name'] ,event_hash['container_type'] ,event_hash['status'],event_hash)
   
