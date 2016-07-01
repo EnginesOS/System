@@ -3,7 +3,9 @@ module DockerContainerActions
   
   def create_container(container, create_only = false)
    r = @docker_comms.create_container(container)
+    STDERR.puts(' CREATED ')
    return r if create_only == true || r.is_a?(EnginesError) 
+   STDERR.puts(' CREATED AND NOW STARTING ')
     @docker_comms.start_container(container)
 #    clear_error
 #    commandargs = DockerCmdOptions.container_commandline_args(container)
