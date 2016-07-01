@@ -55,10 +55,10 @@ module DockerApiContainerStatus
     
     return log_error_mesg('no such engine') if r == true # happens on a destroy
     return r if r.is_a?(EnginesError) 
-    return log_error(' 409 twice for ' + request.to_s) if r == false
+    return log_error_mesg(' 409 twice for ' + request.to_s) if r == false
     STDERR.puts(' container_name_and_type_from_id GOT ' + r['Config']['Labels'].to_s)
-    return false unless r.key?('Config')
-    return false unless r['Config'].key?('Labels')
+    return log_error_mesg('not a managed engine') unless r.key?('Config')
+    return log_error_mesg('not a managed engine') unless r['Config'].key?('Labels')
     ret = []
       ret[0] = r['Config']['Labels']['container_name']
       ret[1] = r['Config']['Labels']['container_type']
