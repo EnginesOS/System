@@ -15,7 +15,7 @@ module DockerEvents
     return log_error_mesg('Nil event hash passed to container event','') if event_hash.nil?
    
     STDERR.puts('1 CONTAINER EVENTS' + event_hash.to_s)
-    return no_container(event_hash) if event_hash['from'].length == 65 
+   
     
     r = fill_in_event_system_values(event_hash)
     return r if r.is_a?(EnginesError) 

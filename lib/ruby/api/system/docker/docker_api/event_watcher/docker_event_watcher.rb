@@ -128,9 +128,12 @@ class DockerEventWatcher  < ErrorsApi
       r = ''
       resp.read_body do |chunk|
         hash = parser.parse(chunk) do |hash|
-
+          next unless hash.is_a?(Hash)
+          # Skip from numeric events as theses are of no interest to named containers
+          # in future warning if not building 
+          next if hash['from'].length == 65
           @event_listeners.values.each do |listener |
-
+           
             log_exeception(r) if (r = listener.trigger(hash)).is_a?(StandardError)
             STDERR.puts(' TRigger returned ' + r.class.name + ':' + r.to_s + ' on ' + hash.to_s + ' with ' +  listener.to_s)
           end
