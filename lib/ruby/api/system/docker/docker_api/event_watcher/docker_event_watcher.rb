@@ -131,7 +131,10 @@ class DockerEventWatcher  < ErrorsApi
           next unless hash.is_a?(Hash)
           # Skip from numeric events as theses are of no interest to named containers
           # in future warning if not building 
-          next if hash['from'].length == 65
+           if  hash.key?('from') && hash['from'].length >= 64
+             STDERR.puts(' SKIPPING ' + hash.to_s)
+             next
+           end
           @event_listeners.values.each do |listener |
            
             log_exeception(r) if (r = listener.trigger(hash)).is_a?(StandardError)
