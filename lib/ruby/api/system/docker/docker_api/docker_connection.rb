@@ -129,9 +129,10 @@ class DockerConnection < ErrorsApi
     begin
       # Fixme add Timeout
       # Fixme add mutex lock on docker_socker
+      
       @socket_mutex.synchronize {
       resp = docker_socket.request(req)
-      }
+      
       if  resp.code  == '404'
         clear_cid(container) if ! container.nil? && resp.body.start_with?('no such id: ')
         return log_error_mesg("no such id response from docker", resp, resp.body)
@@ -153,7 +154,7 @@ class DockerConnection < ErrorsApi
 
       #   hashes[1] is a timestamp
       return hashes[0]
-
+    }
     rescue EOFError 
       STDERR.puts(' EOFError' + req.to_s )
       return log_exception(e,r)
