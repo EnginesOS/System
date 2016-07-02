@@ -25,6 +25,7 @@ class DockerConnection < ErrorsApi
   def initialize
     @response_parser = Yajl::Parser.new
     @docker_socket = docker_socket
+    @socket_mutex = Mutex.new
   rescue StandardError => e
     log_exception(e)
   end
@@ -128,7 +129,9 @@ class DockerConnection < ErrorsApi
     begin
       # Fixme add Timeout
       # Fixme add mutex lock on docker_socker
+      @socket_mutex.synchronize {
       resp = docker_socket.request(req)
+      }
       if  resp.code  == '404'
         clear_cid(container) if ! container.nil? && resp.body.start_with?('no such id: ')
         return log_error_mesg("no such id response from docker", resp, resp.body)
