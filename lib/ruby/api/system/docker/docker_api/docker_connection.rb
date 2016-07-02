@@ -106,7 +106,7 @@ class DockerConnection < ErrorsApi
       req = Net::HTTP::Post.new(uri)
     end
     return perform_data_request(req, container, return_hash, data) unless data.nil?
-    perform_request(req, container, return_hash)
+    perform_request(req, container, return_hash, true)
   rescue StandardError => e
     log_exception(e)
   end
@@ -120,18 +120,25 @@ class DockerConnection < ErrorsApi
   def make_del_request(uri, container)
     req = Net::HTTP::Delete.new(uri)
     STDERR.puts(' Del ' + uri.to_s)
-    perform_request(req, container)
+    perform_request(req, container, false, false)
   end
-
-  def  perform_request(req, container, return_hash = true)
+  
+  private
+  
+  def  perform_request(req, container, return_hash = true , lock = false)
     tries=0
     r = ''
     begin
       # Fixme add Timeout
       # Fixme add mutex lock on docker_socker
-      
-      @socket_mutex.synchronize {
-      resp = docker_socket.request(req)
+      resp = ''
+      if lock == true
+        @socket_mutex.synchronize {
+        resp = docker_socket.request(req)
+        }
+      else
+        resp = docker_socket.request(req)
+      end
       
       if  resp.code  == '404'
         clear_cid(container) if ! container.nil? && resp.body.start_with?('no such id: ')
@@ -154,7 +161,7 @@ class DockerConnection < ErrorsApi
 
       #   hashes[1] is a timestamp
       return hashes[0]
-    }
+    
     rescue EOFError 
       STDERR.puts(' EOFError' + req.to_s )
       return log_exception(e,r)
@@ -177,7 +184,7 @@ class DockerConnection < ErrorsApi
     end
   end
 
-private
+
 
  def clear_cid(container)
    SystemDebug.debug(SystemDebug.docker, '++++++++++++++++++++++++++Cleared Cid')
