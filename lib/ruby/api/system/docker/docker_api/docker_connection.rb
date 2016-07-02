@@ -167,13 +167,15 @@ class DockerConnection < ErrorsApi
 
     rescue EOFError # also Bad file descriptor
       return r
+    rescue Errno::EBADF
+    return r
     rescue StandardError => e
       return log_exception(e,r) if tries > 2
       log_exception(e,r)
-      STDERR.puts(' RETRY RETRY ON ' + req.to_s + ' DUE to ' + e.to_s)
-      tries += 1
-      sleep 0.1
-      retry
+      STDERR.puts(' RETRY RETRY ON ' + req.to_s + ' With ' + resp.to_s + '  DUE to ' + e.to_s)
+#      tries += 1
+#      sleep 0.1
+#      retry
     end
   end
 
