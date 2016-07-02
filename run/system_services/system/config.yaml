@@ -86,9 +86,9 @@ port:
 mapped_ports:
  access: 
   name: access
-  port: 4567
+  port: 2380
   publicFacing: true
-  external: 4567
+  external: 2380
  ssh:
   name: ssh
   port: 22

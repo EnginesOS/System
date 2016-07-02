@@ -321,9 +321,9 @@ end
 #ENV['access_token'] = 'test_token'
 #@base_url = 'http://' + ENV['CONTROL_IP'] + ':4567'
 #@host = ENV['CONTROL_IP']
-@base_url = 'http://' + ENV['DOCKER_IP'] + ':4567'
+@base_url = 'http://' + ENV['DOCKER_IP'] + ':2380'
 @host = ENV['DOCKER_IP']
-@port = '4567'
+@port = '2380'
 @route = "/v0"
 
 load_token
