@@ -114,13 +114,13 @@ class DockerConnection < ErrorsApi
   def make_request(uri, container, return_hash = true)
     req = Net::HTTP::Get.new(uri)
     STDERR.puts(' GET ' + uri.to_s)
-    perform_request(req, container, return_hash)
+    perform_request(req, container, return_hash, true)
   end
 
   def make_del_request(uri, container)
     req = Net::HTTP::Delete.new(uri)
     STDERR.puts(' Del ' + uri.to_s)
-    perform_request(req, container, false, false)
+    perform_request(req, container, false, true)
   end
   
   private
