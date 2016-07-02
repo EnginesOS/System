@@ -135,8 +135,7 @@ class DockerEventWatcher  < ErrorsApi
              STDERR.puts(' SKIPPING ' + hash.to_s)
              next
            end
-          @event_listeners.values.each do |listener |
-           
+          @event_listeners.values.each do |listener |           
             log_exeception(r) if (r = listener.trigger(hash)).is_a?(StandardError)
             STDERR.puts(' TRigger returned ' + r.class.name + ':' + r.to_s + ' on ' + hash.to_s + ' with ' +  listener.to_s)
           end

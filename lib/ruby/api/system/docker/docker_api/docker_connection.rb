@@ -126,6 +126,8 @@ class DockerConnection < ErrorsApi
     tries=0
     r = ''
     begin
+      # Fixme add Timeout
+      # Fixme add mutex lock on docker_socker
       resp = docker_socket.request(req)
       if  resp.code  == '404'
         clear_cid(container) if ! container.nil? && resp.body.start_with?('no such id: ')
