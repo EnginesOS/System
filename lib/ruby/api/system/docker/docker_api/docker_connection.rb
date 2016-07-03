@@ -114,7 +114,7 @@ class DockerConnection < ErrorsApi
   def make_request(uri, container, return_hash = true)
     req = Net::HTTP::Get.new(uri)
     STDERR.puts(' GET ' + uri.to_s)
-    perform_request(req, container, return_hash, true)
+    perform_request(req, container, return_hash)
   end
 
   def make_del_request(uri, container)
@@ -137,6 +137,10 @@ class DockerConnection < ErrorsApi
         resp = docker_socket.request(req)
         }
       else
+        if @socket_mutex.locked?
+          @socket_mutex.lock
+          @socket_mutex.unlock          
+        end          
         resp = docker_socket.request(req)
       end
       
