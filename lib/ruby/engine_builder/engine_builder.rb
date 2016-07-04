@@ -287,7 +287,7 @@ class EngineBuilder < ErrorsApi
     res = @core_api.docker_build_engine(@build_params[:engine_name], SystemConfig.DeploymentDir + '/' + @build_name.to_s + '.tgz')
     #cmd = 'nohup /usr/bin/docker build --force-rm=true --tag=' + @build_params[:engine_name] + ' ' + basedir
     #res = run_system(cmd)
-    #log_build_output('Cancelable:false')
+    log_build_output('Cancelable:false')
     return true if res
     log_error_mesg('build Image failed ', res)
   rescue StandardError => e

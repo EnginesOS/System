@@ -1,34 +1,6 @@
 module DockerApiBuilder
-  class ArchiveStream
-     def initialize(datafile)
-       @mutex = Mutex.new
-       @file = File.new(datafile,'rb')
-       rescue StandardError => e
-         log_exception(e)      
-     end
-     def eof?()
-       @file.eof?
-     end
  
-     def size
-       @file.size
-     end
- 
-     def read(r_size, offset)
-         @mutex.synchronize {
-           return nil if eof?
-         r_size = size - @file.pos  if r_size > size - @file.pos      
-           STDERR.puts('READ ' + r_size.to_s + '/' + size.to_s)
-           bytes =  @file.read(r_size)
-           STDERR.puts('READ ' + bytes.length.to_s)
-           bytes
-         }
-  #     end
-     end
- 
-  
-   end
-  def build_options(engine_name)
+    def build_options(engine_name)
     ret_val = 'buildargs={}'
     ret_val += '&cgroupparent='
     ret_val += '&forcerm=1'
@@ -52,7 +24,7 @@ module DockerApiBuilder
     Base64.encode64(r.to_json)
   end
   
-  def build_engine(engine_name, build_archive_filename)
+  def build_engine(engine_name, build_archive_filename, builder)
     options =  build_options(engine_name)
     header = {}
     header['X-Registry-Config'] = get_auth
@@ -63,17 +35,9 @@ module DockerApiBuilder
     req = Net::HTTP::Post.new('/build?' + options, header)
     req.content_length = File.size(build_archive_filename)
     
-#        t1 = Thread.new do
-#          archive_stream.set_source(build_archive_filename)
-#          
-#        end
-        req.body_stream = File.new(build_archive_filename,'rb') #archive_stream
-    #  req.body = File.read(build_archive_filename)
-#    STDERR.puts( 'START ' + build_archive_filename.to_s + ' is ' )
-#       resp = docker_socket.request(req) 
-#    resp.read_body do | seg|
-#      STDERR.puts( 'START ' +  seg.to_s)
-#    end
+
+      req.body = File.read(build_archive_filename)
+   
     
     Net::HTTP.start('172.17.0.1', 2375)  do |http|
        
@@ -83,12 +47,17 @@ module DockerApiBuilder
              STDERR.puts( 'START ' + chunk)
             #end
             response_parser.parse(chunk) do |hash |
-              STDERR.puts( 'STDIO ' + hash['stream'].to_s) if hash.key?('stream')
-                 
+               if hash.key?('stream')
+                 builder.log_build_output(hash['stream'])
+               elsif hash.key?('error')
+                 builder.log_build_errors(hash['error'])
+               else
+                 STDERR.puts( 'EOROROROROR ' + hash.to_s)
+               end
                   end
           end
         }
-    
+      out_f.close
     end
       rescue StandardError => e
         log_exception(e)
