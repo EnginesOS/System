@@ -21,7 +21,7 @@ class DockerConnection < ErrorsApi
   include DockerApiContainerOps
   
   require_relative 'docker_api_builder.rb'
-   DockerApiBuilder
+  include DockerApiBuilder
   
   attr_accessor :response_parser
 
