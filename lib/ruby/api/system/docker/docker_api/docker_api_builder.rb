@@ -69,10 +69,22 @@ module DockerApiBuilder
 #        end
     #    req.body_stream = File.new(build_archive_filename,'rb') #archive_stream
     req.body = File.read(build_archive_filename)
-    STDERR.puts( 'START ' + build_archive_filename.to_s + ' is ' )
-       resp = docker_socket.request(req) 
-    resp.read_body do | seg|
-      STDERR.puts( 'START ' +  seg.to_s)
+#    STDERR.puts( 'START ' + build_archive_filename.to_s + ' is ' )
+#       resp = docker_socket.request(req) 
+#    resp.read_body do | seg|
+#      STDERR.puts( 'START ' +  seg.to_s)
+#    end
+    
+    Net::HTTP.start('172.17.0.1', 2375)  do |http|
+       
+        http.request(req) { |resp|
+          resp.read_body do |chunk|
+            #hash = parser.parse(chunk) do |hash|
+             STDERR.puts( 'START ' + chunk)
+            #end
+          end
+        }
+    
     end
       rescue StandardError => e
         log_exception(e)
