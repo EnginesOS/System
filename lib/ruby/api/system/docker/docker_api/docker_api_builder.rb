@@ -3,7 +3,8 @@ module DockerApiBuilder
      def initialize(datafile)
        @mutex = Mutex.new
        @file = File.new(datafile,'r')
-       @eof = false
+       rescue StandardError => e
+         log_exception(e)      
      end
      def eof?()
        @file.eof?
@@ -14,10 +15,6 @@ module DockerApiBuilder
      end
  
      def read(size, offset)
-       STDERR.puts(' READ PARAm ' + offset.to_s + ',' + size.to_s + ' from ' + @body )
-#       if eof?
-#         nil
-#       else
          @mutex.synchronize {
            return nil if eof?
          STDERR.puts('READ ' + size.to_s)
@@ -26,16 +23,7 @@ module DockerApiBuilder
   #     end
      end
  
-     def set_source(datafile)
-       @mutex.synchronize {  
-         @file = File.new(datafile,'r')
-         return false if file.nil?
-         STDERR.puts('opened ' + datafile.to_s )
-         return true
-         }
-     end
-       rescue StandardError => e
-         log_exception(e)      
+  
    end
   def build_options(engine_name)
     ret_val = 'buildargs={}'
