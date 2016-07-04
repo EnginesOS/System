@@ -2,7 +2,7 @@ module DockerApiBuilder
   class ArchiveStream
      def initialize(datafile)
        @mutex = Mutex.new
-       @file = File.new(datafile,'r')
+       @file = File.new(datafile,'rb')
        rescue StandardError => e
          log_exception(e)      
      end
@@ -17,7 +17,7 @@ module DockerApiBuilder
      def read(r_size, offset)
          @mutex.synchronize {
            return nil if eof?
-         r_size = @file.size if r_size > @file.size      
+         r_size = size if r_size > size      
            STDERR.puts('READ ' + r_size.to_s + '/' + size.to_s)
            @file.read(r_size)
          }
@@ -58,12 +58,12 @@ module DockerApiBuilder
     
     req = Net::HTTP::Post.new('/build?' + options, header)
     req.content_length = File.size(build_archive_filename)
-    archive_stream = ArchiveStream.new(build_archive_filename)
+    #archive_stream = ArchiveStream.new(build_archive_filename)
 #        t1 = Thread.new do
 #          archive_stream.set_source(build_archive_filename)
 #          
 #        end
-        req.body_stream = archive_stream
+        req.body_stream = File.new(build_archive_filename,'rb') #archive_stream
         docker_socket.start {|http| http.request(req) 
         STDERR.puts( 'START ' + http.to_s )
         }
