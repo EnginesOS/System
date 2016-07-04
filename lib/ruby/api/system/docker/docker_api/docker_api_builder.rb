@@ -24,7 +24,9 @@ module DockerApiBuilder
            bytes
          }
   #     end
-     end  
+     end
+ 
+  
    end
   def build_options(engine_name)
     ret_val = 'buildargs={}'
@@ -40,13 +42,14 @@ module DockerApiBuilder
     ret_val += '&memswap=0'
     ret_val += '&dockerfile=Dockerfile'   
     ret_val += '&ulimits=null' 
-    ret_val += '&t=' + engine_name    
-    ret_val
+    ret_val += '&t=' + engine_name
+    
+     ret_val
   end
   require "base64"
   def get_auth
     r = {}
-    Base64.encode64(r.to_json).gsub(/\n/, '')
+    Base64.encode64(r.to_json)
   end
   
   def build_engine(engine_name, build_archive_filename)
@@ -59,20 +62,18 @@ module DockerApiBuilder
     
     req = Net::HTTP::Post.new('/build?' + options, header)
     req.content_length = File.size(build_archive_filename)
-  #  archive_stream = ArchiveStream.new(build_archive_filename)
+    
 #        t1 = Thread.new do
 #          archive_stream.set_source(build_archive_filename)
 #          
 #        end
-        #req.body_stream = File.new(build_archive_filename,'rb') #archive_stream
-   # req.body_stream = archive_stream
+    #    req.body_stream = File.new(build_archive_filename,'rb') #archive_stream
     req.body = File.read(build_archive_filename)
     STDERR.puts( 'START ' + build_archive_filename.to_s + ' is ' )
-        docker_socket.start {|http| http.request(req)  { |resp|
-          p resp.read_body
-        }
-        STDERR.puts( 'START ' + http.to_s )
-        }
+       resp = docker_socket.request(req) 
+    resp.read_body do | seg|
+      STDERR.puts( 'START ' +  seg.to_s)
+    end
       rescue StandardError => e
         log_exception(e)
       end
