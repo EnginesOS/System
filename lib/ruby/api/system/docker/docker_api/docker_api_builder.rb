@@ -29,8 +29,13 @@ module DockerApiBuilder
      def set_source(datafile)
        @mutex.synchronize {  
          @file = File.new(datafile,'r')
-       }
+         return false if file.nil?
+         STDERR.puts('opened ' + datafile.to_s )
+         return true
+         }
      end
+       rescue StandardError => e
+         log_exception(e)      
    end
   def build_options(engine_name)
     ret_val = 'buildargs={}'
@@ -65,10 +70,11 @@ module DockerApiBuilder
     req = Net::HTTP::Post.new('/build?' + options, header)
     req.content_length = File.size(build_archive_filename)
     archive_stream = ArchiveStream.new
-    req.body_stream = archive_stream
         t1 = Thread.new do
           archive_stream.set_source(build_archive_filename)
+          
         end
+        req.body_stream = archive_stream
         docker_socket.start {|http| http.request(req) 
         STDERR.puts( 'START ' + http.to_s )
         }
