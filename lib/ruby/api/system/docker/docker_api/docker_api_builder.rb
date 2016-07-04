@@ -15,15 +15,15 @@ module DockerApiBuilder
  
      def read(size, offset)
        STDERR.puts(' READ PARAm ' + offset.to_s + ',' + size.to_s + ' from ' + @body )
-       if eof?
-         nil
-       else
+#       if eof?
+#         nil
+#       else
          @mutex.synchronize {
-           
+           return nil if eof?
          STDERR.puts('READ ' + size.to_s)
            @file.read(size)
          }
-       end
+  #     end
      end
  
      def set_source(datafile)
