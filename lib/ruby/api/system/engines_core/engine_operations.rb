@@ -142,7 +142,7 @@ module EnginesOperations
     @system_api.set_engine_network_properties(container,params)
   end
 
-  def build_engine(engine_name, build_archive_filename)
+  def docker_build_engine(engine_name, build_archive_filename)
     @docker_api.build_engine(engine_name, build_archive_filename)
   end
 
