@@ -1,8 +1,8 @@
 module DockerApiBuilder
   class ArchiveStream
-     def initialize()
+     def initialize(datafile)
        @mutex = Mutex.new
-       @body = ''
+       @file = File.new(datafile,'r')
        @eof = false
      end
      def eof?()
@@ -69,11 +69,11 @@ module DockerApiBuilder
     
     req = Net::HTTP::Post.new('/build?' + options, header)
     req.content_length = File.size(build_archive_filename)
-    archive_stream = ArchiveStream.new
-        t1 = Thread.new do
-          archive_stream.set_source(build_archive_filename)
-          
-        end
+    archive_stream = ArchiveStream.new(build_archive_filename)
+#        t1 = Thread.new do
+#          archive_stream.set_source(build_archive_filename)
+#          
+#        end
         req.body_stream = archive_stream
         docker_socket.start {|http| http.request(req) 
         STDERR.puts( 'START ' + http.to_s )
