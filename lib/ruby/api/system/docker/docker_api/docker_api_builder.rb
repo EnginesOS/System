@@ -64,8 +64,9 @@ module DockerApiBuilder
 #          archive_stream.set_source(build_archive_filename)
 #          
 #        end
-        req.body_stream = File.new(build_archive_filename,'rb') #archive_stream
+        #req.body_stream = File.new(build_archive_filename,'rb') #archive_stream
    # req.body_stream = archive_stream
+    req.body = File.read(build_archive_filename)
     STDERR.puts( 'START ' + build_archive_filename.to_s + ' is ' )
         docker_socket.start {|http| http.request(req)  { |resp|
           p resp.read_body
