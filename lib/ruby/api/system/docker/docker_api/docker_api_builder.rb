@@ -67,9 +67,11 @@ module DockerApiBuilder
      #   req.body_stream = f #archive_stream
     req.body = File.read(build_archive_filename)
     STDERR.puts( 'START ' + build_archive_filename.to_s)
-        docker_socket.start {|http| http.request(req) 
-        STDERR.puts( 'START ' + http.to_s )
-        }
+  r =   docker_socket.request(req)
+#        docker_socket.start {|http| http.request(req) 
+#        STDERR.puts( 'START ' + http.to_s )
+#        }
+    STDERR.puts( 'START ' + r.to_s)
       rescue StandardError => e
         log_exception(e)
       end
