@@ -5,9 +5,6 @@ module DockerApiBuilder
        @body = ''
        @eof = false
      end
- 
-
- 
      def eof?()
        @file.eof?
      end
@@ -67,7 +64,9 @@ module DockerApiBuilder
         t1 = Thread.new do
           archive_stream.set_source(build_archive_filename)
         end
-        docker_socket.start {|http| http.request(req) }
+        docker_socket.start {|http| http.request(req) 
+        STDERR.puts( 'START ' + http.to_s )
+        }
       rescue StandardError => e
         log_exception(e)
       end
