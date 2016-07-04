@@ -42,6 +42,7 @@ module DockerApiBuilder
             #hash = parser.parse(chunk) do |hash|
              STDERR.puts( 'START ' + chunk)
             #end
+             begin
             response_parser.parse(chunk) do |hash |
                if hash.key?('stream')
                  builder.log_build_output(hash['stream'])
@@ -51,6 +52,9 @@ module DockerApiBuilder
                  STDERR.puts( 'EOROROROROR ' + hash.to_s)
                end
                   end
+             rescue
+               continue 
+             end
           end
         }
       out_f.close
