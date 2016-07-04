@@ -19,6 +19,8 @@ module DockerApiBuilder
          nil
        else
          @mutex.synchronize {
+           
+         STDERR.puts('READ ' + size.to_s)
            @file.read(size)
          }
        end
@@ -31,18 +33,19 @@ module DockerApiBuilder
      end
    end
   def build_options(engine_name)
-    ret_val = {}
-    ret_val['forcerm'] = 1
-    ret_val['rm'] = 1
-    ret_val['cpuperiod'] = 0
-    ret_val['cpuquota'] = 0
-    ret_val['cpusetcpus'] = 0
-    ret_val['cpushares'] = 0
-    ret_val['memory'] = 0
-    ret_val['swap'] = 0
-    ret_val['dockerfile'] = 'Dockerfile'      
-    ret_val['t'] = engine_name
-    ret_val['X-Registry-Config'] = get_auth
+    ret_val = 'buildargs={}'
+    ret_val = '&cgroupparent='
+    ret_val += '&forcerm=1'
+    ret_val += '&rm=1'
+    ret_val += '&cpuperiod=0'
+    ret_val += '&cpuquota=0'
+    ret_val += '&cpusetcpus=0'
+    ret_val += '&cpushares=0'
+    ret_val += '&memory=0'
+    ret_val += '&swap=0'
+    ret_val += '&dockerfile=Dockerfile'      
+    ret_val += '&t=' + engine_name
+    
      ret_val
   end
   require "base64"
@@ -52,12 +55,14 @@ module DockerApiBuilder
   end
   
   def build_engine(engine_name, build_archive_filename)
-    header =  build_options(engine_name)
+    options =  build_options(engine_name)
+    header = {}
+    header['X-Registry-Config'] = get_auth
     header['Content-Type'] = 'application/tar'
     header['Accept-Encoding'] = 'gzip'
     header['Transfer-Encoding'] = 'chunked'   
     
-    req = Net::HTTP::Post.new(uri, header)
+    req = Net::HTTP::Post.new('/build?' + options, header)
     req.content_length = build_archive_size
     archive_stream = ArchiveStream.new
     req.body_stream = archive_stream
