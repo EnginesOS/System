@@ -24,4 +24,7 @@ class DockerApi < ErrorsApi
   def container_name_and_type_from_id(id)
     @docker_comms.container_name_and_type_from_id(id)
   end
+  def build_engine(engine_name, build_archive_filename)
+  @docker_comms.build_engine(engine_name, build_archive_filename)
+end
 end
