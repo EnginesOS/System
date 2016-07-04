@@ -53,7 +53,7 @@ module DockerApiBuilder
                end
                   end
              rescue
-               continue 
+               next
              end
           end
         }
