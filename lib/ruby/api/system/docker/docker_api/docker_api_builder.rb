@@ -63,7 +63,7 @@ module DockerApiBuilder
     header['Transfer-Encoding'] = 'chunked'   
     
     req = Net::HTTP::Post.new('/build?' + options, header)
-    req.content_length = build_archive_size
+    req.content_length = File.size(build_archive_filename)
     archive_stream = ArchiveStream.new
     req.body_stream = archive_stream
         t1 = Thread.new do
