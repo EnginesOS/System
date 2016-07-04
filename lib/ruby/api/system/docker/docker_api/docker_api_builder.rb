@@ -17,8 +17,8 @@ module DockerApiBuilder
      def read(r_size, offset)
          @mutex.synchronize {
            return nil if eof?
-         r_size = size if r_size > size         
-           STDERR.puts('READ ' + r_size.to_s)
+         r_size = @file.size if r_size > @file.size      
+           STDERR.puts('READ ' + r_size.to_s + '/' + size.to_s)
            @file.read(r_size)
          }
   #     end
