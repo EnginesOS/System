@@ -20,6 +20,9 @@ class DockerConnection < ErrorsApi
   require_relative 'docker_api_container_ops.rb'
   include DockerApiContainerOps
   
+  require_relative 'docker_api_builder.rb'
+   DockerApiBuilder
+  
   attr_accessor :response_parser
 
   def initialize
