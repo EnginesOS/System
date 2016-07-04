@@ -82,6 +82,10 @@ module DockerApiBuilder
             #hash = parser.parse(chunk) do |hash|
              STDERR.puts( 'START ' + chunk)
             #end
+            response_parser.parse(chunk) do |hash |
+              STDERR.puts( 'STDIO ' + hash['stream'].to_s) if hash.key?('stream')
+                 
+                  end
           end
         }
     
