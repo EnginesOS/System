@@ -169,12 +169,12 @@ class DockerConnection < ErrorsApi
       #   hashes[1] is a timestamp
       return hashes[0]
     
-    rescue EOFError 
+    rescue EOFError => e
       STDERR.puts(' EOFError' + req.to_s )
       return log_exception(e,r)
-    rescue Errno::EBADF
+    rescue Errno::EBADF => e
         return log_exception(e,r) if tries > 2
-          log_exception(e,r)
+
           STDERR.puts(' EBADF RETRY ON ' + req.to_s +  '  DUE to ' + e.to_s)
           tries += 1
           sleep 0.1
