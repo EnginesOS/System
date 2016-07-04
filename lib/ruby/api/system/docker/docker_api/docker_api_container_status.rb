@@ -59,6 +59,7 @@ module DockerApiContainerStatus
     STDERR.puts(' container_name_and_type_from_id GOT ' + r['Config']['Labels'].to_s)
     return log_error_mesg('not a managed engine') unless r.key?('Config')
     return log_error_mesg('not a managed engine') unless r['Config'].key?('Labels')
+    return log_error_mesg('not a managed engine') unless r['Config']['Labels'].key?('container_type')
     ret = []
       ret[0] = r['Config']['Labels']['container_name']
       ret[1] = r['Config']['Labels']['container_type']

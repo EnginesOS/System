@@ -4,8 +4,7 @@ class DockerApi  < ErrorsApi
 
   require_relative 'docker_api_errors.rb'
   include EnginesDockerApiErrors
-
-
+ 
   
   def initialize
     @con = DockerConnection.new

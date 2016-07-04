@@ -29,7 +29,11 @@ module DockerApiImages
       container = nil
     end
     STDERR.puts(' pull  ' + request.to_s)
-    r = make_post_request(request, container)
+    header = { 'X-Registry-Config'  => get_registry_auth}
+      
+    req = Net::HTTP::Post.new(request, header)
+   r = perform_request(req, container, false,  false)
+    
     STDERR.puts(' pull result ' + r.to_s)
     return true
   rescue StandardError => e

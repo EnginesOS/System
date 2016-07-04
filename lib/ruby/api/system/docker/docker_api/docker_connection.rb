@@ -20,6 +20,9 @@ class DockerConnection < ErrorsApi
   require_relative 'docker_api_container_ops.rb'
   include DockerApiContainerOps
   
+  require_relative 'docker_api_builder.rb'
+  include DockerApiBuilder
+  
   attr_accessor :response_parser
 
   def initialize
@@ -89,7 +92,12 @@ class DockerConnection < ErrorsApi
     log_exception(e)
   end
 
- 
+  require "base64"
+  def get_registry_auth
+    r = {}
+    Base64.encode64(r.to_json)
+  end
+  
   def make_post_request(uri, container, params = nil, return_hash = true , data = nil)
 
     unless params.nil?
@@ -166,12 +174,12 @@ class DockerConnection < ErrorsApi
       #   hashes[1] is a timestamp
       return hashes[0]
     
-    rescue EOFError 
+    rescue EOFError => e
       STDERR.puts(' EOFError' + req.to_s )
       return log_exception(e,r)
-    rescue Errno::EBADF
+    rescue Errno::EBADF => e
         return log_exception(e,r) if tries > 2
-          log_exception(e,r)
+
           STDERR.puts(' EBADF RETRY ON ' + req.to_s +  '  DUE to ' + e.to_s)
           tries += 1
           sleep 0.1
