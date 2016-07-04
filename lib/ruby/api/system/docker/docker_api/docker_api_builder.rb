@@ -46,7 +46,7 @@ module DockerApiBuilder
   require "base64"
   def get_auth
     r = {}
-    Base64.encode64(r.to_json)
+    Base64.encode64(r.to_json).gsub(/\n/, '')
   end
   
   def build_engine(engine_name, build_archive_filename)
