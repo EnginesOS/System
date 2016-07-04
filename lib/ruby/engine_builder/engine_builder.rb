@@ -284,7 +284,7 @@ class EngineBuilder < ErrorsApi
     log_build_output('Building Image')
     create_build_tar
     log_build_output('Cancelable:true')
-    res = @core_api.docker_build_engine(@build_params[:engine_name], SystemConfig.DeploymentDir + '/' + @build_name.to_s + '.tgz')
+    res = @core_api.docker_build_engine(@build_params[:engine_name], SystemConfig.DeploymentDir + '/' + @build_name.to_s + '.tgz', self)
     #cmd = 'nohup /usr/bin/docker build --force-rm=true --tag=' + @build_params[:engine_name] + ' ' + basedir
     #res = run_system(cmd)
     log_build_output('Cancelable:false')
