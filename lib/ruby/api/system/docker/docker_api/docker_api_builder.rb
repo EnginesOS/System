@@ -67,7 +67,9 @@ module DockerApiBuilder
     #    req.body_stream = File.new(build_archive_filename,'rb') #archive_stream
     req.body_stream = archive_stream
     STDERR.puts( 'START ' + build_archive_filename.to_s + ' is ' )
-        docker_socket.start {|http| http.request(req) 
+        docker_socket.start {|http| http.request(req)  { |resp|
+          p resp.read_body
+        }
         STDERR.puts( 'START ' + http.to_s )
         }
       rescue StandardError => e
