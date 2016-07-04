@@ -72,9 +72,10 @@ module DockerApiBuilder
 #          p resp.read_body
 #        }
     docker_socket.request(req)  { |resp|
+      STDERR.puts( 'START ' + resp.to_s)
       STDERR.puts( 'START ' + resp.read_body.to_s)
             }
-        STDERR.puts( 'START ' + http.to_s )
+      
       #  }
       rescue StandardError => e
         log_exception(e)
