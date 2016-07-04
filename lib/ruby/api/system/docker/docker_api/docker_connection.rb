@@ -92,7 +92,12 @@ class DockerConnection < ErrorsApi
     log_exception(e)
   end
 
- 
+  require "base64"
+  def get_registry_auth
+    r = {}
+    Base64.encode64(r.to_json)
+  end
+  
   def make_post_request(uri, container, params = nil, return_hash = true , data = nil)
 
     unless params.nil?

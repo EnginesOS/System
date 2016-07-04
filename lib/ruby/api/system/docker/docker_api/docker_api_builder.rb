@@ -18,16 +18,12 @@ module DockerApiBuilder
     
      ret_val
   end
-  require "base64"
-  def get_auth
-    r = {}
-    Base64.encode64(r.to_json)
-  end
+
   
   def build_engine(engine_name, build_archive_filename, builder)
     options =  build_options(engine_name)
     header = {}
-    header['X-Registry-Config'] = get_auth
+    header['X-Registry-Config'] = get_registry_auth
     header['Content-Type'] = 'application/tar'
     header['Accept-Encoding'] = 'gzip'
     header['Transfer-Encoding'] = 'chunked'   
