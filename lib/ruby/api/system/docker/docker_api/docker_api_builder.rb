@@ -24,25 +24,24 @@ module DockerApiBuilder
            bytes
          }
   #     end
-     end
- 
-  
+     end  
    end
   def build_options(engine_name)
     ret_val = 'buildargs={}'
-    ret_val = '&cgroupparent='
+    ret_val += '&cgroupparent='
     ret_val += '&forcerm=1'
     ret_val += '&rm=1'
     ret_val += '&cpuperiod=0'
     ret_val += '&cpuquota=0'
-    ret_val += '&cpusetcpus=0'
+    ret_val += '&cpusetcpus='
+    ret_val += '&cpusetmems='
     ret_val += '&cpushares=0'
     ret_val += '&memory=0'
-    ret_val += '&swap=0'
-    ret_val += '&dockerfile=Dockerfile'      
-    ret_val += '&t=' + engine_name
-    
-     ret_val
+    ret_val += '&memswap=0'
+    ret_val += '&dockerfile=Dockerfile'   
+    ret_val += '&ulimits=null' 
+    ret_val += '&t=' + engine_name    
+    ret_val
   end
   require "base64"
   def get_auth
