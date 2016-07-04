@@ -296,7 +296,7 @@ class EngineBuilder < ErrorsApi
 
   def create_build_tar
     dest_file = SystemConfig.DeploymentDir + '/' + @build_name.to_s + '.tgz'
-    cmd = ' tar -czpf ' + dest_file + ' ' +  basedir
+    cmd = ' cd ' + basedir + ' ; tar -czf ' + dest_file + ' .'
     run_system(cmd)
   end
   def launch_deploy(managed_container)
