@@ -20,7 +20,7 @@ module DockerApiExec
     end
     initheader = {'Transfer-Encoding' => 'chunked', 'content-type' => 'application/octet-stream' }
       
-        req = Net::HTTP::Post.new(uri, initheader)
+     req = Net::HTTP::Post.new(request, initheader)
       #r = make_post_request(request, container, request_params, false , data)
     perform_data_request(req, container, false, data)
       STDERR.puts('EXEC RESQU ' + r.to_s)
