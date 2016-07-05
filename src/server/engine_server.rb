@@ -178,6 +178,8 @@ end
   
   def post_params(request)
      JSON.parse(request.env["rack.input"].read)
+  rescue StandardError => e 
+    log_error_mesg(request, e, e.backtrace.to_s)
   end
 
 rescue StandardError => e
