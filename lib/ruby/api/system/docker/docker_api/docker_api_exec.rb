@@ -127,7 +127,7 @@ module DockerApiExec
    end
  
    private
-   def create_docker_exec
+   def create_docker_exec(container, commands)
      commands = format_commands(commands)
           
           request_params = {}
