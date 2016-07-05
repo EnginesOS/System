@@ -51,6 +51,7 @@ private
 
 def parse_error(r)
   STDERR.puts("RSPONSE",r.to_s)
+  r.gsub!(/^\n/,'')
   res = JSON.parse(r, :create_additions => true)
   EnginesRegistryError.new(res)
   rescue  StandardError => e

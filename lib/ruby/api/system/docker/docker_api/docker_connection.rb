@@ -33,64 +33,7 @@ class DockerConnection < ErrorsApi
     log_exception(e)
   end
 
-  class DataProducer
-    def initialize()
-      @mutex = Mutex.new
-      @body = ''
-      @eof = false
-    end
-
-    def eof!()
-      @eof = true
-    end
-
-    def eof?()
-      @eof
-    end
-
-    def size
-      @body.size
-    end
-
-    def read(size, offset)
-      STDERR.puts(' READ PARAm ' + offset.to_s + ',' + size.to_s + ' from ' + @body )
-      if @body.empty? && @eof
-        nil
-      else
-        @mutex.synchronize {
-          size =  @body.size - 1  if size >= @body.size
-
-          b = @body.slice!(0,size)
-          STDERR.puts(' write b ' + b.to_s + ' of ' + size.to_s + ' bytes  remaining str ' + @body.to_s )
-          return b
-        }
-      end
-    end
-
-    def produce(data)
-      @mutex.synchronize {
-        @body = data
-      }
-    end
-  end
-
-  def perform_data_request(req, container, return_hash, data)
-    producer = DataProducer.new
-    #'Transfer-Encoding' => 'chunked', 'content-type' => 'text/plain'
-    #
-
-    req.content_type = "application/octet-stream" #"text/plain"
-    req['Transfer-Encoding'] = 'chunked'
-    req.content_length = data.length
-    req.body_stream = producer
-    t1 = Thread.new do
-      producer.produce(data)
-      producer.eof!
-    end
-    docker_socket.start {|http| http.request(req) }
-  rescue StandardError => e
-    log_exception(e)
-  end
+  
 
   require "base64"
   def get_registry_auth

@@ -35,7 +35,8 @@ module ApiActionators
         return  log_error_mesg('Timeout on Running Action ', cmds.to_s)
        
       end
-  
+       return result if result.is_a?(EnginesError)
+       
       if result[:result] == 0
         if result[:stdout].start_with?('{') || result[:stdout].start_with?('"{') 
           begin
