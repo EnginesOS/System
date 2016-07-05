@@ -1,8 +1,10 @@
 module DockerApiExec
   
   def docker_exec(container, commands, log_error = true, data=nil)
+    have_data = false
+    have_data = true unless data.nil?
     
-      r = create_docker_exec(container, commands)
+      r = create_docker_exec(container, commands, have_data)
     
       return r unless r.is_a?(Hash)
   
@@ -11,6 +13,11 @@ module DockerApiExec
       request_params["Detach"] = false
       request_params["Tty"] = true
       request = '/exec/' + exec_id + '/start'
+    unless  have_data == true
+      r = make_post_request(request, container, nil, false , nil)
+      return r if r.is_a?(EnginesError)
+      return docker_stream_as_result(r)
+    end
     initheader = {'Transfer-Encoding' => 'chunked', 'content-type' => 'application/octet-stream' }
       
         req = Net::HTTP::Post.new(uri, initheader)
@@ -127,11 +134,11 @@ module DockerApiExec
    end
  
    private
-   def create_docker_exec(container, commands)
+   def create_docker_exec(container, commands, have_data)
      commands = format_commands(commands)
           
           request_params = {}
-          if data.nil?
+          if have_data == false
             request_params["AttachStdin"] = false
             request_params["Tty"] =  false
           else
