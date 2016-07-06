@@ -79,7 +79,7 @@ class DockerConnection < ErrorsApi
       @socket_mutex.lock
       @socket_mutex.unlock          
     end   
-    handle_response(connection.request(:method => :get, :path => uri))
+    handle_response(connection.request(:method => :get, :path => uri),return_hash)
    # perform_request(req, container, return_hash)
     
   end
