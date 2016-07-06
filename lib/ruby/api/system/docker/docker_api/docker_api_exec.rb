@@ -34,9 +34,9 @@ module DockerApiExec
     
     
   class DataProducer
-      def initialize()
+      def initialize(data)
         @mutex = Mutex.new
-        @body = ''
+        @body = data
         @eof = false
       end
   
@@ -78,11 +78,11 @@ module DockerApiExec
     end
   
     def perform_data_request(req, container, return_hash, data)
-      producer = DataProducer.new
-      t1 = Thread.new do
-        producer.produce(data)
-        producer.eof!
-      end
+      producer = DataProducer.new(data)
+#      t1 = Thread.new do
+#        producer.produce(data)
+#        producer.eof!
+#      end
       req.content_type = "application/octet-stream" #"text/plain"
       req['Transfer-Encoding'] = 'chunked'
       req.content_length = data.length
@@ -101,7 +101,7 @@ module DockerApiExec
        
     while r.length >0
    if r[0].nil?
-    return h if r[0].length == 1
+    return h if r.length == 1
     r = r[1..-1]
     next
     end
