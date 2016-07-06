@@ -79,6 +79,7 @@ class ManagedContainer < Container
   end
 
   def post_load
+    @container_mutex = Mutex.new
     i = @container_id
     super
     if @container_id != -1 && @container_id != i
