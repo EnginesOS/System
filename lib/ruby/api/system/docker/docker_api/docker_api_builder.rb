@@ -46,7 +46,7 @@ module DockerApiBuilder
             response_parser.parse(chunk) do |hash |
                if hash.key?('stream')
                  builder.log_build_output(hash['stream'])
-               elsif hash.key?('error')
+               elsif hash.key?('errorDetail')
                  builder.log_build_errors(hash['error'])
                else
                  STDERR.puts( 'EOROROROROR ' + hash.to_s)
@@ -57,7 +57,7 @@ module DockerApiBuilder
              end
           end
         }
-      out_f.close
+
     end
       rescue StandardError => e
         log_exception(e)
