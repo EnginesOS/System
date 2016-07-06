@@ -169,15 +169,14 @@ def handle_resp(resp, return_hash)
    end
    return false if resp.status  == 409
    return true if resp.status  == 204 # nodata but all good
-   STDERR.puts(' RESPOSE ' + resp.status.to_s + ' : ' + resp.msg  )
-   return log_error_mesg("no OK response from docker", resp, resp.body, resp.msg )   unless resp.status  == 200 ||  resp.status  == 201
+   STDERR.puts(' RESPOSE ' + resp.status.to_s + ' : ' + resp.body  )
+   return log_error_mesg("Error response from docker", resp, resp.body, resp.headers.to_s )   unless resp.status  == 200 ||  resp.status  == 201
 
    r = resp.body
    return r unless return_hash == true
 
    hashes = []
-
-   return clear_cid(container) if ! container.nil? && r.start_with?('no such id: ')
+  # return clear_cid(container) if ! container.nil? && r.start_with?('no such id: ')
    response_parser.parse(r) do |hash |
      hashes.push(hash)
    end
