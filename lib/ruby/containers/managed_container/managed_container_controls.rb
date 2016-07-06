@@ -47,6 +47,7 @@ module ManagedContainerControls
 
     return false unless has_api?
     SystemDebug.debug(SystemDebug.containers, :teask_preping)
+    @container_mutex.synchronize {
     return false unless prep_task(:create)
     SystemDebug.debug(SystemDebug.containers,  :teask_preped)
     expire_engine_info
@@ -66,6 +67,7 @@ module ManagedContainerControls
 #    @container_api.register_non_persistent_services(self)
 #    add_nginx_service if @deployment_type == 'web'
     true
+    }
   rescue StandardError => e
     log_exception(e)
   end
@@ -85,20 +87,24 @@ module ManagedContainerControls
   def unpause_container
 
     return false unless has_api?
+    @container_mutex.synchronize {
     return r unless (r = prep_task(:unpause))
     return task_failed('unpause') unless super
     #register_with_dns # MUst register each time as IP Changes
    # @container_api.register_non_persistent_services(self)
     true
+    }
   end
 
   def pause_container
 
     return false unless has_api?
+    @container_mutex.synchronize {
     return r unless (r = prep_task(:pause))
     return task_failed('pause') unless super
    # @container_api.deregister_non_persistent_services(self)
     true
+    }
   end
 
   def stop_container
@@ -109,24 +115,29 @@ module ManagedContainerControls
     #     end
     SystemDebug.debug(SystemDebug.containers,  :stop_read_sta, read_state)
     return false unless has_api?
+    @container_mutex.synchronize {
     return r unless (r = prep_task(:stop))
    # @container_api.deregister_non_persistent_services(self)
     return task_failed('stop') unless super
     true
+    }
   end
 
   def start_container
 
     return false unless has_api?
+    @container_mutex.synchronize {
     return r unless (r = prep_task(:start))
     return task_failed('start') unless super
     @restart_required = false
   #  register_with_dns # MUst register each time as IP Changes
   #  @container_api.register_non_persistent_services(self)
     true
+    }
   end
 
   def restart_container
+    
     return task_failed('restart/stop') unless stop_container
     wait_for_task('stop')
     return task_failed('restart/start') unless start_container
@@ -136,6 +147,7 @@ module ManagedContainerControls
   def rebuild_container
     r = ''
     return false unless has_api?
+    @container_mutex.synchronize {
     return r unless (r = prep_task(:reinstall))
     ret_val = @container_api.rebuild_image(self)
     expire_engine_info
@@ -146,6 +158,7 @@ module ManagedContainerControls
 #    end
     return true if ret_val
     task_failed('rebuild')
+    }
   end
 
   def correct_current_state
