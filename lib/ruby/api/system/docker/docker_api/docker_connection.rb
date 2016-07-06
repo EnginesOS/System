@@ -80,7 +80,8 @@ class DockerConnection < ErrorsApi
       @socket_mutex.unlock          
     end   
     handle_resp(connection.request(:method => :get, :path => uri),return_hash)
-
+   # perform_request(req, container, return_hash)
+    
   end
 
   def make_del_request(uri, container)
@@ -110,7 +111,7 @@ class DockerConnection < ErrorsApi
         resp = docker_socket.request(req)
       end
       
-      handle_response(resp)
+      handle_response(resp,return_hash )
       
   
       rescue EOFError => e
