@@ -13,7 +13,7 @@ module DockerApiExec
       request_params["Detach"] = false
       request_params["Tty"] = true
       request = '/exec/' + exec_id + '/start'
-    unless  have_data == true
+    unless have_data == true
       r = make_post_request(request, container, nil, false , nil)
       return r if r.is_a?(EnginesError)
       return docker_stream_as_result(r)
@@ -70,6 +70,7 @@ module DockerApiExec
       def produce(data)
         @mutex.synchronize {
           @body = data
+          STDERR.puts(' body ' + @body.to_s)
         }
       end
     end
@@ -94,9 +95,14 @@ module DockerApiExec
  h = {}
    h[:stdout] = ''
    h[:stderr] =  ''
+       return h if r.nil?
        
     while r.length >0
- 
+   if r[0].nil?
+    return h if r[0].length == 1
+    r = r[1..-1]
+    next
+    end
      if r[0].start_with?("\u0001\u0000\u0000\u0000")
       dst = :stdout
      elsif r[0].start_with?("\u0002\u0000\u0000\u0000")
