@@ -14,7 +14,7 @@ module DockerApiExec
       request_params["Tty"] = true
       request = '/exec/' + exec_id + '/start'
     unless have_data == true
-      r = make_post_request(request, container, nil, false , nil)
+      r = make_post_request(request, container, request_params, false , nil)
       return r if r.is_a?(EnginesError)
       return docker_stream_as_result(r)
     end
@@ -22,7 +22,7 @@ module DockerApiExec
       
      req = Net::HTTP::Post.new(request, initheader)
       #r = make_post_request(request, container, request_params, false , data)
-    perform_data_request(req, container, false, data)
+    perform_data_request(req, container, request_params, data)
       STDERR.puts('EXEC RESQU ' + r.to_s)
       return r if r.is_a?(EnginesError)
       docker_stream_as_result(r)
@@ -77,7 +77,7 @@ module DockerApiExec
       end
     end
   
-    def perform_data_request(req, container, return_hash, data)
+    def perform_data_request(req, container, params, data)
       producer = DataProducer.new(data)
 #      t1 = Thread.new do
 #        producer.produce(data)
@@ -86,9 +86,15 @@ module DockerApiExec
       req.content_type = "application/octet-stream" #"text/plain"
      # req['Transfer-Encoding'] = 'chunked'
      # req.content_length = data.length
-      req.body_stream = producer
+      req.body = params.to_json
+      
+      #req.body_stream = producer
 
-      docker_socket.start {|http| http.request(req) }
+      docker_socket.start {|http| http.request(req) 
+      
+        docker_socket.write(data)
+        
+      }
     rescue StandardError => e
       log_exception(e)
     end
