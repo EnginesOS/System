@@ -83,9 +83,9 @@ module DockerApiExec
 #        producer.produce(data)
 #        producer.eof!
 #      end
-      req.content_type = "application/octet-stream" #"text/plain"
-      req['Transfer-Encoding'] = 'chunked'
-      req.content_length = data.length
+   #   req.content_type = "application/octet-stream" #"text/plain"
+    #  req['Transfer-Encoding'] = 'chunked'
+     # req.content_length = data.length
       req.body_stream = producer
 
       docker_socket.start {|http| http.request(req) }
