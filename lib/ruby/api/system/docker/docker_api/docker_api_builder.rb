@@ -49,6 +49,7 @@ error_mesg = ''
                  builder.log_build_output(hash['stream'])
                elsif hash.key?('errorDetail')
                  build_fail = true 
+                  
                  error_mesg = hash['errorDetail']
                  builder.log_build_errors(error_mesg)
                else

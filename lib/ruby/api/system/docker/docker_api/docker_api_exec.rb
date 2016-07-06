@@ -1,5 +1,5 @@
 module DockerApiExec
-  
+
   def docker_exec(container, commands, log_error = true, data=nil)
     have_data = false
     have_data = true unless data.nil?

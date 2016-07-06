@@ -3,6 +3,9 @@ class DockerConnection < ErrorsApi
   require 'yajl'
   require 'net_x/http_unix'
   require 'socket'
+  
+  require 'rubygems'
+  require 'excon'
 
   require_relative 'docker_api_errors.rb'
   include EnginesDockerApiErrors
@@ -29,6 +32,7 @@ class DockerConnection < ErrorsApi
     @response_parser = Yajl::Parser.new
     @docker_socket = docker_socket
     @socket_mutex = Mutex.new
+    @connection = nil
   rescue StandardError => e
     log_exception(e)
   end
@@ -62,10 +66,22 @@ class DockerConnection < ErrorsApi
     log_exception(e)
   end
 
+  def connection
+    @connection = Excon.new('http://172.17.0.1:2375', :debug_request => true, :debug_response => true,:persistent => true) if @connection.nil?
+    @connection
+  end
+  
   def make_request(uri, container, return_hash = true)
-    req = Net::HTTP::Get.new(uri)
-    STDERR.puts(' GET ' + uri.to_s)
-    perform_request(req, container, return_hash)
+  
+    #req = Net::HTTP::Get.new(uri)
+    #STDERR.puts(' GET ' + uri.to_s)
+    if @socket_mutex.locked?
+      @socket_mutex.lock
+      @socket_mutex.unlock          
+    end   
+    handle_response(connection.request(:method => :get, :path => uri))
+   # perform_request(req, container, return_hash)
+    
   end
 
   def make_del_request(uri, container)
@@ -95,6 +111,32 @@ class DockerConnection < ErrorsApi
         resp = docker_socket.request(req)
       end
       
+      handle_response(resp)
+      
+  
+      rescue EOFError => e
+        STDERR.puts(' EOFError' + req.to_s )
+        return log_exception(e,r)
+      rescue Errno::EBADF => e
+          return log_exception(e,r) if tries > 2
+  
+            STDERR.puts(' EBADF RETRY ON ' + req.to_s +  '  DUE to ' + e.to_s)
+            tries += 1
+            sleep 0.1
+            retry
+  
+      rescue StandardError => e
+        return log_exception(e,r) if tries > 2
+       
+        STDERR.puts(' Exception ON perform_request' + req.to_s +  '  DUE to ' + e.to_s)
+      return log_exception(e,r)
+  #      tries += 1
+  #      sleep 0.1
+  #      retry
+      
+    end
+    
+    def handle_response(resp, return_hash)
       if  resp.code  == '404'
         clear_cid(container) if ! container.nil? && resp.body.start_with?('no such id: ')
         return log_error_mesg("no such id response from docker", resp, resp.body)
@@ -116,27 +158,7 @@ class DockerConnection < ErrorsApi
 
       #   hashes[1] is a timestamp
       return hashes[0]
-    
-    rescue EOFError => e
-      STDERR.puts(' EOFError' + req.to_s )
-      return log_exception(e,r)
-    rescue Errno::EBADF => e
-        return log_exception(e,r) if tries > 2
-
-          STDERR.puts(' EBADF RETRY ON ' + req.to_s +  '  DUE to ' + e.to_s)
-          tries += 1
-          sleep 0.1
-          retry
-
-    rescue StandardError => e
-      return log_exception(e,r) if tries > 2
-     
-      STDERR.puts(' Exception ON perform_request' + req.to_s +  '  DUE to ' + e.to_s)
-    return log_exception(e,r)
-#      tries += 1
-#      sleep 0.1
-#      retry
-    end
+  end
   end
 
 
