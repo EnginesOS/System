@@ -34,9 +34,9 @@ module DockerApiBuilder
 
       req.body = File.read(build_archive_filename)
    
-    
+error_mesg = ''
     Net::HTTP.start('172.17.0.1', 2375)  do |http|
-       
+       build_fail = false 
         http.request(req) { |resp|
           resp.read_body do |chunk|
             #hash = parser.parse(chunk) do |hash|
@@ -45,9 +45,12 @@ module DockerApiBuilder
              begin
             response_parser.parse(chunk) do |hash |
                if hash.key?('stream')
+                 build_fail = false 
                  builder.log_build_output(hash['stream'])
                elsif hash.key?('errorDetail')
-                 builder.log_build_errors(hash['error'])
+                 build_fail = true 
+                 error_mesg = hash['error']
+                 builder.log_build_errors(error_mesg)
                else
                  STDERR.puts( 'EOROROROROR ' + hash.to_s)
                end
@@ -57,7 +60,8 @@ module DockerApiBuilder
              end
           end
         }
-
+     return  builder.build_failed(error_mesg) if  build_fail == true 
+     return 
     end
       rescue StandardError => e
         log_exception(e)
