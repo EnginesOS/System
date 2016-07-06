@@ -79,9 +79,8 @@ class DockerConnection < ErrorsApi
       @socket_mutex.lock
       @socket_mutex.unlock          
     end   
-    handle_response(connection.request(:method => :get, :path => uri),return_hash)
-   # perform_request(req, container, return_hash)
-    
+    handle_resp(connection.request(:method => :get, :path => uri),return_hash)
+
   end
 
   def make_del_request(uri, container)
@@ -161,6 +160,29 @@ class DockerConnection < ErrorsApi
 
     #   hashes[1] is a timestamp
     return hashes[0]
+end
+def handle_resp(resp, return_hash)
+   if  resp.status  == 404
+     clear_cid(container) if ! container.nil? && resp.body.start_with?('no such id: ')
+     return log_error_mesg("no such id response from docker", resp, resp.body)
+   end
+   return false if resp.status  == 409
+   return true if resp.status  == 204 # nodata but all good
+   STDERR.puts(' RESPOSE ' + resp.status.to_s + ' : ' + resp.msg  )
+   return log_error_mesg("no OK response from docker", resp, resp.body, resp.msg )   unless resp.status  == 200 ||  resp.status  == 201
+
+   r = resp.body
+   return r unless return_hash == true
+
+   hashes = []
+
+   return clear_cid(container) if ! container.nil? && r.start_with?('no such id: ')
+   response_parser.parse(r) do |hash |
+     hashes.push(hash)
+   end
+
+   #   hashes[1] is a timestamp
+   return hashes[0]
 end
 
  def clear_cid(container)
