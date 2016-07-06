@@ -6,7 +6,7 @@ conf_self_start: true
 publisher_namespace: EnginesSystem
 type_path: registry
 last_error: 
-memory: '96'
+memory: '150'
 hostname: registry
 domain_name: 
 environments: []
