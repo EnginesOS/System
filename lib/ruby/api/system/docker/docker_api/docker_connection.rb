@@ -154,7 +154,7 @@ class DockerConnection < ErrorsApi
 
     hashes = []
 
-    return clear_cid(container) if ! container.nil? && r.start_with?('no such id: ')
+ #   return clear_cid(container) if ! container.nil? && r.start_with?('no such id: ')
     response_parser.parse(r) do |hash |
       hashes.push(hash)
     end
