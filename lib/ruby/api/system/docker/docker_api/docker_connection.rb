@@ -140,10 +140,10 @@ class DockerConnection < ErrorsApi
   end
 
   def handle_response(resp, return_hash)
-    if  resp.code  == '404'
-      clear_cid(container) if ! container.nil? && resp.body.start_with?('no such id: ')
-      return log_error_mesg("no such id response from docker", resp, resp.body)
-    end
+  #  return false  if  resp.code  == '404'
+#      clear_cid(container) if ! container.nil? && resp.body.start_with?('no such id: ')
+      return log_error_mesg("no such id response from docker", resp, resp.body) if  resp.code  == '404'
+#    end
     return false if resp.code  == '409'
     return true if resp.code  == '204' # nodata but all good
     STDERR.puts(' RESPOSE ' + resp.code.to_s + ' : ' + resp.msg  )
@@ -163,11 +163,11 @@ class DockerConnection < ErrorsApi
     return hashes[0]
 end
 def handle_resp(resp, return_hash)
-   if  resp.status  == 404
-     clear_cid(container) if ! container.nil? && resp.body.start_with?('no such id: ')
-     return log_error_mesg("no such id response from docker", resp, resp.body)
-   end
-   return false if resp.status  == 409
+#   if  resp.status  == 404
+#     clear_cid(container) if ! container.nil? && resp.body.start_with?('no such id: ')
+#     return log_error_mesg("no such id response from docker", resp, resp.body)
+#   end
+   return false if resp.status  >= 400
    return true if resp.status  == 204 # nodata but all good
    STDERR.puts(' RESPOSE ' + resp.status.to_s + ' : ' + resp.body  )
    return log_error_mesg("Error response from docker", resp, resp.body, resp.headers.to_s )   unless resp.status  == 200 ||  resp.status  == 201
