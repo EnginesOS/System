@@ -136,32 +136,32 @@ class DockerConnection < ErrorsApi
       
     end
     
-    def handle_response(resp, return_hash)
-      if  resp.code  == '404'
-        clear_cid(container) if ! container.nil? && resp.body.start_with?('no such id: ')
-        return log_error_mesg("no such id response from docker", resp, resp.body)
-      end
-      return false if resp.code  == '409'
-      return true if resp.code  == '204' # nodata but all good
-      STDERR.puts(' RESPOSE ' + resp.code.to_s + ' : ' + resp.msg  )
-      return log_error_mesg("no OK response from docker", resp, resp.body, resp.msg )   unless resp.code  == '200' ||  resp.code  == '201'
 
-      r = resp.body
-      return r unless return_hash == true
-
-      hashes = []
-
-      return clear_cid(container) if ! container.nil? && r.start_with?('no such id: ')
-      response_parser.parse(r) do |hash |
-        hashes.push(hash)
-      end
-
-      #   hashes[1] is a timestamp
-      return hashes[0]
-  end
   end
 
+  def handle_response(resp, return_hash)
+    if  resp.code  == '404'
+      clear_cid(container) if ! container.nil? && resp.body.start_with?('no such id: ')
+      return log_error_mesg("no such id response from docker", resp, resp.body)
+    end
+    return false if resp.code  == '409'
+    return true if resp.code  == '204' # nodata but all good
+    STDERR.puts(' RESPOSE ' + resp.code.to_s + ' : ' + resp.msg  )
+    return log_error_mesg("no OK response from docker", resp, resp.body, resp.msg )   unless resp.code  == '200' ||  resp.code  == '201'
 
+    r = resp.body
+    return r unless return_hash == true
+
+    hashes = []
+
+    return clear_cid(container) if ! container.nil? && r.start_with?('no such id: ')
+    response_parser.parse(r) do |hash |
+      hashes.push(hash)
+    end
+
+    #   hashes[1] is a timestamp
+    return hashes[0]
+end
 
  def clear_cid(container)
    SystemDebug.debug(SystemDebug.docker, '++++++++++++++++++++++++++Cleared Cid')
