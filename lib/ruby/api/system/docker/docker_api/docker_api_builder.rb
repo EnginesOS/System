@@ -46,14 +46,14 @@ module DockerApiBuilder
     header['Content-Type'] = 'application/tar'
     header['Accept-Encoding'] = 'gzip'
     header['Transfer-Encoding'] = 'chunked'   
-
+    header['Content-Length'] = File.size(build_archive_filename)
       
-    req = Net::HTTP::Post.new('/build?' + options, header)
-    req.content_length = File.size(build_archive_filename)
+    #req = Net::HTTP::Post.new('/build?' + options, header)
+   # req.content_length = File.size(build_archive_filename)
     
-    stream_handler = DockerStreamHandler.new(File.open(build_archive_filename))
+    stream_handler = DockerStreamHandler.new(nil)
      
-  return  post_stream_request('/build?' + options, stream_handler,  header )
+  return  post_stream_request('/build?' + options, stream_handler,  header, File.read(build_archive_filename) )
     req.body = File.read(build_archive_filename)
 error_mesg = ''
     Net::HTTP.start('172.17.0.1', 2375)  do |http|
