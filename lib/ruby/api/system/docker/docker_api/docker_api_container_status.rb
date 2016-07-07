@@ -49,7 +49,7 @@ module DockerApiContainerStatus
     r =  get_request(request)
     if r.is_a?(FalseClass) # 409 conflict occurs if ask too soon ?
       sleep 0.2 
-      return log_error(' 409 ' )      
+      return log_error_mesg(' 409 ' + id.to_s )      
       r =  get_request(request)
     end
     

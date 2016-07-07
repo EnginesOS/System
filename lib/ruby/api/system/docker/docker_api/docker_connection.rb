@@ -179,10 +179,10 @@ def handle_resp(resp, expect_json)
 #     clear_cid(container) if ! container.nil? && resp.body.start_with?('no such id: ')
 #     return log_error_mesg("no such id response from docker", resp, resp.body)
 #   end
-   return false if resp.status  >= 400
+   return log_error_mesg("error:" + resp.status.to_s)  if resp.status  >= 400
    return true if resp.status  == 204 # nodata but all good
    STDERR.puts(' RESPOSE ' + resp.status.to_s + ' : ' + resp.body  )
-   return log_error_mesg("Error response from docker", resp, resp.body, resp.headers.to_s )   unless resp.status  == 200 ||  resp.status  == 201
+   return log_error_mesg("Un exepect response from docker", resp, resp.body, resp.headers.to_s )   unless resp.status  == 200 ||  resp.status  == 201
 
    r = resp.body
    return r unless expect_json == true
