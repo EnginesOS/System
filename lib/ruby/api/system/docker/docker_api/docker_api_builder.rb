@@ -24,7 +24,9 @@ module DockerApiBuilder
       @io_stream = stream
     end
 
-        
+   def is_hijack?
+     false
+   end
         def has_data?
           return true unless @io_stream.nil?
           return false
@@ -35,7 +37,7 @@ module DockerApiBuilder
     end
     def process_request(*args)
          STDERR.puts('PROCESS REQUEST got ' + args.to_s)
-         
+      @io_stream.read(Excon.defaults[:chunk_size]).to_s 
        end
   end
   
@@ -47,13 +49,13 @@ module DockerApiBuilder
     header['Accept-Encoding'] = 'gzip'
     header['Transfer-Encoding'] = 'chunked'   
     header['Content-Length'] = File.size(build_archive_filename)
-      
+   
     #req = Net::HTTP::Post.new('/build?' + options, header)
    # req.content_length = File.size(build_archive_filename)
     
-    stream_handler = DockerStreamHandler.new(nil)
+    stream_handler = DockerStreamHandler.new(File.new(build_archive_filename))
      
-  return  post_stream_request('/build?' + options, stream_handler,  header, File.read(build_archive_filename) )
+  return  post_stream_request('/build?' + options, stream_handler,  header )
     req.body = File.read(build_archive_filename)
 error_mesg = ''
     Net::HTTP.start('172.17.0.1', 2375)  do |http|

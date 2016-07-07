@@ -72,8 +72,11 @@ excon_params = {:debug_request => true,
   :persistent => false,
   :response_block => stream_reader.method(:process_response)
 }
-    excon_params[:hijack_block] = stream_reader.method(:process_request) if stream_reader.method(:has_data?).call == true
-  
+    if stream_reader.method(:is_hijack?).call == true
+      excon_params[:hijack_block] = stream_reader.method(:process_request)
+    else 
+       excon_params[:request_block] = stream_reader.method(:process_request) if stream_reader.method(:has_data?).call == true
+    end
   return Excon.new('http://172.17.0.1:2375',excon_params)
   
   end
@@ -93,12 +96,14 @@ excon_params = {:debug_request => true,
 
          
      return    stream_connection(stream_handler).request(
-    :method => :post,:path => uri,
+    :method => :post,
+    :path => uri,
     :headers => headers,
     :body =>  body  )
     else
       return    stream_connection(stream_handler).request(
-         :method => :post,:path => uri,
+         :method => :post,
+         :path => uri,
          :headers => headers)
     end
 
