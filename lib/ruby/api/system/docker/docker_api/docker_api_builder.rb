@@ -50,7 +50,7 @@ module DockerApiBuilder
     header['X-Registry-Config'] = get_registry_auth
     header['Content-Type'] = 'application/tar'
     header['Accept-Encoding'] = 'gzip'
-
+    header['Accept'] = '*/*'
     header['Content-Length'] = File.size(build_archive_filename).to_s
      
     req = Net::HTTP::Post.new('/build?' + options, header)
