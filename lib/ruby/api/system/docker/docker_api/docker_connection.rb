@@ -98,7 +98,7 @@ excon_params = {:debug_request => true,
      end         
      return stream_connection(stream_handler).request(
     :method => :post,
-      :query => options,
+    :query => options,
     :path => uri,
     :headers => headers,
     :body =>  body  )
