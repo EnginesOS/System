@@ -39,7 +39,7 @@ module DockerApiBuilder
         if chunk.start_with?('{"stream":"')
           chunk = chunk[12..chunk-3]
           @builder.log_build_output(chunk)
-        elsif chunk.start_with?('{"stream":"')
+        elsif chunk.start_with?('{"errorDetail":"')
         chunk = chunk[17..chunk-3]
         @builder.log_build_errors(chunk)
         end
@@ -58,8 +58,8 @@ module DockerApiBuilder
 #                      STDERR.puts( 'EOROROROROR ' + hash.to_s)
 #                    end
 #                       end
-                  rescue
-        STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s)
+                  rescue StandardError =>e
+        STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s+ ' : ' +  e.to_s)
                     return
                   end
     end
