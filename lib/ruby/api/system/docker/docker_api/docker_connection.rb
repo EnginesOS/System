@@ -92,16 +92,14 @@ excon_params = {:debug_request => true,
           body = content.to_json
       else
         body = content
-     end
-
-         
-     return    stream_connection(stream_handler).request(
+     end         
+     return stream_connection(stream_handler).request(
     :method => :post,
     :path => uri,
     :headers => headers,
     :body =>  body  )
     else
-      return    stream_connection(stream_handler).request(
+      return stream_connection(stream_handler).request(
          :method => :post,
          :path => uri,
          :headers => headers)
