@@ -51,10 +51,10 @@ module DockerApiBuilder
     header['Content-Type'] = 'application/tar'
     header['Accept-Encoding'] = 'gzip'
 
-    header['Content-Length'] = File.size(build_archive_filename)
+    header['Content-Length'] = File.size(build_archive_filename).to_s
     header['Transfer-Encoding'] = 'chunked'   
     req = Net::HTTP::Post.new('/build?' + options, header)
-    req.content_length = File.size(build_archive_filename)
+    req.content_length = File.size(build_archive_filename).to_s
     STDERR.puts( 'build_engine ' +  header.to_s)
     #stream_handler = DockerStreamHandler.new(File.new(build_archive_filename,'r'))
    
