@@ -88,10 +88,13 @@ excon_params = {:debug_request => true,
     if stream_handler.method(:has_data?).call == false
       if content.nil? # Dont to_s as may be tgz
         body = ''
+        STDERR.puts(' no content ' )
       elsif headers['Content'] == 'application/json'
           body = content.to_json
+        STDERR.puts(' using content as json '  + headers.to_s )
       else
         body = content
+        STDERR.puts(' using content as raw '  + headers.to_s )
      end         
      return stream_connection(stream_handler).request(
     :method => :post,
@@ -99,6 +102,7 @@ excon_params = {:debug_request => true,
     :headers => headers,
     :body =>  body  )
     else
+      STDERR.puts(' using content ask chunked ' + headers.to_s )
       return stream_connection(stream_handler).request(
          :method => :post,
          :path => uri,
