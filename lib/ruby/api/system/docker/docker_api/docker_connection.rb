@@ -45,7 +45,7 @@ class DockerConnection < ErrorsApi
   end
 
   def post_request(uri,  params = nil, expect_json = true , headers = nil)
-    params = '' if params.nil?
+
       headers = {'Content-Type' =>'application/json'} if headers.nil?
     return handle_resp(
     connection.request(
