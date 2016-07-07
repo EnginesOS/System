@@ -47,13 +47,13 @@ class DockerConnection < ErrorsApi
   
   def post_request(uri,  params = nil, expect_json = true )
     params = {} if params.nil?
-   if data.nil?    
+  
      return handle_resp(
                         connection.request(
                            :method => :post,:path => uri,
                            :headers => {'Content-Type' =>'application/json'},
                            :body =>  params.to_json  ), expect_json)  
-   end
+ 
     
 #    unless params.nil?
 #      initheader = {'Content-Type' =>'application/json'}
