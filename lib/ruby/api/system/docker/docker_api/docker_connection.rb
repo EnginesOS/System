@@ -44,13 +44,13 @@ class DockerConnection < ErrorsApi
     Base64.encode64(r.to_json).gsub(/\n/, '')
   end
 
-  def post_request(uri,  params = nil, expect_json = true )
-    params = {} if params.nil?
-
+  def post_request(uri,  params = nil, expect_json = true , headers = nil)
+    params = '' if params.nil?
+      headers = {'Content-Type' =>'application/json'} if headers.nil?
     return handle_resp(
     connection.request(
     :method => :post,:path => uri,
-    :headers => {'Content-Type' =>'application/json'},
+    :headers => headers,
     :body =>  params.to_json  ), 
     expect_json)
 

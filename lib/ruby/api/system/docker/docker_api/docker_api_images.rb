@@ -30,7 +30,7 @@ module DockerApiImages
     end
     STDERR.puts(' pull  ' + request.to_s)
     headers = { 'X-Registry-Config'  => get_registry_auth}
-    r =  get_request(request,  expect_json = false , headers )
+    r =  post_request(request,  nil, false , headers )
 #    req = Net::HTTP::Post.new(request, header)
 #   r = perform_request(req, container, false,  false)
 #    
