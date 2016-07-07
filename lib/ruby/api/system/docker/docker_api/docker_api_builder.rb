@@ -38,11 +38,12 @@ module DockerApiBuilder
       begin
         if chunk.start_with?('{"stream":"')
         c_e = chunk.length-3
-          chunk = chunk[11..c_e]
-          @builder.log_build_output(chunk)
+          chunk = chunk[11..-1]
+          @builder.log_build_output(chunk.gsub(/"}$/,''))
         elsif chunk.start_with?('{"errorDetail":"')
-        chunk = chunk[16..c_e]
-        @builder.log_build_errors(chunk)
+        chunk = chunk[16..-1]
+        
+        @builder.log_build_errors(chunk.gsub(/"}$/,''))
         end
         
 #      response_parser.parse(chunk) do |hash |
