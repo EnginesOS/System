@@ -67,14 +67,14 @@ class DockerConnection < ErrorsApi
   end
 
   def stream_connection(stream_reader)
-params = {:debug_request => true,
+excon_params = {:debug_request => true,
   :debug_response => true,
   :persistent => false,
-  :response_block => stream_reader.method[:process_response]
+  :response_block => stream_reader.method(:process_response)
 }
-params[:hijack_block] = stream_reader.method[:process_request] if stream_reader.method[:has_data?].call == true
+    excon_params[:hijack_block] = stream_reader.method(:process_request) if stream_reader.method(:has_data?).call == true
   
-  return Excon.new('http://172.17.0.1:2375',params)
+  return Excon.new('http://172.17.0.1:2375',excon_params)
   
   end
 
