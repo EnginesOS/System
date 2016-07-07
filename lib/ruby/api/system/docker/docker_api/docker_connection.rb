@@ -81,6 +81,7 @@ excon_params = {:debug_request => true,
   
   def post_stream_request(uri,stream_handler,  headers = nil, content = nil )
   headers = {'Content-Type' =>'application/json'} if headers.nil?
+    
     if stream_handler.method(:has_data?).call == false
       if content.nil? # Dont to_s as may be tgz
         body = ''
@@ -89,16 +90,23 @@ excon_params = {:debug_request => true,
       else
         body = content
      end
-    end
+
          
-    stream_connection(stream_handler).request(
+     return    stream_connection(stream_handler).request(
     :method => :post,:path => uri,
     :headers => headers,
     :body =>  body  )
+    else
+      return    stream_connection(stream_handler).request(
+         :method => :post,:path => uri,
+         :headers => headers)
+    end
 
   rescue StandardError => e
     log_exception(e)
   end
+  
+
   
   def get_request(uri,  expect_json = true, headers = nil)
     return handle_resp(connection.request(:method => :get,
