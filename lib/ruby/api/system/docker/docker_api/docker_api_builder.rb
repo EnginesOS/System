@@ -55,8 +55,8 @@ module DockerApiBuilder
      
 
     STDERR.puts( 'build_engine ' +  header.to_s)
-    stream_handler = DockerStreamHandler.new() #File.new(build_archive_filename,'r'))
-   
+    stream_handler = DockerStreamHandler.new(nil) #File.new(build_archive_filename,'r'))
+#   
   return post_stream_request('/build' , options, stream_handler,  header, File.read(build_archive_filename,'r') )
   
     req = Net::HTTP::Post.new('/build?' + options, header)
