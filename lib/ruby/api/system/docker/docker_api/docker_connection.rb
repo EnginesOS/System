@@ -85,7 +85,7 @@ class DockerConnection < ErrorsApi
   headers = {'Content-Type' =>'application/json'} if headers.nil?
     body = '' if body.nil? # Dont to_s as may be tgz
       stream_reader = DockerStreamReader.new()
-    stream_connection(stream_reader.method(:process_request)).connection.request(
+    stream_connection(stream_reader.method(:process_request)).request(
     :method => :post,:path => uri,
     :headers => headers,
     :body =>  body  )
