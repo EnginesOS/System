@@ -37,10 +37,11 @@ module DockerApiBuilder
       STDERR.puts('PROCESS RESPONSE got ' + chunk.to_s)
       begin
         if chunk.start_with?('{"stream":"')
-          chunk = chunk[12..chunk.length - 3]
+        c_e = chunk.length-3
+          chunk = chunk[11..c_e]
           @builder.log_build_output(chunk)
         elsif chunk.start_with?('{"errorDetail":"')
-        chunk = chunk[17..chunk.length - 3]
+        chunk = chunk[16..c_e]
         @builder.log_build_errors(chunk)
         end
         
