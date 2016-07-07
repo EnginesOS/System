@@ -37,10 +37,10 @@ module DockerApiBuilder
       STDERR.puts('PROCESS RESPONSE got ' + chunk.to_s)
       begin
         if chunk.start_with?('{"stream":"')
-          chunk = chunk[12..chunk-3]
+          chunk = chunk[12..chunk.count - 3]
           @builder.log_build_output(chunk)
         elsif chunk.start_with?('{"errorDetail":"')
-        chunk = chunk[17..chunk-3]
+        chunk = chunk[17..chunk.count - 3]
         @builder.log_build_errors(chunk)
         end
         
@@ -59,7 +59,7 @@ module DockerApiBuilder
 #                    end
 #                       end
                   rescue StandardError =>e
-        STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s+ ' : ' +  e.to_s)
+        STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s)
                     return
                   end
     end
