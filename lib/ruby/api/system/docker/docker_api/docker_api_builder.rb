@@ -26,7 +26,7 @@ module DockerApiBuilder
     header['X-Registry-Config'] = get_registry_auth
     header['Content-Type'] = 'application/tar'
     header['Accept-Encoding'] = 'gzip'
-    header['Transfer-Encoding'] = 'chunked'   
+  #  header['Transfer-Encoding'] = 'chunked'   
 
       
     req = Net::HTTP::Post.new('/build?' + options, header)
