@@ -69,7 +69,7 @@ class DockerConnection < ErrorsApi
   def stream_connection(stream_reader)
 excon_params = {:debug_request => true,
   :debug_response => true,
-  :persistent => false,
+  :persistent => true,
   :response_block => stream_reader.method(:process_response)
 }
     if stream_reader.method(:is_hijack?).call == true
