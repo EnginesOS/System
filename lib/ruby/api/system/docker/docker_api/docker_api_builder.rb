@@ -37,7 +37,11 @@ module DockerApiBuilder
     end
     def process_request(*args)
          STDERR.puts('PROCESS REQUEST got ' + args.to_s)
-      @io_stream.read(Excon.defaults[:chunk_size]).to_s 
+     r = @io_stream.read(Excon.defaults[:chunk_size]).to_s
+       STDERR.puts(r.to_s)
+       r 
+    rescue StandardError => e
+      return nil
        end
   end
   
@@ -53,7 +57,7 @@ module DockerApiBuilder
     #req = Net::HTTP::Post.new('/build?' + options, header)
    # req.content_length = File.size(build_archive_filename)
     
-    stream_handler = DockerStreamHandler.new(File.new(build_archive_filename))
+    stream_handler = DockerStreamHandler.new(File.new(build_archive_filename,'r'))
      
   return  post_stream_request('/build?' + options, stream_handler,  header )
     req.body = File.read(build_archive_filename)
