@@ -51,7 +51,8 @@ module DockerApiBuilder
                     end
                        end
                   rescue
-                    next
+        STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s)
+                    return
                   end
     end
     
