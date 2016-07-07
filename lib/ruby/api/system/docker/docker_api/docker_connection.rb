@@ -45,49 +45,61 @@ class DockerConnection < ErrorsApi
     Base64.encode64(r.to_json)
   end
   
-  def make_post_request(uri, container, params = nil, return_hash = true , data = nil)
-
-    unless params.nil?
-      initheader = {'Content-Type' =>'application/json'}
-      req = Net::HTTP::Post.new(uri, initheader)
-      STDERR.puts('Post REQUEST ' + uri.to_s + '::' + req.body.to_s )
-      req.body = params.to_json
-
-      #      c.gsub!(/\\"/,'"')
-      #      c.gsub!(/^"/,'')
-      #      c.gsub!(/"$/,'')
-      STDERR.puts('Post REQUEST ' + req.body.to_s )
-    else
-      req = Net::HTTP::Post.new(uri)
-    end
-    return perform_data_request(req, container, return_hash, data) unless data.nil?
-    perform_request(req, container, return_hash, true)
+  def post_request(uri,  params = nil, expect_json = true )
+    params = {} if params.nil?
+   if data.nil?    
+     return handle_resp(
+                        connection.request(
+                           :method => :post,:path => uri,
+                           :headers => {'Content-Type' =>'application/json'},
+                           :body =>  params.to_json  ), expect_json)  
+   end
+    
+#    unless params.nil?
+#      initheader = {'Content-Type' =>'application/json'}
+#      req = Net::HTTP::Post.new(uri, initheader)
+#      STDERR.puts('Post REQUEST ' + uri.to_s + '::' + req.body.to_s )
+#      req.body = params.to_json
+#
+#      #      c.gsub!(/\\"/,'"')
+#      #      c.gsub!(/^"/,'')
+#      #      c.gsub!(/"$/,'')
+#      STDERR.puts('Post REQUEST ' + req.body.to_s )
+#    else
+#      req = Net::HTTP::Post.new(uri)
+#    end
+#    return perform_data_request(req, container, return_hash, data) unless data.nil?
+    #perform_request(req, container, return_hash, true)
   rescue StandardError => e
     log_exception(e)
   end
 
   def connection
-    @connection = Excon.new('http://172.17.0.1:2375', :debug_request => true, :debug_response => true,:persistent => true) if @connection.nil?
+    @connection = Excon.new('http://172.17.0.1:2375', 
+                            :debug_request => true, 
+                            :debug_response => true,
+                            :persistent => true) if @connection.nil?
     @connection
   end
   
-  def make_request(uri, container, return_hash = true)
-  
-    #req = Net::HTTP::Get.new(uri)
-    #STDERR.puts(' GET ' + uri.to_s)
-    if @socket_mutex.locked?
-      @socket_mutex.lock
-      @socket_mutex.unlock          
-    end   
-    handle_resp(connection.request(:method => :get, :path => uri),return_hash)
-   # perform_request(req, container, return_hash)
-    
+  def get_request(uri,  expect_json = true, headers = nil)
+    return handle_resp(connection.request(:method => :get, 
+                                          :path => uri, 
+                                          :headers => headers), 
+                                          expect_json) unless headers.nil?
+                                          
+    handle_resp(connection.request(:method => :get, 
+                                   :path => uri), 
+                                   expect_json)    
   end
 
-  def make_del_request(uri, container)
-    req = Net::HTTP::Delete.new(uri)
-    STDERR.puts(' Del ' + uri.to_s)
-    perform_request(req, container, false, true)
+  def delete_request(uri)
+    handle_resp(connection.request(:method => :delete, 
+                                   :path => uri), 
+                                   false)  
+#    req = Net::HTTP::Delete.new(uri)
+#    STDERR.puts(' Del ' + uri.to_s)
+#    perform_request(req, container, false, true)
   end
   
   private
@@ -162,7 +174,7 @@ class DockerConnection < ErrorsApi
     #   hashes[1] is a timestamp
     return hashes[0]
 end
-def handle_resp(resp, return_hash)
+def handle_resp(resp, expect_json)
 #   if  resp.status  == 404
 #     clear_cid(container) if ! container.nil? && resp.body.start_with?('no such id: ')
 #     return log_error_mesg("no such id response from docker", resp, resp.body)
@@ -173,7 +185,7 @@ def handle_resp(resp, return_hash)
    return log_error_mesg("Error response from docker", resp, resp.body, resp.headers.to_s )   unless resp.status  == 200 ||  resp.status  == 201
 
    r = resp.body
-   return r unless return_hash == true
+   return r unless expect_json == true
 
    hashes = []
   # return clear_cid(container) if ! container.nil? && r.start_with?('no such id: ')
@@ -183,6 +195,8 @@ def handle_resp(resp, return_hash)
 
    #   hashes[1] is a timestamp
    return hashes[0]
+rescue StandardError => e
+  log_exception(e)
 end
 
  def clear_cid(container)

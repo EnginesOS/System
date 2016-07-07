@@ -53,6 +53,7 @@ error_mesg = ''
                  error_mesg = hash['errorDetail']
                  builder.log_build_errors(error_mesg)
                else
+                 builder.log_build_errors('EOROROROROR ' + hash.to_s)
                  STDERR.puts( 'EOROROROROR ' + hash.to_s)
                end
                   end
@@ -61,8 +62,8 @@ error_mesg = ''
              end
           end
         }
-     return  builder.build_failed(error_mesg) if  build_fail == true 
-     return 
+     return  builder.build_failed(error_mesg) if build_fail == true 
+     return true
     end
       rescue StandardError => e
         log_exception(e)

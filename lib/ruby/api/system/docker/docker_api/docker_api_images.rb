@@ -1,7 +1,7 @@
 module DockerApiImages
   def image_exist_by_name?(image_name)
     request = '/images/json?filter=' + image_name
-    r =  make_request(request, nil,true)
+    r =  get_request(request, true)
     return  false unless r.is_a?(Array)
     r = r[0]
     return true if r.is_a?(Hash) && r.key?('Id')
@@ -13,7 +13,7 @@ module DockerApiImages
 
   def find_images(search)
     request = '/images/json?filter=' + search
-    r =  make_request(request, nil,true)
+    r =  get_request(request, true)
     return  false unless r.is_a?(Array)
     r
   end
@@ -29,11 +29,11 @@ module DockerApiImages
       container = nil
     end
     STDERR.puts(' pull  ' + request.to_s)
-    header = { 'X-Registry-Config'  => get_registry_auth}
-      
-    req = Net::HTTP::Post.new(request, header)
-   r = perform_request(req, container, false,  false)
-    
+    headers = { 'X-Registry-Config'  => get_registry_auth}
+    get_request(request,  expect_json = false , headers )
+#    req = Net::HTTP::Post.new(request, header)
+#   r = perform_request(req, container, false,  false)
+#    
     STDERR.puts(' pull result ' + r.to_s)
     return true
   rescue StandardError => e
@@ -44,7 +44,7 @@ module DockerApiImages
     return image_exist_by_name?(container) if container.is_a?(String)
     return image_exist_by_name?(container.image)
     #    request = '/images/' + container.image + '/json'
-    #    r =  make_request(request, container,true)
+    #    r =  get_request(request,true)
     #    return true if r.is_a?(Hash) && r.key?('Id')
     #    STDERR.puts(' image_exist? res ' + r.to_s )
     #    return  false
@@ -54,14 +54,14 @@ module DockerApiImages
 
   def delete_container_image(container)
     request = '/images/' + container.image
-    return make_del_request(request, container)
+    return delete_request(request)
   rescue StandardError => e
     log_exception(e)
   end
 
   def delete_image(image_name)
     request = '/images/' + image_name
-    return make_del_request(request, nil)
+    return delete_request(request)
   rescue StandardError => e
     log_exception(e)
   end

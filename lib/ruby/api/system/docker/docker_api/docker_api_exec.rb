@@ -14,14 +14,14 @@ module DockerApiExec
       request_params["Tty"] = true
       request = '/exec/' + exec_id + '/start'
     unless have_data == true
-      r = make_post_request(request, container, request_params, false , nil)
+      r = post_request(request,  request_params, false )
       return r if r.is_a?(EnginesError)
       return docker_stream_as_result(r)
     end
     initheader = {'Transfer-Encoding' => 'chunked', 'content-type' => 'application/octet-stream' }
       
      req = Net::HTTP::Post.new(request, initheader)
-      #r = make_post_request(request, container, request_params, false , data)
+     
     perform_data_request(req, container, request_params, data)
       STDERR.puts('EXEC RESQU ' + r.to_s)
       return r if r.is_a?(EnginesError)
@@ -165,7 +165,7 @@ module DockerApiExec
           request_params[ "Cmd"] =  commands
       
           request = '/containers/'  + container.container_id.to_s + '/exec'
-          r = make_post_request(request, container, request_params)
+          r = post_request(request,  request_params)
           STDERR.puts('DOCKER EXEC ' + r.to_s + ': for :' + container.container_name + ': with :' + request_params.to_s)
           return r
    end
