@@ -20,8 +20,9 @@ module DockerApiBuilder
   end
 
   class DockerStreamHandler
-    def initialize(stream)
+    def initialize(stream, builder)
       @io_stream = stream
+      @builder = builder
     end
 
    def is_hijack?
@@ -32,9 +33,28 @@ module DockerApiBuilder
           return false
         end
         
-    def process_response(*args)
+    def process_response(chunk , c , t)
       STDERR.puts('PROCESS RESPONSE got ' + args.to_s)
+      begin
+      response_parser.parse(chunk) do |hash |
+                    if hash.key?('stream')
+                      build_fail = false 
+                      @builder.log_build_output(hash['stream'])
+                    elsif hash.key?('errorDetail')
+                      build_fail = true 
+                       
+                      error_mesg = hash['errorDetail']
+                      @builder.log_build_errors(error_mesg)
+                    else
+                      @builder.log_build_errors('EOROROROROR ' + hash.to_s)
+                      STDERR.puts( 'EOROROROROR ' + hash.to_s)
+                    end
+                       end
+                  rescue
+                    next
+                  end
     end
+    
     def process_request(*args)
          STDERR.puts('PROCESS REQUEST with ')
       @io_stream.read(Excon.defaults[:chunk_size]).to_s    
@@ -55,44 +75,44 @@ module DockerApiBuilder
      
 
     STDERR.puts( 'build_engine ' +  header.to_s)
-    stream_handler = DockerStreamHandler.new(nil) #File.new(build_archive_filename,'r'))
+    stream_handler = DockerStreamHandler.new(nil, builder) #File.new(build_archive_filename,'r'))
 #   
   return post_stream_request('/build' , options, stream_handler,  header, File.read(build_archive_filename) )
   
-    req = Net::HTTP::Post.new('/build?' + options, header)
-    req.content_length = File.size(build_archive_filename).to_s
-    req.body = File.read(build_archive_filename)
-error_mesg = ''
-    Net::HTTP.start('172.17.0.1', 2375)  do |http|
-       build_fail = false 
-        http.request(req) { |resp|
-          resp.read_body do |chunk|
-            #hash = parser.parse(chunk) do |hash|
-             STDERR.puts( 'START ' + chunk)
-            #end
-             begin
-            response_parser.parse(chunk) do |hash |
-               if hash.key?('stream')
-                 build_fail = false 
-                 builder.log_build_output(hash['stream'])
-               elsif hash.key?('errorDetail')
-                 build_fail = true 
-                  
-                 error_mesg = hash['errorDetail']
-                 builder.log_build_errors(error_mesg)
-               else
-                 builder.log_build_errors('EOROROROROR ' + hash.to_s)
-                 STDERR.puts( 'EOROROROROR ' + hash.to_s)
-               end
-                  end
-             rescue
-               next
-             end
-          end
-        }
-     return  builder.build_failed(error_mesg) if build_fail == true 
-     return true
-    end
+#    req = Net::HTTP::Post.new('/build?' + options, header)
+#    req.content_length = File.size(build_archive_filename).to_s
+#    req.body = File.read(build_archive_filename)
+#error_mesg = ''
+#    Net::HTTP.start('172.17.0.1', 2375)  do |http|
+#       build_fail = false 
+#        http.request(req) { |resp|
+#          resp.read_body do |chunk|
+#            #hash = parser.parse(chunk) do |hash|
+#             STDERR.puts( 'START ' + chunk)
+#            #end
+#             begin
+#            response_parser.parse(chunk) do |hash |
+#               if hash.key?('stream')
+#                 build_fail = false 
+#                 builder.log_build_output(hash['stream'])
+#               elsif hash.key?('errorDetail')
+#                 build_fail = true 
+#                  
+#                 error_mesg = hash['errorDetail']
+#                 builder.log_build_errors(error_mesg)
+#               else
+#                 builder.log_build_errors('EOROROROROR ' + hash.to_s)
+#                 STDERR.puts( 'EOROROROROR ' + hash.to_s)
+#               end
+#                  end
+#             rescue
+#               next
+#             end
+#          end
+#        }
+#     return  builder.build_failed(error_mesg) if build_fail == true 
+#     return true
+    #    end
       rescue StandardError => e
         log_exception(e)
       end
