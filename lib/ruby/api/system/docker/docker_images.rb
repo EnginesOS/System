@@ -60,7 +60,7 @@ module DockerImages
 #    Thread.new { SystemUtils.execute_command(cmd) }
     return true # often warning not error
     rescue StandardError => e
-      container.last_error = ('Failed To Delete ' + e.to_s)
+     
       log_exception(e)
   end
 

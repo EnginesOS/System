@@ -196,7 +196,7 @@ class DockerConnection < ErrorsApi
     return log_error_mesg("Un exepect response from docker", resp, resp.body, resp.headers.to_s )   unless resp.status  == 200 ||  resp.status  == 201
     return resp.body unless expect_json == true
     hashes = []
-    response_parser.parse(r) do |hash |
+    response_parser.parse(resp.body) do |hash |
       hashes.push(hash)
     end
     return hashes[0]
