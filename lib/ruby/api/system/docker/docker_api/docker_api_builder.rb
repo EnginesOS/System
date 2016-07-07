@@ -34,36 +34,21 @@ module DockerApiBuilder
         end
         
     def process_response(chunk , c , t)
-      STDERR.puts('PROCESS RESPONSE got ' + chunk.to_s)
-      begin
+
         if chunk.start_with?('{"stream":"')
-        c_e = chunk.length-3
-          chunk = chunk[11..-1]
+
+          chunk = chunk[11..-3]
           @builder.log_build_output(chunk.gsub(/"}$/,''))
         elsif chunk.start_with?('{"errorDetail":"')
-        chunk = chunk[16..-1]
+        chunk = chunk[16..-3]
         
         @builder.log_build_errors(chunk.gsub(/"}$/,''))
         end
-        
-#      response_parser.parse(chunk) do |hash |
-#                    if hash.key?('stream')
-#                      build_fail = false 
-#                      @builder.log_build_output(hash['stream'])
-#                    elsif hash.key?('errorDetail')
-#                      build_fail = true 
-#                       
-#                      error_mesg = hash['errorDetail']
-#                      @builder.log_build_errors(error_mesg)
-#                    else
-#                      @builder.log_build_errors('EOROROROROR ' + hash.to_s)
-#                      STDERR.puts( 'EOROROROROR ' + hash.to_s)
-#                    end
-#                       end
-                  rescue StandardError =>e
+
+   rescue StandardError =>e
         STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s)
                     return
-                  end
+
     end
     
     def process_request(*args)
