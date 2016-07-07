@@ -53,12 +53,14 @@ module DockerApiBuilder
     header['Accept'] = '*/*'
     header['Content-Length'] = File.size(build_archive_filename).to_s
      
+
+    STDERR.puts( 'build_engine ' +  header.to_s)
+    stream_handler = DockerStreamHandler.new() #File.new(build_archive_filename,'r'))
+   
+  return post_stream_request('/build' , options, stream_handler,  header, File.read(build_archive_filename,'r') )
+  
     req = Net::HTTP::Post.new('/build?' + options, header)
     req.content_length = File.size(build_archive_filename).to_s
-    STDERR.puts( 'build_engine ' +  header.to_s)
-    stream_handler = DockerStreamHandler.new(File.new(build_archive_filename,'r'))
-   
-  return  post_stream_request('/build' , options, stream_handler,  header) #, File.read(build_archive_filename) )
     req.body = File.read(build_archive_filename)
 error_mesg = ''
     Net::HTTP.start('172.17.0.1', 2375)  do |http|
