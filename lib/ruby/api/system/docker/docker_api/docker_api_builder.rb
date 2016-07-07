@@ -23,9 +23,7 @@ module DockerApiBuilder
     def initialize(stream)
       @io_stream = stream
     end
-    def initialize()
-          @io_stream = nil
-        end
+
         
         def has_data?
           return true unless @io_stream.nil?
