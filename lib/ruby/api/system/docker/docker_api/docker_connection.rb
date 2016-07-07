@@ -67,25 +67,31 @@ class DockerConnection < ErrorsApi
   end
 
   def stream_connection(stream_reader)
-
-      return Excon.new('http://172.17.0.1:2375',
-                      :debug_request => true,
-                      :debug_response => true,
-                      :persistent => false,
-                      :response_block => stream_reader
-      )
-  end
-  class DockerStreamReader
-    def process_request(*args)
-      STDERR.puts('PROCESS REQUEST got ' + args.to_s)
-    end
-  end
+params = {:debug_request => true,
+  :debug_response => true,
+  :persistent => false,
+  :response_block => stream_reader.method[:process_response]
+}
+params[:hijack_block] = stream_reader.method[:process_request] if stream_reader.method[:has_data?].call == true
   
-  def post_stream_request(uri, body = nil, headers = nil )
+  return Excon.new('http://172.17.0.1:2375',params)
+  
+  end
+
+  
+  def post_stream_request(uri,stream_handler,  headers = nil, content = nil )
   headers = {'Content-Type' =>'application/json'} if headers.nil?
-    body = '' if body.nil? # Dont to_s as may be tgz
-      stream_reader = DockerStreamReader.new()
-    stream_connection(stream_reader.method(:process_request)).request(
+    if stream_handler.method(:has_data?).call == false
+      if content.nil? # Dont to_s as may be tgz
+        body = ''
+      elsif headers['Content'] == 'application/json'
+          body = content.to_json
+      else
+        body = content
+     end
+    end
+         
+    stream_connection(stream_handler).request(
     :method => :post,:path => uri,
     :headers => headers,
     :body =>  body  )
