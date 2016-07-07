@@ -10,14 +10,14 @@
 				"type_path": "database/sql/mysql",
 				"publisher_namespace": "EnginesSystem",
 				"create_type": "orphan",
-				"parent_engine": "installtest",
-				"service_handle": "installtest"
+				"parent_engine": "testengine",
+				"service_handle": "testengine"
 			}, {
 				"type_path": "filesystem/local/filesystem",
 				"publisher_namespace": "EnginesSystem",
 				"create_type": "orphan",
-				"parent_engine":"installtest",
-				"service_handle":"installtest"
+				"parent_engine":"testengine",
+				"service_handle":"testengine"
 				}
 				]		
 			 }

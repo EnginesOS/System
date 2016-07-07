@@ -5,22 +5,22 @@ tests:
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 	
 clear_testengine:
-	engines engine installtest stop >/dev/null
-	engines engine installtest destroy >/dev/null
-	engines engine installtest delete all >/dev/null
+	engines engine testengine stop >/dev/null
+	engines engine testengine destroy >/dev/null
+	engines engine testengine delete all >/dev/null
 	
 delete_engine_and_orphanate:
 	make -k clear_testengine
 	cd ../../engines
 	make -k build_plain
 	cd ../service_manager/orphans
-	engines engine installtest stop >/dev/null
-	engines engine installtest destroy >/dev/null
-	engines engine installtest delete none
-	engines service_manager orphan EnginesSystem filesystem/local/filesystem installtest installtest | engines_test_expects json
+	engines engine testengine stop >/dev/null
+	engines engine testengine destroy >/dev/null
+	engines engine testengine delete none
+	engines service_manager orphan EnginesSystem filesystem/local/filesystem testengine testengine | engines_test_expects json
 	
 delete_orphan:
-	engines service_manager orphan delete EnginesSystem filesystem/local/filesystem installtest installtest | engines_test_expects bool true
+	engines service_manager orphan delete EnginesSystem filesystem/local/filesystem testengine testengine | engines_test_expects bool true
 	
 use_orphan:
 	make  delete_engine_and_orphanate
