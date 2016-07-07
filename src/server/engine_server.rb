@@ -107,10 +107,9 @@ begin
   def get_service(service_name)
 
     service = engines_api.loadManagedService(service_name)
-#    return service if service.is_a?(ManagedService)
-#    log_error('Load failed !!!' + service_name)
+    return service if service.is_a?(ManagedService) || service.is_a?(EnginesError)
+    return log_error_mesg('Load Service failed !!!' + service_name, service)
    
-    return service
   end
   def  downcase_keys(hash)
     return hash unless hash.is_a? Hash
