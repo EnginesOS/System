@@ -52,7 +52,7 @@ module DockerApiBuilder
     header['Accept-Encoding'] = 'gzip'
 
     header['Content-Length'] = File.size(build_archive_filename).to_s
-    header['Transfer-Encoding'] = 'chunked'   
+     
     req = Net::HTTP::Post.new('/build?' + options, header)
     req.content_length = File.size(build_archive_filename).to_s
     STDERR.puts( 'build_engine ' +  header.to_s)
