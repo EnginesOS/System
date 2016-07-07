@@ -82,7 +82,7 @@ excon_params = {:debug_request => true,
   end
 
   
-  def post_stream_request(uri,stream_handler,  headers = nil, content = nil )
+  def post_stream_request(uri,options, stream_handler,  headers = nil, content = nil )
   headers = {'Content-Type' =>'application/json'} if headers.nil?
     
     if stream_handler.method(:has_data?).call == false
@@ -98,6 +98,7 @@ excon_params = {:debug_request => true,
      end         
      return stream_connection(stream_handler).request(
     :method => :post,
+      :query => options,
     :path => uri,
     :headers => headers,
     :body =>  body  )
@@ -106,6 +107,7 @@ excon_params = {:debug_request => true,
       STDERR.puts(' using content ask chunked ' + headers.to_s )
       return stream_connection(stream_handler).request(
          :method => :post,
+         :query => options,
          :path => uri,
          :headers => headers)
     end
