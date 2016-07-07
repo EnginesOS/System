@@ -26,8 +26,8 @@ module DockerUtils
          STDERR.puts(' R ' + r.to_s)
          size = r[0,3]
      STDERR.puts(' SIZE '  + size.to_s)
-         length = size.unpack("N")
-     STDERR.puts(' LENGTH '  + size.to_s + ' cn:' + length[0].class.name)
+    #     length = size.unpack("N")
+    # STDERR.puts(' LENGTH '  + size.to_s + ' cn:' + length[0].class.name)
          #length = length[0]
          r = r[4..-1]
          l = r.index("\u0000\u0000\u0000")
