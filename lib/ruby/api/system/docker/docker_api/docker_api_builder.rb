@@ -37,10 +37,9 @@ module DockerApiBuilder
     end
     def process_request(*args)
          STDERR.puts('PROCESS REQUEST got ' + args.to_s)
-     r = @io_stream.read(Excon.defaults[:chunk_size]).to_s
-       STDERR.puts(r.to_s)
-       r 
+      @io_stream.read(Excon.defaults[:chunk_size]).to_s    
     rescue StandardError => e
+      STDERR.puts('PROCESS REQUEST got nilling')
       return nil
        end
   end
@@ -52,7 +51,7 @@ module DockerApiBuilder
     header['Content-Type'] = 'application/tar'
     header['Accept-Encoding'] = 'gzip'
     header['Transfer-Encoding'] = 'chunked'   
-    header['Content-Length'] = File.size(build_archive_filename)
+    #header['Content-Length'] = File.size(build_archive_filename)
    
     #req = Net::HTTP::Post.new('/build?' + options, header)
    # req.content_length = File.size(build_archive_filename)
