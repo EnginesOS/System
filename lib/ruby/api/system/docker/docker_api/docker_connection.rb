@@ -94,7 +94,7 @@ excon_params = {:debug_request => true,
         STDERR.puts(' using content as json '  + headers.to_s )
       else
         body = content
-        STDERR.puts(' using content as raw '  + headers.to_s )
+        STDERR.puts(' using content as raw '  + headers.to_s  + ' contentlen ' + content.length.to_s )
      end         
      return stream_connection(stream_handler).request(
     :method => :post,
