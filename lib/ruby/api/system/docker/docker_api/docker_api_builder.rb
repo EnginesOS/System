@@ -34,7 +34,7 @@ module DockerApiBuilder
         end
         
     def process_response(chunk , c , t)
-      STDERR.puts('PROCESS RESPONSE got ' + args.to_s)
+      STDERR.puts('PROCESS RESPONSE got ' + chunk.to_s)
       begin
       response_parser.parse(chunk) do |hash |
                     if hash.key?('stream')
