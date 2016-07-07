@@ -41,7 +41,7 @@ class DockerConnection < ErrorsApi
 
   def get_registry_auth
     r = {}
-    Base64.encode64(r.to_json)
+    Base64.encode64(r.to_json).gsub(/\n/, '')
   end
 
   def post_request(uri,  params = nil, expect_json = true )
