@@ -25,8 +25,10 @@ module DockerUtils
        STDERR.puts("CONTENT " + r.to_s)
        p r
          r = r[4..-1]
-         STDERR.puts(' R ' + r.to_s)
-         size = r[0,3]
+         #STDERR.puts(' R ' + r.to_s)
+   
+         
+         #size = r[0,3]
      STDERR.puts(' SIZE '  + size.to_s)
     #     length = size.unpack("N")
     # STDERR.puts(' LENGTH '  + size.to_s + ' cn:' + length[0].class.name)
