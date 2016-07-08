@@ -90,7 +90,7 @@ excon_params = {:debug_request => true,
       if content.nil? # Dont to_s as may be tgz
         body = ''
         STDERR.puts(' no content ' )
-      elsif headers['Content'] == 'application/json'
+      elsif headers['Content-Type'] == 'application/json'
           body = content.to_json
         STDERR.puts(' using content as json '  + headers.to_s )
       else
