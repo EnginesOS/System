@@ -38,10 +38,10 @@ module DockerApiExec
              STDERR.puts('PROCESS REQUEST with single chunk ' + @data.to_s)
              r = @data
              @data = ''
-             socket.write(@data)
+             socket.send(@data)
              socket.close_write
            else
-             socket.write(@data.slice!(0,Excon.defaults[:chunk_size]))
+             socket.send(@data.slice!(0,Excon.defaults[:chunk_size]))
            end
       end
       rescue StandardError => e
