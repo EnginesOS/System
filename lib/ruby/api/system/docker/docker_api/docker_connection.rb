@@ -73,6 +73,7 @@ excon_params = {:debug_request => true,
   :response_block => stream_reader.method(:process_response)
 }
     if stream_reader.method(:is_hijack?).call == true
+      STDERR.puts('  hijack_block ' )
       excon_params[:hijack_block] = stream_reader.method(:process_request)
     else 
        excon_params[:request_block] = stream_reader.method(:process_request) if stream_reader.method(:has_data?).call == true
@@ -84,7 +85,7 @@ excon_params = {:debug_request => true,
   
   def post_stream_request(uri,options, stream_handler,  headers = nil, content = nil )
   headers = {'Content-Type' =>'application/json'} if headers.nil?
-    
+    content = '' if content.nil?
     if stream_handler.method(:has_data?).call == false
       if content.nil? # Dont to_s as may be tgz
         body = ''

@@ -13,7 +13,7 @@ module DockerApiExec
       end
     
      def is_hijack?
-       false
+       true
      end
           def has_data?
             return false if @data.nil?
