@@ -71,7 +71,7 @@ module DockerApiExec
   #  initheader = {'Transfer-Encoding' => 'chunked', 'content-type' => 'application/octet-stream' }
 
     stream_handler = DockerStreamHandler.new(data)
-    post_stream_request(request, nil, stream_handler,  nil, request_params  )
+    post_stream_request(request, nil, stream_handler,  nil, request_params.to_json  )
     STDERR.puts('EXEC RES ' + stream_handler.result.to_s)
     stream_handler.result
 #     req = Net::HTTP::Post.new(request, initheader)

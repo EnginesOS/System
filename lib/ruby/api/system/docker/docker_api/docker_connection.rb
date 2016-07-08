@@ -104,8 +104,8 @@ excon_params = {:debug_request => true,
     :headers => headers,
     :body =>  body  )
     else
-      headers['Transfer-Encoding'] = 'chunked'   
-      STDERR.puts(' using content ask chunked ' + headers.to_s )
+      #headers['Transfer-Encoding'] = 'chunked'   
+      STDERR.puts(' using content as is json assumed ' + headers.to_s )
       return stream_connection(stream_handler).request(
          :method => :post,
          :query => options,
