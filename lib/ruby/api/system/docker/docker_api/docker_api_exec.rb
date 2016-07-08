@@ -31,10 +31,11 @@ module DockerApiExec
   
       end
     def process_request(*args)
-           STDERR.puts('PROCESS REQUEST with ')
+         
            return nil if @data.length == 0
            if @data.length < Excon.defaults[:chunk_size]
-             return @data
+             STDERR.puts('PROCESS REQUEST with single chunk')
+             return @data.slice!(0,-1)
            else
              return @data.slice!(0,Excon.defaults[:chunk_size])
            end
