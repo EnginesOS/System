@@ -4,45 +4,48 @@ module DockerApiExec
   
   class DockerStreamHandler
     attr_accessor :result
-      def initialize(data, result)
+      def initialize(data)
         @data = data
-        @result = result
+        @result = {}
         @result[:raw] = ''
         @result[:stdout] = ''
-          @result[:stderr] = ''
+        @result[:stderr] = ''
       end
     
      def is_hijack?
        true
      end
           def has_data?
-            return false 
+            return false if  @data.nil?
+            return false if  @data.length == 0
+            return true
           end
           
       def process_response(chunk , c , t)
         DockerUtils.docker_stream_as_result(chunk, @result)
-      @result[:raw] = @result[:raw] + chunk
+      @result[:raw] = @result[:raw] + chunk.to_s
   STDERR.puts( ' parse build res  ' + chunk.to_s )
      rescue StandardError =>e
-          STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s)
+          STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s + ' ' + e.backtrace.to_s)
                       return
   
       end
-    def process_request(*args)
-         
-           return nil if @data.length == 0
+    def process_request(socket)
+      STDERR.puts('PROCESS REQUEST with single chunk ' + @data.to_s)
+           return socket.close_write if @data.length == 0
            if @data.length < Excon.defaults[:chunk_size]
              STDERR.puts('PROCESS REQUEST with single chunk ' + @data.to_s)
              r = @data
              @data = ''
-             return r
+             socket.write(@data)
+             socket.close_write
            else
-             return @data.slice!(0,Excon.defaults[:chunk_size])
+             socket.write(@data.slice!(0,Excon.defaults[:chunk_size]))
            end
        
       rescue StandardError => e
         STDERR.puts('PROCESS REQUEST got ' + e.to_s)
-        return nil
+        return socket.close_write
          end
     end
     
@@ -53,22 +56,24 @@ module DockerApiExec
       r = create_docker_exec(container, commands, have_data)
     
       return r unless r.is_a?(Hash)
-    result = {}
+
       exec_id = r['Id']
       request_params = {}
       request_params["Detach"] = false
       request_params["Tty"] = true
       request = '/exec/' + exec_id + '/start'
     unless have_data == true
+      result = {}
       r = post_request(request,  request_params, false )
       return r if r.is_a?(EnginesError)
       return DockerUtils.docker_stream_as_result(r, result)
     end
   #  initheader = {'Transfer-Encoding' => 'chunked', 'content-type' => 'application/octet-stream' }
 
-    stream_handler = DockerStreamHandler.new(data, result)
+    stream_handler = DockerStreamHandler.new(data)
     post_stream_request(request, nil, stream_handler,  nil, request_params  )
-    result
+    STDERR.puts('EXEC RES ' + stream_handler.result.to_s)
+    stream_handler.result
 #     req = Net::HTTP::Post.new(request, initheader)
 #     
 #    perform_data_request(req, container, request_params, data)
