@@ -35,7 +35,9 @@ module DockerApiExec
            return nil if @data.length == 0
            if @data.length < Excon.defaults[:chunk_size]
              STDERR.puts('PROCESS REQUEST with single chunk')
-             return @data.slice!(0,-1)
+             r = @data
+             @data = ''
+             return r
            else
              return @data.slice!(0,Excon.defaults[:chunk_size])
            end
