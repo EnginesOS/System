@@ -13,7 +13,7 @@ module DockerApiExec
       end
     
      def is_hijack?
-       false
+       true
      end
           def has_data?
             return false if @data.nil?
@@ -69,7 +69,7 @@ module DockerApiExec
     initheader = {'Transfer-Encoding' => 'chunked', 'content-type' => 'application/octet-stream' }
 
     stream_handler = DockerStreamHandler.new(data, result)
-    post_stream_request(request,nil, stream_handler,  initheader  )
+    post_stream_request(request,request_params, stream_handler,  initheader  )
     result
 #     req = Net::HTTP::Post.new(request, initheader)
 #     
