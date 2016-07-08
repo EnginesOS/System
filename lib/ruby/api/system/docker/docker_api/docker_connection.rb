@@ -109,6 +109,7 @@ excon_params = {:debug_request => true,
          :method => :post,
          :query => options,
          :path => uri,
+         :body => content,
          :headers => headers)
     end
 
