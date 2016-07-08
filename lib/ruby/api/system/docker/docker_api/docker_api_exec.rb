@@ -16,9 +16,7 @@ module DockerApiExec
        true
      end
           def has_data?
-            return false if @data.nil?
-            return true unless @data.length == 0 
-            return false
+            return false 
           end
           
       def process_response(chunk , c , t)
@@ -66,10 +64,10 @@ module DockerApiExec
       return r if r.is_a?(EnginesError)
       return DockerUtils.docker_stream_as_result(r, result)
     end
-    initheader = {'Transfer-Encoding' => 'chunked', 'content-type' => 'application/octet-stream' }
+  #  initheader = {'Transfer-Encoding' => 'chunked', 'content-type' => 'application/octet-stream' }
 
     stream_handler = DockerStreamHandler.new(data, result)
-    post_stream_request(request, nil, stream_handler,  initheader, request_params.to_json  )
+    post_stream_request(request, nil, stream_handler,  nil, request_params  )
     result
 #     req = Net::HTTP::Post.new(request, initheader)
 #     
