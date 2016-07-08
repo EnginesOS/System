@@ -30,7 +30,8 @@ module DockerApiExec
                       return
   
       end
-    def process_request(socket)
+    def process_request(*args)
+      lambda do |socket|
       STDERR.puts('PROCESS REQUEST with single chunk ' + @data.to_s)
            return socket.close_write if @data.length == 0
            if @data.length < Excon.defaults[:chunk_size]
@@ -42,7 +43,7 @@ module DockerApiExec
            else
              socket.write(@data.slice!(0,Excon.defaults[:chunk_size]))
            end
-       
+      end
       rescue StandardError => e
         STDERR.puts('PROCESS REQUEST got ' + e.to_s)
         return socket.close_write
