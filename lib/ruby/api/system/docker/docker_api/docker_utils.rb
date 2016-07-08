@@ -32,6 +32,7 @@ module DockerUtils
     # STDERR.puts(' LENGTH '  + size.to_s + ' cn:' + length[0].class.name)
          #length = length[0]
          r = r[4..-1]
+         return h if r.nil?
          l = r.index("\u0000\u0000\u0000")
          unless l.nil?
          length =  l - 1

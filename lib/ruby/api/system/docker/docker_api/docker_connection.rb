@@ -46,7 +46,7 @@ class DockerConnection < ErrorsApi
 
   def post_request(uri,  params = nil, expect_json = true , headers = nil)
 
-      headers = {'Content-Type' =>'application/json'} if headers.nil?
+      headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
     return handle_resp(
     connection.request(
     :method => :post,:path => uri,
@@ -84,7 +84,7 @@ excon_params = {:debug_request => true,
 
   
   def post_stream_request(uri,options, stream_handler,  headers = nil, content = nil )
-  headers = {'Content-Type' =>'application/json'} if headers.nil?
+  headers = {'Content-Type' =>'application/json', 'Accept' => '*/*' } if headers.nil?
     content = '' if content.nil?
     if stream_handler.method(:has_data?).call == false
       if content.nil? # Dont to_s as may be tgz
