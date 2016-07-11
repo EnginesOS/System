@@ -36,7 +36,7 @@ module DockerApiCreateOptions
 
   def volumes_mounts(container)
     mounts = []
-      return mounts if container.volumes.nil?
+      return system_mounts(container) if container.volumes.nil?
     container.volumes.each_value do |volume|
       mounts.push(mount_string(volume))
     end
