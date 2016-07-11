@@ -6,7 +6,7 @@ last_error:
 memory: '390'
 hostname: mgmt
 publisher_namespace: EnginesSystem
-type_path: control
+type_path: mgmt
 port: 10443
 environments: []
 volumes: 
