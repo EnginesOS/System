@@ -41,7 +41,7 @@ module EnginesApiSystem
     r = @docker_api.create_container(container)
     STDERR.puts(' DOCKER api CREATE ' + r.to_s)
     return r if r.is_a?(EnginesDockerError)
-     
+     return true
   rescue StandardError => e
     container.last_error = ('Failed To Create ' + e.to_s)
     log_exception(e)
