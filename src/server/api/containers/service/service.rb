@@ -58,6 +58,20 @@ get '/v0/containers/service/:service_name/websites' do
     return log_error(request, r)
   end
 end
+# @method get_service_logs
+# @overload   get '/v0/containers/service/:service_name/logs'
+# get service logs
+# @return [String] 
+get '/v0/containers/engine/:service_name/logs' do
+  service = get_service(params[:service_name])
+   return log_error(request, service, params) if service.is_a?(EnginesError)
+   r = service.logs_container()
+  unless r.is_a?(EnginesError)
+    return r.to_json
+  else
+    return log_error(request, r)
+  end
+end
 # @!endgroup
 
 
