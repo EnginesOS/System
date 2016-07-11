@@ -7,14 +7,14 @@ tests:
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 
 persistent_services:
-	engines_tool engine installtest services persistent | engines_test_expects array
+	engines_tool engine testengine services persistent | engines_test_expects array
 	
 	
 persistent_services_type:
-	engines_tool engine installtest services persistent EnginesSystem | engines_test_expects array
+	engines_tool engine testengine services persistent EnginesSystem | engines_test_expects array
 
 persistent_service:
-	engines_tool engine installtest service persistent EnginesSystem filesystem/local/filesystem installtest | engines_test_expects json type_path filesystem/local/filesystem 
+	engines_tool engine testengine service persistent EnginesSystem filesystem/local/filesystem testengine | engines_test_expects json type_path filesystem/local/filesystem 
 
 
 service_persistent_export:

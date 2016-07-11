@@ -55,7 +55,7 @@ properties_net:
 	engines_tool service email stop | engines_test_expects bool true
 	cat network_properties.json | engines_tool service email properties network | engines_test_expects bool true
 	echo -n " Checking:"
-	engines_tool service installtest state  | engines_test_expects text is running
+	engines_tool service testengine state  | engines_test_expects text is running
 	
 
 	properties_run:

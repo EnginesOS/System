@@ -33,6 +33,7 @@ module EnginesApiSystem
   def create_container(container)
     clear_error
     return log_error_mesg('Failed To create container exists by the same name', container) if container.ctype != 'system_service' && container.has_container?
+    return  log_error_mesg('Failed to create state files', self) unless ContainerStateFiles.create_container_dirs(container)
     ContainerStateFiles.clear_cid_file(container)
     ContainerStateFiles.clear_container_var_run(container)
     start_dependancies(container) if container.dependant_on.is_a?(Hash)
@@ -40,10 +41,7 @@ module EnginesApiSystem
     r = @docker_api.create_container(container)
     STDERR.puts(' DOCKER api CREATE ' + r.to_s)
     return r if r.is_a?(EnginesDockerError)
-
-    return true if ContainerStateFiles.create_container_dirs(container)
-    log_error_mesg('Failed to create state files', self)
-
+     return true
   rescue StandardError => e
     container.last_error = ('Failed To Create ' + e.to_s)
     log_exception(e)

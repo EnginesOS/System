@@ -1,0 +1,40 @@
+--- !ruby/object:ManagedService
+container_name: firstrun
+ctype: service
+persistent: true
+last_error: 
+memory: '190'
+hostname: firstrun
+publisher_namespace: EnginesSystem
+type_path: firstrun
+port: 10444
+environments: []
+volumes: 
+mapped_ports:
+ web:
+  name: web
+  port: 4567
+  publicFacing: true
+  external: 10444
+  proto_type: tcp
+environments:
+- !ruby/object:EnvironmentVariable
+ name: SYSTEM_API_URL
+ value: http://control.engines.internal:2380/v0/
+ has_changed: true 
+ build_time_only: false
+- !ruby/object:EnvironmentVariable 
+ name: SYSTEM_RELEASE
+ value: _Engines_System(release)
+ has_changed: true 
+ build_time_only: false
+image: engines/firstrun:_Engines_System(release)
+repo: na
+last_result: 
+setState: nocontainer
+nginxored: false
+conf_register_site: true
+conf_register_dns: true
+conf_self_start: true
+dependant_on:
+- "dns"

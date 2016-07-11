@@ -41,10 +41,12 @@ class ManagedContainer < Container
   @restart_required = false
   @rebuild_required = false
   @large_temp = false
+  
   attr_accessor  :restart_required, :rebuild_required, :environments, :volumes, :image_repo
 
   def initialize
     super
+    @container_mutex = Mutex.new
     @status = {}
     init_task_at_hand
   end
@@ -77,6 +79,7 @@ class ManagedContainer < Container
   end
 
   def post_load
+    @container_mutex = Mutex.new
     i = @container_id
     super
     if @container_id != -1 && @container_id != i

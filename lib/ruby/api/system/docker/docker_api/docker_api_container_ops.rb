@@ -8,7 +8,7 @@ module DockerApiContainerOps
     else
       request = '/containers/' + container.container_id.to_s + '/json'
     end
-    r = make_request(request, container)
+    r = get_request(request)
     return true if r.is_a?(Hash)
     return false
   rescue StandardError => e
@@ -21,7 +21,7 @@ module DockerApiContainerOps
     else
       request = '/containers/' + container.container_id.to_s
     end
-    return make_del_request(request, container)
+    return delete_request(request)
   rescue StandardError => e
     log_exception(e)
   end
@@ -32,6 +32,7 @@ module DockerApiContainerOps
   def create_container(container)
     request_params = create_options(container)
     request = '/containers/create?name=' + container.container_name
-    make_post_request(request, container, request_params)
+    STDERR.puts("sending crate para s " + request.to_s)
+    post_request(request,  request_params)
   end
 end

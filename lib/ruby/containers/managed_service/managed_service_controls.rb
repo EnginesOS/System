@@ -32,10 +32,10 @@ def create_service()
      end
    end
  
-
-     return true if create_container
+   r = ''
+     return true if (r = create_container)
      save_state()
-     return log_error_mesg('Failed to create service',last_error)
+     return r
 
 rescue StandardError =>e
   log_exception(e)

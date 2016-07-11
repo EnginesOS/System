@@ -14,7 +14,7 @@ end
 # 
 # @return [String]  starting|running|stopped|creating|upgrading
 get '/v0/unauthenticated/bootstrap/mgmt/status' do
-  engine = get_engine('mgmt')
+  engine = get_service('mgmt')
    return log_error(request, engine, params) if engine.is_a?(EnginesError)
    engine.state.to_json
   # starting
