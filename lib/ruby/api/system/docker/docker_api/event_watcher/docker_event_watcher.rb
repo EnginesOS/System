@@ -48,6 +48,8 @@ class DockerEventWatcher  < ErrorsApi
 
     def state_from_status(status)
       case status
+        when 'die'
+        return 'stopped'
       when 'stop'
         return 'stopped'
       when 'run'

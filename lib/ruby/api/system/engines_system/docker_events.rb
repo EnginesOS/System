@@ -56,6 +56,8 @@ module DockerEvents
     inform_container_tracking(event_hash['container_name'] ,event_hash['container_type'] ,event_hash['status']) 
       when 'killed'
     inform_container_tracking(event_hash['container_name'] ,event_hash['container_type'] ,event_hash['status']) 
+    when 'die'
+       inform_container_tracking(event_hash['container_name'] ,event_hash['container_type'] ,event_hash['status'])  
   else
     SystemDebug.debug(SystemDebug.container_events, 'Untracked event',event_name.to_s,c_name.to_s,ctype.to_s )
     tracked = false
