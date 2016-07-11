@@ -143,7 +143,7 @@ module DockerApiCreateOptions
 
   def build_top_level(container)
     top_level = {}
-    top_level['Hostname'] = container.hostname
+    top_level['Hostname'] = container.hostname unless container.on_host_net? == true
     top_level['Domainame'] =  container.domain_name
     top_level['AttachStdin'] = false
     top_level['AttachStdout'] = false
