@@ -113,7 +113,7 @@ excon_params = {:debug_request => true,
          :path => uri,
          :body => content,
          :headers => headers)
-    end
+    end 
 
   rescue StandardError => e
     log_exception(e)
