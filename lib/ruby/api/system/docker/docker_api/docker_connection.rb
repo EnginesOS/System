@@ -47,7 +47,7 @@ class DockerConnection < ErrorsApi
   def post_request(uri,  params = nil, expect_json = true , headers = nil)
 
       headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
-    params = params.to_json if headers['Content-Type'] == 'application/json'
+    params = params.to_json if headers['Content-Type'] == 'application/json' && ! params.nil?
     return handle_resp(
     connection.request(
     :method => :post,:path => uri,
@@ -56,7 +56,7 @@ class DockerConnection < ErrorsApi
     expect_json)
 
   rescue StandardError => e
-    log_exception(e)
+    log_exception(e,uri)
   end
 
   def connection
