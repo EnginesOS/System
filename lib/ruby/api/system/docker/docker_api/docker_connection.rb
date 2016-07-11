@@ -40,18 +40,19 @@ class DockerConnection < ErrorsApi
   require "base64"
 
   def get_registry_auth
-    r = {}
+    r = {"auth"=> "","email" => ""}
     Base64.encode64(r.to_json).gsub(/\n/, '')
   end
 
   def post_request(uri,  params = nil, expect_json = true , headers = nil)
 
       headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
+    params = params.to_json if headers['Content-Type'] == 'application/json'
     return handle_resp(
     connection.request(
     :method => :post,:path => uri,
     :headers => headers,
-    :body =>  params.to_json  ), 
+    :body =>  params  ), 
     expect_json)
 
   rescue StandardError => e
