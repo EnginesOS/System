@@ -62,7 +62,7 @@ end
 # @overload   get '/v0/containers/service/:service_name/logs'
 # get service logs
 # @return [String] 
-get '/v0/containers/engine/:service_name/logs' do
+get '/v0/containers/service/:service_name/logs' do
   service = get_service(params[:service_name])
    return log_error(request, service, params) if service.is_a?(EnginesError)
    r = service.logs_container()
