@@ -8,7 +8,6 @@ hostname: mgmt
 publisher_namespace: EnginesSystem
 type_path: mgmt
 port: 10443
-environments: []
 volumes: 
  cert_key: 
   volume_name: cert_key

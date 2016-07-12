@@ -130,15 +130,17 @@ class ManagedContainer < Container
   def to_h
     s = self.dup
     envs = []
+    unless environments.nil?
     s.environments.each do |env|
       envs.push(env.to_h)
     end
+    end
     s.environments = envs
-
+  unless volumes.nil?
     s.volumes.each_key do | key|
       s.volumes[key] = s.volumes[key].to_h
     end
-
+end
     s.instance_variables.each_with_object({}) do |var, hash|
       next if var.to_s.delete("@") == 'container_api'
       hash[var.to_s.delete("@")] = s.instance_variable_get(var)
