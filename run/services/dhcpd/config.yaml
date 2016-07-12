@@ -11,7 +11,7 @@ hostname: dhcpd
 domain_name: 
 environments: []
 image: engines/dhcpd:_Engines_System(release)
-volumes: []
+volumes: {}
 mapped_ports:
  dhcpd:
   name: dhcpd
