@@ -112,7 +112,15 @@ class ContainerStateFiles
     container.last_error = 'Failed To remove cid file' + e.to_s
     SystemUtils.log_exception(e)
   end
-
+  
+  def self.container_service_dir(service_name)  
+    SystemConfig.RunDir + '/services/' + service_name
+  end
+  
+  def self.container_disabled_service_dir(service_name)  
+    SystemConfig.RunDir + '/services-disabled/' + service_name
+  end
+  
   def self.container_state_dir(container)
     SystemConfig.RunDir + '/' + container.ctype + 's/' + container.container_name
   end

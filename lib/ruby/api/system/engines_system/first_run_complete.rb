@@ -5,17 +5,18 @@ module FirstRunComplete
        r = false
     first_run = @engines_api.loadManagedService('firstrun')
     return first_run if first_run.is_a?(EnginesError)
-    
-   return r if ( r = first_run.stop_container).is_a?(EnginesError)
-   return r if ( r = first_run.destroy_container).is_a?(EnginesError)
+    Thread.start do
+  first_run.stop_container
+  first_run.destroy_container
    
    mgmt = @engines_api.loadManagedService('mgmt')
-   return r if ( r = mgmt.create_service).is_a?(EnginesError)
-   if (r = mgmt.start) == true
+    
+   unless mgmt.create_service.is_a?(EnginesError)
    File.delete(SystemConfig.FirstRunRan)
    disable_service('firstrun')
-   return true
    end
-   return r
+    end
+    
+    return true
  end
 end
