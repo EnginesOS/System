@@ -12,7 +12,7 @@ module FirstRunComplete
    mgmt = @engines_api.loadManagedService('mgmt')
     
    unless mgmt.create_service.is_a?(EnginesError)
-   File.delete(SystemConfig.FirstRunRan)
+   File.touch(SystemConfig.FirstRunRan)
    disable_service('firstrun')
    end
     end
