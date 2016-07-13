@@ -15,7 +15,7 @@ mapped_ports:
   name: web
   port: 3000
   publicFacing: true
-  external: 10444
+  external: 10443
   proto_type: tcp
 environments:
 - !ruby/object:EnvironmentVariable
