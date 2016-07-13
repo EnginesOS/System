@@ -20,4 +20,6 @@ module SystemSettings
    log_error_mesg('fail to get hosthame ' + res[:stderr])  
    return 'unknown'
  end
+ 
+ 
 end
