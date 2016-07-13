@@ -44,7 +44,12 @@ class SystemApi < ErrorsApi
   require_relative 'engines_server_host.rb'
   include EnginesServerHost
   
-
+  require_relative 'service_management.rb'
+  include ServiceManagement
+  # FixMe
+  # Put if first run needed around this
+  require_relative 'first_run_complete.rb'
+  include FirstRunComplete
   
   def initialize(api)
     @engines_api = api
@@ -52,6 +57,8 @@ class SystemApi < ErrorsApi
     @docker_event_listener = start_docker_event_listener
     @docker_event_listener.add_event_listener([self,'container_event'.to_sym],16)
   end
+  
+  
   
   def list_system_services
   services = []
