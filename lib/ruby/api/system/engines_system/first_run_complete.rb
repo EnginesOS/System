@@ -13,20 +13,19 @@ module FirstRunComplete
    mgmt = @engines_api.loadManagedService('mgmt')
     
    unless mgmt.create_service.is_a?(EnginesError)
-     STDERR.puts('MGMT SERVICE CREATED ')
+   
    FileUtils.touch(SystemConfig.FirstRunRan)
-   r = disable_service('firstrun')
-     STDERR.puts('FIRST RUN RETIRED' + r.to_s)
+   disable_service('firstrun')
+
    end
-      STDERR.puts('FIRST RUN Thread complete ' + r.to_s)
+    
    
       rescue StandardError => e
-         STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
+         STDERR.puts('FIRST RUN Thread Exception' + e.to_s + ':' + e.backtrace.to_s)
         end
     end
     return true    
    rescue StandardError => e
-   STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
       log_exception(e, event_hash)
  end
 end
