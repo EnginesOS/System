@@ -21,7 +21,7 @@ module FirstRunComplete
     
     return true    
    rescue StandardError => e
-     
+   STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
       log_exception(e, event_hash)
  end
 end
