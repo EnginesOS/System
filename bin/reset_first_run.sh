@@ -9,7 +9,7 @@ if test -d /opt/engines/run/services-disabled/firstrun
  elif  test -d /opt/engines/run/services-available/firstrun
  then
  	mv /opt/engines/run/services-available/firstrun /opt/engines/run/services/firstrun
- end
+ fi
 
 rm /opt/engines/run/system/flags/first_ran 
 engines service firstrun create
