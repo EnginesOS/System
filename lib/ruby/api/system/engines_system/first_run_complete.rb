@@ -6,6 +6,7 @@ module FirstRunComplete
     first_run = @engines_api.loadManagedService('firstrun')
     return first_run if first_run.is_a?(EnginesError)
     Thread.start do
+      begin
   first_run.stop_container
   first_run.destroy_container
    
@@ -17,8 +18,12 @@ module FirstRunComplete
    r = disable_service('firstrun')
      STDERR.puts('FIRST RUN RETIRED' + r.to_s)
    end
+      STDERR.puts('FIRST RUN Thread complete ' + r.to_s)
+   
+      rescue StandardError => e
+         STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
+        end
     end
-    
     return true    
    rescue StandardError => e
    STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
