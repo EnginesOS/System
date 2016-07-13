@@ -1,7 +1,11 @@
+
 if Process.euid != 21000
   p "This program can only be run be the engines user"
   exit
 end
+
+require 'json'
+require 'yajl'
 
 def command_useage(mesg=nil)
   p "Incorrect usage"
