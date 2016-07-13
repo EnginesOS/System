@@ -13,27 +13,19 @@ module DockerUtils
         next
         end
          if r[0].start_with?("\u0001\u0000\u0000\u0000")
+          r = r[4..-1]
           dst = :stdout
          elsif r[0].start_with?("\u0002\u0000\u0000\u0000")
            dst = :stderr
-         else
-         #  STDERR.puts('START ' + r[0..4].to_s)
+           r = r[4..-1]
+         else         
           dst = :stdout
          end
      #"\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u000b{\"certs\":[\n\u0001\u0000\u0000\u0000\u0000\u0000\u0000\n\"engines\"\n\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0003]}\n
          
        STDERR.puts("CONTENT " + r.to_s)
-      # p r
-         r = r[4..-1]
-         #STDERR.puts(' R ' + r.to_s)
-   
+
          
-         #size = r[0,3]
-# STDERR.puts(' SIZE '  + size.to_s)
-    #     length = size.unpack("N")
-    # STDERR.puts(' LENGTH '  + size.to_s + ' cn:' + length[0].class.name)
-         #length = length[0]
-         r = r[4..-1]
          return h if r.nil?
          l = r.index("\u0000\u0000\u0000")
          unless l.nil?
