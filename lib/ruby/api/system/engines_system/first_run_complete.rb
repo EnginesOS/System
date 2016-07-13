@@ -14,10 +14,14 @@ module FirstRunComplete
    unless mgmt.create_service.is_a?(EnginesError)
      STDERR.puts('MGMT SERVICE CREATED ')
    File.touch(SystemConfig.FirstRunRan)
-   disable_service('firstrun')
+   r = disable_service('firstrun')
+     STDERR.puts('FIRST RUN RETIRED' + r.to_s)
    end
     end
     
-    return true
+    return true    
+   rescue StandardError => e
+     
+      log_exception(e, event_hash)
  end
 end
