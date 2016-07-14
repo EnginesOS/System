@@ -3,8 +3,8 @@ module DockerUtils
   def self.docker_stream_as_result(r, h)
     
            return h if r.nil?
-           h[:stderr] = '' unless h.key?(:stderr)
-             h[:stdout] = '' unless h.key?(:stdout)
+           h[:stderr] = "" unless h.key?(:stderr)
+             h[:stdout] = "" unless h.key?(:stdout)
                
         while r.length >0
        if r[0].nil?
