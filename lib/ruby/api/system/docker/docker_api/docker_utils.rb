@@ -19,6 +19,7 @@ module DockerUtils
            dst = :stderr
            r = r[4..-1]
          else         
+         r = r[4..-1]
           dst = :stdout
          end
      #"\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u000b{\"certs\":[\n\u0001\u0000\u0000\u0000\u0000\u0000\u0000\n\"engines\"\n\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0003]}\n
