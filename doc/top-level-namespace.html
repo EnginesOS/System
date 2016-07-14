@@ -1416,7 +1416,31 @@ Do not use the ”from“ key.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#get_mgmt_status-instance_method" title="#get (instance method)">- (String) <strong>get</strong>(&#39;/v0/system/bootstrap/mgmt_url&#39;) </a>
+      <a href="top-level-namespace.html#get_mgmt_state-instance_method" title="#get (instance method)">- (String) <strong>get</strong>(&#39;/v0/unauthenticated/bootstrap/mgmt/state&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>starting running get the system mgmt container state.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#get_mgmt_status-instance_method" title="#get (instance method)">- (String) <strong>get</strong>(&#39;/v0/unauthenticated/bootstrap/mgmt/status&#39;) </a>
     
 
     
@@ -1456,6 +1480,31 @@ Do not use the ”from“ key.</p>
   
     <span class="summary_desc"><div class='inline'>
 <p>get the system mgmt url.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#set_first_run_complete-instance_method" title="#post (instance method)">- (Boolean) <strong>post</strong>(&#39;/v0/unauthenticated/bootstrap/first_run/complete&#39;) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>starting running tell first run wizard you are complete and ready to start
+mgmt.</p>
 </div></span>
   
 </li>
@@ -9269,9 +9318,78 @@ configured engines</p>
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="get_mgmt_state-instance_method">
+  
+    - (<tt>String</tt>) <strong>get</strong>(&#39;/v0/unauthenticated/bootstrap/mgmt/state&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>starting running get the system mgmt container state</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>starting|running|stopped|creating|upgrading</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+28
+29
+30
+31
+32
+33
+34</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/unauthenticated/routes.rb', line 28</span>
+
+<span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/unauthenticated/bootstrap/mgmt/state</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+    <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_service'>get_service</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>mgmt</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+     <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
+     <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_state'>state</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
+    <span class='comment'># starting
+</span>    <span class='comment'># running
+</span><span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="get_mgmt_status-instance_method">
   
-    - (<tt>String</tt>) <strong>get</strong>(&#39;/v0/system/bootstrap/mgmt_url&#39;) 
+    - (<tt>String</tt>) <strong>get</strong>(&#39;/v0/unauthenticated/bootstrap/mgmt/status&#39;) 
   
 
   
@@ -9318,10 +9436,7 @@ configured engines</p>
 17
 18
 19
-20
-21
-22
-23</pre>
+20</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'src/server/api/unauthenticated/routes.rb', line 16</span>
@@ -9329,10 +9444,7 @@ configured engines</p>
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/unauthenticated/bootstrap/mgmt/status</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_engine'>engine</span> <span class='op'>=</span> <span class='id identifier rubyid_get_service'>get_service</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>mgmt</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
    <span class='kw'>return</span> <span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='id identifier rubyid_request'>request</span><span class='comma'>,</span> <span class='id identifier rubyid_engine'>engine</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>EnginesError</span><span class='rparen'>)</span>
-   <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_state'>state</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
-  <span class='comment'># starting
-</span>  <span class='comment'># running
-</span>  
+   <span class='id identifier rubyid_engine'>engine</span><span class='period'>.</span><span class='id identifier rubyid_status'>status</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -15393,6 +15505,67 @@ service</p>
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="set_first_run_complete-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>post</strong>(&#39;/v0/unauthenticated/bootstrap/first_run/complete&#39;) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>starting running tell first run wizard you are complete and ready to start
+mgmt</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+42
+43
+44
+45
+46</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/server/api/unauthenticated/routes.rb', line 42</span>
+
+<span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/unauthenticated/bootstrap/first_run/complete</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+
+  <span class='id identifier rubyid_engines_api'>engines_api</span><span class='period'>.</span><span class='id identifier rubyid_first_run_complete'>first_run_complete</span>
+  
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="set_hostname-instance_method">
   
     - (<tt>true</tt>) <strong>post</strong>(&#39;/v0/system/config/hostname&#39;) 
@@ -16985,9 +17158,9 @@ EnginesError &gt; an error occurred</code></pre>
 </div>
 
     <div id="footer">
-  Generated on Mon Jul 11 17:18:24 2016 by
+  Generated on Thu Jul 14 08:08:26 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.2.3).
+  0.8.7.6 (ruby-2.2.5).
 </div>
 
   </body>
