@@ -2,6 +2,7 @@
 
 engines service mgmt stop
 engines service mgmt destroy
+ rm /opt/engines/run/services/mgmt/running.yaml*
 
 if test -d /opt/engines/run/services-disabled/firstrun
  then
