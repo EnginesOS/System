@@ -57,7 +57,6 @@ module PersistantServiceBuilder
     r = @core_api.create_and_register_service(service_hash)
      return r if r.is_a?(EnginesError)
       @attached_services.push(service_hash)
-
     return true
   end
 
