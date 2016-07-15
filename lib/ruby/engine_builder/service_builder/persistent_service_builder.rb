@@ -73,7 +73,7 @@ module PersistantServiceBuilder
       && existing_service[:type_path] == service_hash[:type_path]
         SystemDebug.debug(SystemDebug.builder, :comparing_services)
         # FIX ME run a check here on service hash
-        return use_active_service(service_hash, existing_service) if existing_service[:create_type] == 'active'
+        return use_active_service(service_hash, existing_service) if existing_service[:create_type] == 'existing'
         return use_orphan(existing_service) if existing_service[:create_type] == 'orphan'
       end
     end
