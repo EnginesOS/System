@@ -13,12 +13,12 @@ def command_details(command_name)
 
   return log_error_mesg('No Commands') unless @commands.is_a?(Array)
  return @commands[command_name] if commands.key?(command_name)
- return log_error_mesg('No such command ' + command_name.to_s)
+ return log_error_mesg('Command not found ' + command_name.to_s)
 end
 
 def execute_command(command_name, command_params)
   STDERR.puts("COMMANDS " +@commands.to_s)
-  return log_error_mesg('No such command ' + command_name.to_s, command_name, command_params) unless @commands.key?(command_name)
+  return log_error_mesg('No such command: ' + command_name.to_s, command_name, command_params) unless @commands.key?(command_name)
   command = command_details(command_name)
  return log_error_mesg('Missing params' + r.to_s) unless (r = check_params(command, command_params)) == false
  
