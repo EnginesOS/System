@@ -1,5 +1,5 @@
 #require '/opt/engines/lib/ruby/containers/ManagedContainer.rb'
-require 'thread'
+require 'mutex'
 require '/opt/engines/lib/ruby/containers/managed_service.rb'
 class SystemService < ManagedService
   @ctype = 'system_service'
