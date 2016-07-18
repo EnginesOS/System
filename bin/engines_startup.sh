@@ -17,7 +17,7 @@ then
 fi 
  /opt/engines/system/scripts/startup/set_ip.sh
 release=`cat /opt/engines/release`
-DOCKER_IP=`/opt/engines/bin/docker_ip.sh`
+ 
 export DOCKER_IP
 
 CONTROL_IP=`/opt/engines/bin/system_ip.sh`
