@@ -20,22 +20,23 @@ module LocalFileServiceBuilder
     util_params[:fw_user] = username.to_s
     util_params[:target] = container.container_name
     util_params[:data_gid] = container.data_gid.to_s
-    result =  execute_command(:setup_engine, util_params)
+    result =  volbuilder.execute_command(:setup_engine, util_params)
     STDERR.puts(' excute utile REsult  ' + result.to_s)
-    
-    if result[:result] != 0
-      p result[:stdout]
-      @last_error='Volbuilder: ' + command + '->' + result[:stdout].to_s + ' err:' + result[:stderr].to_s
-      p @last_error
-      return false
-    end
+    return true if result[:stdout] == 'OK'
+    return log_error_mesg('volbuild problem ' + result.to_s, result)
+#    if result[:result] != 0
+#      p result[:stdout]
+#      @last_error='Volbuilder: ' + command + '->' + result[:stdout].to_s + ' err:' + result[:stderr].to_s
+#      p @last_error
+#      return false
+#    end
     #Note no -d so process will not return until setup.sh completes
-    command = 'docker rm volbuilder'
-    File.delete(SystemConfig.CidDir + '/volbuilder.cid') if File.exist?(SystemConfig.CidDir + '/volbuilder.cid')
-    res = SystemUtils.run_system(command)
-    SystemUtils.log_error(res) if res.is_a?(FalseClass)
+#    command = 'docker rm volbuilder'
+#    File.delete(SystemConfig.CidDir + '/volbuilder.cid') if File.exist?(SystemConfig.CidDir + '/volbuilder.cid')
+#    res = SystemUtils.run_system(command)
+#    SystemUtils.log_error(res) if res.is_a?(FalseClass)
     # don't return false as
-    return true
+    #return true
   rescue StandardError => e
     log_exception(e)
   end
