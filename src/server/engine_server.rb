@@ -8,7 +8,7 @@ begin
   
   require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
   require '/opt/engines/lib/ruby/api/system/first_run_wizard/first_run_wizard.rb'
-  
+  require 'objspace'
   require 'warden'
 
   $token = 'test_token'
