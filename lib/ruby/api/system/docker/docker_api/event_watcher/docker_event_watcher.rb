@@ -18,10 +18,11 @@ class DockerEventWatcher  < ErrorsApi
     @@service_action = @@container_action | @@service_target
     @@engine_action = @@container_action | @@engine_target
     # @@container_id
-    def initialize(listener, event_mask)
+    def initialize(listener, event_mask, container_id = nil)
       @object =  listener[0]
       @method = listener[1]
       @event_mask = event_mask
+      @container_id = container_id
     end
 
     def hash_name
@@ -137,7 +138,10 @@ class DockerEventWatcher  < ErrorsApi
              STDERR.puts(' SKIPPING ' + hash.to_s)
              next
            end
-          @event_listeners.values.each do |listener |           
+          @event_listeners.values.each do |listener|           
+            unless listener.container_id.nil?
+              next if hash['id'] != listener.container_id               
+              end
             log_exeception(r) if (r = listener.trigger(hash)).is_a?(StandardError)
             STDERR.puts(' TRigger returned ' + r.class.name + ':' + r.to_s + ' on ' + hash.to_s + ' with ' +  listener.to_s)
           end
@@ -150,11 +154,10 @@ class DockerEventWatcher  < ErrorsApi
     log_exception(e,chunk)
   end
 
-
   
-  def add_event_listener(listener, event_mask = nil)
+  def add_event_listener(listener, event_mask = nil, container_id = nil)
     STDERR.puts('ADDED listenter ' + listener.class.name)
-    event = EventListener.new(listener,event_mask)
+    event = EventListener.new(listener,event_mask, container_id)
     @event_listeners[event.hash_name] = event
   rescue StandardError => e
     log_exception(e)

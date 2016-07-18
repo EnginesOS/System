@@ -13,7 +13,16 @@ module LocalFileServiceBuilder
     SystemDebug.debug(SystemDebug.services,'Run volume builder',command)
 
     #run_system(command)
-    result = SystemUtils.execute_command(command)
+   # result = SystemUtils.execute_command(command)
+    volbuilder = loadManagedUtility('volbuilder')
+    util_params = {}
+    util_params[:volume] = '/'
+    util_params[:fw_user] = username.to_s
+    util_params[:target] = container.container_name
+    util_params[:data_gid] = container.data_gid.to_s
+    result =  execute_command(:setup_engine, util_params)
+    STDERR.puts(' excute utile REsult  ' + result.to_s)
+    
     if result[:result] != 0
       p result[:stdout]
       @last_error='Volbuilder: ' + command + '->' + result[:stdout].to_s + ' err:' + result[:stderr].to_s

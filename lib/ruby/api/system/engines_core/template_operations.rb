@@ -29,7 +29,7 @@ module TemplateOperations
 
     log_exception(e)
   end
-  
+ 
   def get_resolved_engine_string(env_value, container)
     templater = Templater.new(SystemAccess.new,container)
         value = templater.apply_build_variables(env_value)

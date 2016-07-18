@@ -91,11 +91,11 @@ module Engines
     return e unless e.nil?
 
     return log_error_mesg('No Engine name', engine_name) if engine_name.nil? || engine_name.length == 0
-    yam_file_name = SystemConfig.RunDir + '/containers/' + engine_name + '/running.yaml'
-    return log_error_mesg('No Engine file', engine_name) unless File.exist?(yam_file_name)
-    return log_error_mesg('Engine File Locked',yam_file_name) if is_container_conf_file_locked?(SystemConfig.RunDir + '/containers/' + engine_name)
-    yaml_file = File.read(yam_file_name)
-    ts = File.mtime(yam_file_name)
+    yaml_file_name = SystemConfig.RunDir + '/containers/' + engine_name + '/running.yaml'
+    return log_error_mesg('No Engine file', engine_name) unless File.exist?(yaml_file_name)
+    return log_error_mesg('Engine File Locked',yaml_file_name) if is_container_conf_file_locked?(SystemConfig.RunDir + '/containers/' + engine_name)
+    yaml_file = File.read(yaml_file_name)
+    ts = File.mtime(yaml_file_name)
     managed_engine = ManagedEngine.from_yaml(yaml_file, @engines_api.container_api)
     return engine if managed_engine.nil? || managed_engine.is_a?(EnginesError)
     cache_engine(managed_engine, ts)

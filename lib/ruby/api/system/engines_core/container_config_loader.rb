@@ -11,6 +11,10 @@ module ContainerConfigLoader
     @system_api.loadManagedService(service_name)
   end
 
+  def loadManagedUtility(utility_name, utility_params)
+    @system_api.loadManagedUtility(utility_name, utility_params)
+  end
+  
   def getManagedServices
     @system_api.getManagedServices
   end

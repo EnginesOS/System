@@ -7,6 +7,20 @@ class Templater
     @builder_public = builder_public
   end
 
+  
+  def apply_hash_variables(text, values_hash)
+    return text  unless text.is_a?(String) 
+      template.gsub!(/_Engines_Template\([(0-9a-z_A-Z]*\)/) { |match|
+        resolve_hash_value(match, values_hash)
+      }
+      return template
+  end
+  
+  def resolve_hash_value(match, values_hash)
+    return values[match] if values_hash.key?(match)
+    return ''
+  end
+  
   def resolve_system_variable(match)
 
     name = match.sub!(/_Engines_System\(/, '')
@@ -126,6 +140,9 @@ class Templater
       resolve_engines_variable(match)
     }
     return template
+    rescue StandardError => e
+      p 'problem with ' + template.to_s
+      SystemUtils.log_exception(e)
   end
 
   def apply_system_variables(template)
