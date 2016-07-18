@@ -10,7 +10,7 @@ class ManagedUtility< ManagedContainer
   
 def command_details(command_name)
   return log_error_mesg('No Commands') unless @commands.is_a?(Array)
- return @commands[command_name] if commands.key?(command_name)
+ return @commands[command_name.to_sym] if commands.key?(command_name.to_sym)
  return log_error_mesg('No such command ' + command_name.to_s)
 end
 
