@@ -8,7 +8,7 @@ module PersistantServiceBuilder
    #   service_hash =  SystemUtils.deal_with_jason(sh)
       STDERR.puts('persisten sevi3e ' + service_hash.to_s)
       service_def = SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:publisher_namespace])
-      return log_error_mesg('no matching service definition',self) if service_def.nil?
+      return log_error_mesg('no matching service definition for ' + service_hash.to_s ,self) if service_def.nil?
       if service_def[:persistent]
         service_hash[:persistent] = true
         return r if (r = process_persistent_service(service_hash, environ, use_existing)).is_a?(EnginesError)
@@ -57,7 +57,6 @@ module PersistantServiceBuilder
     r = @core_api.create_and_register_service(service_hash)
      return r if r.is_a?(EnginesError)
       @attached_services.push(service_hash)
-
     return true
   end
 
@@ -74,7 +73,7 @@ module PersistantServiceBuilder
       && existing_service[:type_path] == service_hash[:type_path]
         SystemDebug.debug(SystemDebug.builder, :comparing_services)
         # FIX ME run a check here on service hash
-        return use_active_service(service_hash, existing_service) if existing_service[:create_type] == 'active'
+        return use_active_service(service_hash, existing_service) if existing_service[:create_type] == 'existing'
         return use_orphan(existing_service) if existing_service[:create_type] == 'orphan'
       end
     end

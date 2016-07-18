@@ -3,8 +3,8 @@ module DockerUtils
   def self.docker_stream_as_result(r, h)
     
            return h if r.nil?
-           h[:stderr] = '' unless h.key?(:stderr)
-             h[:stdout] = '' unless h.key?(:stdout)
+           h[:stderr] = "" unless h.key?(:stderr)
+             h[:stdout] = "" unless h.key?(:stdout)
                
         while r.length >0
        if r[0].nil?
@@ -13,12 +13,13 @@ module DockerUtils
         next
         end
          if r[0].start_with?("\u0001\u0000\u0000\u0000")
-          r = r[4..-1]
+          r = r[7..-1]
           dst = :stdout
          elsif r[0].start_with?("\u0002\u0000\u0000\u0000")
            dst = :stderr
-           r = r[4..-1]
+           r = r[7..-1]
          else         
+         r = r[7..-1]
           dst = :stdout
          end
      #"\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u000b{\"certs\":[\n\u0001\u0000\u0000\u0000\u0000\u0000\u0000\n\"engines\"\n\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0003]}\n

@@ -1,6 +1,7 @@
 #!/home/engines/.rbenv/shims/ruby
 
 require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
+require 'thread'
 require 'yaml'
 #require "/opt/engines/lib/ruby/containers/system_service.rb"
 #require '/opt/engines/lib/ruby/containers/container.rb'

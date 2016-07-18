@@ -24,7 +24,7 @@ src/server/api/system/keys/routes.rb 1b7d61418d4ed5e2779b6069dd51f20c942ad6ec
 src/server/api/system/do_first_run.rb 6f896b93b1604b5f3d58bacbc4c62767d86b3499
 src/server/api/containers/containers.rb 0aa15554db8ab3a46da970a97639d99f582ad949
 src/server/api/system/control/routes.rb cedc090b7190ce509968b818172bf928b54d0478
-src/server/api/unauthenticated/routes.rb d81a31ed2241c5bd98904bf06088588b3a8f15ec
+src/server/api/unauthenticated/routes.rb d2dcb65932b81d5ce7bd9c85cb9ce20a7018da39
 src/server/api/system/control/base_os.rb 2029e1902b29c01fd68359151d7623afb57652dd
 src/server/api/service_manager/routes.rb 7f26ba64c5f88747c7da56c2447d3f3a1c54673e
 src/server/api/service_manager/engines.rb 619e67b091d5f2c34f15726c3a6ad431730a3d59

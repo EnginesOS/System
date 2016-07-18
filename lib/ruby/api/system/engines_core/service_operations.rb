@@ -90,9 +90,7 @@ module ServiceOperations
 
   protected
 
-  def create_and_register_managed_service(service_hash)
-  
-
+  def create_and_register_managed_service(service_hash) 
     r = ''
 
     SystemDebug.debug(SystemDebug.services, "osapicreate_and_register_managed_service", service_hash)
@@ -102,13 +100,11 @@ module ServiceOperations
     return r unless ( r = check_engine_service_hash(service_hash))
     return log_error_mesg('Attached Service passed no variables', service_hash) unless service_hash.key?(:variables)
     if service_hash[:type_path] == 'filesystem/local/filesystem'
-              engine = loadManagedEngine(service_hash[:parent_engine])
-              return engine unless engine.is_a?(ManagedEngine)          
+              engine = loadManagedEngine(service_hash[:parent_engine])         
               engine.add_volume(service_hash) if engine.is_a?(ManagedEngine)
             end
     SystemDebug.debug(SystemDebug.services,"calling service ", service_hash)
     return  service_manager.create_and_register_service(service_hash)
-
   end
 
 end

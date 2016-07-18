@@ -34,12 +34,12 @@ end
 end
 # starting
 # running
-# @method get_frist_run_complete
-# @overload post '/v0/unauthenticated/bootstrap/firstrun/complete'
+# @method set_first_run_complete
+# @overload post '/v0/unauthenticated/bootstrap/first_run/complete'
 # tell first run wizard you are complete and ready to start mgmt
 # 
 # @return [Boolean]  
-post '/v0/unauthenticated/bootstrap/firstrun/complete' do
+post '/v0/unauthenticated/bootstrap/first_run/complete' do
 
   engines_api.first_run_complete
   

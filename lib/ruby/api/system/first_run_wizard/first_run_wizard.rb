@@ -32,10 +32,10 @@ class FirstRunWizard <ErrorsApi
   end
 
   def mark_as_run
-    f = File.new(SystemConfig.FirstRunRan, 'w')
-    date = DateTime.now
-    f.puts(date.to_s)
-    f.close
+    #f = File.new(SystemConfig.FirstRunRan, 'w')
+  #  date = DateTime.now
+  #  f.puts(date.to_s)
+ #   f.close
   end
 
   def FirstRunWizard.required?

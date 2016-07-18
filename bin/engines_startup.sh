@@ -6,7 +6,10 @@ then
 	mv /tmp/.t ~/.bashrc
 fi
 
+
 . ~/.bashrc
+
+/opt/engines/system/scripts/system/rotate_system_log.sh
 
 if test -f  ~/.complete_update
 then
@@ -102,7 +105,7 @@ count=0
 
 
 #this dance ensures auth gets pub key from ftp 
-#really only needs to happen firts time ftp is enabled
+#really only needs to happen first time ftp is enabled
  /opt/engines/bin/engines_tool service ftp start
  /opt/engines/bin/engines_tool service auth start
    /opt/engines/bin/engines_tool service ftp stop
