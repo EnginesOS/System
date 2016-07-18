@@ -6,9 +6,11 @@ module ContainerConfigLoader
   def loadManagedEngine(engine_name)
     @system_api.loadManagedEngine(engine_name)
   end
-
   def loadManagedService(service_name)
-    @system_api.loadManagedService(service_name)
+     @system_api.loadManagedService(service_name)
+   end
+  def loadManagedUtility(utility_name)
+    @system_api.loadManagedUtility(utility_name)
   end
 
   def loadManagedUtility(utility_name, utility_params)
