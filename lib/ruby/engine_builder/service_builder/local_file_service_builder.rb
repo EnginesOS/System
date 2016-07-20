@@ -14,7 +14,7 @@ module LocalFileServiceBuilder
 
     #run_system(command)
    # result = SystemUtils.execute_command(command)
-    volbuilder = @core_api.loadManagedUtility('volbuilder')
+    volbuilder = @core_api.loadManagedUtility('fsconfigurator')
     util_params = {}
     util_params[:volume] = '/'
     util_params[:fw_user] = username.to_s

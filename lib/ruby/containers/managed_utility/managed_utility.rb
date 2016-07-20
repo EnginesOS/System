@@ -1,4 +1,6 @@
 class ManagedUtility< ManagedContainer
+ attr_accessor :volumes_from
+
   def post_load
     @container_mutex = Mutex.new
   end
