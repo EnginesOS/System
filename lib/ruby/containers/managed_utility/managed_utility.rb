@@ -13,7 +13,6 @@ class ManagedUtility< ManagedContainer
 
   def command_details(command_name)
     STDERR.puts(@commands.to_s)
-
     return log_error_mesg('No Commands') unless @commands.is_a?(Hash)
     return @commands[command_name.to_s] if @commands.key?(command_name.to_s)
     return log_error_mesg('Command not found _' + command_name.to_s + '_')
