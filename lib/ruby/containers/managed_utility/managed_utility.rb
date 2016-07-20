@@ -20,7 +20,8 @@ def execute_command(command_name, command_params)
   r = ''
   STDERR.puts("COMMANDS " + @commands.to_s)
   STDERR.puts( ' commaned keys ' + @commands.keys.to_s)
-  return log_error_mesg('No such command: ' + command_name.to_s, command_name, command_params) unless @commands.key?(command_name)
+  command_name = command_name.to_sym unless @commands.key?(command_name.to_s)
+  return log_error_mesg('No such command: ' + command_name.to_s, command_name, command_params) unless @commands.key?(command_name.to_s)
   command = command_details(command_name)
  return log_error_mesg('Missing params' + r.to_s) unless (r = check_params(command, command_params)) == false
  
