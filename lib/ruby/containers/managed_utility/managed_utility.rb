@@ -13,8 +13,8 @@ class ManagedUtility< ManagedContainer
     STDERR.puts(@commands.to_s)
 
     return log_error_mesg('No Commands') unless @commands.is_a?(Hash)
-    return @commands[command_name] if @commands.key?(command_name)
-    return log_error_mesg('Command not found ' + command_name.to_s)
+    return @commands[command_name.to_s] if @commands.key?(command_name.to_s)
+    return log_error_mesg('Command not found _' + command_name.to_s + '_')
   rescue StandardError => e
 
     log_exception(e)
@@ -24,10 +24,10 @@ class ManagedUtility< ManagedContainer
     r = ''
     STDERR.puts("COMMANDS " + @commands.to_s)
     STDERR.puts( ' commaned keys ' + @commands.keys.to_s)
-    command_name = command_name.to_sym unless @commands.key?(command_name.to_s)
+  #  command_name = command_name.to_sym unless @commands.key?(command_name)
     return log_error_mesg('No such command: ' + command_name.to_s, command_name, command_params) unless @commands.key?(command_name.to_s)
     command = command_details(command_name)
-    return log_error_mesg('Missing params' + r.to_s) unless (r = check_params(command, command_params)) == false
+    return log_error_mesg('Missing params' + r.to_s, r) unless (r = check_params(command, command_params)) == false
 
     apply_templates(command_params)
     create_container()
