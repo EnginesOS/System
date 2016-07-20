@@ -109,8 +109,10 @@ class ManagedUtility< ManagedContainer
 
   def check_params(cmd, parrams)
     r = true
+    STDERR.puts(' required params' ,params.to_s)
     cmd[:requires].each do |required_param|
-      next if params.key?(required_param)
+      STDERR.puts(' required param ' + required_param.to_s )
+      next if params.key?(required_param.to_s)
       r = 'Missing:' if r == true
       r +=  ' ' + required_param.to_s
     end
