@@ -13,7 +13,7 @@ class Templater
     text.gsub!(/_Engines_Template\([(0-9a-z_A-Z]*\)/) { |match|
         resolve_hash_value(match, values_hash)
       }
-      return template
+      return text
   end
   
   def resolve_hash_value(match, values_hash)
