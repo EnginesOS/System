@@ -30,7 +30,7 @@ class ManagedUtility< ManagedContainer
     command = command_details(command_name)
     return log_error_mesg('Missing params' + r.to_s, r) if (r = check_params(command, command_params)) == false
 
-    apply_templates(command_params)
+    apply_templates(command, command_params)
     create_container()
     start_container
     wait_for('stopped')
@@ -46,18 +46,18 @@ class ManagedUtility< ManagedContainer
   def construct_cmdline(command, command_params, templater)
     command = templater.apply_hash_variables(command, command_params)
     #FixME as will not honor "value with spaces in braces"
-    @command = command.split(' ')
-
+    @command = command['command'].split(' ')
+    STDERR.puts('COMMAND ' + @command.to_s )
   rescue StandardError => e
 
     log_exception(e)
   end
 
-  def apply_templates(command_params)
+  def apply_templates(command, command_params)
 
     templater = Templater.new(SystemAccess.new,nil)
 
-    construct_cmdline(@command, command_params, templater)
+    construct_cmdline(command, command_params, templater)
 
     apply_env_templates(command_params, templater) unless @environments.nil?
 
@@ -72,9 +72,11 @@ class ManagedUtility< ManagedContainer
 
   def apply_volume_templates(command_params, templater)
     @volumes.each_value do |volume|
+      STDERR.puts('volume VALUE  ' + volume.to_s )
       volume[:remotepath] = templater.apply_hash_variables(volume[:remotepath] , command_params)
       volume[:localpath] = templater.apply_hash_variables(volume[:localpath] , command_params)
       volume[:permissions] = templater.apply_hash_variables(volume[:permissions] , command_params)
+      STDERR.puts('volume VALUE  ' + volume.to_s )
     end
   rescue StandardError => e
 
@@ -83,6 +85,7 @@ class ManagedUtility< ManagedContainer
 
   def apply_volume_from_templates(command_params, templater)
     volumes_from.each_value do |from|
+
       from[:volume_from] = templater.apply_hash_variables(from[:volume_from], command_params)
     end
   rescue StandardError => e
@@ -92,10 +95,11 @@ class ManagedUtility< ManagedContainer
 
   def apply_env_templates(command_params, templater)
     environments.each do |env|
+      STDERR.puts('ENV VALUE  ' + env.value.to_s )
       env.value = templater.apply_hash_variables(env.value, command_params)
+      STDERR.puts('ENV VALUE=  ' + env.value.to_s )
     end
   rescue StandardError => e
-
     log_exception(e)
   end
 
