@@ -57,7 +57,7 @@ class ManagedUtility< ManagedContainer
 
     templater = Templater.new(SystemAccess.new,nil)
 
-    construct_cmdline(command, command_params, templater)
+    construct_cmdline(@command, command_params, templater)
 
     apply_env_templates(command_params, templater) unless @environments.nil?
 
