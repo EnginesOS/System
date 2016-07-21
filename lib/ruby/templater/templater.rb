@@ -9,15 +9,16 @@ class Templater
 
   
   def apply_hash_variables(text, values_hash)
+    STDERR.puts('APPLY hash for ' + text.to_s + ' with values ' + values_hash.to_s)
     return text  unless text.is_a?(String) 
     text.gsub!(/_Engines_Template\([(0-9a-z_A-Z]*\)/) { |match|
-        resolve_hash_value(match, values_hash)
+      resolve_hash_value(match, values_hash)
       }
       return text
   end
   
   def resolve_hash_value(match, values_hash)
-    return values[match] if values_hash.key?(match)
+    return values[match.to_s] if values_hash.key?(match.to_s)
     return ''
   end
   
