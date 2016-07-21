@@ -73,9 +73,9 @@ class ManagedUtility< ManagedContainer
   def apply_volume_templates(command_params, templater)
     @volumes.each_value do |volume|
       STDERR.puts('volume VALUE  ' + volume.to_s )
-      volume[:remotepath] = templater.apply_hash_variables(volume[:remotepath] , command_params)
-      volume[:localpath] = templater.apply_hash_variables(volume[:localpath] , command_params)
-      volume[:permissions] = templater.apply_hash_variables(volume[:permissions] , command_params)
+      volume['remotepath'] = templater.apply_hash_variables(volume['remotepath'] , command_params)
+      volume['localpath'] = templater.apply_hash_variables(volume['localpath'] , command_params)
+      volume['permissions']= templater.apply_hash_variables(volume['permissions'] , command_params)
       STDERR.puts('volume VALUE  ' + volume.to_s )
     end
   rescue StandardError => e
