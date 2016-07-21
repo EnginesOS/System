@@ -15,11 +15,15 @@ class Templater
       resolve_hash_value(match, values_hash)
       }
       return text
+    rescue StandardError => e
+      SystemUtils.log_exception(e)
   end
   
   def resolve_hash_value(match, values_hash)
     return values_hash[match.to_s] if values_hash.key?(match.to_s)
     return ''
+  rescue StandardError => e
+    SystemUtils.log_exception(e)
   end
   
   def resolve_system_variable(match)
@@ -44,6 +48,8 @@ class Templater
       resolve_blueprint_variable(match)
     }
     return template
+    rescue StandardError => e
+      SystemUtils.log_exception(e)
   end
 
   def resolve_blueprint_variable(match)
