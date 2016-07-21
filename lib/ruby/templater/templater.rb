@@ -18,7 +18,7 @@ class Templater
   end
   
   def resolve_hash_value(match, values_hash)
-    return values[match.to_s] if values_hash.key?(match.to_s)
+    return values_hash[match.to_s] if values_hash.key?(match.to_s)
     return ''
   end
   
