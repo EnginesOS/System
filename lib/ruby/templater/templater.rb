@@ -21,7 +21,7 @@ class Templater
   end
   
   def resolve_hash_value(match, values_hash)
-    return values_hash[match.to_s] if values_hash.key?(match.to_s)
+    return values_hash[match.to_sym] if values_hash.key?(match.to_sym)
     return ''
   rescue StandardError => e
     SystemUtils.log_exception(e)
