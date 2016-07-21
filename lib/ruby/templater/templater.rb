@@ -12,7 +12,10 @@ class Templater
    
     return text  unless text.is_a?(String) 
     text.gsub!(/_Engines_Template\([(0-9a-z_A-Z]*\)/) { |match|
-      resolve_hash_value(match, values_hash)
+      STDERR.puts('MATCH '+ match.to_s)
+     t =  resolve_hash_value(match, values_hash)
+      STDERR.puts('MATCHed '+ t.to_s)
+      t
       }
     STDERR.puts('APPLY hash for ' + text.to_s + ' with values ' + values_hash.to_s + "\nResolved as " + text)
       return text
@@ -22,6 +25,7 @@ class Templater
   
   def resolve_hash_value(match, values_hash)
     return values_hash[match.to_sym] if values_hash.key?(match.to_sym)
+  return values_hash[match.to_s] if values_hash.key?(match.to_s)
     return ''
   rescue StandardError => e
     SystemUtils.log_exception(e)
