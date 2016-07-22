@@ -117,8 +117,8 @@ end
     log_exception(e)
 
   end
-  def add_event_listener(listener,mask)
-     @docker_event_listener.add_event_listener(listener,mask)
+  def add_event_listener(listener,mask, container_id = nil )
+     @docker_event_listener.add_event_listener(listener,mask, container_id )
   end
   def rm_event_listener(listener)
       @docker_event_listener.rm_event_listener(listener)
