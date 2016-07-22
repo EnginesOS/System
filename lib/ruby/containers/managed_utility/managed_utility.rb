@@ -56,7 +56,8 @@ class ManagedUtility< ManagedContainer
   def apply_templates(command, command_params)
 
     templater = Templater.new(SystemAccess.new,nil)
-
+    @image = process_templated_string(@image)
+     
     construct_cmdline(command, command_params, templater)
 
     apply_env_templates(command_params, templater) unless @environments.nil?
