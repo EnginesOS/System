@@ -10,7 +10,7 @@ module ContainerApiEvents
     @event_mutex.lock
     @event_mutex.unlock
     end
-  @system_api.rm_event_listener(listener)
+  @system_api.rm_event_listener([self,'state_reached'.to_sym])
   end
 
   def state_reached(event_hash)

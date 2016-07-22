@@ -156,7 +156,7 @@ class DockerEventWatcher  < ErrorsApi
 
   
   def add_event_listener(listener, event_mask = nil, container_id = nil)
-    STDERR.puts('ADDED listenter ' + listener.class.name)
+    STDERR.puts('ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
     event = EventListener.new(listener,event_mask, container_id)
     @event_listeners[event.hash_name] = event
   rescue StandardError => e
