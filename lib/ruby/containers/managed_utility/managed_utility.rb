@@ -33,7 +33,7 @@ class ManagedUtility< ManagedContainer
     apply_templates(command, command_params)
     create_container()
     start_container
-    wait_for('stopped')
+    @container_api.wait_for('stopped')
     result = container_logs #_as_result
     destroy_container
     return result
