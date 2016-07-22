@@ -1,9 +1,8 @@
 module ContainerApiEvents
   
   def wait_for(state)
-    return if read_state == state
     
-    case state
+   case state
     when 'stopped'
       @event_mutex = Mutex.new
       @event_mutex.lock
@@ -11,6 +10,7 @@ module ContainerApiEvents
     @event_mutex.lock
     @event_mutex.unlock
     end
+  @system_api.rm_event_listener(listener)
   end
 
   def state_reached(event_hash)

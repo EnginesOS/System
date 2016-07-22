@@ -120,7 +120,7 @@ end
   def add_event_listener(listener,mask)
      @docker_event_listener.add_event_listener(listener,mask)
   end
-  def rm_event_listener(listener,mask)
+  def rm_event_listener(listener)
       @docker_event_listener.rm_event_listener(listener)
    end
 end
