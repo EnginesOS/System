@@ -10,7 +10,7 @@ class Templater
   
   def apply_hash_variables(text, values_hash)
    
-    return text  unless text.is_a?(String) 
+    return text unless text.is_a?(String) 
     text.gsub!(/_Engines_Template\([(0-9a-z_A-Z]*\)/) { |match|
       STDERR.puts('MATCH '+ match.to_s)
      t =  resolve_hash_value(match, values_hash)
@@ -24,8 +24,11 @@ class Templater
   end
   
   def resolve_hash_value(match, values_hash)
-    return values_hash[match.to_sym] if values_hash.key?(match.to_sym)
-  return values_hash[match.to_s] if values_hash.key?(match.to_s)
+    STDERR.puts('APPLing MATCH' )
+    name = match.sub!(/_Engines_Template\(/, '')
+        name.sub!(/[\)]/, '')
+    return values_hash[name.to_sym] if values_hash.key?(name.to_sym)
+  return values_hash[name.to_s] if values_hash.key?(name.to_s)
     return ''
   rescue StandardError => e
     SystemUtils.log_exception(e)
