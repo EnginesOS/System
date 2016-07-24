@@ -176,7 +176,7 @@ end
   end
   
   def post_params(request)
-     JSON.parse(request.env["rack.input"].read)
+     JSON.parse(request.env["rack.input"].read,:symbolize_keys => true)
   rescue StandardError => e 
     log_error_mesg(request, e, e.backtrace.to_s)
   end

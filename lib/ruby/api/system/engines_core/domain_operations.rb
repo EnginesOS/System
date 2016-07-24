@@ -113,7 +113,7 @@ module DomainOperations
 private
   def get_ip_for_hosted_dns(internal)
     return DNSHosting.get_local_ip if internal
-    open('http://jsonip.com/') { |s| JSON::parse(s.string)['ip'] }
+    open('http://jsonip.com/') { |s| JSON::parse(s.string,:symbolize_keys => true)[:ip] }
   end
 
 end

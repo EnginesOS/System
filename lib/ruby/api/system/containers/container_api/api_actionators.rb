@@ -40,7 +40,7 @@ module ApiActionators
       if result[:result] == 0
         if result[:stdout].start_with?('{') || result[:stdout].start_with?('"{') 
           begin
-          return JSON.parse( result[:stdout], :create_additons => true )
+          return JSON.parse( result[:stdout], :create_additons => true , :symbolize_keys => true)
         rescue         
           return result[:stdout]
           end
