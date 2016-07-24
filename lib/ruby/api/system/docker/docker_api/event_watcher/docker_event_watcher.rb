@@ -17,6 +17,8 @@ class DockerEventWatcher  < ErrorsApi
 
     @@service_action = @@container_action | @@service_target
     @@engine_action = @@container_action | @@engine_target
+    
+    attr_accessor :container_id, :event_mask
     # @@container_id
     def initialize(listener, event_mask, container_id = nil)
       @object =  listener[0]
@@ -140,7 +142,8 @@ class DockerEventWatcher  < ErrorsApi
              STDERR.puts(' SKIPPING ' + hash.to_s)
              next
            end
-          @event_listeners.values.each do |listener|           
+          @event_listeners.values.each do |listener|    
+            STDERR.puts(' Event Hash ' + hash.to_s)
             unless listener.container_id.nil?
               next if hash[:id] != listener.container_id               
               end
