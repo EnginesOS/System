@@ -14,7 +14,7 @@ class ManagedUtility< ManagedContainer
   def command_details(command_name)
     STDERR.puts(@commands.to_s)
     return log_error_mesg('No Commands') unless @commands.is_a?(Hash)
-    return @commands[command_name.to_s] if @commands.key?(command_name.to_s)
+    return @commands[command_name] if @commands.key?(command_name)
     return log_error_mesg('Command not found _' + command_name.to_s + '_')
   rescue StandardError => e
 
@@ -46,7 +46,7 @@ class ManagedUtility< ManagedContainer
   def construct_cmdline(command, command_params, templater)
     command = templater.apply_hash_variables(command, command_params)
     #FixME as will not honor "value with spaces in braces"
-    @command = command['command'].split(' ')
+    @command = command[:command].split(' ')
     STDERR.puts('COMMAND ' + @command.to_s )
   rescue StandardError => e
 
@@ -74,9 +74,9 @@ class ManagedUtility< ManagedContainer
   def apply_volume_templates(command_params, templater)
     @volumes.each_value do |volume|
       STDERR.puts('volume VALUE  ' + volume.to_s )
-      volume['remotepath'] = templater.apply_hash_variables(volume['remotepath'] , command_params)
-      volume['localpath'] = templater.apply_hash_variables(volume['localpath'] , command_params)
-      volume['permissions']= templater.apply_hash_variables(volume['permissions'] , command_params)
+      volume[:remotepath] = templater.apply_hash_variables(volume[:remotepath] , command_params)
+      volume[:localpath] = templater.apply_hash_variables(volume[:localpath] , command_params)
+      volume[:permissions]= templater.apply_hash_variables(volume[:permissions] , command_params)
       STDERR.puts('volume VALUE  ' + volume.to_s )
     end
   rescue StandardError => e

@@ -4,9 +4,9 @@ class EnginesRegistryError < EnginesError
   
     def initialize(error_hash)
       if error_hash.is_a?(Hash)
-        message = error_hash['error_mesg']
-        type = error_hash['error_type']
-        @params = error_hash['params']
+        message = error_hash[:error_mesg]
+        type = error_hash[:error_type]
+        @params = error_hash[:params]
       else
         message = hash.to_s
         type = :error
@@ -15,7 +15,7 @@ class EnginesRegistryError < EnginesError
       
     super(message, type)
         @sub_system = 'engines_registry'
-        @registry_source = error_hash['source']
+        @registry_source = error_hash[:source]
       end
       
   def to_json(opt)

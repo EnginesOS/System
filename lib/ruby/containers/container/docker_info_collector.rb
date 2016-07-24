@@ -26,7 +26,7 @@ module DockerInfoCollector
   # @ return false on inspect container error
   def get_ip_str
     #
-    return docker_info['NetworkSettings']['IPAddress'] unless docker_info.is_a?(FalseClass)
+    return docker_info[:NetworkSettings][:IPAddress] unless docker_info.is_a?(FalseClass)
     return false
   rescue
     return nil
@@ -76,7 +76,7 @@ module DockerInfoCollector
         SystemDebug.debug(SystemDebug.containers,'hash')
       end
  
-      return -1 if info.key?('RepoTags') #No container by that name and it will return images by that name WTF
+      return -1 if info.key?(:RepoTags) #No container by that name and it will return images by that name WTF
       @container_id = info[:Id] if info.key?(:Id)
       SystemDebug.debug(SystemDebug.containers,@container_id)
 
@@ -90,9 +90,9 @@ module DockerInfoCollector
   def running_user
     info = docker_info
     return -1 unless info.is_a?(Hash)
-    return -1 unless info.key?('Config')
-    return -1 unless info['Config'].key?('User')
-    return  info['Config']['User']
+    return -1 unless info.key?(:Config)
+    return -1 unless info[:Config].key?(:User)
+    return  info[:Config][:User]
   rescue StandardError => e
     return log_exception(e,info)
   end
