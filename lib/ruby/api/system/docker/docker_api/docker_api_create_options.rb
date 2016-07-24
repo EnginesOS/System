@@ -29,6 +29,7 @@ module DockerApiCreateOptions
     container.mapped_ports.each_value do |port|
       port = SystemUtils.symbolize_keys(port)
       STDERR.puts(' exposing ' + port.to_s + '' + port[:port].to_s + '/' + get_protocol_str(port))
+      port[:proto_type] = 'tcp' if port[:proto_type].nil?
       if port[:proto_type].downcase.include?('and')
         eports[port[:port].to_s + '/tcp'] = {}
         eports[port[:port].to_s + '/udp'] = {}
