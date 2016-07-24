@@ -34,7 +34,7 @@ class ManagedUtility< ManagedContainer
     create_container()
     start_container
     @container_api.wait_for('stopped') unless read_state == 'stopped' 
-    result = container_logs #_as_result
+    result = logs_container #_as_result
     destroy_container
     return result
 
