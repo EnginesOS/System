@@ -125,6 +125,7 @@ excon_params = {:debug_request => true,
 
   
   def get_request(uri,  expect_json = true, headers = nil)
+    STDERR.puts('get_request  ' + uri.to_s + ' : ' + headers.to_s)
     return handle_resp(connection.request(:method => :get,
     :path => uri,
     :headers => headers),
