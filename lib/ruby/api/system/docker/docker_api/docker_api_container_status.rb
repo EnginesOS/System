@@ -57,14 +57,14 @@ module DockerApiContainerStatus
     return r if r.is_a?(EnginesError) 
     return log_error_mesg(' 409 twice for ' + request.to_s) if r == false
 
-    return log_error_mesg('not a managed engine') unless r.key?('Config')
-    return log_error_mesg('not a managed engine') unless r['Config'].key?('Labels')
-    STDERR.puts(' container_name_and_type_from_id GOT ' + r['Config']['Labels'].to_s)
-    return log_error_mesg('not a managed engine') unless r['Config']['Labels'].key?('container_type')
+    return log_error_mesg('not a managed engine') unless r.key?(:Config)
+    return log_error_mesg('not a managed engine') unless r[:Config].key?(:Labels)
+    STDERR.puts(' container_name_and_type_from_id GOT ' + r[:Config][:Labels].to_s)
+    return log_error_mesg('not a managed engine') unless r[:Config][:Labels].key?(:container_type)
       
     ret = []
-      ret[0] = r['Config']['Labels']['container_name']
-      ret[1] = r['Config']['Labels']['container_type']
+      ret[0] = r[:Config][:Labels][:container_name]
+      ret[1] = r[:Config][:Labels][:container_type]
 
         ret
 rescue StandardError => e
@@ -79,9 +79,9 @@ rescue StandardError => e
     return -1 unless containers_info.is_a?(Array)
     containers_info.each do |info|
       #  SystemDebug.debug(SystemDebug.containers, 'container_id_from_name  ' ,info['Names'][0]  )
-      if info['Names'][0] == '/' + container.container_name
-        SystemDebug.debug(SystemDebug.containers, 'MATCHED container_id_from_name  ' ,info['Names'][0],info['Id']    )
-        id = info['Id']
+      if info[:Names][0] == '/' + container.container_name
+        SystemDebug.debug(SystemDebug.containers, 'MATCHED container_id_from_name  ' ,info[:Names][0],info[:Id]    )
+        id = info[:Id]
         return id
       end
     end

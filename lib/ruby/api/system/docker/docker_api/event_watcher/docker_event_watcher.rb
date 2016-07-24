@@ -39,7 +39,7 @@ class DockerEventWatcher  < ErrorsApi
 #        hash['container_name'] = hash['from'].sub(/engines\//,'') if hash.key?('from')
 #        hash['container_type'] = 'service'
 #      end
-      hash['state'] = state_from_status( hash['status'] )
+      hash[:state] = state_from_status( hash[:status] )
       STDERR.puts('fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
       return @object.method(@method).call(hash)
     rescue StandardError => e
@@ -70,36 +70,36 @@ class DockerEventWatcher  < ErrorsApi
 
     def event_mask(event_hash)
       mask = 0
-      if event_hash['Type'] = 'container'
+      if event_hash[:Type] = 'container'
         mask |= @@container_event
-        if event_hash.key?('from')
-          return  mask |= @@build_event if event_hash['from'].length == 64
-          if event_hash['from'].start_with?('engines/')
+        if event_hash.key?(:from)
+          return  mask |= @@build_event if event_hash[:from].length == 64
+          if event_hash[:from].start_with?('engines/')
             mask |= @@service_target
           else
             mask |= @@engine_target
           end
         end
-        if event_hash['status'].start_with?('exec')
+        if event_hash[:status].start_with?('exec')
           mask |= @@container_exec
-        elsif event_hash['status'] == 'commit'
+        elsif event_hash[:status] == 'commit'
           mask |= @@container_commit
-        elsif event_hash['status'] == 'pull'
+        elsif event_hash[:status] == 'pull'
           mask |= @@container_pull
           #        elsif event_hash['status'] == 'delete'
           #          mask |= @@container_delete
-        elsif event_hash['status'] == 'die'
+        elsif event_hash[:status] == 'die'
           mask |= @@container_die
-        elsif event_hash['status'] == 'kill'
+        elsif event_hash[:status] == 'kill'
           mask |= @@container_kill
-        elsif event_hash['status'] == 'attach'
+        elsif event_hash[:status] == 'attach'
           mask |= @@container_attach
         else
           mask |= @@container_action
         end
-      elsif event_hash['Type'] = 'image'
+      elsif event_hash[:Type] = 'image'
         mask |= @@image_event
-      elsif event_hash['Type'] = 'network'
+      elsif event_hash[:Type] = 'network'
         mask |= @@network_event
       end
 
@@ -134,13 +134,13 @@ class DockerEventWatcher  < ErrorsApi
           next unless hash.is_a?(Hash)
           # Skip from numeric events as theses are of no interest to named containers
           # in future warning if not building 
-           if  hash.key?('from') && hash['from'].length >= 64
+           if  hash.key?(:from) && hash[:from].length >= 64
              STDERR.puts(' SKIPPING ' + hash.to_s)
              next
            end
           @event_listeners.values.each do |listener|           
             unless listener.container_id.nil?
-              next if hash['id'] != listener.container_id               
+              next if hash[:id] != listener.container_id               
               end
             log_exeception(r) if (r = listener.trigger(hash)).is_a?(StandardError)
             STDERR.puts(' TRigger returned ' + r.class.name + ':' + r.to_s + ' on ' + hash.to_s + ' with ' +  listener.to_s)

@@ -75,7 +75,7 @@ module DockerApiExec
     
       return r unless r.is_a?(Hash)
 
-      exec_id = r['Id']
+      exec_id = r[:Id]
       request_params = {}
       request_params["Detach"] = false
       request_params["Tty"] = true
