@@ -130,8 +130,10 @@ class DockerEventWatcher  < ErrorsApi
       chunk = ''
       r = ''
       resp.read_body do |chunk|
+        STDERR.puts(' Event Chunk ' + chunk.to_s)
         hash = parser.parse(chunk) do |hash|
           next unless hash.is_a?(Hash)
+          STDERR.puts(' Event Hash ' + hash.to_s)
           # Skip from numeric events as theses are of no interest to named containers
           # in future warning if not building 
            if  hash.key?(:from) && hash[:from].length >= 64
@@ -156,9 +158,10 @@ class DockerEventWatcher  < ErrorsApi
 
   
   def add_event_listener(listener, event_mask = nil, container_id = nil)
-    STDERR.puts('ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
+  
     event = EventListener.new(listener,event_mask, container_id)
     @event_listeners[event.hash_name] = event
+STDERR.puts('ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
   rescue StandardError => e
     log_exception(e)
   end
@@ -166,6 +169,7 @@ class DockerEventWatcher  < ErrorsApi
   def rm_event_listener(listener)
     STDERR.puts('REMOVED listenter ' + listener.class.name)
     @event_listeners.delete(listener.object_id) if @event_listeners.key?(listener.object_id)
+    STDERR.puts('REMOVED listenter ' + listener.class.name  + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
   end
 
 end
