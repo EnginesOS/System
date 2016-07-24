@@ -101,6 +101,7 @@ excon_params = {:debug_request => true,
      end         
      return stream_connection(stream_handler).request(
     :method => :post,
+    :read_timeout => 360,
     :query => options,
     :path => uri,
     :headers => headers,
@@ -110,6 +111,7 @@ excon_params = {:debug_request => true,
       STDERR.puts(' using content as is json assumed ' + headers.to_s )
       return stream_connection(stream_handler).request(
          :method => :post,
+         :read_timeout => 360,
          :query => options,
          :path => uri,
          :body => content,
