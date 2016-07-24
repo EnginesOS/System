@@ -132,18 +132,18 @@ class DockerEventWatcher  < ErrorsApi
       chunk = ''
       r = ''
       resp.read_body do |chunk|
-        STDERR.puts(' Event Chunk ' + chunk.to_s)
+      #  STDERR.puts(' Event Chunk ' + chunk.to_s)
         hash = parser.parse(chunk) do |hash|
           next unless hash.is_a?(Hash)
-          STDERR.puts(' Event Hash ' + hash.to_s)
+         # STDERR.puts(' Event Hash ' + hash.to_s)
           # Skip from numeric events as theses are of no interest to named containers
           # in future warning if not building 
            if  hash.key?(:from) && hash[:from].length >= 64
-             STDERR.puts(' SKIPPING ' + hash.to_s)
+           #  STDERR.puts(' SKIPPING ' + hash.to_s)
              next
            end
           @event_listeners.values.each do |listener|    
-            STDERR.puts(' Event Hash ' + hash.to_s)
+           # STDERR.puts(' Event Hash ' + hash.to_s)
             unless listener.container_id.nil?
               next if hash[:id] != listener.container_id               
               end
