@@ -170,7 +170,7 @@ def get_json_stream(path)
   uri = URI(@base_url + path_with_params(path, add_access(nil)))
   Net::HTTP.start(uri.host, uri.port)  do |http|
     req = Net::HTTP::Get.new(uri)
-    parser = Yajl::Parser.new
+    parser = Yajl::Parser.new(:symbolize_keys => true)
     http.request(req) { |resp|
       resp.read_body do |chunk|
         begin

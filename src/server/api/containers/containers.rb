@@ -14,7 +14,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
     @events_stream = engines_api.container_events_stream
     has_data = true
 
-    parser = Yajl::Parser.new
+    parser = Yajl::Parser.new(:symbolize_keys => true)
     timer = nil
     while has_data == true
       begin

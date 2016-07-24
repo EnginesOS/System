@@ -119,7 +119,7 @@ class DockerEventWatcher  < ErrorsApi
   end
 
   def start
-    parser = Yajl::Parser.new
+    parser = Yajl::Parser.new(:symbolize_keys => true)
 
     req = Net::HTTP::Get.new('/events')
     client = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
@@ -130,7 +130,7 @@ class DockerEventWatcher  < ErrorsApi
       chunk = ''
       r = ''
       resp.read_body do |chunk|
-        hash = parser.parse(chunk,:symbolize_keys => true) do |hash|
+        hash = parser.parse(chunk) do |hash|
           next unless hash.is_a?(Hash)
           # Skip from numeric events as theses are of no interest to named containers
           # in future warning if not building 
