@@ -95,6 +95,9 @@ if test -f /home/startwebapp.sh
 
 #Apache based below here
 
+if test -f /usr/sbin/apache2ctl
+ then
+
 PID_FILE=/run/apache2/apache2.pid
 export PID_FILE
 . /home/trap.sh
@@ -117,7 +120,26 @@ mkdir -p /var/log/apache2/ >/dev/null
 			 echo  " $!" >> /run/apache2/apache2.pid
 	else		
 		/usr/sbin/apache2ctl -DFOREGROUND &
-	fi	
+	fi
+else
+	PID_FILE=/var/run/nginx/nginx.pid
+
+export PID_FILE
+. /home/trap.sh
+cp /home/ruby_env /home/app/.env_vars
+echo " passenger_env_var RAILS_ENV $RAILS_ENV;" >> /home/app/.env_vars
+echo " passenger_env_var SECRET_KEY_BASE $SECRET_KEY_BASE;" >> /home/app/.env_vars
+echo " passenger_env_var SYSTEM_API_URL $SYSTEM_API_URL;">> /home/app/.env_vars
+echo " passenger_env_var SYSTEM_RELEASE $SYSTEM_RELEASE;" >> /home/app/.env_vars
+echo " passenger_env_var DATABASE_URL $DATABASE_URL;" >> /home/app/.env_vars
+echo " passenger_env_var ACTION_CABLE_ALLOWED_REQUEST_ORIGINS $ACTION_CABLE_ALLOWED_REQUEST_ORIGINS;" >> /home/app/.env_vars
+echo " passenger_env_var ACTION_CABLE_URL $ACTION_CABLE_URL;" >> /home/app/.env_vars
+echo " passenger_env_var ACTION_CABLE_URL $ACTION_CABLE_URL;" >> /home/app/.env_vars
+echo " passenger_env_var WORKSHOP_KEY $ACTION_CABLE_URL;" >> /home/app/.env_vars
+nginx &
+
+fi
+
 		
 touch /engines/var/run/flags/startup_complete
  wait 
