@@ -129,10 +129,13 @@ export PID_FILE
 cp /home/ruby_env /home/app/.env_vars
  for env_name in `cat /home/app.env `
   do
-  	echo  "passenger_env_var $env_name  ${!env_name};"   >> /home/app/.env_vars
+   if ! test -z  ${!env_name}
+        then
+  	      echo  "passenger_env_var $env_name  ${!env_name};"   >> /home/app/.env_vars
+  	    fi
   done
-#echo " passenger_env_var RAILS_ENV $RAILS_ENV;" >> /home/app/.env_vars
-#echo " passenger_env_var SECRET_KEY_BASE $SECRET_KEY_BASE;" >> /home/app/.env_vars
+echo " passenger_env_var RAILS_ENV $RAILS_ENV;" >> /home/app/.env_vars
+echo " passenger_env_var SECRET_KEY_BASE $SECRET_KEY_BASE;" >> /home/app/.env_vars
 #echo " passenger_env_var SYSTEM_API_URL $SYSTEM_API_URL;">> /home/app/.env_vars
 #echo " passenger_env_var SYSTEM_RELEASE $SYSTEM_RELEASE;" >> /home/app/.env_vars
 #echo " passenger_env_var DATABASE_URL $DATABASE_URL;" >> /home/app/.env_vars
