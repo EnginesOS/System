@@ -26,7 +26,7 @@ class ManagedUtility< ManagedContainer
     STDERR.puts("COMMANDS " + @commands.to_s)
     STDERR.puts( ' commaned keys ' + @commands.keys.to_s)
   #  command_name = command_name.to_sym unless @commands.key?(command_name)
-    return log_error_mesg('No such command: ' + command_name.to_s, command_name, command_params) unless @commands.key?(command_name.to_s)
+    return log_error_mesg('No such command: ' + command_name, command_name, command_params) unless @commands.key?(command_name)
     command = command_details(command_name)
     return log_error_mesg('Missing params' + r.to_s, r) if (r = check_params(command, command_params)) == false
 
@@ -120,7 +120,7 @@ class ManagedUtility< ManagedContainer
     STDERR.puts(' required params' ,params.to_s)
     cmd[:requires].each do |required_param|
       STDERR.puts(' required param ' + required_param.to_s )
-      next if params.key?(required_param.to_s)
+      next if params.key?(required_param.to_sym)
       r = 'Missing:' if r == true
       r +=  ' ' + required_param.to_s
     end
