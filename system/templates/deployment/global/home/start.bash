@@ -127,15 +127,19 @@ else
 export PID_FILE
 . /home/trap.sh
 cp /home/ruby_env /home/app/.env_vars
-echo " passenger_env_var RAILS_ENV $RAILS_ENV;" >> /home/app/.env_vars
-echo " passenger_env_var SECRET_KEY_BASE $SECRET_KEY_BASE;" >> /home/app/.env_vars
-echo " passenger_env_var SYSTEM_API_URL $SYSTEM_API_URL;">> /home/app/.env_vars
-echo " passenger_env_var SYSTEM_RELEASE $SYSTEM_RELEASE;" >> /home/app/.env_vars
-echo " passenger_env_var DATABASE_URL $DATABASE_URL;" >> /home/app/.env_vars
-echo " passenger_env_var ACTION_CABLE_ALLOWED_REQUEST_ORIGINS $ACTION_CABLE_ALLOWED_REQUEST_ORIGINS;" >> /home/app/.env_vars
-echo " passenger_env_var ACTION_CABLE_URL $ACTION_CABLE_URL;" >> /home/app/.env_vars
-echo " passenger_env_var ACTION_CABLE_URL $ACTION_CABLE_URL;" >> /home/app/.env_vars
-echo " passenger_env_var WORKSHOP_KEY $ACTION_CABLE_URL;" >> /home/app/.env_vars
+ for env_name in `cat /home/app.env `
+  do
+  	echo  "passenger_env_var $env_name  ${!env_name};"   >> /home/app/.env_vars
+  done
+#echo " passenger_env_var RAILS_ENV $RAILS_ENV;" >> /home/app/.env_vars
+#echo " passenger_env_var SECRET_KEY_BASE $SECRET_KEY_BASE;" >> /home/app/.env_vars
+#echo " passenger_env_var SYSTEM_API_URL $SYSTEM_API_URL;">> /home/app/.env_vars
+#echo " passenger_env_var SYSTEM_RELEASE $SYSTEM_RELEASE;" >> /home/app/.env_vars
+#echo " passenger_env_var DATABASE_URL $DATABASE_URL;" >> /home/app/.env_vars
+#echo " passenger_env_var ACTION_CABLE_ALLOWED_REQUEST_ORIGINS $ACTION_CABLE_ALLOWED_REQUEST_ORIGINS;" >> /home/app/.env_vars
+#echo " passenger_env_var ACTION_CABLE_URL $ACTION_CABLE_URL;" >> /home/app/.env_vars
+#echo " passenger_env_var ACTION_CABLE_URL $ACTION_CABLE_URL;" >> /home/app/.env_vars
+#echo " passenger_env_var WORKSHOP_KEY $WORKSHOP_KEY;" >> /home/app/.env_vars
 nginx &
 
 fi
