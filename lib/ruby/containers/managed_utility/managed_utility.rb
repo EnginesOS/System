@@ -23,6 +23,7 @@ class ManagedUtility< ManagedContainer
 
   def execute_command(command_name, command_params)
     r = {}
+    r[:stdout] = 'OK'
     STDERR.puts("COMMANDS " + @commands.to_s)
     STDERR.puts( ' commaned keys ' + @commands.keys.to_s)
   #  command_name = command_name.to_sym unless @commands.key?(command_name)
