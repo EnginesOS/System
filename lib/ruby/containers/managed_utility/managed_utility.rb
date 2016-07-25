@@ -22,8 +22,7 @@ class ManagedUtility< ManagedContainer
   end
 
   def execute_command(command_name, command_params)
-    r = {}
-    r[:stdout] = 'OK'
+    r =  '' 
     STDERR.puts("COMMANDS " + @commands.to_s)
     STDERR.puts( ' commaned keys ' + @commands.keys.to_s)
   #  command_name = command_name.to_sym unless @commands.key?(command_name)
@@ -37,6 +36,8 @@ class ManagedUtility< ManagedContainer
     @container_api.wait_for('stopped') unless read_state == 'stopped' 
   #  r = logs_container #_as_result
     destroy_container
+    r = {}
+    r[:stdout] = 'OK'
     return r
 
   rescue StandardError => e
