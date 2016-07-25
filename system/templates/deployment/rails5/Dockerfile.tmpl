@@ -1,0 +1,11 @@
+FROM  engines/ngpassenger:_Engines_System(release)
+
+ADD build_scripts /build_scripts
+ADD home home
+ENV CONTFSVolHome /home/fs/
+ENV WWW_DIR public
+ENV ContUser ruby
+ENV RAILS_ENV production
+ENV SECRET_KEY_BASE	_Engines_System(random(128))
+
+RUN chown $ContUser /opt
