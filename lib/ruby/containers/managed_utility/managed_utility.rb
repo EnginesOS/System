@@ -37,7 +37,7 @@ class ManagedUtility< ManagedContainer
   end
 
   def execute_command(command_name, command_params)
-    
+    return log_error_mesg('Utility ' + container_name + ' in use ' ,  command_name) if is_active?
   #FIXMe need to check if running
     r =  '' 
     STDERR.puts("COMMANDS " + @commands.to_s)
@@ -48,10 +48,11 @@ class ManagedUtility< ManagedContainer
     return log_error_mesg('Missing params' + r.to_s, r) if (r = check_params(command, command_params)) == false
 
 
-    destroy_container if has_container?
+    destroy_container #if has_container?
+    STDERR.puts("Container Destroyed")
     @container_api.wait_for('nocontainer') unless read_state == 'nocontainer' 
     clear_configs
-    
+    STDERR.puts("Container NOT Destroyed") if has_container?
     apply_templates(command, command_params)
     create_container()
     start_container
