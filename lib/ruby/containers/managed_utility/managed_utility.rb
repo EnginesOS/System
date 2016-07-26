@@ -49,6 +49,7 @@ class ManagedUtility< ManagedContainer
 
 
     destroy_container if has_container?
+    @container_api.wait_for('nocontainer') unless read_state == 'nocontainer' 
     clear_configs
     
     apply_templates(command, command_params)
@@ -159,8 +160,8 @@ class ManagedUtility< ManagedContainer
   end
   
   def clear_configs
-    FileUtils.rm(ContainerStateFiles.container_state_dir(self) + '/running.yaml')
-    FileUtils.rm(ContainerStateFiles.container_state_dir(self) + '/running.yaml.bak')  
+    FileUtils.rm(ContainerStateFiles.container_state_dir(self) + '/running.yaml') if File.exist?(ContainerStateFiles.container_state_dir(self) + '/running.yaml')
+    FileUtils.rm(ContainerStateFiles.container_state_dir(self) + '/running.yaml.bak')   if File.exist?(ContainerStateFiles.container_state_dir(self) + '/running.yaml.bak')
   end
 
 end

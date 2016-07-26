@@ -151,7 +151,7 @@ fi
 if test -f /home/engines/scripts/blocking.sh
 	then
 		 /home/engines/scripts/blocking.sh &
-		 blocking_pid = $!
+		 blocking_pid=$!
 		 echo " $blocking_pid " >>  $PID_FILE
 	fi
 		
