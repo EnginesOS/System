@@ -46,11 +46,13 @@ class ManagedUtility< ManagedContainer
     return log_error_mesg('Missing params' + r.to_s, r) if (r = check_params(command, command_params)) == false
 
     apply_templates(command, command_params)
+    destroy_container  if has_container?
     create_container()
     start_container
     @container_api.wait_for('stopped') unless read_state == 'stopped' 
-  #  r = logs_container #_as_result
-    destroy_container
+    r = logs_container #_as_result
+   # destroy_container
+    STDERR.puts(' logs ' + r.to_s)
     r = {}
     r[:stdout] = 'OK'
     return r
