@@ -37,6 +37,8 @@ class ManagedUtility< ManagedContainer
   end
 
   def execute_command(command_name, command_params)
+    
+  #FIXMe need to check if running
     r =  '' 
     STDERR.puts("COMMANDS " + @commands.to_s)
     STDERR.puts( ' commaned keys ' + @commands.keys.to_s)
@@ -47,6 +49,7 @@ class ManagedUtility< ManagedContainer
 
     apply_templates(command, command_params)
     destroy_container  if has_container?
+    clear_configs
     create_container()
     start_container
     @container_api.wait_for('stopped') unless read_state == 'stopped' 
@@ -151,6 +154,11 @@ class ManagedUtility< ManagedContainer
 
   def container_logs_as_result
 
+  end
+  
+  def clear_configs
+    FileUtils.rm(ContainerStateFiles.container_state_dir(self) + '/running.yaml')
+    FileUtils.rm(ContainerStateFiles.container_state_dir(self) + '/running.yaml.bak')  
   end
 
 end
