@@ -23,8 +23,16 @@ class ManagedUtility< ManagedContainer
   def on_start
   end
 
-  def on_create
+  def  on_create(event_hash)
+        @container_mutex.synchronize {
+          SystemDebug.debug(SystemDebug.container_events,:ON_Create_CALLED,event_hash)    
+            @container_id = event_hash[:id]
+    @out_of_memory = false
+    @had_out_memory = false
+        save_state
+          }
   end
+
 
   def command_details(command_name)
     STDERR.puts(@commands.to_s)
@@ -51,8 +59,10 @@ class ManagedUtility< ManagedContainer
   return r if (r = destroy_container).is_a?(EnginesError) #if has_container?
 
     @container_api.wait_for('nocontainer') unless read_state == 'nocontainer' 
+    @container_api.destroy_container(self)  unless read_state == 'nocontainer' 
     clear_configs
     STDERR.puts("Container NOT Destroyed") if has_container?
+    
     apply_templates(command, command_params)
     create_container()
     start_container
