@@ -122,7 +122,7 @@ mkdir -p /var/log/apache2/ >/dev/null
 		/usr/sbin/apache2ctl -DFOREGROUND &
 	fi
 else
-	PID_FILE=/var/run/nginx/nginx.pid
+	PID_FILE=/var/run/nginx.pid
 
 export PID_FILE
 . /home/trap.sh
