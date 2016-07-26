@@ -5,8 +5,8 @@ module ManagedUtilities
   def loadManagedUtility(utility_name)
 
     return log_error_mesg('No utility name', utility_name) if utility_name.nil? || utility_name.length == 0
-    yaml_file_name = SystemConfig.RunDir + '/utilities/' + utility_name + '/running.yaml'
-    yaml_file_name = SystemConfig.RunDir + '/utilities/' + utility_name + '/config.yaml' unless File.exist?(yaml_file_name)
+#    yaml_file_name = SystemConfig.RunDir + '/utilities/' + utility_name + '/running.yaml'
+    yaml_file_name = SystemConfig.RunDir + '/utilities/' + utility_name + '/config.yaml' #unless File.exist?(yaml_file_name)
     return log_error_mesg('No Utility file', utility_name) unless File.exist?(yaml_file_name)
     return log_error_mesg('Utility File Locked',yaml_file_name) if is_container_conf_file_locked?(SystemConfig.RunDir + '/utilities/' + utility_name)
     yaml_file = File.read(yaml_file_name)

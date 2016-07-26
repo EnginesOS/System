@@ -64,6 +64,7 @@ class ManagedUtility< ManagedContainer
     STDERR.puts("Container NOT Destroyed") if has_container?
     
     apply_templates(command, command_params)
+    save_state
     create_container()
     start_container
     @container_api.wait_for('stopped') unless read_state == 'stopped' 
