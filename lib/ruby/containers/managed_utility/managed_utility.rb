@@ -47,9 +47,9 @@ class ManagedUtility< ManagedContainer
     command = command_details(command_name)
     return log_error_mesg('Missing params' + r.to_s, r) if (r = check_params(command, command_params)) == false
 
+    r = ''
+  return r if (r = destroy_container).is_a?(EnginesError) #if has_container?
 
-    destroy_container #if has_container?
-    STDERR.puts("Container Destroyed")
     @container_api.wait_for('nocontainer') unless read_state == 'nocontainer' 
     clear_configs
     STDERR.puts("Container NOT Destroyed") if has_container?
