@@ -8,7 +8,7 @@ class ManagedUtility< ManagedContainer
        set_cont_id
        set_running_user
        domain_name = SystemConfig.internal_domain
-    @conf_self_start.freeze
+       @conf_self_start.freeze
         @container_name.freeze
         @data_uid.freeze
         @data_gid.freeze
@@ -90,6 +90,8 @@ class ManagedUtility< ManagedContainer
 
   def apply_volume_templates(command_params, templater)
     @volumes.each_value do |volume|
+       volume = SystemUtils.symbolize_keys(volume)
+    
       STDERR.puts('volume VALUE  ' + volume.to_s )
       volume[:remotepath] = templater.apply_hash_variables(volume[:remotepath] , command_params)
       volume[:localpath] = templater.apply_hash_variables(volume[:localpath] , command_params)
