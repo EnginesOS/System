@@ -47,9 +47,11 @@ class ManagedUtility< ManagedContainer
     command = command_details(command_name)
     return log_error_mesg('Missing params' + r.to_s, r) if (r = check_params(command, command_params)) == false
 
-    apply_templates(command, command_params)
-    destroy_container  if has_container?
+
+    destroy_container if has_container?
     clear_configs
+    
+    apply_templates(command, command_params)
     create_container()
     start_container
     @container_api.wait_for('stopped') unless read_state == 'stopped' 
