@@ -2,7 +2,20 @@ class ManagedUtility< ManagedContainer
  attr_accessor :volumes_from
 
   def post_load
-    super
+    
+  # Basically parent super but no lock on image 
+    expire_engine_info
+       set_cont_id
+       set_running_user
+       domain_name = SystemConfig.internal_domain
+    @conf_self_start.freeze
+        @container_name.freeze
+        @data_uid.freeze
+        @data_gid.freeze
+      #  @image.freeze This is the one difference
+        @repository = '' if @repository.nil?
+        @repository.freeze
+        
     @container_mutex = Mutex.new
     @commands = SystemUtils.symbolize_keys(@commands)
   end
