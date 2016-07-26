@@ -11,41 +11,41 @@ commands:
   command: "/home/setup_engine.sh"
   timeout: 60
   requires:
-  - "target"
-  - "fw_user"
-  - "data_gid"
-  - "volume"
+  - :target
+  - :fw_user
+  - :data_gid
+  - :volume
  add_volume:
   command: "/home/add_volume.sh _Engines_Template(volume)"
   timeout: 15
   requires:
-  - "target"
-  - "fw_user"
-  - "data_gid"
-  - "volume"  
+  - :target
+  - :fw_user
+  - :data_gid
+  - :volume 
  remove_volumes:
   command: "/home/remove_container.sh fs"
   timeout: 20
   requires:
-  - "target"  
+  - :target  
  remove_volume:
   command: "/home/remove_container.sh volume _Engines_Template(volume)"
   requires:
-  - "target"
-  - "volume"  
+  - :target
+  - :volume  
  remove_logs:
   command: "/home/remove_container.sh logs"
   requires:
-  - "target"
+  - :target
  remove_state:
   command: "/home/remove_container.sh state"
   requires:
-  - "target"
+  - :target
  remove:
   command: "/home/remove_container.sh state logs"
   timeout: 20
   requires:
-  - "target"
+  - :target
 last_error: 
 memory: '128'
 hostname: 
@@ -80,7 +80,7 @@ volumes:
   permissions: "rw"
 volumes_from:
  "_Engines_Template(target)":
-  volume_from: _Engines_Template(target)
+   volume_from: _Engines_Template(target)
 mapped_ports:
 repo: na
 last_result: 
