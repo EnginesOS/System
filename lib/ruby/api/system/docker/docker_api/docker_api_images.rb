@@ -4,7 +4,7 @@ module DockerApiImages
     r =  get_request(request, true)
     return  false unless r.is_a?(Array)
     r = r[0]
-    return true if r.is_a?(Hash) && r.key?('Id')
+    return true if r.is_a?(Hash) && r.key?(:Id)
 
     return  false
   rescue StandardError => e

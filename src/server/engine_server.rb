@@ -8,7 +8,7 @@ begin
   
   require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
   require '/opt/engines/lib/ruby/api/system/first_run_wizard/first_run_wizard.rb'
-  
+  require 'objspace'
   require 'warden'
 
   $token = 'test_token'
@@ -176,7 +176,7 @@ end
   end
   
   def post_params(request)
-     JSON.parse(request.env["rack.input"].read)
+     JSON.parse(request.env["rack.input"].read,:symbolize_keys => true)
   rescue StandardError => e 
     log_error_mesg(request, e, e.backtrace.to_s)
   end

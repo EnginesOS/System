@@ -1,6 +1,7 @@
 #require '/opt/engines/lib/ruby/containers/ManagedContainer.rb'
 require 'thread'
 require '/opt/engines/lib/ruby/containers/managed_service.rb'
+
 class SystemService < ManagedService
   @ctype = 'system_service'
   def lock_values
@@ -12,23 +13,23 @@ class SystemService < ManagedService
     @container_api.create_container(self)
   end
 
-  def   unpause_container
+  def unpause_container
     @container_api.unpause_container(self)
   end
 
-  def  stop_container
+  def stop_container
     @container_api.stop_container(self)
   end
 
-  def  destroy_container
+  def destroy_container
     @container_api.destroy_container(self)
   end
 
-  def  start_container
+  def start_container
     @container_api.start_container(self)
   end
 
-  def  forced_recreate
+  def forced_recreate
     SystemDebug.debug(SystemDebug.system,'Forced recreate  System Service ' + container_name)
     unpause_container
     stop_container
@@ -37,15 +38,15 @@ class SystemService < ManagedService
   rescue StandardError => e
     log_exception(e)
   end
- 
+
   def inspect_container
     SystemDebug.debug(SystemDebug.system,:system_service_inspect_container)
 
     return false  if has_api? == false
     if @docker_info.nil? || @docker_info.is_a?(FalseClass)
-    #  @container_api.inspect_container(self)
+      #  @container_api.inspect_container(self)
       @docker_info =  @container_api.inspect_container(self)
-     # @docker_info = @last_result
+      # @docker_info = @last_result
       if @docker_info.is_a?(FalseClass)
         unless has_image?
           SystemUtils.log_output('pulling system service' + container_name.to_s,10)
@@ -61,7 +62,7 @@ class SystemService < ManagedService
         end
       end
     end
-   # Thread.new { sleep 5 ; @docker_info = nil }
+    # Thread.new { sleep 5 ; @docker_info = nil }
     SystemDebug.debug(SystemDebug.system,:system_service_inspected_container)
     return @docker_info
   end

@@ -4,10 +4,12 @@ require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 
 #require '/opt/engines/lib/ruby/api/public/engines_osapi_result.rb'
 require '/opt/engines/lib/ruby/containers/container.rb'
+
 require '/opt/engines/lib/ruby/containers/managed_container.rb'
 require '/opt/engines/lib/ruby/containers/managed_engine.rb'
 require '/opt/engines/lib/ruby/containers/managed_service.rb'
 require '/opt/engines/lib/ruby/containers/system_service.rb'
+require '/opt/engines/lib/ruby/containers/managed_utility/managed_utility.rb'
 require '/opt/engines/lib/ruby/managed_services/service_definitions/software_service_definition.rb'
 require '/opt/engines/lib/ruby/service_manager/service_definitions.rb'
 

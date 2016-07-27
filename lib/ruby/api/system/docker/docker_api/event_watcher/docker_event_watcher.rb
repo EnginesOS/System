@@ -17,11 +17,14 @@ class DockerEventWatcher  < ErrorsApi
 
     @@service_action = @@container_action | @@service_target
     @@engine_action = @@container_action | @@engine_target
+    
+    attr_accessor :container_id, :event_mask
     # @@container_id
-    def initialize(listener, event_mask)
+    def initialize(listener, event_mask, container_id = nil)
       @object =  listener[0]
       @method = listener[1]
       @event_mask = event_mask
+      @container_id = container_id
     end
 
     def hash_name
@@ -38,7 +41,7 @@ class DockerEventWatcher  < ErrorsApi
 #        hash['container_name'] = hash['from'].sub(/engines\//,'') if hash.key?('from')
 #        hash['container_type'] = 'service'
 #      end
-      hash['state'] = state_from_status( hash['status'] )
+      hash[:state] = state_from_status( hash[:status] )
       STDERR.puts('fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
       return @object.method(@method).call(hash)
     rescue StandardError => e
@@ -69,36 +72,36 @@ class DockerEventWatcher  < ErrorsApi
 
     def event_mask(event_hash)
       mask = 0
-      if event_hash['Type'] = 'container'
+      if event_hash[:Type] = 'container'
         mask |= @@container_event
-        if event_hash.key?('from')
-          return  mask |= @@build_event if event_hash['from'].length == 64
-          if event_hash['from'].start_with?('engines/')
+        if event_hash.key?(:from)
+          return  mask |= @@build_event if event_hash[:from].length == 64
+          if event_hash[:from].start_with?('engines/')
             mask |= @@service_target
           else
             mask |= @@engine_target
           end
         end
-        if event_hash['status'].start_with?('exec')
+        if event_hash[:status].start_with?('exec')
           mask |= @@container_exec
-        elsif event_hash['status'] == 'commit'
+        elsif event_hash[:status] == 'commit'
           mask |= @@container_commit
-        elsif event_hash['status'] == 'pull'
+        elsif event_hash[:status] == 'pull'
           mask |= @@container_pull
           #        elsif event_hash['status'] == 'delete'
           #          mask |= @@container_delete
-        elsif event_hash['status'] == 'die'
+        elsif event_hash[:status] == 'die'
           mask |= @@container_die
-        elsif event_hash['status'] == 'kill'
+        elsif event_hash[:status] == 'kill'
           mask |= @@container_kill
-        elsif event_hash['status'] == 'attach'
+        elsif event_hash[:status] == 'attach'
           mask |= @@container_attach
         else
           mask |= @@container_action
         end
-      elsif event_hash['Type'] = 'image'
+      elsif event_hash[:Type] = 'image'
         mask |= @@image_event
-      elsif event_hash['Type'] = 'network'
+      elsif event_hash[:Type] = 'network'
         mask |= @@network_event
       end
 
@@ -118,7 +121,7 @@ class DockerEventWatcher  < ErrorsApi
   end
 
   def start
-    parser = Yajl::Parser.new
+    parser = Yajl::Parser.new(:symbolize_keys => true)
 
     req = Net::HTTP::Get.new('/events')
     client = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
@@ -129,15 +132,21 @@ class DockerEventWatcher  < ErrorsApi
       chunk = ''
       r = ''
       resp.read_body do |chunk|
+      #  STDERR.puts(' Event Chunk ' + chunk.to_s)
         hash = parser.parse(chunk) do |hash|
           next unless hash.is_a?(Hash)
+         # STDERR.puts(' Event Hash ' + hash.to_s)
           # Skip from numeric events as theses are of no interest to named containers
           # in future warning if not building 
-           if  hash.key?('from') && hash['from'].length >= 64
-             STDERR.puts(' SKIPPING ' + hash.to_s)
+           if  hash.key?(:from) && hash[:from].length >= 64
+           #  STDERR.puts(' SKIPPING ' + hash.to_s)
              next
            end
-          @event_listeners.values.each do |listener |           
+          @event_listeners.values.each do |listener|    
+           # STDERR.puts(' Event Hash ' + hash.to_s)
+            unless listener.container_id.nil?
+              next if hash[:id] != listener.container_id               
+              end
             log_exeception(r) if (r = listener.trigger(hash)).is_a?(StandardError)
             STDERR.puts(' TRigger returned ' + r.class.name + ':' + r.to_s + ' on ' + hash.to_s + ' with ' +  listener.to_s)
           end
@@ -150,12 +159,12 @@ class DockerEventWatcher  < ErrorsApi
     log_exception(e,chunk)
   end
 
-
   
-  def add_event_listener(listener, event_mask = nil)
-    STDERR.puts('ADDED listenter ' + listener.class.name)
-    event = EventListener.new(listener,event_mask)
+  def add_event_listener(listener, event_mask = nil, container_id = nil)
+  
+    event = EventListener.new(listener,event_mask, container_id)
     @event_listeners[event.hash_name] = event
+STDERR.puts('ADDED listenter ' + listener.to_s + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
   rescue StandardError => e
     log_exception(e)
   end
@@ -163,6 +172,7 @@ class DockerEventWatcher  < ErrorsApi
   def rm_event_listener(listener)
     STDERR.puts('REMOVED listenter ' + listener.class.name)
     @event_listeners.delete(listener.object_id) if @event_listeners.key?(listener.object_id)
+    STDERR.puts('REMOVED listenter ' + listener.class.name  + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
   end
 
 end

@@ -7,7 +7,9 @@ class ContainerApi < ErrorsApi
   
 #  require_relative 'api_result_checks.rb'
 #  include ApiResultChecks
-
+  require_relative 'container_api_events.rb' 
+  include ContainerApiEvents
+  
   require_relative 'container_api_docker_actions.rb'
   include ContainerApiDockerActions
 

@@ -37,6 +37,7 @@ class RegistryHandler < ErrorsApi
   def get_registry_ip
     return @registry_ip unless @registry_ip.is_a?(FalseClass)
     registry_service = @system_api.loadSystemService('registry') # FIXME: Panic if this fails
+    return log_error_mesg('Failed to load registry ' + registry_service.to_s, registry_service ) if registry_service.is_a?(EnginesError)
     state = registry_service.read_state
     if state == "running"
       @registry_ip  = registry_service.get_ip_str
@@ -85,7 +86,7 @@ class RegistryHandler < ErrorsApi
       sleep 1
       wait += 1
       SystemDebug.debug(SystemDebug.registry, :recreate_wait)
-      return log_error(' failed t o complkete startup in 90s') if wait > 90
+      return log_error_mesg('Failed to complete startup in 90s') if wait > 90
     end
     return true
   end

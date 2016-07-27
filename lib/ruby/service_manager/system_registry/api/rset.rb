@@ -52,7 +52,7 @@ private
 def parse_error(r)
   STDERR.puts("RSPONSE",r.to_s)
   r.gsub!(/^\n/,'')
-  res = JSON.parse(r, :create_additions => true)
+  res = JSON.parse(r, :create_additions => true,:symbolize_keys => true)
   EnginesRegistryError.new(res)
   rescue  StandardError => e
   STDERR.puts(r.to_s)
@@ -66,7 +66,7 @@ def parse_rest_response(r)
   return parse_error(r) if r.code > 399
   return true if r.to_s   == '' ||  r.to_s   == 'true'
   return false if r.to_s  == 'false'
-  res = JSON.parse(r, :create_additions => true)
+  res = JSON.parse(r, :create_additions => true,:symbolize_keys => true)
   # STDERR.puts("RESPONSE "  + deal_with_jason(res).to_s)
   return deal_with_jason(res)
 rescue  StandardError => e

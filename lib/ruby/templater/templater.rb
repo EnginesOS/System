@@ -7,6 +7,33 @@ class Templater
     @builder_public = builder_public
   end
 
+  
+  def apply_hash_variables(text, values_hash)
+   
+    return text unless text.is_a?(String) 
+    text.gsub!(/_Engines_Template\([(0-9a-z_A-Z]*\)/) { |match|
+      STDERR.puts('MATCH '+ match.to_s)
+     t =  resolve_hash_value(match, values_hash)
+      STDERR.puts('MATCHed '+ t.to_s)
+      t
+      }
+    STDERR.puts('APPLY hash for ' + text.to_s + ' with values ' + values_hash.to_s + "\nResolved as " + text)
+      return text
+    rescue StandardError => e
+      SystemUtils.log_exception(e)
+  end
+  
+  def resolve_hash_value(match, values_hash)
+    STDERR.puts('APPLing MATCH' )
+    name = match.sub!(/_Engines_Template\(/, '')
+        name.sub!(/[\)]/, '')
+    return values_hash[name.to_sym] if values_hash.key?(name.to_sym)
+  return values_hash[name.to_s] if values_hash.key?(name.to_s)
+    return ''
+  rescue StandardError => e
+    SystemUtils.log_exception(e)
+  end
+  
   def resolve_system_variable(match)
 
     name = match.sub!(/_Engines_System\(/, '')
@@ -29,6 +56,8 @@ class Templater
       resolve_blueprint_variable(match)
     }
     return template
+    rescue StandardError => e
+      SystemUtils.log_exception(e)
   end
 
   def resolve_blueprint_variable(match)
@@ -126,6 +155,9 @@ class Templater
       resolve_engines_variable(match)
     }
     return template
+    rescue StandardError => e
+      p 'problem with ' + template.to_s
+      SystemUtils.log_exception(e)
   end
 
   def apply_system_variables(template)

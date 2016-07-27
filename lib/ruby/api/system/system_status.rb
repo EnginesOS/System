@@ -127,8 +127,8 @@ class SystemStatus
 
   def self.current_build_params
     unless File.exist?(SystemConfig.BuildRunningParamsFile)
-      SystemUtils.log_error_mesg("No ", SystemConfig.BuildRunningParamsFile)
-      return {}
+    return  SystemUtils.log_error_mesg("No ", SystemConfig.BuildRunningParamsFile)
+ 
     end
     param_file = File.new(SystemConfig.BuildRunningParamsFile, 'r')
     param_raw = param_file.read

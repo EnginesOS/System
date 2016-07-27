@@ -4,16 +4,16 @@ module ContainerStatus
     SystemDebug.debug(SystemDebug.containers, :info, info)
     return 'nocontainer' unless info.is_a?(Hash)
 
-    if info.key?('State')
-      if info['State']['Running']     
-        if  info['State']['Paused']
+    if info.key?(:State)
+      if info[:State][:Running]     
+        if  info[:State][:Paused]
           return 'paused'
         else
           return 'running'
         end
-      elsif info['State']['Running'] == false        
+      elsif info[:State][:Running] == false        
         return 'stopped'
-      elsif info['State']['Status'] == 'exited'
+      elsif info[:State][:Status] == 'exited'
         return 'stopped'
       else
         SystemDebug.debug(SystemDebug.containers, :info, info)

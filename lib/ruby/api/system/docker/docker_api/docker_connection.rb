@@ -29,7 +29,7 @@ class DockerConnection < ErrorsApi
   attr_accessor :response_parser
 
   def initialize
-    @response_parser = Yajl::Parser.new
+    @response_parser = Yajl::Parser.new(:symbolize_keys => true)
     #    @docker_socket = docker_socket
    # @socket_mutex = Mutex.new
     @connection = nil
@@ -101,6 +101,7 @@ excon_params = {:debug_request => true,
      end         
      return stream_connection(stream_handler).request(
     :method => :post,
+    :read_timeout => 360,
     :query => options,
     :path => uri,
     :headers => headers,
@@ -110,6 +111,7 @@ excon_params = {:debug_request => true,
       STDERR.puts(' using content as is json assumed ' + headers.to_s )
       return stream_connection(stream_handler).request(
          :method => :post,
+         :read_timeout => 360,
          :query => options,
          :path => uri,
          :body => content,
@@ -123,6 +125,7 @@ excon_params = {:debug_request => true,
 
   
   def get_request(uri,  expect_json = true, headers = nil)
+    STDERR.puts('get_request  ' + uri.to_s + ' : ' + headers.to_s)
     return handle_resp(connection.request(:method => :get,
     :path => uri,
     :headers => headers),

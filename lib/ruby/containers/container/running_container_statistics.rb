@@ -3,9 +3,9 @@ module RunningContainerStatistics
     expire_engine_info
 
     return false unless docker_info.is_a?(Hash)
-    return false unless docker_info['State'].is_a?(Hash)
-    started = docker_info['State']['StartedAt']
-    stopped = docker_info['State']['FinishedAt']
+    return false unless docker_info[:State].is_a?(Hash)
+    started = docker_info[:State][:StartedAt]
+    stopped = docker_info[:State][:FinishedAt]
     ps_json = ps_container
     SystemDebug.debug(SystemDebug.containers,'ps_container json result',container_name,ps_json)
     cpu_time =[0,0,0]

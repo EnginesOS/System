@@ -95,6 +95,9 @@ if test -f /home/startwebapp.sh
 
 #Apache based below here
 
+if test -f /usr/sbin/apache2ctl
+ then
+
 PID_FILE=/run/apache2/apache2.pid
 export PID_FILE
 . /home/trap.sh
@@ -117,7 +120,40 @@ mkdir -p /var/log/apache2/ >/dev/null
 			 echo  " $!" >> /run/apache2/apache2.pid
 	else		
 		/usr/sbin/apache2ctl -DFOREGROUND &
-	fi	
+	fi
+else
+	PID_FILE=/var/run/nginx.pid
+	mkdir /var/log/nginx
+	
+export PID_FILE
+. /home/trap.sh
+cp /home/ruby_env /home/.env_vars
+ for env_name in `cat /home/app.env `
+  do
+   if ! test -z  ${!env_name}
+        then
+  	      echo  "passenger_env_var $env_name  ${!env_name};"   >> /home/.env_vars
+  	    fi
+  done
+echo " passenger_env_var RAILS_ENV $RAILS_ENV;" >> /home/.env_vars
+echo " passenger_env_var SECRET_KEY_BASE $SECRET_KEY_BASE;" >> /home/.env_vars
+#echo " passenger_env_var SYSTEM_API_URL $SYSTEM_API_URL;">> /home/.env_vars
+#echo " passenger_env_var SYSTEM_RELEASE $SYSTEM_RELEASE;" >> /home/.env_vars
+#echo " passenger_env_var DATABASE_URL $DATABASE_URL;" >> /home/.env_vars
+#echo " passenger_env_var ACTION_CABLE_ALLOWED_REQUEST_ORIGINS $ACTION_CABLE_ALLOWED_REQUEST_ORIGINS;" >> /home/.env_vars
+#echo " passenger_env_var ACTION_CABLE_URL $ACTION_CABLE_URL;" >> /home/.env_vars
+#echo " passenger_env_var ACTION_CABLE_URL $ACTION_CABLE_URL;" >> /home/.env_vars
+#echo " passenger_env_var WORKSHOP_KEY $WORKSHOP_KEY;" >> /home/.env_vars
+nginx &
+
+fi
+
+if test -f /home/engines/scripts/blocking.sh
+	then
+		 /home/engines/scripts/blocking.sh &
+		 blocking_pid=$!
+		 echo " $blocking_pid " >>  $PID_FILE
+	fi
 		
 touch /engines/var/run/flags/startup_complete
  wait 

@@ -3,7 +3,9 @@ module EngineApiEvents
   class EventsStreamWriter
     attr_accessor :rd
     
-   def initialize     
+   def initialize   (system_api)  
+     @system_api = system_api
+     
      @rd, @wr = IO.pipe
 end
 
@@ -28,17 +30,16 @@ rescue StandardError => e
   def stop
     @wr.close
     @rd.close
+    @system_api.rm_event_listener([self,'write_event'.to_sym])
   end
   
   end
     
  def container_events_stream
   
- stream = EventsStreamWriter.new( )
+ stream = EventsStreamWriter.new(@system_api )
    @system_api.add_event_listener([stream,'write_event'.to_sym],16)
    stream.start
-  
-  
   return stream
  end
  
