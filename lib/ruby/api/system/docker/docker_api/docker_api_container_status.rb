@@ -91,8 +91,9 @@ rescue StandardError => e
   end
 
   def logs_container(container, count)
+    return log_error_mesg(' No Container ID ', container) if container.container_id == -1 
     #    GET /containers/4fa6e0f0c678/logs?stderr=1&stdout=1&timestamps=1&follow=1&tail=10&since=1428990821 HTTP/1.1
-    request = '/containers/' + container.container_id + '/logs?stderr=1&stdout=1&timestamps=1&follow=0&tail=' + count.to_s
+    request = '/containers/' + container.container_id .to_s + '/logs?stderr=1&stdout=1&timestamps=1&follow=0&tail=' + count.to_s
    r = get_request(request, false)
     result = {}
     DockerUtils.docker_stream_as_result(r , result)
