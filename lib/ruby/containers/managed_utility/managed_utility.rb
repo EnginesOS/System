@@ -1,5 +1,5 @@
 class ManagedUtility< ManagedContainer
- attr_accessor :volumes_from
+ 
 
   def post_load
     
@@ -125,11 +125,14 @@ class ManagedUtility< ManagedContainer
     log_exception(e)
   end
 
-  def apply_volume_from_templates(command_params, templater)
-    volumes_from.each_value do |from|
+  def apply_volume_from_templates(command_params  , templater)
+    vols = []
 
-      from[:volume_from] = templater.apply_hash_variables(from[:volume_from], command_params)
+    volumes_from.each do |from|
+      vols.push(templater.apply_hash_variables(from, command_params))
+      
     end
+  volumes_from = vols
   rescue StandardError => e
 
     log_exception(e)
