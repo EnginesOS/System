@@ -7,6 +7,7 @@ for directory in $*
  echo $directory
  directory=`echo $directory | sed "/^\/home\/app/s///"`
  	directory=`echo $directory | sed "/\/$/s///"`
+ 	 echo $directory
           if [ -h  /home/app/$directory ] 
             then 
             dest=`ls -la /home/app/$directory |cut -f2 -d'>'`
