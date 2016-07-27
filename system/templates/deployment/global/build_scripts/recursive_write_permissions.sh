@@ -34,13 +34,13 @@ echo no suffix $directory
         dirs=`find /home/app/$directory -type d -print0`
         if ! test -z "$dirs" 
           then
-         	find /home/app/$directory -type d -print0 | xargs -0 chmod 755
+         	find /home/app/$directory -type d -print0 | xargs -0 chmod 775
          fi
          
         files=`find /home/app/$directory -type f -print0`
         if ! test -z "$files" 
           then
-         	find /home/app/$directory -type f -print0 | xargs -0 chmod 644
+         	find /home/app/$directory -type f -print0 | xargs -0 chmod 664
          fi
        
         done
