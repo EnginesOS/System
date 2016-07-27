@@ -1,16 +1,16 @@
 module LocalFileServiceBuilder
   def run_volume_builder(container,username)
     clear_error
-    if File.exist?(SystemConfig.CidDir + '/volbuilder.cid')
-      command = 'docker stop volbuilder'
-      SystemUtils.run_system(command)
-      command = 'docker rm volbuilder'
-      SystemUtils.run_system(command)
-      File.delete(SystemConfig.CidDir + '/volbuilder.cid')
-    end
-    mapped_vols = get_volbuild_volmaps(container)
-    command = 'docker run --name volbuilder --memory=128m -e fw_user=' + username.to_s + ' -e data_gid=' + container.data_gid.to_s + '   --cidfile ' +SystemConfig.CidDir + 'volbuilder.cid ' + mapped_vols.to_s + ' -t engines/volbuilder:' + SystemUtils.system_release + ' /bin/sh /home/setup_vols.sh '
-    SystemDebug.debug(SystemDebug.services,'Run volume builder',command)
+#    if File.exist?(SystemConfig.CidDir + '/volbuilder.cid')
+#      command = 'docker stop volbuilder'
+#      SystemUtils.run_system(command)
+#      command = 'docker rm volbuilder'
+#      SystemUtils.run_system(command)
+#      File.delete(SystemConfig.CidDir + '/volbuilder.cid')
+#    end
+#    mapped_vols = get_volbuild_volmaps(container)
+#    command = 'docker run --name volbuilder --memory=128m -e fw_user=' + username.to_s + ' -e data_gid=' + container.data_gid.to_s + '   --cidfile ' +SystemConfig.CidDir + 'volbuilder.cid ' + mapped_vols.to_s + ' -t engines/volbuilder:' + SystemUtils.system_release + ' /bin/sh /home/setup_vols.sh '
+#    SystemDebug.debug(SystemDebug.services,'Run volume builder',command)
 
     #run_system(command)
    # result = SystemUtils.execute_command(command)

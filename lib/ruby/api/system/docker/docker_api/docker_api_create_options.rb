@@ -98,6 +98,8 @@ module DockerApiCreateOptions
     host_config['Memory'] = memory
     host_config['MemorySwap'] = memory * 2
     host_config['MemoryReservation'] # 0,
+    host_config['VolumesFrom'] = container.volumes_from unless container.volumes_from.nil?
+      
     # host_config['KernelMemory'] # 0,
     #  host_config['CpuShares'] # 512,
     # host_config['CpuPeriod'] # 100000,
