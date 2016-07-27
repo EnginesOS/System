@@ -126,10 +126,13 @@ class ManagedUtility< ManagedContainer
   end
 
   def apply_volume_from_templates(command_params, templater)
-    volumes_from.each_value do |from|
-
-      from[:volume_from] = templater.apply_hash_variables(from[:volume_from], command_params)
+    vols = []
+  
+    volumes_from.each do |from|
+      vols.push(templater.apply_hash_variables(from))
+      
     end
+  volumes_from = vols
   rescue StandardError => e
 
     log_exception(e)
