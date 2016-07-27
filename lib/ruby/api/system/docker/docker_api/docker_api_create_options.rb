@@ -98,6 +98,7 @@ module DockerApiCreateOptions
     host_config['Memory'] = memory
     host_config['MemorySwap'] = memory * 2
     host_config['MemoryReservation'] # 0,
+    STDERR.puts('CONTAINERS FROM ' + container.volumes_from.to_s) unless container.volumes_from.nil?
     host_config['VolumesFrom'] = container.volumes_from unless container.volumes_from.nil?
       
     # host_config['KernelMemory'] # 0,
