@@ -4,10 +4,11 @@
 for directory in $*
  do
  directory=`echo $directory | sed "/[.][.]/s///g"` 
- echo $directory
+ echo not .. $directory
  directory=`echo $directory | sed "/^\/home\/app/s///"`
+  	 echo no prefix $directory
  	directory=`echo $directory | sed "/\/$/s///"`
- 	 echo $directory
+echo no suffix $directory
           if [ -h  /home/app/$directory ] 
             then 
             dest=`ls -la /home/app/$directory |cut -f2 -d'>'`
