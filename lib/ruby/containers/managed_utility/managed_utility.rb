@@ -125,11 +125,11 @@ class ManagedUtility< ManagedContainer
     log_exception(e)
   end
 
-  def apply_volume_from_templates(command_params, templater)
+  def apply_volume_from_templates(command_params  , templater)
     vols = []
-  
+
     volumes_from.each do |from|
-      vols.push(templater.apply_hash_variables(from))
+      vols.push(templater.apply_hash_variables(from, command_params))
       
     end
   volumes_from = vols
