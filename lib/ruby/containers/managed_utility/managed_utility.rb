@@ -5,7 +5,9 @@ class ManagedUtility< ManagedContainer
     
   # Basically parent super but no lock on image 
     expire_engine_info
-       set_cont_id
+      
+    info  =  @container_api.inspect_container_by_name(self)
+    @container_id = info[:Id] if info.is_a?(Hash)
        set_running_user
        domain_name = SystemConfig.internal_domain
        @conf_self_start.freeze
