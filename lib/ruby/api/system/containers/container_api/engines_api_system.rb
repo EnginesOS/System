@@ -10,7 +10,7 @@ module EnginesApiSystem
   def delete_engine(container)
     SystemDebug.debug(SystemDebug.containers,  :container_api_delete_engine,container)
     @system_api.delete_engine(container)
-    volbuilder = @core_api.loadManagedUtility('fsconfigurator')
+    volbuilder = @engines_core.loadManagedUtility('fsconfigurator')
     ContainerStateFiles.delete_container_configs(volbuilder, container)
   end
 
