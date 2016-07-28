@@ -131,11 +131,10 @@ class ManagedUtility< ManagedContainer
     volumes_from.each do |from|
       s =templater.apply_hash_variables(from, command_params)
     
-      vols.push(s) unless s == ''
-      
+      vols.push(s) unless s == ""
     end
-  volumes_from = vols
-    volumes_from = nil if vols.size == 0
+  @volumes_from = vols
+    @volumes_from = nil if vols.size == 0
   rescue StandardError => e
 
     log_exception(e)
