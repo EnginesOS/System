@@ -2,7 +2,7 @@ module EngineApiImageActions
   def delete_image(container)
     clear_error
     @system_api.delete_engine(container)
-    volbuilder = @core_api.loadManagedUtility('fsconfigurator')
+    volbuilder = @engines_core.loadManagedUtility('fsconfigurator')
     return  ContainerStateFiles.delete_container_configs(volbuilder, container) if @docker_api.delete_image(container)
     # only delete if del all otherwise backup
     # NO Image well delete the rest
