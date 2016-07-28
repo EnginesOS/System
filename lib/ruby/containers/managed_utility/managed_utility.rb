@@ -135,6 +135,7 @@ class ManagedUtility< ManagedContainer
       
     end
   volumes_from = vols
+    volumes_from = nil if vols.size == 0
   rescue StandardError => e
 
     log_exception(e)
