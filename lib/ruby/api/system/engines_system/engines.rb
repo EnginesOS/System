@@ -116,8 +116,7 @@ module Engines
   def delete_engine(container)
     
     rm_engine_from_cache(container.container_name)
-    volbuilder = @core_api.loadManagedUtility('fsconfigurator')
-    ContainerStateFiles.delete_container_configs(volbuilder, container)
+   
   end
   
 end
