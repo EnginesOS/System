@@ -7,21 +7,14 @@ module DockerContainerActions
    return r if create_only == true || r.is_a?(EnginesError) 
    STDERR.puts(' CREATED AND NOW STARTING ')
     @docker_comms.start_container(container)
-#    clear_error
-#    commandargs = DockerCmdOptions.container_commandline_args(container)
-#    commandargs = 'docker run  -d ' + commandargs.to_s
 #
-#    SystemDebug.debug(SystemDebug.docker,'create cont', commandargs)
-#     old_docker_cmd_w(commandargs, container)       
   rescue StandardError => e
     container.last_error = ('Failed To Create ')
     log_exception(e)
   end
 
   def start_container(container)
-#    clear_error
-#    commandargs = 'docker start ' + container.container_name
-#    run_docker_cmd(commandargs, container)
+
     @docker_comms.start_container(container)
   rescue StandardError => e
     log_exception(e)

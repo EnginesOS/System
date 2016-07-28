@@ -20,7 +20,8 @@ class VolumeService < ManagedService
     log_exception(e)
   end
 
-  def rm_volume(service_hash)
+  def rm_volume(volbuilder, service_hash)
+    volbuilder = @engines_core.loadManagedUtility('fsconfigurator')
     util_params = {}
     util_params[:volume] =  service_hash[:variables][:service_name]
     util_params[:fw_user] = service_hash[:variables][:user]

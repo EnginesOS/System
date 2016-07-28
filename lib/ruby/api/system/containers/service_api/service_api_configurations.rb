@@ -1,7 +1,7 @@
 module ServiceApiConfigurations
   @@configurator_timeout = 10
   def retrieve_configurator(c, params)
-    # cmd = 'docker exec -u ' + c.cont_userid + ' ' +  c.container_name + ' /home/configurators/read_' + params[:configurator_name].to_s + '.sh '
+    # cmd = 'docker_exec -u ' + c.cont_userid + ' ' +  c.container_name + ' /home/configurators/read_' + params[:configurator_name].to_s + '.sh '
     cmd =  '/home/configurators/read_' + params[:configurator_name].to_s + '.sh'
     result = {}
     begin
@@ -29,7 +29,7 @@ module ServiceApiConfigurations
     p :configurator_params
     p configurator_params
     cmd = ['/home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh','\'' + SystemUtils.hash_variables_as_json_str(configurator_params[:variables]).to_s + '\'']
-    #cmd = 'docker exec -u ' + container.cont_userid.to_s + ' ' +  container.container_name.to_s + ' /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh \'' + SystemUtils.hash_variables_as_json_str(configurator_params).to_s + '\''
+    #cmd = 'docker_exec -u ' + container.cont_userid.to_s + ' ' +  container.container_name.to_s + ' /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh \'' + SystemUtils.hash_variables_as_json_str(configurator_params).to_s + '\''
     result = {}
     begin
       Timeout.timeout(@@configurator_timeout) do

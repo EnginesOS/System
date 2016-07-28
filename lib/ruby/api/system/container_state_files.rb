@@ -71,17 +71,18 @@ class ContainerStateFiles
     SystemConfig.CidDir + '/' + container.container_name + '.cid'
   end
 
-  def self.delete_container_configs(container)
+  def self.delete_container_configs(volbuilder, container)
     cidfile = SystemConfig.CidDir + '/' + container.container_name + '.cid'
     File.delete(cidfile) if File.exist?(cidfile)
     util_params = {}
     util_params[:target] =  container.container_name 
+    
     result =  volbuilder.execute_command(:remove, util_params)
-#    cmd = 'docker rm volbuilder'
+#    cmd = 'docker_rm volbuilder'
 #    retval = SystemUtils.run_system(cmd)
-#    cmd = 'docker run  --name volbuilder --memory=20m -e fw_user=www-data  -v /opt/engines/run/containers/' + container.container_name + '/:/client/state:rw  -v /var/log/engines/containers/' + container.container_name + ':/client/log:rw    -t engines/volbuilder:' + SystemUtils.system_release + ' /home/remove_container.sh state logs'
+#    cmd = 'docker_run  --name volbuilder --memory=20m -e fw_user=www-data  -v /opt/engines/run/containers/' + container.container_name + '/:/client/state:rw  -v /var/log/engines/containers/' + container.container_name + ':/client/log:rw    -t engines/volbuilder:' + SystemUtils.system_release + ' /home/remove_container.sh state logs'
 #    retval = SystemUtils.run_system(cmd)
-#    cmd = 'docker rm volbuilder'
+#    cmd = 'docker_rm volbuilder'
 #    retval =  SystemUtils.run_system(cmd)
     unless result.is_a?(EnginesError)
       FileUtils.rm_rf(ContainerStateFiles.container_state_dir(container))
