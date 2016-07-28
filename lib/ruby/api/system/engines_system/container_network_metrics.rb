@@ -1,6 +1,6 @@
 module ContainerNetworkMetrics
   # FIXME: Kludge should read from network namespace /proc ?
-    def get_container_network_metrics(container_name)
+    def get_container_network_metrics(container)
       ret_val = {}
       clear_error
   
@@ -10,9 +10,9 @@ module ContainerNetworkMetrics
         ret_val[:out] = 'n/a'
         return ret_val
       end
-      commandargs = 'docker exec ' + container_name + " netstat  --interfaces -e |  grep bytes |head -1 | awk '{ print $2 \" \" $6}'  2>&1"
+      cmd = ['netstat','--interfaces', '-e','|','grep', 'bytes', '|','head', '-1', '|', 'awk', '{ print $2 \" \" $6}']
   
-      result = SystemUtils.execute_command(commandargs)
+      result = @engines_core.exec_in_container(container, cmd)
       if result[:result] != 0
         ret_val = error_result
       else

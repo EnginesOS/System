@@ -1,15 +1,16 @@
 module EngineApiExportImport
   @@export_timeout=120
-  def export_service_data(service_hash)
+  def export_service_data(container, service_hash)
     SystemDebug.debug(SystemDebug.export_import, :export_service, service_hash)
     cmd_dir = SystemConfig.BackupScriptsRoot + '/' + service_hash[:publisher_namespace] + '/' + service_hash[:type_path] + '/' + service_hash[:service_handle] + '/'
-
-    cmd = 'docker exec  ' + service_hash[:parent_engine] + ' ' + cmd_dir + '/backup.sh ' 
+   
+    cmd = cmd_dir + '/backup.sh' 
     SystemDebug.debug(SystemDebug.export_import, :export_service, cmd)
         begin
           result = {}
           Timeout.timeout(@@export_timeout) do
-            thr = Thread.new { result = SystemUtils.execute_command(cmd, true) }
+          thr = Thread.new { result = @engines_core.exec_in_container(container, [cmd]) }
+            #SystemUtils.execute_command(cmd, true) }
             thr.join
             SystemDebug.debug(SystemDebug.export_import, :export_service,service_hash,'result code =' ,result[:result])
             return result[:stdout] if result[:result] == 0
@@ -23,7 +24,7 @@ module EngineApiExportImport
 end
 
    
-  def import_service_data(params)  
+  def import_service_data(container, params)  
    
     service_hash = params[:service_connection]
     SystemDebug.debug(SystemDebug.export_import, :import_service, service_hash,params[:import_method])

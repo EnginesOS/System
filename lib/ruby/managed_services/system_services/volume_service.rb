@@ -21,15 +21,24 @@ class VolumeService < ManagedService
   end
 
   def rm_volume(service_hash)
-    return log_error_mesg('invalid parent dir in rm_volume',service_hash) unless service_hash[:variables][:volume_src] .start_with?( SystemConfig.LocalFSVolHome() + '/' + service_hash[:parent_engine])
-    cmd = 'docker run  --name volbuilder --memory=20m -e fw_user=www-data    -v ' + service_hash[:variables][:volume_src] + ':/dest/fs:rw   -t engines/volbuilder:' + SystemUtils.system_release + ' /home/remove_container.sh fs'
-    retval =  SystemUtils.run_system(cmd)
-    cmd = 'docker rm volbuilder'
-    retval =  SystemUtils.run_system(cmd)
+    util_params = {}
+    util_params[:volume] =  service_hash[:variables][:service_name]
+    util_params[:fw_user] = service_hash[:variables][:user]
+    util_params[:target] =  service_hash[:parent_engine]
+    util_params[:data_gid] = service_hash[:variables][:group]
+    result =  volbuilder.execute_command(:remove_volume, util_params)
+    STDERR.puts(' remove volume ' + result.to_s)
+#    return log_error_mesg('invalid parent dir in rm_volume',service_hash) unless service_hash[:variables][:volume_src] .start_with?( SystemConfig.LocalFSVolHome() + '/' + service_hash[:parent_engine])
+#    cmd = 'docker_run  --name volbuilder --memory=20m -e fw_user=www-data    -v ' + service_hash[:variables][:volume_src] + ':/dest/fs:rw   -t engines/volbuilder:' + SystemUtils.system_release + ' /home/remove_container.sh fs'
+#    retval =  SystemUtils.run_system(cmd)
+#    cmd = 'docker_rm volbuilder'
+#    retval =  SystemUtils.run_system(cmd)
     return FileUtils.rm_rf( service_hash[:variables][:volume_src] ) #SystemConfig.LocalFSVolHome() + '/' + service_hash[:parent_engine] +  '/' + service_hash[:service_handle]) if retval
-    log_error_mesg('Failed to Delete FS:' + retval.to_s ,service_hash)
+  
+    
   rescue  Exception=>e
-    SystemUtils.log_exception(e)
+    log_error_mesg('Failed to Delete FS:' + service_hash.to_s ,service_hash)
+    SystemUtils.log_exception(e,service_hash)
   end
 
   def reregister_consumers

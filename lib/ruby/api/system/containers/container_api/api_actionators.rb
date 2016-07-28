@@ -9,7 +9,7 @@ module ApiActionators
     end    
     inter=''
     inter='-i ' unless data.nil?
-    #cmd = 'docker exec ' + inter  +  c.container_name + ' /home/actionators/' + actionator_name + '.sh ' + args.to_s
+
     cmds = ['/home/actionators/' + actionator_name + '.sh',args.to_s]
       result = {}
       begin

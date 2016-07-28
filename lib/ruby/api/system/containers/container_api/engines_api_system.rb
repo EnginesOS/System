@@ -14,7 +14,7 @@ module EnginesApiSystem
   end
 
   def get_container_network_metrics(container)
-    @system_api.get_container_network_metrics(container.container_name)
+    @system_api.get_container_network_metrics(container)
   end
 
   def save_container(container)
