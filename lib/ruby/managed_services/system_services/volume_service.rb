@@ -9,13 +9,14 @@ class VolumeService < ManagedService
     return rm_volume(service_hash)
   end
 
-  def add_volume(service_hash)
-    dest = SystemConfig.LocalFSVolHome() + '/' + service_hash[:parent_engine]
-    make_fs_root_dir(dest)  unless Dir.exist?(dest)
-
-    dest +=  '/' + service_hash[:service_handle]
-    dest = service_hash[:variables][:volume_src]
-    FileUtils.mkdir_p(dest) unless Dir.exist?(dest)
+  def add_volume(volbuilder, service_hash)
+    volbuilder = @engines_core.loadManagedUtility('fsconfigurator')
+       util_params = {}
+       util_params[:volume] =  service_hash[:variables][:service_name]
+       util_params[:fw_user] = service_hash[:variables][:user]
+       util_params[:target] =  service_hash[:parent_engine]
+       util_params[:data_gid] = service_hash[:variables][:group]
+       result =  volbuilder.execute_command(:add_volume, util_params)
   rescue  Exception=>e
     log_exception(e)
   end

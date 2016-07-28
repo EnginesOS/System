@@ -7,6 +7,7 @@ module LocalFileServiceBuilder
     util_params[:volume] = '/'
     util_params[:fw_user] = username.to_s
     util_params[:target] = container.container_name
+    util_params[:target_container] = container.container_name
     util_params[:data_gid] = container.data_gid.to_s
     result =  volbuilder.execute_command(:setup_engine, util_params)
     STDERR.puts(' excute utile REsult  ' + result.to_s)
