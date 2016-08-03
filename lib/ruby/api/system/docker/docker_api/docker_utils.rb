@@ -18,8 +18,11 @@ module DockerUtils
          elsif r[0].start_with?("\u0002\u0000\u0000\u0000")
            dst = :stderr
            r = r[7..-1]
+         elsif r[0].start_with?("\u0002\u0000\u0000\u0000")
+          dst = :stdout
+          r = r[7..-1]
          else         
-         r = r[7..-1]
+        # r = r[7..-1]
           dst = :stdout
          end
      #"\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u000b{\"certs\":[\n\u0001\u0000\u0000\u0000\u0000\u0000\u0000\n\"engines\"\n\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0003]}\n
@@ -28,9 +31,9 @@ module DockerUtils
 
          
          return h if r.nil?
-         l = r.index("\u0000\u0000\u0000")
-         unless l.nil?
-         length =  l - 1
+         next_chunk = r.index("\u0000\u0000\u0000")
+         unless next_chunk.nil?
+          length =  next_chunk - 1
          else
            length = r.length
          end
