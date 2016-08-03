@@ -34,6 +34,7 @@ module DockerApiExec
       STDERR.puts('PROCESS REQUEST with single chunk ' + @data.to_s)
  #     lambda do |socket|
         write_thread = Thread.start do 
+          begin
       STDERR.puts('PROCESS REQUEST write thread ' + @data.to_s)
            return socket.close_write if @data.length == 0
            if @data.length < Excon.defaults[:chunk_size]
@@ -45,15 +46,21 @@ module DockerApiExec
            else
              socket.send(@data.slice!(0,Excon.defaults[:chunk_size]))
            end
+          rescue StandardError => e
+              STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
+          end
         end
         read_thread = Thread.start do
           begin
             STDERR.puts('PROCESS REQUEST read thread')
-          while chunk = socker.read_partial(1024)
+          while chunk = socket.read_partial(1024)
             DockerUtils.docker_stream_as_result(chunk, @result)
             STDERR.puts('PROCESS REQUEST read thread' + @result.to_s)
           end          
          rescue EOFError 
+           return
+         rescue StandardError => e
+            STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
         end
           write_thread.kill
         end
