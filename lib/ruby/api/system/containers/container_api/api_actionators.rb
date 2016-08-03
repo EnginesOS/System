@@ -7,8 +7,7 @@ module ApiActionators
     else 
         args = '\'' + params.to_json + '\''        
     end    
-    inter=''
-    inter='-i ' unless data.nil?
+
 
     cmds = ['/home/actionators/' + actionator_name + '.sh',args.to_s]
       result = {}
@@ -17,9 +16,11 @@ module ApiActionators
           thr = Thread.new do
             begin
             if data.nil?
+              STDERR.puts('Actionator with no data ')
               result = engines_core.exec_in_container(c, cmds, true)
         #      result = SystemUtils.execute_command(cmd)
             else
+              STDERR.puts('Actionator with data ')
               result = engines_core.exec_in_container(c, cmds, true, data)
               # result = SystemUtils.execute_command(cmd, false, data)
             end 
