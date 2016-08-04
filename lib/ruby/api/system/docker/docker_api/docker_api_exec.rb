@@ -30,9 +30,9 @@ module DockerApiExec
                       return
   
       end
-    def process_request(socket)
-      STDERR.puts('PROCESS REQUEST with single chunk ' + @data.to_s)
- #     lambda do |socket|
+    def process_request()
+      STDERR.puts('PROCESS REQUEST init ' + @data.to_s)
+      lambda do |socket|
         write_thread = Thread.start do 
           begin
       STDERR.puts('PROCESS REQUEST write thread ' + @data.to_s)
@@ -67,7 +67,7 @@ module DockerApiExec
         
         write_thread.join
         read_thread.join
-    # end
+     end
     rescue StandardError => e
       STDERR.puts('PROCESS Execp' + e.to_s + ' ' + e.backtrace.to_s)
       
