@@ -21,14 +21,16 @@ module DockerApiExec
             return true
           end
           
-      def process_response(chunk , c , t)
+      def process_response()
+         lambda do |chunk , c , t|
         DockerUtils.docker_stream_as_result(chunk, @result)
       @result[:raw] = @result[:raw] + chunk.to_s
   STDERR.puts( ' parse build res  ' + chunk.to_s )
+          end
      rescue StandardError =>e
           STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s + ' ' + e.backtrace.to_s)
                       return
-  
+        
       end
     def process_request()
       STDERR.puts('PROCESS REQUEST init ' + @data.to_s)
