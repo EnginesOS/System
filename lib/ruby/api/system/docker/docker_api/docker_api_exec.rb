@@ -22,9 +22,10 @@ module DockerApiExec
           end
           
       def process_response()
+        return_result = @result
          lambda do |chunk , c , t|
-        DockerUtils.docker_stream_as_result(chunk, @result)
-      @result[:raw] = @result[:raw] + chunk.to_s
+        DockerUtils.docker_stream_as_result(chunk, return_result)
+           return_result[:raw] = return_result[:raw] + chunk.to_s
   STDERR.puts( ' parse build res  ' + chunk.to_s )
           end
      rescue StandardError =>e
@@ -33,21 +34,23 @@ module DockerApiExec
         
       end
     def process_request()
-      STDERR.puts('PROCESS REQUEST init ' + @data.to_s)
+      to_send = @data
+      return_result = @result
+      STDERR.puts('PROCESS REQUEST init ' + to_sendto_s)
       lambda do |socket|
         STDERR.puts('PROCESS REQUEST Lambda')
         write_thread = Thread.start do 
           begin
-      STDERR.puts('PROCESS REQUEST write thread ' + @data.to_s)
-           return socket.close_write if @data.length == 0
-           if @data.length < Excon.defaults[:chunk_size]
-             STDERR.puts('PROCESS REQUEST with single chunk ' + @data.to_s)
-             r = @data
-             @data = ''
-             socket.send(@data)
+      STDERR.puts('PROCESS REQUEST write thread ' + to_send.to_s)
+           return socket.close_write if to_send.length == 0
+           if to_send.length < Excon.defaults[:chunk_size]
+             STDERR.puts('PROCESS REQUEST with single chunk ' + to_send.to_s)
+             r = to_send
+             to_send = ''
+             socket.send(r)
              socket.close_write
            else
-             socket.send(@data.slice!(0,Excon.defaults[:chunk_size]))
+             socket.send(to_send.slice!(0,Excon.defaults[:chunk_size]))
            end
           rescue StandardError => e
               STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
@@ -57,8 +60,8 @@ module DockerApiExec
           begin
             STDERR.puts('PROCESS REQUEST read thread')
           while chunk = socket.read_partial(1024)
-            DockerUtils.docker_stream_as_result(chunk, @result)
-            STDERR.puts('PROCESS REQUEST read thread' + @result.to_s)
+            DockerUtils.docker_stream_as_result(chunk, return_result)
+            STDERR.puts('PROCESS REQUEST read thread' + return_result.to_s)
           end          
          rescue EOFError 
            return
@@ -72,7 +75,7 @@ module DockerApiExec
         read_thread.join
      end
     rescue StandardError => e
-      STDERR.puts('PROCESS Execp' + e.to_s + ' ' + e.backtrace.to_s)
+      STDERR.puts('PROCESS Execp' + e.to_s + ' ' + e.backtrace.to_s )
       
     end
   end
