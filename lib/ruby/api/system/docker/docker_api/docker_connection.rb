@@ -73,13 +73,14 @@ excon_params = {:debug_request => true,
   :persistent => false,
   :response_block => stream_reader.process_response
 }
-    body = {
-          "Tty" => true,
-          "Detach" => false
-        }
-    excon_params = { :body => body.to_json }
+   
     if stream_reader.method(:is_hijack?).call == true
       STDERR.puts('  hijack_block ' )
+      body = {
+               "Tty" => true,
+               "Detach" => false
+             }
+         excon_params[:body] = body.to_json 
       excon_params.delete(:response_block)
       excon_params[:hijack_block] = stream_reader.process_request
     else 
