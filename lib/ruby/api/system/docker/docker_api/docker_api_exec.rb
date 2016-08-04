@@ -36,7 +36,7 @@ module DockerApiExec
     def process_request()
       to_send = @data
       return_result = @result
-      STDERR.puts('PROCESS REQUEST init ' + to_sendto_s)
+      STDERR.puts('PROCESS REQUEST init ' + to_send.to_s)
       lambda do |socket|
         STDERR.puts('PROCESS REQUEST Lambda')
         write_thread = Thread.start do 
