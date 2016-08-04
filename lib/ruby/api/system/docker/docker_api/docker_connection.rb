@@ -80,6 +80,7 @@ excon_params = {:debug_request => true,
     else 
        excon_params[:request_block] = stream_reader.method(:process_request) if stream_reader.method(:has_data?).call == true
     end
+    STDERR.puts('Excon Params ' + excon_params.to_s)
   return Excon.new('http://172.17.0.1:2375',excon_params)
   
   end
