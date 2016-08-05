@@ -91,7 +91,7 @@ module DockerApiExec
       exec_id = r[:Id]
       request_params = {}
       request_params["Detach"] = false
-      request_params["Tty"] = true
+      request_params["Tty"] = false
       request = '/exec/' + exec_id + '/start'
     unless have_data == true
       result = {}
@@ -100,10 +100,16 @@ module DockerApiExec
       return DockerUtils.docker_stream_as_result(r, result)
     end
   #  initheader = {'Transfer-Encoding' => 'chunked', 'content-type' => 'application/octet-stream' }
-
+    request_params["Tty"] = false
+    request_params["AttachStdin"] = true
+    request_params["AttachStdout"] = true
+    request_params["AttachStderr"] = true
+      
     stream_handler = DockerStreamHandler.new(data)
-
-    post_stream_request(request, nil, stream_handler,  nil, request_params.to_json  )
+    headers = {}
+    headers['Content-type'] = 'text'
+     
+    post_stream_request(request, nil, stream_handler,  headers, request_params.to_json  )
     STDERR.puts('EXEC RES ' + stream_handler.result.to_s)
     stream_handler.result
 #     req = Net::HTTP::Post.new(request, initheader)
