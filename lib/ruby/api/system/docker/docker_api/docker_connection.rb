@@ -112,7 +112,9 @@ excon_params = {:debug_request => true,
     :query => options,
     :path => uri,
     :headers => headers,
-    :body =>  body  )
+    :body =>  body ,
+    :hijack_block => DockerUtils.process_request(stream_reader.data, stream_reader.result)
+      )
     else
       #headers['Transfer-Encoding'] = 'chunked'   
       STDERR.puts(' using content as is json assumed ' + headers.to_s + ' : options ' + options.to_s + ' body ' + content.to_s ) 
