@@ -107,7 +107,7 @@ module DockerApiExec
       
     stream_handler = DockerStreamHandler.new(data)
     headers = {}
-    headers['Content-type'] = 'text'
+    headers['Content-type'] = 'text/plain'
      
     post_stream_request(request, nil, stream_handler,  headers, request_params.to_json  )
     STDERR.puts('EXEC RES ' + stream_handler.result.to_s)
@@ -205,7 +205,7 @@ module DockerApiExec
             request_params["Tty"] =  false
           else
             request_params["AttachStdin"] = true
-            request_params["Tty"] =  true
+            request_params["Tty"] =  false
           end
           request_params[ "AttachStdout"] =  true
           request_params[ "AttachStderr"] =  true
