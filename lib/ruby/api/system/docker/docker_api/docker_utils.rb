@@ -14,10 +14,10 @@ module DockerUtils
               STDERR.puts('PROCESS REQUEST with single chunk ' + to_send.to_s)
               r = to_send
               to_send = ''
-              socket.send(r)
+              socket.send(r,0)
               socket.close_write
             else
-              socket.send(to_send.slice!(0,Excon.defaults[:chunk_size]))
+              socket.send(to_send.slice!(0,Excon.defaults[:chunk_size]),0)
             end
            rescue StandardError => e
                STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
@@ -26,7 +26,7 @@ module DockerUtils
          read_thread = Thread.start do
            begin
              STDERR.puts('PROCESS REQUEST read thread')
-           while chunk = socket.read_partial(1024)
+           while chunk = socket.recv(1024,0)
              DockerUtils.docker_stream_as_result(chunk, return_result)
              STDERR.puts('PROCESS REQUEST read thread' + return_result.to_s)
            end          
