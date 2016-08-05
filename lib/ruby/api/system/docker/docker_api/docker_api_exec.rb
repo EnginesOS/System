@@ -70,7 +70,7 @@ module DockerApiExec
     headers['Content-type'] = 'text/plain'
     headers['Connection'] = 'Upgrade'
     headers['Upgrade'] = 'tcp'
-        
+    headers['rack.hijack'] = DockerUtils.process_request(stream_reader.data, stream_reader.result)
     post_stream_request(request, nil, stream_handler,  headers , request_params.to_json )
     STDERR.puts('EXEC RES ' + stream_handler.result.to_s)
     stream_handler.result
