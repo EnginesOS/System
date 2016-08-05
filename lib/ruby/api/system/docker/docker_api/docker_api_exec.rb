@@ -108,7 +108,9 @@ module DockerApiExec
     stream_handler = DockerStreamHandler.new(data)
     headers = {}
     headers['Content-type'] = 'text/plain'
-     
+    headers['Connection'] = 'Upgrade'
+    headers['Upgrade'] = 'tcp'
+        
     post_stream_request(request, nil, stream_handler,  headers , request_params.to_json )
     STDERR.puts('EXEC RES ' + stream_handler.result.to_s)
     stream_handler.result
