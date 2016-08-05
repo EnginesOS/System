@@ -6,7 +6,10 @@ class DockerConnection < ErrorsApi
 
   require 'rubygems'
   require 'excon'
-
+  
+  require_relative 'hijack.rb'
+  Excon.defaults[:middlewares].unshift Excon::Middleware::Hijack
+      
   require_relative 'docker_api_errors.rb'
   include EnginesDockerApiErrors
   require_relative 'docker_api_exec.rb'

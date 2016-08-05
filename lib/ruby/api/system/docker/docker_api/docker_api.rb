@@ -5,8 +5,7 @@ class DockerApi  < ErrorsApi
   require_relative 'docker_api_errors.rb'
   include EnginesDockerApiErrors
  
-  require_relative 'hijack.rb'
-  Excon.defaults[:middlewares].unshift Excon::Middleware::Hijack
+  
     
   def initialize
     @con = DockerConnection.new
