@@ -51,7 +51,7 @@ module DockerUtils
     
            return h if r.nil?
            h[:stderr] = "" unless h.key?(:stderr)
-             h[:stdout] = "" unless h.key?(:stdout)
+           h[:stdout] = "" unless h.key?(:stdout)
                
         while r.length >0
        if r[0].nil?
@@ -65,7 +65,7 @@ module DockerUtils
          elsif r[0].start_with?("\u0002\u0000\u0000\u0000")
            dst = :stderr
            r = r[7..-1]
-         elsif r[0].start_with?("\u0002\u0000\u0000\u0000")
+         elsif r[0].start_with?("\u0000\u0000\u0000\u0000")
           dst = :stdout
           r = r[7..-1]
          else         
@@ -80,13 +80,15 @@ module DockerUtils
          return h if r.nil?
          next_chunk = r.index("\u0000\u0000\u0000")
          unless next_chunk.nil?
-          length =  next_chunk - 1
+          length =  next_chunk - 2
          else
+           STDERR.puts(' wnd of string')
            length = r.length
          end
       #   STDERR.puts(' problem ' + r.to_s + ' has ' + r.length.to_s + ' bytes and length ' + length.to_s ) if r.length < length
          h[dst] += r[0..length-1]
          r = r[length..-1]
+STDERR.puts(' still ave of string ' + r.to_s + ' with ' + r.length)
          end
      
         # FIXME need to get correct error status and set :stderr if app
