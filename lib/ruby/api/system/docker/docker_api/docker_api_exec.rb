@@ -109,7 +109,7 @@ module DockerApiExec
     headers = {}
     headers['Content-type'] = 'text/plain'
      
-    post_stream_request(request, nil, stream_handler,  headers , request_params )
+    post_stream_request(request, nil, stream_handler,  headers , request_params.to_json )
     STDERR.puts('EXEC RES ' + stream_handler.result.to_s)
     stream_handler.result
 #     req = Net::HTTP::Post.new(request, initheader)
