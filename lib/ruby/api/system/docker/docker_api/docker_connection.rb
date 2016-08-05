@@ -30,8 +30,7 @@ class DockerConnection < ErrorsApi
 
   def initialize
     @response_parser = Yajl::Parser.new(:symbolize_keys => true)
-    #    @docker_socket = docker_socket
-   # @socket_mutex = Mutex.new
+
     @connection = nil
   rescue StandardError => e
     log_exception(e)
