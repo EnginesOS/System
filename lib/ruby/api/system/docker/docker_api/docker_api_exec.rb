@@ -105,6 +105,10 @@ module DockerApiExec
     request_params["AttachStdout"] = true
     request_params["AttachStderr"] = true
       
+    request_params["User"] = ''
+    request_params["Privileged"] = false
+    request_params["Container"] = container.container_name 
+    request_params["Cmd"] = commands
     stream_handler = DockerStreamHandler.new(data)
     headers = {}
     headers['Content-type'] = 'text/plain'
