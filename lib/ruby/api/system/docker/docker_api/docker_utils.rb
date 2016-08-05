@@ -88,7 +88,7 @@ module DockerUtils
       #   STDERR.puts(' problem ' + r.to_s + ' has ' + r.length.to_s + ' bytes and length ' + length.to_s ) if r.length < length
          h[dst] += r[0..length-1]
          r = r[length..-1]
-STDERR.puts(' still ave of string ' + r.to_s + ' with ' + r.length)
+STDERR.puts(' still ave of string ' + r.to_s + ' with ' + r.length.to_s)
          end
      
         # FIXME need to get correct error status and set :stderr if app
