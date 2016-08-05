@@ -73,14 +73,14 @@ excon_params = {:debug_request => true,
 }
    
     if stream_reader.method(:is_hijack?).call == true
-#      STDERR.puts('  hijack_block ' )
+     STDERR.puts('  hijack_block ' )
 #      body = {
 #               "Tty" => true,
 #               "Detach" => false
 #             }
 #         excon_params[:body] = body.to_json 
       excon_params.delete(:response_block)
-      excon_params[:rack_hijack] = DockerUtils.process_request(stream_reader.data, stream_reader.result)
+   
       excon_params[:hijack_block] = DockerUtils.process_request(stream_reader.data, stream_reader.result)
     else 
        excon_params[:request_block] = stream_reader.method(:process_request) if stream_reader.method(:has_data?).call == true
