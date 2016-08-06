@@ -26,11 +26,12 @@ module DockerUtils
          read_thread = Thread.start do
            begin
              STDERR.puts('PROCESS REQUEST read thread')
-           while chunk = socket.recv(1024,0)
+           while chunk = socket.readpartial(1024)
              DockerUtils.docker_stream_as_result(chunk, return_result)
              STDERR.puts('PROCESS REQUEST read thread' + return_result.to_s)
            end          
           rescue EOFError 
+             write_thread.kill
             return
           rescue StandardError => e
              STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
