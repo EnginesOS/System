@@ -61,19 +61,19 @@ module DockerUtils
         next
         end
          if r.start_with?("\u0001\u0000\u0000\u0000")
-          r = r[7..-1]
+          r = r[8..-1]
     STDERR.puts("Stdout CONTENT " + r.to_s)    
           dst = :stdout
          elsif r.start_with?("\u0002\u0000\u0000\u0000")
            dst = :stderr
            
-           r = r[7..-1]
+           r = r[8..-1]
 STDERR.puts("Stderr CONTENT " + r.to_s)
 
          elsif r.start_with?("\u0000\u0000\u0000\u0000")
           dst = :stdout
           
-          r = r[7..-1]
+          r = r[8..-1]
 STDERR.puts("unlable stdout CONTENT " + r.to_s)
 
          else         
