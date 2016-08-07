@@ -62,21 +62,28 @@ module DockerUtils
         end
          if r[0].start_with?("\u0001\u0000\u0000\u0000")
           r = r[7..-1]
+    STDERR.puts("Stdout CONTENT " + r.to_s)    
           dst = :stdout
          elsif r[0].start_with?("\u0002\u0000\u0000\u0000")
            dst = :stderr
+           
            r = r[7..-1]
+STDERR.puts("Stderr CONTENT " + r.to_s)
+
          elsif r[0].start_with?("\u0000\u0000\u0000\u0000")
           dst = :stdout
+          
           r = r[7..-1]
+STDERR.puts("unlable stdout CONTENT " + r.to_s)
+
          else         
         # r = r[7..-1]
+STDERR.puts(" umatched CONTENT " + r.to_s)
           dst = :stdout
          end
      #"\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u000b{\"certs\":[\n\u0001\u0000\u0000\u0000\u0000\u0000\u0000\n\"engines\"\n\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0003]}\n
          
-       STDERR.puts("CONTENT " + r.to_s)
-
+     
          
          return h if r.nil?
          next_chunk = r.index("\u0000\u0000\u0000")
