@@ -32,7 +32,7 @@ module DockerUtils
            end          
           rescue EOFError 
              write_thread.kill
-            return
+            
           rescue StandardError => e
              STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
          end
