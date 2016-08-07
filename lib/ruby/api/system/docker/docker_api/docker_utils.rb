@@ -78,7 +78,7 @@ STDERR.puts("unlable stdout CONTENT " + r.to_s)
 
          else         
         # r = r[7..-1]
-STDERR.puts(" umatched CONTENT " + r.to_s)
+STDERR.puts(" umatched CONTENT " + r)
           dst = :stdout
          end
      #"\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u000b{\"certs\":[\n\u0001\u0000\u0000\u0000\u0000\u0000\u0000\n\"engines\"\n\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0003]}\n
