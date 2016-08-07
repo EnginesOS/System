@@ -60,17 +60,17 @@ module DockerUtils
         r = r[1..-1]
         next
         end
-         if r[0].start_with?("\u0001\u0000\u0000\u0000")
+         if r.start_with?("\u0001\u0000\u0000\u0000")
           r = r[7..-1]
     STDERR.puts("Stdout CONTENT " + r.to_s)    
           dst = :stdout
-         elsif r[0].start_with?("\u0002\u0000\u0000\u0000")
+         elsif r.start_with?("\u0002\u0000\u0000\u0000")
            dst = :stderr
            
            r = r[7..-1]
 STDERR.puts("Stderr CONTENT " + r.to_s)
 
-         elsif r[0].start_with?("\u0000\u0000\u0000\u0000")
+         elsif r.start_with?("\u0000\u0000\u0000\u0000")
           dst = :stdout
           
           r = r[7..-1]
