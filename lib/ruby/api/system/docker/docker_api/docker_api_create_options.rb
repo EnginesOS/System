@@ -114,10 +114,10 @@ module DockerApiCreateOptions
     host_config['PublishAllPorts'] = false
     host_config['Privileged'] = false
     host_config['ReadonlyRootfs'] = false
-    host_config['Dns'] = get_dns_servers
+    host_config['Dns'] = get_dns_servers  if container.on_host_net? == false
     # host_config['DnsOptions'] # [""],
-    host_config['DnsSearch'] = get_dns_search
-    #host_config['ExtraHosts'] # null,
+    host_config['DnsSearch'] = get_dns_search  if container.on_host_net? == false
+    #host_config['ExtraHosts'] # null, 
     #   host_config['VolumesFrom'] # ["parent", "other:ro"],
     #   host_config['CapAdd'] # ["NET_ADMIN"],
     #   host_config['CapDrop'] # ["MKNOD"],
