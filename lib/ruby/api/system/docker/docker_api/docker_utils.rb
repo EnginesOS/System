@@ -49,7 +49,7 @@ module DockerUtils
 
 
   def self.docker_stream_as_result(r, h)
-    
+    unmatched = false
            return h if r.nil?
            h[:stderr] = "" unless h.key?(:stderr)
            h[:stdout] = "" unless h.key?(:stdout)
@@ -78,14 +78,17 @@ STDERR.puts("unlable stdout CONTENT " + r.to_s)
 
          else         
         # r = r[7..-1]
-STDERR.puts(" umatched CONTENT " + r)
+STDERR.puts(" umatched CONTENT " + r.to_s)
           dst = :stdout
+          unmatched = true
          end
      #"\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u000b{\"certs\":[\n\u0001\u0000\u0000\u0000\u0000\u0000\u0000\n\"engines\"\n\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0003]}\n
          
      
          
          return h if r.nil?
+         unless unmatched == true
+           
          next_chunk = r.index("\u0000\u0000\u0000")
          unless next_chunk.nil?
           length =  next_chunk - 2
@@ -93,6 +96,9 @@ STDERR.puts(" umatched CONTENT " + r)
            STDERR.puts(' wnd of string')
            length = r.length
          end
+           length = r.length
+         end
+         
       #   STDERR.puts(' problem ' + r.to_s + ' has ' + r.length.to_s + ' bytes and length ' + length.to_s ) if r.length < length
          h[dst] += r[0..length-1]
          r = r[length..-1]
