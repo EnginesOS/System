@@ -29,5 +29,11 @@ end
     @domain_name = domain_name
     return true
   end
+  
+  def domain_name
+    @domain_name = SystemConfig.internal_domain if @domain_name.nil?
+      @domain_name
+
+  end
 
 end
