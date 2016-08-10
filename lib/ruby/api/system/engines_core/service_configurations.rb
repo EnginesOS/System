@@ -18,6 +18,7 @@ module ServiceConfigurations
     STDERR.puts(' avail definitions ' +  avail.to_s)
     
     configured = service_manager.get_service_configurations_hashes(service_hash)
+    STDERR.puts('configureddefinitions ' +  configured.to_s)
     return configured  if configured.is_a?(EnginesError) 
     configured.each do | configuration |
       avail[ configuration[:configurator_name] ] = configuration
