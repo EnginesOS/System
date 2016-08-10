@@ -19,7 +19,12 @@ module ServiceConfigurations
     
     configured = service_manager.get_service_configurations_hashes(service_hash)
     return configured  if configured.is_a?(EnginesError) 
-    avail.merge(configured)
+    configured.each do | configuration |
+      avail[ configuration[:configurator_name] ] = configuration
+ 
+    end
+   
+    avail.values
     
   end
 
