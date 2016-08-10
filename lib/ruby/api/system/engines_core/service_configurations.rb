@@ -10,7 +10,13 @@ module ServiceConfigurations
   end
 
   def get_service_configurations_hashes(service_hash)
-    service_manager.get_service_configurations_hashes(service_hash)
+    
+    avail = SoftwareServiceDefinition.configurators(service_hash)
+    
+    STDERR.puts(' avail definitions ' +  avail.to_s)
+    configured = service_manager.get_service_configurations_hashes(service_hash)
+    avail.merge(configured)
+    
   end
 
   def get_pending_service_configurations_hashes(service_hash)
