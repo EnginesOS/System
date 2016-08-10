@@ -12,9 +12,13 @@ module ServiceConfigurations
   def get_service_configurations_hashes(service_hash)
     
     avail = SoftwareServiceDefinition.configurators(service_hash)
+    return avail if avail.is_a?(EnginesError) 
+    
     
     STDERR.puts(' avail definitions ' +  avail.to_s)
+    
     configured = service_manager.get_service_configurations_hashes(service_hash)
+    return configured  if configured.is_a?(EnginesError) 
     avail.merge(configured)
     
   end

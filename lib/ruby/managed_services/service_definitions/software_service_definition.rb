@@ -56,9 +56,10 @@ end
 
   
   def SoftwareServiceDefinition.configurators(service_hash)
-
+    STDERR.puts(' SoftwareServiceDefinition.configurators ' + service_hash.to_s)
    service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
     return service_def if service_def.nil?
+    return service_def if service_def.is_a?(EnginesError)
     service_def = service_def[:configurators]
     service_def
 #        SystemDebug.debug(SystemDebug.services,:SERVICE_Constants,:loaded,service_hash[:type_path],service_hash[:publisher_namespace],service_def)
