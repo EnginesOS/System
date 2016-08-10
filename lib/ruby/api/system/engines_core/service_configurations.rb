@@ -21,7 +21,7 @@ module ServiceConfigurations
     STDERR.puts('configureddefinitions ' +  configured.to_s)
     return configured  if configured.is_a?(EnginesError) 
     configured.each do | configuration |
-      avail[ configuration[:configurator_name] ] = configuration
+      avail[ configuration[:configurator_name].to_sym ] = configuration
  
     end
    
