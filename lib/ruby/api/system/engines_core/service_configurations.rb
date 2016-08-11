@@ -91,6 +91,7 @@ end
   end
   
   def update_configuration_on_service(service_param)
+    STDERR.puts( ' update_configuration_on_service ' + service_param.to_s)
      return log_error_mesg('Missing Service name',service_param) unless service_param.key?(:service_name)
      service = loadManagedService(service_param[:service_name])
        return service  unless service.is_a?(ManagedService)
