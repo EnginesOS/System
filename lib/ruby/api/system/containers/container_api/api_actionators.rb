@@ -5,7 +5,7 @@ module ApiActionators
     if params.nil? || params.is_a?(String)
       args = params
     else 
-        args = '\'' + params.to_json + '\''        
+        args = params.to_json        
     end    
 
 

@@ -28,7 +28,7 @@ module ServiceApiConfigurations
   def run_configurator(container, configurator_params)
     p :configurator_params
     p configurator_params
-    cmd = ['/home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh','\'' + SystemUtils.hash_variables_as_json_str(configurator_params[:variables]).to_s + '\'']
+    cmd = ['/home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh', SystemUtils.hash_variables_as_json_str(configurator_params[:variables]).to_s ]
     #cmd = 'docker_exec -u ' + container.cont_userid.to_s + ' ' +  container.container_name.to_s + ' /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh \'' + SystemUtils.hash_variables_as_json_str(configurator_params).to_s + '\''
     result = {}
     begin
