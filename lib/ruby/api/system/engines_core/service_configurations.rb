@@ -62,8 +62,8 @@ module ServiceConfigurations
   
   def  definition_params_to_variables(params)
     variables =  {}
-    params.each do | param| 
-      variables[param[:name]] = nil
+    params.keys do | param_name| 
+      variables[param_name] = nil
   end
 end
   
