@@ -73,7 +73,7 @@ end
     avail = {}
       defs.each_value do |definition|
         STDERR.puts(' definition ' +  definition.to_s)
-        definition_key = definition[:name].to_s
+        definition_key = definition[:name].to_sym
       avail[definition_key] = {}
     avail[definition_key][:service_name] = service_hash[:service_name]
     avail[definition_key][:type_path] = service_hash[:type_path]
