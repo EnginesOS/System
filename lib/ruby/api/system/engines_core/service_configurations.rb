@@ -68,9 +68,10 @@ module ServiceConfigurations
 end
   
   def service_defs_to_configurations(defs, service_hash)
-    
+    STDERR.puts(' avail definitions ' +  defs.to_s)
     avail = {}
       defs.each do |definition|
+        STDERR.puts(' definition ' +  def.to_s)
         definition_key = definition[:name].to_s
       avail[definition_key] = {}
     avail[definition_key][:service_name] = service_hash[:service_name]
