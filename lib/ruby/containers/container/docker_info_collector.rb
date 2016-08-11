@@ -12,7 +12,7 @@ module DockerInfoCollector
 
     @docker_info_cache
   rescue StandardError => e
-    p @docker_info_cache.to_s
+    STDERR.puts('Exceptions ' + e.to_s + ':' + @docker_info_cache.to_s )
     log_exception(e)
   end
 
