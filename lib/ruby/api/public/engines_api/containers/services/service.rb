@@ -15,6 +15,7 @@ module PublicApiService
 
  
  def update_service_configuration(service_param)
+   STDERR.puts( ' update_configuration_on_service ' + service_param.to_s)
    @core_api.update_service_configuration(service_param)
  end
 
