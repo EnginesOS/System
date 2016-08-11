@@ -11,10 +11,11 @@ module ServiceConfigurations
 
   def get_service_configurations_hashes(service_hash)
     
-    avail = SoftwareServiceDefinition.configurators(service_hash)
+    defs = SoftwareServiceDefinition.configurators(service_hash)
+    
+    return defs if defs.is_a?(EnginesError) 
+    avail = service_defs_to_configurations(defs,service_hash)
     return avail if avail.is_a?(EnginesError) 
-    
-    
     STDERR.puts(' avail definitions ' +  avail.to_s)
     
     configured = service_manager.get_service_configurations_hashes(service_hash)
@@ -22,11 +23,9 @@ module ServiceConfigurations
     return configured  if configured.is_a?(EnginesError) 
     configured.each do | configuration |
       avail[ configuration[:configurator_name].to_sym ] = configuration
- 
     end
    
-    avail.values
-    
+    avail.values 
   end
 
   def get_pending_service_configurations_hashes(service_hash)
@@ -60,7 +59,31 @@ module ServiceConfigurations
   end
   
   private
-   
+  
+  def  definition_params_to_variables(params)
+    variables =  {}
+    params.each do | param| 
+      variables[param[:name]] = nil
+  end
+end
+  
+  def service_defs_to_configurations(defs, service_hash)
+    
+    avail = {}
+      defs.each do |definition|
+        definition_key = definition[:name].to_s
+      avail[definition_key] = {}
+    avail[definition_key][:service_name] = service_hash[:service_name]
+    avail[definition_key][:type_path] = service_hash[:type_path]
+    avail[definition_key][:publisher_namespace] = service_hash[:publisher_namespace]
+      
+    avail[definition_key][:configurator_name] = definition[:name]
+    avail[definition_key][:variables] = definition_params_to_variables(definition[:params][definition_key])
+    avail[definition_key][:no_save] = definition[:no_save]
+      end
+      avail
+  end
+  
   def get_service_configuration(service_param)
     service_manager.get_service_configuration(service_param)
   end
