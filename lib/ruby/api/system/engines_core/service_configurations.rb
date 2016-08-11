@@ -65,6 +65,7 @@ module ServiceConfigurations
     params.each do | param_name| 
       variables[param_name] = ''
   end
+  variables
 end
   
   def service_defs_to_configurations(defs, service_hash)
