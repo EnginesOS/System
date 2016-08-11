@@ -113,7 +113,8 @@ class SystemDebug
     args.each do |arg|
       mesg += arg.to_s + ' '
     end
-    SystemUtils.log_output(mesg,20)
+   # SystemUtils.log_output(mesg,20)
+    STDERR.puts(mesg )
   end
 
 end
