@@ -70,7 +70,7 @@ end
   def service_defs_to_configurations(defs, service_hash)
     STDERR.puts(' avail definitions ' +  defs.to_s)
     avail = {}
-      defs.each do |definition|
+      defs.each_value do |definition|
         STDERR.puts(' definition ' +  definition.to_s)
         definition_key = definition[:name].to_s
       avail[definition_key] = {}
