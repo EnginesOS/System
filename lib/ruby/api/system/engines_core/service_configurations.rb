@@ -24,7 +24,7 @@ module ServiceConfigurations
     configured.each do | configuration |
       avail[ configuration[:configurator_name].to_sym ] = configuration
     end
-   
+    STDERR.puts(' avail merged definitions ' +  avail.to_s)
     avail.values 
   end
 
