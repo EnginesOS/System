@@ -5,7 +5,7 @@
 # 
 # @return [String] 
 get '/v0/unauthenticated/bootstrap/mgmt/url' do
- ('https://' + engines_api.get_default_domain.to_s + '/:10443').to_json
+ 'https://' + engines_api.get_default_domain.to_s + '/:10443'
 end
 
 # @method get_mgmt_status
@@ -28,7 +28,7 @@ end
   get '/v0/unauthenticated/bootstrap/mgmt/state' do
     engine = get_service('mgmt')
      return log_error(request, engine, params) if engine.is_a?(EnginesError)
-     engine.state.to_json
+     engine.read_state.to_json
     # starting
     # running
 end

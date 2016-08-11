@@ -6,7 +6,10 @@ class DockerConnection < ErrorsApi
 
   require 'rubygems'
   require 'excon'
-
+  
+  require_relative 'hijack.rb'
+  Excon.defaults[:middlewares].unshift Excon::Middleware::Hijack
+      
   require_relative 'docker_api_errors.rb'
   include EnginesDockerApiErrors
   require_relative 'docker_api_exec.rb'
@@ -30,8 +33,7 @@ class DockerConnection < ErrorsApi
 
   def initialize
     @response_parser = Yajl::Parser.new(:symbolize_keys => true)
-    #    @docker_socket = docker_socket
-   # @socket_mutex = Mutex.new
+
     @connection = nil
   rescue StandardError => e
     log_exception(e)
@@ -40,7 +42,7 @@ class DockerConnection < ErrorsApi
   require "base64"
 
   def get_registry_auth
-    r = {"auth"=> "","email" => ""}
+    r = {"auth"=> "","email" => "","username" => '','password' => '' }
     Base64.encode64(r.to_json).gsub(/\n/, '')
   end
 
@@ -70,16 +72,23 @@ class DockerConnection < ErrorsApi
   def stream_connection(stream_reader)
 excon_params = {:debug_request => true,
   :debug_response => true,
-  :persistent => true,
-  :response_block => stream_reader.method(:process_response)
+  :persistent => false
 }
+   
     if stream_reader.method(:is_hijack?).call == true
-      STDERR.puts('  hijack_block ' )
+     STDERR.puts('  hijack_block ' )
+#      body = {
+#               "Tty" => true,
+#               "Detach" => false
+#             }
+#         excon_params[:body] = body.to_json 
       excon_params.delete(:response_block)
-      excon_params[:hijack_block] = stream_reader.method(:process_request)
+   
+      excon_params[:hijack_block] = DockerUtils.process_request(stream_reader.data, stream_reader.result)
     else 
        excon_params[:request_block] = stream_reader.method(:process_request) if stream_reader.method(:has_data?).call == true
     end
+    STDERR.puts('Excon Params ' + excon_params.to_s)
   return Excon.new('http://172.17.0.1:2375',excon_params)
   
   end
@@ -105,10 +114,11 @@ excon_params = {:debug_request => true,
     :query => options,
     :path => uri,
     :headers => headers,
-    :body =>  body  )
+    :body =>  body 
+      )
     else
       #headers['Transfer-Encoding'] = 'chunked'   
-      STDERR.puts(' using content as is json assumed ' + headers.to_s )
+      STDERR.puts(' using content as is json assumed ' + headers.to_s + ' : options ' + options.to_s + ' body ' + content.to_s ) 
       return stream_connection(stream_handler).request(
          :method => :post,
          :read_timeout => 360,
@@ -221,7 +231,7 @@ excon_params = {:debug_request => true,
   #    return hashes[0]
   #end
   def handle_resp(resp, expect_json)
-    STDERR.puts(' RESPOSE ' + resp.status.to_s + ' : ' + resp.body  )
+    STDERR.puts(" RESPOSE " + resp.status.to_s + " : " + resp.body  )
     return log_error_mesg("error:" + resp.status.to_s)  if resp.status  >= 400
     return true if resp.status  == 204 # nodata but all good happens on del
     return log_error_mesg("Un exepect response from docker", resp, resp.body, resp.headers.to_s )   unless resp.status  == 200 ||  resp.status  == 201

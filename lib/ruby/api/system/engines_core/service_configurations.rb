@@ -10,7 +10,22 @@ module ServiceConfigurations
   end
 
   def get_service_configurations_hashes(service_hash)
-    service_manager.get_service_configurations_hashes(service_hash)
+    
+    defs = SoftwareServiceDefinition.configurators(service_hash)
+    
+    return defs if defs.is_a?(EnginesError) 
+    avail = service_defs_to_configurations(defs,service_hash)
+    return avail if avail.is_a?(EnginesError) 
+    STDERR.puts(' avail definitions ' +  avail.to_s)
+    
+    configured = service_manager.get_service_configurations_hashes(service_hash)
+    STDERR.puts('configureddefinitions ' +  configured.to_s)
+    return configured  if configured.is_a?(EnginesError) 
+    configured.each do | configuration |
+      avail[ configuration[:configurator_name].to_sym ] = configuration
+    end
+    STDERR.puts(' avail merged definitions ' +  avail.to_s)
+    avail.values 
   end
 
   def get_pending_service_configurations_hashes(service_hash)
@@ -44,12 +59,39 @@ module ServiceConfigurations
   end
   
   private
-   
+  
+  def  definition_params_to_variables(params)
+    variables =  {}
+    params.each do | param_name| 
+      variables[param_name] = ''
+  end
+  variables
+end
+  
+  def service_defs_to_configurations(defs, service_hash)
+    STDERR.puts(' avail definitions ' +  defs.to_s)
+    avail = {}
+      defs.each_value do |definition|
+        STDERR.puts(' definition ' +  definition.to_s)
+        definition_key = definition[:name].to_sym
+      avail[definition_key] = {}
+    avail[definition_key][:service_name] = service_hash[:service_name]
+    avail[definition_key][:type_path] = service_hash[:type_path]
+    avail[definition_key][:publisher_namespace] = service_hash[:publisher_namespace]
+      
+    avail[definition_key][:configurator_name] = definition[:name]
+    avail[definition_key][:variables] = definition_params_to_variables(definition[:params].keys)
+    avail[definition_key][:no_save] = definition[:no_save]
+      end
+      avail
+  end
+  
   def get_service_configuration(service_param)
     service_manager.get_service_configuration(service_param)
   end
   
   def update_configuration_on_service(service_param)
+    STDERR.puts( ' update_configuration_on_service ' + service_param.to_s)
      return log_error_mesg('Missing Service name',service_param) unless service_param.key?(:service_name)
      service = loadManagedService(service_param[:service_name])
        return service  unless service.is_a?(ManagedService)
@@ -57,14 +99,14 @@ module ServiceConfigurations
      service_param[:type_path] = service.type_path.to_s
      # setting stopped contianer is ok as call can know the state, used to boot strap a config
      unless service.is_running?
-       service_param[:pending]= true        
+       service_param[:pending] = true        
        return true
      end
      if service_param.key?(:pending)
        service_param.delete(:pending)
      end
      # set config on reunning service
-
+    STDERR.puts( ' update_configuration_on_service ' + service_param.to_s)
      configurator_result =  service.run_configurator(service_param)
      return log_error_mesg('Service configurator erro@core_api.r incorrect result type ', configurator_result.to_s) unless configurator_result.is_a?(Hash)
  

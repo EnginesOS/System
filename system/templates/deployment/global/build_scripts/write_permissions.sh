@@ -8,6 +8,7 @@
    path=`echo $path | sed "/[.][.]/s///g"` 
   # echo $path
   path=`echo $path | sed "/\/$/s///"`
+   path=`echo $path | sed "/^\/home\/app/s///"`
   if [ -h  /home/app/$path ] 
    then
   		dest=`ls -la /home/app/$path |cut -f2 -d'>'`

@@ -14,6 +14,10 @@ module ManagedServiceConfigurations
     @container_api.retrieve_configurator(self, configurator_params)
   end
   def get_service_configurations
-      @container_api.get_service_configurations_hashes({service_name: @container_name})
+      @container_api.get_service_configurations_hashes(
+        {service_name: @container_name,
+          type_path: @type_path, 
+          publisher_namespace: 
+          @publisher_namespace })
 end
 end

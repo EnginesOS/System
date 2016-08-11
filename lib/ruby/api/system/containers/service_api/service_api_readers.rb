@@ -1,10 +1,10 @@
 module ServiceApiReaders
   def retrieve_reader(container, reader_name)
-    cmd = 'docker exec ' +  container.container_name.to_s + ' /home/readers/' + reader_name + '.sh \''
+    cmd = '/home/readers/' + reader_name + '.sh'
     result = {}
     begin
       Timeout.timeout(@@configurator_timeout) do
-        thr = Thread.new { result = SystemUtils.execute_command(cmd) }
+        thr = Thread.new { result =  @engines_core.exec_in_container(container, [cmd]) }
         thr.join
       end
     rescue Timeout::Error

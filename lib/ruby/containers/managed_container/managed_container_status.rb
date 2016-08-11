@@ -38,7 +38,7 @@ module ManagedContainerStatus
     end
     return state
   rescue Exception=>e
-    p @last_result
+    STDERR.puts 'excetpion ' + e.to_s + ':' + @last_result.to_s
     log_exception(e)
     return 'nocontainer'
   end

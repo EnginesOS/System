@@ -15,6 +15,7 @@ commands:
   - :fw_user
   - :data_gid
   - :volume
+  - :target_container 
  add_volume:
   command: "/home/add_volume.sh _Engines_Template(volume)"
   timeout: 15
@@ -23,6 +24,7 @@ commands:
   - :fw_user
   - :data_gid
   - :volume 
+  - :target_container 
  remove_volumes:
   command: "/home/remove_container.sh fs"
   timeout: 20
@@ -79,7 +81,7 @@ volumes:
   localpath: /var/lib/engines/fs/_Engines_Template(target)/_Engines_Template(volume)
   permissions: "rw"
 volumes_from:
- - _Engines_Template(target)
+ - _Engines_Template(target_container)
 mapped_ports:
 repo: na
 last_result: 

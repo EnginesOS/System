@@ -3,7 +3,7 @@ module DockerApiExec
   require_relative 'docker_utils.rb'
   
   class DockerStreamHandler
-    attr_accessor :result
+    attr_accessor :result, :data
       def initialize(data)
         @data = data
         @result = {}
@@ -21,50 +21,19 @@ module DockerApiExec
             return true
           end
           
-      def process_response(chunk , c , t)
-        DockerUtils.docker_stream_as_result(chunk, @result)
-      @result[:raw] = @result[:raw] + chunk.to_s
+      def process_response()
+        return_result = @result
+         lambda do |chunk , c , t|
+        DockerUtils.docker_stream_as_result(chunk, return_result)
+           return_result[:raw] = return_result[:raw] + chunk.to_s
   STDERR.puts( ' parse build res  ' + chunk.to_s )
+          end
      rescue StandardError =>e
           STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s + ' ' + e.backtrace.to_s)
                       return
-  
-      end
-    def process_request(socket)
-      STDERR.puts('PROCESS REQUEST with single chunk ' + @data.to_s)
- #     lambda do |socket|
-        write_thread = Thread.start do 
-      STDERR.puts('PROCESS REQUEST write thread ' + @data.to_s)
-           return socket.close_write if @data.length == 0
-           if @data.length < Excon.defaults[:chunk_size]
-             STDERR.puts('PROCESS REQUEST with single chunk ' + @data.to_s)
-             r = @data
-             @data = ''
-             socket.send(@data)
-             socket.close_write
-           else
-             socket.send(@data.slice!(0,Excon.defaults[:chunk_size]))
-           end
-        end
-        read_thread = Thread.start do
-          begin
-            STDERR.puts('PROCESS REQUEST read thread')
-          while chunk = socker.read_partial(1024)
-            DockerUtils.docker_stream_as_result(chunk, @result)
-            STDERR.puts('PROCESS REQUEST read thread' + @result.to_s)
-          end          
-         rescue EOFError 
-        end
-          write_thread.kill
-        end
         
-        write_thread.join
-        read_thread.join
-    # end
-    rescue StandardError => e
-      STDERR.puts('PROCESS Execp' + e.to_s + ' ' + e.backtrace.to_s)
-      
-    end
+      end
+
   end
     
   def docker_exec(container, commands, log_error = true, data=nil)
@@ -78,7 +47,7 @@ module DockerApiExec
       exec_id = r[:Id]
       request_params = {}
       request_params["Detach"] = false
-      request_params["Tty"] = true
+      request_params["Tty"] = false
       request = '/exec/' + exec_id + '/start'
     unless have_data == true
       result = {}
@@ -87,10 +56,22 @@ module DockerApiExec
       return DockerUtils.docker_stream_as_result(r, result)
     end
   #  initheader = {'Transfer-Encoding' => 'chunked', 'content-type' => 'application/octet-stream' }
-
+    request_params["Tty"] = false
+    request_params["AttachStdin"] = true
+    request_params["AttachStdout"] = true
+    request_params["AttachStderr"] = true
+      
+    request_params["User"] = ''
+    request_params["Privileged"] = false
+    request_params["Container"] = container.container_name 
+    request_params["Cmd"] = commands
     stream_handler = DockerStreamHandler.new(data)
-
-    post_stream_request(request, nil, stream_handler,  nil, request_params.to_json  )
+    headers = {}
+    headers['Content-type'] = 'text/plain'
+    headers['Connection'] = 'Upgrade'
+    headers['Upgrade'] = 'tcp'
+  
+    post_stream_request(request, nil, stream_handler,  headers , request_params.to_json )
     STDERR.puts('EXEC RES ' + stream_handler.result.to_s)
     stream_handler.result
 #     req = Net::HTTP::Post.new(request, initheader)
@@ -186,7 +167,7 @@ module DockerApiExec
             request_params["Tty"] =  false
           else
             request_params["AttachStdin"] = true
-            request_params["Tty"] =  true
+            request_params["Tty"] =  false
           end
           request_params[ "AttachStdout"] =  true
           request_params[ "AttachStderr"] =  true

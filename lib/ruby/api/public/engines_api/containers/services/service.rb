@@ -15,6 +15,7 @@ module PublicApiService
 
  
  def update_service_configuration(service_param)
+  
    @core_api.update_service_configuration(service_param)
  end
 

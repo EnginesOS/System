@@ -36,8 +36,10 @@ end
 # @return [true]  apply service configuration Hash
 post '/v0/containers/service/:service_name/configuration/:configurator_name' do
   p_params = post_params(request)
-  cparams =  Utils::Params.assemble_params(p_params, [:service_name, :configurator_name], [:variables])
-
+  
+  STDERR.puts( ' update_configuration_on_service ' + p_params.to_s)
+  cparams =  Utils::Params.assemble_params(p_params, [], [:variables,:service_name, :configurator_name])
+  STDERR.puts( ' update_configuration_on_service ' + cparams.to_s)
    r = engines_api.update_service_configuration(cparams)
   unless r.is_a?(FalseClass) 
       r.to_json

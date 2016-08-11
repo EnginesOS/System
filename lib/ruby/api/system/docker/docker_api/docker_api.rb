@@ -6,6 +6,7 @@ class DockerApi  < ErrorsApi
   include EnginesDockerApiErrors
  
   
+    
   def initialize
     @con = DockerConnection.new
   rescue StandardError =>e

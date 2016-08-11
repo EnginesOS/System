@@ -1,7 +1,7 @@
 class EnginesDockerError < EnginesError
   def initialize(message, type = :fail)
       super
-      @source = caller[1].to_s 
+      @source = caller[1,4].to_s 
       @sub_system = 'docker'
     end
 end

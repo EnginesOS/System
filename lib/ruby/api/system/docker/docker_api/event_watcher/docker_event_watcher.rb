@@ -33,7 +33,9 @@ class DockerEventWatcher  < ErrorsApi
 
     def trigger(hash)
       mask = event_mask(hash)
-      return  if  @event_mask != 0 && mask & @event_mask == 0
+     
+      return  if  @event_mask == 0 || mask & @event_mask == 0
+      STDERR.puts('Events mask:' + @event_mask.to_s + ' with mask ' + mask.to_s)
 #      unless mask & @@engine_target == 0
 #        hash['container_type'] = 'container'
 #        hash['container_name'] = hash['from'] if hash.key?('from')
@@ -84,6 +86,8 @@ class DockerEventWatcher  < ErrorsApi
         end
         if event_hash[:status].start_with?('exec')
           mask |= @@container_exec
+        elsif event_hash[:status] == 'delete'
+          mask |= @@container_delete
         elsif event_hash[:status] == 'commit'
           mask |= @@container_commit
         elsif event_hash[:status] == 'pull'
@@ -147,6 +151,7 @@ class DockerEventWatcher  < ErrorsApi
             unless listener.container_id.nil?
               next if hash[:id] != listener.container_id               
               end
+              
             log_exeception(r) if (r = listener.trigger(hash)).is_a?(StandardError)
             STDERR.puts(' TRigger returned ' + r.class.name + ':' + r.to_s + ' on ' + hash.to_s + ' with ' +  listener.to_s)
           end

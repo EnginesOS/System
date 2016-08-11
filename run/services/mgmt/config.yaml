@@ -8,6 +8,7 @@ hostname: mgmt
 publisher_namespace: EnginesSystem
 type_path: mgmt
 port: 10443
+domain_name: _Engines_System(default_domain)
 volumes: 
  cert_key: 
   volume_name: cert_key

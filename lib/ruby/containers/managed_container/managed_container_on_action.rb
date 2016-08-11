@@ -45,8 +45,8 @@ module ManagedContainerOnAction
     end
     
     def out_of_mem(what)
-      p :out_of_mem
-      p what
+
+      SystemDebug.debug(SystemDebug.container_events,:OUTOF_MEM_CALLED,what)
       @out_of_memory = true
       @had_out_memory = true    
       save_state
