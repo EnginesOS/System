@@ -28,7 +28,7 @@ end
   get '/v0/unauthenticated/bootstrap/mgmt/state' do
     engine = get_service('mgmt')
      return log_error(request, engine, params) if engine.is_a?(EnginesError)
-     engine.state.to_json
+     engine.read_state.to_json
     # starting
     # running
 end
