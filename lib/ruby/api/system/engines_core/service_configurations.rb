@@ -71,7 +71,7 @@ end
     STDERR.puts(' avail definitions ' +  defs.to_s)
     avail = {}
       defs.each do |definition|
-        STDERR.puts(' definition ' +  def.to_s)
+        STDERR.puts(' definition ' +  definition.to_s)
         definition_key = definition[:name].to_s
       avail[definition_key] = {}
     avail[definition_key][:service_name] = service_hash[:service_name]
