@@ -62,7 +62,7 @@ module ServiceConfigurations
   
   def  definition_params_to_variables(params)
     variables =  {}
-    params.keys do | param_name| 
+    params.each do | param_name| 
       variables[param_name] = nil
   end
 end
@@ -79,7 +79,7 @@ end
     avail[definition_key][:publisher_namespace] = service_hash[:publisher_namespace]
       
     avail[definition_key][:configurator_name] = definition[:name]
-    avail[definition_key][:variables] = definition_params_to_variables(definition[:params][definition_key])
+    avail[definition_key][:variables] = definition_params_to_variables(definition[:params].keys)
     avail[definition_key][:no_save] = definition[:no_save]
       end
       avail
