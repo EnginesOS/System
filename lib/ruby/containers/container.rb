@@ -18,7 +18,8 @@ class Container < ErrorsApi
   @conf_register_dns = true
   
   def self.from_yaml(yaml, container_api)
-    container = YAML::load(yaml)
+  #  container = YAML::load(yaml)
+    container = Psych.safe_load(yaml,[EnvironmentVariable])
     return SystemUtils.log_error_mesg(" Failed to Load yaml ", yaml, container_name) if container.nil?
     container.container_api = container_api
     container.post_load
