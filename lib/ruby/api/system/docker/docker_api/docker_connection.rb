@@ -80,7 +80,7 @@ excon_params = {:debug_request => true,
      # excon_params.delete(:response_block)
       excon_params[:hijack_block] = DockerUtils.process_request(stream_reader.data, stream_reader.result)
     else 
-       excon_params[:response_block] = stream_reader.method(:process_request)
+       excon_params[:response_block] = stream_reader.method(:process_response)
     end
     STDERR.puts('Excon Params ' + excon_params.to_s)
   return Excon.new('http://172.17.0.1:2375',excon_params)
