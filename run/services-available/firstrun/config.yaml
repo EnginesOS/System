@@ -3,7 +3,7 @@ container_name: firstrun
 ctype: service
 persistent: true
 last_error: 
-memory: '190'
+memory: '192'
 hostname: firstrun
 publisher_namespace: EnginesSystem
 type_path: firstrun
