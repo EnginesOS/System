@@ -48,11 +48,16 @@ module DockerApiExec
            @result[:stderr] = ''
          end
    def process_response( )
-     
-     lambda do |chunk, remaining_bytes, total_bytes |  
-       #@result[:raw] +=  chunk
-       STDERR.puts('LABM ' + chunk.to_s )      
-     end
+     return_result = @result
+            lambda do |chunk , c , t|
+           DockerUtils.docker_stream_as_result(chunk, return_result)
+              return_result[:raw] = return_result[:raw] + chunk.to_s
+     STDERR.puts( ' parse build res  ' + chunk.to_s )
+             end
+#     lambda do |chunk, remaining_bytes, total_bytes |  
+#       #@result[:raw] +=  chunk
+#       STDERR.puts('LABM ' + chunk.to_s )      
+#     end
      
   end  
     def has_data?
