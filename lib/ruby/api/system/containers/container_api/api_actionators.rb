@@ -8,7 +8,6 @@ module ApiActionators
         args = params.to_json        
     end    
 
-
     cmds = ['/home/actionators/' + actionator_name + '.sh',args.to_s]
       result = {}
       begin
