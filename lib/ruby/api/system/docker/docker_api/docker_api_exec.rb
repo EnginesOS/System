@@ -74,14 +74,13 @@ module DockerApiExec
       request_params["Tty"] = false
       request = '/exec/' + exec_id + '/start'
     
-
     request_params["AttachStdout"] = true
     request_params["AttachStderr"] = true
-      
-    request_params["User"] = ''
-    request_params["Privileged"] = false
-    request_params["Container"] = container.container_name 
-    request_params["Cmd"] = commands
+#      
+#    request_params["User"] = ''
+#    request_params["Privileged"] = false
+#    request_params["Container"] = container.container_name 
+#    request_params["Cmd"] = commands
       
     unless have_data == true
       result = {}
@@ -92,6 +91,10 @@ module DockerApiExec
       return stream_reader.result # DockerUtils.docker_stream_as_result(r, result)
     end
   #  initheader = {'Transfer-Encoding' => 'chunked', 'content-type' => 'application/octet-stream' }
+        request_params["User"] = ''
+        request_params["Privileged"] = false
+        request_params["Container"] = container.container_name 
+        request_params["Cmd"] = commands
     request_params["AttachStdin"] = true
     stream_handler = DockerHijackStreamHandler.new(data)
     headers = {}
