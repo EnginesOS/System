@@ -47,11 +47,12 @@ module DockerApiExec
            @result[:stdout] = ''
            @result[:stderr] = ''
          end
-   def process_response(chunk, remaining_bytes, total_bytes )
+   def process_response( )
      
-     lambda.do { @result[:raw] +=  chunk
-     }
-       
+     lambda do |chunk, remaining_bytes, total_bytes |  
+       @result[:raw] +=  chunk      
+     end
+     
   end  
     def has_data?
               return false 
