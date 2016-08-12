@@ -50,7 +50,8 @@ module DockerApiExec
    def process_response( )
      
      lambda do |chunk, remaining_bytes, total_bytes |  
-       @result[:raw] +=  chunk      
+       #@result[:raw] +=  chunk
+       STDERR.puts('LABM ' + chunk.to_s )      
      end
      
   end  
