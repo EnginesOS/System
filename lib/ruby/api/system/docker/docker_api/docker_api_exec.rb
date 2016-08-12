@@ -81,7 +81,7 @@ module DockerApiExec
       post_stream_request(request, nil, stream_reader,  nil , request_params.to_json )
       #      r = post_request(request,  request_params, false )
       return r if r.is_a?(EnginesError)
-      return stream_handler.result # DockerUtils.docker_stream_as_result(r, result)
+      return stream_reader.result # DockerUtils.docker_stream_as_result(r, result)
     end
   #  initheader = {'Transfer-Encoding' => 'chunked', 'content-type' => 'application/octet-stream' }
     request_params["AttachStdin"] = true
