@@ -76,23 +76,21 @@ module DockerApiExec
     
     request_params["AttachStdout"] = true
     request_params["AttachStderr"] = true
-#      
-#    request_params["User"] = ''
-#    request_params["Privileged"] = false
-#    request_params["Container"] = container.container_name 
-#    request_params["Cmd"] = commands
+
       
     unless have_data == true
       result = {}
       stream_reader = DockerStreamReader.new
-      post_stream_request(request, nil, stream_reader,  nil , request_params.to_json )
+      post_stream_request(request, nil, stream_reader,  nil , nil )
       #      r = post_request(request,  request_params, false )
       return r if r.is_a?(EnginesError)
       return stream_reader.result # DockerUtils.docker_stream_as_result(r, result)
     end
   #  initheader = {'Transfer-Encoding' => 'chunked', 'content-type' => 'application/octet-stream' }
         request_params["User"] = ''
-        request_params["Privileged"] = false
+       request_params["Privileged"] = false
+    request_params["AttachStdout"] = true
+      request_params["AttachStderr"] = true 
         request_params["Container"] = container.container_name 
         request_params["Cmd"] = commands
     request_params["AttachStdin"] = true
