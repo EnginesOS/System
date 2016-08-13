@@ -2,7 +2,7 @@ module DockerApiExec
 
   require_relative 'docker_utils.rb'
   
-  class DockerStreamHandler
+  class DockerHijackStreamHandler
     attr_accessor :result, :data
       def initialize(data)
         @data = data
@@ -30,10 +30,39 @@ module DockerApiExec
           end
      rescue StandardError =>e
           STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s + ' ' + e.backtrace.to_s)
-                      return
-        
+          return        
       end
 
+  end
+  
+  class DockerStreamReader
+    def is_hijack?
+         false
+       end
+    attr_accessor :result
+         def initialize()
+          
+           @result = {}
+           @result[:raw] = ''
+           @result[:stdout] = ''
+           @result[:stderr] = ''
+         end
+   def process_response( )
+     return_result = @result
+            lambda do |chunk , c , t|
+           DockerUtils.docker_stream_as_result(chunk, return_result)
+              return_result[:raw] = return_result[:raw] + chunk.to_s
+     STDERR.puts( ' parse build res  ' + chunk.to_s )
+             end
+#     lambda do |chunk, remaining_bytes, total_bytes |  
+#       #@result[:raw] +=  chunk
+#       STDERR.puts('LABM ' + chunk.to_s )      
+#     end
+     
+  end  
+    def has_data?
+              return false 
+            end
   end
     
   def docker_exec(container, commands, log_error = true, data=nil)
@@ -49,25 +78,31 @@ module DockerApiExec
       request_params["Detach"] = false
       request_params["Tty"] = false
       request = '/exec/' + exec_id + '/start'
-    unless have_data == true
-      result = {}
-      r = post_request(request,  request_params, false )
-      return r if r.is_a?(EnginesError)
-      return DockerUtils.docker_stream_as_result(r, result)
-    end
-  #  initheader = {'Transfer-Encoding' => 'chunked', 'content-type' => 'application/octet-stream' }
-    request_params["Tty"] = false
-    request_params["AttachStdin"] = true
+    request_params["User"] = ''
+        request_params["Privileged"] = false
+     request_params["AttachStdout"] = true
+       request_params["AttachStderr"] = true 
+         request_params["Container"] = container.container_name 
+         request_params["Cmd"] = commands
     request_params["AttachStdout"] = true
     request_params["AttachStderr"] = true
       
-    request_params["User"] = ''
-    request_params["Privileged"] = false
-    request_params["Container"] = container.container_name 
-    request_params["Cmd"] = commands
-    stream_handler = DockerStreamHandler.new(data)
     headers = {}
-    headers['Content-type'] = 'text/plain'
+       headers['Content-type'] = 'text/plain'
+      
+    unless have_data == true
+      result = {}
+      stream_reader = DockerStreamReader.new
+      post_stream_request(request, nil, stream_reader,  headers ,  request_params.to_json  )
+      #      r = post_request(request,  request_params, false )
+      return r if r.is_a?(EnginesError)
+      return stream_reader.result # DockerUtils.docker_stream_as_result(r, result)
+    end
+  #  initheader = {'Transfer-Encoding' => 'chunked', 'content-type' => 'application/octet-stream' }
+     
+    request_params["AttachStdin"] = true
+    stream_handler = DockerHijackStreamHandler.new(data)
+   
     headers['Connection'] = 'Upgrade'
     headers['Upgrade'] = 'tcp'
   
