@@ -60,11 +60,22 @@ if test -f /usr/bin/pulseaudio
 
 docker start registry
 #ruby /opt/engines/bin/system_service.rb registry start
-sleep 25
-if test `/opt/engines/bin/system_service.rb system state` = \"nocontainer\"
+sleep 5
+  while ! test -f /opt/engines/run/system_services/registry/run/flags/startup_complete
+  do 
+  	sleep 5
+  	count=`expr $count + 5`
+  		if test $count -gt 120
+  		 then
+  		  echo "ERROR failed to start registry "
+  		  exit
+  		fi
+  done 
+
+if test "`/opt/engines/bin/system_service.rb system state`" = \"nocontainer\"
  then
 	/opt/engines/bin/system_service.rb system create
- elif test `/opt/engines/bin/system_service.rb system state` = \"stopped\"
+ elif test "`/opt/engines/bin/system_service.rb system state`" = \"stopped\"
   then
 	/opt/engines/bin/system_service.rb system start
   fi
@@ -76,6 +87,7 @@ if test `/opt/engines/bin/system_service.rb system state` = \"nocontainer\"
   		if test $count -gt 120
   		 then
   		  echo "ERROR failed to start system "
+  		  exit
   		fi
   done 
  sleep 5
