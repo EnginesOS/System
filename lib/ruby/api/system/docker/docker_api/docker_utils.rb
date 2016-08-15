@@ -59,20 +59,24 @@ module DockerUtils
         next
       end
       if r.start_with?("\u0001\u0000\u0000\u0000")
+        ls = r[0,7]
         r = r[8..-1]
-        STDERR.puts("Stdout CONTENT " + r)
+        STDERR.puts("Stdout CONTENT " + ls)
         dst = :stdout
       elsif r.start_with?("\u0002\u0000\u0000\u0000")
         dst = :stderr
+        ls = r[0,7]
         r = r[8..-1]
-        STDERR.puts("Stderr CONTENT " + r)
+        STDERR.puts("StdERR CONTENT "  + ls)
       elsif r.start_with?("\u0000\u0000\u0000\u0000")
         dst = :stdout
+        ls = r[0,7]
         r = r[8..-1]
-        STDERR.puts("unlable stdout CONTENT " + r)
+        STDERR.puts("unlabled stdout CONTENT "  + ls)
       else
         # r = r[7..-1]
-        STDERR.puts(" umatched CONTENT " + r)
+        ls = r[0,7]
+        STDERR.puts(" umatched CONTENT "  + ls)
         dst = :stdout
         unmatched = true
       end
