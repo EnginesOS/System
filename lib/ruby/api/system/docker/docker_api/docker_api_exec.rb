@@ -26,7 +26,7 @@ module DockerApiExec
       lambda do |chunk , c , t|
         DockerUtils.docker_stream_as_result(chunk, return_result)
         return_result[:raw] = return_result[:raw] + chunk.to_s
-        STDERR.puts( ' parse exec_hj res  ' + chunk.to_s )
+        STDERR.puts( ' parse exec_hj res  ' + chunk.length.to_s )
       end
     rescue StandardError =>e
       STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s + ' ' + e.backtrace.to_s)
@@ -54,7 +54,7 @@ module DockerApiExec
       lambda do |chunk , c , t|
         DockerUtils.docker_stream_as_result(chunk, return_result)
         return_result[:raw] = return_result[:raw] + chunk.to_s
-        STDERR.puts( 'exec parse process  res  ' + chunk.to_s )
+        STDERR.puts( 'exec parse process  res  ' + chunk.length.to_s )
       end
     end
 
