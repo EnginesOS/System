@@ -60,19 +60,19 @@ module DockerUtils
       end
       if r.start_with?("\u0001\u0000\u0000\u0000")
         r = r[8..-1]
-        STDERR.puts("Stdout CONTENT " + r.to_s)
+        STDERR.puts("Stdout CONTENT " + r)
         dst = :stdout
       elsif r.start_with?("\u0002\u0000\u0000\u0000")
         dst = :stderr
         r = r[8..-1]
-        STDERR.puts("Stderr CONTENT " + r.to_s)
+        STDERR.puts("Stderr CONTENT " + r)
       elsif r.start_with?("\u0000\u0000\u0000\u0000")
         dst = :stdout
         r = r[8..-1]
-        STDERR.puts("unlable stdout CONTENT " + r.to_s)
+        STDERR.puts("unlable stdout CONTENT " + r)
       else
         # r = r[7..-1]
-        STDERR.puts(" umatched CONTENT " + r.to_s)
+        STDERR.puts(" umatched CONTENT " + r)
         dst = :stdout
         unmatched = true
       end
@@ -81,7 +81,7 @@ module DockerUtils
       unless unmatched == true
 
         next_chunk = r.index("\u0000\u0000\u0000")
-        STDERR.puts("Next Chunk " + next_chunk.to_s)
+        STDERR.puts("Next Chunk " + next_chunk)
         unless next_chunk.nil?
           length =  next_chunk - 2
         else
@@ -94,7 +94,7 @@ module DockerUtils
       #   STDERR.puts(' problem ' + r.to_s + ' has ' + r.length.to_s + ' bytes and length ' + length.to_s ) if r.length < length
       h[dst] += r[0..length-1]
       r = r[length..-1]
-      STDERR.puts(' still ave of string ' + r.to_s + ' with ' + r.length.to_s)
+      STDERR.puts(' still ave of string ' + r + ' with ' + r.length.to_s)
     end
 
     # FIXME need to get correct error status and set :stderr if app
