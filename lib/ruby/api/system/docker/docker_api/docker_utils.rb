@@ -61,22 +61,22 @@ module DockerUtils
       if r.start_with?("\u0001\u0000\u0000\u0000")
         ls = r[0,7]
         r = r[8..-1]
-        STDERR.puts("Stdout CONTENT " + ls)
+        STDERR.puts("Stdout CONTENT " + ls.to_s)
         dst = :stdout
       elsif r.start_with?("\u0002\u0000\u0000\u0000")
         dst = :stderr
         ls = r[0,7]
         r = r[8..-1]
-        STDERR.puts("StdERR CONTENT "  + ls)
+        STDERR.puts("StdERR CONTENT "  + ls.to_s)
       elsif r.start_with?("\u0000\u0000\u0000\u0000")
         dst = :stdout
         ls = r[0,7]
         r = r[8..-1]
-        STDERR.puts("unlabled stdout CONTENT "  + ls)
+        STDERR.puts("unlabled stdout CONTENT "  + ls.to_s)
       else
         # r = r[7..-1]
         ls = r[0,7]
-        STDERR.puts(" umatched CONTENT "  + ls)
+        STDERR.puts(" umatched CONTENT "  + ls.to_s)
         dst = :stdout
         unmatched = true
       end
@@ -98,7 +98,7 @@ module DockerUtils
       #   STDERR.puts(' problem ' + r.to_s + ' has ' + r.length.to_s + ' bytes and length ' + length.to_s ) if r.length < length
       h[dst] += r[0..length-1]
       r = r[length..-1]
-      STDERR.puts(' still ave of string ' + r + ' with ' + r.length.to_s)
+      STDERR.puts(' still ave of string ' + r.length.to_s)
     end
 
     # FIXME need to get correct error status and set :stderr if app
