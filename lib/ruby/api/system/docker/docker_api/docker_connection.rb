@@ -94,13 +94,13 @@ excon_params = {:debug_request => true,
     if stream_handler.method(:has_data?).call == false
       if content.nil? # Dont to_s as may be tgz
         body = ''
-        STDERR.puts(' no content ' )
+     #   STDERR.puts(' no content ' )
       elsif headers['Content-Type'] == 'application/json'
           body = content.to_json
-        STDERR.puts(' using content as json '  + headers.to_s )
+      #  STDERR.puts(' using content as json '  + headers.to_s )
       else
         body = content
-        STDERR.puts(' using content as raw '  + headers.to_s  + ' contentlen ' + content.length.to_s )
+       # STDERR.puts(' using content as raw '  + headers.to_s  + ' contentlen ' + content.length.to_s )
      end         
      return stream_connection(stream_handler).request(
     :method => :post,
@@ -112,7 +112,7 @@ excon_params = {:debug_request => true,
       )
     else
       #headers['Transfer-Encoding'] = 'chunked'   
-      STDERR.puts(' using content as is json assumed ' + headers.to_s + ' : options ' + options.to_s + ' body ' + content.to_s ) 
+   #   STDERR.puts(' using content as is json assumed ' + headers.to_s + ' : options ' + options.to_s + ' body ' + content.to_s ) 
       return stream_connection(stream_handler).request(
          :method => :post,
          :read_timeout => 360,
@@ -129,7 +129,7 @@ excon_params = {:debug_request => true,
 
   
   def get_request(uri,  expect_json = true, headers = nil)
-    STDERR.puts('get_request  ' + uri.to_s + ' : ' + headers.to_s)
+  #  STDERR.puts('get_request  ' + uri.to_s + ' : ' + headers.to_s)
     return handle_resp(connection.request(:method => :get,
     :path => uri,
     :headers => headers),
@@ -225,7 +225,7 @@ excon_params = {:debug_request => true,
   #    return hashes[0]
   #end
   def handle_resp(resp, expect_json)
-    STDERR.puts(" RESPOSE " + resp.status.to_s + " : " + resp.body  )
+   # STDERR.puts(" RESPOSE " + resp.status.to_s + " : " + resp.body  )
     return log_error_mesg("error:" + resp.status.to_s)  if resp.status  >= 400
     return true if resp.status  == 204 # nodata but all good happens on del
     return log_error_mesg("Un exepect response from docker", resp, resp.body, resp.headers.to_s )   unless resp.status  == 200 ||  resp.status  == 201
