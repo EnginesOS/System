@@ -86,7 +86,7 @@ module DockerUtils
         next_chunk = r.index("\u0000\u0000\u0000")
         STDERR.puts("Next Chunk " + next_chunk.to_s)
         unless next_chunk.nil?
-          length =  next_chunk - 1
+          length =  next_chunk - 2
         else
           STDERR.puts('End of string')
           length = r.length
