@@ -123,24 +123,8 @@ module DockerApiExec
     log_exception(e)
   end
 
-  #  def perform_data_request(req, container, params, data)
-  #    producer = DataProducer.new(data)
-  #
-  #    req.content_type = "application/octet-stream" #"text/plain"
-  #    # req['Transfer-Encoding'] = 'chunked'
-  #    # req.content_length = data.length
-  #    req.body = params.to_json
-  #
-  #    #req.body_stream = producer
-  #
-  #    docker_socket.start {|http| http.request(req)
-  #
-  #      docker_socket.write(data)
-  #
-  #    }
-  #  rescue StandardError => e
-  #    log_exception(e)
-  #  end
+ 
+
 
   private
 
