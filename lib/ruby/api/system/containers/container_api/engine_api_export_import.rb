@@ -9,7 +9,7 @@ module EngineApiExportImport
         begin
           result = {}
           Timeout.timeout(@@export_timeout) do
-          thr = Thread.new { result = @engines_core.exec_in_container(container, [cmd]) }
+          thr = Thread.new { result = @engines_core.exec_in_container({:container => container, :command_line => [cmd], :log_error => true }) }
             #SystemUtils.execute_command(cmd, true) }
             thr.join
             SystemDebug.debug(SystemDebug.export_import, :export_service,service_hash,'result code =' ,result[:result])

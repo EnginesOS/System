@@ -6,7 +6,7 @@ module ServiceApiConfigurations
     result = {}
     begin
       Timeout.timeout(@@configurator_timeout) do
-      thr = Thread.new {result =  @engines_core.exec_in_container(c, [cmd]) }
+      thr = Thread.new {result =  @engines_core.exec_in_container({:container => c, :command_line => [cmd], :log_error => true }) }
           #result = SystemUtils.execute_command(cmd) }
         
         thr.join
@@ -25,7 +25,7 @@ module ServiceApiConfigurations
 
   end
 
-  def run_configurator(container, configurator_params)
+  def run_configurator(c, configurator_params)
     p :configurator_params
     p configurator_params
     cmd = ['/home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh', SystemUtils.hash_variables_as_json_str(configurator_params[:variables]).to_s ]
@@ -33,7 +33,7 @@ module ServiceApiConfigurations
     result = {}
     begin
       Timeout.timeout(@@configurator_timeout) do
-      thr = Thread.new { result = @engines_core.exec_in_container(container, cmd) }
+      thr = Thread.new { result = @engines_core.exec_in_container({:container => c, :command_line => cmd, :log_error => true }) }
         #SystemUtils.execute_command(cmd) }
         thr.join
       end

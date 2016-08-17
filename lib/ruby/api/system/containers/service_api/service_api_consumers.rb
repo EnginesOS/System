@@ -39,7 +39,7 @@ module ServiceApiConsumers
     result = {}
     begin
       Timeout.timeout(@@consumer_timeout) do
-        thr = Thread.new {result =  engines_core.exec_in_container(c, cmd, true) }
+        thr = Thread.new {result =  engines_core.exec_in_container({:container => c, :command_line => cmd, :log_error => true }) }
         thr.join
       end
     rescue Timeout::Error
