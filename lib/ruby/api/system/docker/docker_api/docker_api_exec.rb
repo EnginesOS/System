@@ -21,12 +21,17 @@ module DockerApiExec
       return true
     end
 
-    def process_response()
+    def process_response(stream=nil)
       return_result = @result
       lambda do |chunk , c , t|
-        DockerUtils.docker_stream_as_result(chunk, return_result)
-        return_result[:raw] = return_result[:raw] + chunk.to_s
-        STDERR.puts( ' parse exec_hj res  ' + chunk.length.to_s )
+        if  stream.nil?
+          DockerUtils.docker_stream_as_result(chunk, return_result)
+          return_result[:raw] = return_result[:raw] + chunk.to_s
+          STDERR.puts( ' parse exec_hj res  ' + chunk.length.to_s )
+        else
+          r = DockerUtils.decode_from_docker_chunk(chunk, return_result)
+          stream.write(r) unless r.nil?
+        end
       end
     rescue StandardError =>e
       STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s + ' ' + e.backtrace.to_s)
@@ -49,12 +54,17 @@ module DockerApiExec
       @result[:stderr] = ''
     end
 
-    def process_response( )
+    def process_response(stream=nil )
       return_result = @result
       lambda do |chunk , c , t|
-        DockerUtils.docker_stream_as_result(chunk, return_result)
-        return_result[:raw] = return_result[:raw] + chunk.to_s
-        STDERR.puts( 'exec parse process  res  ' + chunk.length.to_s )
+        if  stream.nil?
+          DockerUtils.docker_stream_as_result(chunk, return_result)
+          return_result[:raw] = return_result[:raw] + chunk.to_s
+          STDERR.puts( 'exec parse process  res  ' + chunk.length.to_s )
+        else
+          r = DockerUtils.decode_from_docker_chunk(chunk, return_result)
+          stream.write(r) unless r.nil?
+        end
       end
     end
 
@@ -107,32 +117,30 @@ module DockerApiExec
     post_stream_request(request, nil, stream_handler,  headers , request_params.to_json )
     STDERR.puts('EXEC RES ' + stream_handler.result.to_s)
     stream_handler.result
-   
+
   rescue StandardError => e
     STDERR.puts('DOCKER EXECep  ' + container.container_name + ': with :' + request_params.to_s)
     log_exception(e)
   end
 
-
-
-#  def perform_data_request(req, container, params, data)
-#    producer = DataProducer.new(data)
-#
-#    req.content_type = "application/octet-stream" #"text/plain"
-#    # req['Transfer-Encoding'] = 'chunked'
-#    # req.content_length = data.length
-#    req.body = params.to_json
-#
-#    #req.body_stream = producer
-#
-#    docker_socket.start {|http| http.request(req)
-#
-#      docker_socket.write(data)
-#
-#    }
-#  rescue StandardError => e
-#    log_exception(e)
-#  end
+  #  def perform_data_request(req, container, params, data)
+  #    producer = DataProducer.new(data)
+  #
+  #    req.content_type = "application/octet-stream" #"text/plain"
+  #    # req['Transfer-Encoding'] = 'chunked'
+  #    # req.content_length = data.length
+  #    req.body = params.to_json
+  #
+  #    #req.body_stream = producer
+  #
+  #    docker_socket.start {|http| http.request(req)
+  #
+  #      docker_socket.write(data)
+  #
+  #    }
+  #  rescue StandardError => e
+  #    log_exception(e)
+  #  end
 
   private
 
