@@ -100,7 +100,8 @@ module DockerApiExec
       result = {}
       stream_reader = DockerStreamReader.new
     sr =  post_stream_request(request, nil, stream_reader,  headers ,  request_params.to_json  )
-    STDERR.puts('response ' + sr.to_s)
+     h = handle_resp(sr, true)
+    STDERR.puts('response ' + h.to_s)
       #      r = post_request(request,  request_params, false )
       return r if r.is_a?(EnginesError)
       return stream_reader.result # DockerUtils.docker_stream_as_result(r, result)
