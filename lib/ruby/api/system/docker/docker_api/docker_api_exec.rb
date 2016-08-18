@@ -99,13 +99,13 @@ module DockerApiExec
     unless params.key?(:data)
       result = {}
       stream_reader = DockerStreamReader.new
-    sr =  post_stream_request(request, nil, stream_reader,  headers ,  request_params.to_json  )
-     h = handle_resp(sr, true)
-      STDERR.puts('response ' + sr.body)
-    STDERR.puts('response ' + h.to_s)
-      #      r = post_request(request,  request_params, false )
+  r =  post_stream_request(request, nil, stream_reader,  headers ,  request_params.to_json  )
+#     h = handle_resp(sr, true)
+#      STDERR.puts('response ' + sr.body)
+#    STDERR.puts('response ' + h.to_s)
+#      #      r = post_request(request,  request_params, false )
       return r if r.is_a?(EnginesError)
-      get_exec_result(exec_id)
+      stream_reader.result[:result] = get_exec_result(exec_id)
       return stream_reader.result # DockerUtils.docker_stream_as_result(r, result)
     end
     #  initheader = {'Transfer-Encoding' => 'chunked', 'content-type' => 'application/octet-stream' }
@@ -118,7 +118,7 @@ module DockerApiExec
 
    r =  post_stream_request(request, nil, stream_handler,  headers , request_params.to_json )
     STDERR.puts('EXEC RES ' + stream_handler.result.to_s + ' with r ' + r.to_s)
-
+    stream_reader.result[:result] = get_exec_result(exec_id)
     stream_handler.result
 
   rescue StandardError => e
@@ -126,15 +126,14 @@ module DockerApiExec
     log_exception(e)
   end
 
- 
-  def  get_exec_result(exec_id)
-      
-   uri = '/exec/' + exec_id.to_s + '/json'
-    r  = get_request(uri)
-    STDERR.puts(' exec result for ' + exec_id.to_s + ' is ' + r.to_s )
-  end
 
   private
+ 
+  def  get_exec_result(exec_id)        
+    r  = get_request('/exec/' + exec_id.to_s + '/json')
+    return -1 if r.is_a?(EnginesError)
+    r['ExitCode']    
+  end
 
   def create_docker_exec(params) #container, commands, have_data)
     commands = format_commands(params[:command_line])
