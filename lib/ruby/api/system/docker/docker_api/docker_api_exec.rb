@@ -92,8 +92,6 @@ module DockerApiExec
     request_params["AttachStderr"] = true
     request_params["Container"] = params[:container].container_name
     request_params["Cmd"] = params[:command_line]
-    request_params["AttachStdout"] = true
-    request_params["AttachStderr"] = true
 
     headers = {}
     headers['Content-type'] = 'text/plain'
@@ -114,8 +112,11 @@ module DockerApiExec
     headers['Connection'] = 'Upgrade'
     headers['Upgrade'] = 'tcp'
 
-    post_stream_request(request, nil, stream_handler,  headers , request_params.to_json )
-    STDERR.puts('EXEC RES ' + stream_handler.result.to_s)
+   r =  post_stream_request(request, nil, stream_handler,  headers , request_params.to_json )
+    STDERR.puts('EXEC RES ' + stream_handler.result.to_s + ' with r ' + r.to_s)
+    
+    
+    
     stream_handler.result
 
   rescue StandardError => e
