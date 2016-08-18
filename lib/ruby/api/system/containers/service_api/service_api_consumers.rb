@@ -45,8 +45,9 @@ module ServiceApiConsumers
     rescue Timeout::Error
       return log_error_mesg('Timeout on removing consumer from service',cmd)
     end
+    STDERR.puts('rm result ' + result.to_s) 
   return result if result.is_a?(EnginesError)
     return true  if result[:result] == 0
-    log_error_mesg('Failed rm_consumer_from_service', result.to_s)
+    log_error_mesg('Failed rm_consumer_from_service ' + result.to_s, result )
   end
 end
