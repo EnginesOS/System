@@ -103,7 +103,7 @@ module DockerApiExec
 
     unless params.key?(:data)
       result = {}
-      stream_reader = DockerStreamReader.new()
+      stream_reader = DockerStreamReader.new(params[:stream])
       r =  post_stream_request(request, nil, stream_reader,  headers ,  request_params.to_json  )
       return r if r.is_a?(EnginesError)
       stream_reader.result[:result] = get_exec_result(exec_id)
@@ -112,7 +112,7 @@ module DockerApiExec
     #  initheader = {'Transfer-Encoding' => 'chunked', 'content-type' => 'application/octet-stream' }
 
     request_params["AttachStdin"] = true
-    stream_handler = DockerHijackStreamHandler.new(params[:data])
+    stream_handler = DockerHijackStreamHandler.new(params[:data],params[:istream], params[:ostream])
 
     headers['Connection'] = 'Upgrade'
     headers['Upgrade'] = 'tcp'
