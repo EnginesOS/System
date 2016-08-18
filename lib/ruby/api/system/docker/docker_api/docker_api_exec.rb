@@ -133,7 +133,7 @@ module DockerApiExec
     r  = get_request('/exec/' + exec_id.to_s + '/json')
     STDERR.puts('DOCKER EXEC RESULT' + r.to_s)
     return -1 if r.is_a?(EnginesError)
-    r['ExitCode']    
+    r[:ExitCode]    
   end
 
   def create_docker_exec(params) #container, commands, have_data)
