@@ -1,5 +1,7 @@
 module DockerUtils
-  def self.process_request(data , result)
+  def self.process_request(data , result, ostream=nil, istream=nil)
+    @i_stream = istream
+    @o_stream = ostream
     to_send = data
     return_result = result
     STDERR.puts('PROCESS REQUEST init ' + to_send.to_s)
@@ -8,6 +10,10 @@ module DockerUtils
       write_thread = Thread.start do
         begin
           STDERR.puts('PROCESS REQUEST write thread ' + to_send.to_s)
+          unless @i_stream.nil?
+            return socket.close_write if @i_stream.eof?
+            IO.copy_stream(@i_stream,socket)
+          else
           return socket.close_write if to_send.length == 0
           if to_send.length < Excon.defaults[:chunk_size]
             STDERR.puts('PROCESS REQUEST with single chunk ' + to_send.to_s)
@@ -16,18 +22,34 @@ module DockerUtils
             socket.send(r,0)
             socket.close_write
           else
-            socket.send(to_send.slice!(0,Excon.defaults[:chunk_size]),0)
+            while to_send.length != 0
+              if to_send.length < Excon.defaults[:chunk_size]
+              socket.send(to_send.slice!(0,Excon.defaults[:chunk_size]),0)
+              else
+                socket.send(r,0)
+                to_send = ''
+            end
+          end
+            socket.close_write
+          end
           end
         rescue StandardError => e
           STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
         end
       end
+      
       read_thread = Thread.start do
         begin
           STDERR.puts('PROCESS REQUEST read thread')
-          while chunk = socket.readpartial(1024)
+          while chunk = socket.readpartial(16384)
+            if  @o_stream.nil?
             DockerUtils.docker_stream_as_result(chunk, return_result)
             STDERR.puts('PROCESS REQUEST read thread' + return_result.to_s)
+              else
+             r = DockerUtils.decode_from_docker_chunk(chunk)
+             @o_stream.write(r[:stdout]) unless r.nil?
+              return_result[:stderr] =  return_result[:stderr].to_s + r[:stderr].to_s
+            end
           end
         rescue EOFError
           write_thread.kill
@@ -45,6 +67,15 @@ module DockerUtils
     STDERR.puts('PROCESS Execp' + e.to_s + ' ' + e.backtrace.to_s )
 
   end
+
+  
+  def self.decode_from_docker_chunk(chunk)
+    r = {}
+    r[:stderr] = ''
+    r[:stdout] = ''
+    self.docker_stream_as_result(chunck, r)
+    r
+end
 
   def self.docker_stream_as_result(r, h)
     unmatched = false

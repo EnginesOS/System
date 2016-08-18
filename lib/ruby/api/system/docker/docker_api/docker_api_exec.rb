@@ -3,7 +3,8 @@ module DockerApiExec
   require_relative 'docker_utils.rb'
   class DockerHijackStreamHandler
     attr_accessor :result, :data
-    def initialize(data)
+    def initialize(data, stream=nil)
+      @o_stream = stream
       @data = data
       @result = {}
       @result[:raw] = ''
@@ -21,16 +22,18 @@ module DockerApiExec
       return true
     end
 
-    def process_response(stream=nil)
+    def process_response()
       return_result = @result
       lambda do |chunk , c , t|
-        if  stream.nil?
+        if  @o_stream.nil?
           DockerUtils.docker_stream_as_result(chunk, return_result)
           return_result[:raw] = return_result[:raw] + chunk.to_s
           STDERR.puts( ' parse exec_hj res  ' + chunk.length.to_s )
         else
-          r = DockerUtils.decode_from_docker_chunk(chunk, return_result)
-          stream.write(r) unless r.nil?
+          r = DockerUtils.decode_from_docker_chunk(chunk)
+          @o_stream.write(r[:stdout]) unless r.nil?
+          return_result[:stderr] =  return_result[:stderr].to_s + r[:stderr].to_s
+            
         end
       end
     rescue StandardError =>e
@@ -46,24 +49,25 @@ module DockerApiExec
     end
     attr_accessor :result
 
-    def initialize()
-
+    def initialize(stream=nil )
+      @o_stream = stream
       @result = {}
       @result[:raw] = ''
       @result[:stdout] = ''
       @result[:stderr] = ''
     end
 
-    def process_response(stream=nil )
+    def process_response()
       return_result = @result
       lambda do |chunk , c , t|
-        if  stream.nil?
+        if  @o_stream.nil?
           DockerUtils.docker_stream_as_result(chunk, return_result)
           return_result[:raw] = return_result[:raw] + chunk.to_s
           STDERR.puts( 'exec parse process  res  ' + chunk.length.to_s )
         else
-          r = DockerUtils.decode_from_docker_chunk(chunk, return_result)
-          stream.write(r) unless r.nil?
+          r = DockerUtils.decode_from_docker_chunk(chunk)
+          @o_stream.write(r[:stdout]) unless r.nil?
+          return_result[:stderr] =  return_result[:stderr].to_s + r[:stderr].to_s
         end
       end
     end
@@ -98,12 +102,8 @@ module DockerApiExec
 
     unless params.key?(:data)
       result = {}
-      stream_reader = DockerStreamReader.new
-  r =  post_stream_request(request, nil, stream_reader,  headers ,  request_params.to_json  )
-#     h = handle_resp(sr, true)
-#      STDERR.puts('response ' + sr.body)
-#    STDERR.puts('response ' + h.to_s)
-#      #      r = post_request(request,  request_params, false )
+      stream_reader = DockerStreamReader.new()
+      r =  post_stream_request(request, nil, stream_reader,  headers ,  request_params.to_json  )
       return r if r.is_a?(EnginesError)
       stream_reader.result[:result] = get_exec_result(exec_id)
       return stream_reader.result # DockerUtils.docker_stream_as_result(r, result)
@@ -131,7 +131,6 @@ module DockerApiExec
  
   def  get_exec_result(exec_id)        
     r  = get_request('/exec/' + exec_id.to_s + '/json')
-    STDERR.puts('DOCKER EXEC RESULT' + r.to_s)
     return -1 if r.is_a?(EnginesError)
     r[:ExitCode]    
   end
