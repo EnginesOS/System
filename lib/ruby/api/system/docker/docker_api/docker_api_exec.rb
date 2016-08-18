@@ -2,9 +2,10 @@ module DockerApiExec
 
   require_relative 'docker_utils.rb'
   class DockerHijackStreamHandler
-    attr_accessor :result, :data
-    def initialize(data, stream=nil)
-      @o_stream = stream
+    attr_accessor :result, :data, :i_stream, :o_stream
+    def initialize(data, istream=nil, ostream=nil)
+      @i_stream = istream
+      @o_stream = ostream
       @data = data
       @result = {}
       @result[:raw] = ''
