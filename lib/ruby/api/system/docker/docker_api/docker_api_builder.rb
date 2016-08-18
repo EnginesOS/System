@@ -48,7 +48,7 @@ module DockerApiBuilder
     end
 
     def process_request(*args)
-      # STDERR.puts('PROCESS REQUEST with ')
+       STDERR.puts('PROCESS REQUEST with ', + args.to_s)
       @io_stream.read(Excon.defaults[:chunk_size]).to_s
     rescue StandardError => e
       STDERR.puts('PROCESS REQUEST got nilling')

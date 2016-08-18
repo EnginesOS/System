@@ -73,11 +73,11 @@ module DockerApiExec
     end
   end
 
-  def docker_exec(container, commands, log_error = true, data=nil)
-    have_data = false
-    have_data = true unless data.nil?
+  def docker_exec(params) #container, commands, log_error = true, data=nil)
+    #have_data = false
+    #have_data = true unless data.nil?
 
-    r = create_docker_exec(container, commands, have_data)
+    r = create_docker_exec(params) #container, commands, have_data)
 
     return r unless r.is_a?(Hash)
 
@@ -90,15 +90,15 @@ module DockerApiExec
     request_params["Privileged"] = false
     request_params["AttachStdout"] = true
     request_params["AttachStderr"] = true
-    request_params["Container"] = container.container_name
-    request_params["Cmd"] = commands
+    request_params["Container"] = params[:container].container_name
+    request_params["Cmd"] = params[:command_line]
     request_params["AttachStdout"] = true
     request_params["AttachStderr"] = true
 
     headers = {}
     headers['Content-type'] = 'text/plain'
 
-    unless have_data == true
+    unless params.key?(:data)
       result = {}
       stream_reader = DockerStreamReader.new
       post_stream_request(request, nil, stream_reader,  headers ,  request_params.to_json  )
@@ -109,7 +109,7 @@ module DockerApiExec
     #  initheader = {'Transfer-Encoding' => 'chunked', 'content-type' => 'application/octet-stream' }
 
     request_params["AttachStdin"] = true
-    stream_handler = DockerHijackStreamHandler.new(data)
+    stream_handler = DockerHijackStreamHandler.new(params[:data])
 
     headers['Connection'] = 'Upgrade'
     headers['Upgrade'] = 'tcp'
@@ -119,7 +119,7 @@ module DockerApiExec
     stream_handler.result
 
   rescue StandardError => e
-    STDERR.puts('DOCKER EXECep  ' + container.container_name + ': with :' + request_params.to_s)
+    STDERR.puts('DOCKER EXECep  ' + params[:container].container_name + ': with :' + request_params.to_s)
     log_exception(e)
   end
 
@@ -128,15 +128,15 @@ module DockerApiExec
 
   private
 
-  def create_docker_exec(container, commands, have_data)
-    commands = format_commands(commands)
+  def create_docker_exec(params) #container, commands, have_data)
+    commands = format_commands(params[:command_line])
 
     request_params = {}
-    if have_data == false
-      request_params["AttachStdin"] = false
+    if params.key?(:data)
+      request_params["AttachStdin"] = true
       request_params["Tty"] =  false
     else
-      request_params["AttachStdin"] = true
+      request_params["AttachStdin"] = false
       request_params["Tty"] =  false
     end
     request_params[ "AttachStdout"] =  true
@@ -144,9 +144,9 @@ module DockerApiExec
     request_params[ "DetachKeys"] =  "ctrl-p,ctrl-q"
     request_params[ "Cmd"] =  commands
 
-    request = '/containers/'  + container.container_id.to_s + '/exec'
+    request = '/containers/'  + params[:container].container_id.to_s + '/exec'
     r = post_request(request,  request_params)
-    STDERR.puts('DOCKER EXEC ' + r.to_s + ': for :' + container.container_name + ': with :' + request_params.to_s)
+    STDERR.puts('DOCKER EXEC ' + r.to_s + ': for :' + params[:container].container_name + ': with :' + request_params.to_s)
     return r
   end
 

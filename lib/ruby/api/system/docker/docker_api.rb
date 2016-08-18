@@ -18,8 +18,8 @@ class DockerApi < ErrorsApi
   def initialize()
   @docker_comms = DockerConnection.new
   end 
-  def docker_exec(container, command, log_error = true, data=nil)
-    @docker_comms.docker_exec(container, command, log_error, data)
+  def docker_exec(params)
+    @docker_comms.docker_exec(params)
   end
   def container_name_and_type_from_id(id)
     @docker_comms.container_name_and_type_from_id(id)

@@ -11,7 +11,7 @@ module DockerOperations
   end
   
   def exec_in_container( params ) #container, commandline, log_error = false, data = nil)
-    @docker_api.docker_exec(params[:container], params[:commandline], params[:log_error], params[:data])    
+    @docker_api.docker_exec(params) #params[:container], params[:command_line], params[:log_error], params[:data])    
   end
   
   def  container_name_and_type_from_id(id)
