@@ -162,6 +162,8 @@ end
 
 require 'rest-client'
 
+
+#used by events 
 def get_json_stream(path)
   require 'yajl'
   chunk = ''
@@ -194,6 +196,7 @@ rescue StandardError => e
   p e.backtrace.to_s
 end
 
+## Used By builder command
 def get_stream(path)
   #require 'yajl'
   chunk = ''

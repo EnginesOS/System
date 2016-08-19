@@ -107,7 +107,11 @@ class ContainerStateFiles
   def self.container_log_dir(container)
     SystemConfig.SystemLogRoot + '/' + container.ctype + 's/' + container.container_name
   end
-
+  def self.container_ssh_keydir(container)
+    
+    SystemConfig.SSHStore + '/' + container.ctype + 's/' + container.container_name
+  end
+  
   def self.clear_cid_file(container)
     cidfile = container_cid_file(container)
     File.delete(cidfile) if File.exist?(cidfile)

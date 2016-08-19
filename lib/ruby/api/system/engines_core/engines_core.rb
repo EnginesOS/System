@@ -213,6 +213,8 @@ class EnginesCore < ErrorsApi
     end
     
   def build_engine(params)
+    
+    @system_api.init_engine_dirs(params[:engine_name])
     @build_controller = BuildController.new(self)  unless @build_controller
     @build_thread = Thread.new {
       @build_controller.build_engine(params) 
