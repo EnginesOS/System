@@ -307,7 +307,7 @@ end
 def rest_post(uri, params, content_type )
 
   begin
-  r =  connection(content_type).request(:method => :get,:path => uri, :body => params.to_json) #,:body => params.to_json)
+  r =  connection(content_type).request(:method => :post,:path => uri, :body => params.to_json) #,:body => params.to_json)
     write_response(r)
     exit
         rescue StandardError => e
