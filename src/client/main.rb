@@ -262,6 +262,7 @@ def handle_resp(resp, expect_json=true)
    STDOUT.puts 'OK' if resp.status  == 204 # nodata but all good happens on del
   STDOUT.puts("Un exepect response from docker" + resp.status.to_s + ' ' +resp.body.to_s + ' ' + resp.headers.to_s )   unless resp.status  == 200 ||  resp.status  == 201
 return resp.body.to_s unless expect_json == true
+  STDOUT.puts("exepect json")
    hashes = []
    parser.parse(resp.body) do |hash |
      hashes.push(hash)
