@@ -298,9 +298,12 @@ def write_response(r)
     STDOUT.write( r.body.b)
     # STDERR.puts "as_binary"
   else
-    puts r.body.to_s
-    STDOUT.write(r.body)
-    puts 'bb'
+#    puts r.body.to_s
+#    STDOUT.write(r.body)
+#    puts 'bb'
+    expect_json=false
+    expect_json=true if r.headers[:content_type] == 'application/json'
+   puts handle_resp(r, expect_json)
   end
 
 end
