@@ -265,7 +265,7 @@ return resp.body.to_s unless expect_json == true
    parser.parse(resp.body) do |hash |
      hashes.push(hash)
    end
-  return.puts hashes[0].to_s
+  return hashes[0].to_s
  rescue StandardError => e
 STDERR.puts e.to_s + ' with :' + resp.to_s
    STDERR.puts e.backtrace.to_s
