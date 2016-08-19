@@ -305,7 +305,7 @@ def write_response(r)
 #    STDOUT.write(r.body)
 #    puts 'bb'
     expect_json=false
-    expect_json=true if r.headers['Content-Type'] == 'application/json'
+   expect_json=true if r.body.start_with?('{')
    puts handle_resp(r, expect_json)
   end
 
