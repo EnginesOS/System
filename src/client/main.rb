@@ -240,7 +240,7 @@ def connection
     @connection
  end
  
-def rest_get(uri,params)
+def rest_get(uri,params=nil)
   
  #  STDERR.puts('get_request  ' + uri.to_s + ' : ' + headers.to_s)
 
