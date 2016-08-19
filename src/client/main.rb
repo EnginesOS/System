@@ -239,8 +239,7 @@ def connection
                            :debug_request => true,
                            :debug_response => true,
                            :persistent => true,
-  :query => headers,
-                           :headers => headers) if @connection.nil?
+                           :body => headers.to_json) if @connection.nil?
     @connection
  end
  
