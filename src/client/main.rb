@@ -21,7 +21,7 @@ def parse_rest_response(r)
   return true if r.to_s   == '' ||  r.to_s   == 'true'
   return false if r.to_s  == 'false'
   return r.to_s if @raw
-  parser = Yajl::Parser.new(:symbolize_keys => true)
+  parser = Yajl::Parser.new()
   res = parser.parse(r)
  # res = JSON.parse(r, :create_additions => true,:symbolize_keys => true)
   # STDERR.puts("RESPONSE "  + deal_with_jason(res).to_s)
