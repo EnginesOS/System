@@ -253,7 +253,8 @@ def rest_get(uri,params=nil)
  end
  
 def handle_resp(resp, expect_json=true)
-  # STDERR.puts(" RESPOSE " + resp.status.to_s + " : " + resp.body  )
+  STDERR.puts(" RESPOSE " + resp.to_s)
+   STDERR.puts(" RESPOSE " + resp.status.to_s + " : " + resp.body  )
    STDERR.puts("error:" + resp.status.to_s)  if resp.status  >= 400
    STDOUT.puts 'OK' if resp.status  == 204 # nodata but all good happens on del
   STDOUT.puts("Un exepect response from docker" + resp.status.to_s + ' ' +resp.body.to_s + ' ' + resp.headers.to_s )   unless resp.status  == 200 ||  resp.status  == 201
@@ -264,7 +265,7 @@ def handle_resp(resp, expect_json=true)
    end
   STDOUT.puts hashes[0].to_s
  rescue StandardError => e
-   log_exception(e)
+   log_exception(e.to_s)
  end
  
 #def rest_get(path,params=nil)
