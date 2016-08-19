@@ -256,10 +256,9 @@ def handle_resp(resp, expect_json=true)
   STDERR.puts(" RESPOSE " + resp.to_s)
    STDERR.puts(" RESPOSE " + resp.status.to_s + " : " + resp.body  )
    STDERR.puts("error:" + resp.status.to_s)  if resp.status  >= 400
-   STDOUT.puts 'OK' if resp.status  == 204 # nodata but all good happens on del
-  STDOUT.puts("Un exepect response from docker" + resp.status.to_s + ' ' +resp.body.to_s + ' ' + resp.headers.to_s )   unless resp.status  == 200 ||  resp.status  == 201
+   return 'OK' if resp.status  == 204   # nodata but all good happens on del
+return "Un exepect response from system" + resp.status.to_s + ' ' + resp.body.to_s + ' ' + resp.headers.to_s    unless resp.status  == 200 ||  resp.status  == 201 || resp.status  == 202
 return resp.body.to_s unless expect_json == true
-  STDOUT.puts("expect json")
    hashes = []
    parser.parse(resp.body) do |hash |
      hashes.push(hash)
