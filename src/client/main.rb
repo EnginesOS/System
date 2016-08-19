@@ -338,7 +338,7 @@ def rest_post(uri, params, content_type )
   end
 end
 
-def rest_delete(path, params=nil)
+def rest_delete(uri, params=nil)
  # params = add_access(params)
   begin
     if params.nil?  
@@ -350,7 +350,7 @@ def rest_delete(path, params=nil)
     exit
 
   rescue StandardError => e
-    STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
+    STDERR.puts e.to_s + ' with path:' + uri + "\n" + 'params:' + params.to_s
   end
 end
 
