@@ -18,7 +18,7 @@ module Actionators
      @last_error = "Engine not running"
      return  EnginesCoreError.new('Engine not running',:warning)
       rescue StandardError => e
-          log_exception( e,'perform_engine_action',engine.container_name,actionator_name,params)
+        log_exception( e,'perform_engine_action',engine.container_name,actionator_name,params)
     end
     
   

@@ -21,6 +21,16 @@ class ManagedUtility< ManagedContainer
     @container_mutex = Mutex.new
     @commands = SystemUtils.symbolize_keys(@commands)
   end
+  
+  def drop_log_dir
+    volumes.delete(:log_dir)
+  
+  end
+  
+    def drop_state_dir
+      
+      volumes.delete(:state_dir)
+    end
 
   def on_start
   end
