@@ -234,12 +234,12 @@ end
 
 def connection
   headers = {}
-  headers['HTTP_ACCESS_TOKEN'] = ENV['access_token']
+  headers['ACCESS_TOKEN'] = load_token
    @connection = Excon.new(@base_url,
                            :debug_request => true,
                            :debug_response => true,
                            :persistent => true,
-                           :body => headers.to_json) if @connection.nil?
+                           :headers => headers.to_json) if @connection.nil?
     @connection
  end
  
@@ -262,7 +262,7 @@ def handle_resp(resp, expect_json=true)
    STDOUT.puts 'OK' if resp.status  == 204 # nodata but all good happens on del
   STDOUT.puts("Un exepect response from docker" + resp.status.to_s + ' ' +resp.body.to_s + ' ' + resp.headers.to_s )   unless resp.status  == 200 ||  resp.status  == 201
 return resp.body.to_s unless expect_json == true
-  STDOUT.puts("exepect json")
+  STDOUT.puts("expect json")
    hashes = []
    parser.parse(resp.body) do |hash |
      hashes.push(hash)
