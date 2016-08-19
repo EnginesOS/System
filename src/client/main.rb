@@ -248,7 +248,7 @@ def rest_get(uri,params=nil)
   handle_resp(connection.request(:method => :get,:path => uri,:body => params.to_json))
     rescue StandardError => e
   
-      STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
+      STDERR.puts e.to_s + ' with path:' + uri + "\n" + 'params:' + params.to_s
       STDERR.puts e.backtrace.to_s
  end
  
