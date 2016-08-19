@@ -18,7 +18,7 @@ module Engines
     FileUtils.mkdir_p(ContainerStateFiles.container_ssh_keydir(engine_name)) unless Dir.exist?(ContainerStateFiles.container_ssh_keydir(engine_name))
     rescue StandardError => e
       log_exception(e)
-      return ret_val
+    
   end
   
   def set_engine_network_properties(engine, params)
