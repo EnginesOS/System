@@ -1,9 +1,10 @@
 
 if Process.euid != 21000
-  p "This program can only be run be the engines user"
+  STDERR.puts("This program can only be run be the engines user")
   exit
 end
-
+require 'rubygems'
+ require 'excon'
 require 'json'
 require 'yajl'
 
@@ -24,7 +25,9 @@ def parse_rest_response(r)
   return true if r.to_s   == '' ||  r.to_s   == 'true'
   return false if r.to_s  == 'false'
   return r.to_s if @raw
-  res = JSON.parse(r, :create_additions => true)
+  parser = Yajl::Parser.new(:symbolize_keys => true)
+  res = parser.parse(r)
+ # res = JSON.parse(r, :create_additions => true,:symbolize_keys => true)
   # STDERR.puts("RESPONSE "  + deal_with_jason(res).to_s)
   return deal_with_jason(res)
 rescue  StandardError => e
@@ -35,6 +38,7 @@ rescue  StandardError => e
 end
 
 def deal_with_jason(res)
+  return res
   return symbolize_keys(res) if res.is_a?(Hash)
   return symbolize_keys_array_members(res) if res.is_a?(Array)
   return symbolize_tree(res) if res.is_a?(Tree::TreeNode)
@@ -148,12 +152,11 @@ end
 def perform_post(params, content_type='application/json')
   post_params = {}
   post_params[:api_vars] = params
- #  add_access(post_params)
-  #  STDERR.puts  @route
-
   rest_post(@route,post_params, content_type)
   exit
 end
+
+
 
 def perform_delete(params=nil)
   #STDERR.puts  @route
@@ -229,23 +232,58 @@ def add_access(params)
   params
 end
 
-def rest_get(path,params=nil)
+def connection
+   @connection = Excon.new(@base_url,
+                           :debug_request => true,
+                           :debug_response => true,
+                           :persistent => true) if @connection.nil?
+    @connection
+ end
+ 
+def rest_get(uri,params)
+  
+ #  STDERR.puts('get_request  ' + uri.to_s + ' : ' + headers.to_s)
 
-  begin
-    retry_count = 0
-    # STDERR.puts('Get Path:' + path.to_s + ' Params:' + params.to_s)
-    params = add_access(params)
-    r = RestClient.get(@base_url + path, params) #, { :access_token => load_token})
-
-    return r
-  rescue RestClient::ExceptionWithResponse => e
-    parse_error(e.response)
-  rescue StandardError => e
-
-    STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
-    STDERR.puts e.backtrace.to_s
-  end
-end
+   params = add_access(params)
+  handle_resp(connection.request(:method => :get,:path => uri,:body => params.to_json))
+    rescue StandardError => e
+  
+      STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
+      STDERR.puts e.backtrace.to_s
+ end
+ 
+def handle_resp(resp, expect_json=true)
+  # STDERR.puts(" RESPOSE " + resp.status.to_s + " : " + resp.body  )
+   STDERR.puts("error:" + resp.status.to_s)  if resp.status  >= 400
+   STDOUT.puts 'OK' if resp.status  == 204 # nodata but all good happens on del
+  STDOUT.puts("Un exepect response from docker" + resp.status.to_s + ' ' +resp.body.to_s + ' ' + resp.headers.to_s )   unless resp.status  == 200 ||  resp.status  == 201
+  STDOUT.puts resp.body unless expect_json == true
+   hashes = []
+   response_parser.parse(resp.body) do |hash |
+     hashes.push(hash)
+   end
+  STDOUT.puts hashes[0].to_s
+ rescue StandardError => e
+   log_exception(e)
+ end
+ 
+#def rest_get(path,params=nil)
+#
+#  begin
+#    retry_count = 0
+#    # STDERR.puts('Get Path:' + path.to_s + ' Params:' + params.to_s)
+#    params = add_access(params)
+#    r = RestClient.get(@base_url + path, params) #, { :access_token => load_token})
+#
+#    return r
+#  rescue RestClient::ExceptionWithResponse => e
+#    parse_error(e.response)
+#  rescue StandardError => e
+#
+#    STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
+#    STDERR.puts e.backtrace.to_s
+#  end
+#end
 
 def write_response(r)
   if r.nil?
@@ -253,7 +291,7 @@ def write_response(r)
     return
   end
   if r.headers[:content_type] == 'application/octet-stream'
-    puts r.body.b
+    STDOUT.write( r.body.b)
     # STDERR.puts "as_binary"
   else
     #puts r.body
@@ -271,15 +309,7 @@ def rest_post(path, params, content_type )
     #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
     params = params.to_json if content_type == 'application/json'
     r = RestClient.post(@base_url + path, params, { :content_type => content_type, :access_token => load_token} )
-#    unless content_type.nil?
-#      #  STDERR.puts  'ct ' + content_type
-#      #   r = RestClient.post(@base_url + path, params[:api_vars][:data], :content_type => content_type )
-#      r = RestClient.post(@base_url + path, params, :content_type => content_type )
-#    else
-#      # STDERR.puts  "no_ct"
-#      r = RestClient.post(@base_url + path, params,  :content_type =>  :json)
-#    end
-#  
+
     write_response(r)
     exit
   rescue RestClient::ExceptionWithResponse => e
@@ -322,9 +352,7 @@ end
 def  process_args
   
 end
-#ENV['access_token'] = 'test_token'
-#@base_url = 'http://' + ENV['CONTROL_IP'] + ':4567'
-#@host = ENV['CONTROL_IP']
+
 @base_url = 'http://' + ENV['DOCKER_IP'] + ':2380'
 @host = ENV['DOCKER_IP']
 @port = '2380'
