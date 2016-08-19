@@ -242,8 +242,11 @@ def connection(content_type = 'application/json')
  
 def rest_get(uri,params=nil)
   
-
+if params.nil?
 connection.request(:method => :get,:path => uri) #,:body => params.to_json)
+else
+  connection.request(:method => :get,:path => uri,:body => params.to_json)
+end
     rescue StandardError => e
   
       STDERR.puts e.to_s + ' with path:' + uri + "\n" + 'params:' + params.to_s
@@ -307,7 +310,11 @@ end
 def rest_post(uri, params, content_type )
 
   begin
+   unless params.nil?   
   r =  connection(content_type).request(:method => :post,:path => uri, :body => params.to_json) #,:body => params.to_json)
+   else
+     r =  connection(content_type).request(:method => :post,:path => uri)
+   end
     write_response(r)
     exit
         rescue StandardError => e
@@ -332,14 +339,16 @@ def rest_post(uri, params, content_type )
 end
 
 def rest_delete(path, params=nil)
-  params = add_access(params)
+ # params = add_access(params)
   begin
-    #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
-    r = RestClient.delete(@base_url + path, params) #, {  :access_token => load_token} )
+    if params.nil?  
+  r =  connection.request(:method => :delete,:path => uri) #,:body => params.to_json)
+    else
+      r =  connection.request(:method => :delete,:path => uri,:body => params.to_json)
+    end
     write_response(r)
     exit
-  rescue RestClient::ExceptionWithResponse => e
-    parse_error(e.response)
+
   rescue StandardError => e
     STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
   end
