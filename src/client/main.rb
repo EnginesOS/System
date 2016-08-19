@@ -305,7 +305,7 @@ def write_response(r)
 
 end
 
-def rest_post(path, params, content_type )
+def rest_post(uri, params, content_type )
 
   begin
   r =  connection(content_type).request(:method => :get,:path => uri, :body => params.to_json) #,:body => params.to_json)
@@ -327,7 +327,7 @@ def rest_post(path, params, content_type )
 #    parse_error(e.response)
 #  rescue StandardError => e
     params[:api_vars][:data] = nil
-    STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
+    STDERR.puts e.to_s + ' with path:' + uri + "\n" + 'params:' + params.to_s
     STDERR.puts r.to_s
   end
 end
