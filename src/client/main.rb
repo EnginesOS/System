@@ -296,6 +296,7 @@ def write_response(r)
     STDERR.puts 'nil response'
     return
   end
+ STDERR.puts( 'RESPONSE HEADER ' + r.headers.to_s)
   if r.headers[:content_type] == 'application/octet-stream'
     STDOUT.write( r.body.b)
     # STDERR.puts "as_binary"
