@@ -14,11 +14,7 @@ def command_useage(mesg=nil)
   exit
 end
 
-def parse_error(r)
-  STDOUT.puts r.to_s
-  exit (-1)
 
-end
 
 def parse_rest_response(r)
   return false if r.code > 399
@@ -37,83 +33,83 @@ rescue  StandardError => e
   return false
 end
 
-def deal_with_jason(res)
-  return res
-  return symbolize_keys(res) if res.is_a?(Hash)
-  return symbolize_keys_array_members(res) if res.is_a?(Array)
-  return symbolize_tree(res) if res.is_a?(Tree::TreeNode)
-  return boolean_if_true_false_str(res) if res.is_a?(String)
-  return res
-rescue  StandardError => e
-  STDERR.puts e.to_s
-end
-
-def boolean_if_true_false_str(r)
-  if  r == 'true'
-    return true
-  elsif r == 'false'
-    return false
-  end
-  return r
-rescue  StandardError => e
-  STDERR.puts e.to_s
-end
-
-def symbolize_keys(hash)
-  hash.inject({}){|result, (key, value)|
-    new_key = case key
-    when String then key.to_sym
-    else key
-    end
-    new_value = case value
-    when Hash then symbolize_keys(value)
-    when Array then
-      newval = []
-      value.each do |array_val|
-        array_val = symbolize_keys(array_val) if array_val.is_a?(Hash)
-        array_val =  boolean_if_true_false_str(array_val) if array_val.is_a?(String)
-        newval.push(array_val)
-      end
-      newval
-    when String then
-      boolean_if_true_false_str(value)
-    else value
-    end
-    result[new_key] = new_value
-    result
-  }
-rescue  StandardError => e
-  STDERR.puts e.to_s
-end
-
-def symbolize_keys_array_members(array)
-  return array if array.count == 0
-  return array unless array[0].is_a?(Hash)
-  retval = []
-  i = 0
-  array.each do |hash|
-    retval[i] = array[i]
-    next if hash.nil?
-    next unless hash.is_a?(Hash)
-    retval[i] = symbolize_keys(hash)
-    i += 1
-  end
-  return retval
-
-rescue  StandardError => e
-  STDERR.puts e.to_s
-end
-
-def symbolize_tree(tree)
-  nodes = tree.children
-  nodes.each do |node|
-    node.content = symbolize_keys(node.content) if node.content.is_a?(Hash)
-    symbolize_tree(node)
-  end
-  return tree
-rescue  StandardError => e
-  STDERR.puts e.to_s
-end
+#def deal_with_jason(res)
+#  return res
+#  return symbolize_keys(res) if res.is_a?(Hash)
+#  return symbolize_keys_array_members(res) if res.is_a?(Array)
+#  return symbolize_tree(res) if res.is_a?(Tree::TreeNode)
+#  return boolean_if_true_false_str(res) if res.is_a?(String)
+#  return res
+#rescue  StandardError => e
+#  STDERR.puts e.to_s
+#end
+#
+#def boolean_if_true_false_str(r)
+#  if  r == 'true'
+#    return true
+#  elsif r == 'false'
+#    return false
+#  end
+#  return r
+#rescue  StandardError => e
+#  STDERR.puts e.to_s
+#end
+#
+#def symbolize_keys(hash)
+#  hash.inject({}){|result, (key, value)|
+#    new_key = case key
+#    when String then key.to_sym
+#    else key
+#    end
+#    new_value = case value
+#    when Hash then symbolize_keys(value)
+#    when Array then
+#      newval = []
+#      value.each do |array_val|
+#        array_val = symbolize_keys(array_val) if array_val.is_a?(Hash)
+#        array_val =  boolean_if_true_false_str(array_val) if array_val.is_a?(String)
+#        newval.push(array_val)
+#      end
+#      newval
+#    when String then
+#      boolean_if_true_false_str(value)
+#    else value
+#    end
+#    result[new_key] = new_value
+#    result
+#  }
+#rescue  StandardError => e
+#  STDERR.puts e.to_s
+#end
+#
+#def symbolize_keys_array_members(array)
+#  return array if array.count == 0
+#  return array unless array[0].is_a?(Hash)
+#  retval = []
+#  i = 0
+#  array.each do |hash|
+#    retval[i] = array[i]
+#    next if hash.nil?
+#    next unless hash.is_a?(Hash)
+#    retval[i] = symbolize_keys(hash)
+#    i += 1
+#  end
+#  return retval
+#
+#rescue  StandardError => e
+#  STDERR.puts e.to_s
+#end
+#
+#def symbolize_tree(tree)
+#  nodes = tree.children
+#  nodes.each do |node|
+#    node.content = symbolize_keys(node.content) if node.content.is_a?(Hash)
+#    symbolize_tree(node)
+#  end
+#  return tree
+#rescue  StandardError => e
+#  STDERR.puts e.to_s
+#end
 
 def base_url
   'http://' + @core_api.get_registry_ip + ':4567'
@@ -232,8 +228,9 @@ def add_access(params)
   params
 end
 
-def connection
+def connection(content_type = 'application/json')
   headers = {}
+  headers['content_type'] = content_type
   headers['ACCESS_TOKEN'] = load_token
    @connection = Excon.new(@base_url,
                            :debug_request => true,
@@ -301,9 +298,6 @@ def write_response(r)
     STDOUT.write( r.body.b)
     # STDERR.puts "as_binary"
   else
-#    puts r.body.to_s
-#    STDOUT.write(r.body)
-#    puts 'bb'
     expect_json=false
    expect_json=true if r.body.start_with?('{')
    puts handle_resp(r, expect_json)
@@ -314,17 +308,24 @@ end
 def rest_post(path, params, content_type )
 
   begin
-     
-   # params = add_access(params)
-    #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
-    params = params.to_json if content_type == 'application/json'
-    r = RestClient.post(@base_url + path, params, { :content_type => content_type, :access_token => load_token} )
-
+  r =  connection(content_type).request(:method => :get,:path => uri, :body => params.to_json) #,:body => params.to_json)
     write_response(r)
     exit
-  rescue RestClient::ExceptionWithResponse => e
-    parse_error(e.response)
-  rescue StandardError => e
+        rescue StandardError => e
+      
+          STDERR.puts e.to_s + ' with path:' + uri + "\n" + 'params:' + params.to_s
+          STDERR.puts e.backtrace.to_s
+#          
+#   # params = add_access(params)
+#    #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
+#    params = params.to_json if content_type == 'application/json'
+#    r = RestClient.post(@base_url + path, params, { :content_type => content_type, :access_token => load_token} )
+#
+#    write_response(r)
+#    exit
+#  rescue RestClient::ExceptionWithResponse => e
+#    parse_error(e.response)
+#  rescue StandardError => e
     params[:api_vars][:data] = nil
     STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
     STDERR.puts r.to_s
