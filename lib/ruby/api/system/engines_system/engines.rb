@@ -16,6 +16,9 @@ module Engines
      FileUtils.mkdir_p(ContainerStateFiles.container_state_dir(engine_name) + '/run') unless Dir.exist?(ContainerStateFiles.container_state_dir(engine_name)+ '/run')
      FileUtils.mkdir_p(ContainerStateFiles.container_log_dir(engine_name)) unless Dir.exist?(ContainerStateFiles.container_log_dir(engine_name))
     FileUtils.mkdir_p(ContainerStateFiles.container_ssh_keydir(engine_name)) unless Dir.exist?(ContainerStateFiles.container_ssh_keydir(engine_name))
+    rescue StandardError => e
+      log_exception(e)
+      return ret_val
   end
   
   def set_engine_network_properties(engine, params)
