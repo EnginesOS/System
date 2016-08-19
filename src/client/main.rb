@@ -233,17 +233,20 @@ def add_access(params)
 end
 
 def connection
+  headers = {}
+  headers['HTTP_ACCESS_TOKEN'] = ENV['access_token']
    @connection = Excon.new(@base_url,
                            :debug_request => true,
                            :debug_response => true,
-                           :persistent => true) if @connection.nil?
+                           :persistent => true,
+                           :headers => headers) if @connection.nil?
     @connection
  end
  
 def rest_get(uri,params=nil)
   
  #  STDERR.puts('get_request  ' + uri.to_s + ' : ' + headers.to_s)
-
+ 
    params = add_access(params)
 connection.request(:method => :get,:path => uri,:body => params.to_json)
     rescue StandardError => e
