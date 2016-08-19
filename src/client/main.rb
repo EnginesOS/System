@@ -298,9 +298,9 @@ def write_response(r)
     STDOUT.write( r.body.b)
     # STDERR.puts "as_binary"
   else
-    #puts r.body
+    puts r.body.to_s
     STDOUT.write(r.body)
-    puts ''
+    puts 'bb'
   end
 
 end
