@@ -297,7 +297,7 @@ def write_response(r)
     return
   end
  STDERR.puts( 'RESPONSE HEADER ' + r.headers.to_s)
-  if r.headers[:content_type] == 'application/octet-stream'
+  if r.headers['Content-Type'] == 'application/octet-stream'
     STDOUT.write( r.body.b)
     # STDERR.puts "as_binary"
   else
@@ -305,7 +305,7 @@ def write_response(r)
 #    STDOUT.write(r.body)
 #    puts 'bb'
     expect_json=false
-    expect_json=true if r.headers[:content_type] == 'application/json'
+    expect_json=true if r.headers['Content-Type'] == 'application/json'
    puts handle_resp(r, expect_json)
   end
 
