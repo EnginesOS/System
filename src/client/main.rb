@@ -245,10 +245,8 @@ def connection
  
 def rest_get(uri,params=nil)
   
- #  STDERR.puts('get_request  ' + uri.to_s + ' : ' + headers.to_s)
- 
-   params = add_access(params)
-connection.request(:method => :get,:path => uri,:body => params.to_json)
+
+connection.request(:method => :get,:path => uri) #,:body => params.to_json)
     rescue StandardError => e
   
       STDERR.puts e.to_s + ' with path:' + uri + "\n" + 'params:' + params.to_s
