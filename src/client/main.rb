@@ -253,6 +253,8 @@ def rest_get(uri,params=nil)
  end
  
 def handle_resp(resp, expect_json=true)
+  parser = Yajl::Parser.new(:symbolize_keys => true)
+
   STDERR.puts(" RESPOSE " + resp.to_s)
    STDERR.puts(" RESPOSE " + resp.status.to_s + " : " + resp.body  )
    STDERR.puts("error:" + resp.status.to_s)  if resp.status  >= 400
@@ -260,7 +262,7 @@ def handle_resp(resp, expect_json=true)
   STDOUT.puts("Un exepect response from docker" + resp.status.to_s + ' ' +resp.body.to_s + ' ' + resp.headers.to_s )   unless resp.status  == 200 ||  resp.status  == 201
   STDOUT.puts resp.body unless expect_json == true
    hashes = []
-   response_parser.parse(resp.body) do |hash |
+   parser.parse(resp.body) do |hash |
      hashes.push(hash)
    end
   STDOUT.puts hashes[0].to_s
