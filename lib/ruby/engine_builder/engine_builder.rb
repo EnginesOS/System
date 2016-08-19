@@ -499,6 +499,7 @@ class EngineBuilder < ErrorsApi
     @mc.save_state # no running.yaml throws a no such container so save so others can use
     log_build_errors('Failed to save blueprint ' + @blueprint.to_s) unless @mc.save_blueprint(@blueprint)
     log_build_output('Launching ' + @mc.to_s)
+    @core_api.init_engine_dirs(@mc)
     return log_build_errors('Error Failed to Launch') unless launch_deploy(@mc)
    
     log_build_output('Applying Volume settings and Log Permissions' + @mc.to_s)
