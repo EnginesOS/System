@@ -251,7 +251,7 @@ connection.request(:method => :get,:path => uri) #,:body => params.to_json)
  end
  
 def handle_resp(resp, expect_json=true)
-  parser = Yajl::Parser.new(:symbolize_keys => true)
+  parser = Yajl::Parser.new()
 
   STDERR.puts(" RESPOSE " + resp.to_s)
    STDERR.puts(" RESPOSE " + resp.status.to_s + " : " + resp.body  )
