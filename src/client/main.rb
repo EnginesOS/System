@@ -265,7 +265,8 @@ def handle_resp(resp, expect_json=true)
    end
   STDOUT.puts hashes[0].to_s
  rescue StandardError => e
-   log_exception(e.to_s)
+STDERR.puts e.to_s + ' with :' + resp.to_s
+   STDERR.puts e.backtrace.to_s
  end
  
 #def rest_get(path,params=nil)
