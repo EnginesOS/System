@@ -9,12 +9,10 @@ get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/
   hash = Utils::ServiceHash.engine_service_hash_from_params(params)
   engine = get_engine(params[:engine_name])
   return log_error(request, engine, params) if engine.is_a?(EnginesError)
-   r = engine.export_service_data(hash)
-
-  unless r.is_a?(EnginesError)
-    return r.b
-    #.to_json
-  else
+  stream do |out|
+   r = engine.export_service_data(hash,out)
+  end
+  if r.is_a?(EnginesError)
     return log_error(request, r, engine.last_error)
   end
 end

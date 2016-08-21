@@ -8,7 +8,7 @@ module ManagedContainerExportImportService
 #    @container_api.import_replace_service_data(params)
 #  end
   
- def export_service_data(params)
-   @container_api.export_service_data(self, params)
+ def export_service_data(params, ostream)
+   @container_api.export_service_data(self, params, ostream)
  end
 end
