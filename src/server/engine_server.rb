@@ -1,6 +1,7 @@
 
 begin
   require 'sinatra'
+  require "sinatra/streaming"
   require 'json'
   require 'yajl'
   require '/opt/engines/lib/ruby/system/system_debug.rb'
