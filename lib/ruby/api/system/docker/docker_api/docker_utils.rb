@@ -75,7 +75,7 @@ module DockerUtils
     r = {}
     r[:stderr] = ''
     r[:stdout] = ''
-    self.docker_stream_as_result(chunck, r)
+    self.docker_stream_as_result(chunk, r)
     r
 end
 
