@@ -8,6 +8,7 @@ get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/
   content_type 'application/octet-stream'
   hash = Utils::ServiceHash.engine_service_hash_from_params(params)
   engine = get_engine(params[:engine_name])
+  r = ''
   return log_error(request, engine, params) if engine.is_a?(EnginesError)
   stream do |out|
    r = engine.export_service_data(hash,out)
