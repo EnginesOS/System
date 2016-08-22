@@ -1,7 +1,8 @@
 module ServiceHash
   def self.service_hash_from_params(params, search)
     splats = params['splat']
-
+    p :params
+        p params
     hash = {}
     hash[:publisher_namespace] = params['publisher_namespace']
 

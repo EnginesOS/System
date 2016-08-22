@@ -244,19 +244,9 @@ def rest_post(uri, params, content_type )
     exit
         rescue StandardError => e
       
-          STDERR.puts e.to_s + ' with path:' + uri + "\n" + 'params:' + params.to_s
-          STDERR.puts e.backtrace.to_s
-#          
-#   # params = add_access(params)
-#    #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
-#    params = params.to_json if content_type == 'application/json'
-#    r = RestClient.post(@base_url + path, params, { :content_type => content_type, :access_token => load_token} )
-#
-#    write_response(r)
-#    exit
-#  rescue RestClient::ExceptionWithResponse => e
-#    parse_error(e.response)
-#  rescue StandardError => e
+   STDERR.puts e.to_s + ' with path:' + uri + "\n" + 'params:' + params.to_s
+   STDERR.puts e.backtrace.to_s
+
     params[:api_vars][:data] = nil
     STDERR.puts e.to_s + ' with path:' + uri + "\n" + 'params:' + params.to_s
     STDERR.puts r.to_s
