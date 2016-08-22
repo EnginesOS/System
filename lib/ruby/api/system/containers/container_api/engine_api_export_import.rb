@@ -32,9 +32,9 @@ end
     SystemDebug.debug(SystemDebug.export_import, :import_service, service_params,service_params[:import_method])
        cmd_dir = SystemConfig.BackupScriptsRoot + '/' + service_hash[:publisher_namespace] + '/' + service_hash[:type_path] + '/' + service_hash[:service_handle] + '/'
    if service_params[:import_method] == :replace  
-     cmd = cmd_dir + '/replace.sh ' 
+     cmd = cmd_dir + '/replace.sh' 
    else
-     cmd = cmd_dir + '/restore.sh ' 
+     cmd = cmd_dir + '/restore.sh' 
    end
     params = {:container => container, :command_line => [cmd], :log_error => true }
               params[:stream] =  stream unless stream.nil?
