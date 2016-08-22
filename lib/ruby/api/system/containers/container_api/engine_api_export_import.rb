@@ -45,7 +45,7 @@ end
              Timeout.timeout(@@export_timeout) do
                thr = Thread.new { result = @engines_core.exec_in_container(params) }
                thr.join
-               SystemDebug.debug(SystemDebug.export_import, :import_service,'result code =' ,result[:result])
+               SystemDebug.debug(SystemDebug.export_import, :import_service,'result ' ,result.to_s)
                return true if result[:result] == 0
                return log_error_mesg("failed to export ",service_params,params,result)
              end
