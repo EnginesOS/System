@@ -2,7 +2,6 @@ module DockerUtils
   def self.process_request(stream_reader) #data , result, ostream=nil, istream=nil)
     @stream_reader = stream_reader
 
-  
     to_send = @stream_reader.data
     return_result = @stream_reader.result
     STDERR.puts('PROCESS REQUEST init ' + stream_reader.data.to_s)
@@ -12,43 +11,43 @@ module DockerUtils
         begin
           STDERR.puts('PROCESS REQUEST write thread ' + stream_reader.data.to_s)
           unless @stream_reader.i_stream.nil?
-            return socket.close_write if @stream_reader.i_stream.eof?
-            IO.copy_stream(@stream_reader.i_stream,socket)
+            IO.copy_stream(@stream_reader.i_stream,socket) unless @stream_reader.i_stream.eof?
           else
-            return socket.close_write if stream_reader.data.nil?
-          return socket.close_write if stream_reader.data.length == 0
-          if stream_reader.data.length < Excon.defaults[:chunk_size]
-            STDERR.puts('PROCESS REQUEST with single chunk ' + stream_reader.data.to_s)
-            stream_reader.data = ''
-            socket.send(stream_reader.data,0)
-            socket.close_write
-          else
-            while stream_reader.data.length != 0
+            #   unless stream_reader.data.nil?
+
+            unless stream_reader.data.nil? ||  stream_reader.data.length == 0
               if stream_reader.data.length < Excon.defaults[:chunk_size]
-              socket.send(stream_reader.data.slice!(0,Excon.defaults[:chunk_size]),0)
-              else
+                STDERR.puts('PROCESS REQUEST with single chunk ' + stream_reader.data.to_s)
+                stream_reader.data = ''
                 socket.send(stream_reader.data,0)
-                stream_reader.data = '' 
+              else
+                while stream_reader.data.length != 0
+                  if stream_reader.data.length < Excon.defaults[:chunk_size]
+                    socket.send(stream_reader.data.slice!(0,Excon.defaults[:chunk_size]),0)
+                  else
+                    socket.send(stream_reader.data,0)
+                    stream_reader.data = ''
+                  end
+                end
+              end
             end
-          end
-            socket.close_write
-          end
-          end
+          end       
+          socket.close_write
         rescue StandardError => e
           STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
         end
       end
-      
+
       read_thread = Thread.start do
         begin
           STDERR.puts('PROCESS REQUEST read thread')
           while chunk = socket.readpartial(16384)
             if  @stream_reader.o_stream.nil?
-            DockerUtils.docker_stream_as_result(chunk, return_result)
-            STDERR.puts('PROCESS REQUEST read thread' + return_result.to_s)
-              else
-             r = DockerUtils.decode_from_docker_chunk(chunk)
-             @stream_reader.o_stream.write(r[:stdout]) unless r.nil?
+              DockerUtils.docker_stream_as_result(chunk, return_result)
+              STDERR.puts('PROCESS REQUEST read thread' + return_result.to_s)
+            else
+              r = DockerUtils.decode_from_docker_chunk(chunk)
+              @stream_reader.o_stream.write(r[:stdout]) unless r.nil?
               return_result[:stderr] =  return_result[:stderr].to_s + r[:stderr].to_s
             end
           end
@@ -71,14 +70,13 @@ module DockerUtils
 
   end
 
-  
   def self.decode_from_docker_chunk(chunk)
     r = {}
     r[:stderr] = ''
     r[:stdout] = ''
     self.docker_stream_as_result(chunk, r)
     r
-end
+  end
 
   def self.docker_stream_as_result(r, h)
     unmatched = false
