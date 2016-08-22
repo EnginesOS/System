@@ -15,6 +15,7 @@ module DockerUtils
             return socket.close_write if @stream_reader.i_stream.eof?
             IO.copy_stream(@stream_reader.i_stream,socket)
           else
+            return socket.close_write if stream_reader.data.nil?
           return socket.close_write if stream_reader.data.length == 0
           if stream_reader.data.length < Excon.defaults[:chunk_size]
             STDERR.puts('PROCESS REQUEST with single chunk ' + stream_reader.data.to_s)
