@@ -30,8 +30,8 @@ end
    
     service_hash = service_params[:service_connection]
     SystemDebug.debug(SystemDebug.export_import, :import_service, service_params,service_params[:import_method])
-       cmd_dir = SystemConfig.BackupScriptsRoot + '/' + service_params[:publisher_namespace] + '/' + service_params[:type_path] + '/' + service_params[:service_handle] + '/'
-   if params[:import_method] == :replace  
+       cmd_dir = SystemConfig.BackupScriptsRoot + '/' + service_hash[:publisher_namespace] + '/' + service_hash[:type_path] + '/' + service_hash[:service_handle] + '/'
+   if service_params[:import_method] == :replace  
      cmd = cmd_dir + '/replace.sh ' 
    else
      cmd = cmd_dir + '/restore.sh ' 
