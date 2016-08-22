@@ -36,6 +36,48 @@ post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace
     return log_error(request, r, engine.last_error)
   end
 end
+# @method engine_import_persistent_service_file
+# @overload post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/:type_path/:service_handle/import_file'
+# import the service data gzip optional 
+# @param 
+# @return [true]
+post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/import_file' do
+  params = post_params(request)
+  hash = {}
+  hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
+  engine = get_engine(params[:engine_name])
+  hash[:data]  = params[:data]
+  file = params[:file][:tempfile]
+  return log_error(request, engine, params) if engine.is_a?(EnginesError)
+  
+  r = engine.import_service_data(hash, file)
+  unless r.is_a?(EnginesError)
+    return r.to_json
+  else
+    return log_error(request, r, engine.last_error)
+  end
+end
+# @method engine_replace_persistent_service_file
+# @overload post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/:type_path/:service_handle/replace_file'
+# import the service data gzip optional after dropping/deleting existing data
+# @param :data data to import
+# @return [true]
+post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/replace_file' do
+  params = post_params(request)
+  hash = {}
+   hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
+   engine = get_engine(params[:engine_name])
+  hash[:import_method] = :replace  
+  hash[:data] = params[:data]
+  file = params[:file][:tempfile]
+  return log_error(request, engine, params) if engine.is_a?(EnginesError)
+  r = engine.import_service_data(hash,file)
+  unless r.is_a?(EnginesError)
+    return r.to_json
+  else
+    return log_error(request, r, engine.last_error)
+  end
+end
 # @method engine_replace_persistent_service
 # @overload post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/:type_path/:service_handle/replace'
 # import the service data gzip optional after dropping/deleting existing data
@@ -46,7 +88,7 @@ post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace
   hash = {}
    hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
    engine = get_engine(params[:engine_name])
-  hash[:import_method] == :replace  
+  hash[:import_method] = :replace  
   hash[:data] = params[:data]
   return log_error(request, engine, params) if engine.is_a?(EnginesError)
   r = engine.import_service_data(hash)
