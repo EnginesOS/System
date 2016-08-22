@@ -2,20 +2,21 @@ module DockerUtils
   def self.process_request(stream_reader) #data , result, ostream=nil, istream=nil)
     @stream_reader = stream_reader
 
-    to_send = @stream_reader.data
+   # to_send = @stream_reader.data
     return_result = @stream_reader.result
     STDERR.puts('PROCESS REQUEST init ' + stream_reader.data.to_s)
     lambda do |socket|
       STDERR.puts('PROCESS REQUEST Lambda')
       write_thread = Thread.start do
         begin
-          STDERR.puts('PROCESS REQUEST write thread ' + stream_reader.data.to_s)
+          
           unless @stream_reader.i_stream.nil?
             IO.copy_stream(@stream_reader.i_stream,socket) unless @stream_reader.i_stream.eof?
           else
             #   unless stream_reader.data.nil?
 
             unless stream_reader.data.nil? ||  stream_reader.data.length == 0
+              STDERR.puts('PROCESS REQUEST write thread ' + stream_reader.data.to_s)
               if stream_reader.data.length < Excon.defaults[:chunk_size]
                 STDERR.puts('PROCESS REQUEST with single chunk ' + stream_reader.data.to_s)
                 stream_reader.data = ''
@@ -32,7 +33,7 @@ module DockerUtils
               end
             end
           end       
-          socket.close_write
+         
         rescue StandardError => e
           STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
         end
@@ -44,7 +45,7 @@ module DockerUtils
           while chunk = socket.readpartial(16384)
             if  @stream_reader.o_stream.nil?
               DockerUtils.docker_stream_as_result(chunk, return_result)
-              STDERR.puts('PROCESS REQUEST read thread' + return_result.to_s)
+              STDERR.puts('PROCESS REQUEST read thread' + return_result.to_s + ' from ' + chunk.to_s)
             else
               r = DockerUtils.decode_from_docker_chunk(chunk)
               @stream_reader.o_stream.write(r[:stdout]) unless r.nil?
