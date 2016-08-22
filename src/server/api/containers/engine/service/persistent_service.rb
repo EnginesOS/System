@@ -23,12 +23,12 @@ end
 # @param :data data to import
 # @return [true]
 post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/import' do
-  params = post_params(request)
+  p_params = post_params(request)
   hash = {}
   hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
   engine = get_engine(params[:engine_name])
-  hash[:data]  = params[:data]
-  return log_error(request, engine, params) if engine.is_a?(EnginesError)
+  hash[:data]  = p_params[:data]
+  return log_error(request, engine, hash) if engine.is_a?(EnginesError)
   r = engine.import_service_data(hash)
   unless r.is_a?(EnginesError)
     return r.to_json
@@ -42,13 +42,13 @@ end
 # @param 
 # @return [true]
 post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/import_file' do
-  params = post_params(request)
+  p_params = post_params(request)
   hash = {}
   hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
   engine = get_engine(params[:engine_name])
-  hash[:data]  = params[:data]
-  file = params[:file][:tempfile]
-  return log_error(request, engine, params) if engine.is_a?(EnginesError)
+  hash[:data]  = p_params[:data]
+  file = p_params[:file][:tempfile]
+  return log_error(request, engine, hash) if engine.is_a?(EnginesError)
   
   r = engine.import_service_data(hash, file)
   unless r.is_a?(EnginesError)
@@ -63,14 +63,14 @@ end
 # @param :data data to import
 # @return [true]
 post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/replace_file' do
-  params = post_params(request)
+  p_params = post_params(request)
   hash = {}
    hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
    engine = get_engine(params[:engine_name])
   hash[:import_method] = :replace  
-  hash[:data] = params[:data]
-  file = params[:file][:tempfile]
-  return log_error(request, engine, params) if engine.is_a?(EnginesError)
+  hash[:data] = p_params[:data]
+  file = p_params[:file][:tempfile]
+  return log_error(request, engine, hash) if engine.is_a?(EnginesError)
   r = engine.import_service_data(hash,file)
   unless r.is_a?(EnginesError)
     return r.to_json
@@ -84,13 +84,13 @@ end
 # @param :data data to import
 # @return [true]
 post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/replace' do
-  params = post_params(request)
+  p_params = post_params(request)
   hash = {}
    hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
    engine = get_engine(params[:engine_name])
   hash[:import_method] = :replace  
-  hash[:data] = params[:data]
-  return log_error(request, engine, params) if engine.is_a?(EnginesError)
+  hash[:data] = p_params[:data]
+  return log_error(request, engine, hash) if engine.is_a?(EnginesError)
   r = engine.import_service_data(hash)
   unless r.is_a?(EnginesError)
     return r.to_json
