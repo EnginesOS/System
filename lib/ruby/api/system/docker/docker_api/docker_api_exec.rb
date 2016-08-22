@@ -119,7 +119,7 @@ module DockerApiExec
 
    r =  post_stream_request(request, nil, stream_handler,  headers , request_params.to_json )
     STDERR.puts('EXEC RES ' + stream_handler.result.to_s + ' with r ' + r.to_s)
-    stream_reader.result[:result] = get_exec_result(exec_id)
+    stream_handler.result[:result] = get_exec_result(exec_id)
     stream_handler.result
 
   rescue StandardError => e
