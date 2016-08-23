@@ -55,9 +55,9 @@ module Engines
 
   def set_engine_hostname_details(container, params)
     clear_error
-    p :set_engine_network_properties
-    p container.container_name
-    p params
+#    p :set_engine_network_properties
+#    p container.container_name
+#    p params
     #FIXME [:hostname]  silly host_name from gui drop it
     if params.key?(:host_name)
       hostname = params[:host_name]
@@ -97,7 +97,7 @@ module Engines
 
   def loadManagedEngine(engine_name)
     e = engine_from_cache(engine_name)
-    return e unless e.nil?
+    return e if e.is_a?(ManagedEngine)
 
     return log_error_mesg('No Engine name', engine_name) if engine_name.nil? || engine_name.length == 0
     yaml_file_name = SystemConfig.RunDir + '/containers/' + engine_name + '/running.yaml'
