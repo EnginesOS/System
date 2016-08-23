@@ -1,4 +1,5 @@
 module EngineApiExportImport
+  require "base64"
   @@export_timeout=120
   def export_service_data(container, service_hash, stream=nil)
     SystemDebug.debug(SystemDebug.export_import, :export_service, service_hash)
@@ -37,8 +38,12 @@ end
      cmd = cmd_dir + '/restore.sh' 
    end
     params = {:container => container, :command_line => [cmd], :log_error => true }
-              params[:stream] =  stream unless stream.nil?
-              params[:data] = service_params[:data]
+            unless stream.nil?
+              params[:stream] =  stream
+              params[:data] = 'file'
+            else 
+              params[:data] = Base64.decode64(service_params[:data])
+            end
        SystemDebug.debug(SystemDebug.export_import, :import_service, params,service_params)
            begin
              result = {}

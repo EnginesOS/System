@@ -17,11 +17,20 @@ when 'import'
   post = true
   STDERR.puts  @route
   params[:data] = read_stdin_data
+when 'import_file'
+  cmd = ARGV[4]
+  post = true
+  params[:data] =  'file'
+when 'replace_file'
+  cmd = ARGV[4]
+  post = true
+  params[:data] =  'file'
+
 when 'replace'
-cmd = ARGV[4]
- post = true
- STDERR.puts  @route
- params[:data] = read_stdin_data
+  cmd = ARGV[4]
+  post = true
+  STDERR.puts  @route
+  params[:data] = read_stdin_data
 end
 
 if cmd.nil?

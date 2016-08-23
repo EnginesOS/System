@@ -1,5 +1,5 @@
 # @!group /containers/engine/:engine_name/services/persistent/
-
+require 'base64'
 # @method engine_export_persistent_service
 # @overload get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/:type_path/:service_handle/export'
 # exports the service data as a gzip
@@ -27,7 +27,8 @@ post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace
   hash = {}
   hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
   engine = get_engine(params[:engine_name])
-  hash[:data] = p_params['api_vars']['data']
+
+  hash[:data] =Base64.encode64( p_params['api_vars']['data'])
   return log_error(request, engine, hash) if engine.is_a?(EnginesError)
   r = engine.import_service_data(hash)
   unless r.is_a?(EnginesError)
@@ -91,9 +92,9 @@ post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace
    engine = get_engine(params[:engine_name])
   hash[:import_method] = :replace  
  
-    STDERR.puts(' data passed ' + p_params.to_s)
+  STDERR.puts(' data passed ' + p_params.to_s)
   return log_error(request, engine, hash) if engine.is_a?(EnginesError)
-  hash[:data] = p_params['api_vars']['data']
+  hash[:data] =Base64.encode64( p_params['api_vars']['data'])
   r = engine.import_service_data(hash)
   unless r.is_a?(EnginesError)
     return r.to_json
