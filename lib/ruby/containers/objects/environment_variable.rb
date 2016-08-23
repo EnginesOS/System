@@ -39,7 +39,7 @@ class EnvironmentVariable
   end
 
   # Replace any envs in dest [Array] that exist in fresh_envs [Array] and add any new
-  # the members or teh arrays are EnvironmentVariable match by EnvironmentVariable.name
+  # the members or the arrays are EnvironmentVariable match by EnvironmentVariable.name
   def self.merge_envs(fresh_envs,dest)
 
     fresh_envs.each do |new_env|

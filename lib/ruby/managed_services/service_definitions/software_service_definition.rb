@@ -108,11 +108,12 @@ end
           env_name = env_variable_pair[:environment_name]
           value_name = env_variable_pair[:variable_name]
           value = service_hash[:variables][value_name.to_sym]
-         immutable = service_variables[value_name.to_sym][:immutable]
+        immutable = service_variables[value_name.to_sym][:immutable]
         build_time_only = service_variables[value_name.to_sym][:build_time_only]
         setatrun = service_variables[value_name.to_sym][:ask_at_build_time]
         mandatory = service_variables[value_name.to_sym][:mandatory]
-        retval.push( EnvironmentVariable.new(env_name,value,setatrun,mandatory,build_time_only,service_hash[:type_path] + env_name,immutable)) # env_name , value
+        retval.push( EnvironmentVariable.new(env_name,value,setatrun,mandatory,build_time_only,
+        service_hash[:publisher_namespace] + '/' + service_hash[:type_path] + ':' + value_name,immutable)) # env_name , value
           
         end                                                      #(name,value,setatrun,mandatory,build_time_only,label,immutable)
       end
@@ -217,4 +218,6 @@ end
     SystemUtils.log_error_mesg('Exception With to h',self)
     SystemUtils.log_exception(e)
   end
+  
+  
 end
