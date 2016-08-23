@@ -31,6 +31,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
           next
         end
         #out <<'data:'
+        break if out.closed?
         out << jason_event.to_json
         out << "\n\n"
         STDERR.puts('EVENTS ' + jason_event.to_s + ' ' + jason_event.class.name)
