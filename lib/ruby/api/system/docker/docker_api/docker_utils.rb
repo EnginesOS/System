@@ -19,8 +19,8 @@ module DockerUtils
               STDERR.puts('PROCESS REQUEST write thread ' + stream_reader.data.to_s)
               if stream_reader.data.length < Excon.defaults[:chunk_size]
                 STDERR.puts('PROCESS REQUEST with single chunk ' + stream_reader.data.to_s)
-                stream_reader.data = ''
                 socket.send(stream_reader.data,0)
+                stream_reader.data = ''
               else
                 while stream_reader.data.length != 0
                   if stream_reader.data.length < Excon.defaults[:chunk_size]
