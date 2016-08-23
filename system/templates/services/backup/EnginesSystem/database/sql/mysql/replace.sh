@@ -31,6 +31,7 @@ if test $? -eq 0
 	    cat /tmp/roll_back.err
 	    echo  Rolled back >&2
 	    rm /tmp/big/backup.sql $Archive
+	    exit 127
 	 fi 
 
 
