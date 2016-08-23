@@ -4,7 +4,7 @@ module DockerUtils
 
    # to_send = @stream_reader.data
     return_result = @stream_reader.result
-    STDERR.puts('PROCESS REQUEST init ' + stream_reader.data.to_s)
+    STDERR.puts('PROCESS REQUEST init ' )
     lambda do |socket|
       STDERR.puts('PROCESS REQUEST Lambda')
       write_thread = Thread.start do
@@ -30,10 +30,11 @@ module DockerUtils
                     stream_reader.data = ''
                   end
                 end
+               
               end
             end
           end       
-         
+          socket.close_write
         rescue StandardError => e
           STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
         end
