@@ -8,9 +8,10 @@ cat - > $Archive
 
 $Script_Dir/backup.sh > /tmp/big/backup.sql
   
-cat $Script_Dir/drop_tables.sql | mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname 2> /tmp/extract.err
-  
-	
+#cat $Script_Dir/drop_tables.sql | mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname 2> /tmp/extract.err
+echo " SET FOREIGN_KEY_CHECKS = 0;" | mysql  -h $dbhost -u $dbuser --password=$dbpasswd  $dbname
+mysql  -h $dbhost -u $dbuser --password=$dbpasswd  --silent --skip-column-names -e "SHOW TABLES" $dbname | xargs -L1 -I% echo 'DROP TABLE `%`;' | mysql -v $dbname
+echo " SET FOREIGN_KEY_CHECKS = 1;" | mysql  -h $dbhost -u $dbuser --password=$dbpasswd  $dbname
 
 type=`file -i $Archive |grep application/gzip`
 if test $? -eq 0
