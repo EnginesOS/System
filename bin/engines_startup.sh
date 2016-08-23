@@ -63,8 +63,16 @@ if test -f /usr/bin/pulseaudio
  	/usr/bin/pulseaudio -D
  fi
  
+ f test "`/opt/engines/bin/system_service.rb registry state`" = \"nocontainer\"
+ then
+	/opt/engines/bin/system_service.rb registry create
+ elif test "`/opt/engines/bin/system_service.rb registry state`" = \"stopped\"
+  then
+	/opt/engines/bin/system_service.rb registry start
+  fi
 
-docker start registry
+#docker start registry
+ 
 #ruby /opt/engines/bin/system_service.rb registry start
 sleep 5
   while ! test -f /opt/engines/run/system_services/registry/run/flags/startup_complete
