@@ -27,7 +27,7 @@ post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace
   hash = {}
   hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
   engine = get_engine(params[:engine_name])
-  hash[:data]  = p_params[:data]
+  hash[:data] = p_params['api_vars']['data']
   return log_error(request, engine, hash) if engine.is_a?(EnginesError)
   r = engine.import_service_data(hash)
   unless r.is_a?(EnginesError)
@@ -46,7 +46,8 @@ post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace
   hash = {}
   hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
   engine = get_engine(params[:engine_name])
-  hash[:data]  = p_params[:data]
+  
+  hash[:data] = p_params['api_vars']['data']
   file = p_params[:file][:tempfile]
   return log_error(request, engine, hash) if engine.is_a?(EnginesError)
   
@@ -68,7 +69,7 @@ post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace
    hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
    engine = get_engine(params[:engine_name])
   hash[:import_method] = :replace  
-  hash[:data] = p_params[:data]
+  hash[:data] = p_params['api_vars']['data']
   file = p_params[:file][:tempfile]
   return log_error(request, engine, hash) if engine.is_a?(EnginesError)
   r = engine.import_service_data(hash,file)
