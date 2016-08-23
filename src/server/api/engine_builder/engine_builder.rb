@@ -84,11 +84,10 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream'  do
         build_log_file.close
         has_data = false
       rescue IOError
-        has_data = false
-        out  << bytes 
+        has_data = false        
+        out  << bytes  unless out.closed?     
         build_log_file.close
-
-        out.close
+        out.close unless out.closed?  
       end
     end    
   end
