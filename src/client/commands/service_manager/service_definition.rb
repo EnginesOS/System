@@ -3,5 +3,5 @@
 
   @route += '/' + ARGV[2] 
 
-
+puts @route
 perform_get

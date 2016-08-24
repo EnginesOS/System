@@ -28,7 +28,7 @@ get '/v0/service_manager/service_definition/:service_name' do
 
  
    cparams =  Utils::Params.assemble_params(params, [:service_name], []) 
-   r = engines_api.get_service(cparams[:service_name])
+   r = get_service(cparams[:service_name])
   return r if r.is_a?(EnginesError)
   pparams = {}
   pparams[:publisher_namespace] = r.publisher_namespace
