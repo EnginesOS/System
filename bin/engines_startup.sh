@@ -63,7 +63,7 @@ if test -f /usr/bin/pulseaudio
  	/usr/bin/pulseaudio -D
  fi
  
- f test "`/opt/engines/bin/system_service.rb registry state`" = \"nocontainer\"
+ if test "`/opt/engines/bin/system_service.rb registry state`" = \"nocontainer\"
  then
 	/opt/engines/bin/system_service.rb registry create
  elif test "`/opt/engines/bin/system_service.rb registry state`" = \"stopped\"
