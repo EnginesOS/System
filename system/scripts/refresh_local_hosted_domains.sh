@@ -4,4 +4,9 @@
  
 #su engines -c /opt/engines/system/scripts/get_ip.sh
 
-su engines -l /opt/engines/scripts/restart_avahi.sh
+if test `id -u` -eq 21000
+ then
+ 	/opt/engines/scripts/restart_avahi.sh
+ else
+	su engines -l /opt/engines/scripts/restart_avahi.sh
+fi

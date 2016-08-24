@@ -4,6 +4,10 @@ module ContainerOperations
     File.exist?(completed_flag_file)
   end
 
+  def  init_engine_dirs(engine)
+    @system_api.init_engine_dirs(engine)    
+  end
+  
   def image_exist?(container_name)
     @docker_api.image_exist?(container_name)
   rescue StandardError => e

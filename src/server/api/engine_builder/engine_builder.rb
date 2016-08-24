@@ -73,22 +73,21 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream'  do
         bytes = ''
         retry
       rescue EOFError
-       
+       unless out.closed?       
         out  << bytes
         out  << '.'
         bytes = ''
         sleep 2
         retry if File.exist?(SystemConfig.BuildRunningParamsFile)
+        out.close
+       end
         build_log_file.close
         has_data = false
-
-        out.close
       rescue IOError
-        has_data = false
-        out  << bytes 
+        has_data = false        
+        out  << bytes  unless out.closed?     
         build_log_file.close
-
-        out.close
+        out.close unless out.closed?  
       end
     end    
   end

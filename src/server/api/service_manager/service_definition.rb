@@ -1,5 +1,5 @@
 # @!group /service_manager/
-# @method get_service_definition
+# @method get_service_definitions
 # @overload get '/v0/service_manager/service_definitions/:publisher_namespace/:type_path'
 # return  Hash for service definition addressed by
 #  :publisher_namespace :type_path
@@ -19,4 +19,6 @@ get '/v0/service_manager/service_definitions/:publisher_namespace/*' do
   log_error(request, r, cparams)
   return status(404)
 end
+
+
 # @!endgroup

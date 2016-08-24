@@ -31,6 +31,8 @@ class BuildController
     SystemStatus.build_starting(@build_params)
     @engine_builder = get_engine_builder(@build_params)
 
+    
+    
     @engine = @engine_builder.build_from_blue_print
     
     @build_error = @engine_builder.last_error

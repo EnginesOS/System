@@ -20,7 +20,7 @@ module ServiceApiConsumers
     result = {}
     begin
       Timeout.timeout(@@consumer_timeout) do
-        thr = Thread.new { result =  engines_core.exec_in_container(c, cmd, true) } #SystemUtils.execute_command(cmd) }
+        thr = Thread.new { result =  engines_core.exec_in_container({:container => c, :command_line => cmd, :log_error => true }) } #SystemUtils.execute_command(cmd) }
         thr.join
       end
     rescue Timeout::Error
@@ -39,14 +39,15 @@ module ServiceApiConsumers
     result = {}
     begin
       Timeout.timeout(@@consumer_timeout) do
-        thr = Thread.new {result =  engines_core.exec_in_container(c, cmd, true) }
+        thr = Thread.new {result =  engines_core.exec_in_container({:container => c, :command_line => cmd, :log_error => true }) }
         thr.join
       end
     rescue Timeout::Error
       return log_error_mesg('Timeout on removing consumer from service',cmd)
     end
+    STDERR.puts('rm result ' + result.to_s) 
   return result if result.is_a?(EnginesError)
     return true  if result[:result] == 0
-    log_error_mesg('Failed rm_consumer_from_service', result)
+    log_error_mesg('Failed rm_consumer_from_service ' + result.to_s, result )
   end
 end

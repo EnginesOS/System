@@ -1,6 +1,7 @@
 
 begin
   require 'sinatra'
+  require "sinatra/streaming"
   require 'json'
   require 'yajl'
   require '/opt/engines/lib/ruby/system/system_debug.rb'
@@ -32,9 +33,8 @@ begin
   
   before do
   content_type 'application/json' unless  request.path.end_with?('stream')    
-     pass if request.path.start_with?('/v0/system/login/')
+    pass if request.path.start_with?('/v0/system/login/')
     pass if request.path.start_with?('/v0/unauthenticated')    
-  
     pass if request.path.start_with?('/v0/system/do_first_run') && FirstRunWizard.required?
     env['warden'].authenticate!(:access_token)
    end
@@ -76,8 +76,7 @@ begin
 
   def log_error(request, error_object, *args)
    # return EnginesError.new(msg.to_s,:error)
-    p :ERROR
-    p args
+
     error_mesg = {}
       if request.is_a?(String)
         error_mesg[:route] = request

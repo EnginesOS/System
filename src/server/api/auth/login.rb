@@ -7,7 +7,7 @@
 get '/v0/system/login/:user_name/:password' do 
   $token = 'test_token_arandy'
 
-  return $token.to_json
+  return $token
 end
 
 # @clears Authentication token

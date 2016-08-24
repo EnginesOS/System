@@ -41,7 +41,8 @@ module Services
 
   def loadManagedService(service_name)
     s = engine_from_cache('services/' + service_name)
-    return s unless s.nil?
+    return s if s.is_a?(ManagedService)
+    STDERR.puts(' service from disk ' + service_name.to_s )
     s = _loadManagedService(service_name,  '/services/')
     ts = File.mtime(SystemConfig.RunDir + '/services/' + service_name + '/running.yaml')
     cache_engine(s, ts)

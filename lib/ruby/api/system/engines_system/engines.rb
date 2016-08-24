@@ -11,7 +11,16 @@ module Engines
     log_exception(e)
     return ret_val
   end
-
+  
+  def init_engine_dirs(engine)
+     FileUtils.mkdir_p(ContainerStateFiles.container_state_dir(engine_name) + '/run') unless Dir.exist?(ContainerStateFiles.container_state_dir(engine_name)+ '/run')
+     FileUtils.mkdir_p(ContainerStateFiles.container_log_dir(engine_name)) unless Dir.exist?(ContainerStateFiles.container_log_dir(engine_name))
+    FileUtils.mkdir_p(ContainerStateFiles.container_ssh_keydir(engine_name)) unless Dir.exist?(ContainerStateFiles.container_ssh_keydir(engine_name))
+    rescue StandardError => e
+      log_exception(e)
+    
+  end
+  
   def set_engine_network_properties(engine, params)
     clear_error
     p :set_engine_network_properties
@@ -46,9 +55,9 @@ module Engines
 
   def set_engine_hostname_details(container, params)
     clear_error
-    p :set_engine_network_properties
-    p container.container_name
-    p params
+#    p :set_engine_network_properties
+#    p container.container_name
+#    p params
     #FIXME [:hostname]  silly host_name from gui drop it
     if params.key?(:host_name)
       hostname = params[:host_name]
@@ -88,7 +97,7 @@ module Engines
 
   def loadManagedEngine(engine_name)
     e = engine_from_cache(engine_name)
-    return e unless e.nil?
+    return e if e.is_a?(ManagedEngine)
 
     return log_error_mesg('No Engine name', engine_name) if engine_name.nil? || engine_name.length == 0
     yaml_file_name = SystemConfig.RunDir + '/containers/' + engine_name + '/running.yaml'

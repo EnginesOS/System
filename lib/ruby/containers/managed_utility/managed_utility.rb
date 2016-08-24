@@ -1,40 +1,42 @@
 class ManagedUtility< ManagedContainer
- 
-
   def post_load
-    
-  # Basically parent super but no lock on image 
+    # Basically parent super but no lock on image
     expire_engine_info
-      
-    info  =  @container_api.inspect_container_by_name(self)
+    info = @container_api.inspect_container_by_name(self)
     @container_id = info[:Id] if info.is_a?(Hash)
-       set_running_user
-       domain_name = SystemConfig.internal_domain
-       @conf_self_start.freeze
-        @container_name.freeze
-        @data_uid.freeze
-        @data_gid.freeze
-      #  @image.freeze This is the one difference
-        @repository = '' if @repository.nil?
-        @repository.freeze
-        
+    set_running_user
+    domain_name = SystemConfig.internal_domain
+    @conf_self_start.freeze
+    @container_name.freeze
+    @data_uid.freeze
+    @data_gid.freeze
+    #  @image.freeze This is the one difference
+    @repository = '' if @repository.nil?
+    @repository.freeze
     @container_mutex = Mutex.new
     @commands = SystemUtils.symbolize_keys(@commands)
+  end
+
+  def drop_log_dir
+    volumes.delete(:log_dir)
+  end
+
+  def drop_state_dir
+    volumes.delete(:state_dir)
   end
 
   def on_start
   end
 
   def  on_create(event_hash)
-        @container_mutex.synchronize {
-          SystemDebug.debug(SystemDebug.container_events,:ON_Create_CALLED,event_hash)    
-            @container_id = event_hash[:id]
+    @container_mutex.synchronize {
+    SystemDebug.debug(SystemDebug.container_events,:ON_Create_CALLED,event_hash)
+    @container_id = event_hash[:id]
     @out_of_memory = false
     @had_out_memory = false
-        save_state
-          }
+    save_state
+    }
   end
-
 
   def command_details(command_name)
     STDERR.puts(@commands.to_s)
@@ -48,37 +50,36 @@ class ManagedUtility< ManagedContainer
 
   def execute_command(command_name, command_params)
     return log_error_mesg('Utility ' + container_name + ' in use ' ,  command_name) if is_active?
-  #FIXMe need to check if running
-    r =  '' 
+    #FIXMe need to check if running
+    r =  ''
     STDERR.puts("COMMANDS " + @commands.to_s)
     STDERR.puts( ' commaned keys ' + @commands.keys.to_s)
-  #  command_name = command_name.to_sym unless @commands.key?(command_name)
+    #  command_name = command_name.to_sym unless @commands.key?(command_name)
     return log_error_mesg('No such command: ' + command_name.to_s, command_name, command_params) unless @commands.key?(command_name)
     command = command_details(command_name)
     return log_error_mesg('Missing params' + r.to_s, r) if (r = check_params(command, command_params)) == false
 
     r = ''
-  return r if (r = destroy_container).is_a?(EnginesError) #if has_container?
+    return r if (r = destroy_container).is_a?(EnginesError) #if has_container?
 
-    @container_api.wait_for('nocontainer') unless read_state == 'nocontainer' 
-    @container_api.destroy_container(self)  unless read_state == 'nocontainer' 
+    @container_api.wait_for('nocontainer') unless read_state == 'nocontainer'
+    @container_api.destroy_container(self)  unless read_state == 'nocontainer'
     clear_configs
     STDERR.puts("Container NOT Destroyed") if has_container?
-    
+
     apply_templates(command, command_params)
     save_state
     create_container()
     start_container
-    @container_api.wait_for('stopped') unless read_state == 'stopped' 
+    @container_api.wait_for('stopped') unless read_state == 'stopped'
     r = logs_container #_as_result
-   # destroy_container
+    # destroy_container
     STDERR.puts(' logs ' + r.to_s)
     r = {}
     r[:stdout] = 'OK'
     return r
 
   rescue StandardError => e
-
     log_exception(e)
   end
 
@@ -96,7 +97,7 @@ class ManagedUtility< ManagedContainer
 
     templater = Templater.new(SystemAccess.new,nil)
     @image = templater.process_templated_string(@image)
-     
+
     construct_cmdline(command, command_params, templater)
 
     apply_env_templates(command_params, templater) unless @environments.nil?
@@ -112,8 +113,8 @@ class ManagedUtility< ManagedContainer
 
   def apply_volume_templates(command_params, templater)
     @volumes.each_value do |volume|
-       volume = SystemUtils.symbolize_keys(volume)
-    
+      volume = SystemUtils.symbolize_keys(volume)
+
       STDERR.puts('volume VALUE  ' + volume.to_s )
       volume[:remotepath] = templater.apply_hash_variables(volume[:remotepath] , command_params)
       volume[:localpath] = templater.apply_hash_variables(volume[:localpath] , command_params)
@@ -130,10 +131,10 @@ class ManagedUtility< ManagedContainer
 
     volumes_from.each do |from|
       s =templater.apply_hash_variables(from, command_params)
-    
+
       vols.push(s) unless s == ""
     end
-  @volumes_from = vols
+    @volumes_from = vols
     @volumes_from = nil if vols.size == 0
   rescue StandardError => e
 
@@ -177,7 +178,7 @@ class ManagedUtility< ManagedContainer
   def container_logs_as_result
 
   end
-  
+
   def clear_configs
     FileUtils.rm(ContainerStateFiles.container_state_dir(self) + '/running.yaml') if File.exist?(ContainerStateFiles.container_state_dir(self) + '/running.yaml')
     FileUtils.rm(ContainerStateFiles.container_state_dir(self) + '/running.yaml.bak')   if File.exist?(ContainerStateFiles.container_state_dir(self) + '/running.yaml.bak')

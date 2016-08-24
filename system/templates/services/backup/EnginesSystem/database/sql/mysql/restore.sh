@@ -24,6 +24,7 @@ if test $? -eq 0
 	    cat  /tmp/extract.err
 	    echo  Rolled back >&2
 	    rm  $Archive 
+	    exit 127
 	 fi 
 
 

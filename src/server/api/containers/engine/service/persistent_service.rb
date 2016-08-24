@@ -1,5 +1,5 @@
 # @!group /containers/engine/:engine_name/services/persistent/
-
+require 'base64'
 # @method engine_export_persistent_service
 # @overload get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/:type_path/:service_handle/export'
 # exports the service data as a gzip
@@ -8,13 +8,12 @@ get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/
   content_type 'application/octet-stream'
   hash = Utils::ServiceHash.engine_service_hash_from_params(params)
   engine = get_engine(params[:engine_name])
+  r = ''
   return log_error(request, engine, params) if engine.is_a?(EnginesError)
-   r = engine.export_service_data(hash)
-
-  unless r.is_a?(EnginesError)
-    return r.b
-    #.to_json
-  else
+  stream do |out|
+   r = engine.export_service_data(hash,out)
+  end
+  if r.is_a?(EnginesError)
     return log_error(request, r, engine.last_error)
   end
 end
@@ -24,13 +23,57 @@ end
 # @param :data data to import
 # @return [true]
 post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/import' do
-  params = post_params(request)
+  p_params = post_params(request)
   hash = {}
   hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
   engine = get_engine(params[:engine_name])
-  hash[:data]  = params[:data]
-  return log_error(request, engine, params) if engine.is_a?(EnginesError)
+
+  hash[:data] =Base64.encode64( p_params['api_vars']['data'])
+  return log_error(request, engine, hash) if engine.is_a?(EnginesError)
   r = engine.import_service_data(hash)
+  unless r.is_a?(EnginesError)
+    return r.to_json
+  else
+    return log_error(request, r, engine.last_error)
+  end
+end
+# @method engine_import_persistent_service_file
+# @overload post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/:type_path/:service_handle/import_file'
+# import the service data gzip optional 
+# @param 
+# @return [true]
+post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/import_file' do
+  p_params = post_params(request)
+  hash = {}
+  hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
+  engine = get_engine(params[:engine_name])
+  
+  hash[:data] = p_params['api_vars']['data']
+  file = p_params[:file][:tempfile]
+  return log_error(request, engine, hash) if engine.is_a?(EnginesError)
+  
+  r = engine.import_service_data(hash, file)
+  unless r.is_a?(EnginesError)
+    return r.to_json
+  else
+    return log_error(request, r, engine.last_error)
+  end
+end
+# @method engine_replace_persistent_service_file
+# @overload post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/:type_path/:service_handle/replace_file'
+# import the service data gzip optional after dropping/deleting existing data
+# @param :data data to import
+# @return [true]
+post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/replace_file' do
+  p_params = post_params(request)
+  hash = {}
+   hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
+   engine = get_engine(params[:engine_name])
+  hash[:import_method] = :replace  
+  hash[:data] = p_params['api_vars']['data']
+  file = p_params[:file][:tempfile]
+  return log_error(request, engine, hash) if engine.is_a?(EnginesError)
+  r = engine.import_service_data(hash,file)
   unless r.is_a?(EnginesError)
     return r.to_json
   else
@@ -43,13 +86,15 @@ end
 # @param :data data to import
 # @return [true]
 post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/replace' do
-  params = post_params(request)
+  p_params = post_params(request)
   hash = {}
    hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
    engine = get_engine(params[:engine_name])
-  hash[:import_method] == :replace  
-  hash[:data] = params[:data]
-  return log_error(request, engine, params) if engine.is_a?(EnginesError)
+  hash[:import_method] = :replace  
+ 
+  STDERR.puts(' data passed ' + p_params.to_s)
+  return log_error(request, engine, hash) if engine.is_a?(EnginesError)
+  hash[:data] =Base64.encode64( p_params['api_vars']['data'])
   r = engine.import_service_data(hash)
   unless r.is_a?(EnginesError)
     return r.to_json
