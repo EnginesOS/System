@@ -99,8 +99,8 @@ module DockerApiExec
     request_params["Cmd"] = params[:command_line]
 
     headers = {}
-    headers['Content-type'] = 'text/plain'
-
+  #  headers['Content-type'] = 'text/plain'
+    headers['Content-type'] = 'application/json'
     unless params.key?(:data)
       result = {}
       stream_reader = DockerStreamReader.new(params[:stream])
