@@ -121,6 +121,7 @@ count=0
   		if test $count -gt 120
   		 then
   		  echo "ERROR failed to start DNS "
+  		  exit 127
   		fi
   done 
 
