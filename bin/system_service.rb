@@ -17,6 +17,10 @@ core_api = EnginesCore.new
 system_api = core_api.system_api
 
 service = system_api.loadSystemService(ARGV[0])
+if service.is_a?(EnginesError)
+p service.to_s
+exit 127
+end 
 
 case ARGV[1]
 when 'start'
@@ -34,3 +38,4 @@ when 'set_state'
 when 'status'
   p service.status
 end
+
