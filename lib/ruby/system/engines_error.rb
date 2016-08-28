@@ -2,6 +2,10 @@ class EnginesError # < FalseClass
   attr_accessor :source, :error_type, :error_mesg, :sub_system
 
   def initialize(message, type )
+    if message.is_a?(Hash)
+      message = message.to_json
+    end
+      
     @error_mesg = message
     @error_type = type
     @sub_system = 'global'
