@@ -18,12 +18,12 @@ end
 # Called in response to an unauthorised post request
 # returns error hash
 post '/v0/unauthenticated' do     
-    log_error(request,nil,'unauthorised', params).to_json
+    log_error(request,nil,'unauthorised', params)
   end
 
 # Called in response to an unauthorised get request
 # returns error hash   
   get  '/v0/unauthenticated' do     
-  log_error(request,nil,'unauthorised', params).to_json
+  log_error(request,nil,'unauthorised', params)
 end
 
