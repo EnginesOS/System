@@ -89,7 +89,7 @@ begin
 
     STDERR.puts args.to_s + '::' + engines_api.last_error.to_s
   #  body args.to_s + ':' + engines_api.last_error.to_s
-    status(404)
+    status(403)
     return error_mesg.to_json
   end
 
