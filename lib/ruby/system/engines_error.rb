@@ -2,6 +2,10 @@ class EnginesError # < FalseClass
   attr_accessor :source, :error_type, :error_mesg, :sub_system
 
   def initialize(message, type )
+    if message.is_a?(Hash)
+      message = message.to_json
+    end
+      
     @error_mesg = message
     @error_type = type
     @sub_system = 'global'
@@ -14,7 +18,7 @@ class EnginesError # < FalseClass
   
 def to_h
   
-   self.instance_variables.each_with_object({}) { |var, hash| hash[var.to_s.delete("@")] = self.instance_variable_get(var) }
+   self.instance_variables.each_with_object({}) { |var, hash| hash[var.to_s.delete("@")] = self.instance_variable_get(var).to_json }
     
 end
 

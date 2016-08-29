@@ -126,7 +126,7 @@ class EnginesCore < ErrorsApi
   #why readers on these apis
 #  attr_reader :container_api, :service_api
   
-  attr_reader :system_api, :service_manager, :container_api, :service_api
+  attr_reader :system_api,  :container_api, :service_api
   
 
   def api_shutdown
@@ -212,6 +212,12 @@ class EnginesCore < ErrorsApi
   MemoryStatistics.container_memory_stats(engine)
     end
     
+  def service_manager
+    return create_service_manager if @service_manager.nil?
+    return  @service_manager
+    
+  end
+
   def build_engine(params)
     
    

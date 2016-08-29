@@ -2,9 +2,9 @@
 
 # @method get_container_event_stream
 # @overload get '/v0/containers/events/stream'
-# Add listener to container events and write event-stream of events as json to client 
+# Add listener to container events and write event-stream of events as json to client
 # @return [text/event-stream]
-# stream is in the format 
+# stream is in the format
 # {"state":"stopped",status":"stop","id":"50ffafcef4018242dcf8a89155dcf61f069b4933e69ad62c5397c9b77b2b0b22","from":"prosody","time":1463529792,"timeNano":1463529792881164857,"Type":"container","container_type":"container","container_name":"prosody"
 #  Do not use the "from" key
 get '/v0/containers/events/stream', provides: 'text/event-stream' do
@@ -13,13 +13,17 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
 
     @events_stream = engines_api.container_events_stream
     has_data = true
-
+    no_op = {:no-op => true}
     parser = Yajl::Parser.new(:symbolize_keys => true)
     timer = nil
     while has_data == true
       begin
         require "timeout"
-        timer =  EventMachine::PeriodicTimer.new(5) { out << "\n" } if timer.nil?
+        
+        timer = EventMachine::PeriodicTimer.new(15) do
+          out << no_op.to_json unless lock_timer == true
+        end if timer.nil?
+        
         bytes = @events_stream.rd.read_nonblock(2048)
         timer.cancel
         timer = nil
@@ -32,8 +36,9 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
         end
         #out <<'data:'
         break if out.closed?
+        lock_timer = true
         out << jason_event.to_json
-        out << "\n\n"
+        lock_timer = false
         STDERR.puts('EVENTS ' + jason_event.to_s + ' ' + jason_event.class.name)
         bytes = ''
       rescue IO::WaitReadable
@@ -54,7 +59,7 @@ end
 
 # @method check_and_act_on_containers
 # @overload get '/v0/containers/check_and_act'
-# 
+#
 # checks status and if the container is not in the set state attempt to set it
 # @return [Hash] container_name:Hash :container_type,:status,:error
 #  container_name:Hash :container_type,:status,:error
@@ -67,10 +72,10 @@ end
 get '/v0/containers/check_and_act' do
   r = engines_api.containers_check_and_act.to_json
   unless r.is_a?(EnginesError)
-     return r.to_json
-   else
-     return log_error(request, r, engine.last_error)
-   end
+    return r.to_json
+  else
+    return log_error(request, r, engine.last_error)
+  end
 end
 
 # @!endgroup

@@ -21,6 +21,11 @@ class ErrorsApi
     @last_error = e.to_s + e.backtrace.to_s
     mesg = @last_error + ':'
     args.each do |arg|
+      if arg.is_a?(Hash)
+      arg = arg.to_json 
+      else
+        arg = arg.to_s
+      end
       mesg += arg.to_s + ' '
     end
   STDERR.puts(e.to_s + e.backtrace.to_s)
