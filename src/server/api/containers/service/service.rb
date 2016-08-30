@@ -8,7 +8,7 @@
 # @return [Hash]
 get '/v0/containers/service/:service_name' do
   service = get_service(params[:service_name])
-  unless service.is_a?(EnginesError)
+  if service.is_a?(ManagedService)
     return managed_container_as_json(service)
   else
     return log_error(request, service)
