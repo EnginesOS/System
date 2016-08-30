@@ -89,7 +89,7 @@ begin
 
     STDERR.puts args.to_s + '::' + engines_api.last_error.to_s
   #  body args.to_s + ':' + engines_api.last_error.to_s
-    if mesg == 'unauthorised'
+    if error_mesg[:mesg] == 'unauthorised'
       status(403)
     else
       status(404)
