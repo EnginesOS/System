@@ -89,7 +89,11 @@ begin
 
     STDERR.puts args.to_s + '::' + engines_api.last_error.to_s
   #  body args.to_s + ':' + engines_api.last_error.to_s
-    status(403)
+    if mesg == 'unauthorised'
+      status(403)
+    else
+      status(404)
+    end
     return error_mesg.to_json
   end
 
