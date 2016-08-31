@@ -58,7 +58,7 @@ properties_net:
 	engines_tool service testengine state  | engines_test_expects text is running
 	
 
-	properties_run:
+properties_run:
 	make properties_memory
 	make properties_env
 	
