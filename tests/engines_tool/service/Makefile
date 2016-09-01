@@ -55,7 +55,7 @@ properties_net:
 	engines_tool service email stop | engines_test_expects bool true
 	cat network_properties.json | engines_tool service email properties network | engines_test_expects bool true
 	echo -n " Checking:"
-	engines_tool service testengine state  | engines_test_expects text is running
+	engines_tool service email state  | engines_test_expects text is running
 	
 
 properties_run:
@@ -63,22 +63,22 @@ properties_run:
 	make properties_env
 	
 properties_memory:
-	engines_tool engine email stop | engines_test_expects bool true
+	engines_tool service email stop | engines_test_expects bool true
 	cat runtime_properties_memory.json | engines_tool engine email properties runtime | engines_test_expects bool true
 	echo -n " Checking:"
-	engines_tool engine email state  | engines_test_expects text is running
+	engines_tool service email state  | engines_test_expects text is running
 	echo -n " Checking:"
-	engines_tool engine email state  | engines_test_expects text 128
-	engines_tool engine email stop | engines_test_expects bool true
-	cat revert_runtime_properties_memory.json | engines_tool engine email properties runtime | engines_test_expects bool true
+	engines_tool service email state  | engines_test_expects text 128
+	engines_tool service email stop | engines_test_expects bool true
+	cat revert_runtime_properties_memory.json | engines_tool service email properties runtime | engines_test_expects bool true
 	
 properties_env:
-	engines_tool engine email stop | engines_test_expects bool true
-	cat runtime_properties_env.json | engines_tool engine email properties runtime | engines_test_expects bool true
+	engines_tool service email stop | engines_test_expects bool true
+	cat runtime_properties_env.json | engines_tool service email properties runtime | engines_test_expects bool true
 	echo -n " Checking:"
-	engines_tool engine email state  | engines_test_expects text is running
+	engines_tool service email state  | engines_test_expects text is running
 	echo -n " Checking:"
-	engines_tool engine email   | engines_test_expects text valuewer32342342
+	engines_tool service email   | engines_test_expects text valuewer32342342
 	
 
 	
