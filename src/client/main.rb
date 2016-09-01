@@ -181,8 +181,8 @@ end
 def handle_resp(resp, expect_json=true)
   parser = Yajl::Parser.new()
 
-  STDERR.puts(" RESPOSE " + resp.to_s)
-   STDERR.puts(" RESPOSE " + resp.status.to_s + " : " + resp.body  )
+  #STDERR.puts(" RESPOSE " + resp.to_s)
+  # STDERR.puts(" RESPOSE " + resp.status.to_s + " : " + resp.body  )
    STDERR.puts("error:" + resp.status.to_s)  if resp.status  >= 400
    return 'OK' if resp.status  == 204   # nodata but all good happens on del
 STDERR.puts "Un exepect response from system" + resp.status.to_s + ' ' + resp.body.to_s + ' ' + resp.headers.to_s    unless resp.status  == 200 ||  resp.status  == 201 || resp.status  == 202
@@ -220,7 +220,7 @@ def write_response(r)
     STDERR.puts 'nil response'
     return
   end
- STDERR.puts( 'RESPONSE HEADER ' + r.headers.to_s)
+ #STDERR.puts( 'RESPONSE HEADER ' + r.headers.to_s)
   if r.headers['Content-Type'] == 'application/octet-stream'
     STDOUT.write( r.body.b)
     # STDERR.puts "as_binary"
