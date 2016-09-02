@@ -5,6 +5,6 @@ if test $# -gt 0
   if test -d /opt/engines/run/containers/$1
    then
 	rm -r /opt/engines/run/containers/$1/run
-	chown engine.containers /opt/engines/run/containers/$1
+	chown engines.containers /opt/engines/run/containers/$1
   fi
 fi 
