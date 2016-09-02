@@ -64,7 +64,7 @@ properties_run:
 	
 properties_memory:
 	engines_tool service email stop | engines_test_expects bool true
-	cat runtime_properties_memory.json | engines_tool engine email properties runtime | engines_test_expects bool true
+	cat runtime_properties_memory.json | engines_tool service email properties runtime | engines_test_expects bool true
 	echo -n " Checking:"
 	engines_tool service email state  | engines_test_expects text is running
 	echo -n " Checking:"
