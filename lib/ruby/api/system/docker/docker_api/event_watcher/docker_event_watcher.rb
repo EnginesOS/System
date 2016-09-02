@@ -85,7 +85,7 @@ class DockerEventWatcher  < ErrorsApi
             mask |= @@engine_target
           end
         end
-       return  STDERR.puts(' BAD EVENT ' + event_hash.to_s )  if event_hash[:status].nil?
+       return  0  if event_hash[:status].nil?
           
         if event_hash[:status].start_with?('exec')
           mask |= @@container_exec
