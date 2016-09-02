@@ -84,8 +84,9 @@ class ContainerStateFiles
 #    retval = SystemUtils.run_system(cmd)
 #    cmd = 'docker_rm volbuilder'
 #    retval =  SystemUtils.run_system(cmd)
-    unless result.is_a?(EnginesError)
+    unless result.is_a?(EnginesError)      
       FileUtils.rm_rf(ContainerStateFiles.container_state_dir(container))
+      SystemUtils.run_system('/opt/engines/system/scripts/system/clear_container_dir.sh')
       return true
     else
       container.last_error = 'Failed to Delete state and logs:' + result.to_s
