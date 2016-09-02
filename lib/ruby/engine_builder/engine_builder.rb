@@ -173,6 +173,7 @@ class EngineBuilder < ErrorsApi
       @last_error = ' ' + tail_of_build_log
       return post_failed_build_clean_up
     end
+  SystemUtils.run_system('/opt/engines/system/scripts/system/create_container_dir.sh ' + @build_params[:engine_name])
     if build_init == false
       log_build_errors('Error Build Image failed')
       @last_error = ' ' + tail_of_build_log

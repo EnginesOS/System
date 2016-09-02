@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if test $# -gt 0
+if test $# -eq 1
   then
   if test -d /opt/engines/run/containers/$1
    then
