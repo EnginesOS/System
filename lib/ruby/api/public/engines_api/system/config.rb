@@ -14,7 +14,7 @@ module PublicApiConfig
    end
    def set_hostname(hostname)      
        service_param = {}
-       service_param[:service_name] = 'mgmt'
+       service_param[:service_name] = 'system'
        service_param[:configurator_name] = 'hostname'
        service_param[:variables] = {}
        service_param[:variables][:hostname] = hostname

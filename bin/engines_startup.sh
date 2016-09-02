@@ -11,7 +11,7 @@ fi
 
 if test -f  /opt/engines/run/system/flags/run_post_system_update
  then 
- 	/opt/engines/system/scripts/ssh/sudo/post_system_update_boot.sh
+  sudo	/opt/engines/system/scripts/ssh/sudo/post_system_update_boot.sh
  fi
 
 

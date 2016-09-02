@@ -196,7 +196,7 @@ class EngineBuilder < ErrorsApi
     log_build_output('Build Successful')
     @container = mc
     build_report = generate_build_report(@templater, @blueprint)
-    @core_api.save_build_report(mc, build_report)
+    @core_api.save_build_report(@container, build_report)
     cnt = 0
     lcnt = 5
     log_build_output('Starting Engine')
@@ -204,8 +204,7 @@ class EngineBuilder < ErrorsApi
       cnt += 1
       if cnt == 120
         log_build_output('') # force EOL to end the ...
-        log_build_output('Startup still running')
-       
+        log_build_output('Startup still running')       
         break
       end
       if lcnt == 5
@@ -518,7 +517,7 @@ class EngineBuilder < ErrorsApi
     restart_reason='Restart to run post install script, as required in blueprint'
     # FixME this should be elsewhere
     restart_flag_file = ContainerStateFiles.restart_flag_file(mc)
-    FileUtils.mkdir_p(ContainerStateFiles.container_flag_dir(container)) unless Dir(ContainerStateFiles.container_flag_dir(container)).exist?
+    FileUtils.mkdir_p(ContainerStateFiles.container_flag_dir(mc)) unless Dir(ContainerStateFiles.container_flag_dir(mc)).exist?
     f = File.new(restart_flag_file,'w+')
     f.puts(restart_reason)
     f.close
