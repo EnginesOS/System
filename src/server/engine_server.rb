@@ -170,7 +170,7 @@ end
           # Your actual access token should be generated using one of the several great libraries
           # for this purpose and stored in a database, this is just to show how Warden should be
           # set up.
-    
+        STDERR.puts("NO HTTP_ACCESS_TOKEN in header ") if request.env["HTTP_ACCESS_TOKEN"].nil? 
         access_granted = (params['access_token'] == $token  || request.env["HTTP_ACCESS_TOKEN"] == $token)
           !access_granted ? fail!('Could not log in') : success!(access_granted)
       end
