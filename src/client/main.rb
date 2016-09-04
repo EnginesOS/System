@@ -94,6 +94,7 @@ def get_json_stream(path)
   Net::HTTP.start(uri.host, uri.port)  do |http|
     req = Net::HTTP::Get.new(uri)
     req['access_token'] = ENV['access_token']
+    req['HTTP_access_token'] = ENV['access_token']
     parser = Yajl::Parser.new(:symbolize_keys => true)
     http.request(req) { |resp|
       resp.read_body do |chunk|
@@ -128,6 +129,7 @@ def get_stream(path, ostream=STDOUT)
   Net::HTTP.start(uri.host, uri.port)  do |http|
     req = Net::HTTP::Get.new(uri)
     #  parser = Yajl::Parser.new
+    req['HTTP_access_token'] = ENV['access_token']
     req['access_token'] = ENV['access_token']
     http.request(req) { |resp|
       resp.read_body do |chunk|
