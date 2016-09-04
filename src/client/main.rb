@@ -284,6 +284,7 @@ def load_token
   return false unless File.exist?(Dir.home + '/.engines_token')
   ENV['access_token'] = File.read(Dir.home + '/.engines_token')
   ENV['access_token'].strip = ENV['access_token'].strip
+  ENV['access_token']
 end
 
 def  process_args
