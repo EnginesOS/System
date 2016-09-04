@@ -126,11 +126,10 @@ def get_stream(path, ostream=STDOUT)
   chunk = ''
 
   uri = URI(@base_url + path)
-  Net::HTTP.start(uri.host, uri.port)  do |http|
-    req = Net::HTTP::Get.new(uri)
-    #  parser = Yajl::Parser.new
-    req['HTTP_access_token'] = ENV['access_token']
-    req['access_token'] = ENV['access_token']
+  req = Net::HTTP::Get.new(uri)
+  req['Access_Token'] = ENV['access_token']
+  STDERR.puts('Access ' + req.to_s)
+  Net::HTTP.start(uri.host, uri.port)  do |http|  
     http.request(req) { |resp|
       resp.read_body do |chunk|
         #hash = parser.parse(chunk) do |hash|
