@@ -1,5 +1,5 @@
-TESTS=persistent_services persistent_services_type persistent_service\
-	prepare\
+TESTS=prepare\
+	persistent_services persistent_services_type persistent_service\	
 	 service_persistent_import service_persistent_replace service_persistent_export \
 	clean_up
 
@@ -11,10 +11,10 @@ persistent_services:
 	
 	
 persistent_services_type:
-	engines_tool engine prosody services persistent EnginesSystem | engines_test_expects array
+	engines_tool engine prosody services persistent EnginesSystem database/sql/mysql | engines_test_expects array
 
 persistent_service:
-	engines_tool engine prosody service persistent EnginesSystem filesystem/local/filesystem testengine | engines_test_expects json type_path filesystem/local/filesystem 
+	engines_tool engine prosody service persistent EnginesSystem filesystem/local/filesystem prosody | engines_test_expects json type_path filesystem/local/filesystem 
 
 
 service_persistent_export:
