@@ -9,7 +9,7 @@ class EnvironmentVariable
     @build_time_only = build_time_only
     @mandatory = mandatory
     @label = label
-      unless owner.nil
+      unless owner.nil?
         @owner_type = owner[0]
         @owner_path =  owner[1]
       else
