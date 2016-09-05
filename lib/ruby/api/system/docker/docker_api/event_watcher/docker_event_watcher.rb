@@ -35,7 +35,7 @@ class DockerEventWatcher  < ErrorsApi
       mask = event_mask(hash)
      
       return  if  @event_mask == 0 || mask & @event_mask == 0
-      STDERR.puts('Events mask:' + @event_mask.to_s + ' with mask ' + mask.to_s)
+     # STDERR.puts('Events mask:' + @event_mask.to_s + ' with mask ' + mask.to_s)
 #      unless mask & @@engine_target == 0
 #        hash['container_type'] = 'container'
 #        hash['container_name'] = hash['from'] if hash.key?('from')
@@ -156,7 +156,7 @@ class DockerEventWatcher  < ErrorsApi
               end
               
             log_exeception(r) if (r = listener.trigger(hash)).is_a?(StandardError)
-            STDERR.puts(' TRigger returned ' + r.class.name + ':' + r.to_s + ' on ' + hash.to_s + ' with ' +  listener.to_s)
+            #STDERR.puts(' TRigger returned ' + r.class.name + ':' + r.to_s + ' on ' + hash.to_s + ' with ' +  listener.to_s)
           end
 
           # @system_api.container_event(hash) # if hash.key?('from')
