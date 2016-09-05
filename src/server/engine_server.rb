@@ -16,7 +16,8 @@ begin
   require_relative 'utils.rb'
   class Application < Sinatra::Base
    
-  
+
+    
   set :sessions, true
   set :logging, true
   set :run, true
@@ -136,6 +137,7 @@ def managed_container_as_json(container)
   container.to_h.to_json
 end
 
+
 #  post '/v0/login/' do
 #    u = User.new(:username => params[:username], :password => params[:password])
 #    u.save
@@ -165,14 +167,19 @@ end
           request.env["HTTP_ACCESS_TOKEN"].is_a?(String) | params['access_token'].is_a?(String)
       end
   
+    
+    def is_token_valid?(token)
+      return token == 'test_token_arandy'
+    end
+      
       def authenticate!
           # Authorize request if HTTP_ACCESS_TOKEN matches 'youhavenoprivacyandnosecrets'
           # Your actual access token should be generated using one of the several great libraries
           # for this purpose and stored in a database, this is just to show how Warden should be
           # set up.
-        STDERR.puts("HTTP_ACCESS_TOKEN in header _" + request.env["HTTP_ACCESS_TOKEN"] + '_')
+       
         STDERR.puts("NO HTTP_ACCESS_TOKEN in header ") if request.env["HTTP_ACCESS_TOKEN"].nil? 
-        access_granted = (params['access_token'] == $token  || request.env["HTTP_ACCESS_TOKEN"] == $token)
+        access_granted = is_token_valid?(request.env["HTTP_ACCESS_TOKEN"]) # == $token
           !access_granted ? fail!('Could not log in') : success!(access_granted)
       end
   end

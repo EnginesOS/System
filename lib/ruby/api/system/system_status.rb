@@ -60,6 +60,7 @@ class SystemStatus
   end
 
   def self.build_complete(params)
+    STDERR.puts("BULT WITH params " + params.to_s)
     param_file = File.new(SystemConfig.BuildBuiltFile, 'w+')
     param_file.puts(params.to_yaml)
     param_file.close
@@ -74,7 +75,7 @@ class SystemStatus
     param_file.puts(params.to_yaml)
     param_file.close
     File.delete(SystemConfig.BuildFailedFile) if File.exist?(SystemConfig.BuildFailedFile)
-    File.delete(SystemConfig.BuildBuiltFile) if File.exist?(SystemConfig.BuildBuiltFile)
+  #  File.delete(SystemConfig.BuildBuiltFile) if File.exist?(SystemConfig.BuildBuiltFile)
   rescue StandardError => e
     SystemUtils.log_exception(e)
  
