@@ -31,4 +31,3 @@ service_non_persistent_reregister:
 	echo -n " Checking:"
 	engines_tool service dns consumer testengine testengine |engines_test_expects  json type_path dns
 
-"

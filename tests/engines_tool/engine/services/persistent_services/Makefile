@@ -36,8 +36,8 @@ service_persistent_replace:
 	engines_tool engine prosody action perform list_users | engines_test_expects not regex "*test4*"
 
 prepare:
-	cat prosody_build_params.json | engines_tool engines build
-	engines_tool engine_builder follow
+	cat ../../actions/prosody_build_params.json | engines_tool engines build
+	engines_tool engine_builder follow >/dev/null
 	echo '{"username":"test1","password":"pass"}' | engines_tool engine prosody action perform add_user 
 
 clean_up:
