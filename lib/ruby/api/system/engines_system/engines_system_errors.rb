@@ -12,6 +12,6 @@ end
   
   def log_exception(e,*objs)
  
-    return EnginesSystemError.new(e.to_s,:exception)
+    return EnginesSystemError.new(e.to_s + ':' + e.backtrace.to_s,:exception)
   end
 end

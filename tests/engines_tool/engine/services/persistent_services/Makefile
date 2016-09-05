@@ -1,20 +1,20 @@
-TESTS=persistent_services persistent_services_type persistent_service\
-	prepare\
-	 service_persistent_import service_persistent_replace service_persistent_export \
+TESTS=prepare\
+	persistent_services persistent_services_type persistent_service\
+	service_persistent_import service_persistent_replace service_persistent_export \
 	clean_up
 
 tests:
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 
 persistent_services:
-	engines_tool engine testengine services persistent | engines_test_expects array
+	engines_tool engine prosody services persistent | engines_test_expects array
 	
 	
 persistent_services_type:
-	engines_tool engine testengine services persistent EnginesSystem | engines_test_expects array
+	engines_tool engine prosody services persistent EnginesSystem database/sql/mysql | engines_test_expects array
 
 persistent_service:
-	engines_tool engine testengine service persistent EnginesSystem filesystem/local/filesystem testengine | engines_test_expects json type_path filesystem/local/filesystem 
+	engines_tool engine prosody service persistent EnginesSystem filesystem/local/filesystem prosody | engines_test_expects json type_path filesystem/local/filesystem 
 
 
 service_persistent_export:
@@ -36,8 +36,8 @@ service_persistent_replace:
 	engines_tool engine prosody action perform list_users | engines_test_expects not regex "*test4*"
 
 prepare:
-	cat prosody_build_params.json | engines_tool engines build
-	engines_tool engine_builder follow
+	cat ../../actions/prosody_build_params.json | engines_tool engines build
+	engines_tool engine_builder follow >/dev/null
 	echo '{"username":"test1","password":"pass"}' | engines_tool engine prosody action perform add_user 
 
 clean_up:

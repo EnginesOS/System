@@ -29,7 +29,7 @@ get '/v0/containers/engine/:engine_name/action/:action_name' do
   else
     return log_error(request, action, engine.last_error)
   end
-end 
+end  
 
 # @method preform_engine_action
 # @overload post '/v0/containers/engine/:engine_name/action/:action_name'
@@ -39,11 +39,12 @@ end
 # @return [Hash] action specific keys
 post '/v0/containers/engine/:engine_name/action/:action_name' do
   p_params = post_params(request)
-  engine = get_engine(p_params[:engine_name])
+  p_params[:engine_name] = params[:engine_name]
+  engine = get_engine(params[:engine_name])
   return log_error(request, engine, p_params) if engine.is_a?(EnginesError)
    
   cparams =  Utils::Params.assemble_params(p_params, [:engine_name], :all)
-   action = engines_api.perform_engine_action(engine, p_params[:action_name], cparams)
+   action = engines_api.perform_engine_action(engine, params[:action_name], cparams)
   unless action.is_a?(EnginesError) 
       action.to_json
   else
