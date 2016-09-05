@@ -16,7 +16,8 @@ begin
   require_relative 'utils.rb'
   class Application < Sinatra::Base
    
-  
+
+    
   set :sessions, true
   set :logging, true
   set :run, true
@@ -136,6 +137,10 @@ def managed_container_as_json(container)
   container.to_h.to_json
 end
 
+def is_token_valid?(token)
+  return token == 'test_token_arandy'
+end
+
 #  post '/v0/login/' do
 #    u = User.new(:username => params[:username], :password => params[:password])
 #    u.save
@@ -172,7 +177,7 @@ end
           # set up.
        
         STDERR.puts("NO HTTP_ACCESS_TOKEN in header ") if request.env["HTTP_ACCESS_TOKEN"].nil? 
-        access_granted = (params['access_token'] == $token  || request.env["HTTP_ACCESS_TOKEN"] == $token)
+        access_granted = is_token_valid?(request.env["HTTP_ACCESS_TOKEN"]) # == $token
           !access_granted ? fail!('Could not log in') : success!(access_granted)
       end
   end
