@@ -1,6 +1,6 @@
 TESTS=prepare\
 	persistent_services persistent_services_type persistent_service\	
-	 service_persistent_import service_persistent_replace service_persistent_export \
+	service_persistent_import service_persistent_replace service_persistent_export \
 	clean_up
 
 tests:
