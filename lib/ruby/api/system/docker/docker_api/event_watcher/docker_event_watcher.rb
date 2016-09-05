@@ -77,6 +77,7 @@ class DockerEventWatcher  < ErrorsApi
       if event_hash[:Type] = 'container'
         mask |= @@container_event
         if event_hash.key?(:from)
+          return  mask |= @@build_event if event_hash[:from].nil?
           return  mask |= @@build_event if event_hash[:from].length == 64
           if event_hash[:from].start_with?('engines/')
             mask |= @@service_target
@@ -84,6 +85,8 @@ class DockerEventWatcher  < ErrorsApi
             mask |= @@engine_target
           end
         end
+       return  0  if event_hash[:status].nil?
+          
         if event_hash[:status].start_with?('exec')
           mask |= @@container_exec
         elsif event_hash[:status] == 'delete'

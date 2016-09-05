@@ -90,9 +90,11 @@ def get_json_stream(path)
   require 'yajl'
   chunk = ''
 
-  uri = URI(@base_url + path_with_params(path, add_access(nil)))
+  uri = URI(@base_url + path)
   Net::HTTP.start(uri.host, uri.port)  do |http|
     req = Net::HTTP::Get.new(uri)
+    req['access_token'] = ENV['access_token']
+    req['HTTP_access_token'] = ENV['access_token']
     parser = Yajl::Parser.new(:symbolize_keys => true)
     http.request(req) { |resp|
       resp.read_body do |chunk|
@@ -123,10 +125,11 @@ def get_stream(path, ostream=STDOUT)
   #require 'yajl'
   chunk = ''
 
-  uri = URI(@base_url + path_with_params(path, add_access(nil)))
-  Net::HTTP.start(uri.host, uri.port)  do |http|
-    req = Net::HTTP::Get.new(uri)
-    #  parser = Yajl::Parser.new
+  uri = URI(@base_url + path)
+  req = Net::HTTP::Get.new(uri)
+  req['Access_Token'] = ENV['access_token']
+  STDERR.puts('Access ' + req.to_s)
+  Net::HTTP.start(uri.host, uri.port)  do |http|  
     http.request(req) { |resp|
       resp.read_body do |chunk|
         #hash = parser.parse(chunk) do |hash|
@@ -280,7 +283,8 @@ end
 def load_token
   return false unless File.exist?(Dir.home + '/.engines_token')
   ENV['access_token'] = File.read(Dir.home + '/.engines_token')
-  ENV['access_token'].strip
+  ENV['access_token'] = ENV['access_token'].strip
+  ENV['access_token']
 end
 
 def  process_args

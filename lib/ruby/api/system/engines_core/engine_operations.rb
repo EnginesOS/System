@@ -43,7 +43,7 @@ module EnginesOperations
     engine.delete_image if engine.has_image? == true
 
     SystemDebug.debug(SystemDebug.containers,:engine_image_deleted,engine)
-    if(r =  service_manager.rm_remove_engine_services(params) ) #remove_engine_from_managed_engines_registry(params)
+    if(r = service_manager.rm_remove_engine_services(params) ) #remove_engine_from_managed_engines_registry(params)
       return engine.delete_engine if ( r = service_manager.remove_engine_from_managed_engines_registry(params))
       return r
     end

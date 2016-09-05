@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if test $# -eq 1
+  then
+  if ! test -d /opt/engines/run/containers/$1
+   then
+	mkdir /opt/engines/run/containers/$1
+  fi
+  
+  chown engines.containers /opt/engines/run/containers/$1
+fi 

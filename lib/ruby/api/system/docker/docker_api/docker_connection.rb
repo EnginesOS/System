@@ -62,11 +62,13 @@ class DockerConnection < ErrorsApi
   end
 
   def connection
-    @connection = Excon.new('http://172.17.0.1:2375',
+    @connection = Excon.new('unix:///', :socket => '/var/run/docker.sock',
                             :debug_request => true,
                             :debug_response => true,
                             :persistent => true) if @connection.nil?
      @connection
+    
+    #    @connection = Excon.new('http://172.17.0.1:2375'
   end
 
   def stream_connection(stream_reader)
@@ -83,8 +85,9 @@ excon_params = {:debug_request => true,
        excon_params[:response_block] = stream_reader.process_response
     end
     STDERR.puts('Excon Params ' + excon_params.to_s)
-  return Excon.new('http://172.17.0.1:2375',excon_params)
-  
+  #return Excon.new('http://172.17.0.1:2375',excon_params)
+    excon_params[:socket] = '/var/run/docker.sock'
+    return Excon.new('unix:///', excon_params ) 
   end
 
   
