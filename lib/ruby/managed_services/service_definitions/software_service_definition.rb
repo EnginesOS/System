@@ -88,7 +88,7 @@ end
      # initialize(name, value, setatrun, mandatory, build_time_only,label, immutable)
       owner = []
       owner[0] = 'service_consumer'
-      owner[1] = service_hash[:publisher_namespace] + '/' + service_hash[:type_path] + ':' + name
+    owner[1] = service_hash[:publisher_namespace] + '/' + service_hash[:type_path] + ':' + name
         env = EnvironmentVariable.new(name,value,false,true,false,service_hash[:type_path] + name,true, owner)
       SystemDebug.debug(SystemDebug.services,:SERVICE_Constants,:new_env,env)
       ret_val.push( env) # env_name , value 
