@@ -146,7 +146,7 @@ class BuildController
   
   def build_complete(build_params)
     @core_api.build_stoped()
-    SystemStatus.build_complete(build_params)    
+     
     true
   end
 end
