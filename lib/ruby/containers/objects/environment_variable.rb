@@ -11,13 +11,12 @@ class EnvironmentVariable
     @label = label
       unless owner.nil?
         @owner_type = owner[0]
-        @owner_path =  owner[1]
+        @owner_path = owner[1]
       else
         @owner_path = ''
         @owner_type = 'application'# |service_consumer |system
       end
     
-    @owner_path = ''
     @immutable = immutable
     @has_changed = true
   end
