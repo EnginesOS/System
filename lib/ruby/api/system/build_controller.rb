@@ -145,8 +145,10 @@ class BuildController
   end
   
   def build_complete(build_params)
-    @core_api.build_stoped()
+    STDERR.puts('BUIT ENGINE ' + params.to_s)
     SystemStatus.build_complete(build_params)    
+    @core_api.build_stoped()
+   
     true
   end
 end
