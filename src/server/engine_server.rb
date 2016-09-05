@@ -137,9 +137,6 @@ def managed_container_as_json(container)
   container.to_h.to_json
 end
 
-def is_token_valid?(token)
-  return token == 'test_token_arandy'
-end
 
 #  post '/v0/login/' do
 #    u = User.new(:username => params[:username], :password => params[:password])
@@ -170,6 +167,11 @@ end
           request.env["HTTP_ACCESS_TOKEN"].is_a?(String) | params['access_token'].is_a?(String)
       end
   
+    
+    def is_token_valid?(token)
+      return token == 'test_token_arandy'
+    end
+      
       def authenticate!
           # Authorize request if HTTP_ACCESS_TOKEN matches 'youhavenoprivacyandnosecrets'
           # Your actual access token should be generated using one of the several great libraries
@@ -177,8 +179,8 @@ end
           # set up.
        
         STDERR.puts("NO HTTP_ACCESS_TOKEN in header ") if request.env["HTTP_ACCESS_TOKEN"].nil? 
-        access_granted = is_token_valid?(request.env["HTTP_ACCESS_TOKEN"]) # == $token
-          !access_granted ? fail!('Could not log in') : success!(access_granted)
+       # access_granted = is_token_valid?(request.env["HTTP_ACCESS_TOKEN"]) # == $token
+          !access_granted ? fail!('Could not log in') : success!(is_token_valid?(request.env["HTTP_ACCESS_TOKEN"]))
       end
   end
 
