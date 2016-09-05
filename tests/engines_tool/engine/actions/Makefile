@@ -5,12 +5,13 @@ tests:
 	
 prepare:
 	cat prosody_build_params.json | engines_tool engines build
+	engines engine_builder follow >/dev/null
 	
 actions:
 	engines_tool engine prosody actions | engines_test_expects json list_users
 	
 action:
-	engines_tool engine prosody action | engines_test_expects json name list_users
+	engines_tool engine prosody action list_users | engines_test_expects json name list_users
 
 action_perform:
 	echo '{"username":"test","password":"pass"}' | engines_tool engine prosody action perform add_user  | engines_test_expects test "Successfully added test"
