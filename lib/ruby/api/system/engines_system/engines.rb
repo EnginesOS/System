@@ -96,6 +96,7 @@ module Engines
   end
 
   def loadManagedEngine(engine_name)
+    return log_error_mesg('Nil Engine Name', engine_name) if engine_name.nil?
     e = engine_from_cache(engine_name)
     return e if e.is_a?(ManagedEngine)
 
