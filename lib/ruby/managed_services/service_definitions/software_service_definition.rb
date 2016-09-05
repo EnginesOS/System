@@ -86,7 +86,10 @@ end
       name = env_variable_pair[:name]
       value = env_variable_pair[:value]      
      # initialize(name, value, setatrun, mandatory, build_time_only,label, immutable)
-        env = EnvironmentVariable.new(name,value,false,true,false,service_hash[:type_path] + name,true)
+      owner = []
+      owner[0] = 'service_consumer'
+      owner[1] = service_hash[:publisher_namespace] + '/' + service_hash[:type_path] + ':' + name
+        env = EnvironmentVariable.new(name,value,false,true,false,service_hash[:type_path] + name,true, owner)
       SystemDebug.debug(SystemDebug.services,:SERVICE_Constants,:new_env,env)
       ret_val.push( env) # env_name , value 
   end
@@ -100,6 +103,10 @@ end
     retval = Array.new
     service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
     if  service_def != nil
+      owner= []
+        owner[0]= 'service_consumer'
+        path = service_hash[:publisher_namespace] + '/' + service_hash[:type_path] + ':'
+           
       service_environment_variables = service_def[:target_environment_variables]
       service_variables = service_def[:consumer_params]
       SystemDebug.debug(SystemDebug.services,:SERVICE_ENVIRONMENT_VARIABLES, service_environment_variables)
@@ -108,12 +115,12 @@ end
           env_name = env_variable_pair[:environment_name]
           value_name = env_variable_pair[:variable_name]
           value = service_hash[:variables][value_name.to_sym]
+          owner[1] = path + value_name 
         immutable = service_variables[value_name.to_sym][:immutable]
         build_time_only = service_variables[value_name.to_sym][:build_time_only]
         setatrun = service_variables[value_name.to_sym][:ask_at_build_time]
         mandatory = service_variables[value_name.to_sym][:mandatory]
-        retval.push( EnvironmentVariable.new(env_name,value,setatrun,mandatory,build_time_only,
-        service_hash[:publisher_namespace] + '/' + service_hash[:type_path] + ':' + value_name,immutable)) # env_name , value
+        retval.push( EnvironmentVariable.new(env_name,value,setatrun,mandatory,build_time_only,value_name,immutable,owner)) # env_name , value
           
         end                                                      #(name,value,setatrun,mandatory,build_time_only,label,immutable)
       end

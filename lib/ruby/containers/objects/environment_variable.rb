@@ -1,5 +1,5 @@
 class EnvironmentVariable
-  def initialize(name, value, setatrun=false, mandatory=false, build_time_only=false,label=nil, immutable=false)
+  def initialize(name, value, setatrun=false, mandatory=false, build_time_only=false,label=nil, immutable=false,ownwer=nil)
     #name,value,ask,mandatory,build_time_only
     
     label = name if label.nil?
@@ -9,9 +9,20 @@ class EnvironmentVariable
     @build_time_only = build_time_only
     @mandatory = mandatory
     @label = label
+      unless owner.nil
+        @owner_type = owner[0]
+        @owner_path =  owner[1]
+      else
+        @owner_path = ''
+        @owner_type = 'application'# |service_consumer |system
+      end
+    
+    @owner_path = ''
     @immutable = immutable
     @has_changed = true
   end
+  
+  
 
   def setatrun
     return @ask_at_build_time
@@ -21,6 +32,8 @@ class EnvironmentVariable
   :build_time_only,  
   :mandatory,
   :label,
+  :owner_type,
+  :owner_path,
   :immutable,
   :has_changed
   attr_accessor :value
@@ -30,6 +43,8 @@ class EnvironmentVariable
     retval[:name] = @name
     retval[:label] = @label
     retval[:value] = @value
+    retval[:owner_type]  = @owner_type
+    retval[:owner_path] =  @owner_path 
     retval[:ask_at_build_time] = @ask_at_build_time
     retval[:build_time_only] = @build_time_only
     retval[:mandatory] = @mandatory
