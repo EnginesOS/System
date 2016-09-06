@@ -94,7 +94,7 @@ module EnginesOperations
   end
 
   def set_container_runtime_properties(container,params)
-
+    STDERR.puts('s ENV params ' + params.to_s)
     if container.is_active?
       return EnginesCoreError.new('Container is active', :warning)
     end
@@ -104,6 +104,7 @@ module EnginesOperations
       end
       return container.update_memory(params[:memory])
     end
+    STDERR.puts('s ENV params ' + params.to_s)
     if params.key?(:environment_variables)
       new_variables = params[:environment_variables]
 
