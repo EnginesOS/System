@@ -115,6 +115,7 @@ module EnginesOperations
      # end
       #
     end
+
     if container.has_container?
       r = container.destroy_container
       return r unless r == true
