@@ -107,19 +107,13 @@ module EnginesOperations
     if params.key?(:environment_variables)
       new_variables = params[:environment_variables]
 
-      container.environments.each do |env|
+      #   container.environments.each do |env|
         #         new_variables.each do |new_env|
         new_variables.each_pair do |new_env_name, new_env_value|
           container.update_environment(new_env_name, new_env_value)
         end
-      end
-      #          if  env.name == new_env_name
-      #            return log_error_mesg('Cannot Change Value of',env) if env.immutable
-      #            env.value = new_env_value
-      #          end
-      #          # end
-      #        end
-      #      end
+     # end
+      #
     end
     if container.has_container?
       r = container.destroy_container
