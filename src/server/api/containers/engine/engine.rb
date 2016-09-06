@@ -64,7 +64,8 @@ end
 get '/v0/containers/engine/:engine_name/build_report' do
   r = engines_api.get_build_report(params[:engine_name])
   unless r.is_a?(EnginesError)
-    return r.to_json
+    content_type 'text/plain' 
+    return r.to_s
   else
     return log_error(request, r)
   end
