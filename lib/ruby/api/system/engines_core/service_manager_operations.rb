@@ -42,9 +42,11 @@ module ServiceManagerOperations
   end
 
   def rollback_shared_service(service_hash)
-    service_manager.rollback_orphaned_service(service_hash)
+    service_manager.rollback_shared_service(service_hash)
   end
-
+  def rollback_orphan_service(service_hash)
+      service_manager.rollback_orphan_service(service_hash)
+    end
   def get_service_entry(service_hash)
     service_manager.get_service_entry(service_hash)
   end

@@ -47,9 +47,12 @@ module DockerApiCreateOptions
       mounts.push(mount_string(volume))
     end
     mounts.concat(system_mounts(container))
+
     mounts
   end
 
+  
+  
   def mount_string(volume)
     volume = SystemUtils.symbolize_keys(volume)
     perms = 'ro'
@@ -59,16 +62,7 @@ module DockerApiCreateOptions
       perms = 'ro'
     end
     volume[:localpath] + ':' + volume[:remotepath] + ':' + perms
-    #    mount_string = {}
-    #    mount_string['Source'] = volume[:localpath]
-    #    mount_string['Destination'] = volume[:remotepath]
-    #    mount_string['Mode'] = volume[:permissions] + ',Z'
-    #    if volume[:permissions] == 'rw'
-    #      mount_string['RW'] = true
-    #    else
-    #      mount_string['RW'] = false
-    #    end
-    #    mount_string
+
   rescue StandardError => e
     STDERR.puts(' vol ' + volume.to_s)
     log_exception(e, volume)
