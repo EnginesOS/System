@@ -8,7 +8,7 @@
 get '/v0/containers/engine/:engine_name' do
   engine = get_engine(params[:engine_name])
   if engine.is_a?(ManagedEngine)
-    STDERR.puts('got ' + engine.class.name)
+   # STDERR.puts('got ' + engine.class.name)
     return  managed_container_as_json(engine)
   else
     return log_error(request,engine, params[:engine_name])
@@ -38,7 +38,8 @@ get '/v0/containers/engine/:engine_name/state' do
   return log_error(request, engine, params) if engine.is_a?(EnginesError)
   r = engine.read_state
   unless r.is_a?(EnginesError)
-    return r.to_json
+    content_type 'text/plain' 
+       return r.to_s
   else
     return log_error(request, r, engine.last_error)
   end

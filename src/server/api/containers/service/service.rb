@@ -38,7 +38,8 @@ get '/v0/containers/service/:service_name/state' do
  return log_error(request, service, params) if service.is_a?(EnginesError)
   r = service.read_state
   unless r.is_a?(EnginesError)
-    return r.to_json
+    content_type 'text/plain' 
+        return r.to_s
   else
     return log_error(request, r)
   end
