@@ -4,7 +4,8 @@ module ManagedContainerEnvironment
     return log_error_mesg('No envionment varaibles') if @environments.nil?
     
     @environments.each do |environment|
-    if environment.name == key        
+      STDERR.puts(' compare' + environment.name.to_s + ' with ' +  key.to_s)
+    if environment.name == key.to_s
       SystemDebug.debug(SystemDebug.containers, :update_environment, "Cahnged")
       return log_error_mesg(' variable ' + environment.name + ' immutable' )  if environment.immutable == true
       environment.value = value 
@@ -15,7 +16,7 @@ module ManagedContainerEnvironment
     
     if add == true
       SystemDebug.debug(SystemDebug.containers, :update_environment, "added")
-      env = EnvironmentVariable.new(key,value)
+      env = EnvironmentVariable.new(key.to_s,value)
       @environments.push(env)
       return true
     end

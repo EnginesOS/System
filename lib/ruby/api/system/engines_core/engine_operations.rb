@@ -81,46 +81,42 @@ module EnginesOperations
     log_exception(e)
   end
 
-  def set_engine_runtime_properties(params)
-    p :set_engine_runtime_properties
-    p params
-    engine_name = params[:engine_name]
-
-    container = loadManagedEngine(engine_name)
-    if container.is_a?(EnginesError)
-      return container
-    end
-    set_container_runtime_properties(container,params)
-  end
+#  def set_engine_runtime_properties(params)
+#    p :set_engine_runtime_properties
+#    p params
+#    engine_name = params[:engine_name]
+#
+#    container = loadManagedEngine(engine_name)
+#    if container.is_a?(EnginesError)
+#      return container
+#    end
+#    set_container_runtime_properties(container,params)
+#  end
 
   def set_container_runtime_properties(container,params)
-
+    STDERR.puts('s ENV params ' + params.to_s)
     if container.is_active?
       return EnginesCoreError.new('Container is active', :warning)
     end
-    if params.key?(:memory)
+    if params.key?(:memory) &&  ! params[:memory].nil?
       if params[:memory] == container.memory
         return EnginesCoreError.new('Error no Change in Memory Value', :warning)
       end
       return container.update_memory(params[:memory])
     end
+    STDERR.puts('s ENV params ' + params.to_s)
     if params.key?(:environment_variables)
       new_variables = params[:environment_variables]
 
-      container.environments.each do |env|
+      #   container.environments.each do |env|
         #         new_variables.each do |new_env|
         new_variables.each_pair do |new_env_name, new_env_value|
           container.update_environment(new_env_name, new_env_value)
         end
-      end
-      #          if  env.name == new_env_name
-      #            return log_error_mesg('Cannot Change Value of',env) if env.immutable
-      #            env.value = new_env_value
-      #          end
-      #          # end
-      #        end
-      #      end
+     # end
+      #
     end
+
     if container.has_container?
       r = container.destroy_container
       return r unless r == true

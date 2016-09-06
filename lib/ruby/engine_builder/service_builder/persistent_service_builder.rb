@@ -91,10 +91,15 @@ module PersistantServiceBuilder
   end
 
   def attach_existing_service_to_engine(service_hash, existing)
+    SystemDebug.debug(SystemDebug.builder, :attach_existing_service_to_engine, service_hash, existing)
     params =  service_hash.dup
     params[ :existing_service] = existing
     trim_to_editable_variables(params)
     if @core_api.attach_existing_service_to_engine(params)
+      if service_hash[:type_path] == 'filesystem/local/filesystem'
+        result = add_file_service(service_hash)
+       log_error_mesg('failed to create fs',self) unless result
+      end
       @attached_services.push(service_hash)
       return true
     end
@@ -104,9 +109,7 @@ module PersistantServiceBuilder
   def trim_to_editable_variables(params)
     variables = SoftwareServiceDefinition.consumer_params(params)
     variables.values do |variable |
-      p :variable
-      
-      p  variable
+
       key = variable[:name]
       params[:variables].delete(key) if variable[:immutable] == true
     end

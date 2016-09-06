@@ -6,21 +6,9 @@ module Params
     r_params = self.required_params(params,required_params)
     a_params.merge!(r_params)
     
-    o_params = self.optional_params(params,required_params)
+    o_params = self.optional_params(params,accept_params)
     a_params.merge!(o_params)
 
-   # ad_params.merge!(a_params)
-    #    address_params = [:engine_name]
-    #    accept_params = [:all]
-    #    cparams = assemble_params(params, address_params, accept_params )
-    #    cparams = address_params(params,  :engine_name) # , :variables)
-    #    vars = params[:api_vars]
-    #    Utils.symbolize_keys(vars)
-    #    cparams.merge!(vars)
-#    p ':assembled r_params + o_params + a_params'
-#    p r_params
-#    p o_params
-#    p a_params
     a_params
   end
 
@@ -61,7 +49,7 @@ module Params
         # return missing_param key unless param.key?(key)
 
         return false  unless self.check_required(params, key,required )     
-        cparams[key.to_sym] = params[key]        
+        cparams[key.to_sym] = params[key] unless params[key].nil?
       end
     else
       return false  unless  self.check_required(params, keys,required)
