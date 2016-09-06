@@ -109,9 +109,9 @@ module PersistantServiceBuilder
   def trim_to_editable_variables(params)
     variables = SoftwareServiceDefinition.consumer_params(params)
     variables.values do |variable |
-      p :variable
+     # p :variable
       
-      p  variable
+     # p  variable
       key = variable[:name]
       params[:variables].delete(key) if variable[:immutable] == true
     end
