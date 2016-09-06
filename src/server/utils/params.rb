@@ -6,7 +6,7 @@ module Params
     r_params = self.required_params(params,required_params)
     a_params.merge!(r_params)
     
-    o_params = self.optional_params(params,required_params)
+    o_params = self.optional_params(params,accept_params)
     a_params.merge!(o_params)
 
    # ad_params.merge!(a_params)
