@@ -9,18 +9,6 @@ module Params
     o_params = self.optional_params(params,accept_params)
     a_params.merge!(o_params)
 
-   # ad_params.merge!(a_params)
-    #    address_params = [:engine_name]
-    #    accept_params = [:all]
-    #    cparams = assemble_params(params, address_params, accept_params )
-    #    cparams = address_params(params,  :engine_name) # , :variables)
-    #    vars = params[:api_vars]
-    #    Utils.symbolize_keys(vars)
-    #    cparams.merge!(vars)
-#    p ':assembled r_params + o_params + a_params'
-#    p r_params
-#    p o_params
-#    p a_params
     a_params
   end
 
