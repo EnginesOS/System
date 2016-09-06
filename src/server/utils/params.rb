@@ -49,7 +49,7 @@ module Params
         # return missing_param key unless param.key?(key)
 
         return false  unless self.check_required(params, key,required )     
-        cparams[key.to_sym] = params[key]        
+        cparams[key.to_sym] = params[key] unless params[key].nil?
       end
     else
       return false  unless  self.check_required(params, keys,required)
