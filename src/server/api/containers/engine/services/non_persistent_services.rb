@@ -16,6 +16,29 @@ get '/v0/containers/engine/:engine_name/services/non_persistent/' do
   end
 end
 
+# @method add_engine_non_persistent_service
+# @overload post '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/:type_path'
+#  ad non persistent services in the :publisher_namespace and :type_path registered to the engine with posted params
+# boolean
+
+post '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/*' do
+  path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, true)
+  p_params = post_params(request)
+  service_hash = path_hash.merge(p_params)
+  create_non_persistent_service(service_hash)
+end
+
+# @method del_engine_non_persistent_service
+# @overload delete '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/:type_path'
+#  ad non persistent services in the :publisher_namespace and :type_path registered to the engine with posted params
+# boolean
+
+delete '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/*' do
+  path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, true)
+  delete_non_persistent_service(path_hash)
+end
+
+
 # @method get_engine_non_persistent_services_by_type
 # @overload get '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/:type_path'
 # Return the non persistent services matchedin the :publisher_namespace and :type_path registered to the engine (which this engine consumes)
@@ -31,4 +54,7 @@ get '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_names
     return log_error(request,  r, hash)
   end
 end
+
+
+
 # @!endgroup

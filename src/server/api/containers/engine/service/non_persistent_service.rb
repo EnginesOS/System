@@ -1,6 +1,19 @@
 # @!group /containers/engine/:engine_name/service/non_persistent/
 
 
+# @method update_engine_non_persistent_service
+# @overload post '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/:type_path'
+#  ad non persistent services in the :publisher_namespace and :type_path registered to the engine with posted params
+# boolean
+
+post '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/*' do
+  path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, true)
+  p_params = post_params(request)
+  service_hash = path_hash.merge(p_params)
+  update_non_persistent_service(service_hash)
+   
+end
+
 # @method engine_force_register_non_persistent_service
 # @overload get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/register' 
 # force register the non persistent service  

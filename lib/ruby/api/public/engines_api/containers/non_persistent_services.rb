@@ -12,4 +12,16 @@ module PublicApiContainersNonPersistentServices
    def list_non_persistent_services(engine)
      @service_manager.list_non_persistent_services(engine)
    end
+   
+  def create_non_persistent_service(service_hash)
+       @service_manager.create_non_persistent_service(service_hash)
+     end
+   
+   def update_non_persistent_service(service_hash)
+     @service_manager.update_non_persistent_service(service_hash)
+   end
+   
+   def delete_non_persistent_service(service_hash)
+     @service_manager.delete_non_persistent_service(service_hash)
+   end
 end

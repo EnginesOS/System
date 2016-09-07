@@ -29,18 +29,13 @@ module EnginesOperations
       return true if service_manager.remove_engine_from_managed_engines_registry(params)
       return log_error_mesg('Failed to find Engine',params)
     end
-    if reinstall == true
-
-      return service_manager.remove_engine_from_managed_engines_registry(params) if ( r = service_manager.rm_remove_engine_services(params))
-      return r
-      #
-    end
-
-    #    if reinstall == true
-    #      return service_manager.remove_engine_from_managed_engines_registry(params) if service_manager.rm_remove_engine_services(params) #remove_engine_from_managed_engines_registry(params)
-    #      return log_error_mesg('Failed to remove Engine from engines registry ' +  service_manager.last_error.to_s,params)
-    #    end
+    
     engine.delete_image if engine.has_image? == true
+    
+    if reinstall == true
+      return service_manager.remove_engine_from_managed_engines_registry(params) if ( r = service_manager.rm_remove_engine_services(params))
+      return r      
+    end
 
     SystemDebug.debug(SystemDebug.containers,:engine_image_deleted,engine)
     if(r = service_manager.rm_remove_engine_services(params) ) #remove_engine_from_managed_engines_registry(params)
