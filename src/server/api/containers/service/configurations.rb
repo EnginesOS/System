@@ -30,7 +30,11 @@ end
 post '/v0/containers/service/:service_name/configuration/:configurator_name' do
   p_params = post_params(request)
   cparams =  Utils::Params.assemble_params(p_params.merge(params), [:service_name, :configurator_name], [:variables])
-  return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
+  return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)  
+  service = get_service(params[:service_name])
+  return log_error(request, service, params) if service.is_a?(EnginesError)  
+  cparams[:type_path] = service = service.type_path
+  cparams[:publisher_namespace]  = service.publisher_namespace
   r = engines_api.update_service_configuration(cparams)
   return log_error(request, r, r) if r.is_a?(FalseClass) || r.is_a?(EnginesError)
   content_type 'text/plain' 
