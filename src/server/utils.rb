@@ -5,7 +5,7 @@ class Utils
    # hash.delete('splat')
    # hash.delete('captures')
     
-    return SystemUtils.log_error('cannot symbolse nil ')  if hash.nil?
+    return nil  if hash.nil?
     hash.inject({}){|result, (key, value)|
       new_key = case key
       when String then key.to_sym

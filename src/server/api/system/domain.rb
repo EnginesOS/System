@@ -22,6 +22,7 @@ post '/v0/system/domains/:domain_name' do
   post_s[:domain_name] = params['domain_name']
 
   cparams =  Utils::Params.assemble_params(post_s, [:domain_name], :all)
+  return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
   r = engines_api.update_domain(cparams)
   return log_error(request, r, cparams) if r.is_a?(EnginesError)
   status(202)

@@ -1,14 +1,14 @@
 class EnginesError # < FalseClass
   attr_accessor :source, :error_type, :error_mesg, :sub_system
 
-  def initialize(message, type )
+  def initialize(message, type, system = 'global')
     if message.is_a?(Hash)
       message = message.to_json
     end
       
     @error_mesg = message
     @error_type = type
-    @sub_system = 'global'
+    @sub_system = system
     @source = []
     @source[0] = caller[2].to_s 
     @source[1] = caller[3].to_s if caller.count >= 4

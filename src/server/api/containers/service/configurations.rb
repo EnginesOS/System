@@ -21,7 +21,6 @@ get '/v0/containers/service/:service_name/configuration/:configurator_name' do
   config = service.retrieve_configurator(cparams)
   return log_error(request, config, service.last_error) if  config.is_a?(EnginesError)
   config.to_json
-  return log_error(request, config, service.last_error)
 end
 # @method set_service_configuration
 # @overload post '/v0/containers/service/:service_name/configuration/:configurator_name'
@@ -30,9 +29,16 @@ end
 # @return [true]  apply service configuration Hash
 post '/v0/containers/service/:service_name/configuration/:configurator_name' do
   p_params = post_params(request)
-  cparams =  Utils::Params.assemble_params(p_params, [], [:variables,:service_name, :configurator_name])
+  p_params.merge!(params)
+  cparams =  Utils::Params.assemble_params(p_params, [:service_name, :configurator_name], [:variables])
+  return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)  
+  service = get_service(params[:service_name])
+  return log_error(request, service, params) if service.is_a?(EnginesError)  
+  cparams[:type_path] = service.type_path
+  cparams[:publisher_namespace]  = service.publisher_namespace
+    STDERR.puts('PUTRY PARAMS '+ cparams.to_s, + ' ' + params.to_s )
   r = engines_api.update_service_configuration(cparams)
-  return log_error(request, r, service.last_error) if r.is_a?(FalseClass) || r.is_a?(EnginesError)
+  return log_error(request, r, r) if r.is_a?(FalseClass) || r.is_a?(EnginesError)
   content_type 'text/plain' 
   r.to_s
 end 
