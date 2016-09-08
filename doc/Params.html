@@ -255,12 +255,12 @@
       <pre class="lines">
 
 
-49
-50
-51</pre>
+37
+38
+39</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/utils/params.rb', line 49</span>
+      <pre class="code"><span class="info file"># File 'src/server/utils/params.rb', line 37</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_address_params'>address_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='id identifier rubyid_keys'>keys</span><span class='rparen'>)</span>
    <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_match_params'>match_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='id identifier rubyid_keys'>keys</span><span class='rparen'>)</span>    
@@ -296,19 +296,7 @@
 10
 11
 12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25</pre>
+13</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'src/server/utils/params.rb', line 2</span>
@@ -320,22 +308,10 @@
   <span class='id identifier rubyid_r_params'>r_params</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_required_params'>required_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span><span class='id identifier rubyid_required_params'>required_params</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_a_params'>a_params</span><span class='period'>.</span><span class='id identifier rubyid_merge!'>merge!</span><span class='lparen'>(</span><span class='id identifier rubyid_r_params'>r_params</span><span class='rparen'>)</span>
   
-  <span class='id identifier rubyid_o_params'>o_params</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_optional_params'>optional_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span><span class='id identifier rubyid_required_params'>required_params</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_o_params'>o_params</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_optional_params'>optional_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span><span class='id identifier rubyid_accept_params'>accept_params</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_a_params'>a_params</span><span class='period'>.</span><span class='id identifier rubyid_merge!'>merge!</span><span class='lparen'>(</span><span class='id identifier rubyid_o_params'>o_params</span><span class='rparen'>)</span>
 
- <span class='comment'># ad_params.merge!(a_params)
-</span>  <span class='comment'>#    address_params = [:engine_name]
-</span>  <span class='comment'>#    accept_params = [:all]
-</span>  <span class='comment'>#    cparams = assemble_params(params, address_params, accept_params )
-</span>  <span class='comment'>#    cparams = address_params(params,  :engine_name) # , :variables)
-</span>  <span class='comment'>#    vars = params[:api_vars]
-</span>  <span class='comment'>#    Utils.symbolize_keys(vars)
-</span>  <span class='comment'>#    cparams.merge!(vars)
-</span><span class='comment'>#    p &#39;:assembled r_params + o_params + a_params&#39;
-</span><span class='comment'>#    p r_params
-</span><span class='comment'>#    p o_params
-</span><span class='comment'>#    p a_params
-</span>  <span class='id identifier rubyid_a_params'>a_params</span>
+  <span class='id identifier rubyid_a_params'>a_params</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -357,16 +333,16 @@
       <pre class="lines">
 
 
-76
-77
-78
-79
-80
-81
-82</pre>
+64
+65
+66
+67
+68
+69
+70</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/utils/params.rb', line 76</span>
+      <pre class="code"><span class="info file"># File 'src/server/utils/params.rb', line 64</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_check_required'>check_required</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='id identifier rubyid_is_required'>is_required</span><span class='rparen'>)</span>
    <span class='kw'>return</span> <span class='kw'>true</span> <span class='kw'>unless</span> <span class='id identifier rubyid_is_required'>is_required</span>
@@ -395,6 +371,18 @@
       <pre class="lines">
 
 
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
 53
 54
 55
@@ -404,22 +392,10 @@
 59
 60
 61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74</pre>
+62</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/utils/params.rb', line 53</span>
+      <pre class="code"><span class="info file"># File 'src/server/utils/params.rb', line 41</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_match_params'>match_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='id identifier rubyid_keys'>keys</span><span class='comma'>,</span> <span class='id identifier rubyid_required'>required</span> <span class='op'>=</span> <span class='kw'>false</span><span class='rparen'>)</span>
   <span class='kw'>return</span>  <span class='id identifier rubyid_params'>params</span> <span class='kw'>if</span> <span class='id identifier rubyid_keys'>keys</span> <span class='op'>==</span> <span class='symbol'>:all</span>
@@ -432,7 +408,7 @@
       <span class='comment'># return missing_param key unless param.key?(key)
 </span>
       <span class='kw'>return</span> <span class='kw'>false</span>  <span class='kw'>unless</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_check_required'>check_required</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='id identifier rubyid_key'>key</span><span class='comma'>,</span><span class='id identifier rubyid_required'>required</span> <span class='rparen'>)</span>     
-      <span class='id identifier rubyid_cparams'>cparams</span><span class='lbracket'>[</span><span class='id identifier rubyid_key'>key</span><span class='period'>.</span><span class='id identifier rubyid_to_sym'>to_sym</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='id identifier rubyid_key'>key</span><span class='rbracket'>]</span>        
+      <span class='id identifier rubyid_cparams'>cparams</span><span class='lbracket'>[</span><span class='id identifier rubyid_key'>key</span><span class='period'>.</span><span class='id identifier rubyid_to_sym'>to_sym</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='id identifier rubyid_key'>key</span><span class='rbracket'>]</span> <span class='kw'>unless</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='id identifier rubyid_key'>key</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
     <span class='kw'>end</span>
   <span class='kw'>else</span>
     <span class='kw'>return</span> <span class='kw'>false</span>  <span class='kw'>unless</span>  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_check_required'>check_required</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='id identifier rubyid_keys'>keys</span><span class='comma'>,</span><span class='id identifier rubyid_required'>required</span><span class='rparen'>)</span>
@@ -463,18 +439,18 @@
       <pre class="lines">
 
 
-39
-40
-41
-42
-43
-44
-45
-46
-47</pre>
+27
+28
+29
+30
+31
+32
+33
+34
+35</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/utils/params.rb', line 39</span>
+      <pre class="code"><span class="info file"># File 'src/server/utils/params.rb', line 27</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_optional_params'>optional_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='id identifier rubyid_keys'>keys</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_mparams'>mparams</span> <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>api_vars</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
@@ -505,20 +481,20 @@
       <pre class="lines">
 
 
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37</pre>
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'src/server/utils/params.rb', line 27</span>
+      <pre class="code"><span class="info file"># File 'src/server/utils/params.rb', line 15</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_required_params'>required_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='id identifier rubyid_keys'>keys</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_mparams'>mparams</span> <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>api_vars</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
@@ -541,7 +517,7 @@
 </div>
 
     <div id="footer">
-  Generated on Thu Jul 14 08:08:26 2016 by
+  Generated on Thu Sep  8 11:32:05 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.5).
 </div>

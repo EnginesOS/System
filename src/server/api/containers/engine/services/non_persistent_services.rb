@@ -13,9 +13,9 @@ get '/v0/containers/engine/:engine_name/services/non_persistent/' do
 end
 
 # @method add_engine_non_persistent_service
-# @overload post '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/:type_path'
+# @overload post '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/:type_path/:service_handle'
 #  ad non persistent services in the :publisher_namespace and :type_path registered to the engine with posted params
-# boolean
+# @return [true|false]
 
 post '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/*' do
   path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, true)
@@ -30,7 +30,7 @@ end
 # @method del_engine_non_persistent_service
 # @overload delete '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/:type_path'
 #  ad non persistent services in the :publisher_namespace and :type_path registered to the engine with posted params
-# boolean
+# @return [true|false]
 
 delete '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/*' do
   path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, true)
