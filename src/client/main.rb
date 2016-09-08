@@ -67,6 +67,13 @@ def perform_get
   exit
 end
 
+def perform_del
+  #STDERR.puts  @route
+  r = rest_del(@route)
+  write_response(r)
+  exit
+end
+
 def perform_post(params, content_type='application/json')
   post_params = {}
   post_params[:api_vars] = params
@@ -167,7 +174,18 @@ def connection(content_type = 'application/json')
                            :headers => headers) if @connection.nil?
     @connection
  end
- 
+def rest_del(uri,params=nil)
+  
+if params.nil?
+connection.request(:method => :delete,:path => uri) #,:body => params.to_json)
+else
+  connection.request(:method => :delete,:path => uri,:body => params.to_json)
+end
+    rescue StandardError => e
+  
+      STDERR.puts e.to_s + ' delete with path:' + uri + "\n" + 'params:' + params.to_s
+      STDERR.puts e.backtrace.to_s
+ end
 def rest_get(uri,params=nil)
   
 if params.nil?
