@@ -89,12 +89,12 @@ end
 
   def load_engine_actionators(container)
     SystemDebug.debug(SystemDebug.actions,container,ContainerStateFiles.actionator_dir(container) + '/actionators.yaml')
-    return [] unless File.exist?(ContainerStateFiles.actionator_dir(container) + '/actionators.yaml')
+    return {} unless File.exist?(ContainerStateFiles.actionator_dir(container) + '/actionators.yaml')
     yaml =  File.read(ContainerStateFiles.actionator_dir(container) + '/actionators.yaml')
     actionators = YAML::load(yaml)
     SystemDebug.debug(SystemDebug.actions,container,actionators)
     return actionators if actionators.is_a?(Hash)
-    return []
+    return {}
   rescue StandardError => e
     log_exception(e)
   end
