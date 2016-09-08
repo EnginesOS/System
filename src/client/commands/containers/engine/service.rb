@@ -32,11 +32,7 @@ when 'replace'
   post = true
   STDERR.puts  @route
   params[:data] = read_stdin_data
-when 'add'
-  cmd = ARGV[4]
-post = true
-STDERR.puts  @route
-params[:data] = read_stdin_data
+
 when 'update'
   cmd = ARGV[4]
 cmd = nil
