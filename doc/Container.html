@@ -1,0 +1,1380 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: Container
+  
+    &mdash; Documentation by YARD 0.8.7.6
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!Container.html";
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index (C)</a> &raquo;
+    
+    
+    <span class="title">Container</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Class: Container
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName"><span class='object_link'><a href="ErrorsApi.html" title="ErrorsApi (class)">ErrorsApi</a></span></span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next"><span class='object_link'><a href="ErrorsApi.html" title="ErrorsApi (class)">ErrorsApi</a></span></li>
+          
+            <li class="next">Container</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+      <dt class="r2">Includes:</dt>
+      <dd class="r2"><span class='object_link'><a href="ContainerControls.html" title="ContainerControls (module)">ContainerControls</a></span>, <span class='object_link'><a href="ContainerSetup.html" title="ContainerSetup (module)">ContainerSetup</a></span>, <span class='object_link'><a href="ContainerStatus.html" title="ContainerStatus (module)">ContainerStatus</a></span>, <span class='object_link'><a href="DockerInfoCollector.html" title="DockerInfoCollector (module)">DockerInfoCollector</a></span>, <span class='object_link'><a href="EnginesApiAccess.html" title="EnginesApiAccess (module)">EnginesApiAccess</a></span>, <span class='object_link'><a href="ImageControls.html" title="ImageControls (module)">ImageControls</a></span>, <span class='object_link'><a href="RunningContainerStatistics.html" title="RunningContainerStatistics (module)">RunningContainerStatistics</a></span></dd>
+      
+    
+  
+  
+  
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">lib/ruby/containers/container.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<div id="subclasses">
+  <h2>Direct Known Subclasses</h2>
+  <p class="children"><span class='object_link'><a href="ManagedContainer.html" title="ManagedContainer (class)">ManagedContainer</a></span></p>
+</div>
+
+
+
+
+  <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#arguments-instance_method" title="#arguments (instance method)">- (Object) <strong>arguments</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute arguments.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#container_api-instance_method" title="#container_api (instance method)">- (Object) <strong>container_api</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute container_api.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#container_id-instance_method" title="#container_id (instance method)">- (Object) <strong>container_id</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute container_id.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#container_name-instance_method" title="#container_name (instance method)">- (Object) <strong>container_name</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute container_name.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#environments-instance_method" title="#environments (instance method)">- (Object) <strong>environments</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute environments.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#image-instance_method" title="#image (instance method)">- (Object) <strong>image</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute image.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#last_error-instance_method" title="#last_error (instance method)">- (Object) <strong>last_error</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute last_error.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#last_result-instance_method" title="#last_result (instance method)">- (Object) <strong>last_result</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute last_result.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#mapped_ports-instance_method" title="#mapped_ports (instance method)">- (Object) <strong>mapped_ports</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute mapped_ports.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#memory-instance_method" title="#memory (instance method)">- (Object) <strong>memory</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute memory.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#setState-instance_method" title="#setState (instance method)">- (Object) <strong>setState</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute setState.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#volumes-instance_method" title="#volumes (instance method)">- (Object) <strong>volumes</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute volumes.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#web_port-instance_method" title="#web_port (instance method)">- (Object) <strong>web_port</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute web_port.</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
+
+
+
+
+  
+    <h2>
+      Class Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#from_yaml-class_method" title="from_yaml (class method)">+ (Object) <strong>from_yaml</strong>(yaml, container_api) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#on_host_net%3F-instance_method" title="#on_host_net? (instance method)">- (Boolean) <strong>on_host_net?</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#update_memory-instance_method" title="#update_memory (instance method)">- (Object) <strong>update_memory</strong>(new_memory) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="EnginesApiAccess.html" title="EnginesApiAccess (module)">EnginesApiAccess</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="EnginesApiAccess.html#has_api%3F-instance_method" title="EnginesApiAccess#has_api? (method)">#has_api?</a></span>, <span class='object_link'><a href="EnginesApiAccess.html#logs_container-instance_method" title="EnginesApiAccess#logs_container (method)">#logs_container</a></span>, <span class='object_link'><a href="EnginesApiAccess.html#ps_container-instance_method" title="EnginesApiAccess#ps_container (method)">#ps_container</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="RunningContainerStatistics.html" title="RunningContainerStatistics (module)">RunningContainerStatistics</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="RunningContainerStatistics.html#get_container_memory_stats-instance_method" title="RunningContainerStatistics#get_container_memory_stats (method)">#get_container_memory_stats</a></span>, <span class='object_link'><a href="RunningContainerStatistics.html#get_container_network_metrics-instance_method" title="RunningContainerStatistics#get_container_network_metrics (method)">#get_container_network_metrics</a></span>, <span class='object_link'><a href="RunningContainerStatistics.html#stats-instance_method" title="RunningContainerStatistics#stats (method)">#stats</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="ImageControls.html" title="ImageControls (module)">ImageControls</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="ImageControls.html#delete_image-instance_method" title="ImageControls#delete_image (method)">#delete_image</a></span>, <span class='object_link'><a href="ImageControls.html#has_image%3F-instance_method" title="ImageControls#has_image? (method)">#has_image?</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="ContainerStatus.html" title="ContainerStatus (module)">ContainerStatus</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="ContainerStatus.html#has_container%3F-instance_method" title="ContainerStatus#has_container? (method)">#has_container?</a></span>, <span class='object_link'><a href="ContainerStatus.html#is_active%3F-instance_method" title="ContainerStatus#is_active? (method)">#is_active?</a></span>, <span class='object_link'><a href="ContainerStatus.html#is_paused%3F-instance_method" title="ContainerStatus#is_paused? (method)">#is_paused?</a></span>, <span class='object_link'><a href="ContainerStatus.html#is_running%3F-instance_method" title="ContainerStatus#is_running? (method)">#is_running?</a></span>, <span class='object_link'><a href="ContainerStatus.html#read_state-instance_method" title="ContainerStatus#read_state (method)">#read_state</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="DockerInfoCollector.html" title="DockerInfoCollector (module)">DockerInfoCollector</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="DockerInfoCollector.html#clear_cid-instance_method" title="DockerInfoCollector#clear_cid (method)">#clear_cid</a></span>, <span class='object_link'><a href="DockerInfoCollector.html#docker_info-instance_method" title="DockerInfoCollector#docker_info (method)">#docker_info</a></span>, <span class='object_link'><a href="DockerInfoCollector.html#expire_engine_info-instance_method" title="DockerInfoCollector#expire_engine_info (method)">#expire_engine_info</a></span>, <span class='object_link'><a href="DockerInfoCollector.html#get_ip_str-instance_method" title="DockerInfoCollector#get_ip_str (method)">#get_ip_str</a></span>, <span class='object_link'><a href="DockerInfoCollector.html#read_container_id-instance_method" title="DockerInfoCollector#read_container_id (method)">#read_container_id</a></span>, <span class='object_link'><a href="DockerInfoCollector.html#running_user-instance_method" title="DockerInfoCollector#running_user (method)">#running_user</a></span>, <span class='object_link'><a href="DockerInfoCollector.html#set_cont_id-instance_method" title="DockerInfoCollector#set_cont_id (method)">#set_cont_id</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="ContainerControls.html" title="ContainerControls (module)">ContainerControls</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="ContainerControls.html#create_container-instance_method" title="ContainerControls#create_container (method)">#create_container</a></span>, <span class='object_link'><a href="ContainerControls.html#destroy_container-instance_method" title="ContainerControls#destroy_container (method)">#destroy_container</a></span>, <span class='object_link'><a href="ContainerControls.html#pause_container-instance_method" title="ContainerControls#pause_container (method)">#pause_container</a></span>, <span class='object_link'><a href="ContainerControls.html#start_container-instance_method" title="ContainerControls#start_container (method)">#start_container</a></span>, <span class='object_link'><a href="ContainerControls.html#stop_container-instance_method" title="ContainerControls#stop_container (method)">#stop_container</a></span>, <span class='object_link'><a href="ContainerControls.html#unpause_container-instance_method" title="ContainerControls#unpause_container (method)">#unpause_container</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="ContainerSetup.html" title="ContainerSetup (module)">ContainerSetup</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="ContainerSetup.html#post_load-instance_method" title="ContainerSetup#post_load (method)">#post_load</a></span>, <span class='object_link'><a href="ContainerSetup.html#set_running_user-instance_method" title="ContainerSetup#set_running_user (method)">#set_running_user</a></span></p>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods inherited from <span class='object_link'><a href="ErrorsApi.html" title="ErrorsApi (class)">ErrorsApi</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="ErrorsApi.html#clear_error-instance_method" title="ErrorsApi#clear_error (method)">#clear_error</a></span>, <span class='object_link'><a href="ErrorsApi.html#log_error_mesg-instance_method" title="ErrorsApi#log_error_mesg (method)">#log_error_mesg</a></span>, <span class='object_link'><a href="ErrorsApi.html#log_exception-instance_method" title="ErrorsApi#log_exception (method)">#log_exception</a></span></p>
+
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id="arguments=-instance_method"></span>
+      <div class="method_details first">
+  <h3 class="signature first" id="arguments-instance_method">
+  
+    - (<tt>Object</tt>) <strong>arguments</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute arguments</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+41
+42
+43</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/ruby/containers/container.rb', line 41</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_arguments'>arguments</span>
+  <span class='ivar'>@arguments</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="container_api=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="container_api-instance_method">
+  
+    - (<tt>Object</tt>) <strong>container_api</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute container_api</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+41
+42
+43</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/ruby/containers/container.rb', line 41</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_container_api'>container_api</span>
+  <span class='ivar'>@container_api</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="container_id=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="container_id-instance_method">
+  
+    - (<tt>Object</tt>) <strong>container_id</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute container_id</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+31
+32
+33</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/ruby/containers/container.rb', line 31</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_container_id'>container_id</span>
+  <span class='ivar'>@container_id</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="container_name-instance_method">
+  
+    - (<tt>Object</tt>) <strong>container_name</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute container_name</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+31
+32
+33</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/ruby/containers/container.rb', line 31</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_container_name'>container_name</span>
+  <span class='ivar'>@container_name</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="environments-instance_method">
+  
+    - (<tt>Object</tt>) <strong>environments</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute environments</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+31
+32
+33</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/ruby/containers/container.rb', line 31</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_environments'>environments</span>
+  <span class='ivar'>@environments</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="image-instance_method">
+  
+    - (<tt>Object</tt>) <strong>image</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute image</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+31
+32
+33</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/ruby/containers/container.rb', line 31</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_image'>image</span>
+  <span class='ivar'>@image</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="last_error=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="last_error-instance_method">
+  
+    - (<tt>Object</tt>) <strong>last_error</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute last_error</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+41
+42
+43</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/ruby/containers/container.rb', line 41</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_last_error'>last_error</span>
+  <span class='ivar'>@last_error</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="last_result=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="last_result-instance_method">
+  
+    - (<tt>Object</tt>) <strong>last_result</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute last_result</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+41
+42
+43</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/ruby/containers/container.rb', line 41</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_last_result'>last_result</span>
+  <span class='ivar'>@last_result</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="mapped_ports-instance_method">
+  
+    - (<tt>Object</tt>) <strong>mapped_ports</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute mapped_ports</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+31
+32
+33</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/ruby/containers/container.rb', line 31</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_mapped_ports'>mapped_ports</span>
+  <span class='ivar'>@mapped_ports</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="memory-instance_method">
+  
+    - (<tt>Object</tt>) <strong>memory</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute memory</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+31
+32
+33</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/ruby/containers/container.rb', line 31</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_memory'>memory</span>
+  <span class='ivar'>@memory</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="setState-instance_method">
+  
+    - (<tt>Object</tt>) <strong>setState</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute setState</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+31
+32
+33</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/ruby/containers/container.rb', line 31</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_setState'>setState</span>
+  <span class='ivar'>@setState</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="volumes-instance_method">
+  
+    - (<tt>Object</tt>) <strong>volumes</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute volumes</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+31
+32
+33</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/ruby/containers/container.rb', line 31</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_volumes'>volumes</span>
+  <span class='ivar'>@volumes</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="web_port-instance_method">
+  
+    - (<tt>Object</tt>) <strong>web_port</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute web_port</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+31
+32
+33</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/ruby/containers/container.rb', line 31</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_web_port'>web_port</span>
+  <span class='ivar'>@web_port</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="from_yaml-class_method">
+  
+    + (<tt>Object</tt>) <strong>from_yaml</strong>(yaml, container_api) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/ruby/containers/container.rb', line 20</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_from_yaml'>from_yaml</span><span class='lparen'>(</span><span class='id identifier rubyid_yaml'>yaml</span><span class='comma'>,</span> <span class='id identifier rubyid_container_api'>container_api</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_container'>container</span> <span class='op'>=</span> <span class='const'>YAML</span><span class='op'>::</span><span class='id identifier rubyid_load'>load</span><span class='lparen'>(</span><span class='id identifier rubyid_yaml'>yaml</span><span class='rparen'>)</span>
+<span class='comment'>#  container = Psych.safe_load(yaml,[EnvironmentVariable,ManagedEngine,ManagedService,SystemService])
+</span>  <span class='kw'>return</span> <span class='const'>SystemUtils</span><span class='period'>.</span><span class='id identifier rubyid_log_error_mesg'>log_error_mesg</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> Failed to Load yaml </span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_yaml'>yaml</span><span class='comma'>,</span> <span class='id identifier rubyid_container_name'>container_name</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_container'>container</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+  <span class='id identifier rubyid_container'>container</span><span class='period'>.</span><span class='id identifier rubyid_container_api'>container_api</span> <span class='op'>=</span> <span class='id identifier rubyid_container_api'>container_api</span>
+  <span class='id identifier rubyid_container'>container</span><span class='period'>.</span><span class='id identifier rubyid_post_load'>post_load</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_container'>container</span>
+<span class='kw'>rescue</span> <span class='const'>Exception</span> <span class='op'>=&gt;</span> <span class='id identifier rubyid_e'>e</span>
+  <span class='const'>SystemUtils</span><span class='period'>.</span><span class='id identifier rubyid_log_exception'>log_exception</span><span class='lparen'>(</span><span class='id identifier rubyid_e'>e</span><span class='comma'>,</span><span class='id identifier rubyid_yaml'>yaml</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="on_host_net?-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>on_host_net?</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+51
+52
+53
+54</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/ruby/containers/container.rb', line 51</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_on_host_net?'>on_host_net?</span>
+  <span class='kw'>return</span> <span class='kw'>true</span> <span class='kw'>if</span> <span class='ivar'>@host_network</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>TrueClass</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='kw'>false</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="update_memory-instance_method">
+  
+    - (<tt>Object</tt>) <strong>update_memory</strong>(new_memory) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+47
+48
+49</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/ruby/containers/container.rb', line 47</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_update_memory'>update_memory</span><span class='lparen'>(</span><span class='id identifier rubyid_new_memory'>new_memory</span><span class='rparen'>)</span>
+  <span class='ivar'>@memory</span> <span class='op'>=</span> <span class='id identifier rubyid_new_memory'>new_memory</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Thu Sep  8 11:31:55 2016 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7.6 (ruby-2.2.5).
+</div>
+
+  </body>
+</html>

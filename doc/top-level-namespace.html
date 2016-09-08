@@ -3538,7 +3538,7 @@ false &gt; no udpdate available  EnginesError &gt; an error occurred.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Post params to match configurators.</p>
+<p>Post :variables,:service_name, :configurator_name].</p>
 </div></span>
   
 </li>
@@ -15446,7 +15446,7 @@ mgmt</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Post params to match configurators</p>
+<p>Post :variables,:service_name, :configurator_name]</p>
 
 
   </div>
@@ -15459,16 +15459,16 @@ mgmt</p>
   
     <li>
       
-        <span class='name'>keys</span>
+        <span class='name'>key</span>
       
       
-        <span class='type'></span>
+        <span class='type'>(<tt>Hash</tt>)</span>
       
       
       
         &mdash;
         <div class='inline'>
-<p>to match configurator definition</p>
+<p>:variables [Hash] of  variable_name =&gt; variable_value</p>
 </div>
       
     </li>
@@ -16943,7 +16943,7 @@ EnginesError &gt; an error occurred</code></pre>
 </div>
 
     <div id="footer">
-  Generated on Thu Sep  8 11:39:57 2016 by
+  Generated on Thu Sep  8 12:03:29 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.5).
 </div>
