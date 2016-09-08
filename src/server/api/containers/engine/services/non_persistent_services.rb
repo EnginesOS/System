@@ -19,10 +19,14 @@ end
 
 post '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/*' do
   p_params = post_params(request)
+  STDERR.puts( 'POST NONPER Ser paht Post:' + p_params.to_s )
   path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, false)
+  STDERR.puts( 'POST NONPER Ser paht' + path_hash.to_s + ' Post:' + p_params.to_s )
   p_params.merge!(path_hash)
+  STDERR.puts( 'POST NONPER MEFE:' + p_params.to_s)
   cparams =  Utils::Params.assemble_params(p_params, [:engine_name,:publisher_namespace], :all)
-  r =  engines_api.create_and_register_service(cparams)
+  return cparams if cparams.is_a?(EnginesError)
+    r =  engines_api.create_and_register_service(cparams)
   return log_error(request, r, cparams,to_s) if r.is_a?(EnginesError) 
   content_type 'text/plain' 
   r.to_s
