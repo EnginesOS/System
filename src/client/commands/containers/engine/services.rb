@@ -7,8 +7,8 @@ n = 4
 post = true
 STDERR.puts  @route
 params_data = read_stdin_json
-p params_data
-perform_post(params_data)
+
+
 n = 4
 elsif ARGV[3] == 'del'
   del=true
@@ -29,7 +29,7 @@ while n < len
 end
 
 if post == true
-  perform_post(params)
+  perform_post(params_data)
 elsif del == true
   perform_del
 else
