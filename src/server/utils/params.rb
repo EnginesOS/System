@@ -9,10 +9,13 @@ module Params
       return EngineError.new('Missing Parameters ' + required_params.to_s + ' but only have:' + params.to_s) if r_params == false
       a_params.merge!(r_params)
     end
+    
+    return a_params if accept_params.nils?
+    
     unless accept_params.empty?
       o_params = self.optional_params(params,accept_params)
       a_params.merge!(o_params)
-    end
+    end    
     a_params
   end
 
