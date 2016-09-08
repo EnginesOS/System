@@ -2,7 +2,7 @@ require '/opt/engines/lib/ruby/system/engines_error.rb'
 module Params
  
   def self.assemble_params(params, address_params, required_params, accept_params=nil )
-
+    params = Utils.symbolize_keys(params)
     a_params = self.address_params(params, address_params)
     return EnginesError.new('Missing Address Parameters ' + address_params.to_s + ' but only have:' + params.to_s, :error,'api') if a_params == false
     
@@ -43,6 +43,7 @@ module Params
   end
 
   def self.address_params(params, keys)
+    
     self.match_params(params, keys, true)
   end
 
