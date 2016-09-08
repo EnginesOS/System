@@ -4,9 +4,9 @@ module Params
   def self.assemble_params(params, address_params, required_params, accept_params=nil )
 
     a_params = self.address_params(params, address_params)
-
-    unless required_params.empty?
-      return EnginesError.new('Missing Address Parameters ' + address_params.to_s + ' but only have:' + params.to_s, :error,'api') if a_params == false
+    return EnginesError.new('Missing Address Parameters ' + address_params.to_s + ' but only have:' + params.to_s, :error,'api') if a_params == false
+    
+    unless required_params.empty?     
       r_params = self.required_params(params,required_params)
       return EnginesError.new('Missing Parameters ' + required_params.to_s + ' but only have:' + params.to_s, :error,'api') if r_params == false
       a_params.merge!(r_params)
@@ -43,7 +43,7 @@ module Params
   end
 
   def self.address_params(params, keys)
-    self.match_params(params, keys)
+    self.match_params(params, keys, true)
   end
 
   def self.match_params(params, keys, required = false)
@@ -55,7 +55,6 @@ module Params
     if keys.is_a?(Array)
       for key in keys
         # return missing_param key unless param.key?(key)
-
         return false  unless self.check_required(params, key,required )
         cparams[key.to_sym] = params[key] unless params[key].nil?
       end
