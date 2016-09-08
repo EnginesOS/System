@@ -8,7 +8,7 @@ get '/v0/system/certs/system_ca' do
   system_ca = engines_api.get_system_ca
   return log_error(request, system_ca) if system_ca.is_a?(EnginesError)
   content_type 'text/plain'
-  system_ca.to_to
+  system_ca.to_s
 end
 
 # @method get certificate
