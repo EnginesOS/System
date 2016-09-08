@@ -29,7 +29,8 @@ end
 # @return [true]  apply service configuration Hash
 post '/v0/containers/service/:service_name/configuration/:configurator_name' do
   p_params = post_params(request)
-  cparams =  Utils::Params.assemble_params(params.merge!(p_params), [:service_name, :configurator_name], [:variables])
+  p_params.merge!(params)
+  cparams =  Utils::Params.assemble(p_params, [:service_name, :configurator_name], [:variables])
   return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)  
   service = get_service(params[:service_name])
   return log_error(request, service, params) if service.is_a?(EnginesError)  
