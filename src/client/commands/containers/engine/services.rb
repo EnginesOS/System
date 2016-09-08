@@ -6,8 +6,9 @@ n = 4
  if ARGV[3] == 'add'
 post = true
 STDERR.puts  @route
-params = {}
-params[:data] = read_stdin_data
+params_data = read_stdin_json
+p params_data
+perform_post(params_data)
 n = 4
 elsif ARGV[3] == 'del'
   del=true
