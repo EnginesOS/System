@@ -15,7 +15,8 @@ post '/v0/containers/service/:service_name/properties/network' do
   cparams =  Utils::Params.assemble_params(p_params, [:service_name],  :all) 
   r = engines_api.set_container_network_properties(service, cparams)
   return log_error(request, r, cparams) if r.is_a?(EnginesError)
-  r.to_json
+  content_type 'text/plain' 
+  r.to_s
 end
 # @method set_service_properties_runtime
 # @overload  post '/v0/containers/service/:service_name/properties/runtime' 
@@ -31,7 +32,8 @@ post '/v0/containers/service/:service_name/properties/runtime' do
   cparams =  Utils::Params.assemble_params(p_params, [:service_name],  :all) 
   r = engines_api.set_container_runtime_properties(service, cparams)
   return log_error(request, r, cparams) if r.is_a?(EnginesError)
-  r.to_json
+  content_type 'text/plain' 
+  r.to_s
 end
 
 

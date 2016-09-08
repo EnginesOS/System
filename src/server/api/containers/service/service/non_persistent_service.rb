@@ -13,7 +13,8 @@ get '/v0/containers/service/:service_name/service/non_persistent/:publisher_name
   r = engines_api.force_register_attached_service(service_hash)
 
   return log_error(request, r, hash) if r.is_a?(EnginesError)
-  r.to_json
+  content_type 'text/plain' 
+  r.to_s
 end
 # @method service_force_reregister_non_persistent_service
 # @overload get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/reregister'
@@ -27,7 +28,8 @@ get '/v0/containers/service/:service_name/service/non_persistent/:publisher_name
   r = engines_api.force_reregister_attached_service(service_hash)
 
   return log_error(request, r, hash) if r.is_a?(EnginesError)
-  r.to_json
+  content_type 'text/plain' 
+  r.to_s
 end
 # @method service_force_deregister_non_persistent_service
 # @overload get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/deregister'
@@ -40,7 +42,8 @@ get '/v0/containers/service/:service_name/service/non_persistent/:publisher_name
   return service_hash  if service_hash.is_a?(EnginesError)
   r = engines_api.force_deregister_attached_service(service_hash)
   return log_error(request, r, hash) if r.is_a?(EnginesError)
-  r.to_json
+  content_type 'text/plain' 
+  r.to_s
 end
 # @method service_get_non_persistent_service
 # @overload get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle'

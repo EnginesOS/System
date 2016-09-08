@@ -16,7 +16,8 @@ post '/v0/containers/engine/:engine_name/properties/network' do
   cparams =  Utils::Params.assemble_params(p_params, [:engine_name], :all) # [:memory, :environment_variables])
   r = engines_api.set_container_network_properties(engine, cparams)
   return log_error(request , r,engine.last_error) if r.is_a?(EnginesError)
-  r.to_json
+  content_type 'text/plain' 
+  r.to_s
 end
 
 # @method set_engine_runtime_properties
@@ -33,7 +34,8 @@ post '/v0/containers/engine/:engine_name/properties/runtime' do
   return log_error(request, engine, p_params) if engine.is_a?(EnginesError)
   r = engines_api.set_container_runtime_properties(engine, cparams) #Utils.symbolize_keys(params))
   return log_error(request , r, cparams) if r.is_a?(EnginesError)
-  r.to_json
+  content_type 'text/plain' 
+  r.to_s
 end
 
 # @!endgroup

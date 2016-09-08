@@ -12,6 +12,7 @@ post '/v0/system/template' do
   resolved_string = engines_api.get_resolved_string(cparams[:string])
   return log_error(request, resolved_string, cparams) if resolved_string.is_a?(EnginesError)
   status(202)
-  resolved_string.to_json
+  content_type 'text/plain' 
+  resolved_string.to_s
 end
 # @!endgroup

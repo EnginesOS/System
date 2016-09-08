@@ -11,7 +11,8 @@ get '/v0/system/version/release' do
   release = SystemStatus.get_engines_system_release
   return log_error(request, release) if release.is_a?(EnginesError)
   status(202)
-  release.to_json
+  content_type 'text/plain' 
+  release.to_s
 end
 
 # @method get_system_version_api
@@ -24,7 +25,8 @@ get '/v0/system/version/api' do
   api = engines_api.api_version
   return log_error(request, api) if api.is_a?(EnginesError)
   status(202)
-  api.to_json
+  content_type 'text/plain' 
+  api.to_s
 end
 
 # @method get_system_version_ident
@@ -36,7 +38,8 @@ get '/v0/system/version/ident' do
   ident = engines_api.version_string
   return log_error(request, ident) if ident.is_a?(EnginesError)
   status(202)
-  ident.to_json
+  content_type 'text/plain' 
+  ident.to_s
 end
 
 # @method get_system_version_system
@@ -48,7 +51,8 @@ get '/v0/system/version/system' do
   system = engines_api.system_version
   return log_error(request, system) if system.is_a?(EnginesError)
   status(202)
-  system.to_json
+  content_type 'text/plain' 
+  system.to_s
 end
 
 require '/opt/engines/lib/ruby/system/system_utils.rb'

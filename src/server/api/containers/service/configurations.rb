@@ -32,6 +32,7 @@ post '/v0/containers/service/:service_name/configuration/:configurator_name' do
   p_params = post_params(request)
   cparams =  Utils::Params.assemble_params(p_params, [], [:variables,:service_name, :configurator_name])
   r = engines_api.update_service_configuration(cparams)
-  return log_error(request, r, service.last_error) if r.is_a?(FalseClass)
-  r.to_json
+  return log_error(request, r, service.last_error) if r.is_a?(FalseClass) || r.is_a?(EnginesError)
+  content_type 'text/plain' 
+  r.to_s
 end 

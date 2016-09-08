@@ -32,7 +32,8 @@ post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace
   return log_error(request, engine, hash) if engine.is_a?(EnginesError)
   r = engine.import_service_data(hash)
   return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
-  r.to_json
+  content_type 'text/plain' 
+  r.to_s
 end
 # @method engine_import_persistent_service_file
 # @overload post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/:type_path/:service_handle/import_file'
@@ -49,7 +50,8 @@ post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace
   return log_error(request, engine, hash) if engine.is_a?(EnginesError)
   r = engine.import_service_data(hash, file)
   return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
-  r.to_json
+  content_type 'text/plain' 
+  r.to_s
 end
 # @method engine_replace_persistent_service_file
 # @overload post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/:type_path/:service_handle/replace_file'
@@ -67,7 +69,8 @@ post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace
   return log_error(request, engine, hash) if engine.is_a?(EnginesError)
   r = engine.import_service_data(hash,file)
   return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
-  r.to_json
+  content_type 'text/plain' 
+  r.to_s
 end
 # @method engine_replace_persistent_service
 # @overload post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/:type_path/:service_handle/replace'
@@ -84,7 +87,8 @@ post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace
   hash[:data] =Base64.encode64( p_params['api_vars']['data'])
   r = engine.import_service_data(hash)
   return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
-  r.to_json
+  content_type 'text/plain' 
+  r.to_s
 end
 
 # @method get_engine_persistent_service

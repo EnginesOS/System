@@ -25,6 +25,7 @@ post '/v0/system/domains/:domain_name' do
   r = engines_api.update_domain(cparams)
   return log_error(request, r, cparams) if r.is_a?(EnginesError)
   status(202)
-  r.to_json
+  content_type 'text/plain' 
+  r.to_s
 end
 # @!endgroup

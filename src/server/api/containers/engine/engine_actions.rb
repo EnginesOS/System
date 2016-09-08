@@ -9,7 +9,8 @@ get '/v0/containers/engine/:engine_name/create' do
   return log_error(request, engine, params) if engine.is_a?(EnginesError)
   r = engine.create_container
   return log_error(request, r) if r.is_a?(EnginesError)
-  r.to_json
+  content_type 'text/plain'
+  r.to_s
 end
 
 # @method recreate_engine
@@ -23,7 +24,8 @@ get '/v0/containers/engine/:engine_name/recreate' do
   return log_error(request, engine, params) if engine.is_a?(EnginesError)
   r = engine.recreate_container
   return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
-  r.to_json
+  content_type 'text/plain'
+  r.to_s
 end
 # @method stop_engine
 # @overload get '/v0/containers/engine/:engine_name/stop'
@@ -34,7 +36,8 @@ get '/v0/containers/engine/:engine_name/stop' do
   return log_error(request, engine, params) if engine.is_a?(EnginesError)
   r = engine.stop_container
   return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
-  r.to_json
+  content_type 'text/plain'
+  r.to_s
 end
 # @method start_engine
 # @overload get '/v0/containers/engine/:engine_name/start'
@@ -45,7 +48,8 @@ get '/v0/containers/engine/:engine_name/start' do
   return log_error(request, engine, params) if engine.is_a?(EnginesError)
   r = engine.start_container
   return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
-  r.to_json
+  content_type 'text/plain'
+  r.to_s
 end
 # @method restart_engine
 # @overload get '/v0/containers/engine/:engine_name/restart'
@@ -80,7 +84,8 @@ get '/v0/containers/engine/:engine_name/unpause' do
   return log_error(request, engine, params) if engine.is_a?(EnginesError)
   r = engine.unpause_container
   return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
-  r.to_json
+  content_type 'text/plain'
+  r.to_s
 end
 
 # @method reinstall_engine
@@ -92,7 +97,8 @@ get '/v0/containers/engine/:engine_name/reinstall' do
   return log_error(request, engine, params) if engine.is_a?(EnginesError)
   r = engines_api.reinstall_engine(engine)
   return log_error(request, r) if r.is_a?(EnginesError)
-  r.to_json
+  content_type 'text/plain'
+  r.to_s
 end
 
 # @method destroy_engine
@@ -104,7 +110,8 @@ delete '/v0/containers/engine/:engine_name/destroy' do
   return log_error(request, engine, params) if engine.is_a?(EnginesError)
   r = engine.destroy_container
   return log_error(request, r,  engine.last_error) if r.is_a?(EnginesError)
-  r.to_json
+  content_type 'text/plain'
+  r.to_s
 end
 # @method delete_engine
 # @overload delete '/v0/containers/engine/:engine_name/delete/:remove_data'
@@ -124,7 +131,8 @@ delete '/v0/containers/engine/:engine_name/delete/*' do
   end
   r =  engines_api.delete_engine(rparams)
   return log_error(request, r, 'delete_image') if r.is_a?(EnginesError)
-  r.to_json
+  content_type 'text/plain'
+  r.to_s
 end
 
 # @!endgroup

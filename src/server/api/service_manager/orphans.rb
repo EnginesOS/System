@@ -55,6 +55,7 @@ delete '/v0/service_manager/orphan_service/:publisher_namespace/*' do
   r = engines_api.remove_orphaned_service(service_hash)
 
   return log_error(request, r) if r.is_a?(EnginesError)
-  r.to_json
+content_type 'text/plain' 
+  r.to_s
 end
 # @!endgroup
