@@ -4298,7 +4298,7 @@ service consumes).</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#add_engine_non_persistent_service-instance_method" title="#post (instance method)">- (Object) <strong>post</strong>(&#39;/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/:type_path/:service_handle&#39;) </a>
+      <a href="top-level-namespace.html#add_engine_non_persistent_service-instance_method" title="#post (instance method)">- (true|false) <strong>post</strong>(&#39;/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/:type_path/:service_handle&#39;) </a>
     
 
     
@@ -4313,7 +4313,8 @@ service consumes).</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>boolean.</p>
+<p>ad non persistent services in the :publisher_namespace and :type_path
+registered to the engine with posted params.</p>
 </div></span>
   
 </li>
@@ -4322,7 +4323,7 @@ service consumes).</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#del_engine_non_persistent_service-instance_method" title="#delete (instance method)">- (Object) <strong>delete</strong>(&#39;/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/:type_path&#39;) </a>
+      <a href="top-level-namespace.html#del_engine_non_persistent_service-instance_method" title="#delete (instance method)">- (true|false) <strong>delete</strong>(&#39;/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/:type_path&#39;) </a>
     
 
     
@@ -4337,7 +4338,8 @@ service consumes).</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>boolean.</p>
+<p>ad non persistent services in the :publisher_namespace and :type_path
+registered to the engine with posted params.</p>
 </div></span>
   
 </li>
@@ -4607,7 +4609,7 @@ service consumes).</p>
       <div class="method_details ">
   <h3 class="signature " id="add_engine_non_persistent_service-instance_method">
   
-    - (<tt>Object</tt>) <strong>post</strong>(&#39;/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/:type_path/:service_handle&#39;) 
+    - (<tt>true|false</tt>) <strong>post</strong>(&#39;/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/:type_path/:service_handle&#39;) 
   
 
   
@@ -4616,8 +4618,6 @@ service consumes).</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>boolean</p>
-
 
   </div>
 </div>
@@ -4637,6 +4637,19 @@ registered to the engine with posted params</p>
 
 </div>
 
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>true|false</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -5195,7 +5208,7 @@ is updated prior to the container creation</p>
       <div class="method_details ">
   <h3 class="signature " id="del_engine_non_persistent_service-instance_method">
   
-    - (<tt>Object</tt>) <strong>delete</strong>(&#39;/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/:type_path&#39;) 
+    - (<tt>true|false</tt>) <strong>delete</strong>(&#39;/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/:type_path&#39;) 
   
 
   
@@ -5204,8 +5217,6 @@ is updated prior to the container creation</p>
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>boolean</p>
-
 
   </div>
 </div>
@@ -5225,6 +5236,19 @@ registered to the engine with posted params</p>
 
 </div>
 
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>true|false</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 </div><table class="source_code">
   <tr>
@@ -16919,7 +16943,7 @@ EnginesError &gt; an error occurred</code></pre>
 </div>
 
     <div id="footer">
-  Generated on Thu Sep  8 11:32:05 2016 by
+  Generated on Thu Sep  8 11:39:57 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.5).
 </div>
