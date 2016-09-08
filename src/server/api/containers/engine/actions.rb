@@ -38,6 +38,7 @@ post '/v0/containers/engine/:engine_name/action/:action_name' do
   return log_error(request, engine, p_params) if engine.is_a?(EnginesError)
 
   cparams =  Utils::Params.assemble_params(p_params, [:engine_name], :all)
+  return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
   action = engines_api.perform_engine_action(engine, params[:action_name], cparams)
   return log_error(request, action, engine.last_error) if action.is_a?(EnginesError)
   action.to_json

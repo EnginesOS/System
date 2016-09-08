@@ -16,6 +16,7 @@
 post '/v0/containers/engines/build' do
   p_params = post_params(request)
   cparams =  Utils::Params.assemble_params(p_params, [], :all)
+  return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
   r = engines_api.build_engine(cparams)
   return log_error(request, r, cparams) if r.is_a?(EnginesError)
   content_type 'text/plain' 

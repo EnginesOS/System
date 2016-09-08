@@ -14,6 +14,7 @@ end
 get '/v0/service_manager/orphan_services/:publisher_namespace/*' do
   params[:type_path] = params['splat'][0] if params.key?('splat') && params['splat'].is_a?(Array)
   cparams =  Utils::Params.assemble_params(params, [:publisher_namespace, :type_path], [])
+return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
   r = engines_api.get_orphaned_services(cparams)
   return log_error(request, r) if r.is_a?(EnginesError)
   r.to_json
@@ -32,6 +33,7 @@ get '/v0/service_manager/orphan_service/:publisher_namespace/*' do
   pparams[:parent_engine] = File.basename(splats[0])
 
   cparams =  Utils::Params.assemble_params(pparams, [:publisher_namespace, :type_path, :service_handle, :parent_engine], [])
+return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
   r = engines_api.retrieve_orphan(cparams)
 
   return log_error(request, r) if r.is_a?(EnginesError)
@@ -50,6 +52,7 @@ delete '/v0/service_manager/orphan_service/:publisher_namespace/*' do
   pparams[:type_path] = File.dirname(pparams[:type_path])
   pparams[:parent_engine] = File.basename(splats[0])
   cparams =  Utils::Params.assemble_params(pparams, [:publisher_namespace, :type_path, :service_handle, :parent_engine], [])
+return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
   service_hash = engines_api.retrieve_orphan(cparams)
   return service_hash if service_hash.is_a?(EnginesError)
   r = engines_api.remove_orphaned_service(service_hash)

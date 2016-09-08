@@ -12,6 +12,7 @@ get '/v0/service_manager/persistent_services/:publisher_namespace/*' do
   pparams[:type_path] = splats[0]
 
   cparams =  Utils::Params.assemble_params(pparams, [:publisher_namespace, :type_path], [])
+return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
   r = engines_api.get_registered_against_service(cparams)
 
   return log_error(request, r) if r.is_a?(EnginesError)

@@ -21,6 +21,7 @@
 post '/v0/system/do_first_run' do
   params = post_params(request)
   cparams =  Utils::Params.assemble_params(params, [], :all)
+  return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
   r = engines_api.set_first_run_parameters(cparams)
   log_error(request, r, engines_api.last_error) if r.is_a?(EnginesError)
   status(202)

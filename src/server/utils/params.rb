@@ -2,8 +2,9 @@ module Params
   def self.assemble_params(params, address_params, required_params, accept_params=nil )
 
     a_params = self.address_params(params, address_params)       
-      
+    return EngineError.new('Missing Address Parameters ' + address_params.to_s + ' but only have:' + params.to_s) if a_params == false
     r_params = self.required_params(params,required_params)
+    return EngineError.new('Missing Parameters ' + required_params.to_s + ' but only have:' + params.to_s) if r_params == false
     a_params.merge!(r_params)
     
     o_params = self.optional_params(params,accept_params)
@@ -27,8 +28,7 @@ module Params
   def self.optional_params(params, keys)
      mparams = params['api_vars']
      m_params = Utils.symbolize_keys(mparams)
-     p :POST_SYM
-     p
+
      return nil if m_params.nil?
     self.match_params(m_params, keys )
      #   Utils.symbolize_keys(matched)

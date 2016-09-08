@@ -63,7 +63,7 @@ end
 post '/v0/system/certs/default' do
   post_s = post_params(request)
   cparams =  Utils::Params.assemble_params(post_s, [], :all)
-
+  return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
   cparams[:set_as_default] = true
   r = engines_api.upload_ssl_certificate(cparams)
   return log_error(request, r, cparams) if r.is_a?(EnginesError)
