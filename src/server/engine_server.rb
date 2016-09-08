@@ -27,7 +27,7 @@ begin
    core_api = EnginesCore.new   
        @@engines_api = PublicApi.new(core_api)
 # end
-       
+  
   STDERR.puts('CREATED ENGINES API +++++++++++++++++++++++++++++++++++++++++++')
   ObjectSpace.trace_object_allocations_start
   @@last_error =''  
@@ -59,6 +59,11 @@ begin
     
   end
 
+    def json_parser    
+      @json_parser = Yajl::Parser.new(:symbolize_keys => true) if @json_parser.nil?
+      @json_parser
+    end
+  
   def log_exception(e, *args)
     e_str = e.to_s()
     e.backtrace.each do |bt|
@@ -187,7 +192,7 @@ end
   end
   
   def post_params(request)
-     JSON.parse(request.env["rack.input"].read,:symbolize_keys => true)
+     json_parser.parse(request.env["rack.input"].read)
   rescue StandardError => e 
     log_error_mesg(request, e, e.backtrace.to_s)
   end

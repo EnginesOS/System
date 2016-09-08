@@ -2,7 +2,7 @@ require '/opt/engines/lib/ruby/system/engines_error.rb'
 module Params
  
   def self.assemble_params(params, address_params, required_params, accept_params=nil )
-    params = Utils.symbolize_keys(params)
+   # params = Utils.symbolize_keys(params)
     a_params = self.address_params(params, address_params)
     return EnginesError.new('Missing Address Parameters ' + address_params.to_s + ' but only have:' + params.to_s, :error,'api') if a_params == false
     
@@ -22,23 +22,23 @@ module Params
   end
 
   def self.required_params(params, keys)
-    mparams = params['api_vars']
-      p :pre_SYM
-     p  mparams
-    m_params = Utils.symbolize_keys(mparams)
-     p :POST_SYM
-      p  m_params
-    return false if m_params.nil?
-    self.match_params(m_params, keys, true)
+    mparams = params[:api_vars]
+#      p :pre_SYM
+#     p  mparams
+#    m_params = Utils.symbolize_keys(mparams)
+#     p :POST_SYM
+#      p  m_params
+    return false if mparams.nil?
+    self.match_params(mparams, keys, true)
     #   Utils.symbolize_keys(matched)
   end
 
   def self.optional_params(params, keys)
-    mparams = params['api_vars']
-    m_params = Utils.symbolize_keys(mparams)
+    mparams = params[:api_vars]
+  #  m_params = Utils.symbolize_keys(mparams)
 
-    return {} if m_params.nil?
-    self.match_params(m_params, keys )
+    return {} if mparams.nil?
+    self.match_params(mparams, keys )
     #   Utils.symbolize_keys(matched)
   end
 
