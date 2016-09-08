@@ -21,7 +21,6 @@ get '/v0/containers/service/:service_name/configuration/:configurator_name' do
   config = service.retrieve_configurator(cparams)
   return log_error(request, config, service.last_error) if  config.is_a?(EnginesError)
   config.to_json
-  return log_error(request, config, service.last_error)
 end
 # @method set_service_configuration
 # @overload post '/v0/containers/service/:service_name/configuration/:configurator_name'
