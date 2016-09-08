@@ -1,7 +1,7 @@
 # @!group /containers/engine/:engine_name/service/non_persistent/
 
 # @method update_engine_non_persistent_service
-# @overload post '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/:type_path'
+# @overload post '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle'
 #  ad non persistent services in the :publisher_namespace and :type_path registered to the engine with posted params
 # boolean
 

@@ -25,8 +25,8 @@ get '/v0/containers/service/:service_name/configuration/:configurator_name' do
 end
 # @method set_service_configuration
 # @overload post '/v0/containers/service/:service_name/configuration/:configurator_name'
-# Post params to match configurators
-# @param keys to match configurator definition
+# Post :variables,:service_name, :configurator_name]
+# @param [Hash] key :variables [Hash] of  variable_name => variable_value
 # @return [true]  apply service configuration Hash
 post '/v0/containers/service/:service_name/configuration/:configurator_name' do
   p_params = post_params(request)
