@@ -10,7 +10,7 @@ module Params
       a_params.merge!(r_params)
     end
     
-    return a_params if accept_params.nils?
+    return a_params if accept_params.nil?
     
     unless accept_params.empty?
       o_params = self.optional_params(params,accept_params)
