@@ -8,12 +8,9 @@
 #  
 get '/v0/system/metrics/memory' do
   memory_info =  engines_api.get_system_memory_info #engines_api.get_system_memory_info
-  unless memory_info.is_a?(EnginesError)
+  return log_error(request, memory_info) if memory_info.is_a?(EnginesError)
     status(202)
-    return memory_info.to_json
-  else
-    return log_error(request, memory_info)
-  end
+   memory_info.to_json
 end
 
 # @method get_system_metrics_load
@@ -28,12 +25,9 @@ end
 
 get '/v0/system/metrics/load' do
   load_info = engines_api.get_system_load_info
-  unless load_info.is_a?(EnginesError)
+  return log_error(request, load_info) if load_info.is_a?(EnginesError)
     status(202)
-    return load_info.to_json
-  else
-    return log_error(request, load_info)
-  end
+   load_info.to_json
 end
 
 # @method get_system_metrics_memory_statistics
@@ -46,12 +40,9 @@ end
 
 get '/v0/system/metrics/memory/statistics' do
   memory_statistics = MemoryStatistics.total_memory_statistics(engines_api)
-  unless memory_statistics.is_a?(EnginesError)
+  return log_error(request, memory_statistics) if memory_statistics.is_a?(EnginesError)
     status(202)
-    return memory_statistics.to_json
-  else
-    return log_error(request, memory_statistics)
-  end
+   memory_statistics.to_json
 end
 
 # @method get_system_metrics_disk
@@ -61,12 +52,9 @@ end
 #  
 get '/v0/system/metrics/disks' do
   disk_statistics = engines_api.get_disk_statistics
+  return log_error(request, disk_statistics) if disk_statistics.is_a?(EnginesError)
   status(202)
-  unless disk_statistics.is_a?(EnginesError)
-    return disk_statistics.to_json
-  else
-    return log_error(request, disk_statistics)
-  end
+  disk_statistics.to_json
 end
 
 # @method get_system_metrics_network
@@ -75,11 +63,8 @@ end
 #  
 get '/v0/system/metrics/network' do
   net_statistics = engines_api.get_network_statistics
+  return log_error(request, net_statistics) if net_statistics.is_a?(EnginesError)
   status(202)
-  unless net_statistics.is_a?(EnginesError)
-    return net_statistics.to_json
-  else
-    return log_error(request, net_statistics)
-  end
+  net_statistics.to_json
 end
 # @!endgroup

@@ -19,11 +19,11 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
     while has_data == true
       begin
         require "timeout"
-        
+
         timer = EventMachine::PeriodicTimer.new(15) do
           out << no_op.to_json unless lock_timer == true
         end if timer.nil?
-        
+
         bytes = @events_stream.rd.read_nonblock(2048)
         timer.cancel
         timer = nil
@@ -71,11 +71,8 @@ end
 
 get '/v0/containers/check_and_act' do
   r = engines_api.containers_check_and_act.to_json
-  unless r.is_a?(EnginesError)
-    return r.to_json
-  else
-    return log_error(request, r, engine.last_error)
-  end
+  return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
+  r.to_json
 end
 
 # @!endgroup

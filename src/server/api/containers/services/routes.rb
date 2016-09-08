@@ -7,11 +7,8 @@
 # @return [Array] services [Hash]
 get '/v0/containers/services/' do
   engines = engines_api.getManagedServices
-  unless engines.is_a?(EnginesError)
-    return  managed_containers_to_json(engines)   
-  else
-    return log_error(request,engines )
-  end
+  return log_error(request,engines ) if engines.is_a?(EnginesError)
+   managed_containers_to_json(engines)
 end
 
 #
@@ -21,11 +18,8 @@ end
 #
 get '/v0/containers/services/container_name' do
   container_names = engines_api.list_managed_services
-  unless container_names.is_a?(EnginesError)
-    return container_names.to_json
-  else
-    return log_error(request, container_names)
-  end
+  return log_error(request, container_names) if container_names.is_a?(EnginesError)
+  container_names.to_json
 end
 
 # @method get_services_state
@@ -35,11 +29,8 @@ end
 
 get '/v0/containers/services/state' do
   states = engines_api.get_services_states
-  unless states.is_a?(EnginesError)
-    return states.to_json
-  else
-    return log_error(request, states)
-  end
+  return log_error(request, states) if states.is_a?(EnginesError)
+  states.to_json
 end
 # @method get_services_status
 # @overload get '/v0/containers/services/status'
@@ -47,11 +38,8 @@ end
 # @return  [Hash] [:container_name => service_status] service_status Hash :state :set_state :progress_to :error
 get '/v0/containers/services/status' do
   status = engines_api.get_services_status
-  unless status.is_a?(EnginesError)
-    return status.to_json
-  else
-    return log_error(request, statuses)
-  end
+  return log_error(request, statuses) if status.is_a?(EnginesError)
+  status.to_json
 end
 # @method get_system_services
 # @overload  get '/v0/containers/services/system'
@@ -59,10 +47,7 @@ end
 # @return [Array] system services
 get '/v0/containers/services/system' do
   states = engines_api.list_system_services
-  unless states.is_a?(EnginesError)
-    return states.to_json
-  else
-    return log_error(request, states)
-  end
+  return log_error(request, states) if states.is_a?(EnginesError)
+  states.to_json
 end
 # @!endgroup

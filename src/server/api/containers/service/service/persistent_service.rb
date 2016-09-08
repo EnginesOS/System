@@ -10,13 +10,9 @@ get '/v0/containers/service/:service_name/service/persistent/:publisher_namespac
   service = get_service(params[:service_name])
   return log_error(request, service, params) if service.is_a?(EnginesError)
    r = service.export_service_data(hash)
-
-  unless r.is_a?(EnginesError)
-    return r.b
-    #.to_json
-  else
-    return log_error(request, r, service.last_error)
-  end
+  return log_error(request, r, service.last_error) if r.is_a?(EnginesError)
+  content_type 'binary/octet-stream'
+   r.b
 end
 # @method service_import_persistent_service
 # @overload get '/v0/containers/service/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle/import'
@@ -32,11 +28,8 @@ get '/v0/containers/service/:service_name/service/persistent/:publisher_namespac
   hash[:data]  = params[:data]
   return log_error(request, service, params) if service.is_a?(EnginesError)
   r = service.import_service_data(hash)
-  unless r.is_a?(EnginesError)
-    return r.to_json
-  else
-    return log_error(request, r, service.last_error)
-  end
+  return log_error(request, r, service.last_error) if r.is_a?(EnginesError)
+  r.to_json
 end
 # @method service_replace_persistent_service
 # @overload get '/v0/containers/service/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle/replace'
@@ -53,11 +46,8 @@ get '/v0/containers/service/:service_name/service/persistent/:publisher_namespac
   hash[:data] = params[:data]
   return log_error(request, service, params) if service.is_a?(EnginesError)
   r = service.import_service_data(hash)
-  unless r.is_a?(EnginesError)
-    return r.to_json
-  else
-    return log_error(request, r, service.last_error)
-  end
+  return log_error(request, r, service.last_error) if r.is_a?(EnginesError)
+  r.to_json
 end
 
 # @method service_get_persistent_service
@@ -69,11 +59,7 @@ get '/v0/containers/service/:service_name/service/persistent/:publisher_namespac
   hash = Utils::ServiceHash.service_service_hash_from_params(params)
   return log_error(request, 'Service not found', hash) if hash.is_a?(EnginesError)
   r = engines_api.find_service_service_hash(hash)
-
-  unless r.is_a?(EnginesError)
-    return r.to_json
-  else
-    return log_error(request, r, hash)
-  end
+  return log_error(request, r, hash) if r.is_a?(EnginesError)
+    r.to_json
 end
 # @!endgroup

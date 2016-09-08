@@ -1,31 +1,25 @@
 # @!group /engine_builder/
-#  
+#
 # @method get_builder_status
 # @overload get '/v0/engine_builder/status'
 # Return builder status as Json
 # @return [Hash]  :is_building :did_build_fail
 get '/v0/engine_builder/status' do
- r = engines_api.build_status
+  r = engines_api.build_status
 
-  unless r.is_a?(EnginesError)
-    return r.to_json
-  else
-    return log_error(request, r)
-  end
+  return log_error(request, r) if r.is_a?(EnginesError)
+  r.to_json
 end
 
 # @method get_current_build_params
 # @overload get '/v0/engine_builder/params'
-# Return current build params 
+# Return current build params
 # @return  [Hash]  :engine_name :memory :repository_url :variables :reinstall :web_port :host_name  :domain_name :attached_services
 get '/v0/engine_builder/params' do
   r = engines_api.current_build_params
-  unless r.is_a?(EnginesError)
-     return r.to_json
-   else
-     return log_error(request, r)
-   end
- end
+  return log_error(request, r) if r.is_a?(EnginesError)
+  r.to_json
+end
 
 # @method get_last_build_log
 # @overload get '/v0/engine_builder/last_build/log'
@@ -33,11 +27,8 @@ get '/v0/engine_builder/params' do
 # @return [String] last build log
 get '/v0/engine_builder/last_build/log' do
   r = engines_api.last_build_log
-  unless r.is_a?(EnginesError)
-    return r.to_json
-  else
-    return log_error(request, r)
-  end
+  return log_error(request, r) if r.is_a?(EnginesError)
+  r.to_json
 end
 # @method get_last_build_param
 # @overload get '/v0/engine_builder/last_build/params'
@@ -45,13 +36,9 @@ end
 # @return  [Hash]  :engine_name :memory :repository_url :variables :reinstall :web_port :host_name  :domain_name :attached_services
 get '/v0/engine_builder/last_build/params' do
   r = engines_api.last_build_params
-
-  unless r.is_a?(EnginesError)
-      return r.to_json
-    else
-      return log_error(request, r)
-    end
-  end
+  return log_error(request, r) if r.is_a?(EnginesError)
+  r.to_json
+end
 # @method follow_build
 # @overload get '/v0/engine_builder/follow_stream'
 # Follow the current build
@@ -60,36 +47,34 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream'  do
   build_log_file =  File.new(SystemConfig.BuildOutputFile, 'r')
   has_data = true
   stream :keep_open do |out|
-    
 
-  
-    while has_data == true 
+    while has_data == true
       begin
-        bytes = build_log_file.read_nonblock(1000)            
-        out << bytes     
+        bytes = build_log_file.read_nonblock(1000)
+        out << bytes
         bytes = ''
       rescue IO::WaitReadable
-        out << bytes     
+        out << bytes
         bytes = ''
         retry
       rescue EOFError
-       unless out.closed?       
-        out  << bytes
-        out  << '.'
-        bytes = ''
-        sleep 2
-        retry if File.exist?(SystemConfig.BuildRunningParamsFile)
-        out.close
-       end
+        unless out.closed?
+          out  << bytes
+          out  << '.'
+          bytes = ''
+          sleep 2
+          retry if File.exist?(SystemConfig.BuildRunningParamsFile)
+          out.close
+        end
         build_log_file.close
         has_data = false
       rescue IOError
-        has_data = false        
-        out  << bytes  unless out.closed?     
+        has_data = false
+        out  << bytes  unless out.closed?
         build_log_file.close
-        out.close unless out.closed?  
+        out.close unless out.closed?
       end
-    end    
+    end
   end
 
 end
