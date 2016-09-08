@@ -18,11 +18,11 @@ end
 # @return [true|false]
 
 post '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/*' do
-  path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, true)
   p_params = post_params(request)
-  service_hash = path_hash.merge(p_params)
-  r =  engines_api.create_and_register_service(service_hash)
-  return log_error(request, r, engine.last_error) if r.is_a?(EnginesError) 
+  p_params.merge!(params)
+  cparams =  Utils::Params.assemble_params(p_params, [:engine_name], :all)
+  r =  engines_api.create_and_register_service(cparams)
+  return log_error(request, r, service_hash,to_s) if r.is_a?(EnginesError) 
   content_type 'text/plain' 
   r.to_s
 end
@@ -33,9 +33,9 @@ end
 # @return [true|false]
 
 delete '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/*' do
-  path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, true)
+  path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, false)
   r = engines_api.dettach_service(path_hash)
-  return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)  
+  return log_error(request, r, path_hash.to_s ) if r.is_a?(EnginesError)  
   content_type 'text/plain' 
   r.to_s
 end
