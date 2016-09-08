@@ -33,7 +33,7 @@ post '/v0/containers/service/:service_name/configuration/:configurator_name' do
   return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)  
   service = get_service(params[:service_name])
   return log_error(request, service, params) if service.is_a?(EnginesError)  
-  cparams[:type_path] = service = service.type_path
+  cparams[:type_path] = service.type_path
   cparams[:publisher_namespace]  = service.publisher_namespace
   r = engines_api.update_service_configuration(cparams)
   return log_error(request, r, r) if r.is_a?(FalseClass) || r.is_a?(EnginesError)
