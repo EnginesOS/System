@@ -57,7 +57,7 @@ src/server/api/service_manager/shared_service.rb edfa30b7aca3fca54c00237dd911874
 src/server/api/service_manager/service_template.rb 6eca7016a6ec30d7df29b7e1d4ae4fa181f066bd
 src/server/api/containers/engine/engine_actions.rb 1e59cb4df1a8c4ee62f3df8b6276eebe20c66a4d
 src/server/api/containers/engine/service/routes.rb 972abe06b4fb012b2dc736d56003e13f0907b4b3
-src/server/api/containers/service/configurations.rb 2328b8b2ccd71eec90fcbf8fd098e23fc4123f47
+src/server/api/containers/service/configurations.rb a34d7179144b21706f3814c58016d2e061bd0e01
 src/server/api/containers/engine/services/routes.rb 0069b51a8ac3f7130d729989d3809cbadbd012e4
 src/server/api/containers/service/service/routes.rb 972abe06b4fb012b2dc736d56003e13f0907b4b3
 src/server/api/service_manager/available_services.rb 77b210d7b3d957eefd2a05aa58ca873d9256defa
