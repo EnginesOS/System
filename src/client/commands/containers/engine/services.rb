@@ -4,6 +4,7 @@ n = 4
  if ARGV[3] == 'add'
 post = true
 STDERR.puts  @route
+params = {}
 params[:data] = read_stdin_data
 n = 4
 end
