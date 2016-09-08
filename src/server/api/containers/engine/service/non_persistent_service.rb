@@ -7,6 +7,7 @@
 
 post '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/*' do
   path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, true)
+
   p_params = post_params(request)
   service_hash = path_hash.merge(p_params)
   r = engines_api.update_attached_service(service_hash)
