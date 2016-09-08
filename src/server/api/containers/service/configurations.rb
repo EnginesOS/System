@@ -35,7 +35,7 @@ post '/v0/containers/service/:service_name/configuration/:configurator_name' do
   return log_error(request, service, params) if service.is_a?(EnginesError)  
   cparams[:type_path] = service.type_path
   cparams[:publisher_namespace]  = service.publisher_namespace
-    STDERR.puts('PUTRY PARAMS '+ cparams.to_s)
+    STDERR.puts('PUTRY PARAMS '+ cparams.to_s, + ' ' + params.to_s )
   r = engines_api.update_service_configuration(cparams)
   return log_error(request, r, r) if r.is_a?(FalseClass) || r.is_a?(EnginesError)
   content_type 'text/plain' 
