@@ -12,6 +12,7 @@ post '/v0/containers/engine/:engine_name/template' do
   cparams =  Utils::Params.assemble_params(p_params, [:engine_name], :template_string)
   resolved_string = engines_api.get_resolved_engine_string(cparams[:template_string],engine)
   return log_error(request, resolved_string, cparams) if resolved_string.is_a?(EnginesError)
-  resolved_string.to_json
+  content_type 'text/plain'
+  resolved_string.to_s
 end
 # @!endgroup

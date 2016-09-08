@@ -9,28 +9,24 @@ require '/opt/engines/lib/ruby/api/system/system_status.rb'
 
 get '/v0/system/version/release' do
   release = SystemStatus.get_engines_system_release
-  unless release.is_a?(EnginesError)
-    status(202)
-    return release.to_json
-  else
-    return log_error(request, release)
-  end
+  return log_error(request, release) if release.is_a?(EnginesError)
+  status(202)
+  content_type 'text/plain' 
+  release.to_s
 end
 
 # @method get_system_version_api
 # @overload get '/v0/system/version/api'
-# api version 
-# @return [String] api version 
+# api version
+# @return [String] api version
 #
 
 get '/v0/system/version/api' do
   api = engines_api.api_version
-  unless api.is_a?(EnginesError)
-    status(202)
-    return api.to_json
-  else
-    return log_error(request, api)
-  end
+  return log_error(request, api) if api.is_a?(EnginesError)
+  status(202)
+  content_type 'text/plain' 
+  api.to_s
 end
 
 # @method get_system_version_ident
@@ -40,27 +36,23 @@ end
 #  string format $release-$system-$api
 get '/v0/system/version/ident' do
   ident = engines_api.version_string
-  unless ident.is_a?(EnginesError)
-    status(202)
-    return ident.to_json
-  else
-    return log_error(request, ident)
-  end
+  return log_error(request, ident) if ident.is_a?(EnginesError)
+  status(202)
+  content_type 'text/plain' 
+  ident.to_s
 end
 
 # @method get_system_version_system
 # @overload get '/v0/system/version/system'
 #
-# @return [String] system version 
-# system version 
+# @return [String] system version
+# system version
 get '/v0/system/version/system' do
   system = engines_api.system_version
-  unless system.is_a?(EnginesError)
-    status(202)
-    return system.to_json
-  else
-    return log_error(request, system)
-  end
+  return log_error(request, system) if system.is_a?(EnginesError)
+  status(202)
+  content_type 'text/plain' 
+  system.to_s
 end
 
 require '/opt/engines/lib/ruby/system/system_utils.rb'
@@ -72,13 +64,10 @@ require '/opt/engines/lib/ruby/system/system_utils.rb'
 get '/v0/system/version/base_os' do
   base_os = SystemUtils.get_os_release_data
 
-  unless base_os.is_a?(EnginesError)
-    base_os =  downcase_keys(base_os)
-    status(202)
-    return base_os.to_json
-  else
-    return log_error(request, base_os)
-  end
+  return log_error(request, base_os) if base_os.is_a?(EnginesError)
+  base_os =  downcase_keys(base_os)
+  status(202)
+  base_os.to_json
 end
 
 # @!endgroup

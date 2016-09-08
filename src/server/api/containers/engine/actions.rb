@@ -8,28 +8,22 @@ get '/v0/containers/engine/:engine_name/actions/' do
   engine = get_engine(params[:engine_name])
   return log_error(request, engine, params) if engine.is_a?(EnginesError)
   list = engines_api.list_engine_actionators(engine)
-    unless list.is_a?(EnginesError)
-      list.to_json
-  else
-    return log_error(request, list)
-  end
+  return log_error(request, list) if list.is_a?(EnginesError)
+  list.to_json
 end
 
 # @method get_engine_action
 # @overload get '/v0/containers/engine/:engine_name/action/:action_name'
-# return engine action 
-# @return [Hash] 
+# return engine action
+# @return [Hash]
 
 get '/v0/containers/engine/:engine_name/action/:action_name' do
   engine = get_engine(params[:engine_name])
   return log_error(request, engine, params) if engine.is_a?(EnginesError)
   action = engines_api.get_engine_actionator(engine, params[:action_name])
-    unless action.is_a?(EnginesError) 
-      action.to_json
-  else
-    return log_error(request, action, engine.last_error)
-  end
-end  
+  return log_error(request, action, engine.last_error) if action.is_a?(EnginesError)
+  action.to_json
+end
 
 # @method preform_engine_action
 # @overload post '/v0/containers/engine/:engine_name/action/:action_name'
@@ -42,12 +36,9 @@ post '/v0/containers/engine/:engine_name/action/:action_name' do
   p_params[:engine_name] = params[:engine_name]
   engine = get_engine(params[:engine_name])
   return log_error(request, engine, p_params) if engine.is_a?(EnginesError)
-   
+
   cparams =  Utils::Params.assemble_params(p_params, [:engine_name], :all)
-   action = engines_api.perform_engine_action(engine, params[:action_name], cparams)
-  unless action.is_a?(EnginesError) 
-      action.to_json
-  else
-    return log_error(request, action, engine.last_error)
-  end
+  action = engines_api.perform_engine_action(engine, params[:action_name], cparams)
+  return log_error(request, action, engine.last_error) if action.is_a?(EnginesError)
+  action.to_json
 end 

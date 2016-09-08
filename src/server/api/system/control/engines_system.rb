@@ -8,12 +8,10 @@
 # @return [true|false]
 get '/v0/system/control/engines_system/update' do
   update = engines_api.update_engines_system_software
-  unless update.is_a?(EnginesError)
+  return log_error(request, update, 'Might just be update to date update') if update.is_a?(EnginesError)
     status(202)
-    return update.to_json
-  else
-    return log_error(request, update, 'Might just be update to date update')
-  end
+  content_type 'text/plain'
+    update.to_s    
 end
 # @method restart_engines_system
 # @overload get '/v0/system/control/engines_system/restart'
@@ -21,12 +19,10 @@ end
 # @return [true]
 get '/v0/system/control/engines_system/restart' do
   restart = engines_api.restart_mgmt
-  unless restart.is_a?(EnginesError)
+  return log_error(request, restart) if restart.is_a?(EnginesError)
     status(202)
-    return restart.to_json
-  else
-    return log_error(request, restart)
-  end
+  content_type 'text/plain'
+    return restart.to_s
 end
 # @method recreate_engines_system
 # @overload get '/v0/system/control/engines_system/recreate'
@@ -34,12 +30,10 @@ end
 # @return [true]
 get '/v0/system/control/engines_system/recreate' do
   recreate = engines_api.recreate_mgmt
-  unless recreate.is_a?(EnginesError)
+  return log_error(request, recreate) if recreate.is_a?(EnginesError)
     status(202)
-    return recreate.to_json
-  else
-    return log_error(request, recreate)
-  end
+  content_type 'text/plain'
+   recreate.to_s
 end
 # @method dump_engines_system_heap_stats
 # @overload get '/v0/system/control/engines_system/heap_stats'
@@ -49,12 +43,9 @@ end
 # @return [true]
  get '/v0/system/control/engines_system/heap_stats' do
       dump_stats = engines_api.dump_heap_stats
-      unless dump_stats.is_a?(EnginesError)
+   return log_error(request, dump_stats) if  dump_stats.is_a?(EnginesError)
         status(202)
-        return dump_stats.to_json
-      else
-        return log_error(request, dump_stats)
-      end
-  
+   content_type 'text/plain'
+   dump_stats.to_s
 end
 # @!endgroup

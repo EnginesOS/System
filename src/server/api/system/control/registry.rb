@@ -5,12 +5,10 @@
 # @return [true]
 get '/v0/system/control/registry/restart' do
   restart_registry = engines_api.force_registry_restart
-  unless restart_registry.is_a?(EnginesError)
+  return log_error(request, restart_registry) if restart_registry.is_a?(EnginesError)
     status(202)
-    return restart_registry.to_json
-  else
-    return log_error(request, restart_registry)
-  end
+  content_type 'text/plain' 
+    restart_registry.to_s
 end
 #  get '/v0/system/control/regsitry/update' do
 #    update = engines_api.update_registry

@@ -3,7 +3,7 @@ module ServiceRollBack
 
     @attached_services.each do |service_hash|
       if service_hash[:shared]
-        roll_back_shared(service_hash)
+        rollback_shared_service(service_hash)
       elsif service_hash[:freed_orphan]
         roll_back_orphan(service_hash)
       elsif service_hash[:fresh] = true

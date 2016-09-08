@@ -7,12 +7,9 @@
 # @return [String]
 get '/v0/system/keys/user/:user_name/generate' do
   generated_key = engines_api.generate_engines_user_ssh_key
-  unless generated_key.is_a?(EnginesError)
-    status(202)
-    return generated_key.to_json
-  else
-    return log_error(request, generated_key)
-  end
+  return log_error(request, generated_key) if generated_key.is_a?(EnginesError)
+  content_type 'text/plain'
+  generated_key.to_s
 end
 # @!group /system/keys/user
 # @method upload_user_key
@@ -23,15 +20,13 @@ end
 # @return [true]
 post '/v0/system/keys/user/:user_name' do
   params = post_params(request)
-  cparams =  Utils::Params.assemble_params(params, [:user_name],  :public_key) 
+  cparams =  Utils::Params.assemble_params(params, [:user_name],  :public_key)
   update_key = cparams[:public_key] #symbolize_keys(params)
-    r = engines_api.update_public_key(update_key)
-  unless r.is_a?(EnginesError)
+  r = engines_api.update_public_key(update_key)
+  return log_error(request, r, cparams) if r.is_a?(EnginesError)
+  content_type 'text/plain'
   status(202)
-  return r.to_json
-  else
-    return log_error(request, r, cparams)
-  end
+  r.to_s
 end
 
 # @method get_user_key
@@ -40,11 +35,9 @@ end
 # @return [String]
 get '/v0/system/keys/user/:user_name' do
   public_key = engines_api.get_public_key
-  unless public_key.is_a?(EnginesError)
-    status(202)
-    return public_key.to_json
-  else
-    return log_error(request, public_key)
-  end
+  return log_error(request, public_key) if public_key.is_a?(EnginesError)
+  status(202)
+  content_type 'text/plain'
+  public_key.to_s
 end
 # @!endgroup

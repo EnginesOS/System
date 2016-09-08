@@ -1,39 +1,30 @@
 # @!group /containers/engines/
 # @method get_engines
 # @overload  get '/v0/containers/engines/'
-# @return [Array]  Engines [Hash] 
+# @return [Array]  of Engines [Hash] 
 get '/v0/containers/engines/' do
   engines = engines_api.getManagedEngines
-  unless engines.is_a?(EnginesError)
-    managed_containers_to_json(engines)  
-  else
-    return log_error(request, engines)
-  end
+  return log_error(request, engines) if engines.is_a?(EnginesError)
+  managed_containers_to_json(engines)  
 end
 # @method get_engines_container_name
 # @overload get '/v0/containers/engines/container_name'
 # returns an array of the container_name of configured engines
-# @return [Array] container_names
+# @return [Array] of container_names [String]
 #
 get '/v0/containers/engines/container_name' do
   container_names = engines_api.list_managed_engines
-  unless container_names.is_a?(EnginesError)
-    return container_names.to_json
-  else
-    return log_error(request, container_names)
-  end
+  return log_error(request, container_names) if container_names.is_a?(EnginesError)
+  container_names.to_json  
 end
 # @method get_engines_status
 # @overload get '/v0/containers/engines/status'
 # returns a [container_name => engines_status,] of the container_name of configured engines
-# @return [Array] Status :container_name Hashs  :state :set_state :progress_to :error
+# @return [Array] Status Hash with keys :container_name values Hash with keys :state :set_state :progress_to :error
 get '/v0/containers/engines/status' do 
   status = engines_api.get_engines_status
-  unless status.is_a?(EnginesError)
-    return status.to_json
-  else
-    return log_error(request, states)
-  end
+  return log_error(request, states) if status.is_a?(EnginesError)
+  status.to_json
 end
 # @method get_engines_state
 # @overload get '/v0/containers/engines/state'
@@ -41,10 +32,7 @@ end
 # @return [Hash] States :container_name running|stopped|paused|nocontainer
 get '/v0/containers/engines/state' do 
   states = engines_api.get_engines_states
-  unless states.is_a?(EnginesError)
-    return states.to_json
-  else
-    return log_error(request, states)
-  end
+  return log_error(request, states) if  states.is_a?(EnginesError)
+  states.to_json
 end
 # @!endgroup
