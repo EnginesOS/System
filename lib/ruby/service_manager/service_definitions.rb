@@ -16,7 +16,7 @@ class ServiceDefinitions
      return SystemUtils.log_error_mesg('no set_top_level_service_params_nil_service_hash container_name:',container_name) if container_name.nil?
      return SystemUtils.log_error_mesg('no set_top_level_service_params_nil_container_name service_hash:',service_hash)  if service_hash.nil?
      service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
-     return service_def if service_def.is_s?(EnginesError)
+     return service_def if service_def.is_a?(EnginesError)
      service_hash[:service_container_name] = service_def[:service_container]
      service_hash[:persistent] = service_def[:persistent]
      service_hash[:parent_engine] = container_name      
