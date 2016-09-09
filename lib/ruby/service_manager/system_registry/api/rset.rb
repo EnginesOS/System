@@ -54,10 +54,10 @@ private
 
 def parse_error(r)
   r.strip!# (/^\n/,'')
-  STDERR.puts("RSPONSE:" +r.to_s)
+ # STDERR.puts("RSPONSE:" +r.to_s)
 
   res = json_parser.parse(r)#, :create_additions => true,:symbolize_keys => true)
-  STDERR.puts("RSPONSE:" + res.to_s)
+  #STDERR.puts("RSPONSE:" + res.to_s)
   EnginesRegistryError.new(res)
   rescue  StandardError => e
   STDERR.puts(r.to_s)
