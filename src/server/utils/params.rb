@@ -6,7 +6,8 @@ module Params
     a_params = self.address_params(params, address_params)
     return EnginesError.new('Missing Address Parameters ' + address_params.to_s + ' but only have:' + params.to_s, :error,'api') if a_params == false
     
-    unless required_params.empty?     
+    unless required_params.empty?
+    return params if required_params == :all
       r_params = self.required_params(params,required_params)
       return EnginesError.new('Missing Parameters ' + required_params.to_s + ' but only have:' + params.to_s, :error,'api') if r_params == false
       a_params.merge!(r_params)
