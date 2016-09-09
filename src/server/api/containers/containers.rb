@@ -22,8 +22,11 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
         require "timeout"
 
         timer = EventMachine::PeriodicTimer.new(15) do
-          timer.cancel if out.closed?      
+          if out.closed?         
+          timer.cancel   
+          else  
           out << no_op.to_json unless lock_timer == true
+          end
         end if timer.nil?
 
         bytes = @events_stream.rd.read_nonblock(2048)
