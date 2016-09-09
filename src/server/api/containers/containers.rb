@@ -23,7 +23,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
 
         timer = EventMachine::PeriodicTimer.new(15) do
           if out.closed?         
-          timer.cancel   
+            timer.cancel unless timer.nil?
           else  
           out << no_op.to_json unless lock_timer == true
           end
