@@ -34,11 +34,10 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
         bytes = @events_stream.rd.read_nonblock(2048)
         timer.cancel
         timer = nil
-        # jason_event = parser.parse(bytes)
+        # jason_event = parser.parse(bytes) #yajil baffs as  docker encloses within []
         begin
-          bytes.strip!
-          jason_event = parser.parse(bytes)#,:symbolize_keys => true)
-        rescue  StandardError => e
+          jason_event = JSON.parse(bytes,:symbolize_keys => true)
+        rescue  JSON::ParserError => e
           STDERR.puts('Failed to parse ' + bytes )
           next
         end
