@@ -2,7 +2,7 @@
 
 # @method update_engine_non_persistent_service
 # @overload post '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle'
-#   update non persistent services in the :publisher_namespace :type_path and service_handle registered to the engine with posted params
+# update non persistent services in the :publisher_namespace :type_path and service_handle registered to the engine with posted params
 # post api_vars :variables  
 # @return [true|false]
 
