@@ -39,7 +39,9 @@ end
 
 delete '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/*' do
   path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, false)
-  r = engines_api.dettach_service(path_hash)
+  cparams =  Utils::Params.assemble_params(path_hash, [:engine_name, :publisher_namespace, :type_path, :service_handle], :all)
+  return cparams if cparams.is_a?(EnginesError)
+  r = engines_api.dettach_service(cparams)
   return log_error(request, r, path_hash.to_s ) if r.is_a?(EnginesError)  
   content_type 'text/plain' 
   r.to_s
