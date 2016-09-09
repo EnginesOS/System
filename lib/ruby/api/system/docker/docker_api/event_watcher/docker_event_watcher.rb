@@ -181,6 +181,8 @@ STDERR.puts('ADDED listenter ' + listener.to_s + ' Now have ' + @event_listeners
     STDERR.puts('REMOVED listenter ' + listener.class.name)
     @event_listeners.delete(listener.object_id) if @event_listeners.key?(listener.object_id)
     STDERR.puts('REMOVED listenter ' + listener.class.name  + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
+    rescue StandardError => e
+      log_exception(e)
   end
 
 end

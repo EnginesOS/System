@@ -41,12 +41,15 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
           next
         end
         #out <<'data:'
-        break if out.closed?
+        if out.closed?
+          has_data = false          
+        else
         lock_timer = true
         out << jason_event.to_json
         lock_timer = false
         STDERR.puts('EVENTS ' + jason_event.to_s + ' ' + jason_event.class.name)
         bytes = ''
+        end
       rescue IO::WaitReadable
         sleep 0.21
         retry
@@ -55,12 +58,14 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
         retry
       rescue IOError
         has_data = false
+        timer.cancel unless timer.nil?
         @events_stream.stop unless @events_stream.nil?
       end
     end
     timer.cancel unless timer.nil?
     @events_stream.stop unless @events_stream.nil?
   end
+  timer.cancel unless timer.nil?
   @events_stream.stop unless @events_stream.nil?
 end
 
