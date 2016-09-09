@@ -23,6 +23,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
 
         timer = EventMachine::PeriodicTimer.new(15) do
           if out.closed?         
+            has_data = false
             timer.cancel unless timer.nil?
           else  
           out << no_op.to_json unless lock_timer == true
@@ -60,6 +61,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
     timer.cancel unless timer.nil?
     @events_stream.stop unless @events_stream.nil?
   end
+  @events_stream.stop unless @events_stream.nil?
 end
 
 # @method check_and_act_on_containers
