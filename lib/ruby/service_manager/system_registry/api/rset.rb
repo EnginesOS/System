@@ -53,7 +53,7 @@ end
 private
 
 def parse_error(r)
-  r.gsub!(/^\n/,'')
+  r.strip!# (/^\n/,'')
   STDERR.puts("RSPONSE:" +r.to_s)
 
   res = json_parser.parse(r)#, :create_additions => true,:symbolize_keys => true)
