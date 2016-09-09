@@ -6,7 +6,6 @@ def json_parser
 def rest_get(path,params)
   begin
     retry_count = 0
-   # STDERR.puts('Get Path:' + path.to_s + ' Params:' + params.to_s)
     parse_rest_response(RestClient.get(base_url + path, params))
    rescue RestClient::ExceptionWithResponse => e   
      parse_error(e.response)
@@ -31,8 +30,7 @@ def rest_put(path,params)
   begin
     #  STDERR.puts('Put Path:' + path.to_s + ' Params:' + params.to_s)
     parse_rest_response(RestClient.put(base_url + path, params))
-    rescue RestClient::ExceptionWithResponse => e
-      STDERR.puts(e.repsonse + ' ' + path.to_s + ' ' + params.to_s)   
+    rescue RestClient::ExceptionWithResponse => e      
       parse_error(e.response)
   rescue StandardError => e
     log_exception(e, params)
@@ -41,7 +39,6 @@ end
 
 def rest_delete(path,params)
   begin
-    # STDERR.puts('Del Path:' + path.to_s + ' Params:' + params.to_s)
     parse_rest_response(RestClient.delete(base_url + path, params))
     rescue RestClient::ExceptionWithResponse => e   
       parse_error(e.response)
@@ -71,9 +68,10 @@ def parse_rest_response(r)
   return parse_error(r) if r.code > 399
   return true if r.to_s   == '' ||  r.to_s   == 'true'
   return false if r.to_s  == 'false'
-  res = JSON.parse(r, :create_additions => true,:symbolize_keys => true)
+  r.strip!
+  res = json_parser.parse(r)#, :create_additions => true,:symbolize_keys => true)
   # STDERR.puts("RESPONSE "  + deal_with_jason(res).to_s)
-  return deal_with_jason(res)
+  return res #deal_with_jason(res)
 rescue  StandardError => e
   STDERR.puts e.to_s
   STDERR.puts e.backtrace
