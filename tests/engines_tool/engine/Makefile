@@ -1,7 +1,7 @@
 TESTS=state stop start pause unpause  template mem_stat net_stat\
 	blueprint build_report properties_net properties_run\
 	actions services \
-	 destroy recreate reinstall delete 
+	 destroy recreate delete reinstall 
  
 	
 tests:
