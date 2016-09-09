@@ -57,7 +57,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
         @events_stream.stop unless @events_stream.nil?
       end
     end
-    timer.cancel
+    timer.cancel unless timer.nil?
     @events_stream.stop unless @events_stream.nil?
   end
 end
