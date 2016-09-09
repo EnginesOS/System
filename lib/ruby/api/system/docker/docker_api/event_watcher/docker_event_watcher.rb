@@ -181,6 +181,8 @@ STDERR.puts('ADDED listenter ' + listener.to_s + ' Now have ' + @event_listeners
     
     STDERR.puts('REMOVED listenter ' + listener.class.name + ':' + listener.object_id.to_s)
     STDERR.puts('FROM ' + @event_listeners.keys.to_s)
+    STDERR.puts('KEY is Present') if @event_listeners.key?(listener.object_id)
+    STDERR.puts('SYM is Present') if @event_listeners.key?(listener.object_id.to_sym)
     @event_listeners.delete(listener.object_id) if @event_listeners.key?(listener.object_id)
     STDERR.puts('REMOVED listenter ' + listener.class.name  + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
     rescue StandardError => e
