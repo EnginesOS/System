@@ -30,8 +30,8 @@ rescue StandardError => e
   def stop
     STDERR.puts('RM levent List')
     @system_api.rm_event_listener(self)
-    @wr.close if @wr.is_open?
-    @rd.close if @rd.is_open?
+   # @wr.close if @wr.is_open?
+   # @rd.close if @rd.is_open?
   end
   
   end
