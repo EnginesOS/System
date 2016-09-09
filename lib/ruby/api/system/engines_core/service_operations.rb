@@ -83,6 +83,7 @@ module ServiceOperations
     return false unless (r = check_engine_service_hash(service_hash))
     
     ahash = service_manager.find_engine_service_hash(service_hash)
+    return ahash if ahash.is_a?(EnginesError)
        return log_error_mesg("Cannot update a shared service",service_hash) if ahash[:shared] == true
          
     service_manager.update_attached_service(service_hash)
