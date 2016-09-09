@@ -25,7 +25,7 @@ post '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_name
   p_params.merge!(path_hash)
   STDERR.puts( 'POST NONPER MEFE:' + p_params.to_s)
   cparams =  Utils::Params.assemble_params(p_params, [:engine_name,:publisher_namespace], :all)
-  return cparams if cparams.is_a?(EnginesError)
+  return log_error(request,cparams,p_params) if cparams.is_a?(EnginesError)
     r =  engines_api.create_and_register_service(cparams)
   return log_error(request, r, cparams,to_s) if r.is_a?(EnginesError) 
   content_type 'text/plain' 
@@ -40,9 +40,9 @@ end
 delete '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/*' do
   path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, false)
   cparams =  Utils::Params.assemble_params(path_hash, [:engine_name, :publisher_namespace, :type_path, :service_handle], :all)
-  return cparams if cparams.is_a?(EnginesError)
+  return log_error(request,cparams,p_params)  if cparams.is_a?(EnginesError)
   r = engines_api.dettach_service(cparams)
-  return log_error(request, r, path_hash.to_s ) if r.is_a?(EnginesError)  
+  return log_error(request, r, cparams.to_s ) if r.is_a?(EnginesError)  
   content_type 'text/plain' 
   r.to_s
 end
