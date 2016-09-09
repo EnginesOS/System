@@ -4,6 +4,7 @@ STDERR.puts 'engine service ns tp sh ' +  @route
 cmd = nil
 post = false
 del = false
+content_type='application/octet-stream'
 case ARGV[4]
 when 'register'
   cmd = ARGV[4]
@@ -37,16 +38,14 @@ when 'update'
   cmd = ARGV[4]
 cmd = nil
 post = true
+content_type='application/json'
 STDERR.puts  @route
-params[:data] = read_stdin_data
+params = read_stdin_json
+n = 5
 
-when 'delete'
-  cmd = nil
-del = true
-STDERR.puts  @route
 end
 
-if cmd.nil?
+if cmd.nil? && n != 5
   n = 4
 else
   n = 5
@@ -62,7 +61,7 @@ end
 
 if post == true
   STDERR.puts  'Posting'  + @route
-  perform_post(params, 'application/octet-stream')
+  perform_post(params, content_type)
 elsif del == true
   perform_del
 else
