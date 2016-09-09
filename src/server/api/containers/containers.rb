@@ -16,6 +16,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
     no_op = {:no_op => true}
     parser = Yajl::Parser.new(:symbolize_keys => true)
     timer = nil
+    lock_timer = false
     while has_data == true
       begin
         require "timeout"
