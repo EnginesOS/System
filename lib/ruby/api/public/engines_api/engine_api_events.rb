@@ -28,6 +28,7 @@ rescue StandardError => e
   end
   
   def stop
+    STDERR.puts('RM levent List')
     @system_api.rm_event_listener([self,'write_event'.to_sym])
     @wr.close
     @rd.close    
