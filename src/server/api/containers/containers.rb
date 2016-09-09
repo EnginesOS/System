@@ -8,14 +8,14 @@
 # {"state":"stopped",status":"stop","id":"50ffafcef4018242dcf8a89155dcf61f069b4933e69ad62c5397c9b77b2b0b22","from":"prosody","time":1463529792,"timeNano":1463529792881164857,"Type":"container","container_type":"container","container_name":"prosody"
 #  Do not use the "from" key
 get '/v0/containers/events/stream', provides: 'text/event-stream' do
-
+  timer = nil
   stream :keep_open do |out|
 
     @events_stream = engines_api.container_events_stream
     has_data = true
     no_op = {:no_op => true}
     parser = Yajl::Parser.new(:symbolize_keys => true)
-    timer = nil
+ 
     lock_timer = false
     while has_data == true
       begin
