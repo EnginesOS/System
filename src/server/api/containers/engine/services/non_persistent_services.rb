@@ -14,16 +14,14 @@ end
 
 # @method add_engine_non_persistent_service
 # @overload post '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/:type_path/:service_handle'
-#  ad non persistent services in the :publisher_namespace and :type_path registered to the engine with posted params
+#  add non persistent services in the :publisher_namespace and :type_path  :service_handle registered to the engine with posted params
+# post api_vars :variables  
 # @return [true|false]
 
 post '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/*' do
   p_params = post_params(request)
-  STDERR.puts( 'POST NONPER Ser paht Post:' + p_params.to_s )
   path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, false)
-  STDERR.puts( 'POST NONPER Ser paht' + path_hash.to_s + ' Post:' + p_params.to_s )
   p_params.merge!(path_hash)
-  STDERR.puts( 'POST NONPER MEFE:' + p_params.to_s)
   cparams =  Utils::Params.assemble_params(p_params, [:parent_engine,:publisher_namespace, :type_path, :service_handle], :all)
   return log_error(request,cparams,p_params) if cparams.is_a?(EnginesError)
     r =  engines_api.create_and_register_service(cparams)
@@ -34,7 +32,7 @@ end
 
 # @method del_engine_non_persistent_service
 # @overload delete '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/:type_path'
-#  ad non persistent services in the :publisher_namespace and :type_path registered to the engine with posted params
+#  delete non persistent services sddressed by :publisher_namespace, :type_path :service_handle registered to the engine
 # @return [true|false]
 
 delete '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/*' do
