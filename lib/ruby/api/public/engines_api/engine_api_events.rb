@@ -28,9 +28,9 @@ rescue StandardError => e
   end
   
   def stop
-    @wr.close
-    @rd.close
     @system_api.rm_event_listener([self,'write_event'.to_sym])
+    @wr.close
+    @rd.close    
   end
   
   end
