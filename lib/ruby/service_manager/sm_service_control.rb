@@ -38,10 +38,13 @@ module SmServiceControl
     clear_error
     r = ''
     complete_service_query = ServiceDefinitions.set_top_level_service_params(service_query,service_query[:parent_engine])
+      return complete_service_query if complete_service_query.is_a?(EnginesError)
     service_hash = system_registry_client.find_engine_service_hash(complete_service_query)
     return service_hash unless service_hash.is_a?(Hash)
-    return remove_shared_service_from_engine(service_query) if service_hash[:shared] == true
-    
+    if service_hash[:shared] == true
+      return r if ( r = remove_shared_service_from_engine(service_query)).is_a?(EnginesError)
+      return system_registry_client.remove_from_managed_engines_registry(service_hash)       
+    end
    # return log_error_mesg('Failed to match params to registered service',service_hash) unless service_hash.is_a?(Hash)
     service_hash[:remove_all_data] = service_query[:remove_all_data]
     return r if (r = remove_from_managed_service(service_hash)).is_a?(EnginesError) && !service_query.key?(:force)

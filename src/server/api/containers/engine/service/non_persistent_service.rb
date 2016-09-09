@@ -2,14 +2,18 @@
 
 # @method update_engine_non_persistent_service
 # @overload post '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle'
-#  ad non persistent services in the :publisher_namespace and :type_path registered to the engine with posted params
-# boolean
+# update non persistent services in the :publisher_namespace :type_path and service_handle registered to the engine with posted params
+# post api_vars :variables  
+# @return [true|false]
 
 post '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/*' do
-  path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, true)
   p_params = post_params(request)
-  service_hash = path_hash.merge(p_params)
-  r = engines_api.update_attached_service(service_hash)
+   path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, false)
+   p_params.merge!(path_hash)
+   cparams =  Utils::Params.assemble_params(p_params, [:parent_engine,:publisher_namespace, :type_path, :service_handle], :all)
+   return log_error(request,cparams,p_params) if cparams.is_a?(EnginesError)
+ 
+  r = engines_api.update_attached_service(cparams)
   return log_error(request, r, hash) if r.is_a?(EnginesError)
   content_type 'text/plain' 
   r.to_s

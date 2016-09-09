@@ -1,5 +1,8 @@
 require 'rest-client'
-
+def json_parser    
+     @json_parser = Yajl::Parser.new(:create_additions => true,:symbolize_keys => true) if @json_parser.nil?
+     @json_parser
+   end
 def rest_get(path,params)
   begin
     retry_count = 0

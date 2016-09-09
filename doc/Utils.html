@@ -264,7 +264,7 @@
  <span class='comment'># hash.delete(&#39;splat&#39;)
 </span> <span class='comment'># hash.delete(&#39;captures&#39;)
 </span>  
-  <span class='kw'>return</span> <span class='const'>SystemUtils</span><span class='period'>.</span><span class='id identifier rubyid_log_error'>log_error</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>cannot symbolse nil </span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>  <span class='kw'>if</span> <span class='id identifier rubyid_hash'>hash</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+  <span class='kw'>return</span> <span class='kw'>nil</span>  <span class='kw'>if</span> <span class='id identifier rubyid_hash'>hash</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
   <span class='id identifier rubyid_hash'>hash</span><span class='period'>.</span><span class='id identifier rubyid_inject'>inject</span><span class='lparen'>(</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span><span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_result'>result</span><span class='comma'>,</span> <span class='lparen'>(</span><span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span><span class='op'>|</span>
     <span class='id identifier rubyid_new_key'>new_key</span> <span class='op'>=</span> <span class='kw'>case</span> <span class='id identifier rubyid_key'>key</span>
     <span class='kw'>when</span> <span class='const'>String</span> <span class='kw'>then</span> <span class='id identifier rubyid_key'>key</span><span class='period'>.</span><span class='id identifier rubyid_to_sym'>to_sym</span>
@@ -300,7 +300,7 @@
 </div>
 
     <div id="footer">
-  Generated on Thu Sep  8 12:04:52 2016 by
+  Generated on Fri Sep  9 11:54:27 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.2.5).
 </div>

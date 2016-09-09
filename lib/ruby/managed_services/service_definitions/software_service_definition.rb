@@ -141,7 +141,6 @@ end
       service_def = SoftwareServiceDefinition.load_service_def(dir,service_type)
       if service_def == nil
         return SystemUtils.log_error_mesg('Nil Service type',provider.to_s + '/' + service_type.to_s )
-
       end
       return service_def #.to_h
     end
@@ -159,8 +158,8 @@ end
       yaml = File.read(filename)
       return SoftwareServiceDefinition.from_yaml(yaml)
     end
-    SystemUtils.log_error_mesg('No Such Definitions File',dir.to_s + '/' + service_type.to_s + ' ' + filename.to_s)
-    return nil
+    return  SystemUtils.log_error_mesg('No Such Definitions File',dir.to_s + '/' + service_type.to_s + ' ' + filename.to_s)
+
   rescue Exception=>e
     SystemUtils.log_error_mesg('Error With',dir.to_s + '/' + service_type.to_s)
     SystemUtils.log_exception(e)
