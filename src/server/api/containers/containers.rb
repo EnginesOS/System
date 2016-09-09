@@ -36,6 +36,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
         timer = nil
         # jason_event = parser.parse(bytes)
         begin
+          bytes.strip!
           jason_event = parser.parse(bytes)#,:symbolize_keys => true)
         rescue  StandardError => e
           STDERR.puts('Failed to parse ' + bytes )
