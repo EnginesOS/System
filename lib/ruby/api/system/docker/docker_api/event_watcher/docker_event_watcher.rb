@@ -28,7 +28,7 @@ class DockerEventWatcher  < ErrorsApi
     end
 
     def hash_name
-      return @object.object_id
+      return @object.object_id.to_s
     end
 
     def trigger(hash)
@@ -178,9 +178,15 @@ STDERR.puts('ADDED listenter ' + listener.to_s + ' Now have ' + @event_listeners
   end
 
   def rm_event_listener(listener)
-    STDERR.puts('REMOVED listenter ' + listener.class.name)
-    @event_listeners.delete(listener.object_id) if @event_listeners.key?(listener.object_id)
+    
+    STDERR.puts('REMOVED listenter ' + listener.class.name + ':' + listener.object_id.to_s)
+    STDERR.puts('FROM ' + @event_listeners.keys.to_s)
+    STDERR.puts('KEY is Present') if @event_listeners.key?(listener.object_id.to_s)
+    STDERR.puts('SYM is Present') if @event_listeners.key?(listener.object_id.to_s)
+    @event_listeners.delete(listener.object_id.to_s) if @event_listeners.key?(listener.object_id.to_s)
     STDERR.puts('REMOVED listenter ' + listener.class.name  + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
+    rescue StandardError => e
+      log_exception(e)
   end
 
 end
