@@ -25,6 +25,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
           if out.closed?         
             has_data = false
             timer.cancel unless timer.nil?
+            @events_stream.stop unless @events_stream.nil? 
           else  
           out << no_op.to_json unless lock_timer == true
           end
