@@ -6,11 +6,21 @@
 # boolean
 
 post '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/*' do
-  path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, true)
 
   p_params = post_params(request)
-  service_hash = path_hash.merge(p_params)
-  r = engines_api.update_attached_service(service_hash)
+   STDERR.puts( 'POST NONPER Ser paht Post:' + p_params.to_s )
+   path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, false)
+   STDERR.puts( 'POST NONPER Ser paht' + path_hash.to_s + ' Post:' + p_params.to_s )
+   p_params.merge!(path_hash)
+   STDERR.puts( 'POST NONPER MEFE:' + p_params.to_s)
+   cparams =  Utils::Params.assemble_params(p_params, [:parent_engine,:publisher_namespace, :type_path, :service_handle], :all)
+   return log_error(request,cparams,p_params) if cparams.is_a?(EnginesError)
+  
+#  path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, true)
+#
+#  p_params = post_params(request)
+#  service_hash = path_hash.merge(p_params)
+  r = engines_api.update_attached_service(cparams)
   return log_error(request, r, hash) if r.is_a?(EnginesError)
   content_type 'text/plain' 
   r.to_s
