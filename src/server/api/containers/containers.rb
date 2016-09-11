@@ -15,26 +15,26 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
     has_data = true
     no_op = {:no_op => true}
     parser = Yajl::Parser.new(:symbolize_keys => true)
- 
+
     lock_timer = false
     while has_data == true
       begin
         require "timeout"
 
         timer = EventMachine::PeriodicTimer.new(15) do
-          if out.closed?         
+          if out.closed?
             has_data = false
             timer.cancel unless timer.nil?
-            @events_stream.stop unless @events_stream.nil? 
-          else  
-          out << no_op.to_json unless lock_timer == true
+            @events_stream.stop unless @events_stream.nil?
+          else
+            out << no_op.to_json unless lock_timer == true
           end
         end if timer.nil?
 
         bytes = @events_stream.rd.read_nonblock(2048)
         timer.cancel
         timer = nil
-        # jason_event = parser.parse(bytes)
+        # jason_event = parser.parse(bytes) #yajil baffs as  docker encloses within []
         begin
           jason_event = JSON.parse(bytes,:symbolize_keys => true)
         rescue  JSON::ParserError => e
@@ -43,34 +43,28 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
         end
         #out <<'data:'
         if out.closed?
-          has_data = false    
-          STDERR.puts('PUT CLOSED ')
+          has_data = false
         else
-        lock_timer = true
-        out << jason_event.to_json
-        lock_timer = false
-        STDERR.puts('EVENTS ' + jason_event.to_s + ' ' + jason_event.class.name)
-        bytes = ''
+          lock_timer = true
+          out << jason_event.to_json
+          lock_timer = false
+          bytes = ''
         end
-      rescue IO::WaitReadable       
+      rescue IO::WaitReadable
         sleep 0.21
         retry
-      rescue EOFError =>e 
-        STDERR.puts('EOF ' + e.to_s)
+      rescue EOFError =>e
         sleep 0.21
         retry
       rescue IOError
         has_data = false
         timer.cancel unless timer.nil?
         @events_stream.stop unless @events_stream.nil?
-        STDERR.puts(' CLOSED y IOERR')
       end
     end
-    STDERR.puts(' CLOSED at end of stream block')
     timer.cancel unless timer.nil?
     @events_stream.stop unless @events_stream.nil?
   end
-  STDERR.puts(' CLOSED at end')
   timer.cancel unless timer.nil?
   @events_stream.stop unless @events_stream.nil?
 end

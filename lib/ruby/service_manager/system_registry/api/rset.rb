@@ -29,10 +29,8 @@ end
 
 def rest_put(path,params)
   begin
-    #  STDERR.puts('Put Path:' + path.to_s + ' Params:' + params.to_s)
     parse_rest_response(RestClient.put(base_url + path, params))
-    rescue RestClient::ExceptionWithResponse => e
-      STDERR.puts(e.repsonse + ' ' + path.to_s + ' ' + params.to_s)   
+    rescue RestClient::ExceptionWithResponse => e      
       parse_error(e.response)
   rescue StandardError => e
     log_exception(e, params)
@@ -41,7 +39,6 @@ end
 
 def rest_delete(path,params)
   begin
-    # STDERR.puts('Del Path:' + path.to_s + ' Params:' + params.to_s)
     parse_rest_response(RestClient.delete(base_url + path, params))
     rescue RestClient::ExceptionWithResponse => e   
       parse_error(e.response)
@@ -53,10 +50,12 @@ end
 private
 
 def parse_error(r)
-  STDERR.puts("RSPONSE",r.to_s)
-  r.gsub!(/^\n/,'')
+  r.strip!# (/^\n/,'')
+ # STDERR.puts("RSPONSE:" +r.to_s)
+
   res = JSON.parse(r, :create_additions => true,:symbolize_keys => true)
-  EnginesRegistryError.new(res)
+  #STDERR.puts("RSPONSE:" + res.to_s)
+  EnginesRegistryError.new(deal_with_jason(res))
   rescue  StandardError => e
   STDERR.puts(r.to_s)
   STDERR.puts(e.to_s)
@@ -69,6 +68,7 @@ def parse_rest_response(r)
   return parse_error(r) if r.code > 399
   return true if r.to_s   == '' ||  r.to_s   == 'true'
   return false if r.to_s  == 'false'
+  r.strip!
   res = JSON.parse(r, :create_additions => true,:symbolize_keys => true)
   # STDERR.puts("RESPONSE "  + deal_with_jason(res).to_s)
   return deal_with_jason(res)
