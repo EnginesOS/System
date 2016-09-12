@@ -17,7 +17,7 @@ end
     #  last_error = container.last_error
     # save_last_result_and_error(container)
     container.last_result = ''
-
+    container.container_mutex = nil
     serialized_object = YAML.dump(container)
     container.container_api = api
     # container.last_result = last_result
