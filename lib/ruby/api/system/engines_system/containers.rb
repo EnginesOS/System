@@ -19,9 +19,7 @@ end
 #    container.last_result = ''
 
     serialized_object = YAML.dump(container)
-    container.container_api = api
-    # container.last_result = last_result
-    #container.last_error = last_error
+
     state_dir = ContainerStateFiles.container_state_dir(container)
     FileUtils.mkdir_p(state_dir)  if Dir.exist?(state_dir) == false
     statefile = state_dir + '/running.yaml'
