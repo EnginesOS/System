@@ -5,10 +5,11 @@ module OrphansServiceBuilder
     SystemDebug.debug(SystemDebug.orphans, :retrieved_orphan, service_hash)
     STDERR.puts("retrieved_orphan" + service_hash.to_s)
     @orphans.push(service_hash.dup)
+    SystemDebug.debug(SystemDebug.orphans,'@orphans" ',@orphans)
     service_hash[:fresh] = false
     reparent_orphan(service_hash)
     unless service_hash.nil?
-      SystemDebug.debug(SystemDebug.orphans, :from_reparemt, service_hash)
+      SystemDebug.debug(SystemDebug.orphans, :from_reparent, service_hash)
       service_hash[:variables][:engine_path] = service_hash[:variables][:engine_path] if service_hash[:type_path] == 'filesystem/local/filesystem'
     end
     return service_hash

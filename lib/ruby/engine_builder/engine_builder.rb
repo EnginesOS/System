@@ -387,7 +387,6 @@ class EngineBuilder < ErrorsApi
       if @mc.is_a?(ManagedContainer)
         @mc.stop_container if @mc.is_running?
         @mc.destroy_container if @mc.has_container?
-
         @mc.delete_image if @mc.has_image?
       end
 
@@ -409,7 +408,6 @@ class EngineBuilder < ErrorsApi
     create_php_ini
     create_apache_config
     create_scripts
-
   end
 
   def create_template_files
