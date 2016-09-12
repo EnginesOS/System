@@ -7,7 +7,7 @@ def rotate_container_log(container_id, retention = 10)
   run_server_script('rotate_container_log',container_id.to_s + ' ' + retention.to_s)   
 end
   
-  def save_container(cont)
+  def save_container(container)
     clear_error
     # FIXME:
 #    container = cont.dup
