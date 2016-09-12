@@ -23,12 +23,10 @@ module PersistantServiceBuilder
     return log_error_mesg("Problem with service hash", service_hash) if service_hash.is_a?(FalseClass)
     existing = match_service_to_existing(service_hash, use_existing)
     if existing.is_a?(Hash)
-      # service_hash
-      service_hash[:shared] = true
       service_hash[:fresh] = false
       @first_build = false
-      return attach_existing_service_to_engine(service_hash, existing)
-
+      return attach_existing_service_to_engine(service_hash, existing) if existing[:shared] == true
+      service_hash = existing #Orphan case
       #  LAREADY DONE service_hash = use_orphan(service_hash) if @service_manager.match_orphan_service(service_hash) == true
     elsif @core_api.match_orphan_service(service_hash) == true #auto orphan pick up
       service_hash = use_orphan(service_hash)
@@ -82,7 +80,6 @@ module PersistantServiceBuilder
 
   def use_active_service(service_hash, existing_service )
     s = @core_api.get_service_entry(existing_service)
-
     s[:variables][:engine_path] = service_hash[:variables][:engine_path] if service_hash[:type_path] == 'filesystem/local/filesystem'
     s[:fresh] = false
     s[:shared] = true
