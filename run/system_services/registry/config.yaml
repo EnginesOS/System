@@ -1,6 +1,7 @@
 --- !ruby/object:SystemService
 container_name: registry
 ctype: system_service
+consumer_less: true
 persistent: false
 conf_self_start: true
 publisher_namespace: EnginesSystem
