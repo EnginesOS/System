@@ -60,8 +60,13 @@ rm -f /opt/engines/run/system/flags/update_engines_running
 
 if test -f /usr/bin/pulseaudio
  then
- 	/usr/bin/pulseaudio -D
+   if ! test `pulseaudio --check` -eq 0
+    then
+ 	 /usr/bin/pulseaudio -D
+    fi
  fi
+ 
+ docker start registry
  
  if test "`/opt/engines/bin/system_service.rb registry state`" = \"nocontainer\"
  then
