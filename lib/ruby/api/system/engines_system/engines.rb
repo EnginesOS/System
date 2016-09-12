@@ -70,7 +70,8 @@ module Engines
     
     container.remove_nginx_service
     container.set_hostname_details(hostname, domain_name)
-    save_container(container)
+    container.save_state
+   # save_container(container)
     container.add_nginx_service
     return true
   rescue StandardError => e
