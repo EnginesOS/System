@@ -25,7 +25,8 @@ module PersistantServiceBuilder
     if existing.is_a?(Hash)
       service_hash[:fresh] = false
       @first_build = false
-      return attach_existing_service_to_engine(service_hash, existing) 
+      return attach_existing_service_to_engine(service_hash, existing) if existing[:shared] == true
+      service_hash = existing #Orphan case
       #  LAREADY DONE service_hash = use_orphan(service_hash) if @service_manager.match_orphan_service(service_hash) == true
     elsif @core_api.match_orphan_service(service_hash) == true #auto orphan pick up
       service_hash = use_orphan(service_hash)
