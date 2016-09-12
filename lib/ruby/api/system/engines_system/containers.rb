@@ -10,13 +10,13 @@ end
   def save_container(cont)
     clear_error
     # FIXME:
-    container = cont.dup
-    api = container.container_api.dup
-    container.container_api = nil
-    last_result = container.last_result
-    #  last_error = container.last_error
-    # save_last_result_and_error(container)
-    container.last_result = ''
+#    container = cont.dup
+#    api = container.container_api.dup
+#    container.container_api = nil
+#    last_result = container.last_result
+#    #  last_error = container.last_error
+#    # save_last_result_and_error(container)
+#    container.last_result = ''
 
     serialized_object = YAML.dump(container)
     container.container_api = api
