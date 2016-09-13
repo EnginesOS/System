@@ -552,7 +552,8 @@ class EngineBuilder < ErrorsApi
   end
 
   def log_build_output(line)
-    @log_file.puts(line)
+    return if line == "\u0000" 
+    @log_file.puts('_' + line + '_')
     @log_file.flush
     # @log_pipe_wr.puts(line)
   rescue
