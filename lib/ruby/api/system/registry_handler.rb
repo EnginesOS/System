@@ -39,7 +39,7 @@ class RegistryHandler < ErrorsApi
     registry_service = @system_api.loadSystemService('registry') # FIXME: Panic if this fails
     return log_error_mesg('Failed to load registry ' + registry_service.to_s, registry_service ) if registry_service.is_a?(EnginesError)
     state = registry_service.read_state
-    STDERR.puts("REGISYRT _STATE _" + state.to_s + '_')
+    STDERR.puts("REGISYRT _STATE _" + state + '_')
     if state == "running"
       @registry_ip  = registry_service.get_ip_str
       return  @registry_ip
