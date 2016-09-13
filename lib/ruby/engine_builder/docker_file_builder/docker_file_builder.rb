@@ -59,7 +59,7 @@ class DockerFileBuilder
     write_modules
     write_permissions
     write_line('')
-    write_line('run mkdir -p /home/fs/local/')
+    write_line('RUN mkdir -p /home/fs/local/')
     write_line('')
     set_user('$ContUser')
     write_run_install_script
@@ -95,7 +95,7 @@ class DockerFileBuilder
   end
 
   def prepare_persitant_source
-    write_line('run mv /home/fs /home/fs_src')
+    write_line('RUN mv /home/fs /home/fs_src')
     write_line('VOLUME /home/fs_src/')
   end
 
@@ -161,8 +161,8 @@ class DockerFileBuilder
   end
 
   def write_run_install_script
-    write_line('WorkDir /home/')
-    write_line('#run framework and custom installer')
+    write_line('WORKDIR /home/')
+    write_line('#RUN framework and custom installer')
     write_line('RUN bash /home/setup.sh')
   end
 
@@ -407,6 +407,6 @@ class DockerFileBuilder
   end
 
   def set_user(user)
-    write_line('User ' + user)
+    write_line('USER ' + user)
   end
 end
