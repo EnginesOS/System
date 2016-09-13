@@ -30,9 +30,7 @@ class BuilderPublic
   end
 
   def http_protocol
-    if @builder.build_params[:http_protocol] == 'http_https'
-      return 'https'
-    end
+    return @builder.build_params[:http_protocol].gsub(/_.*/,'') if @builder.build_params[:http_protocol].include?('_')
     return @builder.build_params[:http_protocol]
   end
 

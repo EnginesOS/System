@@ -10,9 +10,7 @@ module ManagedContainerWebSites
   end
 
   def http_protocol
-    if @protocol == :http_https ||  @protocol == 'http_https'
-      return 'https'
-    end
+    return @protocol.gsub(/_.*/,'') if @protocol.include?('_')
     return @protocol.to_s
   end
 
