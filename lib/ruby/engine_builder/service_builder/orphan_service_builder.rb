@@ -3,7 +3,6 @@ module OrphansServiceBuilder
     SystemDebug.debug(SystemDebug.orphans,:attaching_orphan, service_hash)
     service_hash = @core_api.retrieve_orphan(service_hash)
     SystemDebug.debug(SystemDebug.orphans, :retrieved_orphan, service_hash)
-    STDERR.puts("retrieved_orphan" + service_hash.to_s)
     @orphans.push(service_hash.dup)
     SystemDebug.debug(SystemDebug.orphans,'@orphans" ',@orphans)
     service_hash[:fresh] = false
@@ -16,7 +15,6 @@ module OrphansServiceBuilder
   end
 
   def reparent_orphan(service_hash)
-    STDERR.puts("reparent_orphan" + service_hash.to_s)
     service_hash[:old_parent] =  service_hash[:parent_engine]
     service_hash[:parent_engine] = @engine_name
     service_hash[:fresh] = false
@@ -26,10 +24,8 @@ module OrphansServiceBuilder
   end
 
   def release_orphans()
-    STDERR.puts("release_orphans")
     @orphans.each do |service_hash|
       service_hash[:remove_all_data] = false
-      STDERR.puts("release_orphan" + service_hash.to_s)
       @core_api.release_orphan(service_hash)
     end
   end

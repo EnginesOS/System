@@ -39,7 +39,6 @@ class ManagedUtility< ManagedContainer
   end
 
   def command_details(command_name)
-    STDERR.puts(@commands.to_s)
     return log_error_mesg('No Commands') unless @commands.is_a?(Hash)
     return @commands[command_name] if @commands.key?(command_name)
     return log_error_mesg('Command not found _' + command_name.to_s + '_')
@@ -52,8 +51,6 @@ class ManagedUtility< ManagedContainer
     return log_error_mesg('Utility ' + container_name + ' in use ' ,  command_name) if is_active?
     #FIXMe need to check if running
     r =  ''
-    STDERR.puts("COMMANDS " + @commands.to_s)
-    STDERR.puts( ' commaned keys ' + @commands.keys.to_s)
     #  command_name = command_name.to_sym unless @commands.key?(command_name)
     return log_error_mesg('No such command: ' + command_name.to_s, command_name, command_params) unless @commands.key?(command_name)
     command = command_details(command_name)
@@ -65,7 +62,6 @@ class ManagedUtility< ManagedContainer
     @container_api.wait_for('nocontainer') unless read_state == 'nocontainer'
     @container_api.destroy_container(self)  unless read_state == 'nocontainer'
     clear_configs
-    STDERR.puts("Container NOT Destroyed") if has_container?
 
     apply_templates(command, command_params)
     save_state
@@ -74,7 +70,7 @@ class ManagedUtility< ManagedContainer
     @container_api.wait_for('stopped') unless read_state == 'stopped'
     r = logs_container #_as_result
     # destroy_container
-    STDERR.puts(' logs ' + r.to_s)
+
     r = {}
     r[:stdout] = 'OK'
     return r
@@ -87,7 +83,7 @@ class ManagedUtility< ManagedContainer
     command = templater.apply_hash_variables(command, command_params)
     #FixME as will not honor "value with spaces in braces"
     @command = command[:command].split(' ')
-    STDERR.puts('COMMAND ' + @command.to_s )
+
   rescue StandardError => e
 
     log_exception(e)
@@ -115,11 +111,11 @@ class ManagedUtility< ManagedContainer
     @volumes.each_value do |volume|
       volume = SystemUtils.symbolize_keys(volume)
 
-      STDERR.puts('volume VALUE  ' + volume.to_s )
+
       volume[:remotepath] = templater.apply_hash_variables(volume[:remotepath] , command_params)
       volume[:localpath] = templater.apply_hash_variables(volume[:localpath] , command_params)
       volume[:permissions]= templater.apply_hash_variables(volume[:permissions] , command_params)
-      STDERR.puts('volume VALUE  ' + volume.to_s )
+
     end
   rescue StandardError => e
 
@@ -142,10 +138,8 @@ class ManagedUtility< ManagedContainer
   end
 
   def apply_env_templates(command_params, templater)
-    environments.each do |env|
-      STDERR.puts('ENV VALUE  ' + env.value.to_s )
+    environments.each do |env|  
       env.value = templater.apply_hash_variables(env.value, command_params)
-      STDERR.puts('ENV VALUE=  ' + env.value.to_s )
     end
   rescue StandardError => e
     log_exception(e)
@@ -162,9 +156,7 @@ class ManagedUtility< ManagedContainer
 
   def check_params(cmd, parrams)
     r = true
-    STDERR.puts(' required params' ,params.to_s)
     cmd[:requires].each do |required_param|
-      STDERR.puts(' required param ' + required_param.to_s )
       next if params.key?(required_param.to_sym)
       r = 'Missing:' if r == true
       r +=  ' ' + required_param.to_s

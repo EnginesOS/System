@@ -3,8 +3,7 @@ module ManagedContainerEnvironment
     SystemDebug.debug(SystemDebug.containers, :update_environment, key, value, @environments)
     return log_error_mesg('No envionment varaibles') if @environments.nil?
     
-    @environments.each do |environment|
-      STDERR.puts(' compare' + environment.name.to_s + ' with ' +  key.to_s)
+    @environments.each do |environment|    
     if environment.name == key.to_s
       SystemDebug.debug(SystemDebug.containers, :update_environment, "Cahnged")
       return log_error_mesg(' variable ' + environment.name + ' immutable' )  if environment.immutable == true

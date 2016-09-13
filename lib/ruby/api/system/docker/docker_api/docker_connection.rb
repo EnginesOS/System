@@ -78,13 +78,13 @@ excon_params = {:debug_request => true,
 }
    
     if stream_reader.method(:is_hijack?).call == true
-     STDERR.puts('  hijack_block ' )
+   
      # excon_params.delete(:response_block)
       excon_params[:hijack_block] = DockerUtils.process_request(stream_reader)
     else 
        excon_params[:response_block] = stream_reader.process_response
     end
-    STDERR.puts('Excon Params ' + excon_params.to_s)
+  
   #return Excon.new('http://172.17.0.1:2375',excon_params)
     excon_params[:socket] = '/var/run/docker.sock'
     return Excon.new('unix:///', excon_params ) 

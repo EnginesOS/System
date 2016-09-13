@@ -34,7 +34,6 @@ class VolumeService < ManagedService
     util_params[:target] =  service_hash[:parent_engine]
     util_params[:data_gid] = service_hash[:variables][:group]
     result =  volbuilder.execute_command(:remove_volume, util_params)
-    STDERR.puts(' remove volume ' + result.to_s)
 #    return log_error_mesg('invalid parent dir in rm_volume',service_hash) unless service_hash[:variables][:volume_src] .start_with?( SystemConfig.LocalFSVolHome() + '/' + service_hash[:parent_engine])
 #    cmd = 'docker_run  --name volbuilder --memory=20m -e fw_user=www-data    -v ' + service_hash[:variables][:volume_src] + ':/dest/fs:rw   -t engines/volbuilder:' + SystemUtils.system_release + ' /home/remove_container.sh fs'
 #    retval =  SystemUtils.run_system(cmd)

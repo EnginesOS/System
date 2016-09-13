@@ -60,7 +60,7 @@ class SystemStatus
   end
 
   def self.build_complete(params)
-    STDERR.puts("BULT WITH params " + params.to_s)
+
     param_file = File.new(SystemConfig.BuildBuiltFile, 'w+')
     param_file.puts(params.to_yaml)
     param_file.close

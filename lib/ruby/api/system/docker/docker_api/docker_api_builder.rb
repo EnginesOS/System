@@ -48,7 +48,6 @@ module DockerApiBuilder
     end
 
     def process_request(*args)
-       STDERR.puts('PROCESS REQUEST with ', + args.to_s)
       @io_stream.read(Excon.defaults[:chunk_size]).to_s
     rescue StandardError => e
       STDERR.puts('PROCESS REQUEST got nilling')
@@ -64,7 +63,6 @@ module DockerApiBuilder
     header['Accept-Encoding'] = 'gzip'
     header['Accept'] = '*/*'
     header['Content-Length'] = File.size(build_archive_filename).to_s
-    #   STDERR.puts( 'build_engine ' +  header.to_s)
     stream_handler = DockerStreamHandler.new(nil, builder) #File.new(build_archive_filename,'r'))
     return post_stream_request('/build' , options, stream_handler,  header, File.read(build_archive_filename) )
   rescue StandardError => e

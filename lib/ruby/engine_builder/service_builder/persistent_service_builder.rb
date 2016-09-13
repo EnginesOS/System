@@ -2,11 +2,9 @@ module PersistantServiceBuilder
   def create_persistent_services(services, environ, use_existing)
     r = ''
     SystemDebug.debug(SystemDebug.builder,:services ,services)
-    STDERR.puts('Match persisten sevi3e' + use_existing.to_s)
     services.each do | service_hash |
       SystemDebug.debug(SystemDebug.builder,:servicer_hash,service_hash)
    #   service_hash =  SystemUtils.deal_with_jason(sh)
-      STDERR.puts('persisten sevi3e ' + service_hash.to_s)
       service_def = SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:publisher_namespace])
       return log_error_mesg('no matching service definition for ' + service_hash.to_s ,self) if service_def.nil?
       if service_def[:persistent]
@@ -62,7 +60,6 @@ module PersistantServiceBuilder
     return false if use_existing.nil?
     return log_error_mesg(" Existing Attached services should be an array",use_existing) unless use_existing.is_a?(Array)
     use_existing.each do |existing_service|
-      STDERR.puts('Match persisten sevi3e' + existing_service.to_s)
       SystemDebug.debug(SystemDebug.builder, :create_type, existing_service)
       next if existing_service[:create_type] == 'new'
       next if existing_service[:create_type].nil?

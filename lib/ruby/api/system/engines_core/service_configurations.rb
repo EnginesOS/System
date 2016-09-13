@@ -16,15 +16,15 @@ module ServiceConfigurations
     return defs if defs.is_a?(EnginesError) 
     avail = service_defs_to_configurations(defs,service_hash)
     return avail if avail.is_a?(EnginesError) 
-    STDERR.puts(' avail definitions ' +  avail.to_s)
+
     
     configured = service_manager.get_service_configurations_hashes(service_hash)
-    STDERR.puts('configureddefinitions ' +  configured.to_s)
+
     return configured  if configured.is_a?(EnginesError) 
     configured.each do | configuration |
       avail[ configuration[:configurator_name].to_sym ] = configuration
     end
-    STDERR.puts(' avail merged definitions ' +  avail.to_s)
+  
     avail.values 
   end
 
@@ -69,10 +69,8 @@ module ServiceConfigurations
 end
   
   def service_defs_to_configurations(defs, service_hash)
-    STDERR.puts(' avail definitions ' +  defs.to_s)
     avail = {}
       defs.each_value do |definition|
-        STDERR.puts(' definition ' +  definition.to_s)
         definition_key = definition[:name].to_sym
       avail[definition_key] = {}
     avail[definition_key][:service_name] = service_hash[:service_name]
@@ -90,8 +88,7 @@ end
     service_manager.get_service_configuration(service_param)
   end
   
-  def update_configuration_on_service(service_param)
-    STDERR.puts( ' update_configuration_on_service ' + service_param.to_s)
+  def update_configuration_on_service(service_param)   
      return log_error_mesg('Missing Service name',service_param) unless service_param.key?(:service_name)
      service = loadManagedService(service_param[:service_name])
        return service  unless service.is_a?(ManagedService)
@@ -106,10 +103,8 @@ end
        service_param.delete(:pending)
      end
      # set config on reunning service
-    STDERR.puts( ' update_configuration_on_service ' + service_param.to_s)
      configurator_result =  service.run_configurator(service_param)
      return log_error_mesg('Service configurator erro@core_api.r incorrect result type ', configurator_result.to_s) unless configurator_result.is_a?(Hash)
- 
      return log_error_mesg('Service configurator error ', configurator_result.to_s) unless configurator_result[:result] == 0 || configurator_result[:stderr].start_with?('Warning')
      return true
    end

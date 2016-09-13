@@ -340,7 +340,6 @@ class BluePrintReader
     ports = @blueprint[:software][:ports]
     return true unless ports.is_a?(Array) # not an error just nada
     ports.each do |port|
-      STDERR.puts("READINF PORT " + port.to_s )
       portnum = port[:port]
         if port.key?(:name)
           name = port[:name]
