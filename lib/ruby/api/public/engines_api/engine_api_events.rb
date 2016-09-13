@@ -10,7 +10,7 @@ module EngineApiEvents
 end
 
 def write_event(hash)
-  STDERR.puts(hash.to_s + ' is a ' + hash.class.name)
+
  @wr.write(hash.to_json)
   @wr.write("\n\n")
   @wr.flush
@@ -28,7 +28,7 @@ rescue StandardError => e
   end
   
   def stop
-    STDERR.puts('RM levent List')
+   
     @system_api.rm_event_listener(self)
    # @wr.close if @wr.is_open?
    # @rd.close if @rd.is_open?

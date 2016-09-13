@@ -26,21 +26,19 @@ module EnginesApiSystem
     free_ram = @system_api.available_ram
     return free_ram if free_ram.is_a?(EnginesError)
     ram_needed = SystemConfig.MinimumFreeRam .to_i + container.memory.to_i * 0.7
-    STDERR.puts('____RAM_________ ' + ram_needed.to_s + '/' + free_ram.to_s )
-    return true if  free_ram > ram_needed
+    return true if free_ram > ram_needed
     return false
   end
 
   def create_container(container)
     clear_error
     return log_error_mesg('Failed To create container exists by the same name', container) if container.ctype != 'system_service' && container.has_container?
-    return  log_error_mesg('Failed to create state files', self) unless ContainerStateFiles.create_container_dirs(container)
+    return log_error_mesg('Failed to create state files', self) unless ContainerStateFiles.create_container_dirs(container)
     ContainerStateFiles.clear_cid_file(container)
     ContainerStateFiles.clear_container_var_run(container)
     start_dependancies(container) if container.dependant_on.is_a?(Hash)
     container.pull_image if container.ctype != 'container'
     r = @docker_api.create_container(container)
-    STDERR.puts(' DOCKER api CREATE ' + r.to_s)
     return r if r.is_a?(EnginesDockerError)
      return true
   rescue StandardError => e

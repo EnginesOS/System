@@ -41,7 +41,7 @@ module EnginesServerHost
     proc_mem_info = r[:stdout]
     proc_mem_info.split("\n").each do |line|
       values = line.split(' ')
-      STDERR.puts('mem val ' + values[0].to_s)
+  
       case values[0]
       when 'MemTotal:'
         ret_val[:total] = values[1].to_i

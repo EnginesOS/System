@@ -44,10 +44,10 @@ class DockerEventWatcher  < ErrorsApi
 #        hash['container_type'] = 'service'
 #      end
       hash[:state] = state_from_status( hash[:status] )
-      STDERR.puts('fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
+      SystemDebug.debug(SystemDebug.container_events,'fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
       return @object.method(@method).call(hash)
     rescue StandardError => e
-      STDERR.puts(e.to_s + ':' +  e.backtrace.to_s)
+      SystemDebug.debug(SystemDebug.container_events,e.to_s + ':' +  e.backtrace.to_s)
       return e
     end
 
@@ -167,24 +167,19 @@ class DockerEventWatcher  < ErrorsApi
     log_exception(e,chunk)
   end
 
-  
+
   def add_event_listener(listener, event_mask = nil, container_id = nil)
   
     event = EventListener.new(listener,event_mask, container_id)
     @event_listeners[event.hash_name] = event
-STDERR.puts('ADDED listenter ' + listener.to_s + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
+SystemDebug.debug(SystemDebug.container_events,'ADDED listenter ' + listener.to_s + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
   rescue StandardError => e
     log_exception(e)
   end
 
-  def rm_event_listener(listener)
-    
-    STDERR.puts('REMOVED listenter ' + listener.class.name + ':' + listener.object_id.to_s)
-    STDERR.puts('FROM ' + @event_listeners.keys.to_s)
-    STDERR.puts('KEY is Present') if @event_listeners.key?(listener.object_id.to_s)
-    STDERR.puts('SYM is Present') if @event_listeners.key?(listener.object_id.to_s)
+  def rm_event_listener(listener)   
+    SystemDebug.debug(SystemDebug.container_events,'REMOVED listenter ' + listener.class.name + ':' + listener.object_id.to_s)
     @event_listeners.delete(listener.object_id.to_s) if @event_listeners.key?(listener.object_id.to_s)
-    STDERR.puts('REMOVED listenter ' + listener.class.name  + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
     rescue StandardError => e
       log_exception(e)
   end

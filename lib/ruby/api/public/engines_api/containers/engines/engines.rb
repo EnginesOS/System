@@ -16,7 +16,6 @@ module PublicApiEngines
   end
    
   def  build_engine(params)
-    STDERR.puts('build parram ' + params.to_s)
     @core_api.build_engine(params)
       end
       
@@ -26,9 +25,6 @@ module PublicApiEngines
   
   def delete_engine(params)
   #  params[:remove_all_data] = true
-      STDERR.puts(' :DELETE_ENGINE ' + params.to_s)
-    
-#      p params
     @core_api.delete_engine(params)
   end
   

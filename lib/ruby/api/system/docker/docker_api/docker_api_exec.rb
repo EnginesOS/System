@@ -29,7 +29,6 @@ module DockerApiExec
         if  @o_stream.nil?
           DockerUtils.docker_stream_as_result(chunk, return_result)
           return_result[:raw] = return_result[:raw] + chunk.to_s
-          STDERR.puts( ' parse exec_hj res  ' + chunk.length.to_s )
         else
           r = DockerUtils.decode_from_docker_chunk(chunk)
           @o_stream.write(r[:stdout]) unless r.nil?
@@ -64,7 +63,6 @@ module DockerApiExec
         if  @o_stream.nil?
           DockerUtils.docker_stream_as_result(chunk, return_result)
           return_result[:raw] = return_result[:raw] + chunk.to_s
-          STDERR.puts( 'exec parse process  res  ' + chunk.length.to_s )
         else
           r = DockerUtils.decode_from_docker_chunk(chunk)
           @o_stream.write(r[:stdout]) unless r.nil?
@@ -118,7 +116,7 @@ module DockerApiExec
     headers['Upgrade'] = 'tcp'
 
    r =  post_stream_request(request, nil, stream_handler,  headers , request_params.to_json )
-    STDERR.puts('EXEC RES ' + stream_handler.result.to_s + ' with r ' + r.to_s)
+
     stream_handler.result[:result] = get_exec_result(exec_id)
     stream_handler.result
 
@@ -154,7 +152,6 @@ module DockerApiExec
 
     request = '/containers/'  + params[:container].container_id.to_s + '/exec'
     r = post_request(request,  request_params)
-    STDERR.puts('DOCKER EXEC ' + r.to_s + ': for :' + params[:container].container_name + ': with :' + request_params.to_s)
     return r
   end
 
