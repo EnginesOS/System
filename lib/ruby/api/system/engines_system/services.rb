@@ -35,12 +35,12 @@ module Services
   end
   
   def list_managed_services
-    list_services  
+    _list_services  
   rescue StandardError => e
     return log_exception(e)    
   end
   def list_system_services
-    list_services('system_service')  
+    _list_services('system_service')  
   rescue StandardError => e
     return log_exception(e)    
   end 
