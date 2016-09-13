@@ -112,14 +112,15 @@ module Engines
     cache_engine(managed_engine, ts)
     return managed_engine
   rescue StandardError => e
-    unless engine_name.nil?
-      unless managed_engine.nil?
-        managed_engine.last_error = 'Failed To get Managed Engine ' + engine_name + ' ' + e.to_s
-        log_error_mesg(managed_engine.last_error, e)
-      end
-    else
-      log_error_mesg('nil Engine Name', engine_name)
-    end
+#    unless engine_name.nil?
+#      unless managed_engine.nil?
+#        managed_engine.last_error = 'Failed To get Managed Engine ' + engine_name + ' ' + e.to_s
+#        log_error_mesg(managed_engine.last_error, e)
+#      end
+#    else
+#      log_error_mesg('nil Engine Name', engine_name)
+#    end
+    log_error_mesg('nil Engine Name', engine_name)
     log_exception(e)
   end
   
