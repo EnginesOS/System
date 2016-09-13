@@ -25,6 +25,7 @@ class Container < ErrorsApi
     container.post_load
     return container
   rescue Exception => e
+    SystemUtils.log_error_mesg(" Failed to Load yaml ", container_name)
     SystemUtils.log_exception(e,yaml)
   end
 
