@@ -133,7 +133,7 @@ end
 
   def SoftwareServiceDefinition.find(service_type, provider)
     if service_type == nil  || provider == nil
-      return  SystemUtils.log_error_mesg('missing params:' +  provider.to_s  + '/' + service_type.to_s )
+      return  SystemUtils.log_error_mesg('missing params:' +  provider.to_s  + '/' + service_type.to_s + ' ' + caller.to_s )
     end
     dir = SystemConfig.ServiceTemplateDir + '/' + provider
     if Dir.exist?(dir)
