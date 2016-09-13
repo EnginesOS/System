@@ -20,10 +20,10 @@ module Services
   end
   
   def getSystemServices
-    get_services(type='system_service')
+    get_services_by_type(type='system_service')
   end
   
-  def get_services(type='service')
+  def get_services_by_type(type='service')
     ret_val = []
     services = list_services(type)
     services.each do |service_name |
