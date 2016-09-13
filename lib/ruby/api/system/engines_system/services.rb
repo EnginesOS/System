@@ -25,7 +25,7 @@ module Services
   
   def get_services_by_type(type='service')
     ret_val = []
-    services = list_services(type)
+    services = _list_services(type)
     services.each do |service_name |
       service = loadManagedService(service_name) if type == 'service'
       service = loadSystemService(service_name) if type == 'system_service'
