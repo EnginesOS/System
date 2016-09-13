@@ -10,7 +10,6 @@ end
   def save_container(container)
     clear_error
     # FIXME:
-#    container = cont.dup
 #    api = container.container_api.dup
 #    container.container_api = nil
 #    last_result = container.last_result
