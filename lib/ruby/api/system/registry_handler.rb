@@ -56,7 +56,7 @@ class RegistryHandler < ErrorsApi
     end
     #FIXME replace with wait for
     sleep 5
-    
+    STDERR.puts("REGISYRT STARted_" + registry_service.read_state .to_s + '_')
     if registry_service.read_state != 'running'
       unless force_recreate
         return log_error_mesg('Fatal Unable to Start Registry Service: ', registry_service.last_error)
