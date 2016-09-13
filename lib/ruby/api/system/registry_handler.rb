@@ -54,6 +54,7 @@ class RegistryHandler < ErrorsApi
       STDERR.puts("REGISYRT STARTUNG _" + state.to_s + '_')
       registry_service.start_container
     end
+    #FIXME replace with wait for
     sleep 5
     
     if registry_service.read_state != 'running'
