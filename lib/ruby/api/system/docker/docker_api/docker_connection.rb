@@ -239,7 +239,10 @@ excon_params = {:debug_request => true,
     end
     return hashes[0]
   rescue StandardError => e
+    log_error_mesg("Un exepect response content " +   resp.to_s)
     log_exception(e)
+    return {} if expect_json == true
+    return ''
   end
 
   # def clear_cid(container)
