@@ -20,12 +20,13 @@ class Container < ErrorsApi
   def self.from_yaml(yaml, container_api)
     container = YAML::load(yaml)
   #  container = Psych.safe_load(yaml,[EnvironmentVariable,ManagedEngine,ManagedService,SystemService])
-    return SystemUtils.log_error_mesg(" Failed to Load yaml ", yaml, container_name) if container.nil?
+    return SystemUtils.log_error_mesg(" Failed to Load yaml ", yaml) if container.nil?
     container.container_api = container_api
     container.post_load
     return container
   rescue Exception => e
-    SystemUtils.log_exception(e,yaml)
+    SystemUtils.log_error_mesg(" Failed to Load yaml ", yaml)
+    SystemUtils.log_exception(e)
   end
 
   attr_reader :container_id,\
@@ -53,4 +54,16 @@ class Container < ErrorsApi
     return false
   end
 
+  def to_h
+    
+     self.instance_variables.each_with_object({}) do |var, hash|
+       var.to_s.delete!("@")
+     next if var.end_with?('_api')
+       next if var.end_with?('docker_info')
+       next if var.end_with?('last_result')
+       next if var.end_with?('mutex')             
+       hash[var.to_sym] = self.instance_variable_get(var) 
+  end
+      
+  end
 end

@@ -72,7 +72,8 @@ class SystemApi < ErrorsApi
   def get_engines_states
     result = {}
     engines = getManagedEngines #list_managed_engines
-    engines.each do |engine|
+    return  engines if engines.is_a?(EnginesError)
+    engines.each do |engine|    
       result[engine.container_name] = engine.read_state
     end
 
