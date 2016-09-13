@@ -4,11 +4,11 @@ class RegistryHandler < ErrorsApi
     @registry_ip = false
   end
 
-  # FIXME: take out or get_registry ip ..
-  def start
-    @registry_ip = false
-    get_registry_ip
-  end
+#  # FIXME: take out or get_registry ip ..
+#  def start
+#    @registry_ip = false
+#    get_registry_ip
+#  end
 
   def force_registry_restart
     # start in thread in case timeout clobbers
@@ -39,7 +39,7 @@ class RegistryHandler < ErrorsApi
     registry_service = @system_api.loadSystemService('registry') # FIXME: Panic if this fails
     return log_error_mesg('Failed to load registry ' + registry_service.to_s, registry_service ) if registry_service.is_a?(EnginesError)
     state = registry_service.read_state
-    STDERR.puts("REGISYRT _STATE _" + state + '_' + caller.to_s)
+  #  STDERR.puts("REGISYRT _STATE _" + state + '_' + caller.to_s)
     if state == "running"
       @registry_ip  = registry_service.get_ip_str
       return  @registry_ip
@@ -51,12 +51,12 @@ class RegistryHandler < ErrorsApi
     when 'paused'
       registry_service.unpause_container
     when 'stopped'
-      STDERR.puts("REGISYRT STARTUNG _" + state.to_s + '_')
+  #    STDERR.puts("REGISYRT STARTUNG _" + state.to_s + '_')
       registry_service.start_container
     end
     #FIXME replace with wait for
     sleep 5
-    STDERR.puts("REGISYRT STARted_" + registry_service.read_state .to_s + '_')
+  #  STDERR.puts("REGISYRT STARted_" + registry_service.read_state .to_s + '_')
     if registry_service.read_state != 'running'
       unless force_recreate
         return log_error_mesg('Fatal Unable to Start Registry Service: ', registry_service.last_error)
