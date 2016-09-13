@@ -12,7 +12,8 @@ module MemoryStatistics
     engines_memory_statistics = {}
     engines = api.getManagedEngines
     services = api.getManagedServices
-    # system_services = api.listSystemServices
+    system_services = api.getSystemServices
+    services += system_services
     engines_memory_statistics[:containers] = {}
     engines_memory_statistics[:containers][:applications] = collect_containers_memory_stats(engines)
     engines_memory_statistics[:containers][:services] = collect_containers_memory_stats(services)
@@ -62,7 +63,7 @@ module MemoryStatistics
         ret_val.store(:current, File.read(path + '/memory.usage_in_bytes').to_i)
         ret_val.store(:limit, File.read(path + '/memory.limit_in_bytes').to_i)
       else
-         SystemUtils.log_error_mesg('no_cgroup_file for ' + container.container_name, path)
+         SystemUtils.log_error_mesg('no_cgroup_file for ' + container.container_name + ':' + path.to_s, path)
         ret_val  = self.empty_container_result
       end
     end
