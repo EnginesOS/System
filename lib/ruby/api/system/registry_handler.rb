@@ -51,6 +51,7 @@ class RegistryHandler < ErrorsApi
     when 'paused'
       registry_service.unpause_container
     when 'stopped'
+      STDERR.puts("REGISYRT STARTUNG _" + state.to_s + '_')
       registry_service.start_container
     end
     if registry_service.read_state != 'running'
