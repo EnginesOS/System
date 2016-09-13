@@ -3,7 +3,7 @@ module ManagedContainerApi
     return false unless has_api?
 
     c = self.dup
-    c.clear_to_save
+   # c.clear_to_save
     
     @container_api.save_container(c)
 

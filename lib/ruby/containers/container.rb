@@ -54,4 +54,16 @@ class Container < ErrorsApi
     return false
   end
 
+  def to_h
+    
+     self.instance_variables.each_with_object({}) do |var, hash|
+       var.to_s.delete!("@")
+     next if var.end_with?('_api')
+       next if var.end_with?('docker_info')
+       next if var.end_with?('last_result')
+       next if var.end_with?('mutex')             
+       hash[var.to_sym] = self.instance_variable_get(var) 
+  end
+      
+  end
 end
