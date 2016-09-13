@@ -38,6 +38,8 @@ environments:
  value: http://control.engines.internal:2380/v0/
  has_changed: true 
  build_time_only: false
+ immutable: false
+ label: "Local System"
 - !ruby/object:EnvironmentVariable 
  name: SYSTEM_RELEASE
  value: _Engines_System(release)

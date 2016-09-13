@@ -14,12 +14,12 @@ class EngineBuilder < ErrorsApi
   require_relative 'service_builder/service_builder.rb'
 
   require_relative 'builder/configure_services_backup.rb'
-  include ConfigureServicesBackup  
+  include ConfigureServicesBackup
   require_relative 'builder/save_engine_configuration.rb'
   include SaveEngineConfiguration
-  
+
   include BuildReport
-  
+
   require_relative 'builder/engine_scripts_builder.rb'
   include EngineScriptsBuilder
 
@@ -52,7 +52,7 @@ class EngineBuilder < ErrorsApi
 
   def initialize(params, core_api)
     # {:engine_name=>'phpmyadmin5', :host_name=>'phpmyadmin5', :domain_name=>'engines.demo', :http_protocol=>'HTTPS and HTTP', :memory=>'96', :variables=>{}, :attached_services=>[{:publisher_namespace=>'EnginesSystem', :type_path=>'filesystem/local/filesystem', :create_type=>'active', :parent_engine=>'phpmyadmin4', :service_handle=>'phpmyadmin4'}, {:publisher_namespace=>'EnginesSystem', :type_path=>'database/sql/mysql', :create_type=>'active', :parent_engine=>'phpmyadmin4', :service_handle=>'phpmyadmin4'}], :repository_url=>'https://github.com/EnginesBlueprints/phpmyadmin.git'}
-  
+
     #@core_api = core_api.dup WTF !
     @core_api = core_api
     @mc = nil # Used in clean up only
@@ -115,8 +115,8 @@ class EngineBuilder < ErrorsApi
     log_build_output(space.to_s + 'MB free > ' +  SystemConfig.MinimumFreeImageSpace.to_s + ' required')
 
     free_ram = @core_api.available_ram
-    if @build_params[:memory].to_i < SystemConfig.MinimumBuildRam 
-    ram_needed = SystemConfig.MinimumBuildRam 
+    if @build_params[:memory].to_i < SystemConfig.MinimumBuildRam
+      ram_needed = SystemConfig.MinimumBuildRam
     else
       ram_needed = @build_params[:memory].to_i
     end
@@ -143,7 +143,7 @@ class EngineBuilder < ErrorsApi
     return build_failed(@service_builder.last_error) unless @service_builder.required_services_are_running?
 
     return build_failed(@service_builder.last_error) if @service_builder.create_persistent_services(@blueprint_reader.services, @blueprint_reader.environments,@build_params[:attached_services]).is_a?(EnginesError)
-   
+
     apply_templates_to_environments
     create_engines_config_files
     index = 0
@@ -173,7 +173,7 @@ class EngineBuilder < ErrorsApi
       @last_error = ' ' + tail_of_build_log
       return post_failed_build_clean_up
     end
-  SystemUtils.run_system('/opt/engines/system/scripts/system/create_container_dir.sh ' + @build_params[:engine_name])
+    SystemUtils.run_system('/opt/engines/system/scripts/system/create_container_dir.sh ' + @build_params[:engine_name])
     if build_init == false
       log_build_errors('Error Build Image failed')
       @last_error = ' ' + tail_of_build_log
@@ -188,8 +188,8 @@ class EngineBuilder < ErrorsApi
       mc = create_managed_container
       if mc == false
         log_build_errors('Failed to create Managed Container')
-      return post_failed_build_clean_up
-      end 
+        return post_failed_build_clean_up
+      end
       @service_builder.create_non_persistent_services(@blueprint_reader.services)
     end
     @service_builder.release_orphans
@@ -198,7 +198,7 @@ class EngineBuilder < ErrorsApi
     @container = mc
     build_report = generate_build_report(@templater, @blueprint)
     @core_api.save_build_report(@container, build_report)
-    SystemStatus.build_complete(build_params)    
+    SystemStatus.build_complete(build_params)
     cnt = 0
     lcnt = 5
     log_build_output('Starting Engine')
@@ -206,7 +206,7 @@ class EngineBuilder < ErrorsApi
       cnt += 1
       if cnt == 120
         log_build_output('') # force EOL to end the ...
-        log_build_output('Startup still running')       
+        log_build_output('Startup still running')
         break
       end
       if lcnt == 5
@@ -286,7 +286,7 @@ class EngineBuilder < ErrorsApi
     create_build_tar
     log_build_output('Cancelable:true')
     res = @core_api.docker_build_engine(@build_params[:engine_name], SystemConfig.DeploymentDir + '/' + @build_name.to_s + '.tgz', self)
-   
+
     log_build_output('Cancelable:false')
     return true if res
     log_error_mesg('build Image failed ', res)
@@ -299,17 +299,17 @@ class EngineBuilder < ErrorsApi
     cmd = ' cd ' + basedir + ' ; tar -czf ' + dest_file + ' .'
     run_system(cmd)
   end
+
   def launch_deploy(managed_container)
     log_build_output('Launching Engine')
     mc = managed_container.create_container
-    return log_error_mesg('Failed to Launch ', mc) if mc.is_a?(EnginesError) 
+    return log_error_mesg('Failed to Launch ', mc) if mc.is_a?(EnginesError)
     save_engine_built_configuration(managed_container)
     return mc
   rescue StandardError => e
     log_exception(e)
   end
-  
- 
+
   def setup_global_defaults
     log_build_output('Setup global defaults')
     cmd = 'cp -r ' + SystemConfig.DeploymentTemplates  + '/global/* ' + basedir
@@ -427,8 +427,6 @@ class EngineBuilder < ErrorsApi
     end
   end
 
- 
-
   def create_php_ini
     FileUtils.mkdir_p(basedir + File.dirname(SystemConfig.CustomPHPiniFile))
     if @blueprint[:software].key?(:custom_php_inis) \
@@ -500,7 +498,7 @@ class EngineBuilder < ErrorsApi
     log_build_output('Launching ' + @mc.to_s)
     @core_api.init_engine_dirs(@mc)
     return log_build_errors('Error Failed to Launch') unless launch_deploy(@mc)
-   
+
     log_build_output('Applying Volume settings and Log Permissions' + @mc.to_s)
     return log_build_errors('Error Failed to Apply FS' + @mc.to_s) unless @service_builder.run_volume_builder(@mc, @web_user)
     flag_restart_required(@mc) if @has_post_install == true
@@ -552,6 +550,7 @@ class EngineBuilder < ErrorsApi
   end
 
   def log_build_output(line)
+    return if line == "\u0000"
     @log_file.puts(line)
     @log_file.flush
     # @log_pipe_wr.puts(line)
@@ -569,7 +568,7 @@ class EngineBuilder < ErrorsApi
   end
 
   def basedir
-     SystemConfig.DeploymentDir + '/' + @build_name.to_s
+    SystemConfig.DeploymentDir + '/' + @build_name.to_s
   end
 
   private

@@ -1,13 +1,19 @@
 module ManagedContainerApi
   def save_state()
     return false unless has_api?
+
     c = self.dup
-    c.expire_engine_info
-   # info = @docker_info_cache
-  #  @docker_info_cache = false
-  @container_api.save_container(c)
-  #  @docker_info_cache = info
-   
+  #  c.clear_to_save
+    
+    @container_api.save_container(c)
+
+  end
+
+  def clear_to_save
+#    @container_api = nil
+#    @last_result = nil
+#    @container_mutex = nil
+    expire_engine_info
   end
 
   def save_blueprint blueprint

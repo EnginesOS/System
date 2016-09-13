@@ -7,21 +7,18 @@ def rotate_container_log(container_id, retention = 10)
   run_server_script('rotate_container_log',container_id.to_s + ' ' + retention.to_s)   
 end
   
-  def save_container(cont)
+  def save_container(container)
     clear_error
     # FIXME:
-    container = cont.dup
-    api = container.container_api.dup
-    container.container_api = nil
-    last_result = container.last_result
-    #  last_error = container.last_error
-    # save_last_result_and_error(container)
-    container.last_result = ''
-    container.container_mutex = nil
+#    api = container.container_api.dup
+#    container.container_api = nil
+#    last_result = container.last_result
+#    #  last_error = container.last_error
+#    # save_last_result_and_error(container)
+#    container.last_result = ''
+
     serialized_object = YAML.dump(container)
-    container.container_api = api
-    # container.last_result = last_result
-    #container.last_error = last_error
+
     state_dir = ContainerStateFiles.container_state_dir(container)
     FileUtils.mkdir_p(state_dir)  if Dir.exist?(state_dir) == false
     statefile = state_dir + '/running.yaml'
