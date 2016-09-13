@@ -12,7 +12,7 @@ module ManagedContainerApi
   def clear_to_save
 #    @container_api = nil
     @last_result = nil
-#    @container_mutex = nil
+   @container_mutex = nil
     expire_engine_info
   end
 
