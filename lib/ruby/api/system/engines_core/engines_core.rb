@@ -119,7 +119,7 @@ class EnginesCore < ErrorsApi
     @registry_handler = RegistryHandler.new(@system_api)
     @container_api = ContainerApi.new(@docker_api, @system_api, self)
     @service_api = ServiceApi.new(@docker_api, @system_api, self)
-    @registry_handler.start
+  #  @registry_handler.start
     @service_manager = ServiceManager.new(self) # create_service_manager
   end
 
