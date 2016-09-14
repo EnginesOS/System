@@ -117,7 +117,7 @@ class SystemStatus
   def self.system_update_status
     result = {}
     
-    result[:needs_base_update] = !self.is_base_system_upto_date?
+    result[:needs_base_update] = self.is_base_system_upto_date?
     result[:needs_engines_update] = !self.is_engines_system_upto_date?
     return result
   rescue StandardError => e
