@@ -116,9 +116,9 @@ class SystemStatus
   # called by per session and post update
   def self.system_update_status
     result = {}
-    
-    result[:base_os_is_up_to_date] = self.is_base_system_upto_date?
     result[:engines_system_is_up_to_date] = self.is_engines_system_upto_date?
+    result[:base_os_is_up_to_date] = self.is_base_system_upto_date?
+  
     return result
   rescue StandardError => e
     SystemUtils.log_exception(e)
