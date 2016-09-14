@@ -8,3 +8,5 @@ when 'first_run_required'
   @route += '/' + 'first_run_required'
   perform_get
 end
+@route += '/' + ARGV[2]
+perform_get

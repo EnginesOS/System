@@ -106,6 +106,7 @@ class SystemStatus
     result[:is_base_system_updating] = SystemStatus.is_base_system_updating?
     result[:is_engines_system_updating] = SystemStatus.is_engines_system_updating?
     result[:needs_reboot] = SystemStatus.needs_reboot?
+      
     return result
   rescue StandardError => e
     SystemUtils.log_exception(e)
@@ -115,10 +116,8 @@ class SystemStatus
   # called by per session and post update
   def self.system_update_status
     result = {}
-    result[:needs_reboot] = SystemStatus.needs_reboot?
-    result[:is_base_system_updating] = SystemStatus.is_base_system_updating?
-    result[:is_engines_system_updating] = SystemStatus.is_engines_system_updating?
-    result[:needs_base_update] = !self.is_base_system_upto_date?
+    
+    result[:needs_base_update] = self.is_base_system_upto_date?
     result[:needs_engines_update] = !self.is_engines_system_upto_date?
     return result
   rescue StandardError => e
@@ -202,8 +201,11 @@ class SystemStatus
   def self.is_base_system_upto_date?
     # FIX ME
     # in future check state of /opt/engines/run/system/flags/update_pending
-    result = SystemUtils.execute_command('/opt/engines/system/scripts/system/engines_system_update_status.sh')
-    return result[:stdout]
+   return false unless File.exists?('/opt/engines/run/system/flags/update_pending')
+   
+    #result = run_server_script('deb_update_status')
+   # result = SystemUtils.execute_command('/opt/engines/system/scripts/system/engines_system_update_status.sh')
+    return File.read('/opt/engines/run/system/flags/update_pending')
   rescue StandardError => e
       SystemUtils.log_exception(e)
   
