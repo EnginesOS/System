@@ -32,15 +32,16 @@ module EnginesOperations
     
     engine.delete_image if engine.has_image? == true
     
-    if reinstall == true
-      return service_manager.remove_engine_from_managed_engines_registry(params) if ( r = service_manager.rm_remove_engine_services(params))
-      return r      
-    end
+#    if reinstall == true
+#      return service_manager.remove_engine_from_managed_engines_registry(params) if ( r = service_manager.rm_remove_engine_services(params))
+#      return r      
+#    end
 
     SystemDebug.debug(SystemDebug.containers,:engine_image_deleted,engine)
     if(r = service_manager.rm_remove_engine_services(params) ) #remove_engine_from_managed_engines_registry(params)
-      return engine.delete_engine if ( r = service_manager.remove_engine_from_managed_engines_registry(params))
-      return r
+      return r if ( r = service_manager.remove_engine_from_managed_engines_registry(params)).is_a?(EnginesError)
+      return r if reinstall == true
+      return engine.delete_engine
     end
     return r
   end
