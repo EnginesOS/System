@@ -24,9 +24,9 @@ get '/v0/system/status' do
 end
 # @method get_system_update_status
 # @overload get '/v0/system/status/update'
-# @return [Hash] :needs_base_update :needs_engines_update
-# :engines_system_is_up_to_date true|String 
-# :base_os_is_up_to_date false|String of text with required updates listed
+# @return [Hash]  :engines_system :base_os
+# :engines_system true|String with required updates listed
+# :base_os true|String with required updates listed
 
 get '/v0/system/status/update' do
   status = SystemStatus.system_update_status
