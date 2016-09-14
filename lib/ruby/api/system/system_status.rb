@@ -201,11 +201,11 @@ class SystemStatus
   def self.is_base_system_upto_date?
     # FIX ME
     # in future check state of /opt/engines/run/system/flags/update_pending
-   return false unless File.exists?('/opt/engines/run/system/flags/update_pending')
+   return false unless File.exists?('/opt/engines/run/system/flags/base_os_update_pending')
    
     #result = run_server_script('deb_update_status')
    # result = SystemUtils.execute_command('/opt/engines/system/scripts/system/engines_system_update_status.sh')
-    return File.read('/opt/engines/run/system/flags/update_pending')
+    return File.read('/opt/engines/run/system/flags/base_os_update_pending')
   rescue StandardError => e
       SystemUtils.log_exception(e)
   
