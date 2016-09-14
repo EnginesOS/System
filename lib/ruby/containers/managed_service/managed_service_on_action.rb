@@ -3,7 +3,7 @@ module ManagedServiceOnAction
   def on_start(event_hash)
     SystemDebug.debug(SystemDebug.container_events,:ON_start_MS,event_hash)    
     super
-    service_configurations = @container_api.get_pending_service_configurations_hashes({service_name: @container_name})
+    service_configurations = @container_api.get_pending_service_configurations_hashes({service_name: @container_name, publisher_namespace: @publisher_namespace, type_path: @type_path })
        if service_configurations.is_a?(Array)
          service_configurations.each do |configuration|
            @container_api.update_service_configuration(configuration)
@@ -20,7 +20,7 @@ module ManagedServiceOnAction
 super
    
     @container_api.load_and_attach_post_services(self)
-    service_configurations = @container_api.get_service_configurations_hashes({service_name: @container_name})
+    service_configurations = @container_api.get_service_configurations_hashes({service_name: @container_name, publisher_namespace: @publisher_namespace, type_path: @type_path})
           if service_configurations.is_a?(Array)
             service_configurations.each do |configuration|
               run_configurator(configuration)

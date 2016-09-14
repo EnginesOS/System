@@ -2,7 +2,9 @@ module PublicApiServices
   def getManagedServices
     @system_api.getManagedServices
   end
-
+  def getSystemServices
+    @system_api.getSystemServices
+  end
   def  list_managed_services
     @system_api.list_managed_services
   end

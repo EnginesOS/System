@@ -35,7 +35,9 @@ when 'state'
   p service.read_state
 when 'set_state'
   p service.set_state
-when 'status'
+when 'status'  
   p service.status
+when 'mem_stat' 
+p MemoryStatistics.container_memory_stats(service)
 end
 
