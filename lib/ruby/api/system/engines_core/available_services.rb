@@ -22,7 +22,8 @@ module AvailableServices
               if service.is_a?(String)
                 log_error_mesg('service yaml load error', service)
               else
-                service = service.to_h
+                
+                service = service.summary
                 if service[:persistent] == true
                   avail_services[:persistent].push(service)
                 else

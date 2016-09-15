@@ -70,6 +70,15 @@ end
         
 end
 
+def summary
+  r = []
+  r[:title] =  @title
+  r[:persistent] = @persistent
+  r[:publisher_namespace] = @publisher_namespace
+  r[:type_path] = @type_path
+    r  
+end
+
   def SoftwareServiceDefinition.service_constants(service_hash)
     ret_val = []
         service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
