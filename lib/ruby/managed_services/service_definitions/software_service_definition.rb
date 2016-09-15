@@ -71,7 +71,7 @@ end
 end
 
 def self.summary(definition)
-  r = []
+  r = {}
   r[:title] = definition[:title]
   r[:persistent] = definition[:persistent]
   r[:publisher_namespace] = definition[:publisher_namespace]
