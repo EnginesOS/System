@@ -30,7 +30,7 @@ end
 #:persistent => [ServiceDefinitionSummaries]
 #:non_persistent => [ServiceDefinitionSummaries]
 get '/v0/service_manager/available_services/type/*' do
-  STDERR.puts(' Params ' + params.to_s)
+
   type_path = params[:splat][0]
   avail = engines_api.load_avail_services_for_type(type_path)
   return log_error(request,avail ) if avail.is_a?(EnginesError)
