@@ -207,7 +207,10 @@ class PublicApi < ErrorsApi
 
   require_relative 'service_manager/public_api_service_definitions.rb'
   include PublicApiServiceDefinitions
-
+  
+  require_relative 'service_manager/public_api_available_services.rb'
+  include PublicApiAvailableServices
+  
   require_relative 'engines_public_api_errors.rb'
   include EnginesPublicApiErrors
   

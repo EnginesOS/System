@@ -17,10 +17,10 @@ end
 # @return [Hash] :is_rebooting :is_base_system_updating :is_engines_system_updating :needs_reboot
 
 get '/v0/system/status' do
-  status = SystemStatus.system_status
-  return log_error(request,status ) if status.is_a?(EnginesError)
+  s_status = SystemStatus.system_status
+  return log_error(request,s_status ) if s_status.is_a?(EnginesError)
   status(202)
-  status.to_json
+  s_status.to_json
 end
 # @method get_system_update_status
 # @overload get '/v0/system/status/update'
