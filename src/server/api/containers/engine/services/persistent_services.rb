@@ -92,4 +92,18 @@ delete '/v0/containers/engine/:engine_name/services/persistent/:remove_all_data/
   content_type 'text/plain' 
   r.to_s
 end
+
+# @method del_engine_persistent_service_share
+# @overload delete '/v0/containers/engine/:engine_name/services/persistent/shared/:publisher_namespace/:type_path'
+# removes the share from the engine
+# @return [true|false]
+delete '/v0/containers/engine/:engine_name/services/persistent/shared/:publisher_namespace/*' do
+  path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, false)
+   cparams =  Utils::Params.assemble_params(path_hash, [:parent_engine, :publisher_namespace, :type_path, :service_handle], [])
+   return log_error(request,cparams,path_hash)  if cparams.is_a?(EnginesError)
+   r = engines_api.dettach_service(cparams)
+   return log_error(request, r, cparams.to_s ) if r.is_a?(EnginesError)  
+   content_type 'text/plain' 
+   r.to_s 
+end
 # @!endgroup
