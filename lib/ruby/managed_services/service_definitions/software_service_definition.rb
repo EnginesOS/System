@@ -70,13 +70,13 @@ end
         
 end
 
-def summary
+def self.summary(definition)
   r = []
-  r[:title] =  @title
-  r[:persistent] = @persistent
-  r[:publisher_namespace] = @publisher_namespace
-  r[:type_path] = @type_path
-    r  
+  r[:title] = definition[:title]
+  r[:persistent] = definition[:persistent]
+  r[:publisher_namespace] = definition[:publisher_namespace]
+  r[:type_path] = definition[:type_path]
+  r
 end
 
   def SoftwareServiceDefinition.service_constants(service_hash)
