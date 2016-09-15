@@ -29,7 +29,7 @@ end
 # @return [Hash]  
 #:persistent => [ServiceDefinitionSummaries]
 #:non_persistent => [ServiceDefinitionSummaries]
-get '/v0/service_manager/available_services/:*' do
+get '/v0/service_manager/available_services/type/:*' do
   type_path = params[:splat][0]
   avail = engines_api.load_avail_services_for_type(type_path)
   return log_error(request,avail ) if avail.is_a?(EnginesError)
