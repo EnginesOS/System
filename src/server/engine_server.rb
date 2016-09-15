@@ -82,7 +82,7 @@ begin
 
   def log_error(request, error_object, *args)
    # return EnginesError.new(msg.to_s,:error)
-
+   code = 404
     error_mesg = {}
       if request.is_a?(String)
         error_mesg[:route] = request
@@ -92,13 +92,14 @@ begin
     error_mesg[:error_object] = error_object
     error_mesg[:mesg] = args[0] unless args.count == 0
     error_mesg[:args] = args.to_s unless args.count == 0
+    code = args[args.count-1] if args[args.count-1].is_a?(Fixnum)
 
     STDERR.puts args.to_s + '::' + engines_api.last_error.to_s
   #  body args.to_s + ':' + engines_api.last_error.to_s
     if error_mesg[:mesg] == 'unauthorised'
       status(403)
     else
-      status(404)
+      status(code)
     end
     return error_mesg.to_json
   end
