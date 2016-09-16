@@ -11,23 +11,22 @@ get '/v0/containers/engine/:engine_name/services/persistent/' do
   r.to_json
 end
 
-
 # @method get_engine_persistent_services_by_type
 # @overload get '/v0/containers/engine/:engine_name/services/persistent/:publisher_namespace/:type_path'
 # Return the persistent services matchedin the :publisher_namespace and :type_path registered to the engine (which this engine consumes)
 # @return [Array]
 
-get '/v0/containers/engine/:engine_name/services/persistent/:publisher_namespace/*' do    
+get '/v0/containers/engine/:engine_name/services/persistent/:publisher_namespace/*' do
   hash = Utils::ServiceHash.engine_service_hash_from_params(params, true)
   r = engines_api.find_engine_service_hashes(hash) #find_engine_services_hashes(hash)
   return log_error(request, r, hash) if r.is_a?(EnginesError)
-   r.to_json
+  r.to_json
 end
 
 # @method add_engine_persistent_service
 # @overload post '/v0/containers/engine/:engine_name/services/persistent/:publisher_namespace/:type_path/:service_handle'
 #  add persistent services in the :publisher_namespace and :type_path  :service_handle registered to the engine with posted params
-# post api_vars :variables  
+# post api_vars :variables
 # @return [true|false]
 
 post '/v0/containers/engine/:engine_name/services/persistent/:publisher_namespace/*' do
@@ -36,15 +35,15 @@ post '/v0/containers/engine/:engine_name/services/persistent/:publisher_namespac
   p_params.merge!(path_hash)
   cparams =  Utils::Params.assemble_params(p_params, [:parent_engine,:publisher_namespace, :type_path, :service_handle], :all)
   return log_error(request,cparams,p_params) if cparams.is_a?(EnginesError)
-    r =  engines_api.create_and_register_service(cparams)
-  return log_error(request, r, cparams,to_s) if r.is_a?(EnginesError) 
-  content_type 'text/plain' 
+  r = engines_api.create_and_register_persistent_service(cparams)
+  return log_error(request, r, cparams,to_s) if r.is_a?(EnginesError)
+  content_type 'text/plain'
   r.to_s
 end
 #@method add_engine_persistent_share_service
 # @overload post '/v0/containers/engine/:engine_name/services/persistent/share/:owner/:publisher_namespace/:type_path/:service_handle'
 #  add persistent services in the :publisher_namespace and :type_path  :service_handle registered to the engine with posted params
-# post api_vars :variables  
+# post api_vars :variables
 # @return [true|false]
 
 post '/v0/containers/engine/:engine_name/services/persistent/share/:owner/:publisher_namespace/*' do
@@ -53,15 +52,15 @@ post '/v0/containers/engine/:engine_name/services/persistent/share/:owner/:publi
   p_params.merge!(path_hash)
   cparams =  Utils::Params.assemble_params(p_params, [:parent_engine,:owner,:publisher_namespace, :type_path, :service_handle], [:variables])
   return log_error(request,cparams,p_params) if cparams.is_a?(EnginesError)
-    r =  engines_api.connect_share_service(cparams)
-  return log_error(request, r, cparams,to_s) if r.is_a?(EnginesError) 
-  content_type 'text/plain' 
+  r = engines_api.connect_share_service(cparams)
+  return log_error(request, r, cparams,to_s) if r.is_a?(EnginesError)
+  content_type 'text/plain'
   r.to_s
 end
 # @method add_engine_persistent_orphan_service
 # @overload post '/v0/containers/engine/:engine_name/services/persistent/orphan/:owner/:publisher_namespace/:type_path/:service_handle'
 #  add persistent services in the :publisher_namespace and :type_path  :service_handle registered to the engine with posted params
-# post api_vars :variables  
+# post api_vars :variables
 # @return [true|false]
 
 post '/v0/containers/engine/:engine_name/services/persistent/orphan/:owner/:publisher_namespace/*' do
@@ -70,12 +69,11 @@ post '/v0/containers/engine/:engine_name/services/persistent/orphan/:owner/:publ
   p_params.merge!(path_hash)
   cparams =  Utils::Params.assemble_params(p_params, [:parent_engine,:owner,:publisher_namespace, :type_path, :service_handle], [:variables])
   return log_error(request,cparams,p_params) if cparams.is_a?(EnginesError)
-    r =  engines_api.connect_orphan_service(cparams)
-  return log_error(request, r, cparams,to_s) if r.is_a?(EnginesError) 
-  content_type 'text/plain' 
+  r = engines_api.connect_orphan_service(cparams)
+  return log_error(request, r, cparams,to_s) if r.is_a?(EnginesError)
+  content_type 'text/plain'
   r.to_s
 end
-
 
 # @method del_engine_persistent_service
 # @overload delete '/v0/containers/engine/:engine_name/services/persistent/:publisher_namespace/:type_path'
@@ -87,9 +85,9 @@ delete '/v0/containers/engine/:engine_name/services/persistent/:remove_all_data/
   path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, false)
   cparams =  Utils::Params.assemble_params(path_hash, [:parent_engine, :publisher_namespace, :type_path, :service_handle,:remove_all_data], [])
   return log_error(request,cparams,path_hash)  if cparams.is_a?(EnginesError)
-  r = engines_api.dettach_service(cparams)
-  return log_error(request, r, cparams.to_s ) if r.is_a?(EnginesError)  
-  content_type 'text/plain' 
+  r = engines_api.remove_persistent_service(cparams)
+  return log_error(request, r, cparams.to_s ) if r.is_a?(EnginesError)
+  content_type 'text/plain'
   r.to_s
 end
 
@@ -99,11 +97,11 @@ end
 # @return [true|false]
 delete '/v0/containers/engine/:engine_name/services/persistent/shared/:publisher_namespace/*' do
   path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, false)
-   cparams =  Utils::Params.assemble_params(path_hash, [:parent_engine, :publisher_namespace, :type_path, :service_handle], [])
-   return log_error(request,cparams,path_hash)  if cparams.is_a?(EnginesError)
-   r = engines_api.dettach_service(cparams)
-   return log_error(request, r, cparams.to_s ) if r.is_a?(EnginesError)  
-   content_type 'text/plain' 
-   r.to_s 
+  cparams =  Utils::Params.assemble_params(path_hash, [:parent_engine, :publisher_namespace, :type_path, :service_handle], [])
+  return log_error(request,cparams,path_hash)  if cparams.is_a?(EnginesError)
+  r = engines_api.dettach_share_service(cparams)
+  return log_error(request, r, cparams.to_s ) if r.is_a?(EnginesError)
+  content_type 'text/plain'
+  r.to_s
 end
 # @!endgroup
