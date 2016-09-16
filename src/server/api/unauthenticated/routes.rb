@@ -40,7 +40,5 @@ end
 # 
 # @return [Boolean]  
 post '/v0/unauthenticated/bootstrap/first_run/complete' do
-
-  engines_api.first_run_complete
-  
+  engines_api.first_run_complete  
 end

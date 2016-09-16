@@ -313,6 +313,7 @@ end
 
 @base_url = 'http://' + ENV['DOCKER_IP'] + ':2380'
 @host = ENV['DOCKER_IP']
+  @host = '127.0.0.1' if @host.length < 3
 @port = '2380'
 @route = "/v0"
 
