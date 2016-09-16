@@ -1,11 +1,8 @@
 #/bin/bash
 
-apt-get install -y  linux-image-extra-$(uname -r) |grep "0 newly"
+apt-get install -y  linux-image-extra-$(uname -r) 
 
-if ! test $? -ne 0
- then
  rm /opt/engines/run/system/flags/run_post_system_update
-    shutdown -r now
-fi 
+ shutdown -r now
+ 
 
-rm /opt/engines/run/system/flags/run_post_system_update
