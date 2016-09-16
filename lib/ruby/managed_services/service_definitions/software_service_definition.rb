@@ -64,6 +64,7 @@ class SoftwareServiceDefinition
     r[:publisher_namespace] = definition[:publisher_namespace]
     r[:type_path] = definition[:type_path]
     r[:description] = definition[:description]
+    r[:service_container] = definition[:service_container]
     r
   end
 
