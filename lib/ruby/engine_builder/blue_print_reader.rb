@@ -380,8 +380,8 @@ class BluePrintReader
      unless @builder.set_environments.nil? 
         SystemDebug.debug(SystemDebug.builder, :looking_for_, name)
        SystemDebug.debug(SystemDebug.builder, 'from ' ,@builder.set_environments )
-        if ask && @builder.set_environments.key?(name)
-          entered_value = @builder.set_environments[name]
+        if ask && @builder.set_environments.key?(name.to_sym)
+          entered_value = @builder.set_environments[name.to_sym]
           if entered_value.nil? == false && entered_value.length != 0 # FIXME: needs to be removed
             value = entered_value
             SystemDebug.debug(SystemDebug.builder, :value_set, value)
