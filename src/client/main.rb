@@ -33,11 +33,11 @@ rescue  StandardError => e
   return false
 end
 
-def base_url
-  'http://' + @core_api.get_registry_ip + ':4567'
-rescue  StandardError => e
-  STDERR.puts e.to_s
-end
+#def base_url
+#  'http://' + @core_api.get_registry_ip + ':4567'
+#rescue  StandardError => e
+#  STDERR.puts e.to_s
+#end
 
 def read_stdin_data
   stdin_data = ""
@@ -173,6 +173,8 @@ def connection(content_type = 'application/json')
                            :persistent => true,
                            :headers => headers) if @connection.nil?
     @connection
+  rescue StandardError => e
+    STDERR.puts('Failed to open base url ' + @base_url.to_s)
  end
 def rest_del(uri,params=nil)
   
