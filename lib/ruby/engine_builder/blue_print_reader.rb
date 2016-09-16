@@ -379,7 +379,7 @@ class BluePrintReader
       # lookup_system_values = env[:lookup_system_values]
      unless @builder.set_environments.nil? 
         SystemDebug.debug(SystemDebug.builder, :looking_for_, name)
-       ystemDebug.debug(SystemDebug.builder, 'from ' ,@builder.set_environments )
+       SystemDebug.debug(SystemDebug.builder, 'from ' ,@builder.set_environments )
         if ask && @builder.set_environments.key?(name)
           entered_value = @builder.set_environments[name]
           if entered_value.nil? == false && entered_value.length != 0 # FIXME: needs to be removed
