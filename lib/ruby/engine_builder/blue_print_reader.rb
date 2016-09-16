@@ -385,6 +385,7 @@ class BluePrintReader
           if entered_value.nil? == false && entered_value.length != 0 # FIXME: needs to be removed
             value = entered_value
             SystemDebug.debug(SystemDebug.builder, :value_set, value)
+            
           end
         end
       end
