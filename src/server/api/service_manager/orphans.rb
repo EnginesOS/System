@@ -3,7 +3,7 @@
 # @method get_all_orphan_services
 # @overload get '/v0/service_manager/orphan_services/'
 # @return [Array] Orphan Service Hashes
-get '/v0/service_manager/orphan_services' do
+get '/v0/service_manager/orphan_services/' do
   orphans = engines_api.get_orphaned_services_tree
   return log_error(request, orphans) if orphans.is_a?(EnginesError)
   orphans.to_json
