@@ -1,4 +1,10 @@
 module TemplateOperations
+  def system_value_access
+    return @system_value_accessor unless @system_value_accessor.nil?
+    @system_value_accessor = SystemAccess.new(@system_api)
+    @system_value_accessor
+  end
+  
   def fillin_template_for_service_def(service_hash)
     r = ''
     return r unless ( r = check_service_hash(service_hash))
@@ -9,7 +15,7 @@ module TemplateOperations
 #    else
 #      SystemDebug.debug(SystemDebug.templater,  :filling_in_template_on, container.container_name)
 #    end
-    templater = Templater.new(SystemAccess.new, container)
+    templater = Templater.new(system_value_access, container)
     templater.fill_in_service_def_values(service_def)
     #FIXME make service_handle_field unique
 
@@ -22,7 +28,7 @@ module TemplateOperations
 
   def get_resolved_string(env_value)
 
-    templater = Templater.new(SystemAccess.new,nil)
+    templater = Templater.new(system_value_access,nil)
     env_value = templater.apply_system_variables(env_value)
     return env_value
   rescue StandardError => e
@@ -31,7 +37,7 @@ module TemplateOperations
   end
  
   def get_resolved_engine_string(env_value, container)
-    templater = Templater.new(SystemAccess.new,container)
+    templater = Templater.new(system_value_access,container)
         value = templater.apply_build_variables(env_value)
     SystemDebug.debug(SystemDebug.templater,  ' get_resolved_engine_string ' + value.to_s + 'from ', env_value)
         return value

@@ -91,7 +91,7 @@ class ManagedUtility< ManagedContainer
 
   def apply_templates(command, command_params)
 
-    templater = Templater.new(SystemAccess.new,nil)
+    templater = Templater.new(@container_api.system_value_access,nil)
     @image = templater.process_templated_string(@image)
 
     construct_cmdline(command, command_params, templater)

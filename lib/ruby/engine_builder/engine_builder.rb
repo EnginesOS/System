@@ -620,8 +620,8 @@ class EngineBuilder < ErrorsApi
 
   def create_templater
     builder_public = BuilderPublic.new(self)
-    system_access = SystemAccess.new
-    @templater = Templater.new(system_access, builder_public)
+ 
+    @templater = Templater.new(@core_api.system_value_access, builder_public)
   rescue StandardError => e
     log_exception(e)
   end
