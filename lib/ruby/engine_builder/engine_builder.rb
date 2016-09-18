@@ -198,7 +198,6 @@ class EngineBuilder < ErrorsApi
     @container = mc
     build_report = generate_build_report(@templater, @blueprint)
     @core_api.save_build_report(@container, build_report)
-    SystemStatus.build_complete(build_params)
     cnt = 0
     lcnt = 5
     log_build_output('Starting Engine')
@@ -219,11 +218,13 @@ class EngineBuilder < ErrorsApi
     end
     log_build_output('') # force EOL to end the ...
     if mc.is_running? == false
+      
       log_build_output('Engine Stopped:' + mc.logs_container.to_s)
       @result_mesg = 'Engine Stopped! ' + mc.logs_container.to_s
     end
 
     close_all
+  SystemStatus.build_complete(build_params)
     return mc
   rescue StandardError => e
     log_exception(e)
