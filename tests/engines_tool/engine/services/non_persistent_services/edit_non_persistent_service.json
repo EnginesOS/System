@@ -1,0 +1,6 @@
+{
+   "variables": {
+    "hostname": "testhost",
+    "name": "atestservice",
+    "ip": "172.172.172.172"
+  }
