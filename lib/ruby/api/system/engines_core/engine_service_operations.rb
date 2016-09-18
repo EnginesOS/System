@@ -82,7 +82,7 @@ module EngineServiceOperations
       args[0] = '/home/get_pubkey.sh'
       args[1] = cmd
       Timeout.timeout(10) do
-      thr = Thread.new {result = @engines_core.exec_in_container({:container => engine, :command_line => args, :log_error => true }) }
+      thr = Thread.new {result =  exec_in_container({:container => engine, :command_line => args, :log_error => true }) }
         thr.join
       end
     rescue Timeout::Error

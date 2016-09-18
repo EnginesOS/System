@@ -1,7 +1,7 @@
 module TemplateOperations
   def system_value_access
     return @system_value_accessor unless @system_value_accessor.nil?
-    @system_value_accessor = SystemAccess.new(@system_api)
+    @system_value_accessor = SystemAccess.new(self)
     @system_value_accessor
   end
   
