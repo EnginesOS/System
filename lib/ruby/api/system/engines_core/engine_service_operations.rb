@@ -74,5 +74,27 @@ module EngineServiceOperations
       log_exception(e,params)
  
    end
+   
+  def get_service_pubkey(engine, cmd)
+    result = nil
+    begin
+      args = []
+      args[0] = '/home/get_pubkey.sh'
+      args[1] = cmd
+      Timeout.timeout(10) do
+      thr = Thread.new {result = @engines_core.exec_in_container({:container => engine, :command_line => args, :log_error => true }) }
+        thr.join
+      end
+    rescue Timeout::Error
+      return log_error_mesg('Timeout on retrieving key',cmd)
+    end
+    return '' unless result.is_a?(Hash)
+    return result[:stdout] if result[:result] == 0
+    log_error('Get pub key failed',result)
+rescue StandardError => e
+  log_exception(e)  
+      
+   # docker exec ' + service + ' /home/get_pubkey.sh ' + cmd
+  end
 
 end

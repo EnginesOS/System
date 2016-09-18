@@ -1,6 +1,6 @@
 class SystemAccess
   def initialize(system)
-    @system_api = system
+    @engines_api = system
   end
 
   #This Class is the public face of the system
@@ -54,12 +54,12 @@ class SystemAccess
   end
 
   def pubkey(type)
-    return '' if @system_api.nil?
+    return '' if @engines_api.nil?
     args = type.split('_')
     engine = args[0]
     cmd = args[1]
     cmd.gsub!(/\)/, '')
-    return @system_api.get_service_pubkey(engine, cmd)
+    return @engines_api.get_service_pubkey(engine, cmd)
   end
 
   def random cnt
