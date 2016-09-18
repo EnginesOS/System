@@ -40,7 +40,25 @@ prepare:
 	engines_tool engine_builder follow >/dev/null
 	echo '{"username":"test1","password":"pass"}' | engines_tool engine prosody action perform add_user 
 
+
+
 clean_up:
 	engines_tool engine prosody stop 
 	engines_tool engine prosody destroy 
 	engines_tool engine prosody delete all
+	
+	
+service_persistent_add:
+	cat add_persistent_service.json | engines_tool engine testengine services persistent add EnginesSystem database/sql/mysql |engines_test_expects bool true
+	echo -n " Checking:"
+	engines_tool service database/sql/mysql consumer testengine  testdatabase |engines_test_expects  json type_path database/sql/mysql
+	
+service_persistent_edit:
+	cat edit_persistent_service.json |engines_tool engine testengine service persistent modify EnginesSystem database/sql/mysql testdatabase|engines_test_expects bool true
+	echo -n " Checking:"
+	engines_tool service database/sql/mysql consumer testengine  testservice 
+	
+service_persistent_del:
+	engines_tool engine testengine services persistent del EnginesSystem database/sql/mysql testdatabase|engines_test_expects bool true
+	echo -n " Checking:"
+	engines_tool service database/sql/mysql consumer testengine  testservice |engines_test_expects bool false
