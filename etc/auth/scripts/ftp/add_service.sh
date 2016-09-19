@@ -9,7 +9,7 @@ service_hash=`echo  $SSH_ORIGINAL_COMMAND | awk '{print $2}'`
 echo $service_hash
 
 
- echo $service_hash | /home/engines/bin/json_to_env >/tmp/.env
+ echo \'$service_hash\' | /home/engines/bin/json_to_env >/tmp/.env
  . /tmp/.env
 
 n=1               

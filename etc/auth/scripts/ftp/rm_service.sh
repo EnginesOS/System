@@ -10,7 +10,7 @@ echo $service_hash
 
 #service_hash=$new
 
- echo $service_hash | /home/engines/bin/json_to_env >/tmp/.env
+ echo \'$service_hash\' | /home/engines/bin/json_to_env >/tmp/.env
  . /tmp/.env
 #n=1
 #
