@@ -51,6 +51,7 @@ delete '/v0/service_manager/orphan_service/:publisher_namespace/*' do
   pparams[:service_handle] = File.basename(pparams[:type_path])
   pparams[:type_path] = File.dirname(pparams[:type_path])
   pparams[:parent_engine] = File.basename(splats[0])
+STDERR.puts(' Removing ' + pparams.to_s )
   cparams =  Utils::Params.assemble_params(pparams, [:publisher_namespace, :type_path, :service_handle, :parent_engine], [])
 return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
   service_hash = engines_api.retrieve_orphan(cparams)
