@@ -12,11 +12,7 @@ echo $service_hash
  echo $service_hash | /home/engines/bin/json_to_env >/tmp/.env
  . /tmp/.env
 
-
-n=1
-
-
-                
+n=1               
          if test "$rw_access" = "true"
           then
           	access="rw"
