@@ -92,7 +92,7 @@ module EngineServiceOperations
       return log_error_mesg('Timeout on retrieving key',cmd)
     end
     return '' unless result.is_a?(Hash)
-    return result[:stdout] if result[:result] == 0
+    return result[:stdout].strip! if result[:result] == 0
     log_error('Get pub key failed',result)
 rescue StandardError => e
   log_exception(e)  
