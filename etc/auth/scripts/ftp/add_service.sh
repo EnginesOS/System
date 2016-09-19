@@ -9,12 +9,12 @@ echo $TS: $SSH_ORIGINAL_COMMAND >> /var/log/ftp/add.log
 #echo $service_hash
 
 cat - > /tmp/.sh
-service_hash=`cat /tmp/.sh`
-rm /tmp/.sh
- 
- echo \'$service_hash\' | /home/engines/bin/json_to_env >/tmp/.env
- . /tmp/.env
 
+ cat /tmp/.sh | /home/engines/bin/json_to_env >/tmp/.env
+
+#rm /tmp/.sh
+
+ . /tmp/.env
 n=1               
          if test "$rw_access" = "true"
           then
@@ -29,9 +29,9 @@ n=1
         
         . /home/auth/.dbenv
         echo $sql | mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname
-        echo $sql   mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname
+        echo $sql   mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname>/tmp/.db
         
            sql="update users set use_count = 1 + use_count,ftphomedir='/ftp/$access/$parent_engine/$volume/$folder/' where userid = '$username';"  
                
          echo $sql | mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname
-         echo $sql   mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname
+         echo $sql   mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname >>/tmp/.db
