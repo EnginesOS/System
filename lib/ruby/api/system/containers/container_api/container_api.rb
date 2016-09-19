@@ -47,5 +47,9 @@ class ContainerApi < ErrorsApi
     @system_api = _system_api
     @engines_core =  _engines_core
   end
+  
+  def system_value_access    
+    @engines_core.system_value_access
+  end
 
 end

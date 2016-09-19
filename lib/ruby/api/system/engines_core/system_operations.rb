@@ -10,7 +10,7 @@ module SystemOperations
 #        ObjectSpace.dump(@docker_api.freeze,output: File.open('/var/log/apache2/docker_api.json','w'))
     @system_api.restart_system
   end
-
+ 
   def restart_mgmt
     @system_api.restart_mgmt
   end

@@ -21,10 +21,6 @@ class SystemUtils
 
   
  
-  def SystemUtils.get_service_pubkey(service, cmd)
-    cmd_line = 'docker exec ' + service + ' /home/get_pubkey.sh ' + cmd
-    SystemUtils.run_command(cmd_line).strip!
-  end
 
   def SystemUtils.system_release
     return 'current' if File.exists?(SystemConfig.ReleaseFile) == false
