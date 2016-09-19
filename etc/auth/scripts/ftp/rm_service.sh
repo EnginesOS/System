@@ -4,12 +4,14 @@ echo rm_ftp_service.sh
 TS=` date +%Y%m%d%H%M%S`
 echo $TS: $SSH_ORIGINAL_COMMAND >> /var/log/ftp/rm.log
 
-service_hash=`echo  $SSH_ORIGINAL_COMMAND | awk '{print $2}'`
-echo $service_hash
+#service_hash=`echo  $SSH_ORIGINAL_COMMAND | awk '{print $2}'`
+#echo $service_hash
 #new=`echo $service_hash | sed "/^:/s///" |  sed "/:$/s///"`
 
 #service_hash=$new
-
+cat - > /tmp/.sh
+service_hash=`cat /tmp/.sh`
+rm /tmp/.sh
  echo \'$service_hash\' | /home/engines/bin/json_to_env >/tmp/.env
  . /tmp/.env
 #n=1

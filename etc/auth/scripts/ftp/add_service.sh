@@ -5,10 +5,13 @@ TS=` date +%Y%m%d%H%M%S`
 mkdir -p /var/log/ftp/
 echo $TS: $SSH_ORIGINAL_COMMAND >> /var/log/ftp/add.log
 
-service_hash=`echo  $SSH_ORIGINAL_COMMAND | awk '{print $2}'`
-echo $service_hash
+#service_hash=`echo  $SSH_ORIGINAL_COMMAND | awk '{print $2}'`
+#echo $service_hash
 
-
+cat - > /tmp/.sh
+service_hash=`cat /tmp/.sh`
+rm /tmp/.sh
+ 
  echo \'$service_hash\' | /home/engines/bin/json_to_env >/tmp/.env
  . /tmp/.env
 
