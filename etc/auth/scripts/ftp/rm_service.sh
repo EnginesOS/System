@@ -14,7 +14,6 @@ cat - | /home/engines/bin/json_to_env >/tmp/.env
           	access="ro"
         fi
         set
-
      
         . /home/auth/.dbenv
          sql="update users set use_count = use_count - 1,ftphomedir='' where userid = '$username';"  
