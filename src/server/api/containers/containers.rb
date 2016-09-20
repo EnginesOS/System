@@ -9,18 +9,15 @@
 #  Do not use the "from" key
 get '/v0/containers/events/stream', provides: 'text/event-stream' do
   timer = nil
+require "timeout"
   stream :keep_open do |out|
-
     @events_stream = engines_api.container_events_stream
     has_data = true
     no_op = {:no_op => true}
     parser = Yajl::Parser.new(:symbolize_keys => true)
-
     lock_timer = false
     while has_data == true
       begin
-        require "timeout"
-
         timer = EventMachine::PeriodicTimer.new(15) do
           if out.closed?
             has_data = false
@@ -59,13 +56,16 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
       rescue IOError
         has_data = false
         timer.cancel unless timer.nil?
+        timer = nil
         @events_stream.stop unless @events_stream.nil?
       end
     end
     timer.cancel unless timer.nil?
+    timer = nil
     @events_stream.stop unless @events_stream.nil?
   end
   timer.cancel unless timer.nil?
+  timer = nil
   @events_stream.stop unless @events_stream.nil?
 end
 
