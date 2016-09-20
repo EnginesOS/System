@@ -29,10 +29,11 @@ class DockerConnection < ErrorsApi
   require_relative 'docker_api_builder.rb'
   include DockerApiBuilder
 
-  attr_accessor :response_parser
-
+  def response_parser
+    Yajl::Parser.new(:symbolize_keys => true)
+  end
   def initialize
-    @response_parser = Yajl::Parser.new(:symbolize_keys => true)
+    #@response_parser =
 
     @connection = nil
   rescue StandardError => e
