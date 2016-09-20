@@ -27,7 +27,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
             timer.cancel unless timer.nil?
             @events_stream.stop unless @events_stream.nil?
           else
-            out << no_op.to_json unless lock_timer == true
+            out << no_op.to_json #unless lock_timer == true
           end
         end if timer.nil?
 
@@ -51,10 +51,10 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
           bytes = ''
         end
       rescue IO::WaitReadable
-        sleep 0.21
+        sleep 0.4
         retry
       rescue EOFError =>e
-        sleep 0.21
+        sleep 0.4
         retry
       rescue IOError
         has_data = false
