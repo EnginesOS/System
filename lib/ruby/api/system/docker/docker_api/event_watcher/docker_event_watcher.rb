@@ -67,6 +67,8 @@ class DockerEventWatcher  < ErrorsApi
         return 'running'
       when 'delete'
         return 'nocontainer'
+        when 'destroy'
+          return 'nocontainer'
       else
         return status
       end
