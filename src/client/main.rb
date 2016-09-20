@@ -135,7 +135,7 @@ def get_stream(path, ostream=STDOUT)
   uri = URI(@base_url + path)
   req = Net::HTTP::Get.new(uri)
   req['Access_Token'] = ENV['access_token']
- 
+  req.read_timeout = 600
   Net::HTTP.start(uri.host, uri.port)  do |http|  
     http.request(req) { |resp|
       resp.read_body do |chunk|
