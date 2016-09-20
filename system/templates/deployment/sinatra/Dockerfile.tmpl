@@ -33,5 +33,6 @@ ENV SECRET_KEY_BASE	_Engines_System(random(128))
 #_Engines_Blueprint(software,rake_tasks)
 #_Engines_Blueprint(software,softwareservices)
 
-RUN  chown $ContUser /opt	
+RUN  chown $ContUser /opt;\
+	chown -R $ContUser /home/home_dir/.bundle/
      
