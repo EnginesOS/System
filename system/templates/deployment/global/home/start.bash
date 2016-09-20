@@ -19,7 +19,7 @@ if ! test -z "$Engines_Debug_Run"
  	 done
  	 echo "Volume setup to Complete "
   fi
-if test -f $VOLDIR/.dynamic_persistence
+if test -f "$VOLDIR/.dynamic_persistence"
   then
 	if ! test -f /home/app/.dynamic_persistence_restored
 	then
