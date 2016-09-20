@@ -77,7 +77,7 @@ if test -f /usr/bin/pulseaudio
   fi
 
 #docker start registry
- 
+ count=0
 #ruby /opt/engines/bin/system_service.rb registry start
 sleep 5
   while ! test -f /opt/engines/run/system_services/registry/run/flags/startup_complete
@@ -98,7 +98,7 @@ if test "`/opt/engines/bin/system_service.rb system state`" = \"nocontainer\"
   then
 	/opt/engines/bin/system_service.rb system start
   fi
-  
+  count=0
   while ! test -f /opt/engines/run/system_services/system/run/flags/startup_complete
   do 
   	sleep 5

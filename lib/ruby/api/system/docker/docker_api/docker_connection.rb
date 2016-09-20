@@ -46,13 +46,14 @@ class DockerConnection < ErrorsApi
     Base64.encode64(r.to_json).gsub(/\n/, '')
   end
 
-  def post_request(uri,  params = nil, expect_json = true , headers = nil)
+  def post_request(uri,  params = nil, expect_json = true , headers = nil, time_out = 60)
 
       headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
     params = params.to_json if headers['Content-Type'] == 'application/json' && ! params.nil?
     return handle_resp(
     connection.request(
     :method => :post,:path => uri,
+    :read_timeout => time_out,
     :headers => headers,
     :body =>  params  ), 
     expect_json)
@@ -118,7 +119,7 @@ excon_params = {:debug_request => true,
    #   STDERR.puts(' using content as is json assumed ' + headers.to_s + ' : options ' + options.to_s + ' body ' + content.to_s ) 
       return stream_connection(stream_handler).request(
          :method => :post,
-         :read_timeout => 360,
+         :read_timeout => 3600,
          :query => options,
          :path => uri,
          :body => content,
@@ -131,10 +132,11 @@ excon_params = {:debug_request => true,
   
 
   
-  def get_request(uri,  expect_json = true, headers = nil)
+  def get_request(uri,  expect_json = true, headers = nil, timeout = 60)
   #  STDERR.puts('get_request  ' + uri.to_s + ' : ' + headers.to_s)
     return handle_resp(connection.request(:method => :get,
     :path => uri,
+    :read_timeout => timout,
     :headers => headers),
     expect_json
     ) unless headers.nil?

@@ -29,7 +29,7 @@ module ServiceApiConsumers
     SystemDebug.debug(SystemDebug.services,  :add_consumer_to_service_res, result)
     return result if result.is_a?(EnginesError)
     return true if result[:result] == 0
-    log_error_mesg('Failed add_consumer_to_service',result)
+    log_error_mesg('Failed add_consumer_to_service ' + c.to_s + ':' + service_hash[:variables].to_s + ':' + result.to_s,result)
   end
 
   def rm_consumer_from_service(c, service_hash)
@@ -47,6 +47,6 @@ module ServiceApiConsumers
     end
   return result if result.is_a?(EnginesError)
     return true  if result[:result] == 0
-    log_error_mesg('Failed rm_consumer_from_service ' + result.to_s, result )
+    log_error_mesg('Failed rm_consumer_from_service '  + c.to_s + ':' + service_hash[:variables].to_s + result.to_s, result )
   end
 end
