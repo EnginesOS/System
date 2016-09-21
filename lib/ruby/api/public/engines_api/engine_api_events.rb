@@ -3,7 +3,7 @@ module EngineApiEvents
   class EventsStreamWriter
     attr_accessor :rd
     
-   def initialize   (system_api)  
+   def initialize(system_api)  
      @system_api = system_api
      
      @rd, @wr = IO.pipe

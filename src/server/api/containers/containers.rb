@@ -31,11 +31,12 @@ require "timeout"
         bytes = @events_stream.rd.read_nonblock(2048)
         timer.cancel
         timer = nil
-        # jason_event = parser.parse(bytes) #yajil baffs as  docker encloses within []
         begin
-          jason_event = JSON.parse(bytes,:symbolize_keys => true)
-        rescue  JSON::ParserError => e
-          STDERR.puts('Failed to parse ' + bytes )
+         jason_event = parser.parse(bytes) #yajil baffs as  docker encloses within []
+       
+         # jason_event = JSON.parse(bytes,:symbolize_keys => true)
+        rescue  Yajl::ParseError => e
+          STDERR.puts('Failed to parse ' + bytes + ':' + e.to_s )
           next
         end
         #out <<'data:'

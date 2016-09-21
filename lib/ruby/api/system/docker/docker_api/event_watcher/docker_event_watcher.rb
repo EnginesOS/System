@@ -11,9 +11,9 @@ class DockerEventWatcher  < ErrorsApi
     @@container_kill = 256
     @@container_die = 512
     @@container_event = 1024
-    @@container_pull     = 2048
+    @@container_pull = 2048
     @@build_event = 4096
-    @@container_attach    = 8192
+    @@container_attach  = 8192
 
     @@service_action = @@container_action | @@service_target
     @@engine_action = @@container_action | @@engine_target
@@ -32,17 +32,8 @@ class DockerEventWatcher  < ErrorsApi
     end
 
     def trigger(hash)
-      mask = event_mask(hash)
-     
+      mask = event_mask(hash)     
       return  if  @event_mask == 0 || mask & @event_mask == 0
-     # STDERR.puts('Events mask:' + @event_mask.to_s + ' with mask ' + mask.to_s)
-#      unless mask & @@engine_target == 0
-#        hash['container_type'] = 'container'
-#        hash['container_name'] = hash['from'] if hash.key?('from')
-#      else
-#        hash['container_name'] = hash['from'].sub(/engines\//,'') if hash.key?('from')
-#        hash['container_type'] = 'service'
-#      end
       hash[:state] = state_from_status( hash[:status] )
       SystemDebug.debug(SystemDebug.container_events,'fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
       return @object.method(@method).call(hash)
@@ -93,6 +84,8 @@ class DockerEventWatcher  < ErrorsApi
           mask |= @@container_exec
         elsif event_hash[:status] == 'delete'
           mask |= @@container_delete
+          elsif event_hash[:status] == 'destroy'
+            mask |= @@container_delete
         elsif event_hash[:status] == 'commit'
           mask |= @@container_commit
         elsif event_hash[:status] == 'pull'
@@ -155,13 +148,11 @@ class DockerEventWatcher  < ErrorsApi
            # STDERR.puts(' Event Hash ' + hash.to_s)
             unless listener.container_id.nil?
               next if hash[:id] != listener.container_id               
-              end
-              
+              end              
             log_exeception(r) if (r = listener.trigger(hash)).is_a?(StandardError)
+            log_error_mesg('Trigger error',r,hash) if r.is_a?(EnginesError)
             #STDERR.puts(' TRigger returned ' + r.class.name + ':' + r.to_s + ' on ' + hash.to_s + ' with ' +  listener.to_s)
           end
-
-          # @system_api.container_event(hash) # if hash.key?('from')
         end
       end
     }
