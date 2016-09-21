@@ -230,13 +230,14 @@ excon_params = {:debug_request => true,
   #    #   hashes[1] is a timestamp
   #    return hashes[0]
   #end
+
   def handle_resp(resp, expect_json)
    # STDERR.puts(" RESPOSE " + resp.status.to_s + " : " + resp.body  )
     return log_error_mesg("error:" + resp.status.to_s)  if resp.status  >= 400
     return true if resp.status  == 204 # nodata but all good happens on del
     return log_error_mesg("Un exepect response from docker", resp, resp.body, resp.headers.to_s )   unless resp.status  == 200 ||  resp.status  == 201
     return resp.body unless expect_json == true
-    hashes = []
+    @hashes = []
     response_parser.parse(resp.body) do |hash |
       hashes.push(hash)
     end
