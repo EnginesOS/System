@@ -237,11 +237,14 @@ excon_params = {:debug_request => true,
     return true if resp.status  == 204 # nodata but all good happens on del
     return log_error_mesg("Un exepect response from docker", resp, resp.body, resp.headers.to_s )   unless resp.status  == 200 ||  resp.status  == 201
     return resp.body unless expect_json == true
-    @hashes = []
+    #    @hashes = nil
+    #   @hashes = []
+    #only want first so return n first
     response_parser.parse(resp.body) do |hash |
-      @hashes.push(hash)
+      #  @hashes.push(hash)
+      return hash
     end
-    return @hashes[0]
+    #  return @hashes[0]
   rescue StandardError => e
     log_error_mesg("Un exepect response content " +   resp.to_s)
     log_exception(e)
