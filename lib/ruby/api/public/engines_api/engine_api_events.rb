@@ -23,13 +23,13 @@ rescue StandardError => e
   end
   
   def start
-    Thread.new {  sleep 5 while @wr.is_open? }
+  @live_thread = Thread.new {  sleep 5 while @wr.is_open? }
       return @rd
   end
   
-  def stop
-   
+  def stop   
     @system_api.rm_event_listener(self)
+    @live_thread.terminate unless @live_thread.nil?
    # @wr.close if @wr.is_open?
    # @rd.close if @rd.is_open?
   end

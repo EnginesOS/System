@@ -141,7 +141,7 @@ class DockerEventWatcher  < ErrorsApi
             end
             @event_listeners.values.each do |listener|
               unless listener.container_id.nil?
-                next if hash[:id] != listener.container_id
+                next unless hash[:id] == listener.container_id
               end
               log_exeception(r) if (r = listener.trigger(hash)).is_a?(StandardError)
               log_error_mesg('Trigger error',r,hash) if r.is_a?(EnginesError)

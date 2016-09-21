@@ -1,5 +1,5 @@
 # @!group /containers
-
+@@no_op = {:no_op => true}.to_json
 # @method get_container_event_stream
 # @overload get '/v0/containers/events/stream'
 # Add listener to container events and write event-stream of events as json to client
@@ -13,7 +13,7 @@ require "timeout"
   stream :keep_open do |out|
     @events_stream = engines_api.container_events_stream
     has_data = true
-    no_op = {:no_op => true}
+ 
     parser = Yajl::Parser.new(:symbolize_keys => true)
     lock_timer = false
     while has_data == true
@@ -24,7 +24,7 @@ require "timeout"
             timer.cancel unless timer.nil?
             @events_stream.stop unless @events_stream.nil?
           else
-            out << no_op.to_json #unless lock_timer == true
+            out << @@no_op #unless lock_timer == true
           end
         end if timer.nil?
 
@@ -32,8 +32,7 @@ require "timeout"
         timer.cancel
         timer = nil
         begin
-         jason_event = parser.parse(bytes) #yajil baffs as  docker encloses within []
-       
+         jason_event = parser.parse(bytes) #yajil baffs as  docker encloses within []       
          # jason_event = JSON.parse(bytes,:symbolize_keys => true)
         rescue  Yajl::ParseError => e
           STDERR.puts('Failed to parse docker events ' + bytes + ':' + e.to_s )
