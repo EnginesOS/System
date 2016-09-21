@@ -120,6 +120,7 @@ class DockerEventWatcher  < ErrorsApi
     # FIXMe add conntection watcher that re establishes connection asap and continues trying after warngin ....
     @event_listeners = {}
     # add_event_listener([system, :container_event])
+      STDERR.puts('EVEMT LISTENER')
   end
 
   def start
