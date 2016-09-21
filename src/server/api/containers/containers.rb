@@ -36,7 +36,7 @@ require "timeout"
        
          # jason_event = JSON.parse(bytes,:symbolize_keys => true)
         rescue  Yajl::ParseError => e
-          STDERR.puts('Failed to parse ' + bytes + ':' + e.to_s )
+          STDERR.puts('Failed to parse docker events ' + bytes + ':' + e.to_s )
           next
         end
         #out <<'data:'
