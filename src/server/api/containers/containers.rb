@@ -32,7 +32,11 @@ require "timeout"
         timer.cancel
         timer = nil
         begin
-         jason_event = parser.parse(bytes.strip) #yajil baffs as  docker encloses within []       
+         parser.parse(bytes.strip) do |event |
+           STDERR.puts(' docker event ' + event.to_s)
+           jason_event = event
+           #yajil baffs as  docker encloses within []
+         end
          # jason_event = JSON.parse(bytes,:symbolize_keys => true)
         rescue  Yajl::ParseError => e
           STDERR.puts('Failed to parse docker events ' + bytes + ':' + e.to_s )
