@@ -32,6 +32,7 @@ require "timeout"
         timer.cancel
         timer = nil
         begin
+          jason_event = ''
          parser.parse(bytes.strip) do |event |
            STDERR.puts(' docker event ' + event.to_s)
            jason_event = event
