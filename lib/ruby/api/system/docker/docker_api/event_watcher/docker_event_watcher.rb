@@ -17,7 +17,7 @@ class DockerEventWatcher  < ErrorsApi
 
     @@service_action = @@container_action | @@service_target
     @@engine_action = @@container_action | @@engine_target
-    
+
     attr_accessor :container_id, :event_mask
     # @@container_id
     def initialize(listener, event_mask, container_id = nil)
@@ -32,7 +32,7 @@ class DockerEventWatcher  < ErrorsApi
     end
 
     def trigger(hash)
-      mask = event_mask(hash)     
+      mask = event_mask(hash)
       return  if  @event_mask == 0 || mask & @event_mask == 0
       hash[:state] = state_from_status( hash[:status] )
       SystemDebug.debug(SystemDebug.container_events,'fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
@@ -44,7 +44,7 @@ class DockerEventWatcher  < ErrorsApi
 
     def state_from_status(status)
       case status
-        when 'die'
+      when 'die'
         return 'stopped'
       when 'stop'
         return 'stopped'
@@ -58,8 +58,8 @@ class DockerEventWatcher  < ErrorsApi
         return 'running'
       when 'delete'
         return 'nocontainer'
-        when 'destroy'
-          return 'nocontainer'
+      when 'destroy'
+        return 'nocontainer'
       else
         return status
       end
@@ -78,14 +78,14 @@ class DockerEventWatcher  < ErrorsApi
             mask |= @@engine_target
           end
         end
-       return  0  if event_hash[:status].nil?
-          
+        return  0  if event_hash[:status].nil?
+
         if event_hash[:status].start_with?('exec')
           mask |= @@container_exec
         elsif event_hash[:status] == 'delete'
           mask |= @@container_delete
-          elsif event_hash[:status] == 'destroy'
-            mask |= @@container_delete
+        elsif event_hash[:status] == 'destroy'
+          mask |= @@container_delete
         elsif event_hash[:status] == 'commit'
           mask |= @@container_commit
         elsif event_hash[:status] == 'pull'
@@ -131,50 +131,46 @@ class DockerEventWatcher  < ErrorsApi
     client.read_timeout = 360000
 
     client.request(req) { |resp|
-      chunk = ''
-      r = ''
       resp.read_body do |chunk|
-      #  STDERR.puts(' Event Chunk ' + chunk.to_s)
-        hash = parser.parse(chunk) do |hash|
-          next unless hash.is_a?(Hash)
-         # STDERR.puts(' Event Hash ' + hash.to_s)
-          # Skip from numeric events as theses are of no interest to named containers
-          # in future warning if not building 
-           if  hash.key?(:from) && hash[:from].length >= 64
-           #  STDERR.puts(' SKIPPING ' + hash.to_s)
-             next
-           end
-          @event_listeners.values.each do |listener|    
-           # STDERR.puts(' Event Hash ' + hash.to_s)
-            unless listener.container_id.nil?
-              next if hash[:id] != listener.container_id               
-              end              
-            log_exeception(r) if (r = listener.trigger(hash)).is_a?(StandardError)
-            log_error_mesg('Trigger error',r,hash) if r.is_a?(EnginesError)
-            #STDERR.puts(' TRigger returned ' + r.class.name + ':' + r.to_s + ' on ' + hash.to_s + ' with ' +  listener.to_s)
+        begin
+          r = ''
+          parser.parse(chunk) do |hash|
+            next unless hash.is_a?(Hash)
+            if  hash.key?(:from) && hash[:from].length >= 64
+              next
+            end
+            @event_listeners.values.each do |listener|
+              unless listener.container_id.nil?
+                next if hash[:id] != listener.container_id
+              end
+              log_exeception(r) if (r = listener.trigger(hash)).is_a?(StandardError)
+              log_error_mesg('Trigger error',r,hash) if r.is_a?(EnginesError)
+            end
           end
+        rescue StandardError => e
+          log_error_mesg('Chunk error' + chunk.to_s)
+          log_exception(e,chunk)
         end
       end
     }
   rescue StandardError => e
-    log_exception(e,chunk)
+    log_exception(e)
   end
 
-
   def add_event_listener(listener, event_mask = nil, container_id = nil)
-  
+
     event = EventListener.new(listener,event_mask, container_id)
     @event_listeners[event.hash_name] = event
-SystemDebug.debug(SystemDebug.container_events,'ADDED listenter ' + listener.to_s + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
+    SystemDebug.debug(SystemDebug.container_events,'ADDED listenter ' + listener.to_s + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
   rescue StandardError => e
     log_exception(e)
   end
 
-  def rm_event_listener(listener)   
+  def rm_event_listener(listener)
     SystemDebug.debug(SystemDebug.container_events,'REMOVED listenter ' + listener.class.name + ':' + listener.object_id.to_s)
     @event_listeners.delete(listener.object_id.to_s) if @event_listeners.key?(listener.object_id.to_s)
-    rescue StandardError => e
-      log_exception(e)
+  rescue StandardError => e
+    log_exception(e)
   end
 
 end

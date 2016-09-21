@@ -111,7 +111,7 @@ end
 
   def start_docker_event_listener
     docker_event_listener = DockerEventWatcher.new()
-    Thread.new {  docker_event_listener.start}
+    @event_listener_thread = Thread.new { docker_event_listener.start}
     docker_event_listener
   rescue StandardError =>e
     log_exception(e)
