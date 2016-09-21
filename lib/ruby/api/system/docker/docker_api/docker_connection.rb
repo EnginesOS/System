@@ -239,9 +239,9 @@ excon_params = {:debug_request => true,
     return resp.body unless expect_json == true
     @hashes = []
     response_parser.parse(resp.body) do |hash |
-      hashes.push(hash)
+      @hashes.push(hash)
     end
-    return hashes[0]
+    return @hashes[0]
   rescue StandardError => e
     log_error_mesg("Un exepect response content " +   resp.to_s)
     log_exception(e)
