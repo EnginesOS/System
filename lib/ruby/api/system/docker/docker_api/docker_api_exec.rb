@@ -155,6 +155,7 @@ module DockerApiExec
 
   def format_commands(commands)
     commands = [commands] unless commands.is_a?(Array)
+    STDERR.puts('CMD ' + commands.to_s)
     commands
   end
 
