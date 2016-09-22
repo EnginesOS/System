@@ -8,6 +8,7 @@
 # {"state":"stopped",status":"stop","id":"50ffafcef4018242dcf8a89155dcf61f069b4933e69ad62c5397c9b77b2b0b22","from":"prosody","time":1463529792,"timeNano":1463529792881164857,"Type":"container","container_type":"container","container_name":"prosody"
 #  Do not use the "from" key
 get '/v0/containers/events/stream', provides: 'text/event-stream' do
+  STDERR.puts(' GET EVENTS S ')
   timer = nil
 require "timeout"
   stream :keep_open do |out|
@@ -46,6 +47,7 @@ require "timeout"
         #out <<'data:'
         if out.closed?
           has_data = false
+          STDERR.puts('OUT IS CLOSED  EVENTS S ')
         else
           lock_timer = true
           out << jason_event.to_json
@@ -63,15 +65,18 @@ require "timeout"
         timer.cancel unless timer.nil?
         timer = nil
         @events_stream.stop unless @events_stream.nil?
+        STDERR.puts('OUT IS IOError  EVENTS S ' )
       end
     end
     timer.cancel unless timer.nil?
     timer = nil
     @events_stream.stop unless @events_stream.nil?
+    STDERR.puts('CLOSED  EVENTS S ' + event.to_s)
   end
   timer.cancel unless timer.nil?
   timer = nil
   @events_stream.stop unless @events_stream.nil?
+  STDERR.puts('ENDED  EVENTS S ' + event.to_s)
 end
 
 # @method check_and_act_on_containers
