@@ -8,42 +8,48 @@
 # {"state":"stopped",status":"stop","id":"50ffafcef4018242dcf8a89155dcf61f069b4933e69ad62c5397c9b77b2b0b22","from":"prosody","time":1463529792,"timeNano":1463529792881164857,"Type":"container","container_type":"container","container_name":"prosody"
 #  Do not use the "from" key
 get '/v0/containers/events/stream', provides: 'text/event-stream' do
+  STDERR.puts(' GET EVENTS S ')
   timer = nil
+  no_op = {:no_op => true}.to_json
+require "timeout"
   stream :keep_open do |out|
-
+    begin
     @events_stream = engines_api.container_events_stream
     has_data = true
-    no_op = {:no_op => true}
     parser = Yajl::Parser.new(:symbolize_keys => true)
-
     lock_timer = false
     while has_data == true
       begin
-        require "timeout"
-
         timer = EventMachine::PeriodicTimer.new(15) do
           if out.closed?
             has_data = false
+            STDERR.puts('OUT IS CLOSED With NO-OP to write ')
             timer.cancel unless timer.nil?
             @events_stream.stop unless @events_stream.nil?
           else
-            out << no_op.to_json unless lock_timer == true
+            out << no_op #unless lock_timer == true
           end
         end if timer.nil?
 
         bytes = @events_stream.rd.read_nonblock(2048)
         timer.cancel
         timer = nil
-        # jason_event = parser.parse(bytes) #yajil baffs as  docker encloses within []
         begin
-          jason_event = JSON.parse(bytes,:symbolize_keys => true)
-        rescue  JSON::ParserError => e
-          STDERR.puts('Failed to parse ' + bytes )
+          jason_event = ''
+         parser.parse(bytes.strip) do |event |
+           STDERR.puts(' docker event ' + event.to_s)
+           jason_event = event
+           #yajil baffs as  docker encloses within []
+         end
+         # jason_event = JSON.parse(bytes,:symbolize_keys => true)
+        rescue  Yajl::ParseError => e
+          STDERR.puts('Failed to parse docker events ' + bytes + ':' + e.to_s )
           next
         end
         #out <<'data:'
         if out.closed?
           has_data = false
+          STDERR.puts('OUT IS CLOSED With EVENT to write ')
         else
           lock_timer = true
           out << jason_event.to_json
@@ -51,22 +57,31 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
           bytes = ''
         end
       rescue IO::WaitReadable
-        sleep 0.21
+        sleep 0.4
         retry
       rescue EOFError =>e
-        sleep 0.21
+        sleep 0.4
         retry
       rescue IOError
         has_data = false
         timer.cancel unless timer.nil?
+        timer = nil
         @events_stream.stop unless @events_stream.nil?
+        STDERR.puts('OUT IS IOError  EVENTS S ' )
       end
     end
+    rescue StandardError => e
+      STDERR.puts('EVENTS Exception' + e.to_s + e.backtrace.to_s)
+    end
     timer.cancel unless timer.nil?
+    timer = nil
     @events_stream.stop unless @events_stream.nil?
+    STDERR.puts('CLOSED  EVENTS S ')
   end
-  timer.cancel unless timer.nil?
-  @events_stream.stop unless @events_stream.nil?
+#  timer.cancel unless timer.nil?
+#  timer = nil
+#  @events_stream.stop unless @events_stream.nil?
+  #   STDERR.puts('ENDED  EVENTS S ' )
 end
 
 # @method check_and_act_on_containers

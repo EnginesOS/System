@@ -24,12 +24,13 @@ begin
 
   end
  #unless @@engines_api
+  ObjectSpace.trace_object_allocations_start
    core_api = EnginesCore.new   
        @@engines_api = PublicApi.new(core_api)
 # end
   
   STDERR.puts('CREATED ENGINES API +++++++++++++++++++++++++++++++++++++++++++')
-  ObjectSpace.trace_object_allocations_start
+ 
   @@last_error =''  
   
   before do

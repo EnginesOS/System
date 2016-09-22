@@ -32,8 +32,7 @@ module DockerApiExec
         else
           r = DockerUtils.decode_from_docker_chunk(chunk)
           @o_stream.write(r[:stdout]) unless r.nil?
-          return_result[:stderr] =  return_result[:stderr].to_s + r[:stderr].to_s
-            
+          return_result[:stderr] =  return_result[:stderr].to_s + r[:stderr].to_s 
         end
       end
     rescue StandardError =>e
@@ -135,7 +134,6 @@ module DockerApiExec
   end
 
   def create_docker_exec(params) #container, commands, have_data)
-    commands = format_commands(params[:command_line])
 
     request_params = {}
     if params.key?(:data)
@@ -148,7 +146,7 @@ module DockerApiExec
     request_params[ "AttachStdout"] =  true
     request_params[ "AttachStderr"] =  true
     request_params[ "DetachKeys"] =  "ctrl-p,ctrl-q"
-    request_params[ "Cmd"] =  commands
+    request_params[ "Cmd"] =   format_commands(params[:command_line])
 
     request = '/containers/'  + params[:container].container_id.to_s + '/exec'
     r = post_request(request,  request_params)
@@ -157,6 +155,7 @@ module DockerApiExec
 
   def format_commands(commands)
     commands = [commands] unless commands.is_a?(Array)
+    STDERR.puts('CMD ' + commands.to_s)
     commands
   end
 

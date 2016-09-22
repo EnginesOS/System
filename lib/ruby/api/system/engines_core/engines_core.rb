@@ -139,7 +139,7 @@ class EnginesCore < ErrorsApi
   def dump_heap_stats
     ObjectSpace.garbage_collect
    # STDERR.puts('dumping heap')
-    file = File.open("/tmp/big/heap.dump", 'w')
+    file = File.open("/engines/var/run/heap.dump", 'w')
     ObjectSpace.dump_all(output: file)
     file.close
     return true
@@ -219,8 +219,7 @@ class EnginesCore < ErrorsApi
   end
 
   def build_engine(params)
-    
-   
+  
     @build_controller = BuildController.new(self)  unless @build_controller
     @build_thread = Thread.new {
       @build_controller.build_engine(params) 

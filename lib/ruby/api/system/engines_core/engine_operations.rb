@@ -99,7 +99,7 @@ module EnginesOperations
       end
       return container.update_memory(params[:memory])
     end
-    if params.key?(:environment_variables)
+    if params.key?(:environment_variables) && ! params[:environment_variables].nil?
       new_variables = params[:environment_variables]
 
       #   container.environments.each do |env|
