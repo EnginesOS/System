@@ -13,9 +13,9 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
   no_op = {:no_op => true}.to_json
 require "timeout"
   stream :keep_open do |out|
+    begin
     @events_stream = engines_api.container_events_stream
     has_data = true
- 
     parser = Yajl::Parser.new(:symbolize_keys => true)
     lock_timer = false
     while has_data == true
@@ -23,6 +23,7 @@ require "timeout"
         timer = EventMachine::PeriodicTimer.new(15) do
           if out.closed?
             has_data = false
+            STDERR.puts('OUT IS CLOSED  EVENTS S ')
             timer.cancel unless timer.nil?
             @events_stream.stop unless @events_stream.nil?
           else
@@ -68,6 +69,9 @@ require "timeout"
         @events_stream.stop unless @events_stream.nil?
         STDERR.puts('OUT IS IOError  EVENTS S ' )
       end
+    end
+    rescue StandardError => e
+      STDERR.puts('EVENTS Exception' + e.to_s + e.backtrace.to_s)
     end
     timer.cancel unless timer.nil?
     timer = nil

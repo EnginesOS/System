@@ -135,7 +135,8 @@ class DockerEventWatcher  < ErrorsApi
       resp.read_body do |chunk|
         begin
           r = ''
-          parser.parse(chunk.strip) do |hash|
+          chunk.strip!
+          parser.parse(chunk) do |hash|
             next unless hash.is_a?(Hash)
             if  hash.key?(:from) && hash[:from].length >= 64
               next

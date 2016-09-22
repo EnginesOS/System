@@ -135,7 +135,6 @@ module DockerApiExec
   end
 
   def create_docker_exec(params) #container, commands, have_data)
-    commands = format_commands(params[:command_line])
 
     request_params = {}
     if params.key?(:data)
@@ -148,7 +147,7 @@ module DockerApiExec
     request_params[ "AttachStdout"] =  true
     request_params[ "AttachStderr"] =  true
     request_params[ "DetachKeys"] =  "ctrl-p,ctrl-q"
-    request_params[ "Cmd"] =  commands
+    request_params[ "Cmd"] =   format_commands(params[:command_line])
 
     request = '/containers/'  + params[:container].container_id.to_s + '/exec'
     r = post_request(request,  request_params)
