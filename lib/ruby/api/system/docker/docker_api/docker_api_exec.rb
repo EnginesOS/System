@@ -32,8 +32,7 @@ module DockerApiExec
         else
           r = DockerUtils.decode_from_docker_chunk(chunk)
           @o_stream.write(r[:stdout]) unless r.nil?
-          return_result[:stderr] =  return_result[:stderr].to_s + r[:stderr].to_s
-            
+          return_result[:stderr] =  return_result[:stderr].to_s + r[:stderr].to_s 
         end
       end
     rescue StandardError =>e
