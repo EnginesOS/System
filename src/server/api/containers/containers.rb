@@ -23,7 +23,7 @@ require "timeout"
         timer = EventMachine::PeriodicTimer.new(15) do
           if out.closed?
             has_data = false
-            STDERR.puts('OUT IS CLOSED  EVENTS S ')
+            STDERR.puts('OUT IS CLOSED With NO-OP to write ')
             timer.cancel unless timer.nil?
             @events_stream.stop unless @events_stream.nil?
           else
@@ -49,7 +49,7 @@ require "timeout"
         #out <<'data:'
         if out.closed?
           has_data = false
-          STDERR.puts('OUT IS CLOSED  EVENTS S ')
+          STDERR.puts('OUT IS CLOSED With EVENT to write ')
         else
           lock_timer = true
           out << jason_event.to_json
