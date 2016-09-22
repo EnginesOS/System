@@ -71,12 +71,12 @@ require "timeout"
     timer.cancel unless timer.nil?
     timer = nil
     @events_stream.stop unless @events_stream.nil?
-    STDERR.puts('CLOSED  EVENTS S ' + event.to_s)
+    STDERR.puts('CLOSED  EVENTS S ')
   end
   timer.cancel unless timer.nil?
   timer = nil
   @events_stream.stop unless @events_stream.nil?
-  STDERR.puts('ENDED  EVENTS S ' + event.to_s)
+  STDERR.puts('ENDED  EVENTS S ' )
 end
 
 # @method check_and_act_on_containers
