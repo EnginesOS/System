@@ -225,7 +225,7 @@ def  SystemUtils.deal_with_jason(res)
  # so appears as exec_create script.sh 'arg.json' and does not throw parse errors 
   def SystemUtils.hash_variables_as_json_str(service_hash_variables)
     json_str = service_hash_variables.to_json
-    return "'" + json_str + "'"
+    return  json_str
 
   end
 end
