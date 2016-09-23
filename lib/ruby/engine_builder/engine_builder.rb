@@ -23,6 +23,9 @@ class EngineBuilder < ErrorsApi
   require_relative 'builder/engine_scripts_builder.rb'
   include EngineScriptsBuilder
 
+  require_relative 'check_build_params.rb'
+  include CheckBuildParams
+  
   require_relative '../templater/templater.rb'
 
   attr_reader   :templater,

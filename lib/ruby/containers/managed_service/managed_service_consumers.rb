@@ -81,6 +81,7 @@ module ManagedServiceConsumers
   def  add_consumer_to_service(service_hash)
 
     return log_error_mesg('service missing cont_userid ',service_hash) unless check_cont_uid
+    return log_error_mesg('service startup not complete ',service_hash) unless is_startup_complete?
     @container_api.add_consumer_to_service(self, service_hash)
   end
 
