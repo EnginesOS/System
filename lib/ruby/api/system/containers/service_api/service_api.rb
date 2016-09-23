@@ -13,7 +13,7 @@ class ServiceApi < ContainerApi
   require_relative 'service_api_status_flags.rb'
   include ServiceApiStatusFlags
 
-  require_relative 'services_api_system.rb'
+  require_relative 'service_api_system.rb'
   include ServiceApiSystem
   
   require_relative 'service_api_readers.rb'
@@ -21,5 +21,8 @@ class ServiceApi < ContainerApi
   
   require_relative 'service_api_load_services.rb'
   include ServiceApiLoadServices
+  
+  require_relative 'service_api_docker_actions.rb'
+  include ServiceApiDockerActions
   
 end

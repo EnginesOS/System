@@ -8,8 +8,7 @@ module DockerUtils
     lambda do |socket|
   
       write_thread = Thread.start do
-        begin
-          
+        begin          
           unless @stream_reader.i_stream.nil?
             IO.copy_stream(@stream_reader.i_stream,socket) unless @stream_reader.i_stream.eof?
           else
@@ -29,8 +28,7 @@ module DockerUtils
                     socket.send(stream_reader.data,0)
                     stream_reader.data = ''
                   end
-                end
-               
+                end               
               end
             end
           end       
