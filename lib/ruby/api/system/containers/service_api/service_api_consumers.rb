@@ -38,6 +38,7 @@ module ServiceApiConsumers
     cmd =  ['/home/rm_service.sh' , SystemUtils.hash_variables_as_json_str(service_hash[:variables])]
     result = {}
     begin
+      #FIx ME us Excon timeout not this
       Timeout.timeout(@@consumer_timeout) do
         thr = Thread.new {result =  engines_core.exec_in_container({:container => c, :command_line => cmd, :log_error => true }) }
         thr.join
