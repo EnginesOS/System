@@ -43,7 +43,7 @@ def read_stdin_data
   stdin_data = ""
 
   require 'timeout'
-  status = Timeout::timeout(10) do
+  status = Timeout::timeout(30) do
     while STDIN.gets
       stdin_data += $_
     end
@@ -188,12 +188,12 @@ end
       STDERR.puts e.to_s + ' delete with path:' + uri + "\n" + 'params:' + params.to_s
       STDERR.puts e.backtrace.to_s
  end
-def rest_get(uri,params=nil)
+def rest_get(uri,params=nil,time_out=120)
   
 if params.nil?
-connection.request(:method => :get,:path => uri) #,:body => params.to_json)
+connection.request(:read_timeout => time_out,:method => :get,:path => uri) #,:body => params.to_json)
 else
-  connection.request(:method => :get,:path => uri,:body => params.to_json)
+  connection.request(:read_timeout => time_out,:method => :get,:path => uri,:body => params.to_json)
 end
     rescue StandardError => e
   
@@ -255,13 +255,13 @@ def write_response(r)
 
 end
 
-def rest_post(uri, params, content_type )
+def rest_post(uri, params, content_type,time_out = 120 )
 
   begin
    unless params.nil?   
-  r =  connection(content_type).request(:method => :post,:path => uri, :body => params.to_json) #,:body => params.to_json)
+  r =  connection(content_type).request(:read_timeout => time_out,:method => :post,:path => uri, :body => params.to_json) #,:body => params.to_json)
    else
-     r =  connection(content_type).request(:method => :post,:path => uri)
+     r =  connection(content_type).request(:read_timeout => time_out,:method => :post,:path => uri)
    end
     write_response(r)
     exit
