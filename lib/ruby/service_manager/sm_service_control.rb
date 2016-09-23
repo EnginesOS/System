@@ -72,8 +72,8 @@ module SmServiceControl
     log_exception(e)
   end
   
-  def clear_service_from_registry(service, persistence=:non_persistent)
-    test_registry_result(system_registry_client.clear_service_from_registry(service, persistence=:non_persistent))
+  def clear_service_from_registry(service)
+    test_registry_result(system_registry_client.clear_service_from_registry(service))
 
   end
 end
