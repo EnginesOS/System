@@ -94,18 +94,18 @@ module DockerUtils
       end
       if r.start_with?("\u0001\u0000\u0000\u0000")
         ls = r[0,7]
-        r.drop(8)
+        r.slice!(8,-1)
         
         dst = :stdout
       elsif r.start_with?("\u0002\u0000\u0000\u0000")
         dst = :stderr
         ls = r[0,7]
-        r.drop(8)
+        r.slice!(8,-1)
        
       elsif r.start_with?("\u0000\u0000\u0000\u0000")
         dst = :stdout
         ls = r[0,7]
-        r.drop(8)
+        r.slice!(8,-1)
         
       else
         # r = r[7..-1]
