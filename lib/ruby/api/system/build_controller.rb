@@ -28,13 +28,13 @@ class BuildController
   def build_engine(params)
     SystemDebug.debug(SystemDebug.builder, :builder_params, params)
     r = ''
-    STDERR.puts('Build param error ' + r.to_s) if (r = @engine_builder.check_build_params(params)).is_a?(EnginesError)
+   
     @build_params = params
     SystemStatus.build_starting(@build_params)
     @engine_builder = get_engine_builder(@build_params)
 
-    
-    
+    STDERR.puts('Build param error ' + r.to_s) if (r = @engine_builder.check_build_params(params)).is_a?(EnginesError)
+   return build_failed(params, r) if r.is_a?(EnginesError)
     @engine = @engine_builder.build_from_blue_print
     
     @build_error = @engine_builder.last_error
