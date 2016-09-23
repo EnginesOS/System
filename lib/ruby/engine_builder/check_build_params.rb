@@ -1,5 +1,6 @@
 module CheckBuildParams
   def check_build_params(params)
+    r = ''
     return r unless (r = check_name(params)).is_a?(TrueClass)
     return r unless (r = check_host(params)).is_a?(TrueClass)    
     return true

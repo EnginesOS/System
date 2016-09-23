@@ -27,6 +27,7 @@ class BuildController
   
   def build_engine(params)
     SystemDebug.debug(SystemDebug.builder, :builder_params, params)
+    r = ''
     STDERR.puts('Build param error ' + r.to_s) if (r = @engine_builder.check_build_params(params)).is_a?(EnginesError)
     @build_params = params
     SystemStatus.build_starting(@build_params)
