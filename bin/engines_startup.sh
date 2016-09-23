@@ -138,9 +138,9 @@ count=0
 
 #this dance ensures auth gets pub key from ftp 
 #really only needs to happen first time ftp is enabled
- /opt/engines/bin/engines_tool service ftp start
+ #/opt/engines/bin/engines_tool service ftp start
  /opt/engines/bin/engines_tool service auth start
-   /opt/engines/bin/engines_tool service ftp stop
+ #  /opt/engines/bin/engines_tool service ftp stop
    /opt/engines/bin/engines_tool service ftp start
 
 
