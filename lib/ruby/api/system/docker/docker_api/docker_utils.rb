@@ -94,41 +94,37 @@ module DockerUtils
       end
       if r.start_with?("\u0001\u0000\u0000\u0000")
         ls = r[0,7]
-        r = r[8..-1]
+        r.drop(8)
         
         dst = :stdout
       elsif r.start_with?("\u0002\u0000\u0000\u0000")
         dst = :stderr
         ls = r[0,7]
-        r = r[8..-1]
+        r.drop(8)
        
       elsif r.start_with?("\u0000\u0000\u0000\u0000")
         dst = :stdout
         ls = r[0,7]
-        r = r[8..-1]
+        r.drop(8)
         
       else
         # r = r[7..-1]
-        ls = r[0,7]
-      
+        ls = r[0,7]     
         dst = :stdout
         unmatched = true
       end
-
       return h if r.nil?
       unless unmatched == true
         next_chunk = r.index("\u0000\u0000\u0000")
         
         unless next_chunk.nil?
           length =  next_chunk - 1
-        else
-       
+        else       
           length = r.length
         end
       else
         length = r.length
       end
-
       #   STDERR.puts(' problem ' + r.to_s + ' has ' + r.length.to_s + ' bytes and length ' + length.to_s ) if r.length < length
       h[dst] += r[0..length-1]
       r = r[length..-1]
