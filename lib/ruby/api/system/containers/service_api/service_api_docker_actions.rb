@@ -1,6 +1,7 @@
 module  ServiceApiDockerActions
   def destroy_container(container)
     r =''
+    STDERR.puts('destroy service')
 return r (r = super) unless r == true
     @engines_core.clear_service_from_registry(self, :non_persistent)
   rescue StandardError => e
