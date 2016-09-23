@@ -24,7 +24,7 @@ rescue StandardError => e
   
   def start
     #@live_thread =
-    #  Thread.new {  sleep 5 while @wr.is_open? } ???
+      Thread.new {  sleep 5 while @wr.is_open? } #???
       return @rd
   end
   
