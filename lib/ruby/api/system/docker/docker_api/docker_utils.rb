@@ -87,15 +87,15 @@ module DockerUtils
     while r.length >0
       if r[0].nil?
         return h if r.length == 1
+      STDERR.puts('Skipping nil ')
         r = r[1..-1]
         next
       end
       if r.start_with?("\u0001\u0000\u0000\u0000")
+        dst = :stdout
+        STDERR.puts('STDOUT')
         ls = r[0,7]
         r = r[8,-1]
-       # r.slice!(8,r.length-1)
-        
-        dst = :stdout
       elsif r.start_with?("\u0002\u0000\u0000\u0000")
         dst = :stderr
         ls = r[0,7]
@@ -106,18 +106,18 @@ module DockerUtils
         dst = :stdout
         ls = r[0,7]
          r = r[8,-1]
-       # r.slice!(8,r.length-1)
-        
+STDERR.puts('STDOUT \0\0\0')
+       # r.slice!(8,r.length-1) 
       else
         # r = r[7..-1]
         ls = r[0,7]     
+STDERR.puts('UNMATCHED')
         dst = :stdout
         unmatched = true
       end
       return h if r.nil?
       unless unmatched == true
-        next_chunk = r.index("\u0000\u0000\u0000")
-        
+        next_chunk = r.index("\u0000\u0000\u0000")        
         unless next_chunk.nil?
           length =  next_chunk - 1
         else       
@@ -129,10 +129,9 @@ module DockerUtils
       #   STDERR.puts(' problem ' + r.to_s + ' has ' + r.length.to_s + ' bytes and length ' + length.to_s ) if r.length < length
       h[dst] += r[0..length-1]
       r = r[length..-1]
-     
     end
 
-    # FIXME need to get correct error status and set :stderr if app
+    # This is actually set elsewhere after exec complete
     h[:result] = 0
     h
   end
