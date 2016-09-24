@@ -93,7 +93,7 @@ module DockerUtils
       end
       if r.start_with?("\u0001\u0000\u0000\u0000")
         dst = :stdout
-      
+        STDERR.puts('STDOUT ' + r.to_s)
        # ls = r[0,7]
         r = r[8,-1]
       STDERR.puts('STDOUT ' + r.to_s)
