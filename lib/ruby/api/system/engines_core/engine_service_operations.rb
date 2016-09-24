@@ -40,7 +40,7 @@ module EngineServiceOperations
     log_exception(e,container_name)
   end
 
-  def  service_is_registered?(service_hash)
+  def service_is_registered?(service_hash)
     r = ''
     return r unless  ( r = check_service_hash(service_hash))
     service_manager.service_is_registered?(service_hash)
@@ -80,6 +80,7 @@ module EngineServiceOperations
     container = loadManagedService(engine)
     return container if container.is_a?(EnginesError)
     
+    return service_manager.load_service_pubkey(engine, cmd) unless container.is_running?
     begin
       args = []
       args[0] = '/home/get_pubkey.sh'
@@ -94,6 +95,7 @@ module EngineServiceOperations
     return '' unless result.is_a?(Hash)
     return result[:stdout].strip! if result[:result] == 0
     log_error('Get pub key failed',result)
+
 rescue StandardError => e
   log_exception(e)  
       
