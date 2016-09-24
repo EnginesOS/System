@@ -80,7 +80,7 @@ module EngineServiceOperations
     container = loadManagedService(engine)
     return container if container.is_a?(EnginesError)
     
-    return service_manager.load_service_pubkey(engine, cmd) unless container.is_running?
+    return service_manager.load_service_pubkey(container, cmd) unless container.is_running?
     begin
       args = []
       args[0] = '/home/get_pubkey.sh'
@@ -94,7 +94,7 @@ module EngineServiceOperations
     end
     return '' unless result.is_a?(Hash)
     return result[:stdout].strip! if result[:result] == 0
-    log_error('Get pub key failed',result)
+    log_error_mesg('Get pub key failed',result)
 
 rescue StandardError => e
   log_exception(e)  
