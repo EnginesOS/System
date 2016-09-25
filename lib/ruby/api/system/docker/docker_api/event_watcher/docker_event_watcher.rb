@@ -163,7 +163,7 @@ class DockerEventWatcher  < ErrorsApi
 
     event = EventListener.new(listener,event_mask, container_id)
     @event_listeners[event.hash_name] = event
-    SystemDebug.debug(SystemDebug.container_events,'ADDED listenter ' + listener.to_s + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
+    SystemDebug.debug(SystemDebug.container_events,'ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
   rescue StandardError => e
     log_exception(e)
   end
