@@ -16,10 +16,8 @@ class Container < ErrorsApi
   require_relative 'container/engines_api_access.rb'
   include EnginesApiAccess
   @conf_register_dns = true
-  
   def self.from_yaml(yaml, container_api)
     container = YAML::load(yaml)
-  #  container = Psych.safe_load(yaml,[EnvironmentVariable,ManagedEngine,ManagedService,SystemService])
     return SystemUtils.log_error_mesg(" Failed to Load yaml ", yaml) if container.nil?
     container.container_api = container_api
     container.post_load
@@ -55,27 +53,27 @@ class Container < ErrorsApi
   end
 
   def to_h
-    
-     self.instance_variables.each_with_object({}) do |var, hash|
-       var.to_s.delete!("@")
-     next if var.end_with?('_api')
-       next if var.end_with?('docker_info')
-       next if var.end_with?('last_result')
-       next if var.end_with?('mutex')             
-       hash[var.to_sym] = self.instance_variable_get(var) 
-  end
-      
-  end
-  
-def encode_with(coder)
-  vars = instance_variables.map{|x| x.to_s}
-  vars = vars - ['@docker_info_cache', '@last_result','@container_api','@container_mutex']
 
-  vars.each do |var|
-    var_val = eval(var)
-    coder[var.gsub('@', '')] = var_val
+    self.instance_variables.each_with_object({}) do |var, hash|
+      var.to_s.delete!("@")
+      next if var.end_with?('_api')
+      next if var.end_with?('docker_info_cache')
+      next if var.end_with?('last_result')
+      next if var.end_with?('mutex')
+      hash[var.to_sym] = self.instance_variable_get(var)
+    end
+
   end
-end
+
+  def encode_with(coder)
+    vars = instance_variables.map{|x| x.to_s}
+    vars = vars - ['@docker_info_cache', '@last_result','@container_api','@container_mutex']
+
+    vars.each do |var|
+      var_val = eval(var)
+      coder[var.gsub('@', '')] = var_val
+    end
+  end
 
 end
 
