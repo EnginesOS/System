@@ -59,7 +59,9 @@ class SystemAccess
     engine = args[0]
     cmd = args[1]
     cmd.gsub!(/\)/, '')
-    return @engines_api.get_service_pubkey(engine, cmd)
+    pk = @engines_api.get_service_pubkey(engine, cmd)
+    STDERR.puts('pub key ' + pk.to_s) 
+    return pk
   end
 
   def random cnt

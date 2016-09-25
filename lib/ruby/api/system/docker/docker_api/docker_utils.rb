@@ -87,16 +87,16 @@ module DockerUtils
     while r.length >0
       if r[0].nil?
         return h if r.length == 1
-      STDERR.puts('Skipping nil ')
+      #STDERR.puts('Skipping nil ')
         r = r[1..-1]
         next
       end
       if r.start_with?("\u0001\u0000\u0000\u0000")
         dst = :stdout
-        STDERR.puts('STDOUT ' + r.to_s)
+        #   STDERR.puts('STDOUT ' + r.to_s)
        # ls = r[0,7]
         r = r[8..-1]
-      STDERR.puts('STDOUT ' + r.to_s)
+      #STDERR.puts('STDOUT ' + r.to_s)
       elsif r.start_with?("\u0002\u0000\u0000\u0000")
         dst = :stderr
       #  ls = r[0,7]
@@ -107,12 +107,12 @@ module DockerUtils
         dst = :stdout
        # ls = r[0,7]
          r = r[8..-1]
-STDERR.puts('STDOUT \0\0\0')
+  #STDERR.puts('STDOUT \0\0\0')
        # r.slice!(8,r.length-1) 
       else
         # r = r[7..-1]
        # ls = r[0,7]     
-STDERR.puts('UNMATCHED')
+  #STDERR.puts('UNMATCHED')
         dst = :stdout
         unmatched = true
       end
