@@ -92,10 +92,11 @@ module EngineServiceOperations
     rescue Timeout::Error
       return log_error_mesg('Timeout on retrieving key',cmd)
     end
-STDERR.puts('RESUTL ' + result.to_s)
+STDERR.puts('RESUTL 1 ' + result.to_s)
     return result unless result.is_a?(Hash)
-   
-    return result[:stdout].strip! if result[:result] == 0
+STDERR.puts('RESUTL 2' + result.to_s)
+    return result[:stdout] if result[:result] == 0
+STDERR.puts('RESUTL 3' + result.to_s)
     log_error_mesg('Get pub key failed',result)
 return service_manager.load_service_pubkey(container, cmd)
 rescue StandardError => e

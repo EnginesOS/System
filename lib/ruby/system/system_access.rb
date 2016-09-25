@@ -66,9 +66,7 @@ class SystemAccess
 
   def random cnt
     len = cnt.to_i
-    rnd = SecureRandom.hex(len)
-    #       p :RANDOM__________
-    #       p rnd.byteslice(0,len)
+    rnd = SecureRandom.hex(len)   
     return rnd.byteslice(0,len)
   end
 
