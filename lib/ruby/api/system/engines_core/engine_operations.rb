@@ -9,7 +9,7 @@ module EnginesOperations
     SystemDebug.debug(SystemDebug.containers,:delete_engines,params)
     # return log_error_mesg('Failed to remove engine as has container ',params) if
     params[:container_type] = 'container' # Force This
-    return r if (r = delete_image_dependancies(params) ).is_a?(EngineError)
+    return r if (r = delete_image_dependancies(params) ).is_a?(EnginesError)
     engine_name = params[:engine_name]
     reinstall = false
     reinstall = params[:reinstall] = true if params.key?(:reinstall)
