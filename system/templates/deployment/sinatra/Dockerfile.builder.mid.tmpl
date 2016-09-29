@@ -1,9 +1,3 @@
-
-
-#state=`echo $TZ |cut -f2 -d/`
-#country=`echo $TZ |cut -f1 -d/`
-#TZ="$country\/$state"
-
 WORKDIR /home/app
 USER 0
 
@@ -13,6 +7,8 @@ RUN	if test -d config ;\
 		else \
 			config_dir=".";\
 	fi ;\
+	if ! test -z ${dbname} ;\
+	  then \	  
 	echo "login: &login" > $config_dir/database.yml;\ 
 	echo "  adapter: $dbflavor" >> $config_dir/database.yml;\ 
 	echo "  host: localhost">> $config_dir/database.yml;\ 
@@ -26,11 +22,11 @@ RUN	if test -d config ;\
 	echo "  <<: *login" >> $config_dir/database.yml;\ 
 	echo "production:">> $config_dir/database.yml;\ 
 	echo "  database: $dbname ">> $config_dir/database.yml;\ 
-	echo "  <<: *login" >> $config_dir/database.yml 
+	echo "  <<: *login" >> $config_dir/database.yml ;\
+	fi 
 	
 
 ENV DATABASE_URL $dbflavor://$dbuser:$dbpasswd@$dbhost/$dbname
-
 
 USER $ContUser
 
@@ -39,8 +35,4 @@ RUN  if test -f Gemfile ;\
 	 /usr/local/rbenv/shims/bundle config build.nokogiri --use-system-libraries;\
 	 /usr/local/rbenv/shims/bundle --standalone install;\
 	 fi  
-
-#include custom rakes here
-
-
 
