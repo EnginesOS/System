@@ -7,8 +7,9 @@ module ManagedContainerOnAction
         @has_run = true
         return save_state
       end
+      # MUst register post each start as IP Changes (different post reboot)
+      register_with_dns
       if  @has_run == false
-        register_with_dns # MUst register post each create as IP Changes
         add_nginx_service if @deployment_type == 'web'
       end
       @has_run = true
