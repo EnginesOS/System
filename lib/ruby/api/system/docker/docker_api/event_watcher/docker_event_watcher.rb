@@ -33,7 +33,7 @@ class DockerEventWatcher  < ErrorsApi
 
     def trigger(hash)
       mask = event_mask(hash)
-      SystemDebug.debug(SystemDebug.container_events,'trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask' + @event_mask)
+      SystemDebug.debug(SystemDebug.container_events,'trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask' + @event_mask.to_s)
       return  if  @event_mask == 0 || mask & @event_mask == 0
       hash[:state] = state_from_status( hash[:status] )
       SystemDebug.debug(SystemDebug.container_events,'fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
