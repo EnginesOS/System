@@ -138,7 +138,9 @@ class DockerEventWatcher  < ErrorsApi
           chunk.strip!
           parser.parse(chunk) do |hash|
             next unless hash.is_a?(Hash)
-            if  hash.key?(:from) && hash[:from].length >= 64
+            SystemDebug.debug(SystemDebug.container_events,'received '  + hash.to_s)
+            if hash.key?(:from) && hash[:from].length >= 64
+              SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
               next
             end
             @event_listeners.values.each do |listener|
