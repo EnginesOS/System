@@ -115,6 +115,7 @@ class DockerEventWatcher  < ErrorsApi
   require 'yajl'
   require 'net_x/http_unix'
   require 'socket'
+require 'json'
 
   def initialize()
     #@system_api = system
