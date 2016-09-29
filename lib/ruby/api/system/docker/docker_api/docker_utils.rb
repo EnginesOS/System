@@ -8,8 +8,7 @@ module DockerUtils
     lambda do |socket|
   
       write_thread = Thread.start do
-        begin
-          
+        begin          
           unless @stream_reader.i_stream.nil?
             IO.copy_stream(@stream_reader.i_stream,socket) unless @stream_reader.i_stream.eof?
           else
@@ -29,8 +28,7 @@ module DockerUtils
                     socket.send(stream_reader.data,0)
                     stream_reader.data = ''
                   end
-                end
-               
+                end               
               end
             end
           end       
@@ -89,54 +87,55 @@ module DockerUtils
     while r.length >0
       if r[0].nil?
         return h if r.length == 1
+      #STDERR.puts('Skipping nil ')
         r = r[1..-1]
         next
       end
       if r.start_with?("\u0001\u0000\u0000\u0000")
-        ls = r[0,7]
-        r = r[8..-1]
-        
         dst = :stdout
+        #   STDERR.puts('STDOUT ' + r.to_s)
+       # ls = r[0,7]
+        r = r[8..-1]
+      #STDERR.puts('STDOUT ' + r.to_s)
       elsif r.start_with?("\u0002\u0000\u0000\u0000")
         dst = :stderr
-        ls = r[0,7]
+      #  ls = r[0,7]
         r = r[8..-1]
+       # r.slice!(8,r.length-1)
        
       elsif r.start_with?("\u0000\u0000\u0000\u0000")
         dst = :stdout
-        ls = r[0,7]
-        r = r[8..-1]
-        
+       # ls = r[0,7]
+         r = r[8..-1]
+  #STDERR.puts('STDOUT \0\0\0')
+       # r.slice!(8,r.length-1) 
       else
         # r = r[7..-1]
-        ls = r[0,7]
-      
+       # ls = r[0,7]     
+  #STDERR.puts('UNMATCHED')
         dst = :stdout
         unmatched = true
       end
-
       return h if r.nil?
       unless unmatched == true
-        next_chunk = r.index("\u0000\u0000\u0000")
-        
+        next_chunk = r.index("\u0000\u0000\u0000")        
         unless next_chunk.nil?
           length =  next_chunk - 1
-        else
-       
+        else       
           length = r.length
         end
       else
         length = r.length
       end
-
       #   STDERR.puts(' problem ' + r.to_s + ' has ' + r.length.to_s + ' bytes and length ' + length.to_s ) if r.length < length
       h[dst] += r[0..length-1]
       r = r[length..-1]
-     
     end
 
-    # FIXME need to get correct error status and set :stderr if app
+    # This is actually set elsewhere after exec complete
     h[:result] = 0
     h
+rescue StandardError =>r
+  log_exception(e)
   end
 end

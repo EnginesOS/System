@@ -42,6 +42,10 @@ module Services
     rest_get('/v0/system_registry/services/providers/in_use/',nil)
   end
 
+  def clear_service_from_registry(service_hash)
+    rest_delete('/v0/system_registry/services/clear',{:params => service_hash })
+  end
+  
   def services_registry
     rest_get('/v0/system_registry/services/tree', nil)
   end

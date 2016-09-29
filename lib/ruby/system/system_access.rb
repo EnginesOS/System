@@ -59,14 +59,14 @@ class SystemAccess
     engine = args[0]
     cmd = args[1]
     cmd.gsub!(/\)/, '')
-    return @engines_api.get_service_pubkey(engine, cmd)
+    pk = @engines_api.get_service_pubkey(engine, cmd)
+    STDERR.puts('pub key ' + pk.to_s) 
+    return pk
   end
 
   def random cnt
     len = cnt.to_i
-    rnd = SecureRandom.hex(len)
-    #       p :RANDOM__________
-    #       p rnd.byteslice(0,len)
+    rnd = SecureRandom.hex(len)   
     return rnd.byteslice(0,len)
   end
 

@@ -59,6 +59,13 @@ class ManagedService < ManagedContainer
   end
   attr_reader :persistent, :type_path, :publisher_namespace
 
+  def to_service_hash()
+    { :publisher_namespace => @publisher_namespace,
+      :type_path => @type_path
+    }
+  
+  end
+  
   def destroy
     log_error_mesg('Cannot call destroy on a service',self)
   end

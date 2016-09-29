@@ -27,12 +27,14 @@ class BuildController
   
   def build_engine(params)
     SystemDebug.debug(SystemDebug.builder, :builder_params, params)
+    r = ''
+   
     @build_params = params
     SystemStatus.build_starting(@build_params)
     @engine_builder = get_engine_builder(@build_params)
 
-    
-    
+    return build_failed(params, r) if (r = @engine_builder.check_build_params(params)).is_a?(EnginesError)
+   
     @engine = @engine_builder.build_from_blue_print
     
     @build_error = @engine_builder.last_error
@@ -140,7 +142,7 @@ class BuildController
     @core_api.build_stoped()   
     SystemUtils.log_error_mesg(err.to_s, params)
     SystemStatus.build_failed(params)
-   
+   return err if err.is_a?(EnginesError)
     return EnginesError.new(params[:engine_name] +  err.to_s + params.to_s , :build_error)
   end
   

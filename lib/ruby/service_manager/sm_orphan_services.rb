@@ -4,6 +4,7 @@ module SmOrphanServices
 
 def orphanate_service(params)
   SystemDebug.debug(SystemDebug.orphans, :Orphanate, params)
+  params[:fresh] = false
    test_registry_result(system_registry_client.orphanate_service(params))   
   rescue StandardError => e
     log_exception(e)

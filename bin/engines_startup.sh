@@ -109,12 +109,11 @@ if test "`/opt/engines/bin/system_service.rb system state`" = \"nocontainer\"
   		  exit
   		fi
   done 
+DOCKER_IP=`ifconfig docker0 |grep "inet addr" |cut -f2 -d: |cut -f1 -d" "`
+export DOCKER_IP
  sleep 5
 /opt/engines/bin/engines_tool system login test test
   
-  
-#pull dns prior to start so download time (if any) is not included in the start timeout below
-docker pull engines/dns:$release 
 
 /opt/engines/bin/engines_tool service dns start 
 count=0
@@ -126,21 +125,22 @@ count=0
   		if test $count -gt 120
   		 then
   		  echo "ERROR failed to start DNS "
+  		   echo "ERROR failed to start DNS " >/tmp/startup_failed
   		  exit 127
   		fi
   done 
 
 
-
+/opt/engines/bin/engines_tool service syslog start
 /opt/engines/bin/engines_tool service  mysql_server start
 /opt/engines/bin/engines_tool service nginx start
 
 
 #this dance ensures auth gets pub key from ftp 
 #really only needs to happen first time ftp is enabled
- /opt/engines/bin/engines_tool service ftp start
+ #/opt/engines/bin/engines_tool service ftp start
  /opt/engines/bin/engines_tool service auth start
-   /opt/engines/bin/engines_tool service ftp stop
+ #  /opt/engines/bin/engines_tool service ftp stop
    /opt/engines/bin/engines_tool service ftp start
 
 

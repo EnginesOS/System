@@ -40,7 +40,7 @@ module EngineServiceOperations
     log_exception(e,container_name)
   end
 
-  def  service_is_registered?(service_hash)
+  def service_is_registered?(service_hash)
     r = ''
     return r unless  ( r = check_service_hash(service_hash))
     service_manager.service_is_registered?(service_hash)
@@ -80,6 +80,7 @@ module EngineServiceOperations
     container = loadManagedService(engine)
     return container if container.is_a?(EnginesError)
     
+    return service_manager.load_service_pubkey(container, cmd) unless container.is_running?
     begin
       args = []
       args[0] = '/home/get_pubkey.sh'
@@ -91,9 +92,13 @@ module EngineServiceOperations
     rescue Timeout::Error
       return log_error_mesg('Timeout on retrieving key',cmd)
     end
-    return '' unless result.is_a?(Hash)
-    return result[:stdout].strip! if result[:result] == 0
-    log_error('Get pub key failed',result)
+STDERR.puts('RESUTL 1 ' + result.to_s)
+    return result unless result.is_a?(Hash)
+STDERR.puts('RESUTL 2' + result.to_s)
+    return result[:stdout] if result[:result] == 0
+STDERR.puts('RESUTL 3' + result.to_s)
+    log_error_mesg('Get pub key failed',result)
+return service_manager.load_service_pubkey(container, cmd)
 rescue StandardError => e
   log_exception(e)  
       

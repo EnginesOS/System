@@ -71,5 +71,9 @@ module SmServiceControl
   rescue StandardError => e
     log_exception(e)
   end
+  
+  def clear_service_from_registry(service)
+    test_registry_result(system_registry_client.clear_service_from_registry(service))
 
+  end
 end

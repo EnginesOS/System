@@ -138,7 +138,9 @@ class DockerEventWatcher  < ErrorsApi
           chunk.strip!
           parser.parse(chunk) do |hash|
             next unless hash.is_a?(Hash)
-            if  hash.key?(:from) && hash[:from].length >= 64
+            SystemDebug.debug(SystemDebug.container_events,'received '  + hash.to_s)
+            if hash.key?(:from) && hash[:from].length >= 64
+              SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
               next
             end
             @event_listeners.values.each do |listener|
@@ -160,10 +162,9 @@ class DockerEventWatcher  < ErrorsApi
   end
 
   def add_event_listener(listener, event_mask = nil, container_id = nil)
-
     event = EventListener.new(listener,event_mask, container_id)
     @event_listeners[event.hash_name] = event
-    SystemDebug.debug(SystemDebug.container_events,'ADDED listenter ' + listener.to_s + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
+    SystemDebug.debug(SystemDebug.container_events,'ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
   rescue StandardError => e
     log_exception(e)
   end

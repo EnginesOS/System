@@ -9,7 +9,7 @@ module EnginesOperations
     SystemDebug.debug(SystemDebug.containers,:delete_engines,params)
     # return log_error_mesg('Failed to remove engine as has container ',params) if
     params[:container_type] = 'container' # Force This
-    return r unless (r = delete_image_dependancies(params) )
+    return r if (r = delete_image_dependancies(params) ).is_a?(EnginesError)
     engine_name = params[:engine_name]
     reinstall = false
     reinstall = params[:reinstall] = true if params.key?(:reinstall)
@@ -25,20 +25,17 @@ module EnginesOperations
     params[:container_type] = 'container' # Force This
     params[:parent_engine] =  engine_name
     params[:reinstall] = reinstall
-    unless engine.is_a?(ManagedEngine) # used in roll back and only works if no engine do mess with this logic
+    unless engine.is_a?(ManagedEngine) # used in roll back and only works if no engine do mess with this logic      
       return true if service_manager.remove_engine_from_managed_engines_registry(params)
       return log_error_mesg('Failed to find Engine',params)
     end
     
     engine.delete_image if engine.has_image? == true
     
-#    if reinstall == true
-#      return service_manager.remove_engine_from_managed_engines_registry(params) if ( r = service_manager.rm_remove_engine_services(params))
-#      return r      
-#    end
+
 
     SystemDebug.debug(SystemDebug.containers,:engine_image_deleted,engine)
-    if(r = service_manager.rm_remove_engine_services(params) ) #remove_engine_from_managed_engines_registry(params)
+    unless(r = service_manager.rm_remove_engine_services(params)).is_a?(EnginesError) #remove_engine_from_managed_engines_registry(params)
       return r if ( r = service_manager.remove_engine_from_managed_engines_registry(params)).is_a?(EnginesError)
       return r if reinstall == true
       return engine.delete_engine
@@ -51,7 +48,7 @@ module EnginesOperations
     params[:parent_engine] = params[:engine_name]
     params[:container_type] = 'container'
     SystemDebug.debug(SystemDebug.containers,  :delete_image_dependancies, params)
-    return r unless (r = service_manager.rm_remove_engine_services(params))
+    return r if (r = service_manager.rm_remove_engine_services(params)).is_a?(EnginesError)
     return true
   rescue StandardError => e
     log_exception(e)
@@ -77,17 +74,6 @@ module EnginesOperations
     log_exception(e)
   end
 
-#  def set_engine_runtime_properties(params)
-#    p :set_engine_runtime_properties
-#    p params
-#    engine_name = params[:engine_name]
-#
-#    container = loadManagedEngine(engine_name)
-#    if container.is_a?(EnginesError)
-#      return container
-#    end
-#    set_container_runtime_properties(container,params)
-#  end
 
   def set_container_runtime_properties(container,params)
     if container.is_active?
@@ -113,8 +99,7 @@ module EnginesOperations
 
     if container.has_container?
       r = container.destroy_container
-      return r unless r == true
-      p :destroyed
+      return r unless r == true  
     end
     container.create_container
 
@@ -127,8 +112,6 @@ module EnginesOperations
   end
 
   def set_container_network_properties(container, params)
-    p :set_engine_network_properties
-
     @system_api.set_engine_network_properties(container,params)
   end
 

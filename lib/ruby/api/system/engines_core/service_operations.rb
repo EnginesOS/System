@@ -88,7 +88,10 @@ module ServiceOperations
          
     service_manager.update_attached_service(service_hash)
   end
-
+  def clear_service_from_registry(service, persistence=:non_persistent)
+     service_manager.clear_service_from_registry({:parent_engine => service.container_name, :container_type => 'service', :persistence => persistence})
+     end
+     
   protected
 
   def create_and_register_managed_service(service_hash) 
@@ -107,5 +110,6 @@ module ServiceOperations
     SystemDebug.debug(SystemDebug.services,"calling service ", service_hash)
     return  service_manager.create_and_register_service(service_hash)
   end
-
+  
+ 
 end

@@ -83,6 +83,7 @@ return services
     return services  unless services.is_a?(Array)
     services.each do |service_hash|
       register_non_persistent_service(service_hash)
+      SystemDebug.debug(SystemDebug.services,:register_non_persistent,service_hash)
     end
     return true
   rescue StandardError => e
