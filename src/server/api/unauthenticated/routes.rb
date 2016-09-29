@@ -35,10 +35,13 @@ end
 # starting
 # running
 # @method set_first_run_complete
-# @overload post '/v0/unauthenticated/bootstrap/first_run/complete'
+# @overload post '/v0/unauthenticated/bootstrap/first_run/complete/'
+# params :install_mgmt true|false defaults to true in future it will default to false
 # tell first run wizard you are complete and ready to start mgmt
 # 
 # @return [Boolean]  
-post '/v0/unauthenticated/bootstrap/first_run/complete' do
-  engines_api.first_run_complete  
+post '/v0/unauthenticated/bootstrap/first_run/complete/' do
+  p_params = post_params(request)
+  cparams =  Utils::Params.assemble_params(p_params, [], :all)
+  engines_api.first_run_complete(cparams[:install_mgmt])  
 end
