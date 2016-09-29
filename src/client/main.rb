@@ -3,9 +3,12 @@ if Process.euid != 21000
   exit
 end
 require 'rubygems'
-require 'excon'
-require 'json'
 require 'yajl'
+
+require_relative 'client_http_requests.rb'
+require_relative 'client_login.rb'
+require_relative 'client_http_stream.rb'
+include ClientHTTPStream
 
 def command_useage(mesg=nil)
   p "Incorrect usage"
@@ -30,22 +33,14 @@ rescue  StandardError => e
   return false
 end
 
-#def base_url
-#  'http://' + @core_api.get_registry_ip + ':4567'
-#rescue  StandardError => e
-#  STDERR.puts e.to_s
-#end
-
 def read_stdin_data
   stdin_data = ""
-
   require 'timeout'
   status = Timeout::timeout(30) do
     while STDIN.gets
       stdin_data += $_
     end
   end
-  #STDERR.puts "Read " + stdin_data.length.to_s + ' bytes'
   stdin_data
 rescue Timeout::Error
   puts "Timeout on data read from stdin"
@@ -58,14 +53,12 @@ def read_stdin_json
 end
 
 def perform_get
-  #STDERR.puts  @route
   r = rest_get(@route)
   write_response(r)
   exit
 end
 
 def perform_del
-  #STDERR.puts  @route
   r = rest_del(@route)
   write_response(r)
   exit
@@ -79,123 +72,8 @@ def perform_post(params, content_type='application/json')
 end
 
 def perform_delete(params=nil)
-  #STDERR.puts  @route
   rest_delete(@route,params)
   exit
-end
-
-require 'rest-client'
-
-#used by events
-def get_json_stream(path)
-  require 'yajl'
-  chunk = ''
-
-  uri = URI(@base_url + path)
-  Net::HTTP.start(uri.host, uri.port)  do |http|
-    req = Net::HTTP::Get.new(uri)
-    req['access_token'] = ENV['access_token']
-    req['HTTP_access_token'] = ENV['access_token']
-    parser = Yajl::Parser.new(:symbolize_keys => true)
-    http.request(req) { |resp|
-      resp.read_body do |chunk|
-        begin
-          next if chunk == "\0" || chunk == "\n"
-          hash = parser.parse(chunk) do |hash|
-            p hash.to_json
-          end
-          #dont panic on bad json as it is the \0 keep alive
-        rescue StandardError => e
-          p e
-          STDERR.puts('_'+ chunk + '_')
-          next
-        end
-      end
-
-    }
-    exit
-  end
-rescue StandardError => e
-  #Should goto to error hanlder but this is a script
-  p e.to_s
-  p e.backtrace.to_s
-end
-
-## Used By builder command
-def get_stream(path, ostream=STDOUT)
-  #require 'yajl'
-  chunk = ''
-
-  uri = URI(@base_url + path)
-  req = Net::HTTP::Get.new(uri)
-  req['Access_Token'] = ENV['access_token']
-
-  Net::HTTP.start(uri.host, uri.port)  do |http|
-    http.read_timeout = 600
-    http.request(req) { |resp|
-      resp.read_body do |chunk|
-        #hash = parser.parse(chunk) do |hash|
-        ostream.write(chunk)
-        #end
-      end
-    }
-    exit
-  end
-rescue StandardError => e
-  p e.to_s
-  p chunk.to_s
-  p e.backtrace.to_s
-end
-
-def path_with_params(path, params)
-  encoded_params = URI.encode_www_form(params)
-  [path, encoded_params].join("?")
-end
-
-def add_access(params)
-  params = {} if params.nil?
-  params['access_token'] = ENV['access_token']
-  params
-end
-
-def connection(content_type = 'application/json')
-  headers = {}
-  headers['content_type'] = content_type
-  headers['ACCESS_TOKEN'] = load_token
-  @connection = Excon.new(@base_url,
-  :debug_request => true,
-  :debug_response => true,
-  :persistent => true,
-  :headers => headers) if @connection.nil?
-  @connection
-rescue StandardError => e
-  STDERR.puts('Failed to open base url ' + @base_url.to_s)
-end
-
-def rest_del(uri,params=nil)
-
-  if params.nil?
-    connection.request(:method => :delete,:path => uri) #,:body => params.to_json)
-  else
-    connection.request(:method => :delete,:path => uri,:body => params.to_json)
-  end
-rescue StandardError => e
-
-  STDERR.puts e.to_s + ' delete with path:' + uri + "\n" + 'params:' + params.to_s
-  STDERR.puts e.backtrace.to_s
-end
-
-def rest_get(uri,params=nil,time_out=120)
-
-  if params.nil?
-    connection.request(:read_timeout => time_out,:method => :get,:path => uri) #,:body => params.to_json)
-  else
-    connection.request(:read_timeout => time_out,:method => :get,:path => uri,:body => params.to_json)
-  end
-rescue StandardError => e
-
-  STDERR.puts e.to_s + ' with path:' + uri + "\n" + 'params:' + params.to_s
-  STDERR.puts e.backtrace.to_s
 end
 
 def handle_resp(resp, expect_json=true)
@@ -217,24 +95,6 @@ rescue StandardError => e
   STDERR.puts e.backtrace.to_s
 end
 
-#def rest_get(path,params=nil)
-#
-#  begin
-#    retry_count = 0
-#    # STDERR.puts('Get Path:' + path.to_s + ' Params:' + params.to_s)
-#    params = add_access(params)
-#    r = RestClient.get(@base_url + path, params) #, { :access_token => load_token})
-#
-#    return r
-#  rescue RestClient::ExceptionWithResponse => e
-#    parse_error(e.response)
-#  rescue StandardError => e
-#
-#    STDERR.puts e.to_s + ' with path:' + path + "\n" + 'params:' + params.to_s
-#    STDERR.puts e.backtrace.to_s
-#  end
-#end
-
 def write_response(r)
   if r.nil?
     STDERR.puts 'nil response'
@@ -250,58 +110,6 @@ def write_response(r)
     puts handle_resp(r, expect_json)
   end
 
-end
-
-def rest_post(uri, params, content_type,time_out = 120 )
-
-  begin
-    unless params.nil?
-      r =  connection(content_type).request(:read_timeout => time_out,:method => :post,:path => uri, :body => params.to_json) #,:body => params.to_json)
-    else
-      r =  connection(content_type).request(:read_timeout => time_out,:method => :post,:path => uri)
-    end
-    write_response(r)
-    exit
-  rescue StandardError => e
-
-    STDERR.puts e.to_s + ' with path:' + uri + "\n" + 'params:' + params.to_s
-    STDERR.puts e.backtrace.to_s
-
-    params[:api_vars][:data] = nil
-    STDERR.puts e.to_s + ' with path:' + uri + "\n" + 'params:' + params.to_s
-    STDERR.puts r.to_s
-  end
-end
-
-def rest_delete(uri, params=nil)
-  # params = add_access(params)
-  begin
-    if params.nil?
-      r =  connection.request(:method => :delete,:path => uri) #,:body => params.to_json)
-    else
-      r =  connection.request(:method => :delete,:path => uri,:body => params.to_json)
-    end
-    write_response(r)
-    exit
-
-  rescue StandardError => e
-    STDERR.puts e.to_s + ' with path:' + uri + "\n" + 'params:' + params.to_s
-  end
-end
-
-def login
-  r = rest_get('/v0/system/login/test/test')
-  ENV['access_token'] = r.body.gsub!(/\"/,'')
-  t = File.new(Dir.home + '/.engines_token','w+')
-  t.write(ENV['access_token'])
-  t.close
-end
-
-def load_token
-  return false unless File.exist?(Dir.home + '/.engines_token')
-  ENV['access_token'] = File.read(Dir.home + '/.engines_token')
-  ENV['access_token'] = ENV['access_token'].strip
-  ENV['access_token']
 end
 
 def  process_args
@@ -320,6 +128,4 @@ login if ENV['access_token'].nil?
 process_args
 
 require_relative 'commands/commands.rb'
-
-#require_relative 'rset.rb'
 
