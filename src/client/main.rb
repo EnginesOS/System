@@ -3,6 +3,7 @@ if Process.euid != 21000
   exit
 end
 require 'rubygems'
+require 'json'
 require 'yajl'
 
 require_relative 'client_http_requests.rb'
