@@ -112,9 +112,6 @@ if test "`/opt/engines/bin/system_service.rb system state`" = \"nocontainer\"
  sleep 5
 /opt/engines/bin/engines_tool system login test test
   
-  
-#pull dns prior to start so download time (if any) is not included in the start timeout below
-docker pull engines/dns:$release 
 
 /opt/engines/bin/engines_tool service dns start 
 count=0
@@ -126,12 +123,13 @@ count=0
   		if test $count -gt 120
   		 then
   		  echo "ERROR failed to start DNS "
+  		   echo "ERROR failed to start DNS " >/tmp/startup_failed
   		  exit 127
   		fi
   done 
 
 
-
+/opt/engines/bin/engines_tool service syslog start
 /opt/engines/bin/engines_tool service  mysql_server start
 /opt/engines/bin/engines_tool service nginx start
 
