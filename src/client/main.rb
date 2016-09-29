@@ -16,22 +16,20 @@ def command_useage(mesg=nil)
   exit
 end
 
-def parse_rest_response(r)
-  return false if r.code > 399
-  return true if r.to_s   == '' ||  r.to_s   == 'true'
-  return false if r.to_s  == 'false'
-  return r.to_s if @raw
-  parser = Yajl::Parser.new()
-  res = parser.parse(r)
-  # res = JSON.parse(r, :create_additions => true,:symbolize_keys => true)
-  # STDERR.puts("RESPONSE "  + deal_with_jason(res).to_s)
-  return deal_with_jason(res)
-rescue  StandardError => e
-  STDERR.puts e.to_s
-  STDERR.puts e.backtrace
-  STDERR.puts "Failed to parse system response _" + r.to_s + "_"
-  return false
-end
+#def parse_rest_response(r)
+#  return false if r.code > 399
+#  return true if r.to_s   == '' ||  r.to_s   == 'true'
+#  return false if r.to_s  == 'false'
+#  return r.to_s if @raw
+#  parser = Yajl::Parser.new()
+#  res = parser.parse(r)
+#  return res
+#rescue  StandardError => e
+#  STDERR.puts e.to_s
+#  STDERR.puts e.backtrace
+#  STDERR.puts "Failed to parse system response _" + r.to_s + "_"
+#  return false
+#end
 
 def read_stdin_data
   stdin_data = ""
@@ -78,10 +76,7 @@ end
 
 def handle_resp(resp, expect_json=true)
   parser = Yajl::Parser.new()
-
-  #STDERR.puts(" RESPOSE " + resp.to_s)
-  # STDERR.puts(" RESPOSE " + resp.status.to_s + " : " + resp.body  )
-  STDERR.puts("error:" + resp.status.to_s)  if resp.status  >= 400
+  STDERR.puts("Error " + resp.status.to_s)  if resp.status  >= 400
   return 'OK' if resp.status  == 204   # nodata but all good happens on del
   STDERR.puts "Un exepect response from system" + resp.status.to_s + ' ' + resp.body.to_s + ' ' + resp.headers.to_s    unless resp.status  == 200 ||  resp.status  == 201 || resp.status  == 202
   return resp.body.to_s unless expect_json == true
