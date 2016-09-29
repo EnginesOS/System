@@ -22,8 +22,9 @@ module DockerEvents
     SystemDebug.debug(SystemDebug.container_events,'1 CONTAINER EVENTS' + event_hash.to_s)
 
     r = fill_in_event_system_values(event_hash)
-    return r if r.is_a?(EnginesError)
+  
     SystemDebug.debug(SystemDebug.container_events,'2 CONTAINER EVENTS' + event_hash.to_s)
+    return r if r.is_a?(EnginesError)
     #    event_hash[:container_name] = container_name_from_id(event_hash['id']) unless event_hash.key?('container_name')
     #    STDERR.puts('2 CONTAINER EVENTS' + event_hash.to_s)
     #    event_hash[:container_name] = container_name_from_id(event_hash['id']) if event_hash[:container_name].nil?
