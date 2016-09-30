@@ -9,7 +9,7 @@ module PublicApiSystemFirstRun
      return first_run.sucess
   end
   
-  def first_run_complete
-    @system_api.first_run_complete
+  def first_run_complete(install_mgmt)
+    @system_api.first_run_complete(install_mgmt)
     end
 end
