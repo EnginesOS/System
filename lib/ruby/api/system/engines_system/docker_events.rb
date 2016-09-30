@@ -5,6 +5,7 @@ module DockerEvents
     unless event_hash[:Attributes].nil?
       event_hash[:container_name] = event_hash[:Attributes][:container_name]
       event_hash[:container_type] = event_hash[:Attributes][:container_type]
+      SystemDebug.debug(SystemDebug.container_events,'1.1 CONTAINER EVENTS' + event_hash.to_s)
       return event_hash
     end
     cn_and_t = @engines_api.container_name_and_type_from_id(event_hash[:id])
@@ -23,7 +24,7 @@ module DockerEvents
 
     r = fill_in_event_system_values(event_hash)
   
-    SystemDebug.debug(SystemDebug.container_events,'2 CONTAINER EVENTS' + event_hash.to_s)
+    SystemDebug.debug(SystemDebug.container_events,'2 CONTAINER EVENTS' + event_hash.to_s + ':' + r.to_s)
     return r if r.is_a?(EnginesError)
     #    event_hash[:container_name] = container_name_from_id(event_hash['id']) unless event_hash.key?('container_name')
     #    STDERR.puts('2 CONTAINER EVENTS' + event_hash.to_s)
@@ -75,6 +76,7 @@ module DockerEvents
   end
 
   def no_container(event_hash)
+    STDERR.puts('A NO Managed CONTAINER EVENT')
     #FIXME track non system containers here
     #use to clear post build crash
     #alert if present when not building
