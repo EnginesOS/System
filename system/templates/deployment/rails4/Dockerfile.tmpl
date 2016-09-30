@@ -1,5 +1,5 @@
-FROM  engines/passenger:_Engines_System(release)
-
+FROM  engines/ngpassenger4:_Engines_System(release)
+# was from engines/passenger
 ADD build_scripts /build_scripts
 ADD home home
 ENV CONTFSVolHome /home/fs/
@@ -9,3 +9,4 @@ ENV RAILS_ENV production
 ENV SECRET_KEY_BASE	_Engines_System(random(128))
 
 RUN chown $ContUser /opt
+
