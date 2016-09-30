@@ -33,6 +33,7 @@ class DockerEventWatcher  < ErrorsApi
 
     def trigger(hash)
       mask = event_mask(hash)
+      SystemDebug.debug(SystemDebug.container_events,'trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask' + @event_mask.to_s)
       return  if  @event_mask == 0 || mask & @event_mask == 0
       hash[:state] = state_from_status( hash[:status] )
       SystemDebug.debug(SystemDebug.container_events,'fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
@@ -85,7 +86,7 @@ class DockerEventWatcher  < ErrorsApi
         elsif event_hash[:status] == 'delete'
           mask |= @@container_delete
         elsif event_hash[:status] == 'destroy'
-          mask |= @@container_delete
+          mask |= @@container_delete | @@container_action
         elsif event_hash[:status] == 'commit'
           mask |= @@container_commit
         elsif event_hash[:status] == 'pull'
@@ -114,13 +115,14 @@ class DockerEventWatcher  < ErrorsApi
   require 'yajl'
   require 'net_x/http_unix'
   require 'socket'
+require 'json'
 
   def initialize()
     #@system_api = system
     # FIXMe add conntection watcher that re establishes connection asap and continues trying after warngin ....
     @event_listeners = {}
     # add_event_listener([system, :container_event])
-      STDERR.puts('EVEMT LISTENER')
+    SystemDebug.debug(SystemDebug.container_events,'EVEMT LISTENER')
   end
 
   def start
@@ -152,7 +154,7 @@ class DockerEventWatcher  < ErrorsApi
             end
           end
         rescue StandardError => e
-          log_error_mesg('Chunk error on docker Event Stream' + chunk.to_s)
+          log_error_mesg('Chunk error on docker Event Stream _' + chunk.to_s + '_')
           log_exception(e,chunk)
         end
       end
