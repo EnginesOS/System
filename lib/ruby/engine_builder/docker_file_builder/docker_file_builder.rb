@@ -138,10 +138,22 @@ class DockerFileBuilder
     end
      write_env('WWW_DIR', @blueprint_reader.web_root.to_s) unless @blueprint_reader.web_root.nil?
      
+     write_locale
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
 
+  
+ def write_locale
+   unless @build_params[:langauge].nil
+  lang =  @build_params[:langauge]
+   else
+     lang = SystemConfig.Language
+   end
+   write_env('LC_ALL', lang)
+   write_env('LANG', lang)
+ end
+ 
   def write_persistent_dirs
     log_build_output('setup persistent Dirs')
     paths = ''
