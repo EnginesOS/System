@@ -75,8 +75,6 @@ get '/v0/containers/engine/:engine_name/logs' do
    return log_error(request, engine, params) if engine.is_a?(EnginesError)
    r = engine.logs_container()
   return log_error(request, r) if r.is_a?(EnginesError)
-  r[:stdout].force_encoding(Encoding::ASCII_8BIT)
-  r[:stderr].force_encoding(Encoding::ASCII_8BIT) 
-  r[:raw].force_encoding(Encoding::ASCII_8BIT) 
+  
     return r.to_json
 end

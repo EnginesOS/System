@@ -134,7 +134,9 @@ module DockerUtils
 
     # This is actually set elsewhere after exec complete
     h[:result] = 0
-    h
+h[:stdout].force_encoding(Encoding::ASCII_8BIT) unless h[:stdout].nil?
+h[:stderr].force_encoding(Encoding::ASCII_8BIT) unless h[:stderr].nil?
+h
 rescue StandardError =>r
   log_exception(e)
   end
