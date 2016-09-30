@@ -32,6 +32,12 @@ if test -f /home/_init.sh
  	then
  		/home/_init.sh
 fi
+if ! test -f /engines/var/run/flags/lang
+	then
+		LANG=`head -1 /engines/var/run/lang`
+		export LC_ALL=$LANG
+e		export LANG
+fi
 
 if ! test -f /engines/var/run/flags/first_run_done
 	then
