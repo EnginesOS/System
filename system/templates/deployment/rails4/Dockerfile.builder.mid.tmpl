@@ -2,7 +2,7 @@ WORKDIR /home/app
 
 USER 0
 ENV DATABASE_URL $rails_flavor://$dbuser:$dbpasswd@$dbhost/$dbname
-RUN /build_scripts/configure_apache.sh;\
+RUN /build_scripts/configure_nginx.sh;\
 	/build_scripts/create_database_yml.sh
 
 USER $ContUser
