@@ -35,7 +35,7 @@ end
 # starting
 # running
 # @method set_first_run_complete
-# @overload post '/v0/unauthenticated/bootstrap/first_run/complete/'
+# @overload post '/v0/unauthenticated/bootstrap/first_run/complete'
 # params :install_mgmt true|false defaults to true in future it will default to false
 # tell first run wizard you are complete and ready to start mgmt
 # 
