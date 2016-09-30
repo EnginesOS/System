@@ -40,7 +40,7 @@ end
 # tell first run wizard you are complete and ready to start mgmt
 # 
 # @return [Boolean]  
-post '/v0/unauthenticated/bootstrap/first_run/complete/' do
+post '/v0/unauthenticated/bootstrap/first_run/complete' do
   p_params = post_params(request)
   cparams =  Utils::Params.assemble_params(p_params, [], :all)
     i = true
