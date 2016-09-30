@@ -3,9 +3,9 @@ module DockerEvents
 
   def fill_in_event_system_values(event_hash)
     SystemDebug.debug(SystemDebug.container_events,'1.1 CONTAINER EVENTS' + event_hash.to_s)
-   if event_hash[:Attributes].is_a?(Hash)
-      event_hash[:container_name] = event_hash[:Attributes][:container_name]
-      event_hash[:container_type] = event_hash[:Attributes][:container_type]
+   if event_hash.key?(:Actor) && event_hash[:Actor][:Attributes].is_a?(Hash)
+      event_hash[:container_name] = event_hash[:Actor][:Attributes][:container_name]
+      event_hash[:container_type] = event_hash[:Actor][:Attributes][:container_type]
       SystemDebug.debug(SystemDebug.container_events,'1.2 CONTAINER EVENTS' + event_hash.to_s)
       return event_hash
     end
