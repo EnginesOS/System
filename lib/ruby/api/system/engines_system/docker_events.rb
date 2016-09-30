@@ -2,11 +2,10 @@ module DockerEvents
   require '/opt/engines/lib/ruby/api/system/docker/docker_api/event_watcher/docker_event_watcher.rb'
 
   def fill_in_event_system_values(event_hash)
-    SystemDebug.debug(SystemDebug.container_events,'1.1 CONTAINER EVENTS' + event_hash.to_s)
-   if event_hash.key?(:Actor) && event_hash[:Actor][:Attributes].is_a?(Hash)
+
+    if event_hash.key?(:Actor) && event_hash[:Actor][:Attributes].is_a?(Hash)
       event_hash[:container_name] = event_hash[:Actor][:Attributes][:container_name]
       event_hash[:container_type] = event_hash[:Actor][:Attributes][:container_type]
-      SystemDebug.debug(SystemDebug.container_events,'1.2 CONTAINER EVENTS' + event_hash.to_s)
       return event_hash
     end
     cn_and_t = @engines_api.container_name_and_type_from_id(event_hash[:id])
@@ -20,22 +19,10 @@ module DockerEvents
   def container_event(event_hash)
 
     return log_error_mesg('Nil event hash passed to container event','') if event_hash.nil?
-
-    SystemDebug.debug(SystemDebug.container_events,'1 CONTAINER EVENTS' + event_hash.to_s)
-
     r = fill_in_event_system_values(event_hash)
-  
     SystemDebug.debug(SystemDebug.container_events,'2 CONTAINER EVENTS' + event_hash.to_s + ':' + r.to_s)
     return r if r.is_a?(EnginesError)
-    #    event_hash[:container_name] = container_name_from_id(event_hash['id']) unless event_hash.key?('container_name')
-    #    STDERR.puts('2 CONTAINER EVENTS' + event_hash.to_s)
-    #    event_hash[:container_name] = container_name_from_id(event_hash['id']) if event_hash[:container_name].nil?
-    #    STDERR.puts('3 CONTAINER EVENTS' + event_hash.to_s)
-    #    event_hash[:container_name].gsub!(/:.*$/,'')
-    #    STDERR.puts('4 CONTAINER EVENTS' + event_hash.to_s)
-    #    event_hash[:container_name] = container_name_from_id(event_hash['id']) unless File.exist?(SystemConfig.RunDir + '/' + event_hash[:container_type].to_s + 's/' + event_hash[:container_name].to_s + '/config.yaml')
-    #    STDERR.puts('5 CONTAINER EVENTS' + event_hash.to_s + ' ' + SystemConfig.RunDir + '/' + event_hash[:container_type].to_s + 's/' + event_hash[:container_name].to_s + '/config.yaml')
-    #    return no_container(event_hash) if event_hash[:container_name].nil?
+
     if event_hash[:container_type] == 'service' ||  event_hash[:container_type] == 'system_service'
       # Enable Cold load of service from config.yaml
       return no_container(event_hash) unless File.exist?(SystemConfig.RunDir + '/' + event_hash[:container_type] + 's/' + event_hash[:container_name] + '/config.yaml')
@@ -77,7 +64,7 @@ module DockerEvents
   end
 
   def no_container(event_hash)
-    STDERR.puts('A NO Managed CONTAINER EVENT')
+    SystemDebug.debug(SystemDebug.container_events,'A NO Managed CONTAINER EVENT')
     #FIXME track non system containers here
     #use to clear post build crash
     #alert if present when not building
