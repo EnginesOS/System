@@ -43,5 +43,7 @@ end
 post '/v0/unauthenticated/bootstrap/first_run/complete/' do
   p_params = post_params(request)
   cparams =  Utils::Params.assemble_params(p_params, [], :all)
-  engines_api.first_run_complete(cparams[:install_mgmt])  
+    i = true
+    i = false if cparams[:install_mgmt] == 'false'
+  engines_api.first_run_complete(i)  
 end
