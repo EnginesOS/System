@@ -197,6 +197,7 @@ end
      json_parser.parse(request.env["rack.input"].read)
   rescue StandardError => e 
     log_error(request, e, e.backtrace.to_s)
+    {}
   end
 
 rescue StandardError => e
