@@ -137,13 +137,13 @@ class DockerFileBuilder
     end
     write_env('WWW_DIR', @blueprint_reader.web_root.to_s) unless @blueprint_reader.web_root.nil?
 
-    write_locale
+    write_locale_env
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
 
-  def write_locale
-    unless @build_params[:langauge].nil
+  def write_locale_env
+    unless @build_params[:langauge].nil?
       lang =  @build_params[:langauge]
     else
       lang = SystemConfig.Language
