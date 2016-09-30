@@ -2,10 +2,11 @@ module DockerEvents
   require '/opt/engines/lib/ruby/api/system/docker/docker_api/event_watcher/docker_event_watcher.rb'
 
   def fill_in_event_system_values(event_hash)
-    unless event_hash[:Attributes].nil?
+    SystemDebug.debug(SystemDebug.container_events,'1.1 CONTAINER EVENTS' + event_hash.to_s)
+   if event_hash[:Attributes].is_a?(Hash)
       event_hash[:container_name] = event_hash[:Attributes][:container_name]
       event_hash[:container_type] = event_hash[:Attributes][:container_type]
-      SystemDebug.debug(SystemDebug.container_events,'1.1 CONTAINER EVENTS' + event_hash.to_s)
+      SystemDebug.debug(SystemDebug.container_events,'1.2 CONTAINER EVENTS' + event_hash.to_s)
       return event_hash
     end
     cn_and_t = @engines_api.container_name_and_type_from_id(event_hash[:id])
