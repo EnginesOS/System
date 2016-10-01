@@ -25,7 +25,7 @@ class EngineBuilder < ErrorsApi
 
   require_relative 'check_build_params.rb'
   include CheckBuildParams
-  
+
   require_relative '../templater/templater.rb'
 
   attr_reader   :templater,
@@ -221,13 +221,13 @@ class EngineBuilder < ErrorsApi
     end
     log_build_output('') # force EOL to end the ...
     if mc.is_running? == false
-      
+
       log_build_output('Engine Stopped:' + mc.logs_container.to_s)
       @result_mesg = 'Engine Stopped! ' + mc.logs_container.to_s
     end
 
     close_all
-  SystemStatus.build_complete(build_params)
+    SystemStatus.build_complete(build_params)
     return mc
   rescue StandardError => e
     log_exception(e)
@@ -554,20 +554,28 @@ class EngineBuilder < ErrorsApi
   end
 
   def log_build_output(line)
+    return if line.nil?
     return if line == "\u0000"
+    line.force_encoding(Encoding::UTF_8)
     @log_file.puts(line)
     @log_file.flush
     # @log_pipe_wr.puts(line)
-  rescue
+
+  rescue StandardError => e
+    log_exception(e)
     return
   end
 
   def log_build_errors(line)
     line = '' if line.nil?
+    line.force_encoding(Encoding::UTF_8)
     @err_file.puts(line.to_s) unless @err_file.nil?
     log_build_output('ERROR:' + line.to_s)
     @result_mesg = 'Error. Aborted Due to:' + line.to_s
     @build_error = @result_mesg
+    return false
+  rescue StandardError => e
+    log_exception(e)
     return false
   end
 
@@ -623,7 +631,7 @@ class EngineBuilder < ErrorsApi
 
   def create_templater
     builder_public = BuilderPublic.new(self)
- 
+
     @templater = Templater.new(@core_api.system_value_access, builder_public)
   rescue StandardError => e
     log_exception(e)
