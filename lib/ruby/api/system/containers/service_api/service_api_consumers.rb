@@ -2,8 +2,6 @@ module ServiceApiConsumers
   @@consumer_timeout=8
   
   def get_registered_consumer(params)
-    p :retrieve_service_hash
-    p params
     engines_core.get_registered_against_service(params)
   end
   
@@ -12,7 +10,7 @@ module ServiceApiConsumers
   end
 
   def add_consumer_to_service(c, service_hash)
-STDERR.puts( " add Consumer " + caller.to_s)
+
     cmd = ['/home/add_service.sh',   SystemUtils.hash_variables_as_json_str(service_hash[:variables]) ]
     SystemDebug.debug(SystemDebug.services,  :add_consumer_to_service, cmd.to_s)
     result = {}
