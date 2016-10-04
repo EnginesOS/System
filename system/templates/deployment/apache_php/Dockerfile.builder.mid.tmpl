@@ -1,10 +1,5 @@
 
 
-
-#state=`echo $TZ |cut -f2 -d/`
-#country=`echo $TZ |cut -f1 -d/`
-#TZ="$country\/$state"
-
 USER 0
 
 #give give x access to dirs
@@ -16,15 +11,8 @@ RUN	chmod -R g+r /home/app;\
 				chmod g+x  $dir ;\
 		fi;\
 	done
-#	;\
-#\				
-#cat /etc/apache2/sites-enabled/000-default.conf  | sed "s/^#SERVER_NAME/ ServerName $fqdn/" > /tmp/.000-default.conf;\ 
-#	cp /tmp/.000-default.conf  /etc/apache2/sites-enabled/000-default.conf;\
-#	echo  ServerName $fqdn > /tmp/apache2.conf;\
-#	cat /etc/apache2/apache2.conf >> /tmp/apache2.conf;\
-#	mv /tmp/apache2.conf /etc/apache2/apache2.conf
-#	
+	
 RUN /build_scripts/configure_apache.sh
-#ENV DATABASE_URL mysql2://$dbuser:$dbpasswd@$dbhost/$dbname
+
 
 USER $ContUser
