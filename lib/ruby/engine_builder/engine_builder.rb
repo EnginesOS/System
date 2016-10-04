@@ -17,8 +17,8 @@ class EngineBuilder < ErrorsApi
   require_relative 'builder/base_image.rb'
   require_relative 'builder/build_image.rb'
   require_relative 'builder/physical_checks.rb'
-  
-  require_relative 'builder/configure_services_backup.rb'  
+
+  require_relative 'builder/configure_services_backup.rb'
   include ConfigureServicesBackup
 
   require_relative 'builder/save_engine_configuration.rb'
@@ -64,7 +64,7 @@ class EngineBuilder < ErrorsApi
   end
 
   def initialize(params, core_api)
-  
+
     @core_api = core_api
     @container = nil
     @build_params = params
@@ -137,6 +137,8 @@ class EngineBuilder < ErrorsApi
     end
     @service_builder.create_non_persistent_services(@blueprint_reader.services)
     true
+  rescue StandardError => e
+    abort_build
   end
 
   def save_build_result
@@ -144,37 +146,40 @@ class EngineBuilder < ErrorsApi
     log_build_output('Build Successful')
     build_report = generate_build_report(@templater, @blueprint)
     @core_api.save_build_report(@container, build_report)
+    FileUtil.copy_file(SystemConfig.DeploymentDir + '/build.out',ContainerStateFiles.container_state_dir(@container) + '/build.log')
+    FileUtil.copy_file(SystemConfig.DeploymentDir + '/build.err',ContainerStateFiles.container_state_dir(@container) + '/build.err')
+    true
   end
 
   def wait_for_engine
     cnt = 0
-       lcnt = 5
-       log_build_output('Starting Engine')
-       while @container.is_startup_complete? == false && @container.is_running?
-         cnt += 1
-         if cnt == 120
-           log_build_output('') # force EOL to end the ...
-           log_build_output('Startup still running')
-           break
-         end
-         if lcnt == 5
-           add_to_build_output('.')
-           lcnt = 0
-         else
-           lcnt += 1
-         end
-         sleep 1
-       end
-       log_build_output('') # force EOL to end the ...
-       if @container.is_running? == false
-   
-         log_build_output('Engine Stopped:' + @container.logs_container.to_s)
-         @result_mesg = 'Engine Stopped! ' + @container.logs_container.to_s
-         return false
-       end
-       true
+    lcnt = 5
+    log_build_output('Starting Engine')
+    while @container.is_startup_complete? == false && @container.is_running?
+      cnt += 1
+      if cnt == 120
+        log_build_output('') # force EOL to end the ...
+        log_build_output('Startup still running')
+        break
+      end
+      if lcnt == 5
+        add_to_build_output('.')
+        lcnt = 0
+      else
+        lcnt += 1
+      end
+      sleep 1
+    end
+    log_build_output('') # force EOL to end the ...
+    if @container.is_running? == false
+
+      log_build_output('Engine Stopped:' + @container.logs_container.to_s)
+      @result_mesg = 'Engine Stopped! ' + @container.logs_container.to_s
+      return false
+    end
+    true
   end
-  
+
   def build_container
     SystemDebug.debug(SystemDebug.builder,  ' Starting build with params ',  @build_params)
 
@@ -198,7 +203,6 @@ class EngineBuilder < ErrorsApi
     File.delete('/opt/engines/run/system/flags/building_params') if File.exist?('/opt/engines/run/system/flags/building_params')
     close_all
   end
-
 
   def backup_lastbuild
     dir = basedir
@@ -226,7 +230,6 @@ class EngineBuilder < ErrorsApi
     log_exception(e)
   end
 
-
   def launch_deploy(managed_container)
     log_build_output('Launching Engine')
     @container = managed_container.create_container
@@ -234,9 +237,9 @@ class EngineBuilder < ErrorsApi
     save_engine_built_configuration(managed_container)
     return @container
   rescue StandardError => e
+    abort_build
     log_exception(e)
   end
-
 
   def get_blueprint_from_repo
     log_build_output('Backup last build')
@@ -250,7 +253,6 @@ class EngineBuilder < ErrorsApi
     return log_error_mesg('Failed to Load Blue print',self) unless get_blueprint_from_repo
     build_container
   end
-
 
   def post_failed_build_clean_up
     return close_all if @rebuild
@@ -282,7 +284,6 @@ class EngineBuilder < ErrorsApi
     return false
   end
 
-
   def setup_rebuild
     log_build_output('Setting up rebuild')
     FileUtils.mkdir_p(basedir)
@@ -292,12 +293,12 @@ class EngineBuilder < ErrorsApi
     f.write(blueprint.to_json)
     f.close
   rescue StandardError => e
+    abort_build
     log_exception(e)
-    close_all
   end
 
   #app_is_persistent
-#used by builder public
+  #used by builder public
   def running_logs()
     return @container.logs_container unless @container.nil?
     return nil
@@ -320,6 +321,7 @@ class EngineBuilder < ErrorsApi
     flag_restart_required(@container) if @has_post_install == true
     return @container
   rescue StandardError => e
+    abort_build
     log_exception(e)
   end
 
@@ -379,7 +381,6 @@ class EngineBuilder < ErrorsApi
 
   def log_exception(e)
     log_build_errors(e.to_s)
-    abort_build
     super
   end
 end
