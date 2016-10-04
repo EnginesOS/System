@@ -15,13 +15,13 @@ class EngineBuilder < ErrorsApi
 
   require_relative 'builder/configure_services_backup.rb'
   include ConfigureServicesBackup
-  
+
   require_relative 'builder/save_engine_configuration.rb'
   include SaveEngineConfiguration
-  
+
   require_relative 'builder/build_report.rb'
   include BuildReport
-  
+
   require_relative 'builder/build_output.rb'
   include BuildOutput
 
@@ -63,7 +63,7 @@ class EngineBuilder < ErrorsApi
 
     #@core_api = core_api.dup WTF !
     @core_api = core_api
-    @mc = nil # Used in clean up only
+    @container = nil
     @build_params = params
     return log_error_mesg('empty container name', params) if @build_params[:engine_name].nil? || @build_params[:engine_name] == ''
     @build_params[:engine_name].freeze
@@ -112,32 +112,11 @@ class EngineBuilder < ErrorsApi
     post_failed_build_clean_up
   end
 
-  def build_container
-    SystemDebug.debug(SystemDebug.builder,  ' Starting build with params ',  @build_params)
-    log_build_output('Checking Free space')
-    space = @core_api.system_image_free_space
-    return build_failed('Failed to determine free space ') if space.is_a?(EnginesError)
-    space /= 1024
-    SystemDebug.debug(SystemDebug.builder,  ' free space /var/lib/docker only ' + space.to_s + 'MB')
-    return build_failed('Not enough free space /var/lib/docker only ' + space.to_s + 'MB') if space < SystemConfig.MinimumFreeImageSpace  && space != -1
-    log_build_output(space.to_s + 'MB free > ' +  SystemConfig.MinimumFreeImageSpace.to_s + ' required')
+  require_relative 'builder/physical_checks.rb'
 
-    free_ram = @core_api.available_ram
-    if @build_params[:memory].to_i < SystemConfig.MinimumBuildRam
-      ram_needed = SystemConfig.MinimumBuildRam
-    else
-      ram_needed = @build_params[:memory].to_i
-    end
-    return build_failed('Not enough free only ' + free_ram.to_s + "MB free " + ram_needed.to_s + 'MB required' ) if free_ram < ram_needed
-    log_build_output(free_ram.to_s + 'MB free > ' + ram_needed.to_s + 'MB required')
-
-    log_build_output('Reading Blueprint')
-    @blueprint = load_blueprint
-    return close_all if @blueprint.nil? || @blueprint == false
-    @blueprint_reader = BluePrintReader.new(@build_params[:engine_name], @blueprint, self)
-    return close_all unless @blueprint_reader.process_blueprint
-    return close_all unless setup_default_files
-    return close_all unless ConfigFileWriter.compile_base_docker_files(@templater, basedir)
+  def setup_build_dir
+    return post_failed_build_clean_up unless setup_default_files
+    return post_failed_build_clean_up unless ConfigFileWriter.compile_base_docker_files(@templater, basedir)
     unless @blueprint_reader.web_port.nil?
       @web_port = @blueprint_reader.web_port
     else
@@ -167,7 +146,19 @@ class EngineBuilder < ErrorsApi
     write_env_file
 
     setup_framework_logging
+    return true
+  end
 
+  def process_blueprint
+    log_build_output('Reading Blueprint')
+    @blueprint = load_blueprint
+    return post_failed_build_clean_up if @blueprint.nil? || @blueprint == false
+    @blueprint_reader = BluePrintReader.new(@build_params[:engine_name], @blueprint, self)
+    return post_failed_build_clean_up unless @blueprint_reader.process_blueprint
+    true
+  end
+
+  def get_base_image
     base_image_name = read_base_image_from_dockerfile
 
     if base_image_name.nil?
@@ -181,7 +172,10 @@ class EngineBuilder < ErrorsApi
       @last_error = ' ' + tail_of_build_log
       return post_failed_build_clean_up
     end
-    SystemUtils.run_system('/opt/engines/system/scripts/system/create_container_dir.sh ' + @build_params[:engine_name])
+    true
+  end
+
+  def create_engine_image
     if build_init == false
       log_build_errors('Error Build Image failed')
       @last_error = ' ' + tail_of_build_log
@@ -192,48 +186,77 @@ class EngineBuilder < ErrorsApi
         @last_error = ' ' + tail_of_build_log
         return post_failed_build_clean_up
       end
-      log_build_output('Creating Deploy Image')
-      mc = create_managed_container
-      if mc == false
-        log_build_errors('Failed to create Managed Container')
-        return post_failed_build_clean_up
-      end
-      @service_builder.create_non_persistent_services(@blueprint_reader.services)
+      true
     end
-    @service_builder.release_orphans
+  end
+
+  def setup_engine_dirs
+    SystemUtils.run_system('/opt/engines/system/scripts/system/create_container_dir.sh ' + @build_params[:engine_name])
+  end
+
+  def  create_engine_container
+    log_build_output('Creating Deploy Image')
+    @container = create_managed_container
+    if @container == false
+      log_build_errors('Failed to create Managed Container')
+      return post_failed_build_clean_up
+    end
+    @service_builder.create_non_persistent_services(@blueprint_reader.services)
+    true
+  end
+
+  def save_build_result
     @result_mesg = 'Build Successful'
     log_build_output('Build Successful')
-    @container = mc
     build_report = generate_build_report(@templater, @blueprint)
     @core_api.save_build_report(@container, build_report)
+  end
+
+  def wait_for_engine
     cnt = 0
-    lcnt = 5
-    log_build_output('Starting Engine')
-    while mc.is_startup_complete? == false && mc.is_running?
-      cnt += 1
-      if cnt == 120
-        log_build_output('') # force EOL to end the ...
-        log_build_output('Startup still running')
-        break
-      end
-      if lcnt == 5
-        add_to_build_output('.')
-        lcnt = 0
-      else
-        lcnt += 1
-      end
-      sleep 1
-    end
-    log_build_output('') # force EOL to end the ...
-    if mc.is_running? == false
+       lcnt = 5
+       log_build_output('Starting Engine')
+       while @container.is_startup_complete? == false && @container.is_running?
+         cnt += 1
+         if cnt == 120
+           log_build_output('') # force EOL to end the ...
+           log_build_output('Startup still running')
+           break
+         end
+         if lcnt == 5
+           add_to_build_output('.')
+           lcnt = 0
+         else
+           lcnt += 1
+         end
+         sleep 1
+       end
+       log_build_output('') # force EOL to end the ...
+       if @container.is_running? == false
+   
+         log_build_output('Engine Stopped:' + @container.logs_container.to_s)
+         @result_mesg = 'Engine Stopped! ' + @container.logs_container.to_s
+         return false
+       end
+       true
+  end
+  
+  def build_container
+    SystemDebug.debug(SystemDebug.builder,  ' Starting build with params ',  @build_params)
 
-      log_build_output('Engine Stopped:' + mc.logs_container.to_s)
-      @result_mesg = 'Engine Stopped! ' + mc.logs_container.to_s
-    end
-
+    return false unless meets_physical_requirements
+    return false unless process_blueprint
+    return false unless setup_build_dir
+    return false unless get_base_image
+    return false unless setup_engine_dirs
+    return false unless create_engine_image
+    return false unless create_engine_container
+    @service_builder.release_orphans
+    save_build_result
+    wait_for_engine
     close_all
     SystemStatus.build_complete(build_params)
-    return mc
+    return @container
   rescue StandardError => e
     log_exception(e)
     post_failed_build_clean_up
@@ -311,10 +334,10 @@ class EngineBuilder < ErrorsApi
 
   def launch_deploy(managed_container)
     log_build_output('Launching Engine')
-    mc = managed_container.create_container
-    return log_error_mesg('Failed to Launch ', mc) if mc.is_a?(EnginesError)
+    @container = managed_container.create_container
+    return log_error_mesg('Failed to Launch ', @container) if @container.is_a?(EnginesError)
     save_engine_built_configuration(managed_container)
-    return mc
+    return @container
   rescue StandardError => e
     log_exception(e)
   end
@@ -393,10 +416,10 @@ class EngineBuilder < ErrorsApi
     # FIXME: Stop it if started (ie vol builder failure)
     # FIXME: REmove container if created
     unless @build_params[:reinstall].is_a?(TrueClass)
-      if @mc.is_a?(ManagedContainer)
-        @mc.stop_container if @mc.is_running?
-        @mc.destroy_container if @mc.has_container?
-        @mc.delete_image if @mc.has_image?
+      if @container.is_a?(ManagedContainer)
+        @container.stop_container if @container.is_running?
+        @container.destroy_container if @container.has_container?
+        @container.delete_image if @container.has_image?
       end
 
       return log_error_mesg('Failed to remove ' + @service_builder.last_error.to_s ,self) unless @service_builder.service_roll_back
@@ -465,8 +488,6 @@ class EngineBuilder < ErrorsApi
     end
   end
 
- 
-
   def setup_rebuild
     log_build_output('Setting up rebuild')
     FileUtils.mkdir_p(basedir)
@@ -492,17 +513,17 @@ class EngineBuilder < ErrorsApi
     @build_params[:web_port] = @web_port
     @build_params[:volumes] = @service_builder.volumes
     @build_params[:image] = @build_params[:engine_name]
-    @mc = ManagedEngine.new(@build_params, @blueprint_reader, @core_api.container_api)
-    @mc.save_state # no running.yaml throws a no such container so save so others can use
-    log_build_errors('Failed to save blueprint ' + @blueprint.to_s) unless @mc.save_blueprint(@blueprint)
-    log_build_output('Launching ' + @mc.to_s)
-    @core_api.init_engine_dirs(@mc)
-    return log_build_errors('Error Failed to Launch') unless launch_deploy(@mc)
+    @container = ManagedEngine.new(@build_params, @blueprint_reader, @core_api.container_api)
+    @container.save_state # no running.yaml throws a no such container so save so others can use
+    log_build_errors('Failed to save blueprint ' + @blueprint.to_s) unless @container.save_blueprint(@blueprint)
+    log_build_output('Launching ' + @container.to_s)
+    @core_api.init_engine_dirs(@container)
+    return log_build_errors('Error Failed to Launch') unless launch_deploy(@container)
 
-    log_build_output('Applying Volume settings and Log Permissions' + @mc.to_s)
-    return log_build_errors('Error Failed to Apply FS' + @mc.to_s) unless @service_builder.run_volume_builder(@mc, @web_user)
-    flag_restart_required(@mc) if @has_post_install == true
-    return @mc
+    log_build_output('Applying Volume settings and Log Permissions' + @container.to_s)
+    return log_build_errors('Error Failed to Apply FS' + @container.to_s) unless @service_builder.run_volume_builder(@container, @web_user)
+    flag_restart_required(@container) if @has_post_install == true
+    return @container
   rescue StandardError => e
     log_exception(e)
   end
@@ -528,14 +549,10 @@ class EngineBuilder < ErrorsApi
     super
   end
 
- 
-
   def abort_build
     post_failed_build_clean_up
     return true
   end
-
-  
 
   def basedir
     SystemConfig.DeploymentDir + '/' + @build_name.to_s
@@ -568,8 +585,6 @@ class EngineBuilder < ErrorsApi
   rescue StandardError => e
     log_exception(e)
   end
-
-  
 
   def create_templater
     builder_public = BuilderPublic.new(self)
@@ -672,8 +687,6 @@ class EngineBuilder < ErrorsApi
   def write_software_file(filename, content)
     ConfigFileWriter.write_templated_file(@templater, basedir + '/' + filename, content)
   end
-
-  
 
   def log_exception(e)
     log_build_errors(e.to_s)
