@@ -130,7 +130,7 @@ class EngineBuilder < ErrorsApi
   def create_engine_container
     log_build_output('Creating Deploy Image')
     @container = create_managed_container
-    if @container == false
+    unless @container.is_a?(ManagedEngine)
       log_build_errors('Failed to create Managed Container')
       return post_failed_build_clean_up
     end
@@ -177,6 +177,8 @@ class EngineBuilder < ErrorsApi
       return false
     end
     true
+    rescue StandardError => e
+      log_exception(e)
   end
 
   def build_container

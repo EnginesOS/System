@@ -8,7 +8,6 @@ module BuildOutput
   end
 
   def log_build_output(line)
-    SystemDebug.debug(SystemDebug.builder,'line ' + line.to_s)
     return if line.nil?
     return if line == "\u0000"
     line.force_encoding(Encoding::UTF_8)
