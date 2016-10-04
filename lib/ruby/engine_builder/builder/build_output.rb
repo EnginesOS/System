@@ -1,6 +1,7 @@
 module BuildOutput
   
   def setup_log_output
+    SystemDebug.debug(SystemDebug.builder,'setup_log_output ')
       @log_file = File.new(SystemConfig.DeploymentDir + '/build.out', File::CREAT | File::TRUNC | File::RDWR, 0644)
       @err_file = File.new(SystemConfig.DeploymentDir + '/build.err', File::CREAT | File::TRUNC | File::RDWR, 0644)
 #      @log_pipe_rd, @log_pipe_wr = IO.pipe
@@ -10,6 +11,7 @@ module BuildOutput
     end
     
   def log_build_output(line)
+    SystemDebug.debug(SystemDebug.builder,'line ' + line.to_s)
       return if line.nil?
       return if line == "\u0000"
       #line.force_encoding(Encoding::UTF_8)
