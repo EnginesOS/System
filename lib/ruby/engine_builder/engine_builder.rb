@@ -19,6 +19,9 @@ class EngineBuilder < ErrorsApi
   include SaveEngineConfiguration
 
   include BuildReport
+  
+  require_relative 'builder/build_output.rb'
+  include BuildOutput
 
   require_relative 'builder/engine_scripts_builder.rb'
   include EngineScriptsBuilder
@@ -383,7 +386,7 @@ class EngineBuilder < ErrorsApi
     # remove persistent services (if created/new)
     # deregister non persistent services (if created)
     # FIXME: need to re orphan here if using an orphan Well this should happen on the fresh
-    # FIXME: don't delete shared service
+    # FIXME: don't delete shared service but remove share entry
     SystemDebug.debug(SystemDebug.builder, :Clean_up_Failed_build)
     # FIXME: Stop it if started (ie vol builder failure)
     # FIXME: REmove container if created
@@ -460,16 +463,7 @@ class EngineBuilder < ErrorsApi
     end
   end
 
-  def tail_of_build_log
-    retval = ''
-    lines = File.readlines(SystemConfig.DeploymentDir + '/build.out')
-    lines_count = lines.count - 1
-    start = lines_count - 10
-    for n in start..lines_count
-      retval += lines[n].to_s
-    end
-    return retval
-  end
+ 
 
   def setup_rebuild
     log_build_output('Setting up rebuild')
@@ -532,55 +526,14 @@ class EngineBuilder < ErrorsApi
     super
   end
 
-  def get_build_log_stream
-    @log_pipe_rd
-  end
-
-  def get_build_err_stream
-    @error_pipe_rd
-  end
-
-  def add_to_build_output(word)
-    @log_file.write(word)
-    @log_file.flush
-    # @log_pipe_wr.puts(line)
-  rescue
-    return
-  end
+ 
 
   def abort_build
     post_failed_build_clean_up
     return true
   end
 
-  def log_build_output(line)
-    return if line.nil?
-    return if line == "\u0000"
-    STDERR.puts('build line pre encoding ' + line) 
-    line.force_encoding(Encoding::UTF_8)
-    STDERR.puts('build line post encoding ' + line) 
-    STDERR.puts('build line post encoding with to_s' + line.to_s) 
-    @log_file.puts(line)
-    @log_file.flush
-    # @log_pipe_wr.puts(line)
-
-  rescue StandardError => e
-    log_exception(e)
-    return
-  end
-
-  def log_build_errors(line)
-    line = '' if line.nil?
-    line.force_encoding(Encoding::UTF_8)
-    @err_file.puts(line.to_s) unless @err_file.nil?
-    log_build_output('ERROR:' + line.to_s)
-    @result_mesg = 'Error. Aborted Due to:' + line.to_s
-    @build_error = @result_mesg
-    return false
-  rescue StandardError => e
-    log_exception(e)
-    return false
-  end
+  
 
   def basedir
     SystemConfig.DeploymentDir + '/' + @build_name.to_s
@@ -614,23 +567,7 @@ class EngineBuilder < ErrorsApi
     log_exception(e)
   end
 
-  def close_all
-    if @log_file.closed? == false
-      log_build_output('Build Result:' + @result_mesg)
-      log_build_output('Build Finished')
-      @log_file.close
-    end
-    if@err_file.closed? == false
-      @err_file.close
-    end
-    if @log_pipe_wr.closed? == false
-      @log_pipe_wr.close
-    end
-    if @error_pipe_wr.closed? == false
-      @error_pipe_wr.close
-    end
-    return false
-  end
+  
 
   def create_templater
     builder_public = BuilderPublic.new(self)
@@ -736,14 +673,7 @@ class EngineBuilder < ErrorsApi
     ConfigFileWriter.write_templated_file(@templater, basedir + '/' + filename, content)
   end
 
-  def setup_log_output
-    @log_file = File.new(SystemConfig.DeploymentDir + '/build.out', File::CREAT | File::TRUNC | File::RDWR, 0644)
-    @err_file = File.new(SystemConfig.DeploymentDir + '/build.err', File::CREAT | File::TRUNC | File::RDWR, 0644)
-    @log_pipe_rd, @log_pipe_wr = IO.pipe
-    @error_pipe_rd, @error_pipe_wr = IO.pipe
-  rescue StandardError => e
-    log_exception(e)
-  end
+  
 
   def log_exception(e)
     log_build_errors(e.to_s)
