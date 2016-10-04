@@ -14,49 +14,43 @@ module FirstRunDNS
     domain_hash = {}
     domain_hash[:domain_name] = params[:domain_name]
     domain_hash[:default_domain] = params[:domain_name]
-   # domain_hash[:type]  = params[:networking]
-      #values for        params[:networking] 
-      # zeroconf 
-      # self_hosted_dns
-      # external_dns
-      # dynamic_dns
-      # when dynamic_dns also dynamic_dns_provider dynamic_dns_username dynamic_dns_password use params[:domain_name] for hostname/dowmain tfor dyndns client
+ 
     if params[:networking] == 'zeroconf'
       domain_hash[:self_hosted] = true
-      domain_hash[:internal_only] = true 
+      domain_hash[:internal_only] = true
       domain_hash[:domain_name] = 'local'
-      params[:domain_name] = domain_hash[:domain_name] 
+      params[:domain_name] = domain_hash[:domain_name]
     elsif params[:networking] == 'self_hosted_dns'
       domain_hash[:self_hosted] = true
       domain_hash[:internal_only] = true if params[:self_dns_local_only] == '1'
-        
-      elsif params[:networking] == 'external_dns'
+
+    elsif params[:networking] == 'external_dns'
       domain_hash[:self_hosted] = false
-      elsif params[:networking] == 'dynamic_dns'
+    elsif params[:networking] == 'dynamic_dns'
       domain_hash[:self_hosted] = false
-      configure_dyndns_service(params)        
+      configure_dyndns_service(params)
     end
-  
+
     return domain_hash
   end
-  
+
   def configure_dyndns_service(params)
-      config_hash = {}
-      config_hash[:service_name] = 'dyndns'
-      config_hash[:configurator_name] = 'dyndns_settings'
-      config_hash[:variables] = {}
-      config_hash[:variables][:provider] = params[:dynamic_dns_provider]
-      config_hash[:variables][:domain_name] = params[:domain_name]
-      config_hash[:variables][:login] = params[:dynamic_dns_username]
-      config_hash[:variables][:password] = params[:dynamic_dns_password]
-      return log_error_mesg('Failed to apply DynDNS ', config_hash) unless @api.update_service_configuration(config_hash)
-      dyndns_service  =  @api.loadManagedService('dyndns')
-      dyndns_service.create_service
-      return true if dyndns_service.is_running?
+    config_hash = {}
+    config_hash[:service_name] = 'dyndns'
+    config_hash[:configurator_name] = 'dyndns_settings'
+    config_hash[:variables] = {}
+    config_hash[:variables][:provider] = params[:dynamic_dns_provider]
+    config_hash[:variables][:domain_name] = params[:domain_name]
+    config_hash[:variables][:login] = params[:dynamic_dns_username]
+    config_hash[:variables][:password] = params[:dynamic_dns_password]
+    return log_error_mesg('Failed to apply DynDNS ', config_hash) unless @api.update_service_configuration(config_hash)
+    dyndns_service  =  @api.loadManagedService('dyndns')
+    dyndns_service.create_service
+    return true if dyndns_service.is_running?
     dyndns_service.start_container
-      
-    end
-    
+
+  end
+
   def set_default_email_domain(domain_name)
     config_hash = {}
     config_hash[:service_name] = 'smtp'
@@ -70,18 +64,15 @@ module FirstRunDNS
   def setup_dns
 
     domain_hash = get_domain_params(@first_run_params)
-
     return log_error_mesg('Fail to add domain ' + @api.last_error, domain_hash) unless @api.add_domain_service(domain_hash)
-
     return r unless (r = apply_hostname(@first_run_params))
     return log_error_mesg('Fail to set default domain ' + @api.last_error, domain_hash.to_s) unless @api.set_default_domain(domain_hash)
     return set_default_email_domain(domain_hash[:default_domain])
 
   end
-  
 
   def validate_dns_params(params)
     return log_error_mesg('Can have empty default domain',params) if params[:domain_name].nil?
-     return true
+    return true
   end
 end
