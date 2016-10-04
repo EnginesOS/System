@@ -556,7 +556,10 @@ class EngineBuilder < ErrorsApi
   def log_build_output(line)
     return if line.nil?
     return if line == "\u0000"
+    STDERR.puts('build line pre encoding ' + line) 
     line.force_encoding(Encoding::UTF_8)
+    STDERR.puts('build line post encoding ' + line) 
+    STDERR.puts('build line post encoding with to_s' + line.to_s) 
     @log_file.puts(line)
     @log_file.flush
     # @log_pipe_wr.puts(line)
