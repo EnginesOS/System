@@ -13,6 +13,7 @@ module FirstRunDNS
   def get_domain_params(params)
     domain_hash = {}
     domain_hash[:domain_name] = params[:domain_name]
+    domain_hash[:default_domain] = params[:domain_name]
    # domain_hash[:type]  = params[:networking]
       #values for        params[:networking] 
       # zeroconf 
@@ -69,9 +70,9 @@ module FirstRunDNS
   def setup_dns
 
     domain_hash = get_domain_params(@first_run_params)
+
     return log_error_mesg('Fail to add domain ' + @api.last_error, domain_hash) unless @api.add_domain_service(domain_hash)
-    domain_hash = {}
-    domain_hash[:default_domain] = @first_run_params[:domain_name]
+
     return r unless (r = apply_hostname(@first_run_params))
     return log_error_mesg('Fail to set default domain ' + @api.last_error, domain_hash.to_s) unless @api.set_default_domain(domain_hash)
     return set_default_email_domain(domain_hash[:default_domain])
