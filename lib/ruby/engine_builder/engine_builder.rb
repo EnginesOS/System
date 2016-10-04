@@ -9,15 +9,17 @@ class EngineBuilder < ErrorsApi
   require_relative 'builder_public.rb'
   require_relative 'blue_print_reader.rb'
   require_relative 'docker_file_builder/docker_file_builder.rb'
-  require_relative 'build_report.rb'
+
   require_relative 'config_file_writer.rb'
   require_relative 'service_builder/service_builder.rb'
 
   require_relative 'builder/configure_services_backup.rb'
   include ConfigureServicesBackup
+  
   require_relative 'builder/save_engine_configuration.rb'
   include SaveEngineConfiguration
-
+  
+  require_relative 'builder/build_report.rb'
   include BuildReport
   
   require_relative 'builder/build_output.rb'
@@ -26,7 +28,7 @@ class EngineBuilder < ErrorsApi
   require_relative 'builder/engine_scripts_builder.rb'
   include EngineScriptsBuilder
 
-  require_relative 'check_build_params.rb'
+  require_relative 'builder/check_build_params.rb'
   include CheckBuildParams
 
   require_relative '../templater/templater.rb'
