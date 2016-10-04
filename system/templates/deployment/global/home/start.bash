@@ -95,7 +95,7 @@ if test -f /home/startwebapp.sh
 		exit
 	fi
 
-#Apache based below here
+#Apache based 
 
 if test -f /usr/sbin/apache2ctl
  then
@@ -103,12 +103,6 @@ if test -f /usr/sbin/apache2ctl
 	PID_FILE=/run/apache2/apache2.pid
 	export PID_FILE
 	. /home/trap.sh
-
-	if test -f /home/app/Rack.sh
-	then 	 
-		#sets PATH only (might not be needed)
-		. /home/app/Rack.sh  
-	fi
 
 	mkdir -p /var/log/apache2/ >/dev/null
 
@@ -136,9 +130,14 @@ else
   		done
 	echo " passenger_env_var RAILS_ENV $RAILS_ENV;" >> /home/.env_vars
 	echo " passenger_env_var SECRET_KEY_BASE $SECRET_KEY_BASE;" >> /home/.env_vars
-
-	nginx &
-
+if test -f /home/engines/scripts/blocking.sh 
+		then
+		nginx &
+			 /home/engines/scripts/blocking.sh  &
+			 echo  " $!" >> /run/apache2/apache2.pid
+	else		
+		nginx &
+	fi
 fi
 
 if test -f /home/engines/scripts/blocking.sh
