@@ -51,7 +51,7 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream'  do
     while has_data == true
       begin
         bytes = build_log_file.read_nonblock(1000)
-        bytes.force_encoding(Encoding::UTF_8)
+        bytes.force_encoding(Encoding::UTF_8) unless bytes.nil?
         out << bytes
         bytes = ''
       rescue IO::WaitReadable
