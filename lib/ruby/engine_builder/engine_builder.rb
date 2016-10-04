@@ -64,7 +64,6 @@ class EngineBuilder < ErrorsApi
   end
 
   def initialize(params, core_api)
-
     @core_api = core_api
     @container = nil
     @build_params = params

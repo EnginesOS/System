@@ -9,8 +9,8 @@ class BuildController
   def initialize(api)
     @core_api = api
     #@core_api.build_started(self)
-    @build_log_stream = nil
-    @build_error_stream = nil
+  #  @build_log_stream = nil
+   # @build_error_stream = nil
     @engine = nil
     @build_error = 'none'
     @engine_builder = nil
@@ -48,9 +48,9 @@ class BuildController
     build_failed(params, e.to_s)
   end
 
-  def get_engine_builder_streams
-    ([@build_log_stream, @build_error_stream])
-  end
+ # def get_engine_builder_streams
+ #   ([@build_log_stream, @build_error_stream])
+  #end
 
   def buildEngine(repository, host, domain_name, environment)
     @build_params = {}
@@ -117,15 +117,15 @@ class BuildController
 
   def get_engine_builder(params)
     @engine_builder = EngineBuilder.new(params, @core_api)
-    @build_log_stream = @engine_builder .get_build_log_stream
-    @build_error_stream = @engine_builder .get_build_err_stream
+  #  @build_log_stream = @engine_builder .get_build_log_stream
+   # @build_error_stream = @engine_builder .get_build_err_stream
     return @engine_builder 
   end
 
-  def close_streams
-    @build_log_stream = nil
-    @build_error_stream = nil
-  end
+ # def close_streams
+ #   @build_log_stream = nil
+ #   @build_error_stream = nil
+ # end
 
   def get_engine_builder_bfr(repository, host, domain_name, environment)
     @build_params = {}
