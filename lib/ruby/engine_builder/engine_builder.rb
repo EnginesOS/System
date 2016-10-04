@@ -628,7 +628,6 @@ class EngineBuilder < ErrorsApi
             err = stderr.read_nonblock(1000)
             error_mesg += err
             log_build_errors(err)
-            p :EIO_retry
             retry
           end
         rescue IO::WaitReadable
@@ -637,7 +636,6 @@ class EngineBuilder < ErrorsApi
         rescue EOFError
           if stdout.closed? == false
             stderr_is_open = false
-            p :EOF_retry
             retry
           elsif stderr.closed? == true
             # log_build_errors(error_mesg)
