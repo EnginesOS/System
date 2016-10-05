@@ -97,10 +97,8 @@ def write_response(r)
     log_error('nil response')
     return
   end
-  #STDERR.puts( 'RESPONSE HEADER ' + r.headers.to_s)
   if r.headers['Content-Type'] == 'application/octet-stream'
     STDOUT.write( r.body.b)
-    # STDERR.puts "as_binary"
   else
     expect_json = false
     expect_json = true if r.headers['Content-Type'] == 'application/json' || r.body.start_with?('{')
