@@ -17,7 +17,7 @@ module BuilderSettings
   @@BackupScriptsRoot = '/home/services/'
   @@BackupScriptsSrcRoot = '/opt/engines/system/templates/services/backup/'
   @@LanguageFile = '/opt/engines/etc/locale'
-  @@DefaultLanguage = 'en_US.UTF-8'
+  @@DefaultLanguage = 'en_US'
   
   def SystemConfig.LanguageFile
     @@LanguageFile
