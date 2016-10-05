@@ -1,5 +1,5 @@
 def login
-  r = rest_get('/v0/system/login/test/test')
+  r = rest_get('/v0/system/login/admin/test')
   ENV['access_token'] = r.body.gsub!(/\"/,'')
   t = File.new(Dir.home + '/.engines_token','w+')
   t.write(ENV['access_token'])

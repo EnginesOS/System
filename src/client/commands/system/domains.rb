@@ -7,7 +7,7 @@ when 'view'
 when 'update'
   @route += '/' + ARGV[3]
   params_data = read_stdin_data
-  command_useage unless params_data.is_a?(String)
+  command_usage unless params_data.is_a?(String)
   perform_post(JSON.parse(params_data))
 
 
@@ -20,6 +20,6 @@ when 'remove'
 when 'add'
   @route += '/'
   params_data = read_stdin_data
-  command_useage unless params_data.is_a?(String)
+  command_usage unless params_data.is_a?(String)
   perform_post(JSON.parse(params_data))
 end
