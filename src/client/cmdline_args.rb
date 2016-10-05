@@ -43,3 +43,21 @@ def process_flag(flag,params)
 rescue StandardError => e
   return('Error:Problem with option ' + flag.to_s)
 end
+
+def get_help_info
+  STDERR.puts('
+    Options
+   -v 
+   -p password
+   -u user
+   -t token
+   --port port
+   --host host
+   --url url
+  --prefix prefix
+  
+  --url overides the following settings --host --port --prefix
+  -v sets verbose
+  Command ')
+
+end

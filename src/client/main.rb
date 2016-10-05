@@ -20,6 +20,7 @@ end
 def command_usage(mesg=nil)
   p "Incorrect usage"
   p mesg
+  p get_help_info
   exit
 end
 
@@ -113,7 +114,7 @@ require_relative 'cmdline_args.rb'
 cmdline_options = process_args
 command_usage(cmdline_options) if cmdline_options.is_a?(String)
 
-ENV['access_token'] = cmdline_options[:access_token]
+ENV['access_token'] = cmdline_options[:access_token] if cmdline_options.key?(:access_token)
 load_token if ENV['access_token'].nil?
 login if ENV['access_token'].nil?
 
