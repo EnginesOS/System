@@ -14,7 +14,7 @@ end
 def process_flag(flag,params)
   case flag
   when '-v'
-    @@silent = false
+    params[:verbose] = true
   when '-p'
     params[:password] = ARGV[1]
     ARGV.delete_at(0)

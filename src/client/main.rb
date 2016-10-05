@@ -11,10 +11,10 @@ require_relative 'client_login.rb'
 require_relative 'client_http_stream.rb'
 include ClientHTTPStream
 
-@@silent = true
+@silent = true
 
 def log_error(*args)
-  STDERR.put(args.to_s) unless @@silent == true
+  STDERR.put(args.to_s) unless @silent == true
 end
 
 def command_usage(mesg=nil)
@@ -127,6 +127,8 @@ else
 end
 
 require_relative 'default_connection_settings.rb'
+
+@silent = false if cmdline_options.key?(:verbose)
 
 require_relative 'commands/commands.rb'
 
