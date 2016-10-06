@@ -2,7 +2,7 @@
 
 
  wget http://pear.php.net/go-pear.phar
- suhosin.executor.include.whitelist = phar >>/etc/php5/conf.d/suhosin.ini 
+ suhosin.executor.include.whitelist = phar >>/etc/php/7.0/conf.d/suhosin.ini 
    php go-pear.phar
     for mod in $*
      do
