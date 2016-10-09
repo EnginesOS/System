@@ -1,3 +1,4 @@
+require 'gctools/oobgc'
 
 begin
   require 'sinatra'
