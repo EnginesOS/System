@@ -4,7 +4,6 @@ class DockerFileBuilder
   def initialize(reader, build_params, webport, builder)
     @build_params = build_params
     @hostname = @build_params[:host_name]
-    # @container_name = containername
     @domain_name = @build_params[:domain_name]
     @web_port = webport
     @blueprint_reader = reader
@@ -136,10 +135,21 @@ class DockerFileBuilder
       end
       write_env(env.name,env.value.to_s) if env.value.nil? == false && env.value.to_s.length > 0 # env statement must have two arguments
     end
-     write_env('WWW_DIR', @blueprint_reader.web_root.to_s) unless @blueprint_reader.web_root.nil?
-     
+    write_env('WWW_DIR', @blueprint_reader.web_root.to_s) unless @blueprint_reader.web_root.nil?
+
+    write_locale_env
   rescue Exception => e
     SystemUtils.log_exception(e)
+  end
+
+  def write_locale_env
+    unless @build_params[:langauge].nil?
+      lang =  @build_params[:langauge]
+    else
+      lang = SystemConfig.Language
+    end
+    write_env('LC_ALL', lang)
+    write_env('LANG', lang)
   end
 
   def write_persistent_dirs
@@ -167,14 +177,9 @@ class DockerFileBuilder
   end
 
   def write_database_seed
- 
+
     if @blueprint_reader.database_seed.nil? == false && @blueprint_reader.database_seed != ''
       ConfigFileWriter.write_templated_file(@builder.templater, @builder.basedir + '/home/database_seed', @blueprint_reader.database_seed)
-#      p :written_seef
-#      p @blueprint_reader.database_seed
-    #  seed_file = File.new(@builder.basedir + '/home/database_seed', 'w')
-    #  seed_file.write(@blueprint_reader.database_seed)
-    #  seed_file.close
     end
   end
 
@@ -388,7 +393,7 @@ class DockerFileBuilder
   end
 
   def write_env(name,value, build_only = false)
-    
+
     write_line('ENV ' + name.to_s  + ' \'' + value.to_s + '\'')
     @env_file.puts(name.to_s  + '=' + '\'' + value.to_s  + '\'')
   end

@@ -113,8 +113,6 @@ def load_service_definition(filename)
    yaml_file = File.open(filename)
    SoftwareServiceDefinition.from_yaml(yaml_file)
  rescue StandardError => e
-   p :filename
-   p filename
    log_exception(e)
  end
  

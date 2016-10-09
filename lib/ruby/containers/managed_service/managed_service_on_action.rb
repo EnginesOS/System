@@ -23,6 +23,7 @@ super
     service_configurations = @container_api.get_service_configurations_hashes({service_name: @container_name, publisher_namespace: @publisher_namespace, type_path: @type_path})
           if service_configurations.is_a?(Array)
             service_configurations.each do |configuration|
+            next if configuration[:no_save] == true
               run_configurator(configuration)
             end
           end

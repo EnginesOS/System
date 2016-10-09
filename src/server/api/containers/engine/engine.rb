@@ -75,5 +75,6 @@ get '/v0/containers/engine/:engine_name/logs' do
    return log_error(request, engine, params) if engine.is_a?(EnginesError)
    r = engine.logs_container()
   return log_error(request, r) if r.is_a?(EnginesError)
+  
     return r.to_json
 end

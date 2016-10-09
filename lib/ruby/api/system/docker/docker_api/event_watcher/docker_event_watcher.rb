@@ -117,8 +117,8 @@ class DockerEventWatcher  < ErrorsApi
   require 'socket'
 require 'json'
 
-  def initialize()
-    #@system_api = system
+  def initialize(system)
+    @system = system
     # FIXMe add conntection watcher that re establishes connection asap and continues trying after warngin ....
     @event_listeners = {}
     # add_event_listener([system, :container_event])
@@ -133,7 +133,7 @@ require 'json'
     client.continue_timeout = 360000
     client.read_timeout = 360000
 
-    client.request(req) { |resp|
+    client.request(req) do |resp|
       resp.read_body do |chunk|
         begin
           r = ''
@@ -153,14 +153,20 @@ require 'json'
               log_error_mesg('Trigger error',r,hash) if r.is_a?(EnginesError)
             end
           end
+        
         rescue StandardError => e
           log_error_mesg('Chunk error on docker Event Stream _' + chunk.to_s + '_')
           log_exception(e,chunk)
+          @system.start_docker_event_listener
         end
-      end
-    }
+      end      
+    end
+    log_error_mesg('Restarting docker Event Stream ')
+    @system.start_docker_event_listener
   rescue StandardError => e
     log_exception(e)
+    log_error_mesg('Restarting docker Event Stream post exception ')
+    @system.start_docker_event_listener
   end
 
   def add_event_listener(listener, event_mask = nil, container_id = nil)

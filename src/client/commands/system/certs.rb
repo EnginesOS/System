@@ -13,10 +13,10 @@ perform_get
 when 'default'
   @route += '/default'
   if ARGV.count < 6
-    command_useage('missing arguments')
+    command_usage('missing arguments')
   end
-  command_useage('missing cert file ') unless File.exist?(ARGV[4])
-  command_useage('missing key file ') unless  File.exist?(ARGV[5])
+  command_usage('missing cert file ') unless File.exist?(ARGV[4])
+  command_usage('missing key file ') unless  File.exist?(ARGV[5])
 
   pass = nil
   if ARGV.count == 7
@@ -33,10 +33,10 @@ when 'default'
 when 'add'
   @route += '/'
   if ARGV.count < 6
-    command_useage('missing arguments')
+    command_usage('missing arguments')
   end
-  command_useage('missing cert file ') unless File.exist?(ARGV[4])
-  command_useage('missing key file ') unless  File.exist?(ARGV[5])
+  command_usage('missing cert file ') unless File.exist?(ARGV[4])
+  command_usage('missing key file ') unless  File.exist?(ARGV[5])
 
   pass = nil
   if ARGV.count == 7

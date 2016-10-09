@@ -17,8 +17,7 @@ module RegistryTrees
   end
 
   def get_shares_tree
-    p :get_shares_tree
-    p service_manager.shares_tree
+ 
     service_manager.shares_tree
   end
 end

@@ -32,7 +32,7 @@ module DockerApiExec
         else
           r = DockerUtils.decode_from_docker_chunk(chunk)
           @o_stream.write(r[:stdout]) unless r.nil?
-          return_result[:stderr] =  return_result[:stderr].to_s + r[:stderr].to_s 
+          return_result[:stderr] =  return_result[:stderr].to_s + r[:stderr].to_s
         end
       end
     rescue StandardError =>e
@@ -75,10 +75,7 @@ module DockerApiExec
     end
   end
 
-  def docker_exec(params) #container, commands, log_error = true, data=nil)
-    #have_data = false
-    #have_data = true unless data.nil?
-
+  def docker_exec(params)
     r = create_docker_exec(params) #container, commands, have_data)
 
     return r unless r.is_a?(Hash)
@@ -96,7 +93,6 @@ module DockerApiExec
     request_params["Cmd"] = params[:command_line]
 
     headers = {}
-  #  headers['Content-type'] = 'text/plain'
     headers['Content-type'] = 'application/json'
     unless params.key?(:data)
       result = {}
@@ -106,7 +102,6 @@ module DockerApiExec
       stream_reader.result[:result] = get_exec_result(exec_id)
       return stream_reader.result # DockerUtils.docker_stream_as_result(r, result)
     end
-    #  initheader = {'Transfer-Encoding' => 'chunked', 'content-type' => 'application/octet-stream' }
 
     request_params["AttachStdin"] = true
     stream_handler = DockerHijackStreamHandler.new(params[:data],params[:istream], params[:ostream])
@@ -114,7 +109,7 @@ module DockerApiExec
     headers['Connection'] = 'Upgrade'
     headers['Upgrade'] = 'tcp'
 
-   r =  post_stream_request(request, nil, stream_handler,  headers , request_params.to_json )
+    r =  post_stream_request(request, nil, stream_handler,  headers , request_params.to_json )
 
     stream_handler.result[:result] = get_exec_result(exec_id)
     stream_handler.result
@@ -124,13 +119,12 @@ module DockerApiExec
     log_exception(e)
   end
 
-
   private
- 
-  def  get_exec_result(exec_id)        
+
+  def  get_exec_result(exec_id)
     r  = get_request('/exec/' + exec_id.to_s + '/json')
     return -1 if r.is_a?(EnginesError)
-    r[:ExitCode]    
+    r[:ExitCode]
   end
 
   def create_docker_exec(params) #container, commands, have_data)
@@ -155,7 +149,6 @@ module DockerApiExec
 
   def format_commands(commands)
     commands = [commands] unless commands.is_a?(Array)
-    STDERR.puts('CMD ' + commands.to_s)
     commands
   end
 

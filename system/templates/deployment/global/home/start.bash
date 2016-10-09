@@ -5,8 +5,7 @@ if ! test -z "$Engines_Debug_Run"
  then
 		echo "Stopped by Sleeping for 500 seconds to allow debuging"
   	 	sleep 500
-  	 fi
-  	 
+  	 fi  	 
  }
   	 
   if test  ! -f /engines/var/run/flags/volume_setup_complete
@@ -19,6 +18,7 @@ if ! test -z "$Engines_Debug_Run"
  	 done
  	 echo "Volume setup to Complete "
   fi
+  
 if test -f "$VOLDIR/.dynamic_persistence"
   then
 	if ! test -f /home/app/.dynamic_persistence_restored
@@ -31,13 +31,18 @@ if test -f "$VOLDIR/.dynamic_persistence"
 if test -f /home/_init.sh
  	then
  		/home/_init.sh
- 	fi
+fi
+if test -f /engines/var/lang
+	then
+		LANG=`head -1 /engines/var/lang`
+		export LC_ALL=$LANG
+		export LANG
+fi
 
-	if ! test -f /engines/var/run/flags/first_run_done
-		then
-			touch /engines/var/run/flags/first_run_done
+if ! test -f /engines/var/run/flags/first_run_done
+	then
+		touch /engines/var/run/flags/first_run_done
 	else		
-
 		if test -f /home/engines/scripts/post_install.sh
 			then 				
 			echo "Has Post install"
@@ -89,29 +94,17 @@ if test -f /home/startwebapp.sh
 		 wait_for_debug
 		exit
 	fi
-	
 
-
-
-#Apache based below here
+#Apache based 
 
 if test -f /usr/sbin/apache2ctl
  then
 
-PID_FILE=/run/apache2/apache2.pid
-export PID_FILE
-. /home/trap.sh
+	PID_FILE=/run/apache2/apache2.pid
+	export PID_FILE
+	. /home/trap.sh
 
-
-  
-if test -f /home/app/Rack.sh
-	then 	 
-	#sets PATH only (might not be needed)
-		. /home/app/Rack.sh  
-	fi
-
-
-mkdir -p /var/log/apache2/ >/dev/null
+	mkdir -p /var/log/apache2/ >/dev/null
 
 	if test -f /home/engines/scripts/blocking.sh 
 		then
@@ -125,27 +118,26 @@ else
 	PID_FILE=/var/run/nginx.pid
 	mkdir /var/log/nginx
 	
-export PID_FILE
-. /home/trap.sh
-cp /home/ruby_env /home/.env_vars
- for env_name in `cat /home/app.env `
-  do
-   if ! test -z  ${!env_name}
-        then
-  	      echo  "passenger_env_var $env_name  ${!env_name};"   >> /home/.env_vars
-  	    fi
-  done
-echo " passenger_env_var RAILS_ENV $RAILS_ENV;" >> /home/.env_vars
-echo " passenger_env_var SECRET_KEY_BASE $SECRET_KEY_BASE;" >> /home/.env_vars
-#echo " passenger_env_var SYSTEM_API_URL $SYSTEM_API_URL;">> /home/.env_vars
-#echo " passenger_env_var SYSTEM_RELEASE $SYSTEM_RELEASE;" >> /home/.env_vars
-#echo " passenger_env_var DATABASE_URL $DATABASE_URL;" >> /home/.env_vars
-#echo " passenger_env_var ACTION_CABLE_ALLOWED_REQUEST_ORIGINS $ACTION_CABLE_ALLOWED_REQUEST_ORIGINS;" >> /home/.env_vars
-#echo " passenger_env_var ACTION_CABLE_URL $ACTION_CABLE_URL;" >> /home/.env_vars
-#echo " passenger_env_var ACTION_CABLE_URL $ACTION_CABLE_URL;" >> /home/.env_vars
-#echo " passenger_env_var WORKSHOP_KEY $WORKSHOP_KEY;" >> /home/.env_vars
-nginx &
-
+	export PID_FILE
+	. /home/trap.sh
+	cp /home/ruby_env /home/.env_vars
+ 		for env_name in `cat /home/app.env `
+  			do
+   				if ! test -z  ${!env_name}
+        			then
+  	      				echo  "passenger_env_var $env_name  ${!env_name};"   >> /home/.env_vars
+  	    		fi
+  		done
+	echo " passenger_env_var RAILS_ENV $RAILS_ENV;" >> /home/.env_vars
+	echo " passenger_env_var SECRET_KEY_BASE $SECRET_KEY_BASE;" >> /home/.env_vars
+if test -f /home/engines/scripts/blocking.sh 
+		then
+		nginx &
+			 /home/engines/scripts/blocking.sh  &
+			 echo  " $!" >> /run/apache2/apache2.pid
+	else		
+		nginx &
+	fi
 fi
 
 if test -f /home/engines/scripts/blocking.sh
@@ -157,5 +149,5 @@ if test -f /home/engines/scripts/blocking.sh
 		
 touch /engines/var/run/flags/startup_complete
  wait 
-  wait_for_debug
- rm /engines/var/run/flags/startup_complete
+ wait_for_debug
+rm /engines/var/run/flags/startup_complete

@@ -3,9 +3,9 @@ module Services
   require_relative 'rset.rb'
   # Services Methods
   def all_engines_registered_to(service_type)
-    p = {}
-    p[:service_type] = service_type
-    rest_get('/v0/system_registry/service/registered/engines/',{:params => p })
+    ps = {}
+    ps[:service_type] = service_type
+    rest_get('/v0/system_registry/service/registered/engines/',{:params => ps })
   end
 
   def find_service_consumers(service_query_hash)

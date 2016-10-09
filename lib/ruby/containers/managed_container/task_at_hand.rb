@@ -294,6 +294,7 @@ module TaskAtHand
 
   def set_task_at_hand(state)
     @task_at_hand = state
+   return unless Dir.exist?(ContainerStateFiles.container_state_dir(self)) # happens on reinstall
     f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand','w+')
     f.write(state)
     f.close

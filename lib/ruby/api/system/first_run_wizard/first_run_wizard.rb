@@ -11,8 +11,6 @@ class FirstRunWizard <ErrorsApi
   include FirstRunParamsValidation
   require_relative 'engines_first_run_errors.rb'
   include EnginesFirstRunErrors
-  
-  
   def initialize(params)
     @sucess = false
     @first_run_params = params
@@ -22,10 +20,9 @@ class FirstRunWizard <ErrorsApi
     @api = api
     SystemDebug.debug(SystemDebug.first_run,:applyin, @first_run_params)
     return log_error_mesg('failed to validate first run params') unless validate_params(@first_run_params)
-   # return false unless set_passwords
-    #FIX ME check what the key is supposed to be
- #??return false unless mysql_password_configurator(@first_run_params[:gui_password])
-    return false unless  setup_dns
+    # return false unless set_passwords
+
+    return false unless setup_dns
     return false unless setup_certs
     @sucess = true
     mark_as_run
@@ -33,9 +30,9 @@ class FirstRunWizard <ErrorsApi
 
   def mark_as_run
     #f = File.new(SystemConfig.FirstRunRan, 'w')
-  #  date = DateTime.now
-  #  f.puts(date.to_s)
- #   f.close
+    #  date = DateTime.now
+    #  f.puts(date.to_s)
+    #   f.close
   end
 
   def FirstRunWizard.required?
@@ -43,6 +40,5 @@ class FirstRunWizard <ErrorsApi
     return false
   end
   # FIXME: and put in it's own class or even service
-  
 
 end

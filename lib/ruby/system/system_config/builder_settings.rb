@@ -16,6 +16,23 @@ module BuilderSettings
   @@ActionatorDir = '/home/actionators/'
   @@BackupScriptsRoot = '/home/services/'
   @@BackupScriptsSrcRoot = '/opt/engines/system/templates/services/backup/'
+  @@LanguageFile = '/opt/engines/etc/locale'
+  @@DefaultLanguage = 'en_US'
+  
+  def SystemConfig.LanguageFile
+    @@LanguageFile
+  end
+  
+  def SystemConfig.DefaultLanguage
+      @@DefaultLanguage
+    end
+    
+  def SystemConfig.Language
+    return File.read(SystemConfig.LanguageFile).strip if File.exist?(SystemConfig.LanguageFile) 
+    return SystemConfig.DefaultLanguage
+  rescue
+    return SystemConfig.DefaultLanguage
+   end
    
   def SystemConfig.BuildOutputFile
     @@BuildOutputFile

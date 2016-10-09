@@ -12,6 +12,7 @@ class SystemPreferences
   def set_default_domain(params)
     domain_name = params
     domain_name = params[:default_domain] unless domain_name.is_a?(String)
+    return false if domain_name.to_s == '' 
     @preferences[:default_domain] = domain_name # params[:default_domain]
     save_preferences
     

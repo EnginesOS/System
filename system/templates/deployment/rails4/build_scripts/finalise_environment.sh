@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for dir in /home/app/tmp/ /home/app/public/cache/ /home/app/public/assets /run/apache2
+for dir in /home/app/tmp/ /home/app/public/cache/ /home/app/public/assets /run/nginx
  do
 	if ! test -d $dir
 		then
@@ -12,12 +12,12 @@ for dir in /home/app/tmp/ /home/app/public/cache/ /home/app/public/assets /run/a
 done 
 	
 	chown www-data.$data_gid -R /home/app/public
-	chown www-data.$data_gid -R /home/app/tmp/ /run/apache2
+	chown www-data.$data_gid -R /home/app/tmp/ /run/nginx /home/app/public/cache/
 
-	mkdir -p log
-	chmod -R g+w  log
+	mkdir -p /home/app/log
+	chmod -R g+w  /home/app/log
 
-		if test -d db
+		if test -d /home/app/db
 			then 
-				chmod -R g+w  db
+				chmod -R g+w  /home/app/db
 		fi

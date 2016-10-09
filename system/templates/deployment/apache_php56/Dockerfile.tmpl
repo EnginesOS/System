@@ -1,0 +1,15 @@
+FROM  engines/php56:_Engines_System(release)
+ENV ContUser www-data
+ADD build_scripts /build_scripts
+ADD home home
+ADD engines home/engines
+ENV CONTFSVolHome /home/fs/
+RUN  chown $ContUser /opt
+
+RUN	apt-get update -y
+
+
+
+
+
+

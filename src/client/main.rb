@@ -11,26 +11,18 @@ require_relative 'client_login.rb'
 require_relative 'client_http_stream.rb'
 include ClientHTTPStream
 
-def command_useage(mesg=nil)
-  p "Incorrect usage"
-  p mesg
-  exit
+@silent = true
+
+def log_error(*args)
+  STDERR.put(args.to_s) unless @silent == true
 end
 
-#def parse_rest_response(r)
-#  return false if r.code > 399
-#  return true if r.to_s   == '' ||  r.to_s   == 'true'
-#  return false if r.to_s  == 'false'
-#  return r.to_s if @raw
-#  parser = Yajl::Parser.new()
-#  res = parser.parse(r)
-#  return res
-#rescue  StandardError => e
-#  STDERR.puts e.to_s
-#  STDERR.puts e.backtrace
-#  STDERR.puts "Failed to parse system response _" + r.to_s + "_"
-#  return false
-#end
+def command_usage(mesg=nil)
+  p "Incorrect usage"
+  p mesg
+  p get_help_info
+  exit
+end
 
 def read_stdin_data
   stdin_data = ""
@@ -77,9 +69,18 @@ end
 
 def handle_resp(resp, expect_json=true)
   parser = Yajl::Parser.new()
-  STDERR.puts("Error " + resp.status.to_s)  if resp.status  >= 400
+
+  if resp.status  >= 400
+    log_error("Error " + resp.status.to_s)
+    return 'fail' if resp.body.nil?
+  end
+
   return 'OK' if resp.status  == 204   # nodata but all good happens on del
-  STDERR.puts "Un exepect response from system" + resp.status.to_s + ' ' + resp.body.to_s + ' ' + resp.headers.to_s    unless resp.status  == 200 ||  resp.status  == 201 || resp.status  == 202
+
+  unless resp.status  >= 200
+    log_error("Un exepect response from system" + resp.status.to_s + ' ' + resp.body.to_s + ' ' + resp.headers.to_s)
+  end
+
   return resp.body.to_s unless expect_json == true
   hashes = []
   parser.parse(resp.body) do |hash |
@@ -87,41 +88,45 @@ def handle_resp(resp, expect_json=true)
   end
   return hashes[0].to_json
 rescue StandardError => e
-  STDERR.puts e.to_s + ' with :' + resp.to_s
-  STDERR.puts e.backtrace.to_s
+  log_error(e.to_s + ' with :' + resp.to_s)
+  log_error(e.backtrace.to_s)
 end
 
 def write_response(r)
   if r.nil?
-    STDERR.puts 'nil response'
+    log_error('nil response')
     return
   end
-  #STDERR.puts( 'RESPONSE HEADER ' + r.headers.to_s)
   if r.headers['Content-Type'] == 'application/octet-stream'
     STDOUT.write( r.body.b)
-    # STDERR.puts "as_binary"
   else
-    expect_json=false
-    expect_json=true if r.body.start_with?('{')
+    expect_json = false
+    expect_json = true if r.headers['Content-Type'] == 'application/json' || r.body.start_with?('{')
     puts handle_resp(r, expect_json)
   end
 
 end
 
-def  process_args
+require_relative 'cmdline_args.rb'
 
-end
+cmdline_options = process_args
+command_usage(cmdline_options) if cmdline_options.is_a?(String)
 
-@host = ENV['DOCKER_IP']
-@host = '127.0.0.1' if @host.length < 3
-@base_url = 'http://' +  @host + ':2380'
-@port = '2380'
-@route = "/v0"
-
-load_token
+ENV['access_token'] = cmdline_options[:access_token] if cmdline_options.key?(:access_token)
+load_token if ENV['access_token'].nil?
 login if ENV['access_token'].nil?
 
-process_args
+if cmdline_options.key?(:base_url)
+  @base_url= cmdline_options[:base_url]
+else
+  @host = cmdline_options[:host] if cmdline_options.key?(:host)
+  @port = cmdline_options[:port] if cmdline_options.key?(:port)
+  @route = cmdline_options[:prefix] if cmdline_options.key?(:prefix)
+end
+
+require_relative 'default_connection_settings.rb'
+
+@silent = false if cmdline_options.key?(:verbose)
 
 require_relative 'commands/commands.rb'
 

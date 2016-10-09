@@ -1,37 +1,38 @@
 require '/opt/engines/lib/ruby/system/engines_error.rb'
+
 module Params
- 
   def self.assemble_params(params, address_params, required_params, accept_params=nil )
-   params = Utils.symbolize_keys(params)
+    return {} if params.nil?
+    params = Utils.symbolize_keys(params)
     a_params = self.address_params(params, address_params)
     return EnginesError.new('Missing Address Parameters ' + address_params.to_s + ' but only have:' + params.to_s, :error,'api') if a_params == false
-    
+
     unless required_params.empty?
-     if required_params == :all
-      a_params.merge!(params[:api_vars]) if params.key?(:api_vars)
-      return a_params       
-    end
+      if required_params == :all
+        a_params.merge!(params[:api_vars]) if params.key?(:api_vars)
+        return a_params
+      end
       r_params = self.required_params(params,required_params)
       return EnginesError.new('Missing Parameters ' + required_params.to_s + ' but only have:' + params.to_s, :error,'api') if r_params == false
       a_params.merge!(r_params)
     end
-    
+
     return a_params if accept_params.nil?
-    
+
     unless accept_params.empty?
       o_params = self.optional_params(params,accept_params)
       a_params.merge!(o_params)
-    end    
+    end
     a_params
   end
 
   def self.required_params(params, keys)
     mparams = params[:api_vars]
-#      p :pre_SYM
-#     p  mparams
-#    m_params = Utils.symbolize_keys(mparams)
-#     p :POST_SYM
-#      p  m_params
+    #      p :pre_SYM
+    #     p  mparams
+    #    m_params = Utils.symbolize_keys(mparams)
+    #     p :POST_SYM
+    #      p  m_params
     return false if mparams.nil?
     self.match_params(mparams, keys, true)
     #   Utils.symbolize_keys(matched)
@@ -39,7 +40,7 @@ module Params
 
   def self.optional_params(params, keys)
     mparams = params[:api_vars]
-  #  m_params = Utils.symbolize_keys(mparams)
+    #  m_params = Utils.symbolize_keys(mparams)
 
     return {} if mparams.nil?
     self.match_params(mparams, keys )
@@ -47,7 +48,7 @@ module Params
   end
 
   def self.address_params(params, keys)
-    
+
     self.match_params(params, keys, true)
   end
 

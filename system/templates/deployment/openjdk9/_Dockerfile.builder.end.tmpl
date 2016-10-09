@@ -1,0 +1,8 @@
+#after chmod so protected
+ADD home/start.bash /home/start.bash
+USER www-data
+VOLUME /var/log/
+WORKDIR /home/app
+CMD ["/home/start.bash"]
+
+
