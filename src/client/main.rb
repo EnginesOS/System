@@ -45,6 +45,7 @@ end
 
 def perform_get
   r = rest_get(@route)
+  p r
   write_response(r)
   exit
 end
