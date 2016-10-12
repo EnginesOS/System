@@ -6,7 +6,7 @@
 # @return [String] Authentication token
 get '/v0/system/login/:user_name/:password' do 
   $token = 'test_token_arandy'
-
+  content_type 'text/plain'
   return $token
 end
 
