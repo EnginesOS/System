@@ -17,6 +17,7 @@ class FirstRunWizard <ErrorsApi
   end
 
   def apply(api)
+    return false if @has_ran == true 
     @api = api
     SystemDebug.debug(SystemDebug.first_run,:applyin, @first_run_params)
     return log_error_mesg('failed to validate first run params') unless validate_params(@first_run_params)
@@ -29,6 +30,7 @@ class FirstRunWizard <ErrorsApi
   end
 
   def mark_as_run
+    @has_ran = true 
     #f = File.new(SystemConfig.FirstRunRan, 'w')
     #  date = DateTime.now
     #  f.puts(date.to_s)
