@@ -138,11 +138,11 @@ require 'json'
         begin
           r = ''
           chunk.strip!
-          STDERR.puts( ' CHUNK' + chunk )
+        #  STDERR.puts( ' CHUNK' + chunk )
           # xstrip this pattern out {\"log_file_path\":\"/apache2/access.log\",\"log_type\":\"apache\",\"log_name\":\"Mgmt Access Log\",\"ctype\":\"service\",\"parent_engine\":\"mgmt\"}
          # chunk.sub!(/\{\\\"*\}/,'')
           #FIX ME use stdin
-          chunk.sub!(/\{\\.*\}/,'')
+         # chunk.sub!(/\{\\.*\}/,'')
           parser.parse(chunk) do |hash|
             next unless hash.is_a?(Hash)
             SystemDebug.debug(SystemDebug.container_events,'received '  + hash.to_s)
