@@ -138,6 +138,7 @@ require 'json'
         begin
           r = ''
           chunk.strip!
+          STDERR.puts( ' CHUNK' + chunk )
           parser.parse(chunk) do |hash|
             next unless hash.is_a?(Hash)
             SystemDebug.debug(SystemDebug.container_events,'received '  + hash.to_s)
