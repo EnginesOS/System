@@ -129,6 +129,7 @@ module DockerApiCreateOptions
     bindings = {}
     return bindings if container.mapped_ports.nil?
     container.mapped_ports.each_value do |port|
+      port = SystemUtils.symbolize_keys(port)
       if port[:port].is_a?(String) && port[:port].include?('-') 
        add_port_range(bindings, port)
       else
@@ -294,8 +295,8 @@ def expose_port_range(eports, port)
         p+=1
        end
 end
-  def add_mapped_port(bindings, port )
-    port = SystemUtils.symbolize_keys(port)
+  def add_mapped_port(bindings, port )    
+    STDERR.puts('Mapping ' + port.to_s)
         local_side =     port[:port].to_s + '/' + get_protocol_str(port)
         remote_side = []
         remote_side[0] = {}
