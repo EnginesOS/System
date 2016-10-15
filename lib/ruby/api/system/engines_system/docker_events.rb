@@ -105,8 +105,8 @@ module DockerEvents
     log_exception(e)
   end
 
-  def start_docker_event_listener
-    docker_event_listener = DockerEventWatcher.new(self)
+  def start_docker_event_listener(listeners = nil)
+    docker_event_listener = DockerEventWatcher.new(self,listeners )
     @event_listener_thread = Thread.new { docker_event_listener.start}
     docker_event_listener
   rescue StandardError =>e
