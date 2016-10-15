@@ -86,7 +86,7 @@ module EngineServiceOperations
       args[0] = '/home/get_pubkey.sh'
       args[1] = cmd
 
-result =  exec_in_container({:container => container, :command_line => args, :log_error => true, :timeout =>30 }) 
+result =  exec_in_container({:container => container, :command_line => args, :log_error => true, :timeout =>30 , :data=>''}) 
   
 STDERR.puts('RESUTL 1 ' + result.to_s)
     return result unless result.is_a?(Hash)

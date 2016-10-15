@@ -125,6 +125,7 @@ require 'json'
     SystemDebug.debug(SystemDebug.container_events,'EVENT LISTENER')
   end
 
+  
   def start
     parser = Yajl::Parser.new(:symbolize_keys => true)
 
@@ -138,27 +139,10 @@ require 'json'
         begin
           r = ''
           chunk.strip!
-        #  STDERR.puts( ' CHUNK' + chunk )
-          # xstrip this pattern out {\"log_file_path\":\"/apache2/access.log\",\"log_type\":\"apache\",\"log_name\":\"Mgmt Access Log\",\"ctype\":\"service\",\"parent_engine\":\"mgmt\"}
-         # chunk.sub!(/\{\\\"*\}/,'')
-          #FIX ME use stdin
-         # chunk.sub!(/\{\\.*\}/,'')
           parser.parse(chunk) do |hash|
             next unless hash.is_a?(Hash)
-            SystemDebug.debug(SystemDebug.container_events,'received '  + hash.to_s)
-            if hash.key?(:from) && hash[:from].length >= 64
-              SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
-              next
-            end
-            @event_listeners.values.each do |listener|
-              unless listener.container_id.nil?
-                next unless hash[:id] == listener.container_id
-              end
-              log_exeception(r) if (r = listener.trigger(hash)).is_a?(StandardError)
-              log_error_mesg('Trigger error',r,hash) if r.is_a?(EnginesError)
-            end
+            trigger(hash)
           end
-        
         rescue StandardError => e
           log_error_mesg('Chunk error on docker Event Stream _' + chunk.to_s + '_')
           log_exception(e,chunk)
@@ -191,4 +175,20 @@ require 'json'
     log_exception(e)
   end
 
+  private
+  
+  def trigger(hash)
+ 
+if hash.key?(:from) && hash[:from].length >= 64
+          SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
+          next
+        end
+        @event_listeners.values.each do |listener|
+          unless listener.container_id.nil?
+            next unless hash[:id] == listener.container_id
+          end
+          log_exeception(r) if (r = listener.trigger(hash)).is_a?(StandardError)
+          log_error_mesg('Trigger error',r,hash) if r.is_a?(EnginesError)
+      end
+  end
 end
