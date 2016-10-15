@@ -53,6 +53,11 @@ mapped_ports:
   port: 115
   publicFacing: true
   external: 115
+ active_ports:
+  name: active_ports
+  port: "49900:50000"
+  publicFacing: true
+  external: "49900:50000"
 repo: na
 last_result: 
 setState: running
