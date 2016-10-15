@@ -141,6 +141,10 @@ require 'json'
           chunk.strip!
           parser.parse(chunk) do |hash|
             next unless hash.is_a?(Hash)
+            if hash.key?(:from) && hash[:from].length >= 64
+                      SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
+                      next
+                    end
             trigger(hash)
           end
         rescue StandardError => e
@@ -179,10 +183,7 @@ require 'json'
   
   def trigger(hash)
  
-if hash.key?(:from) && hash[:from].length >= 64
-          SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
-          next
-        end
+
         @event_listeners.values.each do |listener|
           unless listener.container_id.nil?
             next unless hash[:id] == listener.container_id
