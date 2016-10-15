@@ -122,7 +122,7 @@ require 'json'
     # FIXMe add conntection watcher that re establishes connection asap and continues trying after warngin ....
     @event_listeners = {}
     # add_event_listener([system, :container_event])
-    SystemDebug.debug(SystemDebug.container_events,'EVEMT LISTENER')
+    SystemDebug.debug(SystemDebug.container_events,'EVENT LISTENER')
   end
 
   def start
@@ -130,14 +130,19 @@ require 'json'
 
     req = Net::HTTP::Get.new('/events')
     client = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
-    client.continue_timeout = 360000
-    client.read_timeout = 360000
+    client.continue_timeout = 3600
+    client.read_timeout = 3600
 
     client.request(req) do |resp|
       resp.read_body do |chunk|
         begin
           r = ''
           chunk.strip!
+        #  STDERR.puts( ' CHUNK' + chunk )
+          # xstrip this pattern out {\"log_file_path\":\"/apache2/access.log\",\"log_type\":\"apache\",\"log_name\":\"Mgmt Access Log\",\"ctype\":\"service\",\"parent_engine\":\"mgmt\"}
+         # chunk.sub!(/\{\\\"*\}/,'')
+          #FIX ME use stdin
+         # chunk.sub!(/\{\\.*\}/,'')
           parser.parse(chunk) do |hash|
             next unless hash.is_a?(Hash)
             SystemDebug.debug(SystemDebug.container_events,'received '  + hash.to_s)
@@ -157,15 +162,17 @@ require 'json'
         rescue StandardError => e
           log_error_mesg('Chunk error on docker Event Stream _' + chunk.to_s + '_')
           log_exception(e,chunk)
-          @system.start_docker_event_listener
+         # @system.start_docker_event_listener
         end
       end      
     end
     log_error_mesg('Restarting docker Event Stream ')
+  STDERR.puts('Restarting docker Event Stream ')
     @system.start_docker_event_listener
   rescue StandardError => e
     log_exception(e)
     log_error_mesg('Restarting docker Event Stream post exception ')
+    STDERR.puts('Restarting docker Event Stream post exception')
     @system.start_docker_event_listener
   end
 

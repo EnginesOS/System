@@ -64,6 +64,7 @@ module FirstRunDNS
   def setup_dns
 
     domain_hash = get_domain_params(@first_run_params)
+    return log_error_mesg('Fail to add nill domain ', domain_hash) if domain_hash[:domain_name].nil?
     return log_error_mesg('Fail to add domain ' + @api.last_error, domain_hash) unless @api.add_domain_service(domain_hash)
     return r unless (r = apply_hostname(@first_run_params))
     return log_error_mesg('Fail to set default domain ' + @api.last_error, domain_hash.to_s) unless @api.set_default_domain(domain_hash)

@@ -2,21 +2,11 @@ module ServiceApiConfigurations
   @@configurator_timeout = 10
   def retrieve_configurator(c, params)
     # cmd = 'docker_exec -u ' + c.cont_userid + ' ' +  c.container_name + ' /home/configurators/read_' + params[:configurator_name].to_s + '.sh '
-    cmd =  '/home/configurators/read_' + params[:configurator_name].to_s + '.sh'
-    result = {}
-    begin
-      Timeout.timeout(@@configurator_timeout) do
-      thr = Thread.new {result =  @engines_core.exec_in_container({:container => c, :command_line => [cmd], :log_error => true }) }
-          #result = SystemUtils.execute_command(cmd) }
-        
-        thr.join
-      end
-    rescue Timeout::Error
-      return log_error_mesg('Timeout on retrieving Configuration',cmd)
-    end
-
+    cmd =  '/home/configurators/read_' + params[:configurator_name].to_s + '.sh'   
+     result =  @engines_core.exec_in_container({:container => c, :command_line => [cmd], :log_error => true, :timeout => @@configurator_timeout}) 
     if result[:result] == 0
       #variables = SystemUtils.hash_string_to_hash(result[:stdout])
+      #FIXMe dont use JSON.pars
       variables_hash = JSON.parse( result[:stdout], :create_additons => true ,:symbolize_keys => true)
       params[:variables] = SystemUtils.symbolize_keys(variables_hash)      
       return params
@@ -27,19 +17,9 @@ module ServiceApiConfigurations
 
   def run_configurator(c, configurator_params)
 
-    cmd = ['/home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh', SystemUtils.hash_variables_as_json_str(configurator_params[:variables]).to_s ]
+    cmd = ['/home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh']
     #cmd = 'docker_exec -u ' + container.cont_userid.to_s + ' ' +  container.container_name.to_s + ' /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh \'' + SystemUtils.hash_variables_as_json_str(configurator_params).to_s + '\''
-    result = {}
-    begin
-      Timeout.timeout(@@configurator_timeout) do
-      thr = Thread.new { result = @engines_core.exec_in_container({:container => c, :command_line => cmd, :log_error => true }) }
-        #SystemUtils.execute_command(cmd) }
-        thr.join
-      end
-    rescue Timeout::Error
-     return log_error_mesg('Timeout on running configurator',cmd)
-     
-    end
+     result = @engines_core.exec_in_container({:container => c, :command_line => cmd, :log_error => true , :timeout => @@configurator_timeout, :data=> configurator_params.to_json }) 
     @last_error = result[:stderr] # Dont log just set
     return result
   end
