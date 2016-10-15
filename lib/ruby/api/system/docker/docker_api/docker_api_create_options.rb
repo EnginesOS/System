@@ -9,6 +9,7 @@ module DockerApiCreateOptions
     #  @top_level['Mounts'] = volumes_mounts(container)
     @top_level['ExposedPorts'] = exposed_ports(container)
     @top_level['HostConfig'] = host_config_options(container)
+      STDERR.puts('create options ' + @top_level.to_s)
     return @top_level
   rescue StandardError => e
     log_exception(e)
