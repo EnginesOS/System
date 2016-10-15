@@ -290,7 +290,7 @@ def expose_port_range(eports, port)
       p = internal[0].to_i
       end_port = internal[1].to_i
       while p < end_port
-        expose_port(eports,{:port=> p, :external=>p, :proto_type=>get_protocol_str(port)})
+        add_exposed_port(eports,{:port=> p, :external=>p, :proto_type=>get_protocol_str(port)})
         p+=1
        end
 end
