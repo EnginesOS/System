@@ -117,14 +117,16 @@ class DockerEventWatcher  < ErrorsApi
   require 'socket'
 require 'json'
 
-  def initialize(system)
+  def initialize(system, event_listeners = nil )
     @system = system
     # FIXMe add conntection watcher that re establishes connection asap and continues trying after warngin ....
-    @event_listeners = {}
+    event_listeners = {} if event_listeners.nil?
+    @event_listeners = event_listeners
     # add_event_listener([system, :container_event])
     SystemDebug.debug(SystemDebug.container_events,'EVENT LISTENER')
   end
 
+  
   def start
     parser = Yajl::Parser.new(:symbolize_keys => true)
 
@@ -138,27 +140,14 @@ require 'json'
         begin
           r = ''
           chunk.strip!
-        #  STDERR.puts( ' CHUNK' + chunk )
-          # xstrip this pattern out {\"log_file_path\":\"/apache2/access.log\",\"log_type\":\"apache\",\"log_name\":\"Mgmt Access Log\",\"ctype\":\"service\",\"parent_engine\":\"mgmt\"}
-         # chunk.sub!(/\{\\\"*\}/,'')
-          #FIX ME use stdin
-         # chunk.sub!(/\{\\.*\}/,'')
           parser.parse(chunk) do |hash|
             next unless hash.is_a?(Hash)
-            SystemDebug.debug(SystemDebug.container_events,'received '  + hash.to_s)
             if hash.key?(:from) && hash[:from].length >= 64
-              SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
-              next
-            end
-            @event_listeners.values.each do |listener|
-              unless listener.container_id.nil?
-                next unless hash[:id] == listener.container_id
-              end
-              log_exeception(r) if (r = listener.trigger(hash)).is_a?(StandardError)
-              log_error_mesg('Trigger error',r,hash) if r.is_a?(EnginesError)
-            end
+                      SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
+                      next
+                    end
+            trigger(hash)
           end
-        
         rescue StandardError => e
           log_error_mesg('Chunk error on docker Event Stream _' + chunk.to_s + '_')
           log_exception(e,chunk)
@@ -168,12 +157,12 @@ require 'json'
     end
     log_error_mesg('Restarting docker Event Stream ')
   STDERR.puts('Restarting docker Event Stream ')
-    @system.start_docker_event_listener
+    @system.start_docker_event_listener(@event_listeners)
   rescue StandardError => e
     log_exception(e)
     log_error_mesg('Restarting docker Event Stream post exception ')
     STDERR.puts('Restarting docker Event Stream post exception')
-    @system.start_docker_event_listener
+    @system.start_docker_event_listener(@event_listeners)
   end
 
   def add_event_listener(listener, event_mask = nil, container_id = nil)
@@ -191,4 +180,17 @@ require 'json'
     log_exception(e)
   end
 
+  private
+  
+  def trigger(hash)
+ 
+
+        @event_listeners.values.each do |listener|
+          unless listener.container_id.nil?
+            next unless hash[:id] == listener.container_id
+          end
+          log_exeception(r) if (r = listener.trigger(hash)).is_a?(StandardError)
+          log_error_mesg('Trigger error',r,hash) if r.is_a?(EnginesError)
+      end
+  end
 end
