@@ -296,7 +296,7 @@ def expose_port_range(eports, port)
        end
 end
   def add_mapped_port(bindings, port )    
-    STDERR.puts('Mapping ' + port.to_s)
+  # STDERR.puts('Mapping ' + port.to_s)
         local_side =     port[:port].to_s + '/' + get_protocol_str(port)
         remote_side = []
         remote_side[0] = {}
