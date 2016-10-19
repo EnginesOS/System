@@ -46,7 +46,9 @@ module ContainerOperations
       SystemDebug.debug(SystemDebug.containers,  site.to_s) unless  site.is_a?(Hash)
       next unless site.is_a?(Hash) && site[:variables].is_a?(Hash)
       if site[:variables][:proto] == 'http_https'
-        protocol = 'https'
+        protocol = 'http'
+      elsif site[:variables][:proto] == 'https_http'
+        protocol = 'https'      
       else
         protocol = site[:variables][:proto]
         protocol = 'http' if protocol.nil?
