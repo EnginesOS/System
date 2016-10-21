@@ -60,7 +60,7 @@ rescue StandardError =>e
          keys += ' ' + key.to_s
        end
    SystemDebug.debug(SystemDebug.containers, :keys, keys )
-    SystemUtils.run_command('/opt/engines/scripts/setup_service_keys.sh ' + container_name  + keys)
+    SystemUtils.run_command('/opt/engines/system/scripts/system/setup_service_keys.sh ' + container_name  + keys)
  end
 
  

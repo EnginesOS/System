@@ -17,10 +17,15 @@ system_keys:
 - "run_system_backup"
 - "run_system_logs_backup"
 volumes:
- Volumes: 
-  name: Volumes
+ ApplicationVolumes: 
+  name: ApplicationVolumes
+  remotepath: "/backup_src/volumes/fs"
+  localpath: "/var/lib/engines/applications"
+  permissions: "ro"
+ ServiceVolumes: 
+  name: ServiceVolumes
   remotepath: "/backup_src/volumes/"
-  localpath: "/var/lib/engines/"
+  localpath: "/var/lib/engines/services"
   permissions: "ro"
  ServiceTypes: 
   name: ServiceTypes
