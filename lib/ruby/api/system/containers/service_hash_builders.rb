@@ -41,7 +41,7 @@ def create_zeroconf_service_hash(engine)
   end
   service_hash[:variables][:name] = service_hash[:variables][:hostname]
 
-  SystemDebug.debug(SystemDebug.containers,  :created_zeroconfdns_service_hash, service_hash)
+  SystemDebug.debug(SystemDebug.containers, :created_zeroconfdns_service_hash, service_hash)
   return service_hash
 end
 
@@ -76,7 +76,7 @@ def create_nginx_service_hash(engine)
     unless  engine.ctype == 'service'   
   service_hash[:variables][:www_path] = engine.web_root.to_s unless engine.web_root.to_s == ''
     else 
-      service_hash[:variables][:www_path] =''  
+      service_hash[:variables][:www_path] = ''  
   end
   SystemDebug.debug(SystemDebug.services,'create nginx Hash',service_hash)
   return service_hash

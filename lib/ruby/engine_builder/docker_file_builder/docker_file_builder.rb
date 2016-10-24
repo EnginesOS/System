@@ -11,6 +11,8 @@ class DockerFileBuilder
     @docker_file = File.open(@builder.basedir + '/Dockerfile', 'a')
     @layer_count = 0
     @env_file = File.new(@builder.basedir + '/build.env','w+')
+    # this should be read as it is framework dep
+    @max_layers = 75 
   end
 
   def log_build_output(line)
@@ -23,7 +25,7 @@ class DockerFileBuilder
 
   def count_layer
     @layer_count += 1
-    if @layer_count > 75
+    if @layer_count > @max_layers
       @builder.log_build_errors("More than 75 layers!")
     end
   end

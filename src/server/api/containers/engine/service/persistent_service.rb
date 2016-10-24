@@ -94,7 +94,7 @@ end
 
 
 # @method get_engine_persistent_service
-# @overload get '/v0/containers/engine/:sengine_name/services/persistent/'
+# @overload get '/v0/containers/engine/:engine_name/services/persistent/'
 # Return the persistent services registered to the engine (which this engine consumes)
 # @return [Array]
 

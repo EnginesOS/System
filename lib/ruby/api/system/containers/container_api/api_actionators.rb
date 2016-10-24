@@ -8,28 +8,16 @@ module ApiActionators
     end
 
     cmds = ['/home/actionators/' + actionator_name + '.sh',args.to_s]
-    result = {}
-    begin
-      Timeout.timeout(@@action_timeout) do
-        thr = Thread.new do
-          begin
+
+
             if data.nil?
-              result = engines_core.exec_in_container({:container => c, :command_line => cmds, :log_error => true })
+              result = engines_core.exec_in_container({:container => c, :command_line => cmds, :log_error => true, :data=>nil })
               #      result = SystemUtils.execute_command(cmd)
             else
               result = engines_core.exec_in_container({:container => c, :command_line => cmds, :log_error => true , :data => data})
               # result = SystemUtils.execute_command(cmd, false, data)
             end
-          rescue StandardError =>e
-            log_exception(e)
-          end
-        end
-        thr.join
-      end
-    rescue Timeout::Error
-      return  log_error_mesg('Timeout on Running Action ', cmds.to_s)
-
-    end
+          
     return result if result.is_a?(EnginesError)
 
     if result[:result] == 0

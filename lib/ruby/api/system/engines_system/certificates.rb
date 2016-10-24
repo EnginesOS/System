@@ -25,7 +25,6 @@ module Certificates
   end
 
   def get_system_ca
-
     certs_service = loadManagedService('cert_auth')
     return certs_service if certs_service.is_a?(EnginesError)
     certs_service.perform_action('system_ca',nil)
