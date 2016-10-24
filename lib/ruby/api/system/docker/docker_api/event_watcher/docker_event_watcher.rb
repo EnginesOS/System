@@ -158,6 +158,9 @@ require 'json'
     log_error_mesg('Restarting docker Event Stream ')
   STDERR.puts('Restarting docker Event Stream ')
     @system.start_docker_event_listener(@event_listeners)
+  rescue Net::ReadTimeout
+    STDERR.puts('Restarting docker Event Stream Read Timeout')
+    @system.start_docker_event_listener(@event_listeners)
   rescue StandardError => e
     log_exception(e)
     log_error_mesg('Restarting docker Event Stream post exception ')
