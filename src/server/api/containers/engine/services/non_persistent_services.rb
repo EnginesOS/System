@@ -14,7 +14,7 @@ end
 
 # @method add_engine_non_persistent_service
 # @overload post '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/:type_path/'
-#  add non persistent services in the :publisher_namespace and :type_path   registered to the engine with posted params
+#  add non persistent services in the :publisher_namespace and :type_path registered to the engine with posted params
 # post api_vars :variables  
 # @return [true|false]
 

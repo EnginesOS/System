@@ -104,4 +104,24 @@ get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/
   return log_error(request, r, hash) if r.is_a?(EnginesError)
   r.to_json
 end
+
+# @method update_engine_persistent_service
+# @overload post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/:type_path/:service_handle'
+# update  persistent service in the :publisher_namespace :type_path and service_handle registered to the engine with posted params
+# post api_vars :variables  Note attempts to change service_handle will fail
+# @return [true|false]
+
+post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*' do
+  p_params = post_params(request)
+   path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, false)
+   p_params.merge!(path_hash)
+   cparams =  Utils::Params.assemble_params(p_params, [:parent_engine,:publisher_namespace, :type_path, :service_handle], :all)
+   return log_error(request,cparams,p_params) if cparams.is_a?(EnginesError)
+ 
+  r = engines_api.update_attached_service(cparams)
+  return log_error(request, r, hash) if r.is_a?(EnginesError)
+  content_type 'text/plain' 
+  r.to_s
+end
+
 # @!endgroup
