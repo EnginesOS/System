@@ -20,12 +20,12 @@ mapped_ports:
 environments:
 - !ruby/object:EnvironmentVariable
  name: SYSTEM_API_URL
- value: http://172.17.0.1:2380/
+ value: http://_Engines_System(docker_ip):2380/
  has_changed: true 
  build_time_only: false
 - !ruby/object:EnvironmentVariable
  name: HOSTNAME
- value: 'mgmt_'
+ value: _Engines_System(system_hostname)
  has_changed: true 
  build_time_only: false 
 - !ruby/object:EnvironmentVariable 

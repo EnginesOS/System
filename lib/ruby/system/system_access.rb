@@ -81,4 +81,8 @@ class SystemAccess
     # FixME read docker0 ip or cmd line option
     '172.17.0.1'
   end
+def system_hostname
+  @engines_api.system_hostname
+end
+  
 end
