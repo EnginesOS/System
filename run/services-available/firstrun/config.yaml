@@ -20,9 +20,14 @@ mapped_ports:
 environments:
 - !ruby/object:EnvironmentVariable
  name: SYSTEM_API_URL
- value: http://control.engines.internal:2380/
+ value: http://172.17.0.1:2380/
  has_changed: true 
  build_time_only: false
+- !ruby/object:EnvironmentVariable
+ name: HOSTNAME
+ value: 'mgmt_'
+ has_changed: true 
+ build_time_only: false 
 - !ruby/object:EnvironmentVariable 
  name: SYSTEM_RELEASE
  value: _Engines_System(release)
