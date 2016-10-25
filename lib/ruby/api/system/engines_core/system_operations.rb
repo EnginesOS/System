@@ -61,9 +61,11 @@ module SystemOperations
   def system_image_free_space
     @system_api.system_image_free_space
   end
+  
   def available_ram
     @system_api.available_ram
   end
+  
   def system_hostname
     @system_api.system_hostname
 end
