@@ -24,7 +24,7 @@ volumes:
   permissions: "ro"
  ServiceVolumes: 
   name: ServiceVolumes
-  remotepath: "/backup_src/volumes/"
+  remotepath: "/backup_src/volumes/services"
   localpath: "/var/lib/engines/services"
   permissions: "ro"
  ServiceTypes: 
