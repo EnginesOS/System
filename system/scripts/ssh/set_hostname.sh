@@ -1,7 +1,10 @@
 #/bin/sh
 
-hostname=`echo  $SSH_ORIGINAL_COMMAND | awk '{print $2}'`
-domainname=`echo  $SSH_ORIGINAL_COMMAND | awk '{print $3}'`
+params=`cat -`
+
+hostname=`echo $params | awk '{print $1}'`
+domainname=`echo $params | awk '{print $2}'`
+
 if ! test -z $domainname
  then
 	sudo -n hostname $hostname
