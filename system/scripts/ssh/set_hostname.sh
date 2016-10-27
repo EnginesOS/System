@@ -11,5 +11,5 @@ if ! test -z $domainname
 else
 	sudo -n hostname $hostname.$domainname
 fi
-
-echo hostname $hostname.$domainname > /tmp/set_hostname
+echo $params >/tmp/set_hostname
+echo hostname $hostname.$domainname >> /tmp/set_hostname
