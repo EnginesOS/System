@@ -11,10 +11,12 @@ default_domain:
 	engines_tool system config default_domain | engines_test_expects text testdomain.com
 
 set_hostname:
+	host=`hostname`
 	engines_tool system config set hostname testhost | engines_test_expects bool true	
 
 hostname:
 	engines_tool system config  hostname testhost | engines_test_expects text testhost
+	engines_tool system config set host $host | engines_test_expects bool true
 
 set_default_site:
 	engines_tool system config set default_site mysite.com.au | engines_test_expects bool true	
