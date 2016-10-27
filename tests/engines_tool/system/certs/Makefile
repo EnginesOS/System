@@ -1,4 +1,4 @@
-TESTS=list view set_default default remove add system_ca 
+TESTS=list view set_default default add remove  system_ca 
 
 tests:
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
