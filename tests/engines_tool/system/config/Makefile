@@ -1,6 +1,7 @@
 TESTS=set_default_domain default_domain set_hostname hostname set_default_site default_site remote_exception_logging
 
 tests:
+	host=`hostname`
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 	
 	
@@ -11,7 +12,6 @@ default_domain:
 	engines_tool system config default_domain | engines_test_expects text testdomain.com
 
 set_hostname:
-	host=`hostname`
 	engines_tool system config set hostname testhost | engines_test_expects bool true	
 
 hostname:
