@@ -2,8 +2,8 @@
 
 params=`cat -`
 
-hostname=`echo $params | cut -f1 -d. `
-domainname=`echo $params | cut f 2- d.`
+hostname=`echo $params | cut -f1 -d . `
+domainname=`echo $params | cut -f 2- d .`
 
 if ! test -z $domainname
  then
