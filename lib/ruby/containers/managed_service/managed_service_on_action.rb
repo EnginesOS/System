@@ -9,7 +9,6 @@ module ManagedServiceOnAction
            @container_api.update_service_configuration(configuration)
          end
        end
-  STDERR.puts('TO REGISTER') 
       reregister_consumers
   SystemDebug.debug(SystemDebug.container_events,:ON_start_complete_MS,event_hash)    
   rescue StandardError => e

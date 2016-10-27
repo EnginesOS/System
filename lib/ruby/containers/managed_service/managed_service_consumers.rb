@@ -38,7 +38,6 @@ module ManagedServiceConsumers
   end
 
   def reregister_consumers
-    STDERR.puts('RE REGISTER')
     return true if @persistent == true
     return log_error_mesg('Cant register consumers as not running ',self)  if is_running? == false
     registered_hashes = registered_consumers
@@ -46,7 +45,6 @@ module ManagedServiceConsumers
     return true if registered_hashes.is_a?(EnginesError) # no consumers
     
     registered_hashes.each do |service_hash|
-      STDERR.puts('re reg ' + service_hash.to_s)
       add_consumer_to_service(service_hash) if service_hash[:persistent] == false
     end
     return true
