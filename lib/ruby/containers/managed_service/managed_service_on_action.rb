@@ -36,9 +36,10 @@ module ManagedServiceOnAction
 
   def wait_for_startup
     n=0
-    while n < 4
+    while n < 10
       n = n + 1
       sleep(0.5) unless is_startup_complete?
+      STDERR.puts('n ' + n.to_s)
     end
   end
   
