@@ -19,6 +19,7 @@ module PublicApiConfig
        service_param[:variables] = {}
        service_param[:variables][:hostname] = hostname
        service_param[:variables][:domain_name] = get_default_domain
+         STDERR.puts('set hostname params ' + service_param.to_s )
      @core_api.update_service_configuration(service_param)
      end
  
