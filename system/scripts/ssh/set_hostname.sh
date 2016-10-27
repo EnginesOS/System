@@ -1,9 +1,9 @@
 #/bin/sh
 
-params=$1
+params=`cat -`
 
-hostname=`echo $params | awk '{print $1}'`
-domainname=`echo $params | awk '{print $2}'`
+hostname=`echo $params | cut -f1 -d. `
+domainname=`echo $params | cut f 2- d.`
 
 if ! test -z $domainname
  then
