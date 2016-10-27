@@ -1,4 +1,4 @@
-class ConfigurationsApi <ErrorsApi
+class ConfiguratidonsApi <ErrorsApi
   def initialize(core_api)
     @core_api = core_api
   end
