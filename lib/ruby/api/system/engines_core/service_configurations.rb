@@ -37,7 +37,8 @@ module ServiceConfigurations
   def update_service_configuration(service_param)
     # configurator = ConfigurationsApi.new(self)
     r = ''
-    return r unless (r = update_configuration_on_service(service_param))
+    return r unless (r = update_configuration_on_service(service_param)).is_a?(EnginesError)
+      STDERR.puts('update_service_configuration' + r.to_s )
     return  service_manager.update_service_configuration(service_param)
 
   end
