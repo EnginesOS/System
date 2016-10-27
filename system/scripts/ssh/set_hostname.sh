@@ -1,6 +1,6 @@
 #/bin/sh
 
-params=`cat -`
+params=$1
 
 hostname=`echo $params | awk '{print $1}'`
 domainname=`echo $params | awk '{print $2}'`
