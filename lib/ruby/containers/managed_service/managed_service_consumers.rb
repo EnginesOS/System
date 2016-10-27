@@ -45,6 +45,7 @@ module ManagedServiceConsumers
     return true if registered_hashes.is_a?(EnginesError) # no consumers
     
     registered_hashes.each do |service_hash|
+      STDERR.puts('re reg ' + service_hash.to_s)
       add_consumer_to_service(service_hash) if service_hash[:persistent] == false
     end
     return true
