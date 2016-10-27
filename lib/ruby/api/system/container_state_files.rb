@@ -1,7 +1,7 @@
 class ContainerStateFiles
   def self.build_running_service(service_name, service_type_dir,system_value_access)
     config_template_file_name = service_type_dir + service_name + '/config.yaml'
-    return SystemUtils.log_error_mesg('Running exits', service_name) unless File.exist?(config_template_file_name)
+    return SystemUtils.log_error_mesg('Running exist', service_name) unless File.exist?(config_template_file_name)
     config_template = File.read(config_template_file_name)
     templator = Templater.new(system_value_access, nil)
     running_config = templator.process_templated_string(config_template)

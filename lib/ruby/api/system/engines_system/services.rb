@@ -44,9 +44,13 @@ module Services
   def loadManagedService(service_name)
     s = engine_from_cache('services/' + service_name)
     return s if s.is_a?(ManagedService)
-    s = _loadManagedService(service_name,  '/services/')
-    ts = File.mtime(SystemConfig.RunDir + '/services/' + service_name + '/running.yaml')
-    cache_engine(s, ts)
+    if service_name == 'system'
+      s = loadSystemService(service_name)
+    else    
+      s = _loadManagedService(service_name,  '/services/')    
+      ts = File.mtime(SystemConfig.RunDir + '/services/' + service_name + '/running.yaml')
+      cache_engine(s, ts)
+    end
     return s
   rescue StandardError => e
     return nil

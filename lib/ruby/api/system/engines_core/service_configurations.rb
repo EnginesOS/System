@@ -37,8 +37,11 @@ module ServiceConfigurations
   def update_service_configuration(service_param)
     # configurator = ConfigurationsApi.new(self)
     r = ''
-    return r unless (r = update_configuration_on_service(service_param))
-    return  service_manager.update_service_configuration(service_param)
+    r = update_configuration_on_service(service_param)
+    STDERR.puts('update_service_configuration' + r.to_s )
+    return r unless r.is_a?(EnginesError)
+      
+    return service_manager.update_service_configuration(service_param)
 
   end
 
@@ -104,6 +107,7 @@ end
      end
      # set config on reunning service
      configurator_result =  service.run_configurator(service_param)
+     STDERR.puts('configurator_result ' + configurator_result.to_s)
      return log_error_mesg('Service configurator erro@core_api.r incorrect result type ', configurator_result.to_s) unless configurator_result.is_a?(Hash)
      return log_error_mesg('Service configurator error ', configurator_result.to_s) unless configurator_result[:result] == 0 || configurator_result[:stderr].start_with?('Warning')
      return true
