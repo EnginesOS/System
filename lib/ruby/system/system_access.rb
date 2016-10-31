@@ -53,6 +53,11 @@ class SystemAccess
     return  prefs.get_default_domain
   end
 
+  def publickey
+    pk = @engines_api.get_public_key()
+    pk
+  end
+  
   def pubkey(type)
     return '' if @engines_api.nil?
     args = type.split('_')
