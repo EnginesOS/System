@@ -88,7 +88,7 @@ module EnginesOperations
         #         new_variables.each do |new_env|
         new_variables.each_pair do |new_env_name, new_env_value|
          r = container.update_environment(new_env_name, new_env_value)
-         return r unless r.is_a?(TrueClass)
+        # return r unless r.is_a?(TrueClass)
         end
         
       STDERR.puts(' RAM   RAM RAM RAMRA MRAMA SRAFRSDGFASDFASDFASDSDFDFASASDFASDF ' + new_memory)
