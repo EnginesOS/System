@@ -1,11 +1,11 @@
 module ManagedContainerEnvironment
-  def update_environment(key,value, add=false)
+  def update_environment(key, value, add=false)
     SystemDebug.debug(SystemDebug.containers, :update_environment, key, value, @environments)
     return log_error_mesg('No envionment varaibles') if @environments.nil?
     
     @environments.each do |environment|    
-    if environment.name == key.to_s
-      STDERR.puts(' Evn ' + environment.name.to_s  + ':' + environment.value.to_s) 
+    if environment.name == key
+      STDERR.puts(' Evn ' + environment.name.to_s  + ':' + environment.value.to_s + ' for ' + key) 
       SystemDebug.debug(SystemDebug.containers, :update_environment, "Changed")
       return log_error_mesg(' variable ' + environment.name + ' immutable' )  if environment.immutable == true
       environment.value = value 
