@@ -23,8 +23,7 @@ class Container < ErrorsApi
     container.post_load
     return container
   rescue Exception => e
-    SystemUtils.log_error_mesg(" Failed to Load yaml ", yaml)
-    SystemUtils.log_exception(e)
+    SystemUtils.log_error_mesg(" Failed to Load yaml " + e.to_s, yaml)
   end
 
   attr_reader :container_id,\

@@ -8,5 +8,6 @@ restart:
 	 #engines_tool system control registry restart  | engines_test_expects bool true
 	 
 recreate:
-	system_service.rb registry stop 
-	system_service.rb registry recreate  | engines_test_expects bool true
+	system_service.rb registry stop
+	 system_service.rb registry destroy
+	system_service.rb registry create  | engines_test_expects bool true
