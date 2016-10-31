@@ -84,7 +84,7 @@ end
 # get engine process lists
 # @return [Hash] keys Processes:[Array] Titles:[Array]
 get '/v0/containers/service/:service_name/ps' do
-  engine = get_service(params[:service_name])
+  service = get_service(params[:service_name])
   return log_error(request, service, params) if service.is_a?(EnginesError)
   r = service.ps_container
   return log_error(request, r, service.last_error) if r.is_a?(EnginesError)

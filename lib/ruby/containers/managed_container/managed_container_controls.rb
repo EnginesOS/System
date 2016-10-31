@@ -7,8 +7,10 @@ module ManagedContainerControls
   end
 
   def update_memory(new_memory)
-     super
-     update_environment('Memory',memory,true)
+     super   
+     @memory = new_memory
+    save_state 
+     update_environment('Memory',new_memory,true)
    end
    
   def destroy_container(reinstall=false)
