@@ -7,8 +7,7 @@ module ManagedContainerControls
   end
 
   def update_memory(new_memory)
-     super
-     STDERR.puts(' RAM   RAM RAM RAMRA MRAMA SRAFRSDGFASDFASDFASDSDFDFASASDFASDF ' + new_memory)
+     super   
      @memory = new_memory
     save_state 
      update_environment('Memory',new_memory,true)

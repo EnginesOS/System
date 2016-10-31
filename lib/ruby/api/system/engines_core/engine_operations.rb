@@ -80,7 +80,7 @@ module EnginesOperations
       return EnginesCoreError.new('Container is active', :warning)
     end
     r = false
-    STDERR.puts(' RAM   RAM RAM RAMRA MRAMA SRAFRSDGFASDFASDFASDSDFDFASASDFASDF ' + params.to_s)
+ 
 
     if params.key?(:environment_variables) && ! params[:environment_variables].nil?
       new_variables = params[:environment_variables]
@@ -92,20 +92,17 @@ module EnginesOperations
         # return r unless r.is_a?(TrueClass)
         end
       end    
-      STDERR.puts(' RAM   RAM RAM RAMRA MRAMA SRAFRSDGFASDFASDFASDSDFDFASASDFASDF ' + params[:memory].to_s)
+     
       
       if params.key?(:memory) &&  ! params[:memory].nil?
         if params[:memory] == container.memory
           return r if r.is_a?(TrueClass)
           return EnginesCoreError.new('Error no Change in Memory Value', :warning)
-        end
-        STDERR.puts(' RAM   RAM RAM RAMRA MRAMA SRAFRSDGFASDFASDFASDSDFDFASASDFASDF ' + params[:memory].to_s)
-        return container.update_memory(params[:memory])
+        end      
+         container.update_memory(params[:memory])
       end
       true
-     # end
-      #
-   
+
 
     if container.has_container?
       r = container.destroy_container
