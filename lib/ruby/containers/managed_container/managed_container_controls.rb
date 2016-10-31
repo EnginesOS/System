@@ -8,7 +8,8 @@ module ManagedContainerControls
 
   def update_memory(new_memory)
      super
-     update_environment('Memory',memory,true)
+     STDERR.puts(' Ram ' + new_memory)
+     update_environment('Memory',new_memory,true)
    end
    
   def destroy_container(reinstall=false)

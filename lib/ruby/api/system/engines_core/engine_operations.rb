@@ -90,6 +90,7 @@ module EnginesOperations
          r = container.update_environment(new_env_name, new_env_value)
          return r unless r.is_a?(TrueClass)
         end
+        
       if params.key?(:memory) &&  ! params[:memory].nil?
         if params[:memory] == container.memory
           return r if r.is_a?(TrueClass)
