@@ -12,7 +12,7 @@ module ManagedContainerEnvironment
       environment.value = value 
       return true
     end
-    return log_error_mesg('no matching variable ' + environment.name )  
+   
     end
     
     if add == true
@@ -21,7 +21,7 @@ module ManagedContainerEnvironment
       @environments.push(env)
       return true
     end
-    
+    return log_error_mesg('no matching variable ' + environment.name )  
   rescue StandardError => e
     log_exception(e,:update_environment,key,value, add)
   end
