@@ -5,7 +5,8 @@ module ManagedContainerEnvironment
     
     @environments.each do |environment|    
     if environment.name == key.to_s
-      SystemDebug.debug(SystemDebug.containers, :update_environment, "Cahnged")
+      STDERR.puts(' Evn ' + environment.to_s)
+      SystemDebug.debug(SystemDebug.containers, :update_environment, "Changed")
       return log_error_mesg(' variable ' + environment.name + ' immutable' )  if environment.immutable == true
       environment.value = value 
       return true
