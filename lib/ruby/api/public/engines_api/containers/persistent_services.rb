@@ -1,5 +1,5 @@
 module PublicApiContainersPersistentServices
-  def create_and_register_persistent_service(cparams)
+  def create_and_register_persistent_service(service_hash)
     @core_api.create_and_register_service(service_hash)
   end
 
@@ -15,7 +15,7 @@ module PublicApiContainersPersistentServices
     @core_api.update_attached_service(service_hash)
   end
 
-  def remove_persistent_service(cparams)
+  def remove_persistent_service(service_hash)
     @core_api.dettach_service(service_hash)
   end
 
