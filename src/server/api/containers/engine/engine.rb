@@ -78,3 +78,14 @@ get '/v0/containers/engine/:engine_name/logs' do
   
     return r.to_json
 end
+# @method get_engine_status
+# @overload get '/v0/containers/engine/:engine_name/ps' 
+# get engine process lists
+# @return [Array]
+get '/v0/containers/engine/:engine_name/ps' do
+  engine = get_engine(params[:engine_name])
+  return log_error(request, engine, params) if engine.is_a?(EnginesError)
+  r = engine.ps_container
+  return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
+  r.to_json
+end
