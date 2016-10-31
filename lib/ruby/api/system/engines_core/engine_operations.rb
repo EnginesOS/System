@@ -79,20 +79,24 @@ module EnginesOperations
     if container.is_active?
       return EnginesCoreError.new('Container is active', :warning)
     end
-    if params.key?(:memory) &&  ! params[:memory].nil?
-      if params[:memory] == container.memory
-        return EnginesCoreError.new('Error no Change in Memory Value', :warning)
-      end
-      return container.update_memory(params[:memory])
-    end
+    
+
     if params.key?(:environment_variables) && ! params[:environment_variables].nil?
       new_variables = params[:environment_variables]
 
       #   container.environments.each do |env|
         #         new_variables.each do |new_env|
         new_variables.each_pair do |new_env_name, new_env_value|
-          container.update_environment(new_env_name, new_env_value)
+         r = container.update_environment(new_env_name, new_env_value)
+         return r unless r.is_a?(TrueClass)
         end
+      if params.key?(:memory) &&  ! params[:memory].nil?
+        if params[:memory] == container.memory 
+          return EnginesCoreError.new('Error no Change in Memory Value', :warning)
+        end
+        return container.update_memory(params[:memory])
+      end
+      true
      # end
       #
     end
