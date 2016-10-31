@@ -91,7 +91,7 @@ module EnginesOperations
          r = container.update_environment(new_env_name, new_env_value)
         # return r unless r.is_a?(TrueClass)
         end
-        
+      end    
       STDERR.puts(' RAM   RAM RAM RAMRA MRAMA SRAFRSDGFASDFASDFASDSDFDFASASDFASDF ' + params[:memory].to_s)
       
       if params.key?(:memory) &&  ! params[:memory].nil?
@@ -105,7 +105,7 @@ module EnginesOperations
       true
      # end
       #
-    end
+   
 
     if container.has_container?
       r = container.destroy_container
