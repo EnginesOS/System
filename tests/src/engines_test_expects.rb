@@ -13,7 +13,7 @@ def check_length(check, len)
     return true if @data.length > len 
       
   end
- STDERR.puts(' got lenght of ' + @data.length.to_s  )
+  STDERR.puts('got lenght of ' + @data.length.to_s + ' but expected ' + check + ' ' + len.to_s )
   return false
   end
     
