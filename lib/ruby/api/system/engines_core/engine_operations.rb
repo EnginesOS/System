@@ -91,11 +91,14 @@ module EnginesOperations
          return r unless r.is_a?(TrueClass)
         end
         
+      STDERR.puts(' RAM   RAM RAM RAMRA MRAMA SRAFRSDGFASDFASDFASDSDFDFASASDFASDF ' + new_memory)
+      
       if params.key?(:memory) &&  ! params[:memory].nil?
         if params[:memory] == container.memory
           return r if r.is_a?(TrueClass)
           return EnginesCoreError.new('Error no Change in Memory Value', :warning)
         end
+        STDERR.puts(' RAM   RAM RAM RAMRA MRAMA SRAFRSDGFASDFASDFASDSDFDFASASDFASDF ' + new_memory)
         return container.update_memory(params[:memory])
       end
       true
