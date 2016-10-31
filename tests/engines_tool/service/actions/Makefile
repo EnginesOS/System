@@ -12,5 +12,5 @@ action:
 	engines_tool  service email action list_addresses  | engines_test_expects json name list_addresses
 
 action_perform:
- 	echo ""| engines_tool engine prosody action perform list_addresses  | engines_test_expects test "@"
+	echo ""| engines_tool engine prosody action perform list_addresses  | engines_test_expects test "@"
  	

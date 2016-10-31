@@ -1,4 +1,4 @@
-TESTS=add list remove
+TESTS=list remove view add 
 
 tests:
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
