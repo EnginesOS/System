@@ -1,17 +1,19 @@
 require 'json'
 
 def check_length(check, len)
+  @data.strip!
+  
   case check
     when 'eq'
   
-    return true if @data.length == len +2  
+    return true if @data.length == len 
        
     when 'gt'
     
-    return true if @data.length > len + 2 
+    return true if @data.length > len 
       
   end
-
+ STDERR.puts(' got lenght of ' + @data.length  )
   return false
   end
     
