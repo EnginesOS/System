@@ -55,6 +55,7 @@ return r
       service_hash[:variables][:permissions] = PermissionRights.new(service_hash[:parent_engine] , '', '')
     end
     SystemDebug.debug(SystemDebug.builder, :Complete_Volume_service_hash, service_hash)
+    service_hash[:service_handle] =  service_hash[:service_name] unless service_hash.key?(:service_handle) &&  !service_hash[:service_handle].nil?
     service_hash
   end
 
