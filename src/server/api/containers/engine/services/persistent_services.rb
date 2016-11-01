@@ -33,6 +33,7 @@ post '/v0/containers/engine/:engine_name/services/persistent/:publisher_namespac
   p_params = post_params(request)
   path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, true)
   p_params.merge!(path_hash)
+  STDERR.puts('ADD PERSIST ' + p_params.to_s )
   cparams =  Utils::Params.assemble_params(p_params, [:parent_engine,:publisher_namespace, :type_path], :all)
   return log_error(request,cparams,p_params) if cparams.is_a?(EnginesError)
   r = engines_api.create_and_register_persistent_service(cparams)
@@ -76,7 +77,7 @@ post '/v0/containers/engine/:engine_name/services/persistent/orphan/:owner/:publ
 end
 
 # @method del_engine_persistent_service
-# @overload delete '/v0/containers/engine/:engine_name/services/persistent/:remove_all_data/:publisher_namespace/:type_path/:service_handle/'
+# @overload delete '/v0/containers/engine/:engine_name/services/persistent/:remove_all_data/:publisher_namespace/:type_path/:service_handle'
 #  delete non persistent services sddressed by :publisher_namespace, :type_path :service_handle registered to the engine
 # @return [true|false]
 # :remove_all_data all|none

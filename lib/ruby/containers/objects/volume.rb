@@ -27,6 +27,8 @@ return r
   attr_reader :permissions, :name, :remotepath, :localpath, :user, :group, :vol_permissions, :permissions
 
   def Volume.complete_service_hash(service_hash)
+    service_hash[:service_handle] =  service_hash[:service_name] unless service_hash.key?(:service_handle) &&  !service_hash[:service_handle].nil?
+      
     service_hash[:variables][:engine_path] = service_hash[:variables][:service_name] if service_hash[:variables][:engine_path].nil? || service_hash[:variables][:engine_path] == ''
     if service_hash[:variables][:engine_path] == '/home/app/' || service_hash[:variables][:engine_path]  == '/home/app'
       service_hash[:variables][:engine_path] = '/home/app/'
@@ -55,6 +57,7 @@ return r
       service_hash[:variables][:permissions] = PermissionRights.new(service_hash[:parent_engine] , '', '')
     end
     SystemDebug.debug(SystemDebug.builder, :Complete_Volume_service_hash, service_hash)
+  
     service_hash
   end
 

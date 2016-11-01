@@ -27,7 +27,6 @@ module PublicApiContainersNonPersistentServices
    
    
   def create_and_register_service(service_hash)
-    STDERR.puts('ASDAADDAASDcreate_and_register_service' + service_hash.to_s )
     @core_api.create_and_register_service(service_hash)
   end
  
