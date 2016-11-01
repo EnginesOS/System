@@ -25,7 +25,7 @@ end
 
 # @method add_engine_persistent_service
 # @overload post '/v0/containers/engine/:engine_name/services/persistent/:publisher_namespace/:type_path'
-#  add persistent service in the :publisher_namespace and :type_path  :service_handle registered to the engine with posted params
+#  add persistent service in the :publisher_namespace and :type_path  the engine with posted params
 # post api_vars :variables
 # @return [true|false]
 
@@ -33,7 +33,7 @@ post '/v0/containers/engine/:engine_name/services/persistent/:publisher_namespac
   p_params = post_params(request)
   path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, true)
   p_params.merge!(path_hash)
-  cparams =  Utils::Params.assemble_params(p_params, [:parent_engine,:publisher_namespace, :type_path, :service_handle], :all)
+  cparams =  Utils::Params.assemble_params(p_params, [:parent_engine,:publisher_namespace, :type_path], :all)
   return log_error(request,cparams,p_params) if cparams.is_a?(EnginesError)
   r = engines_api.create_and_register_persistent_service(cparams)
   return log_error(request, r, cparams,to_s) if r.is_a?(EnginesError)
