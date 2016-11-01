@@ -30,6 +30,7 @@ class ServiceDefinitions
            end
      return service_hash if service_hash.key?(:service_handle) && ! service_hash[:service_handle].nil?
      
+       STDERR.puts('SETTING SERVICE HANDLE in ' + service_hash.to_s  + ' USING ' + service_def[:service_handle_field].to_s )
      if service_def.key?(:service_handle_field) && !service_def[:service_handle_field].nil?
      handle_field_sym = service_def[:service_handle_field].to_sym
        return SystemUtils.log_error_mesg('Missing Service Handle field in variables',handle_field_sym) unless service_hash[:variables].key?(handle_field_sym)
@@ -37,6 +38,7 @@ class ServiceDefinitions
      else
        service_hash[:service_handle] = container_name
      end    
+    STDERR.puts('NOW Set service handle field ' + service_hash.to_s)
      return service_hash   
        rescue StandardError => e
          SystemUtils.log_exception(e)
