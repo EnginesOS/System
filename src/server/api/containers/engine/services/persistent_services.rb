@@ -32,6 +32,7 @@ end
 post '/v0/containers/engine/:engine_name/services/persistent/share/:owner/:publisher_namespace/*' do
   p_params = post_params(request)
   path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, false)
+  STDERR.puts('ADD Share ' + path_hash.to_s )
   p_params.merge!(path_hash)
   STDERR.puts('ADD Share ' + p_params.to_s )
   cparams =  Utils::Params.assemble_params(p_params, [:engine_name,:owner,:publisher_namespace, :type_path, :service_handle], :all)
