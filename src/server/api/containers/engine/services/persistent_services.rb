@@ -76,7 +76,7 @@ post '/v0/containers/engine/:engine_name/services/persistent/orphan/:owner/:publ
 end
 
 # @method del_engine_persistent_service
-# @overload delete '/v0/containers/engine/:engine_name/services/persistent/:remove_all_data/:publisher_namespace/:type_path/:service_handle/'
+# @overload delete '/v0/containers/engine/:engine_name/services/persistent/:remove_all_data/:publisher_namespace/:type_path/:service_handle'
 #  delete non persistent services sddressed by :publisher_namespace, :type_path :service_handle registered to the engine
 # @return [true|false]
 # :remove_all_data all|none
