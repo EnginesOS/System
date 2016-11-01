@@ -67,7 +67,7 @@ post '/v0/containers/engine/:engine_name/services/persistent/orphan/:owner/:publ
   p_params = post_params(request)
   path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, false)
   p_params.merge!(path_hash)
-  cparams =  Utils::Params.assemble_params(p_params, [:parent_engine,:owner,:publisher_namespace, :type_path, :service_handle], [:variables])
+  cparams =  Utils::Params.assemble_params(p_params, [:parent_engine,:owner,:publisher_namespace, :type_path, :service_handle], :all)
   return log_error(request,cparams,p_params) if cparams.is_a?(EnginesError)
   r = engines_api.connect_orphan_service(cparams)
   return log_error(request, r, cparams,to_s) if r.is_a?(EnginesError)
