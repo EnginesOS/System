@@ -62,6 +62,16 @@ get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namesp
   content_type 'text/plain' 
   r.to_s
 end
+# @method engine_delete_non_persistent_service
+# @overload delete '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle'
+#  @return [true|false]
+delete '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle' do
+  service_hash = Utils::ServiceHash.engine_service_hash_from_params(params)
+  r = engines_api.dettach_service(service_hash)
+  return log_error(request, r, service_hash) if r.is_a?(EnginesError)
+  content_type 'text/plain' 
+  r.to_s
+end
 
 # @method engine_get_non_persistent_service
 # @overload get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle'
