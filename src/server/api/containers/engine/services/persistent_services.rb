@@ -31,7 +31,7 @@ end
 
 post '/v0/containers/engine/:engine_name/services/persistent/:publisher_namespace/*' do
   p_params = post_params(request)
-  path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, false)
+  path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, true)
   p_params.merge!(path_hash)
   cparams =  Utils::Params.assemble_params(p_params, [:parent_engine,:publisher_namespace, :type_path, :service_handle], :all)
   return log_error(request,cparams,p_params) if cparams.is_a?(EnginesError)
