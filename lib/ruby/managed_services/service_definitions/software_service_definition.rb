@@ -24,7 +24,7 @@ class SoftwareServiceDefinition
 
     server_service =  self.software_service_definition(params)
     return  SystemUtils.log_error_mesg('Failed to load service definitions',params) if server_service.nil? || server_service == false
-
+    return server_service if service.is_a?(EnginesError)
     return server_service[:service_container]
   rescue StandardError => e
     SystemUtils.log_exception(e)
@@ -35,6 +35,7 @@ class SoftwareServiceDefinition
     service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
     SystemDebug.debug(SystemDebug.services,:SERVICE_Constants,:loaded,service_hash[:type_path],service_hash[:publisher_namespace],service_def)
     return ret_val if service_def.nil?
+    return ret_val if service_def.is_a?(EnginesError)
     return ret_val unless service_def.key?(:consumer_params)
     consumer_params = service_def[:consumer_params]
     return retval unless consumer_params.is_a?(Hash)
@@ -141,7 +142,8 @@ class SoftwareServiceDefinition
       end
       return service_def #.to_h
     end
-    return SystemUtils.log_error_mesg('No Dir',dir)
+    
+    return SystemUtils.log_error_mesg('No Dir' + dir.to_s + ':'  + service_type.to_s + ':'+ provider.to_s )
   rescue Exception=>e
     SystemUtils.log_error_mesg('Error ' ,provider.to_s + '/' + service_type.to_s )
     SystemUtils.log_exception(e)
@@ -195,9 +197,8 @@ class SoftwareServiceDefinition
 
   def SoftwareServiceDefinition.is_soft_service?(service_hash)
     service =  SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
-    if service == nil
-      return nil
-    end
+    return service if service.is_a?(EnginesError)
+     
     return false unless service.key?(:soft_service)
     service_hash[:soft_service] = service[:soft_service]
     return service[:soft_service]
@@ -205,9 +206,7 @@ class SoftwareServiceDefinition
 
   def SoftwareServiceDefinition.service_handle_field(params)
     service =  SoftwareServiceDefinition.find(params[:type_path],params[:publisher_namespace])
-    if service == nil
-      return nil
-    end
+    return service if service.is_a?(EnginesError)
     return service[:service_handle_field]
   end
 
