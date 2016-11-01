@@ -23,24 +23,6 @@ get '/v0/containers/engine/:engine_name/services/persistent/:publisher_namespace
   r.to_json
 end
 
-# @method add_engine_persistent_service
-# @overload post '/v0/containers/engine/:engine_name/services/persistent/:publisher_namespace/:type_path'
-#  add persistent service in the :publisher_namespace and :type_path  the engine with posted params
-# post api_vars :variables
-# @return [true|false]
-
-post '/v0/containers/engine/:engine_name/services/persistent/:publisher_namespace/*' do
-  p_params = post_params(request)
-  path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, true)
-  p_params.merge!(path_hash)
-  STDERR.puts('ADD PERSIST ' + p_params.to_s )
-  cparams =  Utils::Params.assemble_params(p_params, [:parent_engine,:publisher_namespace, :type_path], :all)
-  return log_error(request,cparams,p_params) if cparams.is_a?(EnginesError)
-  r = engines_api.create_and_register_persistent_service(cparams)
-  return log_error(request, r, cparams,to_s) if r.is_a?(EnginesError)
-  content_type 'text/plain'
-  r.to_s
-end
 #@method add_engine_persistent_share_service
 # @overload post '/v0/containers/engine/:engine_name/services/persistent/share/:owner/:publisher_namespace/:type_path/:service_handle'
 #  add persistent services in the :publisher_namespace and :type_path  :service_handle registered to the engine with posted params
@@ -80,6 +62,24 @@ post '/v0/containers/engine/:engine_name/services/persistent/orphan/:owner/:publ
   r.to_s
 end
 
+# @method add_engine_persistent_service
+# @overload post '/v0/containers/engine/:engine_name/services/persistent/:publisher_namespace/:type_path'
+#  add persistent service in the :publisher_namespace and :type_path  the engine with posted params
+# post api_vars :variables
+# @return [true|false]
+
+post '/v0/containers/engine/:engine_name/services/persistent/:publisher_namespace/*' do
+  p_params = post_params(request)
+  path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, true)
+  p_params.merge!(path_hash)
+  STDERR.puts('ADD PERSIST ' + p_params.to_s )
+  cparams =  Utils::Params.assemble_params(p_params, [:parent_engine,:publisher_namespace, :type_path], :all)
+  return log_error(request,cparams,p_params) if cparams.is_a?(EnginesError)
+  r = engines_api.create_and_register_persistent_service(cparams)
+  return log_error(request, r, cparams,to_s) if r.is_a?(EnginesError)
+  content_type 'text/plain'
+  r.to_s
+end
 # @method del_engine_persistent_service
 # @overload delete '/v0/containers/engine/:engine_name/services/persistent/:remove_all_data/:publisher_namespace/:type_path/:service_handle'
 #  delete non persistent services sddressed by :publisher_namespace, :type_path :service_handle registered to the engine
