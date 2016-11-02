@@ -4,14 +4,12 @@ module Params
   def self.assemble_params(params, address_params, required_params, accept_params=nil )
     return {} if params.nil?
     params = Utils.symbolize_keys(params)
-
-    params = params[:api_vars]
     a_params = self.address_params(params, address_params)
     return EnginesError.new('Missing Address Parameters ' + address_params.to_s + ' but only have:' + params.to_s, :error,'api') if a_params == false
-    
+
     unless required_params.empty?
       if required_params == :all
-        a_params.merge!(params)
+        a_params.merge!(params[:api_vars]) if params.key?(:api_vars)
         STDERR.puts('Merged params ' + a_params.to_s )
         return a_params
       end
@@ -30,18 +28,23 @@ module Params
   end
 
   def self.required_params(params, keys)
-
-    return false if params.nil?
-    self.match_params(params, keys, true)
+    mparams = params[:api_vars]
+    #      p :pre_SYM
+    #     p  mparams
+    #    m_params = Utils.symbolize_keys(mparams)
+    #     p :POST_SYM
+    #      p  m_params
+    return false if mparams.nil?
+    self.match_params(mparams, keys, true)
     #   Utils.symbolize_keys(matched)
   end
 
   def self.optional_params(params, keys)
-    #  mparams = [:api_vars]
+    mparams = params[:api_vars]
     #  m_params = Utils.symbolize_keys(mparams)
 
-    return {} if params.nil?
-    self.match_params(params, keys )
+    return {} if mparams.nil?
+    self.match_params(mparams, keys )
     #   Utils.symbolize_keys(matched)
   end
 
