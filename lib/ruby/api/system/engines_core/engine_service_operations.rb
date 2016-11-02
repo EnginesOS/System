@@ -119,6 +119,7 @@ module EngineServiceOperations
     rescue StandardError => e
     log_exception(e,params,variables)
   end
+  
   def get_service_pubkey(engine, cmd)
 
     container = loadManagedService(engine)
