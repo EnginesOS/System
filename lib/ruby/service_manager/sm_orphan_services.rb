@@ -74,4 +74,10 @@ end
      test_and_lock_registry_result(system_registry_client.get_orphaned_services(params))
    end
   
+  def connect_orphan_service(service_hash)
+    STDERR.puts('ConnECT ORPHAN ' + service_hash.to_s)
+    service_hash = reparent_orphan(service_hash)
+    STDERR.puts('ATTACGT ORPHAN WITH' + service_hash.to_s)
+    create_and_register_service(service_hash)
+  end
   end
