@@ -22,14 +22,15 @@ end
   end
   
 #@returns [Hash] suitable for use  to attach as a service
-  #nothing written to the tree
-  def reparent_orphan(params)
-    SystemDebug.debug(SystemDebug.orphans, :reparent_orphan, params)
-    test_registry_result(system_registry_client.reparent_orphan(params))   
-    rescue StandardError => e
-      log_exception(e)
+
+  def reparent_orphan(service_hash)
+    service_hash[:old_parent] =  service_hash[:parent_engine]
+    service_hash[:parent_engine] = @engine_name
+    service_hash[:fresh] = false
+    service_hash[:freed_orphan] = true
+    #resuse_service_hash = @service_manager.reparent_orphan(service_hash)
+    return service_hash
   end
- 
   
 def match_orphan_service(service_hash)
   res =  retrieve_orphan(service_hash)
@@ -76,7 +77,7 @@ end
   
   def connect_orphan_service(service_hash)
     STDERR.puts('ConnECT ORPHAN ' + service_hash.to_s)
-    service_hash = reparent_orphan(service_hash)
+    service_hash = reparent_orphan(service_hash) 
     STDERR.puts('ATTACGT ORPHAN WITH' + service_hash.to_s)
     r = create_and_register_service(service_hash)
     r = release_orphan unless r.is_a?(EnginesError)
