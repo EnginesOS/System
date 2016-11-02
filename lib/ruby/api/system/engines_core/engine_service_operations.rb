@@ -80,7 +80,7 @@ module EngineServiceOperations
   STDERR.puts(' SHARE Existing ' + service_hash.to_s)
     existing = service_hash
     existing[:parent_engine] = existing[:owner]
-    existing =  find_engine_services(existing)
+    existing = get_service_entry(existing)
     STDERR.puts(' SHARE Existing ' + existing.to_s)
       params[:existing_service] = existing
       trim_to_editable_variables(params)
