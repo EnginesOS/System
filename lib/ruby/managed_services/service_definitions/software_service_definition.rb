@@ -17,6 +17,8 @@ class SoftwareServiceDefinition
 
   def self.software_service_definition(params)
     SoftwareServiceDefinition.find(params[:type_path], params[:publisher_namespace] )
+  rescue Exception=>e
+    SystemUtils.log_error_mesg('Problem Service defl',params.to_s)
   end
 
   #Find the assigned service container_name from teh service definition file

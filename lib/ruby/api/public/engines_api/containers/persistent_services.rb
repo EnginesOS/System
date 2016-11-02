@@ -5,7 +5,7 @@ module PublicApiContainersPersistentServices
   end
 
   def connect_share_service(cparams)
-    @core_api.connect_orphan_service(cparams)
+    @core_api.connect_share_service(cparams)
   end
 
   def connect_orphan_service(cparams)

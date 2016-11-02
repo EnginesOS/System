@@ -10,6 +10,7 @@ module Params
     unless required_params.empty?
       if required_params == :all
         a_params.merge!(params[:api_vars]) if params.key?(:api_vars)
+        STDERR.puts('Merged params ' + a_params.to_s )
         return a_params
       end
       r_params = self.required_params(params,required_params)
