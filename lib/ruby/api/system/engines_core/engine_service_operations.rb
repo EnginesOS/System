@@ -79,6 +79,9 @@ module EngineServiceOperations
   params =  service_hash.dup
   STDERR.puts(' SHARE Existing ' + service_hash.to_s)
     existing = service_hash
+    existing[:parent_engine] = existing[:owner]
+    existing =  find_engine_services(existing)
+    STDERR.puts(' SHARE Existing ' + existing.to_s)
       params[:existing_service] = existing
       trim_to_editable_variables(params)
       if attach_existing_service_to_engine(params)
@@ -90,7 +93,7 @@ module EngineServiceOperations
       end
     end 
     
-  def add_file_service(service_hash)
+  def add_file_share(service_hash)
      SystemDebug.debug(SystemDebug.builder, 'Add File Service ' + service_hash[:variables][:name].to_s + ' ' + service_hash.to_s)
      #  Default to engine
    
