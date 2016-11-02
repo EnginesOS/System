@@ -77,7 +77,9 @@ module EngineServiceOperations
    end
   def connect_share_service(service_hash)
   params =  service_hash.dup
-      params[ :existing_service] = existing
+  STDERR.puts(' SHARE Existing ' + service_hash.to_s)
+    existing = service_hash
+      params[:existing_service] = existing
       trim_to_editable_variables(params)
       if attach_existing_service_to_engine(params)
         if service_hash[:type_path] == 'filesystem/local/filesystem'
