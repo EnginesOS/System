@@ -69,12 +69,51 @@ module EngineServiceOperations
     r = ''
      SystemDebug.debug(SystemDebug.services,'core attach existing service', params)
     return r unless (r = check_engine_hash(params))
+      
     service_manager.attach_existing_service_to_engine(params)
     rescue StandardError => e
       log_exception(e,params)
  
    end
+  def connect_share_service(service_hash)
+  params =  service_hash.dup
+      params[ :existing_service] = existing
+      trim_to_editable_variables(params)
+      if attach_existing_service_to_engine(params)
+        if service_hash[:type_path] == 'filesystem/local/filesystem'
+          result = add_file_share(service_hash)
+         log_error_mesg('failed to create fs',self) unless result
+        end       
+        return true
+      end
+    end 
+    
+  def add_file_service(service_hash)
+     SystemDebug.debug(SystemDebug.builder, 'Add File Service ' + service_hash[:variables][:name].to_s + ' ' + service_hash.to_s)
+     #  Default to engine
    
+     service_hash = Volume.complete_service_hash(service_hash)
+     SystemDebug.debug(SystemDebug.builder,:complete_VOLUME_service_hash, service_hash)
+#    if service_hash[:share] == true
+#      @volumes[service_hash[:service_owner] + '_' + service_hash[:variables][:service_name]] = vol
+#    else
+#      @volumes[service_hash[:variables][:service_name]] = Volume.volume_hash(service_hash)
+#    end
+     return true
+   rescue StandardError => e
+     SystemUtils.log_exception(e)
+   end
+   
+    
+  def trim_to_editable_variables(params)
+    variables = SoftwareServiceDefinition.consumer_params(params)
+    variables.values do |variable |
+      key = variable[:name]
+      params[:variables].delete(key) if variable[:immutable] == true
+    end
+    rescue StandardError => e
+    log_exception(e,params,variables)
+  end
   def get_service_pubkey(engine, cmd)
 
     container = loadManagedService(engine)
