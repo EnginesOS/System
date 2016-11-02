@@ -78,6 +78,10 @@ end
     STDERR.puts('ConnECT ORPHAN ' + service_hash.to_s)
     service_hash = reparent_orphan(service_hash)
     STDERR.puts('ATTACGT ORPHAN WITH' + service_hash.to_s)
-    create_and_register_service(service_hash)
-  end
+    r = create_and_register_service(service_hash)
+    r = release_orphan unless r.is_a?(EnginesError)
+    return r
+    end
+    
+  
   end
