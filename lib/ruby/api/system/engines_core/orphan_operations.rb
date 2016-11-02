@@ -35,4 +35,13 @@ module OrphanOperations
     return r unless ( r = check_engine_hash(service_hash))
     service_manager.release_orphan(service_hash)
   end
+  
+  def connect_orphan_service(service_hash)
+    return r unless ( r = check_engine_hash(service_hash))
+      service_manager.connect_orphan_service(service_hash)    
+  end
+  def reparent_orphan(service_hash)  
+    return r unless ( r = check_engine_hash(service_hash))
+      service_manager.reparent_orphan(service_hash)    
+  end
 end
