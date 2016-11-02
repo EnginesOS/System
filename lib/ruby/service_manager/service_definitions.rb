@@ -75,7 +75,8 @@ class ServiceDefinitions
 #
 #   return server_service[:service_container]   
    rescue StandardError => e
-   SystemUtils.log_exception(e)
+     STDERR.puts('PARAMS ' + params.to_s)
+   SystemUtils.log_exception(e,params)
  end
  
   def self.software_service_definition(params)
