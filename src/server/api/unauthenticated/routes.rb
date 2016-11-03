@@ -5,7 +5,7 @@
 # 
 # @return [String] 
 get '/v0/unauthenticated/bootstrap/mgmt/url' do
- 'https://' + engines_api.system_hostname.to_s + engines_api.get_default_domain.to_s + ':10443'
+ 'https://' + engines_api.system_hostname.to_s + '.' + engines_api.get_default_domain.to_s + ':10443'
 end
 
 # @method get_mgmt_status
