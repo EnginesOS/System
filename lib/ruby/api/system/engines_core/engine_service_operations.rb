@@ -87,7 +87,7 @@ module EngineServiceOperations
       if attach_existing_service_to_engine(params)
         if service_hash[:type_path] == 'filesystem/local/filesystem'
           result = add_file_share(service_hash)
-         log_error_mesg('failed to create fs',self) unless result
+         log_error_mesg('failed to create fs',self) if result.is_a?(EnginesError)
         end       
         return true
       end
@@ -98,7 +98,12 @@ module EngineServiceOperations
      #  Default to engine
    
      service_hash = Volume.complete_service_hash(service_hash)
-     SystemDebug.debug(SystemDebug.builder,:complete_VOLUME_service_hash, service_hash)
+     
+     SystemDebug.debug(SystemDebug.services,'complete_VOLUME_FOR SHARE_service_hash', service_hash)
+     engine = loadManagedEngine(service_hash[:parent_engine])
+       return engine if engine.is_a?(EnginesError)
+       engine.add_shared_volume(service_hash)
+     
 #    if service_hash[:share] == true
 #      @volumes[service_hash[:service_owner] + '_' + service_hash[:variables][:service_name]] = vol
 #    else

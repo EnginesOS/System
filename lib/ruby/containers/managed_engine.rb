@@ -60,9 +60,21 @@ class ManagedEngine < ManagedContainer
   def extract_plugins
     false
   end
-
-
-
+  
+    def add_shared_volume(service_hash)
+      STDERR.puts('ADD SHARE VOL' + service_hash.to_s)
+      vol = {}
+  vol[:service_name] = service_hash[:variables][:service_name]
+vol[:parent_engine] = service_hash[:parent_engine]
+vol[:volume_src] = service_hash[:variables][:volume_src]
+vol[:engine_path] = service_hash[:variables][:engine_path]
+vol[:permissions] = service_hash[:variables][:permissions]
+vol[:user] =  service_hash[:variables][:user]
+vol[:group] = service_hash[:variables][:user]
+    @volumes[service_hash[:service_owner] + '_' + service_hash[:variables][:service_name]] = vol
+      save_state
+  end
+  
   def engine_attached_services
     return @container_api.engine_attached_services(self)
   end
