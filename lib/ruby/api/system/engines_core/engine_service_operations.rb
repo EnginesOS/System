@@ -84,15 +84,20 @@ module EngineServiceOperations
 
       params[:existing_service] = existing
     STDERR.puts(' SHARE Existing ' + existing.to_s + ' as ' + params.to_s)
-      trim_to_editable_variables(params)
-      
-      if attach_existing_service_to_engine(params)
+      trim_to_editable_variables(params[:existing_service])
+    params[:variables].keys do | k |
+      next unless params[:existing_service][:variables].keys(k)
+      params[:variables][k] = params[:existing_service][:variables][k]
+    end
+      r = attach_existing_service_to_engine(params)
+      unless r.is_a?(EnginesError)
         if service_hash[:type_path] == 'filesystem/local/filesystem'
           result = add_file_share(params)
           return log_error_mesg('failed to create fs',self) if result.is_a?(EnginesError)
         end       
         return true
       end
+      return r
     end 
     
   def add_file_share(service_hash)
