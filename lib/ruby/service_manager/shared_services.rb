@@ -21,13 +21,14 @@ module SharedServices
     shared_service[:container_type] = existing_service[:container_type] 
     shared_service[:container_type] = existing_service[:container_type] 
     shared_service[:service_container_name] = existing_service[:service_container_name]
-    shared_service.delete(:existing)
+
     SystemDebug.debug(SystemDebug.services,'sm regsitring ', shared_service)
       if shared_service[:type_path] == 'filesystem/local/filesystem'    
         shared_service[:variables][:volume_src] = existing_service[:variables][:volume_src] + '/' +  shared_service[:variables][:volume_src]  
         return r unless (r = attach_shared_volume(shared_service))
        
       end
+    shared_service.delete(:existing)
     test_registry_result(system_registry_client.add_share_to_managed_engines_registry(shared_service))
       
   rescue StandardError => e
