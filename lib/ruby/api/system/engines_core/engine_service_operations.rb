@@ -86,7 +86,7 @@ module EngineServiceOperations
       trim_to_editable_variables(params)
       if attach_existing_service_to_engine(params)
         if service_hash[:type_path] == 'filesystem/local/filesystem'
-          result = add_file_share(service_hash)
+          result = add_file_share(params)
          log_error_mesg('failed to create fs',self) if result.is_a?(EnginesError)
         end       
         return true
