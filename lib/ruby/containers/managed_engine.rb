@@ -65,8 +65,8 @@ class ManagedEngine < ManagedContainer
     vol = {}
 
     vol[:volume_name] = service_hash[:owner] + '_' + service_hash[:service_handle]
-    vol[:volume_src] = service_hash[:variables][:volume_src]
-    vol[:engine_path] = service_hash[:variables][:engine_path]
+    vol[:localpath] = service_hash[:variables][:volume_src]
+    vol[:remotepath] = service_hash[:variables][:engine_path]
     vol[:permissions] = service_hash[:variables][:permissions]
     vol[:user] = service_hash[:variables][:user]
     vol[:group] = service_hash[:variables][:group]
