@@ -71,7 +71,7 @@ vol[:engine_path] = service_hash[:variables][:engine_path]
 vol[:permissions] = service_hash[:variables][:permissions]
 vol[:user] =  service_hash[:variables][:user]
 vol[:group] = service_hash[:variables][:user]
-    @volumes[service_hash[:service_owner] + '_' + service_hash[:variables][:service_name]] = vol
+    @volumes[ service_hash[:service_owner] + '_' + service_hash[:service_handle] ] = vol
       save_state
   end
   
