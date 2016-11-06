@@ -81,13 +81,15 @@ module EngineServiceOperations
     existing = service_hash
     existing[:parent_engine] = existing[:owner]
     existing = get_service_entry(existing)
-    STDERR.puts(' SHARE Existing ' + existing.to_s)
+
       params[:existing_service] = existing
+    STDERR.puts(' SHARE Existing ' + existing.to_s + ' as ' + params.to_s)
       trim_to_editable_variables(params)
+      
       if attach_existing_service_to_engine(params)
         if service_hash[:type_path] == 'filesystem/local/filesystem'
           result = add_file_share(params)
-         log_error_mesg('failed to create fs',self) if result.is_a?(EnginesError)
+          return log_error_mesg('failed to create fs',self) if result.is_a?(EnginesError)
         end       
         return true
       end
@@ -102,14 +104,14 @@ module EngineServiceOperations
      SystemDebug.debug(SystemDebug.services,'complete_VOLUME_FOR SHARE_service_hash', service_hash)
      engine = loadManagedEngine(service_hash[:parent_engine])
        return engine if engine.is_a?(EnginesError)
-       engine.add_shared_volume(service_hash)
+    return  engine.add_shared_volume(service_hash)
      
 #    if service_hash[:share] == true
 #      @volumes[service_hash[:service_owner] + '_' + service_hash[:variables][:service_name]] = vol
 #    else
 #      @volumes[service_hash[:variables][:service_name]] = Volume.volume_hash(service_hash)
 #    end
-     return true
+
    rescue StandardError => e
      SystemUtils.log_exception(e)
    end
