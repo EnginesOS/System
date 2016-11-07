@@ -78,13 +78,17 @@ module EngineServiceOperations
   def connect_share_service(service_hash)
   params =  service_hash.dup
   STDERR.puts(' SHARE Existing ' + service_hash.to_s)
+  
+  unless service_hash.key?(:existing)
     existing = service_hash
     existing[:parent_engine] = existing[:owner]
     existing = get_service_entry(existing)
-
-      params[:existing_service] = existing
+    return existing if existing.is_a?(EnginesError)    
+    params[:existing_service] = existing
+  end
+  
     STDERR.puts(' SHARE Existing ' + existing.to_s + ' as ' + params.to_s)
-      trim_to_editable_variables(params[:existing_service])
+    trim_to_editable_variables(params[:existing_service])
     params[:variables].keys do | k |
       next unless params[:existing_service][:variables].keys(k)
       params[:variables][k] = params[:existing_service][:variables][k]
