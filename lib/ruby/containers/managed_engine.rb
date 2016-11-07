@@ -63,7 +63,7 @@ class ManagedEngine < ManagedContainer
   def add_shared_volume(service_hash)
     STDERR.puts('ADD SHARE VOL' + service_hash.to_s)
     vol = {}
-
+    vol[:WTF] = 'WTF'
     vol[:volume_name] = service_hash[:owner] + '_' + service_hash[:service_handle]
     vol[:localpath] = service_hash[:variables][:volume_src]
     vol[:remotepath] = service_hash[:variables][:engine_path]
@@ -71,6 +71,8 @@ class ManagedEngine < ManagedContainer
     vol[:user] = service_hash[:variables][:user]
     vol[:group] = service_hash[:variables][:group]
     @volumes[ vol[:volume_name] ] = vol
+    STDERR.puts('ADD SHARE VOL' + vol.to_s)
+
     save_state
   end
 
