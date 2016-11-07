@@ -14,7 +14,7 @@ include ClientHTTPStream
 @silent = true
 
 def log_error(*args)
-  STDERR.put(args.to_s) unless @silent == true
+  STDERR.puts(args.to_s) unless @silent == true
 end
 
 def command_usage(mesg=nil)
