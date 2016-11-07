@@ -3,7 +3,7 @@ class ManagedEngine < ManagedContainer
 
   def initialize(build_params, runtime_params , core_api)
     @container_mutex = Mutex.new
-  
+
     @memory = build_params[:memory]
     @hostname = build_params[:host_name]
     @domain_name = build_params[:domain_name]
@@ -24,7 +24,7 @@ class ManagedEngine < ManagedContainer
     @deployment_type = runtime_params.deployment_type
     @host_network=false
     @web_port = build_params[:web_port]
-     @web_root = runtime_params.web_root
+    @web_root = runtime_params.web_root
     @last_result = ''
     @container_api = core_api
     @setState = 'running'
@@ -37,7 +37,6 @@ class ManagedEngine < ManagedContainer
 
   attr_reader :plugins_path, :extract_plugins,:web_root
 
-  
   def lock_values
     @ctype = 'container' if @ctype.nil?
     @ctype.freeze
@@ -61,7 +60,17 @@ class ManagedEngine < ManagedContainer
     false
   end
 
-
+  def add_shared_volume(service_hash)    
+    vol = {} 
+    vol[:volume_name] = service_hash[:owner] + '_' + service_hash[:service_handle]
+    vol[:localpath] = service_hash[:variables][:volume_src]
+    vol[:remotepath] = service_hash[:variables][:engine_path]
+    vol[:permissions] = service_hash[:variables][:permissions]
+    vol[:user] = service_hash[:variables][:user]
+    vol[:group] = service_hash[:variables][:group]
+    @volumes[ vol[:volume_name] ] = vol
+    save_state
+  end
 
   def engine_attached_services
     return @container_api.engine_attached_services(self)
