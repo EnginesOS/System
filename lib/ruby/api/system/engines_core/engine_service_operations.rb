@@ -7,7 +7,7 @@ module EngineServiceOperations
     params[:container_type] ='container'
     SystemDebug.debug(SystemDebug.services, :engine_persistent_services, params)
     r = service_manager.get_engine_persistent_services(params)
-    STDERR.put('GET ENGINE PER ' + r.to_s)
+    STDERR.puts('GET ENGINE PER ' + r.to_s)
     r
   rescue StandardError => e
     log_exception(e,container_name)
