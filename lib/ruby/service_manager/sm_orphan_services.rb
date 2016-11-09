@@ -85,7 +85,7 @@ end
     STDERR.puts('ATTACGT ORPHAN WITH' + service_hash.to_s)
     
     r = create_and_register_service(service_hash)
-    r = release_orphan(service_hash) unless r.is_a?(EnginesError)
+    r = release_orphan(orphan) unless r.is_a?(EnginesError)
     return r
     end
     
