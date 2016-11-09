@@ -58,6 +58,7 @@ post '/v0/containers/engine/:engine_name/services/persistent/orphan/:owner/:publ
   p_params.merge!(path_hash)
   cparams =  Utils::Params.assemble_params(p_params, [:parent_engine,:owner,:publisher_namespace, :type_path, :service_handle], :all)
   return log_error(request,cparams,p_params) if cparams.is_a?(EnginesError)
+  STDERR.puts(' Connect Orphan params FROM GUI ' + cparams.to_s)
   r = engines_api.connect_orphan_service(cparams)
   return log_error(request, r, cparams,to_s) if r.is_a?(EnginesError)
   content_type 'text/plain'
