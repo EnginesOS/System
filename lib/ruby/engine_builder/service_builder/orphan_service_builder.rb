@@ -15,7 +15,7 @@ module OrphansServiceBuilder
   end
 
   def reparent_orphan(service_hash)
-    @core_api.reparent_orphan(service_hash)  
+    @core_api.reparent_orphan(service_hash, @engine_name)  
   end
 
   def release_orphans()
