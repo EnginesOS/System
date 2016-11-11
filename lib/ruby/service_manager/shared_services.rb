@@ -58,8 +58,8 @@ module SharedServices
     return ahash unless ahash.is_a?(Hash)
     return log_error_mesg("Not a Shared Service",service_query,ahash) unless ahash[:shared] == true
     return dettach_shared_volume(ahash) if ahash[:type_path] == 'filesystem/local/filesystem'     
-    return test_registry_result(system_registry_client.remove_from_managed_engines_registry(ahash))
-      
+    return if test_registry_result(system_registry_client.remove_from_managed_engines_registry(ahash)).is_a?(EnginesError)
+    return test_registry_result(system_registry_client.remove_from_shares_registry(shared_service))
   rescue StandardError => e
     log_exception(e)
   end
