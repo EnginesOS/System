@@ -23,6 +23,8 @@ exit 127
 end 
 
 case ARGV[1]
+when 'restart'
+  p service.restart_container
 when 'start'
   p service.start_container
 when 'create'
@@ -39,5 +41,5 @@ when 'status'
   p service.status
 when 'mem_stat' 
 p MemoryStatistics.container_memory_stats(service)
-end
+end 
 
