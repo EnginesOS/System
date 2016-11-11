@@ -7,6 +7,7 @@ get '/v0/containers/engine/:engine_name/services/persistent/' do
   engine = get_engine(params[:engine_name])
   return log_error(request, engine, params) if engine.is_a?(EnginesError)
   r = engines_api.list_persistent_services(engine)
+  
   return log_error(request, r, params[:engine_name]) if r.is_a?(EnginesError)
   r.to_json
 end
@@ -57,6 +58,7 @@ post '/v0/containers/engine/:engine_name/services/persistent/orphan/:owner/:publ
   p_params.merge!(path_hash)
   cparams =  Utils::Params.assemble_params(p_params, [:parent_engine,:owner,:publisher_namespace, :type_path, :service_handle], :all)
   return log_error(request,cparams,p_params) if cparams.is_a?(EnginesError)
+  STDERR.puts(' Connect Orphan params FROM GUI ' + cparams.to_s)
   r = engines_api.connect_orphan_service(cparams)
   return log_error(request, r, cparams,to_s) if r.is_a?(EnginesError)
   content_type 'text/plain'

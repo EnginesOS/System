@@ -64,7 +64,7 @@ module SharedServices
     log_exception(e)
   end
 
-  private
+
 
   def merge_variables(shared_service,existing_service_hash)
     shared_service[:variables] = {} unless shared_service.key?(:variables)

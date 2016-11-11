@@ -54,7 +54,7 @@ module SmEngineServices
   params[:container_type] = engine.ctype
 
   services = get_engine_persistent_services(params)
-
+    STDERR.puts('GET ENGINE PER ' + services.to_s)
 return services
     rescue StandardError => e
       log_exception(e)
@@ -112,7 +112,7 @@ return services
         #  next
         end
       else
-        unless (r = orphanate_service(service)).is_a?(EnginesError)
+        if (r = orphanate_service(service)).is_a?(EnginesError)
           return r
         #  next
         end
