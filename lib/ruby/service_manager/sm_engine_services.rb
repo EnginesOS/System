@@ -112,7 +112,7 @@ return services
         #  next
         end
       else
-        unless (r = orphanate_service(service)).is_a?(EnginesError)
+        if (r = orphanate_service(service)).is_a?(EnginesError)
           return r
         #  next
         end
