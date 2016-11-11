@@ -1,7 +1,6 @@
 module OrphansServiceBuilder
   def use_orphan(service_hash)
-    chash = service_hash.dup
-    build_vars = chash[:variables]
+    build_vars = service_hash.dup
     SystemDebug.debug(SystemDebug.orphans,:attaching_orphan, service_hash)
     service_hash = @core_api.retrieve_orphan(service_hash)
     SystemDebug.debug(SystemDebug.orphans, :retrieved_orphan, service_hash)
@@ -11,7 +10,7 @@ module OrphansServiceBuilder
     reparent_orphan(service_hash)
     unless service_hash.nil?
       SystemDebug.debug(SystemDebug.orphans, :from_reparent, service_hash)
-      service_hash[:variables][:engine_path] = build_vars[:engine_path] if service_hash[:type_path] == 'filesystem/local/filesystem'
+      service_hash[:variables][:engine_path] = build_vars[:variables][:engine_path] if service_hash[:type_path] == 'filesystem/local/filesystem'
     end
     return service_hash
   end
