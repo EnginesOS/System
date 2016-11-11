@@ -76,14 +76,11 @@ end
    end
   
   def connect_orphan_service(service_hash)
-    STDERR.puts('ConnECT ORPHAN ' + service_hash.to_s)
     orphan_search = service_hash.dup
     orphan_search[:parent_engine] = orphan_search[:owner]
     orphan = retrieve_orphan(orphan_search)
     merge_variables(service_hash,orphan)
     service_hash = reparent_orphan(service_hash, service_hash[:parent_engine]) 
-    STDERR.puts('ATTACGT ORPHAN WITH' + service_hash.to_s)
-    
     r = create_and_register_service(service_hash)
     r = release_orphan(orphan) unless r.is_a?(EnginesError)
     return r

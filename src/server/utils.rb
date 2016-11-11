@@ -15,11 +15,11 @@ class Utils
       when Hash then self.symbolize_keys(value)
       when Array then
         newval = []
-        STDERR.puts('symb in array ')
+       # STDERR.puts('symb in array ')
         value.each do |array_val|
           array_val = self.symbolize_keys(array_val) if array_val.is_a?(Hash)
           newval.push(array_val)
-          STDERR.puts('new_val ;' + array_val.to_s)
+        #  STDERR.puts('new_val ;' + array_val.to_s)
           
         end
         newval

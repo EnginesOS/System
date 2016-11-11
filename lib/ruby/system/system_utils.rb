@@ -218,7 +218,7 @@ def  SystemUtils.deal_with_jason(res)
    return boolean_if_true_false_str(res) if res.is_a?(String)
    return res
  rescue  StandardError => e
-   STDERR.puts e.to_s
+   STDERR.puts('SystemUtils.deal_with_jason ' + e.to_s) 
  end
  
  # Use when json is on cmdline '' to avoid confusion as in exec_create script.sh arg.json

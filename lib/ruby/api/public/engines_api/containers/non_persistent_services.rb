@@ -35,7 +35,7 @@ module PublicApiContainersNonPersistentServices
   end
   
   def  update_attached_service(service_hash)
-    STDERR.puts('UPDATE_and_register_service' + service_hash..to_s )
+   
     @core_api.update_attached_service(service_hash)
   end
   

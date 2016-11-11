@@ -132,8 +132,8 @@ require 'json'
 
     req = Net::HTTP::Get.new('/events')
     client = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
-    client.continue_timeout = 3600
-    client.read_timeout = 3600
+    client.continue_timeout = 7200
+    client.read_timeout = 7200
 
     client.request(req) do |resp|
       resp.read_body do |chunk|
@@ -156,10 +156,10 @@ require 'json'
       end      
     end
     log_error_mesg('Restarting docker Event Stream ')
-  STDERR.puts('Restarting docker Event Stream ')
+ # STDERR.puts('Restarting docker Event Stream ')
     @system.start_docker_event_listener(@event_listeners)
   rescue Net::ReadTimeout
-    STDERR.puts('Restarting docker Event Stream Read Timeout')
+  #  STDERR.puts('Restarting docker Event Stream Read Timeout')
     @system.start_docker_event_listener(@event_listeners)
   rescue StandardError => e
     log_exception(e)
