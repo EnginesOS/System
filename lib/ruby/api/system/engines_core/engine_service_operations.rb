@@ -7,7 +7,7 @@ module EngineServiceOperations
     params[:container_type] ='container'
     SystemDebug.debug(SystemDebug.services, :engine_persistent_services, params)
     r = service_manager.get_engine_persistent_services(params)
-    STDERR.puts('GET ENGINE PER ' + r.to_s)
+   
     r
   rescue StandardError => e
     log_exception(e,container_name)
@@ -79,7 +79,6 @@ module EngineServiceOperations
    end
   def connect_share_service(service_hash)
   params =  service_hash.dup
-  STDERR.puts(' SHARE Existing ' + service_hash.to_s)
   
   unless service_hash.key?(:existing_service)
     existing = service_hash
@@ -87,7 +86,7 @@ module EngineServiceOperations
     existing = get_service_entry(existing)
     return existing if existing.is_a?(EnginesError)    
     params[:existing_service] = existing
-    STDERR.puts(' SHARE Existing ' + existing.to_s + ' as ' + params.to_s)
+    
   end
   
 

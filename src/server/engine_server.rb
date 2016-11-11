@@ -30,7 +30,7 @@ begin
        @@engines_api = PublicApi.new(core_api)
 # end
   
-  STDERR.puts('CREATED ENGINES API +++++++++++++++++++++++++++++++++++++++++++')
+#  STDERR.puts('CREATED ENGINES API +++++++++++++++++++++++++++++++++++++++++++')
  
   @@last_error =''  
   

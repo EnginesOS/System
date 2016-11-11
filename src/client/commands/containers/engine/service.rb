@@ -1,6 +1,6 @@
 @route += '/' + ARGV[3] + '/'  #{non_}persistent
 params = {}
-STDERR.puts 'engine service ns tp sh ' +  @route
+#STDERR.puts 'engine service ns tp sh ' +  @route
 cmd = nil
 post = false
 del = false

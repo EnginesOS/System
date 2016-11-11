@@ -22,7 +22,6 @@ post '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_name
   p_params = post_params(request)
   path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, true)
   p_params.merge!(path_hash)
-  STDERR.puts('ADD NONPERSIST ' + p_params.to_s )
   cparams =  Utils::Params.assemble_params(p_params, [:parent_engine,:publisher_namespace, :type_path], :all)
   return log_error(request,cparams,p_params) if cparams.is_a?(EnginesError)
     r =  engines_api.create_and_register_service(cparams)
