@@ -41,7 +41,9 @@ module SmServiceControl
       return complete_service_query if complete_service_query.is_a?(EnginesError)
     service_hash = system_registry_client.find_engine_service_hash(complete_service_query)
     return service_hash unless service_hash.is_a?(Hash)
+    STDERR.puts(' Remove Service ' + service_hash.to_s)
     if service_hash[:shared] == true
+      STDERR.puts(' Remove Shared Service ' + service_hash.to_s)
       return r if ( r = remove_shared_service_from_engine(service_query)).is_a?(EnginesError)
       return system_registry_client.remove_from_managed_engines_registry(service_hash)       
     end
