@@ -200,11 +200,9 @@ class Templater
       #    p service_def[:consumer_params]
       #      p service_def[:consumer_params].values
       service_def[:consumer_params].values.each do |field|
-        #      p :value
-        #      p field
+
         if field.key?(:value)
-          value = process_templated_string(field[:value])
-          field[:value] = value
+          field[:value] = process_templated_string(field[:value])
         end
       end
     end
