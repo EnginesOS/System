@@ -60,17 +60,6 @@ module ContainerControls
   r = @container_api.create_container(self)
     SystemDebug.debug(SystemDebug.containers,  :create_container,:containerid,r)
     return r
-    #    unless r == false
-    #      expire_engine_info
-    #      @container_id = r
-    #
-    #      @cont_userid = running_user
-    #      expire_engine_info
-    #      return true
-    #    end
-    #    @container_id = -1
-    #    @cont_userid = ''
-    #    return false
   rescue => e
     log_exception(e)
   end
