@@ -44,8 +44,8 @@ module SmServiceControl
     STDERR.puts(' Remove Service ' + service_hash.to_s)
     if service_hash[:shared] == true
       STDERR.puts(' Remove Shared Service ' + service_hash.to_s)
-      return r if ( r = remove_shared_service_from_engine(service_query)).is_a?(EnginesError)
-      return system_registry_client.remove_from_managed_engines_registry(service_hash)       
+      return  remove_shared_service_from_engine(service_query)
+      #  return system_registry_client.remove_from_managed_engines_registry(service_hash)       
     end
    # return log_error_mesg('Failed to match params to registered service',service_hash) unless service_hash.is_a?(Hash)
     service_hash[:remove_all_data] = service_query[:remove_all_data]
