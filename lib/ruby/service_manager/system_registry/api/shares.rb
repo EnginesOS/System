@@ -6,7 +6,7 @@ module Shares
   end
 
   def remove_from_shares_registry(shared_service)
-    add_to_managed_engines_registry(shared_service)
+   STDERR.puts('REMOVE FROM SSHARE REG ',shared_service.to_s )
     r = rest_post('/v0/system_registry/shares/del',shared_service )
   end
 

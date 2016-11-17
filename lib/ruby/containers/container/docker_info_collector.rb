@@ -103,20 +103,7 @@ module DockerInfoCollector
     # SystemDebug.debug(SystemDebug.containers,  :collect_docker_info )
     return false if @docker_info_cache == false && @setState == 'nocontainer'
     @docker_info_cache =  @container_api.inspect_container(self) if @docker_info_cache.nil?
-    SystemDebug.debug(SystemDebug.containers,  :collect_docker_info,@docker_info_cache )
-    #    if @docker_info_cache == false
-    #      @container_id = -1
-    ##    elsif @docker_info_cache.is_a?(Array)
-    ##      @docker_info_cache =  @docker_info_cache[0]
-    ##      if @container_id.to_s == '' || @container_id == -1
-    ##        @container_id = @docker_info_cache['Id']
-    ##      end
-    #    end
-    #log_error_mesg('collect false from ', self)
-    #@docker_info_cache = @last_result if result
-    # result
-    #@docker_info_cache = false unless result
-    # Thread.new { sleep 4 ; expire_engine_info }
+ 
     if  @docker_info_cache.is_a?(Array)
       @docker_info_cache = @docker_info_cache[0]
     end

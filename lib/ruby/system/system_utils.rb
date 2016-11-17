@@ -24,8 +24,8 @@ class SystemUtils
 
   def SystemUtils.system_release
     return 'current' if File.exists?(SystemConfig.ReleaseFile) == false
-    release = File.read(SystemConfig.ReleaseFile)
-    return release.strip
+    return File.read(SystemConfig.ReleaseFile).strip!
+
   end
 
   def SystemUtils.version

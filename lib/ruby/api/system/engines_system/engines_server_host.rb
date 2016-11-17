@@ -145,6 +145,7 @@ require '/opt/engines/lib/ruby/system/system_config.rb'
 # FIxME
 # use SystemStatus.get_base_host_ip for IP 
     cmd = 'ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/' + script_name + ' engines@' + ENV['CONTROL_IP'] + '  /opt/engines/system/scripts/ssh/' + script_name + '.sh'
+STDERR.puts('RNU SERVER SCRIPT cmd'  + cmd.to_s)      
     Timeout.timeout(@@server_script_timeout) do
       return SystemUtils.execute_command(cmd, false, script_data)
     end

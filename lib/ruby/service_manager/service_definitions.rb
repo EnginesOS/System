@@ -4,7 +4,7 @@ class ServiceDefinitions
 
     soft = SoftwareServiceDefinition.is_soft_service?(service_hash)
        return  SystemUtils.log_error_mesg('Failed to get software status for ',service_hash)  if soft.nil?
-        service_hash[:soft_service] = soft
+      service_hash[:soft_service] = soft
       service_hash[:soft_service]  
     rescue StandardError => e
       SystemUtils.log_exception(e)

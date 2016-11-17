@@ -126,7 +126,7 @@ class ManagedUtility< ManagedContainer
     vols = []
 
     volumes_from.each do |from|
-      s =templater.apply_hash_variables(from, command_params)
+      s = templater.apply_hash_variables(from, command_params)
 
       vols.push(s) unless s == ""
     end

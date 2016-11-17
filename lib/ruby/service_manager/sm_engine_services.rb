@@ -104,12 +104,13 @@ return services
     clear_error
     services = test_registry_result(system_registry_client.get_engine_persistent_services(params))
     services.each do | service |
-      if params[:remove_all_data] && ! (service.key?(:shared) && service[:shared])
+      SystemDebug.debug(SystemDebug.services, :remove_service, service)
+      if params[:remove_all_data] || service[:shared] #&& ! (service.key?(:shared) && service[:shared])
         service[:remove_all_data] = params[:remove_all_data]
         if (r = delete_service(service)).is_a?(EnginesError)
          return r
         #  next
-        end
+        end        
       else
         if (r = orphanate_service(service)).is_a?(EnginesError)
           return r
