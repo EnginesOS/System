@@ -15,7 +15,7 @@ module SshKeys
   end
 
   def regen_system_ssh_key
-   r=   run_server_script('regen_private',"\n\n")
+   r=   run_server_script('regen_private')
    return r if r.is_a?(EnginesError) 
     r[:stdout]
   end
