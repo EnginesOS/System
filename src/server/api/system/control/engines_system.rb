@@ -18,7 +18,7 @@ end
 #  Restart the engines system
 # @return [true]
 get '/v0/system/control/engines_system/restart' do
-  restart = engines_api.restart_mgmt
+  restart = engines_api.restart_engines_system
   return log_error(request, restart) if restart.is_a?(EnginesError)
     status(202)
   content_type 'text/plain'

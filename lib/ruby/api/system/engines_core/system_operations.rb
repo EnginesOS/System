@@ -11,8 +11,8 @@ module SystemOperations
     @system_api.restart_system
   end
  
-  def restart_mgmt
-    @system_api.restart_mgmt
+  def restart_engines_system
+    @system_api.restart_engines_system
   end
 
   def update_engines_system_software
