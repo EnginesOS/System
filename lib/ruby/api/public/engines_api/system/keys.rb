@@ -9,6 +9,7 @@ module PublicApiSystemKeys
    end
    
   def update_public_key(key)
+    STDERR.puts("KEY " + key.to_s)
       @system_api.update_public_key(key)
     end
    
