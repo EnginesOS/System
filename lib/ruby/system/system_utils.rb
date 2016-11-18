@@ -140,7 +140,9 @@ class SystemUtils
       rescue EOFError
         if stdout.closed? == false
           stderr_is_open = false
-          retry
+          retry unless th.status == false
+          retval[:result] = th.value.exitstatus
+          return retval
         elsif stderr.closed? == false
           retval[:stderr] += stderr.read_nonblock(1000)
           retval[:result] = th.value.exitstatus
