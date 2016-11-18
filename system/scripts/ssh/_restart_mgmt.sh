@@ -4,7 +4,8 @@
  /opt/engines/bin/system_service.rb system stop
  /opt/engines/bin/system_service.rb system destroy
  sleep 60 #kludge need wait for
-  /opt/engines/bin/system_service.rb create
+  /opt/engines/system/scripts/ssh/rotate_container_log.sh system
+  /opt/engines/bin/system_service.rb system create
 
  res=$?
 rm	/opt/engines/run/system/flags/engines_restarting
