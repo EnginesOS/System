@@ -55,6 +55,11 @@ environments:
  value: wss://mgmt._Engines_System(default_domain):10443/
  has_changed: true 
  build_time_only: false
+- !ruby/object:EnvironmentVariable 
+ name: RAILS_LOG_TO_STDOUT
+ value: true
+ has_changed: true 
+ build_time_only: false
 image: engines/mgmt:_Engines_System(release)
 repo: na
 last_result: 

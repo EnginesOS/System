@@ -11,7 +11,7 @@ module EnginesServerHost
     return -1
   end
 
-  def restart_mgmt
+  def restart_engines_system
     res = Thread.new { run_server_script('restart_mgmt') }
     # FIXME: check a status flag after sudo side post ssh run ie when we know it's definititly happenging
     return true if res.status == 'run'
