@@ -113,7 +113,7 @@ class SystemUtils
       
     Open3.popen3(cmd)  do |_stdin, stdout, stderr, th|
       _stdin.write(data) unless data.is_a?(FalseClass) 
-      
+      _stdin.close
       oline = ''
       stderr_is_open = true
       begin
