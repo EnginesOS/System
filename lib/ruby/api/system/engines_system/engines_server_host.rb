@@ -1,6 +1,6 @@
 module EnginesServerHost
 
-  @@server_script_timeout = 10
+  @@server_script_timeout = 15
   def system_image_free_space
     result =   run_server_script('free_docker_lib_space')
     return result if result.is_a?(EnginesError)
@@ -140,13 +140,13 @@ module EnginesServerHost
     return r
   end
 
-  def run_server_script(script_name , script_data=false)
+  def run_server_script(script_name , script_data=false, script_timeout = @@server_script_timeout)
 require '/opt/engines/lib/ruby/system/system_config.rb'
 # FIxME
 # use SystemStatus.get_base_host_ip for IP 
     cmd = 'ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/' + script_name + ' engines@' + ENV['CONTROL_IP'] + '  /opt/engines/system/scripts/ssh/' + script_name + '.sh'
 STDERR.puts('RNU SERVER SCRIPT cmd'  + cmd.to_s)      
-    Timeout.timeout(@@server_script_timeout) do
+    Timeout.timeout(script_timeout) do
       return SystemUtils.execute_command(cmd, false, script_data)
     end
   rescue Timeout::Error
