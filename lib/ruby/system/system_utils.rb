@@ -111,22 +111,13 @@ class SystemUtils
     retval[:result] = -1
     retval[:command] = cmd
       
-  #  unless data.is_a?(FalseClass)
-#         t = File.new('/tmp/import','w+')
-#         t.write(data)
-#         t.close
-#         cmd = 'cat /tmp/import | ' + cmd
-#  
-      
-#         end
     Open3.popen3(cmd)  do |_stdin, stdout, stderr, th|
       _stdin.write(data) unless data.is_a?(FalseClass) 
-      
+      _stdin.close
       oline = ''
       stderr_is_open = true
       begin
      
-        
         stdout.each do |line|
           unless binary
             line = line.gsub(/\\\'/,'')  # remove rubys \' arround strings
@@ -143,13 +134,19 @@ class SystemUtils
         SystemDebug.debug(SystemDebug.execute,'read stderr', oline)
         retval[:stderr] += stderr.read_nonblock(256)
       rescue IO::WaitReadable
-        retry
+        retry unless th.status == false
+        retval[:result] = th.value.exitstatus
+        return retval
       rescue EOFError
         if stdout.closed? == false
           stderr_is_open = false
-          retry
+          retry unless th.status == false
+          retval[:result] = th.value.exitstatus
+          return retval
         elsif stderr.closed? == false
           retval[:stderr] += stderr.read_nonblock(1000)
+          retval[:result] = th.value.exitstatus
+           return retval 
         end
       end
      # File.delete('/tmp/import') if File.exist?('/tmp/import')

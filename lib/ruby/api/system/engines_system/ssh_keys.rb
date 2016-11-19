@@ -10,7 +10,7 @@ module SshKeys
   def update_public_key(key)  
     r =  run_server_script('update_system_access', key)
     return r if r.is_a?(EnginesError) 
-     r[:stdout]
+    true
     rescue StandardError => e
         SystemUtils.log_exception(e)
   end

@@ -19,6 +19,7 @@ end
 # @param :public_key
 # @return [true]
 post '/v0/system/keys/user/:user_name' do
+  content_type 'text/plain'
   p_params = post_params(request)
   params.merge!(p_params)
   cparams =  Utils::Params.assemble_params(params, [:user_name],  :public_key)
