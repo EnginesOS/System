@@ -8,8 +8,6 @@ module ApiActionators
     end
 
     cmds = ['/home/actionators/' + actionator_name + '.sh',args.to_s]
-
-
             if data.nil?
               result = engines_core.exec_in_container({:container => c, :command_line => cmds, :log_error => true, :data=>nil })
               #      result = SystemUtils.execute_command(cmd)

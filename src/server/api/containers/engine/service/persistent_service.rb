@@ -28,7 +28,7 @@ post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace
   hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
   engine = get_engine(params[:engine_name])
 
-  hash[:data] =Base64.encode64( p_params['api_vars']['data'])
+  hash[:data] = Base64.encode64( p_params['api_vars']['data'])
   return log_error(request, engine, hash) if engine.is_a?(EnginesError)
   r = engine.import_service_data(hash)
   return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)

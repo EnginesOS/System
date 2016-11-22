@@ -49,5 +49,17 @@ module EnginesApiSystem
   def container_cid_file(container)
     @system_api.container_cid_file(container)
   end
+  
+  def run_cronjob(cronjob, container)
+     return false unless container.is_running?
+   
+    #retreive cron entry from engine registry
+    cron_entry = @engines_core.retreive_cron_entry(cronjob, container)
+     return false if cron_entry.is_a?(EnginesError)
+    r = @engines_core.exec_in_container({:container => container, :command_line => cron_entry, :log_error => true, :data=>nil })    
+     return r.to_s if r.is_a?(EnginesError)
+     return r[:stdout] + r[:stderr]
+    
+  end
 
 end
