@@ -95,6 +95,15 @@ return services
   rescue StandardError => e
     log_exception(e)
   end
+  
+  def get_cron_entry(cronjob, container)
+
+   entry = find_engine_service_hash({:parent_engine => container.container_name,
+                                      :publisher_namespace => 'EnginesSystem',
+                                      :type_path =>'cron',
+                                      :service_handle => cronjob})
+   
+  end
 
   #@ remove an engine matching :engine_name from the service registry, all non persistent serices are removed
   #@ if :remove_all_data is true all data is deleted and all persistent services removed
@@ -114,7 +123,7 @@ return services
       else
         if (r = orphanate_service(service)).is_a?(EnginesError)
           return r
-        #  next
+        # next
         end
       end
       system_registry_client.remove_from_managed_engines_registry(service)

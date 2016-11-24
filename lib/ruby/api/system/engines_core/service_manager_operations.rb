@@ -50,7 +50,9 @@ module ServiceManagerOperations
   def get_service_entry(service_hash)
     service_manager.get_service_entry(service_hash)
   end
-
+  def retreive_cron_entry(cronjob, container)
+    service_manager.get_cron_entry(cronjob, container)
+  end
   def taken_hostnames
 #    query= {}
 #    query[:type_path]='nginx'

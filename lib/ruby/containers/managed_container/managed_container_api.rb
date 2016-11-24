@@ -21,4 +21,8 @@ module ManagedContainerApi
     @container_api.save_blueprint(blueprint, self)
   end
 
+  def run_cronjob(cronjob)
+    return false unless has_api?
+       @container_api.run_cronjob(cronjob, self)
+  end
 end

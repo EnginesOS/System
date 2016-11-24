@@ -50,12 +50,14 @@ end
 
 def create_nginx_service_hash(engine)
   proto =  'http_https'
-  case engine.protocol
-  when :https_only
+  case engine.protocol.to_s
+  when 'https_only'
     proto = 'https'
-  when :http_and_https
+  when 'http_and_https'
     proto = 'http_https'
-  when :http_only
+  when 'https_and_http'
+    proto = 'https_http'
+  when 'http_only'
     proto = 'http'
   end
 
