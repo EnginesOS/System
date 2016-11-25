@@ -16,7 +16,7 @@ file $ca_cert_file | grep PEM
 update-ca-certificates
 
 #force update-ca-certificates on containers and service next start
-files=`find /opt/engines/*/*/run/flags/ -name ca-update`
+files=`find  /opt/engines/run/*/*/run/flags -name ca-update`
 	if ! test -z $files
 		then
 			rm $files
