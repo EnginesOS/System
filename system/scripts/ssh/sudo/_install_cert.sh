@@ -33,6 +33,8 @@ if test -f $key_file
 		echo $name not a PEM certificate
 		exit 127
 	fi
+	mkdir -p /opt/engines/etc/ssl/keys/ /opt/engines/etc/ssl/certs/
+	
   cp $key_file /opt/engines/etc/ssl/keys/${name}.key
   cp $cert_file /opt/engines/etc/ssl/certs/${name}.crt
  fi
