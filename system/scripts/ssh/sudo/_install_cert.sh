@@ -8,6 +8,7 @@ if test $1 = '-d'
   default=yes
   shift
 elif test $1 = '-i'
+ then
 	import=yes
 	shift
  fi	
