@@ -103,12 +103,12 @@ return services
                                       :type_path =>'cron',
                                       :container_type => container.ctype,
                                       :service_handle => cronjob})
-   s = {:parent_engine => container.container_name,
-                                          :publisher_namespace => 'EnginesSystem',
-                                          :type_path =>'cron',
-                                           :container_type => container.ctype,
-                                          :service_handle => cronjob}
-                                          STDERR.puts('serach for ' + s.to_s + ' returned ' + entry.to_s)             
+#   s = {:parent_engine => container.container_name,
+#                                          :publisher_namespace => 'EnginesSystem',
+#                                          :type_path =>'cron',
+#                                           :container_type => container.ctype,
+#                                          :service_handle => cronjob}
+#                                          STDERR.puts('serach for ' + s.to_s + ' returned ' + entry.to_s)             
          return  entry unless entry.is_a?(Hash)
     entry[:variables][:cron_job]
    
