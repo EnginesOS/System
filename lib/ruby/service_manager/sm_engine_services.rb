@@ -106,7 +106,7 @@ return services
                                           :publisher_namespace => 'EnginesSystem',
                                           :type_path =>'cron',
                                           :service_handle => cronjob}
-                                          STDERR.puts('serach for ' + s.to_s + ' returned ' + entry)             
+                                          STDERR.puts('serach for ' + s.to_s + ' returned ' + entry.to_s)             
          return  entry unless entry.is_a?(Hash)
     entry[:variables][:cron_job]
    
