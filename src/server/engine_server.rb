@@ -46,6 +46,7 @@ begin
         
    def source_is_cron?(request)
     cron = get_service('cron')    
+    STDERR.puts('request IP' +  request.ip.to_s + ' Cron ip ' + cron.get_ip_str)
      return true if request.ip.to_s == cron.get_ip_str
      return false
    end
