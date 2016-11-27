@@ -91,10 +91,10 @@ get '/v0/containers/service/:service_name/ps' do
   r.to_json
 end
 # @method run_service_cron_job
-# @overload   get '/v0/containers/service/:service_name/:cron_job/run'
+# @overload   get '/v0/cron/service/:service_name/:cron_job/run'
 #  run cron_job for service
 # @return [String] true|false 
-get '/v0/containers/service/:service_name/:cron_job/run' do
+get '/v0/cron/service/:service_name/:cron_job/run' do
   service = get_service(params[:service_name])
    return log_error(request, service, params) if service.is_a?(EnginesError)
    r = service.run_cronjob(params[:cron_job])

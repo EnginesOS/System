@@ -38,8 +38,8 @@ begin
   content_type 'application/json' unless  request.path.end_with?('stream')    
     pass if request.path.start_with?('/v0/system/login/')
     pass if request.path.start_with?('/v0/unauthenticated')    
-    pass if request.path.start_with?('/v0/containers/engine/:engine_name/:cron_job/run')  && source_is_cron?(request)
-    pass if request.path.start_with?('/v0/containers/service/:service_name/:cron_job/run')  && source_is_cron?(request)
+    pass if request.path.start_with?('/v0/cron/engine/')  && source_is_cron?(request)
+    pass if request.path.start_with?('/v0/cron/service/')  && source_is_cron?(request)
     pass if request.path.start_with?('/v0/system/do_first_run') && FirstRunWizard.required?
     env['warden'].authenticate!(:access_token)
    end

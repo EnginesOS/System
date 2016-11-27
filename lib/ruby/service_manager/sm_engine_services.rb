@@ -102,6 +102,7 @@ return services
                                       :publisher_namespace => 'EnginesSystem',
                                       :type_path =>'cron',
                                       :service_handle => cronjob})
+          entry
    
   end
 
