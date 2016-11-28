@@ -19,7 +19,7 @@ module DockerApiExec
 
     def has_data?
       unless  @i_stream.nil?
-       return true if @i_stream.is_readable? 
+       return true unless @i_stream.closed? 
       end
       return false if  @data.nil?
       return false if  @data.length == 0
@@ -133,7 +133,7 @@ module DockerApiExec
   def create_docker_exec(params) #container, commands, have_data)
 
     request_params = {}
-    if params.key?(:data) || params.key?(:stream)
+    if params.key?(:data) || params.key?(:data_stream)
       request_params["AttachStdin"] = true
       request_params["Tty"] =  false
     else
