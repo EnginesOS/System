@@ -2,6 +2,7 @@
 
 Archive=/tmp/big/archive 
 cd /tmp
+mkdir -p /tmp/big/
 cat - > $Archive
 
 
@@ -13,7 +14,7 @@ if test $? -eq 0
  else
  cat $Archive $extract | mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname 2> /tmp/extract.err
   fi
-	
+
 	if test $? -eq 0
 	  then
 	   rm  $Archive 
@@ -23,7 +24,7 @@ if test $? -eq 0
 	
 	    cat  /tmp/extract.err
 	    echo  Rolled back >&2
-	    rm  $Archive 
+	  #  rm  $Archive 
 	    exit 127
 	 fi 
 

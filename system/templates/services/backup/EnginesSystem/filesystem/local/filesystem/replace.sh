@@ -4,7 +4,7 @@ cd /home/fs
 dirname=`basename $VOLDIR `
 cp -rp $VOLDIR /tmp/big/$dirname.bak
  rm -r $VOLDIR/*
- 
+ mkdir -p /tmp/big/
 if test -f  /tmp/extract.err
  then
 rm /tmp/extract.err
