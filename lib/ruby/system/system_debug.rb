@@ -28,7 +28,7 @@ class SystemDebug
   else
     @@debug_flags = 0
     
-  @@debug_flags =  @@builder|@@templater| @@services | @@orphans# |@@container_events|@@first_run #@@containers# |@@container_events |@@first_run #@@orphans | @@builder |@@export_import | @@services| @@container_events|  @@server |@@templater| @@services | @@export_import |@@builder|@@execute|@@engine_tasks | @@orphans  |@@containers
+  @@debug_flags =  @@builder|@@templater| @@services | @@export_import# |@@container_events|@@first_run #@@containers# |@@container_events |@@first_run #@@orphans | @@builder |@@export_import | @@services| @@container_events|  @@server |@@templater| @@services | @@export_import |@@builder|@@execute|@@engine_tasks | @@orphans  |@@containers
   end
   #end
   #
