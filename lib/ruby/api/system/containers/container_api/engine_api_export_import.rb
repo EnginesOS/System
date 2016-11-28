@@ -39,8 +39,7 @@ end
    end
     params = {:container => container, :command_line => [cmd], :log_error => true }
             unless stream.nil?
-              params[:stream] =  stream
-              params[:data] = 'file'
+              params[:data_stream] =  stream            
             else 
               params[:data] = Base64.decode64(service_params[:data])
             end
