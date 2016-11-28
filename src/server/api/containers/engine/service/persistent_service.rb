@@ -24,6 +24,7 @@ end
 # @return [true]
 post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/import' do
   p_params = post_params(request)
+  STDERR.puts(' upload post '  + p_params.to_s + ' params '  + params.to_s)
   hash = {}
   hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
   engine = get_engine(params[:engine_name])
@@ -42,6 +43,7 @@ end
 # @return [true]
 post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/import_file' do
   p_params = post_params(request)
+  STDERR.puts(' upload post '  + p_params.to_s + ' params '  + params.to_s)
   hash = {}
   hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
   engine = get_engine(params[:engine_name])
@@ -60,6 +62,7 @@ end
 # @return [true]
 post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/replace_file' do
   p_params = post_params(request)
+  STDERR.puts(' upload post '  + p_params.to_s + ' params '  + params.to_s)
   hash = {}
   hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
   engine = get_engine(params[:engine_name])
@@ -79,6 +82,7 @@ end
 # @return [true]
 post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/replace' do
   p_params = post_params(request)
+  STDERR.puts(' upload post '  + p_params.to_s + ' params '  + params.to_s)
   hash = {}
   hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
   engine = get_engine(params[:engine_name])
