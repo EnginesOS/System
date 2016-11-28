@@ -18,7 +18,7 @@ get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/
 
 end
 # @method engine_import_persistent_service
-# @overload post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/:type_path/:service_handle/import'
+# @overload post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/:type_path/:service_handle/overwrite'
 # import the service data gzip optional
 # @param :data data to import
 # @return [true]
