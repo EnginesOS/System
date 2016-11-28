@@ -22,7 +22,7 @@ end
 # import the service data gzip optional
 # @param :data data to import
 # @return [true]
-post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/import' do
+post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/overwrite' do
 #  p_params = request.env["rack.input"].read
 #  STDERR.puts(' upload post '  + p_params.to_s + ' params '  + params.to_s)
   hash = {}
