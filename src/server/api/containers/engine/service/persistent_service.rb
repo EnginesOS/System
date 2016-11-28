@@ -28,7 +28,7 @@ post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace
   hash = {}
   hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
   engine = get_engine(params[:engine_name])
-  hash[:datafile] = params[:tempfile]
+  hash[:datafile] = params['file'][:tempfile]
   STDERR.puts(' upload post  params '  + params.to_s)
  # hash[:data] = Base64.encode64( p_params['api_vars']['data'])
   return log_error(request, engine, hash) if engine.is_a?(EnginesError)
@@ -88,7 +88,7 @@ post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace
   hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
   engine = get_engine(params[:engine_name])
   hash[:import_method] = :replace
-  hash[:datafile] = params[:tempfile]
+  hash[:datafile] = params['file'][:tempfile]
   return log_error(request, engine, hash) if engine.is_a?(EnginesError)
  # hash[:data] =Base64.encode64( p_params['api_vars']['data'])
   r = engine.import_service_data(hash, File.new(hash[:datafile].path,'rb'))
