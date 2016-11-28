@@ -23,15 +23,15 @@ end
 # @param :data data to import
 # @return [true]
 post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/import' do
-  p_params = request.env["rack.input"].read
-  STDERR.puts(' upload post '  + p_params.to_s + ' params '  + params.to_s)
+#  p_params = request.env["rack.input"].read
+#  STDERR.puts(' upload post '  + p_params.to_s + ' params '  + params.to_s)
   hash = {}
   hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
   engine = get_engine(params[:engine_name])
-
-  hash[:data] = Base64.encode64( p_params['api_vars']['data'])
+  hash[:datafile] = params[:tempfile]
+ # hash[:data] = Base64.encode64( p_params['api_vars']['data'])
   return log_error(request, engine, hash) if engine.is_a?(EnginesError)
-  r = engine.import_service_data(hash)
+  r = engine.import_service_data(hash,File.new(hash[:datafile].path,'rb'))
   return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
   content_type 'text/plain' 
   r.to_s
@@ -41,55 +41,56 @@ end
 # import the service data gzip optional
 # @param
 # @return [true]
-post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/import_file' do
-  p_params = request.env["rack.input"].read
-  STDERR.puts(' upload post '  + p_params.to_s + ' params '  + params.to_s)
-  hash = {}
-  hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
-  engine = get_engine(params[:engine_name])
-  hash[:data] = p_params['api_vars']['data']
-  file = p_params[:file][:tempfile]
-  return log_error(request, engine, hash) if engine.is_a?(EnginesError)
-  r = engine.import_service_data(hash, file)
-  return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
-  content_type 'text/plain' 
-  r.to_s
-end
+#post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/import_file' do
+##  p_params = request.env["rack.input"].read
+# # STDERR.puts(' upload post '  + p_params.to_s + ' params '  + params.to_s)
+#  hash = {}
+#  hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
+#  engine = get_engine(params[:engine_name])
+# # hash[:data] = p_params['api_vars']['data']
+#  file = p_params[:file][:tempfile]
+#  return log_error(request, engine, hash) if engine.is_a?(EnginesError)
+#  r = engine.import_service_data(hash, file)
+#  return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
+#  content_type 'text/plain' 
+#  r.to_s
+#end
 # @method engine_replace_persistent_service_file
 # @overload post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/:type_path/:service_handle/replace_file'
 # import the service data gzip optional after dropping/deleting existing data
 # @param :data data to import
 # @return [true]
-post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/replace_file' do
-  p_params =request.env["rack.input"].read
-  STDERR.puts(' upload post '  + p_params.to_s + ' params '  + params.to_s)
-  hash = {}
-  hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
-  engine = get_engine(params[:engine_name])
-  hash[:import_method] = :replace
-  hash[:data] = p_params['api_vars']['data']
-  file = p_params[:file][:tempfile]
-  return log_error(request, engine, hash) if engine.is_a?(EnginesError)
-  r = engine.import_service_data(hash,file)
-  return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
-  content_type 'text/plain' 
-  r.to_s
-end
+#post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/replace_file' do
+# # p_params =request.env["rack.input"].read
+# # STDERR.puts(' upload post '  + p_params.to_s + ' params '  + params.to_s)
+#  hash = {}
+#  hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
+#  engine = get_engine(params[:engine_name])
+#  hash[:import_method] = :replace
+#  hash[:datafile] = params[:tempfile]
+#  file = p_params[:file][:tempfile]
+#  return log_error(request, engine, hash) if engine.is_a?(EnginesError)
+#  r = engine.import_service_data(hash,file)
+#  return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
+#  content_type 'text/plain' 
+#  r.to_s
+#end
 # @method engine_replace_persistent_service
 # @overload post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/:type_path/:service_handle/replace'
 # import the service data gzip optional after dropping/deleting existing data
 # @param :data data to import
 # @return [true]
 post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/replace' do
-  p_params = request.env["rack.input"].read
-  STDERR.puts(' upload post '  + p_params.to_s + ' params '  + params.to_s)
+#  p_params = request.env["rack.input"].read
+#  STDERR.puts(' upload post '  + p_params.to_s + ' params '  + params.to_s)
   hash = {}
   hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
   engine = get_engine(params[:engine_name])
   hash[:import_method] = :replace
+  hash[:datafile] = params[:tempfile]
   return log_error(request, engine, hash) if engine.is_a?(EnginesError)
-  hash[:data] =Base64.encode64( p_params['api_vars']['data'])
-  r = engine.import_service_data(hash)
+ # hash[:data] =Base64.encode64( p_params['api_vars']['data'])
+  r = engine.import_service_data(hash, File.new(hash[:datafile].path,'rb'))
   return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
   content_type 'text/plain' 
   r.to_s
