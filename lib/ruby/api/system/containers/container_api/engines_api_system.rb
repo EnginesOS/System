@@ -56,7 +56,7 @@ module EnginesApiSystem
     #retreive cron entry from engine registry
     cron_entry = @engines_core.retreive_cron_entry(cronjob, container)
      return false if cron_entry.is_a?(EnginesError)
-    r = @engines_core.exec_in_container({:container => container, :command_line => cron_entry, :log_error => true, :data=>nil })    
+    r = @engines_core.exec_in_container({:container => container, :command_line => cron_entry.split(" "), :log_error => true, :data=>nil })    
      return r.to_s if r.is_a?(EnginesError)
      return r[:stdout] + r[:stderr]
     
