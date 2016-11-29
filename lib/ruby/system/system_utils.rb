@@ -133,7 +133,7 @@ class SystemUtils
                  retval[:stdout] += line
                  else 
                    STDERR.puts('out is a  ' + out.class.name)
-                   out.write(data)
+                   out << line
                end
           retval[:stderr] += stderr.read_nonblock(256) if stderr_is_open
         end
@@ -142,7 +142,7 @@ class SystemUtils
         if out.nil?
                retval[:stdout] += line
                else 
-                 out.write(data)
+                 out << line
              end
         retval[:stdout] += stdout.read_nonblock(256)
         SystemDebug.debug(SystemDebug.execute,'read stderr', oline)
