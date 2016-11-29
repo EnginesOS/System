@@ -222,4 +222,8 @@ class PublicApi < ErrorsApi
   
   require_relative 'service_manager/public_api_persistent_services.rb'
   include  PublicApiPersistentServices
+  
+  require_relative 'backup.rb'
+  include  PublicApiBackup
+  
 end

@@ -40,6 +40,7 @@ begin
     pass if request.path.start_with?('/v0/unauthenticated')    
     pass if request.path.start_with?('/v0/cron/engine/')  && source_is_cron?(request)
     pass if request.path.start_with?('/v0/cron/service/')  && source_is_cron?(request)
+    pass if request.path.start_with?('/v0/backup/')  && source_is_backup?(request)
     pass if request.path.start_with?('/v0/system/do_first_run') && FirstRunWizard.required?
     env['warden'].authenticate!(:access_token)
    end
@@ -50,7 +51,12 @@ begin
      return true if request.ip.to_s == cron.get_ip_str
      return false
    end
-    
+  def source_is_backup?(request)
+    backup = get_service('backup')    
+   STDERR.puts('request IP' +  request.ip.to_s + ' backup ip ' + backup.get_ip_str)
+    return true if request.ip.to_s == backup.get_ip_str
+    return false
+  end   
   helpers do
   def engines_api
 #    unless @@engines_api

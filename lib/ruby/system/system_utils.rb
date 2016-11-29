@@ -99,7 +99,7 @@ class SystemUtils
   #:result_code = command exit/result code
   #:stdout = what was written to standard out
   #:stderr = what was written to standard err
-  def SystemUtils.execute_command(cmd, binary=false, data = false)
+  def SystemUtils.execute_command(cmd, binary=false, data = false, out=nil)
     @@last_error = ''
     require 'open3'
     SystemDebug.debug(SystemDebug.execute,'exec command ', cmd)
@@ -111,8 +111,15 @@ class SystemUtils
     retval[:result] = -1
     retval[:command] = cmd
       
+      def handle_output(data)
+        return retval[:stdout] += line if out.nil?
+          out.write(data)
+      end
+      
     Open3.popen3(cmd)  do |_stdin, stdout, stderr, th|
-      _stdin.write(data) unless data.is_a?(FalseClass) 
+      
+      _stdin.write(data) unless data.is_a?(FalseClass)
+       
       _stdin.close
       oline = ''
       stderr_is_open = true
@@ -124,12 +131,12 @@ class SystemUtils
             oline = line
             line.gsub!(/\/r/,'')
           end
-          retval[:stdout] += line
+          handle_output(line)
           retval[:stderr] += stderr.read_nonblock(256) if stderr_is_open
         end
         retval[:result] = th.value.exitstatus
       rescue Errno::EIO
-        retval[:stdout] += oline.chop
+        handle_output(line.chop)
         retval[:stdout] += stdout.read_nonblock(256)
         SystemDebug.debug(SystemDebug.execute,'read stderr', oline)
         retval[:stderr] += stderr.read_nonblock(256)
