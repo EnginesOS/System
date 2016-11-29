@@ -10,6 +10,7 @@ module SystemApiBackup
    
    def backup_system_registry(out)
    tree =  @engines_api.get_registry
+   STDERR.puts(' TREE is ' + tree.to_s)
      out << tree
    end
    
