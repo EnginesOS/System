@@ -118,7 +118,7 @@ module DockerApiExec
     stream_handler.result
 
   rescue StandardError => e
-    STDERR.puts('DOCKER EXECep  ' + params[:container].container_name + ': with :' + request_params.to_s)
+    STDERR.puts('DOCKER EXECep  ' + params.to_s + ': with :' + request_params.to_s)
     log_exception(e)
   end
 
