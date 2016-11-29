@@ -19,7 +19,9 @@ module SystemApiBackup
      return service if service.is_a?(EnginesError)
      result = {}
      params = {:container => service, :stream => out, :command_line => ['/home/services/backup.sh'], :log_error => true }
-     result = @engines_core.exec_in_container(params) 
+       
+     result = @engines_core.exec_in_container(params)
+     STDERR.puts(' service backup ' + params.to_s + ' returned ' + result.to_s ) 
      return result if result[:result] !=0
      return true
    end
