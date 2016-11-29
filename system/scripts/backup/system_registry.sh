@@ -1,3 +1,3 @@
 #!/bin/sh
 
-tar -cxpf - /var/lib/engines/
+tar -czpf - /var/lib/engines/
