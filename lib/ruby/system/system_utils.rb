@@ -132,6 +132,7 @@ class SystemUtils
           if out.nil?
                  retval[:stdout] += line
                  else 
+                   STDERR.puts('out is a  ' + out.class.name)
                    out.write(data)
                end
           retval[:stderr] += stderr.read_nonblock(256) if stderr_is_open
