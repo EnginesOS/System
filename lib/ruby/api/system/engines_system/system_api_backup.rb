@@ -11,7 +11,7 @@ module SystemApiBackup
    def backup_system_registry(out)
    tree =  @engines_api.get_registry
    STDERR.puts(' TREE is ' + tree.to_yaml )
-     out << tree
+     out << tree.to_yaml
    end
    
    def backup_service_data(service_name,out)
