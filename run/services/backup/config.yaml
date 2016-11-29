@@ -20,7 +20,7 @@ volumes:
  ApplicationVolumes: 
   name: ApplicationVolumes
   remotepath: "/backup_src/volumes/fs"
-  localpath: "/var/lib/engines/applications"
+  localpath: "/var/lib/engines/fs"
   permissions: "ro"
  ServiceVolumes: 
   name: ServiceVolumes

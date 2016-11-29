@@ -22,6 +22,7 @@ module SystemApiBackup
        
      result = @engines_api.exec_in_container(params)
      STDERR.puts(' service backup ' + params.to_s + ' returned ' + result.to_s ) 
+     return result if result.is_a?(EnginesError)
      return result if result[:result] !=0
      return true
    end
