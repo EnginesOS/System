@@ -9,7 +9,8 @@ module SystemApiBackup
    end
    
    def backup_system_registry(out)
-     SystemUtils.execute_command('/opt/engines/system/scripts/backup/system_registry.sh', true, false, out)
+   tree =  @engines_api.get_registry
+     out << tree
    end
    
    def backup_service_data(service_name,out)

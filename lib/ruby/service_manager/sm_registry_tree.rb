@@ -30,4 +30,8 @@ module SmRegistryTree
      def shares_tree
        test_and_lock_registry_result(system_registry_client.shares_registry_tree)
      end
+     
+     def get_registry()
+       system_registry_client.get_registry()
+     end
 end
