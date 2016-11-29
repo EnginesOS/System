@@ -111,10 +111,8 @@ class SystemUtils
     retval[:result] = -1
     retval[:command] = cmd
       
-      def handle_output(data)
-        return retval[:stdout] += line if out.nil?
-          out.write(data)
-      end
+
+       
       
     Open3.popen3(cmd)  do |_stdin, stdout, stderr, th|
       
@@ -131,12 +129,20 @@ class SystemUtils
             oline = line
             line.gsub!(/\/r/,'')
           end
-          handle_output(line)
+          if out.nil?
+                 retval[:stdout] += line
+                 else 
+                   out.write(data)
+               end
           retval[:stderr] += stderr.read_nonblock(256) if stderr_is_open
         end
         retval[:result] = th.value.exitstatus
       rescue Errno::EIO
-        handle_output(line.chop)
+        if out.nil?
+               retval[:stdout] += line
+               else 
+                 out.write(data)
+             end
         retval[:stdout] += stdout.read_nonblock(256)
         SystemDebug.debug(SystemDebug.execute,'read stderr', oline)
         retval[:stderr] += stderr.read_nonblock(256)
