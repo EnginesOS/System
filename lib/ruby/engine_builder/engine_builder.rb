@@ -345,6 +345,7 @@ class EngineBuilder < ErrorsApi
   end
 
   def log_error_mesg(m,o)
+    
     log_build_errors(m.to_s + o.to_s)
     super
   end

@@ -6,6 +6,7 @@ def log_warn_mesg(mesg,*objs)
 end
 
   def log_error_mesg(mesg,*objs)
+    @last_error = mesg
     super
     return ServiceBuilderError.new(mesg.to_s,:failure)
   end

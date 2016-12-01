@@ -112,12 +112,14 @@ class BuildController
   end
 
   def build_failed(params,err)
-    SystemStatus.build_failed(params)
+   
     params[:error] = err.to_s
     @build_error = err
     @core_api.build_stoped()   
     SystemUtils.log_error_mesg(err.to_s, params)
-
+    
+    Thread.new{  SystemStatus.build_failed(params) }
+      
    return err if err.is_a?(EnginesError)
     return EnginesError.new(params[:engine_name] +  err.to_s + params.to_s , :build_error)
   end
