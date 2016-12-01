@@ -69,7 +69,7 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream'  do
           
           bytes = ''
           sleep 2
-          retry if File.exist?()
+          retry if File.exist?(SystemConfig.BuildRunningParamsFile)
           out.close
         end
         build_log_file.close
