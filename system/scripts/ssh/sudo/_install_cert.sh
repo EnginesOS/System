@@ -1,23 +1,42 @@
 #!/bin/sh
 
+default=no
+import=no
+
 if test $1 = '-d'
  then
   default=yes
   shift
+elif test $1 = '-i'
+ then
+	import=yes
+	shift
  fi	
 	
 name=$1
+
+ if test import = true
+  then
+	key_file=/home/app/tmp/$name.key
+	cert_file=/home/app/tmp/$name.cert
+  else 
+	key_file=/var/lib/engines/cert_auth/public/keys/$name.key
+	cert_file=/var/lib/engines/cert_auth/public/certs/$name.crt
+ fi
 	
-if test -f /home/app/tmp/$name.key
+	
+if test -f $key_file
  then
- file /home/app/tmp/$name.cert | grep PEM
+ file $cert_file | grep PEM
 	   if test $? -ne 0
  	then
 		echo $name not a PEM certificate
 		exit 127
 	fi
-  mv /home/app/tmp/$name.key /opt/engines/etc/ssl/keys/${name}.key
-  mv /home/app/tmp/$name.cert /opt/engines/etc/ssl/certs/${name}.crt
+	mkdir -p /opt/engines/etc/ssl/keys/ /opt/engines/etc/ssl/certs/
+	
+  cp $key_file /opt/engines/etc/ssl/keys/${name}.key
+  cp $cert_file /opt/engines/etc/ssl/certs/${name}.crt
  fi
 
 

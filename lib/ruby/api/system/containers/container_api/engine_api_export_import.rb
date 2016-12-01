@@ -39,8 +39,7 @@ end
    end
     params = {:container => container, :command_line => [cmd], :log_error => true }
             unless stream.nil?
-              params[:stream] =  stream
-              params[:data] = 'file'
+              params[:data_stream] =  stream            
             else 
               params[:data] = Base64.decode64(service_params[:data])
             end
@@ -52,7 +51,7 @@ end
                thr.join
                SystemDebug.debug(SystemDebug.export_import, :import_service,'result ' ,result.to_s)
                return true if result[:result] == 0
-               return log_error_mesg("failed to export ",service_params,params,result)
+               return log_error_mesg("failed to import ",service_params,params,result)
              end
            rescue Timeout::Error
              return log_error_mesg('Import Timeout on Running Action ',cmd)

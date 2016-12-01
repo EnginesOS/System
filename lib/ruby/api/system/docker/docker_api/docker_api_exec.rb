@@ -18,6 +18,9 @@ module DockerApiExec
     end
 
     def has_data?
+      unless  @i_stream.nil?
+       return true unless @i_stream.closed? 
+      end
       return false if  @data.nil?
       return false if  @data.length == 0
       return true
@@ -94,7 +97,7 @@ module DockerApiExec
 
     headers = {}
     headers['Content-type'] = 'application/json'
-    unless params.key?(:data)
+    unless params.key?(:data) || params.key?(:data_stream)
       result = {}
       stream_reader = DockerStreamReader.new(params[:stream])
       r =  post_stream_request(request, nil, stream_reader,  headers ,  request_params.to_json  )
@@ -104,7 +107,7 @@ module DockerApiExec
     end
 
     request_params["AttachStdin"] = true
-    stream_handler = DockerHijackStreamHandler.new(params[:data],params[:istream], params[:ostream])
+    stream_handler = DockerHijackStreamHandler.new(params[:data],params[:data_stream], params[:ostream])
 
     headers['Connection'] = 'Upgrade'
     headers['Upgrade'] = 'tcp'
@@ -115,7 +118,7 @@ module DockerApiExec
     stream_handler.result
 
   rescue StandardError => e
-    STDERR.puts('DOCKER EXECep  ' + params[:container].container_name + ': with :' + request_params.to_s)
+    STDERR.puts('DOCKER EXECep  ' + params.to_s + ': with :' + request_params.to_s)
     log_exception(e)
   end
 
@@ -130,7 +133,7 @@ module DockerApiExec
   def create_docker_exec(params) #container, commands, have_data)
 
     request_params = {}
-    if params.key?(:data)
+    if params.key?(:data) || params.key?(:data_stream)
       request_params["AttachStdin"] = true
       request_params["Tty"] =  false
     else
@@ -143,6 +146,8 @@ module DockerApiExec
     request_params[ "Cmd"] =   format_commands(params[:command_line])
 
     request = '/containers/'  + params[:container].container_id.to_s + '/exec'
+      
+      
     r = post_request(request,  request_params)
     return r
   end

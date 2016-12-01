@@ -52,6 +52,8 @@ class SystemApi < ErrorsApi
   # Put if first run needed around this
   require_relative 'first_run_complete.rb'
   include FirstRunComplete
+  require_relative 'system_api_backup.rb'
+   include SystemApiBackup
   
   def initialize(api)
     @engines_api = api

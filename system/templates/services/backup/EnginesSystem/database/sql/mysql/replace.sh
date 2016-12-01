@@ -20,7 +20,7 @@ if test $? -eq 0
  else
  cat $Archive $extract | mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname 2> /tmp/extract.err
   fi
- 
+
 	if test $? -eq 0
 	  then
 	   rm  $Archive

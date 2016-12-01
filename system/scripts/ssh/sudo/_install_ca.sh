@@ -1,7 +1,8 @@
 #!/bin/sh
 
 #FIXME check arugments and verifice .crt is a pem
-ca_cert_file=/opt/engines/etc/ssl/ca/certs/system_CA.pem 
+ca_cert_file=/var/lib/engines/cert_auth/public/ca/certs/system_CA.pem 
+#/opt/engines/etc/ssl/ca/certs/system_CA.pem 
 
 file $ca_cert_file | grep PEM
  if test $? -eq 0
@@ -15,8 +16,8 @@ file $ca_cert_file | grep PEM
 update-ca-certificates
 
 #force update-ca-certificates on containers and service next start
-files=`find /opt/engines/*/*/run/flags/ -name ca-update`
-	if ! test -z $files
+files=`find  /opt/engines/run/*/*/run/flags -name ca-update`
+	if ! test -z "$files"
 		then
 			rm $files
 	fi

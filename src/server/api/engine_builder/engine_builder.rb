@@ -53,19 +53,23 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream'  do
         bytes = build_log_file.read_nonblock(1000)
         bytes.force_encoding(Encoding::UTF_8) unless bytes.nil?
         out << bytes
+        STDERR.puts("build log " + bytes)
         bytes = ''
       rescue IO::WaitReadable
         out << bytes
+        STDERR.puts("build log " + bytes)
         bytes = ''
         retry
       rescue EOFError
         unless out.closed?
           bytes.force_encoding(Encoding::UTF_8) unless bytes.nil?
           out  << bytes
+          STDERR.puts("build log " + bytes)
           out  << '.'
+          
           bytes = ''
           sleep 2
-          retry if File.exist?(SystemConfig.BuildRunningParamsFile)
+          retry if File.exist?()
           out.close
         end
         build_log_file.close

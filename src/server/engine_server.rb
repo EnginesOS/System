@@ -38,18 +38,25 @@ begin
   content_type 'application/json' unless  request.path.end_with?('stream')    
     pass if request.path.start_with?('/v0/system/login/')
     pass if request.path.start_with?('/v0/unauthenticated')    
-    pass if request.path.start_with?('/v0/containers/engine/:engine_name/:cron_job/run')  && source_is_cron?(request)
-    pass if request.path.start_with?('/v0/containers/service/:service_name/:cron_job/run')  && source_is_cron?(request)
+    pass if request.path.start_with?('/v0/cron/engine/')  && source_is_cron?(request)
+    pass if request.path.start_with?('/v0/cron/service/')  && source_is_cron?(request)
+    pass if request.path.start_with?('/v0/backup/')  && source_is_backup?(request)
     pass if request.path.start_with?('/v0/system/do_first_run') && FirstRunWizard.required?
     env['warden'].authenticate!(:access_token)
    end
         
    def source_is_cron?(request)
     cron = get_service('cron')    
+    STDERR.puts('request IP' +  request.ip.to_s + ' Cron ip ' + cron.get_ip_str)
      return true if request.ip.to_s == cron.get_ip_str
      return false
    end
-    
+  def source_is_backup?(request)
+    backup = get_service('backup')    
+   STDERR.puts('request IP' +  request.ip.to_s + ' backup ip ' + backup.get_ip_str)
+    return true if request.ip.to_s == backup.get_ip_str
+    return false
+  end   
   helpers do
   def engines_api
 #    unless @@engines_api
