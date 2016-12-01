@@ -385,6 +385,7 @@ class EngineBuilder < ErrorsApi
 
   def log_exception(e)
     log_build_errors(e.to_s)
+    build_failed(e.to_s)
     super
   end
 end
