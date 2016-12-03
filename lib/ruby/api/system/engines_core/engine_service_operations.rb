@@ -151,11 +151,11 @@ module EngineServiceOperations
 
 result =  exec_in_container({:container => container, :command_line => args, :log_error => true, :timeout =>30 , :data=>''}) 
   
-STDERR.puts('RESUTL 1 ' + result.to_s)
+
     return result unless result.is_a?(Hash)
-STDERR.puts('RESUTL 2' + result.to_s)
+
     return result[:stdout] if result[:result] == 0
-STDERR.puts('RESUTL 3' + result.to_s)
+
     log_error_mesg('Get pub key failed',result)
 return service_manager.load_service_pubkey(container, cmd)
 rescue StandardError => e
