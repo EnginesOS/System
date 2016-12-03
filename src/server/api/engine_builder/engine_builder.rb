@@ -46,6 +46,7 @@ end
 get '/v0/engine_builder/follow_stream', provides: 'text/event-stream'  do
   build_log_file =  File.new(SystemConfig.BuildOutputFile, 'r')
   has_data = true
+  build_over = false
   stream :keep_open do |out|
 
     while has_data == true
@@ -59,17 +60,20 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream'  do
         out << bytes
         STDERR.puts("build log " + bytes)
         bytes = ''
-        retry
+        retry 
       rescue EOFError
         unless out.closed?
           bytes.force_encoding(Encoding::UTF_8) unless bytes.nil?
           out  << bytes
           STDERR.puts("build log " + bytes)
-          out  << '.'
-          
+          out  << '.'          
           bytes = ''
           sleep 2
           retry if File.exist?(SystemConfig.BuildRunningParamsFile)
+          if build_over == false         
+            build_over = true
+            retry             
+          end
           out.close
         end
         build_log_file.close
