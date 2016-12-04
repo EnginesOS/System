@@ -109,7 +109,8 @@ class EngineBuilder < ErrorsApi
   def build_failed(errmesg)
     @build_params[:error_mesg] = errmesg
     SystemStatus.build_failed(@build_params)
-    log_build_errors(errmesg)
+    #log_build_errors(errmesg)
+    log_build_errors('Engine Build Aborted Due to:' + errmesg.to_s)
     @result_mesg = 'Error.' + errmesg
     post_failed_build_clean_up
   end

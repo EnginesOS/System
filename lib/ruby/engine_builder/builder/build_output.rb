@@ -23,7 +23,7 @@ module BuildOutput
     line.force_encoding(Encoding::UTF_8)
     @err_file.puts(line.to_s) unless @err_file.nil?
     log_build_output('ERROR:' + line.to_s)
-    @result_mesg = 'Error. Aborted Due to:' + line.to_s
+    @result_mesg = 'Error.' + line.to_s
     @build_error = @result_mesg
     return false
   rescue StandardError => e

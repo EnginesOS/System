@@ -34,6 +34,14 @@ get '/v0/backup/service/:service_name' do
     return log_error(request, r)  if r.is_a?(EnginesError)
 end
 
+get '/v0/backup/engine/services/' do
+  
+  r = engines_api.engines_services_to_backup
+
+    return log_error(request, r)  if r.is_a?(EnginesError)
+    r.to_json
+end
+
 get '/v0/backup/engine/:engine_name' do
   content_type 'application/octet-stream'
   r = ''

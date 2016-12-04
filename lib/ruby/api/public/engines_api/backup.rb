@@ -24,4 +24,9 @@ module PublicApiBackup
   def backup_engine_service(service_hash,out)
     @system_api.backup_engine_service(service_hash,out)
   end
+  
+  def engines_services_to_backup
+    
+    @system_api.engines_services_to_backup()
+  end
 end
