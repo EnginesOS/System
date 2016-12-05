@@ -1,2 +1,3 @@
 #!/bin/bash
-/home/engines/.rbenv/shims/ruby /opt/engines/src/client/main.rb $*
+#/home/engines/.rbenv/shims/ruby /opt/engines/src/client/main.rb $*
+/usr/bin/ruby /opt/engines/src/client/main.rb $*
