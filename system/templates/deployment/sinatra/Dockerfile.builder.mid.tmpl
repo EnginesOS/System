@@ -32,7 +32,7 @@ USER $ContUser
 
 RUN  if test -f Gemfile ;\
 	then \
-	 /usr/local/rbenv/shims/bundle config build.nokogiri --use-system-libraries;\
-	 /usr/local/rbenv/shims/bundle --standalone install;\
+	 bundle config build.nokogiri --use-system-libraries;\
+	 bundle --standalone install;\
 	 fi  
 
