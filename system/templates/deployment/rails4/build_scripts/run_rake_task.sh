@@ -1,5 +1,5 @@
 #!/bin/sh
 
 
-/usr/local/rbenv/shims/bundle exec rake $*
+bundle exec rake $*
 
