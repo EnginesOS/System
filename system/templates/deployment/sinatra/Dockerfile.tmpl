@@ -9,5 +9,6 @@ ENV CONTFSVolHome /home/fs/
   
 
 RUN  chown $ContUser /opt;\
+	mkdir /home/home_dir/.bundle/;\
 	chown -R $ContUser /home/home_dir/.bundle/
      
