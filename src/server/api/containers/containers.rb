@@ -52,6 +52,7 @@ require "timeout"
          
         else
           lock_timer = true
+          STDERR.puts('OUT  EVENTS S ' + jason_event.to_s )
           out << jason_event.to_json
           lock_timer = false
           bytes = ''
