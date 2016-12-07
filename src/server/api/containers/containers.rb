@@ -28,6 +28,7 @@ require "timeout"
             @events_stream.stop unless @events_stream.nil?
           else
             out << no_op #unless lock_timer == true
+            STDERR.puts('OUT noop')
           end
         end if timer.nil?
 
