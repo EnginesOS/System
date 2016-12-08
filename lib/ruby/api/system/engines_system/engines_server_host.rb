@@ -16,12 +16,16 @@ module EnginesServerHost
     # FIXME: check a status flag after sudo side post ssh run ie when we know it's definititly happenging
     return true if res.status == 'run'
     return false
+    rescue StandardError => e
+      SystemUtils.log_exception(e)
   end
 
   def api_shutdown(reason)
     log_error_mesg("Shutdown Due to:" + reason.to_s)
     File.delete(SystemConfig.BuildRunningParamsFile) if File.exist?(SystemConfig.BuildRunningParamsFile)
     res = Thread.new { run_server_script('halt_system') }
+    rescue StandardError => e
+      SystemUtils.log_exception(e)
   end
 
   def available_ram
@@ -30,7 +34,11 @@ module EnginesServerHost
     swp = 0
     swp = mem_stats[:swap_free] unless mem_stats[:swap_free].nil?
     swp /= 2 unless swp == 0
+    if mem_stats.key?(:free)  && mem_stats.key?(:file_cache)
     (mem_stats[:free] + mem_stats[:file_cache] + swp ) /1024
+    else 
+      return -1
+    end
   end
 
   def get_system_memory_info
@@ -61,6 +69,7 @@ module EnginesServerHost
         ret_val[:swap_free] = values[1].to_i
         return ret_val
       end
+      
     end
     return ret_val
   rescue StandardError => e
@@ -117,6 +126,8 @@ module EnginesServerHost
       end
     end
     return r
+rescue StandardError => e
+  SystemUtils.log_exception(e)
   end
 
   def get_disk_statistics
@@ -138,6 +149,8 @@ module EnginesServerHost
       end
     end
     return r
+rescue StandardError => e
+  SystemUtils.log_exception(e)
   end
 
   def run_server_script(script_name , script_data=false, script_timeout = @@server_script_timeout)
