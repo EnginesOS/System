@@ -8,7 +8,7 @@
 # {"state":"stopped",status":"stop","id":"50ffafcef4018242dcf8a89155dcf61f069b4933e69ad62c5397c9b77b2b0b22","from":"prosody","time":1463529792,"timeNano":1463529792881164857,"Type":"container","container_type":"container","container_name":"prosody"
 #  Do not use the "from" key
 get '/v0/containers/events/stream', provides: 'text/event-stream' do
- 
+
   timer = nil
   no_op = {:no_op => true}.to_json
 require "timeout"
@@ -28,6 +28,7 @@ require "timeout"
             @events_stream.stop unless @events_stream.nil?
           else
             out << no_op #unless lock_timer == true
+            STDERR.puts('OUT noop')
           end
         end if timer.nil?
 
@@ -79,6 +80,7 @@ require "timeout"
     @events_stream.stop unless @events_stream.nil?
   #  STDERR.puts('CLOSED  EVENTS S ')
   end
+
 #  timer.cancel unless timer.nil?
 #  timer = nil
 #  @events_stream.stop unless @events_stream.nil?
