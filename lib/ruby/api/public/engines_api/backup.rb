@@ -22,7 +22,9 @@ module PublicApiBackup
   end
   
   def backup_engine_service(service_hash,out)
-    @system_api.backup_engine_service(service_hash,out)
+    engine = get_engine(service_hash[:parent_engine])
+    engine.export_service_data(service_hash,out)
+  
   end
   
   def engines_services_to_backup(engine_name)
