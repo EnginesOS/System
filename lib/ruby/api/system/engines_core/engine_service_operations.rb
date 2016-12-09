@@ -13,6 +13,10 @@ module EngineServiceOperations
     log_exception(e,container_name)
   end
   
+  def engines_services_to_backup(engine)
+    engine_persistent_services(engine.container_name)
+  end
+  
   def service_persistent_services(service_name)
     params = {}
     params[:parent_engine] = service_name

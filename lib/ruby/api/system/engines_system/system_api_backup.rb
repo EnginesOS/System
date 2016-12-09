@@ -32,11 +32,17 @@ module SystemApiBackup
      SystemUtils.execute_command('/opt/engines/system/scripts/backup/engine_config.sh ' + engine_name , true, false, out)
    end
    
-  def engines_services_to_backup()
-    
+  def engines_services_to_backup(engine)
+    paths = []
+   services = @engines_api.engines_services_to_backup(engine)
+   service.each do |service|
+     STDERR.puts( engine.container_name + ':' + service.to_s)
+     paths.push(service[:publisher_namespace] + '/' + service[:type_path] + '/' + service[:service_handle] )      
+   end
+   return paths[]
   end
   
    def backup_engine_service(service_hash,out)
-    
+     @engines_api.engines_services_to_backup()
    end 
 end
