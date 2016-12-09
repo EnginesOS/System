@@ -14,6 +14,7 @@ module EngineServiceOperations
   end
   
   def engines_services_to_backup(engine_name)
+    STDERR.puts('Backup for ' + engine_name )
     engine_persistent_services(engine_name)
   end
   

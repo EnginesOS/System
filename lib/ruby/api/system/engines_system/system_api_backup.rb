@@ -35,6 +35,7 @@ module SystemApiBackup
   def engines_services_to_backup(engine)
     paths = []
    services = @engines_api.engines_services_to_backup(engine)
+    STDERR.puts('Backup for ' + engine_name )
    service.each do |service|
      STDERR.puts( engine.container_name + ':' + service.to_s)
      paths.push(service[:publisher_namespace] + '/' + service[:type_path] + '/' + service[:service_handle] )      

@@ -34,9 +34,9 @@ get '/v0/backup/service/:service_name' do
     return log_error(request, r)  if r.is_a?(EnginesError)
 end
 
-get '/v0/backup/engine/services/' do
+get '/v0/backup/engine/services/:engine_name' do
   
-  r = engines_api.engines_services_to_backup
+  r = engines_api.engines_services_to_backup(params[engine_name])
 
     return log_error(request, r)  if r.is_a?(EnginesError)
     r.to_json
