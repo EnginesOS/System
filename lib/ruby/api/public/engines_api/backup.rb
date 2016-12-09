@@ -22,7 +22,8 @@ module PublicApiBackup
   end
   
   def backup_engine_service(service_hash,out)
-    engine = get_engine(service_hash[:parent_engine])
+    engine = loadManagedEngine(service_hash[:parent_engine])
+      return engines if engine.is_a?(EnginesError)
     engine.export_service_data(service_hash,out)
   
   end
