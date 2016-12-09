@@ -33,14 +33,16 @@ module SystemApiBackup
    end
    
   def engines_services_to_backup(engine)
-    paths = []
+    paths = {}
+      n=0
    services = @engines_api.engines_services_to_backup(engine)
     STDERR.puts('Backup for ' + engine )
    services.each do |service|
      STDERR.puts( engine + ':' + service.to_s)
-     paths.push(service[:publisher_namespace] + '/' + service[:type_path] + '/' + service[:service_handle] )      
+     n+=1
+    paths['service'+n.to_s] =service[:publisher_namespace] + '/' + service[:type_path] + '/' + service[:service_handle]       
    end
-   return paths[]
+   return paths
   end
   
    def backup_engine_service(service_hash,out)
