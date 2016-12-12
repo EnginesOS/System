@@ -65,7 +65,7 @@ class SystemApi < ErrorsApi
   def create_event_listener
     @event_listener_lock = true
     @docker_event_listener = start_docker_event_listener
-    docker_event_listener.add_event_listener([self,'container_event'.to_sym],16)
+    @docker_event_listener.add_event_listener([self,'container_event'.to_sym],16)
   end
   
 
