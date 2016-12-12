@@ -16,8 +16,22 @@ begin
   $token = 'test_token'
   require_relative 'utils.rb'
   class Application < Sinatra::Base
-   
+    
 
+
+    
+    def self.run!
+        super do |server|
+          if File.exist?('/home/app/server.crt')
+          server.ssl = true
+          server.ssl_options = {
+            :cert_chain_file  => '/home/app/server.crt',
+            :private_key_file => '/home/app/server.key',
+            :verify_peer      => false
+          }
+          end
+        end
+    end
     
   set :sessions, true
   set :logging, true
