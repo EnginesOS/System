@@ -22,11 +22,11 @@ begin
     
     def self.run!
         super do |server|
-          if File.exist?('/home/app/server.crt')
+          if File.exist?('/opt/engines/etc/ssl/certs/system/server.crt')
           server.ssl = true
           server.ssl_options = {
-            :cert_chain_file  => '/home/app/server.crt',
-            :private_key_file => '/home/app/server.key',
+            :cert_chain_file  => '/opt/engines/etc/ssl/certs/system/server.crt',
+            :private_key_file => '/opt/engines/etc/ssl/keys/system/server.key',
             :verify_peer      => false
           }
           end
