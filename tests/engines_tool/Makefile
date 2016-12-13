@@ -9,12 +9,12 @@ clear_last:
 	
 clear_engines:
 	@$(foreach engine,$(ENGINES),\
-	engines_tool engine $(engine) stop | engines_test_expects bool true;\
-	engines_tool engine $(engine) destroy | engines_test_expects  bool true;\
-	engines_tool engine $(engine) delete none | engines_test_expects  bool true;)
+	engines engine $(engine) stop | engines_test_expects bool true;\
+	engines engine $(engine) destroy | engines_test_expects  bool true;\
+	engines engine $(engine) delete none | engines_test_expects  bool true;)
 
 clear_services:
-	engines_tool service email stop | engines_test_expects  bool true
-	engines_tool service email destroy | engines_test_expects  bool true
-	engines_tool service imap stop | engines_test_expects  bool true
-	engines_tool service imap destroy | engines_test_expects  bool true
+	engines service email stop | engines_test_expects  bool true
+	engines service email destroy | engines_test_expects  bool true
+	engines service imap stop | engines_test_expects  bool true
+	engines service imap destroy | engines_test_expects  bool true

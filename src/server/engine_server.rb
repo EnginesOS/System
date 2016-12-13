@@ -16,8 +16,22 @@ begin
   $token = 'test_token'
   require_relative 'utils.rb'
   class Application < Sinatra::Base
-   
+    
 
+
+    
+    def self.run!
+        super do |server|
+          if File.exist?('/opt/engines/etc/ssl/certs/system/server.crt')
+          server.ssl = true
+          server.ssl_options = {
+            :cert_chain_file  => '/opt/engines/etc/ssl/certs/system/server.crt',
+            :private_key_file => '/opt/engines/etc/ssl/keys/system/server.key',
+            :verify_peer  => false
+          }
+          end
+        end
+    end
     
   set :sessions, true
   set :logging, true
@@ -218,7 +232,7 @@ rescue StandardError => e
   p e
   p e.backtrace.to_s
   #status(501)
-  r = EnginesError('Unhandled Exception'+ e.to_s + '\n' + e.backtrace.to_s, :error, 'api')
+  r = EnginesError.new('Unhandled Exception'+ e.to_s + '\n' + e.backtrace.to_s, :error, 'api')
   status(404)
   r.to_json
   

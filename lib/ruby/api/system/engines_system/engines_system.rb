@@ -58,12 +58,17 @@ class SystemApi < ErrorsApi
   def initialize(api)
     @engines_api = api
     @engines_conf_cache = {}
+   
+    create_event_listener
+  end
+  
+  def create_event_listener
+    @event_listener_lock = true
     @docker_event_listener = start_docker_event_listener
     @docker_event_listener.add_event_listener([self,'container_event'.to_sym],16)
   end
   
-  
-  
+
   def list_system_services
   services = []
     services.push('system')

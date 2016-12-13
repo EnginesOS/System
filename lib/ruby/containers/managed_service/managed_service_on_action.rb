@@ -9,27 +9,33 @@ module ManagedServiceOnAction
         @container_api.update_service_configuration(configuration)
       end
     end
+    created_and_started if @created == true
     reregister_consumers
     SystemDebug.debug(SystemDebug.container_events,:ON_start_complete_MS,event_hash)
   rescue StandardError => e
     log_exception(e)
   end
+  
+  def created_and_started
+    @container_api.load_and_attach_post_services(self)
+        service_configurations = @container_api.get_service_configurations_hashes({service_name: @container_name, publisher_namespace: @publisher_namespace, type_path: @type_path})
+        if service_configurations.is_a?(Array)
+          service_configurations.each do |configuration|
+            next if configuration[:no_save] == true
+            run_configurator(configuration)
+          end
+        end
+           
+        SystemDebug.debug(SystemDebug.container_events,:ON_StartCreate_MS_compl,event_hash)
+        @created = false
+  end
 
   def on_create(event_hash)
     SystemDebug.debug(SystemDebug.container_events,:ON_Create_MS,event_hash)
     super
-
-    @container_api.load_and_attach_post_services(self)
-    service_configurations = @container_api.get_service_configurations_hashes({service_name: @container_name, publisher_namespace: @publisher_namespace, type_path: @type_path})
-    if service_configurations.is_a?(Array)
-      service_configurations.each do |configuration|
-        next if configuration[:no_save] == true
-        run_configurator(configuration)
-      end
-    end
-
-    reregister_consumers
-    SystemDebug.debug(SystemDebug.container_events,:ON_Create_MS_compl,event_hash)
+    @created = true
+    
+   
   rescue StandardError => e
     log_exception(e)
   end

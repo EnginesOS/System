@@ -4,13 +4,13 @@ tests:
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 	
 services:
-	engines_tool services |engines_test_expects array
+	engines services |engines_test_expects array
 	
 state:
-	engines_tool services state|engines_test_expects json dns running
+	engines services state|engines_test_expects json dns running
 	
 container_name:
-	engines_tool services container_name |engines_test_expects array dns
+	engines services container_name |engines_test_expects array dns
 	
 system:
-	engines_tool services system  |engines_test_expects array registry
+	engines services system  |engines_test_expects array registry

@@ -115,7 +115,7 @@ class DockerEventWatcher  < ErrorsApi
   require 'yajl'
   require 'net_x/http_unix'
   require 'socket'
-require 'json'
+  require 'json'
 
   def initialize(system, event_listeners = nil )
     @system = system
@@ -126,7 +126,6 @@ require 'json'
     SystemDebug.debug(SystemDebug.container_events,'EVENT LISTENER')
   end
 
-  
   def start
     parser = Yajl::Parser.new(:symbolize_keys => true)
 
@@ -143,23 +142,23 @@ require 'json'
           parser.parse(chunk) do |hash|
             next unless hash.is_a?(Hash)
             if hash.key?(:from) && hash[:from].length >= 64
-                      SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
-                      next
-                    end
+              SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
+              next
+            end
             trigger(hash)
           end
         rescue StandardError => e
           log_error_mesg('Chunk error on docker Event Stream _' + chunk.to_s + '_')
           log_exception(e,chunk)
-         # @system.start_docker_event_listener
+          # @system.start_docker_event_listener
         end
-      end      
+      end
     end
     log_error_mesg('Restarting docker Event Stream ')
- # STDERR.puts('Restarting docker Event Stream ')
+    # STDERR.puts('Restarting docker Event Stream ')
     @system.start_docker_event_listener(@event_listeners)
   rescue Net::ReadTimeout
-  #  STDERR.puts('Restarting docker Event Stream Read Timeout')
+    #  STDERR.puts('Restarting docker Event Stream Read Timeout')
     @system.start_docker_event_listener(@event_listeners)
   rescue StandardError => e
     log_exception(e)
@@ -184,16 +183,15 @@ require 'json'
   end
 
   private
-  
-  def trigger(hash)
- 
 
-        @event_listeners.values.each do |listener|
-          unless listener.container_id.nil?
-            next unless hash[:id] == listener.container_id
-          end
-          log_exeception(r) if (r = listener.trigger(hash)).is_a?(StandardError)
-          log_error_mesg('Trigger error',r,hash) if r.is_a?(EnginesError)
+  def trigger(hash)
+
+    @event_listeners.values.each do |listener|
+      unless listener.container_id.nil?
+        next unless hash[:id] == listener.container_id
       end
+      log_exeception(r) if (r = listener.trigger(hash)).is_a?(StandardError)
+      log_error_mesg('Trigger error',r,hash) if r.is_a?(EnginesError)
+    end
   end
 end

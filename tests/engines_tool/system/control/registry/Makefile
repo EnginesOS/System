@@ -5,7 +5,7 @@ tests:
 	
 restart:
 	system_service.rb registry restart 
-	 #engines_tool system control registry restart  | engines_test_expects bool true
+	 #engines system control registry restart  | engines_test_expects bool true
 	 
 recreate:
 	system_service.rb registry stop

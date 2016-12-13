@@ -4,19 +4,19 @@ tests:
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 	
 prepare:
-	cat prosody_build_params.json | engines_tool engines build
+	cat prosody_build_params.json | engines engines build
 	engines engine_builder follow >/dev/null
 	
 actions:
-	engines_tool engine prosody actions | engines_test_expects json list_users
+	engines engine prosody actions | engines_test_expects json list_users
 	
 action:
-	engines_tool engine prosody action list_users | engines_test_expects json name list_users
+	engines engine prosody action list_users | engines_test_expects json name list_users
 
 action_perform:
-	echo '{"username":"test","password":"pass"}' | engines_tool engine prosody action perform add_user  | engines_test_expects test "Successfully added test"
+	echo '{"username":"test","password":"pass"}' | engines engine prosody action perform add_user  | engines_test_expects test "Successfully added test"
  	
 clean_up:
-	engines_tool engine prosody stop 
-	engines_tool engine prosody destroy 
-	engines_tool engine prosody delete all
+	engines engine prosody stop 
+	engines engine prosody destroy 
+	engines engine prosody delete all
