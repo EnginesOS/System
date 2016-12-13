@@ -17,7 +17,7 @@ begin
   require_relative 'utils.rb'
   class Application < Sinatra::Base
     
-
+ @no_op = {:no_op => true}.to_json
 
     
     def self.run!

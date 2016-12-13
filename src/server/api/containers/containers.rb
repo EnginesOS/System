@@ -10,7 +10,7 @@
 get '/v0/containers/events/stream', provides: 'text/event-stream' do
 
   timer = nil
-  no_op = {:no_op => true}.to_json
+ 
 require "timeout"
   stream :keep_open do |out|
     begin
@@ -27,8 +27,7 @@ require "timeout"
             timer.cancel unless timer.nil?
             @events_stream.stop unless @events_stream.nil?
           else
-            out << no_op #unless lock_timer == true
-            STDERR.puts('OUT noop')
+            out << @no_op #unless lock_timer == true
           end
         end if timer.nil?
 
