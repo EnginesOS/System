@@ -23,6 +23,7 @@ begin
     def self.run!
         super do |server|
           if File.exist?('/opt/engines/etc/ssl/certs/system/server.crt')
+            STDERR.puts('USING SSL')
           server.ssl = true
           server.ssl_options = {
             :cert_chain_file  => '/opt/engines/etc/ssl/certs/system/server.crt',
