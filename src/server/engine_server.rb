@@ -27,7 +27,7 @@ begin
           server.ssl_options = {
             :cert_chain_file  => '/opt/engines/etc/ssl/certs/system/server.crt',
             :private_key_file => '/opt/engines/etc/ssl/keys/system/server.key',
-            :verify_peer      => false
+            :verify_peer  => false
           }
           end
         end

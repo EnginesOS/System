@@ -5,16 +5,16 @@ tests:
 	
 hosted_dns:
 	#clear_first_ran
-	cat external_ip_self_hosted_dns.json | engines_tool system do_first_run | engines_test_expects bool true
+	cat external_ip_self_hosted_dns.json | engines system do_first_run | engines_test_expects bool true
 
 selfhosted_dns:
-	cat internal_ip_self_hosted_dns.json | engines_tool system do_first_run | engines_test_expects bool true
+	cat internal_ip_self_hosted_dns.json | engines system do_first_run | engines_test_expects bool true
 	
 dyndns:
-	cat dyndns.json | engines_tool system do_first_run | engines_test_expects bool true
+	cat dyndns.json | engines system do_first_run | engines_test_expects bool true
 	
 zeroconf:
-	cat zeroconf.json  | engines_tool system do_first_run | engines_test_expects bool true
+	cat zeroconf.json  | engines system do_first_run | engines_test_expects bool true
 	
 external:
-	cat externally_hosted_dns.json | engines_tool system do_first_run | engines_test_expects bool true
+	cat externally_hosted_dns.json | engines system do_first_run | engines_test_expects bool true

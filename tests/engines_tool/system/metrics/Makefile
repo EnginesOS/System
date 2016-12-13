@@ -4,13 +4,13 @@ tests:
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 	
 memory:
-	engines_tool system metrics memory|engines_test_expects json total
+	engines system metrics memory|engines_test_expects json total
 	
 load:
-	engines_tool system metrics load|engines_test_expects text_len gt 1
+	engines system metrics load|engines_test_expects text_len gt 1
 	
 mem_stats:
-	engines_tool system metrics mem_stats |engines_test_expects json containers
+	engines system metrics mem_stats |engines_test_expects json containers
 
 disk:
-	engines_tool system metrics disks |engines_test_expects json
+	engines system metrics disks |engines_test_expects json

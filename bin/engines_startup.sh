@@ -113,10 +113,10 @@ if test "`/opt/engines/bin/system_service.rb system state`" = \"nocontainer\"
 DOCKER_IP=`ifconfig docker0 |grep "inet addr" |cut -f2 -d: |cut -f1 -d" "`
 export DOCKER_IP
  sleep 5
-/opt/engines/bin/engines_tool system login test test
+/opt/engines/bin/engines system login test test
   
 
-/opt/engines/bin/engines_tool service dns start 
+/opt/engines/bin/engines service dns start 
 count=0
 
  while ! test -f /opt/engines/run/services/dns/run/flags/startup_complete
@@ -132,21 +132,21 @@ count=0
   done 
 
 
-/opt/engines/bin/engines_tool service syslog start
-/opt/engines/bin/engines_tool service  mysql_server start
-/opt/engines/bin/engines_tool service nginx start
+/opt/engines/bin/engines service syslog start
+/opt/engines/bin/engines service  mysql_server start
+/opt/engines/bin/engines service nginx start
 
 
 #this dance ensures auth gets pub key from ftp 
 #really only needs to happen first time ftp is enabled
- #/opt/engines/bin/engines_tool service ftp start
- /opt/engines/bin/engines_tool service auth start
- #  /opt/engines/bin/engines_tool service ftp stop
-   /opt/engines/bin/engines_tool service ftp start
+ #/opt/engines/bin/engines service ftp start
+ /opt/engines/bin/engines service auth start
+ #  /opt/engines/bin/engines service ftp stop
+   /opt/engines/bin/engines service ftp start
 
 
 
-/opt/engines/bin/engines_tool containers check_and_act 
+/opt/engines/bin/engines containers check_and_act 
 
 
 if test -f  ~/.complete_install

@@ -5,7 +5,7 @@ tests:
 	
 
 list:
-	engines_tool service dns consumers |engines_test_expects array
+	engines service dns consumers |engines_test_expects array
 	
 view:
-	engines_tool service dns consumer email email |engines_test_expects json type_path dns
+	engines service dns consumer email email |engines_test_expects json type_path dns

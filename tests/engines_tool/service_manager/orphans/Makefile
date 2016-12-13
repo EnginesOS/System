@@ -24,7 +24,7 @@ delete_orphan:
 	
 use_orphan:
 	make  delete_engine_and_orphanate
-	cat build_test_engine_with_orphan.json | engines_tool engines build  
+	cat build_test_engine_with_orphan.json | engines engines build  
 	make -f ../../engines/Makefile build_check
 	make -k clear
 	
