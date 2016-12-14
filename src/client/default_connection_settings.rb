@@ -5,7 +5,7 @@ if @base_url.nil?
 @port = '2380' if @port.nil?
  unless ENV['CONTROL_HTTPS'].nil? 
     @use_https = true
-    base_url = 'https://' +  @host + ':' + @port.to_s
+   @base_url = 'https://' +  @host + ':' + @port.to_s
   else
     @use_https = false
     @base_url = 'http://' +  @host + ':' + @port.to_s
