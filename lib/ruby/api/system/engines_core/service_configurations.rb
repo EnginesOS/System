@@ -98,7 +98,8 @@ end
      service_param[:type_path] = service.type_path.to_s
      # setting stopped contianer is ok as call can know the state, used to boot strap a config
      unless service.is_running?
-       service_param[:pending] = true        
+       service_param[:pending] = true
+      service_manager.update_service_configuration(service_param)   
        return true
      end
      if service_param.key?(:pending)
@@ -108,6 +109,7 @@ end
      configurator_result =  service.run_configurator(service_param)
    
      return log_error_mesg('Service configurator erro@core_api.r incorrect result type ', configurator_result.to_s) unless configurator_result.is_a?(Hash)
+    service_manager.update_service_configuration(service_param)
      return log_error_mesg('Service configurator error @core_api', configurator_result.to_s) unless configurator_result[:result] == 0 || configurator_result[:stderr].start_with?('Warning')
      return true
    end
