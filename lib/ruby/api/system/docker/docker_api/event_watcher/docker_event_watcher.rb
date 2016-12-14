@@ -109,7 +109,9 @@ class DockerEventWatcher  < ErrorsApi
       end
 
       return mask
-
+      rescue StandardError => e
+           SystemDebug.debug(SystemDebug.container_events,event_hash.to_s + ':' + e.to_s + ':' +  e.backtrace.to_s)
+           return e
     end
   end
   require 'yajl'
@@ -155,15 +157,15 @@ class DockerEventWatcher  < ErrorsApi
       end
     end
     log_error_mesg('Restarting docker Event Stream ')
-    # STDERR.puts('Restarting docker Event Stream ')
+     STDERR.puts('Restarting docker Event Stream as close')
     @system.start_docker_event_listener(@event_listeners)
   rescue Net::ReadTimeout
-    #  STDERR.puts('Restarting docker Event Stream Read Timeout')
+     STDERR.puts('Restarting docker Event Stream Read Timeout as timeout')
     @system.start_docker_event_listener(@event_listeners)
   rescue StandardError => e
     log_exception(e)
     log_error_mesg('Restarting docker Event Stream post exception ')
-    STDERR.puts('Restarting docker Event Stream post exception')
+    STDERR.puts('Restarting docker Event Stream post exception due to ' + e.to_s)
     @system.start_docker_event_listener(@event_listeners)
   end
 
@@ -193,5 +195,8 @@ class DockerEventWatcher  < ErrorsApi
       log_exeception(r) if (r = listener.trigger(hash)).is_a?(StandardError)
       log_error_mesg('Trigger error',r,hash) if r.is_a?(EnginesError)
     end
+    rescue StandardError => e
+               SystemDebug.debug(SystemDebug.container_events,hash.to_s + ':' + e.to_s + ':' +  e.backtrace.to_s)
+               return log_exception(e)
   end
 end
