@@ -26,7 +26,7 @@ module ManagedServiceOnAction
           end
         end
            
-        SystemDebug.debug(SystemDebug.container_events,:ON_StartCreate_MS_compl,event_hash)
+        SystemDebug.debug(SystemDebug.container_events,:ON_StartCreate_MS_compl)
         @created = false
   end
 
