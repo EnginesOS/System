@@ -16,16 +16,16 @@ begin
   def init_db
       @auth_db = SQLite3::Database.new "/home/app/db/production.sqlite3"
       STDERR.puts('init db')
-          rows = @auth_db.execute <<-SQL
-            create table systemaccess (
-              username varchar(30),
-              email varchar(128),
-              password varchar(30),
-              authtoken varchar(128),
-              uid int,
-              guid int
-            );
-          SQL
+#          rows = @auth_db.execute <<-SQL
+#            create table systemaccess (
+#              username varchar(30),
+#              email varchar(128),
+#              password varchar(30),
+#              authtoken varchar(128),
+#              uid int,
+#              guid int
+#            );
+#          SQL
       rows = @auth_db.execute( "select authtoken from systemaccess" )
       STDERR.puts('init db')
       return if rows.count > 0
