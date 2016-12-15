@@ -15,7 +15,7 @@ begin
   require "sqlite3"
   
   # FIXME remove this once all installs have proper auth 
-  init_db
+ 
   
   require_relative 'utils.rb'
   class Application < Sinatra::Base
@@ -36,7 +36,7 @@ begin
        @@engines_api = PublicApi.new(core_api)
   @auth_db = SQLite3::Database.new "/home/app/db/production.sqlite3"
 # end
-  
+  init_db
  STDERR.puts('CREATED ENGINES API +++++++++++++++++++++++++++++++++++++++++++')
  
   @@last_error =''  
