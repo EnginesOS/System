@@ -15,7 +15,7 @@ begin
   require "sqlite3"
   
   # FIXME remove this once all installs have proper auth 
- 
+  init_db
   
   require_relative 'utils.rb'
   class Application < Sinatra::Base
