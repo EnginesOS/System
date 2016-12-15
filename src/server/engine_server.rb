@@ -199,6 +199,8 @@ end
     def is_token_valid?(token)
       rows = @auth_db.execute( 'select guid from systemaccess where authtoken=' + "'" + token.to_s + "'" )
       return false unless rows.count > 0
+      p rows.to_s
+      return true
       return rows[0]
     rescue StandardError => e
       STDERR.puts(' toekn varify error  ' + e.to_s)
