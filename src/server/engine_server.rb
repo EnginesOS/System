@@ -200,6 +200,9 @@ end
       rows = @auth_db.execute( 'select guid from systemaccess where authtoken=' + "'" + token.to_s + "'" )
       return false unless rows.count > 0
       return rows[0]
+    rescue StandardError => e
+      STDERR.puts(' toekn varify error  ' + e.to_s)
+      return false
     end
       
       def authenticate!
