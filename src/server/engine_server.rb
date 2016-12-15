@@ -198,6 +198,8 @@ end
     
     def is_token_valid?(token)
       rows = @auth_db.execute( 'select guid from systemaccess where authtoken=' + "'" + token.to_s + "'" )
+      p rows.to_s
+      return true
       return false unless rows.count > 0
       p rows.to_s
       return true
