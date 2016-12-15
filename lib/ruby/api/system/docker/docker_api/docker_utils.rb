@@ -137,7 +137,7 @@ module DockerUtils
 h[:stdout].force_encoding(Encoding::UTF_8) unless h[:stdout].nil?
 h[:stderr].force_encoding(Encoding::UTF_8) unless h[:stderr].nil?
 h
-rescue StandardError =>r
+rescue StandardError =>e
   log_exception(e)
   end
 end
