@@ -16,20 +16,20 @@ begin
   def init_db
       @auth_db = SQLite3::Database.new "/home/app/db/production.sqlite3"
       STDERR.puts('init db')
-#          rows = @auth_db.execute <<-SQL
-#            create table systemaccess (
-#              username varchar(30),
-#              email varchar(128),
-#              password varchar(30),
-#              authtoken varchar(128),
-#              uid int,
-#              guid int
-#            );
-#          SQL
-#      rows = @auth_db.execute( "select authtoken from systemaccess" )
-#      STDERR.puts('init db')
-#      return if rows.count > 0
-#      STDERR.puts('init db')
+          rows = @auth_db.execute <<-SQL
+            create table systemaccess (
+              username varchar(30),
+              email varchar(128),
+              password varchar(30),
+              authtoken varchar(128),
+              uid int,
+              guid int
+            );
+          SQL
+      rows = @auth_db.execute( "select authtoken from systemaccess" )
+      STDERR.puts('init db')
+      return if rows.count > 0
+      STDERR.puts('init db')
       @auth_db.execute("INSERT INTO systemaccess (username, password, email, authtoken, uid,guid) 
                         VALUES (?, ?, ?, ?, ?, ?)", ["admin", 'test', '', 'test_token_arandy',1,0])
       STDERR.puts('init db')                 
@@ -222,6 +222,7 @@ end
   
     
     def is_token_valid?(token)
+      @auth_db = SQLite3::Database.new "/home/app/db/production.sqlite3"
       rows = @auth_db.execute( 'select guid from systemaccess where authtoken=' + "'" + token.to_s + "'" )
       p rows.to_s
       return true
