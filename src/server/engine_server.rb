@@ -33,10 +33,11 @@ begin
  #unless @@engines_api
   ObjectSpace.trace_object_allocations_start
    core_api = EnginesCore.new   
-       @@engines_api = PublicApi.new(core_api)
+  
   @auth_db = SQLite3::Database.new "/home/app/db/production.sqlite3"
 # end
   init_db
+  @@engines_api = PublicApi.new(core_api)
  STDERR.puts('CREATED ENGINES API +++++++++++++++++++++++++++++++++++++++++++')
  
   @@last_error =''  
@@ -217,7 +218,7 @@ end
   
   def init_db
     @auth_db = SQLite3::Database.new "/home/app/db/production.sqlite3"
-        
+    STDERR.puts('init db')
         rows = @auth_db.execute <<-SQL
           create table systemaccess (
             username varchar(30),
@@ -229,12 +230,12 @@ end
           );
         SQL
     rows = @auth_db.execute( "select authtoken from systemaccess" )
-     
+    STDERR.puts('init db')
     return if rows.count > 0
-    
+    STDERR.puts('init db')
     @auth_db.execute("INSERT INTO systemaccess (name, password, email, authtoken, uid) 
                       VALUES (?, ?, ?, ?,?)", ["admin", 'test', email.to_s, 'test_token_arandy',1,0])
-                        
+    STDERR.puts('init db')                 
   rescue StandardError => e
     STDERR.puts('init db error ' + e.to_s)
     return
