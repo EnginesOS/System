@@ -14,14 +14,16 @@ begin
   require 'warden'
   require "sqlite3"
   
-
+  # FIXME remove this once all installs have proper auth 
+  init_db
+  
   require_relative 'utils.rb'
   class Application < Sinatra::Base
     
  @no_op = {:no_op => true}.to_json
 
-   # FIXME remove this once all installs have proper auth
-   init_db
+  
+  
 
   set :sessions, true
   set :logging, true
@@ -32,9 +34,10 @@ begin
   ObjectSpace.trace_object_allocations_start
    core_api = EnginesCore.new   
        @@engines_api = PublicApi.new(core_api)
+  @auth_db = SQLite3::Database.new "/home/app/db/production.sqlite3"
 # end
   
-#  STDERR.puts('CREATED ENGINES API +++++++++++++++++++++++++++++++++++++++++++')
+ STDERR.puts('CREATED ENGINES API +++++++++++++++++++++++++++++++++++++++++++')
  
   @@last_error =''  
   
