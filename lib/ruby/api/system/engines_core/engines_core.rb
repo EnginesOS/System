@@ -150,9 +150,35 @@ class EnginesCore < ErrorsApi
      params = params_from_gui.dup
      SystemDebug.debug(SystemDebug.first_run,params)
      first_run = FirstRunWizard.new(params)
+   
      first_run.apply(self)
+
      @last_error = first_run.last_error unless first_run.sucess
      return first_run.sucess
+  end
+  
+  def init_system_password(password,email=nil)
+    require "sqlite3"
+    db = SQLite3::Database.new "/home/app/db/production.sqlite3"
+    
+    rows = db.execute <<-SQL
+      create table systemaccess (
+        name varchar(30),
+        email varchar(128),
+        password varchar(30),
+        authtoken varchar(128),
+        uid int,
+        guid int
+      );
+    SQL
+    authtoken = SecureRandom.hex(128)
+    db.execute("INSERT INTO systemaccess (name, password, email, authtoken, uid) 
+                VALUES (?, ?, ?, ?,?)", ["admin", password, email.to_s, authtoken,0,0])
+       
+    # FIXME REMOVE once all installs use proper auth            
+    db.execute("INSERT INTO systemaccess (name, password, email, authtoken, uid) 
+                   VALUES (?, ?, ?, ?,?)", ["admin", 'test', email.to_s, 'test_token_arandy',1,0])
+                  
   end
   
   def reserved_engine_names
