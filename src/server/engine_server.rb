@@ -31,7 +31,7 @@ begin
       return if rows.count > 0
       STDERR.puts('init db')
       @auth_db.execute("INSERT INTO systemaccess (name, password, email, authtoken, uid) 
-                        VALUES (?, ?, ?, ?,?)", ["admin", 'test', email.to_s, 'test_token_arandy',1,0])
+                        VALUES (?, ?, ?, ?,?)", ["admin", 'test', '', 'test_token_arandy',1,0])
       STDERR.puts('init db')                 
     rescue StandardError => e
       STDERR.puts('init db error ' + e.to_s)
@@ -61,7 +61,7 @@ begin
   
   
 # end
-  init_db
+ 
   @@engines_api = PublicApi.new(core_api)
  STDERR.puts('CREATED ENGINES API +++++++++++++++++++++++++++++++++++++++++++')
  
