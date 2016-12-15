@@ -233,6 +233,7 @@ end
                       VALUES (?, ?, ?, ?,?)", ["admin", 'test', email.to_s, 'test_token_arandy',1,0])
                         
   rescue StandardError => e
+    STDERR.puts('init db error ' + e.to_s)
     return
   end
   
