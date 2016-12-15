@@ -27,6 +27,12 @@ module FirstRunPasswords
     return true
   end
 
+  def setup_system_password(password)
+    return true if @api.set_system_password(password)
+       return log_error_mesg('system_password_configurator ', @api.last_error)
+    
+  end
+  
   def ssh_key_configurator(key)
     service_param = {}
     service_param[:service_name] = 'system'
