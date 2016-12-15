@@ -5,8 +5,13 @@
 # @overload get '/v0/system/login/:user_name/:password'
 # @return [String] Authentication token
 get '/v0/system/login/:user_name/:password' do 
-  $token = 'test_token_arandy'
+  rows = @auth_db.execute( 'select authtoken from systemaccess where username=' + "'" + params[:user_name].to_s + 
+    "' and password = '" +  params[:password].to_s + "'")
+
+  return log_error(request,nil,'unauthorised', params) unless rows.count > 0
+  
   content_type 'text/plain'
+  $token = rows[0]
   return $token
 end
 

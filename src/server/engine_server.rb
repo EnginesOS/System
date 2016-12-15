@@ -12,36 +12,17 @@ begin
   require '/opt/engines/lib/ruby/api/system/first_run_wizard/first_run_wizard.rb'
   require 'objspace'
   require 'warden'
+  require "sqlite3"
+  
 
-  $token = 'test_token'
   require_relative 'utils.rb'
   class Application < Sinatra::Base
     
  @no_op = {:no_op => true}.to_json
 
-#    if File.exist?('/opt/engines/etc/ssl/certs/system/server.crt')
-#            STDERR.puts('USING SSL')
-#            set :ssl, true
-#            set :ssl_options, {
-#            :cert_chain_file  => '/opt/engines/etc/ssl/certs/system/server.crt',
-#            :private_key_file => '/opt/engines/etc/ssl/keys/system/server.key',
-#            :verify_peer  => false
-#          }
-#      end
-#    def self.run!
-#        super do |server|
-#          if File.exist?('/opt/engines/etc/ssl/certs/system/server.crt')
-#            STDERR.puts('USING SSL')
-#          server.ssl = true
-#          server.ssl_options = {
-#            :cert_chain_file  => '/opt/engines/etc/ssl/certs/system/server.crt',
-#            :private_key_file => '/opt/engines/etc/ssl/keys/system/server.key',
-#            :verify_peer  => false
-#          }
-#          end
-#        end
-#    end
-    
+   # FIXME remove this once all installs have proper auth
+   init_db
+
   set :sessions, true
   set :logging, true
   set :run, true
@@ -212,7 +193,9 @@ end
   
     
     def is_token_valid?(token)
-      return token == 'test_token_arandy'
+      rows = @auth_db.execute( 'select guid from systemaccess where authtoken=' + "'" + token.to_s + "'" )
+      return false unless rows.count > 0
+      return rows[0]
     end
       
       def authenticate!
@@ -227,6 +210,30 @@ end
       end
   end
 
+  end
+  
+  def init_db
+    @auth_db = SQLite3::Database.new "/home/app/db/production.sqlite3"
+        
+        rows = @auth_db.execute <<-SQL
+          create table systemaccess (
+            username varchar(30),
+            email varchar(128),
+            password varchar(30),
+            authtoken varchar(128),
+            uid int,
+            guid int
+          );
+        SQL
+    rows = @auth_db.execute( "select authtoken from systemaccess" )
+     
+    return if rows.count > 0
+    
+    @auth_db.execute("INSERT INTO systemaccess (name, password, email, authtoken, uid) 
+                      VALUES (?, ?, ?, ?,?)", ["admin", 'test', email.to_s, 'test_token_arandy',1,0])
+                        
+  rescue StandardError => e
+    return
   end
   
   def post_params(request)
