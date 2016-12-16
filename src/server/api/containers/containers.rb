@@ -67,9 +67,11 @@ require "timeout"
           bytes = ''
         end
       rescue IO::WaitReadable
-        sleep 0.4
+       # sleep 0.4
+        IO.select([@events_stream.rd])
         retry
       rescue EOFError =>e
+        STDERR.puts('OUT IS EOF')     
         sleep 0.4
         retry
       rescue IOError
