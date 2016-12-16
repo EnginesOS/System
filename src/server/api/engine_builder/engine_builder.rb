@@ -66,9 +66,9 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream'  do
           out  << bytes          
           out  << '.'          
           bytes = ''
-          IO.select([build_log_file])
-          sleep 2
-          STDERR.puts('FOLLOW BUILDER GOT EOF')
+          STDERR.puts('FOLLOW BUILDER GOT first EOF')
+          IO.select([build_log_file])       
+          STDERR.puts('FOLLOW BUILDER GOT 2nd EOF')
           retry if File.exist?(SystemConfig.BuildRunningParamsFile)
           if build_over == false         
             build_over = true
