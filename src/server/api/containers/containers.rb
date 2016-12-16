@@ -29,6 +29,7 @@ require "timeout"
             STDERR.puts('OUT  IS CLOSED')     
             timer.cancel unless timer.nil?
             @events_stream.stop unless @events_stream.nil?
+            return
           else
             out << @no_op #unless lock_timer == true
           end
@@ -53,6 +54,7 @@ require "timeout"
         if out.closed?
           has_data = false
           STDERR.puts('OUT IS CLOSED 2')     
+          break
         else
           lock_timer = true
           STDERR.puts('OUT  EVENTS S ' + jason_event.to_s )
@@ -80,8 +82,10 @@ require "timeout"
     timer.cancel unless timer.nil?
     timer = nil
     @events_stream.stop unless @events_stream.nil?
-  #  STDERR.puts('CLOSED  EVENTS S ')
+    STDERR.puts('CLOSED  EVENTS S ')
   end
+  timer.cancel unless timer.nil?
+  @events_stream.stop unless @events_stream.nil?
   STDERR.puts('END OF REQUEST TO  /v0/containers/events/stream ')
 #  timer.cancel unless timer.nil?
 #  timer = nil
