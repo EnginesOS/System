@@ -24,18 +24,19 @@ require "timeout"
     while has_data == true
       STDERR.puts('WHILE HAS DATA')
       begin
-        timer = EventMachine::PeriodicTimer.new(15) do
-          STDERR.puts('PERIOD')     
-          if out.closed?
-            has_data = false
-            STDERR.puts('OUT  IS CLOSED')     
-            timer.cancel unless timer.nil?
-            @events_stream.stop unless @events_stream.nil?
-            next
-          else
-            out << @no_op #unless lock_timer == true
-          end
-        end if timer.nil?
+        
+#        timer = EventMachine::PeriodicTimer.new(15) do
+#          STDERR.puts('PERIOD')     
+#          if out.closed?
+#            has_data = false
+#            STDERR.puts('OUT  IS CLOSED')     
+#            timer.cancel unless timer.nil?
+#            @events_stream.stop unless @events_stream.nil?
+#            next
+#          else
+#            out << @no_op #unless lock_timer == true
+#          end
+#        end if timer.nil?
 
         bytes = @events_stream.rd.read_nonblock(2048)
         timer.cancel
