@@ -70,6 +70,7 @@ class ManagedContainer < Container
     @status[:error] = false   
     @status[:oom] = @out_of_memory
     @status[:had_oom] = @had_out_memory
+    @status[:restart_required] = restart_required?
     @status[:error] = true if @status[:state] !=  @status[:set_state] &&  @status[:progress_to].nil?
     #@status[:error] = false unless  @status[:progress_to].nil?
 #    elsif @status[:progress_to].nil?

@@ -55,7 +55,7 @@ class ManagedEngine < ManagedContainer
   def plugins_path
     return '/plugins/'
   end
-
+ 
   def extract_plugins
     false
   end
