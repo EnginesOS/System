@@ -15,6 +15,7 @@ require "timeout"
   stream :keep_open do |out|
     begin
     @events_stream = engines_api.container_events_stream
+    STDERR.puts('OPEN EVENT STREAM')
     has_data = true
     parser = Yajl::Parser.new(:symbolize_keys => true)
     lock_timer = false
