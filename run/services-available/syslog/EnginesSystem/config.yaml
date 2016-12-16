@@ -5,7 +5,7 @@ type_path: syslog
 ctype: service
 persistent: false
 last_error: 
-memory: '32'
+memory: '42'
 hostname: syslog
 domain_name: 
 environments: []
@@ -17,7 +17,7 @@ volumes:
   localpath: "/opt/engines/etc/syslog/conf/"
   permissions: rw
  logs: 
-  name: config
+  name: logdir
   remotepath: "/var/log/rmt/"
   localpath: "/var/lib/engines/syslog/rmt/"
   permissions: rw
