@@ -15,7 +15,7 @@ def write_event(hash)
   @wr.write("\n\n")
   @wr.flush
   #@wr.fsync
-  STDERR.puts('WRITE TO EVENT STREAM')
+  STDERR.puts('WRITE TO EVENT STREAM ' + hash.to_s)
 rescue StandardError => e
   p e.to_s
   p e.backtrace.to_s
@@ -30,7 +30,7 @@ rescue StandardError => e
            STDERR.puts('WR EVENT STREAM is open' )
         end#???
       end
-        STDERR.puts('Calling START EVENT STREAM')
+        STDERR.puts(' START EVENT STREAM')
       return @rd
   end
   
