@@ -29,7 +29,7 @@ require "timeout"
             STDERR.puts('OUT  IS CLOSED')     
             timer.cancel unless timer.nil?
             @events_stream.stop unless @events_stream.nil?
-            return
+            break
           else
             out << @no_op #unless lock_timer == true
           end
