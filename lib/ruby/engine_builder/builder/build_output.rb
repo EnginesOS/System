@@ -10,6 +10,9 @@ module BuildOutput
   def log_build_output(line)
     return if line.nil?
     return if line == "\u0000"
+    STDERR.puts(line.to_s)
+    STDERR.puts(line)
+    STDERR.puts(line.to_s + "")
     line.force_encoding(Encoding::UTF_8)
     @log_file.puts(line)
     @log_file.flush
