@@ -12,6 +12,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
   timer = nil
  
 require "timeout"
+  STDERR.puts('REQUEST TO  /v0/containers/events/stream')
   stream :keep_open do |out|
     begin
     @events_stream = engines_api.container_events_stream
