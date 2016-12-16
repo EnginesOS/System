@@ -22,6 +22,7 @@ require "timeout"
     parser = Yajl::Parser.new(:symbolize_keys => true)
     lock_timer = false
     while has_data == true
+      STDERR.puts('WHILE HAS DATA')
       begin
         timer = EventMachine::PeriodicTimer.new(15) do
           if out.closed?
@@ -56,8 +57,9 @@ require "timeout"
           STDERR.puts('OUT IS CLOSED 2')     
           next
         else
-          lock_timer = true
           STDERR.puts('OUT  EVENTS S ' + jason_event.to_s )
+          # FIXME replace with with my
+          lock_timer = true
           out << jason_event.to_json
           lock_timer = false
           bytes = ''
