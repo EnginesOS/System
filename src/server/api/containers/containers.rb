@@ -15,8 +15,9 @@ require "timeout"
   STDERR.puts('REQUEST TO  /v0/containers/events/stream')
   stream :keep_open do |out|
     begin
+      STDERR.puts('OPEN EVENT STREAM')
     @events_stream = engines_api.container_events_stream
-    STDERR.puts('OPEN EVENT STREAM')
+   
     has_data = true
     parser = Yajl::Parser.new(:symbolize_keys => true)
     lock_timer = false
@@ -81,7 +82,7 @@ require "timeout"
     @events_stream.stop unless @events_stream.nil?
   #  STDERR.puts('CLOSED  EVENTS S ')
   end
-
+  STDERR.puts('END OF REQUEST TO  /v0/containers/events/stream ')
 #  timer.cancel unless timer.nil?
 #  timer = nil
 #  @events_stream.stop unless @events_stream.nil?
