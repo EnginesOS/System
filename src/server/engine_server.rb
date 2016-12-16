@@ -98,7 +98,7 @@ begin
 #    unless @@engines_api
 #    core_api = EnginesCore.new   
 #    @engines_api = PublicApi.new(core_api)
-   STDERR.puts('CREATED ENGINES API +++++++++++++++++++++++++++++++++++++++++++')
+  
 #    end
 #    STDERR.puts('API SIZE ' + ObjectSpace.memsize_of(@@engines_api).to_s)
 #    total = 0
