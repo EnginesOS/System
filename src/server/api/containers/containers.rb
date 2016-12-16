@@ -86,6 +86,7 @@ require "timeout"
   end
   timer.cancel unless timer.nil?
   @events_stream.stop unless @events_stream.nil?
+  @events_stream = nil
   STDERR.puts('END OF REQUEST TO  /v0/containers/events/stream ')
 #  timer.cancel unless timer.nil?
 #  timer = nil
