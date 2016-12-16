@@ -10,7 +10,7 @@
 get '/v0/containers/events/stream', provides: 'text/event-stream' do
 
   timer = nil
- 
+  begin
 require "timeout"
   STDERR.puts('REQUEST TO  /v0/containers/events/stream')
   stream :keep_open do |out|
@@ -92,6 +92,11 @@ require "timeout"
 #  timer = nil
 #  @events_stream.stop unless @events_stream.nil?
   #   STDERR.puts('ENDED  EVENTS S ' )
+
+  rescue StandardError => e
+#  STDERR.puts('Stream EVENTS Exception' + e.to_s + e.backtrace.to_s)
+#
+end
 end
 
 # @method check_and_act_on_containers

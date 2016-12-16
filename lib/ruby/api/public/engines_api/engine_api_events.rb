@@ -38,7 +38,7 @@ rescue StandardError => e
     @system_api.rm_event_listener(self)
     #  @live_thread.terminate unless @live_thread.nil?
     @wr.close #  if @wr.is_open?
-    @rd.close  # if @rd.is_open?
+    @rd.close #if @rd.is_open?
   end
   
   end
