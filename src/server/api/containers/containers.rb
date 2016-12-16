@@ -12,9 +12,12 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
   timer = nil
  
 require "timeout"
+  STDERR.puts('REQUEST TO  /v0/containers/events/stream')
   stream :keep_open do |out|
     begin
+      STDERR.puts('OPEN EVENT STREAM')
     @events_stream = engines_api.container_events_stream
+   
     has_data = true
     parser = Yajl::Parser.new(:symbolize_keys => true)
     lock_timer = false
@@ -23,9 +26,10 @@ require "timeout"
         timer = EventMachine::PeriodicTimer.new(15) do
           if out.closed?
             has_data = false
-           
+            STDERR.puts('OUT  IS CLOSED')     
             timer.cancel unless timer.nil?
             @events_stream.stop unless @events_stream.nil?
+            next
           else
             out << @no_op #unless lock_timer == true
           end
@@ -49,7 +53,8 @@ require "timeout"
         #out <<'data:'
         if out.closed?
           has_data = false
-         
+          STDERR.puts('OUT IS CLOSED 2')     
+          next
         else
           lock_timer = true
           STDERR.puts('OUT  EVENTS S ' + jason_event.to_s )
@@ -77,9 +82,12 @@ require "timeout"
     timer.cancel unless timer.nil?
     timer = nil
     @events_stream.stop unless @events_stream.nil?
-  #  STDERR.puts('CLOSED  EVENTS S ')
+    STDERR.puts('CLOSED  EVENTS S ')
   end
-
+  timer.cancel unless timer.nil?
+  @events_stream.stop unless @events_stream.nil?
+  @events_stream = nil
+  STDERR.puts('END OF REQUEST TO  /v0/containers/events/stream ')
 #  timer.cancel unless timer.nil?
 #  timer = nil
 #  @events_stream.stop unless @events_stream.nil?
