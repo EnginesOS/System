@@ -39,7 +39,7 @@ require "timeout"
 #        end if timer.nil?
 
         bytes = @events_stream.rd.read_nonblock(2048)
-        timer.cancel
+        timer.cancel unless timer.nil?
         timer = nil
         begin
           jason_event = ''
