@@ -26,7 +26,7 @@ require "timeout"
         timer = EventMachine::PeriodicTimer.new(15) do
           if out.closed?
             has_data = false
-           
+            STDERR.puts('OUT  IS CLOSED')     
             timer.cancel unless timer.nil?
             @events_stream.stop unless @events_stream.nil?
           else
@@ -52,7 +52,7 @@ require "timeout"
         #out <<'data:'
         if out.closed?
           has_data = false
-         
+          STDERR.puts('OUT IS CLOSED 2')     
         else
           lock_timer = true
           STDERR.puts('OUT  EVENTS S ' + jason_event.to_s )
