@@ -59,7 +59,7 @@ require "timeout"
           has_data = false
           @timer.cancel unless @timer.nil?
           @timer = nil
-          STDERR.puts('OUT IS CLOSED 2')     
+          STDERR.puts('OUT IS CLOSED but have '  + jason_event.to_s)     
           next
         else
           STDERR.puts('OUT  EVENTS S ' + jason_event.to_json.to_s )
