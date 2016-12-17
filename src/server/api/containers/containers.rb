@@ -127,8 +127,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
   stream :keep_open do |out|
     begin
       STDERR.puts('OPEN EVENT STREAM')
-    @events_stream = engines_api.container_events_stream
-   
+    @events_stream = engines_api.container_events_stream   
     has_data = true
     parser = Yajl::Parser.new(:symbolize_keys => true)
    
@@ -138,12 +137,9 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
         bytes = @events_stream.rd.read_nonblock(2048)
         begin
           jason_event = ''
-         parser.parse(bytes.strip) do |event |
-          
+         parser.parse(bytes.strip) do |event |          
            jason_event = event
-           #yajil baffs as  docker encloses within []
          end
-         # jason_event = JSON.parse(bytes,:symbolize_keys => true)
         rescue  Yajl::ParseError => e
           finialise
           STDERR.puts('Failed to parse docker events ' + bytes + ':' + e.to_s )

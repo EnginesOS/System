@@ -100,7 +100,8 @@ class DockerConnection < ErrorsApi
       else
         body = content
       end
-      return stream_connection(stream_handler).request(
+      sc = stream_connection(stream_handler)
+      return sc.request(
       :method => :post,
       :read_timeout => 3600,
       :query => options,
@@ -109,8 +110,8 @@ class DockerConnection < ErrorsApi
       :body =>  body
       )
     else
-
-      return stream_connection(stream_handler).request(
+      sc = stream_connection(stream_handler)
+      return sc.request(
       :method => :post,
       :read_timeout => 3600,
       :query => options,
