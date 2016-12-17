@@ -25,19 +25,19 @@ require "timeout"
       STDERR.puts('WHILE HAS DATA')
       begin
         
-        @timer = EventMachine::PeriodicTimer.new(10) do
-          STDERR.puts('PERIOD')     
-          if out.closed?
-            has_data = false
-            STDERR.puts('NOOP found OUT IS CLOSED')     
-            @timer.cancel unless @timer.nil?
-            @timer = nil
-            @events_stream.stop unless @events_stream.nil?
-            next
-          else
-            out << @no_op unless lock_timer == true
-          end
-        end if @timer.nil?
+#        @timer = EventMachine::PeriodicTimer.new(10) do
+#          STDERR.puts('PERIOD')     
+#          if out.closed?
+#            has_data = false
+#            STDERR.puts('NOOP found OUT IS CLOSED')     
+#            @timer.cancel unless @timer.nil?
+#            @timer = nil
+#            @events_stream.stop unless @events_stream.nil?
+#            next
+#          else
+#            out << @no_op unless lock_timer == true
+#          end
+#        end if @timer.nil?
 
         bytes = @events_stream.rd.read_nonblock(2048)
         @timer.cancel unless @timer.nil?
