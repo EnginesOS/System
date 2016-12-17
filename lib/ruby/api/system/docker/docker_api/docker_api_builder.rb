@@ -26,7 +26,8 @@ module DockerApiBuilder
     attr_accessor :stream
 
     def close
-      @stream.close unless @stream.nil?
+      @io_stream.close unless @io_stream.nil?
+      @stream.reset unless @stream.nil?
     end
 
     def is_hijack?

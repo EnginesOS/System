@@ -16,7 +16,7 @@ module DockerApiExec
     def close
       @o_stream.close unless @o_stream.nil?
       @i_stream.close unless @i_stream.nil?
-      @stream.close unless @stream.nil?
+      @stream.reset unless @stream.nil?
     end
 
     def is_hijack?
@@ -67,7 +67,7 @@ module DockerApiExec
 
     def close
       @o_stream.close unless @o_stream.nil?
-      @stream.close unless @stream.nil?
+      @stream.reset unless @stream.nil?
     end
 
     def process_response()
