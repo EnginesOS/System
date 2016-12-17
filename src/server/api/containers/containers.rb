@@ -25,7 +25,7 @@ require "timeout"
       STDERR.puts('WHILE HAS DATA')
       begin
         
-        timer = EventMachine::PeriodicTimer.new(15) do
+        timer = EventMachine::PeriodicTimer.new(10) do
           STDERR.puts('PERIOD')     
           if out.closed?
             has_data = false
