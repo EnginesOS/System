@@ -23,6 +23,11 @@ module DockerApiBuilder
       @builder = builder
       @parser = Yajl::Parser.new(:symbolize_keys => true)
     end
+    attr_accessor :stream
+
+    def close
+      @stream.close unless @stream.nil?
+    end
 
     def is_hijack?
       false
