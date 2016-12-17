@@ -75,7 +75,9 @@ module DockerApiBuilder
     header['Accept'] = '*/*'
     header['Content-Length'] = File.size(build_archive_filename).to_s
     stream_handler = DockerStreamHandler.new(nil, builder) #File.new(build_archive_filename,'r'))
-    return post_stream_request('/build' , options, stream_handler,  header, File.read(build_archive_filename) )
+    r= return post_stream_request('/build' , options, stream_handler,  header, File.read(build_archive_filename) )
+    stream_handler.close
+    return r
   rescue StandardError => e
     log_exception(e)
   end

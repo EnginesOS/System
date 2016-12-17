@@ -111,7 +111,7 @@ class DockerConnection < ErrorsApi
       :headers => headers,
       :body =>  body
       )
-      sc.close
+      stream_handler.close
       return r
     else
       r  = sc.request(
@@ -121,7 +121,7 @@ class DockerConnection < ErrorsApi
       :path => uri,
       :body => content,
       :headers => headers)
-      sc.close
+      stream_handler.close
       return r
     end
 
