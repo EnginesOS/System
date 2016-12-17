@@ -91,7 +91,7 @@ module Services
       return log_error_mesg('failed to create service file ', SystemConfig.RunDir + service_type_dir + '/' + service_name.to_s) unless ContainerStateFiles.build_running_service(service_name, SystemConfig.RunDir + service_type_dir,@engines_api.system_value_access)
     end
     yaml_file = File.read(yam1_file_name)
-   STDERR.puts('Panic nillservice_api'  ) if @engines_api.service_api.nil?
+   STDERR.puts('Panic nill  engine_api'  ) if @engines_api.nil?
     managed_service = SystemService.from_yaml(yaml_file, @engines_api.service_api) if service_type_dir ==  '/system_services/'
     managed_service = ManagedService.from_yaml(yaml_file, @engines_api.service_api)
     return log_error_mesg('Failed to load', yaml_file) if managed_service.nil?
