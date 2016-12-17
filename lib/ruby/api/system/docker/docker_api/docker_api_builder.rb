@@ -21,6 +21,7 @@ module DockerApiBuilder
     def initialize(stream, builder)
       @io_stream = stream
       @builder = builder
+      @parser = Yajl::Parser.new(:symbolize_keys => true)
     end
 
     def is_hijack?
@@ -36,10 +37,14 @@ module DockerApiBuilder
       lambda do |chunk , c , t|
         begin
         hash = JSON.parse(chunk) 
-        STDERR.puts( ' parsed ' + chunk.to_s + ' as :' + hash.class.name)
+        #  @parser.parse(chunk) do |hash|
+        STDERR.puts( ' parsed ' + chunk.to_s + ' as :' + hash.to_s)
         @builder.log_build_output(hash[:stream]) if hash.key?(:stream)
         @builder.log_build_errors(hash[:errorDetail]) if hash.key?(:errorDetail)
-          STDERR.puts( ' wrote ' + chunk.to_s )
+          STDERR.puts( ' wrote ' + hash[:stream].to_s) if hash.key?(:stream)
+          STDERR.puts( ' wrote ' + hash[:errorDetail].to_s) if hash.key?(:errorDetail)
+        #end
+          
 #        if chunk.start_with?('{"stream":"')
 #          chunk = chunk[11..-3]
 #          @builder.log_build_output(chunk.sub(/"}$/,""))
