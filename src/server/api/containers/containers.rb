@@ -59,7 +59,7 @@ require "timeout"
           STDERR.puts('OUT IS CLOSED 2')     
           next
         else
-          STDERR.puts('OUT  EVENTS S ' + jason_event.to_s )
+          STDERR.puts('OUT  EVENTS S ' + jason_event.to_json.to_s )
           # FIXME replace with with my
           lock_timer = true
           out << jason_event.to_json
