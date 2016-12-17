@@ -29,7 +29,7 @@ require "timeout"
           STDERR.puts('PERIOD')     
           if out.closed?
             has_data = false
-            STDERR.puts('OUT  IS CLOSED')     
+            STDERR.puts('NOOP found OUT IS CLOSED')     
             timer.cancel unless timer.nil?
             @events_stream.stop unless @events_stream.nil?
             next
@@ -72,15 +72,22 @@ require "timeout"
         retry
       rescue EOFError =>e
         STDERR.puts('OUT IS EOF')     
-      #  sleep 0.4
-      #  retry
-        next
+          if has_data == false
+        timer.cancel unless timer.nil?
+           timer = nil
+           @events_stream.stop unless @events_stream.nil?
+           next
+      end
+        STDERR.puts('sleeping on EOF')
+      sleep 1
+        retry
       rescue IOError
         has_data = false
         timer.cancel unless timer.nil?
         timer = nil
         @events_stream.stop unless @events_stream.nil?
         STDERR.puts('OUT IS IOError  EVENTS S ' )
+        next
       end
     end
     rescue StandardError => e
@@ -95,8 +102,8 @@ require "timeout"
   @events_stream.stop unless @events_stream.nil?
   @events_stream = nil
   STDERR.puts('END OF REQUEST TO  /v0/containers/events/stream ')
-#  timer.cancel unless timer.nil?
-#  timer = nil
+  timer.cancel unless timer.nil?
+  timer = nil
 #  @events_stream.stop unless @events_stream.nil?
   #   STDERR.puts('ENDED  EVENTS S ' )
 
