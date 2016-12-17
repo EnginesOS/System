@@ -34,7 +34,9 @@ module DockerApiBuilder
 
     def process_response()
       lambda do |chunk , c , t|
+        begin
         hash = JSON.parse(chunk) 
+        STDERR.puts( ' parsed ' + chunk.to_s )
         @builder.log_build_output(hash[:stream]) if hash.key?(:stream)
         @builder.log_build_errors(hash[:errorDetail]) if hash.key?(:errorDetail)
 #        if chunk.start_with?('{"stream":"')
@@ -43,7 +45,11 @@ module DockerApiBuilder
 #        elsif chunk.start_with?('{"errorDetail":"')
 #          chunk = chunk[16..-3]
 #          @builder.log_build_errors(chunk.sub(/"}$/,""))
-#        end
+#        end 
+          rescue StandardError =>e
+        STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s)
+     
+        end
       end
     rescue StandardError =>e
       STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s)
