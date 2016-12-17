@@ -36,25 +36,15 @@ module DockerApiBuilder
     def process_response()
       lambda do |chunk , c , t|
         begin
-          #hash = JSON.parse(chunk) 
-         @parser.parse(chunk) do |hash|
-        STDERR.puts( ' parsed ' + chunk.to_s + ' as :' + hash.to_s)
-        @builder.log_build_output(hash[:stream]) if hash.key?(:stream)
-        @builder.log_build_errors(hash[errorDetail]) if hash.key?(:errorDetail)
-          STDERR.puts( ' wrote ' + hash[:stream].to_s) if hash.key?(:stream)
-          STDERR.puts( ' wrote ' + hash[:errorDetail].to_s) if hash.key?(:errorDetail)
-        end
-          
-#        if chunk.start_with?('{"stream":"')
-#          chunk = chunk[11..-3]
-#          @builder.log_build_output(chunk.sub(/"}$/,""))
-#        elsif chunk.start_with?('{"errorDetail":"')
-#          chunk = chunk[16..-3]
-#          @builder.log_build_errors(chunk.sub(/"}$/,""))
-#        end 
-          rescue StandardError =>e
-        STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s)
-     
+          #hash = JSON.parse(chunk)
+          @parser.parse(chunk) do |hash|
+            @builder.log_build_output(hash[:stream]) if hash.key?(:stream)
+            @builder.log_build_errors(hash[errorDetail]) if hash.key?(:errorDetail)
+          end
+
+        rescue StandardError =>e
+          STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s)
+
         end
       end
     rescue StandardError =>e
