@@ -4,6 +4,7 @@ def json_parser
      @json_parser
    end
 def rest_get(path,params)
+  return base_url if base_url.is_a?(EnginesError)
   begin
     retry_count = 0
    STDERR.puts('Get Path:' + path.to_s + ' Params:' + params.to_s + ' base_url ' + base_url.to_s)
