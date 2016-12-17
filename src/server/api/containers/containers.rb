@@ -25,18 +25,18 @@ require "timeout"
       STDERR.puts('WHILE HAS DATA')
       begin
         
-#        timer = EventMachine::PeriodicTimer.new(15) do
-#          STDERR.puts('PERIOD')     
-#          if out.closed?
-#            has_data = false
-#            STDERR.puts('OUT  IS CLOSED')     
-#            timer.cancel unless timer.nil?
-#            @events_stream.stop unless @events_stream.nil?
-#            next
-#          else
-#            out << @no_op #unless lock_timer == true
-#          end
-#        end if timer.nil?
+        timer = EventMachine::PeriodicTimer.new(15) do
+          STDERR.puts('PERIOD')     
+          if out.closed?
+            has_data = false
+            STDERR.puts('OUT  IS CLOSED')     
+            timer.cancel unless timer.nil?
+            @events_stream.stop unless @events_stream.nil?
+            next
+          else
+            out << @no_op #unless lock_timer == true
+          end
+        end if timer.nil?
 
         bytes = @events_stream.rd.read_nonblock(2048)
         timer.cancel unless timer.nil?
@@ -72,8 +72,9 @@ require "timeout"
         retry
       rescue EOFError =>e
         STDERR.puts('OUT IS EOF')     
-        sleep 0.4
-        retry
+      #  sleep 0.4
+      #  retry
+        next
       rescue IOError
         has_data = false
         timer.cancel unless timer.nil?
@@ -100,7 +101,7 @@ require "timeout"
   #   STDERR.puts('ENDED  EVENTS S ' )
 
   rescue StandardError => e
-#  STDERR.puts('Stream EVENTS Exception' + e.to_s + e.backtrace.to_s)
+  STDERR.puts('Stream EVENTS Exception' + e.to_s + e.backtrace.to_s)
 #
 end
 end
