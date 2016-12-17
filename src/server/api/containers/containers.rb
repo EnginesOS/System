@@ -9,7 +9,7 @@
 #  Do not use the "from" key
 get '/v0/containers/events/stream', provides: 'text/event-stream' do
 
-  timer = nil
+  @timer = nil
   begin
 require "timeout"
   STDERR.puts('REQUEST TO  /v0/containers/events/stream')
@@ -25,22 +25,23 @@ require "timeout"
       STDERR.puts('WHILE HAS DATA')
       begin
         
-        timer = EventMachine::PeriodicTimer.new(10) do
+        @timer = EventMachine::PeriodicTimer.new(10) do
           STDERR.puts('PERIOD')     
           if out.closed?
             has_data = false
             STDERR.puts('NOOP found OUT IS CLOSED')     
-            timer.cancel unless timer.nil?
+            @timer.cancel unless @timer.nil?
+            @timer = nil
             @events_stream.stop unless @events_stream.nil?
             next
           else
-            out << @no_op #unless lock_timer == true
+            out << @no_op unless lock_timer == true
           end
-        end if timer.nil?
+        end if @timer.nil?
 
         bytes = @events_stream.rd.read_nonblock(2048)
-        timer.cancel unless timer.nil?
-        timer = nil
+        @timer.cancel unless @timer.nil?
+        @timer = nil
         begin
           jason_event = ''
          parser.parse(bytes.strip) do |event |
@@ -56,13 +57,13 @@ require "timeout"
         #out <<'data:'
         if out.closed?
           has_data = false
-          timer.cancel unless timer.nil?
-          timer = nil
+          @timer.cancel unless timer.nil?
+          @timer = nil
           STDERR.puts('OUT IS CLOSED 2')     
           next
         else
           STDERR.puts('OUT  EVENTS S ' + jason_event.to_json.to_s )
-          # FIXME replace with with my
+          # FIXME replace with with sync
           lock_timer = true
           out << jason_event.to_json
           lock_timer = false
@@ -75,8 +76,8 @@ require "timeout"
       rescue EOFError =>e
         STDERR.puts('OUT IS EOF')     
           if has_data == false
-        timer.cancel unless timer.nil?
-           timer = nil
+        @timer.cancel unless @timer.nil?
+           @timer = nil
            @events_stream.stop unless @events_stream.nil?
            next
       end
@@ -85,8 +86,8 @@ require "timeout"
         retry
       rescue IOError
         has_data = false
-        timer.cancel unless timer.nil?
-        timer = nil
+        @timer.cancel unless @timer.nil?
+        @timer = nil
         @events_stream.stop unless @events_stream.nil?
         STDERR.puts('OUT IS IOError  EVENTS S ' )
         next
@@ -95,17 +96,17 @@ require "timeout"
     rescue StandardError => e
       STDERR.puts('EVENTS Exception' + e.to_s + e.backtrace.to_s)
     end
-    timer.cancel unless timer.nil?
-    timer = nil
+    @timer.cancel unless @timer.nil?
+    @timer = nil
     @events_stream.stop unless @events_stream.nil?
     STDERR.puts('CLOSED  EVENTS S ')
   end
-  timer.cancel unless timer.nil?
+    @timer.cancel unless @timer.nil?
+    @timer = nil
   @events_stream.stop unless @events_stream.nil?
   @events_stream = nil
   STDERR.puts('END OF REQUEST TO  /v0/containers/events/stream ')
-  timer.cancel unless timer.nil?
-  timer = nil
+
 #  @events_stream.stop unless @events_stream.nil?
   #   STDERR.puts('ENDED  EVENTS S ' )
 
