@@ -13,7 +13,7 @@ module BuildOutput
     STDERR.puts(line.to_s)
     STDERR.puts(line)
     STDERR.puts(line.to_s + "")
-    line.gsub!(/\\\\/,"/")
+    line.gsub!(/\\n/,"\n")
     line.force_encoding(Encoding::UTF_8)
     @log_file.puts(line)
     @log_file.flush
