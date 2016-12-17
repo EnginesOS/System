@@ -36,9 +36,10 @@ module DockerApiBuilder
       lambda do |chunk , c , t|
         begin
         hash = JSON.parse(chunk) 
-        STDERR.puts( ' parsed ' + chunk.to_s )
+        STDERR.puts( ' parsed ' + chunk.to_s + ' as :' + chunk.class.name)
         @builder.log_build_output(hash[:stream]) if hash.key?(:stream)
         @builder.log_build_errors(hash[:errorDetail]) if hash.key?(:errorDetail)
+          STDERR.puts( ' wrote ' + chunk.to_s )
 #        if chunk.start_with?('{"stream":"')
 #          chunk = chunk[11..-3]
 #          @builder.log_build_output(chunk.sub(/"}$/,""))
