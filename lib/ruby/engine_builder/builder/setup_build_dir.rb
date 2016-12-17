@@ -128,6 +128,7 @@ def read_web_user
       @web_user = i[1].strip
     end
   end
+  stef.close
 rescue StandardError => e
   log_exception(e)
 end
@@ -145,8 +146,9 @@ def read_web_port
       i = line.split('=')
       @web_port = i[1].strip
       SystemDebug.debug(SystemDebug.builder,   :web_port_line, line)
-    end
+    end   
   end
+  stef.close
 rescue StandardError => e
   log_exception(e)
   #      throw BuildStandardError.new(e,'setting web port')
@@ -183,6 +185,7 @@ def setup_framework_logging
   end
   local_log_dir = SystemConfig.SystemLogRoot + '/containers/' + @build_params[:engine_name]
   Dir.mkdir(local_log_dir) unless Dir.exist?(local_log_dir)
+  rmt_log_dir_varfile.close
   return ' -v ' + local_log_dir + ':' + rmt_log_dir + ':rw '
 rescue StandardError => e
   log_exception(e)

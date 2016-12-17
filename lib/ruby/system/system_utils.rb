@@ -116,8 +116,7 @@ class SystemUtils
       
     Open3.popen3(cmd)  do |_stdin, stdout, stderr, th|
       
-      _stdin.write(data) unless data.is_a?(FalseClass)
-       
+      _stdin.write(data) unless data.is_a?(FalseClass)       
       _stdin.close
       oline = ''
       stderr_is_open = true
@@ -211,6 +210,7 @@ class SystemUtils
     os_data_hash['Major Version'] = vers[0]
     os_data_hash['Minor Version'] = vers[1]
     os_data_hash['Patch Version'] = vers[2] if vers.count > 2
+    os_file.close
     # FIXME catch sub numbers as in 14.04.1
     return os_data_hash
   end
