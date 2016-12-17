@@ -3,20 +3,49 @@ def json_parser
      @json_parser = Yajl::Parser.new(:create_additions => true,:symbolize_keys => true) if @json_parser.nil?
      @json_parser
    end
-def rest_get(path,params)
-  return base_url if base_url.is_a?(EnginesError)
-  begin
-    retry_count = 0
-   STDERR.puts('Get Path:' + path.to_s + ' Params:' + params.to_s + ' base_url ' + base_url.to_s)
-    
-    parse_rest_response(RestClient.get(base_url + path, params))
-   rescue RestClient::ExceptionWithResponse => e   
-     parse_error(e.response)
-  rescue StandardError => e       
-    log_exception(e, params)
+  
 
-  end
+def connection(content_type = 'application/json')
+  headers = {}
+  headers['content_type'] = content_type
+  #headers['ACCESS_TOKEN'] = load_token
+  @connection = Excon.new(base_url,
+  :debug_request => true,
+  :debug_response => true,
+  :ssl_verify_peer => false,
+  :persistent => true,
+  :headers => headers) if @connection.nil?
+  @connection
+rescue StandardError => e
+  STDERR.puts('Failed to open base url to registry' + @base_url.to_s)
 end
+
+def rest_get(path,params,time_out=120)
+
+
+  parse_rest_response( connection.request(:read_timeout => time_out,:method => :get,:path => uri,:body => params.to_json))
+  
+rescue StandardError => e
+  STDERR.puts e.to_s + ' with path:' + path.to_s + "\n" + 'params:' + params.to_s
+    STDERR.puts e.backtrace.to_s
+  log_exception(e, params, path)
+  
+end
+
+#def rest_get(path,params)
+#  return base_url if base_url.is_a?(EnginesError)
+#  begin
+#    retry_count = 0
+#   STDERR.puts('Get Path:' + path.to_s + ' Params:' + params.to_s + ' base_url ' + base_url.to_s)
+#    
+#    parse_rest_response(RestClient.get(base_url + path, params))
+#   rescue RestClient::ExceptionWithResponse => e   
+#     parse_error(e.response)
+#  rescue StandardError => e       
+#    log_exception(e, params)
+#
+#  end
+#end
 
 def rest_post(path,params)
   begin
