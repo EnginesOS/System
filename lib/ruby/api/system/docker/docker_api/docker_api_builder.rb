@@ -36,10 +36,10 @@ module DockerApiBuilder
       lambda do |chunk , c , t|
         if chunk.start_with?('{"stream":"')
           chunk = chunk[11..-3]
-          @builder.log_build_output(chunk.sub(/"}$/,''))
+          @builder.log_build_output(chunk.sub(/"}$/,""))
         elsif chunk.start_with?('{"errorDetail":"')
           chunk = chunk[16..-3]
-          @builder.log_build_errors(chunk.sub(/"}$/,''))
+          @builder.log_build_errors(chunk.sub(/"}$/,""))
         end
       end
     rescue StandardError =>e

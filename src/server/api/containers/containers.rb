@@ -56,6 +56,8 @@ require "timeout"
         #out <<'data:'
         if out.closed?
           has_data = false
+          timer.cancel unless timer.nil?
+          timer = nil
           STDERR.puts('OUT IS CLOSED 2')     
           next
         else
