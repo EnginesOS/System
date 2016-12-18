@@ -17,7 +17,6 @@ def connection(content_type = 'application/json')
   :debug_request => true,
   :debug_response => true,
   :ssl_verify_peer => false,
-  :persistent => true,
   :headers => headers) 
  # end
   @connection
