@@ -96,7 +96,7 @@ def query_hash(params)
 
    unless params.nil?
     
-   return params[:params] if params.key?(params)
+   return params[:params] if params.key?(:params)
      return params
    end
    return nil
