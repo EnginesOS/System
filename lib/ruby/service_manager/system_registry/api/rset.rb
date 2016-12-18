@@ -23,7 +23,7 @@ end
 def rest_get(path,params,time_out=120)
 
 
-  parse_rest_response( connection.request(:read_timeout => time_out,:method => :get,:path => uri,:body => params.to_json))
+  parse_rest_response( connection.request(:read_timeout => time_out,:method => :get,:path => path,:body => params.to_json))
   
 rescue StandardError => e
   STDERR.puts e.to_s + ' with path:' + path.to_s + "\n" + 'params:' + params.to_s
