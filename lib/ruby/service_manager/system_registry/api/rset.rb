@@ -93,6 +93,7 @@ end
 def query_hash(params)
 
    unless params.nil?
+     STDERR.puts('SEND ' +  params[:params].to_s)
    return params[:params] if params.key?(params)
    end
    return nil
