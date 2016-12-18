@@ -12,12 +12,12 @@ def connection(content_type = 'application/json')
  
   if @connection.nil?
     STDERR.puts('NEW REGISTRY CONNECTION ')
-  @connection = Excon.new(base_url,
+  connection = Excon.new(base_url,
   :debug_request => true,
   :debug_response => true,
   :ssl_verify_peer => false,
   :persistent => true,
-  :headers => headers) if @connection.nil?
+  :headers => headers) 
   end
   @connection
 rescue StandardError => e
