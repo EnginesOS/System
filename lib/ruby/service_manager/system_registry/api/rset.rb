@@ -31,7 +31,7 @@ def rest_get(path,params,time_out=120)
 #  q = query_hash(params)
 #  unless q.nil?
   q = query_hash(params)
-    STDERR.puts('SEND ' +  q.to_s)
+    STDERR.puts('GET PARAMS ' +  q.to_s)
   r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :get,:path => path,:query => q))
 #  else
 #    r =   parse_xcon_response( connection.request(:read_timeout => time_out,:method => :get,:path => path))
@@ -70,7 +70,7 @@ def rest_post(path,params)
     #  parse_rest_response(RestClient.post(base_url + path, params))
     # rescue RestClient::ExceptionWithResponse => e   
     #   parse_error(e.response)
-      
+    STDERR.puts('POST params ' + query_hash(params).to_s )
    r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :post,:path => path,:body => query_hash(params).to_s))
     #  connection.reset
     return r
@@ -80,6 +80,7 @@ def rest_post(path,params)
 end
 
 def rest_put(path,params)
+  STDERR.puts('PUT params ' + query_hash(params).to_s )
   r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :put,:path => path,:query => query_hash(params)))
     connection.reset
   return r
