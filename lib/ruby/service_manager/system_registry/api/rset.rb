@@ -28,7 +28,8 @@ end
 def rest_get(path,params,time_out=120)
 
   STDERR.puts(' get params ' + params.to_s + ' From ' + path.to_s )
-
+  q = nil
+  q = params[:params] if params.key?(params)
   parse_xcon_response( connection.request(:read_timeout => time_out,:method => :get,:path => path,:query => params[:params]))
   connection.reset
 rescue StandardError => e
