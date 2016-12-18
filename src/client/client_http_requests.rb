@@ -72,6 +72,7 @@ def connection(content_type = 'application/json')
   headers = {}
   headers['content_type'] = content_type
   headers['ACCESS_TOKEN'] = load_token
+  headers.delete['ACCESS_TOKEN'] if headers['ACCESS_TOKEN'].nil?    
     puts 'baseusrl ' + @base_url.to_s
   @connection = Excon.new(@base_url,
   :debug_request => true,
