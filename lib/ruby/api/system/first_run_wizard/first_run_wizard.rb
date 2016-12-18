@@ -25,7 +25,7 @@ class FirstRunWizard <ErrorsApi
 
     return false unless setup_dns
     return false unless setup_certs
-    return false unless init_system_password(@first_run_params[:system_password])
+    return false unless setup_system_password(@first_run_params[:system_password])
     @sucess = true
     mark_as_run
   end
