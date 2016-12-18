@@ -126,8 +126,8 @@ require_relative 'default_connection_settings.rb'
 puts 'using Base url  ' + @base_url.to_s
 @silent = false if cmdline_options.key?(:verbose)
 
-#ENV['access_token'] = cmdline_options[:access_token] if cmdline_options.key?(:access_token)
-#load_token if ENV['access_token'].nil?
+ENV['access_token'] = cmdline_options[:access_token] if cmdline_options.key?(:access_token)
+load_token if ENV['access_token'].nil?
 #login if ENV['access_token'].nil?
 
 require_relative 'commands/commands.rb'
