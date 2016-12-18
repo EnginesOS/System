@@ -1,6 +1,7 @@
 require 'gctools/oobgc'
 
 begin
+
   require 'sinatra'
   require "sinatra/streaming"
   require 'json'
