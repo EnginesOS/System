@@ -28,11 +28,8 @@ end
 def rest_get(path,params,time_out=120)
 
   STDERR.puts(' get params ' + params.to_s + ' From ' + path.to_s )
-  q = nil
-  unless params.nil?
-  q = params[:params] if params.key?(params)
-  end
-  parse_xcon_response( connection.request(:read_timeout => time_out,:method => :get,:path => path,:query => params[:params]))
+
+  parse_xcon_response( connection.request(:read_timeout => time_out,:method => :get,:path => path,:query => query_hash(params)))
   connection.reset
 rescue StandardError => e
   STDERR.puts e.to_s + ' with path:' + path.to_s + "\n" + 'params:' + params.to_s
@@ -67,7 +64,7 @@ def rest_post(path,params)
     # rescue RestClient::ExceptionWithResponse => e   
     #   parse_error(e.response)
       
-    parse_xcon_response( connection.request(:read_timeout => time_out,:method => :post,:path => path,:body => params.to_json))
+    parse_xcon_response( connection.request(:read_timeout => time_out,:method => :post,:path => path,:body => query_hash(params)))
     connection.reset
   rescue StandardError => e
     log_exception(e, params)
@@ -75,7 +72,7 @@ def rest_post(path,params)
 end
 
 def rest_put(path,params)
-  parse_xcon_response( connection.request(:read_timeout => time_out,:method => :put,:path => path,:body => params.to_json))
+  parse_xcon_response( connection.request(:read_timeout => time_out,:method => :put,:path => path,:body => query_hash(params)))
   connection.reset
 #  begin
 #    parse_rest_response(RestClient.put(base_url + path, params))
@@ -86,8 +83,17 @@ def rest_put(path,params)
  # end
 end
 
+def query_hash(params)
+
+   unless params.nil?
+   return params[:params] if params.key?(params)
+   end
+   return nil
+end
+
 def rest_delete(path,params)
-  parse_xcon_response( connection.request(:read_timeout => time_out,:method => :delete,:path => path,:query => params[:params]))
+
+  parse_xcon_response( connection.request(:read_timeout => time_out,:method => :delete,:path => path,:query => query_hash(params)))
   connection.reset
 #  begin
 #    parse_rest_response(RestClient.delete(base_url + path, params))
