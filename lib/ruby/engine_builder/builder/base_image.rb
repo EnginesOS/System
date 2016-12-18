@@ -2,7 +2,7 @@ def read_base_image_from_dockerfile
   
     dockerfile = File.open(basedir + '/Dockerfile', 'r')
     from_line = dockerfile.gets("\n", 100)
-    from_line.gsub(/^FROM[ ]./, '')
+    from_line.gsub!(/^FROM[ ]./, '')
   dockerfile.close
   from_line
   rescue StandardError => e
