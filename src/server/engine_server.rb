@@ -29,12 +29,13 @@ begin
     rescue
       rows = @auth_db.execute( "select authtoken from systemaccess" )
       STDERR.puts('init db')
-      #return if rows.count > 0
+      return if rows.count > 0
       STDERR.puts('init db')
 #      @auth_db.execute("INSERT INTO systemaccess (username, password, email, authtoken, uid,guid) 
 #                        VALUES (?, ?, ?, ?, ?, ?)", ["test", 'test', '', 'test_token_arandy',2,0])
 #    rows                        
       toke = SecureRandom.hex(128)
+    
     @auth_db.execute("INSERT INTO systemaccess (username, password, email, authtoken, uid,guid)      
                           VALUES (?, ?, ?, ?, ?, ?)", ["admin", 'EnginesDemo', '', toke.to_s ,1,0])                   
       STDERR.puts('init db')                 

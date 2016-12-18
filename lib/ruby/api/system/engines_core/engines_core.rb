@@ -157,7 +157,7 @@ class EnginesCore < ErrorsApi
      return first_run.sucess
   end
   
-  def init_system_password(password,email=nil)
+  def init_system_password(password,email=nil, token = nil)
     require "sqlite3"
     db = SQLite3::Database.new "/home/app/db/production.sqlite3"
     
@@ -171,13 +171,19 @@ class EnginesCore < ErrorsApi
         guid int
       );
     SQL
-    authtoken = SecureRandom.hex(128)
-    db.execute("INSERT INTO systemaccess (name, password, email, authtoken, uid) 
-                VALUES (?, ?, ?, ?,?)", ["admin", password, email.to_s, authtoken,0,0])
+    
+    rescue StandardError => e
        
+    rws = db.execute("Select from systemaccess where  name = 'admin' ")
+    if rws.count == 0
+    
+      authtoken = SecureRandom.hex(128)
+      db.execute("INSERT INTO systemaccess (name, password, email, authtoken, uid) 
+                VALUES (?, ?, ?, ?,?)", ["admin", password, email.to_s, authtoken,0,0])
+    end   
     # FIXME REMOVE once all installs use proper auth            
-    db.execute("INSERT INTO systemaccess (name, password, email, authtoken, uid) 
-                   VALUES (?, ?, ?, ?,?)", ["admin", 'test', email.to_s, 'test_token_arandy',1,0])
+   # db.execute("INSERT INTO systemaccess (name, password, email, authtoken, uid) 
+    #               VALUES (?, ?, ?, ?,?)", ["admin", 'test', email.to_s, 'test_token_arandy',1,0])
   rescue StandardError => e
     return true          
   end
