@@ -9,8 +9,8 @@ def connection(content_type = 'application/json')
   headers = {}
   headers['content_type'] = content_type
   #headers['ACCESS_TOKEN'] = load_token
- # @connection.reset unless @connection.nil?
-  # @connection = nil
+#  @connection.reset unless @connection.nil?
+   
  if @connection.nil?
     STDERR.puts('NEW REGISTRY CONNECTION ')
   @connection = Excon.new(base_url,
@@ -36,7 +36,7 @@ def rest_get(path,params,time_out=120)
 #  else
 #    r =   parse_xcon_response( connection.request(:read_timeout => time_out,:method => :get,:path => path))
 #  end
-  #  connection.reset
+    connection.reset
   return r
 rescue StandardError => e
   STDERR.puts e.to_s + ' with path:' + path.to_s + "\n" + 'params:' + params.to_s
@@ -81,7 +81,7 @@ end
 
 def rest_put(path,params)
   r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :put,:path => path,:query => query_hash(params)))
-  #  connection.reset
+    connection.reset
   return r
 #  begin
 #    parse_rest_response(RestClient.put(base_url + path, params))
