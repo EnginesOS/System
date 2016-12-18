@@ -98,13 +98,13 @@ def parse_error(resp)
   r.strip!# (/^\n/,'')
  # STDERR.puts("RSPONSE:" +r.to_s)
 
-  res = JSON.parse(r, :create_additions => true,:symbolize_keys => true)
-  #STDERR.puts("RSPONSE:" + res.to_s)
-  EnginesRegistryError.new(deal_with_jason(res))
+ # res = JSON.parse(r, :create_additions => true,:symbolize_keys => true)
+  #STDERR.puts("RSPONSE:" + r.to_s)
+  EnginesRegistryError.new(r)
   rescue  StandardError => e
   STDERR.puts(e.to_s)
   STDERR.puts("Parse Error on error response object ", r.to_s)
-  return EnginesRegistryError.new(res)
+  return EnginesRegistryError.new(resp)
   #log_error_mesg("Parse Error on error response object ", r.to_s)
   
 end
