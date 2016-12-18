@@ -102,9 +102,10 @@ def parse_error(resp)
   #STDERR.puts("RSPONSE:" + res.to_s)
   EnginesRegistryError.new(deal_with_jason(res))
   rescue  StandardError => e
-  STDERR.puts(r.to_s)
   STDERR.puts(e.to_s)
-  return log_error_mesg("Parse Error on error response object ", r.to_s)
+  STDERR.puts("Parse Error on error response object ", r.to_s)
+  return EnginesRegistryError.new(res)
+  #log_error_mesg("Parse Error on error response object ", r.to_s)
   
 end
 def parse_xcon_response(resp)
