@@ -28,7 +28,7 @@ def rest_get(path,params,time_out=120)
 
   STDERR.puts(' get params ' + params.to_s + ' From ' + path.to_s )
 
-  parse_xcon_response( connection.request(:read_timeout => time_out,:method => :get,:path => path,:query => params.to_json))
+  parse_xcon_response( connection.request(:read_timeout => time_out,:method => :get,:path => path,:query => params))
   
 rescue StandardError => e
   STDERR.puts e.to_s + ' with path:' + path.to_s + "\n" + 'params:' + params.to_s
