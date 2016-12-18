@@ -9,8 +9,9 @@ def connection(content_type = 'application/json')
   headers = {}
   headers['content_type'] = content_type
   #headers['ACCESS_TOKEN'] = load_token
- 
-  if @connection.nil?
+  @connection.reset unless @connection.nil?
+ @connection = nil
+ # if @connection.nil?
     STDERR.puts('NEW REGISTRY CONNECTION ')
   @connection = Excon.new(base_url,
   :debug_request => true,
@@ -18,7 +19,7 @@ def connection(content_type = 'application/json')
   :ssl_verify_peer => false,
   :persistent => true,
   :headers => headers) 
-  end
+ # end
   @connection
 rescue StandardError => e
   STDERR.puts('Failed to open base url to registry' + @base_url.to_s)
@@ -29,7 +30,7 @@ def rest_get(path,params,time_out=120)
   STDERR.puts(' get params ' + params.to_s + ' From ' + path.to_s )
 
   parse_xcon_response( connection.request(:read_timeout => time_out,:method => :get,:path => path,:query => params[:params]))
-  
+  connection.reset
 rescue StandardError => e
   STDERR.puts e.to_s + ' with path:' + path.to_s + "\n" + 'params:' + params.to_s
     STDERR.puts e.backtrace.to_s
@@ -64,6 +65,7 @@ def rest_post(path,params)
     #   parse_error(e.response)
       
     parse_xcon_response( connection.request(:read_timeout => time_out,:method => :post,:path => path,:body => params.to_json))
+    connection.reset
   rescue StandardError => e
     log_exception(e, params)
   end
@@ -71,6 +73,7 @@ end
 
 def rest_put(path,params)
   parse_xcon_response( connection.request(:read_timeout => time_out,:method => :put,:path => path,:body => params.to_json))
+  connection.reset
 #  begin
 #    parse_rest_response(RestClient.put(base_url + path, params))
 #    rescue RestClient::ExceptionWithResponse => e      
@@ -82,6 +85,7 @@ end
 
 def rest_delete(path,params)
   parse_xcon_response( connection.request(:read_timeout => time_out,:method => :delete,:path => path,:query => params[:params]))
+  connection.reset
 #  begin
 #    parse_rest_response(RestClient.delete(base_url + path, params))
 #    rescue RestClient::ExceptionWithResponse => e   
