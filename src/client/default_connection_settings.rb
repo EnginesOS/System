@@ -11,5 +11,6 @@ if @base_url.nil?
     @base_url = 'http://' +  @host + ':' + @port.to_s
 end
 
+  @base_url = 'http://' +  @host + ':' + @port.to_s if @base_url.nil?
 @route = "/v0"
   end
