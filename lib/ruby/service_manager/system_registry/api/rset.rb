@@ -30,7 +30,9 @@ def rest_get(path,params,time_out=120)
   STDERR.puts(' get params ' + params.to_s + ' From ' + path.to_s )
 #  q = query_hash(params)
 #  unless q.nil?
-  r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :get,:path => path,:query => query_hash(params)))
+  q = query_hash(params)
+    STDERR.puts('SEND ' +  q.to_s)
+  r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :get,:path => path,:query => q))
 #  else
 #    r =   parse_xcon_response( connection.request(:read_timeout => time_out,:method => :get,:path => path))
 #  end
@@ -93,15 +95,17 @@ end
 def query_hash(params)
 
    unless params.nil?
-     STDERR.puts('SEND ' +  params[:params].to_s)
+    
    return params[:params] if params.key?(params)
+     return params
    end
    return nil
 end
 
 def rest_delete(path,params)
-
-r =  parse_xcon_response( connection.request(:read_timeout => time_out,:method => :delete,:path => path,:query => query_hash(params)))
+q = query_hash(params)
+  STDERR.puts('SEND ' +  q.to_s)
+r =  parse_xcon_response( connection.request(:read_timeout => time_out,:method => :delete,:path => path,:query => q))
   connection.reset
   return r
 #  begin
