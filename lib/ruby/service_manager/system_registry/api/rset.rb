@@ -93,11 +93,13 @@ def parse_error(r)
   return log_error_mesg("Parse Error on error response object ", r.to_s)
   
 end
-def parse_xcon_response(r)
-  return parse_error(r) if r.status > 399
+def parse_xcon_response(resp)
+  return parse_error(resp) if resp.status > 399
+  r = resp.body
+  r.strip!
   return true if r.to_s   == '' ||  r.to_s   == 'true'
   return false if r.to_s  == 'false'
-  r.strip!
+
   res = JSON.parse(r.body, :create_additions => true,:symbolize_keys => true)
   # STDERR.puts("RESPONSE "  + deal_with_jason(res).to_s)
   return deal_with_jason(res)
