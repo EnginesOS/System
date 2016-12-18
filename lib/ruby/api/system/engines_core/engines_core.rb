@@ -174,7 +174,7 @@ class EnginesCore < ErrorsApi
     
     rescue StandardError => e
        
-    rws = db.execute("Select from systemaccess where  name = 'admin' ")
+    rws = db.execute("Select authtoken from systemaccess where  name = 'admin' ")
     if rws.count == 0
     
       authtoken = SecureRandom.hex(128)
