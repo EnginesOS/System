@@ -15,6 +15,10 @@ begin
   require 'warden'
   require "sqlite3"
   def init_db
+    create_table
+    set_first_user
+  end
+  def create_table
       @auth_db = SQLite3::Database.new "/home/app/db/production.sqlite3"
       STDERR.puts('init db')
           rows = @auth_db.execute <<-SQL
@@ -27,7 +31,11 @@ begin
               guid int
             );
           SQL
+       true
     rescue
+      true
+  end
+  def set_first_user
       rows = @auth_db.execute( "select authtoken from systemaccess" )
       STDERR.puts('init db')
       return if rows.count > 0
@@ -44,7 +52,7 @@ begin
       STDERR.puts('init db error ' + e.to_s)
       return
     end
-    
+
   
   # FIXME remove this once all installs have proper auth 
   init_db
