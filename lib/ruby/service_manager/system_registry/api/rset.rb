@@ -1,5 +1,4 @@
 require 'rest-client'
-require 'yajl/json_gem'
 def json_parser    
      @json_parser = Yajl::Parser.new(:create_additions => true,:symbolize_keys => true) if @json_parser.nil?
      @json_parser
@@ -100,10 +99,8 @@ def parse_xcon_response(resp)
   r.strip!
   return true if r.to_s   == '' ||  r.to_s   == 'true'
   return false if r.to_s  == 'false'
-  json_parser.parse(r) do | res|
-    STDERR.puts( ' parse resul' +res.to_s )
-    return res
-  end
+  res = JSON.parse(r, :create_additions => true,:symbolize_keys => true)
+   return deal_with_jason(res)
 rescue  StandardError => e
   STDERR.puts e.to_s
   STDERR.puts e.backtrace
