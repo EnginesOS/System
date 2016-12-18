@@ -161,32 +161,36 @@ class EnginesCore < ErrorsApi
     require "sqlite3"
     db = SQLite3::Database.new "/home/app/db/production.sqlite3"
     
-    rows = db.execute <<-SQL
-      create table systemaccess (
-        name varchar(30),
-        email varchar(128),
-        password varchar(30),
-        authtoken varchar(128),
-        uid int,
-        guid int
-      );
-    SQL
+#    rows = db.execute <<-SQL
+#      create table systemaccess (
+#        name varchar(30),
+#        email varchar(128),
+#        password varchar(30),
+#        authtoken varchar(128),
+#        uid int,
+#        guid int
+#      );
+#    SQL
     
-    rescue StandardError => e
-       
-    rws = db.execute("Select uid from systemaccess where  name = 'admin' ")
+
+    rws = db.execute("Select * from systemaccess where  name = 'admin' ")
+    
     if rws.count == 0
     
       authtoken = SecureRandom.hex(128)
       db.execute("INSERT INTO systemaccess (name, password, email, authtoken, uid) 
                 VALUES (?, ?, ?, ?,?)", ["admin", password, email.to_s, authtoken,0,0])
     end   
+    
     # FIXME REMOVE once all installs use proper auth            
    # db.execute("INSERT INTO systemaccess (name, password, email, authtoken, uid) 
     #               VALUES (?, ?, ?, ?,?)", ["admin", 'test', email.to_s, 'test_token_arandy',1,0])
+
   rescue StandardError => e
     return true          
   end
+  
+  
   
   def reserved_engine_names
     names = list_managed_engines
