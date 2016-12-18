@@ -9,13 +9,16 @@ def connection(content_type = 'application/json')
   headers = {}
   headers['content_type'] = content_type
   #headers['ACCESS_TOKEN'] = load_token
-  STDERR.puts('NEW REGISTRY CONNECTION ')
+ 
+  if @connection.nil?
+    STDERR.puts('NEW REGISTRY CONNECTION ')
   @connection = Excon.new(base_url,
   :debug_request => true,
   :debug_response => true,
   :ssl_verify_peer => false,
   :persistent => true,
   :headers => headers) if @connection.nil?
+  end
   @connection
 rescue StandardError => e
   STDERR.puts('Failed to open base url to registry' + @base_url.to_s)
