@@ -73,7 +73,7 @@ def connection(content_type = 'application/json')
   headers['content_type'] = content_type
   headers['ACCESS_TOKEN'] = load_token
   headers.delete['ACCESS_TOKEN'] if headers['ACCESS_TOKEN'].nil?    
-    puts 'baseusrl ' + @base_url.to_s
+
   @connection = Excon.new(@base_url,
   :debug_request => true,
   :debug_response => true,
@@ -99,7 +99,7 @@ rescue StandardError => e
 end
 
 def rest_get(uri,params=nil,time_out=120)
-puts uri.to_s
+
   if params.nil?
     connection.request(:read_timeout => time_out,:method => :get,:path => uri) #,:body => params.to_json)
   else
