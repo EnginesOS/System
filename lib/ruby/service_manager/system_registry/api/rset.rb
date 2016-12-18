@@ -71,7 +71,7 @@ def rest_post(path,params)
     # rescue RestClient::ExceptionWithResponse => e   
     #   parse_error(e.response)
     STDERR.puts('POST params ' + query_hash(params).to_s )
-   r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :post,:path => path,:body => query_hash(params).to_s))
+   r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :post,:path => path,:body => query_hash(params)))
     #  connection.reset
     return r
   rescue StandardError => e
