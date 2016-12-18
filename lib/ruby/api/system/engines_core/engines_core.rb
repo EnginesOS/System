@@ -178,7 +178,8 @@ class EnginesCore < ErrorsApi
     # FIXME REMOVE once all installs use proper auth            
     db.execute("INSERT INTO systemaccess (name, password, email, authtoken, uid) 
                    VALUES (?, ?, ?, ?,?)", ["admin", 'test', email.to_s, 'test_token_arandy',1,0])
-                  
+  rescue StandardError => e
+    return true          
   end
   
   def reserved_engine_names
