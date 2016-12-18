@@ -123,9 +123,9 @@ else
   @port = cmdline_options[:port] if cmdline_options.key?(:port)
   @route = cmdline_options[:prefix] if cmdline_options.key?(:prefix)
 end
-
+puts 'set Base url  ' + @base_url.to_s
 require_relative 'default_connection_settings.rb'
-
+puts 'using Base url  ' + @base_url.to_s
 @silent = false if cmdline_options.key?(:verbose)
 
 require_relative 'commands/commands.rb'

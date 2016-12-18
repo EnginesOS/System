@@ -12,5 +12,7 @@ if @base_url.nil?
 end
 
   @base_url = 'http://' +  @host + ':' + @port.to_s if @base_url.nil?
+  
+  puts 'Set Base url  ' + @base_url.to_s
 @route = "/v0"
   end
