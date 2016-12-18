@@ -26,6 +26,7 @@ end
 
 def rest_get(path,params,time_out=120)
 
+  STDERR.puts(' get params ' + params.to_s + ' From ' + path.to_s )
 
   parse_xcon_response( connection.request(:read_timeout => time_out,:method => :get,:path => path,:body => params.to_json))
   
