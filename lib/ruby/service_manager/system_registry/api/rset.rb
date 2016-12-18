@@ -20,7 +20,7 @@ rescue StandardError => e
   STDERR.puts('Failed to open base url to registry' + @base_url.to_s)
 end
 
-def rest_get(path,params,time_out=120)
+def rest_get(path,params,time_out=45)
 
 
   parse_xcon_response( connection.request(:read_timeout => time_out,:method => :get,:path => path,:body => params.to_json))
@@ -47,7 +47,7 @@ end
 #  end
 #end
 
-def rest_post(path,params)
+def rest_post(path,params,time_out=45)
   begin
     #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
     #  parse_rest_response(RestClient.post(base_url + path, params))
@@ -60,7 +60,7 @@ def rest_post(path,params)
   end
 end
 
-def rest_put(path,params)
+def rest_put(path,params,time_out=45)
   parse_xcon_response( connection.request(:read_timeout => time_out,:method => :put,:path => path,:body => params.to_json))
 #  begin
 #    parse_rest_response(RestClient.put(base_url + path, params))
@@ -71,7 +71,7 @@ def rest_put(path,params)
  # end
 end
 
-def rest_delete(path,params)
+def rest_delete(path,params,time_out=45)
   parse_xcon_response( connection.request(:read_timeout => time_out,:method => :delete,:path => path,:body => params.to_json))
 #  begin
 #    parse_rest_response(RestClient.delete(base_url + path, params))
