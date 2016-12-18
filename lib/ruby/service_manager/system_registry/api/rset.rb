@@ -23,7 +23,7 @@ end
 def rest_get(path,params,time_out=120)
 
 
-  parse_rest_response( connection.request(:read_timeout => time_out,:method => :get,:path => path,:body => params.to_json))
+  parse_xcon_response( connection.request(:read_timeout => time_out,:method => :get,:path => path,:body => params.to_json))
   
 rescue StandardError => e
   STDERR.puts e.to_s + ' with path:' + path.to_s + "\n" + 'params:' + params.to_s
@@ -93,7 +93,20 @@ def parse_error(r)
   return log_error_mesg("Parse Error on error response object ", r.to_s)
   
 end
-
+def parse_xcon_response(r)
+  return parse_error(r) if r.status > 399
+  return true if r.to_s   == '' ||  r.to_s   == 'true'
+  return false if r.to_s  == 'false'
+  r.strip!
+  res = JSON.parse(r.body, :create_additions => true,:symbolize_keys => true)
+  # STDERR.puts("RESPONSE "  + deal_with_jason(res).to_s)
+  return deal_with_jason(res)
+rescue  StandardError => e
+  STDERR.puts e.to_s
+  STDERR.puts e.backtrace
+  STDERR.puts "Failed to parse Registry response _" + r.to_s + "_"
+  return log_exception(e, r)
+end
 
 def parse_rest_response(r)
   return parse_error(r) if r.code > 399
