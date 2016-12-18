@@ -80,7 +80,7 @@ def rest_post(path,params)
 end
 
 def rest_put(path,params)
-  r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :put,:path => path,:body => query_hash(params)))
+  r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :put,:path => path,:query => query_hash(params)))
   connection.reset
   return r
 #  begin
