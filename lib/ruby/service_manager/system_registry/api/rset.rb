@@ -50,37 +50,42 @@ end
 def rest_post(path,params)
   begin
     #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
-    parse_rest_response(RestClient.post(base_url + path, params))
-    rescue RestClient::ExceptionWithResponse => e   
-      parse_error(e.response)
+    #  parse_rest_response(RestClient.post(base_url + path, params))
+    # rescue RestClient::ExceptionWithResponse => e   
+    #   parse_error(e.response)
+      
+    parse_xcon_response( connection.request(:read_timeout => time_out,:method => :post,:path => path,:body => params.to_json))
   rescue StandardError => e
     log_exception(e, params)
   end
 end
 
 def rest_put(path,params)
-  begin
-    parse_rest_response(RestClient.put(base_url + path, params))
-    rescue RestClient::ExceptionWithResponse => e      
-      parse_error(e.response)
+  parse_xcon_response( connection.request(:read_timeout => time_out,:method => :put,:path => path,:body => params.to_json))
+#  begin
+#    parse_rest_response(RestClient.put(base_url + path, params))
+#    rescue RestClient::ExceptionWithResponse => e      
+#      parse_error(e.response)
   rescue StandardError => e
     log_exception(e, params)
-  end
+ # end
 end
 
 def rest_delete(path,params)
-  begin
-    parse_rest_response(RestClient.delete(base_url + path, params))
-    rescue RestClient::ExceptionWithResponse => e   
-      parse_error(e.response)
-  rescue StandardError => e
+  parse_xcon_response( connection.request(:read_timeout => time_out,:method => :delete,:path => path,:body => params.to_json))
+#  begin
+#    parse_rest_response(RestClient.delete(base_url + path, params))
+#    rescue RestClient::ExceptionWithResponse => e   
+#      parse_error(e.response)
+#  rescue StandardError => e
     log_exception(e, params)
-  end
+  #end
 end
 
 private
 
-def parse_error(r)
+def parse_error(resp)
+  r = resp.body
   r.strip!# (/^\n/,'')
  # STDERR.puts("RSPONSE:" +r.to_s)
 
@@ -108,20 +113,19 @@ rescue  StandardError => e
   return log_exception(e, r)
 end
 
-def parse_rest_response(r)
-  return parse_error(r) if r.code > 399
-  return true if r.to_s   == '' ||  r.to_s   == 'true'
-  return false if r.to_s  == 'false'
-  r.strip!
-  res = JSON.parse(r, :create_additions => true,:symbolize_keys => true)
-  # STDERR.puts("RESPONSE "  + deal_with_jason(res).to_s)
-  return deal_with_jason(res)
-rescue  StandardError => e
-  STDERR.puts e.to_s
-  STDERR.puts e.backtrace
-  STDERR.puts "Failed to parse Registry response _" + r.to_s + "_"
-  return log_exception(e, r)
-end
+#def parse_rest_response(r)
+#  return parse_error(r) if r.code > 399
+#  return true if r.to_s   == '' ||  r.to_s   == 'true'
+#  return false if r.to_s  == 'false'
+#  r.strip!
+#  res = JSON.parse(r, :create_additions => true,:symbolize_keys => true)
+#  return deal_with_jason(res)
+#rescue  StandardError => e
+#  STDERR.puts e.to_s
+#  STDERR.puts e.backtrace
+#  STDERR.puts "Failed to parse Registry response _" + r.to_s + "_"
+#  return log_exception(e, r)
+#end
 
 def deal_with_jason(res)
   return symbolize_keys(res) if res.is_a?(Hash)
