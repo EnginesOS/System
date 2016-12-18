@@ -100,6 +100,7 @@ def parse_xcon_response(resp)
   return true if r.to_s   == '' ||  r.to_s   == 'true'
   return false if r.to_s  == 'false'
   json_parser.parse(r) do | res|
+    STDERR.puts( ' parse resul' +res.to_s )
     return res
   end
 rescue  StandardError => e
