@@ -4,6 +4,7 @@ def read_base_image_from_dockerfile
     from_line = dockerfile.gets("\n", 100)
     from_line.gsub(/^FROM[ ]./, '')
   dockerfile.close
+  from_line
   rescue StandardError => e
     log_build_errors(e)
     return nil
