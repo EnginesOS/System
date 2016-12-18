@@ -1,4 +1,4 @@
-require 'rest-client'
+#require 'rest-client'
 def json_parser    
      @json_parser = Yajl::Parser.new(:create_additions => true,:symbolize_keys => true) if @json_parser.nil?
      @json_parser
@@ -81,12 +81,12 @@ def rest_put(path,params)
 end
 
 def rest_delete(path,params)
-  parse_xcon_response( connection.request(:read_timeout => time_out,:method => :delete,:path => path,:query => params.to_json))
+  parse_xcon_response( connection.request(:read_timeout => time_out,:method => :delete,:path => path,:query => params[:params]))
 #  begin
 #    parse_rest_response(RestClient.delete(base_url + path, params))
 #    rescue RestClient::ExceptionWithResponse => e   
 #      parse_error(e.response)
-#  rescue StandardError => e
+  rescue StandardError => e
     log_exception(e, params)
   #end
 end
