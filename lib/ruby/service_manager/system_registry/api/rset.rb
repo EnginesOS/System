@@ -135,7 +135,7 @@ def parse_error(resp)
   
 end
 def parse_xcon_response(resp)
-  return false if resp.status  == 404
+  return [] if resp.status  == 404
   
   return parse_error(resp) if resp.status > 399
   r = resp.body
