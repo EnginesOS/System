@@ -21,6 +21,13 @@ module DockerApiBuilder
     def initialize(stream, builder)
       @io_stream = stream
       @builder = builder
+      @parser = Yajl::Parser.new(:symbolize_keys => true)
+    end
+    attr_accessor :stream
+
+    def close
+      @io_stream.close unless @io_stream.nil?
+      @stream.reset unless @stream.nil?
     end
 
     def is_hijack?
@@ -34,12 +41,16 @@ module DockerApiBuilder
 
     def process_response()
       lambda do |chunk , c , t|
-        if chunk.start_with?('{"stream":"')
-          chunk = chunk[11..-3]
-          @builder.log_build_output(chunk.sub(/"}$/,''))
-        elsif chunk.start_with?('{"errorDetail":"')
-          chunk = chunk[16..-3]
-          @builder.log_build_errors(chunk.sub(/"}$/,''))
+        begin
+          #hash = JSON.parse(chunk)
+          @parser.parse(chunk) do |hash|
+            @builder.log_build_output(hash[:stream]) if hash.key?(:stream)
+            @builder.log_build_errors(hash[errorDetail]) if hash.key?(:errorDetail)
+          end
+
+        rescue StandardError =>e
+          STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s)
+
         end
       end
     rescue StandardError =>e
@@ -64,7 +75,9 @@ module DockerApiBuilder
     header['Accept'] = '*/*'
     header['Content-Length'] = File.size(build_archive_filename).to_s
     stream_handler = DockerStreamHandler.new(nil, builder) #File.new(build_archive_filename,'r'))
-    return post_stream_request('/build' , options, stream_handler,  header, File.read(build_archive_filename) )
+    r =  post_stream_request('/build' , options, stream_handler,  header, File.read(build_archive_filename) )
+    stream_handler.close
+    return r
   rescue StandardError => e
     log_exception(e)
   end

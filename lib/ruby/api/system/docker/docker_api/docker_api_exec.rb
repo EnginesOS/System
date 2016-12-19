@@ -2,7 +2,7 @@ module DockerApiExec
 
   require_relative 'docker_utils.rb'
   class DockerHijackStreamHandler
-    attr_accessor :result, :data, :i_stream, :o_stream
+    attr_accessor :result, :data, :i_stream, :o_stream, :stream
     def initialize(data, istream=nil, ostream=nil)
       @i_stream = istream
       @o_stream = ostream
@@ -13,13 +13,19 @@ module DockerApiExec
       @result[:stderr] = ''
     end
 
+    def close
+      @o_stream.close unless @o_stream.nil?
+      @i_stream.close unless @i_stream.nil?
+      @stream.reset unless @stream.nil?
+    end
+
     def is_hijack?
       true
     end
 
     def has_data?
       unless  @i_stream.nil?
-       return true unless @i_stream.closed? 
+        return true unless @i_stream.closed?
       end
       return false if  @data.nil?
       return false if  @data.length == 0
@@ -49,7 +55,7 @@ module DockerApiExec
     def is_hijack?
       false
     end
-    attr_accessor :result
+    attr_accessor :result, :stream
 
     def initialize(stream=nil )
       @o_stream = stream
@@ -57,6 +63,11 @@ module DockerApiExec
       @result[:raw] = ''
       @result[:stdout] = ''
       @result[:stderr] = ''
+    end
+
+    def close
+      @o_stream.close unless @o_stream.nil?
+      @stream.reset unless @stream.nil?
     end
 
     def process_response()
@@ -112,8 +123,8 @@ module DockerApiExec
     headers['Connection'] = 'Upgrade'
     headers['Upgrade'] = 'tcp'
 
-    r =  post_stream_request(request, nil, stream_handler,  headers , request_params.to_json )
-
+    r =   post_stream_request(request, nil, stream_handler,  headers , request_params.to_json )
+    return r if r.is_a?(EnginesError)
     stream_handler.result[:result] = get_exec_result(exec_id)
     stream_handler.result
 
@@ -146,8 +157,7 @@ module DockerApiExec
     request_params[ "Cmd"] =   format_commands(params[:command_line])
 
     request = '/containers/'  + params[:container].container_id.to_s + '/exec'
-      
-      
+
     r = post_request(request,  request_params)
     return r
   end

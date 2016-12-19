@@ -1,6 +1,7 @@
 require 'gctools/oobgc'
 
 begin
+
   require 'sinatra'
   require "sinatra/streaming"
   require 'json'
@@ -14,7 +15,11 @@ begin
   require 'warden'
   require "sqlite3"
   def init_db
-      @auth_db = SQLite3::Database.new "/home/app/db/production.sqlite3"
+    create_table
+    set_first_user
+  end
+  def create_table
+      @auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB
       STDERR.puts('init db')
           rows = @auth_db.execute <<-SQL
             create table systemaccess (
@@ -26,23 +31,32 @@ begin
               guid int
             );
           SQL
+       true
     rescue
+      true
+  end
+  def set_first_user
       rows = @auth_db.execute( "select authtoken from systemaccess" )
       STDERR.puts('init db')
-      #return if rows.count > 0
+      return if rows.count > 0
       STDERR.puts('init db')
 #      @auth_db.execute("INSERT INTO systemaccess (username, password, email, authtoken, uid,guid) 
 #                        VALUES (?, ?, ?, ?, ?, ?)", ["test", 'test', '', 'test_token_arandy',2,0])
 #    rows                        
       toke = SecureRandom.hex(128)
+    
     @auth_db.execute("INSERT INTO systemaccess (username, password, email, authtoken, uid,guid)      
                           VALUES (?, ?, ?, ?, ?, ?)", ["admin", 'EnginesDemo', '', toke.to_s ,1,0])                   
-      STDERR.puts('init db')                 
+      STDERR.puts('init db')        
+    @auth_db.close   
+    @auth_db = nil
     rescue StandardError => e
+    @auth_db.close   
+     @auth_db = nil
       STDERR.puts('init db error ' + e.to_s)
       return
     end
-    
+
   
   # FIXME remove this once all installs have proper auth 
   init_db
@@ -52,7 +66,7 @@ begin
     
  @no_op = {:no_op => true}.to_json
 
-   @auth_db = SQLite3::Database.new "/home/app/db/production.sqlite3"
+   @auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB
   
 
   set :sessions, true
@@ -227,12 +241,13 @@ end
   
     
     def is_token_valid?(token)
-      @auth_db = SQLite3::Database.new "/home/app/db/production.sqlite3"
+      
+      @auth_db = SQLite3::Database.new  SystemConfig.SystemAccessDB if @auth_db.nil?
       rows = @auth_db.execute( 'select guid from systemaccess where authtoken=' + "'" + token.to_s + "'" )
       return false unless rows.count > 0
       return rows[0]
     rescue StandardError => e
-      STDERR.puts(' toekn varify error  ' + e.to_s)
+      STDERR.puts(' toekn verify error  ' + e.to_s)
       return false
     end
       
