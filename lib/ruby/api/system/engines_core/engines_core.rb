@@ -169,7 +169,7 @@ class EnginesCore < ErrorsApi
                 VALUES (?, ?, ?, ?,?)", ["admin", password, email.to_s, authtoken,0,0])
     else
       db.execute("UPDATE systemaccesss SET password = '" \
-        + password.to_s + "' email='" + email.to_s + "' where name = admin")
+        + password.to_s + ",' email='" + email.to_s + "' where name = admin")
                  
     end   
 
@@ -179,7 +179,7 @@ class EnginesCore < ErrorsApi
     #               VALUES (?, ?, ?, ?,?)", ["admin", 'test', email.to_s, 'test_token_arandy',1,0])
 
   rescue StandardError => e
-    log_error(e.to_s)
+    log_error_mesg(e.to_s)
     return true          
   end
   
