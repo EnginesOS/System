@@ -169,7 +169,7 @@ class EnginesCore < ErrorsApi
                 VALUES (?, ?, ?, ?,?)", ["admin", password, email.to_s, authtoken,0,0])
     else
       db.execute("UPDATE systemaccess SET password = '" \
-        + password.to_s + ",' email='" + email.to_s + "' where username = 'admin'")
+        + password.to_s + "',email='" + email.to_s + "' where username = 'admin'")
                  
     end   
     db.close
