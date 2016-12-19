@@ -91,7 +91,10 @@ class DockerConnection < ErrorsApi
 
   def post_stream_request(uri,options, stream_handler,  headers = nil, content = nil )
     headers = {'Content-Type' =>'application/json', 'Accept' => '*/*' } if headers.nil?
-    content = '' if content.nil?
+    content = '' if content.nil?      
+      sc = stream_connection(stream_handler)
+      stream_handler.stream = sc
+      
     if stream_handler.method(:has_data?).call == false
       if content.nil? # Dont to_s as may be tgz
         body = ''
@@ -100,7 +103,7 @@ class DockerConnection < ErrorsApi
       else
         body = content
       end
-      return stream_connection(stream_handler).request(
+      r  = sc.request(
       :method => :post,
       :read_timeout => 3600,
       :query => options,
@@ -108,15 +111,18 @@ class DockerConnection < ErrorsApi
       :headers => headers,
       :body =>  body
       )
+      stream_handler.close
+      return r
     else
-
-      return stream_connection(stream_handler).request(
+      r  = sc.request(
       :method => :post,
       :read_timeout => 3600,
       :query => options,
       :path => uri,
       :body => content,
       :headers => headers)
+      stream_handler.close
+      return r
     end
 
   rescue StandardError => e

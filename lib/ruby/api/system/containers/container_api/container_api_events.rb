@@ -1,13 +1,13 @@
 module ContainerApiEvents
   
-  def wait_for(state)
+  def wait_for(state, delay=10)
     
 #   case state
 #    when 'stopped'
 #   
 #  end
 # FixME Big Kludge
-    sleep(10)
+    sleep(delay)
 
   end
     

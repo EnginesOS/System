@@ -24,6 +24,7 @@ module SystemLogging
    end
  
    def SystemUtils.log_error(object)
+     STDERR.puts('ERROR' + object.to_s ) 
      SystemUtils.log_output(object, 10)
     
    end

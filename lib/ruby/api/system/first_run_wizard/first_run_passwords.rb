@@ -27,8 +27,8 @@ module FirstRunPasswords
     return true
   end
 
-  def setup_system_password(password)
-    return true if @api.set_system_password(password)
+  def setup_system_password(password, email)
+    return true if @api.init_system_password(password, email)
        return log_error_mesg('system_password_configurator ', @api.last_error)
     
   end

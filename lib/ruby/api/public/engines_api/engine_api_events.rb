@@ -24,17 +24,18 @@ rescue StandardError => e
   
   def start
     #@live_thread =
-      Thread.new do
-         while @wr.is_open?
-           sleep 5
-           STDERR.puts('WR EVENT STREAM is open' )
-        end#???
-      end
+ #       Thread.new do
+#         while @wr.is_open?
+#           sleep 5
+#           STDERR.puts('WR EVENT STREAM is open' )
+#        end#???
+#      end
         STDERR.puts(' START EVENT STREAM')
       return @rd
   end
   
   def stop   
+    STDERR.puts(' STOP EVENT STREAM')
     @system_api.rm_event_listener(self)
     #  @live_thread.terminate unless @live_thread.nil?
     @wr.close #  if @wr.is_open?

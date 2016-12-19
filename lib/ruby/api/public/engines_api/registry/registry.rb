@@ -21,7 +21,7 @@ module PublicApiRegistry
   
   def as_hash(tree)
     h = { }
-
+    return ({:name => 'No tree'}) if tree.nil?
      h[:name] = tree.name
      h[:content] = tree.content
      h[:children] =  []

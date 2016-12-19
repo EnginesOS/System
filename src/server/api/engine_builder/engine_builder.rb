@@ -58,6 +58,7 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream'  do
       rescue IO::WaitReadable
         out << bytes       
         bytes = ''
+        IO.select([build_log_file])
         retry 
       rescue EOFError
         unless out.closed?
@@ -65,7 +66,11 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream'  do
           out  << bytes          
           out  << '.'          
           bytes = ''
+          #         STDERR.puts('FOLLOW BUILDER GOT first EOF')
           sleep 2
+#          STDERR.puts('FOLLOW BUILDER GOT 3nd EOF')
+#          IO.select([build_log_file])       
+#          STDERR.puts('FOLLOW BUILDER GOT 2nd EOF')
           retry if File.exist?(SystemConfig.BuildRunningParamsFile)
           if build_over == false         
             build_over = true

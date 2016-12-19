@@ -17,6 +17,7 @@ module Services
   end
 
   def add_to_services_registry(service_hash)
+    SystemDebug.debug(SystemDebug.services,'sm add_to_servicess_registry ', service_hash)
     rest_post('/v0/system_registry/services/add',service_hash )
   end
 

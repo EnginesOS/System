@@ -6,7 +6,7 @@
 # @return [true]
 get '/v0/containers/service/:service_name/create' do
   service = get_service(params[:service_name])
-  return log_error(request, service, params) if service.is_a?(FalseClass)
+  return log_error(request, service, params) if service.is_a?(EnginesError)
   r = service.create_service
   return log_error(request, r, service.last_error) if r.is_a?(EnginesError)
   content_type 'text/plain' 

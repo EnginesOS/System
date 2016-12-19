@@ -10,7 +10,8 @@ module BuildOutput
   def log_build_output(line)
     return if line.nil?
     return if line == "\u0000"
-    line.force_encoding(Encoding::UTF_8)
+
+    #  line.force_encoding(Encoding::ANSI) # UTF_8)
     @log_file.puts(line)
     @log_file.flush
   rescue StandardError => e
@@ -20,7 +21,7 @@ module BuildOutput
 
   def log_build_errors(line)
     line = '' if line.nil?
-    line.force_encoding(Encoding::UTF_8)
+      #    line.force_encoding(Encoding::ANSI) # UTF_8)
     @err_file.puts(line.to_s) unless @err_file.nil?
     log_build_output('ERROR:' + line.to_s)
     @result_mesg = 'Error.' + line.to_s

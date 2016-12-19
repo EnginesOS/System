@@ -3,13 +3,15 @@ touch /opt/engines/run/system/flags/update_engines_running
 
 sudo -n /opt/engines/system/scripts/update/sudo/_update_engines_system_software.sh 
 
-echo "Restarting"
-sleep 5
+echo "Stopping"
+
 docker stop system 
-
-
-
 docker stop registry
+
+  /opt/engines/system/scripts/system/rotate_system_log.sh 
+
+echo "Restarting"
+
 docker start registry 
 count=0
 sleep 5
@@ -23,9 +25,9 @@ sleep 5
   		  exit
   		fi
   done 
-rm /tmp/clean.log
+#rm /tmp/clean.log
 
-  /opt/engines/system/scripts/system/rotate_system_log.sh 
+
 
 docker start system 
     while ! test -f /opt/engines/run/system_services/system/run/flags/startup_complete

@@ -271,6 +271,7 @@ class DockerFileBuilder
     frame_build_docker_frag = File.open(build_dir + '/Dockerfile.' + frag_name)
     builder_frag = frame_build_docker_frag.read
     @docker_file.write(builder_frag)
+    frame_build_docker_frag.close
   rescue Exception => e
     SystemUtils.log_exception(e)
   end

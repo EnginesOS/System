@@ -112,6 +112,7 @@ def load_service_definition(filename)
 #open soft link not actual
    yaml_file = File.open(filename)
    SoftwareServiceDefinition.from_yaml(yaml_file)
+  yaml_file.close
  rescue StandardError => e
    log_exception(e)
  end
