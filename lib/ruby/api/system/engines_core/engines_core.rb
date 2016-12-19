@@ -161,18 +161,18 @@ class EnginesCore < ErrorsApi
     require "sqlite3"
     db = SQLite3::Database.new SystemConfig.SystemAccessDB
     
-    rws = db.execute("Select * from systemaccess where  name = 'admin' ")
+    rws = db.execute("Select * from systemaccess where  username = 'admin' ")
     
     if rws.count == 0
       authtoken = SecureRandom.hex(128)
       db.execute("INSERT INTO systemaccess (name, password, email, authtoken, uid) 
                 VALUES (?, ?, ?, ?,?)", ["admin", password, email.to_s, authtoken,0,0])
     else
-      db.execute("UPDATE systemaccesss SET password = '" \
-        + password.to_s + ",' email='" + email.to_s + "' where name = admin")
+      db.execute("UPDATE systemaccess SET password = '" \
+        + password.to_s + ",' email='" + email.to_s + "' where username = 'admin'")
                  
     end   
-
+    db.close
         
     # FIXME REMOVE once all installs use proper auth            
    # db.execute("INSERT INTO systemaccess (name, password, email, authtoken, uid) 
@@ -180,6 +180,7 @@ class EnginesCore < ErrorsApi
 
   rescue StandardError => e
     log_error_mesg(e.to_s)
+    db.close
     return true          
   end
   

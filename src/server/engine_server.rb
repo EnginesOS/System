@@ -47,8 +47,12 @@ begin
     
     @auth_db.execute("INSERT INTO systemaccess (username, password, email, authtoken, uid,guid)      
                           VALUES (?, ?, ?, ?, ?, ?)", ["admin", 'EnginesDemo', '', toke.to_s ,1,0])                   
-      STDERR.puts('init db')                 
+      STDERR.puts('init db')        
+    @auth_db.close   
+    @auth_db = nil
     rescue StandardError => e
+    @auth_db.close   
+     @auth_db = nil
       STDERR.puts('init db error ' + e.to_s)
       return
     end
@@ -237,7 +241,8 @@ end
   
     
     def is_token_valid?(token)
-      @auth_db = SQLite3::Database.new  SystemConfig.SystemAccessDB
+      
+      @auth_db = SQLite3::Database.new  SystemConfig.SystemAccessDB if @auth_db.nil?
       rows = @auth_db.execute( 'select guid from systemaccess where authtoken=' + "'" + token.to_s + "'" )
       return false unless rows.count > 0
       return rows[0]
