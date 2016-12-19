@@ -159,34 +159,27 @@ class EnginesCore < ErrorsApi
   
   def init_system_password(password,email=nil, token = nil)
     require "sqlite3"
-    db = SQLite3::Database.new "/home/app/db/production.sqlite3"
+    db = SQLite3::Database.new SystemConfig.SystemAccessDB
     
-#    rows = db.execute <<-SQL
-#      create table systemaccess (
-#        name varchar(30),
-#        email varchar(128),
-#        password varchar(30),
-#        authtoken varchar(128),
-#        uid int,
-#        guid int
-#      );
-#    SQL
-    
-
     rws = db.execute("Select * from systemaccess where  name = 'admin' ")
     
     if rws.count == 0
-    
       authtoken = SecureRandom.hex(128)
       db.execute("INSERT INTO systemaccess (name, password, email, authtoken, uid) 
                 VALUES (?, ?, ?, ?,?)", ["admin", password, email.to_s, authtoken,0,0])
+    else
+      db.execute("UPDATE systemaccesss SET password = '" \
+        + password.to_s + "' email='" + email.to_s + "' where name = admin")
+                 
     end   
-    
+
+        
     # FIXME REMOVE once all installs use proper auth            
    # db.execute("INSERT INTO systemaccess (name, password, email, authtoken, uid) 
     #               VALUES (?, ?, ?, ?,?)", ["admin", 'test', email.to_s, 'test_token_arandy',1,0])
 
   rescue StandardError => e
+    log_error(e.to_s)
     return true          
   end
   

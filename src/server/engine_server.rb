@@ -19,7 +19,7 @@ begin
     set_first_user
   end
   def create_table
-      @auth_db = SQLite3::Database.new "/home/app/db/production.sqlite3"
+      @auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB
       STDERR.puts('init db')
           rows = @auth_db.execute <<-SQL
             create table systemaccess (
@@ -62,7 +62,7 @@ begin
     
  @no_op = {:no_op => true}.to_json
 
-   @auth_db = SQLite3::Database.new "/home/app/db/production.sqlite3"
+   @auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB
   
 
   set :sessions, true
@@ -237,7 +237,7 @@ end
   
     
     def is_token_valid?(token)
-      @auth_db = SQLite3::Database.new "/home/app/db/production.sqlite3"
+      @auth_db = SQLite3::Database.new  SystemConfig.SystemAccessDB
       rows = @auth_db.execute( 'select guid from systemaccess where authtoken=' + "'" + token.to_s + "'" )
       return false unless rows.count > 0
       return rows[0]

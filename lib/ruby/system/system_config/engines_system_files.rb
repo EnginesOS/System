@@ -9,6 +9,13 @@ module EnginesSystemFiles
   @@engines_ssh_private_keyfile = '/home/engines/.ssh/sshaccess'
   @@ManagedEngineMountsFile = '/opt/engines/etc/create_mounts/engines.yaml'
   @@ManagedServiceMountsFile = '/opt/engines/etc/create_mounts/services.yaml'
+  
+  @@SystemAccessDB = "/home/app/db/production.sqlite3"
+  
+  def SystemConfig.SystemAccessDB
+    @@SystemAccessDB
+  end
+  
   def SystemConfig.ReleaseFile
     @@ReleaseFile
   end
