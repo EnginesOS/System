@@ -157,7 +157,7 @@ class EnginesCore < ErrorsApi
      return first_run.sucess
   end
   
-  def init_system_password(password,email=nil, token = nil)
+  def init_system_password(password,email, token = nil)
     require "sqlite3"
     db = SQLite3::Database.new SystemConfig.SystemAccessDB
     
