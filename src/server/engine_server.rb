@@ -19,14 +19,16 @@ begin
     set_first_user
   end
   def create_table
-      @auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB
+  
       STDERR.puts('init db')
-          rows = @auth_db.execute <<-SQL
+          rows = sql_list_database.execute <<-SQL
             create table systemaccess (
               username varchar(30),
               email varchar(128),
               password varchar(30),
               authtoken varchar(128),
+              ip_addr varchar(64), 
+              ip_mask varchar(64),
               uid int,
               guid int
             );
@@ -36,7 +38,7 @@ begin
       true
   end
   def set_first_user
-      rows = @auth_db.execute( "select authtoken from systemaccess" )
+      rows = sql_list_database.execute( "select authtoken from systemaccess" )
       STDERR.puts('init db')
       return if rows.count > 0
       STDERR.puts('init db')
@@ -45,7 +47,7 @@ begin
 #    rows                        
       toke = SecureRandom.hex(128)
     
-    @auth_db.execute("INSERT INTO systemaccess (username, password, email, authtoken, uid,guid)      
+    sql_list_database.execute("INSERT INTO systemaccess (username, password, email, authtoken, uid,guid)      
                           VALUES (?, ?, ?, ?, ?, ?)", ["admin", 'EnginesDemo', '', toke.to_s ,1,0])                   
       STDERR.puts('init db')        
   #  @auth_db.close   
@@ -66,7 +68,7 @@ begin
     
  @no_op = {:no_op => true}.to_json
 
-   @auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if @auth_db.nil?
+  
   
 
   set :sessions, true
@@ -102,11 +104,19 @@ begin
      return true if request.ip.to_s == cron.get_ip_str
      return false
    end
+   
   def source_is_backup?(request)
     backup = get_service('backup')    
     return true if request.ip.to_s == backup.get_ip_str
     return false
+  end
+  
+  def sql_lite_database
+    @auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if @auth_db.nil?
+    @auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if @auth_db.closed?
+    @auth_db 
   end   
+  
   helpers do
   def engines_api
 #    unless @@engines_api
@@ -240,10 +250,15 @@ end
       end
   
     
-    def is_token_valid?(token)
+    def is_token_valid?(token, ip =nil)
       
-      @auth_db = SQLite3::Database.new  SystemConfig.SystemAccessDB if @auth_db.nil?
-      rows = @auth_db.execute( 'select guid from systemaccess where authtoken=' + "'" + token.to_s + "'" )
+     
+    #  request.env["REMOTE_ADDR"]
+      if ip == nil
+      rows = sql_list_database.execute( 'select guid from systemaccess where authtoken=' + "'" + token.to_s + "'" )
+      else
+        rows = sql_list_database.execute( 'select guid from systemaccess where authtoken=' + "'" + token.to_s + "' and ip_addr ='" + request.env["REMOTE_ADDR"].to_s + "'" )
+      end
       return false unless rows.count > 0
       return rows[0]
     rescue StandardError => e
