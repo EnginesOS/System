@@ -48,12 +48,12 @@ begin
     @auth_db.execute("INSERT INTO systemaccess (username, password, email, authtoken, uid,guid)      
                           VALUES (?, ?, ?, ?, ?, ?)", ["admin", 'EnginesDemo', '', toke.to_s ,1,0])                   
       STDERR.puts('init db')        
-    @auth_db.close   
-    @auth_db = nil
+  #  @auth_db.close   
+  #  @auth_db = nil
     rescue StandardError => e
-    @auth_db.close   
-     @auth_db = nil
-      STDERR.puts('init db error ' + e.to_s)
+    #@auth_db.close   
+    # @auth_db = nil
+     # STDERR.puts('init db error ' + e.to_s)
       return
     end
 
@@ -66,7 +66,7 @@ begin
     
  @no_op = {:no_op => true}.to_json
 
-   @auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB
+   @auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if @auth_db.nil?
   
 
   set :sessions, true
