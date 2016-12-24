@@ -157,20 +157,28 @@ class EnginesCore < ErrorsApi
      return first_run.sucess
   end
   
+
+   
   def init_system_password(password,email, token = nil)
+    set_system_user_password('admin',email, token)
+  end
+  
+  def set_system_user_password(user,password,email, token)
     require "sqlite3"
     db = SQLite3::Database.new SystemConfig.SystemAccessDB
     
-    rws = db.execute("Select * from systemaccess where  username = 'admin' ")
+    rws = db.execute("Select * from systemaccess where  username = '" + user.to + "'")
     
     if rws.count == 0
       authtoken = SecureRandom.hex(128)
-      db.execute("INSERT INTO systemaccess (name, password, email, authtoken, uid) 
-                VALUES (?, ?, ?, ?,?)", ["admin", password, email.to_s, authtoken,0,0])
+      db.execute("INSERT INTO systemaccess (username, password, email, authtoken, uid) 
+                VALUES (?, ?, ?, ?,?)", [username, password, email.to_s, authtoken,0,0])
     else
+    authtoken = SecureRandom.hex(128)
       db.execute("UPDATE systemaccess SET password = '" \
-        + password.to_s + "',email='" + email.to_s + "' where username = 'admin'")
-                 
+        + password.to_s + "',email='" + email.to_s + \
+        ", authtoken ='" + authtoken.to_s + "' " + \
+        " where username = 'admin' and authtoken = '" + token.to_s + '"')                
     end   
     db.close
         
