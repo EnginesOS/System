@@ -19,7 +19,7 @@ module SmServiceControl
     if ServiceDefinitions.is_service_persistent?(service_hash)
       SystemDebug.debug(SystemDebug.services,  :create_and_register_service_persistr, service_hash)
       return r if ( r = add_to_managed_service(service_hash)).is_a?(EnginesError)
-      return  test_registry_result(system_registry_client.add_to_services_registry(service_hash))
+      return test_registry_result(system_registry_client.add_to_services_registry(service_hash))
     else
       SystemDebug.debug(SystemDebug.services,  :create_and_register_service_nonpersistr, service_hash)
       r = add_to_managed_service(service_hash)
