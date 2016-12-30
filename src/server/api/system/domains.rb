@@ -11,6 +11,8 @@ post '/v0/system/domains/' do
 
   cparams =  Utils::Params.assemble_params(p_params, [], :all)
   return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
+  
+  STDERR.puts('ADD DOMAIN Params ' + cparams.to_s )
   r = engines_api.add_domain(cparams)
   return log_error(request, r, params) if  r.is_a?(EnginesError)
   status(202)
