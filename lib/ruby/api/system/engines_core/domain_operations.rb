@@ -63,6 +63,7 @@ module DomainOperations
 
   def update_domain(params)
     r = ''
+    STDERR.puts(' UPDATE DOMAIN VARIABLES ' + params.to_s)
     old_domain_name = params[:original_domain_name]
     return r if ( r = DNSHosting.update_domain(old_domain_name, params)).is_a?(EnginesError)
     return true unless params[:self_hosted]
@@ -84,7 +85,7 @@ module DomainOperations
     service_hash[:variables][:domain_name] = params[:domain_name]
     service_hash[:service_handle] = params[:domain_name] + '_dns'
     service_hash[:variables][:ip] = get_ip_for_hosted_dns(params[:internal_only])
-    STDERR.puts(' UPDATE DOMAIN VARIABLES ' + params.to_s)
+    STDERR.puts(' UPDATE DOMAIN VARIABLES ' + service_hash.to_s)
     return  @service_manager.create_and_register_service(service_hash)
   rescue StandardError => e
     SystemUtils.log_exception(e)
