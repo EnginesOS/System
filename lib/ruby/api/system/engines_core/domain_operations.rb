@@ -84,6 +84,7 @@ module DomainOperations
     service_hash[:variables][:domain_name] = params[:domain_name]
     service_hash[:service_handle] = params[:domain_name] + '_dns'
     service_hash[:variables][:ip] = get_ip_for_hosted_dns(params[:internal_only])
+    STDERR.puts(' UPDATE DOMAIN VARIABLES ' + params.to_s)
     return  @service_manager.create_and_register_service(service_hash)
   rescue StandardError => e
     SystemUtils.log_exception(e)
