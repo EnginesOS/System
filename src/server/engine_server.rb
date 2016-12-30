@@ -115,6 +115,9 @@ begin
     @auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if @auth_db.nil?
     @auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if @auth_db.closed?
     @auth_db 
+    rescue StandardError => e
+         STDERR.puts(' failed to open  ' + e.to_s)
+         return false
   end   
   
   helpers do
@@ -263,6 +266,7 @@ end
       return rows[0]
     rescue StandardError => e
       STDERR.puts(' toekn verify error  ' + e.to_s)
+    STDERR.puts(' toekn verify error exception name  ' + e.class.name)
       return false
     end
       
