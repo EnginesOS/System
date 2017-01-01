@@ -113,6 +113,7 @@ begin
   
   def sql_lite_database
     @auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if @auth_db.nil?
+    @auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if @auth_db.is_a?(FalseClass)
     @auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if @auth_db.closed?
     @auth_db 
     rescue StandardError => e
