@@ -112,12 +112,13 @@ begin
   end
   
   def sql_lite_database
+    STDERR.puts( 'get SQl lite db ' + @auth_db.to_s)
     @auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if @auth_db.nil?
     @auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if @auth_db.is_a?(FalseClass)
     @auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if @auth_db.closed?
     @auth_db 
     rescue StandardError => e
-         STDERR.puts(' failed to open  ' + e.to_s)
+         STDERR.puts('Exception failed to open  sql_lite_database: ' + e.to_s)
          return false
   end   
   
