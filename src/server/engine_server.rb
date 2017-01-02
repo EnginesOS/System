@@ -83,7 +83,7 @@ begin
   
 # end
  
-  @@engines_api = PublicApi.new(core_api)
+  $engines_api = PublicApi.new(core_api)
  STDERR.puts('CREATED ENGINES API +++++++++++++++++++++++++++++++++++++++++++')
  
   @@last_error =''  
@@ -141,7 +141,7 @@ begin
 #      total += ObjectSpace.memsize_of(obj)
 #    end
 #    STDERR.puts('API TOTAL SIZE:' +  total.to_s)
-    return @@engines_api
+    return $engines_api
     
   end
 
