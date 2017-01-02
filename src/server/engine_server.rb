@@ -117,7 +117,7 @@ begin
     STDERR.puts( 'get SQl lite false ')  if @auth_db.nil?
 
     @auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if @auth_db.nil?
-    STDERR.puts( 'get SQl lite nil ')  if @auth_db.false?
+    STDERR.puts( 'get SQl lite nil ')  if @auth_db.is_a?(FalseClass)
     @auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if @auth_db.is_a?(FalseClass)
     STDERR.puts( 'get SQl lite closed ')  if @auth_db.closed?
     @auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if @auth_db.closed?
