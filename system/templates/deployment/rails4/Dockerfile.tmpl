@@ -1,4 +1,4 @@
-FROM  engines/passenger:_Engines_System(release)
+FROM  engines/ngpassenger4:_Engines_System(release)
 # was from engines/passenger
 ADD build_scripts /build_scripts
 ADD home home
@@ -8,5 +8,6 @@ ENV ContUser ruby
 ENV RAILS_ENV production
 ENV SECRET_KEY_BASE	_Engines_System(random(128))
 
-RUN chown $ContUser /opt
+RUN apt-get update;\
+	chown $ContUser /opt
 

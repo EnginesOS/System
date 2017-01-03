@@ -3,10 +3,11 @@ ADD build_scripts /build_scripts
 ADD home home
 ADD engines home/engines
 ENV CONTFSVolHome /home/fs/
-RUN chowns=`find /var /usr/share /usr/local /home -user www-data`;\
+RUN apt-get update;\
+	chowns=`find /var /usr/share /usr/local /home -user www-data`;\
 	/usr/sbin/usermod -u 22671 www-data;\
 	if test `echo $chowns | sed "/ /s///g" | wc -c` -gt 1 ;\
 	then\
 		chown www-data $chowns;\
-		fi 
-RUN  chown $ContUser /opt	
+		fi ;\
+ chown $ContUser /opt	
