@@ -8,5 +8,6 @@ ENV ContUser ruby
 ENV RAILS_ENV production
 ENV SECRET_KEY_BASE	_Engines_System(random(128))
 
-RUN chown $ContUser /opt
+RUN apt-get update;\
+	chown $ContUser /opt
 
