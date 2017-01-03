@@ -5,7 +5,8 @@ ENV CONTFSVolHome /home/fs/
 ADD engines home/engines
 ENV ContUser node
 
-RUN chown $ContUser /opt
+RUN apt-get update;\
+	chown $ContUser /opt
 
 
 
