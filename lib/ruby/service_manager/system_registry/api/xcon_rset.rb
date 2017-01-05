@@ -36,7 +36,7 @@ def rest_get(path,params,time_out=120)
 #  else
 #    r =   parse_xcon_response( connection.request(:read_timeout => time_out,:method => :get,:path => path))
 #  end
-    connection.reset
+  #    connection.reset
   return r
 rescue StandardError => e
   STDERR.puts e.to_s + ' with path:' + path.to_s + "\n" + 'params:' + params.to_s
@@ -82,7 +82,7 @@ end
 def rest_put(path,params)
   #  STDERR.puts('PUT params ' + query_hash(params).to_s )
   r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :put,:path => path,:query => query_hash(params)))
-    connection.reset
+  #  connection.reset
   return r
 #  begin
 #    parse_rest_response(RestClient.put(base_url + path, params))
@@ -107,7 +107,7 @@ def rest_delete(path,params)
 q = query_hash(params)
   #  STDERR.puts('SEND ' +  q.to_s)
 r =  parse_xcon_response( connection.request(:read_timeout => time_out,:method => :delete,:path => path,:query => q))
-  connection.reset
+  #  connection.reset
   return r
 #  begin
 #    parse_rest_response(RestClient.delete(base_url + path, params))
