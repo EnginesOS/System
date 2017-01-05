@@ -27,7 +27,7 @@ end
 
 def rest_get(path,params,time_out=120)
 
-  STDERR.puts(' get params ' + params.to_s + ' From ' + path.to_s )
+  #   STDERR.puts(' get params ' + params.to_s + ' From ' + path.to_s )
 #  q = query_hash(params)
 #  unless q.nil?
   q = query_hash(params)
@@ -70,7 +70,7 @@ def rest_post(path,params)
     #  parse_rest_response(RestClient.post(base_url + path, params))
     # rescue RestClient::ExceptionWithResponse => e   
     #   parse_error(e.response)
-    STDERR.puts('POST params ' + query_hash(params).to_s )
+    #   STDERR.puts('POST params ' + query_hash(params).to_s )
    r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :post,:path => path,:body => query_hash(params).to_json ))
     #  connection.reset
     return r
@@ -80,7 +80,7 @@ def rest_post(path,params)
 end
 
 def rest_put(path,params)
-  STDERR.puts('PUT params ' + query_hash(params).to_s )
+  #  STDERR.puts('PUT params ' + query_hash(params).to_s )
   r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :put,:path => path,:query => query_hash(params)))
     connection.reset
   return r
@@ -105,7 +105,7 @@ end
 
 def rest_delete(path,params)
 q = query_hash(params)
-  STDERR.puts('SEND ' +  q.to_s)
+  #  STDERR.puts('SEND ' +  q.to_s)
 r =  parse_xcon_response( connection.request(:read_timeout => time_out,:method => :delete,:path => path,:query => q))
   connection.reset
   return r
@@ -140,14 +140,25 @@ def parse_xcon_response(resp)
   
   return parse_error(resp) if resp.status > 399
   r = resp.body
-  r.strip!
+  r.strip!  
   return true if r.to_s   == '' ||  r.to_s   == 'true'
   return false if r.to_s  == 'false'
-  
-  res = JSON.parse(r, :create_additions => true,:symbolize_keys => true)
-   return deal_with_jason(res)
+# begin
+  json_parser.parse(r ) do |hash |
+     return hash
+   end
+#   rescue   StandardError => e
+#    STDERR.puts e.backtrace
+#   STDERR.puts "Failed to parse Registry response _" + r.to_s + "_"
+#   STDERR.puts e.class.name
+#   return  deal_with_jason(JSON.parse(r, :create_additions => true,:symbolize_keys => true))
+# end
+  #return json_parser.parse(r, :create_additions => true,:symbolize_keys => true)
+  # res = JSON.parse(r, :create_additions => true,:symbolize_keys => true)
+   #return deal_with_jason(res)
 rescue  StandardError => e
-  STDERR.puts e.to_s
+  STDERR.puts e.class.name
+  
   STDERR.puts e.backtrace
   STDERR.puts "Failed to parse Registry response _" + r.to_s + "_"
   return log_exception(e, r)
@@ -188,61 +199,61 @@ rescue  StandardError => e
   log_exception(e, r)
 end
 
-def symbolize_keys(hash)
-  hash.inject({}){|result, (key, value)|
-    new_key = case key
-    when String then key.to_sym
-    else key
-    end
-    new_value = case value
-    when Hash then symbolize_keys(value)
-    when Array then
-      newval = []
-      value.each do |array_val|
-        array_val = symbolize_keys(array_val) if array_val.is_a?(Hash)
-        array_val =  boolean_if_true_false_str(array_val) if array_val.is_a?(String)
-        newval.push(array_val)
-      end
-      newval
-    when String then
-      boolean_if_true_false_str(value)
-    else value
-    end
-    result[new_key] = new_value
-    result
-  }
-rescue  StandardError => e
-log_exception(e, hash)
-end
-
-def symbolize_keys_array_members(array)
-  return array if array.count == 0
-  return array unless array[0].is_a?(Hash)
-  retval = []
-  i = 0
-  array.each do |hash|
-    retval[i] = array[i]
-    next if hash.nil?
-    next unless hash.is_a?(Hash)
-    retval[i] = symbolize_keys(hash)
-    i += 1
-  end
-  return retval
-
-rescue  StandardError => e
-log_exception(e)
-end
-
-def symbolize_tree(tree)
-  nodes = tree.children
-  nodes.each do |node|
-    node.content = symbolize_keys(node.content) if node.content.is_a?(Hash)
-    symbolize_tree(node)
-  end
-  return tree
-rescue  StandardError => e
-  log_exception(e)
-end
+#def symbolize_keys(hash)
+#  hash.inject({}){|result, (key, value)|
+#    new_key = case key
+#    when String then key.to_sym
+#    else key
+#    end
+#    new_value = case value
+#    when Hash then symbolize_keys(value)
+#    when Array then
+#      newval = []
+#      value.each do |array_val|
+#        array_val = symbolize_keys(array_val) if array_val.is_a?(Hash)
+#        array_val =  boolean_if_true_false_str(array_val) if array_val.is_a?(String)
+#        newval.push(array_val)
+#      end
+#      newval
+#    when String then
+#      boolean_if_true_false_str(value)
+#    else value
+#    end
+#    result[new_key] = new_value
+#    result
+#  }
+#rescue  StandardError => e
+#log_exception(e, hash)
+#end
+#
+#def symbolize_keys_array_members(array)
+#  return array if array.count == 0
+#  return array unless array[0].is_a?(Hash)
+#  retval = []
+#  i = 0
+#  array.each do |hash|
+#    retval[i] = array[i]
+#    next if hash.nil?
+#    next unless hash.is_a?(Hash)
+#    retval[i] = symbolize_keys(hash)
+#    i += 1
+#  end
+#  return retval
+#
+#rescue  StandardError => e
+#log_exception(e)
+#end
+#
+#def symbolize_tree(tree)
+#  nodes = tree.children
+#  nodes.each do |node|
+#    node.content = symbolize_keys(node.content) if node.content.is_a?(Hash)
+#    symbolize_tree(node)
+#  end
+#  return tree
+#rescue  StandardError => e
+#  log_exception(e)
+#end
 
 def base_url
   'http://' + @core_api.get_registry_ip + ':4567'
