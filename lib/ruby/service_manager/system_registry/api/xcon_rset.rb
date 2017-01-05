@@ -141,10 +141,11 @@ def parse_xcon_response(resp)
   return parse_error(resp) if resp.status > 399
   r = resp.body
   r.strip!
+  STDERR.puts(' reg response ' + r.to_s)
   return true if r.to_s   == '' ||  r.to_s   == 'true'
   return false if r.to_s  == 'false'
-  STDERR.puts(' reg response ' + r.to_s)
-  json_parser.parse(r, :create_additions => true,:symbolize_keys => true) do |hash |
+ 
+  json_parser.parse(r ) do |hash |
      #  @hashes.push(hash)
      return hash
    end
