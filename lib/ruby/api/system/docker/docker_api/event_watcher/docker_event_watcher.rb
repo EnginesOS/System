@@ -156,6 +156,8 @@ class DockerEventWatcher  < ErrorsApi
         end
       end
     end
+    client.finish
+    
     log_error_mesg('Restarting docker Event Stream ')
      STDERR.puts('Restarting docker Event Stream as close')
     @system.start_docker_event_listener(@event_listeners)
