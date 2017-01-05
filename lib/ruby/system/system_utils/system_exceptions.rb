@@ -41,6 +41,7 @@ module SystemExceptions
       Net::HTTP.start(uri.host, uri.port) do |http|
         request = Net::HTTP.post_form(uri, error_log_hash)      
         response = http.request request # Net::HTTPResponse object
+        http.finish
       end
 
       return true
