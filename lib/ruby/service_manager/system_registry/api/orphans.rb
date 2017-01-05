@@ -1,6 +1,6 @@
 module Orphans
 
-  require_relative 'xcon_rset.rb'
+ # require_relative 'xcon_rset.rb'
 
   # orphans Methods
   #  def reparent_orphan(params)
