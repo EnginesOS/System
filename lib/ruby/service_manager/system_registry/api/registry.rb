@@ -1,6 +1,6 @@
 module Registry
 
-  require_relative 'rset.rb'
+ # require_relative 'xcon_rset.rb'
   # @ Return complete system registry tree
   def system_registry_tree
 

@@ -1,6 +1,6 @@
 module Shares
 
-  require_relative 'rset.rb'
+ # require_relative 'xcon_rset.rb'
   def shares_registry_tree
     rest_get('/v0/system_registry/shares/tree', nil)
   end

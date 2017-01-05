@@ -37,8 +37,13 @@ module SystemExceptions
       error_log_hash[:return_url] = 'system'
       error_log_hash[:user_comment] = ''
       error_log_hash[:user_email] = 'backend@engines.onl'
-      uri = URI.parse("http://buglog.engines.onl/api/v0/contact/bug_reports")
-      response = Net::HTTP.post_form(uri, error_log_hash)
+      uri = URI.parse('http://buglog.engines.onl/api/v0/contact/bug_reports')
+      Net::HTTP.start(uri.host, uri.port) do |http|
+        request = Net::HTTP.post_form(uri, error_log_hash)      
+        response = http.request request # Net::HTTPResponse object
+        http.finish
+      end
+
       return true
     rescue
       return false

@@ -1,6 +1,6 @@
 module Services
 
-  require_relative 'rset.rb'
+ # require_relative 'xcon_rset.rb'
   # Services Methods
   def all_engines_registered_to(service_type)
     ps = {}
