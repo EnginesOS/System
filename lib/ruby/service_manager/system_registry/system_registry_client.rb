@@ -6,7 +6,7 @@ class SystemRegistryClient < ErrorsApi
   def api_shutdown
 
   end
-  require_relative 'xcon_rset.rb'
+  require_relative 'api/xcon_rset.rb'
   #  require_relative 'xcon_rset.rb'
   require_relative 'api/configurations.rb'
   require_relative 'api/services.rb'
