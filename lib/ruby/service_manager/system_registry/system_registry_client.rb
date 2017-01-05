@@ -7,7 +7,7 @@ class SystemRegistryClient < ErrorsApi
 
   end
 
-  #  require_relative 'rset.rb'
+  #  require_relative 'xcon_rset.rb'
   require_relative 'api/configurations.rb'
   require_relative 'api/services.rb'
   require_relative 'api/engines.rb'
