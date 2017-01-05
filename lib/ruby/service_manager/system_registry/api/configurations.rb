@@ -1,6 +1,6 @@
 # Configurations methods
 module Configurations
-  require_relative 'xcon_rset.rb'
+ # require_relative 'xcon_rset.rb'
   def get_service_configurations_hashes(config_hash)
     rest_get('/v0/system_registry/service/configurations/',{:params => config_hash })
   end
