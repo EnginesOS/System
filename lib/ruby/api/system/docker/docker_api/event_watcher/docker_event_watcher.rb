@@ -163,6 +163,7 @@ class DockerEventWatcher  < ErrorsApi
     @system.start_docker_event_listener(@event_listeners)
   rescue Net::ReadTimeout
      STDERR.puts('Restarting docker Event Stream Read Timeout as timeout')
+    client.finish
     @system.start_docker_event_listener(@event_listeners)
   rescue StandardError => e
     log_exception(e)

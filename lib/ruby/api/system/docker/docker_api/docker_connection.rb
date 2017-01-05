@@ -70,7 +70,6 @@ class DockerConnection < ErrorsApi
     :debug_response => true,
     :persistent => true) if @connection.nil?
     @connection
-
   end
 
   def stream_connection(stream_reader)
