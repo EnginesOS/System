@@ -1,6 +1,6 @@
 #require 'rest-client'
 def json_parser    
-     @json_parser = Yajl::Parser.new(:create_additions => true,:symbolize_keys => true) if @json_parser.nil?
+     @json_parser = Yajl::Parser.new(:create_additions => true) if @json_parser.nil?
      @json_parser
    end
   
@@ -31,7 +31,7 @@ def rest_get(path,params,time_out=120)
 #  q = query_hash(params)
 #  unless q.nil?
   q = query_hash(params)
-    STDERR.puts('GET PARAMS ' +  q.to_s)
+  #  STDERR.puts('GET PARAMS ' +  q.to_s)
   r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :get,:path => path,:query => q))
 #  else
 #    r =   parse_xcon_response( connection.request(:read_timeout => time_out,:method => :get,:path => path))
