@@ -1,6 +1,6 @@
 module Subservices
 
-  require_relative 'rset.rb'
+  require_relative 'xcon_rset.rb'
   # Services Methods
   def all_subservices_registered_to(subservice_type)
     p = {}

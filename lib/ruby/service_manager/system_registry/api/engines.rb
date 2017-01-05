@@ -1,5 +1,5 @@
 module Engines
-  require_relative 'rset.rb'
+  require_relative 'xcon_rset.rb'
   # engines Methods
   def find_engine_service_hash(params)
     rest_get('/v0/system_registry/engine/service/',{:params => params })
