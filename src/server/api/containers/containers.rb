@@ -123,13 +123,13 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
     STDERR.puts('finalise  /v0/containers/events/stream ')
     events_stream = nil
   end
-  @@events_stream = engines_api.container_events_stream   
+ 
     begin
   STDERR.puts('REQUEST TO  /v0/containers/events/stream')
   stream :keep_open do |out|
     begin
       STDERR.puts('OPEN EVENT STREAM')
-   
+      @@events_stream = engines_api.container_events_stream   
     has_data = true
     parser = Yajl::Parser.new(:symbolize_keys => true)
     #  @events_stream = engines_api.container_events_stream   
