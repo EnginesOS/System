@@ -70,6 +70,7 @@ module DockerApiBuilder
   end
 
   def build_engine(engine_name, build_archive_filename, builder)
+    stream_handler = nil
     options =  build_options(engine_name)
     header = {}
     header['X-Registry-Config'] = get_registry_auth
@@ -77,11 +78,13 @@ module DockerApiBuilder
     header['Accept-Encoding'] = 'gzip'
     header['Accept'] = '*/*'
     header['Content-Length'] = File.size(build_archive_filename).to_s
+      
     stream_handler = DockerStreamHandler.new(nil, builder) #File.new(build_archive_filename,'r'))
     r =  post_stream_request('/build' , options, stream_handler,  header, File.read(build_archive_filename) )
     stream_handler.close
     return r
-  rescue StandardError => e
+  rescue StandardError => e  
+    stream_handler.close unless stream_handler.nil?
     log_exception(e)
   end
 
