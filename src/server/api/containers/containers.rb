@@ -189,7 +189,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
   #  finialise
  
   rescue StandardError => e
-    finialise(@@events_stream)
+      #   finialise(@@events_stream)
 ##    @events_stream.stop
   STDERR.puts('Stream EVENTS Exception' + e.to_s + e.backtrace.to_s)
 ##
@@ -197,7 +197,7 @@ end
  # @events_stream.stop
   STDERR.puts('close OF REQUEST TO  /v0/containers/events/stream ')
   
-  finialise(@@events_stream)
+ # finialise(@@events_stream)
 end
 # @method check_and_act_on_containers
 # @overload get '/v0/containers/check_and_act'
