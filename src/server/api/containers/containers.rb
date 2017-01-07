@@ -119,6 +119,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
 
   def finialise
     has_data = false
+    STDERR.puts('finalise  /v0/containers/events/stream ')
     @events_stream.stop unless @events_stream.nil?
     @events_stream = nil
   end
