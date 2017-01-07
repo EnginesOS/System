@@ -182,7 +182,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
       finialise(events_stream)
      # @events_stream.stop
     end
-    finialise
+    finialise(events_stream)    
     STDERR.puts('CLOSED  EVENTS S ')
   end
   #  finialise
