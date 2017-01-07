@@ -116,7 +116,7 @@
 #end
 #end
 get '/v0/containers/events/stream', provides: 'text/event-stream' do
-
+  @events_stream = engines_api.container_events_stream   
   def finialise
     STDERR.puts('finalise   ' + @events_stream.class.name)
     @events_stream.stop unless @events_stream.nil?
@@ -130,7 +130,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
   stream :keep_open do |out|
     begin
       STDERR.puts('OPEN EVENT STREAM')
-    @events_stream = engines_api.container_events_stream   
+   
     has_data = true
     parser = Yajl::Parser.new(:symbolize_keys => true)
    
