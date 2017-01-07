@@ -7,7 +7,7 @@ def read_base_image_from_dockerfile
   from_line
   rescue StandardError => e
     log_build_errors(e)
-    return nil
+    return post_failed_build_clean_up
   end
   
   def get_base_image
