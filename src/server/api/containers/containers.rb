@@ -116,14 +116,15 @@
 #end
 #end
 get '/v0/containers/events/stream', provides: 'text/event-stream' do
-  events_stream = engines_api.container_events_stream   
+  
   def finialise(events_stream)
     STDERR.puts('finalise   ' + events_stream.class.name)
     events_stream.stop unless events_stream.nil?
     STDERR.puts('finalise  /v0/containers/events/stream ')
     events_stream = nil
   end
-   # begin
+    begin
+      events_stream = engines_api.container_events_stream   
   STDERR.puts('REQUEST TO  /v0/containers/events/stream')
   stream :keep_open do |out|
     begin
@@ -187,12 +188,12 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
   end
   #  finialise
  
-#  rescue StandardError => e
-#    finialise
+  rescue StandardError => e
+    finialise
 ##    @events_stream.stop
-#  STDERR.puts('Stream EVENTS Exception' + e.to_s + e.backtrace.to_s)
+  STDERR.puts('Stream EVENTS Exception' + e.to_s + e.backtrace.to_s)
 ##
-#end
+end
  # @events_stream.stop
   STDERR.puts('close OF REQUEST TO  /v0/containers/events/stream ')
   
