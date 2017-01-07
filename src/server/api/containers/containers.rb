@@ -118,9 +118,11 @@
 get '/v0/containers/events/stream', provides: 'text/event-stream' do
 
   def finialise
+    STDERR.puts('finalise   ' + @events_stream.to_s)
+    @events_stream.stop unless @events_stream.nil?
     has_data = false
     STDERR.puts('finalise  /v0/containers/events/stream ')
-    @events_stream.stop unless @events_stream.nil?
+    
     @events_stream = nil
   end
     begin
@@ -179,8 +181,8 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
     end
     rescue StandardError => e
       STDERR.puts('EVENTS Exception' + e.to_s + e.backtrace.to_s)
-   #   finialise
-      @events_stream.stop
+      finialise
+     # @events_stream.stop
     end
     finialise
     STDERR.puts('CLOSED  EVENTS S ')
