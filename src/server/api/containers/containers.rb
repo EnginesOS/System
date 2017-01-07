@@ -194,6 +194,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
   STDERR.puts('Stream EVENTS Exception' + e.to_s + e.backtrace.to_s)
 #
 end
+  finialise
 end
 # @method check_and_act_on_containers
 # @overload get '/v0/containers/check_and_act'
