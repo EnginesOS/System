@@ -116,13 +116,13 @@
 #end
 #end
 get '/v0/containers/events/stream', provides: 'text/event-stream' do
-  begin
+
   def finialise
     has_data = false
     @events_stream.stop unless @events_stream.nil?
     @events_stream = nil
   end
-
+    begin
   STDERR.puts('REQUEST TO  /v0/containers/events/stream')
   stream :keep_open do |out|
     begin
@@ -178,22 +178,25 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
     end
     rescue StandardError => e
       STDERR.puts('EVENTS Exception' + e.to_s + e.backtrace.to_s)
-      finialise
+   #   finialise
+      @events_stream.stop
     end
     finialise
     STDERR.puts('CLOSED  EVENTS S ')
   end
     finialise
   STDERR.puts('END OF REQUEST TO  /v0/containers/events/stream ')
-
+  #  @events_stream.stop
 #  @events_stream.stop unless @events_stream.nil?
   #   STDERR.puts('ENDED  EVENTS S ' )
 
   rescue StandardError => e
     finialise
+#    @events_stream.stop
   STDERR.puts('Stream EVENTS Exception' + e.to_s + e.backtrace.to_s)
 #
 end
+  @events_stream.stop
   finialise
 end
 # @method check_and_act_on_containers
