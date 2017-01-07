@@ -189,6 +189,9 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
   end
     finialise
   STDERR.puts('END OF REQUEST TO  /v0/containers/events/stream ')
+      STDERR.puts('finalise   ' + @events_stream.to_s)
+         @events_stream.stop unless @events_stream.nil?
+         has_data = false
   #  @events_stream.stop
 #  @events_stream.stop unless @events_stream.nil?
   #   STDERR.puts('ENDED  EVENTS S ' )
@@ -200,6 +203,8 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
 #
 end
  # @events_stream.stop
+  STDERR.puts('close OF REQUEST TO  /v0/containers/events/stream ')
+  
   finialise
 end
 # @method check_and_act_on_containers
