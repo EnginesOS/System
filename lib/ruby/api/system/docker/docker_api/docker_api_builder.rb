@@ -23,11 +23,14 @@ module DockerApiBuilder
       @builder = builder
       @parser = Yajl::Parser.new(:symbolize_keys => true)
     end
-    attr_accessor :stream
+    #  attr_accessor :stream
 
     def close
       @io_stream.close unless @io_stream.nil?
-      @stream.reset unless @stream.nil?
+     # @stream.reset unless @stream.nil?
+      rescue StandardError => e
+        STDERR.puts('stream close Exception' + + e.to_s)
+        return nil
     end
 
     def is_hijack?
@@ -45,7 +48,7 @@ module DockerApiBuilder
           #hash = JSON.parse(chunk)
           @parser.parse(chunk) do |hash|
             @builder.log_build_output(hash[:stream]) if hash.key?(:stream)
-            @builder.log_build_errors(hash[errorDetail]) if hash.key?(:errorDetail)
+            @builder.log_build_errors(hash[:errorDetail]) if hash.key?(:errorDetail)
           end
 
         rescue StandardError =>e
