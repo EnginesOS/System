@@ -120,7 +120,6 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
   def finialise(events_stream)
     STDERR.puts('finalise   ' + events_stream.class.name)
     events_stream.stop unless events_stream.nil?
-    has_data = false
     STDERR.puts('finalise  /v0/containers/events/stream ')
     events_stream = nil
   end
@@ -150,7 +149,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
         #out <<'data:'
         if out.closed?
           has_data = false
-          finialise
+          finialise(events_stream)
           STDERR.puts('OUT IS CLOSED but have '  + jason_event.to_s)    
           next
         else
@@ -165,7 +164,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
       rescue EOFError =>e
         STDERR.puts('OUT IS EOF')     
           if has_data == false
-            finialise
+            finialise(events_stream)
            next
            end
         STDERR.puts('sleeping on EOF')
@@ -173,14 +172,14 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
         retry
       rescue IOError
         has_data = false
-        finialise            
+        finialise(events_stream)           
         STDERR.puts('OUT IS IOError  EVENTS S ' )
         next
       end
     end
     rescue StandardError => e
       STDERR.puts('EVENTS Exception' + e.to_s + e.backtrace.to_s)
-      finialise
+      finialise(events_stream)
      # @events_stream.stop
     end
     finialise
@@ -197,7 +196,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
  # @events_stream.stop
   STDERR.puts('close OF REQUEST TO  /v0/containers/events/stream ')
   
-  finialise
+  finialise(events_stream)
 end
 # @method check_and_act_on_containers
 # @overload get '/v0/containers/check_and_act'
