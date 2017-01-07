@@ -23,11 +23,14 @@ module DockerApiBuilder
       @builder = builder
       @parser = Yajl::Parser.new(:symbolize_keys => true)
     end
-    attr_accessor :stream
+    #  attr_accessor :stream
 
     def close
       @io_stream.close unless @io_stream.nil?
-      @stream.reset unless @stream.nil?
+     # @stream.reset unless @stream.nil?
+      rescue StandardError => e
+        STDERR.puts('stream close Exception' + + e.to_s)
+        return nil
     end
 
     def is_hijack?
@@ -45,7 +48,7 @@ module DockerApiBuilder
           #hash = JSON.parse(chunk)
           @parser.parse(chunk) do |hash|
             @builder.log_build_output(hash[:stream]) if hash.key?(:stream)
-            @builder.log_build_errors(hash[errorDetail]) if hash.key?(:errorDetail)
+            @builder.log_build_errors(hash[:errorDetail]) if hash.key?(:errorDetail)
           end
 
         rescue StandardError =>e
@@ -67,6 +70,7 @@ module DockerApiBuilder
   end
 
   def build_engine(engine_name, build_archive_filename, builder)
+    stream_handler = nil
     options =  build_options(engine_name)
     header = {}
     header['X-Registry-Config'] = get_registry_auth
@@ -74,11 +78,13 @@ module DockerApiBuilder
     header['Accept-Encoding'] = 'gzip'
     header['Accept'] = '*/*'
     header['Content-Length'] = File.size(build_archive_filename).to_s
+      
     stream_handler = DockerStreamHandler.new(nil, builder) #File.new(build_archive_filename,'r'))
     r =  post_stream_request('/build' , options, stream_handler,  header, File.read(build_archive_filename) )
     stream_handler.close
     return r
-  rescue StandardError => e
+  rescue StandardError => e  
+    stream_handler.close unless stream_handler.nil?
     log_exception(e)
   end
 
