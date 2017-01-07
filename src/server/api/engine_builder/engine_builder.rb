@@ -87,7 +87,8 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream'  do
         out.close unless out.closed?
       end
     end
+    
   end
-
+out.close unless out.closed?
 end
 # @!endgroup
