@@ -25,6 +25,16 @@ rescue StandardError => e
   STDERR.puts('Failed to open base url to registry' + @base_url.to_s)
 end
 
+def reopen_connection
+  @connection.reset
+  @connection = Excon.new(base_url,
+   :debug_request => true,
+   :debug_response => true,
+   :ssl_verify_peer => false,
+   :persistent => true,
+   :headers => headers)   
+end
+
 def rest_get(path,params,time_out=120)
 
   #   STDERR.puts(' get params ' + params.to_s + ' From ' + path.to_s )
@@ -32,12 +42,16 @@ def rest_get(path,params,time_out=120)
 #  unless q.nil?
   q = query_hash(params)
   #  STDERR.puts('GET PARAMS ' +  q.to_s)
+  r = ''
   r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :get,:path => path,:query => q))
 #  else
 #    r =   parse_xcon_response( connection.request(:read_timeout => time_out,:method => :get,:path => path))
 #  end
   #    connection.reset
   return r
+  rescue  EOFError => e
+  reopen_connection
+  retry
 rescue StandardError => e
   STDERR.puts e.to_s + ' with path:' + path.to_s + "\n" + 'params:' + params.to_s
     STDERR.puts e.backtrace.to_s
@@ -74,6 +88,9 @@ def rest_post(path,params)
    r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :post,:path => path,:body => query_hash(params).to_json ))
     #  connection.reset
     return r
+    rescue  EOFError => e
+    reopen_connection
+    retry
   rescue StandardError => e
     log_exception(e, params)
   end
@@ -84,6 +101,9 @@ def rest_put(path,params)
   r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :put,:path => path,:query => query_hash(params)))
   #  connection.reset
   return r
+  rescue  EOFError => e
+  reopen_connection
+  retry
 #  begin
 #    parse_rest_response(RestClient.put(base_url + path, params))
 #    rescue RestClient::ExceptionWithResponse => e      
@@ -109,6 +129,9 @@ q = query_hash(params)
 r =  parse_xcon_response( connection.request(:read_timeout => time_out,:method => :delete,:path => path,:query => q))
   #  connection.reset
   return r
+  rescue  EOFError => e
+  reopen_connection
+  retry
 #  begin
 #    parse_rest_response(RestClient.delete(base_url + path, params))
 #    rescue RestClient::ExceptionWithResponse => e   
