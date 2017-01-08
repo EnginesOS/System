@@ -1,6 +1,6 @@
 #require 'rest-client'
 def json_parser    
-     @json_parser = Yajl::Parser.new(:create_additions => true) if @json_parser.nil?
+     @json_parser = Yajl::Parser.new(:symbolize_keys => true) if @json_parser.nil?
      @json_parser
    end
   
