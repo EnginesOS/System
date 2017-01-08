@@ -116,7 +116,7 @@
 #end
 #end
 get '/v0/containers/events/stream', provides: 'text/event-stream' do
-  @events_stream = nil
+
   def finialise(events_stream)
     STDERR.puts('finalise   ' + events_stream.class.name)
     events_stream.stop unless events_stream.nil?
@@ -160,15 +160,15 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
        # sleep 0.4
         IO.select([@events_stream.rd])
         retry
-      rescue EOFError =>e
-        STDERR.puts('OUT IS EOF')     
-          if has_data == false
-            finialise(@events_stream)
-           next
-           end
-        STDERR.puts('sleeping on EOF')
-      sleep 1
-        retry
+#      rescue EOFError =>e
+#        STDERR.puts('OUT IS EOF')     
+#          if has_data == false
+#            finialise(@events_stream)
+#           next
+#           end
+#        STDERR.puts('sleeping on EOF')
+#      sleep 1
+#        retry
       rescue IOError
         has_data = false
         finialise(@events_stream)           
