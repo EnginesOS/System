@@ -27,6 +27,7 @@ end
 
 def reopen_connection
   @connection.reset
+  STDERR.puts(' open connection ')
   @connection = Excon.new(base_url,
    :debug_request => true,
    :debug_response => true,
@@ -50,6 +51,7 @@ def rest_get(path,params,time_out=120)
   #    connection.reset
   return r
   rescue  EOFError => e
+  STDERR.puts(' eof ')
   reopen_connection
   retry
 rescue StandardError => e
