@@ -131,7 +131,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
       STDERR.puts('OPEN EVENT STREAM')
       @@events_stream = engines_api.container_events_stream   
     has_data = true
-    parser = Yajl::Parser.new(:symbolize_keys => true)
+   # parser = Yajl::Parser.new(:symbolize_keys => true)
     #  @events_stream = engines_api.container_events_stream   
     while has_data == true
       STDERR.puts('WHILE HAS DATA')
@@ -139,7 +139,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
         bytes = @@events_stream.rd.read_nonblock(2048)
         begin
           jason_event = ''
-         parser.parse(bytes.strip) do |event |          
+          json_parser.parse(bytes.strip) do |event |          
            jason_event = event
          end
         rescue  Yajl::ParseError => e

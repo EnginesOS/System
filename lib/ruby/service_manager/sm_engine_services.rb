@@ -102,16 +102,20 @@ return services
                                       :publisher_namespace => 'EnginesSystem',
                                       :type_path =>'cron',
                                       :container_type => container.ctype,
+                                      :container_name => container.container_name,
                                       :service_handle => cronjob})
 #   s = {:parent_engine => container.container_name,
 #                                          :publisher_namespace => 'EnginesSystem',
 #                                          :type_path =>'cron',
 #                                           :container_type => container.ctype,
 #                                          :service_handle => cronjob}
-#                                          STDERR.puts('serach for ' + s.to_s + ' returned ' + entry.to_s)             
+#                                          STDERR.puts('serach for ' + s.to_s + ' returned ' + entry.to_s)
+    STDERR.puts( 'Got ' + entry.to_s + ' for cron entry')     
          return  entry unless entry.is_a?(Hash)
     entry[:variables][:cron_job]
-   
+    rescue StandardError => e
+      STDERR.puts( 'Got ' + entry.to_s + ' for cron entry')
+        log_exception(e)
   end
 
   #@ remove an engine matching :engine_name from the service registry, all non persistent serices are removed
