@@ -21,13 +21,14 @@ module DockerApiBuilder
     def initialize(stream, builder)
       @io_stream = stream
       @builder = builder
+      @stream = nil
       @parser = Yajl::Parser.new(:symbolize_keys => true)
     end
-    #  attr_accessor :stream
+     attr_accessor :stream
 
     def close
       @io_stream.close unless @io_stream.nil?
-     # @stream.reset unless @stream.nil?
+      @stream.reset unless @stream.nil?
       rescue StandardError => e
         STDERR.puts('stream close Exception' + + e.to_s)
         return nil
