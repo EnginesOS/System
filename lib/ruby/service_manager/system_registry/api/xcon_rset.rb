@@ -4,13 +4,14 @@ def json_parser
   @json_parser
 end
 
-def headers 
+def headers (content_type = nil)
   @headers = {'content_type' => 'application/json','ACCESS_TOKEN' => 'atest_randy'} if @headers.nil?
+ @headers['content_type'] = content_type unless content.nil?
   @headers
 end
 
 def connection(content_type = nil)
-   headers['content_type'] = content_type unless content.nil?
+   #headers['content_type'] = content_type unless content.nil?
   #headers['ACCESS_TOKEN'] = load_token
   #  @connection.reset unless @connection.nil?
 
