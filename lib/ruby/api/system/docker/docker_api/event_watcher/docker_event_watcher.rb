@@ -156,11 +156,14 @@ class DockerEventWatcher  < ErrorsApi
         end
       end
     end
+    client.finish
+    
     log_error_mesg('Restarting docker Event Stream ')
      STDERR.puts('Restarting docker Event Stream as close')
     @system.start_docker_event_listener(@event_listeners)
   rescue Net::ReadTimeout
      STDERR.puts('Restarting docker Event Stream Read Timeout as timeout')
+    client.finish
     @system.start_docker_event_listener(@event_listeners)
   rescue StandardError => e
     log_exception(e)

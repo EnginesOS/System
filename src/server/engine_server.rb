@@ -81,7 +81,7 @@ begin
   core_api = EnginesCore.new
 
   # end
-
+  @events_stream = nil
   $engines_api = PublicApi.new(core_api)
   STDERR.puts('CREATED ENGINES API +++++++++++++++++++++++++++++++++++++++++++')
 

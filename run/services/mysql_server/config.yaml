@@ -6,6 +6,7 @@ ctype: service
 persistent: true
 last_error: 
 memory: '456'
+stop_timeout: 500
 hostname: mysql
 domain_name: 
 environments: []
