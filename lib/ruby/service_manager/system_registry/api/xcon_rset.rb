@@ -6,7 +6,7 @@ end
 
 def headers (content_type = nil)
   @headers = {'content_type' => 'application/json','ACCESS_TOKEN' => 'atest_randy'} if @headers.nil?
- @headers['content_type'] = content_type unless content.nil?
+ @headers['content_type'] = content_type unless content_type.nil?
   @headers
 end
 
