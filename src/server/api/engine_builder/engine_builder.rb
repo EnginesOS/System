@@ -85,10 +85,8 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream'  do
         out  << bytes  unless out.closed?
         build_log_file.close
         out.close unless out.closed?
-      end
+      end   
     end
-    
   end
-out.close unless out.closed?
 end
 # @!endgroup
