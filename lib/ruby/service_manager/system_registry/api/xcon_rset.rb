@@ -10,7 +10,7 @@ def headers
 end
 
 def connection(content_type = nil)
-  headers['content_type'] = content_type unless content.nil?
+   headers['content_type'] = content_type unless content.nil?
   #headers['ACCESS_TOKEN'] = load_token
   #  @connection.reset unless @connection.nil?
 
@@ -25,7 +25,9 @@ def connection(content_type = nil)
   end
   @connection
 rescue StandardError => e
-  STDERR.puts('Failed to open base url to registry' + @base_url.to_s)
+  STDERR.puts('Failed to open base url to registry' + @base_url.to_s)  
+  STDERR.puts e.backtrace.to_s
+  log_exception(e, params, path)
 end
 
 def reopen_connection
