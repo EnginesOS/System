@@ -1,24 +1,23 @@
 #require 'rest-client'
-def json_parser    
-     @json_parser = Yajl::Parser.new(:symbolize_keys => true) if @json_parser.nil?
-     @json_parser
-   end
-  
+def json_parser
+  @json_parser = Yajl::Parser.new(:symbolize_keys => true) if @json_parser.nil?
+  @json_parser
+end
 
 def connection(content_type = 'application/json')
   headers = {}
   headers['content_type'] = content_type
   #headers['ACCESS_TOKEN'] = load_token
-#  @connection.reset unless @connection.nil?
-   
- if @connection.nil?
+  #  @connection.reset unless @connection.nil?
+
+  if @connection.nil?
     STDERR.puts('NEW REGISTRY CONNECTION ')
-  @connection = Excon.new(base_url,
-  :debug_request => true,
-  :debug_response => true,
-  :ssl_verify_peer => false,
-  :persistent => true,
-  :headers => headers) 
+    @connection = Excon.new(base_url,
+    :debug_request => true,
+    :debug_response => true,
+    :ssl_verify_peer => false,
+    :persistent => true,
+    :headers => headers)
   end
   @connection
 rescue StandardError => e
@@ -29,36 +28,31 @@ def reopen_connection
   @connection.reset
   STDERR.puts(' open connection ')
   @connection = Excon.new(base_url,
-   :debug_request => true,
-   :debug_response => true,
-   :ssl_verify_peer => false,
-   :persistent => true,
-   :headers => headers)   
+    :debug_request => true,
+    :debug_response => true,
+    :ssl_verify_peer => false,
+    :persistent => true,
+    :headers => headers)
 end
 
 def rest_get(path,params,time_out=120)
-
-  #   STDERR.puts(' get params ' + params.to_s + ' From ' + path.to_s )
-#  q = query_hash(params)
-#  unless q.nil?
   q = query_hash(params)
-  #  STDERR.puts('GET PARAMS ' +  q.to_s)
-  r = ''
-  r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :get,:path => path,:query => q))
-#  else
-#    r =   parse_xcon_response( connection.request(:read_timeout => time_out,:method => :get,:path => path))
-#  end
-  #    connection.reset
+  r = parse_xcon_response(
+        connection.request(:read_timeout => time_out,
+        :method => :get,
+        :path => path,
+        :query => q)
+      )
   return r
-  rescue  Excon::Error::Socket => e
+rescue  Excon::Error::Socket => e
   STDERR.puts(' eof ')
   reopen_connection
   retry
 rescue StandardError => e
   STDERR.puts e.class.name + ' with path:' + path.to_s + "\n" + 'params:' + params.to_s
-    STDERR.puts e.backtrace.to_s
+  STDERR.puts e.backtrace.to_s
   log_exception(e, params, path)
-  
+
 end
 
 #def rest_get(path,params)
@@ -66,11 +60,11 @@ end
 #  begin
 #    retry_count = 0
 #   STDERR.puts('Get Path:' + path.to_s + ' Params:' + params.to_s + ' base_url ' + base_url.to_s)
-#    
+#
 #    parse_rest_response(RestClient.get(base_url + path, params))
-#   rescue RestClient::ExceptionWithResponse => e   
+#   rescue RestClient::ExceptionWithResponse => e
 #     parse_error(e.response)
-#  rescue StandardError => e       
+#  rescue StandardError => e
 #    log_exception(e, params)
 #
 #  end
@@ -82,15 +76,9 @@ end
 
 def rest_post(path,params)
   begin
-    #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
-    #  parse_rest_response(RestClient.post(base_url + path, params))
-    # rescue RestClient::ExceptionWithResponse => e   
-    #   parse_error(e.response)
-    #   STDERR.puts('POST params ' + query_hash(params).to_s )
-   r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :post,:path => path,:body => query_hash(params).to_json ))
-    #  connection.reset
+    r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :post,:path => path,:body => query_hash(params).to_json ))
     return r
-    rescue  EOFError => e
+  rescue   Excon::Error::Socket => e
     reopen_connection
     retry
   rescue StandardError => e
@@ -103,43 +91,39 @@ def rest_put(path,params)
   r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :put,:path => path,:query => query_hash(params)))
   #  connection.reset
   return r
-  rescue  EOFError => e
+rescue   Excon::Error::Socket => e
   reopen_connection
   retry
-#  begin
-#    parse_rest_response(RestClient.put(base_url + path, params))
-#    rescue RestClient::ExceptionWithResponse => e      
-#      parse_error(e.response)
-  rescue StandardError => e
-    log_exception(e, params)
- # end
+rescue StandardError => e
+  log_exception(e, params)
+  # end
 end
 
 def query_hash(params)
 
-   unless params.nil?
-    
-   return params[:params] if params.key?(:params)
-     return params
-   end
-   return nil
+  unless params.nil?
+
+    return params[:params] if params.key?(:params)
+    return params
+  end
+  return nil
 end
 
 def rest_delete(path,params)
-q = query_hash(params)
+  q = query_hash(params)
   #  STDERR.puts('SEND ' +  q.to_s)
-r =  parse_xcon_response( connection.request(:read_timeout => time_out,:method => :delete,:path => path,:query => q))
+  r =  parse_xcon_response( connection.request(:read_timeout => time_out,:method => :delete,:path => path,:query => q))
   #  connection.reset
   return r
-  rescue  EOFError => e
+rescue   Excon::Error::Socket => e
   reopen_connection
   retry
-#  begin
-#    parse_rest_response(RestClient.delete(base_url + path, params))
-#    rescue RestClient::ExceptionWithResponse => e   
-#      parse_error(e.response)
-  rescue StandardError => e
-    log_exception(e, params)
+  #  begin
+  #    parse_rest_response(RestClient.delete(base_url + path, params))
+  #    rescue RestClient::ExceptionWithResponse => e
+  #      parse_error(e.response)
+rescue StandardError => e
+  log_exception(e, params)
   #end
 end
 
@@ -148,42 +132,43 @@ private
 def parse_error(resp)
   r = resp.body
   r.strip!# (/^\n/,'')
- # STDERR.puts("RSPONSE:" +r.to_s)
+  # STDERR.puts("RSPONSE:" +r.to_s)
 
- # res = JSON.parse(r, :create_additions => true,:symbolize_keys => true)
+  # res = JSON.parse(r, :create_additions => true,:symbolize_keys => true)
   #STDERR.puts("RSPONSE:" + r.to_s)
   EnginesRegistryError.new(r)
-  rescue  StandardError => e
+rescue  StandardError => e
   STDERR.puts(e.to_s)
   STDERR.puts("Parse Error on error response object ", r.to_s)
   return EnginesRegistryError.new(resp)
   #log_error_mesg("Parse Error on error response object ", r.to_s)
-  
+
 end
+
 def parse_xcon_response(resp)
   return [] if resp.status  == 404
-  
+
   return parse_error(resp) if resp.status > 399
   r = resp.body
-  r.strip!  
+  r.strip!
   return true if r.to_s   == '' ||  r.to_s   == 'true'
   return false if r.to_s  == 'false'
- begin
-  json_parser.parse(r) do |hash |
-     return hash
-   end
-   rescue  Yajl::ParseError  => e
- #   STDERR.puts e.backtrace
-   STDERR.puts "Yajl Failed to parse Registry response _" + r.to_s + "_"
- #  STDERR.puts e.class.name
-   return  deal_with_jason(JSON.parse(r, :create_additions => true,:symbolize_keys => true))
- end
+  begin
+    json_parser.parse(r) do |hash |
+      return hash
+    end
+  rescue  Yajl::ParseError  => e
+    #   STDERR.puts e.backtrace
+    STDERR.puts "Yajl Failed to parse Registry response _" + r.to_s + "_"
+    #  STDERR.puts e.class.name
+    return  deal_with_jason(JSON.parse(r, :create_additions => true,:symbolize_keys => true))
+  end
   #return json_parser.parse(r, :create_additions => true,:symbolize_keys => true)
   # res = JSON.parse(r, :create_additions => true,:symbolize_keys => true)
-   #return deal_with_jason(res)
+  #return deal_with_jason(res)
 rescue  StandardError => e
   STDERR.puts e.class.name
-  
+
   STDERR.puts e.backtrace
   STDERR.puts "Failed to parse Registry response _" + r.to_s + "_"
   return log_exception(e, r)
@@ -248,7 +233,7 @@ def symbolize_keys(hash)
     result
   }
 rescue  StandardError => e
-log_exception(e, hash)
+  log_exception(e, hash)
 end
 
 def symbolize_keys_array_members(array)
@@ -266,7 +251,7 @@ def symbolize_keys_array_members(array)
   return retval
 
 rescue  StandardError => e
-log_exception(e)
+  log_exception(e)
 end
 
 def symbolize_tree(tree)
