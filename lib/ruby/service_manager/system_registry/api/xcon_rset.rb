@@ -50,7 +50,7 @@ def rest_get(path,params,time_out=120)
 #  end
   #    connection.reset
   return r
-  rescue  EOFError => e
+  rescue  Excon::Error::Socket => e
   STDERR.puts(' eof ')
   reopen_connection
   retry
