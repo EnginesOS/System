@@ -55,7 +55,7 @@ def rest_get(path,params,time_out=120)
   reopen_connection
   retry
 rescue StandardError => e
-  STDERR.puts e.to_s + ' with path:' + path.to_s + "\n" + 'params:' + params.to_s
+  STDERR.puts e.class.name + ' with path:' + path.to_s + "\n" + 'params:' + params.to_s
     STDERR.puts e.backtrace.to_s
   log_exception(e, params, path)
   
