@@ -4,9 +4,13 @@ def json_parser
   @json_parser
 end
 
-def connection(content_type = 'application/json')
-  headers = {}
-  headers['content_type'] = content_type
+def headers 
+  @headers = {'content_type' => 'application/json','ACCESS_TOKEN' => 'atest_randy'} if @headers.nil?
+  @headers
+end
+
+def connection(content_type = nil)
+  headers['content_type'] = content_type unless content.nil?
   #headers['ACCESS_TOKEN'] = load_token
   #  @connection.reset unless @connection.nil?
 
@@ -26,7 +30,7 @@ end
 
 def reopen_connection
   @connection.reset
-  STDERR.puts(' open connection ')
+  STDERR.puts(' REOPEN connection ')
   @connection = Excon.new(base_url,
     :debug_request => true,
     :debug_response => true,
