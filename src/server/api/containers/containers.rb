@@ -132,7 +132,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
     STDERR.puts('REQUEST TO  /v0/containers/events/stream')
    
     #events_stream =  nil
-     events_stream do |events_stream | 
+    # events_stream do |events_stream | 
     stream :keep_open do |out  |
       begin
         STDERR.puts('OPEN EVENT STREAM')
@@ -176,7 +176,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
       finialise_events_stream(events_stream)
       STDERR.puts('CLOSED  EVENTS S ')
     end
-     end
+   #  end
   rescue StandardError => e
     finialise_events_stream(events_stream)    
     STDERR.puts('Stream EVENTS Exception' + e.to_s + e.backtrace.to_s)
