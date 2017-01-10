@@ -169,6 +169,7 @@ class DockerEventWatcher  < ErrorsApi
     log_exception(e)
     log_error_mesg('Restarting docker Event Stream post exception ')
     STDERR.puts('Restarting docker Event Stream post exception due to ' + e.to_s)
+    client.finish
     @system.start_docker_event_listener(@event_listeners)
   end
 
