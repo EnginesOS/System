@@ -125,16 +125,16 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
 
   begin
     STDERR.puts('REQUEST TO  /v0/containers/events/stream')
-    @events_stream = nil
+    events_stream = nil
     stream :keep_open do |out|
       begin
         STDERR.puts('OPEN EVENT STREAM')
-        @events_stream = engines_api.container_events_stream
+        events_stream = engines_api.container_events_stream
         has_data = true
         while has_data == true
           STDERR.puts('WHILE HAS DATA')
           begin
-            bytes = @events_stream.rd.read_nonblock(2048)
+            bytes = events_stream.rd.read_nonblock(2048)
             begin
               jason_event = ''
               json_parser.parse(bytes.strip) do |event |
@@ -145,7 +145,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
               next
             end
             if out.closed?
-              has_data = finialise_events_stream(@events_stream)
+              has_data = finialise_events_stream(events_stream)
               STDERR.puts('OUT IS CLOSED but have '  + jason_event.to_s)
               next
             else
@@ -154,28 +154,28 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
               bytes = ''
             end
           rescue IO::WaitReadable
-            IO.select([@events_stream.rd])
+            IO.select([events_stream.rd])
             retry
           rescue IOError
-            has_data = finialise_events_stream(@events_stream)
+            has_data = finialise_events_stream(events_stream)
             STDERR.puts('OUT IS IOError  EVENTS S ' )
             next
           end
         end
       rescue StandardError => e
         STDERR.puts('EVENTS Exception' + e.to_s + e.backtrace.to_s)
-        finialise_events_stream(@events_stream)
+        finialise_events_stream(events_stream)
       end
-      finialise_events_stream(@events_stream)
+      finialise_events_stream(events_stream)
       STDERR.puts('CLOSED  EVENTS S ')
     end
   rescue StandardError => e
-    finialise_events_stream(@events_stream)    
+    finialise_events_stream(events_stream)    
     STDERR.puts('Stream EVENTS Exception' + e.to_s + e.backtrace.to_s)
   end
   # @events_stream.stop
   STDERR.puts('close OF REQUEST TO  /v0/containers/events/stream ')
-  finialise_events_stream(@events_stream)
+  finialise_events_stream(events_stream)
 end
 # @method check_and_act_on_containers
 # @overload get '/v0/containers/check_and_act'
