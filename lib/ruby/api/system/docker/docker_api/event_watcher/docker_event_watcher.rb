@@ -127,8 +127,68 @@ class DockerEventWatcher  < ErrorsApi
     # add_event_listener([system, :container_event])
     SystemDebug.debug(SystemDebug.container_events,'EVENT LISTENER')
   end
+  
+def connection
+  @events_connection = Excon.new('unix:///', :socket => '/var/run/docker.sock',
+  :debug_request => true,
+  :debug_response => true,
+  :persistent => true) if @events_connection.nil?
+  @events_connection
+end
 
-  def start
+def reopen_connection
+  @events_connection.reset
+  STDERR.puts(' REOPEN doker.sock connection ')
+  @events_connection = Excon.new('unix:///', :socket => '/var/run/docker.sock',
+  :debug_request => true,
+  :debug_response => true,
+  :persistent => true)
+end
+
+def start
+  parser = Yajl::Parser.new(:symbolize_keys => true)
+
+  streamer = lambda do |chunk, remaining_bytes, total_bytes|
+    begin
+            r = ''
+            chunk.strip!
+            parser.parse(chunk) do |hash|
+              next unless hash.is_a?(Hash)
+              if hash.key?(:from) && hash[:from].length >= 64
+                SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
+                next
+              end
+              trigger(hash)
+            end
+          rescue StandardError => e
+            log_error_mesg('Chunk error on docker Event Stream _' + chunk.to_s + '_')
+            log_exception(e,chunk)
+            # @system.start_docker_event_listener
+          end
+  end
+connection.request(:read_timeout => 7200,
+        :method => :get,
+        :path => path,
+        :response_block => streamer )
+  @events_connection.reset   
+  
+  log_error_mesg('Restarting docker Event Stream ')
+   STDERR.puts('Restarting docker Event Stream as close')
+  @system.start_docker_event_listener(@event_listeners)
+  
+  rescue  Excon::Error::Socket => e
+     STDERR.puts(' docker socket stream close ')
+  @events_connection.reset   
+  @system.start_docker_event_listener(@event_listeners)
+  rescue StandardError => e
+      log_exception(e)
+      log_error_mesg('Restarting docker Event Stream post exception ')
+      STDERR.puts('Restarting docker Event Stream post exception due to ' + e.to_s)
+      client.finish
+      @system.start_docker_event_listener(@event_listeners)
+end
+      
+  def ostart
     parser = Yajl::Parser.new(:symbolize_keys => true)
 
     req = Net::HTTP::Get.new('/events')
