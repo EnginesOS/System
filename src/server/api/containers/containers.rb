@@ -125,8 +125,9 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
 
   begin
     STDERR.puts('REQUEST TO  /v0/containers/events/stream')
-    events_stream = nil
-    stream :keep_open do |out|
+    @events_stream = nil
+    events_stream =  @events_stream
+    stream :keep_open do |out  |
       begin
         STDERR.puts('OPEN EVENT STREAM')
         events_stream = engines_api.container_events_stream
@@ -175,7 +176,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
   end
   # @events_stream.stop
   STDERR.puts('close OF REQUEST TO  /v0/containers/events/stream ')
-  finialise_events_stream(events_stream)
+  finialise_events_stream( @events_stream)
 end
 # @method check_and_act_on_containers
 # @overload get '/v0/containers/check_and_act'
