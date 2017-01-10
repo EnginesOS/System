@@ -168,7 +168,7 @@ def start
   end
 connection.request(:read_timeout => 7200,
         :method => :get,
-        :path => path,
+        :path => '/events',
         :response_block => streamer )
   @events_connection.reset   
   
