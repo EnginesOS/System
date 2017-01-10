@@ -124,10 +124,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
     return false
   end
 
-  def events_stream
-    @events_stream = engines_api.container_events_stream if @events_stream .nil?
-    @events_stream
-  end
+  
      begin
     STDERR.puts('REQUEST TO  /v0/containers/events/stream')
    
