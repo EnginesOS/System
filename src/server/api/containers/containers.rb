@@ -123,14 +123,15 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
     return false
   end
 
-  begin
+     begin
     STDERR.puts('REQUEST TO  /v0/containers/events/stream')
-    #@events_stream = engines_api.container_events_stream
-    events_stream =  nil
-    stream :keep_open do |out , events_stream |
+    events_stream = engines_api.container_events_stream
+    #events_stream =  nil
+     events_stream do |events_stream | 
+    stream :keep_open do |out  |
       begin
         STDERR.puts('OPEN EVENT STREAM')
-       events_stream = engines_api.container_events_stream
+     #  events_stream = engines_api.container_events_stream
         has_data = true
         while has_data == true
           STDERR.puts('WHILE HAS DATA')
@@ -170,6 +171,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
       finialise_events_stream(events_stream)
       STDERR.puts('CLOSED  EVENTS S ')
     end
+     end
   rescue StandardError => e
     finialise_events_stream(events_stream)    
     STDERR.puts('Stream EVENTS Exception' + e.to_s + e.backtrace.to_s)
