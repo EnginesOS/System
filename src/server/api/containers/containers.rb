@@ -115,6 +115,7 @@
 ##
 #end
 #end
+
 get '/v0/containers/events/stream', provides: 'text/event-stream' do
   def finialise_events_stream(events_stream)
     STDERR.puts('finalise   ' + events_stream.class.name)
@@ -123,9 +124,13 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
     return false
   end
 
+  def events_stream
+    @events_stream = engines_api.container_events_stream if @events_stream .nil?
+    @events_stream
+  end
      begin
     STDERR.puts('REQUEST TO  /v0/containers/events/stream')
-    events_stream = engines_api.container_events_stream
+   
     #events_stream =  nil
      events_stream do |events_stream | 
     stream :keep_open do |out  |
