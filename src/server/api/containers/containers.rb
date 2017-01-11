@@ -125,12 +125,13 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
   end
   def curr_events_stream(events_stream )
         @events_stream = events_stream 
+    STDERR.puts('set   ' + events_stream.class.name)
       end
     
   
      begin
     STDERR.puts('REQUEST TO  /v0/containers/events/stream')
-       events_stream = nil
+     
     stream :keep_open do |out  |
       begin
         STDERR.puts('OPEN EVENT STREAM')
