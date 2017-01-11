@@ -160,14 +160,14 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
           rescue IO::WaitReadable
             IO.select([events_stream.rd])
             retry
-          rescue IOError
+          rescue IOError => e
             has_data = finialise_events_stream(events_stream)
-            STDERR.puts('OUT IS IOError  EVENTS S ' )
+            STDERR.puts('OUT IS IOError  EVENTS S ' + e.to_s + ':' + e.class.name + ':' + e.backtrace.to_s )
             next
           end
         end
       rescue StandardError => e
-        STDERR.puts('EVENTS Exception' + e.to_s + e.backtrace.to_s)
+        STDERR.puts('EVENTS Exception' + e.to_s + ':' + e.class.name + e.backtrace.to_s)
         finialise_events_stream(events_stream)
       end
       finialise_events_stream(events_stream)
