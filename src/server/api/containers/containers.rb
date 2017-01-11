@@ -131,7 +131,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
   
      begin
     STDERR.puts('REQUEST TO  /v0/containers/events/stream')
-    #   events_stream = engines_api.container_events_stream if events_stream .nil?
+       events_stream = nil
     stream :keep_open do |out  |
       begin
         STDERR.puts('OPEN EVENT STREAM')
