@@ -113,7 +113,8 @@ if test "`/opt/engines/bin/system_service.rb system state`" = \"nocontainer\"
 DOCKER_IP=`ifconfig docker0 |grep "inet addr" |cut -f2 -d: |cut -f1 -d" "`
 export DOCKER_IP
  sleep 5
-/opt/engines/bin/engines system login test test
+ 
+#/opt/engines/bin/engines system login test test
   
 
 /opt/engines/bin/engines service dns start 
