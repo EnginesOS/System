@@ -138,7 +138,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
       # events_stream = engines_api.container_events_stream
         has_data = true
         while has_data == true
-          STDERR.puts('WHILE HAS DATA ' + events_stream.to_s + ':' + events_stream.class.name )
+          STDERR.puts('WHILE HAS DATA ' + events_stream.to_s + ':' + events_stream.class.name + ':' + events_stream.rd.class.name + ':' + events_stream.rd.to_s )
           begin
             bytes = events_stream.rd.read_nonblock(2048)
             begin
