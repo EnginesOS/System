@@ -62,8 +62,9 @@ module ServiceManagerOperations
     hashes = service_manager.all_engines_registered_to('nginx')
     SystemDebug.debug(SystemDebug.services,  :taken_hostnames, hashes)
     return sites unless hashes.is_a?(Array)    
-    
+    SystemDebug.debug(SystemDebug.services, 'hashes is a ' + hashes.class.name)
     hashes.each do |service_hash|
+      SystemDebug.debug(SystemDebug.services,  'service_hash is a' + service_hash.class.name)
       sites.push(service_hash[:variables][:fqdn])
       SystemDebug.debug(SystemDebug.services,  service_hash[:variables][:fqdn])
     end
