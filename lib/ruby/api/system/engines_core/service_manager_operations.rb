@@ -65,12 +65,14 @@ module ServiceManagerOperations
     SystemDebug.debug(SystemDebug.services, 'hashes is a ' + hashes.class.name)
     hashes.each do |service_hash|
       SystemDebug.debug(SystemDebug.services,  'service_hash is a' + service_hash.class.name)
+      next unless service_hash.is_a?(Hash)
       sites.push(service_hash[:variables][:fqdn])
       SystemDebug.debug(SystemDebug.services,  service_hash[:variables][:fqdn])
     end
     return sites
   rescue StandardError => e
     log_exception(e)
+    return sites
   end
 
 end
