@@ -123,15 +123,19 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
     STDERR.puts('finalise  /v0/containers/events/stream ')
     return false
   end
-
+  def events_stream
+        @events_stream = engines_api.container_events_stream if @events_stream .nil?
+      @events_stream
+      end
+    
   
      begin
     STDERR.puts('REQUEST TO  /v0/containers/events/stream')
-       events_stream = engines_api.container_events_stream if events_stream .nil?
+    #   events_stream = engines_api.container_events_stream if events_stream .nil?
     stream :keep_open do |out  |
       begin
         STDERR.puts('OPEN EVENT STREAM')
-       events_stream = engines_api.container_events_stream
+      # events_stream = engines_api.container_events_stream
         has_data = true
         while has_data == true
           STDERR.puts('WHILE HAS DATA')
@@ -160,9 +164,9 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
             IO.select([events_stream.rd])
             retry
           rescue IOError => e
-           # has_data = finialise_events_stream(events_stream)
+            has_data = finialise_events_stream(events_stream)
             STDERR.puts('OUT IS IOError  EVENTS S ' + e.to_s + ':' + e.class.name + ':' + e.backtrace.to_s )
-           # next
+            next
           end
         end
       rescue StandardError => e
