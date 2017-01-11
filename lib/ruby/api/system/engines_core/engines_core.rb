@@ -160,10 +160,10 @@ class EnginesCore < ErrorsApi
 
    
   def init_system_password(password,email, token = nil)
-    set_system_user_password('admin',email, token)
+    set_system_user_password('admin',password,email, token)
   end
   
-  def set_system_user_password(user,password,email, token)
+  def set_system_user_password(user,password,email, token= nil)
     require "sqlite3"
     db = SQLite3::Database.new SystemConfig.SystemAccessDB
     
