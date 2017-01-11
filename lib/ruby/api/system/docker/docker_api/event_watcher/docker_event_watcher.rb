@@ -160,12 +160,14 @@ def start
               end
               STDERR.puts('trigger' + hash.to_s )
               trigger(hash)
+              
             end
           rescue StandardError => e
             log_error_mesg('Chunk error on docker Event Stream _' + chunk.to_s + '_')
             log_exception(e,chunk)
             # @system.start_docker_event_listener
           end
+          
   end
 connection.request(:read_timeout => 7200,
         :method => :get,
@@ -185,7 +187,7 @@ connection.request(:read_timeout => 7200,
       log_exception(e)
       log_error_mesg('Restarting docker Event Stream post exception ')
       STDERR.puts('Restarting docker Event Stream post exception due to ' + e.to_s)
-      client.finish
+  @events_connection.reset   
       @system.start_docker_event_listener(@event_listeners)
 end
       
