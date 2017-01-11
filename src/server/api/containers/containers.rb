@@ -127,11 +127,11 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
   
      begin
     STDERR.puts('REQUEST TO  /v0/containers/events/stream')
-
+       events_stream = engines_api.container_events_stream if events_stream .nil?
     stream :keep_open do |out  |
       begin
         STDERR.puts('OPEN EVENT STREAM')
-     #  events_stream = engines_api.container_events_stream
+       events_stream = engines_api.container_events_stream
         has_data = true
         while has_data == true
           STDERR.puts('WHILE HAS DATA')
@@ -146,7 +146,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
               STDERR.puts('Failed to parse docker events ' + bytes + ':' + e.to_s )
               next
             end
-            #            jason_event = JSON.parser(bytes)
+            #            jason_event = JSON.parse(bytes)
             if out.closed?
               has_data = finialise_events_stream(events_stream)
               STDERR.puts('OUT IS CLOSED but have '  + jason_event.to_s)
