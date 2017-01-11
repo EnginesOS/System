@@ -66,6 +66,7 @@ module ServiceManagerOperations
     hashes.each do |service_hash|
       SystemDebug.debug(SystemDebug.services,  'service_hash is a' + service_hash.class.name)
       next unless service_hash.is_a?(Hash)
+      next unless service_hash[:variables].is_a?(Hash)
       sites.push(service_hash[:variables][:fqdn])
       SystemDebug.debug(SystemDebug.services,  service_hash[:variables][:fqdn])
     end
