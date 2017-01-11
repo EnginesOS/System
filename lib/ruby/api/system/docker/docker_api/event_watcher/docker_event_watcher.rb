@@ -158,6 +158,7 @@ def start
                 SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
                 next
               end
+              STDERR.puts('trigger' + hash.to_s )
               trigger(hash)
             end
           rescue StandardError => e
