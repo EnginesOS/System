@@ -52,9 +52,11 @@ module ServiceConfigurations
     return service unless service.is_a?(ManagedService)
     if service.is_running?
       ret_val = service.retrieve_configurator(service_param)
+      STDERR.puts('Retrived retrieve_configuration '+ service_param.to_s + ret_val.class.name + ':' + ret_val.to_s )
       return retval unless ret_val.is_a?(Hash)
     else
-      return get_service_configuration(service_param)
+      STDERR.puts('Retrived retrieve_configuration '+ service_param.to_s + ret_val.class.name + ':' + ret_val.to_s )
+      ret_val = get_service_configuration(service_param)
     end
 
     return ret_val
