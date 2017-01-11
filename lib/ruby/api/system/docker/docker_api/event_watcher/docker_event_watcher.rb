@@ -145,7 +145,7 @@ def reopen_connection
   :persistent => true)
 end
 
-def start
+def nstart
   parser = Yajl::Parser.new(:symbolize_keys => true)
 
   streamer = lambda do |chunk, remaining_bytes, total_bytes|
@@ -191,7 +191,7 @@ connection.request(:read_timeout => 7200,
       @system.start_docker_event_listener(@event_listeners)
 end
       
-  def ostart
+  def start
     parser = Yajl::Parser.new(:symbolize_keys => true)
 
     req = Net::HTTP::Get.new('/events')
