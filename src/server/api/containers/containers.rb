@@ -123,10 +123,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
     STDERR.puts('finalise  /v0/containers/events/stream ')
     return false
   end
-  def curr_events_stream(events_stream )
-        @events_stream = events_stream 
-    STDERR.puts('set   ' + events_stream.class.name)
-      end
+
     
   
      begin

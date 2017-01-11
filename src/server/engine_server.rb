@@ -125,7 +125,10 @@ begin
     def engines_api
       $engines_api
     end
-    
+    def curr_events_stream(events_stream )
+          @events_stream = events_stream 
+      STDERR.puts('set   ' + events_stream.class.name)
+        end
 #    def events_stream
 #        @events_stream = engines_api.container_events_stream if @events_stream .nil?
 #        @events_stream
