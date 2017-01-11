@@ -133,7 +133,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
       begin
         STDERR.puts('OPEN EVENT STREAM')
        events_stream = engines_api.container_events_stream
-        curr_events_stream(events_stream )
+        save_curr_events_stream(events_stream )
         has_data = true
         while has_data == true
           STDERR.puts('WHILE HAS DATA ' + events_stream.to_s + ':' + events_stream.class.name + ':' + events_stream.rd.class.name + ':' + events_stream.rd.to_s + ':' + events_stream.rd.inspect)
@@ -181,7 +181,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
   end
   # @events_stream.stop
   STDERR.puts('close OF REQUEST TO  /v0/containers/events/stream ')
-  finialise_events_stream( @events_stream)
+  finialise_events_stream( curr_events_stream)
 end
 # @method check_and_act_on_containers
 # @overload get '/v0/containers/check_and_act'
