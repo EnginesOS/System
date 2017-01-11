@@ -168,9 +168,9 @@ def parse_xcon_response(resp)
     #   STDERR.puts e.backtrace
     STDERR.puts "Yajl Failed to parse Registry response _" + r.to_s + "_"
     #  STDERR.puts e.class.name
-    r = deal_with_jason(JSON.parse(r, :create_additions => true,:symbolize_keys => true))
-    STDERR.puts "JSON parse as " + r.to_s
-      return r
+    hash = deal_with_jason(JSON.parse(r, :create_additions => true,:symbolize_keys => true))
+    STDERR.puts "JSON parse as " + hash.to_s + 'from' + r.to_s
+      return hash
   end
   #return json_parser.parse(r, :create_additions => true,:symbolize_keys => true)
   # res = JSON.parse(r, :create_additions => true,:symbolize_keys => true)
