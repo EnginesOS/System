@@ -160,6 +160,8 @@ def parse_xcon_response(resp)
   r.strip!
   return true if r.to_s   == '' ||  r.to_s   == 'true'
   return false if r.to_s  == 'false'
+  hash = deal_with_jason(JSON.parse(r, :create_additions => true,:symbolize_keys => true))
+  return hash
   begin
     json_parser.parse(r) do |hash |
       return hash
