@@ -160,9 +160,9 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
             IO.select([events_stream.rd])
             retry
           rescue IOError => e
-            has_data = finialise_events_stream(events_stream)
+           # has_data = finialise_events_stream(events_stream)
             STDERR.puts('OUT IS IOError  EVENTS S ' + e.to_s + ':' + e.class.name + ':' + e.backtrace.to_s )
-            next
+           # next
           end
         end
       rescue StandardError => e
