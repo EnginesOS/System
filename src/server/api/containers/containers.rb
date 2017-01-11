@@ -123,10 +123,10 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
     STDERR.puts('finalise  /v0/containers/events/stream ')
     return false
   end
-  def events_stream
-        @events_stream = engines_api.container_events_stream if @events_stream .nil?
-      @events_stream
-      end
+#  def events_stream
+#        @events_stream = engines_api.container_events_stream if @events_stream .nil?
+#      @events_stream
+#      end
     
   
      begin
@@ -135,7 +135,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
     stream :keep_open do |out  |
       begin
         STDERR.puts('OPEN EVENT STREAM')
-      # events_stream = engines_api.container_events_stream
+       events_stream = engines_api.container_events_stream
         has_data = true
         while has_data == true
           STDERR.puts('WHILE HAS DATA ' + events_stream.to_s + ':' + events_stream.class.name + ':' + events_stream.rd.class.name + ':' + events_stream.rd.to_s + ':' + events_stream.rd.inspect)
