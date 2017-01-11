@@ -125,7 +125,12 @@ begin
     def engines_api
       $engines_api
     end
-
+    
+    def events_stream
+        @events_stream = engines_api.container_events_stream if @events_stream .nil?
+        @events_stream
+      end
+      
     def json_parser
       @json_parser = Yajl::Parser.new(:symbolize_keys => true) if @json_parser.nil?
       @json_parser

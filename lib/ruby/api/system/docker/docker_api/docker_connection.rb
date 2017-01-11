@@ -72,6 +72,15 @@ class DockerConnection < ErrorsApi
     @connection
   end
 
+  def reopen_connection
+    @connection.reset
+    STDERR.puts(' REOPEN doker.sock connection ')
+    @connection = Excon.new('unix:///', :socket => '/var/run/docker.sock',
+    :debug_request => true,
+    :debug_response => true,
+    :persistent => true)
+  end
+
   def stream_connection(stream_reader)
     excon_params = {:debug_request => true,
       :debug_response => true,
@@ -90,10 +99,10 @@ class DockerConnection < ErrorsApi
 
   def post_stream_request(uri,options, stream_handler,  headers = nil, content = nil )
     headers = {'Content-Type' =>'application/json', 'Accept' => '*/*' } if headers.nil?
-    content = '' if content.nil?      
-      sc = stream_connection(stream_handler)
-      stream_handler.stream = sc
-      
+    content = '' if content.nil?
+    sc = stream_connection(stream_handler)
+    stream_handler.stream = sc
+
     if stream_handler.method(:has_data?).call == false
       if content.nil? # Dont to_s as may be tgz
         body = ''
@@ -123,7 +132,9 @@ class DockerConnection < ErrorsApi
       stream_handler.close
       return r
     end
-
+  rescue  Excon::Error::Socket => e
+    STDERR.puts(' docker socket stream close ')
+    stream_handler.close
   rescue StandardError => e
     log_exception(e)
   end
@@ -141,6 +152,10 @@ class DockerConnection < ErrorsApi
     :path => uri),
     expect_json
     )
+  rescue  Excon::Error::Socket => e
+    STDERR.puts(' docker socket close ')
+    reopen_connection
+    retry
   end
 
   def delete_request(uri)
@@ -148,7 +163,10 @@ class DockerConnection < ErrorsApi
     :path => uri),
     false
     )
-
+  rescue  Excon::Error::Socket => e
+    STDERR.puts('docker socket close ')
+    reopen_connection
+    retry
   end
 
   private
