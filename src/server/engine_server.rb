@@ -127,7 +127,7 @@ begin
     end
     def save_curr_events_stream(events_stream )
           @events_s = events_stream 
-      STDERR.puts('set   ' + @events_s.class.name + ' from ' + events_stream )
+      STDERR.puts('set   ' + @events_s.class.name + ' from ' + events_stream.class.name )
         end
     def curr_events_stream
 #        @events_stream = engines_api.container_events_stream if @events_stream .nil?
