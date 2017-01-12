@@ -52,7 +52,7 @@ def rest_get(path,params,time_out=120)
       )
   return r
 rescue  Excon::Error::Socket => e
-  STDERR.puts(' eof ')
+  STDERR.puts(' eof ' + path.to_s + ':' + e.to_s + ':' + e.class.name + ':' + e.backtrace.to_s)
   reopen_connection
   retry
 rescue StandardError => e
