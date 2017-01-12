@@ -121,16 +121,21 @@ begin
     return false
   end
 
+  def save_curr_events_stream(events_stream )
+           @events_s = events_stream 
+   #    STDERR.puts('set   ' + @events_s.class.name + ' from ' + events_stream.class.name )
+         end
+     def curr_events_stream
+ #        @events_stream = engines_api.container_events_stream if @events_stream .nil?
+   #    STDERR.puts('ret   ' + @events_s.class.name )
+         @events_s
+       end
+       
   helpers do
     def engines_api
       $engines_api
     end
-    
-    def events_stream
-        @events_stream = engines_api.container_events_stream if @events_stream .nil?
-        @events_stream
-      end
-      
+   
     def json_parser
       @json_parser = Yajl::Parser.new(:symbolize_keys => true) if @json_parser.nil?
       @json_parser
