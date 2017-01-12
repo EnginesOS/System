@@ -14,6 +14,7 @@ module AvailableServices
     if Dir.exist?(dir)
       Dir.foreach(dir) do |service_dir_entry|
         begin
+          STDERR.puts('reading avail service ' + service_dir_entry.to_s )
           if service_dir_entry.start_with?('.') == true
             next
           end
