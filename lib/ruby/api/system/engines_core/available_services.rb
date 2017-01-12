@@ -12,7 +12,7 @@ module AvailableServices
     dir = SystemConfig.ServiceMapTemplateDir + '/' + typename
     if Dir.exist?(dir)
       Dir.foreach(dir) do |service_dir_entry|
-        begin
+        begin       
           if service_dir_entry.start_with?('.') == true
             next
           end
@@ -22,7 +22,6 @@ module AvailableServices
               if service.is_a?(String)
                 log_error_mesg('service yaml load error', service)
               else
-                
                 service = SoftwareServiceDefinition.summary(service)
                 if service[:persistent] == true
                   avail_services[:persistent].push(service)
@@ -111,8 +110,9 @@ module AvailableServices
 def load_service_definition(filename)
 #open soft link not actual
    yaml_file = File.open(filename)
-   SoftwareServiceDefinition.from_yaml(yaml_file)
+  s = SoftwareServiceDefinition.from_yaml(yaml_file)
   yaml_file.close
+  s
  rescue StandardError => e
    log_exception(e)
  end
