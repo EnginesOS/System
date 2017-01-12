@@ -10,6 +10,7 @@ module AvailableServices
     avail_services[:persistent] = []
     avail_services[:non_persistent] = []  
     dir = SystemConfig.ServiceMapTemplateDir + '/' + typename
+    STDERR.puts('reading avail services from ' + dir.to_s )
     if Dir.exist?(dir)
       Dir.foreach(dir) do |service_dir_entry|
         begin
@@ -22,8 +23,9 @@ module AvailableServices
               if service.is_a?(String)
                 log_error_mesg('service yaml load error', service)
               else
-                
+                STDERR.puts('addin  servics  ' + service.to_s )
                 service = SoftwareServiceDefinition.summary(service)
+                STDERR.puts('addin  servics  ' + service.to_s ) 
                 if service[:persistent] == true
                   avail_services[:persistent].push(service)
                 else
