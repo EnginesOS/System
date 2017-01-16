@@ -135,7 +135,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
         #      STDERR.puts('OPEN EVENT STREAM')
         events_stream = engines_api.container_events_stream
         out.callback {  finialise_events_stream(events_stream)}
-        save_curr_events_stream(events_stream )
+        #  save_curr_events_stream(events_stream )
         has_data = true
         while has_data == true
           #   STDERR.puts('WHILE HAS DATA ' + events_stream.to_s + ':' + events_stream.class.name + ':' + events_stream.rd.class.name + ':' + events_stream.rd.to_s + ':' + events_stream.rd.inspect)
@@ -171,14 +171,14 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
         end
       rescue StandardError => e
         STDERR.puts('EVENTS Exception' + e.to_s + ':' + e.class.name + e.backtrace.to_s)
-        finialise_events_stream(events_stream)
+          finialise_events_stream(events_stream)
       end
-      finialise_events_stream(curr_events_stream)
+    #       finialise_events_stream(curr_events_stream)
     #  STDERR.puts('CLOSED  EVENTS S ')
     end
    #  end
   rescue StandardError => e
-    finialise_events_stream(curr_events_stream)    
+  #    finialise_events_stream(curr_events_stream)    
     STDERR.puts('Stream EVENTS Exception' + e.to_s + e.backtrace.to_s)
   end
   # @events_stream.stop
