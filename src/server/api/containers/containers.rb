@@ -129,11 +129,11 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
      begin
     STDERR.puts('REQUEST TO  /v0/containers/events/stream')
        events_stream = engines_api.container_events_stream
-    stream :keep_open do | out,events_stream  |
+    stream :keep_open do | out ; events_stream |
       begin
 
         #      STDERR.puts('OPEN EVENT STREAM')
-        # events_stream = engines_api.container_events_stream
+        #  events_stream = engines_api.container_events_stream
         save_curr_events_stream(events_stream )
         has_data = true
         while has_data == true
