@@ -131,9 +131,10 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
    
     stream :keep_open do | out  |
       begin
-
+       
         #      STDERR.puts('OPEN EVENT STREAM')
         events_stream = engines_api.container_events_stream
+        out.callback {  finialise_events_stream(events_stream)}
         save_curr_events_stream(events_stream )
         has_data = true
         while has_data == true
@@ -182,7 +183,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
   end
   # @events_stream.stop
 #  STDERR.puts('close OF REQUEST TO  /v0/containers/events/stream ')
-  finialise_events_stream( curr_events_stream)
+# finialise_events_stream( curr_events_stream)
 end
 # @method check_and_act_on_containers
 # @overload get '/v0/containers/check_and_act'
