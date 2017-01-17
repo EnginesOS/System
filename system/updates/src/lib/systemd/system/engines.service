@@ -1,0 +1,12 @@
+[Unit]
+Description=Engines System
+Documentation=https://tiki.engines.org/
+After=docker.service
+
+[Service]
+ExecStart=/bin/su  engines /opt/engines/sbin/engines_startup.sh
+
+ExecStop= /opt/engines/sbin/engines_shutdown.sh
+
+[Install]
+WantedBy=multi-user.target
