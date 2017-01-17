@@ -1,7 +1,7 @@
 #!/bin/bash
 
 system_updates_dir=/opt/engines/system/updates/to_run/engines
-
+/opt/engines/bin/engines  containers  check_and_act
 
 update_ids=`ls /opt/engines/system/updates/to_run/engines |grep -v keep`
 

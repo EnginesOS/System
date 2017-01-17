@@ -118,9 +118,9 @@
 
 get '/v0/containers/events/stream', provides: 'text/event-stream' do
   def finialise_events_stream(events_stream)
-    STDERR.puts('finalise   ' + events_stream.class.name)
+    #  STDERR.puts('finalise   ' + events_stream.class.name)
     events_stream.stop unless events_stream.nil?
-    STDERR.puts('finalise  /v0/containers/events/stream ')
+    #   STDERR.puts('finalise  /v0/containers/events/stream ')
     return false
   end
 
@@ -165,7 +165,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
             retry
           rescue IOError => e
             has_data = finialise_events_stream(events_stream)
-            STDERR.puts('OUT IS IOError  EVENTS S ' + e.to_s + ':' + e.class.name + ':' + e.backtrace.to_s )
+          #  STDERR.puts('OUT IS IOError  EVENTS S ' + e.to_s + ':' + e.class.name + ':' + e.backtrace.to_s )
             next
           end
         end
