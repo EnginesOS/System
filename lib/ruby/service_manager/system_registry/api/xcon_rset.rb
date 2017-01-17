@@ -44,6 +44,7 @@ end
 
 def rest_get(path,params,time_out=120)
   q = query_hash(params)
+  STDERR.puts(' GET ' + path.to_s )
   r = parse_xcon_response(
         connection.request(:read_timeout => time_out,
         :method => :get,
@@ -83,6 +84,7 @@ end
 
 def rest_post(path,params)
   begin
+    STDERR.puts(' POST ' + path.to_s )
     r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :post,:path => path,:body => query_hash(params).to_json ))
     return r
   rescue   Excon::Error::Socket => e
@@ -94,6 +96,7 @@ def rest_post(path,params)
 end
 
 def rest_put(path,params)
+  STDERR.puts(' PUT ' + path.to_s )
   #  STDERR.puts('PUT params ' + query_hash(params).to_s )
   r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :put,:path => path,:query => query_hash(params)))
   #  connection.reset
@@ -118,6 +121,7 @@ end
 
 def rest_delete(path,params)
   q = query_hash(params)
+  STDERR.puts('SEND ' +  path.to_s)
   #  STDERR.puts('SEND ' +  q.to_s)
   r =  parse_xcon_response( connection.request(:read_timeout => time_out,:method => :delete,:path => path,:query => q))
   #  connection.reset
