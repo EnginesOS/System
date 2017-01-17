@@ -1,8 +1,8 @@
 #/!bin/sh
-engines service avahi state |grep -i running
+/opt/engines/bin/engines service avahi state |grep -i running
  if test $? -eq 0
   then
-  	engines service avahi stop
-  	engines service avahi destroy
-  	engines service avahi create
+  	/opt/engines/bin/engines service avahi stop
+  	/opt/engines/bin/engines service avahi destroy
+  	/opt/engines/bin/engines service avahi create
  fi
