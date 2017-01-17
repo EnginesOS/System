@@ -1,4 +1,6 @@
 #!/bin/bash
+echo Starting Engines
+
 grep follow_sta ~/.bashrc  
 if test $? -ne 0
 then
