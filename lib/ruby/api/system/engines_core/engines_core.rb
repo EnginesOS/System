@@ -167,7 +167,7 @@ class EnginesCore < ErrorsApi
     require "sqlite3"
     db = SQLite3::Database.new SystemConfig.SystemAccessDB
     
-    rws = db.execute("Select * from systemaccess where  username = '" + user.to + "'")
+    rws = db.execute("Select * from systemaccess where  username = '" + user.to_s + "'")
     
     if rws.count == 0
       authtoken = SecureRandom.hex(128)
