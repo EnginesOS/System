@@ -1,5 +1,13 @@
 module UserAuth
   require "sqlite3"
+ def engines_api.user_login(params)
+   rows = sql_lite_database.execute( 'select authtoken from systemaccess where username=' + "'" + params[:user_name].to_s + 
+     "' and password = '" +  params[:password].to_s + "'")
+ #  auth_db.close
+   return log_error(request,nil,'unauthorised', params) unless rows.count > 0
+   rows[0]
+ 
+ end
   
   def is_token_valid?(token, ip =nil)
   #  request.env["REMOTE_ADDR"]
