@@ -7,13 +7,15 @@
 get '/v0/system/login/:user_name/:password' do 
  # auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if @auth_db.nil?
  # auth_db = sql_lite_database
-  rows = sql_lite_database.execute( 'select authtoken from systemaccess where username=' + "'" + params[:user_name].to_s + 
-    "' and password = '" +  params[:password].to_s + "'")
-#  auth_db.close
-  return log_error(request,nil,'unauthorised', params) unless rows.count > 0
-  
   content_type 'text/plain'
-  $token = rows[0]
+  $token = engines_api.user_login(params)
+#  rows = sql_lite_database.execute( 'select authtoken from systemaccess where username=' + "'" + params[:user_name].to_s + 
+#    "' and password = '" +  params[:password].to_s + "'")
+##  auth_db.close
+#  return log_error(request,nil,'unauthorised', params) unless rows.count > 0
+#  
+# 
+#  $token = rows[0]
   return $token
 end
 
