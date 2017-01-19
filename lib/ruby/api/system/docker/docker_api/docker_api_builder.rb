@@ -22,7 +22,7 @@ module DockerApiBuilder
       @io_stream = stream
       @builder = builder
       @stream = nil
-      @parser = Yajl::Parser.new(:symbolize_keys => true)
+      @parser = FFI_Yajl::Parser.new({:symbolize_keys => true})
     end
      attr_accessor :stream
 

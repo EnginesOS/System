@@ -14,7 +14,8 @@ begin
   require 'objspace'
   require 'warden'
   require "sqlite3"
-
+  require 'ffi_yajl'
+  
   def init_db
     create_table
     set_first_user
@@ -111,11 +112,8 @@ begin
   end
 
   def sql_lite_database
+    engines_api.auth_database
 
-    $auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if $auth_db.nil?
-    $auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if $auth_db.is_a?(FalseClass)
-    $auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if $auth_db.closed?
-    $auth_db
   rescue StandardError => e
     STDERR.puts('Exception failed to open  sql_lite_database: ' + e.to_s)
     return false
@@ -137,7 +135,8 @@ begin
     end
    
     def json_parser
-      @json_parser = Yajl::Parser.new(:symbolize_keys => true) if @json_parser.nil?
+     # @json_parser = Yajl::Parser.new(:symbolize_keys => true) if @json_parser.nil?
+      @json_parser = FFI_Yajl::Parser.new({:symbolize_keys => true}) if @json_parser.nil?
       @json_parser
     end
 

@@ -146,7 +146,7 @@ def reopen_connection
 end
 
 def nstart
-  parser = Yajl::Parser.new(:symbolize_keys => true)
+  parser = FFI_Yajl::Parser.new({:symbolize_keys => true})
 
   streamer = lambda do |chunk, remaining_bytes, total_bytes|
     begin
@@ -192,7 +192,7 @@ connection.request(:read_timeout => 7200,
 end
       
   def start
-    parser = Yajl::Parser.new(:symbolize_keys => true)
+    parser = FFI_Yajl::Parser.new({:symbolize_keys => true})
 
     req = Net::HTTP::Get.new('/events')
     client = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
