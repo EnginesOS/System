@@ -1,5 +1,22 @@
 module UserAuth
   require "sqlite3"
+  
+  def is_token_valid?(token, ip =nil)
+  #  request.env["REMOTE_ADDR"]
+  if ip == nil
+    rows = sql_lite_database.execute( 'select guid from systemaccess where authtoken=' + "'" + token.to_s + "'" )
+  else
+    rows = sql_lite_database.execute( 'select guid from systemaccess where authtoken=' + "'" + token.to_s + "' and ip_addr ='" + request.env["REMOTE_ADDR"].to_s + "'" )
+  end
+  return false unless rows.count > 0
+  return rows[0]
+rescue StandardError => e
+  STDERR.puts(' toekn verify error  ' + e.to_s)
+  STDERR.puts(' toekn verify error exception name  ' + e.class.name)
+  return false
+  
+end
+
    def  auth_database
    $auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if $auth_db.nil?
    $auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if $auth_db.is_a?(FalseClass)
