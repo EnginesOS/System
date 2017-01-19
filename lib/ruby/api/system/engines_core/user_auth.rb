@@ -1,6 +1,6 @@
 module UserAuth
   require "sqlite3"
- def engines_api.user_login(params)
+ def user_login(params)
    rows = sql_lite_database.execute( 'select authtoken from systemaccess where username=' + "'" + params[:user_name].to_s + 
      "' and password = '" +  params[:password].to_s + "'")
  #  auth_db.close
