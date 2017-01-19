@@ -11,11 +11,11 @@ module UserAuth
   end
 
   def is_token_valid?(token, ip =nil)
-    #  request.env["REMOTE_ADDR"]
+
     if ip == nil
       rows = auth_database.execute( 'select guid from systemaccess where authtoken=' + "'" + token.to_s + "'" )
     else
-      rows = auth_database.execute( 'select guid from systemaccess where authtoken=' + "'" + token.to_s + "' and ip_addr ='" + request.env["REMOTE_ADDR"].to_s + "'" )
+      rows = auth_database.execute( 'select guid from systemaccess where authtoken=' + "'" + token.to_s + "' and ip_addr ='" + ip.to_s + "'" )
     end
     return false unless rows.count > 0
     return rows[0]
