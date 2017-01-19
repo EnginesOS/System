@@ -112,11 +112,8 @@ begin
   end
 
   def sql_lite_database
+    engines_api.auth_database
 
-    $auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if $auth_db.nil?
-    $auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if $auth_db.is_a?(FalseClass)
-    $auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if $auth_db.closed?
-    $auth_db
   rescue StandardError => e
     STDERR.puts('Exception failed to open  sql_lite_database: ' + e.to_s)
     return false

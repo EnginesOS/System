@@ -104,6 +104,9 @@ class EnginesCore < ErrorsApi
   require_relative 'certificate_actions.rb'
   include CertificateActions
   
+  require_relative 'user_auth.rb'
+  include UserAuth
+  
   require_relative '../containers/container_api/container_api.rb'
   require_relative '../containers/service_api/service_api.rb'
   require_relative '../docker/docker_api.rb'
@@ -157,42 +160,7 @@ class EnginesCore < ErrorsApi
      return first_run.sucess
   end
   
-
-   
-  def init_system_password(password,email, token = nil)
-    set_system_user_password('admin',password,email, token)
-  end
-  
-  def set_system_user_password(user,password,email, token= nil)
-    require "sqlite3"
-    db = SQLite3::Database.new SystemConfig.SystemAccessDB
-    
-    rws = db.execute("Select * from systemaccess where  username = '" + user.to_s + "'")
-    
-    if rws.count == 0
-      authtoken = SecureRandom.hex(128)
-      db.execute("INSERT INTO systemaccess (username, password, email, authtoken, uid) 
-                VALUES (?, ?, ?, ?,?)", [username, password, email.to_s, authtoken,0,0])
-    else
-    authtoken = SecureRandom.hex(128)
-      db.execute("UPDATE systemaccess SET password = '" \
-        + password.to_s + "',email='" + email.to_s + \
-        ", authtoken ='" + authtoken.to_s + "' " + \
-        " where username = 'admin' and authtoken = '" + token.to_s + '"')                
-    end   
-    db.close
-        
-    # FIXME REMOVE once all installs use proper auth            
-   # db.execute("INSERT INTO systemaccess (name, password, email, authtoken, uid) 
-    #               VALUES (?, ?, ?, ?,?)", ["admin", 'test', email.to_s, 'test_token_arandy',1,0])
-
-  rescue StandardError => e
-    log_error_mesg(e.to_s)
-    db.close
-    return true          
-  end
-  
-  
+ 
   
   def reserved_engine_names
     names = list_managed_engines
