@@ -14,7 +14,7 @@ options = {use_ssl => uri.scheme == 'https', :verify_mode => OpenSSL::SSL::VERIF
     req = Net::HTTP::Get.new(uri)
     req['access_token'] = ENV['access_token']
     req['HTTP_access_token'] = ENV['access_token']
-    parser = Yajl::Parser.new(:symbolize_keys => true)
+    parser = FFI_Yajl::Parser.new({:symbolize_keys => true})
     http.request(req) { |resp|
       resp.read_body do |chunk|
         begin

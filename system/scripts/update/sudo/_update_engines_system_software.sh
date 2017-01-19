@@ -11,6 +11,7 @@ echo "update System"
 cd /opt/engines
 git pull
 
+cp -rp /opt/engines/system/updates/src/* /
 
  cp /opt/engines/system/updates/src/etc/sudoers.d/* /etc/sudoers.d/ 
  chmod og-rw /etc/sudoers.d/* 
