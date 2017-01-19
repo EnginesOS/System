@@ -130,7 +130,7 @@ module DomainOperations
   end
 
   def get_ext_ip_for_hosted_dns()
-    open('http://jsonip.com/') { |s| JSON::parse(s.string,:symbolize_keys => true)[:ip] }
+    open('https://jsonip.com/') { |s| JSON::parse(s.string,:symbolize_keys => true)[:ip] }
   end
 
 end
