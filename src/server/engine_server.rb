@@ -241,7 +241,7 @@ begin
       end
 
       def is_token_valid?(token, ip =nil)
-        engines_api.is_token_valid?(token, ip =nil)
+        $engines_api.is_token_valid?(token, ip =nil)
       end
 
       def authenticate!
