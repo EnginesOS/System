@@ -5,10 +5,12 @@ end
 require 'rubygems'
 require 'json'
 require 'yajl'
+require 'ffi_yajl'
 
 require_relative 'client_http_requests.rb'
 require_relative 'client_login.rb'
 require_relative 'client_http_stream.rb'
+
 include ClientHTTPStream
 
 @silent = true
@@ -68,7 +70,7 @@ def perform_delete(params=nil)
 end
 
 def handle_resp(resp, expect_json=true)
-  parser = Yajl::Parser.new()
+  parser = FFI_Yajl::Parser.new({:symbolize_keys => true})
 
   if resp.status  >= 400
     log_error("Error " + resp.status.to_s)

@@ -14,7 +14,8 @@ begin
   require 'objspace'
   require 'warden'
   require "sqlite3"
-
+  require 'ffi_yajl'
+  
   def init_db
     create_table
     set_first_user
@@ -137,7 +138,8 @@ begin
     end
    
     def json_parser
-      @json_parser = Yajl::Parser.new(:symbolize_keys => true) if @json_parser.nil?
+     # @json_parser = Yajl::Parser.new(:symbolize_keys => true) if @json_parser.nil?
+      @json_parser = FFI_Yajl::Parser.new({:symbolize_keys => true}) if @json_parser.nil?
       @json_parser
     end
 
