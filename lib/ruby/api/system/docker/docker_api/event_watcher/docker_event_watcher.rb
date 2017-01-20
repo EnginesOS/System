@@ -33,6 +33,7 @@ class DockerEventWatcher  < ErrorsApi
 
     def trigger(hash)
       mask = event_mask(hash)
+      STDERR.puts('trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask' + @event_mask.to_s)
       SystemDebug.debug(SystemDebug.container_events,'trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask' + @event_mask.to_s)
       return  if  @event_mask == 0 || mask & @event_mask == 0
       hash[:state] = state_from_status( hash[:status] )
@@ -146,12 +147,13 @@ def reopen_connection
 end
 
 def nstart
-  parser = FFI_Yajl::Parser.new({:symbolize_keys => true})
-
+ 
+  parser =nil
   streamer = lambda do |chunk, remaining_bytes, total_bytes|
     begin
             r = ''
             chunk.strip!
+      parser = FFI_Yajl::Parser.new({:symbolize_keys => true}) if parser.is_nil?
             parser.parse(chunk) do |hash|
               next unless hash.is_a?(Hash)
               if hash.key?(:from) && hash[:from].length >= 64
@@ -159,8 +161,7 @@ def nstart
                 next
               end
               STDERR.puts('trigger' + hash.to_s )
-              trigger(hash)
-              
+              trigger(hash)       
             end
           rescue StandardError => e
             log_error_mesg('Chunk error on docker Event Stream _' + chunk.to_s + '_')
