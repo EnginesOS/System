@@ -2,7 +2,7 @@
 cd /home/app
     for mod in $*
      do    
-   		npm  install $mod
+   		sudo su $ContUser sh -c "npm  install -g $mod"
      done
 #Fix damage while root      
-   chown $ContUser -R  /home/home_dir/.npm
+  # chown $ContUser -R  /home/home_dir/.npm
