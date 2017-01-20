@@ -2,5 +2,5 @@
 cd /home/app
     for mod in $*
      do    
-   		npm  install $mod
+   		su -l $ContUser npm  install $mod
      done
