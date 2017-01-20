@@ -154,7 +154,9 @@ def nstart
             r = ''
             chunk.strip!
       parser = FFI_Yajl::Parser.new({:symbolize_keys => true}) if parser.is_nil?
+      STDERR.puts('event  cunk ' + chunk.to_s )  
             parser.parse(chunk) do |hash|
+              STDERR.puts('event  hash ' + hash.to_s )  
               next unless hash.is_a?(Hash)
               if hash.key?(:from) && hash[:from].length >= 64
                 SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
@@ -193,16 +195,18 @@ connection.request(:read_timeout => 7200,
 end
       
   def start
-    parser = FFI_Yajl::Parser.new({:symbolize_keys => true})
-
+ 
     req = Net::HTTP::Get.new('/events')
     client = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
     client.continue_timeout = 7200
     client.read_timeout = 7200
-
+    parser = nil
+    
     client.request(req) do |resp|
       resp.read_body do |chunk|
         begin
+          parser = FFI_Yajl::Parser.new({:symbolize_keys => true}) if parser.nil?
+
           r = ''
           chunk.strip!
           parser.parse(chunk) do |hash|
