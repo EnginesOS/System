@@ -25,6 +25,7 @@ class BluePrintReader
   :apache_modules,
   :php_modules,
   :pecl_modules,
+  :npm_modules,
   :archives_details,
   :worker_commands,
   :cron_jobs,
@@ -185,7 +186,7 @@ class BluePrintReader
     @pear_modules = []
     @php_modules = []
     @pecl_modules = []
-
+    @npm_modules = []
     pkg_modules = @blueprint[:software][:modules]
     return true unless pkg_modules.is_a?(Array)  # not an error just nada
     pkg_modules.each do |pkg_module|
@@ -207,6 +208,8 @@ class BluePrintReader
         @php_modules.push(modname)
       elsif pkg_module_type == 'apache'
         @apache_modules.push(modname)
+        elsif pkg_module_type == 'npm'
+          @npm_modules.push(npm)
       else
         @last_error = 'pkg module_type ' + pkg_module_type + ' Unknown for ' + modname
         return false
