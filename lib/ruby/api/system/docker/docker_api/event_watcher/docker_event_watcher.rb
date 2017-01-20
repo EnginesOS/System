@@ -91,17 +91,17 @@ def nstart
             r = ''
             chunk.strip!
       parser = FFI_Yajl::Parser.new({:symbolize_keys => true}) if parser.is_nil?
-      STDERR.puts('event  cunk ' + chunk.to_s )  
-            parser.parse(chunk) do |hash|
-              STDERR.puts('event  hash ' + hash.to_s )  
-              next unless hash.is_a?(Hash)
-              if hash.key?(:from) && hash[:from].length >= 64
-                SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
-                next
-              end
-              STDERR.puts('trigger' + hash.to_s )
+      STDERR.puts('event  cunk ' + chunk.to_s + chunk.class.name )  
+      hash =   parser.parse(chunk)#     do |hash|
+          STDERR.puts('event  hash ' + hash.to_s )  
+#              next unless hash.is_a?(Hash)
+#              if hash.key?(:from) && hash[:from].length >= 64
+#                SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
+#                next
+#              end
+#              STDERR.puts('trigger' + hash.to_s )
               trigger(hash)       
-            end
+      #        end
           rescue StandardError => e
             log_error_mesg('Chunk error on docker Event Stream _' + chunk.to_s + '_')
             log_exception(e,chunk)
