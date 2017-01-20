@@ -206,11 +206,12 @@ end
       resp.read_body do |chunk|
         begin
           parser = FFI_Yajl::Parser.new({:symbolize_keys => true}) if parser.nil?
-
+          STDERR.puts('event  cunk ' + chunk.to_s )  
           r = ''
           chunk.strip!
           parser.parse(chunk) do |hash|
             next unless hash.is_a?(Hash)
+            STDERR.puts('trigger' + hash.to_s )
             if hash.key?(:from) && hash[:from].length >= 64
               SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
               next
