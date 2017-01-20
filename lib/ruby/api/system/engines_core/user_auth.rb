@@ -2,12 +2,11 @@ module UserAuth
   require "sqlite3"
 
   def user_login(params)
+    
     rows = auth_database.execute( 'select authtoken from systemaccess where username=' + "'" + params[:user_name].to_s +
     "' and password = '" +  params[:password].to_s + "'")
-    #  auth_db.close
     return log_error(request,nil,'unauthorised', params) unless rows.count > 0
     rows[0]
-
   end
 
   def is_token_valid?(token, ip =nil)
@@ -55,10 +54,6 @@ module UserAuth
       ", authtoken ='" + authtoken.to_s + "' " + \
       " where username = 'admin' and authtoken = '" + token.to_s + '"')
     end
-
-    # FIXME REMOVE once all installs use proper auth
-    # db.execute("INSERT INTO systemaccess (name, password, email, authtoken, uid)
-    #               VALUES (?, ?, ?, ?,?)", ["admin", 'test', email.to_s, 'test_token_arandy',1,0])
 
   rescue StandardError => e
     log_error_mesg(e.to_s)
