@@ -209,7 +209,7 @@ class BluePrintReader
       elsif pkg_module_type == 'apache'
         @apache_modules.push(modname)
         elsif pkg_module_type == 'npm'
-          @npm_modules.push(npm)
+          @npm_modules.push(modname)
       else
         @last_error = 'pkg module_type ' + pkg_module_type + ' Unknown for ' + modname
         return false
