@@ -19,8 +19,8 @@ module SystemOperations
     @system_api.update_engines_system_software
   end
 
-  def update_system
-    @system_api.update_system
+  def update_base_os
+    @system_api.update_base_os
   end
 
 #  def generate_engines_user_ssh_key
@@ -35,9 +35,9 @@ module SystemOperations
     @system_api.generate_engines_user_ssh_key
   end
 
-  def system_update
-    @system_api.update_system
-  end
+#  def system_update
+#    @system_api.update_system
+#  end
 
   def enable_remote_exception_logging
     @system_api.enable_remote_exception_logging
