@@ -73,6 +73,8 @@ class ManagedUtility< ManagedContainer
 
     r = {}
     r[:stdout] = 'OK'
+    r[:result] = 0
+ 
     return r
 
   rescue StandardError => e
