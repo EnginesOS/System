@@ -10,20 +10,27 @@ module EnginesServerHost
     log_exception(e)
     return -1
   end
-
-  def restart_engines_system
-    res = Thread.new { run_server_script('restart_mgmt') }
+  
+  def restart_engines_system_service
+    res = Thread.new { run_server_script('restart_system_service') }
     # FIXME: check a status flag after sudo side post ssh run ie when we know it's definititly happenging
     return true if res.status == 'run'
     return false
     rescue StandardError => e
       SystemUtils.log_exception(e)
   end
-
-  def api_shutdown(reason)
+  def recreate_engines_system_service
+    res = Thread.new { run_server_script('recreate_system_service') }
+    # FIXME: check a status flag after sudo side post ssh run ie when we know it's definititly happenging
+    return true if res.status == 'run'
+    return false
+    rescue StandardError => e
+      SystemUtils.log_exception(e)
+  end
+  def halt_base_os(reason)
     log_error_mesg("Shutdown Due to:" + reason.to_s)
     File.delete(SystemConfig.BuildRunningParamsFile) if File.exist?(SystemConfig.BuildRunningParamsFile)
-    res = Thread.new { run_server_script('halt_system') }
+    res = Thread.new { run_server_script('power_off_base_os') }
     rescue StandardError => e
       SystemUtils.log_exception(e)
   end
@@ -158,7 +165,7 @@ require '/opt/engines/lib/ruby/system/system_config.rb'
 # FIxME
 # use SystemStatus.get_base_host_ip for IP 
     cmd = 'ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/' + script_name + ' engines@' + ENV['CONTROL_IP'] + '  /opt/engines/system/scripts/ssh/' + script_name + '.sh'
-STDERR.puts('RNU SERVER SCRIPT cmd'  + cmd.to_s)      
+STDERR.puts('RUN SERVER SCRIPT cmd'  + cmd.to_s)      
     Timeout.timeout(script_timeout) do
       return SystemUtils.execute_command(cmd, false, script_data)
     end
