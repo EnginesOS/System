@@ -1,5 +1,6 @@
 module ConfigureServicesBackup
   def configure_services_backup(services)
+    log_build_output('Creating Backup Scripts')
     services.each do |service|
       next unless service[:persistent] == true
       script_src_dir = SystemConfig.BackupScriptsSrcRoot + '/' + service[:publisher_namespace] + '/' + service[:type_path]
