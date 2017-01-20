@@ -19,9 +19,9 @@ options = {use_ssl => uri.scheme == 'https', :verify_mode => OpenSSL::SSL::VERIF
       resp.read_body do |chunk|
         begin
           next if chunk == "\0" || chunk == "\n"
-          hash = parser.parse(chunk) do |hash|
+          hash = parser.parse(chunk)  #do |hash|
             p hash.to_json
-          end
+            #  end
           #dont panic on bad json as it is the \0 keep alive
         rescue StandardError => e
           p e
