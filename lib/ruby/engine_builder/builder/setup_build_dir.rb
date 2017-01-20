@@ -18,7 +18,7 @@ def setup_build_dir
   apply_templates_to_environments
   create_engines_config_files
   index = 0
-  unless @blueprint_reader.sed_strings.nil? || @blueprint_reader.sed_strings[:sed_str].is_nil?
+  unless @blueprint_reader.sed_strings.nil? || @blueprint_reader.sed_strings[:sed_str].nil?
     @blueprint_reader.sed_strings[:sed_str].each do |sed_string|
       sed_string = @templater.process_templated_string(sed_string)
       @blueprint_reader.sed_strings[:sed_str][index] = sed_string
