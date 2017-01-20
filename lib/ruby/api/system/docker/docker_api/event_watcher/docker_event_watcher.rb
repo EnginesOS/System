@@ -146,15 +146,15 @@ end
           STDERR.puts('event  cunk ' + chunk.to_s )  
           r = ''
           chunk.strip!
-          parser.parse(chunk) do |hash|
-            next unless hash.is_a?(Hash)
+          hash =  parser.parse(chunk)# do |hash|
+#            next unless hash.is_a?(Hash)
             STDERR.puts('trigger' + hash.to_s )
-            if hash.key?(:from) && hash[:from].length >= 64
-              SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
-              next
-            end
+#            if hash.key?(:from) && hash[:from].length >= 64
+#              SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
+#              next
+#            end
             trigger(hash)
-          end
+        #  end
         rescue StandardError => e
           log_error_mesg('Chunk error on docker Event Stream _' + chunk.to_s + '_')
           log_exception(e,chunk)
