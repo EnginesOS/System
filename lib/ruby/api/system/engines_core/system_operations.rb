@@ -11,10 +11,14 @@ module SystemOperations
     @system_api.restart_system
   end
  
-  def restart_engines_system
-    @system_api.restart_engines_system
-  end
+#  def restart_engines_system
+#    @system_api.restart_engines_system
+#  end
 
+  def restart_engines_system_service
+    @system_api.restart_engines_system_service
+  end
+  
   def update_engines_system_software
     @system_api.update_engines_system_software
   end
