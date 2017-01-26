@@ -42,7 +42,7 @@ rescue StandardError => e
 end
 
 def read_stdin_json
-  JSON.parse(read_stdin_data)
+  JSON.parse(read_stdin_data, :create_additons => true )
 end
 
 def perform_get

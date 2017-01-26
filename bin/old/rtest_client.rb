@@ -2,7 +2,7 @@ require 'yajl'
 
 def convert_json_message_to_hash(request)
     require 'yajl'
-   hash_request = JSON.parse(request)
+   hash_request = JSON.parse(request, :create_additons => true )
     return  symbolize_top_level_keys(hash_request)
   rescue 
       return nil
