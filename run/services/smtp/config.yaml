@@ -16,6 +16,11 @@ volumes:
   remotepath: "/etc/ssl"
   localpath: "/opt/engines/etc/smtp/ssl"
   permissions: "ro"
+ spool:
+  name: spool
+  remotepath: "/var/spool/postfix/"
+  localpath: "/var/lib/fs/services/postfix"
+  permissions: "rw"
 port: 
 mapped_ports: 
  smtp: 
