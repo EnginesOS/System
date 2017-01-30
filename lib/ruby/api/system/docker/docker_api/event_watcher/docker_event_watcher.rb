@@ -90,9 +90,10 @@ def nstart
     begin
             r = ''
             chunk.strip!
-      parser = FFI_Yajl::Parser.new({:symbolize_keys => true}) if parser.is_nil?
+   #   parser = FFI_Yajl::Parser.new({:symbolize_keys => true}) if parser.is_nil?
       STDERR.puts('event  cunk ' + chunk.to_s + chunk.class.name )  
-      hash =   parser.parse(chunk)#     do |hash|
+   #   hash =   parser.parse(chunk)#     do |hash|
+      SystemUtils.deal_with_jason(JSON.parse(chunk, :create_additons => true ))
           STDERR.puts('event  hash ' + hash.to_s )  
 #              next unless hash.is_a?(Hash)
 #              if hash.key?(:from) && hash[:from].length >= 64
@@ -146,7 +147,8 @@ end
           STDERR.puts('event  cunk ' + chunk.to_s )  
           r = ''
           chunk.strip!
-          hash =  parser.parse(chunk)# do |hash|
+          #      hash =  parser.parse(chunk)# do |hash|
+          SystemUtils.deal_with_jason(JSON.parse(chunk, :create_additons => true ))
 #            next unless hash.is_a?(Hash)
             STDERR.puts('trigger' + hash.to_s )
 #            if hash.key?(:from) && hash[:from].length >= 64

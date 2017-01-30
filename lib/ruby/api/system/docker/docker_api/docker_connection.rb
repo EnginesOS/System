@@ -178,9 +178,10 @@ class DockerConnection < ErrorsApi
     return log_error_mesg("Un exepect response from docker", resp, resp.body, resp.headers.to_s )   unless resp.status  == 200 ||  resp.status  == 201
     return resp.body unless expect_json == true
     #only want first so return n first
-    hash =  response_parser.parse(resp.body) #do |hash |
+    # hash =  response_parser.parse(resp.body) #do |hash |
+    SystemUtils.deal_with_jason(JSON.parse(resp.body, :create_additons => true ))
       #  @hashes.push(hash)
-      return hash
+    #   return hash
    # end
     #  return @hashes[0]
   rescue StandardError => e
