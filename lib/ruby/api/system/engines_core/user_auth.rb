@@ -4,8 +4,8 @@ module UserAuth
   def user_login(params)
     
     rows = auth_database.execute( 'select authtoken from systemaccess where username=' + "'" + params[:user_name].to_s +
-    "' and password = '" +  params[:password].to_s + "'")
-    return log_error("failed to select",nil,'unauthorised', params) unless rows.count > 0
+    "' and password = '" +  params[:password].to_s + "';")
+    return log_error_mesg("failed to select",nil,'unauthorised', params) unless rows.count > 0
     rows[0]
   end
 
