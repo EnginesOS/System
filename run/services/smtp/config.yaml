@@ -18,7 +18,7 @@ volumes:
   permissions: "ro"
  spool:
   name: spool
-  remotepath: "/var/spool/postfix/"
+  remotepath: "/var/aspool/postfix/"
   localpath: "/var/lib/fs/services/postfix"
   permissions: "rw"
 port: 
