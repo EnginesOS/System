@@ -57,6 +57,7 @@ module FirstRunDNS
     config_hash[:configurator_name] = 'default_domain'
     config_hash[:variables] = {}
     config_hash[:variables][:domain_name] = domain_name
+    config_hash[:variables][:deliver_local] = false
     return true if @api.update_service_configuration(config_hash)
     return log_error_mesg('smtp default domain configurator ', config_hash)
   end

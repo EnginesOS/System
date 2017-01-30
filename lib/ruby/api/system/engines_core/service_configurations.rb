@@ -100,7 +100,7 @@ end
      service_param[:type_path] = service.type_path.to_s
      # setting stopped contianer is ok as call can know the state, used to boot strap a config
      unless service.is_running?
-       service_param[:pending] = true
+      service_param[:pending] = true
       service_manager.update_service_configuration(service_param)   
        return true
      end
