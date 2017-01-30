@@ -13,9 +13,9 @@ module UserAuth
   def is_token_valid?(token, ip =nil)
 
     if ip == nil
-      rows = auth_database.execute( 'select guid from systemaccess where authtoken=' + "'" + token.to_s + "'" )
+      rows = auth_database.execute( 'select guid from systemaccess where authtoken=' + "'" + token.to_s + "';" )
     else
-      rows = auth_database.execute( 'select guid from systemaccess where authtoken=' + "'" + token.to_s + "' and ip_addr ='" + ip.to_s + "'" )
+      rows = auth_database.execute( 'select guid from systemaccess where authtoken=' + "'" + token.to_s + "' and ip_addr ='" + ip.to_s + "';" )
     end
     return false unless rows.count > 0
     return rows[0]
@@ -42,7 +42,7 @@ module UserAuth
 
   def set_system_user_password(user,password,email, token= nil)
 
-    rws = auth_database.execute("Select * from systemaccess where  username = '" + user.to_s + "'")
+    rws = auth_database.execute("Select * from systemaccess where  username = '" + user.to_s + "';")
 
     if rws.count == 0
       authtoken = SecureRandom.hex(128)
@@ -53,7 +53,7 @@ module UserAuth
       auth_database.execute("UPDATE systemaccess SET password = '" \
       + password.to_s + "',email='" + email.to_s + \
       ", authtoken ='" + authtoken.to_s + "' " + \
-      " where username = 'admin' and authtoken = '" + token.to_s + '"')
+      " where username = 'admin' and authtoken = '" + token.to_s + '";')
     end
 
   rescue StandardError => e
