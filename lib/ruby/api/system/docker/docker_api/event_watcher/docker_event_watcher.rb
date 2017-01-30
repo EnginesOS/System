@@ -148,7 +148,7 @@ end
           r = ''
           chunk.strip!
           #      hash =  parser.parse(chunk)# do |hash|
-          SystemUtils.deal_with_jason(JSON.parse(chunk, :create_additons => true ))
+          hash =  SystemUtils.deal_with_jason(JSON.parse(chunk, :create_additons => true ))
 #            next unless hash.is_a?(Hash)
             STDERR.puts('trigger' + hash.to_s )
 #            if hash.key?(:from) && hash[:from].length >= 64
@@ -199,7 +199,7 @@ end
   private
 
   def trigger(hash)
-
+r = ''
     @event_listeners.values.each do |listener|
       unless listener.container_id.nil?
         STDERR.puts('matching ' + listener.container_id.to_s)
