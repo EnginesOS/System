@@ -57,7 +57,7 @@ module UserAuth
 
   rescue StandardError => e
     log_error_mesg(e.to_s)
-    db.close
+auth_database.close
     return true
   end
 
