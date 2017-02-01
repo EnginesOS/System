@@ -1,14 +1,22 @@
 module PublicApiSystemControlEnginesSystem
   def update_engines_system_software
-  @core_api.update_engines_system_software
+    @core_api.update_engines_system_software
   end
-  def restart_engines_system
-  @core_api.restart_engines_system
+
+  def recreate_engines_system_service
+    @core_api.recreate_engines_system_service
   end
-  def recreate_mgmt
-  @core_api.recreate_mgmt
+
+  def restart_engines_system_service
+    @core_api.restart_engines_system_service
   end
+  
   def dump_heap_stats
     @core_api.dump_heap_stats
   end
+
+  def is_token_valid?(token, ip =nil)
+    @core_api.is_token_valid?(token, ip =nil)
+  end
+
 end

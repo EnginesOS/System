@@ -18,7 +18,7 @@ end
 #  Restart the engines system
 # @return [true]
 get '/v0/system/control/engines_system/restart' do
-  restart = engines_api.restart_engines_system
+  restart = engines_api.restart_engines_system_service
   return log_error(request, restart) if restart.is_a?(EnginesError)
     status(202)
   content_type 'text/plain'
@@ -29,7 +29,7 @@ end
 #  Recreate the engines system container
 # @return [true]
 get '/v0/system/control/engines_system/recreate' do
-  recreate = engines_api.recreate_mgmt
+  recreate = engines_api.recreate_engines_system_service
   return log_error(request, recreate) if recreate.is_a?(EnginesError)
     status(202)
   content_type 'text/plain'

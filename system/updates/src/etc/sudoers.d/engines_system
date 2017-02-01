@@ -1,9 +1,9 @@
 engines ALL = (root) NOPASSWD: /opt/engines/system/scripts/ssh/sudo/_apt-get_update.sh
-engines ALL = (root) NOPASSWD: /opt/engines/system/scripts/ssh/sudo/_halt_system.sh
+engines ALL = (root) NOPASSWD: /opt/engines/system/scripts/ssh/sudo/_power_off_base_os.sh
 engines ALL = (root) NOPASSWD: /opt/engines/system/scripts/ssh/sudo/_install_ca.sh
 engines ALL = (root) NOPASSWD: /opt/engines/system/scripts/ssh/sudo/_install_cert.sh
 engines ALL = (root) NOPASSWD: /opt/engines/system/scripts/ssh/sudo/_remove_cert.sh
-engines ALL = (root) NOPASSWD: /opt/engines/system/scripts/ssh/sudo/_restart_system.sh
+engines ALL = (root) NOPASSWD: /opt/engines/system/scripts/ssh/sudo/_restart_base_os.sh
 engines ALL = (root) NOPASSWD: /opt/engines/system/scripts/ssh/sudo/_update_base_os.sh
 engines ALL = (root) NOPASSWD: /opt/engines/system/scripts/ssh/sudo/_update_engines_console_password.sh
 engines ALL = (root) NOPASSWD: /opt/engines/system/scripts/ssh/sudo/_rotate_container_log.sh

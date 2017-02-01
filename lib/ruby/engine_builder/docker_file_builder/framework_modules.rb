@@ -50,6 +50,16 @@ module FrameworkModules
     write_line('RUN a2enmod ' + ap_modules_str)
   end
 
+  def write_npm_modules
+    return if @blueprint_reader.npm_modules.count < 1
+    write_line('#NPM Modules')
+    npm_modules_str = ''
+    @blueprint_reader.npm_modules.each do |npm_module|
+      npm_modules_str += npm_module + ' ' unless npm_module.nil?
+    end
+    write_build_script('install_npm_modules.sh ' +  npm_modules_str)
+  end
+  
   def write_php_modules
     return if @blueprint_reader.php_modules.count < 1
     write_line('#PHP Modules')

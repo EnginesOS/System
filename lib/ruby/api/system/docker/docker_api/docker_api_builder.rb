@@ -47,10 +47,11 @@ module DockerApiBuilder
       lambda do |chunk , c , t|
         begin
           #hash = JSON.parse(chunk)
-          @parser.parse(chunk) do |hash|
+          hash =   @parser.parse(chunk)  #do |hash|
+          hash = SystemUtils.deal_with_jason(JSON.parse(chunk, :create_additons => true ))
             @builder.log_build_output(hash[:stream]) if hash.key?(:stream)
             @builder.log_build_errors(hash[:errorDetail]) if hash.key?(:errorDetail)
-          end
+            #   end
 
         rescue StandardError =>e
           STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s)

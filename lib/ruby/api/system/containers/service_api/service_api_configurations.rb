@@ -7,7 +7,7 @@ module ServiceApiConfigurations
     if result[:result] == 0
       #variables = SystemUtils.hash_string_to_hash(result[:stdout])
       #FIXMe dont use JSON.pars
-      variables_hash = JSON.parse( result[:stdout], :create_additons => true ,:symbolize_keys => true)
+      variables_hash = SystemUtils.deal_with_jason(JSON.parse( result[:stdout], :create_additons => true ))
       params[:variables] = SystemUtils.symbolize_keys(variables_hash)      
       return params
     end

@@ -1,17 +1,20 @@
 module PublicApiSystemControlBaseOS
   
-  def update_system
-     @system_api.update_system
+  def update_base_os
+     @system_api.update_base_os
    end
    
-  def restart_system   
-    @system_api.restart_system
+  def restart_base_os   
+    @system_api.restart_base_os
   end
   
-  
-def system_update
- @system_api.update_system
-end
+  def halt_base_os
+    @system_api.halt_base_os
+  end
+#  
+#def system_update
+# @system_api.update_system
+#end
 
 end
 

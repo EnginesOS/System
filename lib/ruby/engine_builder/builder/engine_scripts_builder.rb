@@ -53,6 +53,7 @@ module EngineScriptsBuilder
   
   def create_actionator_scripts
     SystemDebug.debug(SystemDebug.builder,"creating actionators ",@blueprint_reader.actionators)
+    log_build_output('Creating Actionators')
     return true if @blueprint_reader.actionators.nil?
     destdir = SystemConfig.ActionatorDir
     FileUtils.mkdir_p(basedir + destdir ) unless Dir.exist?(basedir + destdir )

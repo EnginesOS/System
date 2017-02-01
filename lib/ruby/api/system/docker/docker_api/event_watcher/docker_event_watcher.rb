@@ -1,22 +1,6 @@
 class DockerEventWatcher  < ErrorsApi
   class EventListener
-    @@container_event = 1
-    @@engine_target  = 2
-    @@service_target = 4
-    @@container_exec = 8
-    @@container_action = 16
-    @@image_event = 32
-    @@container_commit = 64
-    @@container_delete = 128
-    @@container_kill = 256
-    @@container_die = 512
-    @@container_event = 1024
-    @@container_pull = 2048
-    @@build_event = 4096
-    @@container_attach  = 8192
-
-    @@service_action = @@container_action | @@service_target
-    @@engine_action = @@container_action | @@engine_target
+    
 
     attr_accessor :container_id, :event_mask
     # @@container_id
@@ -32,7 +16,8 @@ class DockerEventWatcher  < ErrorsApi
     end
 
     def trigger(hash)
-      mask = event_mask(hash)
+      mask = EventMask.event_mask(hash)
+      STDERR.puts('trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask' + @event_mask.to_s)
       SystemDebug.debug(SystemDebug.container_events,'trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask' + @event_mask.to_s)
       return  if  @event_mask == 0 || mask & @event_mask == 0
       hash[:state] = state_from_status( hash[:status] )
@@ -66,59 +51,12 @@ class DockerEventWatcher  < ErrorsApi
       end
     end
 
-    def event_mask(event_hash)
-      mask = 0
-      if event_hash[:Type] = 'container'
-        mask |= @@container_event
-        if event_hash.key?(:from)
-          return  mask |= @@build_event if event_hash[:from].nil?
-          return  mask |= @@build_event if event_hash[:from].length == 64
-          if event_hash[:from].start_with?('engines/')
-            mask |= @@service_target
-          else
-            mask |= @@engine_target
-          end
-        end
-        return  0  if event_hash[:status].nil?
-
-        if event_hash[:status].start_with?('exec')
-          mask |= @@container_exec
-        elsif event_hash[:status] == 'delete'
-          mask |= @@container_delete
-        elsif event_hash[:status] == 'destroy'
-          mask |= @@container_delete | @@container_action
-        elsif event_hash[:status] == 'commit'
-          mask |= @@container_commit
-        elsif event_hash[:status] == 'pull'
-          mask |= @@container_pull
-          #        elsif event_hash['status'] == 'delete'
-          #          mask |= @@container_delete
-        elsif event_hash[:status] == 'die'
-          mask |= @@container_die
-        elsif event_hash[:status] == 'kill'
-          mask |= @@container_kill
-        elsif event_hash[:status] == 'attach'
-          mask |= @@container_attach
-        else
-          mask |= @@container_action
-        end
-      elsif event_hash[:Type] = 'image'
-        mask |= @@image_event
-      elsif event_hash[:Type] = 'network'
-        mask |= @@network_event
-      end
-
-      return mask
-      rescue StandardError => e
-           SystemDebug.debug(SystemDebug.container_events,event_hash.to_s + ':' + e.to_s + ':' +  e.backtrace.to_s)
-           return e
-    end
-  end
+end
   require 'yajl'
   require 'net_x/http_unix'
   require 'socket'
   require 'json'
-
+  require_relative 'event_mask.rb'
   def initialize(system, event_listeners = nil )
     @system = system
     # FIXMe add conntection watcher that re establishes connection asap and continues trying after warngin ....
@@ -146,22 +84,25 @@ def reopen_connection
 end
 
 def nstart
-  parser = FFI_Yajl::Parser.new({:symbolize_keys => true})
-
+ 
+  parser =nil
   streamer = lambda do |chunk, remaining_bytes, total_bytes|
     begin
             r = ''
             chunk.strip!
-            parser.parse(chunk) do |hash|
-              next unless hash.is_a?(Hash)
-              if hash.key?(:from) && hash[:from].length >= 64
-                SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
-                next
-              end
-              STDERR.puts('trigger' + hash.to_s )
-              trigger(hash)
-              
-            end
+   #   parser = FFI_Yajl::Parser.new({:symbolize_keys => true}) if parser.is_nil?
+      STDERR.puts('event  cunk ' + chunk.to_s + chunk.class.name )  
+   #   hash =   parser.parse(chunk)#     do |hash|
+      SystemUtils.deal_with_jason(JSON.parse(chunk, :create_additons => true ))
+          STDERR.puts('event  hash ' + hash.to_s )  
+#              next unless hash.is_a?(Hash)
+#              if hash.key?(:from) && hash[:from].length >= 64
+#                SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
+#                next
+#              end
+#              STDERR.puts('trigger' + hash.to_s )
+              trigger(hash)       
+      #        end
           rescue StandardError => e
             log_error_mesg('Chunk error on docker Event Stream _' + chunk.to_s + '_')
             log_exception(e,chunk)
@@ -192,26 +133,30 @@ connection.request(:read_timeout => 7200,
 end
       
   def start
-    parser = FFI_Yajl::Parser.new({:symbolize_keys => true})
-
+ 
     req = Net::HTTP::Get.new('/events')
     client = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
     client.continue_timeout = 7200
     client.read_timeout = 7200
-
+    parser = nil
+    
     client.request(req) do |resp|
       resp.read_body do |chunk|
         begin
+          parser = FFI_Yajl::Parser.new({:symbolize_keys => true}) if parser.nil?
+          STDERR.puts('event  cunk ' + chunk.to_s )  
           r = ''
           chunk.strip!
-          parser.parse(chunk) do |hash|
-            next unless hash.is_a?(Hash)
-            if hash.key?(:from) && hash[:from].length >= 64
-              SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
-              next
-            end
+          #      hash =  parser.parse(chunk)# do |hash|
+          hash =  SystemUtils.deal_with_jason(JSON.parse(chunk, :create_additons => true ))
+#            next unless hash.is_a?(Hash)
+            STDERR.puts('trigger' + hash.to_s )
+#            if hash.key?(:from) && hash[:from].length >= 64
+#              SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
+#              next
+#            end
             trigger(hash)
-          end
+        #  end
         rescue StandardError => e
           log_error_mesg('Chunk error on docker Event Stream _' + chunk.to_s + '_')
           log_exception(e,chunk)
@@ -254,9 +199,10 @@ end
   private
 
   def trigger(hash)
-
+r = ''
     @event_listeners.values.each do |listener|
       unless listener.container_id.nil?
+        STDERR.puts('matching ' + listener.container_id.to_s)
         next unless hash[:id] == listener.container_id
       end
       log_exeception(r) if (r = listener.trigger(hash)).is_a?(StandardError)

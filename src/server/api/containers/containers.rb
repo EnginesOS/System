@@ -143,9 +143,10 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
             bytes = events_stream.rd.read_nonblock(2048)
             begin
               jason_event = ''
-              json_parser.parse(bytes.strip) do |event |
-                jason_event = event
-              end
+              #  jason_event =    json_parser.parse(bytes.strip) #do |event |
+              #     jason_event = event
+             # end
+              jason_event =  JSON.parse(bytes.strip, :create_additons => true ) 
             rescue  FFI_Yajl::ParseError => e
               STDERR.puts('Failed to parse docker events ' + bytes + ':' + e.to_s )
               next

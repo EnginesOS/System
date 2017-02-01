@@ -5,7 +5,7 @@
 #  Restart the base OS
 # @return [true]
 get '/v0/system/control/base_os/restart' do
-  restart = engines_api.restart_system
+  restart = engines_api.restart_base_os
   return log_error(request, restart) if restart.is_a?(EnginesError)
   status(202)
   content_type 'text/plain'
@@ -22,7 +22,7 @@ post '/v0/system/control/base_os/shutdown' do
   cparams =  Utils::Params.assemble_params(p_params, [],  [:reason])
   return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
   shutdown = cparams[:reason] #symbolize_keys(params)
-  r = engines_api.shutdown(shutdown)
+  r = engines_api.halt_base_os(shutdown)
   return log_error(request, r, cparams) if r.is_a?(EnginesError)
   status(202)
   content_type 'text/plain'
@@ -33,7 +33,7 @@ end
 # update the base OS
 # @return [true|false]
 get '/v0/system/control/base_os/update' do
-  system_update = engines_api.system_update
+  system_update = engines_api.update_base_os
   return log_error(request, system_update) if system_update.is_a?(EnginesError)
   status(202)
   content_type 'text/plain'
