@@ -8,6 +8,9 @@ module ContainerControls
     expire_engine_info
     return  r   
   end
+  def halt_container
+    stop_container
+  end
 
   def stop_container
     #expire_engine_info
