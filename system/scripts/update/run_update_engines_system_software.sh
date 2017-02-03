@@ -8,8 +8,8 @@ echo "Stopping"
 docker stop system 
 docker stop registry
 
-  /opt/engines/system/scripts/system/rotate_system_log.sh 
-
+  /opt/engines/system/scripts/system/rotate_system_log.sh system
+ /opt/engines/system/scripts/system/rotate_system_log.sh registry
 echo "Restarting"
 
 docker start registry 
