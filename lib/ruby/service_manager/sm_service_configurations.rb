@@ -11,6 +11,7 @@ module SmServiceConfigurations
     return log_error_mesg('Missing Configurator ', config_hash[:configurator_name]) unless configurators.key?(config_hash[:configurator_name].to_sym)
     configurator_definition = configurators[config_hash[:configurator_name].to_sym]
     unless configurator_definition.key?(:no_save) && configurator_definition[:no_save]
+      STDERR.puts("sm updating config " + config_hash.to_s)
       return test_registry_result(system_registry_client.update_service_configuration(config_hash))
     else
       return true

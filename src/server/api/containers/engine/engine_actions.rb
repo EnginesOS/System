@@ -39,6 +39,18 @@ get '/v0/containers/engine/:engine_name/stop' do
   content_type 'text/plain'
   r.to_s
 end
+# @method halt_engine
+# @overload get '/v0/containers/engine/:engine_name/halt'
+# halt the engine without affecting it's setstate
+# @return [true]
+get '/v0/containers/engine/:engine_name/halt' do
+  engine = get_engine(params[:engine_name])
+  return log_error(request, engine, params) if engine.is_a?(EnginesError)
+  r = engine.halt_container
+  return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
+  content_type 'text/plain'
+  r.to_s
+end
 # @method start_engine
 # @overload get '/v0/containers/engine/:engine_name/start'
 # start the engine

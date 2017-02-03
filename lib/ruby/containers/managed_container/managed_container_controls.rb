@@ -124,6 +124,14 @@ module ManagedContainerControls
     true
     }
   end
+  def halt_container
+    @container_mutex.synchronize {
+    return r unless (r = prep_task(:stop))
+   # @container_api.deregister_non_persistent_services(self)
+     super
+    true
+    }
+  end
 
   def start_container
 
