@@ -70,7 +70,7 @@ begin
 
   class Application < Sinatra::Base
 
-    @no_op = {:no_op => true}.to_json
+ 
     @events_s = nil
     set :sessions, true
     set :logging, true

@@ -135,7 +135,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
         has_data = true
   
         timer = EventMachine::PeriodicTimer.new(10) do 
-             
+          
                         if out.closed?
                          # has_data = finialise_events_stream(events_stream)
                           STDERR.puts('NOOP found OUT IS CLOSED: ' + timer.to_s)
@@ -144,7 +144,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
                           next
                         else
                           STDERR.puts('PERIOD')
-                          out << @no_op #unless lock_timer == true
+                          out <<  {:no_op => true}.to_json#unless lock_timer == true
                         end
                       end if timer.nil?
                       
