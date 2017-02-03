@@ -85,7 +85,7 @@ def rest_post(path,params, headers=nil)
   begin
    # STDERR.puts(' POST ' + path.to_s )
     headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
-    r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :post,:path => path,:body => query_hash(params).to_json ))
+    r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :post,:path => path,:body => query_hash(params) ))
     return r
   rescue   Excon::Error::Socket => e
     reopen_connection
