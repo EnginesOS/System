@@ -139,7 +139,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
                   STDERR.puts('PERIOD')
                   if out.closed?
                     has_data = finialise_events_stream(events_stream)
-                    STDERR.puts('NOOP found OUT IS CLOSED')
+                    STDERR.puts('NOOP found OUT IS CLOSED: ' +@timer.to_s)
                     @timer.cancel unless @timer.nil?
                     @timer = nil
                     #@events_stream.stop unless @events_stream.nil?
