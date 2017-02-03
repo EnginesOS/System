@@ -131,10 +131,13 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
    
     stream :keep_open do | out  |
       begin
+        has_data = true
+        events_stream = engines_api.container_events_stream
+        out.callback {  finialise_events_stream(events_stream)}
                 @timer = EventMachine::PeriodicTimer.new(10) do
                   STDERR.puts('PERIOD')
                   if out.closed?
-                    has_data = false
+                    has_data = finialise_events_stream(events_stream)
                     STDERR.puts('NOOP found OUT IS CLOSED')
                     @timer.cancel unless @timer.nil?
                     @timer = nil
@@ -146,10 +149,9 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
                 end if @timer.nil?
        
         #      STDERR.puts('OPEN EVENT STREAM')
-        events_stream = engines_api.container_events_stream
-        out.callback {  finialise_events_stream(events_stream)}
+
         #  save_curr_events_stream(events_stream )
-        has_data = true
+   
         while has_data == true
           #   STDERR.puts('WHILE HAS DATA ' + events_stream.to_s + ':' + events_stream.class.name + ':' + events_stream.rd.class.name + ':' + events_stream.rd.to_s + ':' + events_stream.rd.inspect)
           begin
