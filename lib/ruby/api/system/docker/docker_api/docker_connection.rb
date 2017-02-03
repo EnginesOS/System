@@ -145,13 +145,14 @@ class DockerConnection < ErrorsApi
   end
 
   def get_request(uri,  expect_json = true, headers = {}, timeout = 60)
-
-    return handle_resp(connection.request(:method => :get,
+    
+    STDERR.puts(' docker conntection' + connection.to_s)
+r = connection.request(:method => :get,
     :path => uri,
     :read_timeout => timeout,
-    :headers => headers),
-    expect_json
-    ) unless headers.nil?
+    :headers => headers)
+    STDERR.puts(' docker rget' + r.to_s)
+    return handle_resp(r,expect_json) unless headers.nil?
 
     handle_resp(connection.request(:method => :get,
     :path => uri),
