@@ -64,10 +64,10 @@ module Excon
           Excon::Response.parse_headers(socket, datum)
           datum[:hijack_block].call socket.instance_variable_get(:@socket)
             
-
+        end
         @stack.response_call(datum)   
          
-        end
+       
       #    rescue IO::WaitReadable
              # IO.select([events_stream.rd])
       #  retry
