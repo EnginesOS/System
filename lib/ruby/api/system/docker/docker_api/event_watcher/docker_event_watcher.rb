@@ -17,7 +17,7 @@ class DockerEventWatcher  < ErrorsApi
 
     def trigger(hash)
       mask = EventMask.event_mask(hash)
-      STDERR.puts('trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask' + @event_mask.to_s)
+     # STDERR.puts('trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask' + @event_mask.to_s)
       SystemDebug.debug(SystemDebug.container_events,'trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask' + @event_mask.to_s)
       return  if  @event_mask == 0 || mask & @event_mask == 0
       hash[:state] = state_from_status( hash[:status] )
@@ -76,7 +76,7 @@ end
 
 def reopen_connection
   @events_connection.reset
-  STDERR.puts(' REOPEN doker.sock connection ')
+ # STDERR.puts(' REOPEN doker.sock connection ')
   @events_connection = Excon.new('unix:///', :socket => '/var/run/docker.sock',
   :debug_request => true,
   :debug_response => true,
@@ -91,10 +91,10 @@ def nstart
             r = ''
             chunk.strip!
    #   parser = FFI_Yajl::Parser.new({:symbolize_keys => true}) if parser.is_nil?
-      STDERR.puts('event  cunk ' + chunk.to_s + chunk.class.name )  
+   #   STDERR.puts('event  cunk ' + chunk.to_s + chunk.class.name )  
    #   hash =   parser.parse(chunk)#     do |hash|
       SystemUtils.deal_with_jason(JSON.parse(chunk, :create_additons => true ))
-          STDERR.puts('event  hash ' + hash.to_s )  
+       #   STDERR.puts('event  hash ' + hash.to_s )  
 #              next unless hash.is_a?(Hash)
 #              if hash.key?(:from) && hash[:from].length >= 64
 #                SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
@@ -117,17 +117,17 @@ connection.request(:read_timeout => 7200,
   @events_connection.reset   
   
   log_error_mesg('Restarting docker Event Stream ')
-   STDERR.puts('Restarting docker Event Stream as close')
+ #  STDERR.puts('Restarting docker Event Stream as close')
   @system.start_docker_event_listener(@event_listeners)
   
   rescue  Excon::Error::Socket => e
-     STDERR.puts(' docker socket stream close ')
+ #    STDERR.puts(' docker socket stream close ')
   @events_connection.reset   
   @system.start_docker_event_listener(@event_listeners)
   rescue StandardError => e
       log_exception(e)
       log_error_mesg('Restarting docker Event Stream post exception ')
-      STDERR.puts('Restarting docker Event Stream post exception due to ' + e.to_s)
+    #  STDERR.puts('Restarting docker Event Stream post exception due to ' + e.to_s)
   @events_connection.reset   
       @system.start_docker_event_listener(@event_listeners)
 end
@@ -144,13 +144,13 @@ end
       resp.read_body do |chunk|
         begin
           parser = FFI_Yajl::Parser.new({:symbolize_keys => true}) if parser.nil?
-          STDERR.puts('event  cunk ' + chunk.to_s )  
+       #   STDERR.puts('event  cunk ' + chunk.to_s )  
           r = ''
           chunk.strip!
           #      hash =  parser.parse(chunk)# do |hash|
           hash =  SystemUtils.deal_with_jason(JSON.parse(chunk, :create_additons => true ))
 #            next unless hash.is_a?(Hash)
-            STDERR.puts('trigger' + hash.to_s )
+          #  STDERR.puts('trigger' + hash.to_s )
 #            if hash.key?(:from) && hash[:from].length >= 64
 #              SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
 #              next
@@ -167,16 +167,16 @@ end
     client.finish
     
     log_error_mesg('Restarting docker Event Stream ')
-     STDERR.puts('Restarting docker Event Stream as close')
+ #    STDERR.puts('Restarting docker Event Stream as close')
     @system.start_docker_event_listener(@event_listeners)
   rescue Net::ReadTimeout
-     STDERR.puts('Restarting docker Event Stream Read Timeout as timeout')
+   #  STDERR.puts('Restarting docker Event Stream Read Timeout as timeout')
     client.finish
     @system.start_docker_event_listener(@event_listeners)
   rescue StandardError => e
     log_exception(e)
     log_error_mesg('Restarting docker Event Stream post exception ')
-    STDERR.puts('Restarting docker Event Stream post exception due to ' + e.to_s)
+ #   STDERR.puts('Restarting docker Event Stream post exception due to ' + e.to_s)
     client.finish
     @system.start_docker_event_listener(@event_listeners)
   end
@@ -202,7 +202,7 @@ end
 r = ''
     @event_listeners.values.each do |listener|
       unless listener.container_id.nil?
-        STDERR.puts('matching ' + listener.container_id.to_s)
+     #   STDERR.puts('matching ' + listener.container_id.to_s)
         next unless hash[:id] == listener.container_id
       end
       log_exeception(r) if (r = listener.trigger(hash)).is_a?(StandardError)
