@@ -101,7 +101,7 @@ end
      # setting stopped contianer is ok as call can know the state, used to boot strap a config
      unless service.is_running?
       service_param[:pending] = true
-        STDERR.puts(" adding config " + service_param.to_s)
+        STDERR.puts("core update  config " + service_param.to_s)
       service_manager.update_service_configuration(service_param)   
        return true
      end
