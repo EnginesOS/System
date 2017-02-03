@@ -132,13 +132,14 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
     stream :keep_open do | out  |
       begin
         has_data = true
+        @timer = ''
         events_stream = engines_api.container_events_stream
         out.callback {  finialise_events_stream(events_stream)}
           
                 @timer = EventMachine::PeriodicTimer.new(10) do 
        
                   if out.closed?
-                    has_data = finialise_events_stream(events_stream)
+                   # has_data = finialise_events_stream(events_stream)
                     STDERR.puts('NOOP found OUT IS CLOSED: ' +@timer.to_s)
                     @timer.cancel unless @timer.nil?
                     @timer = nil
@@ -170,6 +171,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
             end
             #            jason_event = JSON.parse(bytes)
             if out.closed?
+              @timer.cancel
               @timer = nil
               has_data = finialise_events_stream(events_stream)
               STDERR.puts('OUT IS CLOSED but have '  + jason_event.to_s)
@@ -183,6 +185,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
             IO.select([events_stream.rd])
             retry
           rescue IOError => e
+          @timer.cancel
           @timer = nil
             has_data = finialise_events_stream(events_stream)
           #  STDERR.puts('OUT IS IOError  EVENTS S ' + e.to_s + ':' + e.class.name + ':' + e.backtrace.to_s )
