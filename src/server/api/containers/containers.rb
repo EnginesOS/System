@@ -135,8 +135,8 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
         events_stream = engines_api.container_events_stream
         out.callback {  finialise_events_stream(events_stream)}
           
-                @timer = EventMachine::PeriodicTimer.new(10) do |out |
-                  STDERR.puts('PERIOD')
+                @timer = EventMachine::PeriodicTimer.new(10) do 
+       
                   if out.closed?
                     has_data = finialise_events_stream(events_stream)
                     STDERR.puts('NOOP found OUT IS CLOSED: ' +@timer.to_s)
@@ -145,6 +145,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
                     #@events_stream.stop unless @events_stream.nil?
                     next
                   else
+                    STDERR.puts('PERIOD')
                     out << @no_op #unless lock_timer == true
                   end
                 end if @timer.nil?
