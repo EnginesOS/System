@@ -48,6 +48,7 @@ module Excon
       end
 
       def response_call(datum)
+ 
         if datum[:hijack_block]
           # Need to process the response headers here rather than in
           # Excon::Middleware::ResponseParser as the response parser will
@@ -62,10 +63,15 @@ module Excon
 
           Excon::Response.parse_headers(socket, datum)
           datum[:hijack_block].call socket.instance_variable_get(:@socket)
-        end
+            
+ 
+        
 
-        @stack.response_call(datum)
-      end
+        @stack.response_call(datum)   
+        end    
+       rescue StandardError => e
+      STDERR.puts("hijack " + e.to_s + ":" + e.backtrace.to_s)
+    end
     end
   end
 end
