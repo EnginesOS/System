@@ -142,7 +142,7 @@ class DockerConnection < ErrorsApi
     log_exception(e)
   end
 
-  def get_request(uri,  expect_json = true, headers = nil, timeout = 60)
+    def get_request(uri,  expect_json = true, headers = {}, timeout = 60)
 
     return handle_resp(connection.request(:method => :get,
     :path => uri,
