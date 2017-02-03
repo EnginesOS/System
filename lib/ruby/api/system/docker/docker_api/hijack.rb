@@ -66,8 +66,8 @@ module Excon
             
 
         @stack.response_call(datum)   
-        end    
-      
+         
+        end
       #    rescue IO::WaitReadable
              # IO.select([events_stream.rd])
       #  retry
