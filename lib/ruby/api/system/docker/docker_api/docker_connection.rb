@@ -150,10 +150,10 @@ class DockerConnection < ErrorsApi
     STDERR.puts(' docker uri' + uri.to_s )
     STDERR.puts(' docker headers' + headers.to_s )
  #   STDERR.puts(' docker ' + .to_s )
-r = connection.request(:method => :get,
+r = connection.request({:method => :get,
     :path => uri,
     :read_timeout => timeout,
-    :headers => headers)
+:headers => headers})
     STDERR.puts(' docker rget' + r.to_s)
     return handle_resp(r,expect_json) unless headers.nil?
 
