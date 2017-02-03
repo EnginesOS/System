@@ -137,17 +137,17 @@ class DockerEventWatcher  < ErrorsApi
     client.request(req) do |resp|
       resp.read_body do |chunk|
         begin
-         # parser = FFI_Yajl::Parser.new({:symbolize_keys => true}) if parser.nil?
+          # parser = FFI_Yajl::Parser.new({:symbolize_keys => true}) if parser.nil?
           #   STDERR.puts('event  cunk ' + chunk.to_s )
           r = ''
           chunk.strip!
           #      hash =  parser.parse(chunk)# do |hash|
           hash =  SystemUtils.deal_with_jason(JSON.parse(chunk, :create_additons => true ))
-                      next unless hash.is_a?(Hash)
+          next unless hash.is_a?(Hash)
           #  STDERR.puts('trigger' + hash.to_s )
           next if hash.key?(:from) && hash[:from].length >= 64
-         #   SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
-           # next
+          #   SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
+          # next
           #end
           trigger(hash)
 
