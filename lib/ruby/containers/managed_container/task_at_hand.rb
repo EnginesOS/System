@@ -51,6 +51,7 @@ module TaskAtHand
       return desired_state(step, final_state, curr_state) if curr_state== 'stopped'
     when :pause
       return desired_state(step, final_state, curr_state) if curr_state== 'running'
+ 
     when :restart
       if curr_state == 'running'
         @steps = [:stop,:start]
