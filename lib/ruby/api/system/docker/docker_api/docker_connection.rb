@@ -145,7 +145,7 @@ class DockerConnection < ErrorsApi
   end
 
   def get_request(uri,  expect_json = true, headers = nil, timeout = 60)
-    headers = {} if headers.nil?
+    headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
     STDERR.puts(' docker conntection' + connection.to_s )
     STDERR.puts(' docker uri' + uri.to_s )
     STDERR.puts(' docker headers' + headers.to_s )
