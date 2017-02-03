@@ -65,12 +65,13 @@ class DockerConnection < ErrorsApi
   end
 
   def connection
-    STDERR.puts(' OPEN doker.sock connection ')
+   
 
     @connection = Excon.new('unix:///', :socket => '/var/run/docker.sock',
     :debug_request => true,
     :debug_response => true,
     :persistent => true) if @connection.nil?
+    STDERR.puts(' OPEN doker.sock connection ' + @connection.to_s)
     @connection
   end
 
