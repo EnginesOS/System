@@ -64,13 +64,16 @@ module Excon
           Excon::Response.parse_headers(socket, datum)
           datum[:hijack_block].call socket.instance_variable_get(:@socket)
             
- 
-        
 
         @stack.response_call(datum)   
         end    
-       rescue StandardError => e
+      
+      #    rescue IO::WaitReadable
+             # IO.select([events_stream.rd])
+      #  retry
+      rescue StandardError => e       
       STDERR.puts("hijack " + e.to_s + ":" + e.backtrace.to_s)
+      return nil
     end
     end
   end
