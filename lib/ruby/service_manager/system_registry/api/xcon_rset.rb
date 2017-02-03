@@ -40,16 +40,15 @@ def reopen_connection
     :ssl_verify_peer => false,
     :persistent => true,
     :headers => headers)
+  @connection
 end
 
-def rest_get(path,params,time_out=120)
+def rest_get(path,params,time_out=120, headers = nil)
   q = query_hash(params)
 #  STDERR.puts(' GET ' + path.to_s )
+  headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
   r = parse_xcon_response(
-        connection.request(:read_timeout => time_out,
-        :method => :get,
-        :path => path,
-        :query => q)
+connection.request({read_timeout => time_out,:method => :get,:path => path,:query => q, :headers => headers})
       )
   return r
 rescue  Excon::Error::Socket => e
@@ -82,9 +81,10 @@ def time_out
   120
 end
 
-def rest_post(path,params)
+def rest_post(path,params, headers=nil)
   begin
    # STDERR.puts(' POST ' + path.to_s )
+    headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
     r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :post,:path => path,:body => query_hash(params).to_json ))
     return r
   rescue   Excon::Error::Socket => e
@@ -95,10 +95,11 @@ def rest_post(path,params)
   end
 end
 
-def rest_put(path,params)
+def rest_put(path,params, headers=nil)
  # STDERR.puts(' PUT ' + path.to_s )
   #  STDERR.puts('PUT params ' + query_hash(params).to_s )
-  r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :put,:path => path,:query => query_hash(params)))
+  headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
+  r = parse_xcon_response( connection.request(:read_timeout => time_out, :headers => headers,:method => :put,:path => path,:query => query_hash(params)))
   #  connection.reset
   return r
 rescue   Excon::Error::Socket => e
@@ -119,11 +120,12 @@ def query_hash(params)
   return nil
 end
 
-def rest_delete(path,params)
+def rest_delete(path,params, headers=nil)
   q = query_hash(params)
  # STDERR.puts('SEND ' +  path.to_s)
   #  STDERR.puts('SEND ' +  q.to_s)
-  r =  parse_xcon_response( connection.request(:read_timeout => time_out,:method => :delete,:path => path,:query => q))
+  headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
+  r =  parse_xcon_response( connection.request(:read_timeout => time_out, :headers => headers,:method => :delete,:path => path,:query => q))
   #  connection.reset
   return r
 rescue   Excon::Error::Socket => e
