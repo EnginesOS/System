@@ -134,7 +134,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
       begin
         has_data = true
   
-        timer = EventMachine::PeriodicTimer.new(10) do 
+        timer = EventMachine::PeriodicTimer.new(25) do 
           
                         if out.closed?
                          # has_data = finialise_events_stream(events_stream)
@@ -168,7 +168,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
               #     jason_event = event
              # end
               jason_event =  JSON.parse(bytes.strip, :create_additons => true ) 
-            rescue  FFI_Yajl::ParseError => e
+            rescue  StandardError => e
               STDERR.puts('Failed to parse docker events ' + bytes + ':' + e.to_s )
               next
             end
