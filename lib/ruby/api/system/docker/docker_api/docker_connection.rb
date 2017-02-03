@@ -146,7 +146,7 @@ class DockerConnection < ErrorsApi
 
     return handle_resp(connection.request(:method => :get,
     :path => uri,
-    :read_timeout => timout,
+    :read_timeout => timeout,
     :headers => headers),
     expect_json
     ) unless headers.nil?
