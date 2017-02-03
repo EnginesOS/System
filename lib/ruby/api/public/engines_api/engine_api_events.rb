@@ -13,7 +13,7 @@ module EngineApiEvents
       @wr.write("\n\n")
       @wr.flush
       #@wr.fsync
-      STDERR.puts('WRITE TO EVENT STREAM ' + hash.to_s)
+    #  STDERR.puts('WRITE TO EVENT STREAM ' + hash.to_s)
     rescue StandardError => e
       p e.to_s
       p e.backtrace.to_s
@@ -22,12 +22,12 @@ module EngineApiEvents
 
     def start
 
-      STDERR.puts(' START EVENT STREAM')
+   #   STDERR.puts(' START EVENT STREAM')
       return @rd
     end
 
     def stop
-      STDERR.puts(' STOP EVENT STREAM')
+  #    STDERR.puts(' STOP EVENT STREAM')
       @system_api.rm_event_listener(self)
       #  @live_thread.terminate unless @live_thread.nil?
       @wr.close #  if @wr.is_open?
@@ -40,7 +40,7 @@ module EngineApiEvents
 
     stream = EventsStreamWriter.new(@system_api )
     @system_api.add_event_listener([stream,'write_event'.to_sym],16)
-    STDERR.puts('Calling START EVENT STREAM')
+ #   STDERR.puts('Calling START EVENT STREAM')
     stream.start
     return stream
   end

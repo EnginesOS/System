@@ -16,7 +16,7 @@ def connection(content_type = nil)
   #  @connection.reset unless @connection.nil?
 
   if @connection.nil?
-    STDERR.puts('NEW REGISTRY CONNECTION ')
+   # STDERR.puts('NEW REGISTRY CONNECTION ')
     @connection = Excon.new(base_url,
     :debug_request => true,
     :debug_response => true,
@@ -33,7 +33,7 @@ end
 
 def reopen_connection
   @connection.reset
-  STDERR.puts(' REOPEN connection ')
+#  STDERR.puts(' REOPEN connection ')
   @connection = Excon.new(base_url,
     :debug_request => true,
     :debug_response => true,
@@ -44,7 +44,7 @@ end
 
 def rest_get(path,params,time_out=120)
   q = query_hash(params)
-  STDERR.puts(' GET ' + path.to_s )
+#  STDERR.puts(' GET ' + path.to_s )
   r = parse_xcon_response(
         connection.request(:read_timeout => time_out,
         :method => :get,
@@ -53,7 +53,7 @@ def rest_get(path,params,time_out=120)
       )
   return r
 rescue  Excon::Error::Socket => e
-  STDERR.puts(' eof ' + path.to_s + ':' + e.to_s + ':' + e.class.name + ':' + e.backtrace.to_s)
+#  STDERR.puts(' eof ' + path.to_s + ':' + e.to_s + ':' + e.class.name + ':' + e.backtrace.to_s)
   reopen_connection
   retry
 rescue StandardError => e
@@ -84,7 +84,7 @@ end
 
 def rest_post(path,params)
   begin
-    STDERR.puts(' POST ' + path.to_s )
+   # STDERR.puts(' POST ' + path.to_s )
     r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :post,:path => path,:body => query_hash(params).to_json ))
     return r
   rescue   Excon::Error::Socket => e
@@ -96,7 +96,7 @@ def rest_post(path,params)
 end
 
 def rest_put(path,params)
-  STDERR.puts(' PUT ' + path.to_s )
+ # STDERR.puts(' PUT ' + path.to_s )
   #  STDERR.puts('PUT params ' + query_hash(params).to_s )
   r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :put,:path => path,:query => query_hash(params)))
   #  connection.reset
@@ -121,7 +121,7 @@ end
 
 def rest_delete(path,params)
   q = query_hash(params)
-  STDERR.puts('SEND ' +  path.to_s)
+ # STDERR.puts('SEND ' +  path.to_s)
   #  STDERR.puts('SEND ' +  q.to_s)
   r =  parse_xcon_response( connection.request(:read_timeout => time_out,:method => :delete,:path => path,:query => q))
   #  connection.reset
