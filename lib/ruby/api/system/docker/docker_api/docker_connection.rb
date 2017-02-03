@@ -184,7 +184,9 @@ class DockerConnection < ErrorsApi
     return resp.body unless expect_json == true
     #only want first so return n first
     # hash =  response_parser.parse(resp.body) #do |hash |
-    SystemUtils.deal_with_jason(JSON.parse(resp.body, :create_additons => true ))
+    hash =  SystemUtils.deal_with_jason(JSON.parse(resp.body, :create_additons => true ))
+    STDERR.puts(" RESPOSE " + hash.to_s  )
+    return hash
     #  @hashes.push(hash)
     #   return hash
     # end
