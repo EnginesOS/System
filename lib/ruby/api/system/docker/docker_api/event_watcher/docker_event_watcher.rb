@@ -143,12 +143,12 @@ class DockerEventWatcher  < ErrorsApi
           chunk.strip!
           #      hash =  parser.parse(chunk)# do |hash|
           hash =  SystemUtils.deal_with_jason(JSON.parse(chunk, :create_additons => true ))
-          #            next unless hash.is_a?(Hash)
+                      next unless hash.is_a?(Hash)
           #  STDERR.puts('trigger' + hash.to_s )
-          if hash.key?(:from) && hash[:from].length >= 64
-            SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
-            next
-          end
+          next if hash.key?(:from) && hash[:from].length >= 64
+         #   SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
+           # next
+          #end
           trigger(hash)
 
         rescue StandardError => e
