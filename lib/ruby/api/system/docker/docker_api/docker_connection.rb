@@ -74,11 +74,14 @@ class DockerConnection < ErrorsApi
 
   def reopen_connection
     @connection.reset
-  #  STDERR.puts(' REOPEN doker.sock connection ')
+    STDERR.puts(' REOPEN doker.sock connection ')
     @connection = Excon.new('unix:///', :socket => '/var/run/docker.sock',
     :debug_request => true,
     :debug_response => true,
     :persistent => true)
+    @connection
+    rescue StandardError => e
+      log_exception(e)
   end
 
   def stream_connection(stream_reader)
