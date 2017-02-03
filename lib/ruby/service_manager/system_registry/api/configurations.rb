@@ -10,7 +10,7 @@ module Configurations
   end
 
   def update_service_configuration(config_hash)
-    rest_put('/v0/system_registry/services/configuration/update',config_hash )
+    rest_post('/v0/system_registry/services/configuration/update',config_hash )
   end
 
   def rm_service_configuration(config_hash)
