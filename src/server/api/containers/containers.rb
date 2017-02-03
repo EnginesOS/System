@@ -141,7 +141,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
                     @events_stream.stop unless @events_stream.nil?
                     next
                   else
-                    out << @no_op unless lock_timer == true
+                    out << @no_op #unless lock_timer == true
                   end
                 end if @timer.nil?
        
