@@ -144,9 +144,12 @@ class DockerConnection < ErrorsApi
     log_exception(e)
   end
 
-  def get_request(uri,  expect_json = true, headers = {}, timeout = 60)
-    
-    STDERR.puts(' docker conntection' + connection.to_s)
+  def get_request(uri,  expect_json = true, headers = nil, timeout = 60)
+    headers = {} if headers.nil?
+    STDERR.puts(' docker conntection' + connection.to_s )
+    STDERR.puts(' docker uri' + uri.to_s )
+    STDERR.puts(' docker headers' + headers.to_s )
+ #   STDERR.puts(' docker ' + .to_s )
 r = connection.request(:method => :get,
     :path => uri,
     :read_timeout => timeout,
