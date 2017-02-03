@@ -65,6 +65,8 @@ class DockerConnection < ErrorsApi
   end
 
   def connection
+    STDERR.puts(' OPEN doker.sock connection ')
+
     @connection = Excon.new('unix:///', :socket => '/var/run/docker.sock',
     :debug_request => true,
     :debug_response => true,
@@ -80,8 +82,8 @@ class DockerConnection < ErrorsApi
     :debug_response => true,
     :persistent => true)
     @connection
-    rescue StandardError => e
-      log_exception(e)
+  rescue StandardError => e
+    log_exception(e)
   end
 
   def stream_connection(stream_reader)
@@ -136,13 +138,13 @@ class DockerConnection < ErrorsApi
       return r
     end
   rescue  Excon::Error::Socket => e
-   # STDERR.puts(' docker socket stream close ')
+    # STDERR.puts(' docker socket stream close ')
     stream_handler.close
   rescue StandardError => e
     log_exception(e)
   end
 
-    def get_request(uri,  expect_json = true, headers = {}, timeout = 60)
+  def get_request(uri,  expect_json = true, headers = {}, timeout = 60)
 
     return handle_resp(connection.request(:method => :get,
     :path => uri,
@@ -175,7 +177,7 @@ class DockerConnection < ErrorsApi
   private
 
   def handle_resp(resp, expect_json)
-     STDERR.puts(" RESPOSE " + resp.status.to_s + " : " + resp.body  )
+    STDERR.puts(" RESPOSE " + resp.status.to_s + " : " + resp.body  )
     return log_error_mesg("error:" + resp.status.to_s)  if resp.status  >= 400
     return true if resp.status  == 204 # nodata but all good happens on del
     return log_error_mesg("Un exepect response from docker", resp, resp.body, resp.headers.to_s )   unless resp.status  == 200 ||  resp.status  == 201
@@ -183,9 +185,9 @@ class DockerConnection < ErrorsApi
     #only want first so return n first
     # hash =  response_parser.parse(resp.body) #do |hash |
     SystemUtils.deal_with_jason(JSON.parse(resp.body, :create_additons => true ))
-      #  @hashes.push(hash)
+    #  @hashes.push(hash)
     #   return hash
-   # end
+    # end
     #  return @hashes[0]
   rescue StandardError => e
     log_error_mesg("Un exepect response content " +   resp.to_s)
