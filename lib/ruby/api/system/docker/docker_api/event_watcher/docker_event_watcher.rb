@@ -145,10 +145,10 @@ end
           hash =  SystemUtils.deal_with_jason(JSON.parse(chunk, :create_additons => true ))
 #            next unless hash.is_a?(Hash)
           #  STDERR.puts('trigger' + hash.to_s )
-            if hash.key?(:from) && hash[:from].length >= 64
-              SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
-              next
-            end
+       #     if hash.key?(:from) && hash[:from].length >= 64
+       #       SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
+       #       next
+        #    end
             trigger(hash)
         #  end
         rescue StandardError => e

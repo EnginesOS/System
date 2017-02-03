@@ -168,8 +168,8 @@ def parse_xcon_response(resp)
   return hash
   begin
     #  hash = json_parser.parse(r) # do |hash |
-    SystemUtils.deal_with_jason(JSON.parse(r, :create_additons => true ))
-    #   return hash
+    hash =  SystemUtils.deal_with_jason(JSON.parse(r, :create_additons => true ))
+      return hash
     #   end
   rescue  Yajl::ParseError  => e
     #   STDERR.puts e.backtrace
