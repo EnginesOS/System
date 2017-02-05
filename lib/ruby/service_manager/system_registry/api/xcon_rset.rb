@@ -85,7 +85,7 @@ def rest_post(path,params, headers=nil)
   begin
    # STDERR.puts(' POST ' + path.to_s )
     headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
-    r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :post,:path => path,:body => query_hash(params) ))
+    r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :post,:path => path,:body => query_hash(params).to_json  ))
     return r
   rescue   Excon::Error::Socket => e
     reopen_connection
@@ -99,7 +99,7 @@ def rest_put(path,params, headers=nil)
  # STDERR.puts(' PUT ' + path.to_s )
   #  STDERR.puts('PUT params ' + query_hash(params).to_s )
   headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
-  r = parse_xcon_response( connection.request(:read_timeout => time_out, :headers => headers,:method => :put,:path => path,:query => query_hash(params)))
+  r = parse_xcon_response( connection.request(:read_timeout => time_out, :headers => headers,:method => :put,:path => path,:query => query_hash(params).to_json ))
   #  connection.reset
   return r
 rescue   Excon::Error::Socket => e
@@ -125,7 +125,7 @@ def rest_delete(path,params, headers=nil)
  # STDERR.puts('SEND ' +  path.to_s)
   #  STDERR.puts('SEND ' +  q.to_s)
   headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
-  r =  parse_xcon_response( connection.request(:read_timeout => time_out, :headers => headers,:method => :delete,:path => path,:query => q))
+  r =  parse_xcon_response( connection.request(:read_timeout => time_out, :headers => headers,:method => :delete,:path => path,:query => q.to_json ))
   #  connection.reset
   return r
 rescue   Excon::Error::Socket => e
