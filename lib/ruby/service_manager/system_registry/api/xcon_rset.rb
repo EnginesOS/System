@@ -48,10 +48,9 @@ def rest_get(path,params,time_out=120, headers = nil)
   q = query_hash(params)
   
 #  STDERR.puts(' GET ' + path.to_s + '?' + q.to_s )
-  headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
-  r = parse_xcon_response(
-connection.request({time_out => time_out,:method => :get,:path => path,:query => q, :headers => headers})
-      )
+#  headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
+    r = connection.request({time_out => time_out,:method => :get,:path => path,:query => q, :headers => headers})
+  r = parse_xcon_response(r)
   return r
  rescue  Excon::Error::Socket => e
 
