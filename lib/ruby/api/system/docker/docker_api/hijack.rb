@@ -48,7 +48,7 @@ module Excon
       end
 
       def response_call(datum)
-        r={}
+        r=nil
         if datum[:hijack_block]
           # Need to process the response headers here rather than in
           # Excon::Middleware::ResponseParser as the response parser will
@@ -73,7 +73,8 @@ module Excon
       #  retry
       rescue StandardError => e       
       STDERR.puts("hijack " + e.to_s + ":" + e.backtrace.to_s)
-      return r
+      return {} if r.nil?
+        r
     end
     end
   end
