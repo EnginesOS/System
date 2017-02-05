@@ -16,7 +16,7 @@ def connection(content_type = nil)
   #  @connection.reset unless @connection.nil?
 
   if @connection.nil?
-   # STDERR.puts('NEW REGISTRY CONNECTION ')
+    STDERR.puts('NEW REGISTRY CONNECTION ')
     @connection = Excon.new(base_url,
     :debug_request => true,
     :debug_response => true,
@@ -33,7 +33,7 @@ end
 
 def reopen_connection
   @connection.reset
-#  STDERR.puts(' REOPEN connection ')
+  STDERR.puts(' REOPEN connection ')
   @connection = Excon.new(base_url,
     :debug_request => true,
     :debug_response => true,
