@@ -128,7 +128,7 @@ def query_hash(params)
     return params[:params] if params.key?(:params)
     return params
   end
-  return nil
+  return []
 end
 
 def rest_delete(path,params, headers=nil)
@@ -136,7 +136,8 @@ def rest_delete(path,params, headers=nil)
  # STDERR.puts('SEND ' +  path.to_s)
   #  STDERR.puts('SEND ' +  q.to_s)
   headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
-  r =  parse_xcon_response( connection.request(:read_timeout => time_out, :headers => headers,:method => :delete,:path => path,:query => q.to_json ))
+  # q.to_json! unless q.nil? 
+  r =  parse_xcon_response( connection.request(:read_timeout => time_out, :headers => headers,:method => :delete,:path => path,:query => q))
   #  connection.reset
   return r
 rescue   Excon::Error::Socket => e
