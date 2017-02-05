@@ -48,7 +48,7 @@ module Excon
       end
 
       def response_call(datum)
- r=[]
+        r={}
         if datum[:hijack_block]
           # Need to process the response headers here rather than in
           # Excon::Middleware::ResponseParser as the response parser will
