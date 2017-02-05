@@ -49,7 +49,10 @@ def rest_get(path,params,time_out=120, headers = nil)
   
 #  STDERR.puts(' GET ' + path.to_s + '?' + q.to_s )
 #  headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
-    r = connection.request({time_out => time_out,:method => :get,:path => path,:query => q, :headers => headers})
+req = {time_out => time_out,:method => :get,:path => path}
+req[:query] = q unless q.nil?
+req[:headers] = headers unless headers.nil?
+    r = connection.request(req)
   r = parse_xcon_response(r)
   return r
  rescue  Excon::Error::Socket => e
