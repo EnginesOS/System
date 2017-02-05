@@ -43,15 +43,17 @@ def reopen_connection
   @connection
 end
 
-def rest_get(path,params,time_out=120, headers = nil)
+def rest_get(path,params,time_out=120, _headers = nil)
   cnt = 0
   q = query_hash(params)
   
 #  STDERR.puts(' GET ' + path.to_s + '?' + q.to_s )
 #  headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
-req = {time_out => time_out,:method => :get,:path => path}
-req[:query] = q unless q.nil?
-req[:headers] = headers unless headers.nil?
+    q = {} if q.nil?
+    lheaders = headers
+    lheaders.merge(_headers) unless _headers == nil
+req = {:time_out => time_out,:method => :get,:path => path,:query => q, :headers => lheaders }
+
     r = connection.request(req)
   r = parse_xcon_response(r)
   return r
