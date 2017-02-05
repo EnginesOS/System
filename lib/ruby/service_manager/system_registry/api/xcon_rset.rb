@@ -16,7 +16,7 @@ def connection(content_type = nil)
   #  @connection.reset unless @connection.nil?
 
   if @connection.nil?
-    STDERR.puts('NEW REGISTRY CONNECTION ')
+ #   STDERR.puts('NEW REGISTRY CONNECTION ')
     @connection = Excon.new(base_url,
     :debug_request => true,
     :debug_response => true,
@@ -33,7 +33,7 @@ end
 
 def reopen_connection
   @connection.reset
-  STDERR.puts(' REOPEN connection ')
+#  STDERR.puts(' REOPEN connection ')
   @connection = Excon.new(base_url,
     :debug_request => true,
     :debug_response => true,
@@ -45,21 +45,26 @@ end
 
 def rest_get(path,params,time_out=120, headers = nil)
   q = query_hash(params)
-  STDERR.puts(' GET ' + path.to_s + '?' + q.to_s )
+#  STDERR.puts(' GET ' + path.to_s + '?' + q.to_s )
   headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
   r = parse_xcon_response(
 connection.request({time_out => time_out,:method => :get,:path => path,:query => q, :headers => headers})
       )
   return r
-rescue  Excon::Error::Socket => e
+ rescue  Excon::Error::Socket => e
+
 #  STDERR.puts(' eof ' + path.to_s + ':' + e.to_s + ':' + e.class.name + ':' + e.backtrace.to_s)
   reopen_connection
+STDERR.puts('retry ' + e.to_s)
   retry
 rescue StandardError => e
   STDERR.puts e.class.name + ' with path:' + path.to_s + "\n" + 'params:' + params.to_s
   STDERR.puts e.backtrace.to_s
   log_exception(e, params, path)
-
+  
+reopen_connection
+STDERR.puts('retry ' + e.to_s)
+ retry
 end
 
 #def rest_get(path,params)
