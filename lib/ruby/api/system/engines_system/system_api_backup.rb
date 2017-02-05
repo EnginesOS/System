@@ -10,7 +10,7 @@ module SystemApiBackup
    
    def backup_system_registry(out)
    tree =  @engines_api.get_registry
-   STDERR.puts(' TREE is ' + tree.to_yaml )
+ #  STDERR.puts(' TREE is ' + tree.to_yaml )
      out << tree.to_yaml
    end
    
@@ -21,7 +21,7 @@ module SystemApiBackup
      params = {:container => service, :stream => out, :command_line => ['/home/services/backup.sh'], :log_error => true }
        
      result = @engines_api.exec_in_container(params)
-     STDERR.puts(' service backup ' + params.to_s + ' returned ' + result.to_s ) 
+  #   STDERR.puts(' service backup ' + params.to_s + ' returned ' + result.to_s ) 
      return result if result.is_a?(EnginesError)
      return result if result[:result] !=0
      return true

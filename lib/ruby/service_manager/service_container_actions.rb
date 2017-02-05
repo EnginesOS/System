@@ -12,7 +12,9 @@ def add_to_managed_service(service_hash)
   SystemDebug.debug(SystemDebug.services, :add_to_managed_service, service_hash)
   return log_error_mesg('Failed to add Consumser to Service, as service not running',service_hash) unless service.is_running?
   SystemDebug.debug(SystemDebug.services, :add_to_managed_service, service)
-   service.add_consumer(service_hash) 
+   r = service.add_consumer(service_hash)
+  SystemDebug.debug(SystemDebug.services, :add_to_managed_result, r)
+   return r 
 rescue StandardError => e
   log_exception(e)
 end

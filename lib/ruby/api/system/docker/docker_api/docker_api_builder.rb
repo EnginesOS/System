@@ -30,7 +30,7 @@ module DockerApiBuilder
       @io_stream.close unless @io_stream.nil?
       @stream.reset unless @stream.nil?
       rescue StandardError => e
-        STDERR.puts('stream close Exception' + + e.to_s)
+      #  STDERR.puts('stream close Exception' + + e.to_s)
         return nil
     end
 
@@ -54,12 +54,12 @@ module DockerApiBuilder
             #   end
 
         rescue StandardError =>e
-          STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s)
+       #   STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s)
 
         end
       end
     rescue StandardError =>e
-      STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s)
+    #  STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s)
       return
     end
 

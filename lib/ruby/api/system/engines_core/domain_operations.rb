@@ -35,7 +35,7 @@ module DomainOperations
 
   def add_domain(params)
     r = 0
-    STDERR.puts(' ADD DOMAIN VARIABLE ' + params.to_s)
+   # STDERR.puts(' ADD DOMAIN VARIABLE ' + params.to_s)
     return r  if ( r = DNSHosting.add_domain(params)).is_a?(EnginesError)
     return true unless params[:self_hosted]
     service_hash = {}
@@ -54,7 +54,7 @@ module DomainOperations
       service_hash[:variables][:ip_type] = 'gw'
       service_hash[:variables][:ip] =  get_ext_ip_for_hosted_dns()
     end
-    STDERR.puts(' ADD DOMAIN VARIABLE ' + params.to_s)
+ #   STDERR.puts(' ADD DOMAIN VARIABLE ' + params.to_s)
     return @service_manager.create_and_register_service(service_hash)
 
   rescue StandardError => e
@@ -64,7 +64,7 @@ module DomainOperations
 
   def update_domain(params)
     r = ''
-    STDERR.puts(' UPDATE DOMAIN VARIABLES ' + params.to_s)
+ #   STDERR.puts(' UPDATE DOMAIN VARIABLES ' + params.to_s)
     old_domain_name = params[:original_domain_name]
     return r if ( r = DNSHosting.update_domain(old_domain_name, params)).is_a?(EnginesError)
     return true unless params[:self_hosted]
@@ -95,7 +95,7 @@ module DomainOperations
     #@service_manager.deregister_non_persistent_service(service_hash)
     service_hash[:variables][:domain_name] = params[:domain_name]
     service_hash[:service_handle] = params[:domain_name] + '_dns'
-    STDERR.puts(' UPDATE DOMAIN VARIABLES ' + service_hash.to_s)
+ #   STDERR.puts(' UPDATE DOMAIN VARIABLES ' + service_hash.to_s)
     return  @service_manager.create_and_register_service(service_hash)
   rescue StandardError => e
     SystemUtils.log_exception(e)

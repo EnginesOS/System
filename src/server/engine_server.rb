@@ -23,7 +23,7 @@ begin
 
   def create_table
 
-    STDERR.puts('init db')
+  #  STDERR.puts('init db')
     rows = sql_lite_database.execute <<-SQL
             create table systemaccess (
               username varchar(30),
@@ -43,9 +43,9 @@ begin
 
   def set_first_user
     rows = sql_lite_database.execute( "select authtoken from systemaccess" )
-    STDERR.puts('init db')
+  #  STDERR.puts('init db')
     return if rows.count > 0
-    STDERR.puts('init db')
+  #  STDERR.puts('init db')
     #      @auth_db.execute("INSERT INTO systemaccess (username, password, email, authtoken, uid,guid)
     #                        VALUES (?, ?, ?, ?, ?, ?)", ["test", 'test', '', 'test_token_arandy',2,0])
     #    rows

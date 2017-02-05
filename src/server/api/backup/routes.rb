@@ -54,9 +54,9 @@ end
 get '/v0/backup/engine/:engine_name/service/:publisher_namespace/*' do
   hash = Utils::ServiceHash.engine_service_hash_from_params(params)
   r = ''
-  STDERR.puts('Using ' + hash.to_s )
+ # STDERR.puts('Using ' + hash.to_s )
   service_hash = engines_api.find_engine_service_hash(hash)
-  STDERR.puts('found ' + service_hash.to_s)
+ # STDERR.puts('found ' + service_hash.to_s)
    return log_error(request, service_hash, hash) if service_hash.is_a?(EnginesError)
   content_type 'application/octet-stream'
     stream do |out|

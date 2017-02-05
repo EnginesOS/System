@@ -110,7 +110,7 @@ return services
 #                                           :container_type => container.ctype,
 #                                          :service_handle => cronjob}
 #                                          STDERR.puts('serach for ' + s.to_s + ' returned ' + entry.to_s)
-    STDERR.puts( 'Got ' + entry.to_s + ' for cron entry')     
+   # STDERR.puts( 'Got ' + entry.to_s + ' for cron entry')     
          return  entry unless entry.is_a?(Hash)
     entry[:variables][:cron_job]
     rescue StandardError => e
