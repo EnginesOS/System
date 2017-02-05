@@ -44,7 +44,9 @@ def reopen_connection
 end
 
 def rest_get(path,params,time_out=120, headers = nil)
+  cnt = 0
   q = query_hash(params)
+  
 #  STDERR.puts(' GET ' + path.to_s + '?' + q.to_s )
   headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
   r = parse_xcon_response(
@@ -55,16 +57,20 @@ connection.request({time_out => time_out,:method => :get,:path => path,:query =>
 
 #  STDERR.puts(' eof ' + path.to_s + ':' + e.to_s + ':' + e.class.name + ':' + e.backtrace.to_s)
   reopen_connection
-STDERR.puts('retry ' + e.to_s)
-  retry
+STDERR.puts('retry CNT' + cnt.to_s + ':' + e.to_s)
+cnt+=1
+  retry if cnt< 5
+
 rescue StandardError => e
   STDERR.puts e.class.name + ' with path:' + path.to_s + "\n" + 'params:' + params.to_s
   STDERR.puts e.backtrace.to_s
   log_exception(e, params, path)
   
 reopen_connection
-STDERR.puts('retry ' + e.to_s)
- retry
+STDERR.puts('retry  CNT' + cnt.to_s + ':' + e.to_s)
+cnt+=1
+ retry if cnt< 5
+
 end
 
 #def rest_get(path,params)
