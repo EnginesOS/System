@@ -36,7 +36,7 @@ class ManagedEngine < ManagedContainer
 
   end
 
-  attr_reader :plugins_path, :extract_plugins,:web_root,:capabilities
+  attr_reader :plugins_path, :extract_plugins,:web_root
 
   def lock_values
     @ctype = 'container' if @ctype.nil?
