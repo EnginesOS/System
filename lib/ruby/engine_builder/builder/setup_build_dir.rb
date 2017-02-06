@@ -179,8 +179,9 @@ def setup_framework_defaults
       fw = File.new(basedir  + '/Dockerfile.tmpl','w+')
       fw.write(df)
       fw.close
-      
+      return true      
   end
+  
 rescue StandardError => e
   log_exception(e)
 end
