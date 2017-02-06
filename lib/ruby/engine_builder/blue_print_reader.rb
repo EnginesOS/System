@@ -39,7 +39,8 @@ class BluePrintReader
   :database_seed,
   :blocking_worker,
   :web_root,
-  :actionators
+  :actionators,
+  :base_image
 
   def log_build_output(line)
     @builder.log_build_output(line)
@@ -242,6 +243,10 @@ class BluePrintReader
       archive_details[:destination] = arc_loc
       archive_details[:path_to_extracted] = arc_dir
       @archives_details.push(archive_details)
+      if archive_details[:extraction_command] == 'docker'
+        @base_image =  archive_details[:source_url]
+          @capabilities =  archive_details[:path_to_extracted]  
+      end
     end
   rescue StandardError => e
     SystemUtils.log_exception(e)
