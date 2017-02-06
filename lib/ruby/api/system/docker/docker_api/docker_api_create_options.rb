@@ -89,7 +89,9 @@ module DockerApiCreateOptions
     host_config['MemoryReservation'] # 0,
     host_config['VolumesFrom'] = container.volumes_from unless container.volumes_from.nil?
    # "CapAdd": ["NET_ADMIN"],
-    host_config["CapAdd"] = add_capabilities(capabilities) unless container.capabilities.nil?
+  STDERR.puts(" Add cap ");
+      host_config["CapAdd"] = add_capabilities(capabilities) unless container.capabilities.nil?
+    STDERR.puts(" Add caps " + host_config["CapAdd"].to_s);
     # host_config['KernelMemory'] # 0,
     #  host_config['CpuShares'] # 512,
     # host_config['CpuPeriod'] # 100000,
