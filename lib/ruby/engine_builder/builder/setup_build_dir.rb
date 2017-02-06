@@ -176,7 +176,7 @@ def setup_framework_defaults
   if @blueprint_reader.framework == 'docker'
     df = File.read(SystemConfig.DeploymentTemplates + '/' + @blueprint_reader.framework + '/Dockerfile.tmpl')
     df = 'FROM: ' + @blueprint_reader.base_image + "\n"
-      fw = new File(SystemConfig.DeploymentTemplates + '/' + @blueprint_reader.framework + '/Dockerfile.tmpl','w')
+      fw = File.new(SystemConfig.DeploymentTemplates + '/' + @blueprint_reader.framework + '/Dockerfile.tmpl','w')
       fw.write(df)
       fw.close
       
