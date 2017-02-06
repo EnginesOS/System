@@ -88,7 +88,8 @@ module DockerApiCreateOptions
     host_config['MemorySwap'] = memory * 2
     host_config['MemoryReservation'] # 0,
     host_config['VolumesFrom'] = container.volumes_from unless container.volumes_from.nil?
-      
+   # "CapAdd": ["NET_ADMIN"],
+    host_config["CapAdd"] = add_capabilities(capabilities) unless container.capabilities.nil?
     # host_config['KernelMemory'] # 0,
     #  host_config['CpuShares'] # 512,
     # host_config['CpuPeriod'] # 100000,
@@ -124,7 +125,14 @@ module DockerApiCreateOptions
 
     host_config
   end
-
+  
+  def add_capabilities(capabilities)
+#    r = []
+#    capabilities.each do |capability|
+#      r += capability
+    capabilities
+  end
+  
   def port_bindings(container)
     bindings = {}
     return bindings if container.mapped_ports.nil?

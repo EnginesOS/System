@@ -30,12 +30,13 @@ class ManagedEngine < ManagedContainer
     @setState = 'running'
     @ctype = 'container'
     @conf_self_start = true
+    @capabilites = runtime_params.capabilities
     expire_engine_info
     save_state # no running.yaml throws a no such container so save so others can use
 
   end
 
-  attr_reader :plugins_path, :extract_plugins,:web_root
+  attr_reader :plugins_path, :extract_plugins,:web_root,:capabilites
 
   def lock_values
     @ctype = 'container' if @ctype.nil?

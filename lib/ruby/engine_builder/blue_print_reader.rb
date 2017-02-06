@@ -40,7 +40,8 @@ class BluePrintReader
   :blocking_worker,
   :web_root,
   :actionators,
-  :base_image
+  :base_image,
+  :capabilities
 
   def log_build_output(line)
     @builder.log_build_output(line)
@@ -245,13 +246,16 @@ class BluePrintReader
       @archives_details.push(archive_details)
       if archive_details[:extraction_command] == 'docker'
         @base_image =  archive_details[:source_url]
-          @capabilities =  archive_details[:path_to_extracted]  
+        add_capability(archive_details[:path_to_extracted]  )
       end
     end
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
-
+ def add_capability(capability)
+   @capabilities = [] if @capabilities.nil?
+   @capabilities.push(capability)
+ end
   def read_write_permissions_recursive
     log_build_output('Read Recursive Write Permissions')
     @recursive_chmods = []
