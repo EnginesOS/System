@@ -187,7 +187,7 @@ module DockerApiCreateOptions
     container.certificates.each do |certificate|
       prefix =  certificate[:container_type] + '_' + certificate[:parent_engine] + '_' + certificate[:variables][:cert_name]
       mounts.push(SystemConfig.CertificatesDir + prefix + '.crt:' + SystemConfig.CertificatesDestination +  certificate[:variables][:cert_name] + '.crt:ro' )
-      mounts.push(SystemConfig.KeysDir + prefix + '.crt:' + SystemConfig.KeysDestination +  certificate[:variables][:cert_name] + '.key:ro' )
+      mounts.push(SystemConfig.KeysDir + prefix + '.key:' + SystemConfig.KeysDestination +  certificate[:variables][:cert_name] + '.key:ro' )
   end
   return mounts
   end
