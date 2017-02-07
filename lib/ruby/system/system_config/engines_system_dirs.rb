@@ -28,7 +28,10 @@ module EnginesSystemDirs
   def SystemConfig.CertificatesDestination
     @@CertificatesDestination
   end
-  
+ 
+  def SystemConfig.KeysDir
+    @@KeysDir
+  end
   def SystemConfig.KeysDestination
     @@KeysDestination
   end
