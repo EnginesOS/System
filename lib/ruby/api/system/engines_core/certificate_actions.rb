@@ -40,7 +40,9 @@ module CertificateActions
  q = {:container_type => container.ctype, :parent_engine => container.container_name, :publisher_namespace => 'EnginesSytem', :type_path => 'cert_auth' }
    r = service_manager.find_engine_services_hashes(q)
    STDERR.puts( " CERTIS " + r.to_s)
-    return []
+    return r
+    rescue StandardError => e
+        return log_exception(e,'Failed to list registered certs ')
   end
   
 end
