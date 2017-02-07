@@ -180,9 +180,9 @@ module DockerApiCreateOptions
     return labels
   end
   
-  def cert_mounts
+  def cert_mounts(container)
     mounts = []
-      return mount if container.certificates.nil?
+      return mounts if container.certificates.nil?
       
     container.certificates.each do |certificate|
       mounts.push(SystemConfig.CertificatesDir + prefix + '.crt:' + SystemConfig.CertificatesDestination + prefix + '.crt:ro' )
