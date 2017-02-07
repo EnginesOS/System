@@ -36,6 +36,9 @@ class ManagedContainer < Container
   require_relative 'managed_container/managed_container_on_action.rb'
   include ManagedContainerOnAction
 
+  require_relative 'managed_container/managed_container_certificates.rb'
+  include ManagedContainerCertificates
+  
   @conf_self_start = false
   @conf_zero_conf=false
   @restart_required = false

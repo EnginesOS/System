@@ -62,4 +62,9 @@ module EnginesApiSystem
     
   end
 
+  def certificates(container)
+    @engines_core.containers_certificates(container)
+  
+  end
+  
 end
