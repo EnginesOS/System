@@ -42,7 +42,7 @@ module DockerApiCreateOptions
       mounts.push(mount_string(volume))
     end
     mounts.concat(system_mounts(container))
-
+    mounts.concat(cert_mounts(container))
     mounts
   end
 
@@ -178,6 +178,17 @@ module DockerApiCreateOptions
     labels['container_name'] = container.container_name
     labels['container_type'] = container.ctype
     return labels
+  end
+  
+  def cert_mounts
+    mounts = []
+      return mount if container.certificates.nil?
+      
+    container.certificates.each do |certificate|
+      mounts.push(SystemConfig.CertificatesDir + prefix + '.crt:' + SystemConfig.CertificatesDestination + prefix + '.crt:ro' )
+      mounts.push(SystemConfig.KeysDir + prefix + '.crt:' + SystemConfig.KeyDestination + prefix + '.key:ro' )
+  end
+  return mounts
   end
 
   def system_mounts(container)
