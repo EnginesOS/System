@@ -8,9 +8,11 @@ module Engines
 
   def find_engine_services_hashes(params)
   #  rest_get('/v0/system_registry/engine/services/',{:params => params })
+
   r = '/v0/system_registry/engine/services/'  + params[:container_type] + '/' + params[:parent_engine] 
     r += '/' + params[:type_path] if params.key(:type_path)
     r += '/' + params[:service_handle] if params.key(:service_handle)  
+    STDERR.puts('using r' + r.to_s)
     rest_get(r)
   end
 
