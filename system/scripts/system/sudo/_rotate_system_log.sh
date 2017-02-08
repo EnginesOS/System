@@ -2,7 +2,7 @@
 ContId=`docker inspect --format='{{.Id}}' $1`
 echo system container id $ContId >>/tmp/clean.log
 
-src=/var/lib/docker/containers/$system_cont_id/${ContId}-json.log 
+src=/var/lib/docker/containers/${ContId}/${ContId}-json.log 
 dest=/var/log/engines/raw/${ContId}-json.last
 
 if test -f $dest
