@@ -45,7 +45,7 @@ end
 
 def rest_get(path,params = nil,time_out=120, _headers = nil)
   cnt = 0
-  
+  q = query_hash(params)
   
 #  STDERR.puts(' GET ' + path.to_s + '?' + q.to_s )
 #  headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
@@ -53,7 +53,7 @@ def rest_get(path,params = nil,time_out=120, _headers = nil)
     lheaders = headers
     lheaders.merge(_headers) unless _headers == nil
 req = {:time_out => time_out,:method => :get,:path => path, :headers => lheaders }
-  req[:query] = query_hash(params) unless params.nil?
+  req[:query] = q
 
     r = connection.request(req)
   r = parse_xcon_response(r)
