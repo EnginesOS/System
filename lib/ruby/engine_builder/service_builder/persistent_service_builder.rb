@@ -12,6 +12,8 @@ module PersistantServiceBuilder
       end
     end
     return true
+    rescue Exception => e
+        SystemUtils.log_exception(e)
   end
 
   def process_persistent_service(service_hash, environ, use_existing)
@@ -53,6 +55,8 @@ module PersistantServiceBuilder
      return r if r.is_a?(EnginesError)
       @attached_services.push(service_hash)
     return true
+    rescue Exception => e
+        SystemUtils.log_exception(e)
   end
 
   def match_service_to_existing(service_hash, use_existing)
@@ -72,6 +76,8 @@ module PersistantServiceBuilder
       end
     end
     return false
+    rescue Exception => e
+        SystemUtils.log_exception(e)
   end
 
   def use_active_service(service_hash, existing_service )
@@ -81,6 +87,8 @@ module PersistantServiceBuilder
     s[:shared] = true
     SystemDebug.debug(SystemDebug.builder, :usering_active_Serviec, s)
     return s
+    rescue Exception => e
+        SystemUtils.log_exception(e)
   end
 
   def attach_existing_service_to_engine(service_hash, existing)
@@ -104,6 +112,8 @@ module PersistantServiceBuilder
     end
    # end
     return log_error_mesg('failed to attach_existing_service_to_engine(params)',params)
+    rescue Exception => e
+        SystemUtils.log_exception(e)
   end
 
 
