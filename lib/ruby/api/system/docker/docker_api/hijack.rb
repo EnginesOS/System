@@ -71,10 +71,10 @@ module Excon
       #    rescue IO::WaitReadable
              # IO.select([events_stream.rd])
       #  retry
-      rescue StandardError => e       
-      STDERR.puts("HIJACK " + e.to_s + ":" + e.backtrace.to_s)
-      return {} if r.nil?
-        r
+#      rescue StandardError => e       
+#      STDERR.puts("HIJACK " + e.to_s + ":" + e.backtrace.to_s)
+#      return {} if r.nil?
+#        r
     end
     end
   end
