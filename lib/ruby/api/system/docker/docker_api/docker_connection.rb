@@ -65,20 +65,25 @@ class DockerConnection < ErrorsApi
   end
 
   def connection
+
     @connection = Excon.new('unix:///', :socket => '/var/run/docker.sock',
     :debug_request => true,
     :debug_response => true,
     :persistent => true) if @connection.nil?
+    STDERR.puts(' OPEN docker.sock connection ' + @connection.to_s)
     @connection
   end
 
   def reopen_connection
     @connection.reset
-  #  STDERR.puts(' REOPEN doker.sock connection ')
+    STDERR.puts(' REOPEN doker.sock connection ')
     @connection = Excon.new('unix:///', :socket => '/var/run/docker.sock',
     :debug_request => true,
     :debug_response => true,
     :persistent => true)
+    @connection
+  rescue StandardError => e
+    log_exception(e)
   end
 
   def stream_connection(stream_reader)
@@ -133,20 +138,22 @@ class DockerConnection < ErrorsApi
       return r
     end
   rescue  Excon::Error::Socket => e
-   # STDERR.puts(' docker socket stream close ')
+     STDERR.puts(' docker socket stream close ')
     stream_handler.close
   rescue StandardError => e
     log_exception(e)
   end
 
   def get_request(uri,  expect_json = true, headers = nil, timeout = 60)
-
-    return handle_resp(connection.request(:method => :get,
-    :path => uri,
-    :read_timeout => timout,
-    :headers => headers),
-    expect_json
-    ) unless headers.nil?
+    headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
+  #  STDERR.puts(' docker conntection' + connection.to_s )
+   # STDERR.puts(' docker uri' + uri.to_s )
+   # STDERR.puts(' docker headers' + headers.to_s )
+ #   STDERR.puts(' docker ' + .to_s )
+  #  STDERR.puts(' docker params' + {:method => :get,:path => uri,:read_timeout => timeout,:headers => headers}.to_s)
+r = connection.request({:method => :get,:path => uri,:read_timeout => timeout,:headers => headers})
+  #  STDERR.puts(' docker rget' + r.to_s)
+    return handle_resp(r,expect_json) unless headers.nil?
 
     handle_resp(connection.request(:method => :get,
     :path => uri),
@@ -172,17 +179,19 @@ class DockerConnection < ErrorsApi
   private
 
   def handle_resp(resp, expect_json)
-    # STDERR.puts(" RESPOSE " + resp.status.to_s + " : " + resp.body  )
+  #  STDERR.puts(" RESPOSE " + resp.status.to_s + " : " + resp.body  )
     return log_error_mesg("error:" + resp.status.to_s)  if resp.status  >= 400
     return true if resp.status  == 204 # nodata but all good happens on del
     return log_error_mesg("Un exepect response from docker", resp, resp.body, resp.headers.to_s )   unless resp.status  == 200 ||  resp.status  == 201
     return resp.body unless expect_json == true
     #only want first so return n first
     # hash =  response_parser.parse(resp.body) #do |hash |
-    SystemUtils.deal_with_jason(JSON.parse(resp.body, :create_additons => true ))
-      #  @hashes.push(hash)
+    hash =  SystemUtils.deal_with_jason(JSON.parse(resp.body, :create_additons => true ))
+   # STDERR.puts(" RESPOSE " + hash.to_s  )
+    return hash
+    #  @hashes.push(hash)
     #   return hash
-   # end
+    # end
     #  return @hashes[0]
   rescue StandardError => e
     log_error_mesg("Un exepect response content " +   resp.to_s)

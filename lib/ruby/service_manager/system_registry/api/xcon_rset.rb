@@ -16,7 +16,7 @@ def connection(content_type = nil)
   #  @connection.reset unless @connection.nil?
 
   if @connection.nil?
-   # STDERR.puts('NEW REGISTRY CONNECTION ')
+ #   STDERR.puts('NEW REGISTRY CONNECTION ')
     @connection = Excon.new(base_url,
     :debug_request => true,
     :debug_response => true,
@@ -40,27 +40,40 @@ def reopen_connection
     :ssl_verify_peer => false,
     :persistent => true,
     :headers => headers)
+  @connection
 end
 
-def rest_get(path,params,time_out=120)
+def rest_get(path,params = nil,time_out=120, _headers = nil)
+  cnt = 0
   q = query_hash(params)
-#  STDERR.puts(' GET ' + path.to_s )
-  r = parse_xcon_response(
-        connection.request(:read_timeout => time_out,
-        :method => :get,
-        :path => path,
-        :query => q)
-      )
+  
+  STDERR.puts(' GET ' + path.to_s + '?' + q.to_s )
+#  headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
+  #  q = {} if q.nil?
+    lheaders = headers
+    lheaders.merge(_headers) unless _headers == nil
+  lheaders.delete('Content-Type' ) if  q.nil?
+req = {:time_out => time_out,:method => :get,:path => path, :headers => lheaders }
+  req[:query] = q unless q.nil?
+
+    r = connection.request(req)
+  r = parse_xcon_response(r)
   return r
-rescue  Excon::Error::Socket => e
+ rescue  Excon::Error::Socket => e
+
 #  STDERR.puts(' eof ' + path.to_s + ':' + e.to_s + ':' + e.class.name + ':' + e.backtrace.to_s)
   reopen_connection
-  retry
+#STDERR.puts('retry CNT' + cnt.to_s + ':' + e.to_s)
+  STDERR.puts e.class.name + ' with path:' + path.to_s + "\n" + 'params:' + q.to_s + ':::' + req.to_s  + ':' + e.to_s
+cnt+=1
+  retry if cnt< 5
+
 rescue StandardError => e
-  STDERR.puts e.class.name + ' with path:' + path.to_s + "\n" + 'params:' + params.to_s
+  STDERR.puts e.class.name + ' with path:' + path.to_s + "\n" + 'params:' + q.to_s + ':::' + req.to_s
   STDERR.puts e.backtrace.to_s
   log_exception(e, params, path)
 
+  {}
 end
 
 #def rest_get(path,params)
@@ -82,10 +95,11 @@ def time_out
   120
 end
 
-def rest_post(path,params)
+def rest_post(path,params, headers=nil)
   begin
    # STDERR.puts(' POST ' + path.to_s )
-    r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :post,:path => path,:body => query_hash(params).to_json ))
+    headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
+    r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :post,:path => path,:body => query_hash(params).to_json  ))
     return r
   rescue   Excon::Error::Socket => e
     reopen_connection
@@ -95,10 +109,11 @@ def rest_post(path,params)
   end
 end
 
-def rest_put(path,params)
+def rest_put(path,params, headers=nil)
  # STDERR.puts(' PUT ' + path.to_s )
   #  STDERR.puts('PUT params ' + query_hash(params).to_s )
-  r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :put,:path => path,:query => query_hash(params)))
+  headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
+  r = parse_xcon_response( connection.request(:read_timeout => time_out, :headers => headers,:method => :put,:path => path,:query => query_hash(params).to_json ))
   #  connection.reset
   return r
 rescue   Excon::Error::Socket => e
@@ -119,11 +134,13 @@ def query_hash(params)
   return nil
 end
 
-def rest_delete(path,params)
+def rest_delete(path,params, headers=nil)
   q = query_hash(params)
  # STDERR.puts('SEND ' +  path.to_s)
   #  STDERR.puts('SEND ' +  q.to_s)
-  r =  parse_xcon_response( connection.request(:read_timeout => time_out,:method => :delete,:path => path,:query => q))
+  headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
+  # q.to_json! unless q.nil? 
+  r =  parse_xcon_response( connection.request(:read_timeout => time_out, :headers => headers,:method => :delete,:path => path,:query => q))
   #  connection.reset
   return r
 rescue   Excon::Error::Socket => e
@@ -157,7 +174,7 @@ rescue  StandardError => e
 end
 
 def parse_xcon_response(resp)
-  return [] if resp.status  == 404
+  return {} if resp.status  == 404
 
   return parse_error(resp) if resp.status > 399
   r = resp.body
@@ -168,8 +185,8 @@ def parse_xcon_response(resp)
   return hash
   begin
     #  hash = json_parser.parse(r) # do |hash |
-    SystemUtils.deal_with_jason(JSON.parse(r, :create_additons => true ))
-    #   return hash
+    hash =  SystemUtils.deal_with_jason(JSON.parse(r, :create_additons => true ))
+      return hash
     #   end
   rescue  Yajl::ParseError  => e
     #   STDERR.puts e.backtrace

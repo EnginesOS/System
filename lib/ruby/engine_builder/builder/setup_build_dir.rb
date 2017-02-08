@@ -172,7 +172,16 @@ end
 def setup_framework_defaults
   log_build_output('Copy in default templates')
   cmd = 'cp -r ' + SystemConfig.DeploymentTemplates + '/' + @blueprint_reader.framework + '/* ' + basedir
-  system cmd
+  r = system cmd
+  if @blueprint_reader.framework == 'docker'
+    df = File.read(basedir + '/_Dockerfile.tmpl')
+    df = 'FROM ' + @blueprint_reader.base_image + "\n" + df
+      fw = File.new(basedir  + '/Dockerfile.tmpl','w+')
+      fw.write(df)
+      fw.close 
+    return true   
+  end
+  return r      
 rescue StandardError => e
   log_exception(e)
 end

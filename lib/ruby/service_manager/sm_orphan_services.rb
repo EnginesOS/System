@@ -34,11 +34,17 @@ end
   
 def match_orphan_service(service_hash)
   res =  retrieve_orphan(service_hash)
-  return true if res.is_a?(Hash)
+  STDERR.puts(" MATCHED  " + res.to_s)
+  if res.is_a?(Hash)
+      return true if res[:publisher_namespace] == service_hash[:publisher_namespace]
+  end
+  return false
 end
 
   def retrieve_orphan(params)
-    test_registry_result(system_registry_client.retrieve_orphan(params))   
+    r = system_registry_client.retrieve_orphan(params)
+    STDERR.puts('retrice ORPHA ' + params.to_s)
+    test_registry_result(r)   
     rescue StandardError => e
       log_exception(e)
   end

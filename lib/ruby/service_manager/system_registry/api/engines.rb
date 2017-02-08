@@ -2,11 +2,18 @@ module Engines
 #  require_relative 'xcon_rset.rb'
   # engines Methods
   def find_engine_service_hash(params)
-    rest_get('/v0/system_registry/engine/service/',{:params => params })
+    SystemDebug.debug(SystemDebug.services,'sm find_engine_service_hash  ', params)
+    r = '/v0/system_registry/engine/service/'  + params[:container_type] + '/' + params[:parent_engine] 
+       r += '/' + params[:service_handle] 
+       r += '/' + params[:type_path] 
+       rest_get(r)
   end
 
   def find_engine_services_hashes(params)
-    rest_get('/v0/system_registry/engine/services/',{:params => params })
+  #  rest_get('/v0/system_registry/engine/services/',{:params => params })
+  r = '/v0/system_registry/engine/services/'  + params[:container_type] + '/' + params[:parent_engine] 
+    r += '/' + params[:type_path] if params.key?(:type_path)
+    rest_get(r)
   end
 
   def get_engine_nonpersistent_services(params)
