@@ -47,7 +47,7 @@ module PersistantServiceBuilder
     constants = SoftwareServiceDefinition.service_constants(service_hash)
     environ.concat(constants)
     environ.concat(SoftwareServiceDefinition.service_environments(service_hash))
-    SystemDebug.debug(SystemDebug.builder, :with_env, service_hash)
+    SystemDebug.debug(SystemDebug.builder, :with_env, environ)
     # FIXME: release orphan should happen latter unless use reoprhan on rebuild failure
     r = @core_api.create_and_register_service(service_hash)
      return r if r.is_a?(EnginesError)
