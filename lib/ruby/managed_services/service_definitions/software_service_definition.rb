@@ -74,7 +74,7 @@ class SoftwareServiceDefinition
     ret_val = []
     service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
     SystemDebug.debug(SystemDebug.services,:SERVICE_Constants,:loaded,service_hash[:type_path],service_hash[:publisher_namespace],service_def)
-    return ret_val if service_def.nil?
+    return service_def if service_def.is_a?(EnginesError)
     return ret_val unless service_def.key?(:constants)
     SystemDebug.debug(SystemDebug.services,:SERVICE_Constants,:with,service_def[:constants])
     constants = service_def[:constants]
