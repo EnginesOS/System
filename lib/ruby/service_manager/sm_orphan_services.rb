@@ -34,6 +34,7 @@ end
   
 def match_orphan_service(service_hash)
   res =  retrieve_orphan(service_hash)
+  STDERR.puts(" MATCHED  " + res.to_s)
   return true if res.is_a?(Hash)
 end
 
