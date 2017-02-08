@@ -10,7 +10,11 @@ if test -f $dest
  	rm $dest
  fi
 echo mv $src $dest  &>>/tmp/clean.log
-mv $src $dest  &>>/tmp/clean.log
+if test -f $src
+ then
+	cp $src $dest  &>>/tmp/clean.log
+	rm $src
+fi
 if test -f /var/log/engines/system_services/system/system.log
  then
 	mv /var/log/engines/system_services/system/system.log /var/log/engines/system_services/system/system.log.last
