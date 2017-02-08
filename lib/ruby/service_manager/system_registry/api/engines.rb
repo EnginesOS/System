@@ -15,7 +15,7 @@ module Engines
   #  rest_get('/v0/system_registry/engine/services/',{:params => params })
 
   r = '/v0/system_registry/engine/services/'  + params[:container_type] + '/' + params[:parent_engine] 
-    r += '/' + params[:type_path] if params.key(:type_path)
+    r += '/' + params[:type_path] if params.key?(:type_path)
 
     STDERR.puts('using r' + r.to_s + 'FROM ' + params.to_s)
     rest_get(r)
