@@ -53,7 +53,7 @@ def rest_get(path,params = nil,time_out=120, _headers = nil)
     lheaders = headers
     lheaders.merge(_headers) unless _headers == nil
 req = {:time_out => time_out,:method => :get,:path => path, :headers => lheaders }
-  req[:query] = q
+  req[:query] = q unless q.nil?
 
     r = connection.request(req)
   r = parse_xcon_response(r)
@@ -71,12 +71,8 @@ rescue StandardError => e
   STDERR.puts e.class.name + ' with path:' + path.to_s + "\n" + 'params:' + q.to_s + ':::' + req.to_s
   STDERR.puts e.backtrace.to_s
   log_exception(e, params, path)
-  
-reopen_connection
-STDERR.puts('retry  CNT' + cnt.to_s + ':' + e.to_s)
-cnt+=1
- retry if cnt< 5
 
+  {}
 end
 
 #def rest_get(path,params)
@@ -177,7 +173,7 @@ rescue  StandardError => e
 end
 
 def parse_xcon_response(resp)
-  return [] if resp.status  == 404
+  return {} if resp.status  == 404
 
   return parse_error(resp) if resp.status > 399
   r = resp.body
