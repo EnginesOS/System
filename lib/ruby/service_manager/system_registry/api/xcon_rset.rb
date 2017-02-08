@@ -62,7 +62,8 @@ req = {:time_out => time_out,:method => :get,:path => path, :headers => lheaders
 
 #  STDERR.puts(' eof ' + path.to_s + ':' + e.to_s + ':' + e.class.name + ':' + e.backtrace.to_s)
   reopen_connection
-STDERR.puts('retry CNT' + cnt.to_s + ':' + e.to_s)
+#STDERR.puts('retry CNT' + cnt.to_s + ':' + e.to_s)
+  STDERR.puts e.class.name + ' with path:' + path.to_s + "\n" + 'params:' + q.to_s + ':::' + req.to_s  + ':' + e.to_s
 cnt+=1
   retry if cnt< 5
 

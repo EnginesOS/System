@@ -6,18 +6,13 @@ module Engines
     r = '/v0/system_registry/engine/service/'  + params[:container_type] + '/' + params[:parent_engine] 
        r += '/' + params[:service_handle] 
        r += '/' + params[:type_path] 
-       STDERR.puts('using r' + r.to_s+ 'FROM ' + params.to_s)
        rest_get(r)
-
   end
 
   def find_engine_services_hashes(params)
   #  rest_get('/v0/system_registry/engine/services/',{:params => params })
-
   r = '/v0/system_registry/engine/services/'  + params[:container_type] + '/' + params[:parent_engine] 
     r += '/' + params[:type_path] if params.key?(:type_path)
-
-    STDERR.puts('using r' + r.to_s + 'FROM ' + params.to_s)
     rest_get(r)
   end
 
