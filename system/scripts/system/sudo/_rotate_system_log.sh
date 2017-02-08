@@ -11,5 +11,8 @@ if test -f $dest
  fi
 echo mv $src $dest  &>>/tmp/clean.log
 mv $src $dest  &>>/tmp/clean.log
-mv /var/log/engines/system_services/system/system.log /var/log/engines/system_services/system/system.log.last
+if test -f /var/log/engines/system_services/system/system.log
+ then
+	mv /var/log/engines/system_services/system/system.log /var/log/engines/system_services/system/system.log.last
+fi
 #exit
