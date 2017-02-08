@@ -42,7 +42,7 @@ module DockerApiCreateOptions
       mounts.push(mount_string(volume))
     end
     mounts.concat(system_mounts(container))
-
+    mounts.concat(cert_mounts(container))
     mounts
   end
 
@@ -88,7 +88,10 @@ module DockerApiCreateOptions
     host_config['MemorySwap'] = memory * 2
     host_config['MemoryReservation'] # 0,
     host_config['VolumesFrom'] = container.volumes_from unless container.volumes_from.nil?
-      
+   # "CapAdd": ["NET_ADMIN"],
+  STDERR.puts(" Add cap ");
+      host_config["CapAdd"] = add_capabilities(container.capabilities) unless container.capabilities.nil?
+    STDERR.puts(" Add caps " + host_config["CapAdd"].to_s);
     # host_config['KernelMemory'] # 0,
     #  host_config['CpuShares'] # 512,
     # host_config['CpuPeriod'] # 100000,
@@ -124,7 +127,14 @@ module DockerApiCreateOptions
 
     host_config
   end
-
+  
+  def add_capabilities(capabilities)
+#    r = []
+#    capabilities.each do |capability|
+#      r += capability
+    capabilities
+  end
+  
   def port_bindings(container)
     bindings = {}
     return bindings if container.mapped_ports.nil?
@@ -168,6 +178,18 @@ module DockerApiCreateOptions
     labels['container_name'] = container.container_name
     labels['container_type'] = container.ctype
     return labels
+  end
+  
+  def cert_mounts(container)
+    mounts = []
+      return mounts if container.certificates.nil?
+      
+    container.certificates.each do |certificate|
+      prefix =  certificate[:container_type] + '_' + certificate[:parent_engine] + '_' + certificate[:variables][:cert_name]
+      mounts.push(SystemConfig.CertificatesDir + prefix + '.crt:' + SystemConfig.CertificatesDestination +  certificate[:variables][:cert_name] + '.crt:ro' )
+      mounts.push(SystemConfig.KeysDir + prefix + '.key:' + SystemConfig.KeysDestination +  certificate[:variables][:cert_name] + '.key:ro' )
+  end
+  return mounts
   end
 
   def system_mounts(container)

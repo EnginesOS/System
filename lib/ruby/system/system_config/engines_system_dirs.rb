@@ -12,7 +12,10 @@ module EnginesSystemDirs
   @@ServiceMapTemplateDir = '/opt/engines/etc/services/mapping/'
   @@ServiceTemplateDir = '/opt/engines/etc/services/providers/'
   @@EnginesTemp='/opt/engines/tmp'
-  @@CertificatesDir='/opt/engines/etc/ssl/certs/'
+  @@CertificatesDir='/var/lib/engines/cert_auth/public/certs/'
+  @@KeysDir='/var/lib/engines/cert_auth/public/keys/'
+  @@CertificatesDestination='/engines/ssl/public/certs/'
+  @@KeysDestination='/engines/ssl/public/keys/' 
   @@DomainsFile = '/opt/engines/etc/domains/domains'
   @@timeZone_fileMapping = ' -v /etc/localtime:/etc/localtime:ro '
   @@NoRemoteExceptionLoggingFlagFile = '/opt/engines/run/system/flags/no_remote_exception_log'
@@ -20,6 +23,17 @@ module EnginesSystemDirs
 
   def SystemConfig.SSHStore
     return @@SSHStore
+  end
+  
+  def SystemConfig.CertificatesDestination
+    @@CertificatesDestination
+  end
+ 
+  def SystemConfig.KeysDir
+    @@KeysDir
+  end
+  def SystemConfig.KeysDestination
+    @@KeysDestination
   end
   
   def SystemConfig.CertificatesDir

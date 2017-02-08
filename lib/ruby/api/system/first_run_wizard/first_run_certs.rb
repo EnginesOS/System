@@ -24,6 +24,7 @@ module FirstRunCerts
     service_param[:publisher_namespace] = 'EnginesSystem'
     service_param[:service_handle] = 'default_ssl_cert'
     service_param[:variables] = {}
+    service_param[:variables][:wild] = 'yes'
     service_param[:variables][:cert_name] = 'engines'
     service_param[:variables][:country] = params[:ssl_country]
     service_param[:variables][:state] = params[:ssl_state]

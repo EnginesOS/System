@@ -135,12 +135,21 @@ class DockerEventWatcher  < ErrorsApi
     parser = nil
 
     client.request(req) do |resp|
+      json_part = nil
       resp.read_body do |chunk|
         begin
           # parser = FFI_Yajl::Parser.new({:symbolize_keys => true}) if parser.nil?
           #   STDERR.puts('event  cunk ' + chunk.to_s )
           r = ''
           chunk.strip!
+          chunk = json_part + chunk unless json_part.nil?
+          unless chunk.end_with?('}')
+          STDERR.puts('DOCKER SENT INCOMPLETE json ' + chunk.to_s )
+            json_part = chunk
+            next
+          else
+            json_part = nil
+          end 
           #      hash =  parser.parse(chunk)# do |hash|
           hash =  SystemUtils.deal_with_jason(JSON.parse(chunk, :create_additons => true ))
           next unless hash.is_a?(Hash)

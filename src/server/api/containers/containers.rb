@@ -126,7 +126,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
   end
 
   begin
-    STDERR.puts('REQUEST TO  /v0/containers/events/stream')
+ #   STDERR.puts('REQUEST TO  /v0/containers/events/stream')
 
     stream :keep_open do | out  |
       begin
@@ -141,7 +141,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
             #@events_stream.stop unless @events_stream.nil?
             next
           else
-            STDERR.puts('PERIOD')
+       #     STDERR.puts('PERIOD')
             out <<  {:no_op => true}.to_json#unless lock_timer == true
           end
         end if timer.nil?
