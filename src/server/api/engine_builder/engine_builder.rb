@@ -64,7 +64,7 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream'  do
         unless out.closed?
           bytes.force_encoding(Encoding::UTF_8) unless bytes.nil?
           out  << bytes          
-          out  << ''          
+          out  << ".\b"          
           bytes = ''
           #         STDERR.puts('FOLLOW BUILDER GOT first EOF')
           sleep 2
