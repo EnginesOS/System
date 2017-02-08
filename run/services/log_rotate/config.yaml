@@ -4,6 +4,7 @@ publisher_namespace: EnginesSystem
 type_path: log_rotate
 ctype: service
 service_type: transient
+soft_service: true
 persistent: false
 last_error: 
 memory: '32'
