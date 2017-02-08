@@ -47,7 +47,7 @@ def rest_get(path,params = nil,time_out=120, _headers = nil)
   cnt = 0
   q = query_hash(params)
   
-#  STDERR.puts(' GET ' + path.to_s + '?' + q.to_s )
+  STDERR.puts(' GET ' + path.to_s + '?' + q.to_s )
 #  headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
     q = {} if q.nil?
     lheaders = headers
