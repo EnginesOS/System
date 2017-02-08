@@ -9,7 +9,7 @@ class SystemService < ManagedService
     super
   end
   def certificates
-  nil    
+   return nil    
   end
 
   def create_service()
