@@ -52,7 +52,7 @@ def rest_get(path,params = nil,time_out=120, _headers = nil)
   #  q = {} if q.nil?
     lheaders = headers
     lheaders.merge(_headers) unless _headers == nil
-  _headers.delete('Content-Type' ) if  q.nil?
+  lheaders.delete('Content-Type' ) if  q.nil?
 req = {:time_out => time_out,:method => :get,:path => path, :headers => lheaders }
   req[:query] = q unless q.nil?
 
