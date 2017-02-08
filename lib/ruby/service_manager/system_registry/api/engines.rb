@@ -6,7 +6,7 @@ module Engines
     r = '/v0/system_registry/engine/service/'  + params[:container_type] + '/' + params[:parent_engine] 
        r += '/' + params[:service_handle] 
        r += '/' + params[:type_path] 
-       STDERR.puts('using r' + r.to_s)
+       STDERR.puts('using r' + r.to_s+ 'FROM ' + params.to_s)
        rest_get(r)
 
   end
@@ -17,7 +17,7 @@ module Engines
   r = '/v0/system_registry/engine/services/'  + params[:container_type] + '/' + params[:parent_engine] 
     r += '/' + params[:type_path] if params.key(:type_path)
 
-    STDERR.puts('using r' + r.to_s)
+    STDERR.puts('using r' + r.to_s + 'FROM ' + params.to_s)
     rest_get(r)
   end
 
