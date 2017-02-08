@@ -72,7 +72,7 @@ module Excon
              # IO.select([events_stream.rd])
       #  retry
       rescue StandardError => e       
-      STDERR.puts("hijack " + e.to_s + ":" + e.backtrace.to_s)
+      STDERR.puts("HIJACK " + e.to_s + ":") # + e.backtrace.to_s)
       return {} if r.nil?
         r
     end
