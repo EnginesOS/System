@@ -94,6 +94,7 @@ class SoftwareServiceDefinition
     end
     ret_val
   rescue StandardError => e
+SystemDebug.debug(SystemDebug.services,:SERVICE_EXCEPT,:loaded,service_hash[:type_path],service_hash[:publisher_namespace])
     SystemUtils.log_exception(e)
 
   end
@@ -146,6 +147,7 @@ class SoftwareServiceDefinition
     
     return SystemUtils.log_error_mesg('No Dir' + dir.to_s + ':'  + service_type.to_s + ':'+ provider.to_s )
   rescue Exception=>e
+    SystemDebug.debug(SystemDebug.services,:SERVICE_EXCEPT,:loaded,service_hash[:type_path],service_hash[:publisher_namespace])
     SystemUtils.log_error_mesg('Error ' ,provider.to_s + '/' + service_type.to_s )
     SystemUtils.log_exception(e)
 
