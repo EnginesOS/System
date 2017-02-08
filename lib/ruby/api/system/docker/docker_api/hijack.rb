@@ -22,7 +22,6 @@
 #THE SOFTWARE.
 module Excon
   VALID_REQUEST_KEYS << :hijack_block
-
   module Middleware
     # Hijack is an Excon middleware which parses response headers and then
     # yields the underlying TCP socket for raw TCP communication (used to
@@ -34,14 +33,14 @@ module Excon
           :headers       => Excon::Headers.new,
           :status        => status,
           :remote_ip     => socket.respond_to?(:remote_ip) &&
-                            socket.remote_ip,
+          socket.remote_ip,
         }
         if socket.data[:scheme] =~ /^(https?|tcp)$/
           response.merge({
             :local_port    => socket.respond_to?(:local_port) &&
-                              socket.local_port,
+            socket.local_port,
             :local_address => socket.respond_to?(:local_address) &&
-                              socket.local_address
+            socket.local_address
           })
         end
         response
@@ -63,19 +62,10 @@ module Excon
 
           Excon::Response.parse_headers(socket, datum)
           datum[:hijack_block].call socket.instance_variable_get(:@socket)
-            
         end
-      r =  @stack.response_call(datum)   
-         
-       
-      #    rescue IO::WaitReadable
-             # IO.select([events_stream.rd])
-      #  retry
-#      rescue StandardError => e       
-#      STDERR.puts("HIJACK " + e.to_s + ":" + e.backtrace.to_s)
-#      return {} if r.nil?
-#        r
-    end
+        r =  @stack.response_call(datum)
+        #    rescue   dotn catch excepions here as is break excon
+      end
     end
   end
 end
