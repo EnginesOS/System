@@ -35,7 +35,10 @@ end
 def match_orphan_service(service_hash)
   res =  retrieve_orphan(service_hash)
   STDERR.puts(" MATCHED  " + res.to_s)
-  return true if res.is_a?(Hash)
+  if res.is_a?(Hash)
+      return true if res[:publisher_namespace] = service_hash[:publisher_namespace]
+  end
+  return false
 end
 
   def retrieve_orphan(params)

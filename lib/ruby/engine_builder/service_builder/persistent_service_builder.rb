@@ -30,6 +30,7 @@ module PersistantServiceBuilder
       service_hash = existing #Orphan case
       #  LAREADY DONE service_hash = use_orphan(service_hash) if @service_manager.match_orphan_service(service_hash) == true
     elsif @core_api.match_orphan_service(service_hash) == true #auto orphan pick up
+      SystemDebug.debug(SystemDebug.builder,:orphan_service ,service_hash)
       service_hash = use_orphan(service_hash)
       @first_build = false
       SystemDebug.debug(SystemDebug.builder, ' use orphan ', service_hash)
