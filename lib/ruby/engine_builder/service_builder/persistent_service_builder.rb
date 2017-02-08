@@ -7,7 +7,8 @@ module PersistantServiceBuilder
    #   service_hash =  SystemUtils.deal_with_jason(sh)
       service_def = SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:publisher_namespace])
       return log_error_mesg('no matching service definition for ' + service_hash.to_s ,self) if service_def.nil?
-      if service_def[:persistent] &&  service_hash[:persistent] == true
+      if service_def[:persistent] 
+        service_hash[:persistent] = true        
         return r if (r = process_persistent_service(service_hash, environ, use_existing)).is_a?(EnginesError)
       end
     end
