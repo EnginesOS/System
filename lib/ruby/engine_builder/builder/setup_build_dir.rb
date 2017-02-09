@@ -120,6 +120,8 @@ rescue StandardError => e
 end
 
 def read_web_user
+ return @blueprint_reader.cont_user if @blueprint_reader.framework == 'docker'
+ 
   log_build_output('Read Web User')
   stef = File.open(basedir + '/home/stack.env', 'r')
   while line = stef.gets do
