@@ -8,6 +8,9 @@ class SystemService < ManagedService
     @ctype = 'system_service' if @ctype.nil?
     super
   end
+  def certificates
+   return nil    
+  end
 
   def create_service()
     @container_api.create_container(self)
