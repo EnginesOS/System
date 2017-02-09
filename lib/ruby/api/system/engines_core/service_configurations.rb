@@ -113,7 +113,8 @@ end
    
      return log_error_mesg('Service configurator erro@core_api.r incorrect result type ', configurator_result.to_s) unless configurator_result.is_a?(Hash)
     service_manager.update_service_configuration(service_param)
-     return log_error_mesg('Service configurator error @core_api', configurator_result.to_s) unless configurator_result[:result] == 0 || configurator_result[:stderr].start_with?('Warning')
+     return log_error_mesg('Service configurator error @core_ap Got:', configurator_result.to_s, " For:" +service_param.to_s ) unless configurator_result[:result] == 0 || configurator_result[:stderr].start_with?('Warning')
+       
      return true
    end
   
