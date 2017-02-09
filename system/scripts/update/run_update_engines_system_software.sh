@@ -9,9 +9,9 @@ docker stop system
 docker stop registry
 sleep 5
 
-  /opt/engines/system/scripts/system/rotate_system_log.sh system >& /tmp/_rotate_system_log.system
-# /opt/engines/system/scripts/system/rotate_system_log.sh registry   >& /tmp/rotate_system_log.registry
-echo "Restarting"
+  /opt/engines/system/scripts/system/rotate_system_log.sh system > /tmp/_rotate_system_log.system
+ /opt/engines/system/scripts/system/rotate_system_log.sh registry   > /tmp/rotate_system_log.registry
+ echo "Restarting"
 
 docker start registry 
 count=0
