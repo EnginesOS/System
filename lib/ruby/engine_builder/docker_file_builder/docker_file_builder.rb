@@ -320,7 +320,8 @@ class DockerFileBuilder
     log_build_output('Dockerfile:App Archives')
     write_line('')
     set_user('0')
-    @blueprint_reader.archives_details.each do |archive_details|
+    @blueprint_reader.archives_details.each do |archive_details|      
+    next if archive_details[:extraction_command] = 'docker'
       source_url = archive_details[:source_url].to_s
       package_name = archive_details[:package_name].to_s
       destination = archive_details[:destination].to_s
