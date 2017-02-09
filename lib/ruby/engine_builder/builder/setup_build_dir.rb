@@ -120,8 +120,11 @@ rescue StandardError => e
 end
 
 def read_web_user
- return @blueprint_reader.cont_user if @blueprint_reader.framework == 'docker'
- 
+  if @blueprint_reader.framework == 'docker'
+    @web_user = @blueprint_reader.cont_user
+    return @web_user
+  end
+
   log_build_output('Read Web User')
   stef = File.open(basedir + '/home/stack.env', 'r')
   while line = stef.gets do
@@ -178,13 +181,13 @@ def setup_framework_defaults
   if @blueprint_reader.framework == 'docker'
     df = File.read(basedir + '/_Dockerfile.tmpl')
     df = 'FROM ' + @blueprint_reader.base_image + "\n" +  'ENV ContUser ' + @blueprint_reader.cont_user + "\n" + df
-    
-      fw = File.new(basedir  + '/Dockerfile.tmpl','w+')
-      fw.write(df)
-      fw.close 
-    return true   
+
+    fw = File.new(basedir  + '/Dockerfile.tmpl','w+')
+    fw.write(df)
+    fw.close
+    return true
   end
-  return r      
+  return r
 rescue StandardError => e
   log_exception(e)
 end
