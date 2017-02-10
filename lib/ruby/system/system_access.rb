@@ -80,9 +80,9 @@ class SystemAccess
     '172.17.0.1'
   end
 # where ssh goes
-def control_ip
+def system_ip
   # FixME read docker0 ip or cmd line option
-  ENV['control_ip']
+  ENV['SYSTEM_IP']
 end
   # docker interface addres
   def docker_ip
