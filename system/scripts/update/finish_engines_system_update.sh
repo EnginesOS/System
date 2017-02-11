@@ -21,12 +21,12 @@ if ! test -d  $system_updates_dir/$update_id
   	services=`cat  $system_updates_dir/$update_id/services`
   		for service in $services
   		 do
-  		 	/opt/engines/bin/engines service stop $service >> $system_updates_dir/$update_id/update_log
-  		 	if ! test `/opt/engines/bin/engines service  status $service |grep running |cut -f2 -d:` = "running"
+  		 	/opt/engines/bin/engines service $service stop >> $system_updates_dir/$update_id/update_log
+  		 	if ! test `/opt/engines/bin/engines service  $service state  |grep running |cut -f2 -d:` = "running"
   		 	 then  		 	 
   		 		image=`grep image /opt/engines/run/services/$service/running.yaml | cut -f2 -d" "`
   				docker pull $image
-  		 		/opt/engines/bin/engines service recreate $service  >>  $system_updates_dir/$update_id/update_log
+  		 		/opt/engines/bin/engines service $service recreate  >>  $system_updates_dir/$update_id/update_log
   		 	fi
   		 done
   fi
