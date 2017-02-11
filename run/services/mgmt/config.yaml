@@ -13,12 +13,12 @@ volumes:
  cert_key: 
   volume_name: cert_key
   remotepath: "/opt/engines/etc/ssl/keys/engines.key"
-  localpath: "/var/lib/engines/cert_auth/public/keys/engines.key"
+  localpath: "/var/lib/engines/cert_auth/public/keys/system_system_engines.key"
   permissions: "ro"
  cert: 
   volume_name: cert
   remotepath: "/opt/engines/etc/ssl/certs/engines.crt"
-  localpath: "/var/lib/engines/cert_auth/public/certs/engines.crt"
+  localpath: "/var/lib/engines/cert_auth/public/certs/system_system_engines.crt"
   permissions: "ro"  
  public_dir: 
   volume_name: public_dir
@@ -35,7 +35,7 @@ mapped_ports:
 environments:
 - !ruby/object:EnvironmentVariable
  name: SYSTEM_API_URL
- value: http://control.engines.internal:2380/v0/
+ value: http://_Engines_System(system_ip):2380/v0/
  has_changed: true 
  build_time_only: false
  immutable: false

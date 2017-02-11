@@ -1,2 +1,2 @@
 #!/bin/bash
- gem install ffi_yajl
+ gem install ffi-yajl

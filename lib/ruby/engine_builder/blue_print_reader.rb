@@ -41,7 +41,8 @@ class BluePrintReader
   :web_root,
   :actionators,
   :base_image,
-  :capabilities
+  :capabilities,
+  :cont_user
 
   def log_build_output(line)
     @builder.log_build_output(line)
@@ -247,6 +248,7 @@ class BluePrintReader
       if archive_details[:extraction_command] == 'docker'
         @base_image =  archive_details[:source_url]
         add_capability(archive_details[:path_to_extracted]  )
+        @cont_user = archive_details[:destination]
       end
     end
   rescue StandardError => e
