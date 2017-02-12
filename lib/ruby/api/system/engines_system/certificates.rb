@@ -39,11 +39,12 @@ module Certificates
    c = certs_service.perform_action('fetch_cert', params[:variables][:domainname])
      if c == "a_cert"
        #bail if not overrite
+       return false
      end 
     params[:type_path] = 'cert_auth'
-    service_param[:service_container_name] = 'cert_auth'
-    service_param[:persistent] = true
-    service_param[:publisher_namespace] = 'EnginesSystem'
+    params[:service_container_name] = 'cert_auth'
+    params[:persistent] = true
+    params[:publisher_namespace] = 'EnginesSystem'
       
    
  
@@ -59,7 +60,7 @@ module Certificates
 #      service_param[:variables][:person] = params[:ssl_person_name]
 #      service_param[:variables][:domainname] =  params[:domain_name] #params[:default_domain]
 #      service_param[:variables][:service_handle] = 'default_ssl_cert'
-      return  @api.create_and_register_service(service_param)
+      return  @api.create_and_register_service(params)
   
   
   end
