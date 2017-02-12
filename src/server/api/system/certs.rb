@@ -98,12 +98,12 @@ end
 #      @param[:variables] = {}
 #      @param[:variables][:wild] = 'yes'
 #      @param[:variables][:cert_name] = 'engines'
-#      @param[:variables][:country] = params[:ssl_country]
-#      @param[:variables][:state] = params[:ssl_state]
-#      @param[:variables][:city] = params[:ssl_city]
-#      @param[:variables][:organisation] = params[:ssl_organisation_name]
-#      @param[:variables][:person] = params[:ssl_person_name]
-#      @param[:variables][:domainname] =  params[:domain_name] #params[:default_domain]
+#      @param[:variables][:country] 
+#      @param[:variables][:state]
+#      @param[:variables][:city] 
+#      @param[:variables][:organisation] 
+#      @param[:variables][:person] 
+#      @param[:variables][:domainname] 
 #      @param[:variables][:service_handle] = 'default_ssl_cert'
 post '/v0/system/certs/generate' do
   p_params = post_params(request)
