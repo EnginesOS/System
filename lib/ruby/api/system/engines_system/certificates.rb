@@ -31,7 +31,38 @@ module Certificates
   rescue StandardError =>e
     log_exception(e)
   end
-
+  
+  
+  def generate_cert(params)
+    certs_service = loadManagedService('cert_auth')   
+    return certs_service if certs_service.is_a?(EnginesError)
+   c = certs_service.perform_action('fetch_cert', params[:variables][:domainname])
+     if c == "a_cert"
+       #bail if not overrite
+     end 
+    params[:type_path] = 'cert_auth'
+    service_param[:service_container_name] = 'cert_auth'
+    service_param[:persistent] = true
+    service_param[:publisher_namespace] = 'EnginesSystem'
+      
+   
+ 
+#    service_param[:parent_engine] = 'system'
+#      service_param[:service_handle] = 'default_ssl_cert'
+#      service_param[:variables] = {}
+#      service_param[:variables][:wild] = 'yes'
+#      service_param[:variables][:cert_name] = 'engines'
+#      service_param[:variables][:country] = params[:ssl_country]
+#      service_param[:variables][:state] = params[:ssl_state]
+#      service_param[:variables][:city] = params[:ssl_city]
+#      service_param[:variables][:organisation] = params[:ssl_organisation_name]
+#      service_param[:variables][:person] = params[:ssl_person_name]
+#      service_param[:variables][:domainname] =  params[:domain_name] #params[:default_domain]
+#      service_param[:variables][:service_handle] = 'default_ssl_cert'
+      return  @api.create_and_register_service(service_param)
+  
+  
+  end
   def get_cert(domain_name)
     certs_service = loadManagedService('cert_auth')
 

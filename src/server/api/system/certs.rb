@@ -88,5 +88,34 @@ post '/v0/system/certs/' do
   content_type 'text/plain'
   r.to_s
 end
+# @method generate_certificate
+# @overload post '/v0/system/certs/generate'
+# generTE certificate and key in PEM for domain_name
 
+
+#    service_param[:parent_engine] = 'system'
+#      @param[:service_handle] = 'default_ssl_cert'
+#      @param[:variables] = {}
+#      @param[:variables][:wild] = 'yes'
+#      @param[:variables][:cert_name] = 'engines'
+#      @param[:variables][:country] = params[:ssl_country]
+#      @param[:variables][:state] = params[:ssl_state]
+#      @param[:variables][:city] = params[:ssl_city]
+#      @param[:variables][:organisation] = params[:ssl_organisation_name]
+#      @param[:variables][:person] = params[:ssl_person_name]
+#      @param[:variables][:domainname] =  params[:domain_name] #params[:default_domain]
+#      @param[:variables][:service_handle] = 'default_ssl_cert'
+post '/v0/system/certs/generate' do
+  p_params = post_params(request)
+
+  cparams =  Utils::Params.assemble_params(p_params, [], :all)
+  return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
+  
+ # STDERR.puts('ADD cert Params ' + cparams.to_s )
+  r = engines_api.generate_cert(cparams)
+  return log_error(request, r, params) if  r.is_a?(EnginesError)
+  status(202)
+  content_type 'text/plain' 
+  r.to_s
+end
 # @!endgroup
