@@ -122,6 +122,7 @@ end
 def read_web_user
   if @blueprint_reader.framework == 'docker'
     @web_user = @blueprint_reader.cont_user
+    STDERR.puts("Set web user to:" + @web_user.to_s)
     return @web_user
   end
 
@@ -145,6 +146,7 @@ def apply_templates_to_environments
 end
 
 def read_web_port
+  
   log_build_output('Setting Web port')
   stef = File.open(basedir + '/home/stack.env', 'r')
   while line = stef.gets do
