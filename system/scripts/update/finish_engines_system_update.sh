@@ -24,6 +24,7 @@ if ! test -d  $system_updates_dir/$update_id
   		 	/opt/engines/bin/engines service $service stop >> $system_updates_dir/$update_id/update_log 		 	 
   		 	image=`grep image /opt/engines/run/services/$service/running.yaml | cut -f2 -d" "`
   			docker pull $image
+  			rm /opt/engines/run/services/$service/running.yaml*
   		 	/opt/engines/bin/engines service $service recreate  >>  $system_updates_dir/$update_id/update_log
 
   		 done
@@ -36,6 +37,7 @@ if ! test -d  $system_updates_dir/$update_id
   		 do
   		  	docker pull engines/$service:` cat /opt/engines/release`  >> $system_updates_dir/$update_id/update_log
  			docker stop $service >> $system_updates_dir/$update_id/update_log
+ 			rm /opt/engines/run/system_services/$service/running.yaml*
  			sleep 30
  			/opt/engines/bin/system_service.rb $service destroy >> $system_updates_dir/$update_id/update_log
  			/opt/engines/bin/system_service.rb $service create >> $system_updates_dir/$update_id/update_log
