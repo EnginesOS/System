@@ -9,6 +9,7 @@ perform_get
 when 'view'
 perform_get
 when 'generate'
+@route += '/generate'
 params_data = read_stdin_data
 
    perform_post(JSON.parse(params_data), :create_additons => true )
