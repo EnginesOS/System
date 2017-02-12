@@ -8,8 +8,11 @@ when 'system_ca'
 perform_get
 when 'view'
 perform_get
+when 'generate'
+params_data = read_stdin_data
 
-
+ return  perform_post(JSON.parse(params_data), :create_additons => true )
+ 
 when 'default'
   @route += '/default'
   if ARGV.count < 6
