@@ -149,9 +149,9 @@ class DockerEventWatcher  < ErrorsApi
             next
           else
             json_part = nil
-            STDERR.puts('DOCKER SENT COMPLETE json ' + chunk.to_s )
+          #  STDERR.puts('DOCKER SENT COMPLETE json ' + chunk.to_s )
           end 
-          STDERR.puts('DOCKER SENT json ' + chunk.to_s )
+         # STDERR.puts('DOCKER SENT json ' + chunk.to_s )
           #      hash =  parser.parse(chunk)# do |hash|
           hash =  SystemUtils.deal_with_jason(JSON.parse(chunk, :create_additons => true ))
           next unless hash.is_a?(Hash)
