@@ -17,7 +17,23 @@ end
     return  @system_api.upload_ssl_certificate(params)
   
   end
-  
+  def generate_cert(params)
+    #    service_param[:parent_engine] = 'system'
+    #      service_param[:service_handle] = 'default_ssl_cert'
+    #      service_param[:variables] = {}
+    #      service_param[:variables][:wild] = 'yes'
+    #      service_param[:variables][:cert_name] = 'engines'
+    #      service_param[:variables][:country] = params[:ssl_country]
+    #      service_param[:variables][:state] = params[:ssl_state]
+    #      service_param[:variables][:city] = params[:ssl_city]
+    #      service_param[:variables][:organisation] = params[:ssl_organisation_name]
+    #      service_param[:variables][:person] = params[:ssl_person_name]
+    #      service_param[:variables][:domainname] =  params[:domain_name] #params[:default_domain]
+    #      service_param[:variables][:service_handle] = 'default_ssl_cert'
+     return @system_api.generate_cert(params)
+     rescue StandardError => e
+         return log_exception(e,'Failed to generate cert',params)
+   end  
   def get_cert(domain)
     return @system_api.get_cert(domain)
     rescue StandardError => e
