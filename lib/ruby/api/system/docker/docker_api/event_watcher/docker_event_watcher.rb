@@ -163,6 +163,7 @@ class DockerEventWatcher  < ErrorsApi
         rescue StandardError => e
           log_error_mesg('Chunk error on docker Event Stream _' + chunk.to_s + '_')
           log_exception(e,chunk)
+          next
           # @system.start_docker_event_listener
         end
       end
