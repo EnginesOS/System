@@ -47,3 +47,13 @@ post '/v0/unauthenticated/bootstrap/first_run/complete' do
     i = false if cparams[:install_mgmt] == 'false' || cparams[:install_mgmt] == false
   engines_api.first_run_complete(i)  
 end
+# @method system_ca
+# @overload get '/v0/unauthenticated/system_ca'
+# @return [String] PEM encoded Public certificate
+
+get '/v0/unauthenticated/system_ca' do
+  system_ca = engines_api.get_system_ca
+  return log_error(request, system_ca) if system_ca.is_a?(EnginesError)
+  content_type 'text/plain'
+  system_ca.to_s
+end

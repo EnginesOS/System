@@ -266,7 +266,7 @@ module DockerApiCreateOptions
 
   def service_sshkey_local_dir(container)
     
-    '/opt/engines/etc/ssh/keys/services/' + container.container_name
+    '/opt/engines/etc/ssh/keys/' + container.ctype + 's/' + container.container_name
   end
 
   def in_container_log_dir(container)
