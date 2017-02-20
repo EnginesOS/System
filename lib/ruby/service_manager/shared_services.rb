@@ -61,7 +61,9 @@ module SharedServices
     SystemDebug.debug(SystemDebug.services,  :remove_shared_service_from_engine, ahash)
       return r if (r = system_registry_client.remove_from_managed_engines_registry(ahash)).is_a?(EnginesError)
     SystemDebug.debug(SystemDebug.services,  :remove_shared_service_from_share_reg, ahash)
-    return test_registry_result(system_registry_client.remove_from_shares_registry(ahash))
+    r = test_registry_result(system_registry_client.remove_from_shares_registry(ahash))
+    SystemDebug.debug(SystemDebug.services,  :remove_shared_service_from_share_reg_result, r)
+      return r
   rescue StandardError => e
     log_exception(e)
   end
