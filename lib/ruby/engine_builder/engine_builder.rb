@@ -125,7 +125,7 @@ class EngineBuilder < ErrorsApi
     else 
       version =  @blueprint.key['schema']['version']['major']
         unless File.exist?('blueprint_readers/' + version.to_s + '/versioned_blueprint_reader.rb')
-         log_build_errors('Failed to create Managed Container')
+         log_build_errors('Failed to create Managed Container invalid blueprint schema')
          return post_failed_build_clean_up
         end
       require_relative 'blueprint_readers/' + version.to_s + '/versioned_blueprint_reader.rb'
