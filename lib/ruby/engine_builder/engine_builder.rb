@@ -133,7 +133,7 @@ class EngineBuilder < ErrorsApi
     
     
     
-    @blueprint_reader = VersionedBluePrintReader.new(@build_params[:engine_name], @blueprint, self)
+    @blueprint_reader = VersionedBlueprintReader.new(@build_params[:engine_name], @blueprint, self)
     return post_failed_build_clean_up unless @blueprint_reader.process_blueprint
     true
   rescue Exception => e
