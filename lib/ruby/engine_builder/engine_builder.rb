@@ -137,7 +137,8 @@ class EngineBuilder < ErrorsApi
     return post_failed_build_clean_up unless @blueprint_reader.process_blueprint
     true
   rescue Exception => e
-    log_build_errors('Failed to create Managed Container Problem with blueprint' + e.to_s)
+    log_build_errors('Failed to create Managed Container Problem with blueprint: ' + e.to_s)
+    log_build_errors("dbg " + e.backtrace.to_s)
             return post_failed_build_clean_up
      
   end
