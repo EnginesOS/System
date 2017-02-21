@@ -131,7 +131,7 @@ class EngineBuilder < ErrorsApi
       require_relative 'blueprint_readers/' + version.to_s + '/versioned_blueprint_reader.rb'
     end
     
-    
+    log_build_output('Using Blueprint Schema ' + version.to_s )
     
     @blueprint_reader = VersionedBlueprintReader.new(@build_params[:engine_name], @blueprint, self)
     return post_failed_build_clean_up unless @blueprint_reader.process_blueprint
