@@ -121,7 +121,7 @@ class EngineBuilder < ErrorsApi
     return post_failed_build_clean_up if @blueprint.nil? || @blueprint == false
     
     unless @blueprint.key?('schema')
-      require_relative 'blueprint_readers/0/versioned_blue_print_reader.rb'
+      require_relative 'blueprint_readers/0/versioned_blueprint_reader.rb'
     else 
       version =  @blueprint.key['schema']['version']['major']
         unless File.exist?('blueprint_readers/' + version.to_s + '/versioned_blueprint_reader.rb')
