@@ -121,14 +121,14 @@ class EngineBuilder < ErrorsApi
     return post_failed_build_clean_up if @blueprint.nil? || @blueprint == false
     
     unless @blueprint.key?('schema')
-      require_relative 'blueprint_readers/0/blue_print_reader.rb'
+      require_relative 'blueprint_readers/0/versioned_blue_print_reader.rb'
     else 
       version =  @blueprint.key['schema']['version']['major']
-        unless File.exist?('blueprint_readers/' + version.to_s + '/blue_print_reader.rb')
+        unless File.exist?('blueprint_readers/' + version.to_s + '/versioned_blue_print_reader.rb')
          log_build_errors('Failed to create Managed Container')
          return post_failed_build_clean_up
         end
-      require_relative 'blueprint_readers/' + version.to_s + '/blue_print_reader.rb'
+      require_relative 'blueprint_readers/' + version.to_s + '/versioned_blue_print_reader.rb'
     end
     
     
