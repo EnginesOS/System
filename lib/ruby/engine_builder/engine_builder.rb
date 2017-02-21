@@ -7,7 +7,7 @@ require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 class EngineBuilder < ErrorsApi
 
   require_relative 'builder_public.rb'
-  require_relative 'blue_print_reader.rb'
+
   require_relative 'docker_file_builder/docker_file_builder.rb'
 
   require_relative 'config_file_writer.rb'
@@ -119,7 +119,21 @@ class EngineBuilder < ErrorsApi
     log_build_output('Reading Blueprint')
     @blueprint = load_blueprint
     return post_failed_build_clean_up if @blueprint.nil? || @blueprint == false
-    @blueprint_reader = BluePrintReader.new(@build_params[:engine_name], @blueprint, self)
+    
+    unless @blueprint.key?('schema')
+      require_relative 'blueprint_readers/0/blue_print_reader.rb'
+    else 
+      version =  @blueprint.key['schema']['version']['major']
+        unless FileList.exist?('blueprint_readers/' + version.to_s + '/blue_print_reader.rb')
+         log_build_errors('Failed to create Managed Container')
+         return post_failed_build_clean_up
+        end
+      require_relative 'blueprint_readers/' + version.to_s + '/blue_print_reader.rb'
+    end
+    
+    
+    
+    @blueprint_reader = VersionedBluePrintReader.new(@build_params[:engine_name], @blueprint, self)
     return post_failed_build_clean_up unless @blueprint_reader.process_blueprint
     true
   end
