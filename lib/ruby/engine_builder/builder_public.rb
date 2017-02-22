@@ -87,4 +87,8 @@ class BuilderPublic
   def memory
     @builder.build_params[:memory]
   end
+#  require 'hmac-md5'
+#  def md5_sum(password)
+#    HMAC::MD5.new(password).digest
+#  end
 end
