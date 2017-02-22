@@ -7,7 +7,7 @@ require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 class EngineBuilder < ErrorsApi
 
   require_relative 'builder_public.rb'
-  require_relative 'blue_print_reader.rb'
+
   require_relative 'docker_file_builder/docker_file_builder.rb'
 
   require_relative 'config_file_writer.rb'
@@ -119,9 +119,28 @@ class EngineBuilder < ErrorsApi
     log_build_output('Reading Blueprint')
     @blueprint = load_blueprint
     return post_failed_build_clean_up if @blueprint.nil? || @blueprint == false
-    @blueprint_reader = BluePrintReader.new(@build_params[:engine_name], @blueprint, self)
+    
+    unless @blueprint[:software].key?(:schema)
+      require_relative 'blueprint_readers/0/versioned_blueprint_reader.rb'
+    else 
+      version =  @blueprint[:software][:schema][:version][:major]
+        unless File.exist?('blueprint_readers/' + version.to_s + '/versioned_blueprint_reader.rb')
+         log_build_errors('Failed to create Managed Container invalid blueprint schema')
+         return post_failed_build_clean_up
+        end
+      require_relative 'blueprint_readers/' + version.to_s + '/versioned_blueprint_reader.rb'
+    end
+    
+    log_build_output('Using Blueprint Schema ' + version.to_s )
+    
+    @blueprint_reader = VersionedBlueprintReader.new(@build_params[:engine_name], @blueprint, self)
     return post_failed_build_clean_up unless @blueprint_reader.process_blueprint
     true
+  rescue Exception => e
+    log_build_errors('Failed to create Managed Container Problem with blueprint: ' + e.to_s)
+    log_build_errors("dbg " + e.backtrace.to_s)
+            return post_failed_build_clean_up
+     
   end
 
   def setup_engine_dirs

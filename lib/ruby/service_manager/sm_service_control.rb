@@ -43,8 +43,10 @@ module SmServiceControl
     return service_hash unless service_hash.is_a?(Hash)
 
     if service_hash[:shared] == true
-    
-      return  remove_shared_service_from_engine(service_query)
+      SystemDebug.debug(SystemDebug.services,  :delete_shared_service, service_hash)
+      r =  remove_shared_service_from_engine(service_query)
+      SystemDebug.debug(SystemDebug.services,  :DELETED_shared_service, service_hash)
+      return r
       #  return system_registry_client.remove_from_managed_engines_registry(service_hash)       
     end
    # return log_error_mesg('Failed to match params to registered service',service_hash) unless service_hash.is_a?(Hash)
