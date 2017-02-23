@@ -1,0 +1,9 @@
+--- !ruby/object:Hash
+type: oneshot
+notification_email: 
+schedules:
+-
+ label: Nightly
+ cron_spec: "1 * * * *"
+ action: start
+ 
