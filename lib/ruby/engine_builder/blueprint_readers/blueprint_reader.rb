@@ -42,8 +42,17 @@ class BluePrintReader
   :actionators,
   :base_image,
   :capabilities,
-  :cont_user
-
+  :cont_user,
+  :custom_start_script,
+  :custom_stop_script,
+  :custom_install_script,
+  :custom_post_install_script,
+  :template_files,
+  :custom_php_inis,
+  :apache_httpd_configurations,
+  :apache_htaccess_files,
+  :install_report_template
+  
   def log_build_output(line)
     @builder.log_build_output(line)
   end
@@ -79,10 +88,43 @@ class BluePrintReader
     read_persistent_dirs
     read_web_port_overide
     read_web_root
+    read_scripts
+    read_templates
     read_actionators
+    read_custom_php_inis
+    read_apache_httpd_configurations
+    read_apache_htaccess_files
+    read_install_report_template
+    
     return true
   rescue StandardError => e
     SystemUtils.log_exception(e)
+  end
+  
+ def read_install_report_template
+   @install_report_template = blueprint[:software][:installation_report_template]
+ end
+  def read_apache_htaccess_files
+    @apache_htaccess_files = @blueprint[:software][:apache_htaccess_files] if @blueprint[:software][:apache_htaccess_files].is_a?(Array)
+  end
+  
+  def read_custom_php_inis
+    @custom_php_inis = @blueprint[:software][:custom_php_inis] if @blueprint[:software][:custom_php_inis].is_a?(Array)
+  end
+  
+  def read_apache_httpd_configurations
+    @apache_httpd_configurations = @blueprint[:software][:apache_httpd_configurations] if  @blueprint[:software][:apache_httpd_configurations].is_a?(Array)
+  end
+  
+  def read_templates
+    @template_files = @blueprint[:software][:template_files] if @blueprint[:software][:template_files].is_a?(Array)
+  end
+  
+  def read_scripts
+    @custom_start_script =  @blueprint[:software][:custom_start_script].gsub(/\r/, '') if @blueprint[:software].key?(:custom_start_script)
+    @custom_stop_script =  @blueprint[:software][:custom_stop_script].gsub(/\r/, '') if @blueprint[:software].key?(:custom_stop_script)
+    @custom_install_script =  @blueprint[:software][:custom_install_script].gsub(/\r/, '') if @blueprint[:software].key?(:custom_install_script)
+    @custom_post_install_script =  @blueprint[:software][:custom_post_install_script].gsub(/\r/, '') if  @blueprint[:software].key?(:custom_post_install_script)
   end
   
   def read_web_root
@@ -410,18 +452,5 @@ class BluePrintReader
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
-  def read_actionators
-    log_build_output('Read Actionators')
-    SystemDebug.debug(SystemDebug.builder,' readin in actionators', @blueprint[:software][:actionators])
-    if @blueprint[:software].key?(:actionators)   
-    @actionators = @blueprint[:software][:actionators]
-      SystemDebug.debug(SystemDebug.builder,@actionators)
-    else
-      SystemDebug.debug(SystemDebug.builder,'No actionators')
-      @actionators = nil
-    end
-    rescue StandardError => e
-    @actionators = nil
-        SystemUtils.log_exception(e)
-      end 
+ 
 end
