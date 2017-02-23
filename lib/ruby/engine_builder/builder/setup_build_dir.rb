@@ -68,6 +68,7 @@ end
 def create_php_ini
   FileUtils.mkdir_p(basedir + File.dirname(SystemConfig.CustomPHPiniFile))
   if @blueprint_reader.custom_php_inis
+    contents = ''
   @blueprint_reader.custom_php_inis.each do |php_ini_hash|
       content = php_ini_hash[:content].gsub(/\r/, '')
       contents = contents + "\n" + content
