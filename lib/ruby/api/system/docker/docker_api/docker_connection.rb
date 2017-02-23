@@ -70,13 +70,13 @@ class DockerConnection < ErrorsApi
     :debug_request => true,
     :debug_response => true,
     :persistent => true) if @connection.nil?
-    STDERR.puts(' OPEN docker.sock connection ' + @connection.to_s)
+    SystemDebug.debug(SystemDebug.docker,' OPEN docker.sock connection ' + @connection.to_s)
     @connection
   end
 
   def reopen_connection
     @connection.reset
-    STDERR.puts(' REOPEN doker.sock connection ')
+    SystemDebug.debug(SystemDebug.docker,' REOPEN doker.sock connection ')
     @connection = Excon.new('unix:///', :socket => '/var/run/docker.sock',
     :debug_request => true,
     :debug_response => true,
