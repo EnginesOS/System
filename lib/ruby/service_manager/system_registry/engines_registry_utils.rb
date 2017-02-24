@@ -1,4 +1,4 @@
-module EnginesegistryUtils
+module EnginesRegistryUtils
   
   def pe_sh_path(ahash)
     return ahash[:parent_engine] + '/'+  ahash[:service_handle]
