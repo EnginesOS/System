@@ -42,8 +42,9 @@ def match_orphan_service(service_hash)
 end
 
   def retrieve_orphan(params)
-    r = system_registry_client.retrieve_orphan(params)
     STDERR.puts('retrice ORPHA ' + params.to_s)
+    r = system_registry_client.retrieve_orphan(params)
+  
     test_registry_result(r)   
     rescue StandardError => e
       log_exception(e)
