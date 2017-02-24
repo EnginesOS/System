@@ -1,13 +1,13 @@
 module EnginesRegistryUtils
   
   def pe_sh_path(ahash)
-    STDERR.purs('pe_sh_path:' + ahash.to_s)
+    STDERR.puts('pe_sh_path:' + ahash.to_s)
     return ahash[:parent_engine] + '/'+  ahash[:service_handle]
   end
 end
 
 def st_path(ahash)
-  STDERR.purs('st_path:' + ahash.to_s)
+  STDERR.puts('st_path:' + ahash.to_s)
  return  ahash[:publisher_namespace] + '/'+  ahash[:type_path]
 end
 
