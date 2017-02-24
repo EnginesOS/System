@@ -2,11 +2,11 @@
 module Configurations
  # require_relative 'xcon_rset.rb'
   def get_service_configurations_hashes(config_hash)
-    rest_get('/v0/system_registry/service/configurations/',{:params => config_hash })
+    rest_get('/v0/system_registry/service/configurations/' + config_hash[:service_name] )
   end
 
   def get_service_configuration(config_hash)
-    rest_get('/v0/system_registry/services/configuration/',{:params => config_hash })
+    rest_get('/v0/system_registry/services/configuration/' + config_hash[:service_name] + '/' + config_hash[:configurator_name] )
   end
 
   def update_service_configuration(config_hash)
