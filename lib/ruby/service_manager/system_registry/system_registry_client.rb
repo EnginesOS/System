@@ -17,7 +17,8 @@ class SystemRegistryClient < ErrorsApi
   require_relative 'api/shares.rb'
   require_relative 'engines_registry_client_errors.rb'
   require_relative 'engines_registry_error.rb'
-  
+  require_relative 'engines_registry_utils.rb'
+  include EnginesRegistryUtils
   include EnginesRegistryClientErrors
   include Configurations
   include Services

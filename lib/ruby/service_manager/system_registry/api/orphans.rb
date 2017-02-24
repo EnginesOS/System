@@ -11,23 +11,23 @@ module Orphans
   #      t_st_result(send_request('rebirth_orphan', params))
   #    end
   def rollback_orphaned_service(params)
-    rest_post('/v0/system_registry/services/orphans/return',params )
+    rest_post('/v0/system_registry/services/orphans/return/'+ pe_sh_st_path(service_query_hash), service_query_hash)
   end
 
   def retrieve_orphan(params)
-    rest_get('/v0/system_registry/services/orphan/',{:params => params } )
+    rest_get('/v0/system_registry/services/orphan/' + pe_sh_st_path(service_query_hash))
   end
 
   def get_orphaned_services(params)
-    rest_get('/v0/system_registry/services/orphans/',{:params => params } )
+    rest_get('/v0/system_registry/services/orphans/' + st_path(service_query_hash))
   end
 
   def orphanate_service(service_query_hash)
-    rest_post('/v0/system_registry/services/orphans/add',service_query_hash )
+    rest_post('/v0/system_registry/services/orphans/add/' + pe_sh_st_path(service_query_hash), service_query_hash)
   end
 
   def release_orphan(params)
-    rest_delete('/v0/system_registry/services/orphans/del',{:params => params } )
+    rest_delete('/v0/system_registry/services/orphans/del' + pe_sh_st_path(service_query_hash) )
   end
 
   def orphaned_services_registry

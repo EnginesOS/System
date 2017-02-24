@@ -95,7 +95,7 @@ def time_out
   120
 end
 
-def rest_post(path,params, headers=nil)
+def rest_post(path,params = nil, headers=nil)
   begin
    # STDERR.puts(' POST ' + path.to_s )
     headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
@@ -109,7 +109,7 @@ def rest_post(path,params, headers=nil)
   end
 end
 
-def rest_put(path,params, headers=nil)
+def rest_put(path,params = nil, headers=nil)
  # STDERR.puts(' PUT ' + path.to_s )
   #  STDERR.puts('PUT params ' + query_hash(params).to_s )
   headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
@@ -134,7 +134,7 @@ def query_hash(params)
   return nil
 end
 
-def rest_delete(path,params, headers=nil)
+def rest_delete(path,params = nil, headers=nil)
   q = query_hash(params)
  # STDERR.puts('SEND ' +  path.to_s)
   #  STDERR.puts('SEND ' +  q.to_s)
