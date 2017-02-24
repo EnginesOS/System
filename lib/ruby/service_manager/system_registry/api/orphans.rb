@@ -27,7 +27,7 @@ module Orphans
   end
 
   def release_orphan(params)
-    rest_delete('/v0/system_registry/services/orphans/del' + pe_sh_st_path(service_query_hash) )
+    rest_delete('/v0/system_registry/services/orphans/del/' + pe_sh_st_path(service_query_hash) )
   end
 
   def orphaned_services_registry
