@@ -10,15 +10,15 @@ module Configurations
   end
 
   def update_service_configuration(config_hash)
-    rest_post('/v0/system_registry/services/configuration/update',config_hash )
+    rest_post('/v0/system_registry/services/configuration/update/' + config_hash[:service_name] + '/' + config_hash[:configurator_name] ,config_hash )
   end
 
   def rm_service_configuration(config_hash)
-    rest_delete('/v0/system_registry/services/configurations/del',{:params => config_hash } )
+    rest_delete('/v0/system_registry/services/configurations/del/'+ config_hash[:service_name] + '/' + config_hash[:configurator_name] )
   end
 
   def add_service_configuration(config_hash)
-    rest_post('/v0/system_registry/services/configurations/add',config_hash )
+    rest_post('/v0/system_registry/services/configurations/add/'+ config_hash[:service_name] + '/' + config_hash[:configurator_name],config_hash )
   end
 
   def service_configurations_registry
