@@ -42,7 +42,16 @@ class BluePrintReader
   :actionators,
   :base_image,
   :capabilities,
-  :cont_user
+  :cont_user,
+  :custom_start_script,
+  :custom_stop_script,
+  :custom_install_script,
+  :custom_post_install_script,
+  :template_files,
+  :custom_php_inis,
+  :apache_httpd_configurations,
+  :apache_htaccess_files,
+  :install_report_template
 
   def log_build_output(line)
     @builder.log_build_output(line)
@@ -79,12 +88,46 @@ class BluePrintReader
     read_persistent_dirs
     read_web_port_overide
     read_web_root
+    read_scripts
+    read_templates
     read_actionators
+    read_custom_php_inis
+    read_apache_httpd_configurations
+    read_apache_htaccess_files
+    read_install_report_template
+
     return true
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
-  
+
+  def read_install_report_template
+    @install_report_template = blueprint[:software][:installation_report_template]
+  end
+
+  def read_apache_htaccess_files
+    @apache_htaccess_files = @blueprint[:software][:apache_htaccess_files] if @blueprint[:software][:apache_htaccess_files].is_a?(Array)
+  end
+
+  def read_custom_php_inis
+    @custom_php_inis = @blueprint[:software][:custom_php_inis] if @blueprint[:software][:custom_php_inis].is_a?(Array)
+  end
+
+  def read_apache_httpd_configurations
+    @apache_httpd_configurations = @blueprint[:software][:apache_httpd_configurations] if  @blueprint[:software][:apache_httpd_configurations].is_a?(Array)
+  end
+
+  def read_templates
+    @template_files = @blueprint[:software][:template_files] if @blueprint[:software][:template_files].is_a?(Array)
+  end
+
+  def read_scripts
+    @custom_start_script =  @blueprint[:software][:custom_start_script].gsub(/\r/, '') if @blueprint[:software].key?(:custom_start_script)
+    @custom_stop_script =  @blueprint[:software][:custom_stop_script].gsub(/\r/, '') if @blueprint[:software].key?(:custom_stop_script)
+    @custom_install_script =  @blueprint[:software][:custom_install_script].gsub(/\r/, '') if @blueprint[:software].key?(:custom_install_script)
+    @custom_post_install_script =  @blueprint[:software][:custom_post_install_script].gsub(/\r/, '') if  @blueprint[:software].key?(:custom_post_install_script)
+  end
+
   def read_web_root
     @web_root = @blueprint[:software][:web_root_directory] if @blueprint[:software].key?(:web_root_directory)
     SystemDebug.debug(SystemDebug.builder,  ' @web_root ',  @web_root)
@@ -211,8 +254,8 @@ class BluePrintReader
         @php_modules.push(modname)
       elsif pkg_module_type == 'apache'
         @apache_modules.push(modname)
-        elsif pkg_module_type == 'npm'
-          @npm_modules.push(modname)
+      elsif pkg_module_type == 'npm'
+        @npm_modules.push(modname)
       else
         @last_error = 'pkg module_type ' + pkg_module_type + ' Unknown for ' + modname
         return false
@@ -254,10 +297,12 @@ class BluePrintReader
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
- def add_capability(capability)
-   @capabilities = [] if @capabilities.nil?
-   @capabilities.push(capability)
- end
+
+  def add_capability(capability)
+    @capabilities = [] if @capabilities.nil?
+    @capabilities.push(capability)
+  end
+
   def read_write_permissions_recursive
     log_build_output('Read Recursive Write Permissions')
     @recursive_chmods = []
@@ -355,23 +400,23 @@ class BluePrintReader
     return true unless ports.is_a?(Array) # not an error just nada
     ports.each do |port|
       portnum = port[:port]
-        if port.key?(:name)
-          name = port[:name]
-        else
-          name = port[:port].to_s
-        end
-     
+      if port.key?(:name)
+        name = port[:name]
+      else
+        name = port[:port].to_s
+      end
+
       external = port[:external]
       type = port[:protocol]
       type = 'tcp' if type.is_a?(String) == false || type.size == 0
       type = 'both' if type == 'TCP and UDP'
       type.downcase!
-     
+
       # FIXME: when public ports supported
       SystemDebug.debug(SystemDebug.builder, 'Port ' + name + ':' + portnum.to_s + ':' + external.to_s + '/' + type)
-     # @mapped_ports.push(WorkPort.work_port_hash(name, portnum, external, false, type))
-        @mapped_ports[name] = WorkPort.work_port_hash(name, portnum, external, true, type)
-    end 
+      # @mapped_ports.push(WorkPort.work_port_hash(name, portnum, external, false, type))
+      @mapped_ports[name] = WorkPort.work_port_hash(name, portnum, external, true, type)
+    end
     return true
   rescue StandardError => e
     SystemUtils.log_exception(e)
@@ -391,15 +436,15 @@ class BluePrintReader
       label = env[:label]
       immutable = env[:immutable]
       # lookup_system_values = env[:lookup_system_values]
-     unless @builder.set_environments.nil? 
+      unless @builder.set_environments.nil?
         SystemDebug.debug(SystemDebug.builder, :looking_for_, name)
-       SystemDebug.debug(SystemDebug.builder, 'from ' ,@builder.set_environments )
+        SystemDebug.debug(SystemDebug.builder, 'from ' ,@builder.set_environments )
         if ask && @builder.set_environments.key?(name.to_sym)
           entered_value = @builder.set_environments[name.to_sym]
           if entered_value.nil? == false && entered_value.length != 0 # FIXME: needs to be removed
             value = entered_value
             SystemDebug.debug(SystemDebug.builder, :value_set, value)
-            
+
           end
         end
       end
@@ -410,18 +455,19 @@ class BluePrintReader
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
+
   def read_actionators
     log_build_output('Read Actionators')
     SystemDebug.debug(SystemDebug.builder,' readin in actionators', @blueprint[:software][:actionators])
-    if @blueprint[:software].key?(:actionators)   
-    @actionators = @blueprint[:software][:actionators]
+    if @blueprint[:software].key?(:actionators)
+      @actionators = @blueprint[:software][:actionators]
       SystemDebug.debug(SystemDebug.builder,@actionators)
     else
       SystemDebug.debug(SystemDebug.builder,'No actionators')
       @actionators = nil
     end
-    rescue StandardError => e
+  rescue StandardError => e
     @actionators = nil
-        SystemUtils.log_exception(e)
-      end 
+    SystemUtils.log_exception(e)
+  end
 end

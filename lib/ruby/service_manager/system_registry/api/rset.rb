@@ -3,7 +3,7 @@ def json_parser
      @json_parser = Yajl::Parser.new(:create_additions => true,:symbolize_keys => true) if @json_parser.nil?
      @json_parser
    end
-def rest_get(path,params)
+def rest_get(path,params = nil)
   return base_url if base_url.is_a?(EnginesError)
   begin
     retry_count = 0
@@ -18,7 +18,7 @@ def rest_get(path,params)
   end
 end
 
-def rest_post(path,params)
+def rest_post(path,params = nil)
   begin
     #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
     parse_rest_response(RestClient.post(base_url + path, params))
@@ -29,7 +29,7 @@ def rest_post(path,params)
   end
 end
 
-def rest_put(path,params)
+def rest_put(path,param = nils)
   begin
     parse_rest_response(RestClient.put(base_url + path, params))
     rescue RestClient::ExceptionWithResponse => e      
@@ -39,7 +39,7 @@ def rest_put(path,params)
   end
 end
 
-def rest_delete(path,params)
+def rest_delete(path,params = nil)
   begin
     parse_rest_response(RestClient.delete(base_url + path, params))
     rescue RestClient::ExceptionWithResponse => e   

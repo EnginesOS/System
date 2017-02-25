@@ -1,10 +1,10 @@
 module BuildReport
   def get_build_report_template(blueprint)
-    template = blueprint[:software][:installation_report_template]
-    if template.nil? == true
+    
+    if @blueprint_reader.install_report_template.nil? 
       return get_default_build_report_template
     else
-      return template
+      return @blueprint_reader.install_report_template
     end
   rescue
     return ' Template load error '

@@ -49,8 +49,8 @@ def create_engines_config_files
 end
 
 def create_template_files
-  if @blueprint[:software].key?(:template_files) && @blueprint[:software][:template_files].nil? == false
-    @blueprint[:software][:template_files].each do |template_hash|
+  if @blueprint_reader.template_files
+    @blueprint_reader.template_files.each do |template_hash|
       template_hash[:path].sub!(/^\/home/,'')
       write_software_file('/home/engines/templates/' + template_hash[:path], template_hash[:content])
     end
@@ -58,8 +58,8 @@ def create_template_files
 end
 
 def create_httaccess
-  if @blueprint[:software].key?(:apache_htaccess_files) && @blueprint[:software][:apache_htaccess_files].nil? == false
-    @blueprint[:software][:apache_htaccess_files].each do |htaccess_hash|
+  if @blueprint_reader.apache_htaccess_files
+    @blueprint_reader.apache_htaccess_files.each do |htaccess_hash|
       write_software_file('/home/engines/htaccess_files' + htaccess_hash[:directory] + '/.htaccess', htaccess_hash[:htaccess_content])
     end
   end
@@ -67,11 +67,9 @@ end
 
 def create_php_ini
   FileUtils.mkdir_p(basedir + File.dirname(SystemConfig.CustomPHPiniFile))
-  if @blueprint[:software].key?(:custom_php_inis) \
-  && @blueprint[:software][:custom_php_inis].nil? == false \
-  && @blueprint[:software][:custom_php_inis].length > 0
+  if @blueprint_reader.custom_php_inis
     contents = ''
-    @blueprint[:software][:custom_php_inis].each do |php_ini_hash|
+  @blueprint_reader.custom_php_inis.each do |php_ini_hash|
       content = php_ini_hash[:content].gsub(/\r/, '')
       contents = contents + "\n" + content
     end
@@ -80,13 +78,10 @@ def create_php_ini
 end
 
 def create_apache_config
-  if @blueprint[:software].key?(:apache_httpd_configurations) \
-  && @blueprint[:software][:apache_httpd_configurations].nil? == false \
-  && @blueprint[:software][:apache_httpd_configurations].length > 0
-    FileUtils.mkdir_p(basedir + File.dirname(SystemConfig.CustomApacheConfFile))
-    #  @ if @blueprint[:software].key?(:apache_httpd_configurations) && @blueprint[:software][:apache_httpd_configurations]  != nil
+  if @blueprint_reader.apache_httpd_configurations
+    FileUtils.mkdir_p(basedir + File.dirname(SystemConfig.CustomApacheConfFile))  
     contents = ''
-    @blueprint[:software][:apache_httpd_configurations].each do |httpd_configuration|
+    @blueprint_reader.apache_httpd_configurations.each do |httpd_configuration|
       contents = contents + httpd_configuration[:httpd_configuration] + "\n"
 
     end
