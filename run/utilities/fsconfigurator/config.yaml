@@ -81,7 +81,7 @@ volumes:
   localpath: /var/lib/engines/fs/_Engines_Template(target)/_Engines_Template(volume)
   permissions: "rw"
 volumes_from:
- - "_Engines_Template(target_container)"
+- "_Engines_Template(target_container)"
 mapped_ports:
 repo: na
 last_result: 

@@ -47,6 +47,7 @@ class ContainerStateFiles
       Dir.mkdir(state_dir + '/run/flags') unless Dir.exist?(state_dir + '/run/flags')
       FileUtils.chown_R(nil, 'containers', state_dir + '/run')
       FileUtils.chmod_R('u+r', state_dir + '/run')
+      FileUtils.chmod_R('g+w', state_dir + '/run')
     end
     log_dir = ContainerStateFiles.container_log_dir(container)
     Dir.mkdir(log_dir) unless File.directory?(log_dir)
@@ -54,10 +55,21 @@ class ContainerStateFiles
       Dir.mkdir(state_dir + '/configurations/') unless File.directory?(state_dir + '/configurations')
       Dir.mkdir(state_dir + '/configurations/default') unless File.directory?(state_dir + '/configurations/default')
     end
+    
+    key_dir =  ContainerStateFiles.key_dir(container)
+    Dir.mkdir_p(key_dir)  unless File.directory?(key_dir)
+    FileUtils.chown_R(nil, 'containers',key_dir)
+    FileUtils.chmod('u+r', key_dir)    
+    
     return true
+    
   rescue StandardError => e
     container.last_error = 'Failed To Create ' + e.to_s
     SystemUtils.log_exception(e)
+  end
+  
+  def self.key_dir(container)
+    SystemConfig.SSHStore + '/' + container.ctype + 's/'  + container.container_name
   end
 
   def self.clear_container_var_run(container)
