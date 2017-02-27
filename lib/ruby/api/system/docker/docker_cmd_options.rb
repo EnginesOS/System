@@ -49,7 +49,7 @@ module DockerCmdOptions
   end
 
   def self.service_sshkey_container_dir(container)
-    '/home/.ssh/'
+    '/home/home_dir/.ssh'
   end
 
   def self.container_state_dir(container)

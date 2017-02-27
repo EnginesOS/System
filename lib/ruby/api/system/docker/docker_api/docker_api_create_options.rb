@@ -216,7 +216,7 @@ module DockerApiCreateOptions
   end
 
   def ssh_keydir_mount(container)
-    ContainerStateFiles.container_ssh_keydir(container) + ':/home/.ssh:rw'
+    ContainerStateFiles.container_ssh_keydir(container) + ':/home/home_dir/.ssh:rw'
     #service_sshkey_local_dir(container) + ':/home/.ssh:rw'
     #    ssh_keydir_mount_string = {}
     #    ssh_keydir_mount_string['Source'] = service_sshkey_local_dir(container)
