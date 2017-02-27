@@ -3,6 +3,7 @@ module EngineScriptsBuilder
   def create_scripts
      FileUtils.mkdir_p(basedir + SystemConfig.ScriptsDir)
      create_start_script
+    create_stop_script
      create_install_script
      create_post_install_script
      write_worker_commands
@@ -14,24 +15,25 @@ module EngineScriptsBuilder
    end
  
    def create_start_script
-     if @blueprint[:software].key?(:custom_start_script) \
-     && @blueprint[:software][:custom_start_script].nil? == false\
-     && @blueprint[:software][:custom_start_script].length > 0
-       content = @blueprint[:software][:custom_start_script].gsub(/\r/, '')
-       write_software_script_file(SystemConfig.StartScript, content)
+     if @blueprint_reader.custom_start_script
+       write_software_script_file(SystemConfig.StartScript, @blueprint_reader.custom_start_script)
       
      end
    rescue Exception => e
      SystemUtils.log_exception(e)
    end
- 
+
+  def create_stop_script
+    if @blueprint_reader.custom_start_script
+      write_software_script_file(SystemConfig.StopScript, @blueprint_reader.custom_start_script)
+     
+    end
+  rescue Exception => e
+    SystemUtils.log_exception(e)
+  end
    def create_install_script
-     if @blueprint[:software].key?(:custom_install_script) \
-     && @blueprint[:software][:custom_install_script].nil? == false\
-     && @blueprint[:software][:custom_install_script].length > 0
-       content = @blueprint[:software][:custom_install_script].gsub(/\r/, '')
-       write_software_script_file(SystemConfig.InstallScript, content)
-      
+     if @blueprint_reader.custom_install_script
+       write_software_script_file(SystemConfig.InstallScript,  @blueprint_reader.custom_install_script)      
      end
    rescue Exception => e
      SystemUtils.log_exception(e)
@@ -39,11 +41,8 @@ module EngineScriptsBuilder
  
    def create_post_install_script
  
-     if @blueprint[:software].key?(:custom_post_install_script) \
-     && @blueprint[:software][:custom_post_install_script].nil? == false \
-     && @blueprint[:software][:custom_post_install_script].length > 0
-       content = @blueprint[:software][:custom_post_install_script].gsub(/\r/, '')
-       write_software_script_file(SystemConfig.PostInstallScript, content)
+     if @blueprint_reader.custom_post_install_script
+       write_software_script_file(SystemConfig.PostInstallScript, @blueprint_reader.custom_post_install_script)
       
        @has_post_install = true
      end

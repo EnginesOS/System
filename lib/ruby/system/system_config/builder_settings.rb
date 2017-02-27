@@ -18,6 +18,7 @@ module BuilderSettings
   @@BackupScriptsSrcRoot = '/opt/engines/system/templates/services/backup/'
   @@LanguageFile = '/opt/engines/etc/locale'
   @@DefaultLanguage = 'en_US'
+  @@StopScript = '/home/engines/scripts/custom_stop.sh'
   
   def SystemConfig.LanguageFile
     @@LanguageFile
@@ -72,6 +73,10 @@ module BuilderSettings
     return @@StartScript
   end
 
+
+  def SystemConfig.StopScript
+    return @@StopScript
+  end
   def SystemConfig.InstallScript
     return @@InstallScript
   end
