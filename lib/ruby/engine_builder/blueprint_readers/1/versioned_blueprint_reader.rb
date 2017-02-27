@@ -69,7 +69,9 @@ class VersionedBlueprintReader < BluePrintReader
          @last_error = 'pkg Module missing type'
          return false
        end
+       
        modname = pkg_module[:name]
+       SystemDebug.debug(SystemDebug.builder,  ' modules  modname',  modname)
        if pkg_module_type == 'pear'
          @pear_modules.push(modname)
        elsif pkg_module_type == 'pecl'
