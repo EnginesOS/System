@@ -3,7 +3,7 @@ module Engines
   # engines Methods
   def find_engine_service_hash(params)
     SystemDebug.debug(SystemDebug.services,'sm find_engine_service_hash  ', params)
-    r = '/v0/system_registry/engine/service/container/'  + params[:parent_engine] 
+    r = '/v0/system_registry/engine/service/'  + params[:container_type] + '/' + params[:parent_engine] 
        r += '/' + params[:service_handle] 
        r += '/' + params[:type_path] 
        rest_get(r)
