@@ -10,6 +10,14 @@ class VersionedBlueprintReader < BluePrintReader
     @custom_stop_script =  @blueprint[:software][:scripts][:shutdown].gsub(/\r/, '') if @blueprint[:software][:scripts].key?(:shutdown)
     @custom_install_script =  @blueprint[:software][:scripts][:install].gsub(/\r/, '') if @blueprint[:software][:scripts].key?(:install)
     @custom_post_install_script =  @blueprint[:software][:scripts][:post_install].gsub(/\r/, '') if  @blueprint[:software][:scripts].key?(:post_install)
+    STDERR.puts('custom_start_script ' + @custom_start_script.to_s )
+    STDERR.puts('')
+    STDERR.puts('custom_stop_script' + @custom_stop_script.to_s)
+    STDERR.puts('')
+    STDERR.puts('custom_install_script' +@custom_install_script.to_s)
+    STDERR.puts('')
+    STDERR.puts('custom_post_install_script' +@custom_post_install_script.to_s )
+
   end
    
   def read_web_port_overide

@@ -119,6 +119,7 @@ class BluePrintReader
 
   def read_templates
     @template_files = @blueprint[:software][:template_files] if @blueprint[:software][:template_files].is_a?(Array)
+    STDERR.puts('templates ' + @template_files.to_s )
   end
 
   def read_scripts
