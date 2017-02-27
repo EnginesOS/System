@@ -6,10 +6,10 @@ class VersionedBlueprintReader < BluePrintReader
   
   def read_scripts
     return unless @blueprint[:software].key?(:scripts)
-    @custom_start_script =  @blueprint[:software][:scripts][:start].gsub(/\r/, '') if @blueprint[:software][:scripts].key?(:start)
-    @custom_stop_script =  @blueprint[:software][:scripts][:shutdown].gsub(/\r/, '') if @blueprint[:software][:scripts].key?(:shutdown)
-    @custom_install_script =  @blueprint[:software][:scripts][:install].gsub(/\r/, '') if @blueprint[:software][:scripts].key?(:install)
-    @custom_post_install_script =  @blueprint[:software][:scripts][:post_install].gsub(/\r/, '') if  @blueprint[:software][:scripts].key?(:post_install)
+    @custom_start_script =  @blueprint[:software][:scripts][:start][:content].gsub(/\r/, '') if @blueprint[:software][:scripts].key?(:start)
+    @custom_stop_script =  @blueprint[:software][:scripts][:shutdown][:content].gsub(/\r/, '') if @blueprint[:software][:scripts].key?(:shutdown)
+    @custom_install_script =  @blueprint[:software][:scripts][:install][:content].gsub(/\r/, '') if @blueprint[:software][:scripts].key?(:install)
+    @custom_post_install_script =  @blueprint[:software][:scripts][:post_install][:content].gsub(/\r/, '') if  @blueprint[:software][:scripts].key?(:post_install)
     STDERR.puts('custom_start_script ' + @custom_start_script.to_s )
     STDERR.puts('')
     STDERR.puts('custom_stop_script' + @custom_stop_script.to_s)
@@ -17,7 +17,9 @@ class VersionedBlueprintReader < BluePrintReader
     STDERR.puts('custom_install_script' +@custom_install_script.to_s)
     STDERR.puts('')
     STDERR.puts('custom_post_install_script' +@custom_post_install_script.to_s )
-
+  
+    rescue StandardError => e
+      SystemUtils.log_exception(e)
   end
    
   def read_web_port_overide
@@ -25,6 +27,8 @@ class VersionedBlueprintReader < BluePrintReader
       @web_port = @blueprint[:software][:base][:framework_port_overide]
       @web_port = nil if  @web_port == 0
     end
+    rescue StandardError => e
+      SystemUtils.log_exception(e)
     end 
     
   def read_lang_fw_values
@@ -39,24 +43,34 @@ class VersionedBlueprintReader < BluePrintReader
   
   def read_install_report_template
      @install_report_template = @blueprint[:software][:base][:installation_report]
+    rescue StandardError => e
+      SystemUtils.log_exception(e)
    end
    
   def read_deployment_type
      @deployment_type = @blueprint[:software][:base][:deployment_type]
+    rescue StandardError => e
+      SystemUtils.log_exception(e)
    end
    
    def continuous_deployment
      @continuous_deployment = @blueprint[:software][:base][:continuous_deployment]
+     rescue StandardError => e
+       SystemUtils.log_exception(e)
    end
    
    def first_run_url
      @first_run_url =  @blueprint[:software][:base][:first_run_url]
+     rescue StandardError => e
+       SystemUtils.log_exception(e)
    end
   
    
   def read_web_root
     @web_root = @blueprint[:software][:base][:web_root_directory] if @blueprint[:software].key?(:web_root_directory)
     SystemDebug.debug(SystemDebug.builder,  ' @web_root ',  @web_root)
+    rescue StandardError => e
+      SystemUtils.log_exception(e)
   end
   
   def read_pkg_modules
@@ -96,5 +110,7 @@ class VersionedBlueprintReader < BluePrintReader
        end
      end
      return true
+    rescue StandardError => e
+      SystemUtils.log_exception(e)
    end
 end
