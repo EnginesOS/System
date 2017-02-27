@@ -86,7 +86,7 @@ class DockerFileBuilder
 
   def finalise_docker_file
     write_build_script('_finalise_environment.sh')
-    write_line('RUN chown -R $ContUser /home/app') if blueprint_reader.continuous_deployment
+    write_line('RUN chown -R $ContUser /home/app') if @blueprint_reader.continuous_deployment
     insert_framework_frag_in_dockerfile('builder.end.tmpl')
     write_line('')
     write_line('VOLUME /home/fs/')
