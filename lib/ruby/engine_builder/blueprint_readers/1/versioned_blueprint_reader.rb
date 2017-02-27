@@ -50,4 +50,41 @@ class VersionedBlueprintReader < BluePrintReader
     @web_root = @blueprint[:software][:base][:web_root_directory] if @blueprint[:software].key?(:web_root_directory)
     SystemDebug.debug(SystemDebug.builder,  ' @web_root ',  @web_root)
   end
+  
+  def read_pkg_modules
+     @apache_modules = []
+     @pear_modules = []
+     @php_modules = []
+     @pecl_modules = []
+     @npm_modules = []
+     pkg_modules = @blueprint[:software][:required_modules]
+     return true unless pkg_modules.is_a?(Array)  # not an error just nada
+     pkg_modules.each do |pkg_module|
+       os_package = pkg_module[:os_package]
+       if os_package.nil? == false && os_package != ''
+         @os_packages.push(os_package)
+       end
+       pkg_module_type = pkg_module[:type]
+       if pkg_module_type.nil? == true
+         @last_error = 'pkg Module missing type'
+         return false
+       end
+       modname = pkg_module[:name]
+       if pkg_module_type == 'pear'
+         @pear_modules.push(modname)
+       elsif pkg_module_type == 'pecl'
+         @pecl_modules.push(modname)
+       elsif pkg_module_type == 'php'
+         @php_modules.push(modname)
+       elsif pkg_module_type == 'apache'
+         @apache_modules.push(modname)
+       elsif pkg_module_type == 'npm'
+         @npm_modules.push(modname)
+       else
+         @last_error = 'pkg module_type ' + pkg_module_type + ' Unknown for ' + modname
+         return false
+       end
+     end
+     return true
+   end
 end
