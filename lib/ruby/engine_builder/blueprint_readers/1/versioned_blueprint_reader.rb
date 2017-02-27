@@ -8,7 +8,7 @@ class VersionedBlueprintReader < BluePrintReader
     return unless @blueprint[:software].key?(:scripts)
     @custom_start_script =  @blueprint[:software][:scripts][:start].gsub(/\r/, '') if @blueprint[:software][:scripts].key?(:start)
     @custom_stop_script =  @blueprint[:software][:scripts][:shutdown].gsub(/\r/, '') if @blueprint[:software][:scripts].key?(:shutdown)
-    @custom_install_script =  @blueprint[:software][:install].gsub(/\r/, '') if @blueprint[:software][:scripts].key?(:install)
+    @custom_install_script =  @blueprint[:software][:scripts][:install].gsub(/\r/, '') if @blueprint[:software][:scripts].key?(:install)
     @custom_post_install_script =  @blueprint[:software][:scripts][:post_install].gsub(/\r/, '') if  @blueprint[:software][:scripts].key?(:post_install)
   end
    

@@ -12,7 +12,7 @@ class DockerFileBuilder
     @layer_count = 0
     @env_file = File.new(@builder.basedir + '/build.env','w+')
     # this should be read as it is framework dep
-    @max_layers = 75 
+    @max_layers = 75
   end
 
   def log_build_output(line)
@@ -62,10 +62,9 @@ class DockerFileBuilder
     write_line('')
     write_line('RUN mkdir -p /home/fs/local/')
     write_line('')
-    
 
-     set_user('$ContUser')  unless @blueprint_reader.framework == 'docker'
-    
+    set_user('$ContUser')  unless @blueprint_reader.framework == 'docker'
+
     write_run_install_script
     set_user('0')
     setup_persitant_app if @build_params[:app_is_persistent]
@@ -86,9 +85,9 @@ class DockerFileBuilder
 
   def finalise_docker_file
     write_build_script('_finalise_environment.sh')
-    if@blueprint_reader.respond_to?(:continuous_deployment)
-      log_build_output("Setting up Continuos Deployment" + @blueprint_reader.continuous_deployment.to_s )
-    write_line('RUN chown -R $ContUser /home/app')  if @blueprint_reader.continuous_deployment
+    if @blueprint_reader.respond_to?(:continuous_deployment)
+      log_build_output("Setting up Continuos Deployment" + @blueprint_reader.continuous_deployment )
+      write_line('RUN chown -R $ContUser /home/app')  if @blueprint_reader.continuous_deployment
     end
     insert_framework_frag_in_dockerfile('builder.end.tmpl')
     write_line('')
@@ -324,8 +323,8 @@ class DockerFileBuilder
     log_build_output('Dockerfile:App Archives')
     write_line('')
     set_user('0')
-    @blueprint_reader.archives_details.each do |archive_details|      
-    next if archive_details[:extraction_command] == 'docker'
+    @blueprint_reader.archives_details.each do |archive_details|
+      next if archive_details[:extraction_command] == 'docker'
       source_url = archive_details[:source_url].to_s
       package_name = archive_details[:package_name].to_s
       destination = archive_details[:destination].to_s
