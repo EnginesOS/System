@@ -58,7 +58,7 @@ class ContainerStateFiles
     
     key_dir =  ContainerStateFiles.key_dir(container)
     STDERR.puts("KEY DIR" + key_dir.to_s)
-    Dir.mkdir_p(key_dir)  unless File.directory?(key_dir)
+    Dir.mkdir(key_dir)  unless File.directory?(key_dir)
     FileUtils.chown(nil, 'containers',key_dir)
     FileUtils.chmod('g+w', key_dir)    
     
