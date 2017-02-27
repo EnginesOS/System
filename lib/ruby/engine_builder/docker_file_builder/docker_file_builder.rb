@@ -86,8 +86,8 @@ class DockerFileBuilder
   def finalise_docker_file
     write_build_script('_finalise_environment.sh')
     if @blueprint_reader.respond_to?(:continuous_deployment)
-      log_build_output("Setting up Continuos Deployment" + @blueprint_reader.continuous_deployment.to_s )
-      write_line('RUN chown -R $ContUser /home/app')  if @blueprint_reader.continuous_deployment
+      log_build_output("Setting up Continuos Deployment:" + @blueprint_reader.continuous_deployment.to_s ) if @blueprint_reader.continuous_deployment
+      write_line('RUN chown -R $ContUser /home/app; chmod g+w -R /home/app')  if @blueprint_reader.continuous_deployment
     end
     insert_framework_frag_in_dockerfile('builder.end.tmpl')
     write_line('')
