@@ -102,7 +102,7 @@ class BluePrintReader
   end
 
   def read_install_report_template
-    @install_report_template = blueprint[:software][:installation_report_template]
+    @install_report_template = @blueprint[:software][:installation_report_template]
   end
 
   def read_apache_htaccess_files
