@@ -12,8 +12,13 @@ module Services
     rest_get('/v0/system_registry/service/consumers/',{:params => service_query_hash })
   end
 
-  def update_attached_service(service_hash)
-    rest_put('/v0/system_registry/service/update', service_hash)
+  def update_attached_service(params)
+    
+    r = '/v0/system_registry/service/update/'  + params[:container_type] + '/' + params[:parent_engine] 
+                 r += '/' + params[:service_handle] 
+              r += '/' + params[:publisher_namespace] 
+                 r += '/' + params[:type_path] 
+    rest_put(r, params) 
   end
 
   def add_to_services_registry(service_hash)
