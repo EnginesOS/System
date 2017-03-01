@@ -18,7 +18,7 @@ module Services
                  r += '/' + params[:service_handle] 
               r += '/' + params[:publisher_namespace] 
                  r += '/' + params[:type_path] 
-    rest_put(r, params) 
+  rest_post(r, {:api_vars => params }) 
   end
 
   def add_to_services_registry(service_hash)
