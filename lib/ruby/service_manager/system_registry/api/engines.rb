@@ -33,7 +33,12 @@ module Engines
   end
 
   def remove_from_managed_engines_registry(params)
-    rest_delete('/v0/system_registry/engine/services/del',{:params => params })
+    r = '/v0/system_registry/engine/service/del/'  + params[:container_type] + '/' + params[:parent_engine] 
+          r += '/' + params[:service_handle] 
+       r += '/' + params[:publisher_namespace] 
+          r += '/' + params[:type_path] 
+    rest_delete(r)
+   # rest_delete('/v0/system_registry/engine/services/del',{:params => params })
   end
 
   def update_registered_managed_engine(params)
