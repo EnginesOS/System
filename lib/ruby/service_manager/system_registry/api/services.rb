@@ -22,7 +22,12 @@ module Services
   end
 
   def remove_from_services_registry(service_hash)
-    rest_delete('/v0/system_registry/services/del',{:params => service_hash })
+ #   rest_delete('/v0/system_registry/services/del',{:params => service_hash })
+    r = '/v0/system_registry/services/del/'  + params[:container_type] + '/' + params[:parent_engine] 
+             r += '/' + params[:service_handle] 
+          r += '/' + params[:publisher_namespace] 
+             r += '/' + params[:type_path] 
+       rest_delete(r) 
   end
 
   def service_is_registered?(service_hash)
