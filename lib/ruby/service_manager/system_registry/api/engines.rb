@@ -32,6 +32,7 @@ module Engines
   end
 
   def remove_from_managed_engines_registry(params)
+      params[:container_type] = container unless params.keys?(:container_type)
     r = '/v0/system_registry/engine/services/del/ '  + params[:container_type] + '/' + params[:parent_engine] 
           r += '/' + params[:service_handle] 
           r += '/' + params[:type_path] 
