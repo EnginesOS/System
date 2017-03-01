@@ -42,7 +42,11 @@ module Engines
   end
 
   def update_registered_managed_engine(params)
-    rest_delete('/v0/system_registry/engine/services/update',{:params => params })
+    r = '/v0/system_registry/engine/services/update/'  + params[:container_type] + '/' + params[:parent_engine] 
+             r += '/' + params[:service_handle] 
+          r += '/' + params[:publisher_namespace] 
+             r += '/' + params[:type_path] 
+    rest_put(r,{:api_vars => params })
   end
 
   def managed_engines_registry
