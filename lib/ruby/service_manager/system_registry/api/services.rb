@@ -26,7 +26,7 @@ module Services
     rest_post('/v0/system_registry/services/add',service_hash )
   end
 
-  def remove_from_services_registry(service_hash)
+  def remove_from_services_registry(params)
  #   rest_delete('/v0/system_registry/services/del',{:params => service_hash })
     r = '/v0/system_registry/services/del/'  + params[:container_type] + '/' + params[:parent_engine] 
              r += '/' + params[:service_handle] 
