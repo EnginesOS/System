@@ -37,7 +37,7 @@ module Engines
           r += '/' + params[:service_handle] 
        r += '/' + params[:publisher_namespace] 
           r += '/' + params[:type_path] 
-    rest_delete(r)
+    rest_delete(r) 
    # rest_delete('/v0/system_registry/engine/services/del',{:params => params })
   end
 
