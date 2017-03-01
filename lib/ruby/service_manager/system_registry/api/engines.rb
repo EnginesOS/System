@@ -33,7 +33,7 @@ module Engines
   end
 
   def remove_from_managed_engines_registry(params)
-    r = '/v0/system_registry/engine/service/del/'  + params[:container_type] + '/' + params[:parent_engine] 
+    r = '/v0/system_registry/engine/services/del/'  + params[:container_type] + '/' + params[:parent_engine] 
           r += '/' + params[:service_handle] 
        r += '/' + params[:publisher_namespace] 
           r += '/' + params[:type_path] 
