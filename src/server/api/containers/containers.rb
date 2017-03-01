@@ -155,13 +155,16 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
 
             bytes = events_stream.rd.read_nonblock(2048)
             begin
+              next if bytes.nil?
               jason_event = ''
               #  jason_event =    json_parser.parse(bytes.strip) #do |event |
               #     jason_event = event
               # end
-              jason_event =  JSON.parse(bytes.strip, :create_additons => true )
+              bytes.strip!
+              next if bytes.length == 0 || bytes == "\r\n"
+              jason_event =  JSON.parse(bytes, :create_additons => true )
             rescue  StandardError => e
-              STDERR.puts('Failed to parse docker events :' + bytes + ':' + e.to_s )
+              STDERR.puts('Failed to parse docker events:' + bytes + ':' + e.to_s )
               next
             end
             #            jason_event = JSON.parse(bytes)
