@@ -61,7 +61,11 @@ module EngineScriptsBuilder
       filename = SystemConfig.ActionatorDir + '/' + actionator[:name] + '.sh'
       SystemDebug.debug(SystemDebug.builder,"creating actionator " ,  actionator[:name],filename)
 
-      write_software_script_file(filename, actionator[:script])
+     unless actionator[:script].key?(:content)
+       write_software_script_file(filename, actionator[:script])
+     else
+       write_software_script_file(filename, actionator[:script][:content])
+     end
       
     end
     return true
