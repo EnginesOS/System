@@ -5,7 +5,6 @@ module Engines
     SystemDebug.debug(SystemDebug.services,'sm find_engine_service_hash  ', params)
     r = '/v0/system_registry/engine/service/'  + params[:container_type] + '/' + params[:parent_engine] 
        r += '/' + params[:service_handle] 
-    r += '/' + params[:publisher_namespace] 
        r += '/' + params[:type_path] 
        rest_get(r)
   end
@@ -33,9 +32,8 @@ module Engines
   end
 
   def remove_from_managed_engines_registry(params)
-    r = '/v0/system_registry/engine/services/del/'  + params[:container_type] + '/' + params[:parent_engine] 
+    r = '/v0/system_registry/engine/services/del/ '  + params[:container_type] + '/' + params[:parent_engine] 
           r += '/' + params[:service_handle] 
-       r += '/' + params[:publisher_namespace] 
           r += '/' + params[:type_path] 
     rest_delete(r) 
    # rest_delete('/v0/system_registry/engine/services/del',{:params => params })
@@ -44,7 +42,6 @@ module Engines
   def update_registered_managed_engine(params)
     r = '/v0/system_registry/engine/services/update/'  + params[:container_type] + '/' + params[:parent_engine] 
              r += '/' + params[:service_handle] 
-          r += '/' + params[:publisher_namespace] 
              r += '/' + params[:type_path] 
     rest_put(r,{:api_vars => params })
   end
