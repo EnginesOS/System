@@ -452,11 +452,16 @@ class BluePrintReader
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
+  def blueprint_env_varaibles
+    @blueprint[:software][:variables]
+  end
+  
+    
 
   def read_environment_variables
     log_build_output('Read Environment Variables')
     @environments = []
-    envs = @blueprint[:software][:variables]
+    envs = blueprint_env_varaibles
     return true unless envs.is_a?(Array) # not an error just nada
     envs.each do |env|      
       name = env[:name]

@@ -73,6 +73,10 @@ class VersionedBlueprintReader < BluePrintReader
       SystemUtils.log_exception(e)
   end
   
+  def blueprint_env_varaibles
+     @blueprint[:software][:environment_variables]
+   end
+  
   def read_pkg_modules
      @apache_modules = []
      @pear_modules = []
