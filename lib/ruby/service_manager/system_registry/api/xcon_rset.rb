@@ -1,4 +1,6 @@
 #require 'rest-client'
+
+@route_prefix = '/v0/system_registry/'
 def json_parser
   @json_parser = FFI_Yajl::Parser.new({:symbolize_keys => true}) if @json_parser.nil?
   @json_parser
@@ -53,7 +55,7 @@ def rest_get(path,params = nil,time_out=120, _headers = nil)
     lheaders = headers
     lheaders.merge(_headers) unless _headers == nil
   lheaders.delete('Content-Type' ) if  q.nil?
-req = {:time_out => time_out,:method => :get,:path => path, :headers => lheaders }
+req = {:time_out => time_out,:method => :get,:path => @route_prefix + path, :headers => lheaders }
   req[:query] = q unless q.nil?
 
     r = connection.request(req)
@@ -99,7 +101,7 @@ def rest_post(path,params = nil, headers=nil)
   begin
    # STDERR.puts(' POST ' + path.to_s )
     headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
-    r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :post,:path => path,:body => query_hash(params).to_json  ))
+    r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :post,:path => @route_prefix + path,:body => query_hash(params).to_json  ))
     return r
   rescue   Excon::Error::Socket => e
     reopen_connection
@@ -113,7 +115,7 @@ def rest_put(path,params = nil, headers=nil)
  # STDERR.puts(' PUT ' + path.to_s )
   #  STDERR.puts('PUT params ' + query_hash(params).to_s )
   headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
-  r = parse_xcon_response( connection.request(:read_timeout => time_out, :headers => headers,:method => :put,:path => path,:query => query_hash(params).to_json ))
+  r = parse_xcon_response( connection.request(:read_timeout => time_out, :headers => headers,:method => :put,:path => @route_prefix + path,:query => query_hash(params).to_json ))
   #  connection.reset
   return r
 rescue   Excon::Error::Socket => e
@@ -140,7 +142,7 @@ def rest_delete(path,params = nil, headers=nil)
   #  STDERR.puts('SEND ' +  q.to_s)
   headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
   # q.to_json! unless q.nil? 
-  r =  parse_xcon_response( connection.request(:read_timeout => time_out, :headers => headers,:method => :delete,:path => path,:query => q))
+  r =  parse_xcon_response( connection.request(:read_timeout => time_out, :headers => headers,:method => :delete,:path => @route_prefix + path,:query => q))
   #  connection.reset
   return r
 rescue   Excon::Error::Socket => e
