@@ -458,8 +458,9 @@ class BluePrintReader
     @environments = []
     envs = @blueprint[:software][:variables]
     return true unless envs.is_a?(Array) # not an error just nada
-    envs.each do |env|
+    envs.each do |env|      
       name = env[:name]
+      log_build_output('Process Env Variable ' + name )
       value = env[:value]
       ask = env[:ask_at_build_time]
       mandatory = env[:mandatory]
@@ -467,7 +468,9 @@ class BluePrintReader
       label = env[:label]
       immutable = env[:immutable]
       # lookup_system_values = env[:lookup_system_values]
+        
       unless @builder.set_environments.nil?
+        log_build_output('Merging supplied Environment Variable:' + name.to_s)
         SystemDebug.debug(SystemDebug.builder, :looking_for_, name)
         SystemDebug.debug(SystemDebug.builder, 'from ' ,@builder.set_environments )
         if ask && @builder.set_environments.key?(name.to_sym)
@@ -477,7 +480,11 @@ class BluePrintReader
             SystemDebug.debug(SystemDebug.builder, :value_set, value)
 
           end
+        log_build_output('Merged supplied Environment Variable:' + name.to_s)
+      else
+        log_build_output('No supplied Environment Variables')
         end
+        
       end
       name.sub!(/ /, '_')
       ev = EnvironmentVariable.new(name, value, ask, mandatory, build_time_only, label, immutable)
