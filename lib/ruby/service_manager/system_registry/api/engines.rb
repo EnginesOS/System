@@ -52,8 +52,9 @@ module Engines
 
   def remove_from_managed_engines_registry(params)
       params[:container_type] = 'container' unless params.key?(:container_type) || 
-    r = '/v0/system_registry/engine/services/del/ '  + params[:container_type] + '/' + params[:parent_engine] 
-          r += '/' + params[:service_handle] 
+    r = '/v0/system_registry/engine/services/del/ '  + params[:container_type] + '/' + params[:parent_engine]       
+          r += '/' + params[:service_handle]             
+        r += '/' + params[:publisher_namespace] 
           r += '/' + params[:type_path] 
     rest_delete(r) 
    # rest_delete('/v0/system_registry/engine/services/del',{:params => params })
@@ -67,7 +68,7 @@ module Engines
     r = '/v0/system_registry/engine/services/update/'  + params[:container_type] + '/' + params[:parent_engine] 
              r += '/' + params[:service_handle] 
              r += '/' + params[:type_path] 
-    rest_put(r,{:api_vars => params })
+    rest_post(r,{:api_vars => params })
     rescue StandardError => e
        STDERR.puts( 'Failed To /v0/system_registry/engine/services/update/  ' + params.to_s)
         SystemUtils.log_exception(e)
