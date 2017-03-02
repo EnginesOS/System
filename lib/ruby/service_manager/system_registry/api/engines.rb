@@ -26,7 +26,7 @@ module Engines
 
   def get_engine_nonpersistent_services(params)
     params[:persistent] = false
-    rest_get('/v0/system_registry/engine/services/nonpersistent/' + params[:parent_engine])
+    rest_get('/v0/system_registry/engine/services/nonpersistent/' + params[:container_type] +'/' + params[:parent_engine])
     rescue StandardError => e
        STDERR.puts( 'Failed To /v0/system_registry/engine/services/nonpersistent/  ' + params.to_s)
         SystemUtils.log_exception(e)
@@ -35,7 +35,7 @@ module Engines
 
   def get_engine_persistent_services(params)
     params[:persistent] = true
-    rest_get('/v0/system_registry/engine/services/persistent/' + params[:parent_engine])
+    rest_get('/v0/system_registry/engine/services/persistent/' + params[:container_type] +'/' + params[:parent_engine])
     rescue StandardError => e
        STDERR.puts( 'Failed To /v0/system_registry/engine/services/persistent/  ' + params.to_s)
         SystemUtils.log_exception(e)
