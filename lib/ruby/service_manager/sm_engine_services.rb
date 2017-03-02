@@ -125,6 +125,7 @@ return services
   def rm_remove_engine_services(params)
     clear_error
     services = test_registry_result(system_registry_client.get_engine_persistent_services(params))
+      return log_error_message(' rm_remove_engine_services FAILed ', services ) if services.is_a?(EnginesError)
     services.each do | service |
       SystemDebug.debug(SystemDebug.services, :remove_service, service)
       if params[:remove_all_data] || service[:shared] #&& ! (service.key?(:shared) && service[:shared])
