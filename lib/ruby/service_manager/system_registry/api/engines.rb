@@ -67,7 +67,10 @@ module Engines
   def remove_from_managed_engines_registry(params)
       params[:container_type] = 'container' unless params.key?(:container_type) || 
     r = 'engine/services/del'
-        r += address_params(params,[:parent_engine,:container_type,:service_handle,:publisher_namespace,:type_path])
+        addr = address_params(params,[:parent_engine,:container_type,:service_handle,:publisher_namespace,:type_path])
+          
+        STDERR.puts('ADDR ' + addr.to_s)
+        r += addr
 #    + params[:container_type] + '/' + params[:parent_engine]       
 #    r += '/' + params[:service_handle]
 #        r += '/' + params[:publisher_namespace]
