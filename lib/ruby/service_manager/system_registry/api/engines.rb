@@ -73,7 +73,7 @@ module Engines
         rest_delete(ro) 
    # rest_delete('engine/services/del',{:params => params })
         rescue StandardError => e
-           STDERR.puts( 'Failed To engine/services/del/  ' + params.to_s)
+           STDERR.puts( 'Failed To engine/services/del/  ' + ro.to_s + ':' + params.to_s)
             SystemUtils.log_exception(e)
           
   end

@@ -19,7 +19,7 @@ def address_params(hash,param_symbols)
     SystemDebug.debug(SystemDebug.services,r.to_s)
   end
 SystemDebug.debug(SystemDebug.services,r.to_s)
-  r  
+return  r  
 rescue StandardError => e
   log_exception(e, hash)
 end
