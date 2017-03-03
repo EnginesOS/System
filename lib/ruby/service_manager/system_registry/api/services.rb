@@ -42,7 +42,7 @@ module Services
   end
 
   def get_registered_against_service(params)
-    r = 'service/registered' + address_params(params,[:service_type])
+    r = 'service/registered' + address_params(params,[:publisher_namespace,:type_path])
           rest_get(r)
     # rest_get('service/registered/',{:params => params })
   end
