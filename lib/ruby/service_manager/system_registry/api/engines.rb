@@ -3,9 +3,9 @@ module Engines
   # engines Methods
   def find_engine_service_hash(params)
     SystemDebug.debug(SystemDebug.services,'sm find_engine_service_hash  ', params)
-    r = 'engine/service/'  + params[:container_type] + '/' + params[:parent_engine] 
-       r += '/' + params[:service_handle] 
-       r += '/' + params[:type_path] 
+    r = 'engine/service'
+    r += address_params(params,[:container_type,:parent_engine,:service_handle,:type_path] )
+
        rest_get(r)
     rescue StandardError => e
        STDERR.puts( 'Failed To engine/service/ ' + params.to_s)
@@ -15,18 +15,22 @@ module Engines
 
   def find_engine_services_hashes(params)
   #  rest_get('engine/services/',{:params => params })
-  r = 'engine/services/'  + params[:container_type] + '/' + params[:parent_engine] 
-    r += '/' + params[:type_path] if params.key?(:type_path)
+  r = 'engine/services'  
+    r += address_params(params,[:container_type,:parent_engine,:type_path] )
+      #+ params[:container_type] + '/' + params[:parent_engine] 
+    #r += '/' + params[:type_path] if params.key?(:type_path)
     rest_get(r)
     rescue StandardError => e
-       STDERR.puts( 'Failed To engine/services/ ' + params.to_s)
+       STDERR.puts( 'Failed To engine/services ' + params.to_s)
         SystemUtils.log_exception(e)
       
   end
 
   def get_engine_nonpersistent_services(params)
     params[:persistent] = false
-    rest_get('engine/services/nonpersistent/' + params[:container_type] +'/' + params[:parent_engine])
+      r = 'engine/services/nonpersistent'
+    r += address_params(params,[:container_type,:parent_engine])
+    rest_get(r)
     rescue StandardError => e
        STDERR.puts( 'Failed To engine/services/nonpersistent/  ' + params.to_s)
         SystemUtils.log_exception(e)
@@ -35,7 +39,9 @@ module Engines
 
   def get_engine_persistent_services(params)
     params[:persistent] = true
-    rest_get('engine/services/persistent/' + params[:container_type] +'/' + params[:parent_engine])
+   r =  'engine/services/persistent' 
+    r += address_params(params,[:container_type,:parent_engine])
+    rest_get(r)
     rescue StandardError => e
        STDERR.puts( 'Failed To engine/services/persistent/  ' + params.to_s)
         SystemUtils.log_exception(e)
@@ -46,11 +52,12 @@ module Engines
     SystemDebug.debug(SystemDebug.services,'sm add_to_managed_engines_registry ', service_hash)
    # :container_type/:parent_engine/:service_handle/:publisher_namespace/:type_path
     r = 'engine/services/add'
-    r += '/' + service_hash[:container_type]
-    r += '/' + service_hash[:parent_engine]
-    r += '/' + service_hash[:service_handle]
-    r += '/' + service_hash[:publisher_namespace]
-    r += '/' + service_hash[:type_path]
+   r += address_params(service_hash,[:parent_engine,:container_type,:service_handle,:publisher_namespace,:type_path])
+#    r += '/' + service_hash[:container_type]
+#    r += '/' + service_hash[:parent_engine]
+#    r += '/' + service_hash[:service_handle]
+#    r += '/' + service_hash[:publisher_namespace]
+#    r += '/' + service_hash[:type_path]
     rest_post(r,{:api_vars => service_hash} )
   rescue StandardError => e
     STDERR.puts( 'Failed To engine/services/add  ' + service_hash.to_s)
@@ -59,10 +66,12 @@ module Engines
 
   def remove_from_managed_engines_registry(params)
       params[:container_type] = 'container' unless params.key?(:container_type) || 
-    r = 'engine/services/del/ '  + params[:container_type] + '/' + params[:parent_engine]       
-    r += '/' + params[:service_handle]
-        r += '/' + params[:publisher_namespace]
-          r += '/' + params[:type_path] 
+    r = 'engine/services/del'
+        r += address_params(params,[:parent_engine,:container_type,:service_handle,:publisher_namespace,:type_path])
+#    + params[:container_type] + '/' + params[:parent_engine]       
+#    r += '/' + params[:service_handle]
+#        r += '/' + params[:publisher_namespace]
+#          r += '/' + params[:type_path] 
     rest_delete(r) 
    # rest_delete('engine/services/del',{:params => params })
         rescue StandardError => e
@@ -72,9 +81,11 @@ module Engines
   end
 
   def update_registered_managed_engine(params)
-    r = 'engine/services/update/'  + params[:container_type] + '/' + params[:parent_engine] 
-             r += '/' + params[:service_handle] 
-             r += '/' + params[:type_path] 
+    r = 'engine/services/update'
+    r += address_params(params,[:parent_engine,:container_type,:service_handle,:publisher_namespace,:type_path])
+    #+ params[:container_type] + '/' + params[:parent_engine] 
+     #        r += '/' + params[:service_handle] 
+      #       r += '/' + params[:type_path] 
     rest_post(r,{:api_vars => params })
     rescue StandardError => e
        STDERR.puts( 'Failed To engine/services/update/  ' + params.to_s)
