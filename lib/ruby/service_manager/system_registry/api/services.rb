@@ -70,7 +70,7 @@ module Services
     r = 'services/clear' 
     r+= address_params(service_hash,[:container_type,:parent_engine,:persistence])
     #+ service_hash[:container_type] + '/'  + service_hash[:parent_engine] + '/' + service_hash[:persistence]
-    rest_delete()
+    rest_delete(r)
   end
   
   def services_registry
