@@ -23,7 +23,7 @@ module Services
   def add_to_services_registry(service_hash)
     SystemDebug.debug(SystemDebug.services,'sm add_to_servicess_registry ', service_hash)
     
-    rest_post('services/add' + address_params(service_query_hash,[:parent_engine,:service_handle,:publisher_namespace,:type_path]),service_hash )
+    rest_post('services/add' + address_params(service_hash,[:parent_engine,:service_handle,:publisher_namespace,:type_path]),service_hash )
   end
 
   def remove_from_services_registry(params)
@@ -36,19 +36,19 @@ module Services
   end
 
   def service_is_registered?(service_hash)
-    r = 'service/is_registered' + address_params(service_query_hash,[:parent_engine,:service_handle,:publisher_namespace,:type_path])
+    r = 'service/is_registered' + address_params(service_hash,[:parent_engine,:service_handle,:publisher_namespace,:type_path])
        rest_get(r)
     #rest_get('service/is_registered',{:params => service_hash })
   end
 
   def get_registered_against_service(params)
-    r = 'service/registered' + address_params(service_query_hash,[:service_type])
+    r = 'service/registered' + address_params(params,[:service_type])
           rest_get(r)
     # rest_get('service/registered/',{:params => params })
   end
 
   def get_service_entry(service_hash)
-    r = 'service' + address_params(service_query_hash,[:parent_engine,:service_handle,:publisher_namespace,:type_path])
+    r = 'service' + address_params(service_hash,[:parent_engine,:service_handle,:publisher_namespace,:type_path])
              rest_get(r)
     # rest_get('service/',{:params => service_hash })
   end
