@@ -15,9 +15,11 @@ def address_params(hash,param_symbols)
   r = ''
   param_symbols.each do | sym |
     STDERR.puts('Hash Missing key!:'  + sym.to_s) unless hash.key?(sym)
-    r += '/' + hash[sym].to_s
+    r += '/' + hash[sym]
   end
   r  
+rescue StandardError => e
+  log_exception(e, hash)
 end
 
 def pe_sh_st_path(ahash)
