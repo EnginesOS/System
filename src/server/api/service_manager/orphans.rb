@@ -24,13 +24,13 @@ end
 # @return [Hash] Orphan Service Hash
 get '/v0/service_manager/orphan_service/:publisher_namespace/*' do
 
-  splats = params['splat']
+  #splats = params['splat']
   pparams =  {}
   pparams[:publisher_namespace] = params[:publisher_namespace]
-  pparams[:type_path] = File.dirname(splats[0])
+  pparams[:type_path] = File.dirname(params['splat'][0])
   pparams[:service_handle] = File.basename(pparams[:type_path])
   pparams[:type_path] = File.dirname(pparams[:type_path])
-  pparams[:parent_engine] = File.basename(splats[0])
+  pparams[:parent_engine] = File.basename(params['splat'][0])
 
   cparams =  Utils::Params.assemble_params(pparams, [:publisher_namespace, :type_path, :service_handle, :parent_engine], [])
 return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
@@ -44,13 +44,13 @@ end
 # remove underlying data and delete orphan
 # @return [true]
 delete '/v0/service_manager/orphan_service/:publisher_namespace/*' do
-  splats = params['splat']
+#  splats = params['splat']
   pparams =  {}
   pparams[:publisher_namespace] = params[:publisher_namespace]
-  pparams[:type_path] = File.dirname(splats[0])
+  pparams[:type_path] = File.dirname(params['splat'][0])
   pparams[:service_handle] = File.basename(pparams[:type_path])
   pparams[:type_path] = File.dirname(pparams[:type_path])
-  pparams[:parent_engine] = File.basename(splats[0])
+  pparams[:parent_engine] = File.basename(params['splat'][0])
 
   cparams =  Utils::Params.assemble_params(pparams, [:publisher_namespace, :type_path, :service_handle, :parent_engine], [])
 return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)

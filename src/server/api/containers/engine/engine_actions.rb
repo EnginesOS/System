@@ -134,10 +134,10 @@ delete '/v0/containers/engine/:engine_name/delete/*' do
 
   rparams = {}
   rparams[:engine_name] = params[:engine_name]
-  splats = params['splat']
-  unless splats.nil? || splats.count == 0
-    rparams[:remove_all_data] = true  if splats[0] == 'all'
-    rparams[:remove_all_data] = false  if splats[0] == 'none'
+ # splats = params['splat']
+  unless params['splat'].nil? || params['splat'].count == 0
+    rparams[:remove_all_data] = true  if params['splat'][0] == 'all'
+    rparams[:remove_all_data] = false  if params['splat'][0] == 'none'
   else
     rparams[:remove_all_data] = false
   end
