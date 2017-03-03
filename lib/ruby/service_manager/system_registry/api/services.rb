@@ -3,20 +3,24 @@ module Services
  # require_relative 'xcon_rset.rb'
   # Services Methods
   def all_engines_registered_to(service_type)
+    SystemDebug.debug(SystemDebug.registry,'  All registered to  ',service_type.to_s)
     rest_get('service/registered/engines/' + service_type )
   end
 
   def find_service_consumers(service_query_hash)
-    r = 'service/consumers' + address_params(service_query_hash,[:publisher_namespace,:type_path])
+    r = 'service/consumers' 
+    r += address_params(service_query_hash,[:publisher_namespace,:type_path])
     rest_get(r)
   end
 
   def update_attached_service(params)
     
-    r = 'service/update/'  + params[:container_type] + '/' + params[:parent_engine] 
-                 r += '/' + params[:service_handle] 
-              r += '/' + params[:publisher_namespace] 
-                 r += '/' + params[:type_path] 
+    r = 'service/update/'  
+    r += address_params(params,[:parent_engine,:service_handle,:publisher_namespace,:type_path])
+#    + params[:container_type] + '/' + params[:parent_engine] 
+#                 r += '/' + params[:service_handle] 
+#              r += '/' + params[:publisher_namespace] 
+#                 r += '/' + params[:type_path] 
   rest_post(r, {:api_vars => params }) 
   end
 
@@ -28,10 +32,12 @@ module Services
 
   def remove_from_services_registry(params)
  #   rest_delete('services/del',{:params => service_hash })
-    r = 'services/del/'  + params[:container_type] + '/' + params[:parent_engine] 
-             r += '/' + params[:service_handle] 
-          r += '/' + params[:publisher_namespace] 
-             r += '/' + params[:type_path] 
+    r = 'services/del/'  
+    r +=  address_params(params,[:parent_engine,:service_handle,:publisher_namespace,:type_path])
+#    + params[:container_type] + '/' + params[:parent_engine] 
+#             r += '/' + params[:service_handle] 
+#          r += '/' + params[:publisher_namespace] 
+#             r += '/' + params[:type_path] 
        rest_delete(r) 
   end
 
@@ -60,7 +66,10 @@ module Services
   end
 
   def clear_service_from_registry(service_hash)
-    rest_delete('services/clear' + service_hash[:container_type] + '/'  + service_hash[:parent_engine] + '/' + service_hash[:persistence])
+    r = 'services/clear' 
+    r+= address_params(service_hash,[:container_type,:parent_engine,:persistence])
+    #+ service_hash[:container_type] + '/'  + service_hash[:parent_engine] + '/' + service_hash[:persistence]
+    rest_delete()
   end
   
   def services_registry
