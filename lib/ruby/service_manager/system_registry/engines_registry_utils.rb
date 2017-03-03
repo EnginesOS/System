@@ -14,7 +14,8 @@ end
 def address_params(hash,param_symbols)
   r = ''
   param_symbols.each do | sym |
-    r += '/' + hash[sym]
+    log_error_mesg('Hash Missing key!:'  + sym.to_s)
+    r += '/' + hash[sym].to_s
   end
   r  
 end
