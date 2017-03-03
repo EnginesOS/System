@@ -3,13 +3,12 @@ module Services
  # require_relative 'xcon_rset.rb'
   # Services Methods
   def all_engines_registered_to(service_type)
-    ps = {}
-    ps[:service_type] = service_type
-    rest_get('service/registered/engines/',{:params => ps })
+    rest_get('service/registered/engines/' + service_type )
   end
 
   def find_service_consumers(service_query_hash)
-    rest_get('service/consumers/',{:params => service_query_hash })
+    r = 'service/consumers' + address_params(service_query_hash,[:publisher_namespace,:type_path])
+    rest_get(r)
   end
 
   def update_attached_service(params)
@@ -23,7 +22,8 @@ module Services
 
   def add_to_services_registry(service_hash)
     SystemDebug.debug(SystemDebug.services,'sm add_to_servicess_registry ', service_hash)
-    rest_post('services/add',service_hash )
+    
+    rest_post('services/add' + address_params(service_query_hash,[:parent_engine,:service_handle,:publisher_namespace,:type_path]),service_hash )
   end
 
   def remove_from_services_registry(params)
@@ -36,15 +36,21 @@ module Services
   end
 
   def service_is_registered?(service_hash)
-    rest_get('service/is_registered',{:params => service_hash })
+    r = 'service/is_registered' + address_params(service_query_hash,[:parent_engine,:service_handle,:publisher_namespace,:type_path])
+       rest_get(r)
+    #rest_get('service/is_registered',{:params => service_hash })
   end
 
   def get_registered_against_service(params)
-    rest_get('service/registered/',{:params => params })
+    r = 'service/registered' + address_params(service_query_hash,[:service_type])
+          rest_get(r)
+    # rest_get('service/registered/',{:params => params })
   end
 
   def get_service_entry(service_hash)
-    rest_get('service/',{:params => service_hash })
+    r = 'service' + address_params(service_query_hash,[:parent_engine,:service_handle,:publisher_namespace,:type_path])
+             rest_get(r)
+    # rest_get('service/',{:params => service_hash })
   end
 
   # @return an Array of Strings of the Provider names in use
@@ -54,7 +60,7 @@ module Services
   end
 
   def clear_service_from_registry(service_hash)
-    rest_delete('services/clear',{:params => service_hash })
+    rest_delete('services/clear' + service_hash[:container_type] + '/'  + service_hash[:parent_engine] + '/' + service_hash[:persistence])
   end
   
   def services_registry
