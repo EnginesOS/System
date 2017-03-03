@@ -51,7 +51,7 @@ module Engines
     r += '/' + service_hash[:service_handle]
     r += '/' + service_hash[:publisher_namespace]
     r += '/' + service_hash[:type_path]
-    rest_post(r,service_hash )
+    rest_post(r,{:api_vars => service_hash} )
   rescue StandardError => e
     STDERR.puts( 'Failed To engine/services/add  ' + service_hash.to_s)
      SystemUtils.log_exception(e)
