@@ -65,12 +65,12 @@ module Engines
   end
 
   def remove_from_managed_engines_registry(params)
-      params[:container_type] = 'container' unless params.key?(:container_type) || 
-        ro = 'engine/services/del'    
-        STDERR.puts('ADDR ' + ro.to_s)    
-        ro += address_params(params,[:container_type,:parent_engine,:service_handle,:publisher_namespace,:type_path])
-        STDERR.puts('ADDR ' + ro.to_s)
-        rest_delete(ro) 
+      params[:container_type] = 'container' unless params.key?(:container_type)
+        r = 'engine/services/del'    
+        STDERR.puts('ADDR ' + r.to_s)    
+        r += address_params(params,[:container_type,:parent_engine,:service_handle,:publisher_namespace,:type_path])
+        STDERR.puts('ADDR ' + r.to_s)
+        rest_delete(r ) 
    # rest_delete('engine/services/del',{:params => params })
         rescue StandardError => e
            STDERR.puts( 'Failed To engine/services/del/  ' + ro.to_s + ':' + params.to_s)
