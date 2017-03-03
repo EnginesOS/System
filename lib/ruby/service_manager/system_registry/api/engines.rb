@@ -52,7 +52,7 @@ module Engines
     SystemDebug.debug(SystemDebug.services,'sm add_to_managed_engines_registry ', service_hash)
    # :container_type/:parent_engine/:service_handle/:publisher_namespace/:type_path
     r = 'engine/services/add'
-   r += address_params(service_hash,[:parent_engine,:container_type,:service_handle,:publisher_namespace,:type_path])
+   r += address_params(service_hash,[:container_type,:parent_engine,:service_handle,:publisher_namespace,:type_path])
 #    r += '/' + service_hash[:container_type]
 #    r += '/' + service_hash[:parent_engine]
 #    r += '/' + service_hash[:service_handle]
@@ -68,7 +68,7 @@ module Engines
       params[:container_type] = 'container' unless params.key?(:container_type) || 
         ro = 'engine/services/del'    
         STDERR.puts('ADDR ' + ro.to_s)    
-        ro += address_params(params,[:parent_engine,:container_type,:service_handle,:publisher_namespace,:type_path])
+        ro += address_params(params,[:container_type,:parent_engine,:service_handle,:publisher_namespace,:type_path])
         STDERR.puts('ADDR ' + ro.to_s)
         rest_delete(ro) 
    # rest_delete('engine/services/del',{:params => params })
@@ -80,7 +80,7 @@ module Engines
 
   def update_registered_managed_engine(params)
     r = 'engine/services/update'
-    r += address_params(params,[:parent_engine,:container_type,:service_handle,:publisher_namespace,:type_path])
+    r += address_params(params,[:container_type,:parent_engine,:service_handle,:publisher_namespace,:type_path])
     #+ params[:container_type] + '/' + params[:parent_engine] 
      #        r += '/' + params[:service_handle] 
       #       r += '/' + params[:type_path] 
