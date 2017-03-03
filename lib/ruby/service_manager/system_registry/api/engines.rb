@@ -69,8 +69,7 @@ module Engines
         ro = 'engine/services/del'    
         STDERR.puts('ADDR ' + ro.to_s)    
         ro += address_params(params,[:parent_engine,:container_type,:service_handle,:publisher_namespace,:type_path])
-        STDERR.puts('ADDR ' + ro.to_s)    
-        
+        STDERR.puts('ADDR ' + ro.to_s)
         rest_delete(ro) 
    # rest_delete('engine/services/del',{:params => params })
         rescue StandardError => e
