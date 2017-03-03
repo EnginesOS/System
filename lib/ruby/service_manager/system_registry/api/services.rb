@@ -26,8 +26,9 @@ module Services
 
   def add_to_services_registry(service_hash)
     SystemDebug.debug(SystemDebug.services,'sm add_to_servicess_registry ', service_hash)
-    
-    rest_post('services/add' + address_params(service_hash,[:parent_engine,:service_handle,:publisher_namespace,:type_path]),service_hash )
+   r = 'services/add' 
+   r += address_params(service_hash,[:parent_engine,:service_handle,:publisher_namespace,:type_path])
+    rest_post( r,  {:api_vars => service_hash} )
   end
 
   def remove_from_services_registry(params)
