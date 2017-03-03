@@ -50,6 +50,7 @@ def rest_get(path,params = nil,time_out=120, _headers = nil)
   q = query_hash(params)
   
   STDERR.puts(' GET ' + path.to_s + '?' + q.to_s )
+  SystemDebug.debug(SystemDebug.registry,'GET ', path.to_s + '?' + q.to_s)
 #  headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
   #  q = {} if q.nil?
     lheaders = headers
@@ -100,6 +101,7 @@ end
 def rest_post(path,params = nil, headers=nil)
   begin
    # STDERR.puts(' POST ' + path.to_s )
+    SystemDebug.debug(SystemDebug.registry,'POST  ', path.to_s + '?' + params.to_s)
     headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
     r = parse_xcon_response( connection.request(:read_timeout => time_out,:method => :post,:path => @route_prefix + path,:body => query_hash(params).to_json  ))
     return r
@@ -114,6 +116,7 @@ end
 def rest_put(path,params = nil, headers=nil)
  # STDERR.puts(' PUT ' + path.to_s )
   #  STDERR.puts('PUT params ' + query_hash(params).to_s )
+  SystemDebug.debug(SystemDebug.registry,'Delete ', path.to_s + '?' + params.to_s)
   headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
   r = parse_xcon_response( connection.request(:read_timeout => time_out, :headers => headers,:method => :put,:path => @route_prefix + path,:query => query_hash(params).to_json ))
   #  connection.reset
@@ -140,6 +143,7 @@ def rest_delete(path,params = nil, headers=nil)
   q = query_hash(params)
  # STDERR.puts('SEND ' +  path.to_s)
   #  STDERR.puts('SEND ' +  q.to_s)
+  SystemDebug.debug(SystemDebug.registry,'DEL ', path.to_s + '?' + q.to_s)
   headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
   # q.to_json! unless q.nil? 
   r =  parse_xcon_response( connection.request(:read_timeout => time_out, :headers => headers,:method => :delete,:path => @route_prefix + path,:query => q))
