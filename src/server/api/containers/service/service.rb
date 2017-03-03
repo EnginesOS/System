@@ -63,9 +63,9 @@ end
 
 # @return [Hash]
 get '/v0/containers/service/:service_name/service_definition' do
-  STDERR.puts('/v0/containers/service/:service_name/service_definition' )
+  #STDERR.puts('/v0/containers/service/:service_name/service_definition' )
   cparams =  Utils::Params.assemble_params(params, [:service_name], [])
-  return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
+  return log_error(request, cparams, params) if cparams.is_a?(EnginesError)
   r = get_service(cparams[:service_name])
   return r if r.is_a?(EnginesError)
 
@@ -75,7 +75,7 @@ get '/v0/containers/service/:service_name/service_definition' do
 
   r = engines_api.get_service_definition(pparams)
 
-  return  log_error(request, r, cparams) if r.is_a?(EnginesError)
+  return  log_error(request, r,pparams) if r.is_a?(EnginesError)
   status(202)
   r.to_json
 
