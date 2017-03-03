@@ -15,7 +15,7 @@ module Services
 
   def update_attached_service(params)
     
-    r = 'service/update/'  
+    r = 'service/update'  
     r += address_params(params,[:parent_engine,:service_handle,:publisher_namespace,:type_path])
 #    + params[:container_type] + '/' + params[:parent_engine] 
 #                 r += '/' + params[:service_handle] 
@@ -33,7 +33,7 @@ module Services
 
   def remove_from_services_registry(params)
  #   rest_delete('services/del',{:params => service_hash })
-    r = 'services/del/'  
+    r = 'services/del'  
     r +=  address_params(params,[:parent_engine,:service_handle,:publisher_namespace,:type_path])
 #    + params[:container_type] + '/' + params[:parent_engine] 
 #             r += '/' + params[:service_handle] 
