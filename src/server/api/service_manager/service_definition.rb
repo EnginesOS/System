@@ -5,10 +5,10 @@
 #  :publisher_namespace :type_path
 # @return [Hash]
 get '/v0/service_manager/service_definitions/:publisher_namespace/*' do
-  splats = params['splat']
+ # splats = params['splat']
   pparams =  {}
   pparams[:publisher_namespace] = params[:publisher_namespace]
-  pparams[:type_path] = splats[0]
+  pparams[:type_path] = params['splat'][0]
 
   cparams =  Utils::Params.assemble_params(pparams, [:publisher_namespace, :type_path], [])
 return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)

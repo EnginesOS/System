@@ -6,13 +6,13 @@
 # @return [Array]
 get '/v0/service_manager/persistent_services/:publisher_namespace/*' do
 
-  splats = params['splat']
+  #splats = params['splat']
   pparams =  {}
   pparams[:publisher_namespace] = params[:publisher_namespace]
-  pparams[:type_path] = splats[0]
+  pparams[:type_path] = params['splat'][0]
 
   cparams =  Utils::Params.assemble_params(pparams, [:publisher_namespace, :type_path], [])
-return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
+return log_error(request, cparams, params) if cparams.is_a?(EnginesError)
   r = engines_api.get_registered_against_service(cparams)
 
   return log_error(request, r) if r.is_a?(EnginesError)

@@ -1,15 +1,15 @@
 module ServiceHash
   def self.service_hash_from_params(params, search)
-    splats = params['splat']
-    hash = {}
-    hash[:publisher_namespace] = params['publisher_namespace']
+ #   splats = params['splat']
+    #    hash = {}
+    #  hash[:publisher_namespace] = params['publisher_namespace']
     unless search
-      hash[:type_path] = File.dirname(splats[0])
-      hash[:service_handle] = File.basename(splats[0])
+      params[:type_path] = File.dirname(params['splat'][0])
+    params[:service_handle] = File.basename(params['splat'][0])
     else
-      hash[:type_path] =  splats[0]
+    params[:type_path] =  params['splat'][0]
     end
-    hash
+    params
   end
 
   def self.engine_service_hash_from_params(params, search = false)
