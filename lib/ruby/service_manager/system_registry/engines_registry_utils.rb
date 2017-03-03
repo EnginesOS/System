@@ -15,6 +15,7 @@ def address_params(hash,param_symbols)
   r = ''
   param_symbols.each do | sym |
     STDERR.puts('Hash Missing key!:'  + sym.to_s + ' in ' + hash.to_s) unless hash.key?(sym)
+    SystemDebug.debug(SystemDebug.services,r.to_s)
     r += '/' + hash[sym].to_s
   end
   r  
