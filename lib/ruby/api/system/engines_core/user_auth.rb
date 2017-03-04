@@ -37,6 +37,7 @@ module UserAuth
   end
 
   def init_system_password(password,email, token = nil)
+    SystemDebug.debug(SystemDebug.first_run,:applyin, password,email)
     set_system_user_password('admin',password,email, token)
   end
 
@@ -48,12 +49,21 @@ module UserAuth
       authtoken = SecureRandom.hex(128)
       auth_database.execute("INSERT INTO systemaccess (username, password, email, authtoken, uid)
                  VALUES (?, ?, ?, ?,?)", [username, password, email.to_s, authtoken,0,0])
+                 
+    SystemDebug.debug(SystemDebug.first_run,:applyin, "UPDATE systemaccess SET password = '" \
+       + password.to_s + "',email='" + email.to_s + \
+       "INSERT INTO systemaccess (username, password, email, authtoken, uid)
+    VALUES (?, ?, ?, ?,?)", [username, password, email.to_s, authtoken,0,0])
     else
       authtoken = SecureRandom.hex(128)
       auth_database.execute("UPDATE systemaccess SET password = '" \
       + password.to_s + "',email='" + email.to_s + \
       ", authtoken ='" + authtoken.to_s + "' " + \
       " where username = 'admin' and authtoken = '" + token.to_s + '";')
+    SystemDebug.debug(SystemDebug.first_run,:applyin, "UPDATE systemaccess SET password = '" \
+    + password.to_s + "',email='" + email.to_s + \
+    ", authtoken ='" + authtoken.to_s + "' " + \
+    " where username = 'admin' and authtoken = '" + token.to_s + '";')
     end
 
   rescue StandardError => e
