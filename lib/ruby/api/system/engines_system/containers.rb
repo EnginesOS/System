@@ -81,7 +81,7 @@ end
     
     actionators = load_engine_actionators(container)
     SystemDebug.debug(SystemDebug.actions,container,actionators[action]) #.to_sym])
-    return actionators[action.to_sym]
+    return actionators[action] #.to_sym]
   end
 
   def load_engine_actionators(container)
