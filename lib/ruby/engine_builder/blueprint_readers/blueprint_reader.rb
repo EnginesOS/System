@@ -51,7 +51,8 @@ class BluePrintReader
   :custom_php_inis,
   :apache_httpd_configurations,
   :apache_htaccess_files,
-  :install_report_template
+  :install_report_template,
+  :schema
 
   def log_build_output(line)
     @builder.log_build_output(line)
