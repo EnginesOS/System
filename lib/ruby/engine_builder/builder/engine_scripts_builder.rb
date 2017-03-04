@@ -58,7 +58,7 @@ module EngineScriptsBuilder
     FileUtils.mkdir_p(basedir + destdir ) unless Dir.exist?(basedir + destdir )
     
     @blueprint_reader.actionators.each do | actionator| 
-      
+      SystemDebug.debug(SystemDebug.builder| SystemDebug.actions,'create actionator', actionator)
       filename = SystemConfig.ActionatorDir + '/' + actionator[:name] + '.sh'
       SystemDebug.debug(SystemDebug.builder| SystemDebug.actions,"creating actionator " ,  actionator[:name],filename)
 
