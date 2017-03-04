@@ -158,7 +158,7 @@ def read_actionators
 #   else
 #     SystemDebug.debug(SystemDebug.builder,'No actionators')
 #     @actionators = nil
-     @actionators = @blueprint[:software].key?(:actionators)
+     @actionators = @blueprint[:software][:actionators]
    end
  rescue StandardError => e
    @actionators = nil
