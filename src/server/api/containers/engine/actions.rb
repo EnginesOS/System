@@ -21,7 +21,7 @@ get '/v0/containers/engine/:engine_name/action/:action_name' do
   engine = get_engine(params[:engine_name])
   return log_error(request, engine, params) if engine.is_a?(EnginesError)
   action = engines_api.get_engine_actionator(engine, params[:action_name])
-    STDERR.puts('Action ' + action.to_s)
+  #  STDERR.puts('Action ' + action.to_s)
   return log_error(request, action, engine.last_error) if action.is_a?(EnginesError)
   action.to_json
 end
