@@ -291,12 +291,7 @@ class BluePrintReader
       SystemUtils.log_exception(e)
   end
 
-  def read_sql_seed
-    database_seed_file = @blueprint[:software][:database_seed_file]
-    @database_seed = database_seed_file unless database_seed_file.nil?
-    rescue StandardError => e
-      SystemUtils.log_exception(e)
-  end
+
 
   def read_app_packages
     log_build_output('Read App Packages ')

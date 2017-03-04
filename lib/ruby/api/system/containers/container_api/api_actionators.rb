@@ -1,6 +1,7 @@
 module ApiActionators
   @@action_timeout = 20
   def perform_action(c,actionator_name, params, data=nil)
+    SystemDebug.debug(SystemDebug.actions, engine, actionator_name,params)
     if params.nil? || params.is_a?(String)
       args = params
     else

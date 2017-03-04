@@ -76,6 +76,13 @@ class VersionedBlueprintReader < BluePrintReader
   def blueprint_env_varaibles
      @blueprint[:software][:environment_variables]
    end
+   
+  def read_sql_seed
+    database_seed_file = @blueprint[:software][:database_seed_file][:content]
+    @database_seed = database_seed_file unless database_seed_file.nil?
+    rescue StandardError => e
+      SystemUtils.log_exception(e)
+  end
   
   def read_pkg_modules
      @apache_modules = []
@@ -117,4 +124,6 @@ class VersionedBlueprintReader < BluePrintReader
     rescue StandardError => e
       SystemUtils.log_exception(e)
    end
+   
+
 end
