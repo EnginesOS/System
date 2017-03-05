@@ -8,7 +8,7 @@ module CheckBuildParams
     log_exception(e)
   end
   
-  private 
+ # private 
   
   def check_host(params)
     return bad_param('Missing: Hostname', params) unless params.key?(:host_name)
