@@ -71,7 +71,7 @@ class EngineBuilder < ErrorsApi
   
   def setup_build
     
-    r  = check_build_params
+ #   r  = check_build_params
     #return r if r.is_a?(EnginesError)
     return log_error_mesg('empty container name', @build_params) if @build_params[:engine_name].nil? || @build_params[:engine_name] == ''
     @build_params[:engine_name].freeze
