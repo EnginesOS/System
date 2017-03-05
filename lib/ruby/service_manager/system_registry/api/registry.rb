@@ -4,7 +4,7 @@ module Registry
   # @ Return complete system registry tree
   def system_registry_tree
 
-    rest_get('/v0/system_registry/tree', nil)
+    rest_get('tree', nil)
   end
 
 end

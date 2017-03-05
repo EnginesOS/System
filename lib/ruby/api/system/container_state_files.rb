@@ -17,6 +17,7 @@ class ContainerStateFiles
   def self.actionator_dir(container)
     return self.container_state_dir(container) + '/actionators/'
   end
+
   def self.container_flag_dir(container)
     return self.container_state_dir(container) + '/run/flags/'
   end
@@ -55,20 +56,20 @@ class ContainerStateFiles
       Dir.mkdir(state_dir + '/configurations/') unless File.directory?(state_dir + '/configurations')
       Dir.mkdir(state_dir + '/configurations/default') unless File.directory?(state_dir + '/configurations/default')
     end
-    
+
     key_dir =  ContainerStateFiles.key_dir(container)
-    STDERR.puts("KEY DIR" + key_dir.to_s)
-    Dir.mkdir(key_dir)  unless File.directory?(key_dir)
-    FileUtils.chown(nil, 'containers',key_dir)
-    FileUtils.chmod('g+w', key_dir)    
-    
+    unless Dir.exist?(key_dir)
+      Dir.mkdir(key_dir)  unless File.directory?(key_dir)
+      FileUtils.chown(nil, 'containers',key_dir)
+      FileUtils.chmod('g+w', key_dir)
+    end
     return true
-    
+
   rescue StandardError => e
     container.last_error = 'Failed To Create ' + e.to_s
     SystemUtils.log_exception(e)
   end
-  
+
   def self.key_dir(container)
     SystemConfig.SSHStore + '/' + container.ctype + 's/'  + container.container_name
   end
@@ -88,23 +89,23 @@ class ContainerStateFiles
     cidfile = SystemConfig.CidDir + '/' + container.container_name + '.cid'
     File.delete(cidfile) if File.exist?(cidfile)
     util_params = {}
-    util_params[:target] =  container.container_name 
-    
+    util_params[:target] =  container.container_name
+
     result =  volbuilder.execute_command(:remove, util_params)
-#    cmd = 'docker_rm volbuilder'
-#    retval = SystemUtils.run_system(cmd)
-#    cmd = 'docker_run  --name volbuilder --memory=20m -e fw_user=www-data  -v /opt/engines/run/containers/' + container.container_name + '/:/client/state:rw  -v /var/log/engines/containers/' + container.container_name + ':/client/log:rw    -t engines/volbuilder:' + SystemUtils.system_release + ' /home/remove_container.sh state logs'
-#    retval = SystemUtils.run_system(cmd)
-#    cmd = 'docker_rm volbuilder'
-#    retval =  SystemUtils.run_system(cmd)
-    unless result.is_a?(EnginesError)      
+    #    cmd = 'docker_rm volbuilder'
+    #    retval = SystemUtils.run_system(cmd)
+    #    cmd = 'docker_run  --name volbuilder --memory=20m -e fw_user=www-data  -v /opt/engines/run/containers/' + container.container_name + '/:/client/state:rw  -v /var/log/engines/containers/' + container.container_name + ':/client/log:rw    -t engines/volbuilder:' + SystemUtils.system_release + ' /home/remove_container.sh state logs'
+    #    retval = SystemUtils.run_system(cmd)
+    #    cmd = 'docker_rm volbuilder'
+    #    retval =  SystemUtils.run_system(cmd)
+    unless result.is_a?(EnginesError)
       FileUtils.rm_rf(ContainerStateFiles.container_state_dir(container))
       SystemUtils.run_system('/opt/engines/system/scripts/system/clear_container_dir.sh ' + container.container_name)
       return true
     else
       container.last_error = 'Failed to Delete state and logs:' + result.to_s
       SystemUtils.log_error_mesg('Failed to Delete state and logs:' + result.to_s, container)
-      
+
     end
   rescue StandardError => e
     container.last_error = 'Failed To Delete ' + result.to_s
@@ -122,11 +123,12 @@ class ContainerStateFiles
   def self.container_log_dir(container)
     SystemConfig.SystemLogRoot + '/' + container.ctype + 's/' + container.container_name
   end
+
   def self.container_ssh_keydir(container)
-    
+
     SystemConfig.SSHStore + '/' + container.ctype + 's/' + container.container_name
   end
-  
+
   def self.clear_cid_file(container)
     cidfile = container_cid_file(container)
     File.delete(cidfile) if File.exist?(cidfile)
@@ -135,20 +137,19 @@ class ContainerStateFiles
     container.last_error = 'Failed To remove cid file' + e.to_s
     SystemUtils.log_exception(e)
   end
-  
-  def self.container_service_dir(service_name)  
+
+  def self.container_service_dir(service_name)
     SystemConfig.RunDir + '/services/' + service_name
   end
-  
-  def self.container_disabled_service_dir(service_name)  
+
+  def self.container_disabled_service_dir(service_name)
     SystemConfig.RunDir + '/services-disabled/' + service_name
   end
-  
+
   def self.container_state_dir(container)
-  return  SystemConfig.RunDir + '/utilities/' + container.container_name if container.ctype == 'utility'
-    
+    return  SystemConfig.RunDir + '/utilities/' + container.container_name if container.ctype == 'utility'
+
     SystemConfig.RunDir + '/' + container.ctype + 's/' + container.container_name
   end
-  
- 
+
 end

@@ -1,6 +1,6 @@
 require_relative '../blueprint_reader.rb'
 class VersionedBlueprintReader < BluePrintReader
-
+  @schema = 1
   attr_reader   :first_run_url,
                 :continuous_deployment
   
@@ -73,6 +73,17 @@ class VersionedBlueprintReader < BluePrintReader
       SystemUtils.log_exception(e)
   end
   
+  def blueprint_env_varaibles
+     @blueprint[:software][:environment_variables]
+   end
+   
+  def read_sql_seed
+    database_seed_file = @blueprint[:software][:database_seed_file][:content]
+    @database_seed = database_seed_file unless database_seed_file.nil?
+    rescue StandardError => e
+      SystemUtils.log_exception(e)
+  end
+  
   def read_pkg_modules
      @apache_modules = []
      @pear_modules = []
@@ -113,4 +124,44 @@ class VersionedBlueprintReader < BluePrintReader
     rescue StandardError => e
       SystemUtils.log_exception(e)
    end
+   
+  def read_actionators
+      log_build_output('Read Actionators')
+      SystemDebug.debug(SystemDebug.builder,' readin in actionators', @blueprint[:software][:actionators])
+        STDERR.puts(' readin in actionators', @blueprint[:software][:actionators].to_s)
+      if @blueprint[:software].key?(:actionators)
+        @actionators = {}
+          @blueprint[:software][:actionators].each do |actionator |
+            @actionators[actionator[:name]] = actionator
+          end
+        STDERR.puts('Red actionators', @blueprint[:software][:actionators].to_s)
+        SystemDebug.debug(SystemDebug.builder,@actionators)
+      else
+        SystemDebug.debug(SystemDebug.builder,'No actionators')
+        @actionators = nil
+      end
+    rescue StandardError => e
+      @actionators = nil
+      SystemUtils.log_exception(e)
+    end
+def read_actionators
+   log_build_output('Read Actionators')
+   SystemDebug.debug(SystemDebug.builder,' readin in actionators', @blueprint[:software][:actionators])
+     STDERR.puts(' readin in actionators', @blueprint[:software][:actionators].to_s)
+   if @blueprint[:software].key?(:actionators)
+     @actionators = {}
+       @blueprint[:software][:actionators].each do |actionator |
+         @actionators[actionator[:name]] = actionator
+       end
+     STDERR.puts('Red actionators', @blueprint[:software][:actionators].to_s)
+     SystemDebug.debug(SystemDebug.builder,@actionators)
+   else
+     SystemDebug.debug(SystemDebug.builder,'No actionators')
+     @actionators = nil
+   end
+ rescue StandardError => e
+   @actionators = nil
+   SystemUtils.log_exception(e)
+ end
+    
 end

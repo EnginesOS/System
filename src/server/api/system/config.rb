@@ -20,7 +20,7 @@ post '/v0/system/config/default_domain' do
   post_s = post_params(request)
 
   cparams =  Utils::Params.assemble_params(post_s, [], [:default_domain])
-  return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
+  return log_error(request, cparams, post_s) if cparams.is_a?(EnginesError)
   default_domain = cparams[:default_domain]
     r = engines_api.set_default_domain(default_domain)
  return log_error(request, r,  cparams)  if r.is_a?(EnginesError)
@@ -49,7 +49,7 @@ end
 post '/v0/system/config/default_site' do
   post_s = post_params(request)
   cparams =  Utils::Params.assemble_params(post_s, [], [:default_site])
-  return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
+  return log_error(request, cparams, post_s) if cparams.is_a?(EnginesError)
   default_site = cparams[:default_site]
     r = engines_api.set_default_site(default_site)
  return log_error(request, r, cparams) if r.is_a?(EnginesError)
@@ -65,7 +65,7 @@ end
 post '/v0/system/config/hostname' do
   post_s = post_params(request)
   cparams =  Utils::Params.assemble_params(post_s, [], [:host_name])
-  return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
+  return log_error(request, cparams, post_s) if cparams.is_a?(EnginesError)
   hostname = cparams[:host_name]
   r = engines_api.set_hostname(hostname)
   return log_error(request, r, cparams) if r.is_a?(EnginesError) 
