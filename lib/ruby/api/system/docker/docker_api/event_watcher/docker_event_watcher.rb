@@ -130,8 +130,8 @@ class DockerEventWatcher  < ErrorsApi
 
     req = Net::HTTP::Get.new('/events')
     client = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
-    client.continue_timeout = 7200
-    client.read_timeout = 7200
+    client.continue_timeout = 300
+    client.read_timeout = 300
     parser = nil
 
     client.request(req) do |resp|
