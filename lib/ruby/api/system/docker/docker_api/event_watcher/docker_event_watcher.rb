@@ -76,7 +76,7 @@ class DockerEventWatcher  < ErrorsApi
 
   def reopen_connection
     @events_connection.reset
-    # STDERR.puts(' REOPEN doker.sock connection ')
+    STDERR.puts(' REOPEN doker.sock connection ')
     @events_connection = Excon.new('unix:///', :socket => '/var/run/docker.sock',
     :debug_request => true,
     :debug_response => true,
@@ -176,7 +176,7 @@ class DockerEventWatcher  < ErrorsApi
     client.finish
 
     log_error_mesg('Restarting docker Event Stream ')
-        STDERR.puts('CLOSED docker Event Stream as close')
+     STDERR.puts('CLOSED docker Event Stream as close')
     @system.start_docker_event_listener(@event_listeners)
   rescue Net::ReadTimeout
     log_error_mesg('Restarting docker Event Stream Read Timeout as timeout')
