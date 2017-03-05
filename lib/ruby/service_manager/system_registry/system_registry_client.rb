@@ -1,6 +1,7 @@
 class SystemRegistryClient < ErrorsApi
   def initialize(core_api)
     @core_api = core_api
+    @route_prefix = '/v0/system_registry/'
   end
 
   def api_shutdown

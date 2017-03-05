@@ -140,7 +140,7 @@ class DockerFileBuilder
       write_line('#Blueprint ENVs')
       if env.value && env.value.nil? == false && env.value.to_s.length > 0
         SystemDebug.debug(SystemDebug.builder, :env_val, env.value)
-        env.value = env.value.sub(/ /, '\\ ')
+        env.value.gsub!(/ /, "\\ ")
       end
       write_env(env.name,env.value.to_s) if env.value.nil? == false && env.value.to_s.length > 0 # env statement must have two arguments
     end

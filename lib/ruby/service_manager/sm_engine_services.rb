@@ -7,7 +7,7 @@ module SmEngineServices
     test_registry_result(system_registry_client.find_engine_services_hashes(params))
   end
   #
-  
+
   def find_engine_service_hash(params)
     clear_error
     test_registry_result(system_registry_client.find_engine_service_hash(params))
@@ -47,29 +47,32 @@ module SmEngineServices
   rescue StandardError => e
     log_exception(e)
   end
+
   def list_persistent_services(engine)
-      clear_error
-      params = {}
-  params[:parent_engine] = engine.container_name
-  params[:container_type] = engine.ctype
+    clear_error
+    params = {}
+    params[:parent_engine] = engine.container_name
+    params[:container_type] = engine.ctype
 
-  services = get_engine_persistent_services(params)
-return services
-    rescue StandardError => e
-      log_exception(e)
-  end 
-  def list_non_persistent_services(engine)
-      clear_error
-      params = {}
-  params[:parent_engine] = engine.container_name
-  params[:container_type] = engine.ctype
-
-  services = get_engine_nonpersistent_services(params)
-
-return services
-    rescue StandardError => e
-      log_exception(e)
+    services = get_engine_persistent_services(params)
+    return services
+  rescue StandardError => e
+    log_exception(e)
   end
+
+  def list_non_persistent_services(engine)
+    clear_error
+    params = {}
+    params[:parent_engine] = engine.container_name
+    params[:container_type] = engine.ctype
+
+    services = get_engine_nonpersistent_services(params)
+
+    return services
+  rescue StandardError => e
+    log_exception(e)
+  end
+
   #service manager get non persistent services for engine_name
   #for each servie_hash load_service_container and add hash
   #add to service registry even if container is down
@@ -95,27 +98,27 @@ return services
   rescue StandardError => e
     log_exception(e)
   end
-  
+
   def get_cron_entry(cronjob, container)
 
-   entry = find_engine_service_hash({:parent_engine => container.container_name,
-                                      :publisher_namespace => 'EnginesSystem',
-                                      :type_path =>'cron',
-                                      :container_type => container.ctype,
-                                      :container_name => container.container_name,
-                                      :service_handle => cronjob})
-#   s = {:parent_engine => container.container_name,
-#                                          :publisher_namespace => 'EnginesSystem',
-#                                          :type_path =>'cron',
-#                                           :container_type => container.ctype,
-#                                          :service_handle => cronjob}
-#                                          STDERR.puts('serach for ' + s.to_s + ' returned ' + entry.to_s)
-   # STDERR.puts( 'Got ' + entry.to_s + ' for cron entry')     
-         return  entry unless entry.is_a?(Hash)
+    entry = find_engine_service_hash({:parent_engine => container.container_name,
+      :publisher_namespace => 'EnginesSystem',
+      :type_path =>'cron',
+      :container_type => container.ctype,
+      :container_name => container.container_name,
+      :service_handle => cronjob})
+    #   s = {:parent_engine => container.container_name,
+    #                                          :publisher_namespace => 'EnginesSystem',
+    #                                          :type_path =>'cron',
+    #                                           :container_type => container.ctype,
+    #                                          :service_handle => cronjob}
+    #                                          STDERR.puts('serach for ' + s.to_s + ' returned ' + entry.to_s)
+    # STDERR.puts( 'Got ' + entry.to_s + ' for cron entry')
+    return  entry unless entry.is_a?(Hash)
     entry[:variables][:cron_job]
-    rescue StandardError => e
-      STDERR.puts( 'Got ' + entry.to_s + ' for cron entry')
-        log_exception(e)
+  rescue StandardError => e
+    STDERR.puts( 'Got ' + entry.to_s + ' for cron entry')
+    log_exception(e)
   end
 
   #@ remove an engine matching :engine_name from the service registry, all non persistent serices are removed
@@ -125,21 +128,16 @@ return services
   def rm_remove_engine_services(params)
     clear_error
     services = test_registry_result(system_registry_client.get_engine_persistent_services(params))
+    return log_error_message(' rm_remove_engine_services FAILed ', services ) if services.is_a?(EnginesError)
     services.each do | service |
       SystemDebug.debug(SystemDebug.services, :remove_service, service)
       if params[:remove_all_data] || service[:shared] #&& ! (service.key?(:shared) && service[:shared])
         service[:remove_all_data] = params[:remove_all_data]
-        if (r = delete_service(service)).is_a?(EnginesError)
-         return r
-        #  next
-        end        
+        return r  if (r = delete_service(service)).is_a?(EnginesError)
       else
-        if (r = orphanate_service(service)).is_a?(EnginesError)
-          return r
-        # next
-        end
+        return r if (r = orphanate_service(service)).is_a?(EnginesError)
       end
-      system_registry_client.remove_from_managed_engines_registry(service)
+      return r if (r = system_registry_client.remove_from_managed_engines_registry(service)).is_a?(EnginesError)
     end
     return true
   rescue StandardError => e

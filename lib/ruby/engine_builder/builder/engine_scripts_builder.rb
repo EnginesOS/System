@@ -51,18 +51,25 @@ module EngineScriptsBuilder
    end
   
   def create_actionator_scripts
-    SystemDebug.debug(SystemDebug.builder,"creating actionators ",@blueprint_reader.actionators)
+    
+    SystemDebug.debug(SystemDebug.builder| SystemDebug.actions,"creating actionators ",@blueprint_reader.actionators)
     log_build_output('Creating Actionators')
     return true if @blueprint_reader.actionators.nil?
     destdir = SystemConfig.ActionatorDir
     FileUtils.mkdir_p(basedir + destdir ) unless Dir.exist?(basedir + destdir )
     
-    @blueprint_reader.actionators.each_value do | actionator| 
+    @blueprint_reader.actionators.keys.each do | key|
+      actionator = @blueprint_reader.actionators[key] 
+      SystemDebug.debug(SystemDebug.builder| SystemDebug.actions,'create actionator', actionator)
       filename = SystemConfig.ActionatorDir + '/' + actionator[:name] + '.sh'
-      SystemDebug.debug(SystemDebug.builder,"creating actionator " ,  actionator[:name],filename)
+      SystemDebug.debug(SystemDebug.builder| SystemDebug.actions,"creating actionator " ,  actionator[:name],filename)
 
-      write_software_script_file(filename, actionator[:script])
-      
+     if @blueprint_reader.schema == 0
+       write_software_script_file(filename, actionator[:script])
+     else 
+       write_software_script_file(filename, actionator[:script][:content])
+     end
+    actionator[:script].delete(:content)
     end
     return true
     rescue StandardError => e

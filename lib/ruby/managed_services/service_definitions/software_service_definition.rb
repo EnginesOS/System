@@ -16,6 +16,9 @@ class SoftwareServiceDefinition
   end
 
   def self.software_service_definition(params)
+    SystemUtils.log_error_mesg('Missing params',  params.to_s) if params[:publisher_namespace].nil?
+    SystemUtils.log_error_mesg('Missing params',  params.to_s) if params[:type_path].nil?
+      
     SoftwareServiceDefinition.find(params[:type_path], params[:publisher_namespace] )
   rescue Exception=>e
     SystemUtils.log_error_mesg('Problem Service defl',params.to_s)
