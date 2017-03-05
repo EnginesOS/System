@@ -99,7 +99,7 @@ class BuildController
   def get_engine_builder(params)
     @engine_builder = EngineBuilder.new(params, @core_api)
     @engine_builder.setup_build
-
+    @engine_builder
   end
 
 
@@ -111,6 +111,7 @@ class BuildController
     @build_params[:environment] = environment
     get_engine_builder(@build_params)
     @engine_builder.setup_build
+    @engine_builder
   end
 
   def build_failed(params,err)
