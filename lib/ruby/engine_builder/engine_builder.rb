@@ -72,7 +72,7 @@ class EngineBuilder < ErrorsApi
   def setup_build
     r  = check_build_params
     return r if r.is_a?(EnginesError)
-    return log_error_mesg('empty container name', params) if @build_params[:engine_name].nil? || @build_params[:engine_name] == ''
+    return log_error_mesg('empty container name', @build_params) if @build_params[:engine_name].nil? || @build_params[:engine_name] == ''
     @build_params[:engine_name].freeze
     @build_name = File.basename(@build_params[:repository_url]).sub(/\.git$/, '')
     @web_port = SystemConfig.default_webport
@@ -82,7 +82,7 @@ class EngineBuilder < ErrorsApi
     @first_build = true
     @attached_services = []
     return "error" unless create_templater
-    return "error" unless process_supplied_envs(params[:variables])
+    return "error" unless process_supplied_envs(@build_params[:variables])
     @runtime =  ''
     return "error" unless create_build_dir
     return "error" unless setup_log_output
@@ -91,9 +91,9 @@ class EngineBuilder < ErrorsApi
     @data_gid = '11111'
     @build_params[:data_uid] =  @data_uid
     @build_params[:data_gid] = @data_gid
-    SystemDebug.debug(SystemDebug.builder, :builder_init, params,@build_params)
+    SystemDebug.debug(SystemDebug.builder, :builder_init, @build_params)
     @service_builder = ServiceBuilder.new(@core_api, @templater, @build_params[:engine_name],  @attached_services)
-    SystemDebug.debug(SystemDebug.builder, :builder_init__service_builder, params,@build_params)
+    SystemDebug.debug(SystemDebug.builder, :builder_init__service_builder, @build_params)
     return self
   rescue StandardError => e
     log_exception(e)
