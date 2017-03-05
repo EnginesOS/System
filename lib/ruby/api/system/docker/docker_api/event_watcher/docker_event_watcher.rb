@@ -140,11 +140,13 @@ class DockerEventWatcher  < ErrorsApi
         begin
           # parser = FFI_Yajl::Parser.new({:symbolize_keys => true}) if parser.nil?
           #   STDERR.puts('event  cunk ' + chunk.to_s )
+          SystemDebug.debug(SystemDebug.container_events,chunk.to_s )
+          next if chunk.nil?
           r = ''
           chunk.strip!
           chunk = json_part.to_s + chunk unless json_part.nil?
           unless chunk.end_with?('}')
-          STDERR.puts('DOCKER SENT INCOMPLETE json ' + chunk.to_s )
+            SystemDebug.debug(SystemDebug.container_events,'DOCKER SENT INCOMPLETE json ' + chunk.to_s )
             json_part = chunk
             next
           else
@@ -157,12 +159,13 @@ class DockerEventWatcher  < ErrorsApi
           next unless hash.is_a?(Hash)
           #  STDERR.puts('trigger' + hash.to_s )
           next if hash.key?(:from) && hash[:from].length >= 64
-          #   SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
+            SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
           # next
           #end
           trigger(hash)
 
         rescue StandardError => e
+          STDERR.puts('EXCEPTION docker Event Stream as close ' + e.to_s)
           log_error_mesg('Chunk error on docker Event Stream _' + chunk.to_s + '_')
           log_exception(e,chunk)
           next
@@ -173,16 +176,17 @@ class DockerEventWatcher  < ErrorsApi
     client.finish
 
     log_error_mesg('Restarting docker Event Stream ')
-    #    STDERR.puts('Restarting docker Event Stream as close')
+        STDERR.puts('CLOSED docker Event Stream as close')
     @system.start_docker_event_listener(@event_listeners)
   rescue Net::ReadTimeout
-    #  STDERR.puts('Restarting docker Event Stream Read Timeout as timeout')
+    log_error_mesg('Restarting docker Event Stream Read Timeout as timeout')
     client.finish
+    STDERR.puts('TIMEOUT docker Event Stream as close')
     @system.start_docker_event_listener(@event_listeners)
   rescue StandardError => e
     log_exception(e)
     log_error_mesg('Restarting docker Event Stream post exception ')
-    #   STDERR.puts('Restarting docker Event Stream post exception due to ' + e.to_s)
+      STDERR.puts('EXCEPTION docker Event Stream post exception due to ' + e.to_s)
     client.finish
     @system.start_docker_event_listener(@event_listeners)
   end
