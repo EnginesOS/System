@@ -105,6 +105,7 @@ class VersionedBlueprintReader < BluePrintReader
        
        modname = pkg_module[:name]
        SystemDebug.debug(SystemDebug.builder,  ' modules  modname',  modname)
+       pkg_module_type.downcase!
        if pkg_module_type == 'pear'
          @pear_modules.push(modname)
        elsif pkg_module_type == 'pecl'
