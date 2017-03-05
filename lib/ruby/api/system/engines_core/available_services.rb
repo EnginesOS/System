@@ -119,7 +119,7 @@ def load_service_definition(filename)
  
   def load_software_service(params)
     params[:service_container_name]  = ServiceDefinitions.get_software_service_container_name(params)
-    return params[:service_container_name]  if service_container.is_a?(EnginesError)
+    return params[:service_container_name]  if params[:service_container_name].is_a?(EnginesError)
 
     loadManagedService(params[:service_container_name] )
   rescue StandardError => e
