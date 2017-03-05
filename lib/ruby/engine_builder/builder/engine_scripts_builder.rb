@@ -69,7 +69,7 @@ module EngineScriptsBuilder
      else 
        write_software_script_file(filename, actionator[:script][:content])
      end
-      
+    actionator[:script].delete(:content)
     end
     return true
     rescue StandardError => e
