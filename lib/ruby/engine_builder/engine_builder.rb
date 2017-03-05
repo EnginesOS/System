@@ -67,6 +67,11 @@ class EngineBuilder < ErrorsApi
     @core_api = core_api
     @container = nil
     @build_params = params
+  end
+  
+  def setup_build
+    r  = check_build_params
+    return r if r.is_a?(EnginesError)
     return log_error_mesg('empty container name', params) if @build_params[:engine_name].nil? || @build_params[:engine_name] == ''
     @build_params[:engine_name].freeze
     @build_name = File.basename(@build_params[:repository_url]).sub(/\.git$/, '')
@@ -89,6 +94,7 @@ class EngineBuilder < ErrorsApi
     SystemDebug.debug(SystemDebug.builder, :builder_init, params,@build_params)
     @service_builder = ServiceBuilder.new(@core_api, @templater, @build_params[:engine_name],  @attached_services)
     SystemDebug.debug(SystemDebug.builder, :builder_init__service_builder, params,@build_params)
+    return self
   rescue StandardError => e
     log_exception(e)
   end
