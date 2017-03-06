@@ -2,7 +2,7 @@ module SaveEngineConfiguration
    def save_engine_built_configuration(mc)
         
   write_actionators(mc, @blueprint_reader.actionators)
-     write_schedules(mc, @blueprint_reader.schedules) if @blueprint_reader.defined(:schedules)
+     write_schedules(mc, @blueprint_reader.schedules) if @blueprint_reader.defined?(:schedules)
   write_services(mc, @service_builder.attached_services)
   write_variables(mc, @blueprint_reader.environments)    
      
