@@ -11,6 +11,8 @@ module ServiceRollBack
       end
     end
     return true
+    rescue StandardError => e
+      log_exception(e)
   end
 
   def roll_back_new_service(service_hash)

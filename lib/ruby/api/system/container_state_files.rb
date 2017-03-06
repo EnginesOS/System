@@ -14,6 +14,10 @@ class ContainerStateFiles
     SystemUtils.log_exception(e)
   end
 
+  def self.schedules_dir(container)
+    return self.container_state_dir(container) + '/schedules/'
+  end
+  
   def self.actionator_dir(container)
     return self.container_state_dir(container) + '/actionators/'
   end
@@ -34,7 +38,7 @@ class ContainerStateFiles
     cidfile = ContainerStateFiles.container_cid_file(container)
     return -1 unless  File.exist?(cidfile)
     r = File.read(cidfile)
-    r.gsub(/\s+/, '').strip
+    r.gsub!(/\s+/, '').strip
   rescue StandardError => e
     SystemUtils.log_exception(e)
     return '-1'

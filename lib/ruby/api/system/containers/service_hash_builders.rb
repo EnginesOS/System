@@ -71,6 +71,9 @@ def create_nginx_service_hash(engine)
   service_hash[:container_type] = engine.ctype
   service_hash[:variables] = {}
   service_hash[:variables][:parent_engine] = engine.container_name
+  service_hash[:variables][:internal_dir] = '/'
+  service_hash[:variables][:public] = 1
+  service_hash[:variables][:engines_count] = 1
   service_hash[:variables][:name] = engine.container_name
   service_hash[:variables][:fqdn] = engine.fqdn
   service_hash[:variables][:port] = engine.web_port.to_s

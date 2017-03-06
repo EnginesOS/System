@@ -8,17 +8,17 @@ module CheckBuildParams
     log_exception(e)
   end
   
-  private 
+ # private 
   
   def check_host(params)
-    return bad_param('Missing: Hostname', params) unless params.key?(:host_name)
-    return bad_param('Invalid: Hostname', params) unless acceptable_chars(params[:host_name])
+ #   return bad_param('Missing: Hostname', params) unless params.key?(:host_name)
+ #    return bad_param('Invalid: Hostname', params) unless acceptable_chars(params[:host_name])
     return true
   end
   
   def check_name(params)
-    return bad_param('Missing: Engine Name', params) unless params.key?(:engine_name)
-    return bad_param('Invalid: Engine Name', params) unless acceptable_chars(params[:engine_name])
+ #    return bad_param('Missing: Engine Name', params) unless params.key?(:engine_name)
+  #  return bad_param('Invalid: Engine Name', params) unless acceptable_chars(params[:engine_name])
     return true
   end
   

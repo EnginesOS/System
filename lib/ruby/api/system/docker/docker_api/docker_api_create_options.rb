@@ -89,9 +89,9 @@ module DockerApiCreateOptions
     host_config['MemoryReservation'] # 0,
     host_config['VolumesFrom'] = container.volumes_from unless container.volumes_from.nil?
    # "CapAdd": ["NET_ADMIN"],
-  STDERR.puts(" Add cap ");
+  #STDERR.puts(" Add cap ");
       host_config["CapAdd"] = add_capabilities(container.capabilities) unless container.capabilities.nil?
-    STDERR.puts(" Add caps " + host_config["CapAdd"].to_s);
+  #  STDERR.puts(" Add caps " + host_config["CapAdd"].to_s);
     # host_config['KernelMemory'] # 0,
     #  host_config['CpuShares'] # 512,
     # host_config['CpuPeriod'] # 100000,
@@ -101,7 +101,7 @@ module DockerApiCreateOptions
     #     host_config['BlkioWeight'] # 300,
     #host_config['MemorySwappiness'] # 60,
     host_config['OomKillDisable'] = false
-
+    host_config['LogConfig'] = log_config(container) 
     host_config['PublishAllPorts'] = false
     host_config['Privileged'] = false
     host_config['ReadonlyRootfs'] = false
@@ -126,6 +126,12 @@ module DockerApiCreateOptions
     #    host_config['VolumeDriver'] = ""
 
     host_config
+  end
+  
+  def log_config(container)
+    return { "Type" => 'json-file', "Config" => {}}
+    return { "Type" => 'json-file', "Config" => { "max-size" =>"5m", "max-file" => '10' } } if container.ctype == 'service'
+    return { "Type" => 'JsonFile', "Config" => { "max-size" =>"1m", "max-file" => '5' } }
   end
   
   def add_capabilities(capabilities)

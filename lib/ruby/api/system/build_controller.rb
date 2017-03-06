@@ -24,12 +24,12 @@ class BuildController
   
   def build_engine(params)
     SystemDebug.debug(SystemDebug.builder, :builder_params, params)
-    r = ''
-   
+    r = '' 
+ 
     @build_params = params
     SystemStatus.build_starting(@build_params)
     @engine_builder = get_engine_builder(@build_params)
-
+    return  @engine_builder if  @engine_builder.is_a?(EnginesError)
     return build_failed(params, r) if (r = @engine_builder.check_build_params(params)).is_a?(EnginesError)
    
     @engine = @engine_builder.build_from_blue_print
@@ -55,6 +55,7 @@ class BuildController
 
     SystemStatus.build_starting(@build_params)
     @engine_builder= get_engine_builder_bfr(repository, host, domain_name, environment)
+    return  @engine_builder if  @engine_builder.is_a?(EnginesError)
     @engine = @engine_builder.build_from_blue_print
     @build_error = @engine_builder.last_error
     return build_failed(@build_params, @build_error)  unless engine.is_a(ManagedEngine)
@@ -97,8 +98,8 @@ class BuildController
 
   def get_engine_builder(params)
     @engine_builder = EngineBuilder.new(params, @core_api)
+    @engine_builder.setup_build
 
-    return @engine_builder 
   end
 
 
@@ -109,6 +110,8 @@ class BuildController
     @build_params[:domain_name] = domain_name
     @build_params[:environment] = environment
     get_engine_builder(@build_params)
+    @engine_builder.setup_build
+ 
   end
 
   def build_failed(params,err)

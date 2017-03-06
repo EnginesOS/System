@@ -72,6 +72,8 @@ class DockerFileBuilder
     write_data_permissions
     finalise_files
     return true
+    rescue Exception => e
+      SystemUtils.log_exception(e)
   end
 
   def write_app_templates
@@ -94,8 +96,11 @@ class DockerFileBuilder
     write_line('VOLUME /home/fs/')
     write_clear_env_variables
     @docker_file.close
-  end
 
+  rescue Exception => e
+    SystemUtils.log_exception(e)
+    end
+    
   def finalise_files
     finalise_docker_file
     @env_file.close
@@ -104,11 +109,13 @@ class DockerFileBuilder
   def prepare_persitant_source
     write_line('RUN mv /home/fs /home/fs_src')
     write_line('VOLUME /home/fs_src/')
+    return true
   end
 
   def setup_persitant_app
     write_line('RUN cp -rp /home/app /home/app_src')
     write_line('VOLUME /home/app_src/')
+    return true
   end
 
   def write_permissions
@@ -125,16 +132,19 @@ class DockerFileBuilder
   end
 
   def write_clear_env_variables
-    write_line('#Clear env')
+    write_line('#Clear env')    
+    return true if @blueprint_reader.environments.nil?
     @blueprint_reader.environments.each do |env|
       write_line('ENV ' + env.name + ' .') if env.build_time_only
-    end
+    end    
+    return true
 
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
 
-  def write_environment_variables
+  def write_environment_variables   
+    return true if @blueprint_reader.environments.nil?
     write_line('#Environment Variables')
     @blueprint_reader.environments.each do |env|
       write_line('#Blueprint ENVs')
@@ -159,10 +169,13 @@ class DockerFileBuilder
     end
     write_env('LC_ALL', lang)
     write_env('LANG', lang)
+    rescue Exception => e
+      SystemUtils.log_exception(e)
   end
 
   def write_persistent_dirs
     log_build_output('setup persistent Dirs')
+    return true if @blueprint_reader.persistent_dirs.nil?
     paths = ''
     write_line('#Persistant Dirs')
     @blueprint_reader.persistent_dirs.each do |path|
@@ -183,6 +196,7 @@ class DockerFileBuilder
     write_line('WORKDIR /home/')
     write_line('#RUN framework and custom installer')
     write_line('RUN bash /home/setup.sh')
+    return true
   end
 
   def write_database_seed
@@ -190,10 +204,12 @@ class DockerFileBuilder
     if @blueprint_reader.database_seed.nil? == false && @blueprint_reader.database_seed != ''
       ConfigFileWriter.write_templated_file(@builder.templater, @builder.basedir + '/home/database_seed', @blueprint_reader.database_seed)
     end
+    return true
   end
 
   def write_persistent_files
-    write_line('#Persistant Files')
+    write_line('#Persistant Files')   
+    return true if @blueprint_reader.persistent_files.nil?
     log_build_output('set setup_env')
     paths = ''
     src_paths = @blueprint_reader.persistent_files[:src_paths]
@@ -222,13 +238,15 @@ class DockerFileBuilder
         # write_line('RUN mkdir -p $CONTFSVolHome/$VOLDIR' )
       end
     end
+    return true
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
 
   def write_sed_strings
     n = 0
-    write_line('#Sed Strings')
+    write_line('#Sed Strings')   
+    return true if @blueprint_reader.sed_strings.nil?
     @blueprint_reader.sed_strings[:src_file].each do |src_file|
       # src_file = @sed_strings[:src_file][n]
       dest_file = @blueprint_reader.sed_strings[:dest_file][n]
@@ -239,13 +257,15 @@ class DockerFileBuilder
       write_line('     cp ' + tmp_file + ' ' + dest_file)
       n += 1
     end
+return true
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
 
   def write_os_packages
     packages = ''
-    write_line('#OS Packages')
+    write_line('#OS Packages')   
+    return true if @blueprint_reader.os_packages.nil?
     @blueprint_reader.os_packages.each do |package|
       if package.nil? == false
         packages = packages + package + ' '
@@ -260,12 +280,15 @@ class DockerFileBuilder
     @blueprint_reader.mapped_ports.each_value do |port|
       write_line('EXPOSE ' + port[:port].to_s)
     end
+    return true
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
 
   def deploy_dir
     SystemConfig.DeploymentTemplates + '/' + @blueprint_reader.framework
+    rescue Exception => e
+      SystemUtils.log_exception(e)
   end
 
   def build_dir
@@ -279,6 +302,7 @@ class DockerFileBuilder
     builder_frag = frame_build_docker_frag.read
     @docker_file.write(builder_frag)
     frame_build_docker_frag.close
+    return true
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
@@ -295,7 +319,7 @@ class DockerFileBuilder
     write_line('')
     write_line('#Write Permissions Non Recursive')
     log_build_output('Dockerfile:Write Permissions Non Recursive')
-    return if @blueprint_reader.single_chmods.nil? == true
+    return true if @blueprint_reader.single_chmods.nil? == true
     paths = ''
     @blueprint_reader.single_chmods.each do |path|
       paths += path + ' ' unless path.nil?
@@ -308,7 +332,7 @@ class DockerFileBuilder
   def write_write_permissions_recursive
     write_line('#Write Permissions  Recursive')
     log_build_output('Dockerfile:Write Permissions Recursive')
-    return if @blueprint_reader.recursive_chmods.nil? == true
+    return true if @blueprint_reader.recursive_chmods.nil? == true
     dirs = ''
     @blueprint_reader.recursive_chmods.each do |directory|
       dirs += directory + ' ' unless directory.nil?
@@ -318,7 +342,8 @@ class DockerFileBuilder
     SystemUtils.log_exception(e)
   end
 
-  def write_app_archives
+  def write_app_archives    
+ return true if @blueprint_reader.archives_details.nil?
     write_line('#App Archives')
     log_build_output('Dockerfile:App Archives')
     write_line('')
@@ -350,6 +375,7 @@ class DockerFileBuilder
       args += ' \'' + path_to_extracted + '\' '
       write_build_script('package_installer.sh' + args )
     end
+        return true
   rescue Exception => e
     SystemUtils.log_exception(e)
   end
@@ -407,18 +433,29 @@ class DockerFileBuilder
 
     write_line('ENV ' + name.to_s  + ' \'' + value.to_s + '\'')
     @env_file.puts(name.to_s  + '=' + '\'' + value.to_s  + '\'')
+    return true
+    rescue Exception => e
+      SystemUtils.log_exception(e)
   end
 
   def write_build_script(cmd)
     write_line('RUN  /build_scripts/' + cmd)
+    rescue Exception => e
+      SystemUtils.log_exception(e)
   end
 
   def write_line(line)
     @docker_file.puts(line)
     count_layer unless line.start_with?('#') || line.end_with?('\\') # or whitespace only
+    return true
+    rescue Exception => e
+      SystemUtils.log_exception(e)
   end
 
   def set_user(user)
     write_line('USER ' + user)
+    return true
+    rescue Exception => e
+      SystemUtils.log_exception(e)
   end
 end

@@ -5,6 +5,8 @@ class ConfigFileWriter
       return false unless process_dockerfile_tmpl(templater, file)
     end
     return true
+    rescue StandardError => e
+      log_exception(e)
   end
 
   def self.write_templated_file(templater, filename, content)
