@@ -116,7 +116,10 @@ if test -f /usr/sbin/apache2ctl
 	fi
 else
 	PID_FILE=/var/run/nginx.pid
-	mkdir /var/log/nginx
+	if ! test -d /var/log/nginx
+	then
+		mkdir /var/log/nginx
+	fi
 	
 	export PID_FILE
 	. /home/trap.sh
