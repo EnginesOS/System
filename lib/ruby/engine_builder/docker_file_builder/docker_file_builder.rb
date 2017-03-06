@@ -175,7 +175,7 @@ class DockerFileBuilder
 
   def write_persistent_dirs
     log_build_output('setup persistent Dirs')
-    return true if @blueprint_reader.persistent_dirs.nil
+    return true if @blueprint_reader.persistent_dirs.nil?
     paths = ''
     write_line('#Persistant Dirs')
     @blueprint_reader.persistent_dirs.each do |path|
