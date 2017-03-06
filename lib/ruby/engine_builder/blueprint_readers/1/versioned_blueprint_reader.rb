@@ -67,7 +67,7 @@ class VersionedBlueprintReader < BluePrintReader
   
    
   def read_web_root
-    @web_root = @blueprint[:software][:base][:web_root_directory] if @blueprint[:software].key?(:web_root_directory)
+    @web_root = @blueprint[:software][:base][:web_root_directory] if @blueprint[:software][:base].key?(:web_root_directory)
     SystemDebug.debug(SystemDebug.builder,  ' @web_root ',  @web_root)
     rescue StandardError => e
       SystemUtils.log_exception(e)
