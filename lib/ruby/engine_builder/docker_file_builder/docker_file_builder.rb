@@ -96,10 +96,11 @@ class DockerFileBuilder
     write_line('VOLUME /home/fs/')
     write_clear_env_variables
     @docker_file.close
-  end
+
   rescue Exception => e
     SystemUtils.log_exception(e)
-
+    end
+    
   def finalise_files
     finalise_docker_file
     @env_file.close
