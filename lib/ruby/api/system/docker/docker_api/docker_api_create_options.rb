@@ -130,8 +130,8 @@ module DockerApiCreateOptions
   
   def log_config(container)
     return { "Type" => 'json-file', "Config" => {}}
-    return { "Type" => 'JsonFile', "Config" => { "MaxSize" =>"5m", "MaxFile" => 10 } } if container.ctype == 'service'
-    return { "Type" => 'JsonFile', "Config" => { "MaxSize" =>"1m", "MaxFile" => 5 } }
+    return { "Type" => 'json-file', "Config" => { "max-size" =>"5m", "max-file" => '10' } } if container.ctype == 'service'
+    return { "Type" => 'JsonFile', "Config" => { "max-size" =>"1m", "max-file" => '5' } }
   end
   
   def add_capabilities(capabilities)
