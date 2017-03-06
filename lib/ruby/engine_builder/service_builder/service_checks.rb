@@ -7,10 +7,14 @@ module ServiceChecks
       return service_not_running(service_name) unless @core_api.is_service_running?(service_name)
     end
     return true
+    rescue StandardError => e
+      log_exception(e)
   end
 
   def service_not_running(service_name)
     @last_error = service_name.to_s + ' Not Running please start/enable before installing this software'
     return false
+    rescue StandardError => e
+      log_exception(e)
   end
 end

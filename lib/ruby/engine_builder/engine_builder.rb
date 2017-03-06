@@ -98,6 +98,7 @@ class EngineBuilder < ErrorsApi
     return self
   rescue StandardError => e
     log_exception(e)
+    abort_build
   end
 
   def volumes
@@ -111,6 +112,8 @@ class EngineBuilder < ErrorsApi
     return log_error_mesg('Failed to Backup Last build', self) unless backup_lastbuild
     return log_error_mesg('Failed to setup rebuild', self) unless setup_rebuild
     return build_container
+    rescue StandardError => e
+      abort_build
   end
 
   def build_failed(errmesg)
@@ -176,6 +179,8 @@ class EngineBuilder < ErrorsApi
     FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.out',ContainerStateFiles.container_state_dir(@container) + '/build.log')
     FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.err',ContainerStateFiles.container_state_dir(@container) + '/build.err')
     true
+    rescue StandardError => e
+      log_exception(e)
   end
 
   def wait_for_engine
@@ -256,6 +261,7 @@ class EngineBuilder < ErrorsApi
     g = Git.clone(@build_params[:repository_url], @build_name, :path => SystemConfig.DeploymentDir)
   rescue StandardError => e
     log_error_mesg('Problem cloning Git', g)
+    abort_build
     log_exception(e)
   end
 
@@ -282,6 +288,9 @@ class EngineBuilder < ErrorsApi
     return log_error_mesg('Failed to Load Blue print',self) unless get_blueprint_from_repo
     log_build_output('Cloned Blueprint')
     build_container
+    rescue StandardError => e
+      abort_build
+      log_exception(e)
   end
 
   def post_failed_build_clean_up
@@ -370,6 +379,9 @@ class EngineBuilder < ErrorsApi
     f.close
     File.chmod(0660,restart_flag_file)
     FileUtils.chown(nil,'containers',restart_flag_file)
+    rescue StandardError => e
+     
+      log_exception(e)
   end
 
   def log_error_mesg(m,o)
@@ -385,6 +397,9 @@ class EngineBuilder < ErrorsApi
 
   def basedir
     SystemConfig.DeploymentDir + '/' + @build_name.to_s
+    rescue StandardError => e
+    abort_build
+      log_exception(e)
   end
 
   private

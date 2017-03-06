@@ -9,6 +9,8 @@ module NonPersistantServiceBuilder
       @attached_services.push(service_hash)
     end
     return true
+    rescue StandardError => e
+      log_exception(e)
   end
 
 end

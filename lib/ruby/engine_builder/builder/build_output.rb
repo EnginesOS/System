@@ -48,6 +48,8 @@ module BuildOutput
     @err_file.close unless @err_file.closed?
 
     return false
+    rescue StandardError => e
+    log_exception(e)
   end
 
   # used to fill in erro mesg with last ten lines

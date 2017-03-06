@@ -4,7 +4,9 @@ module SaveEngineConfiguration
   write_actionators(mc, @blueprint_reader.actionators)
   write_services(mc, @service_builder.attached_services)
   write_variables(mc, @blueprint_reader.environments)    
-  
+     
+     rescue StandardError => e
+       log_exception(e)
 end
 
 def write_actionators(container, actionators)

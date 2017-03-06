@@ -25,4 +25,7 @@ def read_base_image_from_dockerfile
       return post_failed_build_clean_up
     end
     true
+    rescue StandardError => e
+      log_build_errors(e)
+      return post_failed_build_clean_up
   end
