@@ -14,6 +14,10 @@ class ContainerStateFiles
     SystemUtils.log_exception(e)
   end
 
+  def self.schedules_dir(container)
+    return self.container_state_dir(container) + '/schedules/'
+  end
+  
   def self.actionator_dir(container)
     return self.container_state_dir(container) + '/actionators/'
   end

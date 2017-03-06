@@ -2,7 +2,8 @@ require_relative '../blueprint_reader.rb'
 class VersionedBlueprintReader < BluePrintReader
   @schema = 1
   attr_reader   :first_run_url,
-                :continuous_deployment
+                :continuous_deployment,
+                :schedules
   
   def read_scripts
     return unless @blueprint[:software].key?(:scripts)
@@ -127,25 +128,25 @@ class VersionedBlueprintReader < BluePrintReader
       SystemUtils.log_exception(e)
    end
    
-  def read_actionators
-      log_build_output('Read Actionators')
-      SystemDebug.debug(SystemDebug.builder,' readin in actionators', @blueprint[:software][:actionators])
-        STDERR.puts(' readin in actionators', @blueprint[:software][:actionators].to_s)
-      if @blueprint[:software].key?(:actionators)
-        @actionators = {}
-          @blueprint[:software][:actionators].each do |actionator |
-            @actionators[actionator[:name]] = actionator
-          end
-        STDERR.puts('Red actionators', @blueprint[:software][:actionators].to_s)
-        SystemDebug.debug(SystemDebug.builder,@actionators)
-      else
-        SystemDebug.debug(SystemDebug.builder,'No actionators')
-        @actionators = nil
-      end
-    rescue StandardError => e
-      @actionators = nil
-      SystemUtils.log_exception(e)
-    end
+#  def read_actionators
+#      log_build_output('Read Actionators')
+#      SystemDebug.debug(SystemDebug.builder,' readin in actionators', @blueprint[:software][:actionators])
+#        STDERR.puts(' readin in actionators', @blueprint[:software][:actionators].to_s)
+#      if @blueprint[:software].key?(:actionators)
+#        @actionators = {}
+#          @blueprint[:software][:actionators].each do |actionator |
+#            @actionators[actionator[:name]] = actionator
+#          end
+#        STDERR.puts('Red actionators', @blueprint[:software][:actionators].to_s)
+#        SystemDebug.debug(SystemDebug.builder,@actionators)
+#      else
+#        SystemDebug.debug(SystemDebug.builder,'No actionators')
+#        @actionators = nil
+#      end
+#    rescue StandardError => e
+#      @actionators = nil
+#      SystemUtils.log_exception(e)
+#    end
 def read_actionators
    log_build_output('Read Actionators')
    SystemDebug.debug(SystemDebug.builder,' readin in actionators', @blueprint[:software][:actionators])
@@ -165,5 +166,15 @@ def read_actionators
    @actionators = nil
    SystemUtils.log_exception(e)
  end
+ 
+ def read_schedules
+   return true if @blueprint[:software][:schedules].nil?
+   @schedules = @blueprint[:software][:schedules]
+ end
+ 
+def process_blueprint
+  super
+  read_schedules
+end
     
 end
