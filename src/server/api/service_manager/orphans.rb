@@ -48,8 +48,8 @@ delete '/v0/service_manager/orphan_service/:publisher_namespace/*' do
 #  pparams =  {}
  # pparams[:publisher_namespace] = params[:publisher_namespace]
   params[:type_path] = File.dirname(params['splat'][0])
-  params[:service_handle] = File.basename(pparams[:type_path])
-  params[:type_path] = File.dirname(pparams[:type_path])
+  params[:service_handle] = File.basename(params[:type_path])
+  params[:type_path] = File.dirname(params[:type_path])
   params[:parent_engine] = File.basename(params['splat'][0])
 
   cparams =  Utils::Params.assemble_params(params, [:publisher_namespace, :type_path, :service_handle, :parent_engine], [])
