@@ -213,7 +213,7 @@ class SystemStatus
   def self.is_engines_system_upto_date?
     STDERR.puts('is_engines_system_upto_date')
     if self.get_engines_system_release == 'current'
-      STDERR.puts('get_engines_system_release' + current.to_s)
+      STDERR.puts('get_engines_system_release' + self.get_engines_system_release.to_s)
       result = SystemUtils.execute_command('/opt/engines/system/scripts/system/engines_system_update_status.sh')
       STDERR.puts("is_engines_system_upto_date YES!! " + result.to_s)  if result[:result] == 0  
       return true if result[:result] == 0
