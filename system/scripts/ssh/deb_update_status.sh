@@ -6,7 +6,7 @@ updates=`/usr/lib/update-notifier/apt-check  --human-readable `
 
 update_cnt=`echo $updates | grep    "packages" | awk '{print $1}'  `
 
-if  test 0 -lt $update_cnt
+if  test 0 -eq $update_cnt
  then
 	  echo Upto date  	
 	  rm /opt/engines/run/system/flags/base_os_update_pending
