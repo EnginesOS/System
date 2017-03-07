@@ -29,9 +29,9 @@ end
 # :base_os true|String with required updates listed
 
 get '/v0/system/status/update' do
-  status = SystemStatus.system_update_status
-  return log_error(request,status ) if status.is_a?(EnginesError)
+  ustatus = SystemStatus.system_update_status
+  return log_error(request,ustatus ) if ustatus.is_a?(EnginesError)
   status(202)
-  status.to_json
+  ustatus.to_json
 end
 # @!endgroup
