@@ -30,7 +30,7 @@ module ContainerSchedules
   end
 
   def schedule_instruction(schedule)
-    return schedule[:action] unless  schedule[:action] == "action"
+    return schedule[:instruction] unless  schedule[:instruction] == "action"
     #r = schedule[:actionator]
     schedule[:actionator]
 
