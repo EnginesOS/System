@@ -106,8 +106,8 @@ class SystemStatus
     is_base_system_updating:  SystemStatus.is_base_system_updating?,
     is_engines_system_updating:  SystemStatus.is_engines_system_updating?,
     needs_reboot:  SystemStatus.needs_reboot?,
-    needs_engines_update:  self.is_engines_system_upto_date?,
-    needs_base_update:  self.is_base_system_upto_date?
+    needs_engines_update:  !self.is_engines_system_upto_date?,
+    needs_base_update:  !self.is_base_system_upto_date?
   }
 
   rescue StandardError => e
@@ -198,7 +198,7 @@ class SystemStatus
   def self.is_base_system_upto_date?
     # FIX ME
     # in future check state of /opt/engines/run/system/flags/update_pending
-    return  File.exists?('/opt/engines/run/system/flags/base_os_update_pending')
+    return true unless  File.exists?('/opt/engines/run/system/flags/base_os_update_pending')
 
     #result = run_server_script('deb_update_status')
     # result = SystemUtils.execute_command('/opt/engines/system/scripts/system/engines_system_update_status.sh')
@@ -212,9 +212,7 @@ class SystemStatus
   def self.is_engines_system_upto_date?
    
     if self.get_engines_system_release == 'current'   
-      result = SystemUtils.execute_command('/opt/engines/system/scripts/system/engines_system_update_status.sh')   
-      return true if result[:result] == 0
-      false
+      SystemUtils.execute_command('/opt/engines/system/scripts/system/engines_system_update_status.sh')   
     end
     return true unless File.exist?(SystemConfig.EnginesUpdateStatusFile)
     false
