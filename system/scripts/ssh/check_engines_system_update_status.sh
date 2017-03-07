@@ -11,8 +11,6 @@ if test $? -eq 0
 	echo "Update Pending"
 	echo $status
 	exit 127
- else
-  rm -f /opt/engines/run/system/flags/update_pending
 fi
 
 echo "System Up to Date"
