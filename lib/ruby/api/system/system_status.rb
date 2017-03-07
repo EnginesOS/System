@@ -82,10 +82,10 @@ class SystemStatus
   end
 
   def self.build_status
-    result = {}
-    result[:is_building] = SystemStatus.is_building?
-    result[:did_build_fail] = SystemStatus.did_build_fail?
-    result
+   {
+    is_building:  SystemStatus.is_building?,
+    did_build_fail:  SystemStatus.did_build_fail?
+   }
   rescue StandardError => e
     SystemUtils.log_exception(e)
 
@@ -101,14 +101,14 @@ class SystemStatus
 
   # called by per session and post update
   def self.system_status
-     {
-    is_rebooting:  SystemStatus.is_rebooting?,
-    is_base_system_updating:  SystemStatus.is_base_system_updating?,
-    is_engines_system_updating:  SystemStatus.is_engines_system_updating?,
-    needs_reboot:  SystemStatus.needs_reboot?,
-    needs_engines_update:  !self.is_engines_system_upto_date?,
-    needs_base_update:  !self.is_base_system_upto_date?
-  }
+    {
+      is_rebooting:  SystemStatus.is_rebooting?,
+      is_base_system_updating:  SystemStatus.is_base_system_updating?,
+      is_engines_system_updating:  SystemStatus.is_engines_system_updating?,
+      needs_reboot:  SystemStatus.needs_reboot?,
+      needs_engines_update:  !self.is_engines_system_upto_date?,
+      needs_base_update:  !self.is_base_system_upto_date?
+    }
 
   rescue StandardError => e
     SystemUtils.log_exception(e)
@@ -118,8 +118,8 @@ class SystemStatus
   # called by per session and post update
   def self.system_update_status
     {engines_system:  self.is_engines_system_upto_date?,
-    base_os:  self.is_base_system_upto_date?
-  }
+      base_os:  self.is_base_system_upto_date?
+    }
   rescue StandardError => e
     SystemUtils.log_exception(e)
 
@@ -140,7 +140,7 @@ class SystemStatus
 
   def self.last_build_params
     unless File.exist?(SystemConfig.BuildBuiltFile)
-      SystemUtils.log_error_mesg('No  last_build_params', SystemConfig.BuildBuiltFile)
+      SystemUtils.log_error_mesg('No last_build_params', SystemConfig.BuildBuiltFile)
       return {}
     end
     param_file = File.new(SystemConfig.BuildBuiltFile, 'r')
@@ -210,9 +210,9 @@ class SystemStatus
   end
 
   def self.is_engines_system_upto_date?
-   
-    if self.get_engines_system_release == 'current'   
-      SystemUtils.execute_command('/opt/engines/system/scripts/system/engines_system_update_status.sh')   
+
+    if self.get_engines_system_release == 'current'
+      SystemUtils.execute_command('/opt/engines/system/scripts/system/engines_system_update_status.sh')
     end
     return true unless File.exist?(SystemConfig.EnginesUpdateStatusFile)
     false
