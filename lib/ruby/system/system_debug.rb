@@ -29,7 +29,7 @@ class SystemDebug
   else
     @@debug_flags = 0
    
-        @@debug_flags = @@first_run | @@actions | @@container_events | @@builder#| @@services | @@registry
+        @@debug_flags = @@first_run | @@actions  | @@builder#| @@services | @@registry
 #  @@debug_flags =  @@container_events| @@builder|@@templater| @@services | @@export_import# |@@first_run #@@containers# |@@container_events |@@first_run #@@orphans | @@builder |@@export_import | @@services| @@container_events|  @@server |@@templater| @@services | @@export_import |@@builder|@@execute|@@engine_tasks | @@orphans  |@@containers
   end
   #end
