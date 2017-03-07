@@ -84,11 +84,11 @@ def handle_resp(resp, expect_json=true)
   end
 
   return resp.body.to_s unless expect_json == true
-  hashes = []
-  hashes =   parser.parse(resp.body) # do |hash |
+#  hashes = []
+  hash =   parser.parse(resp.body) # do |hash |
   #   hashes.push(hash)
   #   end
-  json = hashes[0].to_json
+  json = hash.to_json
   return 'Error ' + resp.body.to_s if json.nil?
   return json
 rescue StandardError => e
