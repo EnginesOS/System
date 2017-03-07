@@ -18,8 +18,8 @@ module ContainerSchedules
   
     @engines_api.create_and_register_service( {
       publisher_namespace: 'EnginesSystem', 
-      type_path: 'cron',
-      parent_engine: 'system',
+      type_path: 'schedule',
+      parent_engine: container.container_name,
       container_type: container.ctype,
       service_handle: schedule[:label],
       variables: { 
