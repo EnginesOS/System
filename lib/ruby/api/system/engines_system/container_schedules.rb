@@ -17,9 +17,9 @@ module ContainerSchedules
     SystemDebug.debug(SystemDebug.schedules, 'Creating cro line:' , schedule)
     @engines_api.create_and_register_service( {publisher_namespace: 'EnginesSystem', type_path: 'cron',
       variables: { action_type: 'schedule',
-      cron_job: schedule_instruction(schedule[:timespec]),
+      cron_job: schedule_instruction(schedule),
       title: schedule[:lable],
-      :when => cron_line(schedule),
+      :when => cron_line(schedule[:timespec]),
       parent_engine: container.container_name } }   )
   end
 
