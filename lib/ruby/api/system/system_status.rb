@@ -117,8 +117,9 @@ class SystemStatus
 
   # called by per session and post update
   def self.system_update_status
-    {engines_system:  self.is_engines_system_upto_date?,
-      base_os:  self.is_base_system_upto_date?
+    {
+      needs_engines_update:  !self.is_engines_system_upto_date?,
+      needs_base_update:  !self.is_base_system_upto_date?
     }
   rescue StandardError => e
     SystemUtils.log_exception(e)
