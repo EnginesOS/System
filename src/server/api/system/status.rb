@@ -19,7 +19,7 @@ end
 get '/v0/system/status' do
   s_status = SystemStatus.system_status
   STDERR.puts( 'sin' + s_status.to_s)
-  STDERR.puts( 'sin' + SystemStatus.system_status)
+  STDERR.puts( 'sin' + SystemStatus.system_status.to_s)
   return log_error(request,s_status ) if s_status.is_a?(EnginesError)
   status(202)
   s_status.to_json
