@@ -213,8 +213,8 @@ class SystemStatus
    
     if self.get_engines_system_release == 'current'   
       result = SystemUtils.execute_command('/opt/engines/system/scripts/system/engines_system_update_status.sh')   
-      return false if result[:result] == 0
-      true
+      return true if result[:result] == 0
+      false
     end
     return true unless File.exist?(SystemConfig.EnginesUpdateStatusFile)
     false
