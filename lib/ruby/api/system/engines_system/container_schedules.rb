@@ -7,14 +7,15 @@ module ContainerSchedules
   def apply_schedules(container)
     schedules = schedules(container)
     return true if schedules.nil?
-
+    SystemDebug.debug(SystemDebug.schedules, 'Creating schedules:' , schedules)
     schedules.each do |schedule|
+      SystemDebug.debug(SystemDebug.schedules, 'Creating cro line:' , schedule)
       create_cron_service(container, schedule)
     end
   end
 
   def create_cron_service(container, schedule)
-    SystemDebug.debug(SystemDebug.schedules, 'Creating cro line:' , schedule)
+  
     @engines_api.create_and_register_service( {
       publisher_namespace: 'EnginesSystem', 
       type_path: 'cron',
