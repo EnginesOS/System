@@ -1,6 +1,6 @@
 class SystemStatus
   def self.is_base_system_updating?
-    return true unless File.exist?(SystemConfig.SystemUpdatingFlag)
+    return false unless File.exist?(SystemConfig.SystemUpdatingFlag)
     false
   end
 
