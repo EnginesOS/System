@@ -109,6 +109,7 @@ class SystemStatus
     needs_engines_update:  self.is_engines_system_upto_date?,
     needs_base_update:  self.is_base_system_upto_date?
   }
+ 
 #  STDERR.puts("SYSTEM STATUS   " + r.to_s)
  return r
   rescue StandardError => e
@@ -211,14 +212,14 @@ class SystemStatus
   end
 
   def self.is_engines_system_upto_date?
-    STDERR.puts('is_engines_system_upto_date')
+   
     if self.get_engines_system_release == 'current'
-      STDERR.puts('get_engines_system_release' + self.get_engines_system_release.to_s)
+      
       result = SystemUtils.execute_command('/opt/engines/system/scripts/system/engines_system_update_status.sh')
       STDERR.puts("is_engines_system_upto_date YES!! " + result.to_s)  if result[:result] == 0  
-      return true if result[:result] == 0
+      return false if result[:result] == 0
       STDERR.puts("is_engines_system_upto_date NO!!!" + result.to_s)
-      false
+      true
     end
     return true unless File.exist?(SystemConfig.EnginesUpdateStatusFile)
     false
