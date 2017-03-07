@@ -88,7 +88,9 @@ def handle_resp(resp, expect_json=true)
   hashes =   parser.parse(resp.body) # do |hash |
   #   hashes.push(hash)
   #   end
-  return hashes[0].to_json
+  json = hashes[0].to_json
+  return 'Error ' + resp.body.to_s if json.nil?
+  return json
 rescue StandardError => e
   log_error(e.to_s + ' with :' + resp.to_s)
   log_error(e.backtrace.to_s)
@@ -97,6 +99,7 @@ end
 def write_response(r)
   if r.nil?
     log_error('nil response')
+   
     return
   end
   if r.headers['Content-Type'] == 'application/octet-stream'
