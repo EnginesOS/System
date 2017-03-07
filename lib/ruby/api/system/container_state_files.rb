@@ -17,7 +17,11 @@ class ContainerStateFiles
   def self.schedules_dir(container)
     return self.container_state_dir(container) + '/schedules/'
   end
-  
+
+  def self.schedules_file(container)
+    return self.schedules_dir(container) + '/schedules.yaml'
+  end
+
   def self.actionator_dir(container)
     return self.container_state_dir(container) + '/actionators/'
   end
