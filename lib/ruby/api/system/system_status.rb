@@ -101,7 +101,7 @@ class SystemStatus
 
   # called by per session and post update
   def self.system_status
-  r=   {
+     {
     is_rebooting:  SystemStatus.is_rebooting?,
     is_base_system_updating:  SystemStatus.is_base_system_updating?,
     is_engines_system_updating:  SystemStatus.is_engines_system_updating?,
@@ -109,9 +109,7 @@ class SystemStatus
     needs_engines_update:  self.is_engines_system_upto_date?,
     needs_base_update:  self.is_base_system_upto_date?
   }
- 
-#  STDERR.puts("SYSTEM STATUS   " + r.to_s)
- return r
+
   rescue StandardError => e
     SystemUtils.log_exception(e)
 
@@ -213,12 +211,9 @@ class SystemStatus
 
   def self.is_engines_system_upto_date?
    
-    if self.get_engines_system_release == 'current'
-      
-      result = SystemUtils.execute_command('/opt/engines/system/scripts/system/engines_system_update_status.sh')
-      STDERR.puts("is_engines_system_upto_date YES!! " + result.to_s)  if result[:result] == 0  
+    if self.get_engines_system_release == 'current'   
+      result = SystemUtils.execute_command('/opt/engines/system/scripts/system/engines_system_update_status.sh')   
       return false if result[:result] == 0
-      STDERR.puts("is_engines_system_upto_date NO!!!" + result.to_s)
       true
     end
     return true unless File.exist?(SystemConfig.EnginesUpdateStatusFile)
