@@ -22,6 +22,7 @@ get '/v0/system/status' do
   status(202)
   s_status.to_json
 end
+
 # @method get_system_update_status
 # @overload get '/v0/system/status/update'
 # @return [Hash]  :engines_system :base_os
@@ -29,9 +30,9 @@ end
 # :base_os true|String with required updates listed
 
 get '/v0/system/status/update' do
-  status = SystemStatus.system_update_status
-  return log_error(request,status ) if status.is_a?(EnginesError)
+  ustatus = SystemStatus.system_update_status
+  return log_error(request,ustatus ) if ustatus.is_a?(EnginesError)
   status(202)
-  status.to_json
+  ustatus.to_json
 end
 # @!endgroup

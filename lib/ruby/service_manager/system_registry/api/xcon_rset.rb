@@ -17,16 +17,16 @@ def connection(content_type = nil)
   #headers['ACCESS_TOKEN'] = load_token
   #  @connection.reset unless @connection.nil?
 
-  if @connection.nil?
+  #  if @connection.nil?
  #   STDERR.puts('NEW REGISTRY CONNECTION ')
-    @connection = Excon.new(base_url,
+    @connection ||=  Excon.new(base_url,
     :debug_request => true,
     :debug_response => true,
     :ssl_verify_peer => false,
     :persistent => true,
     :headers => headers)
-  end
-  @connection
+  #  end
+  #  @connection
 rescue StandardError => e
   STDERR.puts('Failed to open base url to registry' + @base_url.to_s)  
   STDERR.puts e.backtrace.to_s

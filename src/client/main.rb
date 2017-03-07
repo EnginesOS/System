@@ -84,11 +84,13 @@ def handle_resp(resp, expect_json=true)
   end
 
   return resp.body.to_s unless expect_json == true
-  hashes = []
-  hashes =   parser.parse(resp.body) # do |hash |
+#  hashes = []
+  hash =   parser.parse(resp.body) # do |hash |
   #   hashes.push(hash)
   #   end
-  return hashes[0].to_json
+  json = hash.to_json
+  return 'Error ' + resp.body.to_s if json.nil?
+  return json
 rescue StandardError => e
   log_error(e.to_s + ' with :' + resp.to_s)
   log_error(e.backtrace.to_s)
@@ -97,6 +99,7 @@ end
 def write_response(r)
   if r.nil?
     log_error('nil response')
+   
     return
   end
   if r.headers['Content-Type'] == 'application/octet-stream'
@@ -105,8 +108,12 @@ def write_response(r)
     expect_json = false
     expect_json = true if r.headers['Content-Type'] == 'application/json' || r.body.start_with?('{')
     puts handle_resp(r, expect_json)
+  #  puts 'got'  + r.headers.to_s
+  #  puts 'got'  + r.body
   end
-
+  rescue StandardError => e
+    log_error(e.to_s + ' with :' + resp.to_s)
+    log_error(e.backtrace.to_s)
 end
 
 require_relative 'cmdline_args.rb'
