@@ -127,7 +127,7 @@ class SystemStatus
 
   def self.current_build_params
     unless File.exist?(SystemConfig.BuildRunningParamsFile)
-      return nil # SystemUtils.log_error_mesg("No ", SystemConfig.BuildRunningParamsFile)
+      return {} # SystemUtils.log_error_mesg("No ", SystemConfig.BuildRunningParamsFile)
 
     end
     param_file = File.new(SystemConfig.BuildRunningParamsFile, 'r')
@@ -141,7 +141,7 @@ class SystemStatus
   def self.last_build_params
     unless File.exist?(SystemConfig.BuildBuiltFile)
       SystemUtils.log_error_mesg('No  last_build_params', SystemConfig.BuildBuiltFile)
-      return nil
+      return {}
     end
     param_file = File.new(SystemConfig.BuildBuiltFile, 'r')
     param_raw = param_file.read
@@ -154,7 +154,7 @@ class SystemStatus
   def self.last_build_failure_params
     unless File.exist?(SystemConfig.BuildFailedFile)
       SystemUtils.log_error_mesg('No last_build_failure_params ', SystemConfig.BuildFailedFile)
-      return nil
+      return {}
     end
     param_file = File.new(SystemConfig.BuildFailedFile, 'r')
     param_raw = param_file.read
