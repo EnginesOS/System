@@ -16,7 +16,8 @@ module ContainerSchedules
 
   def create_cron_service(container, schedule)
   
-    @engines_api.create_and_register_service( {
+    
+      t= {
       publisher_namespace: 'EnginesSystem', 
       type_path: 'schedule',
       parent_engine: container.container_name,
@@ -27,7 +28,9 @@ module ContainerSchedules
         cron_job: schedule_instruction(schedule),
         title: schedule[:label],
         :when => cron_line(schedule[:timespec]),
-        parent_engine: container.container_name } }   )
+        parent_engine: container.container_name } }
+        SDERR.puts("sche hash " + t.to_s) 
+    @engines_api.create_and_register_service(t) 
   end
 
   def schedule_instruction(schedule)
