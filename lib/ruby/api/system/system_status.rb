@@ -1,6 +1,7 @@
 class SystemStatus
   def self.is_base_system_updating?
-    File.exist?(SystemConfig.SystemUpdatingFlag)
+    return true unless File.exist?(SystemConfig.SystemUpdatingFlag)
+    false
   end
 
   # return [String] representing the address of public host interface (ie ifconfig eth0)
@@ -198,25 +199,29 @@ class SystemStatus
   def self.is_base_system_upto_date?
     # FIX ME
     # in future check state of /opt/engines/run/system/flags/update_pending
-    return false unless File.exists?('/opt/engines/run/system/flags/base_os_update_pending')
+    return  File.exists?('/opt/engines/run/system/flags/base_os_update_pending')
 
     #result = run_server_script('deb_update_status')
     # result = SystemUtils.execute_command('/opt/engines/system/scripts/system/engines_system_update_status.sh')
 
-    return false
+    #  return false
   rescue StandardError => e
     SystemUtils.log_exception(e)
 
   end
 
   def self.is_engines_system_upto_date?
+    STDERR.puts('is_engines_system_upto_date')
     if self.get_engines_system_release == 'current'
-      result = SystemUtils.execute_command('/opt/engines/system/scripts/system/engines_system_update_status.sh')     
+      STDERR.puts('get_engines_system_release' + current.to_s)
+      result = SystemUtils.execute_command('/opt/engines/system/scripts/system/engines_system_update_status.sh')
+      STDERR.puts("is_engines_system_upto_date YES!! " + result.to_s)  if result[:result] == 0  
       return true if result[:result] == 0
       STDERR.puts("is_engines_system_upto_date NO!!!" + result.to_s)
       false
     end
-    ! File.exist?(SystemConfig.EnginesUpdateStatusFile)
+    return true unless File.exist?(SystemConfig.EnginesUpdateStatusFile)
+    false
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
