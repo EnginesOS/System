@@ -4,7 +4,7 @@ cd /opt/engines
 
  
 release=`cat /opt/engines/release`
-status=` git remote show origin $release`
+status=` git remote show origin |grep $release`
 echo $status | grep  'local out of date' >/dev/null
 if test $? -eq 0
  then
