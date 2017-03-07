@@ -109,7 +109,7 @@ class SystemStatus
     needs_base_update:  self.is_base_system_upto_date?
   }
   STDERR.puts("SYSTEM STATUS   " + r.to_s)
- 
+ return r
   rescue StandardError => e
     SystemUtils.log_exception(e)
 
@@ -202,7 +202,8 @@ class SystemStatus
 
     #result = run_server_script('deb_update_status')
     # result = SystemUtils.execute_command('/opt/engines/system/scripts/system/engines_system_update_status.sh')
-    File.read('/opt/engines/run/system/flags/base_os_update_pending')
+
+    return false
   rescue StandardError => e
     SystemUtils.log_exception(e)
 
