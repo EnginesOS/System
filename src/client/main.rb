@@ -108,8 +108,8 @@ def write_response(r)
     expect_json = false
     expect_json = true if r.headers['Content-Type'] == 'application/json' || r.body.start_with?('{')
     puts handle_resp(r, expect_json)
-    puts 'got'  + r.headers.to_s
-    puts 'got'  + r.body
+  #  puts 'got'  + r.headers.to_s
+  #  puts 'got'  + r.body
   end
   rescue StandardError => e
     log_error(e.to_s + ' with :' + resp.to_s)

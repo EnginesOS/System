@@ -108,7 +108,7 @@ class SystemStatus
     needs_engines_update:  self.is_engines_system_upto_date?,
     needs_base_update:  self.is_base_system_upto_date?
   }
-  STDERR.puts("SYSTEM STATUS   " + r.to_s)
+#  STDERR.puts("SYSTEM STATUS   " + r.to_s)
  return r
   rescue StandardError => e
     SystemUtils.log_exception(e)
