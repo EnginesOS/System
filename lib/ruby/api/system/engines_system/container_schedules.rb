@@ -14,17 +14,15 @@ module ContainerSchedules
     end
   end
 
-  def create_cron_service(container, schedule)
-  
-    
+  def create_cron_service(container, schedule)      
       t= {
       publisher_namespace: 'EnginesSystem', 
-      type_path: 'schedule',
+      type_path:  schedule_type(schedule),
       parent_engine: container.container_name,
       container_type: container.ctype,
       service_handle: schedule[:label],
       variables: { 
-        action_type: 'schedule',
+        action_type: schedule_type(schedule),
         cron_job: schedule_instruction(schedule),
         title: schedule[:label],
         :when => cron_line(schedule[:timespec]),
@@ -33,11 +31,19 @@ module ContainerSchedules
     @engines_api.create_and_register_service(t) 
   end
 
+  def schedule_type(schedule)
+    return 'schedule' unless  schedule[:instruction] == 'action'
+    schedule[:instruction]
+  end
+  
   def schedule_instruction(schedule)
     return schedule[:instruction] unless  schedule[:instruction] == "action"
     #r = schedule[:actionator]
-    schedule[:actionator]
+   format_actioncron_job( schedule[:actionator])
 
+  end
+  def format_actioncron_job(actionator)
+ {   name: actionator[:name], params: params.to_json  }    
   end
 
   def cron_line(timespec)
