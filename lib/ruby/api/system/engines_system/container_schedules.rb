@@ -27,7 +27,7 @@ module ContainerSchedules
         title: schedule[:label],
         :when => cron_line(schedule[:timespec]),
         parent_engine: container.container_name } }
-        SDERR.puts("sche hash " + t.to_s) 
+        STDERR.puts("sche hash " + t.to_s) 
     @engines_api.create_and_register_service(t) 
   end
 
