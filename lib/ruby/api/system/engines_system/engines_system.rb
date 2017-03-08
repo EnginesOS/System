@@ -40,6 +40,8 @@ class SystemApi < ErrorsApi
   include ContainerChangeMonitor
   require_relative 'container_checks.rb'
   include ContainerChecks
+  require_relative 'container_schedules.rb'
+  include ContainerSchedules
   
   require_relative 'engines_server_host.rb'
   include EnginesServerHost

@@ -90,15 +90,3 @@ get '/v0/containers/engine/:engine_name/ps' do
   r.to_json
 end
 
-# @method run_engine_cron_job
-# @overload   get '/v0/cron/engine/:engine_name/:cron_job/run'
-#  run cron_job for engine
-# @return [String] true|false 
-get '/v0/cron/engine/:engine_name/:cron_job/run' do
-  engine = get_engine(params[:engine_name])
-   return log_error(request, engine, params) if engine.is_a?(EnginesError)
-   r = engine.run_cronjob(params[:cron_job])
-  return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
-  content_type 'text/plain' 
-     r.to_s
-end

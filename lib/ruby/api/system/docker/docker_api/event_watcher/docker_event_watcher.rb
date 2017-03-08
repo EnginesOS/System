@@ -143,7 +143,7 @@ class DockerEventWatcher  < ErrorsApi
           SystemDebug.debug(SystemDebug.container_events,chunk.to_s )
           next if chunk.nil?
           r = ''
-          chunk.strip!
+          chunk.gsub!(/\s+$/, '')
           chunk = json_part.to_s + chunk unless json_part.nil?
           unless chunk.end_with?('}')
             SystemDebug.debug(SystemDebug.container_events,'DOCKER SENT INCOMPLETE json ' + chunk.to_s )
@@ -168,6 +168,7 @@ class DockerEventWatcher  < ErrorsApi
           STDERR.puts('EXCEPTION docker Event Stream as close ' + e.to_s)
           log_error_mesg('Chunk error on docker Event Stream _' + chunk.to_s + '_')
           log_exception(e,chunk)
+          json_part = ''
           next
           # @system.start_docker_event_listener
         end

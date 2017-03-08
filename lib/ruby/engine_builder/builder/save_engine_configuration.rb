@@ -14,7 +14,7 @@ end
     FileUtils.mkdir_p(ContainerStateFiles.schedules_dir(container)) unless Dir.exist?(ContainerStateFiles.schedules_dir(container))
     serialized_object = YAML.dump(schedules)
     
-    f = File.new(ContainerStateFiles.schedules_dir(container) + '/schedules.yaml', File::CREAT | File::TRUNC | File::RDWR, 0644)
+    f = File.new(ContainerStateFiles.schedules_file(container), File::CREAT | File::TRUNC | File::RDWR, 0644)
         f.puts(serialized_object)
         f.flush()
         f.close

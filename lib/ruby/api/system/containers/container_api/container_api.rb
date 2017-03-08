@@ -39,6 +39,9 @@ class ContainerApi < ErrorsApi
   
   require_relative 'engine_api_export_import.rb'
   include EngineApiExportImport
+  
+  require_relative  'container_api_schedules.rb'
+  include ContainerApiSchedules
 
 
     

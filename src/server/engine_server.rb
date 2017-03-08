@@ -92,24 +92,27 @@ begin
     content_type 'application/json' unless  request.path.end_with?('stream')
     pass if request.path.start_with?('/v0/system/login/')
     pass if request.path.start_with?('/v0/unauthenticated')
-    pass if request.path.start_with?('/v0/cron/engine/')  && source_is_cron?(request)
-    pass if request.path.start_with?('/v0/cron/service/')  && source_is_cron?(request)
-    pass if request.path.start_with?('/v0/backup/')  && source_is_backup?(request)
+    pass if request.path.start_with?('/v0/cron/engine/')  && source_is_service?(request,'cron')
+    pass if request.path.start_with?('/v0/cron/service/')  && source_is_service?(request,'cron')
+    pass if request.path.start_with?('/v0/schedule/engine/')  && source_is_service?(request,'cron')
+    pass if request.path.start_with?('/v0/schedule/service/')  && source_is_service?(request,'cron')
+    pass if request.path.start_with?('/v0/backup/')  && source_is_service?(request,'backup')
     pass if request.path.start_with?('/v0/system/do_first_run') && FirstRunWizard.required?
     env['warden'].authenticate!(:access_token)
   end
 
-  def source_is_cron?(request)
-    cron = get_service('cron')
-    return true if request.ip.to_s == cron.get_ip_str
-    return false
+  def source_is_service?(request,service_name)
+    service = get_service(service_name)
+    return false if service.is_a?(EnginesError)
+    return true if request.ip.to_s == service.get_ip_str
+    false
   end
 
-  def source_is_backup?(request)
-    backup = get_service('backup')
-    return true if request.ip.to_s == backup.get_ip_str
-    return false
-  end
+#  def source_is_backup?(request)
+#    backup = get_service('backup')
+#    return true if request.ip.to_s == backup.get_ip_str
+#    return false
+#  end
 
   def sql_lite_database
     engines_api.auth_database
