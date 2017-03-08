@@ -22,7 +22,7 @@ module ContainerSchedules
       container_type: container.ctype,
       service_handle: schedule[:label],
       variables: { 
-        action_type: schedule_type(schedule),
+        action_type: schedule_type_path(schedule),
         cron_job: schedule_instruction(schedule),
         title: schedule[:label],
         :when => cron_line(schedule[:timespec]),
@@ -31,11 +31,14 @@ module ContainerSchedules
     @engines_api.create_and_register_service(t) 
   end
 
+  def schedule_type_path(schedule)
+    return 'schedule' unless  schedule[:instruction] == 'action'
+    'cron'
+  end
   def schedule_type(schedule)
     return 'schedule' unless  schedule[:instruction] == 'action'
     schedule[:instruction]
-  end
-  
+  end  
   def schedule_instruction(schedule)
     return schedule[:instruction] unless  schedule[:instruction] == "action"
     #r = schedule[:actionator]
