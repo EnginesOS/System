@@ -32,7 +32,7 @@ module ContainerSchedules
   end
   
   def container_ctype(ctype)
-    return 'engine' if ctye == 'container'
+    return 'engine' if ctype == 'container'
     ctype    
   end
   
