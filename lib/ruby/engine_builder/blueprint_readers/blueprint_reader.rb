@@ -130,7 +130,7 @@ class BluePrintReader
     @template_files = @blueprint[:software][:template_files] if @blueprint[:software][:template_files].is_a?(Array)
     rescue StandardError => e
       SystemUtils.log_exception(e)
-    STDERR.puts('TEMPLATES ' + @template_files.to_s )
+   # STDERR.puts('TEMPLATES ' + @template_files.to_s )
   end
 
   def read_scripts
@@ -498,13 +498,13 @@ class BluePrintReader
   def read_actionators
     log_build_output('Read Actionators')
     SystemDebug.debug(SystemDebug.builder,' readin in actionators', @blueprint[:software][:actionators])
-      STDERR.puts(' readin in actionators', @blueprint[:software][:actionators].to_s)
+    #  STDERR.puts(' readin in actionators', @blueprint[:software][:actionators].to_s)
     if @blueprint[:software].key?(:actionators)
       @actionators = {}
         @blueprint[:software][:actionators].each do |actionator |
           @actionators[actionator[:name]] = actionator
         end
-      STDERR.puts('Red actionators', @blueprint[:software][:actionators].to_s)
+ #     STDERR.puts('Red actionators', @blueprint[:software][:actionators].to_s)
       SystemDebug.debug(SystemDebug.builder,@actionators)
     else
       SystemDebug.debug(SystemDebug.builder,'No actionators')
