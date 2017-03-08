@@ -168,6 +168,7 @@ class DockerEventWatcher  < ErrorsApi
           STDERR.puts('EXCEPTION docker Event Stream as close ' + e.to_s)
           log_error_mesg('Chunk error on docker Event Stream _' + chunk.to_s + '_')
           log_exception(e,chunk)
+          json_part = ''
           next
           # @system.start_docker_event_listener
         end
