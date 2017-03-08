@@ -12,10 +12,10 @@ get '/v0/cron/engine/:engine_name/:cron_job/run' do
 end
 
 # @method run_engine_schedule container task
-# @overload   get '/v0/cron/engine/:engine_name/:cron_job'
+# @overload   get '/v0/schedule/engine/:engine_name/:cron_job'
 #  run cron_job for engine
 # @return [String] true|false
-get '/v0/cron/engine/:engine_name/:cron_job' do
+get '/v0/schedule/engine/:engine_name/:cron_job' do
   engine = get_engine(params[:engine_name])
   return log_error(request, engine, params) if engine.is_a?(EnginesError)
 
