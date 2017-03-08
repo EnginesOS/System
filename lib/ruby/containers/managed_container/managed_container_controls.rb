@@ -62,7 +62,7 @@ module ManagedContainerControls
     SystemDebug.debug(SystemDebug.containers,@setState, @docker_info_cache.class.name,  @docker_info_cache)
     expire_engine_info
     state = read_state
-    @container_api.apply_schedules(self)
+   
     
     SystemDebug.debug(SystemDebug.containers,@setState, @docker_info_cache.class.name,  @docker_info_cache)
    # return log_error_mesg('No longer running ' + state + ':' + @setState, @docker_info_cache ,self) unless state == 'running' 

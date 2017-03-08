@@ -28,6 +28,7 @@ module ManagedContainerOnAction
       @out_of_memory = false
       @had_out_memory = false
       @has_run = false
+      @container_api.apply_schedules(self)
       save_state
       return true if @consumer_less
       #return if what == 'create'
