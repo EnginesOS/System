@@ -17,12 +17,12 @@ module ContainerSchedules
   def create_cron_service(container, schedule)      
       t= {
       publisher_namespace: 'EnginesSystem', 
-      type_path:  schedule_type(schedule),
+      type_path:  schedule_type_path(schedule),
       parent_engine: container.container_name,
       container_type: container.ctype,
       service_handle: schedule[:label],
       variables: { 
-        action_type: schedule_type_path(schedule),
+        action_type: schedule_type(schedule),
         cron_job: schedule_instruction(schedule),
         title: schedule[:label],
         :when => cron_line(schedule[:timespec]),
