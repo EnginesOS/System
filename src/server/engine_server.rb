@@ -101,10 +101,11 @@ begin
     env['warden'].authenticate!(:access_token)
   end
 
-  def source_is_service?(request,service)
-    cron = get_service(service)
-    return true if request.ip.to_s == cron.get_ip_str
-    return false
+  def source_is_service?(request,service_name)
+    service = get_service(service_name)
+    return false if service.is_a?(EnginesError)
+    return true if request.ip.to_s == service.get_ip_str
+    false
   end
 
 #  def source_is_backup?(request)

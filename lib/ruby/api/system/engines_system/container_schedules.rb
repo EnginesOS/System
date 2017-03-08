@@ -19,7 +19,7 @@ module ContainerSchedules
       publisher_namespace: 'EnginesSystem', 
       type_path:  schedule_type_path(schedule),
       parent_engine: container.container_name,
-      container_type: container.ctype,
+      container_type: container_ctype(container.ctype),
       service_handle: schedule[:label],
       variables: { 
         action_type: schedule_type(schedule),
@@ -30,7 +30,12 @@ module ContainerSchedules
         STDERR.puts("sche hash " + t.to_s) 
     @engines_api.create_and_register_service(t) 
   end
-
+  
+  def container_ctype(ctype)
+    return 'engine' if ctye == 'container'
+    ctype    
+  end
+  
   def schedule_type_path(schedule)
     return 'schedule' unless  schedule[:instruction] == 'action'
     'cron'
