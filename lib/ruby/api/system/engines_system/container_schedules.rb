@@ -46,7 +46,7 @@ module ContainerSchedules
 
   end
   def format_actioncron_job(actionator)
- {   name: actionator[:name], params: actionator[:params].to_json  }    
+  actionator[:name] + ' ' + actionator[:params].to_json.to_s
   end
 
   def cron_line(timespec)
