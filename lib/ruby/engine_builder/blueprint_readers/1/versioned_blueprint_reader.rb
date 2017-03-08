@@ -150,13 +150,13 @@ class VersionedBlueprintReader < BluePrintReader
 def read_actionators
    log_build_output('Read Actionators')
    SystemDebug.debug(SystemDebug.builder,' readin in actionators', @blueprint[:software][:actionators])
-     STDERR.puts(' readin in actionators', @blueprint[:software][:actionators].to_s)
+  #   STDERR.puts(' readin in actionators', @blueprint[:software][:actionators].to_s)
    if @blueprint[:software].key?(:actionators)
      @actionators = {}
        @blueprint[:software][:actionators].each do |actionator |
          @actionators[actionator[:name]] = actionator
        end
-     STDERR.puts('Red actionators', @blueprint[:software][:actionators].to_s)
+  #   STDERR.puts('Red actionators', @blueprint[:software][:actionators].to_s)
      SystemDebug.debug(SystemDebug.builder,@actionators)
    else
      SystemDebug.debug(SystemDebug.builder,'No actionators')

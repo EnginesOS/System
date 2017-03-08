@@ -131,7 +131,7 @@ end
 def read_web_user
   if @blueprint_reader.framework == 'docker'
     @web_user = @blueprint_reader.cont_user
-    STDERR.puts("Set web user to:" + @web_user.to_s)
+ #   STDERR.puts("Set web user to:" + @web_user.to_s)
     return @web_user
   end
 

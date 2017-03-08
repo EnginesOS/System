@@ -10,7 +10,7 @@ module PublicApiOrphans
   
   
   def remove_orphaned_service(service_hash)
-    STDERR.puts('remove ORPHA ' + service_hash.to_s)
+   # STDERR.puts('remove ORPHA ' + service_hash.to_s)
     @core_api.remove_orphaned_service(service_hash)
   end
 end
