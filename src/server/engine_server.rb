@@ -94,8 +94,8 @@ begin
     pass if request.path.start_with?('/v0/unauthenticated')
     pass if request.path.start_with?('/v0/cron/engine/')  && source_is_service?(request,'cron')
     pass if request.path.start_with?('/v0/cron/service/')  && source_is_service?(request,'cron')
-    pass if request.path.start_with?('/v0/schedule/engine/')  && source_is_service?(request,'schedule')
-    pass if request.path.start_with?('/v0/schedule/service/')  && source_is_service?(request,'schedule')
+    pass if request.path.start_with?('/v0/schedule/engine/')  && source_is_service?(request,'cron')
+    pass if request.path.start_with?('/v0/schedule/service/')  && source_is_service?(request,'cron')
     pass if request.path.start_with?('/v0/backup/')  && source_is_service?(request,'backup')
     pass if request.path.start_with?('/v0/system/do_first_run') && FirstRunWizard.required?
     env['warden'].authenticate!(:access_token)
