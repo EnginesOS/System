@@ -1,5 +1,7 @@
 require '/opt/engines/lib/ruby/api/system/errors_api.rb'
+
 require_relative 'engines_public_api_error.rb'
+
 class PublicApi < ErrorsApi
   def initialize(core_api )
     @core_api = core_api
@@ -64,6 +66,16 @@ class PublicApi < ErrorsApi
   # list_managed_engines #  es
   # should not be remove_engine but delete_engine(params)
   include PublicApiEngines
+
+  require_relative 'containers/services/sub_services.rb'
+  # services_subservices(params)
+  # update_subservice(params)
+  # attach_subservice(params)
+  # remove_subservice(params)
+  # attached_subservice(params)
+  # subservice_provided(params)
+  # subservices_provided(params)
+  include PublicApiSubServices
 
   require_relative 'containers/services/service.rb'
   #containers/service
@@ -142,7 +154,7 @@ class PublicApi < ErrorsApi
 
   require_relative 'builder/builder.rb'
   include PublicApiBuilder
-  
+
   require_relative 'system/config.rb'
   #system/config #EX
   #  get_default_domain #EX
@@ -207,25 +219,25 @@ class PublicApi < ErrorsApi
 
   require_relative 'service_manager/public_api_service_definitions.rb'
   include PublicApiServiceDefinitions
-  
+
   require_relative 'service_manager/public_api_available_services.rb'
   include PublicApiAvailableServices
-  
+
   require_relative 'engines_public_api_errors.rb'
   include EnginesPublicApiErrors
-  
+
   require_relative 'engine_api_events.rb'
   include EngineApiEvents
-  
+
   require_relative 'service_manager/public_api_orphans.rb'
   include PublicApiOrphans
-  
+
   require_relative 'service_manager/public_api_persistent_services.rb'
   include  PublicApiPersistentServices
-  
+
   require_relative 'backup.rb'
   include  PublicApiBackup
   require_relative 'system/user_auth.rb'
   include UserAuth
-  
+
 end

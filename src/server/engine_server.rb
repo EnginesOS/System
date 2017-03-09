@@ -142,6 +142,10 @@ begin
       @json_parser = FFI_Yajl::Parser.new({:symbolize_keys => true}) if @json_parser.nil?
       @json_parser
     end
+    
+    def empty_array
+      @empty_array |= [].to_json
+    end
 
     def log_exception(e, *args)
       e_str = e.to_s()
