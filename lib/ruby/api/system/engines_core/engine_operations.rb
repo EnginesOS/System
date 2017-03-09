@@ -20,11 +20,12 @@ module EnginesOperations
     r = ''
     engine = loadManagedEngine(engine_name)
     SystemDebug.debug(SystemDebug.containers,:delete_engines,engine_name,engine, :resinstall,reinstall)
-    params = {}
-    params[:engine_name] = engine_name
-    params[:container_type] = 'container' # Force This
-    params[:parent_engine] =  engine_name
-    params[:reinstall] = reinstall
+    params = {
+      engine_name: engine_name,
+      container_type: 'container', # Force This
+      parent_engine: engine_name,
+      reinstall: reinstall
+    }
     unless engine.is_a?(ManagedEngine) # used in roll back and only works if no engine do mess with this logic
       return true if service_manager.remove_engine_from_managed_engines_registry(params)
       return log_error_mesg('Failed to find Engine',params)
@@ -57,9 +58,10 @@ module EnginesOperations
     clear_error
     r =   engine.destroy_container(true) if engine.has_container?
     return r if r.is_a?(EnginesError)
-    params = {}
-    params[:engine_name] = engine.container_name
-    params[:reinstall] = true
+    params = {
+      engine_name: engine.container_name,
+      reinstall: true
+    }
     delete_engine(params)
     builder = BuildController.new(self)
     @build_thread = Thread.new {

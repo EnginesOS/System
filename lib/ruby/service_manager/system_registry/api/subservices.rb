@@ -1,38 +1,54 @@
 module Subservices
-
-  #require_relative 'xcon_rset.rb'
-  # Services Methods
-  def all_subservices_registered_to(subservice_type)
-    p = {}
-    p[:subservice_type] = subservice_type
-    rest_get('subservice/registered/engines/',{:params => p })
+  def services_subservices(params)
+    # get 'subservices/consumers/:service_name/:engine_name/:service_handle'
+    #   optional[:engine_name, :service_name, :service_handle]
+    r ='sub_services/consumers'
+    r += address_params(params, [:service_name,:engine_name,:service_handle])
+    rest_get(r) 
+  end
+  
+  def update_subservice(params)
+    r = 'sub_service/consumers'
+    r += full_address(params)
+    #post 'sub_service/consumers' + address_params(params, [:service_name,:engine_name,:service_handle,:sub_handle])
+    rest_post(r, {:api_vars => params })
   end
 
-  def find_subservice_consumers(subservice_query_hash)
-    rest_get('subservice/consumers/',{:params => subservice_query_hash })
+  def attach_subservice(params)
+    r = 'sub_services/consumers'
+    r += full_address(params)
+    rest_post(r, {:api_vars => params })
+    # post 'sub_services/consumers/:service_name/:engine_name/:service_handle/:sub_handle'
   end
 
-  def update_attached_subservice(subservice_hash)
-    rest_put('subservice/update', subservice_hash)
+  def remove_subservice(params)
+    r = 'sub_services/consumers'
+    r += full_address(params)
+    # delete 'sub_services/consumers/:service_name/:engine_name/:service_handle/:sub_handle'
+    rest_delete(r)
   end
 
-  def add_to_subservices_registry(subservice_hash)
-    rest_post('subservices/add',subservice_hash )
+  def attached_subservice(params)
+    r = 'sub_service/consumers'
+    r += full_address(params)
+    rest_get(r)
+    # get 'sub_service/consumers/:service_name/:engine_name/:service_handle/:sub_handle'
   end
 
-  def remove_from_subservices_registry(subservice_hash)
-    rest_delete('subservices/del',{:params => subservice_hash })
+  def subservice_provided(params)
+    r = 'sub_service/providers'
+    r += address_params(params, [:service_handle,:publisher_namespace,:type_path])
+    rest_get(r)
+    # get 'sub_service/providers/:service_handle/:publisher_namespace/*'
   end
 
-  def subservice_is_registered?(subservice_hash)
-    rest_get('subservice/is_registered',{:params => subservice_hash })
+  def subservices_provided(params)
+    r = 'sub_services/providers'
+    r += address_params(params, [:publisher_namespace,:type_path])
+    rest_get(r)
+    # get 'sub_services/providers/:publish_namespace/*'
   end
-
-  def get_subservice_entry(subservice_hash)
-    rest_get('subservice/',{:params => subservice_hash })
-  end
-
-  def subservices_registry
-    rest_get('subservices/tree', nil)
-  end
+  def full_address(params)
+      address_params(params, [:service_name,:engine_name,:service_handle,:sub_handle])
+    end
 end

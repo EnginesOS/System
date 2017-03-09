@@ -1,21 +1,41 @@
 module SubserviceOperations
 
-  require_relative 'service_manager_access.rb'
-  def attach_subservice(service_query)
-    r = ''
+    def services_subservices(params)
+      return r unless  (r = check_sub_service_hash(params))
+      service_manager.services_subservices(params)
+    end
+  
+    def update_subservice(params)
+      return r unless  (r = check_sub_service_hash(params))
+      service_manager.update_subservice(params)
+    end
+  
+    def attach_subservice(params)
+      return r unless  (r = check_sub_service_hash(params))
+      service_manager.attach_subservice(params)
+    end
+  
+    def remove_subservice(params)
+      return r unless  (r = check_sub_service_hash(params))
+      service_manager.remove_subservice(params)
+    end
+  
+    def attached_subservice(params)
+      return r unless  (r = check_sub_service_hash(params))
+      service_manager.attached_subservice(params)
+    end
+  
+    def subservice_provided(params)
+      return r unless  (r = check_sub_service_hash(params))
+      service_manager.subservice_provided(params)
+    end
+  
+    def subservices_provided(params)
+      return r unless  (r = check_sub_service_hash(params))
+      service_manager.subservices_provided(params)
+    end
     
-    return r unless  (r = check_sub_service_hash(service_query))
-    ahash = service_manager.find_engine_service_hash(service_query)
-       return log_error_mesg("cannot attach to shared service",params) if ahash[:shared] == true
-    return attach_service(service_query) # if params.key?(:parent_service) && params[:parent_service].key?(:publisher_namespace) && params[:parent_service].key?(:type_path)    && params[:parent_service].key?(:service_handle)
-    log_error_mesg('missing parrameters', service_query)
-  end
 
-  def dettach_subservice(service_query)
-    r = ''
-    return r unless (r = check_sub_service_hash(service_query))
-    dettach_service(service_query)
-    log_error_mesg('missing parrameters', service_query)
-  end
+
 
 end
