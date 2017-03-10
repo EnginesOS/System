@@ -6,15 +6,12 @@ module ServiceConfigurations
   end
 
   def get_service_configurations_hashes(service_hash)
-
     defs = SoftwareServiceDefinition.configurators(service_hash)
-
     return defs if defs.is_a?(EnginesError)
     avail = service_defs_to_configurations(defs,service_hash)
     return avail if avail.is_a?(EnginesError)
 
     configured = service_manager.get_service_configurations_hashes(service_hash)
-
     return configured  if configured.is_a?(EnginesError)
     if configured.is_a?(Array)
       configured.each do | configuration |
