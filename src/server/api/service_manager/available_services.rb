@@ -25,7 +25,7 @@ get '/v0/service_manager/available_services/managed_engine/:managed_engine' do
 
 end
 # @method services_available_for_type
-# @overload get '/v0//service_manager/available_services/:publisher_namespace/:type_path'
+# @overload get '/v0//service_manager/available_services/type/:type_path'
 # @return [Hash]  
 #:persistent => [ServiceDefinitionSummaries]
 #:non_persistent => [ServiceDefinitionSummaries]
