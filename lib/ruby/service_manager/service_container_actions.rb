@@ -14,7 +14,7 @@ def add_to_managed_service(service_hash)
   SystemDebug.debug(SystemDebug.services, :add_to_managed_service, service)
    r = service.add_consumer(service_hash)
   SystemDebug.debug(SystemDebug.services, :add_to_managed_result, r)
-   return r 
+    r 
 rescue StandardError => e
   log_exception(e)
 end
@@ -33,7 +33,7 @@ def remove_from_managed_service(service_hash)
   elsif service.persistent
     return log_error_mesg('Cant remove persistent service if service is stopped ', service_hash)
   else
-    return true
+     true
   end
 rescue StandardError => e
   log_exception(e)

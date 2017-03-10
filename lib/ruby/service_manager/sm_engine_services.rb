@@ -34,9 +34,10 @@ module SmEngineServices
   #remove from service registry even if container is down
   def deregister_non_persistent_services(engine)
     clear_error
-    params = {}
-    params[:parent_engine] = engine.container_name
-    params[:container_type] = engine.ctype
+    params = {
+      parent_engine: engine.container_name,
+      container_type: engine.ctype    
+    }
     services = get_engine_nonpersistent_services(params)
     return services  unless services.is_a?(Array)
     services.each do |service_hash|
@@ -50,10 +51,10 @@ module SmEngineServices
 
   def list_persistent_services(engine)
     clear_error
-    params = {}
-    params[:parent_engine] = engine.container_name
-    params[:container_type] = engine.ctype
-
+    params = {
+         parent_engine: engine.container_name,
+         container_type: engine.ctype    
+       }
     services = get_engine_persistent_services(params)
     return services
   rescue StandardError => e
@@ -62,9 +63,10 @@ module SmEngineServices
 
   def list_non_persistent_services(engine)
     clear_error
-    params = {}
-    params[:parent_engine] = engine.container_name
-    params[:container_type] = engine.ctype
+    params = {
+         parent_engine: engine.container_name,
+         container_type: engine.ctype    
+       }
 
     services = get_engine_nonpersistent_services(params)
 
@@ -78,9 +80,10 @@ module SmEngineServices
   #add to service registry even if container is down
   def register_non_persistent_services(engine)
     clear_error
-    params = {}
-    params[:parent_engine] = engine.container_name
-    params[:container_type] = engine.ctype
+    params = {
+         parent_engine: engine.container_name,
+         container_type: engine.ctype    
+       }
     services = get_engine_nonpersistent_services(params)
     return services  unless services.is_a?(Array)
     services.each do |service_hash|
@@ -100,20 +103,14 @@ module SmEngineServices
   end
 
   def get_cron_entry(cronjob, container)
+    entry = find_engine_service_hash({
+      parent_engine: container.container_name,    
+      publisher_namespace: 'EnginesSystem',
+      type_path: 'cron',
+      container_type: container.ctype,
+      container_name: container.container_name,
+      service_handle:  cronjob})
 
-    entry = find_engine_service_hash({:parent_engine => container.container_name,
-      :publisher_namespace => 'EnginesSystem',
-      :type_path =>'cron',
-      :container_type => container.ctype,
-      :container_name => container.container_name,
-      :service_handle => cronjob})
-    #   s = {:parent_engine => container.container_name,
-    #                                          :publisher_namespace => 'EnginesSystem',
-    #                                          :type_path =>'cron',
-    #                                           :container_type => container.ctype,
-    #                                          :service_handle => cronjob}
-    #                                          STDERR.puts('serach for ' + s.to_s + ' returned ' + entry.to_s)
-    # STDERR.puts( 'Got ' + entry.to_s + ' for cron entry')
     return  entry unless entry.is_a?(Hash)
     entry[:variables][:cron_job]
   rescue StandardError => e

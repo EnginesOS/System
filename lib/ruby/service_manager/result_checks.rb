@@ -3,7 +3,7 @@
 def test_registry_result(result)
 
   log_error_mesg(system_registry_client.last_error, result) if result.is_a?(EnginesError)
-  return result
+   result
 rescue StandardError => e
   log_exception(e)
 end
@@ -11,7 +11,7 @@ end
 def test_subservices_result(result)
 
   log_error_mesg(@subservices_registry.last_error, result) if result.is_a?(EnginesError)
-  return result
+   result
 rescue StandardError => e
   log_exception(e)
 end
@@ -23,5 +23,5 @@ def test_and_lock_registry_result(result)
   if test_registry_result(result)
     result.freeze
   end
-  return result
+   result
 end   
