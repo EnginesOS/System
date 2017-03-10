@@ -15,7 +15,7 @@ begin
   require 'warden'
   require "sqlite3"
   require 'ffi_yajl'
-  
+
   def init_db
     create_table
     set_first_user
@@ -23,7 +23,7 @@ begin
 
   def create_table
 
-  #  STDERR.puts('init db')
+    #  STDERR.puts('init db')
     rows = sql_lite_database.execute <<-SQL
             create table systemaccess (
               username varchar(30),
@@ -43,9 +43,9 @@ begin
 
   def set_first_user
     rows = sql_lite_database.execute( "select authtoken from systemaccess" )
-  #  STDERR.puts('init db')
+    #  STDERR.puts('init db')
     return if rows.count > 0
-  #  STDERR.puts('init db')
+    #  STDERR.puts('init db')
     #      @auth_db.execute("INSERT INTO systemaccess (username, password, email, authtoken, uid,guid)
     #                        VALUES (?, ?, ?, ?, ?, ?)", ["test", 'test', '', 'test_token_arandy',2,0])
     #    rows
@@ -70,7 +70,6 @@ begin
 
   class Application < Sinatra::Base
 
- 
     @events_s = nil
     set :sessions, true
     set :logging, true
@@ -108,11 +107,11 @@ begin
     false
   end
 
-#  def source_is_backup?(request)
-#    backup = get_service('backup')
-#    return true if request.ip.to_s == backup.get_ip_str
-#    return false
-#  end
+  #  def source_is_backup?(request)
+  #    backup = get_service('backup')
+  #    return true if request.ip.to_s == backup.get_ip_str
+  #    return false
+  #  end
 
   def sql_lite_database
     engines_api.auth_database
@@ -121,28 +120,43 @@ begin
     STDERR.puts('Exception failed to open  sql_lite_database: ' + e.to_s)
     return false
   end
-#
-#  def save_curr_events_stream(events_stream )
-#           $events_s = events_stream 
-#       STDERR.puts('set   ' + $events_s.class.name + ' from ' + events_stream.class.name )
-#         end
-#     def curr_events_stream
-#     #    @events_stream = engines_api.container_events_stream if @events_stream .nil?
-#       STDERR.puts('ret   ' + $events_s.class.name )
-#         $events_s
-#       end
-#       
+  #
+  #  def save_curr_events_stream(events_stream )
+  #           $events_s = events_stream
+  #       STDERR.puts('set   ' + $events_s.class.name + ' from ' + events_stream.class.name )
+  #         end
+  #     def curr_events_stream
+  #     #    @events_stream = engines_api.container_events_stream if @events_stream .nil?
+  #       STDERR.puts('ret   ' + $events_s.class.name )
+  #         $events_s
+  #       end
+  #
   helpers do
     def engines_api
       $engines_api
     end
-   
+
+    def return_json(r, s=202)
+      status(s)
+      r.to_json
+    end
+
+    def return_text(r, s=202)
+      status(s)
+      r.to_json
+    end
+
+    def return_true(s=200)
+      content_type 'text/plain'
+      'true'
+    end
+
     def json_parser
-     # @json_parser = Yajl::Parser.new(:symbolize_keys => true) if @json_parser.nil?
+      # @json_parser = Yajl::Parser.new(:symbolize_keys => true) if @json_parser.nil?
       @json_parser = FFI_Yajl::Parser.new({:symbolize_keys => true}) if @json_parser.nil?
       @json_parser
     end
-    
+
     def empty_array
       @empty_array |= [].to_json
     end
@@ -225,7 +239,6 @@ begin
       container.to_h.to_json
     end
 
-
     use Warden::Manager do |config|
       config.scope_defaults :default,
       # Set your authorization strategy
@@ -266,7 +279,7 @@ begin
   end
 
   def post_params(request)
-  #  json_parser.parse(request.env["rack.input"].read)
+    #  json_parser.parse(request.env["rack.input"].read)
     SystemUtils.deal_with_jason(JSON.parse(request.env["rack.input"].read, :create_additons => true ))
   rescue StandardError => e
     log_error(request, e, e.backtrace.to_s)

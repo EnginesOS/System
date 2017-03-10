@@ -8,7 +8,7 @@ get '/v0/containers/service/:service_name/configurations/' do
   return log_error(request, service, params) if service.is_a?(EnginesError)
   list = service.get_service_configurations()
   return log_error(request, list, service.last_error) if list.is_a?(EnginesError)
-  list.to_json
+  return_json(list)
 end
 # @method get_service_configuration
 # @overload get '/v0/containers/service/:service_name/configuration/:configurator_name'
@@ -20,7 +20,7 @@ get '/v0/containers/service/:service_name/configuration/:configurator_name' do
   cparams[:configurator_name] = params[:configurator_name]
   config = service.retrieve_configurator(cparams)
   return log_error(request, config, service.last_error) if  config.is_a?(EnginesError)
-  config.to_json
+  return_json(config)
 end
 # @method set_service_configuration
 # @overload post '/v0/containers/service/:service_name/configuration/:configurator_name'
@@ -41,6 +41,5 @@ post '/v0/containers/service/:service_name/configuration/:configurator_name' do
   
   r = engines_api.update_service_configuration(cparams)
   return log_error(request, r, r) if r.is_a?(FalseClass) || r.is_a?(EnginesError)
-  content_type 'text/plain' 
-  r.to_s
+  return_text(r.to_s)
 end 
