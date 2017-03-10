@@ -19,7 +19,7 @@ module ServiceConfigurations
 
     
     configured = service_manager.get_service_configurations_hashes(service_hash)
-
+    return [] if configured.nil?
     return configured  if configured.is_a?(EnginesError) 
     configured.each do | configuration |
       avail[ configuration[:configurator_name].to_sym ] = configuration

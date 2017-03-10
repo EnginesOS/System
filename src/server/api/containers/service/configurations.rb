@@ -7,7 +7,7 @@ get '/v0/containers/service/:service_name/configurations/' do
   service = get_service(params[:service_name])
   return log_error(request, service, params) if service.is_a?(EnginesError)
   list = service.get_service_configurations()
-  return log_error(request, list, service.last_error) if list.is_a?(EnginesError)
+  return log_error(request, list, service.last_error) if list.is_a?(EnginesError)  
   return_json(list)
 end
 # @method get_service_configuration
