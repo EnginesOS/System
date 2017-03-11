@@ -143,8 +143,8 @@ class BluePrintReader
   end
 
   def read_sql_seed
-    return true unless @blueprint[:software].key?(:database_seed_file) && @blueprint[:software][:database_seed_file][:content].nil? == false
-    database_seed_file = @blueprint[:software][:database_seed_file][:content]
+    return true unless @blueprint[:software].key?(:database_seed_file) # && @blueprint[:software][:database_seed_file][:content].nil? == false
+    database_seed_file = @blueprint[:software][:database_seed_file] #[:content]
     @database_seed = database_seed_file unless database_seed_file.nil?
   rescue StandardError => e
     SystemUtils.log_exception(e)
