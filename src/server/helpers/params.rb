@@ -10,7 +10,7 @@ def assemble_params(ps, address_params, required_params=nil, accept_params=nil )
         a_params.merge!(ps[:api_vars]) if ps.key?(:api_vars)
         return a_params
       end
-      r_params = self.required_params(ps,required_params)
+      r_params = required_params(ps,required_params)
       return EnginesError.new('Missing Parameters ' + required_params.to_s + ' but only have:' + ps.to_s, :error,'api') if r_params == false
       a_params.merge!(r_params) unless r_params.nil?
     end
