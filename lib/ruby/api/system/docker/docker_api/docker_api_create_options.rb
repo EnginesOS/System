@@ -9,9 +9,10 @@ module DockerApiCreateOptions
     #  @top_level['Mounts'] = volumes_mounts(container)
    # ports = exposed_ports(container)
    # @top_level['ExposedPorts'] = ports unless ports.nil?
-    @top_level['HostConfig'] = host_config_options(container)
+   # @top_level['HostConfig'] = host_config_options(container)
     # STDERR.puts('create options ' + @top_level.to_s)
     # @top_level
+    STDERR.puts('create options ' + @top_level.to_s)
   rescue StandardError => e
     log_exception(e)
   end
