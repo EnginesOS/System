@@ -13,12 +13,7 @@ def headers (content_type = nil)
 end
 
 def connection(content_type = nil)
-   #headers['content_type'] = content_type unless content.nil?
-  #headers['ACCESS_TOKEN'] = load_token
-  #  @connection.reset unless @connection.nil?
 
-  #  if @connection.nil?
- #   STDERR.puts('NEW REGISTRY CONNECTION ')
     @connection ||=  Excon.new(base_url,
     :debug_request => true,
     :debug_response => true,
@@ -79,20 +74,6 @@ rescue StandardError => e
   {}
 end
 
-#def rest_get(path,params)
-#  return base_url if base_url.is_a?(EnginesError)
-#  begin
-#    retry_count = 0
-#   STDERR.puts('Get Path:' + path.to_s + ' Params:' + params.to_s + ' base_url ' + base_url.to_s)
-#
-#    parse_rest_response(RestClient.get(base_url + path, params))
-#   rescue RestClient::ExceptionWithResponse => e
-#     parse_error(e.response)
-#  rescue StandardError => e
-#    log_exception(e, params)
-#
-#  end
-#end
 
 def time_out
   120
@@ -114,8 +95,6 @@ def rest_post(path,params = nil, headers=nil)
 end
 
 def rest_put(path,params = nil, headers=nil)
- # STDERR.puts(' PUT ' + path.to_s )
-  #  STDERR.puts('PUT params ' + query_hash(params).to_s )
   SystemDebug.debug(SystemDebug.registry,'Delete ', path.to_s + '?' + params.to_s)
   headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
   r = parse_xcon_response( connection.request(:read_timeout => time_out, :headers => headers,:method => :put,:path => @route_prefix + path,:query => query_hash(params).to_json ))
@@ -173,26 +152,26 @@ def parse_error(resp)
   EnginesRegistryError.new(r)
 rescue  StandardError => e
   STDERR.puts(e.to_s)
-  STDERR.puts("Parse Error on error response object ", r.to_s)
+  STDERR.puts('Parse Error on error response object ', r.to_s)
   return EnginesRegistryError.new(resp)
-  #log_error_mesg("Parse Error on error response object ", r.to_s)
+  #log_error_mesg('Parse Error on error response object ', r.to_s)
 
 end
 
 def parse_xcon_response(resp)
-  return {} if resp.status  == 404
-
+  return STDERR.puts('nil resp')  if resp.nil?
+  return false if resp.status  == 404
   return parse_error(resp) if resp.status > 399
   r = resp.body
+  return false if r.nil?
   r.strip!
   return true if r.to_s   == '' ||  r.to_s   == 'true'
-  return false if r.nil?
   return false if r.to_s  == 'false'
   hash = SystemUtils.deal_with_jason(JSON.parse(r, :create_additions => true))
   return hash
   rescue  StandardError => e
     STDERR.puts(e.to_s)
-    STDERR.puts("Parse Error on error response object_" + r.to_s + '_')
+    STDERR.puts('Parse Error on error response object_' + r.to_s + '_')
   begin
     #  hash = json_parser.parse(r) # do |hash |
     hash =  SystemUtils.deal_with_jason(JSON.parse(r, :create_additons => true ))
@@ -200,10 +179,10 @@ def parse_xcon_response(resp)
     #   end
   rescue  Yajl::ParseError  => e
     #   STDERR.puts e.backtrace
-    STDERR.puts "Yajl Failed to parse Registry response _" + r.to_s + "_"
+    STDERR.puts 'Yajl Failed to parse Registry response _' + r.to_s + '_'
     #  STDERR.puts e.class.name
     hash = SystemUtils.deal_with_jason(JSON.parse(r, :create_additions => true))
-    STDERR.puts "JSON parse as " + hash.to_s + 'from' + r.to_s
+    STDERR.puts 'JSON parse as ' + hash.to_s + 'from' + r.to_s
       return hash
   end
   #return json_parser.parse(r, :create_additions => true,:symbolize_keys => true)
@@ -213,100 +192,10 @@ rescue  StandardError => e
   STDERR.puts e.class.name
 
   STDERR.puts e.backtrace
-  STDERR.puts "Failed to parse Registry response _" + r.to_s + "_"
+  STDERR.puts 'Failed to parse Registry response _' + r.to_s + '_'
   return log_exception(e, r)
 end
 
-#def parse_rest_response(r)
-#  return parse_error(r) if r.code > 399
-#  return true if r.to_s   == '' ||  r.to_s   == 'true'
-#  return false if r.to_s  == 'false'
-#  r.strip!
-#  res = JSON.parse(r, :create_additions => true,:symbolize_keys => true)
-#  return deal_with_jason(res)
-#rescue  StandardError => e
-#  STDERR.puts e.to_s
-#  STDERR.puts e.backtrace
-#  STDERR.puts "Failed to parse Registry response _" + r.to_s + "_"
-#  return log_exception(e, r)
-#end
-
-#def deal_with_jason(res)
-#  return symbolize_keys(res) if res.is_a?(Hash)
-#  return symbolize_keys_array_members(res) if res.is_a?(Array)
-#  return symbolize_tree(res) if res.is_a?(Tree::TreeNode)
-#  return boolean_if_true_false_str(res) if res.is_a?(String)
-#  return res
-#rescue  StandardError => e
-#  log_exception(e, res)
-#end
-#
-#def boolean_if_true_false_str(r)
-#  if  r == 'true'
-#    return true
-#  elsif r == 'false'
-#    return false
-#  end
-#  return r
-#rescue  StandardError => e
-#  log_exception(e, r)
-#end
-#
-#def symbolize_keys(hash)
-#  hash.inject({}){|result, (key, value)|
-#    new_key = case key
-#    when String then key.to_sym
-#    else key
-#    end
-#    new_value = case value
-#    when Hash then symbolize_keys(value)
-#    when Array then
-#      newval = []
-#      value.each do |array_val|
-#        array_val = symbolize_keys(array_val) if array_val.is_a?(Hash)
-#        array_val =  boolean_if_true_false_str(array_val) if array_val.is_a?(String)
-#        newval.push(array_val)
-#      end
-#      newval
-#    when String then
-#      boolean_if_true_false_str(value)
-#    else value
-#    end
-#    result[new_key] = new_value
-#    result
-#  }
-#rescue  StandardError => e
-#  log_exception(e, hash)
-#end
-#
-#def symbolize_keys_array_members(array)
-#  return array if array.count == 0
-#  return array unless array[0].is_a?(Hash)
-#  retval = []
-#  i = 0
-#  array.each do |hash|
-#    retval[i] = array[i]
-#    next if hash.nil?
-#    next unless hash.is_a?(Hash)
-#    retval[i] = symbolize_keys(hash)
-#    i += 1
-#  end
-#  return retval
-#
-#rescue  StandardError => e
-#  log_exception(e)
-#end
-#
-#def symbolize_tree(tree)
-#  nodes = tree.children
-#  nodes.each do |node|
-#    node.content = symbolize_keys(node.content) if node.content.is_a?(Hash)
-#    symbolize_tree(node)
-#  end
-#  return tree
-#rescue  StandardError => e
-#  log_exception(e)
-#end
 
 def base_url
   'http://' + @core_api.get_registry_ip + ':4567'
