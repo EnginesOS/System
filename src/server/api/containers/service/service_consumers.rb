@@ -9,7 +9,7 @@ get '/v0/containers/service/:service_name/consumers/' do
   return log_error(request, service, params) if service.is_a?(EnginesError)
   r = service.registered_consumers
   return log_error(request, r, service.last_error) if r.is_a?(EnginesError)
-  r.to_json
+  return_json_array(r)
 end
 
 # @method get_service_consumers_for_engine
@@ -24,7 +24,7 @@ get '/v0/containers/service/:service_name/consumers/:parent_engine' do
 
   r = service.registered_consumers(cparams)
   return log_error(request, r, service.last_error) if r.is_a?(EnginesError)
-  r.to_json
+  return_json_array(r)
 end
 
 # @!endgroup

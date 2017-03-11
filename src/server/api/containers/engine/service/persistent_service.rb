@@ -34,8 +34,7 @@ post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace
   return log_error(request, engine, hash) if engine.is_a?(EnginesError)
   r = engine.import_service_data(hash,File.new(hash[:datafile].path,'rb'))
   return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
-  content_type 'text/plain' 
-  r.to_s
+  return_text(r)
 end
 # @method engine_import_persistent_service_file
 # @overload post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/:type_path/:service_handle/import_file'
@@ -93,8 +92,7 @@ post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace
  # hash[:data] =Base64.encode64( p_params['api_vars']['data'])
   r = engine.import_service_data(hash, File.new(hash[:datafile].path,'rb'))
   return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
-  content_type 'text/plain' 
-  r.to_s
+  return_text(r)
 end
 
 
@@ -108,7 +106,7 @@ get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/
   hash = Utils::ServiceHash.engine_service_hash_from_params(params)
   r = engines_api.find_engine_service_hash(hash)
   return log_error(request, r, hash) if r.is_a?(EnginesError)
-  r.to_json
+  return_json(r)
 end
 
 # @method update_engine_persistent_service
@@ -126,8 +124,7 @@ post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace
  
   r = engines_api.update_attached_service(cparams)
   return log_error(request, r, hash) if r.is_a?(EnginesError)
-  content_type 'text/plain' 
-  r.to_s
+  return_text(r)
 end
 
 # @!endgroup

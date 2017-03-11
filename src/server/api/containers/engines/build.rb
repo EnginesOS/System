@@ -19,8 +19,7 @@ post '/v0/containers/engines/build' do
   return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
   r = engines_api.build_engine(cparams)
   return log_error(request, r, cparams) if r.is_a?(EnginesError)
-  content_type 'text/plain' 
-  r.to_s
+  return_text(r)
 end
 
 # @!endgroup

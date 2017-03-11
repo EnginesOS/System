@@ -132,6 +132,7 @@ begin
   #       end
   #
   helpers do
+    
     def engines_api
       $engines_api
     end
@@ -140,10 +141,16 @@ begin
       status(s)
       r.to_json
     end
+    def return_json_array(r, s=202)
+        status(s)
+        r = {} if r.nil?
+        r.to_json
+      end
 
     def return_text(r, s=202)
+      content_type 'text/plain'
       status(s)
-      r.to_json
+      r
     end
 
     def return_true(s=200)

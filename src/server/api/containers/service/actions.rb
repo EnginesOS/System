@@ -9,7 +9,7 @@ get '/v0/containers/service/:service_name/actions/' do
   return log_error(request, service, params) if service.is_a?(EnginesError)
   list = engines_api.list_service_actionators(service)
   return log_error(request, list, service.last_error) if list.is_a?(EnginesError)
-  list.to_json
+return_json_array(list)
 end
 # @method get_service_action
 # @overload get '/v0/containers/service/:service_name/action/:action_name'
@@ -21,7 +21,7 @@ get '/v0/containers/service/:service_name/action/:action_name' do
   return log_error(request, service, params) if service.is_a?(EnginesError)
   action = engines_api.get_service_actionator(service, params[:action_name])
   return log_error(request, action, service.last_error) if action.is_a?(EnginesError)
-  action.to_json
+  return_json(action)
 
 end
 # @method preform_service_action
@@ -38,6 +38,6 @@ post '/v0/containers/service/:service_name/action/:action_name' do
   return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
   action = engines_api.perform_service_action(service, p_params[:action_name], cparams)
   return log_error(request, action, service.last_error) if action.is_a?(EnginesError)
-  action.to_json
+  return_json(action)
 end
 # @!endgroup

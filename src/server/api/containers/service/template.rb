@@ -12,8 +12,7 @@ post '/v0/containers/service/:service_name/template' do
   return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
   resolved_string = engines_api.get_resolved_engine_string(cparams[:template_string],service)
   return log_error(request, resolved_string, cparams) if resolved_string.is_a?(EnginesError)
-  content_type 'text/plain'
-  resolved_string.to_s
+  return_text(resolved_string)
 end
 
 # @!endgroup

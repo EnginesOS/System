@@ -17,8 +17,7 @@ post '/v0/containers/engine/:engine_name/properties/network' do
   return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
   r = engines_api.set_container_network_properties(engine, cparams)
   return log_error(request , r,engine.last_error) if r.is_a?(EnginesError)
-  content_type 'text/plain' 
-  r.to_s
+  return_text(r)
 end
 
 # @method set_engine_runtime_properties
@@ -36,8 +35,7 @@ post '/v0/containers/engine/:engine_name/properties/runtime' do
   return log_error(request, engine, p_params) if engine.is_a?(EnginesError)
   r = engines_api.set_container_runtime_properties(engine, cparams) #Utils.symbolize_keys(params))
   return log_error(request , r, cparams) if r.is_a?(EnginesError)
-  content_type 'text/plain' 
-  r.to_s
+  return_text(r)
 end
 
 # @!endgroup

@@ -10,7 +10,7 @@ get '/v0/containers/service/:service_name/consumer/:parent_engine/:service_handl
   cparams =  Utils::Params.address_params(params, [:service_name,:service_handle,:parent_engine])
   r = service.registered_consumer(cparams)
   return log_error(request, r, service.last_error) if r.is_a?(EnginesError)
-  r.to_json
+  return_json(r)
 end
 
 # @!endgroup

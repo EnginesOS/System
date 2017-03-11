@@ -9,7 +9,7 @@ get '/v0/containers/engine/:engine_name/services/persistent/' do
   r = engines_api.list_persistent_services(engine)
   
   return log_error(request, r, params[:engine_name]) if r.is_a?(EnginesError)
-  r.to_json
+  return_json_array(r)
 end
 
 # @method get_engine_persistent_services_by_type
@@ -21,7 +21,7 @@ get '/v0/containers/engine/:engine_name/services/persistent/:publisher_namespace
   hash = Utils::ServiceHash.engine_service_hash_from_params(params, true)
   r = engines_api.find_engine_service_hashes(hash) #find_engine_services_hashes(hash)
   return log_error(request, r, hash) if r.is_a?(EnginesError)
-  r.to_json
+  return_json_array(r)
 end
 
 #@method add_engine_persistent_share_service
@@ -42,8 +42,7 @@ post '/v0/containers/engine/:engine_name/services/persistent/share/:owner/:publi
   return log_error(request,cparams,p_params) if cparams.is_a?(EnginesError)
   r = engines_api.connect_share_service(cparams)
   return log_error(request, r, cparams,to_s) if r.is_a?(EnginesError)
-  content_type 'text/plain'
-  r.to_s
+  return_text(r)
 end
 # @method add_engine_persistent_orphan_service
 # @overload post '/v0/containers/engine/:engine_name/services/persistent/orphan/:owner/:publisher_namespace/:type_path/:service_handle'
@@ -61,8 +60,7 @@ post '/v0/containers/engine/:engine_name/services/persistent/orphan/:owner/:publ
 
   r = engines_api.connect_orphan_service(cparams)
   return log_error(request, r, cparams,to_s) if r.is_a?(EnginesError)
-  content_type 'text/plain'
-  r.to_s
+  return_text(r)
 end
 
 # @method add_engine_persistent_service
@@ -80,8 +78,7 @@ post '/v0/containers/engine/:engine_name/services/persistent/:publisher_namespac
   return log_error(request,cparams,p_params) if cparams.is_a?(EnginesError)
   r = engines_api.create_and_register_persistent_service(cparams)
   return log_error(request, r, cparams,to_s) if r.is_a?(EnginesError)
-  content_type 'text/plain'
-  r.to_s
+  return_text(r)
 end
 # @method del_engine_persistent_service
 # @overload delete '/v0/containers/engine/:engine_name/services/persistent/:remove_all_data/:publisher_namespace/:type_path/:service_handle'
@@ -95,8 +92,7 @@ delete '/v0/containers/engine/:engine_name/services/persistent/:remove_all_data/
   return log_error(request,cparams,path_hash)  if cparams.is_a?(EnginesError)
   r = engines_api.remove_persistent_service(cparams)
   return log_error(request, r, cparams.to_s ) if r.is_a?(EnginesError)
-  content_type 'text/plain'
-  r.to_s
+  return_text(r)
 end
 
 # @method del_engine_persistent_service_share
@@ -109,7 +105,6 @@ delete '/v0/containers/engine/:engine_name/services/persistent/shared/:owner/:pu
   return log_error(request,cparams,path_hash)  if cparams.is_a?(EnginesError)
   r = engines_api.dettach_share_service(cparams)
   return log_error(request, r, cparams.to_s ) if r.is_a?(EnginesError)
-  content_type 'text/plain'
-  r.to_s
+  return_text(r)
 end
 # @!endgroup

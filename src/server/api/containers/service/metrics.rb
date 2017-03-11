@@ -9,7 +9,7 @@ get '/v0/containers/service/:service_name/metrics/network' do
   return log_error(request, service, params) if service.is_a?(EnginesError)
   r = engines_api.get_container_network_metrics(service)
   return log_error(request, r) if r.is_a?(EnginesError)
-  r.to_json
+  return_json(r)
 end
 # @method get_service_metrics_memory
 # @overload get '/v0/containers/service/:service_name/metrics/memory'
@@ -21,7 +21,7 @@ get '/v0/containers/service/:service_name/metrics/memory' do
   return log_error(request, service, params) if service.is_a?(EnginesError)
   r = engines_api.container_memory_stats(service)
   return log_error(request, r) if r.is_a?(EnginesError)
-  r.to_json
+  return_json(r)
 end
 
 # @!endgroup

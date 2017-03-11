@@ -16,8 +16,7 @@ post '/v0/containers/service/:service_name/properties/network' do
   return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
   r = engines_api.set_container_network_properties(service, cparams)
   return log_error(request, r, cparams) if r.is_a?(EnginesError)
-  content_type 'text/plain' 
-  r.to_s
+  return_text(r)
 end
 # @method set_service_properties_runtime
 # @overload  post '/v0/containers/service/:service_name/properties/runtime' 
@@ -34,8 +33,7 @@ post '/v0/containers/service/:service_name/properties/runtime' do
   return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
   r = engines_api.set_container_runtime_properties(service, cparams)
   return log_error(request, r, cparams) if r.is_a?(EnginesError)
-  content_type 'text/plain' 
-  r.to_s
+  return_text(r)
 end
 
 

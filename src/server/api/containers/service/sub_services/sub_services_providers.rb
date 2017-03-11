@@ -13,6 +13,6 @@ get '/v0/containers/services/sub_service_providers/:publish_namespace/*' do
   return log_error(request, params) if params.is_a?(EnginesError)
   r = engines_api.subservices_provided(params)
   return log_error(request, r) if r.is_a?(EnginesError)
-  r.return_json(r)
+  return_json(r)
 end
 
