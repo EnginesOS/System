@@ -189,6 +189,9 @@ def parse_xcon_response(resp)
   return false if r.to_s  == 'false'
   hash = SystemUtils.deal_with_jason(JSON.parse(r, :create_additions => true))
   return hash
+  rescue  StandardError => e
+    STDERR.puts(e.to_s)
+    STDERR.puts("Parse Error on error response object_" + r.to_s + '_')
   begin
     #  hash = json_parser.parse(r) # do |hash |
     hash =  SystemUtils.deal_with_jason(JSON.parse(r, :create_additons => true ))
