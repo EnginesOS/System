@@ -8,8 +8,7 @@
 get '/v0/service_manager/available_services/managed_engine' do
   avail = engines_api.load_avail_services_for_type('ManagedEngine')
   return log_error(request, avail) if avail.is_a?(EnginesError)
-  status(202)
-  avail.to_json
+  return_json(avail)
 
 end
 # @method services_available_for_managed_engine

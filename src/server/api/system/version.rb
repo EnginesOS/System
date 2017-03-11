@@ -50,9 +50,7 @@ end
 get '/v0/system/version/system' do
   system = engines_api.system_version
   return log_error(request, system) if system.is_a?(EnginesError)
-  status(202)
-  content_type 'text/plain' 
-  system.to_s
+  return_text(system)
 end
 
 require '/opt/engines/lib/ruby/system/system_utils.rb'
@@ -66,8 +64,7 @@ get '/v0/system/version/base_os' do
 
   return log_error(request, base_os) if base_os.is_a?(EnginesError)
   base_os =  downcase_keys(base_os)
-  status(202)
-  base_os.to_json
+  return_json(base_os)
 end
 
 # @!endgroup

@@ -7,8 +7,7 @@ get '/v0/system/domains/:domain_name' do
   domain_name = engines_api.domain_name(params[:domain_name])
 
   return log_error(request, domain_name) if domain_name.is_a?(EnginesError)
-  status(202)
-  domain_name.to_json
+  return_json(domain_name)
 end
 # @method update_domain_name
 # @overload post '/v0/system/domains/:domain_name'
@@ -26,8 +25,6 @@ post '/v0/system/domains/:domain_name' do
  # STDERR.puts('EDIT DOMAIN Params ' + cparams.to_s )
   r = engines_api.update_domain(cparams)
   return log_error(request, r, cparams) if r.is_a?(EnginesError)
-  status(202)
-  content_type 'text/plain' 
-  r.to_s
+  return_text(r)
 end
 # @!endgroup

@@ -27,8 +27,7 @@ end
 get '/v0/system/certs/default' do
   cert = engines_api.get_cert('engines')
   return log_error(request, cert) if cert.is_a?(EnginesError)
-  content_type 'text/plain'
-  cert.to_s
+  return_json(cert)
 end
 
 # @method list_certificate
@@ -38,7 +37,7 @@ end
 get '/v0/system/certs/' do
   certs = engines_api.list_certs
   return log_error('list certs', certs, params) if certs.is_a?(EnginesError)
-  certs.to_json
+  return_json_array(r)
 end
 # @method delete_certificate
 # @overload delete '/v0/system/certs/:cert_name'
@@ -48,8 +47,7 @@ delete '/v0/system/certs/:cert_name' do |cert_name|
   r = engines_api.remove_cert(cert_name)
   return log_error(request, r) if r.is_a?(EnginesError)
   status(202)
-  content_type 'text/plain'
-  r.to_s
+  return_text(r)
 end
 
 # @method upload_default_certificate
@@ -67,9 +65,7 @@ post '/v0/system/certs/default' do
   cparams[:set_as_default] = true
   r = engines_api.upload_ssl_certificate(cparams)
   return log_error(request, r, cparams) if r.is_a?(EnginesError)
-  status(202)
-  content_type 'text/plain'
-  r.to_s
+  return_text(r)
 end
 # @method upload_certificate
 # @overload post '/v0/system/certs/'
@@ -84,9 +80,7 @@ post '/v0/system/certs/' do
   cparams = assemble_params(post_s, [], :all)
   r = engines_api.upload_ssl_certificate(cparams)
   return  log_error(request, r, cparams) if r.is_a?(EnginesError)
-  status(202)
-  content_type 'text/plain'
-  r.to_s
+  return_text(r)
 end
 # @method generate_certificate
 # @overload post '/v0/system/certs/generate'
@@ -114,8 +108,6 @@ post '/v0/system/certs/generate' do
  # STDERR.puts('ADD cert Params ' + cparams.to_s )
   r = engines_api.generate_cert(cparams)
   return log_error(request, r, params) if  r.is_a?(EnginesError)
-  status(202)
-  content_type 'text/plain' 
-  r.to_s
+  return_text(r)
 end
 # @!endgroup
