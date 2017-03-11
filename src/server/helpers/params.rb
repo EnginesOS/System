@@ -46,11 +46,11 @@ def assemble_params(ps, address_params, required_params=nil, accept_params=nil )
     if keys.is_a?(Array)
       for key in keys
         # return missing_param key unless param.key?(key)
-        return false  unless self.check_required(params, key, is_required)
+        return false  unless  check_required(params, key, is_required)
         cparams[key.to_sym] = params[key] unless params[key].nil?
       end
     else
-      return false unless self.check_required(params, keys, is_required)
+      return false unless check_required(params, keys, is_required)
       cparams[keys.to_sym] = params[keys]
     end
     cparams
