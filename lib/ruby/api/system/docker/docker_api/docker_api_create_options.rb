@@ -5,13 +5,13 @@ module DockerApiCreateOptions
 
   def create_options(container)
     @top_level = build_top_level(container)
-    @top_level['Env'] = envs(container)
+    # @top_level['Env'] = envs(container)
     #  @top_level['Mounts'] = volumes_mounts(container)
-    ports = exposed_ports(container)
-    @top_level['ExposedPorts'] = ports unless ports.nil?
+   # ports = exposed_ports(container)
+   # @top_level['ExposedPorts'] = ports unless ports.nil?
     @top_level['HostConfig'] = host_config_options(container)
     # STDERR.puts('create options ' + @top_level.to_s)
-    @top_level
+    # @top_level
   rescue StandardError => e
     log_exception(e)
   end
@@ -78,21 +78,59 @@ module DockerApiCreateOptions
     servers
   end
 
+  def container_memory(container)
+    container.memory.to_i * 1024 * 1024
+  end
+
+  def container_volumes(container)
+    container.volumes_from unless container.volumes_from.nil?
+  end
+
+  def container.capabilities(container)
+    add_capabilities(container.capabilities) unless container.capabilities.nil?
+  end
+
+  def container_get_dns_servers(container)
+    get_dns_servers  if container.on_host_net? == false
+  end
+
+  def container_dns_search(container)
+    get_dns_search  if container.on_host_net? == false
+  end
+
+  def container_network_mode(container)
+    if container.on_host_net? == false
+      host_config['NetworkMode'] = 'bridge'
+    else
+      host_config['NetworkMode'] ='host'
+    end
+  end
+
   def host_config_options(container)
 
-    host_config = {}
-    host_config['Binds'] = volumes_mounts(container)
-    host_config['PortBindings'] = port_bindings(container)
-    host_config['Volumes'] = {}
+    {
+      'Binds' => volumes_mounts(container),
+      'PortBindings' => port_bindings(container),
+      'Volumes' => {},
+      'Memory' => container_memory(container),
+      'MemorySwap' => container_memory(container) * 2,
+      'VolumesFrom' => container_volumes(container),
+      'CapAdd' => container.capabilities(container),
+      'OomKillDisable' => false,
+      'LogConfig' => log_config(container),
+      'PublishAllPorts' => false,
+      'Privileged' => false,
+      'ReadonlyRootfs' => false,
+      'Dns' => container_get_dns_servers(container),
+      'DnsSearch' => container_dns_search(container),
+      'NetworkMode' => container_network_mode(container)
+    }
+
     #  host_config['LxcConf'] # {"lxc.utsname":"docker"},
-    memory = container.memory.to_i * 1024 * 1024
-    host_config['Memory'] = memory
-    host_config['MemorySwap'] = memory * 2
-    host_config['MemoryReservation'] # 0,
-    host_config['VolumesFrom'] = container.volumes_from unless container.volumes_from.nil?
+    #'MemoryReservation' # 0,
     # "CapAdd": ["NET_ADMIN"],
     #STDERR.puts(" Add cap ");
-    host_config["CapAdd"] = add_capabilities(container.capabilities) unless container.capabilities.nil?
+
     #  STDERR.puts(" Add caps " + host_config["CapAdd"].to_s);
     # host_config['KernelMemory'] # 0,
     #  host_config['CpuShares'] # 512,
@@ -102,32 +140,20 @@ module DockerApiCreateOptions
     #   host_config['CpusetMems'] # "0,1",
     #     host_config['BlkioWeight'] # 300,
     #host_config['MemorySwappiness'] # 60,
-    host_config['OomKillDisable'] = false
-    host_config['LogConfig'] = log_config(container)
-    host_config['PublishAllPorts'] = false
-    host_config['Privileged'] = false
-    host_config['ReadonlyRootfs'] = false
-    host_config['Dns'] = get_dns_servers  if container.on_host_net? == false
     # host_config['DnsOptions'] # [""],
-    host_config['DnsSearch'] = get_dns_search  if container.on_host_net? == false
-    #host_config['ExtraHosts'] # null,
-    #   host_config['VolumesFrom'] # ["parent", "other:ro"],
-    #   host_config['CapAdd'] # ["NET_ADMIN"],
-    #   host_config['CapDrop'] # ["MKNOD"],
-    #   host_config['RestartPolicy'] # { "Name": "", "MaximumRetryCount": 0 },
-    if container.on_host_net? == false
-      host_config['NetworkMode'] = 'bridge'
-    else
-      host_config['NetworkMode'] ='host'
-    end
+
     #      host_config['Devices'] # [],
     #      host_config['Ulimits'] # [{}],
     #   host_config['LogConfig'] = Hash.new ( "Type": "json-file", "Config": {} )
     #    host_config['SecurityOpt']= ""
     #    host_config['CgroupParent'] = ""
     #    host_config['VolumeDriver'] = ""
-
-    host_config
+    #host_config['ExtraHosts'] # null,
+    #   host_config['VolumesFrom'] # ["parent", "other:ro"],
+    #   host_config['CapAdd'] # ["NET_ADMIN"],
+    #   host_config['CapDrop'] # ["MKNOD"],
+    #   host_config['RestartPolicy'] # { "Name": "", "MaximumRetryCount": 0 },
+    # host_config
   end
 
   def log_config(container)
@@ -162,7 +188,7 @@ module DockerApiCreateOptions
   end
 
   def build_top_level(container)
-    
+
     top_level = {
       'Hostname' => hostname(container),
       'Domainame' =>  container.domain_name,
@@ -172,15 +198,17 @@ module DockerApiCreateOptions
       'Tty' => false,
       'OpenStdin' => false,
       'StdinOnce' => false,
-      'Labels' => {},
       'WorkingDir' => '',
       'User' => '',
       'Labels' => get_labels(container),
       'NetworkDisabled' => false,
       'StopSignal' => 'SIGTERM',
-      'Image' => container.image
+      'Image' => container.image,
+      'Env' => envs(container),
+     'ExposedPorts' => exposed_ports(container),
+      'HostConfig' => host_config_options(container)
     }
-    
+
     command =  container.command
     command = ['/bin/bash' ,'/home/start.bash'] if container.command.nil?
     top_level['Entrypoint'] = container.command  unless container.conf_self_start
@@ -231,43 +259,18 @@ module DockerApiCreateOptions
 
   def ssh_keydir_mount(container)
     ContainerStateFiles.container_ssh_keydir(container) + ':/home/home_dir/.ssh:rw'
-    #service_sshkey_local_dir(container) + ':/home/.ssh:rw'
-    #    ssh_keydir_mount_string = {}
-    #    ssh_keydir_mount_string['Source'] = service_sshkey_local_dir(container)
-    #    ssh_keydir_mount_string['Destination'] = '/home/.ssh'
-    #    ssh_keydir_mount_string['Mode'] = 'rw,Z'
-    #    ssh_keydir_mount_string['RW'] = true
-    #    ssh_keydir_mount_string
   end
 
   def vlogdir_mount(container)
     container_local_log_dir(container) + ':/var/log/:rw'
-    #    vlogdir_mount_string = {}
-    #    vlogdir_mount_string['Source'] = container_local_log_dir(container)
-    #    vlogdir_mount_string['Destination'] = '/var/log/'
-    #    vlogdir_mount_string['Mode'] = 'rw,Z'
-    #    vlogdir_mount_string['RW'] = true
-    #    vlogdir_mount_string
   end
 
   def logdir_mount(container)
     container_local_log_dir(container) + ':' + in_container_log_dir(container) + ':rw'
-    #    logdir_mount_string = {}
-    #    logdir_mount_string['Source'] = container_local_log_dir(container)
-    #    logdir_mount_string['Destination'] = in_container_log_dir(container)
-    #    logdir_mount_string['Mode'] = 'rw,Z'
-    #    logdir_mount_string['RW'] = true
-    #    logdir_mount_string
   end
 
   def state_mount(container)
     container_state_dir(container) + '/run:/engines/var/run:rw'
-    #    state_mount_string = {}
-    #    state_mount_string['Source'] = container_state_dir(container) + '/run'
-    #    state_mount_string['Destination'] = '/engines/var/run'
-    #    state_mount_string['Mode'] = 'rw,Z'
-    #    state_mount_string['RW'] = true
-    #    state_mount_string
   end
 
   def container_state_dir(container)
@@ -279,7 +282,6 @@ module DockerApiCreateOptions
   end
 
   def service_sshkey_local_dir(container)
-
     '/opt/engines/etc/ssh/keys/' + container.ctype + 's/' + container.container_name
   end
 
