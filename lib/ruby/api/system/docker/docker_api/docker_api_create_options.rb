@@ -114,15 +114,15 @@ module DockerApiCreateOptions
   def host_config_options(container)
 
     {
-      'Binds' => volumes_mounts(container).to_s,
-      'PortBindings' => port_bindings(container).to_s,
+      'Binds' => volumes_mounts(container),
+      'PortBindings' => port_bindings(container),
       'Volumes' => {},
       'Memory' => container_memory(container),
       'MemorySwap' => container_memory(container) * 2,
       'VolumesFrom' => container_volumes(container),
       'CapAdd' => container_capabilities(container),
       'OomKillDisable' => false,
-      'LogConfig' => log_config(container).to_s,
+      'LogConfig' => log_config(container),
       'PublishAllPorts' => false,
       'Privileged' => false,
       'ReadonlyRootfs' => false,
