@@ -15,7 +15,7 @@ module TemplateOperations
     templater.fill_in_service_def_values(service_def)
     #FIXME make service_handle_field unique
 
-    return service_def
+     service_def
   rescue StandardError => e
     p service_hash
     p service_def
@@ -26,7 +26,7 @@ module TemplateOperations
 
     templater = Templater.new(system_value_access,nil)
     env_value = templater.apply_system_variables(env_value)
-    return env_value
+     env_value
   rescue StandardError => e
     log_exception(e)
   end
@@ -35,7 +35,7 @@ module TemplateOperations
     templater = Templater.new(system_value_access,container)
     value = templater.apply_build_variables(env_value)
     SystemDebug.debug(SystemDebug.templater,  ' get_resolved_engine_string ' + value.to_s + 'from ', env_value)
-    return value
+     value
   rescue StandardError => e
     log_exception(e,env_value,container)
   end

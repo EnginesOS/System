@@ -40,7 +40,7 @@ class FirstRunWizard <ErrorsApi
 
   def FirstRunWizard.required?
     return true if File.exist?(SystemConfig.FirstRunRan) == false
-    return false
+     false
   end
   # FIXME: and put in it's own class or even service
 

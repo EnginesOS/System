@@ -99,7 +99,7 @@ class DockerConnection < ErrorsApi
     end
 
     excon_params[:socket] = '/var/run/docker.sock'
-    return Excon.new('unix:///', excon_params )
+     Excon.new('unix:///', excon_params )
   end
 
   def post_stream_request(uri,options, stream_handler,  headers = nil, content = nil )

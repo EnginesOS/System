@@ -24,14 +24,14 @@ module DockerApiBuilder
       @stream = nil
       @parser = FFI_Yajl::Parser.new({:symbolize_keys => true})
     end
-     attr_accessor :stream
+    attr_accessor :stream
 
     def close
       @io_stream.close unless @io_stream.nil?
       @stream.reset unless @stream.nil?
-      rescue StandardError => e
+    rescue StandardError => e
       #  STDERR.puts('stream close Exception' + + e.to_s)
-        return nil
+      return nil
     end
 
     def is_hijack?
@@ -40,7 +40,7 @@ module DockerApiBuilder
 
     def has_data?
       return true unless @io_stream.nil?
-      return false
+       false
     end
 
     def process_response()
@@ -49,17 +49,16 @@ module DockerApiBuilder
           #hash = JSON.parse(chunk)
           hash =   @parser.parse(chunk)  #do |hash|
           hash = SystemUtils.deal_with_jason(JSON.parse(chunk, :create_additons => true ))
-            @builder.log_build_output(hash[:stream]) if hash.key?(:stream)
-            @builder.log_build_errors(hash[:errorDetail]) if hash.key?(:errorDetail)
-            #   end
+          @builder.log_build_output(hash[:stream]) if hash.key?(:stream)
+          @builder.log_build_errors(hash[:errorDetail]) if hash.key?(:errorDetail)
+          #   end
 
         rescue StandardError =>e
-       #   STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s)
-
+          #   STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s)
         end
       end
     rescue StandardError =>e
-    #  STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s)
+      #  STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s)
       return
     end
 
@@ -67,25 +66,25 @@ module DockerApiBuilder
       @io_stream.read(Excon.defaults[:chunk_size]).to_s
     rescue StandardError => e
       STDERR.puts('PROCESS REQUEST got nilling')
-      return nil
+       nil
     end
   end
 
   def build_engine(engine_name, build_archive_filename, builder)
     stream_handler = nil
     options =  build_options(engine_name)
-    header = {}
-    header['X-Registry-Config'] = get_registry_auth
-    header['Content-Type'] = 'application/tar'
-    header['Accept-Encoding'] = 'gzip'
-    header['Accept'] = '*/*'
-    header['Content-Length'] = File.size(build_archive_filename).to_s
-      
+    header = {
+      'X-Registry-Config' => get_registry_auth,
+      'Content-Type' => 'application/tar',
+      'Accept-Encoding' => 'gzip',
+      'Accept' => '*/*',
+      'Content-Length' => File.size(build_archive_filename).to_s
+    }
     stream_handler = DockerStreamHandler.new(nil, builder) #File.new(build_archive_filename,'r'))
     r =  post_stream_request('/build' , options, stream_handler,  header, File.read(build_archive_filename) )
     stream_handler.close
-    return r
-  rescue StandardError => e  
+     r
+  rescue StandardError => e
     stream_handler.close unless stream_handler.nil?
     log_exception(e)
   end

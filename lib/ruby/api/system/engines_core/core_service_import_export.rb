@@ -33,7 +33,7 @@ module CoreServiceImportExport
       engine = loadManagedService(service_hash[:parent_engine])
     end
     return engine  if engine.is_a?(EnginesError)
-     return engine.import_service_data(params)
+      engine.import_service_data(params)
 
   rescue StandardError => e
     log_exception(e,'import service',params)

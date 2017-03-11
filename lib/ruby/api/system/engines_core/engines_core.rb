@@ -153,7 +153,7 @@ class EnginesCore < ErrorsApi
     file = File.open("/engines/var/run/heap.dump", 'w')
     ObjectSpace.dump_all(output: file)
     file.close
-    return true
+     true
   end
   
   def set_first_run_parameters(params_from_gui)
@@ -165,7 +165,7 @@ class EnginesCore < ErrorsApi
      first_run.apply(self)
 
      @last_error = first_run.last_error unless first_run.sucess
-     return first_run.sucess
+      first_run.sucess
   end
   
  
@@ -178,7 +178,7 @@ class EnginesCore < ErrorsApi
     rescue StandardError => e
        SystemUtils.log_exception(e)
     failed('Gui', 'reserved_engine_names', 'failed')
-    return []
+     []
   end 
   
   
@@ -211,7 +211,7 @@ class EnginesCore < ErrorsApi
     p :error
     p params
     log_exception(e)
-    return nil
+     nil
   end
 
   def get_build_report(engine_name)
@@ -229,7 +229,7 @@ class EnginesCore < ErrorsApi
     
   def service_manager
     return create_service_manager if @service_manager.nil?
-    return  @service_manager
+      @service_manager
     
   end
 
@@ -240,7 +240,7 @@ class EnginesCore < ErrorsApi
       @build_controller.build_engine(params) 
     }
     return true if @build_thread.alive?
-    return log_error(params[:engine_name], 'Build Failed to start')
+     log_error(params[:engine_name], 'Build Failed to start')
   end
 
   def shutdown(reason)

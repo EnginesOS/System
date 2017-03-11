@@ -1,11 +1,11 @@
 module Actionators
 
   def get_engine_actionator(engine, action)
-    return @system_api.get_engine_actionator(engine, action)
+     @system_api.get_engine_actionator(engine, action)
   end
   
     def list_engine_actionators(engine)
-    return @system_api.load_engine_actionators(engine)
+     @system_api.load_engine_actionators(engine)
     
       rescue StandardError => e
           log_exception(e,'list_actionators', engine)
@@ -42,7 +42,7 @@ module Actionators
        return service_def[:actionators]
      end
     # SystemDebug.debug(SystemDebug.actions,service.container_name,service_def[:actionators],service_def)
-    return service_def[:actionators]
+     service_def[:actionators]
       
     rescue StandardError => e
         log_exception(e,'list_actionators',service)
@@ -53,7 +53,7 @@ module Actionators
    service = loadManagedService(service_name)
   return service.perform_action(actionator_name,params) if service.is_running?
    @last_error = "Service not running"
-    return  EnginesCoreError.new('Service not running',:warning)
+      EnginesCoreError.new('Service not running',:warning)
 
     rescue StandardError => e
         log_exception( e,'perform_service_action',service_name,actionator_name,params)

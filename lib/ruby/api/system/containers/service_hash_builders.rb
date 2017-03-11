@@ -20,7 +20,7 @@ def create_dns_service_hash(engine)
   service_hash[:variables][:ip] = engine.get_ip_str.to_s
   SystemDebug.debug(SystemDebug.services,  service_hash.to_s)
 
-  return service_hash
+   service_hash
 end
 
 def create_zeroconf_service_hash(engine)
@@ -42,7 +42,7 @@ def create_zeroconf_service_hash(engine)
   service_hash[:variables][:name] = service_hash[:variables][:hostname]
 
   SystemDebug.debug(SystemDebug.containers, :created_zeroconfdns_service_hash, service_hash)
-  return service_hash
+   service_hash
 end
 
 #@return [Hash] completed nginx service_hash for engine on for the default website configured for
@@ -84,5 +84,5 @@ def create_nginx_service_hash(engine)
       service_hash[:variables][:www_path] = ''  
   end
   SystemDebug.debug(SystemDebug.services,'create nginx Hash',service_hash)
-  return service_hash
+   service_hash
 end

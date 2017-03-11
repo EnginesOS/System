@@ -14,7 +14,7 @@ end
     unless params.has_key?(:certificate) || params.key?(:domain_name)
       return log_error_mesg('error expect keys  :certificate :domain_name with optional :use_as_default', 'uploads cert', params.to_s)
     end
-    return  @system_api.upload_ssl_certificate(params)
+      @system_api.upload_ssl_certificate(params)
   
   end
   def generate_cert(params)
@@ -30,26 +30,26 @@ end
     #      service_param[:variables][:person] = params[:ssl_person_name]
     #      service_param[:variables][:domainname] =  params[:domain_name] #params[:default_domain]
     #      service_param[:variables][:service_handle] = 'default_ssl_cert'
-     return @system_api.generate_cert(params)
+      @system_api.generate_cert(params)
      rescue StandardError => e
-         return log_exception(e,'Failed to generate cert',params)
+          log_exception(e,'Failed to generate cert',params)
    end  
   def get_cert(domain)
-    return @system_api.get_cert(domain)
+     @system_api.get_cert(domain)
     rescue StandardError => e
-        return log_exception(e,'Failed to load cert',domain)
+         log_exception(e,'Failed to load cert',domain)
   end
   
   def remove_cert(domain)
-     return @system_api.remove_cert(domain)
+      @system_api.remove_cert(domain)
      rescue StandardError => e
-         return log_exception(e,'Failed to remove cert',domain)
+          log_exception(e,'Failed to remove cert',domain)
    end
    
   def list_certs
-    return @system_api.list_certs()
+     @system_api.list_certs()
       rescue StandardError => e
-          return log_exception(e,'Failed to list certs')
+           log_exception(e,'Failed to list certs')
   end
   
 end

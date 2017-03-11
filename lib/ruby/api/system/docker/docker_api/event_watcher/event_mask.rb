@@ -60,9 +60,9 @@ class EventMask
       mask |= @@network_event
     end
 
-    return mask
+     mask
     rescue StandardError => e
          SystemDebug.debug(SystemDebug.container_events,event_hash.to_s + ':' + e.to_s + ':' +  e.backtrace.to_s)
-         return e
+          e
   end
 end

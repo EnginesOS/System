@@ -68,7 +68,7 @@ module DockerEvents
     #FIXME track non system containers here
     #use to clear post build crash
     #alert if present when not building
-    return true
+     true
   end
 
   def inform_container_tracking(container_name,ctype,event_name)
@@ -88,7 +88,7 @@ module DockerEvents
       c = loadManagedService(container_name)  if ctype == 'service'
     end
     return false if c.nil?
-    return c
+     c
   rescue StandardError =>e
     log_exception(e)
 
@@ -100,7 +100,7 @@ module DockerEvents
     return false if c.is_a?(FalseClass)
     SystemDebug.debug(SystemDebug.container_events, 'informed _container',container_name,event_name)
     c.process_container_event(event_name,event_hash)
-    return true
+     true
   rescue StandardError =>e
     log_exception(e)
   end

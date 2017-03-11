@@ -11,7 +11,7 @@ module ServiceApiConfigurations
       params[:variables] = SystemUtils.symbolize_keys(variables_hash)      
       return params
     end
-    return log_error_mesg('Error on retrieving Configuration',result)
+     log_error_mesg('Error on retrieving Configuration',result)
 
   end
 
@@ -22,7 +22,7 @@ module ServiceApiConfigurations
     #cmd = 'docker_exec -u ' + container.cont_userid.to_s + ' ' +  container.container_name.to_s + ' /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh \'' + SystemUtils.hash_variables_as_json_str(configurator_params).to_s + '\''
      result = @engines_core.exec_in_container({:container => c, :command_line => cmd, :log_error => true , :timeout => @@configurator_timeout, :data=> configurator_params[:variables].to_json }) 
     @last_error = result[:stderr] unless result.is_a?(EnginesError)# Dont log just set
-    return result
+     result
   end
 
   def update_service_configuration(configuration)

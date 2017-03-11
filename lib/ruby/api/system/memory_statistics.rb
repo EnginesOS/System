@@ -67,13 +67,13 @@ module MemoryStatistics
         ret_val  = self.empty_container_result
       end
     end
-    return ret_val
+     ret_val
   rescue StandardError => e
     SystemUtils.log_exception(e)
     ret_val.store(:maximum, e.to_s)
     ret_val.store(:current, 'NA')
     ret_val.store(:limit, 'NA')
-    return ret_val
+     ret_val
   end
 
   def self.empty_container_result
@@ -81,7 +81,7 @@ module MemoryStatistics
     ret_val.store(:maximum, 0)
     ret_val.store(:current, 0)
     ret_val.store(:limit, 0)
-    return ret_val
+     ret_val
   end
 
   def self.available_ram

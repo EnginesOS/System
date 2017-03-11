@@ -31,7 +31,7 @@ module ApiActionators
       return true if result[:stdout].start_with?('true') || result[:stdout].start_with?('"true')
       return result[:stdout]
     end
-    return log_error_mesg('Error on performing action ' + c.container_name.to_s + ':' + actionator_name.to_s + result[:stderr] ,result)
+     log_error_mesg('Error on performing action ' + c.container_name.to_s + ':' + actionator_name.to_s + result[:stderr] ,result)
   rescue StandardError =>e
     log_exception(e)
 
@@ -43,7 +43,7 @@ module ApiActionators
     params.each do |param|
       r += param.to_s + ' '
     end
-    return r
+     r
   end
 
 end

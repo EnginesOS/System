@@ -9,7 +9,7 @@ class BlueprintApi < ErrorsApi
     f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0644)
     f.write(blueprint.to_json)
     f.close
-    return true
+     true
   rescue StandardError => e
     log_error_mesg('Blueprint save Failure', container)
     log_exception(e)
@@ -19,7 +19,7 @@ class BlueprintApi < ErrorsApi
     blueprint_file = File.open(blueprint_file_name, 'r')
     json_hash = SystemUtils.deal_with_jason(JSON.parse(blueprint_file.read, :create_additons => true ))
     blueprint_file.close
-    return json_hash
+     json_hash
     rescue StandardError => e
         SystemUtils.log_error_mesg('Blueprint Parse Failure', blueprint_file)
     SystemUtils.log_exception(e)

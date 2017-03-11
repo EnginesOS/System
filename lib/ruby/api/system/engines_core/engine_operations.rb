@@ -13,7 +13,7 @@ module EnginesOperations
     engine_name = params[:engine_name]
     reinstall = false
     reinstall = params[:reinstall] = true if params.key?(:reinstall)
-    return remove_engine(engine_name, reinstall)
+     remove_engine(engine_name, reinstall)
   end
 
   def remove_engine(engine_name, reinstall = false)
@@ -39,7 +39,7 @@ module EnginesOperations
       return r if reinstall == true
       return engine.delete_engine
     end
-    return r
+     r
   end
 
   def delete_image_dependancies(params)
@@ -48,7 +48,7 @@ module EnginesOperations
     params[:container_type] = 'container'
     SystemDebug.debug(SystemDebug.containers, :delete_image_dependancies, params)
     return r if (r = service_manager.rm_remove_engine_services(params)).is_a?(EnginesError)
-    return true
+     true
   rescue StandardError => e
     log_exception(e)
   end
@@ -68,7 +68,7 @@ module EnginesOperations
       engine.reinstall_engine(builder)
     }
     return true if @build_thread.alive?
-    return log_error(params[:engine_name], 'Build Failed to start')
+     log_error(params[:engine_name], 'Build Failed to start')
 
   rescue  StandardError => e
     log_exception(e)

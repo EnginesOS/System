@@ -74,7 +74,7 @@ module ServiceManagerOperations
       sites.push(service_hash[:variables][:fqdn])
 
     end
-    return sites
+     sites
   rescue StandardError => e
     log_exception(e)
     return sites

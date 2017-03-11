@@ -8,22 +8,22 @@ module DomainOperations
     # cycle through engines and serices turning on zero_conf where conf_zero_conf=true
     # also self host .local regardless so windows can point to dns and pretend to understand
     # bonjournoe without happing it installed and there fore bypass the cname issue with windows
-    return  add_domain(params)
+      add_domain(params)
 
   end
 
   def update_domain_service(params)
-    return  update_domain(params)
+      update_domain(params)
 
   end
 
   def remove_domain_service(params)
-    return remove_domain(params)
+     remove_domain(params)
 
   end
 
   def list_domains
-    return DNSHosting.list_domains
+     DNSHosting.list_domains
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
@@ -55,7 +55,7 @@ module DomainOperations
       service_hash[:variables][:ip] =  get_ext_ip_for_hosted_dns()
     end
  #   STDERR.puts(' ADD DOMAIN VARIABLE ' + params.to_s)
-    return @service_manager.create_and_register_service(service_hash)
+     @service_manager.create_and_register_service(service_hash)
 
   rescue StandardError => e
     log_error_mesg('Add self hosted domain exception', params.to_s)
@@ -96,7 +96,7 @@ module DomainOperations
     service_hash[:variables][:domain_name] = params[:domain_name]
     service_hash[:service_handle] = params[:domain_name] + '_dns'
  #   STDERR.puts(' UPDATE DOMAIN VARIABLES ' + service_hash.to_s)
-    return  @service_manager.create_and_register_service(service_hash)
+      @service_manager.create_and_register_service(service_hash)
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
@@ -118,7 +118,7 @@ module DomainOperations
     service_hash[:container_type] = 'system'
     service_hash[:publisher_namespace] = 'EnginesSystem'
     service_hash[:type_path] = 'dns'
-    return @service_manager.delete_service(service_hash)
+     @service_manager.delete_service(service_hash)
 
   rescue StandardError => e
     log_exception(e)
@@ -126,7 +126,7 @@ module DomainOperations
   private
 
   def get_lan_ip_for_hosted_dns()
-    return DNSHosting.get_local_ip
+     DNSHosting.get_local_ip
   end
 
   def get_ext_ip_for_hosted_dns()

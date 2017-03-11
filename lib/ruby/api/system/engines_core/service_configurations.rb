@@ -2,7 +2,7 @@ module ServiceConfigurations
   require_relative 'service_manager_access.rb'
   def retrieve_service_configuration(config)
     r = retrieve_configuration(config)
-    return r
+     r
   end
 
   def get_service_configurations_hashes(service_hash)
@@ -30,7 +30,7 @@ module ServiceConfigurations
     r = ''
     r = update_configuration_on_service(service_param)
     return service_manager.update_service_configuration(service_param) unless r.is_a?(EnginesError)
-    return log_error_mesg('Failed to update configuration on service ' + service_param.to_s, r)
+     log_error_mesg('Failed to update configuration on service ' + service_param.to_s, r)
 
   end
 
@@ -47,7 +47,7 @@ module ServiceConfigurations
       ret_val = get_service_configuration(service_param)
     end
 
-    return ret_val
+     ret_val
   end
 
   private
@@ -103,7 +103,7 @@ module ServiceConfigurations
     service_manager.update_service_configuration(service_param)
     return log_error_mesg('Service configurator error @core_ap Got:', configurator_result.to_s, " For:" +service_param.to_s ) unless configurator_result[:result] == 0 || configurator_result[:stderr].start_with?('Warning')
 
-    return true
+     true
   end
 
 end

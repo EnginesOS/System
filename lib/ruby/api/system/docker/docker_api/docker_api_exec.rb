@@ -85,7 +85,7 @@ module DockerApiExec
     end
 
     def has_data?
-      return false
+       false
     end
   end
 
@@ -158,8 +158,8 @@ module DockerApiExec
 
     request = '/containers/'  + params[:container].container_id.to_s + '/exec'
 
-    r = post_request(request,  request_params)
-    return r
+     post_request(request,  request_params)
+    
   end
 
   def format_commands(commands)

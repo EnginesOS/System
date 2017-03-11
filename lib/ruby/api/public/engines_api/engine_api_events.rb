@@ -17,13 +17,12 @@ module EngineApiEvents
     rescue StandardError => e
       p e.to_s
       p e.backtrace.to_s
-      return
-    end
+      return    end
 
     def start
 
    #   STDERR.puts(' START EVENT STREAM')
-      return @rd
+       @rd
     end
 
     def stop
@@ -42,7 +41,7 @@ module EngineApiEvents
     @system_api.add_event_listener([stream,'write_event'.to_sym],16)
  #   STDERR.puts('Calling START EVENT STREAM')
     stream.start
-    return stream
+     stream
   end
 
 end

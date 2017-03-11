@@ -75,7 +75,7 @@ class SystemApi < ErrorsApi
   services = []
     services.push('system')
      services.push('registry')
-     return services
+      services
   end
   
   def get_engines_states
@@ -86,7 +86,7 @@ class SystemApi < ErrorsApi
       result[engine.container_name] = engine.read_state
     end
 
-    return result
+     result
   end
   
 def get_engines_status
@@ -95,7 +95,7 @@ def get_engines_status
   engines.each do |engine|
         result[engine.container_name] = engine.status
       end
-      return result
+       result
  end
  
 def get_services_status
@@ -115,7 +115,7 @@ def get_services_status
           result[service.container_name] = service.read_state
         end
 
-        return result
+         result
    end
 
   

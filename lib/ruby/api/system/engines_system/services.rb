@@ -28,12 +28,12 @@ module Services
   def list_managed_services
     _list_services  
   rescue StandardError => e
-    return log_exception(e)    
+     log_exception(e)    
   end
   def list_system_services
     _list_services('system_service')  
   rescue StandardError => e
-    return log_exception(e)    
+     log_exception(e)    
   end 
   
  

@@ -24,7 +24,7 @@ module SystemApiBackup
   #   STDERR.puts(' service backup ' + params.to_s + ' returned ' + result.to_s ) 
      return result if result.is_a?(EnginesError)
      return result if result[:result] !=0
-     return true
+      true
    end
    
    def backup_engine_config(engine_name, out)
@@ -40,7 +40,7 @@ module SystemApiBackup
      n+=1
     paths['service'+n.to_s] =  engine + '/service/' + service[:publisher_namespace] + '/' + service[:type_path] + '/' + + service[:service_handle]       
    end
-   return paths
+    paths
   end
   
    def backup_engine_service(service_hash,out)

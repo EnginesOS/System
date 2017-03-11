@@ -12,7 +12,7 @@ module ServiceApiReaders
       return {}
     end
     @last_error = result[:stderr] # Dont log just set
-    return result
+     result
   end
 
   def get_readers(container)
@@ -22,10 +22,10 @@ module ServiceApiReaders
     return [] unless service_def.key?(:actionators)
     return [] unless service_def[:actionators].is_a?(Hash)
     return [] unless  service_def[:actionators].key?(:readers)
-    return service_def[:actionators][:readers]
+     service_def[:actionators][:readers]
 
   end
 rescue StandardError => e
-  return log_exception(e)
+   log_exception(e)
 
 end
