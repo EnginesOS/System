@@ -110,21 +110,21 @@ module DockerApiCreateOptions
   def host_config_options(container)
 
     {
-      'Binds' => volumes_mounts(container),
-      'PortBindings' => port_bindings(container),
+      'Binds' => volumes_mounts(container).to_s,
+      'PortBindings' => port_bindings(container).to_s,
       'Volumes' => {},
       'Memory' => container_memory(container),
       'MemorySwap' => container_memory(container) * 2,
-      'VolumesFrom' => container_volumes(container),
-      'CapAdd' => container_capabilities(container),
+      'VolumesFrom' => container_volumes(container).to_s,
+      'CapAdd' => container_capabilities(container).to_s,
       'OomKillDisable' => false,
-      'LogConfig' => log_config(container),
+      'LogConfig' => log_config(container).to_s,
       'PublishAllPorts' => false,
       'Privileged' => false,
       'ReadonlyRootfs' => false,
-      'Dns' => container_get_dns_servers(container),
-      'DnsSearch' => container_dns_search(container),
-      'NetworkMode' => container_network_mode(container)
+      'Dns' => container_get_dns_servers(container).to_s,
+      'DnsSearch' => container_dns_search(container).to_s,
+      'NetworkMode' => container_network_mode(container).to_s
     }
 
     #  host_config['LxcConf'] # {"lxc.utsname":"docker"},
@@ -188,11 +188,14 @@ module DockerApiCreateOptions
     container.hostname unless container.on_host_net? == true
   end
 
+  def container_domain_name(container)
+    SystemConfig.internal_domain
+  end
   def build_top_level(container)
 
     top_level = {
       'Hostname' => hostname(container),
-      'Domainame' =>  container.domain_name,
+      'Domainame' =>  container_domain_name(container),
       'AttachStdin' => false,
       'AttachStdout' => false,
       'AttachStderr' => false,
@@ -205,9 +208,9 @@ module DockerApiCreateOptions
       'NetworkDisabled' => false,
       'StopSignal' => 'SIGTERM',
       'Image' => container.image,
-      'Env' => envs(container),
-     'ExposedPorts' => exposed_ports(container),
-      'HostConfig' => host_config_options(container)
+      'Env' => envs(container).to_s,
+     'ExposedPorts' => exposed_ports(container).to_s,
+      'HostConfig' => host_config_options(container).to_s
     }
 
     command =  container.command
