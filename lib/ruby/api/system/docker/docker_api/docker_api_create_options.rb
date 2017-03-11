@@ -100,9 +100,9 @@ module DockerApiCreateOptions
 
   def container_network_mode(container)
     if container.on_host_net? == false
-      host_config['NetworkMode'] = 'bridge'
+       'bridge'
     else
-      host_config['NetworkMode'] ='host'
+      'host'
     end
   end
 
