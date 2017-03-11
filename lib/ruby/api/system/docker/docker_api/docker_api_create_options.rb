@@ -86,7 +86,7 @@ module DockerApiCreateOptions
     container.volumes_from unless container.volumes_from.nil?
   end
 
-  def container.capabilities(container)
+  def container_capabilities(container)
     add_capabilities(container.capabilities) unless container.capabilities.nil?
   end
 
@@ -115,7 +115,7 @@ module DockerApiCreateOptions
       'Memory' => container_memory(container),
       'MemorySwap' => container_memory(container) * 2,
       'VolumesFrom' => container_volumes(container),
-      'CapAdd' => container.capabilities(container),
+      'CapAdd' => container_capabilities(container),
       'OomKillDisable' => false,
       'LogConfig' => log_config(container),
       'PublishAllPorts' => false,
