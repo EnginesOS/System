@@ -7,7 +7,7 @@ module DockerApiCreateOptions
     @top_level = build_top_level(container)
     @top_level['Env'] = envs(container)
     #  @top_level['Mounts'] = volumes_mounts(container)
-    @top_level['ExposedPorts'] = exposed_ports(container)
+    @top_level['ExposedPorts'] = exposed_ports(container) unless exposed_ports.nil?
     @top_level['HostConfig'] = host_config_options(container)
      # STDERR.puts('create options ' + @top_level.to_s)
     return @top_level
@@ -22,8 +22,9 @@ module DockerApiCreateOptions
   end
 
   def exposed_ports(container)
+   
+    return if container.mapped_ports.nil?
     eports = {}
-    return eports if container.mapped_ports.nil?
     container.mapped_ports.each_value do |port|      
       port = SystemUtils.symbolize_keys(port)  
       if port[:port].is_a?(String) && port[:port].include?('-')
@@ -41,8 +42,10 @@ module DockerApiCreateOptions
     container.volumes.each_value do |volume|
       mounts.push(mount_string(volume))
     end
-    mounts.concat(system_mounts(container))
-    mounts.concat(cert_mounts(container))
+    sm = system_mounts(container)
+    mounts.concat(sm) unless sm.nil?
+    cm = cert_mounts(container)
+    mounts.concat(cm) unless cm.nil?
     mounts
   end
 
