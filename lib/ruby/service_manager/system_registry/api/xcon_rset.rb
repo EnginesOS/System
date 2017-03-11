@@ -168,6 +168,7 @@ def parse_xcon_response(resp)
   r.strip!
   return true if r.to_s   == '' ||  r.to_s   == 'true'
   return false if r.to_s  == 'false'
+  return nil if r.to_s  == 'null'
   hash = SystemUtils.deal_with_jason(JSON.parse(r, :create_additions => true))
   return hash
   rescue  StandardError => e
