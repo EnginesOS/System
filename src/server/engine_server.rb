@@ -118,7 +118,7 @@ begin
 
   rescue StandardError => e
     STDERR.puts('Exception failed to open  sql_lite_database: ' + e.to_s)
-    return false
+     false
   end
   #
   #  def save_curr_events_stream(events_stream )

@@ -64,5 +64,5 @@ def assemble_params(ps, address_params, required_params=nil, accept_params=nil )
     return true if params.key?(key)
     p :missing_key
     p key
-    return false
+    false
   end

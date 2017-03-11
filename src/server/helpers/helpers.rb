@@ -49,7 +49,7 @@ require_relative 'params.rb'
     f = File.open('/tmp/exceptions.' + Process.pid.to_s, 'a+')
     f.puts(e_str)
     f.close
-    return false
+     false
   end
 
   def log_error(request, error_object, *args)
@@ -73,7 +73,7 @@ require_relative 'params.rb'
     else
       status(code)
     end
-    return error_mesg.to_json
+     error_mesg.to_json
   end
 
   def get_engine(engine_name)
@@ -89,7 +89,7 @@ require_relative 'params.rb'
 
     service = engines_api.loadManagedService(service_name)
     return service if service.is_a?(ManagedService) || service.is_a?(EnginesError)
-    return log_error('Load Service failed !!!' + service_name, service)
+     log_error('Load Service failed !!!' + service_name, service)
   end
 
   def  downcase_keys(hash)
