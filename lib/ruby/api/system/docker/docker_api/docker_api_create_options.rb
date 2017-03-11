@@ -85,18 +85,22 @@ module DockerApiCreateOptions
 
   def container_volumes(container)
     container.volumes_from unless container.volumes_from.nil?
+    ''
   end
 
   def container_capabilities(container)
     add_capabilities(container.capabilities) unless container.capabilities.nil?
+    ''
   end
 
   def container_get_dns_servers(container)
     get_dns_servers  if container.on_host_net? == false
+    ''
   end
 
   def container_dns_search(container)
     get_dns_search  if container.on_host_net? == false
+    ''
   end
 
   def container_network_mode(container)
@@ -115,16 +119,16 @@ module DockerApiCreateOptions
       'Volumes' => {},
       'Memory' => container_memory(container),
       'MemorySwap' => container_memory(container) * 2,
-      'VolumesFrom' => container_volumes(container).to_s,
-      'CapAdd' => container_capabilities(container).to_s,
+      'VolumesFrom' => container_volumes(container),
+      'CapAdd' => container_capabilities(container),
       'OomKillDisable' => false,
       'LogConfig' => log_config(container).to_s,
       'PublishAllPorts' => false,
       'Privileged' => false,
       'ReadonlyRootfs' => false,
-      'Dns' => container_get_dns_servers(container).to_s,
-      'DnsSearch' => container_dns_search(container).to_s,
-      'NetworkMode' => container_network_mode(container).to_s
+      'Dns' => container_get_dns_servers(container),
+      'DnsSearch' => container_dns_search(container),
+      'NetworkMode' => container_network_mode(container)
     }
 
     #  host_config['LxcConf'] # {"lxc.utsname":"docker"},
@@ -158,7 +162,7 @@ module DockerApiCreateOptions
   end
 
   def log_config(container)
-    return { "Type" => 'json-file', "Config" => {}}
+    #  return { "Type" => 'json-file', "Config" => {}}
     return { "Type" => 'json-file', "Config" => { "max-size" =>"5m", "max-file" => '10' } } if container.ctype == 'service'
     { "Type" => 'JsonFile', "Config" => { "max-size" =>"1m", "max-file" => '5' } }
   end
@@ -186,6 +190,7 @@ module DockerApiCreateOptions
 
   def hostname(container)
     container.hostname unless container.on_host_net? == true
+    ''
   end
 
   def container_domain_name(container)
@@ -209,8 +214,8 @@ module DockerApiCreateOptions
       'StopSignal' => 'SIGTERM',
       'Image' => container.image,
       'Env' => envs(container).to_s,
-     'ExposedPorts' => exposed_ports(container).to_s,
-      'HostConfig' => host_config_options(container).to_s
+     'ExposedPorts' => exposed_ports(container),
+      'HostConfig' => host_config_options(container)
     }
 
     command =  container.command
