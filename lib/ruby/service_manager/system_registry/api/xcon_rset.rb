@@ -160,6 +160,7 @@ end
 
 def parse_xcon_response(resp)
   return STDERR.puts('nil resp')  if resp.nil?
+  return STDERR.puts('40x resp' + resp.body.to_s)  if resp.status > 399
   return false if resp.status  == 404
   return parse_error(resp) if resp.status > 399
   r = resp.body

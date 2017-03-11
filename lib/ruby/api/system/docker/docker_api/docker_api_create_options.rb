@@ -187,9 +187,9 @@ module DockerApiCreateOptions
   end
   
   def cert_mounts(container)
-    mounts = []
-      return mounts if container.certificates.nil?
-      
+
+      return  unless container.certificates.is_a?(Array)    
+    mounts = []  
     container.certificates.each do |certificate|
       prefix =  certificate[:container_type] + '_' + certificate[:parent_engine] + '_' + certificate[:variables][:cert_name]
       mounts.push(SystemConfig.CertificatesDir + prefix + '.crt:' + SystemConfig.CertificatesDestination +  certificate[:variables][:cert_name] + '.crt:ro' )
