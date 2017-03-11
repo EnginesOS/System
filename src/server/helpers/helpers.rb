@@ -98,7 +98,7 @@ require_relative 'params.rb'
     hash.map{|k,v| [k.downcase, downcase_keys(v)] }.to_h
   end
 
-  require_relative 'api/routes.rb'
+ 
 
   def managed_containers_to_json(containers)
     if containers.is_a?(Array)
