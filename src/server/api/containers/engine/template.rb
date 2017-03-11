@@ -14,6 +14,6 @@ post '/v0/containers/engine/:engine_name/template' do
   return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
   resolved_string = engines_api.get_resolved_engine_string(cparams[:template_string],engine)
   return log_error(request, resolved_string, cparams) if resolved_string.is_a?(EnginesError)
-  return_text(r)
+  return_text(resolved_string)
 end
 # @!endgroup
