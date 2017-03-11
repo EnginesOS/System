@@ -2,7 +2,7 @@ def assemble_params(ps, address_params, required_params=nil, accept_params=nil )
   # STDERR.puts( 'assemble_params Address params ' + ps.to_s + ' address keys required ' + address_params.to_s)
     return nil if ps.nil?
    ps = RegistryUtils.symbolize_keys(ps)
-    a_params = address_params(ps, address_params)
+    a_params = match_address_params(ps, address_params)
     return EnginesError.new('Missing Address Parameters ' + address_params.to_s + ' but only have:' + ps.to_s, :error,'api') if a_params == false
   
     unless  required_params.nil? || required_params.empty?
@@ -34,7 +34,7 @@ def assemble_params(ps, address_params, required_params=nil, accept_params=nil )
     match_params(mparams, keys )
   end
 
-  def address_params(params, keys)
+  def match_address_params(params, keys)
     # STDERR.puts( 'Address params ' + params.to_s + ' keys required ' + keys.to_s)
     match_params(params, keys, true)
   end
