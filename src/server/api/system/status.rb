@@ -7,7 +7,7 @@
 get '/v0/system/status/first_run_required' do
   first_run_required = engines_api.first_run_required?
   return log_error(request,status ) if first_run_required.is_a?(EnginesError)
-  return_text(rfirst_run_required) # no checky as true or false
+  return_text(first_run_required) # no checky as true or false
 end
 
 # @method get_system_status
