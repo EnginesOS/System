@@ -16,6 +16,7 @@ return log_error(request, cparams, params) if cparams.is_a?(EnginesError)
   r = engines_api.get_registered_against_service(cparams)
 
   return log_error(request, r) if r.is_a?(EnginesError)
+  r = [] if r.nil?
   r.to_json
 end
 
