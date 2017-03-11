@@ -13,7 +13,7 @@ end
 # @return [Array] Orphan Service Hashes
 get '/v0/service_manager/orphan_services/:publisher_namespace/*' do
   params[:type_path] = params['splat'][0] if params.key?('splat') && params['splat'].is_a?(Array)
-  cparams =  Utils::Params.assemble_params(params, [:publisher_namespace, :type_path], [])
+  cparams = assemble_params(params, [:publisher_namespace, :type_path], [])
   return log_error(request, cparams, params) if cparams.is_a?(EnginesError)
   r = engines_api.get_orphaned_services(cparams)
   return log_error(request, r) if r.is_a?(EnginesError)
@@ -32,7 +32,7 @@ get '/v0/service_manager/orphan_service/:publisher_namespace/*' do
   params[:type_path] = File.dirname(params[:type_path])
   params[:parent_engine] = File.basename(params['splat'][0])
 
-  cparams =  Utils::Params.assemble_params(params, [:publisher_namespace, :type_path, :service_handle, :parent_engine], [])
+  cparams = assemble_params(params, [:publisher_namespace, :type_path, :service_handle, :parent_engine], [])
   return log_error(request, cparams, params) if cparams.is_a?(EnginesError)
   r = engines_api.retrieve_orphan(cparams)
 
@@ -52,7 +52,7 @@ delete '/v0/service_manager/orphan_service/:publisher_namespace/*' do
   params[:type_path] = File.dirname(params[:type_path])
   params[:parent_engine] = File.basename(params['splat'][0])
 
-  cparams =  Utils::Params.assemble_params(params, [:publisher_namespace, :type_path, :service_handle, :parent_engine], [])
+  cparams = assemble_params(params, [:publisher_namespace, :type_path, :service_handle, :parent_engine], [])
   return log_error(request, cparams, params) if cparams.is_a?(EnginesError)
   service_hash = engines_api.retrieve_orphan(cparams)
   STDERR.puts('Orphan restrived to DELETE ' + service_hash.to_s  + ' From ' + cparams.to_s)

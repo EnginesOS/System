@@ -13,7 +13,7 @@ post '/v0/containers/engine/:engine_name/properties/network' do
   p_params[:engine_name] = params[:engine_name]
   engine = get_engine(p_params[:engine_name])
   return log_error(request ,'failed to load ') unless engine.is_a?(ManagedEngine)
-  cparams =  Utils::Params.assemble_params(p_params, [:engine_name], :all) # [:memory, :environment_variables])
+  cparams = assemble_params(p_params, [:engine_name], :all) # [:memory, :environment_variables])
   return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
   r = engines_api.set_container_network_properties(engine, cparams)
   return log_error(request , r,engine.last_error) if r.is_a?(EnginesError)
@@ -29,7 +29,7 @@ end
 post '/v0/containers/engine/:engine_name/properties/runtime' do
   p_params = post_params(request)
   p_params[:engine_name] = params[:engine_name]
-  cparams =  Utils::Params.assemble_params(p_params, [:engine_name], [], [:memory, :environment_variables]) # :all)
+  cparams = assemble_params(p_params, [:engine_name], [], [:memory, :environment_variables]) # :all)
   return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
   engine = get_engine(cparams[:engine_name])
   return log_error(request, engine, p_params) if engine.is_a?(EnginesError)

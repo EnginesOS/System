@@ -37,7 +37,7 @@ post '/v0/containers/engine/:engine_name/services/persistent/share/:owner/:publi
   
   p_params.merge!(path_hash)
  
-  cparams =  Utils::Params.assemble_params(p_params, [:parent_engine,:owner,:publisher_namespace, :type_path, :service_handle], :all)
+  cparams = assemble_params(p_params, [:parent_engine,:owner,:publisher_namespace, :type_path, :service_handle], :all)
 
   return log_error(request,cparams,p_params) if cparams.is_a?(EnginesError)
   r = engines_api.connect_share_service(cparams)
@@ -55,7 +55,7 @@ post '/v0/containers/engine/:engine_name/services/persistent/orphan/:owner/:publ
   path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, false)
   path_hash[:owner] = params[:owner]
   p_params.merge!(path_hash)
-  cparams =  Utils::Params.assemble_params(p_params, [:parent_engine,:owner,:publisher_namespace, :type_path, :service_handle], :all)
+  cparams = assemble_params(p_params, [:parent_engine,:owner,:publisher_namespace, :type_path, :service_handle], :all)
   return log_error(request,cparams,p_params) if cparams.is_a?(EnginesError)
 
   r = engines_api.connect_orphan_service(cparams)
@@ -74,7 +74,7 @@ post '/v0/containers/engine/:engine_name/services/persistent/:publisher_namespac
   path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, true)
   p_params.merge!(path_hash)
 
-  cparams =  Utils::Params.assemble_params(p_params, [:parent_engine,:publisher_namespace, :type_path], :all)
+  cparams = assemble_params(p_params, [:parent_engine,:publisher_namespace, :type_path], :all)
   return log_error(request,cparams,p_params) if cparams.is_a?(EnginesError)
   r = engines_api.create_and_register_persistent_service(cparams)
   return log_error(request, r, cparams,to_s) if r.is_a?(EnginesError)
@@ -88,7 +88,7 @@ end
 # none orphanicates the persistent services
 delete '/v0/containers/engine/:engine_name/services/persistent/:remove_all_data/:publisher_namespace/*' do
   path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, false)
-  cparams =  Utils::Params.assemble_params(path_hash, [:parent_engine, :publisher_namespace, :type_path, :service_handle,:remove_all_data], [])
+  cparams = assemble_params(path_hash, [:parent_engine, :publisher_namespace, :type_path, :service_handle,:remove_all_data], [])
   return log_error(request,cparams,path_hash)  if cparams.is_a?(EnginesError)
   r = engines_api.remove_persistent_service(cparams)
   return log_error(request, r, cparams.to_s ) if r.is_a?(EnginesError)
@@ -101,7 +101,7 @@ end
 # @return [true|false]
 delete '/v0/containers/engine/:engine_name/services/persistent/shared/:owner/:publisher_namespace/*' do
   path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, false)
-  cparams =  Utils::Params.assemble_params(path_hash, [:engine_name, :owner, :publisher_namespace, :type_path, :service_handle], [])
+  cparams = assemble_params(path_hash, [:engine_name, :owner, :publisher_namespace, :type_path, :service_handle], [])
   return log_error(request,cparams,path_hash)  if cparams.is_a?(EnginesError)
   r = engines_api.dettach_share_service(cparams)
   return log_error(request, r, cparams.to_s ) if r.is_a?(EnginesError)

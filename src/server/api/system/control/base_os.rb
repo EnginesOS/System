@@ -19,7 +19,7 @@ end
 # @return [true]
 post '/v0/system/control/base_os/shutdown' do
   p_params = post_params(request)
-  cparams =  Utils::Params.assemble_params(p_params, [],  [:reason])
+  cparams = assemble_params(p_params, [],  [:reason])
   return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
   shutdown = cparams[:reason] #symbolize_keys(params)
   r = engines_api.halt_base_os(shutdown)

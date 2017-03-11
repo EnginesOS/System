@@ -31,7 +31,7 @@ post '/v0/containers/service/:service_name/configuration/:configurator_name' do
   p_params.merge!(params)
  # STDERR.puts(" post config " + p_params.to_s)
   
-  cparams =  Utils::Params.assemble_params(p_params, [:service_name, :configurator_name], [:variables])
+  cparams = assemble_params(p_params, [:service_name, :configurator_name], [:variables])
   return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)  
   service = get_service(params[:service_name])
   return log_error(request, service, params) if service.is_a?(EnginesError)  

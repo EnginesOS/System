@@ -21,7 +21,7 @@ post '/v0/system/domains/:domain_name' do
   post_s = post_params(request)
   post_s[:domain_name] = params['domain_name']
 
-  cparams =  Utils::Params.assemble_params(post_s, [:domain_name], :all)
+  cparams = assemble_params(post_s, [:domain_name], :all)
   return log_error(request, cparams, post_s) if cparams.is_a?(EnginesError)
  # STDERR.puts('EDIT DOMAIN Params ' + cparams.to_s )
   r = engines_api.update_domain(cparams)

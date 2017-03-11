@@ -22,7 +22,7 @@ post '/v0/system/keys/user/:user_name' do
   content_type 'text/plain'
   p_params = post_params(request)
   params.merge!(p_params)
-  cparams =  Utils::Params.assemble_params(params, [:user_name],  :public_key)
+  cparams = assemble_params(params, [:user_name],  :public_key)
   return log_error(request, cparams, params) if cparams.is_a?(EnginesError)
   update_key = cparams[:public_key] #symbolize_keys(params)
   r = engines_api.update_public_key(update_key)

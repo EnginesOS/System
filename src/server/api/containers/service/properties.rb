@@ -12,7 +12,7 @@ post '/v0/containers/service/:service_name/properties/network' do
   p_params[:service_name] = params[:service_name]
   service = get_service(p_params[:service_name])
   return log_error(request, service, p_params) if service.is_a?(EnginesError)
-  cparams =  Utils::Params.assemble_params(p_params, [:service_name],  :all) 
+  cparams = assemble_params(p_params, [:service_name],  :all) 
   return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
   r = engines_api.set_container_network_properties(service, cparams)
   return log_error(request, r, cparams) if r.is_a?(EnginesError)
@@ -29,7 +29,7 @@ post '/v0/containers/service/:service_name/properties/runtime' do
   p_params[:service_name] = params[:service_name]
   service = get_service(p_params[:service_name])
   return log_error(request, service, p_params) if service.is_a?(EnginesError)
-  cparams =  Utils::Params.assemble_params(p_params, [:service_name],  :all) 
+  cparams = assemble_params(p_params, [:service_name],  :all) 
   return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
   r = engines_api.set_container_runtime_properties(service, cparams)
   return log_error(request, r, cparams) if r.is_a?(EnginesError)

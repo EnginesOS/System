@@ -10,7 +10,7 @@ post '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_names
   p_params = post_params(request)
    path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, false)
    p_params.merge!(path_hash)
-   cparams =  Utils::Params.assemble_params(p_params, [:parent_engine,:publisher_namespace, :type_path, :service_handle], :all)
+   cparams = assemble_params(p_params, [:parent_engine,:publisher_namespace, :type_path, :service_handle], :all)
    return log_error(request,cparams,p_params) if cparams.is_a?(EnginesError)
  
   r = engines_api.update_attached_service(cparams)

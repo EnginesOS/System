@@ -62,7 +62,7 @@ end
 # @return [true]
 post '/v0/system/certs/default' do
   post_s = post_params(request)
-  cparams =  Utils::Params.assemble_params(post_s, [], :all)
+  cparams = assemble_params(post_s, [], :all)
   return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
   cparams[:set_as_default] = true
   r = engines_api.upload_ssl_certificate(cparams)
@@ -81,7 +81,7 @@ end
 # @return [true]
 post '/v0/system/certs/' do
   post_s = post_params(request)
-  cparams =  Utils::Params.assemble_params(post_s, [], :all)
+  cparams = assemble_params(post_s, [], :all)
   r = engines_api.upload_ssl_certificate(cparams)
   return  log_error(request, r, cparams) if r.is_a?(EnginesError)
   status(202)
@@ -108,7 +108,7 @@ end
 post '/v0/system/certs/generate' do
   p_params = post_params(request)
 
-  cparams =  Utils::Params.assemble_params(p_params, [], :all)
+  cparams = assemble_params(p_params, [], :all)
   return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
   
  # STDERR.puts('ADD cert Params ' + cparams.to_s )

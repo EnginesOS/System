@@ -63,7 +63,7 @@ end
 # @return [Hash]
 get '/v0/containers/service/:service_name/service_definition' do
   #STDERR.puts('/v0/containers/service/:service_name/service_definition' )
-  cparams =  Utils::Params.assemble_params(params, [:service_name], [])
+  cparams = assemble_params(params, [:service_name], [])
   return log_error(request, cparams, params) if cparams.is_a?(EnginesError)
   r = get_service(cparams[:service_name])
   return r if r.is_a?(EnginesError)

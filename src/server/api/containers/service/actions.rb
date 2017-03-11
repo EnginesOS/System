@@ -34,7 +34,7 @@ post '/v0/containers/service/:service_name/action/:action_name' do
   p_params = post_params(request)
   service = get_service(p_params[:service_name])
   return log_error(request, service, p_params) if service.is_a?(EnginesError)
-  cparams =  Utils::Params.assemble_params(p_params, [:service_name], :all)
+  cparams = assemble_params(p_params, [:service_name], :all)
   return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
   action = engines_api.perform_service_action(service, p_params[:action_name], cparams)
   return log_error(request, action, service.last_error) if action.is_a?(EnginesError)

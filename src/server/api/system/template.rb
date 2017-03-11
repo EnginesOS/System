@@ -8,7 +8,7 @@
 post '/v0/system/template' do
   # engine = get_engine(params[:engine_name])
   params = post_params(request)
-  cparams =  Utils::Params.assemble_params(params, [],  :string)
+  cparams = assemble_params(params, [],  :string)
   return log_error(request, cparams, params) if cparams.is_a?(EnginesError)
   resolved_string = engines_api.get_resolved_string(cparams[:string])
   return log_error(request, resolved_string, cparams) if resolved_string.is_a?(EnginesError)

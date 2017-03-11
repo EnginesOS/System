@@ -9,7 +9,7 @@
 post '/v0/system/domains/' do
   p_params = post_params(request)
 
-  cparams =  Utils::Params.assemble_params(p_params, [], :all)
+  cparams = assemble_params(p_params, [], :all)
   return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
   
  # STDERR.puts('ADD DOMAIN Params ' + cparams.to_s )
