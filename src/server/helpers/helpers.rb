@@ -19,12 +19,11 @@ require_relative 'params.rb'
   def return_text(r, s=202)
     content_type 'text/plain'
     status(s)
-    r
+    r.to_s
   end
 
-  def return_true(s=200)
-    content_type 'text/plain'
-    'true'
+  def return_true(s = 200)   
+    return_text('true', s)
   end
 
   def json_parser
