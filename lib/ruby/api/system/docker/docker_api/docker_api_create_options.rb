@@ -7,7 +7,8 @@ module DockerApiCreateOptions
     @top_level = build_top_level(container)
     @top_level['Env'] = envs(container)
     #  @top_level['Mounts'] = volumes_mounts(container)
-    @top_level['ExposedPorts'] = exposed_ports(container) unless exposed_ports.nil?
+    ports = exposed_ports(container) 
+    @top_level['ExposedPorts'] = ports unless ports.nil?
     @top_level['HostConfig'] = host_config_options(container)
      # STDERR.puts('create options ' + @top_level.to_s)
     return @top_level
