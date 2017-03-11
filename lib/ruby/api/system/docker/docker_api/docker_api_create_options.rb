@@ -25,7 +25,7 @@ module DockerApiCreateOptions
 
   def exposed_ports(container)
 
-    return if container.mapped_ports.nil?
+    return {} if container.mapped_ports.nil?
     eports = {}
     container.mapped_ports.each_value do |port|
       port = SystemUtils.symbolize_keys(port)
