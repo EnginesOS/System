@@ -117,7 +117,7 @@ module DockerApiCreateOptions
     {
       'Binds' => volumes_mounts(container),
      'PortBindings' => port_bindings(container),
-      'Volumes' => {},
+     
       'Memory' => container_memory(container),
       'MemorySwap' => container_memory(container) * 2,
      'VolumesFrom' => container_volumes(container),
@@ -216,7 +216,8 @@ module DockerApiCreateOptions
       'StopSignal' => 'SIGTERM',
       'Image' => container.image,
       'Env' => envs(container),
-   #  'ExposedPorts' => exposed_ports(container),
+      'Volumes' => {},
+    'ExposedPorts' => exposed_ports(container),
       'HostConfig' => host_config_options(container)
     }
 
