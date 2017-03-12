@@ -194,7 +194,8 @@ module DockerApiCreateOptions
   end
 
   def container_domain_name(container)
-    SystemConfig.internal_domain unless container.on_host_net? == false
+    SystemConfig.internal_domain if container.on_host_net? == false
+    ''
   end
   def build_top_level(container)
 
