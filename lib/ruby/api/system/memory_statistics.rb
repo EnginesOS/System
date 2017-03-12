@@ -28,7 +28,7 @@ module MemoryStatistics
     }
     engines_memory_statistics[:containers][:totals] = {
       applications: engines_memory_statistics[:containers][:applications][:totals],
-      services: engines_memory_statistics[:services][:applications][:totals]
+      services: engines_memory_statistics[:containers][:services][:totals]
     }
     engines_memory_statistics[:containers][:applications].delete(:totals)
     engines_memory_statistics[:containers][:services].delete(:totals)
