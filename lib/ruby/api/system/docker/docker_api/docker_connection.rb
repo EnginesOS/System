@@ -147,16 +147,19 @@ class DockerConnection < ErrorsApi
   rescue StandardError => e
     log_exception(e)
   end
-
+  
+  def request_params(params)
+    @request_params = params
+  end
   def get_request(uri,  expect_json = true, rheaders = nil, timeout = 60)
     rheaders = default_headers if rheaders.nil?
 
-    r = connection.request({method: :get,path: uri,read_timeout: timeout,headers: rheaders})
+    r = connection.request(request_params({method: :get,path: uri,read_timeout: timeout,headers: rheaders}))
     #  STDERR.puts(' docker rget' + r.to_s)
     return handle_resp(r,expect_json) unless headers.nil?
 
-    handle_resp(connection.request(:method => :get,
-    :path => uri),
+    handle_resp(connection.request(request_params(method: :get,
+    path: uri)),
     expect_json
     )
   rescue  Excon::Error::Socket => e
@@ -166,8 +169,8 @@ class DockerConnection < ErrorsApi
   end
 
   def delete_request(uri)
-    handle_resp(connection.request(method: :delete,
-    path: uri),
+    handle_resp(connection.request(request_params({method: :delete,
+  path: uri})),
     false
     )
   rescue  Excon::Error::Socket => e
@@ -179,7 +182,8 @@ class DockerConnection < ErrorsApi
   private
 
   def handle_resp(resp, expect_json)
-    STDERR.puts(" RESPOSE " + resp.status.to_s + " : " + resp.body  ) if resp.status  >= 400
+    STDERR.puts(" Bad Request " + resp.status.to_s + " : " + @request_params.to_s ) if resp.status  == 400
+    STDERR.puts(" RESPOSE " + resp.status.to_s + " : " + resp.body ) if resp.status  > 400
     return log_error_mesg("error:" + resp.status.to_s,resp.body ).to_json  if resp.status  >= 400
     return true if resp.status  == 204 # nodata but all good happens on del
     return log_error_mesg("Un exepect response from docker", resp, resp.body, resp.headers.to_s )   unless resp.status  == 200 ||  resp.status  == 201
