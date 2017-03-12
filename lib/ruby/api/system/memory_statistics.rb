@@ -14,7 +14,9 @@ module MemoryStatistics
     services = api.getManagedServices
     system_services = api.getSystemServices
     services.concat(system_services)
-   # STDERR.puts('services ' + services.to_s)
+    services.each do |service |
+    STDERR.puts('service ' + service.container_name.to_s)
+    end
     engines_memory_statistics[:containers] = {}
     engines_memory_statistics[:containers][:applications] = collect_containers_memory_stats(engines)
     engines_memory_statistics[:containers][:services] = collect_containers_memory_stats(services)
