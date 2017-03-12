@@ -7,6 +7,7 @@ require_relative 'params.rb'
 
   def return_json(r, s=202)
     status(s)
+    return empty_json if r.nil?
     STDERR.puts("JSON " + r.to_s)
     r.to_json
   end
@@ -38,7 +39,9 @@ require_relative 'params.rb'
   def empty_array
     @empty_array ||= [].to_json
   end
-
+  def empty_json
+    @empty_json ||= {}.to_json
+   end
   def log_exception(e, *args)
     e_str = e.to_s()
     e.backtrace.each do |bt|
