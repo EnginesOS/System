@@ -75,7 +75,7 @@ module DockerInfoCollector
       if info.is_a?(Hash)
         SystemDebug.debug(SystemDebug.containers,'hash')
       end
- 
+    return -1 unless info.is_a?(Hash)
       return -1 if info.key?(:RepoTags) #No container by that name and it will return images by that name WTF
       @container_id = info[:Id] if info.key?(:Id)
       SystemDebug.debug(SystemDebug.containers,@container_id)

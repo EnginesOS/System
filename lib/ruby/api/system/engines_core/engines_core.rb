@@ -241,6 +241,8 @@ class EnginesCore < ErrorsApi
     }
     return true if @build_thread.alive?
      log_error(params[:engine_name], 'Build Failed to start')
+  rescue StandardError => e
+    log_excepton(e)
   end
 
   def shutdown(reason)
