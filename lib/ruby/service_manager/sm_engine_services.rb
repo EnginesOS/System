@@ -56,7 +56,7 @@ module SmEngineServices
          container_type: engine.ctype    
        }
     services = get_engine_persistent_services(params)
-    return services
+     services
   rescue StandardError => e
     log_exception(e)
   end
@@ -70,7 +70,7 @@ module SmEngineServices
 
     services = get_engine_nonpersistent_services(params)
 
-    return services
+     services
   rescue StandardError => e
     log_exception(e)
   end
@@ -97,7 +97,7 @@ module SmEngineServices
 
   def remove_engine_from_managed_engines_registry(params)
     r = system_registry_client.remove_from_managed_engines_registry(params)
-    return r
+     r
   rescue StandardError => e
     log_exception(e)
   end
@@ -127,6 +127,7 @@ module SmEngineServices
     r = ''
     services = test_registry_result(system_registry_client.get_engine_persistent_services(params))
     return log_error_message(' rm_remove_engine_services FAILed ', services ) if services.is_a?(EnginesError)
+    return true unless services.is_a?(Array)
     services.each do | service |
       SystemDebug.debug(SystemDebug.services, :remove_service, service)
       if params[:remove_all_data] || service[:shared] #&& ! (service.key?(:shared) && service[:shared])
@@ -137,7 +138,7 @@ module SmEngineServices
       end
       return r if (r = system_registry_client.remove_from_managed_engines_registry(service)).is_a?(EnginesError)
     end
-    return true
+     true
   rescue StandardError => e
     log_exception(e)
   end

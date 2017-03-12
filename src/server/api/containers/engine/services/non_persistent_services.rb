@@ -9,7 +9,7 @@ get '/v0/containers/engine/:engine_name/services/non_persistent/' do
   return log_error(request, engine, params) if engine.is_a?(EnginesError)
   r = engines_api.list_non_persistent_services(engine)
   return log_error(request, r,  engine.last_error) if r.is_a?(EnginesError)
-  return_json(r)
+  return_json_array(r)
 end
 
 # @method add_engine_non_persistent_service
