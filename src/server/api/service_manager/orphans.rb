@@ -6,7 +6,7 @@
 get '/v0/service_manager/orphan_services/' do
   orphans = engines_api.get_orphaned_services_tree
   return log_error(request, orphans) if orphans.is_a?(EnginesError)
-  return_json(r)
+  return_json(orphans)
 end
 # @method get_orphan_services_by_type
 # @overload get '/v0/service_manager/orphan_services/:publisher_namespace/:type_path:'
