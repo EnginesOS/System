@@ -25,7 +25,6 @@ end
 get '/v0/system/metrics/load' do
   load_info = engines_api.get_system_load_info
   return log_error(request, load_info) if load_info.is_a?(EnginesError)
-    status(202)
   return_json(load_info)
 end
 
@@ -40,7 +39,6 @@ end
 get '/v0/system/metrics/memory/statistics' do
   memory_statistics = MemoryStatistics.total_memory_statistics(engines_api)
   return log_error(request, memory_statistics) if memory_statistics.is_a?(EnginesError)
-    status(202)
   return_json( memory_statistics)
 end
 
