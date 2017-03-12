@@ -49,6 +49,7 @@ module Services
     services.each do |service_name |
       service = loadManagedService(service_name) if type == 'service'
       service = loadSystemService(service_name) if type == 'system_service'
+      STDERR.puts('laoded ' + service.container_name)
       ret_val.push(service) if service.is_a?(ManagedService)
     end
     return ret_val
