@@ -4,6 +4,7 @@
 def add_to_managed_service(service_hash)
   clear_error
   result = false
+  SystemDebug.debug(SystemDebug.services, :add_to_managed_service, service_hash)
   service =  @core_api.load_software_service(service_hash)
   return service if service.is_a?(EnginesError)
   return true if  service.is_soft_service? && !service.is_running?
