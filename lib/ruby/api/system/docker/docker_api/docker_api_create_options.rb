@@ -7,12 +7,12 @@ module DockerApiCreateOptions
     @top_level = build_top_level(container)
     # @top_level['Env'] = envs(container)
     #  @top_level['Mounts'] = volumes_mounts(container)
-   # ports = exposed_ports(container)
-   # @top_level['ExposedPorts'] = ports unless ports.nil?
-   # @top_level['HostConfig'] = host_config_options(container)
+    # ports = exposed_ports(container)
+    # @top_level['ExposedPorts'] = ports unless ports.nil?
+    # @top_level['HostConfig'] = host_config_options(container)
     # STDERR.puts('create options ' + @top_level.to_s)
     # @top_level
-   # STDERR.puts('create  container.on_host_net?' + container.on_host_net?.to_s)
+    # STDERR.puts('create  container.on_host_net?' + container.on_host_net?.to_s)
     STDERR.puts('create options ' + @top_level.to_json)
   rescue StandardError => e
     log_exception(e)
@@ -100,13 +100,13 @@ module DockerApiCreateOptions
   end
 
   def container_dns_search(container)
-   return get_dns_search  if container.on_host_net? == false
+    return get_dns_search  if container.on_host_net? == false
     ''
   end
 
   def container_network_mode(container)
     if container.on_host_net? == false
-       'bridge'
+      'bridge'
     else
       'host'
     end
@@ -116,14 +116,13 @@ module DockerApiCreateOptions
 
     {
       'Binds' => volumes_mounts(container),
-     'PortBindings' => port_bindings(container),
-     
+      'PortBindings' => port_bindings(container),
       'Memory' => container_memory(container),
       'MemorySwap' => container_memory(container) * 2,
-     'VolumesFrom' => container_volumes(container),
-      #   'CapAdd' => container_capabilities(container),
+      'VolumesFrom' => container_volumes(container),
+      'CapAdd' => container_capabilities(container),
       'OomKillDisable' => false,
-      #   'LogConfig' => log_config(container),
+      'LogConfig' => log_config(container),
       'PublishAllPorts' => false,
       'Privileged' => false,
       'ReadonlyRootfs' => false,
@@ -163,7 +162,7 @@ module DockerApiCreateOptions
   end
 
   def log_config(container)
-      return { "Type" => 'json-file', "Config" => {}}
+    return { "Type" => 'json-file', "Config" => {}}
     return { "Type" => 'json-file', "Config" => { "max-size" =>"5m", "max-file" => '10' } } if container.ctype == 'service'
     { "Type" => 'json-file', "Config" => { "max-size" =>"1m", "max-file" => '5' } }
   end
@@ -198,6 +197,7 @@ module DockerApiCreateOptions
     return SystemConfig.internal_domain if container.on_host_net? == false
     ''
   end
+
   def build_top_level(container)
 
     top_level = {
@@ -212,7 +212,7 @@ module DockerApiCreateOptions
       'StdinOnce' => false,
       'Env' => envs(container),
       # 'Cmd'
-      # Entrypoint     
+      # Entrypoint
       'Image' => container.image,
       'Labels' => get_labels(container),
       'Volumes' => {},
@@ -220,7 +220,7 @@ module DockerApiCreateOptions
       'NetworkDisabled' => false,
       'ExposedPorts' => exposed_ports(container),
       'StopSignal' => 'SIGTERM',
-      #       "StopTimeout": 10,     
+      #       "StopTimeout": 10,
       'HostConfig' => host_config_options(container)
     }
 
