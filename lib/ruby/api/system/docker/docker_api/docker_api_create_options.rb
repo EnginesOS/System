@@ -189,12 +189,12 @@ module DockerApiCreateOptions
   end
 
   def hostname(container)
-    container.hostname unless container.on_host_net? == false
+    container.hostname if container.on_host_net? == false
     ''
   end
 
   def container_domain_name(container)
-    SystemConfig.internal_domain
+    SystemConfig.internal_domain unless container.on_host_net? == false
   end
   def build_top_level(container)
 
