@@ -123,7 +123,7 @@ module DockerApiCreateOptions
       'VolumesFrom' => container_volumes(container),
       'CapAdd' => container_capabilities(container),
       'OomKillDisable' => false,
-      'LogConfig' => log_config(container),
+     # 'LogConfig' => log_config(container),
       'PublishAllPorts' => false,
       'Privileged' => false,
       'ReadonlyRootfs' => false,
