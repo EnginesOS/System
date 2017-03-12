@@ -6,16 +6,16 @@ module MemoryStatistics
     stats[:peak_sum] = mem_stats[:engines][:totals][:peak_sum] + mem_stats[:services][:totals][:peak_sum].to_i
     stats
   end
-
+#  def applications_totals
+#     engines_memory_statistics[:containers][:applications][:totals]
+#   end
+#
+#   def services_totals
+#     engines_memory_statistics[:services][:applications][:totals]
+#   end
   def self.total_memory_statistics(api)
     SystemDebug.debug(SystemDebug.system, :total_mem_stats)
-    def applications_totals
-      engines_memory_statistics[:containers][:applications][:totals]
-    end
-
-    def services_totals
-      engines_memory_statistics[:services][:applications][:totals]
-    end
+ 
     engines = api.getManagedEngines
     services = api.getManagedServices
     system_services = api.getSystemServices
@@ -25,8 +25,8 @@ module MemoryStatistics
       applications: collect_containers_memory_stats(engines),
       services:  collect_containers_memory_stats(services),
       totals:  {
-      applications: applications_totals,
-      services: services_totals
+      applications: engines_memory_statistics[:containers][:applications][:totals],
+      services: engines_memory_statistics[:services][:applications][:totals]
       }
       }
     }
