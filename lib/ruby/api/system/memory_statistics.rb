@@ -9,31 +9,43 @@ module MemoryStatistics
 
   def self.total_memory_statistics(api)
     SystemDebug.debug(SystemDebug.system, :total_mem_stats)
-    engines_memory_statistics = {}
+    def applications_totals
+      engines_memory_statistics[:containers][:applications][:totals]
+    end
+
+    def services_totals
+      engines_memory_statistics[:services][:applications][:totals]
+    end
     engines = api.getManagedEngines
     services = api.getManagedServices
     system_services = api.getSystemServices
     services.concat(system_services)
-    engines_memory_statistics[:containers] = {}
-    engines_memory_statistics[:containers][:applications] = collect_containers_memory_stats(engines)
-    engines_memory_statistics[:containers][:services] = collect_containers_memory_stats(services)
-    engines_memory_statistics[:containers][:totals] = {}
-    engines_memory_statistics[:containers][:totals][:applications] = engines_memory_statistics[:containers][:applications][:totals]
-    engines_memory_statistics[:containers][:totals][:services] = engines_memory_statistics[:containers][:services][:totals]
+    engines_memory_statistics = {
+      containers:  {
+      applications: collect_containers_memory_stats(engines),
+      services:  collect_containers_memory_stats(services),
+      totals:  {
+      applications: applications_totals,
+      services: services_totals
+      }
+      }
+    }
     engines_memory_statistics[:containers][:applications].delete(:totals)
     engines_memory_statistics[:containers][:services].delete(:totals)
-    # engines_memory_statistics[:system_services] = collect_container_memory_stats(system_services)
-    #  engines_memory_statistics[:system] = self.get_system_memory_info
+
     engines_memory_statistics
   end
 
   def self.collect_containers_memory_stats(containers)
-    mem_stats = {}
-    mem_stats[:totals] = {}
-    mem_stats[:totals][:allocated] = 0
-    mem_stats[:totals][:in_use] = 0
-    mem_stats[:totals][:peak_sum] = 0
-    containers.each do | container|     
+
+    mem_stats = {
+      totals: {
+      allocated: 0,
+      in_use:  0,
+      peak_sum: 0
+      }
+    }
+    containers.each do | container|
       next if container.setState != "running"
       next unless container.is_running?
       container_sym = container.container_name.to_sym
@@ -49,40 +61,43 @@ module MemoryStatistics
     ret_val = {}
     if container && container.container_id.nil? == false && container.container_id != '-1'
       # path = '/sys/fs/cgroup/memory/docker/' + container.container_id.to_s + '/'
-      path = SystemUtils.cgroup_mem_dir(container.container_id.to_s)     
+      path = SystemUtils.cgroup_mem_dir(container.container_id.to_s)
       if Dir.exist?(path)
         ret_val.store(:maximum, File.read(path + '/memory.max_usage_in_bytes').to_i)
         ret_val.store(:current, File.read(path + '/memory.usage_in_bytes').to_i)
         ret_val.store(:limit, File.read(path + '/memory.limit_in_bytes').to_i)
       else
         STDERR.puts('no_cgroup_file for ' + container.container_name + ':' + path.to_s, path)
-         SystemUtils.log_error_mesg('no_cgroup_file for ' + container.container_name + ':' + path.to_s, path)
+        SystemUtils.log_error_mesg('no_cgroup_file for ' + container.container_name + ':' + path.to_s, path)
         ret_val  = self.empty_container_result
       end
     end
-     ret_val
+    ret_val
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    ret_val.store(:maximum, e.to_s)
-    ret_val.store(:current, 'NA')
-    ret_val.store(:limit, 'NA')
-     ret_val
+    {
+      maximum: e.to_s,
+      current: 0,
+      limit: 0
+    }
+
   end
 
   def self.empty_container_result
-    ret_val = {}
-    ret_val.store(:maximum, 0)
-    ret_val.store(:current, 0)
-    ret_val.store(:limit, 0)
-     ret_val
+    {
+      maximum: 0,
+      current: 0,
+      limit: 0
+    }
+
   end
 
   def self.available_ram
     mem_stats = self.get_system_memory_info
-    swp = 0 
-    swp = mem_stats[:swap_free] unless mem_stats[:swap_free].nil? 
-    swp /= 2 unless swp == 0 
+    swp = 0
+    swp = mem_stats[:swap_free] unless mem_stats[:swap_free].nil?
+    swp /= 2 unless swp == 0
     (mem_stats[:free] + mem_stats[:file_cache] + swp ) /1024
   end
- 
+
 end
