@@ -85,22 +85,22 @@ module DockerApiCreateOptions
   end
 
   def container_volumes(container)
-    container.volumes_from unless container.volumes_from.nil?
+    return  container.volumes_from unless container.volumes_from.nil?
     ''
   end
 
   def container_capabilities(container)
-    add_capabilities(container.capabilities) unless container.capabilities.nil?
+    return add_capabilities(container.capabilities) unless container.capabilities.nil?
     ''
   end
 
   def container_get_dns_servers(container)
-    get_dns_servers  if container.on_host_net? == false
+    return  get_dns_servers  if container.on_host_net? == false
     ''
   end
 
   def container_dns_search(container)
-    get_dns_search  if container.on_host_net? == false
+   return get_dns_search  if container.on_host_net? == false
     ''
   end
 
@@ -190,12 +190,12 @@ module DockerApiCreateOptions
   end
 
   def hostname(container)
-    container.hostname if container.on_host_net? == false
+    return  container.hostname if container.on_host_net? == false
     ''
   end
 
   def container_domain_name(container)
-    SystemConfig.internal_domain if container.on_host_net? == false
+    return SystemConfig.internal_domain if container.on_host_net? == false
     ''
   end
   def build_top_level(container)
