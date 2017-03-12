@@ -1,21 +1,13 @@
 module MemoryStatistics
   def self.collate_containers_mem(mem_stats)
-    stats = {}
-    stats[:allocated] = mem_stats[:engines][:totals][:allocated] + mem_stats[:services][:totals][:allocated].to_i
-    stats[:in_use] = mem_stats[:engines][:totals][:in_use] + mem_stats[:services][:totals][:in_use].to_i
-    stats[:peak_sum] = mem_stats[:engines][:totals][:peak_sum] + mem_stats[:services][:totals][:peak_sum].to_i
-    stats
+     {
+    allocated: mem_stats[:engines][:totals][:allocated] + mem_stats[:services][:totals][:allocated].to_i,
+    in_use: mem_stats[:engines][:totals][:in_use] + mem_stats[:services][:totals][:in_use].to_i,
+    peak_sum: mem_stats[:engines][:totals][:peak_sum] + mem_stats[:services][:totals][:peak_sum].to_i
+     }
   end
-#  def applications_totals
-#     engines_memory_statistics[:containers][:applications][:totals]
-#   end
-#
-#   def services_totals
-#     engines_memory_statistics[:services][:applications][:totals]
-#   end
-  def self.total_memory_statistics(api)
-    SystemDebug.debug(SystemDebug.system, :total_mem_stats)
  
+  def self.total_memory_statistics(api)
     engines = api.getManagedEngines
     services = api.getManagedServices
     system_services = api.getSystemServices
@@ -32,12 +24,10 @@ module MemoryStatistics
     }
     engines_memory_statistics[:containers][:applications].delete(:totals)
     engines_memory_statistics[:containers][:services].delete(:totals)
-
     engines_memory_statistics
   end
 
   def self.collect_containers_memory_stats(containers)
-
     mem_stats = {
       totals: {
       allocated: 0,
@@ -80,7 +70,6 @@ module MemoryStatistics
       current: 0,
       limit: 0
     }
-
   end
 
   def self.empty_container_result
@@ -89,7 +78,6 @@ module MemoryStatistics
       current: 0,
       limit: 0
     }
-
   end
 
   def self.available_ram
