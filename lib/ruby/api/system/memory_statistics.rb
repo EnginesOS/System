@@ -14,9 +14,6 @@ module MemoryStatistics
     services = api.getManagedServices
     system_services = api.getSystemServices
     services.concat(system_services)
-    services.each do |service |
-    STDERR.puts('service ' + service.container_name.to_s)
-    end
     engines_memory_statistics[:containers] = {}
     engines_memory_statistics[:containers][:applications] = collect_containers_memory_stats(engines)
     engines_memory_statistics[:containers][:services] = collect_containers_memory_stats(services)
@@ -36,10 +33,7 @@ module MemoryStatistics
     mem_stats[:totals][:allocated] = 0
     mem_stats[:totals][:in_use] = 0
     mem_stats[:totals][:peak_sum] = 0
-    containers.each do | container|
-      SystemDebug.debug(SystemDebug.system, :collect_containers_memory_stats )
-      SystemDebug.debug(SystemDebug.system, container.container_name)
-      
+    containers.each do | container|     
       next if container.setState != "running"
       next unless container.is_running?
       container_sym = container.container_name.to_sym
