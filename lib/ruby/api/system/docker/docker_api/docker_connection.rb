@@ -117,23 +117,23 @@ class DockerConnection < ErrorsApi
         body = content
       end
       r  = sc.request(
-      :method => :post,
-      :read_timeout => 3600,
-      :query => options,
-      :path => uri,
-      :headers => headers,
-      :body =>  body
+      method: :post,
+      read_timeout: 3600,
+      query: options,
+      path: uri,
+      headers: headers,
+      body: body
       )
       stream_handler.close
       return r
     else
       r  = sc.request(
-      :method => :post,
-      :read_timeout => 3600,
-      :query => options,
-      :path => uri,
-      :body => content,
-      :headers => headers)
+      method: :post,
+      read_timeout: 3600,
+      query: options,
+      path: uri,
+      body: content,
+      headers:  headers)
       stream_handler.close
       return r
     end
@@ -180,7 +180,7 @@ r = connection.request({:method => :get,:path => uri,:read_timeout => timeout,:h
 
   def handle_resp(resp, expect_json)
     STDERR.puts(" RESPOSE " + resp.status.to_s + " : " + resp.body  ) if resp.status  >= 400
-    return log_error_mesg("error:" + resp.status.to_s,resp.body )  if resp.status  >= 400
+    return log_error_mesg("error:" + resp.status.to_s,resp.body ).to_json  if resp.status  >= 400
     return true if resp.status  == 204 # nodata but all good happens on del
     return log_error_mesg("Un exepect response from docker", resp, resp.body, resp.headers.to_s )   unless resp.status  == 200 ||  resp.status  == 201
     return resp.body unless expect_json == true
@@ -194,10 +194,9 @@ r = connection.request({:method => :get,:path => uri,:read_timeout => timeout,:h
     # end
     #  return @hashes[0]
   rescue StandardError => e
-    log_error_mesg("Un exepect response content " +   resp.to_s)
-    log_exception(e)
-    return {} if expect_json == true
-    return ''
+    log_error_mesg("Un exepect response content " +   resp.to_s)    
+    return log_exception(e).json if expect_json == true
+    log_exception(e).to_s
   end
 
 end
