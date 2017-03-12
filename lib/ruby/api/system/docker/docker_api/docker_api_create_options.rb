@@ -212,7 +212,7 @@ module DockerApiCreateOptions
       'StdinOnce' => false,
       'Env' => envs(container),
       # 'Cmd'
-      # Entrypoint
+     'Entrypoint' => entry_point(container),
       'Image' => container.image,
       'Labels' => get_labels(container),
       'Volumes' => {},
@@ -226,10 +226,16 @@ module DockerApiCreateOptions
 
     command =  container.command
     command = ['/bin/bash' ,'/home/start.bash'] if container.command.nil?
-    top_level['Entrypoint'] = container.command  unless container.conf_self_start
+    top_level['Entrypoint'] = command  unless container.conf_self_start
     top_level
   end
 
+  def entry_point(container)
+    command =  container.command
+        command = ['/bin/bash' ,'/home/start.bash'] if container.command.nil?
+          command
+  end
+  
   def get_labels(container)
     labels = {}
     labels['container_name'] = container.container_name
