@@ -54,7 +54,7 @@ module MemoryStatistics
 #      container_id = container.container_id #ContainerStateFiles.read_container_id(container)
 #    end
     #   return self.empty_container_result  unless container.is_active?
-
+    SystemUtils.log_error_mesg('container ' + container.container_name)
     if container && container.container_id.nil? == false && container.container_id != '-1'
       # path = '/sys/fs/cgroup/memory/docker/' + container.container_id.to_s + '/'
       path = SystemUtils.cgroup_mem_dir(container.container_id.to_s)     
