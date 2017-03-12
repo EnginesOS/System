@@ -215,8 +215,8 @@ module DockerApiCreateOptions
       'NetworkDisabled' => false,
       'StopSignal' => 'SIGTERM',
       'Image' => container.image,
-      'Env' => envs(container).to_s,
-     'ExposedPorts' => exposed_ports(container),
+      'Env' => envs(container),
+   #  'ExposedPorts' => exposed_ports(container),
       'HostConfig' => host_config_options(container)
     }
 
