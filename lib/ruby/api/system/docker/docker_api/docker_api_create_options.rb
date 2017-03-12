@@ -121,9 +121,9 @@ module DockerApiCreateOptions
       'Memory' => container_memory(container),
       'MemorySwap' => container_memory(container) * 2,
      'VolumesFrom' => container_volumes(container),
-      'CapAdd' => container_capabilities(container),
+      #   'CapAdd' => container_capabilities(container),
       'OomKillDisable' => false,
-      'LogConfig' => log_config(container),
+      #   'LogConfig' => log_config(container),
       'PublishAllPorts' => false,
       'Privileged' => false,
       'ReadonlyRootfs' => false,
@@ -203,21 +203,24 @@ module DockerApiCreateOptions
     top_level = {
       'Hostname' => hostname(container),
       'Domainame' =>  container_domain_name(container),
+      'User' => '',
       'AttachStdin' => false,
       'AttachStdout' => false,
       'AttachStderr' => false,
       'Tty' => false,
       'OpenStdin' => false,
       'StdinOnce' => false,
-      'WorkingDir' => '',
-      'User' => '',
-      'Labels' => get_labels(container),
-      'NetworkDisabled' => false,
-      'StopSignal' => 'SIGTERM',
-      'Image' => container.image,
       'Env' => envs(container),
+      # 'Cmd'
+      # Entrypoint     
+      'Image' => container.image,
+      'Labels' => get_labels(container),
       'Volumes' => {},
-    'ExposedPorts' => exposed_ports(container),
+      'WorkingDir' => '',
+      'NetworkDisabled' => false,
+      'ExposedPorts' => exposed_ports(container),
+      'StopSignal' => 'SIGTERM',
+      #       "StopTimeout": 10,     
       'HostConfig' => host_config_options(container)
     }
 
