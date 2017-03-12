@@ -190,8 +190,9 @@ module DockerApiCreateOptions
   end
 
   def hostname(container)
-    return  container.hostname if container.on_host_net? == false
-    ''
+    return '' if container.on_host_net? == true
+    return container.container_name unless container.hostname.nil?
+    container.hostname
   end
 
   def container_domain_name(container)
