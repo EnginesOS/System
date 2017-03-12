@@ -12,6 +12,7 @@ module DockerApiCreateOptions
    # @top_level['HostConfig'] = host_config_options(container)
     # STDERR.puts('create options ' + @top_level.to_s)
     # @top_level
+    STDERR.puts('create  container.on_host_net?' + container.on_host_net?.to_s)
     STDERR.puts('create options ' + @top_level.to_s)
   rescue StandardError => e
     log_exception(e)
