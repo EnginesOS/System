@@ -116,12 +116,12 @@ module DockerApiCreateOptions
 
     {
       'Binds' => volumes_mounts(container),
-      'PortBindings' => port_bindings(container),
+   #   'PortBindings' => port_bindings(container),
       'Volumes' => {},
       'Memory' => container_memory(container),
       'MemorySwap' => container_memory(container) * 2,
-      'VolumesFrom' => container_volumes(container),
-      'CapAdd' => container_capabilities(container),
+   #   'VolumesFrom' => container_volumes(container),
+   #   'CapAdd' => container_capabilities(container),
       'OomKillDisable' => false,
      # 'LogConfig' => log_config(container),
       'PublishAllPorts' => false,
