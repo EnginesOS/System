@@ -47,17 +47,18 @@ class DockerConnection < ErrorsApi
     r = {"auth"=> "","email" => "","username" => '','password' => '' }
     Base64.encode64(r.to_json).gsub(/\n/, '')
   end
-
-  def post_request(uri,  params = nil, expect_json = true , headers = nil, time_out = 60)
-
-    headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
-    params = params.to_json if headers['Content-Type'] == 'application/json' && ! params.nil?
+  def default_headers
+    @default_headers ||= {'Content-Type' =>'application/json', 'Accept' => '*/*'} 
+  end
+  def post_request(uri,  params = nil, expect_json = true , rheaders = nil, time_out = 60)
+    rheaders = default_headers if rheaders.nil?   
+    params = params.to_json if rheaders['Content-Type'] == 'application/json' && ! params.nil?
     return handle_resp(
     connection.request(
-    :method => :post,:path => uri,
-    :read_timeout => time_out,
-    :headers => headers,
-    :body =>  params  ),
+    method: :post,:path => uri,
+    read_timeout: time_out,
+    headers: rheaders,
+    body: params  ),
     expect_json)
 
   rescue StandardError => e
@@ -67,9 +68,9 @@ class DockerConnection < ErrorsApi
   def connection
 
     @connection = Excon.new('unix:///', :socket => '/var/run/docker.sock',
-    :debug_request => true,
-    :debug_response => true,
-    :persistent => true) if @connection.nil?
+    debug_request: true,
+    debug_response: true,
+    persistent: true) if @connection.nil?
     SystemDebug.debug(SystemDebug.docker,' OPEN docker.sock connection ' + @connection.to_s)
     @connection
   end
@@ -78,18 +79,19 @@ class DockerConnection < ErrorsApi
     @connection.reset
     SystemDebug.debug(SystemDebug.docker,' REOPEN doker.sock connection ')
     @connection = Excon.new('unix:///', :socket => '/var/run/docker.sock',
-    :debug_request => true,
-    :debug_response => true,
-    :persistent => true)
+    debug_request: true,
+    debug_response: true,
+    persistent: true)
     @connection
   rescue StandardError => e
     log_exception(e)
   end
 
   def stream_connection(stream_reader)
-    excon_params = {:debug_request => true,
-      :debug_response => true,
-      :persistent => false
+    excon_params = {
+      debug_request: true,    
+      debug_response: true,
+      persistent: false
     }
 
     if stream_reader.method(:is_hijack?).call == true
@@ -102,8 +104,8 @@ class DockerConnection < ErrorsApi
      Excon.new('unix:///', excon_params )
   end
 
-  def post_stream_request(uri,options, stream_handler,  headers = nil, content = nil )
-    headers = {'Content-Type' =>'application/json', 'Accept' => '*/*' } if headers.nil?
+  def post_stream_request(uri,options, stream_handler,  rheaders = nil, content = nil )
+    rheaders = default_headers if rheaders.nil?   
     content = '' if content.nil?
     sc = stream_connection(stream_handler)
     stream_handler.stream = sc
@@ -111,7 +113,7 @@ class DockerConnection < ErrorsApi
     if stream_handler.method(:has_data?).call == false
       if content.nil? # Dont to_s as may be tgz
         body = ''
-      elsif headers['Content-Type'] == 'application/json'
+      elsif rheaders['Content-Type'] == 'application/json'
         body = content.to_json
       else
         body = content
@@ -121,7 +123,7 @@ class DockerConnection < ErrorsApi
       read_timeout: 3600,
       query: options,
       path: uri,
-      headers: headers,
+      headers: rheaders,
       body: body
       )
       stream_handler.close
@@ -133,7 +135,7 @@ class DockerConnection < ErrorsApi
       query: options,
       path: uri,
       body: content,
-      headers:  headers)
+      headers:  rheaders)
       stream_handler.close
       return r
     end
@@ -144,14 +146,10 @@ class DockerConnection < ErrorsApi
     log_exception(e)
   end
 
-  def get_request(uri,  expect_json = true, headers = nil, timeout = 60)
-    headers = {'Content-Type' =>'application/json', 'Accept' => '*/*'} if headers.nil?
-  #  STDERR.puts(' docker conntection' + connection.to_s )
-   # STDERR.puts(' docker uri' + uri.to_s )
-   # STDERR.puts(' docker headers' + headers.to_s )
- #   STDERR.puts(' docker ' + .to_s )
-  #  STDERR.puts(' docker params' + {:method => :get,:path => uri,:read_timeout => timeout,:headers => headers}.to_s)
-r = connection.request({:method => :get,:path => uri,:read_timeout => timeout,:headers => headers})
+  def get_request(uri,  expect_json = true, rheaders = nil, timeout = 60)
+    rheaders = default_headers if rheaders.nil?   
+  
+r = connection.request({method: :get,path: uri,read_timeout: timeout,headers: rheaders})
   #  STDERR.puts(' docker rget' + r.to_s)
     return handle_resp(r,expect_json) unless headers.nil?
 
@@ -166,8 +164,8 @@ r = connection.request({:method => :get,:path => uri,:read_timeout => timeout,:h
   end
 
   def delete_request(uri)
-    handle_resp(connection.request(:method => :delete,
-    :path => uri),
+    handle_resp(connection.request(method: :delete,
+    path: uri),
     false
     )
   rescue  Excon::Error::Socket => e
@@ -186,7 +184,7 @@ r = connection.request({:method => :get,:path => uri,:read_timeout => timeout,:h
     return resp.body unless expect_json == true
     #only want first so return n first
     # hash =  response_parser.parse(resp.body) #do |hash |
-    hash =  SystemUtils.deal_with_jason(JSON.parse(resp.body, :create_additons => true ))
+    hash =  SystemUtils.deal_with_jason(JSON.parse(resp.body, create_additons: true ))
    # STDERR.puts(" RESPOSE " + hash.to_s  )
     return hash
     #  @hashes.push(hash)
