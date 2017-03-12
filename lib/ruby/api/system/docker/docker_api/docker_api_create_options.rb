@@ -5,7 +5,6 @@ module DockerApiCreateOptions
 
   def create_options(container)
     @top_level = build_top_level(container)
-
     STDERR.puts('create options ' + @top_level.to_json)
     @top_level
   rescue StandardError => e
@@ -14,12 +13,10 @@ module DockerApiCreateOptions
 
   def get_protocol_str(port)
     return  'tcp'  if port[:proto_type].nil?
-    # return  'both' if port[:proto_type].downcase.include?('and')
     port[:proto_type]
   end
 
   def exposed_ports(container)
-
     return {} if container.mapped_ports.nil?
     eports = {}
     container.mapped_ports.each_value do |port|
@@ -40,7 +37,7 @@ module DockerApiCreateOptions
       mounts.push(mount_string(volume))
     end
     sm = system_mounts(container)
-    mounts.concat(sm) unless sm.nil?   
+    mounts.concat(sm) unless sm.nil?
     mounts
   end
 
@@ -53,7 +50,6 @@ module DockerApiCreateOptions
       perms = 'ro'
     end
     volume[:localpath] + ':' + volume[:remotepath] + ':' + perms
-
   rescue StandardError => e
     STDERR.puts(' vol ' + volume.to_s)
     log_exception(e, volume)
@@ -105,7 +101,6 @@ module DockerApiCreateOptions
   end
 
   def host_config_options(container)
-
     {
       'Binds' => volumes_mounts(container),
       'PortBindings' => port_bindings(container),
@@ -122,35 +117,6 @@ module DockerApiCreateOptions
       'DnsSearch' => container_dns_search(container),
       'NetworkMode' => container_network_mode(container)
     }
-
-    #  host_config['LxcConf'] # {"lxc.utsname":"docker"},
-    #'MemoryReservation' # 0,
-    # "CapAdd": ["NET_ADMIN"],
-    #STDERR.puts(" Add cap ");
-
-    #  STDERR.puts(" Add caps " + host_config["CapAdd"].to_s);
-    # host_config['KernelMemory'] # 0,
-    #  host_config['CpuShares'] # 512,
-    # host_config['CpuPeriod'] # 100000,
-    #   host_config['CpuQuota'] # 50000,
-    #   host_config['CpusetCpus'] # "0,1",
-    #   host_config['CpusetMems'] # "0,1",
-    #     host_config['BlkioWeight'] # 300,
-    #host_config['MemorySwappiness'] # 60,
-    # host_config['DnsOptions'] # [""],
-
-    #      host_config['Devices'] # [],
-    #      host_config['Ulimits'] # [{}],
-    #   host_config['LogConfig'] = Hash.new ( "Type": "json-file", "Config": {} )
-    #    host_config['SecurityOpt']= ""
-    #    host_config['CgroupParent'] = ""
-    #    host_config['VolumeDriver'] = ""
-    #host_config['ExtraHosts'] # null,
-    #   host_config['VolumesFrom'] # ["parent", "other:ro"],
-    #   host_config['CapAdd'] # ["NET_ADMIN"],
-    #   host_config['CapDrop'] # ["MKNOD"],
-    #   host_config['RestartPolicy'] # { "Name": "", "MaximumRetryCount": 0 },
-    # host_config
   end
 
   def log_config(container)
@@ -205,8 +171,7 @@ module DockerApiCreateOptions
       'OpenStdin' => false,
       'StdinOnce' => false,
       'Env' => envs(container),
-      # 'Cmd'
-     'Entrypoint' => entry_point(container),
+      'Entrypoint' => entry_point(container),
       'Image' => container.image,
       'Labels' => get_labels(container),
       'Volumes' => {},
@@ -226,10 +191,10 @@ module DockerApiCreateOptions
 
   def entry_point(container)
     command =  container.command
-        command = ['/bin/bash' ,'/home/start.bash'] if container.command.nil?
-          command
+    command = ['/bin/bash' ,'/home/start.bash'] if container.command.nil?
+    command
   end
-  
+
   def get_labels(container)
     labels = {}
     labels['container_name'] = container.container_name
@@ -238,7 +203,6 @@ module DockerApiCreateOptions
   end
 
   def cert_mounts(container)
-
     return  unless container.certificates.is_a?(Array)
     mounts = []
     container.certificates.each do |certificate|
@@ -353,7 +317,6 @@ module DockerApiCreateOptions
   end
 
   def add_mapped_port(bindings, port )
-    # STDERR.puts('Mapping ' + port.to_s)
     local_side =     port[:port].to_s + '/' + get_protocol_str(port)
     remote_side = []
     remote_side[0] = {}
@@ -362,7 +325,6 @@ module DockerApiCreateOptions
   end
 
   def add_exposed_port(eports , port)
-
     port[:proto_type] = 'tcp' if port[:proto_type].nil?
     if port[:proto_type].downcase.include?('and') || port[:proto_type].downcase == 'both'
       eports[port[:port].to_s + '/tcp'] = {}

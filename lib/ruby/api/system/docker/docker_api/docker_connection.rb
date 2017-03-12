@@ -147,17 +147,15 @@ class DockerConnection < ErrorsApi
   rescue StandardError => e
     log_exception(e)
   end
-  
+
   def request_params(params)
     @request_params = params
   end
+
   def get_request(uri,  expect_json = true, rheaders = nil, timeout = 60)
     rheaders = default_headers if rheaders.nil?
-
     r = connection.request(request_params({method: :get,path: uri,read_timeout: timeout,headers: rheaders}))
-    #  STDERR.puts(' docker rget' + r.to_s)
     return handle_resp(r,expect_json) unless headers.nil?
-
     handle_resp(connection.request(request_params(method: :get,
     path: uri)),
     expect_json
@@ -170,7 +168,7 @@ class DockerConnection < ErrorsApi
 
   def delete_request(uri)
     handle_resp(connection.request(request_params({method: :delete,
-  path: uri})),
+      path: uri})),
     false
     )
   rescue  Excon::Error::Socket => e
@@ -188,15 +186,9 @@ class DockerConnection < ErrorsApi
     return true if resp.status  == 204 # nodata but all good happens on del
     return log_error_mesg("Un exepect response from docker", resp, resp.body, resp.headers.to_s )   unless resp.status  == 200 ||  resp.status  == 201
     return resp.body unless expect_json == true
-    #only want first so return n first
-    # hash =  response_parser.parse(resp.body) #do |hash |
+
     hash =  SystemUtils.deal_with_jason(JSON.parse(resp.body, create_additons: true ))
-    # STDERR.puts(" RESPOSE " + hash.to_s  )
-    return hash
-    #  @hashes.push(hash)
-    #   return hash
-    # end
-    #  return @hashes[0]
+    hash
   rescue StandardError => e
     log_error_mesg("Un exepect response content " +   resp.to_s)
     return log_exception(e).json if expect_json == true
