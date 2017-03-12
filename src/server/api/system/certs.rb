@@ -7,8 +7,7 @@
 get '/v0/system/certs/system_ca' do
   system_ca = engines_api.get_system_ca
   return log_error(request, system_ca) if system_ca.is_a?(EnginesError)
-  content_type 'text/plain'
-  system_ca.to_s
+  return_text(system_ca)
 end
 
 # @method get certificate
@@ -18,7 +17,7 @@ get '/v0/system/certs/:cert_name' do
   cert = engines_api.get_cert(params[:cert_name])
   return log_error(request, cert) if cert.is_a?(EnginesError)
   content_type 'text/plain'
-  cert.to_s
+  return_text(cert)
 end
 
 # @method default_certificate
@@ -37,7 +36,7 @@ end
 get '/v0/system/certs/' do
   certs = engines_api.list_certs
   return log_error('list certs', certs, params) if certs.is_a?(EnginesError)
-  return_json_array(r)
+  return_json_array(certs)
 end
 # @method delete_certificate
 # @overload delete '/v0/system/certs/:cert_name'
@@ -46,7 +45,6 @@ end
 delete '/v0/system/certs/:cert_name' do |cert_name|
   r = engines_api.remove_cert(cert_name)
   return log_error(request, r) if r.is_a?(EnginesError)
-  status(202)
   return_text(r)
 end
 
