@@ -12,7 +12,7 @@ module DockerApiCreateOptions
    # @top_level['HostConfig'] = host_config_options(container)
     # STDERR.puts('create options ' + @top_level.to_s)
     # @top_level
-    STDERR.puts('create  container.on_host_net?' + container.on_host_net?.to_s)
+   # STDERR.puts('create  container.on_host_net?' + container.on_host_net?.to_s)
     STDERR.puts('create options ' + @top_level.to_s)
   rescue StandardError => e
     log_exception(e)
@@ -86,12 +86,12 @@ module DockerApiCreateOptions
 
   def container_volumes(container)
     return  container.volumes_from unless container.volumes_from.nil?
-    ''
+    []
   end
 
   def container_capabilities(container)
     return add_capabilities(container.capabilities) unless container.capabilities.nil?
-    ''
+    []
   end
 
   def container_get_dns_servers(container)
@@ -116,14 +116,14 @@ module DockerApiCreateOptions
 
     {
       'Binds' => volumes_mounts(container),
-   #   'PortBindings' => port_bindings(container),
+     'PortBindings' => port_bindings(container),
       'Volumes' => {},
       'Memory' => container_memory(container),
       'MemorySwap' => container_memory(container) * 2,
-   #   'VolumesFrom' => container_volumes(container),
-   #   'CapAdd' => container_capabilities(container),
+     'VolumesFrom' => container_volumes(container),
+      'CapAdd' => container_capabilities(container),
       'OomKillDisable' => false,
-     # 'LogConfig' => log_config(container),
+      'LogConfig' => log_config(container),
       'PublishAllPorts' => false,
       'Privileged' => false,
       'ReadonlyRootfs' => false,
@@ -165,7 +165,7 @@ module DockerApiCreateOptions
   def log_config(container)
       return { "Type" => 'json-file', "Config" => {}}
     return { "Type" => 'json-file', "Config" => { "max-size" =>"5m", "max-file" => '10' } } if container.ctype == 'service'
-    { "Type" => 'JsonFile', "Config" => { "max-size" =>"1m", "max-file" => '5' } }
+    { "Type" => 'json-file', "Config" => { "max-size" =>"1m", "max-file" => '5' } }
   end
 
   def add_capabilities(capabilities)
