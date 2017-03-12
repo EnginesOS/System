@@ -179,7 +179,7 @@ r = connection.request({:method => :get,:path => uri,:read_timeout => timeout,:h
   private
 
   def handle_resp(resp, expect_json)
-  #  STDERR.puts(" RESPOSE " + resp.status.to_s + " : " + resp.body  )
+    STDERR.puts(" RESPOSE " + resp.status.to_s + " : " + resp.body  )
     return log_error_mesg("error:" + resp.status.to_s)  if resp.status  >= 400
     return true if resp.status  == 204 # nodata but all good happens on del
     return log_error_mesg("Un exepect response from docker", resp, resp.body, resp.headers.to_s )   unless resp.status  == 200 ||  resp.status  == 201
