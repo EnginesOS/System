@@ -5,14 +5,7 @@ module DockerApiCreateOptions
 
   def create_options(container)
     @top_level = build_top_level(container)
-    # @top_level['Env'] = envs(container)
-    #  @top_level['Mounts'] = volumes_mounts(container)
-    # ports = exposed_ports(container)
-    # @top_level['ExposedPorts'] = ports unless ports.nil?
-    # @top_level['HostConfig'] = host_config_options(container)
-    # STDERR.puts('create options ' + @top_level.to_s)
-    # @top_level
-    # STDERR.puts('create  container.on_host_net?' + container.on_host_net?.to_s)
+
     STDERR.puts('create options ' + @top_level.to_json)
     @top_level
   rescue StandardError => e
@@ -47,9 +40,7 @@ module DockerApiCreateOptions
       mounts.push(mount_string(volume))
     end
     sm = system_mounts(container)
-    mounts.concat(sm) unless sm.nil?
-    cm = cert_mounts(container)
-    mounts.concat(cm) unless cm.nil?
+    mounts.concat(sm) unless sm.nil?   
     mounts
   end
 
@@ -163,7 +154,7 @@ module DockerApiCreateOptions
   end
 
   def log_config(container)
-    return { "Type" => 'json-file', "Config" => {}}
+    #return { "Type" => 'json-file', "Config" => {}}
     return { "Type" => 'json-file', "Config" => { "max-size" =>"5m", "max-file" => '10' } } if container.ctype == 'service'
     { "Type" => 'json-file', "Config" => { "max-size" =>"1m", "max-file" => '5' } }
   end
@@ -276,6 +267,8 @@ module DockerApiCreateOptions
     mounts.push(logdir_mount(container))
     mounts.push(vlogdir_mount(container)) unless in_container_log_dir(container) == '/var/log' || in_container_log_dir(container) == '/var/log/'
     mounts.push(ssh_keydir_mount(container))
+    cm = cert_mounts(container)
+    mounts.concat(cm) unless cm.nil?
 
     mounts
   end
