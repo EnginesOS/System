@@ -8,7 +8,7 @@ module ManagedServiceConsumers
     return true if service_hash.has_key?(:remove_all_data) && service_hash[:remove_all_data] == false
     return rm_consumer_from_service(service_hash) if service_hash.has_key?(:remove_all_data) && service_hash[:remove_all_data]
     #log_error_mesg('No remove_all_data key',service_hash)
-    return true
+     true
   end
 
   #  def service_manager
@@ -20,7 +20,7 @@ module ManagedServiceConsumers
       params = {}
       params[:publisher_namespace] = @publisher_namespace
       params[:type_path] = @type_path
-      return @container_api.get_registered_against_service(params)
+       @container_api.get_registered_against_service(params)
     end
     
     registered_consumer(params)
@@ -47,7 +47,7 @@ module ManagedServiceConsumers
     registered_hashes.each do |service_hash|
       add_consumer_to_service(service_hash) if service_hash[:persistent] == false
     end
-    return true
+     true
   end
 
   def add_consumer(service_hash)
@@ -73,7 +73,7 @@ module ManagedServiceConsumers
     #for a reason
     return result unless result
     save_state
-    return result
+     result
   end
 
   private

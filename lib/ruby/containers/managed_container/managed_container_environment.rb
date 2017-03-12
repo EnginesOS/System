@@ -21,7 +21,7 @@ module ManagedContainerEnvironment
       @environments.push(env)
       return true
     end
-    return log_error_mesg('no matching variable ' + key.to_s )  
+     log_error_mesg('no matching variable ' + key.to_s )  
   rescue StandardError => e
     log_exception(e,:update_environment,key,value, add)
   end

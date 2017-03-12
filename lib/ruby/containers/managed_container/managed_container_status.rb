@@ -13,7 +13,7 @@ module ManagedContainerStatus
       return 'nocontainer'
     end
     
-    return state
+     state
   end
   
 # raw=true means dont check state for error
@@ -36,11 +36,11 @@ module ManagedContainerStatus
     else
       @last_error = ''
     end
-    return state
+     state
   rescue Exception=>e
     STDERR.puts 'excetpion ' + e.to_s + ':' + @last_result.to_s
     log_exception(e)
-    return 'nocontainer'
+     'nocontainer'
   end
 
   def is_startup_complete?
@@ -53,7 +53,7 @@ module ManagedContainerStatus
     return false if in_two_step?
     state = read_state
     return true if @setState != state
-    return false
+     false
   end
 
   def restart_required?
@@ -77,7 +77,7 @@ module ManagedContainerStatus
   end
   
   def in_two_step?
-    return File.exist?(ContainerStateFiles.container_state_dir(self) + '/in_progress')
+     File.exist?(ContainerStateFiles.container_state_dir(self) + '/in_progress')
   end
 
 end

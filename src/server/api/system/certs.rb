@@ -85,18 +85,6 @@ end
 # generTE certificate and key in PEM for domain_name
 
 
-#    service_param[:parent_engine] = 'system'
-#      @param[:service_handle] = 'default_ssl_cert'
-#      @param[:variables] = {}
-#      @param[:variables][:wild] = 'yes'
-#      @param[:variables][:cert_name] = 'engines'
-#      @param[:variables][:country] 
-#      @param[:variables][:state]
-#      @param[:variables][:city] 
-#      @param[:variables][:organisation] 
-#      @param[:variables][:person] 
-#      @param[:variables][:domainname] 
-#      @param[:variables][:service_handle] = 'default_ssl_cert'
 post '/v0/system/certs/generate' do
   p_params = post_params(request)
 

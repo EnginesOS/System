@@ -1,15 +1,11 @@
 module DockerInfoCollector
   def docker_info
-
     if @docker_info_cache.is_a?(FalseClass)
       return collect_docker_info if @setState != 'nocontainer'
       return false
     end
-
     collect_docker_info if @docker_info_cache.nil?
-
     return false if @docker_info_cache.nil?
-
     @docker_info_cache
   rescue StandardError => e
     STDERR.puts('Exceptions ' + e.to_s + ':' + @docker_info_cache.to_s )
@@ -18,7 +14,7 @@ module DockerInfoCollector
 
   def expire_engine_info
     @docker_info_cache = nil
-    return true
+     true
   end
 
   # @return a containers ip address as a [String]
@@ -27,7 +23,7 @@ module DockerInfoCollector
   def get_ip_str
     #
     return docker_info[:NetworkSettings][:IPAddress] unless docker_info.is_a?(FalseClass)
-    return false
+     false
   rescue
     return nil
   rescue StandardError => e
@@ -57,8 +53,8 @@ module DockerInfoCollector
       #    sleep 1
 
       #    ContainerStateFiles.read_container_id(self)
-      info  =  @container_api.inspect_container_by_name(self) # docker_info
-      return  -1 if info.nil?
+      info = @container_api.inspect_container_by_name(self) # docker_info
+      return -1 if info.nil?
        if info.is_a?(EnginesError)
          STDERR.puts(EnginesError.to_s)
          return -1
@@ -67,7 +63,7 @@ module DockerInfoCollector
       if info.is_a?(Array)
         SystemDebug.debug(SystemDebug.containers,'array')
         info = info[0]
-        return  -1 if info.nil?
+        return -1 if info.nil?
       end
       SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ' ,info)
       # SystemUtils.deal_with_jason(info)
@@ -82,7 +78,7 @@ module DockerInfoCollector
 
     end
     save_state unless cid == @container_id
-    return  @container_id
+      @container_id
   rescue StandardError => e
     log_exception(e)
   end
@@ -92,9 +88,9 @@ module DockerInfoCollector
     return -1 unless info.is_a?(Hash)
     return -1 unless info.key?(:Config)
     return -1 unless info[:Config].key?(:User)
-    return  info[:Config][:User]
+      info[:Config][:User]
   rescue StandardError => e
-    return log_exception(e,info)
+     log_exception(e,info)
   end
   protected
 
@@ -107,7 +103,7 @@ module DockerInfoCollector
     if  @docker_info_cache.is_a?(Array)
       @docker_info_cache = @docker_info_cache[0]
     end
-    return @docker_info_cache
+     @docker_info_cache
   end
 
 end

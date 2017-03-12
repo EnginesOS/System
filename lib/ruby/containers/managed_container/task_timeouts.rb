@@ -19,6 +19,6 @@ class TaskTimeouts
     return  @@default_task_timeout  unless @@task_timeouts.key?(task.to_sym)
     #  SystemDebug.debug(SystemDebug.engine_tasks, :timeout_set_for_task,task.to_sym, @task_timeouts[task.to_sym].to_s + 'secs')
     # return  @default_task_timeout
-    return @@task_timeouts[task.to_sym]
+     @@task_timeouts[task.to_sym]
   end
 end

@@ -27,12 +27,12 @@ class ManagedService < ManagedContainer
   end
 
   def ctype
-    return @ctype
+     @ctype
   end
 
   def is_soft_service?
       return true unless @soft_service.is_a?(FalseClass)
-      return false
+       false
   end
 
 #  def state
