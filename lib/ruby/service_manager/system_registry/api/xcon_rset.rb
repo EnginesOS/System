@@ -133,7 +133,6 @@ STDERR.puts('1 ' + resp.status.to_s + ':' + resp.body.to_s)
 if resp.status > 399
   r = deal_with_jason(resp.body)
   r[:status] = resp.status
-  STDERR.puts('1,1 ' + r.to_s )    
   raise RegistryException.new(r)
 end 
   STDERR.puts('2 ' + resp.status.to_s + ':' + resp.body.to_s)
