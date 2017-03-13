@@ -22,7 +22,7 @@ module ServiceManagerOperations
 
   def find_service_service_hash(params)
     params[:container_type] = 'service'
-    service_manager.find_engine_service_hash(params)
+    find_engine_service_hash(params)
   end
 
   def list_persistent_services(engine)

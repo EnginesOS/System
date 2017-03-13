@@ -1,13 +1,4 @@
 module CertificateActions
-  #  def get_system_ca
-  #    @system_api.get_system_ca
-  ##    return "No CA found" unless File.exists?(SystemConfig.EnginesInternalCA)
-  ##    File.read(SystemConfig.EnginesInternalCA)
-  ##
-  ##  rescue StandardError => e
-  ##    return log_exception(e,'Failed to load CA')
-  #
-  #  end
   def upload_ssl_certificate(params)
     return log_error_mesg('invalid parameter', 'upload Cert ', params.to_s) unless params.is_a?(Hash)
     unless params.has_key?(:certificate) || params.key?(:domain_name)
@@ -37,10 +28,8 @@ module CertificateActions
   end
 
   def containers_certificates(container)
-
-    q = {:container_type => container.ctype, :parent_engine => container.container_name, :publisher_namespace => 'EnginesSytem', :type_path => 'cert_auth' }
-    r = service_manager.find_engine_services_hashes(q)
-    STDERR.puts( " CERTIS " + r.to_s)
+    q = {container_type:  container.ctype, parent_engine: container.container_name, publisher_namespace: 'EnginesSytem', type_path: 'cert_auth' }
+    r = find_engine_services_hashes(q)
     r
   rescue StandardError => e
     return log_exception(e,'Failed to list registered certs ')

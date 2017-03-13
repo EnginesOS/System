@@ -36,7 +36,7 @@ module EngineServiceOperations
       parent_engine: service_name,
       container_type: 'service'
     }
-     service_manager.find_engine_services_hashes(params)
+    find_engine_services_hashes(params)
   rescue StandardError => e
     log_exception(e,service_name)
   end
@@ -46,7 +46,7 @@ module EngineServiceOperations
       parent_engine: service_name,
       container_type: 'container'
     }
-     service_manager.find_engine_services_hashes(params)
+    find_engine_services_hashes(params)
   rescue StandardError => e
     log_exception(e,container_name)
   end
@@ -70,7 +70,7 @@ module EngineServiceOperations
   def find_engine_services(service_query)
     r = ''
     return r unless  (r = check_engine_hash(service_query))
-    service_manager.find_engine_services_hashes(service_query)
+    find_engine_services_hashes(service_query)
   rescue StandardError => e
     log_exception(e,service_query)
     #return sm.find_engine_services(params)

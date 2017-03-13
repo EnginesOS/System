@@ -9,7 +9,7 @@ class SystemApi < ErrorsApi
   require_relative 'engines_system_error.rb'
   require_relative 'engines_system_errors.rb'
   include EnginesSystemErrors
-  
+
   require_relative 'base_os_system.rb'
   include BaseOsSystem
   require_relative 'build_report.rb'
@@ -31,7 +31,7 @@ class SystemApi < ErrorsApi
   require_relative 'system_settings.rb'
   include SystemSettings
   require_relative 'container_locking.rb'
-  include ContainerLocking  
+  include ContainerLocking
   require_relative 'docker_events.rb'
   include DockerEvents
   require_relative 'container_network_metrics.rb'
@@ -42,10 +42,10 @@ class SystemApi < ErrorsApi
   include ContainerChecks
   require_relative 'container_schedules.rb'
   include ContainerSchedules
-  
+
   require_relative 'engines_server_host.rb'
   include EnginesServerHost
-  
+
   require_relative 'service_management.rb'
   include ServiceManagement
   require_relative 'managed_utilities.rb'
@@ -55,68 +55,59 @@ class SystemApi < ErrorsApi
   require_relative 'first_run_complete.rb'
   include FirstRunComplete
   require_relative 'system_api_backup.rb'
-   include SystemApiBackup
-  
+  include SystemApiBackup
+
   def initialize(api)
     @engines_api = api
     @engines_conf_cache = {}
-   
+
     create_event_listener
   end
-  
+
   def create_event_listener
     @event_listener_lock = true
     @docker_event_listener = start_docker_event_listener
     @docker_event_listener.add_event_listener([self,'container_event'.to_sym],16)
   end
-  
 
   def list_system_services
-  services = []
-    services.push('system')
-     services.push('registry')
-      services
+    @system_services ||= ['system', 'registry']
   end
-  
+
   def get_engines_states
     result = {}
     engines = getManagedEngines #list_managed_engines
     return  engines if engines.is_a?(EnginesError)
-    engines.each do |engine|    
+    engines.each do |engine|
       result[engine.container_name] = engine.read_state
     end
-
-     result
+    result
   end
-  
-def get_engines_status
-  result = {}
-  engines =  getManagedEngines # list_managed_services
-  engines.each do |engine|
-        result[engine.container_name] = engine.status
-      end
-       result
- end
- 
-def get_services_status
-  result = {}
-  services =  getManagedServices # list_managed_services
-      services.each do |service|
-        result[service.container_name] = service.status
-      end
 
-      return result
- end
- 
+  def get_engines_status
+    result = {}
+    engines =  getManagedEngines # list_managed_services
+    engines.each do |engine|
+      result[engine.container_name] = engine.status
+    end
+    result
+  end
+
+  def get_services_status
+    result = {}
+    services =  getManagedServices # list_managed_services
+    services.each do |service|
+      result[service.container_name] = service.status
+    end
+    return result
+  end
+
   def get_services_states
     result = {}
     services =  getManagedServices # list_managed_services
-        services.each do |service|
-          result[service.container_name] = service.read_state
-        end
-
-         result
-   end
-
-  
+    services.each do |service|
+      result[service.container_name] = service.read_state
+    end
+    result
+  end
 end
