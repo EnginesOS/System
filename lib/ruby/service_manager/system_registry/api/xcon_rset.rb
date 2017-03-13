@@ -1,6 +1,5 @@
 #require 'rest-client'
 
-
 def json_parser
   @json_parser ||= FFI_Yajl::Parser.new({:symbolize_keys => true})
 end
@@ -56,12 +55,7 @@ rescue  Excon::Error::Socket => e
   STDERR.puts e.class.name + ' with path:' + path.to_s + "\n" + 'params:' + q.to_s + ':::' + req.to_s  + ':' + e.to_s
   cnt+=1
   retry if cnt< 5
-#
-#rescue StandardError => e
-#  STDERR.puts e.class.name + ' with path:' + path.to_s + "\n" + 'params:' + q.to_s + ':::' + req.to_s
-#  STDERR.puts e.backtrace.to_s
-#  log_exception(e, params, path)
-#  nil
+
 end
 
 def time_out
@@ -77,8 +71,6 @@ def rest_post(path,params = nil, lheaders=nil)
   rescue   Excon::Error::Socket => e
     reopen_connection
     retry
-  rescue StandardError => e
-    log_exception(e, params)
   end
 end
 
@@ -90,8 +82,6 @@ def rest_put(path,params = nil, lheaders=nil)
 rescue Excon::Error::Socket => e
   reopen_connection
   retry
-rescue StandardError => e
-  log_exception(e, params)
 end
 
 def query_hash(params)
@@ -109,8 +99,6 @@ def rest_delete(path, params = nil, lheaders=nil)
 rescue Excon::Error::Socket => e
   reopen_connection
   retry
-rescue StandardError => e
-  log_exception(e, params)
   #end
 end
 
@@ -128,13 +116,13 @@ private
 #end
 
 def parse_xcon_response(resp)
-raise RegistryException.new({status: 500 , error_mesg: 'Server Error', exception: :exception})  if resp.nil?
-STDERR.puts('1 ' + resp.status.to_s + ':' + resp.body.to_s)    
-if resp.status > 399
-  r = deal_with_jason(resp.body)
-  r[:status] = resp.status
-  raise RegistryException.new(r)
-end 
+  raise RegistryException.new({status: 500 , error_mesg: 'Server Error', exception: :exception})  if resp.nil?
+  STDERR.puts('1 ' + resp.status.to_s + ':' + resp.body.to_s)
+  if resp.status > 399
+    r = deal_with_jason(resp.body)
+    r[:status] = resp.status
+    raise RegistryException.new(r)
+  end
   STDERR.puts('2 ' + resp.status.to_s + ':' + resp.body.to_s)
   #return parse_error(resp) if resp.status > 399
   r = resp.body
@@ -143,7 +131,7 @@ end
   return true if r.to_s   == '' ||  r.to_s   == 'true'
   return false if r.to_s  == 'false'
   return false if r.to_s  == 'null'
-  deal_with_jason(r)  
+  deal_with_jason(r)
 end
 
 def base_url

@@ -48,9 +48,8 @@ module SmServiceControl
       return r
       #  return system_registry_client.remove_from_managed_engines_registry(service_hash)
     end
-    # return log_error_mesg('Failed to match params to registered service',service_hash) unless service_hash.is_a?(Hash)
+   
     service_hash[:remove_all_data] = service_query[:remove_all_data]
-    return log_error_mesg(' missing ns ',service_hash) unless service_hash.key?(:publisher_namespace) && service_hash.key?(:type_path)
     return r if (r = remove_from_managed_service(service_hash)).is_a?(EnginesError) && !service_query.key?(:force)
     return r if ( r = system_registry_client.remove_from_managed_engines_registry(service_hash)).is_a?(EnginesError)
     return system_registry_client.remove_from_services_registry(service_hash)

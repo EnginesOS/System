@@ -13,7 +13,7 @@ module SharedServices
     service_query[:parent_engine] = existing_service[:parent_engine]
 
     existing_service_hash =  get_service_entry(service_query)
-    return log_error_mesg('Failed to find service to share', service_query) unless existing_service_hash.is_a?(Hash)
+    
     SystemDebug.debug(SystemDebug.services,'sm using existing service', existing_service_hash)
     merge_variables(shared_service,existing_service_hash)
     shared_service[:shared] = true
@@ -31,8 +31,8 @@ module SharedServices
     shared_service.delete(:existing)
     system_registry_client.add_share_to_managed_engines_registry(shared_service)
 
-  rescue StandardError => e
-    log_exception(e,shared_service)
+    rescue StandardError => e
+      handle_exception(e, shared_service)
   end
 
   def attach_shared_volume(shared_service)
@@ -41,8 +41,8 @@ module SharedServices
     return engine unless  engine.is_a?(ManagedEngine)
     # Volume.complete_service_hash(shared_service)
     true
-  rescue StandardError => e
-    log_exception(e,shared_service)
+    rescue StandardError => e
+      handle_exception(e, shared_service)
   end
 
   def dettach_shared_volume(service_hash)

@@ -131,7 +131,7 @@ module SmEngineServices
     clear_error
     r = ''
     services = system_registry_client.get_engine_persistent_services(params)
-    return log_error_message(' rm_remove_engine_services FAILed ', services ) if services.is_a?(EnginesError)
+  
     return true unless services.is_a?(Array)
     services.each do | service |
       SystemDebug.debug(SystemDebug.services, :remove_service, service)

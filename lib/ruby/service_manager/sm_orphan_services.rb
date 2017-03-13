@@ -63,17 +63,13 @@ module SmOrphanServices
     clear_error
     r = ''
     service_hash = retrieve_orphan(service_query_hash)
-    return log_error_mesg('failed to retrieve orphan service:' +  @last_error.to_s,service_hash)  unless service_hash.is_a?(Hash)
+
     if service_query_hash[:remove_all_data] == false
       service_hash[:remove_all_data] = false
     else
       service_hash[:remove_all_data] = true
     end
-
-    return log_error_mesg('failed to retrieve orphan service:' +  @last_error.to_s,service_hash)  if service_hash.nil? || service_hash == false
     return system_registry_client.release_orphan(service_hash) if ( r = remove_from_managed_service(service_hash))
-    r
-
   rescue StandardError => e
     handle_exception(e)
   end
