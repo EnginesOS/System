@@ -60,7 +60,6 @@ rescue StandardError => e
   STDERR.puts e.class.name + ' with path:' + path.to_s + "\n" + 'params:' + q.to_s + ':::' + req.to_s
   STDERR.puts e.backtrace.to_s
   log_exception(e, params, path)
-
   nil
 end
 
