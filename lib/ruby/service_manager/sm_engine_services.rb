@@ -5,12 +5,18 @@ module SmEngineServices
   def find_engine_services_hashes(params)
     clear_error
     system_registry_client.find_engine_services_hashes(params)
+    rescue RegistryException => e
+      return  if e.level == :warning
+      log_exception(e)
   end
   #
 
   def find_engine_service_hash(params)
     clear_error
     system_registry_client.find_engine_service_hash(params)
+    rescue RegistryException => e
+      return  if e.level == :warning
+      log_exception(e)
   end
 
   #@return [Array] of all service_hashs marked persistence true for :engine_name
@@ -18,6 +24,9 @@ module SmEngineServices
   #on recepit of an empty array any non critical error will be in  this object's  [ServiceManager] last_error method
   def get_engine_persistent_services(params)
     system_registry_client.get_engine_persistent_services(params)
+    rescue RegistryException => e
+      return  if e.level == :warning
+      log_exception(e)
   end
 
   #@return [Array] of all service_hashs marked persistence false for :engine_name
@@ -27,6 +36,9 @@ module SmEngineServices
   #on recepit of an empty array any non critical error will be in  this object's  [ServiceManager] last_error method
   def get_engine_nonpersistent_services(params)
     system_registry_client.get_engine_nonpersistent_services(params)
+    rescue RegistryException => e
+      return  if e.level == :warning
+      log_exception(e)
   end
 
   #service manager get non persistent services for engine_name
@@ -45,6 +57,9 @@ module SmEngineServices
       remove_from_managed_service(service_hash)
     end
     return true
+    rescue RegistryException => e
+      return false if e.level == :warning
+      log_exception(e)
   rescue StandardError => e
     log_exception(e)
   end
@@ -57,6 +72,9 @@ module SmEngineServices
        }
     services = get_engine_persistent_services(params)
      services
+    rescue RegistryException => e
+      return false if e.level == :warning
+      log_exception(e)
   rescue StandardError => e
     log_exception(e)
   end
@@ -71,6 +89,9 @@ module SmEngineServices
     services = get_engine_nonpersistent_services(params)
 
      services
+    rescue RegistryException => e
+      return false if e.level == :warning
+      log_exception(e)
   rescue StandardError => e
     log_exception(e)
   end
@@ -92,6 +113,9 @@ module SmEngineServices
       SystemDebug.debug(SystemDebug.services,:register_non_persistent,service_hash)
     end
      true
+    rescue RegistryException => e
+      return false if e.level == :warning
+      log_exception(e)
   rescue StandardError => e
     log_exception(e)
   end
@@ -99,6 +123,9 @@ module SmEngineServices
   def remove_engine_from_managed_engines_registry(params)
     r = system_registry_client.remove_from_managed_engines_registry(params)
      r
+    rescue RegistryException => e
+      return false if e.level == :warning
+      log_exception(e)
   rescue StandardError => e
     log_exception(e)
   end
@@ -114,6 +141,9 @@ module SmEngineServices
 
     return  entry unless entry.is_a?(Hash)
     entry[:variables][:cron_job]
+    rescue RegistryException => e
+      return false if e.level == :warning
+      log_exception(e)
   rescue StandardError => e
     STDERR.puts( 'Got ' + entry.to_s + ' for cron entry')
     log_exception(e)
@@ -140,6 +170,9 @@ module SmEngineServices
       return r if (r = remove_from_managed_engines_registry(service)).is_a?(EnginesError)
     end
      true
+  rescue RegistryException => e
+    return false if e.level == :warning
+    log_exception(e)
   rescue StandardError => e
     log_exception(e)
   end

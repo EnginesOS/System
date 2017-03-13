@@ -48,6 +48,7 @@ class ServiceManager  < ErrorsApi
   include SmPublicKeyAccess
   
   private
+  require '/opt/engines/lib/ruby/exceptions/registry_exception.rb'
   require_relative 'registry_client.rb'
   include RegistryClient
   
