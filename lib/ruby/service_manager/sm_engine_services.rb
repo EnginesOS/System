@@ -5,7 +5,9 @@ module SmEngineServices
   def find_engine_services_hashes(params)
     clear_error
     system_registry_client.find_engine_services_hashes(params)
-    rescue RegistryException => e
+    rescue StandardError => e
+    STDERR.puts(' Error Level ')
+    return log_exception(e) unless e.is_a?(RegistryException)
     STDERR.puts(' Error Level ' + e.level.to_s)
       return  if e.level == :warning
       STDERR.puts(' Error Level ' + e.level.to_s)
