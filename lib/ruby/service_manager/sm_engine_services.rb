@@ -85,6 +85,7 @@ module SmEngineServices
          container_type: engine.ctype    
        }
     services = get_engine_nonpersistent_services(params)
+    SystemDebug.debug(SystemDebug.services,:register_non_persistent,service_hash, services)
     return services  unless services.is_a?(Array)
     services.each do |service_hash|
       register_non_persistent_service(service_hash)

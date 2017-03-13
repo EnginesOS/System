@@ -55,8 +55,7 @@ req = {:time_out => time_out,:method => :get,:path => @route_prefix + path, :hea
   req[:query] = q unless q.nil?
 
     r = connection.request(req)
-  r = parse_xcon_response(r)
-  return r
+parse_xcon_response(r)
  rescue  Excon::Error::Socket => e
 
 #  STDERR.puts(' eof ' + path.to_s + ':' + e.to_s + ':' + e.class.name + ':' + e.backtrace.to_s)
@@ -71,7 +70,7 @@ rescue StandardError => e
   STDERR.puts e.backtrace.to_s
   log_exception(e, params, path)
 
-  {}
+ nil
 end
 
 

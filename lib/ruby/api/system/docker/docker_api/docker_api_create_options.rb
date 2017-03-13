@@ -171,7 +171,7 @@ module DockerApiCreateOptions
       'OpenStdin' => false,
       'StdinOnce' => false,
       'Env' => envs(container),
-      'Entrypoint' => entry_point(container),
+    #  'Entrypoint' => entry_point(container),
       'Image' => container.image,
       'Labels' => get_labels(container),
       'Volumes' => {},
@@ -182,17 +182,17 @@ module DockerApiCreateOptions
       #       "StopTimeout": 10,
       'HostConfig' => host_config_options(container)
     }
-
-    command =  container.command
-    command = ['/bin/bash' ,'/home/start.bash'] if container.command.nil?
-    top_level['Entrypoint'] = command  unless container.conf_self_start
+    set_entry_point(container, top_level)
+   
+   # top_level['Entrypoint'] = command  unless container.conf_self_start
     top_level
   end
 
-  def entry_point(container)
+  def set_entry_point(container, top_level)
     command =  container.command
+    return  if container.conf_self_start
     command = ['/bin/bash' ,'/home/start.bash'] if container.command.nil?
-    command
+    top_level['Entrypoint'] = command
   end
 
   def get_labels(container)
