@@ -129,7 +129,7 @@ end
 
 def parse_xcon_response(resp)
 raise RegistryException.new({status:  resp.status, msg: 'Server Error', exception: :exception})  if resp.nil?
-STDERR.puts('1 ' + resp.status.to_s + ':' + resp.body.to_s)    
+STDERR.puts('1 ' + resp.status.to_s + ':' + resp.body.class.name)    
 if resp.status > 399
   r = deal_with_jason(resp.body)
   r[:status] = resp.status
