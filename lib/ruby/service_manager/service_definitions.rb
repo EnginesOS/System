@@ -1,6 +1,5 @@
 class ServiceDefinitions
   def self.is_soft_service?(service_hash)
-
     soft = SoftwareServiceDefinition.is_soft_service?(service_hash)
     return  SystemUtils.log_error_mesg('Failed to get software status for ',service_hash)  if soft.nil?
     service_hash[:soft_service] = soft
