@@ -144,11 +144,11 @@ rescue  StandardError => e
   STDERR.puts(e.to_s)
   STDERR.puts('Parse Error on error response object_' + r.to_s + '_')
   begin
-    hash =  SystemUtils.deal_with_jason(JSON.parse(r, create_additions: true))
+    hash =  deal_with_jason(JSON.parse(r, create_additions: true))
     return hash
   rescue  Yajl::ParseError  => e
     STDERR.puts 'Yajl Failed to parse Registry response _' + r.to_s + '_'
-    hash = SystemUtils.deal_with_jason(JSON.parse(r, create_additions: true))
+    hash = deal_with_jason(JSON.parse(r, create_additions: true))
     STDERR.puts 'JSON parse as ' + hash.to_s + 'from' + r.to_s
     hash
   end
