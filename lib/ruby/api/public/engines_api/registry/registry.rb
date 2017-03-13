@@ -12,11 +12,11 @@ module PublicApiRegistry
   end
 
   def get_configurations_tree
-    @core_api.service_configurations_tree
+    @core_api.get_configurations_tree
   end
 
   def get_shares_tree
-    @core_api.shares_tree
+    @core_api.get_shares_tree
   end
   
  
