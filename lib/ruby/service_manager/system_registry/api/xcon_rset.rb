@@ -133,6 +133,7 @@ STDERR.puts('1 ' + resp.status.to_s + ':' + resp.body.to_s)
 if resp.status > 399
   r = deal_with_jason(resp.body)
   r[:status] = resp.status
+  STDERR.puts('1,1 ' + r.to_s )    
   raise RegistryException.new(r)
 end 
   STDERR.puts('2 ' + resp.status.to_s + ':' + resp.body.to_s)
@@ -147,15 +148,7 @@ end
 rescue  StandardError => e
   STDERR.puts(e.to_s)
   STDERR.puts('Parse Error on error response object_' + r.to_s + '_')
-  begin
-   # r =  deal_with_jason(r) unless r.nil?
-    r
-  rescue  Yajl::ParseError  => e
-    STDERR.puts 'Yajl Failed to parse Registry response _' + r.to_s + '_'
-    hash = deal_with_jason(r)
-    STDERR.puts 'JSON parse as ' + hash.to_s + 'from' + r.to_s
-    hash
-  end
+  r 
 rescue  StandardError => e
   STDERR.puts e.class.name
 
