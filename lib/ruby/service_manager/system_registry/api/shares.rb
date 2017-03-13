@@ -5,11 +5,11 @@ module Shares
   end
 
   def remove_from_shares_registry(shared_service)
-    r = rest_post('shares/del',shared_service )
+    rest_post('shares/del',shared_service )
   end
 
   def add_share_to_managed_engines_registry(shared_service)
     add_to_managed_engines_registry(shared_service)
-    r = rest_post('shares/add',shared_service )
+   rest_post('shares/add',shared_service )
   end
 end
