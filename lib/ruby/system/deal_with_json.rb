@@ -1,5 +1,5 @@
 def  deal_with_jason(res)
-  return res.nil?
+  return if res.nil?
   r = parse_as_json(res)
   symbolise_json(r)
 rescue StandardError => e
