@@ -129,7 +129,10 @@ end
 
 def parse_xcon_response(resp)
   raise RegistryException.new('Server Error', :exception)  if resp.nil?
-  raise RegistryException.new(resp.status , json_parser(resp.body))  if resp.status > 399
+
+  STDERR.puts( 'resp ' +  resp.body.to_s)
+  r = json_parser(resp.body)
+  raise RegistryException.new(resp.status , r)  if resp.status > 399
 
   #return parse_error(resp) if resp.status > 399
   r = resp.body
