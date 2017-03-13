@@ -8,7 +8,6 @@ require '/opt/engines/lib/ruby/system/system_utils.rb'
 
 class ServiceManager  < ErrorsApi
 
-  require_relative 'result_checks.rb'
   require_relative 'service_definitions.rb'
   require_relative 'sm_service_control.rb'
   require_relative 'sm_engine_services.rb'
