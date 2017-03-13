@@ -11,9 +11,6 @@ module ManagedServiceConsumers
      true
   end
 
-  #  def service_manager
-  #    return @container_api.service_manager
-  #  end
 
   def registered_consumers(params = nil)
     if params.nil?

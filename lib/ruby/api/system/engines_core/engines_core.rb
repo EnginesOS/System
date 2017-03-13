@@ -227,11 +227,11 @@ class EnginesCore < ErrorsApi
   MemoryStatistics.container_memory_stats(engine)
     end
     
-  def service_manager
-    return create_service_manager if @service_manager.nil?
-      @service_manager
-    
-  end
+#  def service_manager
+#    return create_service_manager if @service_manager.nil?
+#      @service_manager
+#    
+#  end
 
   def build_engine(params)
   
@@ -248,6 +248,10 @@ class EnginesCore < ErrorsApi
   def shutdown(reason)
     # FIXME: @registry_handler.api_dissconnect
     @system_api.api_shutdown(reason)
+  end
+  private
+  def service_manager
+    @service_manager ||= ServiceManager.new(self) 
   end
   protected
 end
