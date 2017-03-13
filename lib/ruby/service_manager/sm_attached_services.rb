@@ -18,7 +18,7 @@ module SMAttachedServices
         #      hashes = system_registry_client.find_engine_services_hashes(params)
         #      SystemUtils.debug_output('hashes',hashes)
   
-        return test_registry_result(system_registry_client.find_engine_services_hashes(params))
+        return system_registry_client.find_engine_services_hashes(params)
         #    attached_managed_engine_services(identifier)
       when 'Volume'
         SystemDebug.debug(SystemDebug.services,  :looking_for_volume,identifier)

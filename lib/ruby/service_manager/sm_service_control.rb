@@ -10,7 +10,7 @@ module SmServiceControl
     SystemDebug.debug(SystemDebug.services, :sm_create_and_register_service, service_hash)
     #register with Engine
     unless ServiceDefinitions.is_soft_service?(service_hash) 
-      test_registry_result(system_registry_client.add_to_managed_engines_registry(service_hash))
+      system_registry_client.add_to_managed_engines_registry(service_hash)
       # FIXME not checked because of builder createing services prior to engine
       SystemDebug.debug(SystemDebug.services, :create_and_register_service_register, service_hash)
     end
@@ -19,12 +19,12 @@ module SmServiceControl
     if ServiceDefinitions.is_service_persistent?(service_hash)
       SystemDebug.debug(SystemDebug.services,  :create_and_register_service_persistr, service_hash)
       return r if ( r = add_to_managed_service(service_hash)).is_a?(EnginesError)
-      return test_registry_result(system_registry_client.add_to_services_registry(service_hash))
+      return system_registry_client.add_to_services_registry(service_hash)
     else
       SystemDebug.debug(SystemDebug.services,  :create_and_register_service_nonpersistr, service_hash)
       r = add_to_managed_service(service_hash)
       return r if r.is_a?(EnginesError)
-      return test_registry_result(system_registry_client.add_to_services_registry(service_hash))
+      return system_registry_client.add_to_services_registry(service_hash)
     end
     return true
   rescue Exception=>e
@@ -54,7 +54,7 @@ module SmServiceControl
     return log_error_mesg(' missing ns ',service_hash) unless service_hash.key?(:publisher_namespace) && service_hash.key?(:type_path) 
     return r if (r = remove_from_managed_service(service_hash)).is_a?(EnginesError) && !service_query.key?(:force)
     return r if ( r = system_registry_client.remove_from_managed_engines_registry(service_hash)).is_a?(EnginesError)
-    return test_registry_result(system_registry_client.remove_from_services_registry(service_hash))
+    return system_registry_client.remove_from_services_registry(service_hash)
 
   rescue StandardError => e
     log_exception(e)
@@ -64,7 +64,7 @@ module SmServiceControl
     clear_error
     r = ''
     ServiceDefinitions.set_top_level_service_params(params,params[:parent_engine])
-    if (r = test_registry_result(system_registry_client.update_attached_service(params)))
+    if (r = system_registry_client.update_attached_service(params))
       return add_to_managed_service(params) if ( r = remove_from_managed_service(params))
         return r
       # this calls add_to_managed_service(params) plus adds to reg
@@ -78,7 +78,6 @@ module SmServiceControl
   end
   
   def clear_service_from_registry(service)
-    test_registry_result(system_registry_client.clear_service_from_registry(service))
-
+    system_registry_client.clear_service_from_registry(service)
   end
 end

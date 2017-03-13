@@ -1,4 +1,5 @@
 #require 'rest-client'
+require_relative 'registry_exception.rb'
 
 def json_parser
   @json_parser ||= FFI_Yajl::Parser.new({:symbolize_keys => true})
@@ -29,11 +30,11 @@ def reopen_connection
   @connection.reset
 
   @connection = Excon.new(base_url,
-  :debug_request => true,
-  :debug_response => true,
-  :ssl_verify_peer => false,
-  :persistent => true,
-  :headers => headers)
+  debug_request: true,
+  debug_response: true,
+  ssl_verify_peer: false,
+  persistent: true,
+  headers: headers)
   @connection
 end
 
@@ -45,7 +46,7 @@ def rest_get(path,params = nil,time_out=120, _headers = nil)
   lheaders = headers
   lheaders.merge(_headers) unless _headers == nil
   lheaders.delete('Content-Type' ) if  q.nil?
-  req = {:time_out => time_out,:method => :get,:path => @route_prefix + path, :headers => lheaders }
+  req = {time_out: time_out, method: :get, path: @route_prefix + path, headers: lheaders }
   req[:query] = q unless q.nil?
 
   r = connection.request(req)
@@ -71,7 +72,7 @@ def rest_post(path,params = nil, lheaders=nil)
   begin
     SystemDebug.debug(SystemDebug.registry,'POST  ', path.to_s + '?' + params.to_s)
     lheaders = headers if lheaders.nil?
-    r = parse_xcon_response( connection.request(:read_timeout => time_out, :headers => lheaders,:method => :post,:path => @route_prefix + path,:body => query_hash(params).to_json  ))
+    r = parse_xcon_response( connection.request(read_timeout: time_out, headers: lheaders, method: :post, path: @route_prefix + path, body: query_hash(params).to_json  ))
     return r
   rescue   Excon::Error::Socket => e
     reopen_connection
@@ -84,9 +85,9 @@ end
 def rest_put(path,params = nil, lheaders=nil)
   SystemDebug.debug(SystemDebug.registry,'Delete ', path.to_s + '?' + params.to_s)
   lheaders = headers if lheaders.nil?
-  r = parse_xcon_response( connection.request(:read_timeout => time_out, :headers => lheaders,:method => :put,:path => @route_prefix + path,:query => query_hash(params).to_json ))
+  r = parse_xcon_response( connection.request(read_timeout: time_out, headers: lheaders, method: :put, path: @route_prefix + path, query: query_hash(params).to_json ))
   return r
-rescue   Excon::Error::Socket => e
+rescue Excon::Error::Socket => e
   reopen_connection
   retry
 rescue StandardError => e
@@ -99,11 +100,11 @@ def query_hash(params)
   params
 end
 
-def rest_delete(path,params = nil, lheaders=nil)
+def rest_delete(path, params = nil, lheaders=nil)
   q = query_hash(params)
   SystemDebug.debug(SystemDebug.registry,'DEL ', path.to_s + '?' + q.to_s)
   lheaders = headers if lheaders.nil?
-  r =  parse_xcon_response( connection.request(:read_timeout => time_out, :headers => lheaders,:method => :delete,:path => @route_prefix + path,:query => q))
+  r =  parse_xcon_response( connection.request(read_timeout: time_out, headers: lheaders, method: :delete, path: @route_prefix + path, query: q))
   return r
 rescue Excon::Error::Socket => e
   reopen_connection
@@ -127,27 +128,27 @@ rescue  StandardError => e
 end
 
 def parse_xcon_response(resp)
-  return STDERR.puts('nil resp')  if resp.nil?
-  return STDERR.puts('40x resp' + resp.body.to_s)  if resp.status > 399
-  return false if resp.status  == 404
-  return parse_error(resp) if resp.status > 399
+  raise RegistryException.new('Server Error', :exception)  if resp.nil?
+  raise RegistryException.new(resp.status , json_parser(resp.body))  if resp.status > 399
+
+  #return parse_error(resp) if resp.status > 399
   r = resp.body
   return false if r.nil?
   r.strip!
   return true if r.to_s   == '' ||  r.to_s   == 'true'
   return false if r.to_s  == 'false'
   return nil if r.to_s  == 'null'
-  hash = SystemUtils.deal_with_jason(JSON.parse(r, :create_additions => true))
+  hash = deal_with_jason(JSON.parse(r, create_additions: true))
   hash
 rescue  StandardError => e
   STDERR.puts(e.to_s)
   STDERR.puts('Parse Error on error response object_' + r.to_s + '_')
   begin
-    hash =  SystemUtils.deal_with_jason(JSON.parse(r, :create_additons => true ))
+    hash =  SystemUtils.deal_with_jason(JSON.parse(r, create_additions: true))
     return hash
   rescue  Yajl::ParseError  => e
     STDERR.puts 'Yajl Failed to parse Registry response _' + r.to_s + '_'
-    hash = SystemUtils.deal_with_jason(JSON.parse(r, :create_additions => true))
+    hash = SystemUtils.deal_with_jason(JSON.parse(r, create_additions: true))
     STDERR.puts 'JSON parse as ' + hash.to_s + 'from' + r.to_s
     hash
   end

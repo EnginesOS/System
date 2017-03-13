@@ -29,7 +29,7 @@ module SharedServices
        
       end
     shared_service.delete(:existing)
-    test_registry_result(system_registry_client.add_share_to_managed_engines_registry(shared_service))
+    system_registry_client.add_share_to_managed_engines_registry(shared_service)
       
   rescue StandardError => e
     log_exception(e,shared_service)
@@ -49,7 +49,7 @@ module SharedServices
    engine = @core_api.loadManagedEngine(service_hash[:parent_engine])
      return engine unless engine.is_a?(ManagedEngine)
    
-     test_registry_result(system_registry_client.remove_from_managed_engines_registry(service_hash)) if engine.del_volume(service_hash)
+     system_registry_client.remove_from_managed_engines_registry(service_hash) if engine.del_volume(service_hash)
   end
   
   def remove_shared_service_from_engine(service_query)
@@ -59,9 +59,9 @@ module SharedServices
     return log_error_mesg("Not a Shared Service",service_query,ahash) unless ahash[:shared] == true
    # return dettach_shared_volume(ahash) if ahash[:type_path] == 'filesystem/local/filesystem'     
     SystemDebug.debug(SystemDebug.services,  :remove_shared_service_from_engine, ahash)
-      return r if (r = system_registry_client.remove_from_managed_engines_registry(ahash)).is_a?(EnginesError)
+     system_registry_client.remove_from_managed_engines_registry(ahash)
     SystemDebug.debug(SystemDebug.services,  :remove_shared_service_from_share_reg, ahash)
-    r = test_registry_result(system_registry_client.remove_from_shares_registry(ahash))
+    r = system_registry_client.remove_from_shares_registry(ahash)
     SystemDebug.debug(SystemDebug.services,  :remove_shared_service_from_share_reg_result, r)
        r
   rescue StandardError => e

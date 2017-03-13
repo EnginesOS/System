@@ -4,20 +4,20 @@ module SmEngineServices
   #end
   def find_engine_services_hashes(params)
     clear_error
-    test_registry_result(system_registry_client.find_engine_services_hashes(params))
+    system_registry_client.find_engine_services_hashes(params)
   end
   #
 
   def find_engine_service_hash(params)
     clear_error
-    test_registry_result(system_registry_client.find_engine_service_hash(params))
+    system_registry_client.find_engine_service_hash(params)
   end
 
   #@return [Array] of all service_hashs marked persistence true for :engine_name
   #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
   #on recepit of an empty array any non critical error will be in  this object's  [ServiceManager] last_error method
   def get_engine_persistent_services(params)
-    test_registry_result(system_registry_client.get_engine_persistent_services(params))
+    system_registry_client.get_engine_persistent_services(params)
   end
 
   #@return [Array] of all service_hashs marked persistence false for :engine_name
@@ -26,7 +26,7 @@ module SmEngineServices
   #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
   #on recepit of an empty array any non critical error will be in  this object's  [ServiceManager] last_error method
   def get_engine_nonpersistent_services(params)
-    test_registry_result(system_registry_client.get_engine_nonpersistent_services(params))
+    system_registry_client.get_engine_nonpersistent_services(params)
   end
 
   #service manager get non persistent services for engine_name
@@ -41,7 +41,7 @@ module SmEngineServices
     services = get_engine_nonpersistent_services(params)
     return services  unless services.is_a?(Array)
     services.each do |service_hash|
-      test_registry_result(system_registry_client.remove_from_services_registry(service_hash))
+      system_registry_client.remove_from_services_registry(service_hash)
       remove_from_managed_service(service_hash)
     end
     return true
@@ -126,7 +126,7 @@ module SmEngineServices
   def rm_remove_engine_services(params)
     clear_error
     r = ''
-    services = test_registry_result(system_registry_client.get_engine_persistent_services(params))
+    services = system_registry_client.get_engine_persistent_services(params)
     return log_error_message(' rm_remove_engine_services FAILed ', services ) if services.is_a?(EnginesError)
     return true unless services.is_a?(Array)
     services.each do | service |
@@ -137,7 +137,7 @@ module SmEngineServices
       else
         return r if (r = orphanate_service(service)).is_a?(EnginesError)
       end
-      return r if (r = system_registry_client.remove_from_managed_engines_registry(service)).is_a?(EnginesError)
+      return r if (r = remove_from_managed_engines_registry(service)).is_a?(EnginesError)
     end
      true
   rescue StandardError => e

@@ -5,7 +5,7 @@ module SmOrphanServices
 def orphanate_service(params)
   SystemDebug.debug(SystemDebug.orphans, :Orphanate, params)
   params[:fresh] = false
-   test_registry_result(system_registry_client.orphanate_service(params))   
+   system_registry_client.orphanate_service(params)
   rescue StandardError => e
     log_exception(e)
  end
@@ -18,7 +18,7 @@ end
 
   def rollback_orphaned_service(service_hash)
     SystemDebug.debug(SystemDebug.orphans, :rollback_orphaned_service, service_hash)
-    test_registry_result(system_registry_client.rollback_orphaned_service(service_hash))   
+    system_registry_client.rollback_orphaned_service(service_hash)
   end
   
 #@returns [Hash] suitable for use  to attach as a service
@@ -43,9 +43,7 @@ end
 
   def retrieve_orphan(params)
   #  STDERR.puts('retrice ORPHA ' + params.to_s)
-    r = system_registry_client.retrieve_orphan(params)
-  
-    test_registry_result(r)   
+     system_registry_client.retrieve_orphan(params)
     rescue StandardError => e
       log_exception(e)
   end
@@ -65,7 +63,7 @@ end
      end
 
     return log_error_mesg('failed to retrieve orphan service:' +  @last_error.to_s,service_hash)  if service_hash.nil? || service_hash == false
-    return test_registry_result(system_registry_client.release_orphan(service_hash)) if ( r = remove_from_managed_service(service_hash))  
+    return system_registry_client.release_orphan(service_hash) if ( r = remove_from_managed_service(service_hash))  
        r
     rescue StandardError => e
       log_exception(e)
@@ -80,7 +78,7 @@ end
    #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
    #on recepit of an empty array any non critical error will be in  this object's  [ServiceManager] last_error method
    def get_orphaned_services(params)
-     test_and_lock_registry_result(system_registry_client.get_orphaned_services(params))
+     system_registry_client.get_orphaned_services(params)
    end
   
   def connect_orphan_service(service_hash)

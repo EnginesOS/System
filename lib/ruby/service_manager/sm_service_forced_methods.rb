@@ -5,7 +5,7 @@ module SmServiceForcedMethods
        clear_error
     r = ''
       return r unless ( r = add_to_managed_service(service_hash))
-      return test_registry_result(system_registry_client.add_to_services_registry(service_hash))
+      return system_registry_client.add_to_services_registry(service_hash)
 
        rescue StandardError => e
          log_exception(e)
@@ -15,7 +15,7 @@ module SmServiceForcedMethods
     clear_error
     r = ''
    return r unless ( r = remove_from_managed_service(service_hash))
-    return  test_registry_result(system_registry_client.remove_from_services_registry(service_hash))
+    return  system_registry_client.remove_from_services_registry(service_hash)
     rescue StandardError => e
       log_exception(e)
   end

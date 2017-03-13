@@ -19,9 +19,9 @@ end
 #test the result and carry last_error from system_registry_client if nil
 #freeze result object if not nil
 #@return result
-def test_and_lock_registry_result(result)
-  if test_registry_result(result)
-    result.freeze
-  end
-   result
-end   
+#def test_and_lock_registry_result(result)
+#  if test_registry_result(result)
+#    result.freeze
+#  end
+#   result
+#end   
