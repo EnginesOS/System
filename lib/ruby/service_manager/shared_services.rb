@@ -40,7 +40,7 @@ module SharedServices
     #used by the builder whn no engine to add volume to def
      return engine unless  engine.is_a?(ManagedEngine)
       # Volume.complete_service_hash(shared_service)      
-    return true
+     true
     rescue StandardError => e
       log_exception(e,shared_service)
   end
@@ -49,7 +49,7 @@ module SharedServices
    engine = @core_api.loadManagedEngine(service_hash[:parent_engine])
      return engine unless engine.is_a?(ManagedEngine)
    
-    return test_registry_result(system_registry_client.remove_from_managed_engines_registry(service_hash)) if engine.del_volume(service_hash)
+     test_registry_result(system_registry_client.remove_from_managed_engines_registry(service_hash)) if engine.del_volume(service_hash)
   end
   
   def remove_shared_service_from_engine(service_query)
@@ -63,7 +63,7 @@ module SharedServices
     SystemDebug.debug(SystemDebug.services,  :remove_shared_service_from_share_reg, ahash)
     r = test_registry_result(system_registry_client.remove_from_shares_registry(ahash))
     SystemDebug.debug(SystemDebug.services,  :remove_shared_service_from_share_reg_result, r)
-      return r
+       r
   rescue StandardError => e
     log_exception(e)
   end

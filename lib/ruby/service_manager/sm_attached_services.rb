@@ -28,11 +28,11 @@ module SMAttachedServices
         return attached_database_services(identifier)
       end
       SystemDebug.debug(SystemDebug.services, :no_object_name_match, objectName)
-      return nil
+       nil
     rescue Exception=>e
       puts e.message
       log_exception(e)
-      return params
+       params
     end
 
 end

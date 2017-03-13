@@ -20,7 +20,6 @@ end
 
 def rest_post(path,params = nil)
   begin
-    #STDERR.puts('Post Path:' + path.to_s + ' Params:' + params.to_s)
     parse_rest_response(RestClient.post(base_url + path, params))
     rescue RestClient::ExceptionWithResponse => e   
       parse_error(e.response)
@@ -52,11 +51,8 @@ end
 private
 
 def parse_error(r)
-  r.strip!# (/^\n/,'')
- # STDERR.puts("RSPONSE:" +r.to_s)
-
-  res = JSON.parse(r, :create_additions => true,:symbolize_keys => true)
-  #STDERR.puts("RSPONSE:" + res.to_s)
+  r.strip!
+  res = JSON.parse(r, :create_additions => true)
   EnginesRegistryError.new(deal_with_jason(res))
   rescue  StandardError => e
   STDERR.puts(r.to_s)
@@ -71,7 +67,7 @@ def parse_rest_response(r)
   return true if r.to_s   == '' ||  r.to_s   == 'true'
   return false if r.to_s  == 'false'
   r.strip!
-  res = JSON.parse(r, :create_additions => true,:symbolize_keys => true)
+  res = JSON.parse(r, :create_additions => true)
   # STDERR.puts("RESPONSE "  + deal_with_jason(res).to_s)
   return deal_with_jason(res)
 rescue  StandardError => e

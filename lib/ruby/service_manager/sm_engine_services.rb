@@ -91,7 +91,7 @@ module SmEngineServices
       register_non_persistent_service(service_hash)
       SystemDebug.debug(SystemDebug.services,:register_non_persistent,service_hash)
     end
-    return true
+     true
   rescue StandardError => e
     log_exception(e)
   end

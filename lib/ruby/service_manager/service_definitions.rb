@@ -38,7 +38,7 @@ class ServiceDefinitions
        service_hash[:service_handle] = container_name
      end    
     
-     return service_hash   
+      service_hash   
        rescue StandardError => e
          SystemUtils.log_exception(e)
    end
@@ -60,7 +60,7 @@ class ServiceDefinitions
  def self.software_service_persistence(service_hash)
    service_definition = self.software_service_definition(service_hash)
    return service_definition[:persistent] unless service_definition.nil?              
-   return nil 
+    nil 
    rescue StandardError => e
    SystemUtils.log_exception(e)
  end
@@ -84,7 +84,7 @@ class ServiceDefinitions
     p :error
     p params
     SystemUtils.log_exception(e)
-    return nil
+     nil
   end
 
  

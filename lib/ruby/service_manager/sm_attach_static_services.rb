@@ -11,7 +11,7 @@ module SmAttachStaticServices
       SystemDebug.debug(SystemDebug.services,:Service_dile,container.container_name,curr_service_file)    
 
       yaml = File.read(service_file)
-      service_hash = YAML::load( yaml )
+      service_hash = YAML::load(yam )
       service_hash = SystemUtils.symbolize_keys(service_hash)
       service_hash[:container_type] = container.ctype
       SystemDebug.debug(SystemDebug.services, :loaded_service_hash, service_hash)
@@ -48,7 +48,7 @@ module SmAttachStaticServices
         log_error_mesg('failed to get service entry from ' ,service_hash)
       end
     end
-    return true
+     true
   rescue StandardError =>e
     puts e.message
     log_error_mesg('Parse error on ' + curr_service_file,container)

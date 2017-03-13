@@ -29,7 +29,7 @@ end
     service_hash[:fresh] = false
     service_hash[:freed_orphan] = true
     #resuse_service_hash = @service_manager.reparent_orphan(service_hash)
-    return service_hash
+     service_hash
   end
   
 def match_orphan_service(service_hash)
@@ -38,7 +38,7 @@ def match_orphan_service(service_hash)
   if res.is_a?(Hash)
       return true if res[:publisher_namespace] == service_hash[:publisher_namespace]
   end
-  return false
+   false
 end
 
   def retrieve_orphan(params)
@@ -66,7 +66,7 @@ end
 
     return log_error_mesg('failed to retrieve orphan service:' +  @last_error.to_s,service_hash)  if service_hash.nil? || service_hash == false
     return test_registry_result(system_registry_client.release_orphan(service_hash)) if ( r = remove_from_managed_service(service_hash))  
-      return r
+       r
     rescue StandardError => e
       log_exception(e)
   end
@@ -91,7 +91,7 @@ end
     service_hash = reparent_orphan(service_hash, service_hash[:parent_engine]) 
     r = create_and_register_service(service_hash)
     r = release_orphan(orphan) unless r.is_a?(EnginesError)
-    return r
+     r
     end
     
   
