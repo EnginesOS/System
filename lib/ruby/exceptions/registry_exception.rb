@@ -8,7 +8,7 @@ class RegistryException < StandardError
 
   def initialize( hash)
   unless hash.nil?
-      @status = status
+      @status = hash[:status]
       @level = hash[:error_type]
       @params = hash[:params]
       super(hash[:error_mesg])

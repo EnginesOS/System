@@ -9,7 +9,7 @@ module SmEngineServices
     STDERR.puts(' Error Level ')
     return log_exception(e) unless e.is_a?(RegistryException)
     STDERR.puts(' Error Level ' + e.level.to_s)
-      return  if e.error_level == :warning  ||  e.error_level == :error 
+      return  if e.level == :warning  ||  e.level == :error 
       STDERR.puts(' Error Level ' + e.level.to_s)
       log_exception(e)
   end
