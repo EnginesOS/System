@@ -56,12 +56,12 @@ rescue  Excon::Error::Socket => e
   STDERR.puts e.class.name + ' with path:' + path.to_s + "\n" + 'params:' + q.to_s + ':::' + req.to_s  + ':' + e.to_s
   cnt+=1
   retry if cnt< 5
-
-rescue StandardError => e
-  STDERR.puts e.class.name + ' with path:' + path.to_s + "\n" + 'params:' + q.to_s + ':::' + req.to_s
-  STDERR.puts e.backtrace.to_s
-  log_exception(e, params, path)
-  nil
+#
+#rescue StandardError => e
+#  STDERR.puts e.class.name + ' with path:' + path.to_s + "\n" + 'params:' + q.to_s + ':::' + req.to_s
+#  STDERR.puts e.backtrace.to_s
+#  log_exception(e, params, path)
+#  nil
 end
 
 def time_out
