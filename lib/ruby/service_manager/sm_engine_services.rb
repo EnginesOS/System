@@ -7,6 +7,7 @@ module SmEngineServices
     system_registry_client.find_engine_services_hashes(params)
     rescue RegistryException => e
       return  if e.level == :warning
+      STDERR.puts(' Error Level ' + e.level.to_s)
       log_exception(e)
   end
   #
