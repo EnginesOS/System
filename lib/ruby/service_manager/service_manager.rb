@@ -44,7 +44,7 @@ class ServiceManager  < ErrorsApi
   include SharedServices
   include SmPublicKeyAccess
 
-  private
+ # private
   require '/opt/engines/lib/ruby/exceptions/registry_exception.rb'
   require_relative 'registry_client.rb'
   include RegistryClient
