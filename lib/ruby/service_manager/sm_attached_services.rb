@@ -29,6 +29,11 @@ module SMAttachedServices
       end
       SystemDebug.debug(SystemDebug.services, :no_object_name_match, objectName)
        nil
+      rescue RegistryException => e
+      STDERR.puts(' Error Level ' + e.level.to_s)
+        return  if e.level == :warning
+        STDERR.puts(' Error Level ' + e.level.to_s)
+        log_exception(e)
     rescue Exception=>e
       puts e.message
       log_exception(e)
