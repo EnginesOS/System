@@ -1,4 +1,4 @@
-require_relative 'result_checks.rb'
+
 require_relative 'registry_client.rb'
 
 module SmRegistryTree

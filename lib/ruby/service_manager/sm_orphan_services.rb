@@ -1,4 +1,4 @@
-require_relative 'result_checks.rb'
+
 require_relative 'service_container_actions.rb'
 
 module SmOrphanServices
