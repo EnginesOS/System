@@ -15,7 +15,7 @@ class EnginesRegistryError < EnginesError
       
     super(message, type)
         @sub_system = 'engines_registry'
-        @registry_source = error_hash[:source]
+       @registry_source = error_hash[:source]
       end
 #      
 #  def to_json(opt)
