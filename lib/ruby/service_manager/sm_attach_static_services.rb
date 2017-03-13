@@ -11,7 +11,7 @@ module SmAttachStaticServices
       SystemDebug.debug(SystemDebug.services,:Service_dile,container.container_name,curr_service_file)    
 
       yaml = File.read(service_file)
-      service_hash = YAML::load(yam )
+      service_hash = YAML::load(yaml)
       service_hash = SystemUtils.symbolize_keys(service_hash)
       service_hash[:container_type] = container.ctype
       SystemDebug.debug(SystemDebug.services, :loaded_service_hash, service_hash)
