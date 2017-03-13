@@ -141,14 +141,13 @@ def parse_xcon_response(resp)
   return true if r.to_s   == '' ||  r.to_s   == 'true'
   return false if r.to_s  == 'false'
   return false if r.to_s  == 'null'
-  hash = deal_with_jason(r)
-  hash
+   deal_with_jason(r)  
 rescue  StandardError => e
   STDERR.puts(e.to_s)
   STDERR.puts('Parse Error on error response object_' + r.to_s + '_')
   begin
-    hash =  deal_with_jason(r)
-    return hash
+    r =  deal_with_jason(r) unless r.nil?
+    r
   rescue  Yajl::ParseError  => e
     STDERR.puts 'Yajl Failed to parse Registry response _' + r.to_s + '_'
     hash = deal_with_jason(r)

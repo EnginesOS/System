@@ -1,7 +1,10 @@
 
-def  deal_with_jason(res)  
+def  deal_with_jason(res) 
+  return res.nil?
   r = parse_as_json(res)
-  symbolise_json(r)  
+  symbolise_json(r) 
+  rescue StandardError => e
+  res
 end
 
 def parse_as_json(res)
@@ -14,8 +17,6 @@ def symbolise_json(res)
  return symbolize_tree(res) if res.is_a?(Tree::TreeNode)
  return boolean_if_true_false_str(res) if res.is_a?(String)
   res
-rescue  StandardError => e
- STDERR.puts('SystemUtils.deal_with_jason ' + e.to_s) 
 end
 def symbolize_keys_array_members(array)
 return array if array.count == 0
@@ -31,8 +32,6 @@ array.each do |hash|
 end
  retval
 
-rescue StandardError => e
-log_exception(e)
 end
 
 def symbolize_keys(hash)
@@ -66,8 +65,6 @@ def boolean_if_true_false_str(r)
     return false
   end
    r
-rescue  StandardError => e
-  log_exception(e, r)
 end
 
 def symbolize_tree(tree)
@@ -77,6 +74,5 @@ def symbolize_tree(tree)
     symbolize_tree(node)
   end
    tree
-rescue  StandardError => e
-  log_exception(e)
+
 end
