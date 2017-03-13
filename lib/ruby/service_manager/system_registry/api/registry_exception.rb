@@ -6,14 +6,12 @@ class RegistryException < StandardError
     super(msg)
   end
 
-  def   initialize( hash)
-   
-  
-    unless hash.nil?
+  def initialize( hash)
+  unless hash.nil?
       @status = status
       @level = hash[:level]
       @params = hash[:params]
-      super(hash[:msg])
+      super(hash[:error_mesg])
     else
       @level = :nil
       super

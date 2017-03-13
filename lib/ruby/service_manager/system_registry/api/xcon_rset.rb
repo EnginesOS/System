@@ -128,7 +128,7 @@ rescue  StandardError => e
 end
 
 def parse_xcon_response(resp)
-raise RegistryException.new({status: 500 , msg: 'Server Error', exception: :exception})  if resp.nil?
+raise RegistryException.new({status: 500 , error_mesg: 'Server Error', exception: :exception})  if resp.nil?
 STDERR.puts('1 ' + resp.status.to_s + ':' + resp.body.class.name)    
 if resp.status > 399
   r = deal_with_jason(resp.body)
@@ -148,7 +148,7 @@ rescue  StandardError => e
   STDERR.puts(e.to_s)
   STDERR.puts('Parse Error on error response object_' + r.to_s + '_')
   begin
-    r =  deal_with_jason(r) unless r.nil?
+   # r =  deal_with_jason(r) unless r.nil?
     r
   rescue  Yajl::ParseError  => e
     STDERR.puts 'Yajl Failed to parse Registry response _' + r.to_s + '_'

@@ -1,7 +1,7 @@
 def  deal_with_jason(res)
   return if res.nil?
-  r = parse_as_json(res)
-  symbolise_json(r)
+  res = parse_as_json(res) unless res.is_a?(Hash)
+  symbolise_json(res)
 rescue StandardError => e
   log_exception(e)
 end
