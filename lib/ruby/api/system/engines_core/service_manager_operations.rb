@@ -15,13 +15,13 @@ module ServiceManagerOperations
   end
 
   def  find_engine_services_hashes(hash)
-    hash[:container_type] = 'service'
+    hash[:container_type] = 'container'
     service_manager.find_engine_services_hashes(hash)
    
   end
 
   def find_service_service_hash(params)
-    params[:container_type] = 'service'
+    params[:container_type] = 'container'
     find_engine_service_hash(params)
   end
 
