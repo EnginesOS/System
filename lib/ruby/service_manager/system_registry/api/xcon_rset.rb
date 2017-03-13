@@ -130,9 +130,9 @@ end
 def parse_xcon_response(resp)
   raise RegistryException.new('Server Error', :exception)  if resp.nil?
 
-  STDERR.puts(resp.status.to_s + ':' + resp.body.to_s)
+ # STDERR.puts(resp.status.to_s + ':' + resp.body.to_s)
   
-  raise RegistryException.new(resp.status, deal_with_jason(JSON.parse(resp.body, create_additions: true)))  if resp.status > 399
+  raise RegistryException.new(resp.status, deal_with_jason(resp.body))  if resp.status > 399
 
   #return parse_error(resp) if resp.status > 399
   r = resp.body
@@ -140,18 +140,18 @@ def parse_xcon_response(resp)
   r.strip!
   return true if r.to_s   == '' ||  r.to_s   == 'true'
   return false if r.to_s  == 'false'
-  return nil if r.to_s  == 'null'
-  hash = deal_with_jason(JSON.parse(r, create_additions: true))
+  return false if r.to_s  == 'null'
+  hash = deal_with_jason(r)
   hash
 rescue  StandardError => e
   STDERR.puts(e.to_s)
   STDERR.puts('Parse Error on error response object_' + r.to_s + '_')
   begin
-    hash =  deal_with_jason(JSON.parse(r, create_additions: true))
+    hash =  deal_with_jason(r)
     return hash
   rescue  Yajl::ParseError  => e
     STDERR.puts 'Yajl Failed to parse Registry response _' + r.to_s + '_'
-    hash = deal_with_jason(JSON.parse(r, create_additions: true))
+    hash = deal_with_jason(r)
     STDERR.puts 'JSON parse as ' + hash.to_s + 'from' + r.to_s
     hash
   end

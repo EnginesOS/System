@@ -66,8 +66,6 @@ module DockerInfoCollector
         return -1 if info.nil?
       end
       SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ' ,info)
-      # SystemUtils.deal_with_jason(info)
-      # SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ' ,info)
       if info.is_a?(Hash)
         SystemDebug.debug(SystemDebug.containers,'hash')
       end
