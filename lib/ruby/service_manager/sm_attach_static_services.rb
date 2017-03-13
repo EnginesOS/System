@@ -5,10 +5,10 @@ module SmAttachStaticServices
     clear_error
     container.environments  = [] if container.environments .nil?
     curr_service_file = ''
-    SystemDebug.debug(SystemDebug.services,:Globbing,container.container_name,dirname + '/*.yaml')    
+    SystemDebug.debug(SystemDebug.services,:Globbing,container.container_name,dirname + '/*.yaml')
     Dir.glob(dirname + '/*.yaml').each do |service_file|
       curr_service_file = service_file
-      SystemDebug.debug(SystemDebug.services,:Service_dile,container.container_name,curr_service_file)    
+      SystemDebug.debug(SystemDebug.services,:Service_dile,container.container_name,curr_service_file)
 
       yaml = File.read(service_file)
       service_hash = YAML::load(yaml)
@@ -37,7 +37,7 @@ module SmAttachStaticServices
       end
       if service_hash.is_a?(Hash)
         SystemDebug.debug(SystemDebug.services, :post_entry_service_hash, service_hash)
-        
+
         new_envs = SoftwareServiceDefinition.service_environments(service_hash)
         # p 'new_envs'
         # p new_envs.to_s
@@ -48,7 +48,7 @@ module SmAttachStaticServices
         log_error_mesg('failed to get service entry from ' ,service_hash)
       end
     end
-     true
+    true
   rescue StandardError =>e
     puts e.message
     log_error_mesg('Parse error on ' + curr_service_file,container)

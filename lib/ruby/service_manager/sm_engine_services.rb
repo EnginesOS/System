@@ -5,22 +5,16 @@ module SmEngineServices
   def find_engine_services_hashes(params)
     clear_error
     system_registry_client.find_engine_services_hashes(params)
-    rescue StandardError => e
-    STDERR.puts(' Error Level ')
-    return log_exception(e) unless e.is_a?(RegistryException)
-    STDERR.puts(' Error Level ' + e.level.to_s)
-      return  if e.level == :warning  ||  e.level == :error 
-      STDERR.puts(' Error Level ' + e.level.to_s)
-      log_exception(e)
+  rescue StandardError => e
+    handle_exception(e)
   end
   #
 
   def find_engine_service_hash(params)
     clear_error
     system_registry_client.find_engine_service_hash(params)
-    rescue RegistryException => e
-      return  if e.level == :warning
-      log_exception(e)
+  rescue StandardError => e
+    handle_exception(e)
   end
 
   #@return [Array] of all service_hashs marked persistence true for :engine_name
@@ -28,9 +22,8 @@ module SmEngineServices
   #on recepit of an empty array any non critical error will be in  this object's  [ServiceManager] last_error method
   def get_engine_persistent_services(params)
     system_registry_client.get_engine_persistent_services(params)
-    rescue RegistryException => e
-      return  if e.level == :warning
-      log_exception(e)
+  rescue StandardError => e
+    handle_exception(e)
   end
 
   #@return [Array] of all service_hashs marked persistence false for :engine_name
@@ -40,9 +33,8 @@ module SmEngineServices
   #on recepit of an empty array any non critical error will be in  this object's  [ServiceManager] last_error method
   def get_engine_nonpersistent_services(params)
     system_registry_client.get_engine_nonpersistent_services(params)
-    rescue RegistryException => e
-      return  if e.level == :warning
-      log_exception(e)
+  rescue StandardError => e
+    handle_exception(e)
   end
 
   #service manager get non persistent services for engine_name
@@ -52,7 +44,7 @@ module SmEngineServices
     clear_error
     params = {
       parent_engine: engine.container_name,
-      container_type: engine.ctype    
+      container_type: engine.ctype
     }
     services = get_engine_nonpersistent_services(params)
     return services  unless services.is_a?(Array)
@@ -60,44 +52,32 @@ module SmEngineServices
       system_registry_client.remove_from_services_registry(service_hash)
       remove_from_managed_service(service_hash)
     end
-    return true
-    rescue RegistryException => e
-      return false if e.level == :warning
-      log_exception(e)
+    true
   rescue StandardError => e
-    log_exception(e)
+    handle_exception(e)
   end
 
   def list_persistent_services(engine)
     clear_error
     params = {
-         parent_engine: engine.container_name,
-         container_type: engine.ctype    
-       }
+      parent_engine: engine.container_name,
+      container_type: engine.ctype
+    }
     services = get_engine_persistent_services(params)
-     services
-    rescue RegistryException => e
-      return false if e.level == :warning
-      log_exception(e)
+    services
   rescue StandardError => e
-    log_exception(e)
+    handle_exception(e)
   end
 
   def list_non_persistent_services(engine)
     clear_error
     params = {
-         parent_engine: engine.container_name,
-         container_type: engine.ctype    
-       }
-
-    services = get_engine_nonpersistent_services(params)
-
-     services
-    rescue RegistryException => e
-      return false if e.level == :warning
-      log_exception(e)
+      parent_engine: engine.container_name,
+      container_type: engine.ctype
+    }
+    get_engine_nonpersistent_services(params)
   rescue StandardError => e
-    log_exception(e)
+    handle_exception(e)
   end
 
   #service manager get non persistent services for engine_name
@@ -106,9 +86,9 @@ module SmEngineServices
   def register_non_persistent_services(engine)
     clear_error
     params = {
-         parent_engine: engine.container_name,
-         container_type: engine.ctype    
-       }
+      parent_engine: engine.container_name,
+      container_type: engine.ctype
+    }
     services = get_engine_nonpersistent_services(params)
     SystemDebug.debug(SystemDebug.services,:register_non_persistent, services)
     return services  unless services.is_a?(Array)
@@ -116,27 +96,20 @@ module SmEngineServices
       register_non_persistent_service(service_hash)
       SystemDebug.debug(SystemDebug.services,:register_non_persistent,service_hash)
     end
-     true
-    rescue RegistryException => e
-      return false if e.level == :warning
-      log_exception(e)
+    true
   rescue StandardError => e
-    log_exception(e)
+    handle_exception(e)
   end
 
   def remove_engine_from_managed_engines_registry(params)
-    r = system_registry_client.remove_from_managed_engines_registry(params)
-     r
-    rescue RegistryException => e
-      return false if e.level == :warning
-      log_exception(e)
+    system_registry_client.remove_from_managed_engines_registry(params)
   rescue StandardError => e
-    log_exception(e)
+    handle_exception(e)
   end
 
   def get_cron_entry(cronjob, container)
     entry = find_engine_service_hash({
-      parent_engine: container.container_name,    
+      parent_engine: container.container_name,
       publisher_namespace: 'EnginesSystem',
       type_path: 'cron',
       container_type: container.ctype,
@@ -145,12 +118,9 @@ module SmEngineServices
 
     return  entry unless entry.is_a?(Hash)
     entry[:variables][:cron_job]
-    rescue RegistryException => e
-      return false if e.level == :warning
-      log_exception(e)
+
   rescue StandardError => e
-    STDERR.puts( 'Got ' + entry.to_s + ' for cron entry')
-    log_exception(e)
+    handle_exception(e)
   end
 
   #@ remove an engine matching :engine_name from the service registry, all non persistent serices are removed
@@ -173,12 +143,10 @@ module SmEngineServices
       end
       return r if (r = remove_from_managed_engines_registry(service)).is_a?(EnginesError)
     end
-     true
-  rescue RegistryException => e
-    return false if e.level == :warning
-    log_exception(e)
+    true
+
   rescue StandardError => e
-    log_exception(e)
+    handle_exception(e)
   end
 
 end

@@ -9,7 +9,7 @@ module SmPublicKeyAccess
     k = File.read(kfn)
     k.split(' ')[1]
   rescue StandardError => e
-    log_exception(e)
+    handle_exception(e)
   end
 
 end
