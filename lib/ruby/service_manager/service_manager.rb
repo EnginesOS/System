@@ -28,7 +28,7 @@ class ServiceManager  < ErrorsApi
 
   def initialize(core_api)
     @core_api = core_api
-    @system_registry = SystemRegistryClient.new(@core_api)
+    #@system_registry = SystemRegistryClient.new(@core_api)
   end
   
 
