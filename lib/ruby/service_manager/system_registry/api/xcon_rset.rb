@@ -115,17 +115,17 @@ rescue StandardError => e
 end
 
 private
-
-def parse_error(resp)
-  r = resp.body
-  r.strip!# (/^\n/,'')
-  EnginesRegistryError.new(r)
-rescue  StandardError => e
-  STDERR.puts(e.to_s)
-  STDERR.puts('Parse Error on error response object ', r.to_s)
-  EnginesRegistryError.new(resp)
-
-end
+#
+#def parse_error(resp)
+#  r = resp.body
+#  r.strip!# (/^\n/,'')
+#  EnginesRegistryError.new(r)
+#rescue  StandardError => e
+#  STDERR.puts(e.to_s)
+#  STDERR.puts('Parse Error on error response object ', r.to_s)
+#  EnginesRegistryError.new(resp)
+#
+#end
 
 def parse_xcon_response(resp)
 raise RegistryException.new({status: 500 , error_mesg: 'Server Error', exception: :exception})  if resp.nil?
@@ -145,16 +145,16 @@ end
   return false if r.to_s  == 'false'
   return false if r.to_s  == 'null'
   deal_with_jason(r)  
-rescue  StandardError => e
-  STDERR.puts(e.to_s)
-  STDERR.puts('Parse Error on error response object_' + r.to_s + '_')
-  r 
-rescue  StandardError => e
-  STDERR.puts e.class.name
-
-  STDERR.puts e.backtrace
-  STDERR.puts 'Failed to parse Registry response _' + r.to_s + '_'
-  log_exception(e, r)
+#rescue  StandardError => e
+#  STDERR.puts(e.to_s)
+#  STDERR.puts('Parse Error on error response object_' + r.to_s + '_')
+#  r 
+#rescue  StandardError => e
+#  STDERR.puts e.class.name
+#
+#  STDERR.puts e.backtrace
+#  STDERR.puts 'Failed to parse Registry response _' + r.to_s + '_'
+#  log_exception(e, r)
 end
 
 def base_url
