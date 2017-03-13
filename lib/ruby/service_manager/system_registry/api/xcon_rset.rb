@@ -128,12 +128,9 @@ rescue  StandardError => e
 end
 
 def parse_xcon_response(resp)
-  raise RegistryException.new('Server Error', :exception)  if resp.nil?
-
- # STDERR.puts(resp.status.to_s + ':' + resp.body.to_s)
-  
+  raise RegistryException.new('Server Error', :exception)  if resp.nil?    
   raise RegistryException.new(resp.status, deal_with_jason(resp.body))  if resp.status > 399
-
+  STDERR.puts(resp.status.to_s + ':' + resp.body.to_s)
   #return parse_error(resp) if resp.status > 399
   r = resp.body
   return false if r.nil?
@@ -141,7 +138,7 @@ def parse_xcon_response(resp)
   return true if r.to_s   == '' ||  r.to_s   == 'true'
   return false if r.to_s  == 'false'
   return false if r.to_s  == 'null'
-   deal_with_jason(r)  
+  deal_with_jason(r)  
 rescue  StandardError => e
   STDERR.puts(e.to_s)
   STDERR.puts('Parse Error on error response object_' + r.to_s + '_')
