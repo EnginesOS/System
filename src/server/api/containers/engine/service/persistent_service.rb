@@ -7,7 +7,7 @@ require 'base64'
 # @return [Binary]
 get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/export' do
   content_type 'application/octet-stream'
-  hash = Utils::ServiceHash.engine_service_hash_from_params(params)
+  hash = engine_service_hash_from_params(params)
   engine = get_engine(params[:engine_name])
   r = ''
   return log_error(request, engine, params) if engine.is_a?(EnginesError)
@@ -26,7 +26,7 @@ post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace
 #  p_params = request.env["rack.input"].read
 #  STDERR.puts(' upload post '  + p_params.to_s + ' params '  + params.to_s)
   hash = {}
-  hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
+  hash[:service_connection] =  engine_service_hash_from_params(params)
   engine = get_engine(params[:engine_name])
   hash[:datafile] = params['file'][:tempfile]
 
@@ -45,7 +45,7 @@ end
 ##  p_params = request.env["rack.input"].read
 # # STDERR.puts(' upload post '  + p_params.to_s + ' params '  + params.to_s)
 #  hash = {}
-#  hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
+#  hash[:service_connection] =  engine_service_hash_from_params(params)
 #  engine = get_engine(params[:engine_name])
 # # hash[:data] = p_params['api_vars']['data']
 #  file = p_params[:file][:tempfile]
@@ -64,7 +64,7 @@ end
 # # p_params =request.env["rack.input"].read
 # # STDERR.puts(' upload post '  + p_params.to_s + ' params '  + params.to_s)
 #  hash = {}
-#  hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
+#  hash[:service_connection] =  engine_service_hash_from_params(params)
 #  engine = get_engine(params[:engine_name])
 #  hash[:import_method] = :replace
 #  hash[:datafile] = params[:tempfile]
@@ -84,7 +84,7 @@ post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace
 #  p_params = request.env["rack.input"].read
 #  STDERR.puts(' upload post '  + p_params.to_s + ' params '  + params.to_s)
   hash = {}
-  hash[:service_connection] =  Utils::ServiceHash.engine_service_hash_from_params(params)
+  hash[:service_connection] =  engine_service_hash_from_params(params)
   engine = get_engine(params[:engine_name])
   hash[:import_method] = :replace
   hash[:datafile] = params['file'][:tempfile]
@@ -103,7 +103,7 @@ end
 # @return [Array]
 
 get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*' do
-  hash = Utils::ServiceHash.engine_service_hash_from_params(params)
+  hash = engine_service_hash_from_params(params)
   r = engines_api.find_engine_service_hash(hash)
   return log_error(request, r, hash) if r.is_a?(EnginesError)
   return_json(r)
@@ -117,7 +117,7 @@ end
 
 post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*' do
   p_params = post_params(request)
-   path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, false)
+   path_hash = engine_service_hash_from_params(params, false)
    p_params.merge!(path_hash)
    cparams =  Utils::Params.assemble_params(p_params, [:parent_engine,:publisher_namespace, :type_path, :service_handle], :all)
    return log_error(request,cparams,p_params) if cparams.is_a?(EnginesError)

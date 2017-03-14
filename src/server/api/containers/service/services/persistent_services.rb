@@ -18,7 +18,7 @@ end
 # @return [Array]
 
 get '/v0/containers/service/:service_name/services/persistent/:publisher_namespace/*' do
-  hash = Utils::ServiceHash.service_service_hash_from_params(params, true)     
+  hash = service_service_hash_from_params(params, true)     
   r = engines_api.find_engine_service_hashes(hash) #find_engine_services_hashes(hash)
   return log_error(request, r, hash) if r.is_a?(EnginesError)
   return_json(r)

@@ -6,7 +6,7 @@
 # @return [true|false]
 get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/*/register' do
 
-  hash = Utils::ServiceHash.service_service_hash_from_params(params)
+  hash = service_service_hash_from_params(params)
 
   service_hash = engines_api.find_service_service_hash(hash)
   return log_error(request, 'Service not found', hash) if service_hash.is_a?(EnginesError)
@@ -21,7 +21,7 @@ end
 # @return [true|false]
 get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/*/reregister' do
 
-  hash = Utils::ServiceHash.service_service_hash_from_params(params)
+  hash = service_service_hash_from_params(params)
   service_hash = engines_api.find_service_service_hash(hash)
   return service_hash if service_hash.is_a?(EnginesError)
   r = engines_api.force_reregister_attached_service(service_hash)
@@ -35,7 +35,7 @@ end
 # @return [true|false]
 get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/*/deregister' do
 
-  hash = Utils::ServiceHash.service_service_hash_from_params(params)
+  hash = service_service_hash_from_params(params)
   service_hash = engines_api.find_service_service_hash(hash)
   return service_hash  if service_hash.is_a?(EnginesError)
   r = engines_api.force_deregister_attached_service(service_hash)
@@ -48,7 +48,7 @@ end
 get '/v0/containers/service/:service_name/service/non_persistent/:publisher_namespace/*' do
   #splats = params['splat']
 
-  hash = Utils::ServiceHash.service_service_hash_from_params(params)
+  hash = service_service_hash_from_params(params)
   r = engines_api.find_service_service_hash(hash) #find_engine_services_hashes(hash)
   return log_error(request, 'service not found', r, hash) if r.is_a?(EnginesError)
   return_json(r)
