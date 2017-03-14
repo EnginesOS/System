@@ -9,25 +9,15 @@ module LocalFileServiceBuilder
     util_params[:target] = container.container_name
     util_params[:target_container] = container.container_name
     util_params[:data_gid] = container.data_gid.to_s
+      STDERR.puts('VOL BUILD PARAMS ' + util_params)
     result =  volbuilder.execute_command(:setup_engine, util_params)
     return result if result.is_a?(EnginesError)
     #return true if result[:stdout] == 'OK'
     return true if result[:result] == 0
     return log_error_mesg('volbuild problem ' + result.to_s, result)
-#    if result[:result] != 0
-#      p result[:stdout]
-#      @last_error='Volbuilder: ' + command + '->' + result[:stdout].to_s + ' err:' + result[:stderr].to_s
-#      p @last_error
-#      return false
-#    end
-    #Note no -d so process will not return until setup.sh completes
-#    command = 'docker rm volbuilder'
-#    File.delete(SystemConfig.CidDir + '/volbuilder.cid') if File.exist?(SystemConfig.CidDir + '/volbuilder.cid')
-#    res = SystemUtils.run_system(command)
-#    SystemUtils.log_error(res) if res.is_a?(FalseClass)
-    # don't return false as
-    #return true
+
   rescue StandardError => e
+    log_error_mesg('volbuild problem ' + e.to_s)
     log_exception(e)
   end
 
@@ -42,7 +32,7 @@ module LocalFileServiceBuilder
   else
     @volumes[service_hash[:variables][:service_name]] = Volume.volume_hash(service_hash)
 end
-    return true
+     true
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
