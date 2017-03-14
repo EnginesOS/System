@@ -11,7 +11,6 @@ def headers (content_type = nil)
 end
 
 def connection(content_type = nil)
-
   @connection ||=  Excon.new(base_url,
   :debug_request => true,
   :debug_response => true,
@@ -27,7 +26,6 @@ end
 
 def reopen_connection
   @connection.reset
-
   @connection = Excon.new(base_url,
   debug_request: true,
   debug_response: true,
@@ -104,16 +102,7 @@ end
 
 private
 #
-#def parse_error(resp)
-#  r = resp.body
-#  r.strip!# (/^\n/,'')
-#  EnginesRegistryError.new(r)
-#rescue  StandardError => e
-#  STDERR.puts(e.to_s)
-#  STDERR.puts('Parse Error on error response object ', r.to_s)
-#  EnginesRegistryError.new(resp)
-#
-#end
+
 
 def parse_xcon_response(resp)
 
@@ -140,7 +129,6 @@ def parse_xcon_response(resp)
   r = r[:BooleanResult] if r.is_a?(Hash) && r.key?(:BooleanResult)
   STDERR.puts( 'response is a ' + r.class.name)
   r
-
 end
 
 def base_url
