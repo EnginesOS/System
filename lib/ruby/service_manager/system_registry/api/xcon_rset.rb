@@ -122,7 +122,7 @@ def parse_xcon_response(resp)
   if resp.status > 399
     raise RegistryException.new(
       {status: resp.status, 
-        error_type: :failure, 
+        error_type: :error, 
         error_mesg: 'Route Not Found',
         params: resp.body
   }) unless resp.headers['Content-Type'] == 'application/json'
