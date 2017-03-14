@@ -35,12 +35,14 @@ if ! test -d  $system_updates_dir/$update_id
   	services=`cat  $system_updates_dir/$update_id/system_services`
   		for service in $services
   		 do
-  		  	docker pull engines/$service:` cat /opt/engines/release`  >> $system_updates_dir/$update_id/update_log
- 			docker stop $service >> $system_updates_dir/$update_id/update_log
+  		    echo "Recreate Service $service" >>& $system_updates_dir/$update_id/update_log
+  		    
+  		  	docker pull engines/$service:` cat /opt/engines/release`  >>& $system_updates_dir/$update_id/update_log
  			rm /opt/engines/run/system_services/$service/running.yaml*
- 			sleep 30
- 			/opt/engines/bin/system_service.rb $service destroy >> $system_updates_dir/$update_id/update_log
- 			/opt/engines/bin/system_service.rb $service create >> $system_updates_dir/$update_id/update_log
+ 			#sleep 30
+ 			/opt/engines/bin/system_service.rb $service stop >>& $system_updates_dir/$update_id/update_log
+ 			/opt/engines/bin/system_service.rb $service destroy >>& $system_updates_dir/$update_id/update_log
+ 			/opt/engines/bin/system_service.rb $service create >>& $system_updates_dir/$update_id/update_log
   		 done
   fi
   
