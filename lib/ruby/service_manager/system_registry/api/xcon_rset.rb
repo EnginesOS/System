@@ -61,7 +61,7 @@ def rest_post(path,params = nil, lheaders=nil)
   begin
     SystemDebug.debug(SystemDebug.registry,'POST  ', path.to_s + '?' + params.to_s)
     lheaders = headers if lheaders.nil?
-    r = parse_xcon_response( connection.request(read_timeout: time_out, headers: lheaders, method: :post, path: @route_prefix + path, body: query_hash(params).to_json  ))
+  r = parse_xcon_response(connection.request({read_timeout: time_out, headers: lheaders, method: :post, path: @route_prefix + path, body: query_hash(params).to_json }))
     return r
   rescue   Excon::Error::Socket => e
     reopen_connection
@@ -112,7 +112,7 @@ def parse_xcon_response(resp)
       params: resp.body
     }) unless resp.headers['Content-Type'] == 'application/json'
     r = deal_with_json(resp.body)
-    r[:status] = resp.status
+    r[:status] = resp.status if r.is_(Hash)
     raise RegistryException.new(r)
   end
 #  STDERR.puts('2 ' + resp.status.to_s + ':' + resp.body.to_s)
