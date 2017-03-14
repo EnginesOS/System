@@ -30,18 +30,18 @@ class ManagedUtility< ManagedContainer
 
   def  on_create(event_hash)
     @container_mutex.synchronize {
-    SystemDebug.debug(SystemDebug.container_events,:ON_Create_CALLED,event_hash)
-    @container_id = event_hash[:id]
-    @out_of_memory = false
-    @had_out_memory = false
-    save_state
+      SystemDebug.debug(SystemDebug.container_events,:ON_Create_CALLED,event_hash)
+      @container_id = event_hash[:id]
+      @out_of_memory = false
+      @had_out_memory = false
+      save_state
     }
   end
 
   def command_details(command_name)
     return log_error_mesg('No Commands') unless @commands.is_a?(Hash)
     return @commands[command_name] if @commands.key?(command_name)
-     log_error_mesg('Command not found _' + command_name.to_s + '_')
+    log_error_mesg('Command not found _' + command_name.to_s + '_')
   rescue StandardError => e
 
     log_exception(e)
@@ -56,9 +56,11 @@ class ManagedUtility< ManagedContainer
     command = command_details(command_name)
     return log_error_mesg('Missing params' + r.to_s, r) if (r = check_params(command, command_params)) == false
 
-    r = ''
-    return r if (r = destroy_container).is_a?(EnginesError) #if has_container?
+    STDERR.puts('FSCONFIGURAT IN ' + read_state.to_s)
 
+    r = destroy_container
+   # return r if r.is_a?(EnginesError) #if has_container?
+    STDERR.puts('FSCONFIGURAT IN ' + r.to_s)
     @container_api.wait_for('nocontainer') unless read_state == 'nocontainer'
     @container_api.destroy_container(self)  unless read_state == 'nocontainer'
     clear_configs
@@ -70,13 +72,10 @@ class ManagedUtility< ManagedContainer
     @container_api.wait_for('stopped') unless read_state == 'stopped'
     r = logs_container #_as_result
     # destroy_container
-
-    r = {}
-    r[:stdout] = 'OK'
-    r[:result] = 0
- 
-     r
-
+    {
+      stdout: 'OK',
+      result: 0
+    }
   rescue StandardError => e
     log_exception(e)
   end
@@ -113,7 +112,6 @@ class ManagedUtility< ManagedContainer
     @volumes.each_value do |volume|
       volume = SystemUtils.symbolize_keys(volume)
 
-
       volume[:remotepath] = templater.apply_hash_variables(volume[:remotepath] , command_params)
       volume[:localpath] = templater.apply_hash_variables(volume[:localpath] , command_params)
       volume[:permissions]= templater.apply_hash_variables(volume[:permissions] , command_params)
@@ -140,7 +138,7 @@ class ManagedUtility< ManagedContainer
   end
 
   def apply_env_templates(command_params, templater)
-    environments.each do |env|  
+    environments.each do |env|
       env.value = templater.apply_hash_variables(env.value, command_params)
     end
   rescue StandardError => e
@@ -163,7 +161,7 @@ class ManagedUtility< ManagedContainer
       r = 'Missing:' if r == true
       r +=  ' ' + required_param.to_s
     end
-     r
+    r
   rescue StandardError => e
 
     #    log_exception(e)

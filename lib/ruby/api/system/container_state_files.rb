@@ -96,16 +96,7 @@ class ContainerStateFiles
   def self.delete_container_configs(volbuilder, container)
     cidfile = SystemConfig.CidDir + '/' + container.container_name + '.cid'
     File.delete(cidfile) if File.exist?(cidfile)
-    util_params = {}
-    util_params[:target] =  container.container_name
-
-    result =  volbuilder.execute_command(:remove, util_params)
-    #    cmd = 'docker_rm volbuilder'
-    #    retval = SystemUtils.run_system(cmd)
-    #    cmd = 'docker_run  --name volbuilder --memory=20m -e fw_user=www-data  -v /opt/engines/run/containers/' + container.container_name + '/:/client/state:rw  -v /var/log/engines/containers/' + container.container_name + ':/client/log:rw    -t engines/volbuilder:' + SystemUtils.system_release + ' /home/remove_container.sh state logs'
-    #    retval = SystemUtils.run_system(cmd)
-    #    cmd = 'docker_rm volbuilder'
-    #    retval =  SystemUtils.run_system(cmd)
+    result = volbuilder.execute_command(:remove, {target: container.container_name} )
     unless result.is_a?(EnginesError)
       FileUtils.rm_rf(ContainerStateFiles.container_state_dir(container))
       SystemUtils.run_system('/opt/engines/system/scripts/system/clear_container_dir.sh ' + container.container_name)
@@ -113,7 +104,6 @@ class ContainerStateFiles
     else
       container.last_error = 'Failed to Delete state and logs:' + result.to_s
       SystemUtils.log_error_mesg('Failed to Delete state and logs:' + result.to_s, container)
-
     end
   rescue StandardError => e
     container.last_error = 'Failed To Delete ' + result.to_s
