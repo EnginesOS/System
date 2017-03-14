@@ -5,13 +5,13 @@ module ManagedContainerImageControls
     clear_error
     in_progress(:delete)
     r =  super   
-    return r
+     r
   end
 
   # @returns [Boolean]
   # whether pulled or no false if no new image
   def pull_image
-    return true
+     true
   end
 
 end

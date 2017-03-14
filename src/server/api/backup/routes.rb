@@ -39,7 +39,7 @@ get '/v0/backup/engine/services/:engine_name' do
   r = engines_api.engines_services_to_backup(params[:engine_name])
 
     return log_error(request, r)  if r.is_a?(EnginesError)
-    r.to_json
+  return_json(r)
 end
 
 get '/v0/backup/engine/:engine_name' do
@@ -52,7 +52,7 @@ get '/v0/backup/engine/:engine_name' do
 end
 
 get '/v0/backup/engine/:engine_name/service/:publisher_namespace/*' do
-  hash = Utils::ServiceHash.engine_service_hash_from_params(params)
+  hash = engine_service_hash_from_params(params)
   r = ''
  # STDERR.puts('Using ' + hash.to_s )
   service_hash = engines_api.find_engine_service_hash(hash)

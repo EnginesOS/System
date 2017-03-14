@@ -35,7 +35,7 @@ def create_service()
    r = ''
      return true if (r = create_container)
      save_state()
-     return r
+      r
 
 rescue StandardError =>e
   log_exception(e)

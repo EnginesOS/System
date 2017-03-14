@@ -29,7 +29,7 @@ class RegistryHandler < ErrorsApi
     SystemDebug.debug(SystemDebug.registry, :restarted_registry)
     #      }
     #      restart_thread.join
-    return true
+     true
   rescue StandardError => e
     log_exception(e)
   end
@@ -76,7 +76,7 @@ class RegistryHandler < ErrorsApi
       break if wait > 5
     end
     SystemDebug.debug(SystemDebug.registry, :registry_is_up)
-    return registry_service.get_ip_str
+     registry_service.get_ip_str
   rescue StandardError => e
     log_exception(e)
   end
@@ -95,6 +95,6 @@ class RegistryHandler < ErrorsApi
       SystemDebug.debug(SystemDebug.registry, :recreate_wait)
       return log_error_mesg('Failed to complete startup in 90s') if wait > 90
     end
-    return true
+     true
   end
 end

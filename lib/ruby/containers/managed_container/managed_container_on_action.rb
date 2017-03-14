@@ -49,7 +49,7 @@ module ManagedContainerOnAction
     @out_of_memory = false
     save_state
     return true if @consumer_less
-    deregister_with_dns # MUst register each time as IP Changes
+    # deregister_with_dns # Really its in the following nowMUst register each time as IP Changes
     @container_api.deregister_non_persistent_services(self)
     true
   rescue StandardError => e

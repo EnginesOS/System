@@ -18,11 +18,11 @@ module UserAuth
       rows = auth_database.execute( 'select guid from systemaccess where authtoken=' + "'" + token.to_s + "' and ip_addr ='" + ip.to_s + "';" )
     end
     return false unless rows.count > 0
-    return rows[0]
+     rows[0]
   rescue StandardError => e
     STDERR.puts(' toekn verify error  ' + e.to_s)
     STDERR.puts(' toekn verify error exception name  ' + e.class.name)
-    return false
+     false
 
   end
 
@@ -33,7 +33,7 @@ module UserAuth
     $auth_db
   rescue StandardError => e
     STDERR.puts('Exception failed to open  sql_lite_database: ' + e.to_s)
-    return false
+     false
   end
 
   def init_system_password(password,email, token = nil)
@@ -69,7 +69,7 @@ module UserAuth
   rescue StandardError => e
     log_error_mesg(e.to_s)
 auth_database.close
-    return true
+     true
   end
 
 end

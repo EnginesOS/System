@@ -1,7 +1,8 @@
 class ContainerApi < ErrorsApi
   require_relative '../../container_state_files.rb'
   require_relative '../service_hash_builders.rb'
-
+  require '/opt/engines/lib/ruby/system/deal_with_json.rb'
+  
   require_relative 'engine_api_errors.rb'
   include EngineApiErrors
   

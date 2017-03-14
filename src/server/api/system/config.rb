@@ -19,7 +19,7 @@ end
 post '/v0/system/config/default_domain' do
   post_s = post_params(request)
 
-  cparams =  Utils::Params.assemble_params(post_s, [], [:default_domain])
+  cparams = assemble_params(post_s, [], [:default_domain])
   return log_error(request, cparams, post_s) if cparams.is_a?(EnginesError)
   default_domain = cparams[:default_domain]
     r = engines_api.set_default_domain(default_domain)
@@ -48,7 +48,7 @@ end
 # @return  [true]
 post '/v0/system/config/default_site' do
   post_s = post_params(request)
-  cparams =  Utils::Params.assemble_params(post_s, [], [:default_site])
+  cparams = assemble_params(post_s, [], [:default_site])
   return log_error(request, cparams, post_s) if cparams.is_a?(EnginesError)
   default_site = cparams[:default_site]
     r = engines_api.set_default_site(default_site)
@@ -64,14 +64,12 @@ end
 # @return [true]
 post '/v0/system/config/hostname' do
   post_s = post_params(request)
-  cparams =  Utils::Params.assemble_params(post_s, [], [:host_name])
+  cparams = assemble_params(post_s, [], [:host_name])
   return log_error(request, cparams, post_s) if cparams.is_a?(EnginesError)
   hostname = cparams[:host_name]
   r = engines_api.set_hostname(hostname)
   return log_error(request, r, cparams) if r.is_a?(EnginesError) 
-       status(202)
-  content_type 'text/plain' 
-     r.to_s
+  return_text(r)
 end
 # @method get_hostname
 # @overload get '/v0/system/config/hostname'
@@ -80,9 +78,7 @@ end
 get '/v0/system/config/hostname' do
   hostname = engines_api.system_hostname
   return log_error(request, hostname) if hostname.is_a?(EnginesError)
-    status(202)
-  content_type 'text/plain' 
-     hostname.to_s
+  return_text(r)
 end
 # @method enable_remote_exception_logging
 # @overload post '/v0/system/config/remote_exception_logging/enable'
@@ -91,9 +87,7 @@ end
 post '/v0/system/config/remote_exception_logging/enable' do
   r = engines_api.enable_remote_exception_logging
   return log_error(request, r) if r.is_a?(EnginesError)
-    status(202)
-  content_type 'text/plain' 
-   r.to_s
+  return_text(r)
 end
 # @method disable_remote_exception_logging
 # @overload post '/v0/system/config/remote_exception_logging/disable'
@@ -102,8 +96,7 @@ end
 post '/v0/system/config/remote_exception_logging/disable' do
   r = engines_api.disable_remote_exception_logging
   return log_error(request, r) if r.is_a?(EnginesError)
-  content_type 'text/plain' 
-  r.to_s
+  return_text(r)
 end
 # @method get_remote_exception_logging
 # @overload get '/v0/system/config/remote_exception_logging'
@@ -112,8 +105,6 @@ end
 get '/v0/system/config/remote_exception_logging' do
   r = SystemStatus.is_remote_exception_logging?
   return log_error(request,r)  if r.is_a?(EnginesError)
-  content_type 'text/plain' 
-  return r.to_s
- 
+  return_text(r)
 end
 # @!endgroup

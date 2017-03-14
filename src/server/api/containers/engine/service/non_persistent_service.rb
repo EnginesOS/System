@@ -8,15 +8,14 @@
 
 post '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/*' do
   p_params = post_params(request)
-   path_hash = Utils::ServiceHash.engine_service_hash_from_params(params, false)
+   path_hash = engine_service_hash_from_params(params, false)
    p_params.merge!(path_hash)
-   cparams =  Utils::Params.assemble_params(p_params, [:parent_engine,:publisher_namespace, :type_path, :service_handle], :all)
+   cparams = assemble_params(p_params, [:parent_engine,:publisher_namespace, :type_path, :service_handle], :all)
    return log_error(request,cparams,p_params) if cparams.is_a?(EnginesError)
  
   r = engines_api.update_attached_service(cparams)
   return log_error(request, r, hash) if r.is_a?(EnginesError)
-  content_type 'text/plain' 
-  r.to_s
+  return_text(r)
 end
 
 # @method engine_force_register_non_persistent_service
@@ -25,13 +24,12 @@ end
 # @return [true|false]
 get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/*/register' do
 
-  hash = Utils::ServiceHash.engine_service_hash_from_params(params)
+  hash = engine_service_hash_from_params(params)
   service_hash =  engines_api.find_engine_service_hash(hash)
   return log_error(request, service_hash, hash)  if service_hash.is_a?(EnginesError)
   r = engines_api.force_register_attached_service(service_hash)
   return log_error(request, r, hash) if r.is_a?(EnginesError)
-  content_type 'text/plain' 
-  r.to_s
+  return_text(r)
 
 end
 # @method engine_force_reregister_non_persistent_service
@@ -40,13 +38,12 @@ end
 # @return [true|false]
 get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/*/reregister' do
 
-  hash = Utils::ServiceHash.engine_service_hash_from_params(params)
+  hash = engine_service_hash_from_params(params)
   service_hash =  engines_api.find_engine_service_hash(hash)
   return log_error(request, service_hash, hash) if service_hash.is_a?(EnginesError)
   r = engines_api.force_reregister_attached_service(service_hash)
   return log_error(request, r, hash) if r.is_a?(EnginesError)
-  content_type 'text/plain' 
-  r.to_s
+  return_text(r)
 end
 # @method engine_force_deregister_non_persistent_service
 # @overload get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/deregister'
@@ -54,22 +51,21 @@ end
 # @return [true|false]
 get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/*/deregister' do
 
-  hash = Utils::ServiceHash.engine_service_hash_from_params(params)
+  hash = engine_service_hash_from_params(params)
   service_hash =  engines_api.find_engine_service_hash(hash)
   return log_error(request, service_hash, hash) if service_hash.is_a?(EnginesError)
   r = engines_api.force_deregister_attached_service(service_hash)
   return log_error(request, r, hash) if r.is_a?(EnginesError)
-  content_type 'text/plain' 
-  r.to_s
+  return_text(r)
 end
 
 # @method engine_get_non_persistent_service
 # @overload get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle'
 #  @return [Hash]
 get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/*' do
-  hash = Utils::ServiceHash.engine_service_hash_from_params(params)
+  hash = engine_service_hash_from_params(params)
   r = engines_api.find_engine_service_hash(hash)
   return log_error(request, r, hash) if r.is_a?(EnginesError)
-  r.to_json
+  return_json(r)
 end
 # @!endgroup

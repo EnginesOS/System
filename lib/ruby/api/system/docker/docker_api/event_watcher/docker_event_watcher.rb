@@ -1,6 +1,6 @@
 class DockerEventWatcher  < ErrorsApi
   class EventListener
-
+    require '/opt/engines/lib/ruby/system/deal_with_json.rb'
     attr_accessor :container_id, :event_mask
     # @@container_id
     def initialize(listener, event_mask, container_id = nil)
@@ -11,7 +11,7 @@ class DockerEventWatcher  < ErrorsApi
     end
 
     def hash_name
-      return @object.object_id.to_s
+       @object.object_id.to_s
     end
 
     def trigger(hash)
@@ -93,7 +93,7 @@ class DockerEventWatcher  < ErrorsApi
         #   parser = FFI_Yajl::Parser.new({:symbolize_keys => true}) if parser.is_nil?
         #   STDERR.puts('event  cunk ' + chunk.to_s + chunk.class.name )
 
-        SystemUtils.deal_with_jason(JSON.parse(chunk, :create_additons => true ))
+        deal_with_json(chunk)
 
         trigger(hash)
         #        end
@@ -155,7 +155,7 @@ class DockerEventWatcher  < ErrorsApi
           end 
          # STDERR.puts('DOCKER SENT json ' + chunk.to_s )
           #      hash =  parser.parse(chunk)# do |hash|
-          hash =  SystemUtils.deal_with_jason(JSON.parse(chunk, :create_additons => true ))
+          hash =  deal_with_json(chunk)
           next unless hash.is_a?(Hash)
           #  STDERR.puts('trigger' + hash.to_s )
           next if hash.key?(:from) && hash[:from].length >= 64
@@ -195,8 +195,9 @@ class DockerEventWatcher  < ErrorsApi
 
   def add_event_listener(listener, event_mask = nil, container_id = nil)
     event = EventListener.new(listener,event_mask, container_id)
-    @event_listeners[event.hash_name] = event
     SystemDebug.debug(SystemDebug.container_events,'ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
+    @event_listeners[event.hash_name] = event
+  
   rescue StandardError => e
     log_exception(e)
   end
@@ -222,6 +223,6 @@ class DockerEventWatcher  < ErrorsApi
     end
   rescue StandardError => e
     SystemDebug.debug(SystemDebug.container_events,hash.to_s + ':' + e.to_s + ':' +  e.backtrace.to_s)
-    return log_exception(e)
+     log_exception(e)
   end
 end

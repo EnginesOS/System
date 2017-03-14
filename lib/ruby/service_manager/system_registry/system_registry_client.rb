@@ -8,7 +8,6 @@ class SystemRegistryClient < ErrorsApi
 
   end
   require_relative 'api/xcon_rset.rb'
-  #  require_relative 'xcon_rset.rb'
   require_relative 'api/configurations.rb'
   require_relative 'api/services.rb'
   require_relative 'api/engines.rb'
@@ -19,6 +18,9 @@ class SystemRegistryClient < ErrorsApi
   require_relative 'engines_registry_client_errors.rb'
   require_relative 'engines_registry_error.rb'
   require_relative 'engines_registry_utils.rb'
+  require '/opt/engines/lib/ruby/system/deal_with_json.rb'
+  require '/opt/engines/lib/ruby/exceptions/registry_exception.rb'
+  
   include EnginesRegistryUtils
   include EnginesRegistryClientErrors
   include Configurations

@@ -1,3 +1,0 @@
-#!/bin/sh
-
-/opt/engines/bin/engines.rb service $1 $2 $3 $4

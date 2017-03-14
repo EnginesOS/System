@@ -35,7 +35,7 @@ result
     r = container.correct_current_state
     return r if r.is_a?(EnginesError)
     
-    return 'fixed'
+     'fixed'
     
   
   end

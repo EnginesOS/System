@@ -9,7 +9,7 @@ class ContainerStateFiles
     yaml_file = File.new(yam1_file_name, 'w+')
     yaml_file.write(running_config)
     yaml_file.close
-    return true
+     true
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
@@ -71,7 +71,7 @@ class ContainerStateFiles
       FileUtils.chown(nil, 'containers',key_dir)
       FileUtils.chmod('g+w', key_dir)
     end
-    return true
+     true
 
   rescue StandardError => e
     container.last_error = 'Failed To Create ' + e.to_s
@@ -84,7 +84,7 @@ class ContainerStateFiles
 
   def self.clear_container_var_run(container)
     File.unlink(ContainerStateFiles.container_state_dir(container) + '/startup_complete') if File.exist?(ContainerStateFiles.container_state_dir(container) + '/startup_complete')
-    return true
+     true
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
@@ -122,7 +122,7 @@ class ContainerStateFiles
 
   def self.destroy_container(container)
     return File.delete(ContainerStateFiles.container_cid_file(container)) if File.exist?(ContainerStateFiles.container_cid_file(container))
-    return true # File may or may not exist
+     true # File may or may not exist
   rescue StandardError => e
     container.last_error = 'Failed To delete cid ' + e.to_s
     SystemUtils.log_exception(e)
@@ -140,7 +140,7 @@ class ContainerStateFiles
   def self.clear_cid_file(container)
     cidfile = container_cid_file(container)
     File.delete(cidfile) if File.exist?(cidfile)
-    return true
+     true
   rescue StandardError => e
     container.last_error = 'Failed To remove cid file' + e.to_s
     SystemUtils.log_exception(e)

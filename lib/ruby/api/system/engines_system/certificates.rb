@@ -60,7 +60,7 @@ module Certificates
 #      service_param[:variables][:person] = params[:ssl_person_name]
 #      service_param[:variables][:domainname] =  params[:domain_name] #params[:default_domain]
 #      service_param[:variables][:service_handle] = 'default_ssl_cert'
-      return  @engines_api.create_and_register_service(params)
+        @engines_api.create_and_register_service(params)
   
   
   end

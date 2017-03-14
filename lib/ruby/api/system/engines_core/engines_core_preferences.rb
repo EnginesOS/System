@@ -40,7 +40,7 @@ module EnginesCorePreferences
       vars = config_params[:variables]
       return vars[:default_site_url] if vars.key?(:default_site_url)
     end
-    return config_params
+     config_params
   end
 
 end

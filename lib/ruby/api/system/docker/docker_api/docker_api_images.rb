@@ -6,7 +6,7 @@ module DockerApiImages
     r = r[0]
     return true if r.is_a?(Hash) && r.key?(:Id)
 
-    return  false
+      false
   rescue StandardError => e
     log_exception(e)
   end
@@ -38,14 +38,14 @@ module DockerApiImages
 #   r = perform_request(req, container, false,  false)
 #    
 
-    return true
+     true
   rescue StandardError => e
     log_exception(e)
   end
 
   def  image_exist?(container)
     return image_exist_by_name?(container) if container.is_a?(String)
-    return image_exist_by_name?(container.image)
+     image_exist_by_name?(container.image)
     #    request = '/images/' + container.image + '/json'
     #    r =  get_request(request,true)
     #    return true if r.is_a?(Hash) && r.key?('Id')
@@ -57,14 +57,14 @@ module DockerApiImages
 
   def delete_container_image(container)
     request = '/images/' + container.image
-    return delete_request(request)
+     delete_request(request)
   rescue StandardError => e
     log_exception(e)
   end
 
   def delete_image(image_name)
     request = '/images/' + image_name
-    return delete_request(request)
+     delete_request(request)
   rescue StandardError => e
     log_exception(e)
   end

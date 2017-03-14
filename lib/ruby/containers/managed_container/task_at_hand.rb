@@ -96,7 +96,7 @@ module TaskAtHand
 
     return log_error_mesg(@container_name + ' not in matching state want _' + tasks_final_state(action).to_s + '_but in ' + curr_state.class.name + ' ',curr_state )
 
-    return true
+     true
 
     # Perhaps ?return clear_task_at_hand
   rescue StandardError => e
@@ -129,7 +129,7 @@ module TaskAtHand
     return save_state unless @last_task == :delete_image && @steps_to_go <= 0
     # FixMe Kludge unless docker event listener
     delete_engine
-    return true
+     true
   rescue StandardError => e
     log_exception(e)
   end
@@ -153,7 +153,7 @@ module TaskAtHand
   rescue StandardError => e
     return nil unless File.exist?(fn)
     log_exception(e)
-    return nil
+     nil
     # @task_at_hand
   end
 
@@ -185,7 +185,7 @@ module TaskAtHand
   rescue StandardError => e
     # log_exception(e) Dont log exception
     # well perhaps a perms or disk error but definitly not no such file
-    return true  #possbile exception such file (another process alsop got the eot mesg and removed)
+     true  #possbile exception such file (another process alsop got the eot mesg and removed)
   end
 
   def wait_for_task(task)
@@ -208,7 +208,7 @@ module TaskAtHand
     return true unless File.exist?(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
   rescue StandardError => e
     return true unless File.exist?(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
-  return  log_exception(e)
+    log_exception(e)
   
   end
 
@@ -219,7 +219,7 @@ module TaskAtHand
     @last_error = @container_api.last_error unless @container_api.nil?
     SystemDebug.debug(SystemDebug.engine_tasks, :WITH, @last_error.to_s, msg.to_s)
     task_complete(:failed)
-    return false
+     false
   rescue StandardError => e
     log_exception(e)
   end
@@ -233,7 +233,7 @@ module TaskAtHand
       loop += 1
       return log_error_mesg('timeout expire') if loop > timeout * 2
     end
-    return true
+     true
   rescue StandardError => e
     log_exception(e)
   end
@@ -280,11 +280,11 @@ module TaskAtHand
       SystemDebug.debug(SystemDebug.engine_tasks, :expired_task, task, ' after ' , task_set_timeout(task))
       return true
     end
-    return false
+     false
     # no file problem with mtime etc means task has finished in progress and task file has dissapppeared
   rescue StandardError => e
     # SystemDebug.debug(SystemDebug.engine_tasks, e, e.backtrace)
-    return true
+     true
   end
 
   require_relative 'task_timeouts.rb'

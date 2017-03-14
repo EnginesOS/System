@@ -16,7 +16,7 @@ class SystemPreferences
     @preferences[:default_domain] = domain_name # params[:default_domain]
     save_preferences
     
-    return true #EnginesOSapiResult.success(params[:default_domain], :default_domain)
+    #return true #EnginesOSapiResult.success(params[:default_domain], :default_domain)
   rescue StandardError => e
     log_exception(e)
   
@@ -24,7 +24,7 @@ class SystemPreferences
 
   def get_default_domain
     return 'unset' unless @preferences.key?(:default_domain)
-    return @preferences[:default_domain]
+     @preferences[:default_domain]
   rescue StandardError => e
     SystemUtils.log_exception(e)
 

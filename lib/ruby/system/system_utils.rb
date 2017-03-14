@@ -221,14 +221,14 @@ class SystemUtils
     return '/sys/fs/cgroup/memory/system.slice/docker-' + container_id_str + '.scope'
     # old pre docker 1.9. return '/sys/fs/cgroup/memory/system.slice/docker-' + container_id_str + '.scope'
   end
-def  SystemUtils.deal_with_jason(res)
+def  SystemUtils.deal_with_json(res)
    return self.symbolize_keys(res) if res.is_a?(Hash)
    return self.symbolize_keys_array_members(res) if res.is_a?(Array)
    return self.symbolize_tree(res) if res.is_a?(Tree::TreeNode)
    return self.boolean_if_true_false_str(res) if res.is_a?(String)
    return res
  rescue  StandardError => e
-   STDERR.puts('SystemUtils.deal_with_jason ' + e.to_s) 
+   STDERR.puts('SystemUtils.deal_with_json ' + e.to_s) 
  end
 def SystemUtils.symbolize_keys_array_members(array)
   return array if array.count == 0

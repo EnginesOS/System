@@ -6,6 +6,6 @@ module ManagedServiceContainerInfo
         return log_error_mesg('service missing cont_userid ',@container_name)       
       end
     end
-    return true
+     true
   end
 end

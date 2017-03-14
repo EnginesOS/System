@@ -1,5 +1,5 @@
 class DockerApi  < ErrorsApi
-
+  require '/opt/engines/lib/ruby/system/deal_with_json.rb'
   require_relative 'docker_connection.rb'
 
   require_relative 'docker_api_errors.rb'

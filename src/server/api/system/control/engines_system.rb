@@ -21,8 +21,7 @@ get '/v0/system/control/engines_system/restart' do
   restart = engines_api.restart_engines_system_service
   return log_error(request, restart) if restart.is_a?(EnginesError)
     status(202)
-  content_type 'text/plain'
-    return restart.to_s
+  return_text(restart)
 end
 # @method recreate_engines_system
 # @overload get '/v0/system/control/engines_system/recreate'
@@ -31,9 +30,7 @@ end
 get '/v0/system/control/engines_system/recreate' do
   recreate = engines_api.recreate_engines_system_service
   return log_error(request, recreate) if recreate.is_a?(EnginesError)
-    status(202)
-  content_type 'text/plain'
-   recreate.to_s
+  return_text(recreate)
 end
 # @method dump_engines_system_heap_stats
 # @overload get '/v0/system/control/engines_system/heap_stats'
@@ -43,9 +40,6 @@ end
 # @return [true]
  get '/v0/system/control/engines_system/heap_stats' do
       dump_stats = engines_api.dump_heap_stats
-   return log_error(request, dump_stats) if  dump_stats.is_a?(EnginesError)
-        status(202)
-   content_type 'text/plain'
-   dump_stats.to_s
+   return_text(dump_stats)
 end
 # @!endgroup

@@ -15,7 +15,7 @@ end
 get '/v0/containers/engines/container_name' do
   container_names = engines_api.list_managed_engines
   return log_error(request, container_names) if container_names.is_a?(EnginesError)
-  container_names.to_json  
+  return_json_array(container_names)  
 end
 # @method get_engines_status
 # @overload get '/v0/containers/engines/status'
@@ -24,7 +24,7 @@ end
 get '/v0/containers/engines/status' do 
   status = engines_api.get_engines_status
   return log_error(request, states) if status.is_a?(EnginesError)
-  status.to_json
+  return_json(status)
 end
 # @method get_engines_state
 # @overload get '/v0/containers/engines/state'
@@ -33,6 +33,6 @@ end
 get '/v0/containers/engines/state' do 
   states = engines_api.get_engines_states
   return log_error(request, states) if  states.is_a?(EnginesError)
-  states.to_json
+  return_json(states)
 end
 # @!endgroup

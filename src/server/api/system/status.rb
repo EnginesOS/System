@@ -7,9 +7,7 @@
 get '/v0/system/status/first_run_required' do
   first_run_required = engines_api.first_run_required?
   return log_error(request,status ) if first_run_required.is_a?(EnginesError)
-  status(202)
-  content_type 'text/plain'
-  return first_run_required.to_s # no checky as true or false
+  return_text(first_run_required) # no checky as true or false
 end
 
 # @method get_system_status
@@ -19,8 +17,7 @@ end
 get '/v0/system/status' do
   s_status = SystemStatus.system_status
   return log_error(request,s_status ) if s_status.is_a?(EnginesError)
-  status(202)
-  s_status.to_json
+  return_json(s_status)
 end
 
 # @method get_system_update_status
@@ -33,6 +30,6 @@ get '/v0/system/status/update' do
   ustatus = SystemStatus.system_update_status
   return log_error(request,ustatus ) if ustatus.is_a?(EnginesError)
   status(202)
-  ustatus.to_json
+  return_json(ustatus)
 end
 # @!endgroup

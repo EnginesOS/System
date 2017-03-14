@@ -26,7 +26,7 @@ module EngineServiceOperations
       container_type: 'service'
     }
     SystemDebug.debug(SystemDebug.services,  :engine_persistent_services, params)
-    return service_manager.get_engine_persistent_services(params)
+     service_manager.get_engine_persistent_services(params)
   rescue StandardError => e
     log_exception(e,service_name)
   end
@@ -36,7 +36,7 @@ module EngineServiceOperations
       parent_engine: service_name,
       container_type: 'service'
     }
-    return service_manager.find_engine_services_hashes(params)
+    find_engine_services_hashes(params)
   rescue StandardError => e
     log_exception(e,service_name)
   end
@@ -46,7 +46,7 @@ module EngineServiceOperations
       parent_engine: service_name,
       container_type: 'container'
     }
-    return service_manager.find_engine_services_hashes(params)
+    find_engine_services_hashes(params)
   rescue StandardError => e
     log_exception(e,container_name)
   end
@@ -70,7 +70,7 @@ module EngineServiceOperations
   def find_engine_services(service_query)
     r = ''
     return r unless  (r = check_engine_hash(service_query))
-    service_manager.find_engine_services_hashes(service_query)
+    find_engine_services_hashes(service_query)
   rescue StandardError => e
     log_exception(e,service_query)
     #return sm.find_engine_services(params)
@@ -112,7 +112,7 @@ module EngineServiceOperations
       end
       return true
     end
-    return r
+     r
   end
 
   def add_file_share(service_hash)
@@ -124,13 +124,7 @@ module EngineServiceOperations
     SystemDebug.debug(SystemDebug.services,'complete_VOLUME_FOR SHARE_service_hash', service_hash)
     engine = loadManagedEngine(service_hash[:parent_engine])
     return engine if engine.is_a?(EnginesError)
-    return  engine.add_shared_volume(service_hash)
-
-    #    if service_hash[:share] == true
-    #      @volumes[service_hash[:service_owner] + '_' + service_hash[:variables][:service_name]] = vol
-    #    else
-    #      @volumes[service_hash[:variables][:service_name]] = Volume.volume_hash(service_hash)
-    #    end
+      engine.add_shared_volume(service_hash)
 
   rescue StandardError => e
     SystemUtils.log_exception(e)

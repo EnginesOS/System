@@ -6,7 +6,7 @@ module ContainerControls
     return log_error_mesg('Can\'t Start Container as ', self) unless read_state == 'stopped'
     r  =  @container_api.start_container(self)
     expire_engine_info
-    return  r   
+      r   
   end
   def halt_container
     stop_container
@@ -19,7 +19,7 @@ module ContainerControls
     return log_error_mesg('Can\'t Stop Container as ', self) unless read_state == 'running'
     r =  @container_api.stop_container(self)
     expire_engine_info
-    return  r   
+      r   
   end
 
   def pause_container
@@ -29,7 +29,7 @@ module ContainerControls
     return log_error_mesg('Can\'t Pause Container as not running', self) unless is_running?
     r  =  @container_api.pause_container(self)
     expire_engine_info
-    return r  
+     r  
   end
 
   def unpause_container
@@ -39,7 +39,7 @@ module ContainerControls
     return log_error_mesg("Can\'t unpause as not paused", self) unless is_paused?
     r =  @container_api.unpause_container(self)
     expire_engine_info
-    return r
+     r
   end
 
   def destroy_container()
@@ -53,7 +53,7 @@ module ContainerControls
     r = @container_api.destroy_container(self)
     @container_id = '-1'
     expire_engine_info
-    return r   
+     r   
   end
 
   def create_container
@@ -62,7 +62,7 @@ module ContainerControls
     @container_id = -1
   r = @container_api.create_container(self)
     SystemDebug.debug(SystemDebug.containers,  :create_container,:containerid,r)
-    return r
+     r
   rescue => e
     log_exception(e)
   end

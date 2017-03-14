@@ -7,8 +7,7 @@ get '/v0/cron/service/:service_name/:cron_job/run' do
    return log_error(request, service, params) if service.is_a?(EnginesError)
    r = service.run_cronjob(params[:cron_job])
   return log_error(request, r, service.last_error) if r.is_a?(EnginesError)
-  content_type 'text/plain' 
-     r.to_s
+  return_text(r)
 end
 
 # @method run_service_schedule_container_task
@@ -39,8 +38,7 @@ get '/v0/schedule/service/:service_name/:cron_job' do
 
   #  r = engine.run_cronjob(params[:cron_job])
   return log_error(request, r, service.last_error) if r.is_a?(EnginesError)
-  content_type 'text/plain'
-  r.to_s
+  return_text(r)
 end
 
 # @method run_engine_schedule_action 
@@ -50,6 +48,5 @@ get '/v0/schedule/service/:service_name/:cron_job/run' do
   
   r = service.run_cronjob(params[:cron_job])
   return log_error(request, r, service.last_error) if r.is_a?(EnginesError)
-  content_type 'text/plain'
-  r.to_s
+  return_text(r)
 end

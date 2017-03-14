@@ -39,7 +39,7 @@ end
         out.write(bytes)
       end
   rescue StandardError => e
-    return e
+     e
       end
       
 end

@@ -102,17 +102,15 @@ class SystemStatus
   # called by per session and post update
   def self.system_status
     {
-      is_rebooting:  SystemStatus.is_rebooting?,
-      is_base_system_updating:  SystemStatus.is_base_system_updating?,
-      is_engines_system_updating:  SystemStatus.is_engines_system_updating?,
-      needs_reboot:  SystemStatus.needs_reboot?,
-      needs_engines_update:  !self.is_engines_system_upto_date?,
-      needs_base_update:  !self.is_base_system_upto_date?
+      is_rebooting: SystemStatus.is_rebooting?,
+      is_base_system_updating: SystemStatus.is_base_system_updating?,
+      is_engines_system_updating: SystemStatus.is_engines_system_updating?,
+      needs_reboot: SystemStatus.needs_reboot?,
+      needs_engines_update: !self.is_engines_system_upto_date?,
+      needs_base_update: !self.is_base_system_upto_date?
     }
-
   rescue StandardError => e
     SystemUtils.log_exception(e)
-
   end
 
   # called by per session and post update
@@ -123,13 +121,11 @@ class SystemStatus
     }
   rescue StandardError => e
     SystemUtils.log_exception(e)
-
   end
 
   def self.current_build_params
     unless File.exist?(SystemConfig.BuildRunningParamsFile)
-      return {} # SystemUtils.log_error_mesg("No ", SystemConfig.BuildRunningParamsFile)
-
+      return  # SystemUtils.log_error_mesg("No ", SystemConfig.BuildRunningParamsFile)
     end
     param_file = File.new(SystemConfig.BuildRunningParamsFile, 'r')
     param_raw = param_file.read
@@ -142,7 +138,7 @@ class SystemStatus
   def self.last_build_params
     unless File.exist?(SystemConfig.BuildBuiltFile)
       SystemUtils.log_error_mesg('No last_build_params', SystemConfig.BuildBuiltFile)
-      return {}
+      return 
     end
     param_file = File.new(SystemConfig.BuildBuiltFile, 'r')
     param_raw = param_file.read
@@ -155,7 +151,7 @@ class SystemStatus
   def self.last_build_failure_params
     unless File.exist?(SystemConfig.BuildFailedFile)
       SystemUtils.log_error_mesg('No last_build_failure_params ', SystemConfig.BuildFailedFile)
-      return {}
+      return 
     end
     param_file = File.new(SystemConfig.BuildFailedFile, 'r')
     param_raw = param_file.read
@@ -166,8 +162,9 @@ class SystemStatus
   end
 
   def self.is_remote_exception_logging?
-    return true unless File.exist?(SystemConfig.NoRemoteExceptionLoggingFlagFile)
-    false
+     ! File.exist?(SystemConfig.NoRemoteExceptionLoggingFlagFile)
+    #   return true unless File.exist?(SystemConfig.NoRemoteExceptionLoggingFlagFile)
+    #     false
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
@@ -199,15 +196,10 @@ class SystemStatus
   def self.is_base_system_upto_date?
     # FIX ME
     # in future check state of /opt/engines/run/system/flags/update_pending
-    return true unless  File.exists?('/opt/engines/run/system/flags/base_os_update_pending')
-
-    #result = run_server_script('deb_update_status')
-    # result = SystemUtils.execute_command('/opt/engines/system/scripts/system/engines_system_update_status.sh')
-
-    #  return false
+     ! File.exists?('/opt/engines/run/system/flags/base_os_update_pending')
+    #return true unless File.exists?('/opt/engines/run/system/flags/base_os_update_pending')
   rescue StandardError => e
     SystemUtils.log_exception(e)
-
   end
 
   def self.is_engines_system_upto_date?

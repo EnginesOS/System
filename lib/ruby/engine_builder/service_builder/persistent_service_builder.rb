@@ -4,7 +4,6 @@ module PersistantServiceBuilder
     SystemDebug.debug(SystemDebug.builder,:services ,services)
     services.each do | service_hash |
       SystemDebug.debug(SystemDebug.builder,:servicer_hash,service_hash)
-   #   service_hash =  SystemUtils.deal_with_jason(sh)
       service_def = SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:publisher_namespace])
       return log_error_mesg('no matching service definition for ' + service_hash.to_s ,self) if service_def.nil?
       if service_def[:persistent] 
@@ -27,8 +26,7 @@ module PersistantServiceBuilder
       @first_build = false
       SystemDebug.debug(SystemDebug.builder,:existing_service ,service_hash)
       return attach_existing_service_to_engine(service_hash, existing) if existing[:shared] == true
-      service_hash = existing #Orphan case
-      #  LAREADY DONE service_hash = use_orphan(service_hash) if @service_manager.match_orphan_service(service_hash) == true
+      service_hash = existing #Orphan case    
     elsif @core_api.match_orphan_service(service_hash) == true #auto orphan pick up
       SystemDebug.debug(SystemDebug.builder,:orphan_service ,service_hash)
       service_hash = use_orphan(service_hash)

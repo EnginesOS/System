@@ -21,7 +21,7 @@ module ContainerStatus
       end
     end
    # SystemDebug.debug(SystemDebug.containers,  'no_matching state_info', info.class.name, info)
-    return 'nocontainer'
+     'nocontainer'
   rescue StandardError => e
     log_exception(e)
   end
@@ -29,7 +29,7 @@ module ContainerStatus
   def is_paused?
     state = read_state
     return true if state == 'paused'
-    return false
+     false
   end
 
   def is_active?
@@ -47,13 +47,13 @@ module ContainerStatus
   def is_running?
     state = read_state
     return true if state == 'running'
-    return false
+     false
   end
 
   def has_container?
     # return false if has_image? == false NO Cached
     return false if read_state == 'nocontainer'
-    return true
+     true
   end
 
 end
