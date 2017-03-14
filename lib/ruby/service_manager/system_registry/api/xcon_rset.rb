@@ -135,10 +135,11 @@ def parse_xcon_response(resp)
   r = resp.body
   return false if r.nil?
   r.strip!
-  return true if r.to_s   == '' ||  r.to_s   == 'true'
-  return false if r.to_s  == 'false'
-  return false if r.to_s  == 'null'
-  deal_with_json(r)
+ return r if resp.headers['Content-Type'] == 'plain/text'
+r = deal_with_json(r)
+  return r[:BooleanResult] if r.key?(:BooleanResult)
+r
+ 
 end
 
 def base_url
