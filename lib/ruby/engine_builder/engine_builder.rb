@@ -243,7 +243,7 @@ class EngineBuilder < ErrorsApi
     backup = dir + '.backup'
     FileUtils.rm_rf(backup) if Dir.exist?(backup)
     FileUtils.mv(dir, backup) if Dir.exist?(dir)
-    return true
+     true
   rescue StandardError => e
     log_exception(e)
   end
@@ -261,8 +261,8 @@ class EngineBuilder < ErrorsApi
     g = Git.clone(@build_params[:repository_url], @build_name, :path => SystemConfig.DeploymentDir)
   rescue StandardError => e
     log_error_mesg('Problem cloning Git', g)
-    abort_build
     log_exception(e)
+    abort_build
   end
 
   def launch_deploy(managed_container)
@@ -276,8 +276,8 @@ class EngineBuilder < ErrorsApi
     save_engine_built_configuration(managed_container)
     return r
   rescue StandardError => e
-    abort_build
     log_exception(e)
+    abort_build
   end
 
   def get_blueprint_from_repo
@@ -293,8 +293,8 @@ class EngineBuilder < ErrorsApi
     log_build_output('Cloned Blueprint')
     build_container
     rescue StandardError => e
+    log_exception(e)
       abort_build
-      log_exception(e)
   end
 
   def post_failed_build_clean_up
@@ -328,8 +328,8 @@ class EngineBuilder < ErrorsApi
     close_all
      
   rescue StandardError => e
+  log_exception(e)
     abort_build
-    log_exception(e)
   end
 
   def setup_rebuild
@@ -341,8 +341,8 @@ class EngineBuilder < ErrorsApi
     f.write(blueprint.to_json)
     f.close
   rescue StandardError => e
-    abort_build
     log_exception(e)
+    abort_build
   end
 
   #app_is_persistent
@@ -371,8 +371,8 @@ class EngineBuilder < ErrorsApi
     flag_restart_required(@container) if @has_post_install == true
     return @container
   rescue StandardError => e
-    abort_build
     log_exception(e)
+    abort_build
   end
 
   def engine_environment
@@ -402,14 +402,14 @@ class EngineBuilder < ErrorsApi
 
   def abort_build
     post_failed_build_clean_up
-    return true
+    false
   end
 
   def basedir
     SystemConfig.DeploymentDir + '/' + @build_name.to_s
     rescue StandardError => e
+    log_exception(e)
     abort_build
-      log_exception(e)
   end
 
   private
@@ -432,13 +432,14 @@ class EngineBuilder < ErrorsApi
     return true
   rescue StandardError => e
     log_exception(e)
+    abort_build
   end
 
   protected
 
-  def log_exception(e)
-    log_build_errors(e.to_s)
-    build_failed(e.to_s)
+  def log_exception(e)    
+    log_build_errors('Engine Build Aborted Due to:' + e.to_s)
+    @result_mesg = 'Error.' + e.to_s
     super
   end
 end
