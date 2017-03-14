@@ -18,7 +18,7 @@ module DockerApiCreateOptions
     return {} if container.mapped_ports.nil?
     eports = {}
     container.mapped_ports.each_value do |port|
-      port = SystemUtils.symbolize_keys(port)
+      port = symbolize_keys(port)
       if port[:port].is_a?(String) && port[:port].include?('-')
         expose_port_range(eports, port)
       else
@@ -40,7 +40,7 @@ module DockerApiCreateOptions
   end
 
   def mount_string(volume)
-    volume = SystemUtils.symbolize_keys(volume)
+    volume = symbolize_keys(volume)
     perms = 'ro'
     if volume[:permissions] == 'rw'
       perms = 'rw'
