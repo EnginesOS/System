@@ -29,8 +29,7 @@ module DockerApiContainerOps
   include DockerApiCreateOptions
 
   def create_container(container)
-    request_params = create_options(container)
- #  STDERR.puts("CRETE OPIOMS " + request_params.to_s)
+    request_params = create_options(container)   
     request = '/containers/create?name=' + container.container_name
     post_request(request, request_params)
   end

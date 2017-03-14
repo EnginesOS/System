@@ -54,6 +54,7 @@ class DockerConnection < ErrorsApi
 
   def post_request(uri,  params = nil, expect_json = true , rheaders = nil, time_out = 60)
     SystemDebug.debug(SystemDebug.docker,' Post ' + uri.to_s)
+    SystemDebug.debug(SystemDebug.docker,'Post OPIOMS ' + params.to_s)
     rheaders = default_headers if rheaders.nil?
     params = params.to_json if rheaders['Content-Type'] == 'application/json' && ! params.nil?
     return handle_resp(
