@@ -134,7 +134,7 @@ module SmEngineServices
         #handle_exception(e)
       true
     end
-    #return true unless services.is_a?(Array)
+    return true unless services.is_a?(Array)
     services.each do | service |
       SystemDebug.debug(SystemDebug.services, :remove_service, service)
       if params[:remove_all_data] || service[:shared] #&& ! (service.key?(:shared) && service[:shared])
