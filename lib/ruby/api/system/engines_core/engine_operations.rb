@@ -27,7 +27,7 @@ module EnginesOperations
       reinstall: reinstall
     }
     unless engine.is_a?(ManagedEngine) # used in roll back and only works if no engine do mess with this logic
-      return true if service_manager.remove_engine_from_managed_engines_registry(params)
+      return true if service_manager.remove_engine_from_managed_engine(params)
       return log_error_mesg('Failed to find Engine',params)
     end
 
@@ -35,7 +35,7 @@ module EnginesOperations
 
     SystemDebug.debug(SystemDebug.containers,:engine_image_deleted,engine)
     unless(r = service_manager.rm_remove_engine_services(params)).is_a?(EnginesError) #remove_engine_from_managed_engines_registry(params)
-      return r if ( r = service_manager.remove_engine_from_managed_engines_registry(params)).is_a?(EnginesError)
+      return r if ( r = service_manager.remove_engine_from_managed_engine(params)).is_a?(EnginesError)
       return r if reinstall == true
       return engine.delete_engine
     end

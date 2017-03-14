@@ -101,7 +101,7 @@ module SmEngineServices
     handle_exception(e)
   end
 
-  def remove_engine_from_managed_engines_registry(params)
+  def remove_engine_from_managed_engine(params)
     system_registry_client.remove_from_managed_engines_registry(params)
   rescue StandardError => e
     handle_exception(e)
