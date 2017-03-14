@@ -113,7 +113,7 @@ def parse_xcon_response(resp)
     }) if resp.headers.nil? || !  resp.headers['Content-Type'] == 'application/json'
     r = deal_with_json(resp.body)
     r = {} if r.nil?
-    r[:status] = resp.status
+    r[:status] = resp.status if r.is_a?(Hash)
     raise RegistryException.new(r)
   end
 #  STDERR.puts('2 ' + resp.status.to_s + ':' + resp.body.to_s)
