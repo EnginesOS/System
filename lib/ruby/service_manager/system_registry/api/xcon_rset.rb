@@ -37,7 +37,7 @@ end
 def rest_get(path,params = nil,time_out=120, _headers = nil)
   cnt = 0
   q = query_hash(params)
-  STDERR.puts(' REG GET ' + path.to_s + '?' + q.to_s )
+  #STDERR.puts(' REG GET ' + path.to_s + '?' + q.to_s )
   SystemDebug.debug(SystemDebug.registry,'GET ', path.to_s + '?' + q.to_s)
   lheaders = headers
   lheaders.merge(_headers) unless _headers == nil
@@ -123,7 +123,7 @@ def parse_xcon_response(resp)
   return r if resp.headers['Content-Type'] == 'plain/text'
   r = deal_with_json(r)
   r = r[:BooleanResult] if r.is_a?(Hash) && r.key?(:BooleanResult)
-  STDERR.puts( resp.status.to_s + ':' + r.class.name)
+  #STDERR.puts( resp.status.to_s + ':' + r.class.name)
   r
 end
 

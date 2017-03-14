@@ -55,7 +55,7 @@ delete '/v0/service_manager/orphan_service/:publisher_namespace/*' do
   cparams = assemble_params(params, [:publisher_namespace, :type_path, :service_handle, :parent_engine], [])
   return log_error(request, cparams, params) if cparams.is_a?(EnginesError)
   service_hash = engines_api.retrieve_orphan(cparams)
-  STDERR.puts('Orphan restrived to DELETE ' + service_hash.to_s  + ' From ' + cparams.to_s)
+  #STDERR.puts('Orphan restrived to DELETE ' + service_hash.to_s  + ' From ' + cparams.to_s)
   return service_hash if service_hash.is_a?(EnginesError)
 
   r = engines_api.remove_orphaned_service(service_hash)

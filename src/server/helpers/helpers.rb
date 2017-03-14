@@ -8,7 +8,7 @@ require_relative 'params.rb'
   def return_json(r, s=202)
     status(s)
     return empty_json if r.nil?
-    STDERR.puts("JSON " + r.to_s)
+  #  STDERR.puts("JSON " + r.to_s)
     r.to_json
   end
 
@@ -16,13 +16,13 @@ require_relative 'params.rb'
     status(s)
     return empty_array if r.nil?  
     return empty_array if r.is_a?(FalseClass)  
-    STDERR.puts("JSON " + r.to_s)
+  #  STDERR.puts("JSON " + r.to_s)
     r.to_json
   end
 
   def return_text(r, s=202)
     content_type 'text/plain'
-    STDERR.puts("text " + r.to_s)
+   # STDERR.puts("text " + r.to_s)
     status(s)
     r.to_s
   end

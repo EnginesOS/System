@@ -4,9 +4,7 @@ module DockerApiCreateOptions
   end
 
   def create_options(container)
-    @top_level = build_top_level(container)
-    STDERR.puts('create options ' + @top_level.to_json)
-    @top_level
+    @top_level ||= build_top_level(container)
   rescue StandardError => e
     log_exception(e)
   end
