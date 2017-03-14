@@ -67,7 +67,7 @@ class EngineBuilder < ErrorsApi
     @core_api = core_api
     @container = nil
     @build_params = params
-    @build_params[:image] = @build_params[:engine_name].gsub(/[-_]/,'')
+   
   end
   
   def setup_build
@@ -76,6 +76,7 @@ class EngineBuilder < ErrorsApi
     #return r if r.is_a?(EnginesError)
     return log_error_mesg('empty container name', @build_params) if @build_params[:engine_name].nil? || @build_params[:engine_name] == ''
     @build_params[:engine_name].freeze
+    @build_params[:image] = @build_params[:engine_name].gsub(/[-_]/,'')
     @build_name = File.basename(@build_params[:repository_url]).sub(/\.git$/, '')
     @web_port = SystemConfig.default_webport
     @memory = @build_params[:memory]
