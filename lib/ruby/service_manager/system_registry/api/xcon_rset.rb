@@ -110,7 +110,7 @@ def parse_xcon_response(resp)
       error_type: :error,
       error_mesg: 'Route Not Found',
       params: resp.body
-    }) unless resp.headers['Content-Type'] == 'application/json'
+    }) if resp.headers.nil? || !  resp.headers['Content-Type'] == 'application/json'
     r = deal_with_json(resp.body)
     r[:status] = resp.status if r.is_a?(Hash)
     raise RegistryException.new(r)
