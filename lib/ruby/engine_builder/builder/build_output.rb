@@ -40,14 +40,13 @@ module BuildOutput
   end
 
   def close_all
-    if @log_file.closed? == false
+    unless @log_file.nil? ||  @log_file.closed? == true
       log_build_output('Build Result:' + @result_mesg)
       log_build_output('Build Finished')
       @log_file.close
     end
-    @err_file.close unless @err_file.closed?
-
-    return false
+    @err_file.close unless @log_file.nil? && @err_file.closed?
+     false
     rescue StandardError => e
     log_exception(e)
   end

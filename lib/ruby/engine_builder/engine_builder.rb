@@ -95,7 +95,7 @@ class EngineBuilder < ErrorsApi
     SystemDebug.debug(SystemDebug.builder, :builder_init, @build_params)
     @service_builder = ServiceBuilder.new(@core_api, @templater, @build_params[:engine_name],  @attached_services)
     SystemDebug.debug(SystemDebug.builder, :builder_init__service_builder, @build_params)
-    return self
+     self
   rescue StandardError => e
     log_exception(e)
     abort_build
@@ -111,7 +111,7 @@ class EngineBuilder < ErrorsApi
     log_build_output('Starting Rebuild')
     return log_error_mesg('Failed to Backup Last build', self) unless backup_lastbuild
     return log_error_mesg('Failed to setup rebuild', self) unless setup_rebuild
-    return build_container
+     build_container
     rescue StandardError => e
       abort_build
   end
@@ -229,7 +229,7 @@ class EngineBuilder < ErrorsApi
     save_build_result
     close_all
     SystemStatus.build_complete(build_params)
-    return @container
+     @container
   rescue StandardError => e
     log_exception(e)
     post_failed_build_clean_up
@@ -325,7 +325,10 @@ class EngineBuilder < ErrorsApi
     @result_mesg = @result_mesg.to_s + ' Roll Back Complete'
     SystemDebug.debug(SystemDebug.builder,'Roll Back Complete')
     close_all
-    return false
+     
+  rescue StandardError => e
+    abort_build
+    log_exception(e)
   end
 
   def setup_rebuild
