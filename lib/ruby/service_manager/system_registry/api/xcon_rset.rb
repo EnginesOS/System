@@ -116,10 +116,18 @@ private
 #end
 
 def parse_xcon_response(resp)
+ 
   raise RegistryException.new({status: 500 , error_mesg: 'Server Error', exception: :exception})  if resp.nil?
-  STDERR.puts('1 ' + resp.status.to_s + ':' + resp.body.to_s)
+  STDERR.puts('1 ' + resp.status.to_s + ':' + response.headers + " __ " + resp.body.to_s)
   if resp.status > 399
+    raise RegistryException.new(
+      {status: resp.status, 
+        error_type: :failure, 
+        error_mesg: "Route Not Found",
+        params: resp.body
+  }) if resp.status == 404 
     r = deal_with_json(resp.body)
+   
     r[:status] = resp.status
     raise RegistryException.new(r)
   end
