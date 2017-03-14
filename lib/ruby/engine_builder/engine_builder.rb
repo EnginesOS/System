@@ -343,12 +343,11 @@ class EngineBuilder < ErrorsApi
     File.chmod(0660,restart_flag_file)
     FileUtils.chown(nil,'containers',restart_flag_file)
   rescue StandardError => e
-    abort_build
     log_exception(e)
+    abort_build
   end
 
   def log_error_mesg(m,o)
-
     log_build_errors(m.to_s + o.to_s)
     super
   end
