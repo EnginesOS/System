@@ -1,4 +1,4 @@
-def  deal_with_jason(res)
+def  deal_with_json(res)
   return if res.nil?
   res = parse_as_json(res) unless res.is_a?(Hash)
   symbolise_json(res)

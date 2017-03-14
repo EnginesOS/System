@@ -23,7 +23,7 @@ module ApiActionators
     if result[:result] == 0
       if result[:stdout].start_with?('{') || result[:stdout].start_with?('"{')
         begin
-          return deal_with_jason(result[:stdout])
+          return deal_with_json(result[:stdout])
         rescue
           return result[:stdout]
         end

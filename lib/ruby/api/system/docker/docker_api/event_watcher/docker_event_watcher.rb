@@ -93,7 +93,7 @@ class DockerEventWatcher  < ErrorsApi
         #   parser = FFI_Yajl::Parser.new({:symbolize_keys => true}) if parser.is_nil?
         #   STDERR.puts('event  cunk ' + chunk.to_s + chunk.class.name )
 
-        deal_with_jason(chunk)
+        deal_with_json(chunk)
 
         trigger(hash)
         #        end
@@ -155,7 +155,7 @@ class DockerEventWatcher  < ErrorsApi
           end 
          # STDERR.puts('DOCKER SENT json ' + chunk.to_s )
           #      hash =  parser.parse(chunk)# do |hash|
-          hash =  deal_with_jason(chunk)
+          hash =  deal_with_json(chunk)
           next unless hash.is_a?(Hash)
           #  STDERR.puts('trigger' + hash.to_s )
           next if hash.key?(:from) && hash[:from].length >= 64

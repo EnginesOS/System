@@ -1,3 +1,4 @@
+
 def assemble_params(ps, address_params, required_params=nil, accept_params=nil )
   # STDERR.puts( 'assemble_params Address params ' + ps.to_s + ' address keys required ' + address_params.to_s)
     return nil if ps.nil?

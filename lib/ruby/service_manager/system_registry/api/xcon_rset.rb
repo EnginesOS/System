@@ -119,7 +119,7 @@ def parse_xcon_response(resp)
   raise RegistryException.new({status: 500 , error_mesg: 'Server Error', exception: :exception})  if resp.nil?
   STDERR.puts('1 ' + resp.status.to_s + ':' + resp.body.to_s)
   if resp.status > 399
-    r = deal_with_jason(resp.body)
+    r = deal_with_json(resp.body)
     r[:status] = resp.status
     raise RegistryException.new(r)
   end
@@ -131,7 +131,7 @@ def parse_xcon_response(resp)
   return true if r.to_s   == '' ||  r.to_s   == 'true'
   return false if r.to_s  == 'false'
   return false if r.to_s  == 'null'
-  deal_with_jason(r)
+  deal_with_json(r)
 end
 
 def base_url
