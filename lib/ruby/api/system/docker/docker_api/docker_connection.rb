@@ -185,9 +185,11 @@ class DockerConnection < ErrorsApi
     return log_error_mesg("error:" + resp.status.to_s,resp.body ).to_json  if resp.status  >= 400
     return true if resp.status  == 204 # nodata but all good happens on del
     return log_error_mesg("Un exepect response from docker", resp, resp.body, resp.headers.to_s )   unless resp.status  == 200 ||  resp.status  == 201
+    STDERR.puts(" RESPOSE " + resp.status.to_s + " : " + resp.body )
     return resp.body unless expect_json == true
 
-    hash =  deal_with_json(resp.body)
+    hash = deal_with_json(resp.body)
+    STDERR.puts(" RESPOSE " + resp.status.to_s + " : " + hash.to_s )
     hash
   rescue StandardError => e
     log_error_mesg("Un exepect response content " +   resp.to_s)
