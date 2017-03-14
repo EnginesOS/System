@@ -71,7 +71,7 @@ module DockerApiCreateOptions
   end
 
   def container_volumes(container)
-    return  container.volumes_from unless container.volumes_from.nil?
+    return container.volumes_from unless container.volumes_from.nil?
     []
   end
 
@@ -81,12 +81,12 @@ module DockerApiCreateOptions
   end
 
   def container_get_dns_servers(container)
-    return  get_dns_servers  if container.on_host_net? == false
+    return get_dns_servers if container.on_host_net? == false
     ''
   end
 
   def container_dns_search(container)
-    return get_dns_search  if container.on_host_net? == false
+    return get_dns_search if container.on_host_net? == false
     ''
   end
 
@@ -169,7 +169,7 @@ module DockerApiCreateOptions
       'OpenStdin' => false,
       'StdinOnce' => false,
       'Env' => envs(container),
-    #  'Entrypoint' => entry_point(container),
+      #  'Entrypoint' => entry_point(container),
       'Image' => container.image,
       'Labels' => get_labels(container),
       'Volumes' => {},
@@ -181,8 +181,8 @@ module DockerApiCreateOptions
       'HostConfig' => host_config_options(container)
     }
     set_entry_point(container, top_level)
-   
-   # top_level['Entrypoint'] = command  unless container.conf_self_start
+
+    # top_level['Entrypoint'] = command  unless container.conf_self_start
     STDERR.puts("CREATE OPS" + top_level.to_s)
     top_level
   end
