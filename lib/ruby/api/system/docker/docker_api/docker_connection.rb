@@ -53,6 +53,7 @@ class DockerConnection < ErrorsApi
   end
 
   def post_request(uri,  params = nil, expect_json = true , rheaders = nil, time_out = 60)
+    SystemDebug.debug(SystemDebug.docker,' Post ' + uri.to_s)
     rheaders = default_headers if rheaders.nil?
     params = params.to_json if rheaders['Content-Type'] == 'application/json' && ! params.nil?
     return handle_resp(
@@ -73,7 +74,7 @@ class DockerConnection < ErrorsApi
     debug_request: true,
     debug_response: true,
     persistent: true) if @connection.nil?
-    SystemDebug.debug(SystemDebug.docker,' OPEN docker.sock connection ' + @connection.to_s)
+   
     @connection
   end
 
@@ -153,6 +154,7 @@ class DockerConnection < ErrorsApi
   end
 
   def get_request(uri,  expect_json = true, rheaders = nil, timeout = 60)
+    SystemDebug.debug(SystemDebug.docker,' Get ' + uri.to_s)
     rheaders = default_headers if rheaders.nil?
     r = connection.request(request_params({method: :get,path: uri,read_timeout: timeout,headers: rheaders}))
     return handle_resp(r,expect_json) unless headers.nil?
@@ -167,6 +169,7 @@ class DockerConnection < ErrorsApi
   end
 
   def delete_request(uri)
+    SystemDebug.debug(SystemDebug.docker,' Delete ' + uri.to_s)
     handle_resp(connection.request(request_params({method: :delete,
       path: uri})),
     false
@@ -189,7 +192,7 @@ class DockerConnection < ErrorsApi
     return resp.body unless expect_json == true
 
     hash = deal_with_json(resp.body)
-    SystemDebug.debug(SystemDebug.docker," RESPOSE " + resp.status.to_s + " : " + hash.to_s.slice(0..256))
+    SystemDebug.debug(SystemDebug.docker,' RESPOSE ' + resp.status.to_s + ' : ' + hash.to_s.slice(0..256))
    
     hash
   rescue StandardError => e
