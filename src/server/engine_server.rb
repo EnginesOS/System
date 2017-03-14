@@ -67,7 +67,7 @@ begin
   # FIXME remove this once all installs have proper auth
   init_db
 
-  require_relative 'utils.rb'
+  #require_relative 'utils.rb'
 
   class Application < Sinatra::Base
 
@@ -138,7 +138,7 @@ begin
   
   def post_params(request)
     #  json_parser.parse(request.env["rack.input"].read)
-    deal_with_jason(request.env["rack.input"].read, :create_additons => true )
+    deal_with_jason(request.env["rack.input"].read )
   rescue StandardError => e
     log_error(request, e, e.backtrace.to_s)
   
