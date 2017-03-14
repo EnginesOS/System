@@ -12,7 +12,7 @@ module Engines
      ret_val
   end
   
-  def init_engine_dirs(engine)
+  def init_engine_dirs(engine_name)
      FileUtils.mkdir_p(ContainerStateFiles.container_state_dir(engine_name) + '/run') unless Dir.exist?(ContainerStateFiles.container_state_dir(engine_name)+ '/run')
     FileUtils.mkdir_p(ContainerStateFiles.container_state_dir(engine_name) + '/run/flags') unless Dir.exist?(ContainerStateFiles.container_state_dir(engine_name)+ '/run/flags')
      FileUtils.mkdir_p(ContainerStateFiles.container_log_dir(engine_name)) unless Dir.exist?(ContainerStateFiles.container_log_dir(engine_name))
