@@ -20,7 +20,7 @@ end
 get '/v0/containers/service/:service_name/consumers/:parent_engine' do
   service = get_service(params[:service_name])
   return log_error(request, service, params) if service.is_a?(EnginesError)
-  cparams =  Utils::Params.address_params(params, [:service_name,:parent_engine])
+  cparams = address_params(params, [:service_name,:parent_engine])
 
   r = service.registered_consumers(cparams)
   return log_error(request, r, service.last_error) if r.is_a?(EnginesError)
