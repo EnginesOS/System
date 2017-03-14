@@ -268,7 +268,7 @@ class EngineBuilder < ErrorsApi
   def launch_deploy(managed_container)
     log_build_output('Launching Engine')
     r = managed_container.create_container
-    if managed_containe.read_state == 'nocontainer'
+    if managed_container.read_state == 'nocontainer'
       log_build_output('Failed to create Engine container from Image')
       abort_build
     end
@@ -329,7 +329,6 @@ class EngineBuilder < ErrorsApi
      
   rescue StandardError => e
   log_exception(e)
-    abort_build
   end
 
   def setup_rebuild
@@ -402,7 +401,6 @@ class EngineBuilder < ErrorsApi
 
   def abort_build
     post_failed_build_clean_up
-    false
   end
 
   def basedir

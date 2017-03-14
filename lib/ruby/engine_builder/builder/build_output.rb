@@ -45,8 +45,7 @@ module BuildOutput
       log_build_output('Build Finished')
       @log_file.close
     end
-    @err_file.close unless @log_file.nil? && @err_file.closed?
-     false
+    @err_file.close unless @log_file.nil? && @err_file.closed?   
     rescue StandardError => e
     log_exception(e)
   end
