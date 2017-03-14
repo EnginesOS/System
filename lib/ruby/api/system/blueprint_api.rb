@@ -17,7 +17,7 @@ class BlueprintApi < ErrorsApi
 
   def self.load_blueprint_file(blueprint_file_name)
     blueprint_file = File.open(blueprint_file_name, 'r')
-    json_hash = SystemUtils.deal_with_jason(JSON.parse(blueprint_file.read, :create_additons => true ))
+    json_hash = deal_with_jason(parse(blueprint_file.read)
     blueprint_file.close
      json_hash
     rescue StandardError => e

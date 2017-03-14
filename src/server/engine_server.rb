@@ -138,7 +138,7 @@ begin
   
   def post_params(request)
     #  json_parser.parse(request.env["rack.input"].read)
-    SystemUtils.deal_with_jason(request.env["rack.input"].read, :create_additons => true )
+    deal_with_jason(request.env["rack.input"].read, :create_additons => true )
   rescue StandardError => e
     log_error(request, e, e.backtrace.to_s)
   

@@ -48,7 +48,7 @@ module DockerApiBuilder
         begin
           #hash = JSON.parse(chunk)
           hash =   @parser.parse(chunk)  #do |hash|
-          hash = SystemUtils.deal_with_jason(JSON.parse(chunk, :create_additons => true ))
+          hash = deal_with_jason(chunk)
           @builder.log_build_output(hash[:stream]) if hash.key?(:stream)
           @builder.log_build_errors(hash[:errorDetail]) if hash.key?(:errorDetail)
           #   end
