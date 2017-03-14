@@ -268,9 +268,8 @@ class EngineBuilder < ErrorsApi
   def launch_deploy(managed_container)
     log_build_output('Launching Engine')
     r = managed_container.create_container
-    STDERR.puts('Launched Engin is in ' + managed_container.read_state.to_s)
     if managed_containe.read_state == 'nocontainer'
-      log_build_output('Failed to create Engine Image')
+      log_build_output('Failed to create Engine container from Image')
       abort_build
     end
     return log_error_mesg('Failed to Launch ', @container) if @container.is_a?(EnginesError)

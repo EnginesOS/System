@@ -36,9 +36,9 @@ module ContainerApiDockerActions
   end
 
   def stop_container(container)
-    clear_error
-    rotate_log(container)
+    clear_error   
     @docker_api.stop_container(container)
+    rotate_log(container)
   end
 
   def rotate_log(container)
