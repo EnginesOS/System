@@ -103,7 +103,7 @@ class ManagedUtility< ManagedContainer
 
   def apply_volume_templates(command_params, templater)
     @volumes.each_value do |volume|
-    #  volume = SystemUtils.symbolize_keys(volume)
+    volume = symbolize_keys(volume)
       volume[:remotepath] = templater.apply_hash_variables(volume[:remotepath] , command_params)
       volume[:localpath] = templater.apply_hash_variables(volume[:localpath] , command_params)
       volume[:permissions]= templater.apply_hash_variables(volume[:permissions] , command_params)
