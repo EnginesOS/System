@@ -137,7 +137,14 @@ def parse_xcon_response(resp)
   r.strip!
  return r if resp.headers['Content-Type'] == 'plain/text'
 r = deal_with_json(r)
-r = r[:BooleanResult] if r.is_a?(Hash) && r.key?(:BooleanResult)
+if r.is_a?(Hash) && r.key?(:BooleanResult)
+r = r[:BooleanResult] 
+  if r.is_a?(String)
+    r = true if r == 'true'
+  else
+    r = false
+  end
+end
   STDERR.puts( 'response is a ' + r.class.name)
 r
  
