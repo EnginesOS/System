@@ -45,7 +45,7 @@ module EnginesOperations
   def delete_image_dependancies(params)
     r = ''
     params[:parent_engine] = params[:engine_name]
-    params[:container_type] = 'container'
+   
     SystemDebug.debug(SystemDebug.containers, :delete_image_dependancies, params)
     return r if (r = service_manager.rm_remove_engine_services(params)).is_a?(EnginesError)
      true

@@ -22,8 +22,6 @@ module SmEngineServices
   #on recepit of an empty array any non critical error will be in  this object's  [ServiceManager] last_error method
   def get_engine_persistent_services(params)
     system_registry_client.get_engine_persistent_services(params)
-  rescue StandardError => e
-    handle_exception(e)
   end
 
   #@return [Array] of all service_hashs marked persistence false for :engine_name
@@ -130,9 +128,13 @@ module SmEngineServices
   def rm_remove_engine_services(params)
     clear_error
     r = ''
-    services = system_registry_client.get_engine_persistent_services(params)
-    STDERR.puts('RM SERVICES ' + params.to_s )
-    return true unless services.is_a?(Array)
+    begin
+    services = get_engine_persistent_services(params)  #system_registry_client.
+    rescue StandardError => e
+        #handle_exception(e)
+      true
+    end
+    #return true unless services.is_a?(Array)
     services.each do | service |
       SystemDebug.debug(SystemDebug.services, :remove_service, service)
       if params[:remove_all_data] || service[:shared] #&& ! (service.key?(:shared) && service[:shared])
