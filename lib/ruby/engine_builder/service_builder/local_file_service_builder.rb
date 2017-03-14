@@ -9,7 +9,7 @@ module LocalFileServiceBuilder
     util_params[:target] = container.container_name
     util_params[:target_container] = container.container_name
     util_params[:data_gid] = container.data_gid.to_s
-      STDERR.puts('VOL BUILD PARAMS ' + util_params)
+      STDERR.puts('VOL BUILD PARAMS ' + util_params.to_s)
     result =  volbuilder.execute_command(:setup_engine, util_params)
     return result if result.is_a?(EnginesError)
     #return true if result[:stdout] == 'OK'
