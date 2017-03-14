@@ -7,6 +7,7 @@ begin
   require 'json'
   require 'yajl'
   require '/opt/engines/lib/ruby/system/system_debug.rb'
+  require '/opt/engines/lib/ruby/system/deal_with_json.rb'
   require '/opt/engines/lib/ruby/api/public/engines_api/engines_api.rb'
 
   require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
@@ -137,7 +138,7 @@ begin
   
   def post_params(request)
     #  json_parser.parse(request.env["rack.input"].read)
-    SystemUtils.deal_with_jason(JSON.parse(request.env["rack.input"].read, :create_additons => true ))
+    SystemUtils.deal_with_jason(request.env["rack.input"].read, :create_additons => true )
   rescue StandardError => e
     log_error(request, e, e.backtrace.to_s)
   
