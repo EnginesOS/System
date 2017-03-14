@@ -33,12 +33,12 @@ module ServiceOperations
 
   #Attach the service defined in service_hash [Hash]
   #@return boolean indicating sucess
-  def create_and_register_service(service_hash)
+  def create_and_register_service(service_hash, overwrite = false)
     r = ''
-    service_hash = SystemUtils.symbolize_keys(service_hash)
+  #  service_hash = SystemUtils.symbolize_keys(service_hash)
 
     SystemDebug.debug(SystemDebug.services, :attach_ing_create_and_egister_service, service_hash)
-    return r unless ( r = create_and_register_managed_service(service_hash))
+    return r unless ( r = create_and_register_managed_service(service_hash, overwrite))
 
     true
   rescue StandardError => e

@@ -25,10 +25,10 @@ def create_dns_service_hash(engine)
     parent_engine: engine.container_name,
     hostname: engine_hostname(engine),
     name: engine_hostname(engine),
-    ip: engine.get_ip_str.to_s }
+    ip: engine.get_ip_str.to_s },
+    overwrite: true
   }
   SystemDebug.debug(SystemDebug.services,  service_hash.to_s)
-
   service_hash
 end
 
