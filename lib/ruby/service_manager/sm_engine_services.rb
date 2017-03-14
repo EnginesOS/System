@@ -100,7 +100,7 @@ module SmEngineServices
   end
 
   def remove_engine_from_managed_engine(params)
-    system_registry_client.remove_from_managed_engined(params)
+    system_registry_client.remove_from_managed_engine(params)
   rescue StandardError => e
     handle_exception(e)
   end
@@ -143,7 +143,7 @@ module SmEngineServices
       else
         return r if (r = orphanate_service(service)).is_a?(EnginesError)
       end
-      return r if (r = remove_from_managed_engined(service)).is_a?(EnginesError)
+      return r if (r = remove_from_managed_engine(service)).is_a?(EnginesError)
     end
     true
 

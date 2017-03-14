@@ -46,12 +46,12 @@ module SmServiceControl
       r =  remove_shared_service_from_engine(service_query)
       SystemDebug.debug(SystemDebug.services,  :DELETED_shared_service, service_hash)
       return r
-      #  return system_registry_client.remove_from_managed_engined(service_hash)
+      #  return system_registry_client.remove_from_managed_engine(service_hash)
     end
    
     service_hash[:remove_all_data] = service_query[:remove_all_data]
     return r if (r = remove_from_managed_service(service_hash)).is_a?(EnginesError) && !service_query.key?(:force)
-    return r if ( r = system_registry_client.remove_from_managed_engined(service_hash)).is_a?(EnginesError)
+    return r if ( r = system_registry_client.remove_from_managed_engine(service_hash)).is_a?(EnginesError)
     return system_registry_client.remove_from_services_registry(service_hash)
   rescue StandardError => e
     handle_exception(e)
