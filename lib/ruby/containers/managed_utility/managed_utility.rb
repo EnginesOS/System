@@ -64,7 +64,7 @@ class ManagedUtility< ManagedContainer
     @container_api.wait_for('nocontainer') unless read_state == 'nocontainer'
     @container_api.destroy_container(self) unless read_state == 'nocontainer'
     clear_configs
-    STDERR.puts('FSCONFIGURAT IN ' + read_state.to_s)
+    STDERR.puts('FSCONFIGURAT execute ' + command.to_s + ' With:' + command_params.to_s)
     apply_templates(command, command_params)
     save_state
     create_container()
