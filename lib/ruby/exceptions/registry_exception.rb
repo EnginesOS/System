@@ -14,8 +14,8 @@ class RegistryException < StandardError
       super(hash[:error_mesg])
     else
       @level = :nil
-      super
     end
+    super
   end
 
 end
