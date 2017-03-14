@@ -103,7 +103,7 @@ private
 
 def parse_xcon_response(resp)
   raise RegistryException.new({status: 500 , error_mesg: 'Server Error', exception: :exception})  if resp.nil?
-  STDERR.puts('1 ' + resp.status.to_s + ':' + resp.headers.to_s + " __ " + resp.body.to_s)
+# STDERR.puts('1 ' + resp.status.to_s + ':' + resp.headers.to_s + " __ " + resp.body.to_s)
   if resp.status > 399
     raise RegistryException.new(
     {status: resp.status,
@@ -115,7 +115,7 @@ def parse_xcon_response(resp)
     r[:status] = resp.status
     raise RegistryException.new(r)
   end
-  STDERR.puts('2 ' + resp.status.to_s + ':' + resp.body.to_s)
+#  STDERR.puts('2 ' + resp.status.to_s + ':' + resp.body.to_s)
   #return parse_error(resp) if resp.status > 399
   r = resp.body
   return if r.nil?
@@ -123,7 +123,7 @@ def parse_xcon_response(resp)
   return r if resp.headers['Content-Type'] == 'plain/text'
   r = deal_with_json(r)
   r = r[:BooleanResult] if r.is_a?(Hash) && r.key?(:BooleanResult)
-  STDERR.puts( 'response is a ' + r.class.name)
+  STDERR.puts( resp.status.to_s + ':' + r.class.name)
   r
 end
 
