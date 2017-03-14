@@ -3,7 +3,7 @@ module DockerApiContainerOps
     if container.container_id.to_s == '-1' || container.container_id.to_s == ''
       r = @docker_comms.inspect_container_by_name(container)
       return true if r.is_a?(Hash)
-       false
+      return false
     else
       request = '/containers/' + container.container_id.to_s + '/json'
     end
