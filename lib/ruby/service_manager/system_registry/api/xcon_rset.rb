@@ -116,17 +116,17 @@ private
 #end
 
 def parse_xcon_response(resp)
- 
+
   raise RegistryException.new({status: 500 , error_mesg: 'Server Error', exception: :exception})  if resp.nil?
   STDERR.puts('1 ' + resp.status.to_s + ':' + resp.headers.to_s + " __ " + resp.body.to_s)
   if resp.status > 399
     raise RegistryException.new(
-      {status: resp.status, 
-        error_type: :error, 
-        error_mesg: 'Route Not Found',
-        params: resp.body
-  }) unless resp.headers['Content-Type'] == 'application/json'
-    r = deal_with_json(resp.body)   
+    {status: resp.status,
+      error_type: :error,
+      error_mesg: 'Route Not Found',
+      params: resp.body
+    }) unless resp.headers['Content-Type'] == 'application/json'
+    r = deal_with_json(resp.body)
     r[:status] = resp.status
     raise RegistryException.new(r)
   end
@@ -135,19 +135,12 @@ def parse_xcon_response(resp)
   r = resp.body
   return false if r.nil?
   r.strip!
- return r if resp.headers['Content-Type'] == 'plain/text'
-r = deal_with_json(r)
-if r.is_a?(Hash) && r.key?(:BooleanResult)
-r = r[:BooleanResult] 
-  if r.is_a?(String)
-    r = true if r == 'true'
-  else
-    r = false
-  end
-end
+  return r if resp.headers['Content-Type'] == 'plain/text'
+  r = deal_with_json(r)
+  r = r[:BooleanResult] if r.is_a?(Hash) && r.key?(:BooleanResult)
   STDERR.puts( 'response is a ' + r.class.name)
-r
- 
+  r
+
 end
 
 def base_url
