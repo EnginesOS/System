@@ -14,7 +14,8 @@ require_relative 'params.rb'
 
   def return_json_array(r, s=202)
     status(s)
-    return empty_array if r.nil?
+    return empty_array if r.nil?  
+    return empty_array if r.is_a?(FalseClass)  
     STDERR.puts("JSON " + r.to_s)
     r.to_json
   end
