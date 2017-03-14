@@ -49,6 +49,7 @@ class ManagedUtility< ManagedContainer
   def execute_command(command_name, command_params)
     
    STDERR.puts('FSCONFIGURAT IN ' + read_state.to_s)
+   stop_container
     return log_error_mesg('Utility ' + container_name + ' in use ' ,  command_name) if is_active?
     #FIXMe need to check if running
     r =  ''
