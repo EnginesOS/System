@@ -123,11 +123,10 @@ def parse_xcon_response(resp)
     raise RegistryException.new(
       {status: resp.status, 
         error_type: :failure, 
-        error_mesg: "Route Not Found",
+        error_mesg: 'Route Not Found',
         params: resp.body
-  }) if resp.status == 404 
-    r = deal_with_json(resp.body)
-   
+  }) unless resp.headers['Content-Type'] == 'application/json'
+    r = deal_with_json(resp.body)   
     r[:status] = resp.status
     raise RegistryException.new(r)
   end
