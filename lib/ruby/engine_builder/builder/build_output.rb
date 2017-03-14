@@ -16,7 +16,7 @@ module BuildOutput
     @log_file.flush
   rescue StandardError => e
     log_exception(e)
-    return
+    
   end
 
   def log_build_errors(line)
@@ -26,17 +26,16 @@ module BuildOutput
     log_build_output('ERROR:' + line.to_s)
     @result_mesg = 'Error.' + line.to_s
     @build_error = @result_mesg
-    return false
+     false
   rescue StandardError => e
     log_exception(e)
-    return false
   end
 
   def add_to_build_output(word)
     @log_file.write(word)
     @log_file.flush
   rescue
-    return
+    
   end
 
   def close_all
@@ -59,7 +58,7 @@ module BuildOutput
     for n in start..lines_count
       retval += lines[n].to_s
     end
-    return retval + tail_of_build_error_log
+     retval + tail_of_build_error_log
   end
 
   # used to fill in erro mesg with last ten lines
@@ -71,8 +70,8 @@ module BuildOutput
     for n in start..lines_count
       retval += lines[n].to_s
     end
-    return retval
+     retval
   rescue
-    return retval
+     retval
   end
 end

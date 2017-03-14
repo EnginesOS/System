@@ -67,6 +67,7 @@ class EngineBuilder < ErrorsApi
     @core_api = core_api
     @container = nil
     @build_params = params
+    @build_params[:image] = @build_params[:engine_name].gsub(/[-_]/,'')
   end
   
   def setup_build
@@ -270,7 +271,7 @@ class EngineBuilder < ErrorsApi
     r = managed_container.create_container
     if managed_container.read_state == 'nocontainer'
       log_build_output('Failed to create Engine container from Image')
-      abort_build
+      return log_error_mesg(' Failed to create Engine container from Image') 
     end
     return log_error_mesg('Failed to Launch ', @container) if @container.is_a?(EnginesError)
     save_engine_built_configuration(managed_container)
@@ -354,8 +355,7 @@ class EngineBuilder < ErrorsApi
   def create_managed_container
     log_build_output('Creating ManagedEngine')
     @build_params[:web_port] = @web_port
-    @build_params[:volumes] = @service_builder.volumes
-    @build_params[:image] = @build_params[:engine_name].gsub(/[-_]/,'')
+    @build_params[:volumes] = @service_builder.volumes   
     @container = ManagedEngine.new(@build_params, @blueprint_reader, @core_api.container_api)
     @container.save_state # no running.yaml throws a no such container so save so others can use
     log_build_errors('Failed to save blueprint ' + @blueprint.to_s) unless @container.save_blueprint(@blueprint)
