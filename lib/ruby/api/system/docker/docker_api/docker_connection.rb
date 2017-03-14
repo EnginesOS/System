@@ -189,7 +189,8 @@ class DockerConnection < ErrorsApi
     return resp.body unless expect_json == true
 
     hash = deal_with_json(resp.body)
-    STDERR.puts(" RESPOSE " + resp.status.to_s + " : " + hash.to_s.slice(0..256) )
+    SystemDebug.debug(SystemDebug.docker," RESPOSE " + resp.status.to_s + " : " + hash.to_s.slice(0..256))
+   
     hash
   rescue StandardError => e
     log_error_mesg("Un exepect response content " +   resp.to_s)
