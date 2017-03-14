@@ -9,7 +9,7 @@ get '/v0/containers/engine/:engine_name/metrics/network' do
   return log_error(request, engine, params) if engine.is_a?(EnginesError)
   r = engines_api.get_container_network_metrics(engine)
   return log_error(request, r) if r.is_a?(EnginesError)
-  r.to_json
+  return_json(r)
 end
 # @method get_engine_metrics_memory
 # @overload get '/v0/containers/engine/:engine_name/metrics/memory'
@@ -21,5 +21,5 @@ get '/v0/containers/engine/:engine_name/metrics/memory' do
   return log_error(request, engine, params) if engine.is_a?(EnginesError)
   r = engines_api.container_memory_stats(engine)
   return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
-  r.to_json
+  return_json(r)
 end

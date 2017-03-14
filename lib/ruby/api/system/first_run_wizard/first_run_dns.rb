@@ -7,7 +7,7 @@ module FirstRunDNS
     config_hash[:variables][:hostname] =  params[:hostname]
     config_hash[:variables][:domain_name] =  params[:domain_name]
     return true if @api.update_service_configuration(config_hash)
-    return log_error_mesg('Hostname configurator ', config_hash)
+     log_error_mesg('Hostname configurator ', config_hash)
   end
 
   def get_domain_params(params)
@@ -31,7 +31,7 @@ module FirstRunDNS
       configure_dyndns_service(params)
     end
 
-    return domain_hash
+     domain_hash
   end
 
   def configure_dyndns_service(params)
@@ -59,7 +59,7 @@ module FirstRunDNS
     config_hash[:variables][:domain_name] = domain_name
     config_hash[:variables][:deliver_local] = false
     return true if @api.update_service_configuration(config_hash)
-    return log_error_mesg('smtp default domain configurator ', config_hash)
+     log_error_mesg('smtp default domain configurator ', config_hash)
   end
 
   def setup_dns

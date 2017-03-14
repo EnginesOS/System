@@ -16,7 +16,7 @@ end
 get '/v0/unauthenticated/bootstrap/mgmt/status' do
   engine = get_service('mgmt')
    return log_error(request, engine, params) if engine.is_a?(EnginesError)
-   engine.status.to_json
+   return_json(engine.status)
 end
   # starting
   # running
@@ -28,7 +28,7 @@ end
   get '/v0/unauthenticated/bootstrap/mgmt/state' do
     engine = get_service('mgmt')
      return log_error(request, engine, params) if engine.is_a?(EnginesError)
-     engine.read_state.to_json
+    return_json( engine.read_state)
     # starting
     # running
 end
@@ -42,10 +42,10 @@ end
 # @return [Boolean]  
 post '/v0/unauthenticated/bootstrap/first_run/complete' do
   p_params = post_params(request)
-  cparams =  Utils::Params.assemble_params(p_params, [], :all)
+  cparams = assemble_params(p_params, [], :all)
     i = true
     i = false if cparams[:install_mgmt] == 'false' || cparams[:install_mgmt] == false
-  engines_api.first_run_complete(i)  
+  return_text( engines_api.first_run_complete(i) ) 
 end
 # @method system_ca
 # @overload get '/v0/unauthenticated/system_ca'
@@ -54,6 +54,5 @@ end
 get '/v0/unauthenticated/system_ca' do
   system_ca = engines_api.get_system_ca
   return log_error(request, system_ca) if system_ca.is_a?(EnginesError)
-  content_type 'text/plain'
-  system_ca.to_s
+ return_text(system_ca)
 end

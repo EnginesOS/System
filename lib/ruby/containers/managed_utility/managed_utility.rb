@@ -41,7 +41,7 @@ class ManagedUtility< ManagedContainer
   def command_details(command_name)
     return log_error_mesg('No Commands') unless @commands.is_a?(Hash)
     return @commands[command_name] if @commands.key?(command_name)
-    return log_error_mesg('Command not found _' + command_name.to_s + '_')
+     log_error_mesg('Command not found _' + command_name.to_s + '_')
   rescue StandardError => e
 
     log_exception(e)
@@ -75,7 +75,7 @@ class ManagedUtility< ManagedContainer
     r[:stdout] = 'OK'
     r[:result] = 0
  
-    return r
+     r
 
   rescue StandardError => e
     log_exception(e)
@@ -163,7 +163,7 @@ class ManagedUtility< ManagedContainer
       r = 'Missing:' if r == true
       r +=  ' ' + required_param.to_s
     end
-    return r
+     r
   rescue StandardError => e
 
     #    log_exception(e)

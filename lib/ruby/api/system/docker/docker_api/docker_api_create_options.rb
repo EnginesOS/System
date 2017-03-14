@@ -4,32 +4,25 @@ module DockerApiCreateOptions
   end
 
   def create_options(container)
-    @top_level = build_top_level(container)
-    @top_level['Env'] = envs(container)
-    #  @top_level['Mounts'] = volumes_mounts(container)
-    @top_level['ExposedPorts'] = exposed_ports(container)
-    @top_level['HostConfig'] = host_config_options(container)
-     # STDERR.puts('create options ' + @top_level.to_s)
-    return @top_level
+    @top_level ||= build_top_level(container)
   rescue StandardError => e
     log_exception(e)
   end
 
   def get_protocol_str(port)
     return  'tcp'  if port[:proto_type].nil?
-    # return  'both' if port[:proto_type].downcase.include?('and')
     port[:proto_type]
   end
 
   def exposed_ports(container)
+    return {} if container.mapped_ports.nil?
     eports = {}
-    return eports if container.mapped_ports.nil?
-    container.mapped_ports.each_value do |port|      
-      port = SystemUtils.symbolize_keys(port)  
+    container.mapped_ports.each_value do |port|
+      port = SystemUtils.symbolize_keys(port)
       if port[:port].is_a?(String) && port[:port].include?('-')
         expose_port_range(eports, port)
       else
-      add_exposed_port(eports, port)
+        add_exposed_port(eports, port)
       end
     end
     eports
@@ -41,13 +34,11 @@ module DockerApiCreateOptions
     container.volumes.each_value do |volume|
       mounts.push(mount_string(volume))
     end
-    mounts.concat(system_mounts(container))
-    mounts.concat(cert_mounts(container))
+    sm = system_mounts(container)
+    mounts.concat(sm) unless sm.nil?
     mounts
   end
 
-  
-  
   def mount_string(volume)
     volume = SystemUtils.symbolize_keys(volume)
     perms = 'ro'
@@ -57,7 +48,6 @@ module DockerApiCreateOptions
       perms = 'ro'
     end
     volume[:localpath] + ':' + volume[:remotepath] + ':' + perms
-
   rescue StandardError => e
     STDERR.puts(' vol ' + volume.to_s)
     log_exception(e, volume)
@@ -76,120 +66,149 @@ module DockerApiCreateOptions
     servers
   end
 
-  def host_config_options(container)
-
-    host_config = {}
-    host_config['Binds'] = volumes_mounts(container)
-    host_config['PortBindings'] = port_bindings(container)
-    host_config['Volumes'] = {}
-    #  host_config['LxcConf'] # {"lxc.utsname":"docker"},
-    memory = container.memory.to_i * 1024 * 1024
-    host_config['Memory'] = memory
-    host_config['MemorySwap'] = memory * 2
-    host_config['MemoryReservation'] # 0,
-    host_config['VolumesFrom'] = container.volumes_from unless container.volumes_from.nil?
-   # "CapAdd": ["NET_ADMIN"],
-  STDERR.puts(" Add cap ");
-      host_config["CapAdd"] = add_capabilities(container.capabilities) unless container.capabilities.nil?
-    STDERR.puts(" Add caps " + host_config["CapAdd"].to_s);
-    # host_config['KernelMemory'] # 0,
-    #  host_config['CpuShares'] # 512,
-    # host_config['CpuPeriod'] # 100000,
-    #   host_config['CpuQuota'] # 50000,
-    #   host_config['CpusetCpus'] # "0,1",
-    #   host_config['CpusetMems'] # "0,1",
-    #     host_config['BlkioWeight'] # 300,
-    #host_config['MemorySwappiness'] # 60,
-    host_config['OomKillDisable'] = false
-
-    host_config['PublishAllPorts'] = false
-    host_config['Privileged'] = false
-    host_config['ReadonlyRootfs'] = false
-    host_config['Dns'] = get_dns_servers  if container.on_host_net? == false
-    # host_config['DnsOptions'] # [""],
-    host_config['DnsSearch'] = get_dns_search  if container.on_host_net? == false
-    #host_config['ExtraHosts'] # null, 
-    #   host_config['VolumesFrom'] # ["parent", "other:ro"],
-    #   host_config['CapAdd'] # ["NET_ADMIN"],
-    #   host_config['CapDrop'] # ["MKNOD"],
-    #   host_config['RestartPolicy'] # { "Name": "", "MaximumRetryCount": 0 },
-    if container.on_host_net? == false
-      host_config['NetworkMode'] = 'bridge'
-    else
-      host_config['NetworkMode'] ='host'
-    end
-    #      host_config['Devices'] # [],
-    #      host_config['Ulimits'] # [{}],
-    #   host_config['LogConfig'] = Hash.new ( "Type": "json-file", "Config": {} )
-    #    host_config['SecurityOpt']= ""
-    #    host_config['CgroupParent'] = ""
-    #    host_config['VolumeDriver'] = ""
-
-    host_config
+  def container_memory(container)
+    container.memory.to_i * 1024 * 1024
   end
-  
+
+  def container_volumes(container)
+    return  container.volumes_from unless container.volumes_from.nil?
+    []
+  end
+
+  def container_capabilities(container)
+    return add_capabilities(container.capabilities) unless container.capabilities.nil?
+    []
+  end
+
+  def container_get_dns_servers(container)
+    return  get_dns_servers  if container.on_host_net? == false
+    ''
+  end
+
+  def container_dns_search(container)
+    return get_dns_search  if container.on_host_net? == false
+    ''
+  end
+
+  def container_network_mode(container)
+    if container.on_host_net? == false
+      'bridge'
+    else
+      'host'
+    end
+  end
+
+  def host_config_options(container)
+    {
+      'Binds' => volumes_mounts(container),
+      'PortBindings' => port_bindings(container),
+      'Memory' => container_memory(container),
+      'MemorySwap' => container_memory(container) * 2,
+      'VolumesFrom' => container_volumes(container),
+      'CapAdd' => container_capabilities(container),
+      'OomKillDisable' => false,
+      'LogConfig' => log_config(container),
+      'PublishAllPorts' => false,
+      'Privileged' => false,
+      'ReadonlyRootfs' => false,
+      'Dns' => container_get_dns_servers(container),
+      'DnsSearch' => container_dns_search(container),
+      'NetworkMode' => container_network_mode(container)
+    }
+  end
+
+  def log_config(container)
+    #return { "Type" => 'json-file', "Config" => {}}
+    return { "Type" => 'json-file', "Config" => { "max-size" =>"5m", "max-file" => '10' } } if container.ctype == 'service'
+    return { "Type" => 'json-file', "Config" => { "max-size" =>"5m", "max-file" => '10' } } if container.ctype == 'system_service'
+    { "Type" => 'json-file', "Config" => { "max-size" =>"1m", "max-file" => '5' } }
+  end
+
   def add_capabilities(capabilities)
-#    r = []
-#    capabilities.each do |capability|
-#      r += capability
+    #    r = []
+    #    capabilities.each do |capability|
+    #      r += capability
     capabilities
   end
-  
+
   def port_bindings(container)
     bindings = {}
     return bindings if container.mapped_ports.nil?
     container.mapped_ports.each_value do |port|
       port = SystemUtils.symbolize_keys(port)
-      if port[:port].is_a?(String) && port[:port].include?('-') 
-       add_port_range(bindings, port)
+      if port[:port].is_a?(String) && port[:port].include?('-')
+        add_port_range(bindings, port)
       else
-      add_mapped_port(bindings, port)
-      end    
+        add_mapped_port(bindings, port)
+      end
     end
     bindings
   end
 
+  def hostname(container)
+    return '' if container.on_host_net? == true
+    return container.container_name unless container.hostname.nil?
+    container.hostname
+  end
+
+  def container_domain_name(container)
+    return SystemConfig.internal_domain if container.on_host_net? == false
+    ''
+  end
+
   def build_top_level(container)
-    top_level = {}
-    top_level['Hostname'] = container.hostname unless container.on_host_net? == true
-    top_level['Domainame'] =  container.domain_name
-    top_level['AttachStdin'] = false
-    top_level['AttachStdout'] = false
-    top_level['AttachStderr'] = false
-    top_level['Tty'] = false
-    top_level['OpenStdin'] = false
-    top_level['StdinOnce'] = false
-    top_level['Labels'] = {}
-    top_level['WorkingDir'] = ''
-    top_level['User'] = ''
-    top_level["Labels" ] = get_labels(container)
-    top_level['NetworkDisabled'] = false
-    top_level['StopSignal'] = 'SIGTERM'
-    top_level['Image']=  container.image
-    # FixME Bridging code in line below to be removed once current machines updated
-    command =  container.command
-    command = ['/bin/bash' ,'/home/start.bash'] if container.command.nil?
-    top_level['Entrypoint'] = container.command  unless container.conf_self_start
+
+    top_level = {
+      'Hostname' => hostname(container),
+      'Domainame' =>  container_domain_name(container),
+      'User' => '',
+      'AttachStdin' => false,
+      'AttachStdout' => false,
+      'AttachStderr' => false,
+      'Tty' => false,
+      'OpenStdin' => false,
+      'StdinOnce' => false,
+      'Env' => envs(container),
+    #  'Entrypoint' => entry_point(container),
+      'Image' => container.image,
+      'Labels' => get_labels(container),
+      'Volumes' => {},
+      'WorkingDir' => '',
+      'NetworkDisabled' => false,
+      'ExposedPorts' => exposed_ports(container),
+      'StopSignal' => 'SIGTERM',
+      #       "StopTimeout": 10,
+      'HostConfig' => host_config_options(container)
+    }
+    set_entry_point(container, top_level)
+   
+   # top_level['Entrypoint'] = command  unless container.conf_self_start
     top_level
+  end
+
+  def set_entry_point(container, top_level)
+    command =  container.command
+    return  if container.conf_self_start
+    command = ['/bin/bash' ,'/home/start.bash'] if container.command.nil?
+    top_level['Entrypoint'] = command
   end
 
   def get_labels(container)
     labels = {}
     labels['container_name'] = container.container_name
     labels['container_type'] = container.ctype
-    return labels
+    labels
   end
-  
+
   def cert_mounts(container)
+    return  unless container.certificates.is_a?(Array)
     mounts = []
-      return mounts if container.certificates.nil?
-      
     container.certificates.each do |certificate|
       prefix =  certificate[:container_type] + '_' + certificate[:parent_engine] + '_' + certificate[:variables][:cert_name]
       mounts.push(SystemConfig.CertificatesDir + prefix + '.crt:' + SystemConfig.CertificatesDestination +  certificate[:variables][:cert_name] + '.crt:ro' )
       mounts.push(SystemConfig.KeysDir + prefix + '.key:' + SystemConfig.KeysDestination +  certificate[:variables][:cert_name] + '.key:ro' )
-  end
-  return mounts
+    end
+    mounts
   end
 
   def system_mounts(container)
@@ -211,49 +230,26 @@ module DockerApiCreateOptions
     mounts.push(logdir_mount(container))
     mounts.push(vlogdir_mount(container)) unless in_container_log_dir(container) == '/var/log' || in_container_log_dir(container) == '/var/log/'
     mounts.push(ssh_keydir_mount(container))
+    cm = cert_mounts(container)
+    mounts.concat(cm) unless cm.nil?
 
-    return mounts
+    mounts
   end
 
   def ssh_keydir_mount(container)
     ContainerStateFiles.container_ssh_keydir(container) + ':/home/home_dir/.ssh:rw'
-    #service_sshkey_local_dir(container) + ':/home/.ssh:rw'
-    #    ssh_keydir_mount_string = {}
-    #    ssh_keydir_mount_string['Source'] = service_sshkey_local_dir(container)
-    #    ssh_keydir_mount_string['Destination'] = '/home/.ssh'
-    #    ssh_keydir_mount_string['Mode'] = 'rw,Z'
-    #    ssh_keydir_mount_string['RW'] = true
-    #    ssh_keydir_mount_string
   end
 
   def vlogdir_mount(container)
     container_local_log_dir(container) + ':/var/log/:rw'
-    #    vlogdir_mount_string = {}
-    #    vlogdir_mount_string['Source'] = container_local_log_dir(container)
-    #    vlogdir_mount_string['Destination'] = '/var/log/'
-    #    vlogdir_mount_string['Mode'] = 'rw,Z'
-    #    vlogdir_mount_string['RW'] = true
-    #    vlogdir_mount_string
   end
 
   def logdir_mount(container)
     container_local_log_dir(container) + ':' + in_container_log_dir(container) + ':rw'
-    #    logdir_mount_string = {}
-    #    logdir_mount_string['Source'] = container_local_log_dir(container)
-    #    logdir_mount_string['Destination'] = in_container_log_dir(container)
-    #    logdir_mount_string['Mode'] = 'rw,Z'
-    #    logdir_mount_string['RW'] = true
-    #    logdir_mount_string
   end
 
   def state_mount(container)
     container_state_dir(container) + '/run:/engines/var/run:rw'
-    #    state_mount_string = {}
-    #    state_mount_string['Source'] = container_state_dir(container) + '/run'
-    #    state_mount_string['Destination'] = '/engines/var/run'
-    #    state_mount_string['Mode'] = 'rw,Z'
-    #    state_mount_string['RW'] = true
-    #    state_mount_string
   end
 
   def container_state_dir(container)
@@ -265,7 +261,6 @@ module DockerApiCreateOptions
   end
 
   def service_sshkey_local_dir(container)
-    
     '/opt/engines/etc/ssh/keys/' + container.ctype + 's/' + container.container_name
   end
 
@@ -285,7 +280,7 @@ module DockerApiCreateOptions
     rescue
       container_logdetails = '/var/log'
     end
-    return container_logdetails
+    container_logdetails
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
@@ -298,41 +293,42 @@ module DockerApiCreateOptions
     end
     envs
   end
- def add_port_range(bindings, port)
-  internal = port[:port].split('-')
+
+  def add_port_range(bindings, port)
+    internal = port[:port].split('-')
     p = internal[0].to_i
     end_port = internal[1].to_i
     while p < end_port
-   add_mapped_port(bindings,{:port=> p, :external=>p, :proto_type=>get_protocol_str(port)})
-     p+=1
+      add_mapped_port(bindings,{:port=> p, :external=>p, :proto_type=>get_protocol_str(port)})
+      p+=1
     end
-end
-
-def expose_port_range(eports, port)
-  internal = port[:port].split('-')
-      p = internal[0].to_i
-      end_port = internal[1].to_i
-      while p < end_port
-        add_exposed_port(eports,{:port=> p, :external=>p, :proto_type=>get_protocol_str(port)})
-        p+=1
-       end
-end
-  def add_mapped_port(bindings, port )    
-  # STDERR.puts('Mapping ' + port.to_s)
-        local_side =     port[:port].to_s + '/' + get_protocol_str(port)
-        remote_side = []
-        remote_side[0] = {}
-        remote_side[0]['HostPort'] = port[:external].to_s
-        bindings[local_side] = remote_side
   end
+
+  def expose_port_range(eports, port)
+    internal = port[:port].split('-')
+    p = internal[0].to_i
+    end_port = internal[1].to_i
+    while p < end_port
+      add_exposed_port(eports,{:port=> p, :external=>p, :proto_type=>get_protocol_str(port)})
+      p+=1
+    end
+  end
+
+  def add_mapped_port(bindings, port )
+    local_side =     port[:port].to_s + '/' + get_protocol_str(port)
+    remote_side = []
+    remote_side[0] = {}
+    remote_side[0]['HostPort'] = port[:external].to_s
+    bindings[local_side] = remote_side
+  end
+
   def add_exposed_port(eports , port)
-    
     port[:proto_type] = 'tcp' if port[:proto_type].nil?
-          if port[:proto_type].downcase.include?('and') || port[:proto_type].downcase == 'both'
-            eports[port[:port].to_s + '/tcp'] = {}
-            eports[port[:port].to_s + '/udp'] = {}
-          else
-            eports[port[:port].to_s + '/' + get_protocol_str(port)] = {}
-          end
+    if port[:proto_type].downcase.include?('and') || port[:proto_type].downcase == 'both'
+      eports[port[:port].to_s + '/tcp'] = {}
+      eports[port[:port].to_s + '/udp'] = {}
+    else
+      eports[port[:port].to_s + '/' + get_protocol_str(port)] = {}
+    end
   end
 end

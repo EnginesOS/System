@@ -33,6 +33,8 @@ def setup_build_dir
 
   setup_framework_logging
   return true
+rescue StandardError => e
+  log_exception(e)
 end
 
 def create_build_dir
@@ -55,6 +57,8 @@ def create_template_files
       write_software_file('/home/engines/templates/' + template_hash[:path], template_hash[:content])
     end
   end
+  rescue StandardError => e
+    log_exception(e)
 end
 
 def create_httaccess
@@ -63,6 +67,8 @@ def create_httaccess
       write_software_file('/home/engines/htaccess_files' + htaccess_hash[:directory] + '/.htaccess', htaccess_hash[:htaccess_content])
     end
   end
+  rescue StandardError => e
+    log_exception(e)
 end
 
 def create_php_ini
@@ -75,6 +81,8 @@ def create_php_ini
     end
     write_software_file(SystemConfig.CustomPHPiniFile, contents)
   end
+  rescue StandardError => e
+    log_exception(e)
 end
 
 def create_apache_config
@@ -87,6 +95,8 @@ def create_apache_config
     end
     write_software_file(SystemConfig.CustomApacheConfFile, contents)
   end
+  rescue StandardError => e
+    log_exception(e)
 end
 
 def write_env_file
@@ -100,10 +110,14 @@ def write_env_file
     env_file.puts(env[0])
   end
   env_file.close
+rescue StandardError => e
+  log_exception(e)
 end
 
 def write_software_file(filename, content)
   ConfigFileWriter.write_templated_file(@templater, basedir + '/' + filename, content)
+  rescue StandardError => e
+    log_exception(e)
 end
 
 def create_templater
@@ -117,7 +131,7 @@ end
 def read_web_user
   if @blueprint_reader.framework == 'docker'
     @web_user = @blueprint_reader.cont_user
-    STDERR.puts("Set web user to:" + @web_user.to_s)
+ #   STDERR.puts("Set web user to:" + @web_user.to_s)
     return @web_user
   end
 
@@ -138,6 +152,8 @@ def apply_templates_to_environments
   @blueprint_reader.environments.each do |env|
     env.value = @templater.process_templated_string(env.value)
   end
+  rescue StandardError => e
+    log_exception(e)
 end
 
 def read_web_port
@@ -161,6 +177,8 @@ def setup_default_files
   log_build_output('Setup Default Files')
   log_error_mesg('Failed to setup Global Defaults', self) unless setup_global_defaults
   return setup_framework_defaults
+  rescue StandardError => e
+    log_exception(e)
 end
 
 def setup_global_defaults

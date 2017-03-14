@@ -104,33 +104,33 @@ class BluePrintReader
 
   def read_install_report_template
     @install_report_template = @blueprint[:software][:installation_report_template]
-    rescue StandardError => e
-      SystemUtils.log_exception(e)
+  rescue StandardError => e
+    SystemUtils.log_exception(e)
   end
 
   def read_apache_htaccess_files
     @apache_htaccess_files = @blueprint[:software][:apache_htaccess_files] if @blueprint[:software][:apache_htaccess_files].is_a?(Array)
-    rescue StandardError => e
-      SystemUtils.log_exception(e)
+  rescue StandardError => e
+    SystemUtils.log_exception(e)
   end
 
   def read_custom_php_inis
     @custom_php_inis = @blueprint[:software][:custom_php_inis] if @blueprint[:software][:custom_php_inis].is_a?(Array)
-    rescue StandardError => e
-      SystemUtils.log_exception(e)
+  rescue StandardError => e
+    SystemUtils.log_exception(e)
   end
 
   def read_apache_httpd_configurations
     @apache_httpd_configurations = @blueprint[:software][:apache_httpd_configurations] if  @blueprint[:software][:apache_httpd_configurations].is_a?(Array)
-    rescue StandardError => e
-      SystemUtils.log_exception(e)
+  rescue StandardError => e
+    SystemUtils.log_exception(e)
   end
 
   def read_templates
     @template_files = @blueprint[:software][:template_files] if @blueprint[:software][:template_files].is_a?(Array)
-    rescue StandardError => e
-      SystemUtils.log_exception(e)
-    STDERR.puts('TEMPLATES ' + @template_files.to_s )
+  rescue StandardError => e
+    SystemUtils.log_exception(e)
+    # STDERR.puts('TEMPLATES ' + @template_files.to_s )
   end
 
   def read_scripts
@@ -138,21 +138,29 @@ class BluePrintReader
     @custom_stop_script =  @blueprint[:software][:custom_stop_script].gsub(/\r/, '') if @blueprint[:software].key?(:custom_stop_script)
     @custom_install_script =  @blueprint[:software][:custom_install_script].gsub(/\r/, '') if @blueprint[:software].key?(:custom_install_script)
     @custom_post_install_script =  @blueprint[:software][:custom_post_install_script].gsub(/\r/, '') if  @blueprint[:software].key?(:custom_post_install_script)
-    rescue StandardError => e
-      SystemUtils.log_exception(e)
+  rescue StandardError => e
+    SystemUtils.log_exception(e)
+  end
+
+  def read_sql_seed
+    return true unless @blueprint[:software].key?(:database_seed_file) # && @blueprint[:software][:database_seed_file][:content].nil? == false
+    database_seed_file = @blueprint[:software][:database_seed_file] #[:content]
+    @database_seed = database_seed_file unless database_seed_file.nil?
+  rescue StandardError => e
+    SystemUtils.log_exception(e)
   end
 
   def read_web_root
     @web_root = @blueprint[:software][:web_root_directory] if @blueprint[:software].key?(:web_root_directory)
     SystemDebug.debug(SystemDebug.builder,  ' @web_root ',  @web_root)
-    rescue StandardError => e
-      SystemUtils.log_exception(e)
+  rescue StandardError => e
+    SystemUtils.log_exception(e)
   end
 
   def read_deployment_type
     @deployment_type = @blueprint[:software][:deployment_type]
-    rescue StandardError => e
-      SystemUtils.log_exception(e)
+  rescue StandardError => e
+    SystemUtils.log_exception(e)
   end
 
   def re_set_service(service_cnt, service_hash)
@@ -166,8 +174,8 @@ class BluePrintReader
     if @blueprint[:software].key?(:framework_port_overide) == true
       @web_port = @blueprint[:software][:framework_port_overide]
     end
-    rescue StandardError => e
-      SystemUtils.log_exception(e)
+  rescue StandardError => e
+    SystemUtils.log_exception(e)
   end
 
   def read_persistent_dirs
@@ -219,8 +227,8 @@ class BluePrintReader
       service[:service_type] = service[:type_path]
       add_service(service)
     end
-      rescue StandardError => e
-        SystemUtils.log_exception(e)
+  rescue StandardError => e
+    SystemUtils.log_exception(e)
   end
 
   def add_service(service_hash)
@@ -228,8 +236,8 @@ class BluePrintReader
     @builder.templater.fill_in_dynamic_vars(service_hash)
     @services.push(service_hash)
     return true
-    rescue StandardError => e
-      SystemUtils.log_exception(e)
+  rescue StandardError => e
+    SystemUtils.log_exception(e)
   end
 
   def read_os_packages
@@ -288,11 +296,9 @@ class BluePrintReader
       end
     end
     return true
-    rescue StandardError => e
-      SystemUtils.log_exception(e)
+  rescue StandardError => e
+    SystemUtils.log_exception(e)
   end
-
-
 
   def read_app_packages
     log_build_output('Read App Packages ')
@@ -326,8 +332,8 @@ class BluePrintReader
   def add_capability(capability)
     @capabilities = [] if @capabilities.nil?
     @capabilities.push(capability)
-    rescue StandardError => e
-      SystemUtils.log_exception(e)
+  rescue StandardError => e
+    SystemUtils.log_exception(e)
   end
 
   def read_write_permissions_recursive
@@ -448,18 +454,17 @@ class BluePrintReader
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
+
   def blueprint_env_varaibles
     @blueprint[:software][:variables]
   end
-  
-    
 
   def read_environment_variables
     log_build_output('Read Environment Variables')
     @environments = []
     envs = blueprint_env_varaibles
     return true unless envs.is_a?(Array) # not an error just nada
-    envs.each do |env|      
+    envs.each do |env|
       name = env[:name]
       log_build_output('Process Env Variable ' + name )
       value = env[:value]
@@ -469,7 +474,7 @@ class BluePrintReader
       label = env[:label]
       immutable = env[:immutable]
       # lookup_system_values = env[:lookup_system_values]
-        
+
       unless @builder.set_environments.nil?
         log_build_output('Merging supplied Environment Variable:' + name.to_s)
         SystemDebug.debug(SystemDebug.builder, :looking_for_, name)
@@ -481,11 +486,11 @@ class BluePrintReader
             SystemDebug.debug(SystemDebug.builder, :value_set, value)
 
           end
-        log_build_output('Merged supplied Environment Variable:' + name.to_s)
-      else
-        log_build_output('No supplied Environment Variables')
+          log_build_output('Merged supplied Environment Variable:' + name.to_s)
+        else
+          log_build_output('No supplied Environment Variables')
         end
-        
+
       end
       name.sub!(/ /, '_')
       ev = EnvironmentVariable.new(name, value, ask, mandatory, build_time_only, label, immutable)
@@ -498,13 +503,13 @@ class BluePrintReader
   def read_actionators
     log_build_output('Read Actionators')
     SystemDebug.debug(SystemDebug.builder,' readin in actionators', @blueprint[:software][:actionators])
-      STDERR.puts(' readin in actionators', @blueprint[:software][:actionators].to_s)
+    #  STDERR.puts(' readin in actionators', @blueprint[:software][:actionators].to_s)
     if @blueprint[:software].key?(:actionators)
       @actionators = {}
-        @blueprint[:software][:actionators].each do |actionator |
-          @actionators[actionator[:name]] = actionator
-        end
-      STDERR.puts('Red actionators', @blueprint[:software][:actionators].to_s)
+      @blueprint[:software][:actionators].each do |actionator |
+        @actionators[actionator[:name]] = actionator
+      end
+      #     STDERR.puts('Red actionators', @blueprint[:software][:actionators].to_s)
       SystemDebug.debug(SystemDebug.builder,@actionators)
     else
       SystemDebug.debug(SystemDebug.builder,'No actionators')

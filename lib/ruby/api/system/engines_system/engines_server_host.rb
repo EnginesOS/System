@@ -5,7 +5,7 @@ module EnginesServerHost
     result =   run_server_script('free_docker_lib_space')
     return result if result.is_a?(EnginesError)
     return -1 if result[:result] != 0
-    return result[:stdout].to_i
+     result[:stdout].to_i
   rescue StandardError => e
     log_exception(e)
     return -1
@@ -15,7 +15,7 @@ module EnginesServerHost
     res = Thread.new { run_server_script('restart_system_service') }
     # FIXME: check a status flag after sudo side post ssh run ie when we know it's definititly happenging
     return true if res.status == 'run'
-    return false
+     false
     rescue StandardError => e
       SystemUtils.log_exception(e)
   end
@@ -23,7 +23,7 @@ module EnginesServerHost
     res = Thread.new { run_server_script('recreate_system_service') }
     # FIXME: check a status flag after sudo side post ssh run ie when we know it's definititly happenging
     return true if res.status == 'run'
-    return false
+     false
     rescue StandardError => e
       SystemUtils.log_exception(e)
   end
@@ -78,7 +78,7 @@ module EnginesServerHost
       end
       
     end
-    return ret_val
+     ret_val
   rescue StandardError => e
     SystemUtils.log_exception(e)
     ret_val[:total] = e.to_s
@@ -89,7 +89,7 @@ module EnginesServerHost
     ret_val[:buffers] = -1
     ret_val[:swap_total] = -1
     ret_val[:swap_free] = -1
-    return ret_val
+     ret_val
   end
 
   def get_system_load_info
@@ -113,7 +113,7 @@ module EnginesServerHost
     ret_val[:fifteen] = -1
     ret_val[:running] = -1
     ret_val[:idle] = -1
-    return ret_val
+     ret_val
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
@@ -132,7 +132,7 @@ module EnginesServerHost
         r[values[0]][:tx] = values[2]
       end
     end
-    return r
+     r
 rescue StandardError => e
   SystemUtils.log_exception(e)
   end
@@ -155,7 +155,7 @@ rescue StandardError => e
         r[values[0]][:mount] = values[6]
       end
     end
-    return r
+     r
 rescue StandardError => e
   SystemUtils.log_exception(e)
   end
@@ -180,7 +180,7 @@ STDERR.puts('RUN SERVER SCRIPT cmd'  + cmd.to_s)
     #system('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/restart_mgmt engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/restart_mgmt.sh')
   rescue StandardError => e
     STDERR.puts( 'Except ' + e.to_s + ' ' + e.backtrace.to_s)
-    return log_exception(e)
+     log_exception(e)
 
   end
 

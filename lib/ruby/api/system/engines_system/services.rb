@@ -1,22 +1,6 @@
 module Services
   def getManagedServices
     get_services_by_type(type='service')
-#    ret_val = []
-#    Dir.foreach(SystemConfig.RunDir + '/services/') do |contdir|
-#      yfn = SystemConfig.RunDir + '/services/' + contdir + '/config.yaml'
-#      if File.exist?(yfn) == true
-#        managed_service = loadManagedService(contdir)
-#        if managed_service.is_a?(ManagedService)
-#          ret_val.push(managed_service) if managed_service
-#        else
-#          log_error_mesg('failed to load ', yfn)
-#        end
-#      end
-#    end
-#    return ret_val
-#  rescue StandardError => e
-#    log_exception(e)
-#    return ret_val
   end
   
   def getSystemServices
@@ -28,12 +12,12 @@ module Services
   def list_managed_services
     _list_services  
   rescue StandardError => e
-    return log_exception(e)    
+     log_exception(e)    
   end
   def list_system_services
     _list_services('system_service')  
   rescue StandardError => e
-    return log_exception(e)    
+     log_exception(e)    
   end 
   
  

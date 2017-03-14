@@ -9,8 +9,7 @@
 get '/v0/system/metrics/memory' do
   memory_info =  engines_api.get_system_memory_info #engines_api.get_system_memory_info
   return log_error(request, memory_info) if memory_info.is_a?(EnginesError)
-    status(202)
-   memory_info.to_json
+  return_json(memory_info)
 end
 
 # @method get_system_metrics_load
@@ -26,8 +25,7 @@ end
 get '/v0/system/metrics/load' do
   load_info = engines_api.get_system_load_info
   return log_error(request, load_info) if load_info.is_a?(EnginesError)
-    status(202)
-   load_info.to_json
+  return_json(load_info)
 end
 
 # @method get_system_metrics_memory_statistics
@@ -41,8 +39,7 @@ end
 get '/v0/system/metrics/memory/statistics' do
   memory_statistics = MemoryStatistics.total_memory_statistics(engines_api)
   return log_error(request, memory_statistics) if memory_statistics.is_a?(EnginesError)
-    status(202)
-   memory_statistics.to_json
+  return_json( memory_statistics)
 end
 
 # @method get_system_metrics_disk
@@ -53,8 +50,7 @@ end
 get '/v0/system/metrics/disks' do
   disk_statistics = engines_api.get_disk_statistics
   return log_error(request, disk_statistics) if disk_statistics.is_a?(EnginesError)
-  status(202)
-  disk_statistics.to_json
+  return_json(disk_statistics)
 end
 
 # @method get_system_metrics_network
@@ -64,7 +60,6 @@ end
 get '/v0/system/metrics/network' do
   net_statistics = engines_api.get_network_statistics
   return log_error(request, net_statistics) if net_statistics.is_a?(EnginesError)
-  status(202)
-  net_statistics.to_json
+  return_json(net_statistics)
 end
 # @!endgroup

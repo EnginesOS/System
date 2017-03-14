@@ -17,7 +17,7 @@ module FirstRunComplete
         STDERR.puts('FIRST RUN Thread Exception' + e.to_s + ':' + e.backtrace.to_s)
       end
     end
-    return true
+     true
   rescue StandardError => e
     log_exception(e, event_hash)
   end

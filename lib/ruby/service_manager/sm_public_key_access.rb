@@ -1,5 +1,5 @@
 module SmPublicKeyAccess
-  def   load_service_pubkey(engine, cmd)
+  def load_service_pubkey(engine, cmd)
     load_pubkey(engine, cmd)
   end
 
@@ -8,8 +8,8 @@ module SmPublicKeyAccess
     return '' unless File.exists?(kfn)
     k = File.read(kfn)
     k.split(' ')[1]
-  rescue StandardError =>e
-    log_exception(e)
+  rescue StandardError => e
+    handle_exception(e)
   end
 
 end

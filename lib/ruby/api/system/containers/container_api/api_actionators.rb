@@ -7,14 +7,14 @@ module ApiActionators
     else
       args = params.to_json
     end
-    STDERR.puts('/home/actionators/' + actionator_name + '.sh ' + params.to_json + ' .  ' + data.to_s )
+  #  STDERR.puts('/home/actionators/' + actionator_name + '.sh ' + params.to_json + ' .  ' + data.to_s )
     cmds = ['/home/actionators/' + actionator_name + '.sh',args.to_s]
             if data.nil?
               result = engines_core.exec_in_container({:container => c, :command_line => cmds, :log_error => true, :data=>nil })
               #      result = SystemUtils.execute_command(cmd)
             else
               result = engines_core.exec_in_container({:container => c, :command_line => cmds, :log_error => true , :data => data})
-              STDERR.puts('/home/actionators/' + actionator_name + '.sh' + data.to_s)
+            #  STDERR.puts('/home/actionators/' + actionator_name + '.sh' + data.to_s)
               # result = SystemUtils.execute_command(cmd, false, data)
             end
           
@@ -23,7 +23,7 @@ module ApiActionators
     if result[:result] == 0
       if result[:stdout].start_with?('{') || result[:stdout].start_with?('"{')
         begin
-          return SystemUtils.deal_with_jason(JSON.parse( result[:stdout], :create_additons => true ))
+          return deal_with_json(result[:stdout])
         rescue
           return result[:stdout]
         end
@@ -31,7 +31,7 @@ module ApiActionators
       return true if result[:stdout].start_with?('true') || result[:stdout].start_with?('"true')
       return result[:stdout]
     end
-    return log_error_mesg('Error on performing action ' + c.container_name.to_s + ':' + actionator_name.to_s + result[:stderr] ,result)
+     log_error_mesg('Error on performing action ' + c.container_name.to_s + ':' + actionator_name.to_s + result[:stderr] ,result)
   rescue StandardError =>e
     log_exception(e)
 
@@ -43,7 +43,7 @@ module ApiActionators
     params.each do |param|
       r += param.to_s + ' '
     end
-    return r
+     r
   end
 
 end

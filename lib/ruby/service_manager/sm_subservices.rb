@@ -1,35 +1,44 @@
 module SMSubservices
- 
-  def all_subservices_registered_to(service_type)
-    test_subservices_result(@subservices_registry.all_subservices_registered_to(service_type))
+  def services_subservices(params)
+    @subservices_registry.services_subservices(params)
+  rescue StandardError => e
+    handle_exception(e)
   end
-  
-  def find_subservice_consumers(params)
-    test_subservices_result(@subservices_registry.find_engine_services_hashes(params))
+
+  def update_subservice(params)
+    @subservices_registry.update_subservice(params)
+  rescue StandardError => e
+    handle_exception(e)
   end
-  
-  def get_subservices_registered_against_service(params)
-    test_subservices_result(@subservices_registry.find_engine_services_hashes(params))
+
+  def attach_subservice(params)
+    @subservices_registry.attach_subservice(params)
+  rescue StandardError => e
+    handle_exception(e)
   end
-  
-  def get_subservice_entry(params)
-    test_subservices_result(@subservices_registry.get_subservice_entry(params))
+
+  def remove_subservice(params)
+    @subservices_registry.remove_subservice(params)
+  rescue StandardError => e
+    handle_exception(e)
   end
-  
-  def subservice_is_registered?(params)
-    test_subservices_result(@subservices_registry.subservice_is_registered?(params))
+
+  def attached_subservice(params)
+    @subservices_registry.attached_subservice(params)
+  rescue StandardError => e
+    handle_exception(e)
   end
-  
-  def add_to_subservices_registry(params)
-    test_subservices_result(@subservices_registry.add_to_subservices_registry(params))
+
+  def subservice_provided(params)
+    @subservices_registry.subservice_provided(params)
+  rescue StandardError => e
+    handle_exception(e)
   end
-  
-  def update_attached_subservice(params)
-    test_subservices_result(@subservices_registry.update_attached_subservice(params))
+
+  def subservices_provided(params)
+    @subservices_registry.subservices_provided(params)
+  rescue StandardError => e
+    handle_exception(e)
   end
-  
-  def remove_from_subservices_registry()
-    test_subservices_result(@subservices_registry.remove_from_subservices_registry())
-  end
-  
+
 end

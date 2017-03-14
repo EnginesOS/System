@@ -19,6 +19,7 @@ class SystemDebug
   @@export_import = 65536
   @@server = 131072
   @@registry = 262144
+  @@schedules = 524288
   @@all_debug_flags = @@execute  |@@engine_tasks |@@first_run |@@docker  |@@containers|@@container_events| @@services | @@orphans |@@environment |@@templater | @@builder |@@system  |@@cache |@@update|@@registry |@@actions
   #if File.exist?(debug_flag)
   # require(debug_flags)
@@ -28,22 +29,29 @@ class SystemDebug
     require '/opt/engines/etc/debug/debug_flags.rb'
   else
     @@debug_flags = 0
-   
-        @@debug_flags = @@first_run | @@actions #| @@container_events # @@builder| @@services | @@registry
-#  @@debug_flags =  @@container_events| @@builder|@@templater| @@services | @@export_import# |@@first_run #@@containers# |@@container_events |@@first_run #@@orphans | @@builder |@@export_import | @@services| @@container_events|  @@server |@@templater| @@services | @@export_import |@@builder|@@execute|@@engine_tasks | @@orphans  |@@containers
+    #  @@debug_flags = @@schedules | @@services | @@registry
+  #  @@debug_flags = @@schedules#| @@services | @@registry
+    #  @@debug_flags =  @@container_events| @@builder|@@templater| @@services | @@export_import# |@@first_run #@@containers# |@@container_events |@@first_run #@@orphans | @@builder |@@export_import | @@services| @@container_events|  @@server |@@templater| @@services | @@export_import |@@builder|@@execute|@@engine_tasks | @@orphans  |@@containers
   end
+
   #end
   #
+  def self.schedules
+    return @@schedules
+  end
+
   def self.registry
-     return @@registry
-   end
+    return @@registry
+  end
+
   def self.server
-     return @@server
-   end
+    return @@server
+  end
+
   def self.export_import
-      return @@export_import
-    end
-     
+    return @@export_import
+  end
+
   def self.container_events
     return @@container_events
   end
@@ -120,7 +128,7 @@ class SystemDebug
     args.each do |arg|
       mesg += arg.to_s + ' '
     end
-   # SystemUtils.log_output(mesg,20)
+    # SystemUtils.log_output(mesg,20)
     STDERR.puts(mesg )
   end
 

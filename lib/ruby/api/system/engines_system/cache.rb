@@ -17,7 +17,7 @@ SystemDebug.debug(SystemDebug.cache, :Stale_in_Cache )
       
 @engines_conf_cache[ident.to_sym][:engine] = nil
 
-return  nil
+  nil
   end
 
   def rm_engine_from_cache(engine_name)
@@ -58,7 +58,7 @@ return  nil
     yam_file_name = SystemConfig.RunDir + '/' + engine.ctype + 's/' + engine.engine_name + '/running.yaml'
     return  File.mtime(yam_file_name) if File.exist?(yam_file_name)
    # return 0 if Dir.exist?(SystemConfig.RunDir + '/' + engine.ctype + 's/' + engine.engine_name)
-    return -1
+     -1
   end
   
   def container_from_cache(container_ident)
@@ -67,7 +67,7 @@ return  nil
     return nil if container_ident.nil?
 #    c = engine_from_cache('/services/' + container_name)
 #    return c unless c.nil?
-    return engine_from_cache(container_ident)
+     engine_from_cache(container_ident)
   end
   
   def cache_update_ts(container, ts) 
@@ -75,7 +75,7 @@ return  nil
     name_key = ident.to_sym
     return false unless  @engines_conf_cache.key?(name_key) && ! @engines_conf_cache[name_key].nil?
     @engines_conf_cache[name_key][:ts] = ts
-     return true
+      true
   end
   
 end

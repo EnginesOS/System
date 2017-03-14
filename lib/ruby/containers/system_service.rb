@@ -9,7 +9,7 @@ class SystemService < ManagedService
     super
   end
   def certificates
-   return nil    
+    nil    
   end
 
   def create_service()
@@ -37,7 +37,7 @@ class SystemService < ManagedService
     unpause_container
     stop_container
     destroy_container
-    return  @container_api.create_container(self)         #start as engine/container or will end up in a loop getting configurations and consumers
+      @container_api.create_container(self)         #start as engine/container or will end up in a loop getting configurations and consumers
   rescue StandardError => e
     log_exception(e)
   end
@@ -67,7 +67,7 @@ class SystemService < ManagedService
     end
     # Thread.new { sleep 5 ; @docker_info = nil }
     SystemDebug.debug(SystemDebug.system,:system_service_inspected_container)
-    return @docker_info
+     @docker_info
   end
 rescue StandardError => e
   log_exception(e)

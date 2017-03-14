@@ -19,7 +19,7 @@ get '/v0/containers/service/:service_name/status' do
   return log_error(request, service, params) if service.is_a?(EnginesError)
   r = service.status
   return log_error(request, r) if r.is_a?(EnginesError)
-  r.to_json
+  return_json(r)
 end
 # @method get_service_state
 # @overload  get '/v0/containers/service/:service_name/state'
@@ -30,8 +30,7 @@ get '/v0/containers/service/:service_name/state' do
   return log_error(request, service, params) if service.is_a?(EnginesError)
   r = service.read_state
   return log_error(request, r) if r.is_a?(EnginesError)
-  content_type 'text/plain'
-  r.to_s
+  return_text(r)
 end
 
 # @method get_service_websites
@@ -43,7 +42,7 @@ get '/v0/containers/service/:service_name/websites' do
   return log_error(request, service, params) if service.is_a?(EnginesError)
   r = service.web_sites
   return log_error(request, r) if r.is_a?(EnginesError)
-  r.to_json
+  return_json_array(r)
 end
 # @method get_service_logs
 # @overload   get '/v0/containers/service/:service_name/logs'
@@ -54,7 +53,7 @@ get '/v0/containers/service/:service_name/logs' do
   return log_error(request, service, params) if service.is_a?(EnginesError)
   r = service.logs_container()
   return log_error(request, r) if r.is_a?(EnginesError)
-  r.to_json
+  return_json(r)
 end
 
 # @method get_service_definition
@@ -64,7 +63,7 @@ end
 # @return [Hash]
 get '/v0/containers/service/:service_name/service_definition' do
   #STDERR.puts('/v0/containers/service/:service_name/service_definition' )
-  cparams =  Utils::Params.assemble_params(params, [:service_name], [])
+  cparams = assemble_params(params, [:service_name], [])
   return log_error(request, cparams, params) if cparams.is_a?(EnginesError)
   r = get_service(cparams[:service_name])
   return r if r.is_a?(EnginesError)
@@ -76,8 +75,7 @@ get '/v0/containers/service/:service_name/service_definition' do
   r = engines_api.get_service_definition(pparams)
 
   return  log_error(request, r,pparams) if r.is_a?(EnginesError)
-  status(202)
-  r.to_json
+  return_json(r)
 
 end
 # @method get_service_ps
@@ -89,19 +87,8 @@ get '/v0/containers/service/:service_name/ps' do
   return log_error(request, service, params) if service.is_a?(EnginesError)
   r = service.ps_container
   return log_error(request, r, service.last_error) if r.is_a?(EnginesError)
-  r.to_json
+  return_json(r)
 end
-# @method run_service_cron_job
-# @overload   get '/v0/cron/service/:service_name/:cron_job/run'
-#  run cron_job for service
-# @return [String] true|false 
-get '/v0/cron/service/:service_name/:cron_job/run' do
-  service = get_service(params[:service_name])
-   return log_error(request, service, params) if service.is_a?(EnginesError)
-   r = service.run_cronjob(params[:cron_job])
-  return log_error(request, r, service.last_error) if r.is_a?(EnginesError)
-  content_type 'text/plain' 
-     r.to_s
-end
+
 # @!endgroup
 

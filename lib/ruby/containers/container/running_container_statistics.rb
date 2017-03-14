@@ -87,6 +87,6 @@ module RunningContainerStatistics
     cpu_time[0] += s
     cpu_time[1] += m
     cpu_time[2] += h
-    return cpu_time
+     cpu_time
   end
 end

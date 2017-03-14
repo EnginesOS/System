@@ -1,9 +1,0 @@
---- !ruby/object:Hash
-type: restart
-notification_email: 
-schedules:
--
- label: Nightly
- cron_spec: "1 * * * *"
- action: start
- 

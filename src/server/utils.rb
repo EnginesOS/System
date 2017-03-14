@@ -38,7 +38,7 @@ class Utils
     elsif r == 'false'
       return false
     end
-    return r
+     r
   rescue  StandardError => e
     STDERR.puts e.to_s
   end

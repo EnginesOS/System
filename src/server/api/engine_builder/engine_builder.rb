@@ -8,7 +8,7 @@ get '/v0/engine_builder/status' do
   r = engines_api.build_status
 
   return log_error(request, r) if r.is_a?(EnginesError)
-  r.to_json
+  return_json(r)
 end
 
 # @method get_current_build_params
@@ -18,7 +18,7 @@ end
 get '/v0/engine_builder/params' do
   r = engines_api.current_build_params
   return log_error(request, r) if r.is_a?(EnginesError)
-  r.to_json
+  return_json(r)
 end
 
 # @method get_last_build_log
@@ -28,7 +28,7 @@ end
 get '/v0/engine_builder/last_build/log' do
   r = engines_api.last_build_log
   return log_error(request, r) if r.is_a?(EnginesError)
-  r.to_json
+  return_json(r)
 end
 # @method get_last_build_param
 # @overload get '/v0/engine_builder/last_build/params'
@@ -37,7 +37,7 @@ end
 get '/v0/engine_builder/last_build/params' do
   r = engines_api.last_build_params
   return log_error(request, r) if r.is_a?(EnginesError)
-  r.to_json
+  return_json(r)
 end
 # @method follow_build
 # @overload get '/v0/engine_builder/follow_stream'

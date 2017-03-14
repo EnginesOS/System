@@ -13,6 +13,9 @@ def create_engine_image
       end
       true
     end
+  rescue StandardError => e
+    log_build_errors(e)
+    return post_failed_build_clean_up
   end
 
 def build_init
@@ -32,4 +35,7 @@ def create_build_tar
   dest_file = SystemConfig.DeploymentDir + '/' + @build_name.to_s + '.tgz'
   cmd = ' cd ' + basedir + ' ; tar -czf ' + dest_file + ' .'
   SystemUtils.run_system(cmd)
+  rescue StandardError => e
+    log_build_errors(e)
+    return post_failed_build_clean_up
 end

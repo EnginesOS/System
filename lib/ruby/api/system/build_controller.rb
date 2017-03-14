@@ -24,12 +24,12 @@ class BuildController
   
   def build_engine(params)
     SystemDebug.debug(SystemDebug.builder, :builder_params, params)
-    r = ''
-   
+    r = '' 
+ 
     @build_params = params
     SystemStatus.build_starting(@build_params)
     @engine_builder = get_engine_builder(@build_params)
-
+    return  @engine_builder if  @engine_builder.is_a?(EnginesError)
     return build_failed(params, r) if (r = @engine_builder.check_build_params(params)).is_a?(EnginesError)
    
     @engine = @engine_builder.build_from_blue_print
@@ -39,7 +39,7 @@ class BuildController
     
     build_failed(params, @build_error) if @engine.nil? || @engine.is_a?(EnginesError)
     build_failed(params, @build_error) unless @engine.is_a?(ManagedEngine)
-    return build_complete(@build_params)
+     build_complete(@build_params)
     
   rescue StandardError => e
     build_failed(params, e.to_s)
@@ -55,12 +55,13 @@ class BuildController
 
     SystemStatus.build_starting(@build_params)
     @engine_builder= get_engine_builder_bfr(repository, host, domain_name, environment)
+    return  @engine_builder if  @engine_builder.is_a?(EnginesError)
     @engine = @engine_builder.build_from_blue_print
     @build_error = @engine_builder.last_error
     return build_failed(@build_params, @build_error)  unless engine.is_a(ManagedEngine)
     @engine.save_state
     build_complete(@build_params)
-    return @engine
+     @engine
   rescue StandardError => e
     build_failed(@build_params, e)
   end
@@ -97,8 +98,8 @@ class BuildController
 
   def get_engine_builder(params)
     @engine_builder = EngineBuilder.new(params, @core_api)
+    @engine_builder.setup_build
 
-    return @engine_builder 
   end
 
 
@@ -109,6 +110,8 @@ class BuildController
     @build_params[:domain_name] = domain_name
     @build_params[:environment] = environment
     get_engine_builder(@build_params)
+    @engine_builder.setup_build
+ 
   end
 
   def build_failed(params,err)
@@ -121,7 +124,7 @@ class BuildController
     Thread.new{  SystemStatus.build_failed(params) }
       
    return err if err.is_a?(EnginesError)
-    return EnginesError.new(params[:engine_name] +  err.to_s + params.to_s , :build_error)
+     EnginesError.new(params[:engine_name] +  err.to_s + params.to_s , :build_error)
   end
   
   def build_complete(build_params)

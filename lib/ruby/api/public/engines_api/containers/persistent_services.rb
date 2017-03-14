@@ -25,6 +25,6 @@ module PublicApiContainersPersistentServices
   end
 
   def list_persistent_services(engine)
-    @service_manager.list_persistent_services(engine)
+    @core_api.list_persistent_services(engine)
   end
 end

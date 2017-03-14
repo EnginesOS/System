@@ -6,7 +6,9 @@ def check_avail_space
       SystemDebug.debug(SystemDebug.builder,  ' free space /var/lib/docker only ' + space.to_s + 'MB')
       return build_failed('Not enough free space /var/lib/docker only ' + space.to_s + 'MB') if space < SystemConfig.MinimumFreeImageSpace  && space != -1
       log_build_output(space.to_s + 'MB free > ' +  SystemConfig.MinimumFreeImageSpace.to_s + ' required')
-
+  
+  rescue StandardError => e
+    log_exception(e)
 end
 
 def check_avail_memory
@@ -19,10 +21,14 @@ def check_avail_memory
       return build_failed('Not enough free only ' + free_ram.to_s + "MB free " + ram_needed.to_s + 'MB required' ) if free_ram < ram_needed
       log_build_output(free_ram.to_s + 'MB free > ' + ram_needed.to_s + 'MB required')
       true
+  rescue StandardError => e
+    log_exception(e)
 end
 
 def meets_physical_requirements
   return false unless check_avail_memory
   return false unless check_avail_space
   return true
+  rescue StandardError => e
+    log_exception(e)
 end

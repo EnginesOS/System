@@ -8,32 +8,28 @@ module ManagedServiceConsumers
     return true if service_hash.has_key?(:remove_all_data) && service_hash[:remove_all_data] == false
     return rm_consumer_from_service(service_hash) if service_hash.has_key?(:remove_all_data) && service_hash[:remove_all_data]
     #log_error_mesg('No remove_all_data key',service_hash)
-    return true
+     true
   end
 
-  #  def service_manager
-  #    return @container_api.service_manager
-  #  end
 
   def registered_consumers(params = nil)
     if params.nil?
-      params = {}
-      params[:publisher_namespace] = @publisher_namespace
-      params[:type_path] = @type_path
-      return @container_api.get_registered_against_service(params)
-    end
-    
-    registered_consumer(params)
-   
+      params = {
+      publisher_namespace: @publisher_namespace,
+      type_path: @type_path
+      }
+       @container_api.get_registered_against_service(params)
+    end    
+    registered_consumer(params)   
   end
 
   def registered_consumer(params)
-    service_params = {}
-    service_params[:publisher_namespace] = @publisher_namespace
-    service_params[:type_path] = @type_path
-    service_params[:parent_engine] = params[:parent_engine]
+    service_params = {
+    publisher_namespace: @publisher_namespace,
+    type_path: @type_path,
+    parent_engine: params[:parent_engine]
+    }
     service_params[:service_handle] = params[:service_handle] if params.key?(:service_handle)
-
     @container_api.get_registered_consumer(service_params)
   end
 
@@ -45,9 +41,10 @@ module ManagedServiceConsumers
     return true if registered_hashes.is_a?(EnginesError) # no consumers
     
     registered_hashes.each do |service_hash|
+      
       add_consumer_to_service(service_hash) if service_hash[:persistent] == false
     end
-    return true
+     true
   end
 
   def add_consumer(service_hash)
@@ -64,7 +61,7 @@ module ManagedServiceConsumers
       if service_hash.key?(:fresh) && service_hash[:fresh] == false
         result = true
       else
-        service_hash[:fresh] = false  if service_hash[:persistent] == true
+        service_hash[:fresh] = false if service_hash[:persistent] == true
         result = add_consumer_to_service(service_hash)
       end
     end
@@ -73,13 +70,12 @@ module ManagedServiceConsumers
     #for a reason
     return result unless result
     save_state
-    return result
+     result
   end
 
   private
 
-  def  add_consumer_to_service(service_hash)
-
+  def add_consumer_to_service(service_hash) 
     return log_error_mesg('service missing cont_userid '+ container_name,service_hash) unless check_cont_uid
     return log_error_mesg('service startup not complete ' + container_name,service_hash) unless is_startup_complete?
     @container_api.add_consumer_to_service(self, service_hash)

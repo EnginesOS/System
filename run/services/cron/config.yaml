@@ -6,7 +6,7 @@ persistent: false
 publisher_namespace: EnginesSystem
 type_path: cron
 last_error: 
-memory: '32'
+memory: '96'
 hostname: cron
 domain_name: 
 environments: []

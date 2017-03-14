@@ -9,8 +9,8 @@ module SmServiceControl
     r = ''
     SystemDebug.debug(SystemDebug.services, :sm_create_and_register_service, service_hash)
     #register with Engine
-    unless ServiceDefinitions.is_soft_service?(service_hash) 
-      test_registry_result(system_registry_client.add_to_managed_engines_registry(service_hash))
+    unless ServiceDefinitions.is_soft_service?(service_hash)
+      system_registry_client.add_to_managed_engines_registry(service_hash)
       # FIXME not checked because of builder createing services prior to engine
       SystemDebug.debug(SystemDebug.services, :create_and_register_service_register, service_hash)
     end
@@ -19,17 +19,16 @@ module SmServiceControl
     if ServiceDefinitions.is_service_persistent?(service_hash)
       SystemDebug.debug(SystemDebug.services,  :create_and_register_service_persistr, service_hash)
       return r if ( r = add_to_managed_service(service_hash)).is_a?(EnginesError)
-      return test_registry_result(system_registry_client.add_to_services_registry(service_hash))
+      return system_registry_client.add_to_services_registry(service_hash)
     else
       SystemDebug.debug(SystemDebug.services,  :create_and_register_service_nonpersistr, service_hash)
       r = add_to_managed_service(service_hash)
       return r if r.is_a?(EnginesError)
-      return test_registry_result(system_registry_client.add_to_services_registry(service_hash))
+      return system_registry_client.add_to_services_registry(service_hash)
     end
     return true
-  rescue Exception=>e
-    puts e.message
-    log_exception(e)
+  rescue StandardError => e
+    handle_exception(e)
   end
 
   #remove service matching the service_hash from both the managed_engine registry and the service registry
@@ -38,7 +37,7 @@ module SmServiceControl
     clear_error
     r = ''
     complete_service_query = ServiceDefinitions.set_top_level_service_params(service_query,service_query[:parent_engine])
-      return complete_service_query if complete_service_query.is_a?(EnginesError)
+    return complete_service_query if complete_service_query.is_a?(EnginesError)
     service_hash = system_registry_client.find_engine_service_hash(complete_service_query)
     return service_hash unless service_hash.is_a?(Hash)
 
@@ -47,26 +46,24 @@ module SmServiceControl
       r =  remove_shared_service_from_engine(service_query)
       SystemDebug.debug(SystemDebug.services,  :DELETED_shared_service, service_hash)
       return r
-      #  return system_registry_client.remove_from_managed_engines_registry(service_hash)       
+      #  return system_registry_client.remove_from_managed_engines_registry(service_hash)
     end
-   # return log_error_mesg('Failed to match params to registered service',service_hash) unless service_hash.is_a?(Hash)
+   
     service_hash[:remove_all_data] = service_query[:remove_all_data]
-      
     return r if (r = remove_from_managed_service(service_hash)).is_a?(EnginesError) && !service_query.key?(:force)
     return r if ( r = system_registry_client.remove_from_managed_engines_registry(service_hash)).is_a?(EnginesError)
-    return test_registry_result(system_registry_client.remove_from_services_registry(service_hash))
-
+    return system_registry_client.remove_from_services_registry(service_hash)
   rescue StandardError => e
-    log_exception(e)
+    handle_exception(e)
   end
 
   def update_attached_service(params)
     clear_error
     r = ''
     ServiceDefinitions.set_top_level_service_params(params,params[:parent_engine])
-    if (r = test_registry_result(system_registry_client.update_attached_service(params)))
+    if (r = system_registry_client.update_attached_service(params))
       return add_to_managed_service(params) if ( r = remove_from_managed_service(params))
-        return r
+      return r
       # this calls add_to_managed_service(params) plus adds to reg
       @last_error='Failed to remove ' + system_registry_client.last_error.to_s
     else
@@ -74,11 +71,12 @@ module SmServiceControl
     end
     return r
   rescue StandardError => e
-    log_exception(e)
+    handle_exception(e)
   end
-  
-  def clear_service_from_registry(service)
-    test_registry_result(system_registry_client.clear_service_from_registry(service))
 
+  def clear_service_from_registry(service)
+    system_registry_client.clear_service_from_registry(service)
+  rescue StandardError => e
+    handle_exception(e)
   end
 end

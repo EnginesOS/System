@@ -67,7 +67,13 @@ class EngineBuilder < ErrorsApi
     @core_api = core_api
     @container = nil
     @build_params = params
-    return log_error_mesg('empty container name', params) if @build_params[:engine_name].nil? || @build_params[:engine_name] == ''
+  end
+  
+  def setup_build
+    
+ #   r  = check_build_params
+    #return r if r.is_a?(EnginesError)
+    return log_error_mesg('empty container name', @build_params) if @build_params[:engine_name].nil? || @build_params[:engine_name] == ''
     @build_params[:engine_name].freeze
     @build_name = File.basename(@build_params[:repository_url]).sub(/\.git$/, '')
     @web_port = SystemConfig.default_webport
@@ -77,7 +83,7 @@ class EngineBuilder < ErrorsApi
     @first_build = true
     @attached_services = []
     return "error" unless create_templater
-    return "error" unless process_supplied_envs(params[:variables])
+    return "error" unless process_supplied_envs(@build_params[:variables])
     @runtime =  ''
     return "error" unless create_build_dir
     return "error" unless setup_log_output
@@ -86,11 +92,13 @@ class EngineBuilder < ErrorsApi
     @data_gid = '11111'
     @build_params[:data_uid] =  @data_uid
     @build_params[:data_gid] = @data_gid
-    SystemDebug.debug(SystemDebug.builder, :builder_init, params,@build_params)
+    SystemDebug.debug(SystemDebug.builder, :builder_init, @build_params)
     @service_builder = ServiceBuilder.new(@core_api, @templater, @build_params[:engine_name],  @attached_services)
-    SystemDebug.debug(SystemDebug.builder, :builder_init__service_builder, params,@build_params)
+    SystemDebug.debug(SystemDebug.builder, :builder_init__service_builder, @build_params)
+    return self
   rescue StandardError => e
     log_exception(e)
+    abort_build
   end
 
   def volumes
@@ -104,6 +112,8 @@ class EngineBuilder < ErrorsApi
     return log_error_mesg('Failed to Backup Last build', self) unless backup_lastbuild
     return log_error_mesg('Failed to setup rebuild', self) unless setup_rebuild
     return build_container
+    rescue StandardError => e
+      abort_build
   end
 
   def build_failed(errmesg)
@@ -123,7 +133,7 @@ class EngineBuilder < ErrorsApi
     unless @blueprint.key?(:schema)
       require_relative 'blueprint_readers/0/versioned_blueprint_reader.rb'
     else 
-      STDERR.puts('BP Schema :' + @blueprint[:schema].to_s + ':' )
+     STDERR.puts('BP Schema :' + @blueprint[:schema].to_s + ':' )
       version =  @blueprint[:schema][:version][:major]
         unless File.exist?('/opt/engines/lib/ruby/engine_builder/blueprint_readers/' + version.to_s + '/versioned_blueprint_reader.rb')
          log_build_errors('Failed to create Managed Container invalid blueprint schema')
@@ -169,6 +179,8 @@ class EngineBuilder < ErrorsApi
     FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.out',ContainerStateFiles.container_state_dir(@container) + '/build.log')
     FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.err',ContainerStateFiles.container_state_dir(@container) + '/build.err')
     true
+    rescue StandardError => e
+      log_exception(e)
   end
 
   def wait_for_engine
@@ -249,6 +261,7 @@ class EngineBuilder < ErrorsApi
     g = Git.clone(@build_params[:repository_url], @build_name, :path => SystemConfig.DeploymentDir)
   rescue StandardError => e
     log_error_mesg('Problem cloning Git', g)
+    abort_build
     log_exception(e)
   end
 
@@ -275,6 +288,9 @@ class EngineBuilder < ErrorsApi
     return log_error_mesg('Failed to Load Blue print',self) unless get_blueprint_from_repo
     log_build_output('Cloned Blueprint')
     build_container
+    rescue StandardError => e
+      abort_build
+      log_exception(e)
   end
 
   def post_failed_build_clean_up
@@ -363,6 +379,9 @@ class EngineBuilder < ErrorsApi
     f.close
     File.chmod(0660,restart_flag_file)
     FileUtils.chown(nil,'containers',restart_flag_file)
+    rescue StandardError => e
+     
+      log_exception(e)
   end
 
   def log_error_mesg(m,o)
@@ -378,6 +397,9 @@ class EngineBuilder < ErrorsApi
 
   def basedir
     SystemConfig.DeploymentDir + '/' + @build_name.to_s
+    rescue StandardError => e
+    abort_build
+      log_exception(e)
   end
 
   private

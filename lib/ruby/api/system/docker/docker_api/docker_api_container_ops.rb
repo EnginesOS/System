@@ -4,13 +4,13 @@ module DockerApiContainerOps
       # return inspect_container_by_name(container)
       r = @docker_comms.inspect_container_by_name(container)
       return true if r.is_a?(Hash)
-      return false
+       false
     else
       request = '/containers/' + container.container_id.to_s + '/json'
     end
     r = get_request(request)
     return true if r.is_a?(Hash)
-    return false
+     false
   rescue StandardError => e
     return false
   end
@@ -21,7 +21,7 @@ module DockerApiContainerOps
     else
       request = '/containers/' + container.container_id.to_s
     end
-    return delete_request(request)
+     delete_request(request)
   rescue StandardError => e
     log_exception(e)
   end
@@ -31,7 +31,7 @@ module DockerApiContainerOps
 
   def create_container(container)
     request_params = create_options(container)
-   STDERR.puts("CRETE OPIOMS " + request_params.to_s)
+ #  STDERR.puts("CRETE OPIOMS " + request_params.to_s)
     request = '/containers/create?name=' + container.container_name
     post_request(request,  request_params)
   end

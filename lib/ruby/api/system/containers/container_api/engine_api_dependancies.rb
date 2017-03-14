@@ -26,7 +26,7 @@ module EngineApiDependancies
         return log_error_mesg('Time out in waiting for Service Dependancy ' + service_name + ' to start ', service_name) if retries > 20
       end
     end
-    return true
+     true
     rescue StandardError => e     
        log_exception(e)
   end

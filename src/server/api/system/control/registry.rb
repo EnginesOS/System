@@ -6,9 +6,7 @@
 get '/v0/system/control/registry/restart' do
   restart_registry = engines_api.force_registry_restart
   return log_error(request, restart_registry) if restart_registry.is_a?(EnginesError)
-    status(202)
-  content_type 'text/plain' 
-    restart_registry.to_s
+    return_text(restart_registry)
 end
 #  get '/v0/system/control/regsitry/update' do
 #    update = engines_api.update_registry

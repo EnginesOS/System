@@ -5,7 +5,7 @@
 # @return [Binary]
 get '/v0/containers/service/:service_name/service/persistent/:publisher_namespace/*/export' do
   content_type 'application/octet-stream'
-  hash = Utils::ServiceHash.service_service_hash_from_params(params)
+  hash = service_service_hash_from_params(params)
   return log_error(request, 'Service not found', hash) if hash.is_a?(EnginesError)
   service = get_service(params[:service_name])
   return log_error(request, service, params) if service.is_a?(EnginesError)
@@ -22,15 +22,14 @@ end
 get '/v0/containers/service/:service_name/service/persistent/:publisher_namespace/*/import' do
   
   hash = {}
-  hash[:service_connection] =  Utils::ServiceHash.service_service_hash_from_params(params)
+  hash[:service_connection] =  service_service_hash_from_params(params)
   return log_error(request, 'Service not found', hash) if hash[:service_connection] .is_a?(FalseClass)
   service = get_service(params[:service_name])
   hash[:data]  = params[:data]
   return log_error(request, service, params) if service.is_a?(EnginesError)
   r = service.import_service_data(hash)
   return log_error(request, r, service.last_error) if r.is_a?(EnginesError)
-  content_type 'text/plain' 
-  r.to_s
+  return_text(r)
 end
 # @method service_replace_persistent_service
 # @overload get '/v0/containers/service/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle/replace'
@@ -40,7 +39,7 @@ end
 get '/v0/containers/service/:service_name/service/persistent/:publisher_namespace/*/replace' do
   
   hash = {}
-   hash[:service_connection] =  Utils::ServiceHash.service_service_hash_from_params(params)
+   hash[:service_connection] =  service_service_hash_from_params(params)
   return log_error(request, 'Service not found', hash) if  hash[:service_connection].is_a?(FalseClass)
   service = get_service(params[:service_name])
   hash[:import_method] == :replace  
@@ -48,8 +47,7 @@ get '/v0/containers/service/:service_name/service/persistent/:publisher_namespac
   return log_error(request, service, params) if service.is_a?(EnginesError)
   r = service.import_service_data(hash)
   return log_error(request, r, service.last_error) if r.is_a?(EnginesError)
-  content_type 'text/plain' 
-  r.to_s
+  return_text(r)
 end
 
 # @method service_get_persistent_service
@@ -58,10 +56,10 @@ end
 # @return [Hash]
 get '/v0/containers/service/:service_name/service/persistent/:publisher_namespace/*' do
   
-  hash = Utils::ServiceHash.service_service_hash_from_params(params)
+  hash = service_service_hash_from_params(params)
   return log_error(request, 'Service not found', hash) if hash.is_a?(EnginesError)
   r = engines_api.find_service_service_hash(hash)
   return log_error(request, r, hash) if r.is_a?(EnginesError)
-    r.to_json
+  return_json(r)
 end
 # @!endgroup

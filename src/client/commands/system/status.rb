@@ -8,5 +8,5 @@ when 'first_run_required'
   @route += '/' + 'first_run_required'
   perform_get
 end
-@route += '/' + ARGV[2]
+@route += '/' + ARGV[2] unless  ARGV[2].nil?  
 perform_get

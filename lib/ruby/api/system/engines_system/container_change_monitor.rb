@@ -19,13 +19,13 @@ module ContainerChangeMonitor
       @change_register['service'] = {}
       @change_register['container'] = {}
     end
-    return @change_register
+     @change_register
   end
 
   def get_changed_containers
     ret = change_register.dup
     @change_register = nil
-    return ret
+     ret
   end
 
 end

@@ -6,7 +6,7 @@ module PublicApiSystemFirstRun
      first_run = FirstRunWizard.new(params)
      first_run.apply(@core_api)
      return log_error_message(first_run.last_error) unless first_run.sucess
-     return first_run.sucess
+      first_run.sucess
   end
   
   def first_run_complete(install_mgmt)

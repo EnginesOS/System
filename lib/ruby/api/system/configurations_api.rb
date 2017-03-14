@@ -23,7 +23,7 @@ class ConfiguratidonsApi <ErrorsApi
     return configurator_result unless configurator_result.is_a?(Hash)
 
     return log_error_mesg('Service configurator error ', configurator_result.to_s) unless configurator_result[:result] == 0 || configurator_result[:stderr].start_with?('Warning')
-    return true
+  true
   end
 
   def retrieve_service_configuration(service_param)
@@ -34,9 +34,8 @@ class ConfiguratidonsApi <ErrorsApi
       ret_val = service.retrieve_configurator(service_param)
       return log_error_mesg('failed to retrieve configuration', ret_val) unless ret_val.is_a?(Hash)
     else
-      return @core_api.get_service_configuration(service_param)
+      ret_val = @core_api.get_service_configuration(service_param)
     end
-
-    return ret_val
+    ret_val
   end
 end

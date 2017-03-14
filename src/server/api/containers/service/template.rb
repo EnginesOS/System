@@ -8,12 +8,11 @@ post '/v0/containers/service/:service_name/template' do
   p_params = post_params(request)
   service = get_service(params[:service_name])
   return log_error(request, service,   p_params) if service.is_a?(EnginesError)
-  cparams =  Utils::Params.assemble_params(  p_params, :service_name,  :template_string)
+  cparams = assemble_params(  p_params, :service_name,  :template_string)
   return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
   resolved_string = engines_api.get_resolved_engine_string(cparams[:template_string],service)
   return log_error(request, resolved_string, cparams) if resolved_string.is_a?(EnginesError)
-  content_type 'text/plain'
-  resolved_string.to_s
+  return_text(resolved_string)
 end
 
 # @!endgroup

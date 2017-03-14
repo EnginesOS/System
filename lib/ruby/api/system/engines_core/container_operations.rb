@@ -56,7 +56,7 @@ module ContainerOperations
       url = protocol.to_s + '://' + site[:variables][:fqdn].to_s
       urls.push(url)
     end
-    return urls
+     urls
   end
 
   def get_container_network_metrics(engine_name)

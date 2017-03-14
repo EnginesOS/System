@@ -5,7 +5,7 @@ module ImageControls
     return log_error_mesg('Cannot Delete the Image while container exists. Please stop/destroy first',self) if has_container?
     r =  @container_api.delete_image(self)
     expire_engine_info
-    return  r
+      r
    
   end
 

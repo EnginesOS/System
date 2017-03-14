@@ -14,7 +14,7 @@ module ManagedUtilities
     managed_utility = ManagedUtility.from_yaml(yaml_file, @engines_api.container_api)
     return engine if managed_utility.nil? || managed_utility.is_a?(EnginesError)
 
-    return managed_utility
+     managed_utility
   rescue StandardError => e
     unless utility_name.nil?
       unless managed_utility.nil?

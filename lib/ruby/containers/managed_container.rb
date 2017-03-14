@@ -39,6 +39,9 @@ class ManagedContainer < Container
   require_relative 'managed_container/managed_container_certificates.rb'
   include ManagedContainerCertificates
   
+  require_relative 'managed_container/managed_container_schedules.rb'
+   include ManagedContainerSchedules
+  
   @conf_self_start = false
   @conf_zero_conf=false
   @restart_required = false
@@ -97,7 +100,7 @@ class ManagedContainer < Container
     return @container_id unless @container_id == -1
     return @container_id if setState == 'noncontainer'
     @container_id = read_container_id
-    return @container_id
+     @container_id
   end
 
   def repo
@@ -127,7 +130,7 @@ class ManagedContainer < Container
   end
 
   def engine_environment
-    return @environments
+     @environments
   end
 
   #  def to_s

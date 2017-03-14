@@ -6,10 +6,10 @@ module Engines
       yfn = SystemConfig.RunDir + '/containers/' + contdir + '/running.yaml'
       ret_val.push(contdir) if File.exist?(yfn)
     end
-    return ret_val
+     ret_val
   rescue StandardError => e
     log_exception(e)
-    return ret_val
+     ret_val
   end
   
   def init_engine_dirs(engine)
@@ -25,7 +25,7 @@ module Engines
     clear_error
     r = ''
     return set_engine_hostname_details(engine, params) if ( r = set_engine_web_protocol_properties(engine, params))
-    return r
+     r
   end
 
   def set_engine_web_protocol_properties(engine, params)
@@ -43,7 +43,7 @@ module Engines
     elsif protocol.include?('https_and_http')
       engine.enable_http_and_https
     end
-    return true
+     true
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
@@ -68,7 +68,7 @@ module Engines
     container.save_state
    # save_container(container)
     container.add_nginx_service
-    return true
+     true
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
@@ -86,7 +86,7 @@ module Engines
         end
       end
     end
-    return ret_val
+     ret_val
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
@@ -105,7 +105,7 @@ module Engines
     managed_engine = ManagedEngine.from_yaml(yaml_file, @engines_api.container_api)
     return managed_engine if managed_engine.is_a?(EnginesError)
     cache_engine(managed_engine, ts)
-    return managed_engine
+     managed_engine
   rescue StandardError => e
 #    unless engine_name.nil?
 #      unless managed_engine.nil?

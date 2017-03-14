@@ -9,9 +9,7 @@ get '/v0/containers/service/:service_name/create' do
   return log_error(request, service, params) if service.is_a?(EnginesError)
   r = service.create_service
   return log_error(request, r, service.last_error) if r.is_a?(EnginesError)
-  content_type 'text/plain' 
-  r.to_s
-
+  return_text(r)
 end
 # @method recreate_service
 # @overload  get '/v0/containers/service/:service_name/recreate'
@@ -24,8 +22,7 @@ get '/v0/containers/service/:service_name/recreate' do
   return log_error(request, service, params) if service.is_a?(EnginesError)
   r = service.recreate
   return log_error(request, r, service.last_error) if r.is_a?(EnginesError)
-  content_type 'text/plain' 
-  r.to_s
+  return_text(r)
 end
 # @method stop_service
 # @overload get '/v0/containers/service/:service_name/stop'
@@ -36,8 +33,7 @@ get '/v0/containers/service/:service_name/stop' do
   return log_error(request, service, params) if service.is_a?(EnginesError)
   r = service.stop_container
   return log_error(request, r, service.last_error) if r.is_a?(EnginesError)
-  content_type 'text/plain' 
-  r.to_s
+  return_text(r)
 end
 # @method stop_service
 # @overload get '/v0/containers/service/:service_name/halt'
@@ -48,8 +44,7 @@ get '/v0/containers/service/:service_name/halt' do
   return log_error(request, service, params) if service.is_a?(EnginesError)
   r = service.halt_container
   return log_error(request, r, service.last_error) if r.is_a?(EnginesError)
-  content_type 'text/plain' 
-  r.to_s
+  return_text(r)
 end
 # @method start_service
 # @overload get '/v0/containers/service/:service_name/start'
@@ -60,8 +55,7 @@ get '/v0/containers/service/:service_name/start' do
   return log_error(request, service, params) if service.is_a?(EnginesError)
   r = service.start_container
   return log_error(request, r, service.last_error) if r.is_a?(EnginesError)
-  content_type 'text/plain' 
-  r.to_s
+  return_text(r)
 end
 # @method restart_service
 # @overload get '/v0/containers/service/:service_name/restart'
@@ -72,8 +66,7 @@ get '/v0/containers/service/:service_name/restart' do
   return log_error(request, service, params) if service.is_a?(EnginesError)
   r = service.restart_container
   return log_error(request, r, service.last_error) if r.is_a?(EnginesError)
-  content_type 'text/plain' 
-  r.to_s
+  return_text(r)
 end
 # @method pause_service
 # @overload get '/v0/containers/service/:service_name/pause'
@@ -84,8 +77,7 @@ get '/v0/containers/service/:service_name/pause' do
   return log_error(request, service, params) if service.is_a?(EnginesError)
   r = service.pause_container
   return log_error(request, r, service.last_error) if r.is_a?(EnginesError)
-  content_type 'text/plain' 
-  r.to_s
+  return_text(r)
 end
 # @method unpause_service
 # @overload get '/v0/containers/service/:service_name/unpause'
@@ -96,8 +88,7 @@ get '/v0/containers/service/:service_name/unpause' do
   return log_error(request, service, params) if service.is_a?(EnginesError)
   r = service.unpause_container
   return log_error(request, r, service.last_error) if r.is_a?(EnginesError)
-  content_type 'text/plain' 
-  r.to_s
+  return_text(r)
 end
 
 # @method destroy_service
@@ -109,8 +100,7 @@ delete '/v0/containers/service/:service_name/destroy' do
   return log_error(request, service, params) if service.is_a?(EnginesError)
   r = service.destroy_container
   return log_error(request, r, service.last_error) if r.is_a?(EnginesError)
-  content_type 'text/plain' 
-  r.to_s
+  return_text(r)
 end
 
 # @method delete_service
@@ -121,8 +111,7 @@ end
 delete '/v0/containers/service/:service_name/delete' do
   r =  engines_api.remove_service(params[:service_name])
   return log_error(request, r) if r.is_a?(EnginesError)
-  content_type 'text/plain' 
-  r.to_s
+  return_text(r)
 end
 
 # @!endgroup

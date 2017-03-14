@@ -8,7 +8,7 @@ module PublicApiSystemReserved
       rescue StandardError => e
          SystemUtils.log_exception(e)
       failed('Gui', 'reserved_engine_names', 'failed')
-      return []
+       []
     end 
     
     def taken_hostnames
@@ -18,7 +18,7 @@ module PublicApiSystemReserved
     def list_system_services
     services = []
        services.push('registry')
-       return services
+        services
     end
     
     def reserved_ports

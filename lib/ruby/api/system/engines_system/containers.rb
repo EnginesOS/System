@@ -40,7 +40,7 @@ end
     unlock_container_conf_file(state_dir)
     cache_engine( container, ts) unless cache_update_ts(container, ts)
 
-    return true
+     true
 
   rescue StandardError => e
     unlock_container_conf_file(state_dir)
@@ -57,7 +57,7 @@ end
 
   def is_startup_complete(container)
     clear_error
-    return File.exist?(ContainerStateFiles.container_state_dir(container) + '/run/flags/startup_complete')
+     File.exist?(ContainerStateFiles.container_state_dir(container) + '/run/flags/startup_complete')
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
@@ -81,7 +81,7 @@ end
     
     actionators = load_engine_actionators(container)
     SystemDebug.debug(SystemDebug.actions,container,actionators[action]) #.to_sym])
-    return actionators[action] #.to_sym]
+     actionators[action] #.to_sym]
   end
 
   def load_engine_actionators(container)
@@ -91,7 +91,7 @@ end
     actionators = YAML::load(yaml)
     SystemDebug.debug(SystemDebug.actions,container,actionators)
     return actionators if actionators.is_a?(Hash)
-    return {}
+     {}
   rescue StandardError => e
     log_exception(e)
   end

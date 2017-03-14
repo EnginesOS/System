@@ -1,0 +1,6 @@
+
+*/10 * * * * /opt/engines/bin/engines  containers  check_and_act all >> /var/log/engines/containers_restarts.log
+* */2 * * * /opt/engines/system/scripts/ssh/check_engines_system_update_status.sh &>/dev/null
+*/30 * * * * /opt/engines/system/scripts/cron/update_system_status_flags.sh&>/dev/null
+1 21 * * * /opt/engines/system/scripts/ssh/deb_update_status.sh  &>/dev/null
+#needs eol at end of file
