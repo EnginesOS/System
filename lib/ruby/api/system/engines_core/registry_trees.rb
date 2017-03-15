@@ -13,7 +13,7 @@ module RegistryTrees
   end
 
   def get_configurations_tree
-    service_manager.service_configurations_tree
+    service_manager.get_configurations_tree
   end
 
   def get_shares_tree
