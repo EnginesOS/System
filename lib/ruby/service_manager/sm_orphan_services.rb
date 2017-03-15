@@ -1,4 +1,3 @@
-
 require_relative 'private/service_container_actions.rb'
 
 module SmOrphanServices
@@ -50,7 +49,6 @@ module SmOrphanServices
   end
 
   def retrieve_orphan(params)
-    #  STDERR.puts('retrice ORPHA ' + params.to_s)
     system_registry_client.retrieve_orphan(params)
   rescue StandardError => e
     handle_exception(e)
@@ -61,15 +59,14 @@ module SmOrphanServices
   def remove_orphaned_service(service_query_hash)
     SystemDebug.debug(SystemDebug.orphans, :remove_orphaned_service, service_query_hash)
     clear_error
-    r = ''
     service_hash = retrieve_orphan(service_query_hash)
-
     if service_query_hash[:remove_all_data] == false
       service_hash[:remove_all_data] = false
     else
       service_hash[:remove_all_data] = true
     end
-    return system_registry_client.release_orphan(service_hash) if ( r = remove_from_managed_service(service_hash))
+    remove_from_managed_service(service_hash)
+    return system_registry_client.release_orphan(service_hash)
   rescue StandardError => e
     handle_exception(e)
   end
@@ -93,9 +90,8 @@ module SmOrphanServices
     orphan = retrieve_orphan(orphan_search)
     merge_variables(service_hash,orphan)
     service_hash = reparent_orphan(service_hash, service_hash[:parent_engine])
-    r = create_and_register_service(service_hash)
-    r = release_orphan(orphan) if r.is_a?(TrueClass)
-    r
+    create_and_register_service(service_hash)
+    release_orphan(orphan)
   rescue StandardError => e
     handle_exception(e)
   end
