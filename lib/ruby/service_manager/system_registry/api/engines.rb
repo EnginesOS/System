@@ -29,6 +29,7 @@ module Engines
 
   def add_to_managed_engines_registry(service_hash)
     SystemDebug.debug(SystemDebug.services,'sm add_to_managed_engines_registry ', service_hash)
+    STDERR.puts('sm add_to_managed_engines_registry ' + service_hash.to_s)
     r = 'engine/services/add'
     r += address_params(service_hash, full_path)
     rest_post(r,{:api_vars => service_hash} )
