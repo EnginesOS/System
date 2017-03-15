@@ -1,4 +1,5 @@
 module SmEngineServices
+  require_relative 'service_container_actions.rb'
   #def find_engine_services(params)
   #  system_registry_client.find_engine_services(params)
   #end

@@ -22,11 +22,10 @@ class ServiceManager  < ErrorsApi
   require_relative 'sm_service_configurations.rb'
 
   require_relative 'shared_services.rb'
-  require_relative 'engines_service_manager_errors.rb'
+  require_relative 'errors/engines_service_manager_errors.rb'
   require_relative 'sm_public_key_access.rb'
   def initialize(core_api)
-    @core_api = core_api
-    #@system_registry = SystemRegistryClient.new(@core_api)
+    @core_api = core_api    
   end
 
   include EnginesServiceManagerErrors
@@ -44,9 +43,13 @@ class ServiceManager  < ErrorsApi
   include SharedServices
   include SmPublicKeyAccess
 
- # private
   require '/opt/engines/lib/ruby/exceptions/registry_exception.rb'
-  require_relative 'registry_client.rb'
-  include RegistryClient
+  
+  private 
+  def system_registry_client
+     @system_registry ||= SystemRegistryClient.new(@core_api)
+   end
+#  require_relative 'registry_client.rb'
+#  include RegistryClient
 
 end
