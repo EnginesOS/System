@@ -57,7 +57,7 @@ module Engines
   private
 
   def full_path
-    @fullpath ||= [:container_type, :parent_engine, :service_handle, :publisher_namespace, :type_path]
+    [:container_type, :parent_engine, :service_handle, :publisher_namespace, :type_path]
   end
 
 end
