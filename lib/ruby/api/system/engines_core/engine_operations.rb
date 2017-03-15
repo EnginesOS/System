@@ -104,12 +104,12 @@ module EnginesOperations
         return log_error_mesg('Failed to find Engine',params)
       end
   SystemDebug.debug(SystemDebug.containers,:engine_image_deleted,engine)
-      unless(r = service_manager.rm_remove_engine_services(params)).is_a?(EnginesError) #remove_engine_from_managed_engines_registry(params)
-        return r if ( r = service_manager.remove_engine_from_managed_engine(params)).is_a?(EnginesError)
+       service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
+       service_manager.remove_engine_services(params)
         engine.delete_image if engine.has_image? == true
         return r if reinstall == true
         return engine.delete_engine
-      end
+
        r
     end
 #  def delete_image_dependancies(params)
