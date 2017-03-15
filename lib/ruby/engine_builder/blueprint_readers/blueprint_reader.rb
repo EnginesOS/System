@@ -224,7 +224,7 @@ class BluePrintReader
     return true unless services.is_a?(Array) # not an error just nada
     services.each do |service|
       service[:publisher_namespace] = 'EnginesSystem' if service.key?(:publisher_namespace) == false || service[:publisher_namespace].nil?
-      service[:service_type] = service[:type_path]
+        # service[:service_type] = service[:type_path]
       add_service(service)
     end
   rescue StandardError => e
