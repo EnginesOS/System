@@ -6,7 +6,7 @@ class PublicApi < ErrorsApi
   def initialize(core_api )
     @core_api = core_api
     @system_api = @core_api.system_api
-   # @service_manager = core_api.service_manager
+    @service_manager = core_api.service_manager
   end
 
   #methods called by api sinatra server routes
