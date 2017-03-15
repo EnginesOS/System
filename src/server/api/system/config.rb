@@ -7,9 +7,7 @@
 get '/v0/system/config/default_domain' do
   default_domain = engines_api.get_default_domain
  return log_error(request, default_domain) if default_domain.is_a?(EnginesError)
-    status(202)
-  content_type 'text/plain' 
-    default_domain.to_s
+  return_text(default_domain)
 end
 # @method set_default_domain 
 # @overload post '/v0/system/config/default_domain'
@@ -24,9 +22,7 @@ post '/v0/system/config/default_domain' do
   default_domain = cparams[:default_domain]
     r = engines_api.set_default_domain(default_domain)
  return log_error(request, r,  cparams)  if r.is_a?(EnginesError)
-      status(202)
-  content_type 'text/plain' 
-    r.to_s
+  return_text(r)
 end
 # @!group /system/config/
 # @method get_default_site
@@ -37,9 +33,7 @@ end
 get '/v0/system/config/default_site' do
   default_site = engines_api.get_default_site
   return log_error(request, default_site) if default_site.is_a?(EnginesError)
-    status(202)
-  content_type 'text/plain' 
- default_site.to_s
+  return_text(default_site)
 end
 # @method set_default_site 
 # @overload post '/v0/system/config/default_site'
@@ -53,9 +47,7 @@ post '/v0/system/config/default_site' do
   default_site = cparams[:default_site]
     r = engines_api.set_default_site(default_site)
  return log_error(request, r, cparams) if r.is_a?(EnginesError)
-       status(202)
-  content_type 'text/plain' 
-      r.to_s
+  return_text(r)
 end
 # @method set_hostname
 # @overload post '/v0/system/config/hostname'

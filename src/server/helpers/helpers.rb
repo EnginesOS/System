@@ -22,7 +22,7 @@ require_relative 'params.rb'
 
   def return_text(r, s=202)
     content_type 'text/plain'
-   # STDERR.puts("text " + r.to_s)
+    STDERR.puts("text " + r.to_s)
     status(s)
     r.to_s
   end
