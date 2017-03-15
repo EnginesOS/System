@@ -8,9 +8,9 @@ def attach_shared_volume(shared_service)
     handle_exception(e, shared_service)
 end
 
-def dettach_shared_volume(service_hash)
-  engine = @core_api.loadManagedEngine(service_hash[:parent_engine])
-  return engine unless engine.is_a?(ManagedEngine)
-
-  system_registry_client.remove_from_managed_engine(service_hash) if engine.del_volume(service_hash)
-end
+#def dettach_shared_volume(service_hash)
+#  engine = @core_api.loadManagedEngine(service_hash[:parent_engine])
+#  return engine unless engine.is_a?(ManagedEngine)
+#
+#  engine.del_volume(service_hash)
+#end

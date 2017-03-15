@@ -135,7 +135,7 @@ module DockerApiCreateOptions
     bindings = {}
     return bindings if container.mapped_ports.nil?
     container.mapped_ports.each_value do |port|
-      port = SystemUtils.symbolize_keys(port)
+      port = symbolize_keys(port)
       if port[:port].is_a?(String) && port[:port].include?('-')
         add_port_range(bindings, port)
       else

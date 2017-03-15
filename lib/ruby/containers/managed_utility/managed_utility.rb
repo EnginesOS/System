@@ -14,7 +14,7 @@ class ManagedUtility< ManagedContainer
     @repository = '' if @repository.nil?
     @repository.freeze
     @container_mutex = Mutex.new
-    @commands = SystemUtils.symbolize_keys(@commands)
+    @commands = symbolize_keys(@commands)
   end
 
   def drop_log_dir

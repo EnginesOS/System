@@ -91,7 +91,7 @@ module DockerCmdOptions
     if container.mapped_ports.is_a?(Hash)
       container.mapped_ports.each_value do |eport|
         unless eport.nil?
-         # eport = SystemUtils.symbolize_keys(eport) if eport.key?('external')
+         symbolize_keys(eport) if eport.key?('external')
           if eport[:external].nil? == false && eport[:external] > 0
             eportoption += ' -p '
             eportoption += eport[:external].to_s + ':'
@@ -159,7 +159,7 @@ module DockerCmdOptions
         unless volume.nil? 
           
         #FIXME Why need this for some reason symbs as converted to str
-    #  volume = SystemUtils.symbolize_keys(volume) if volume.key?('localpath')
+    symbolize_keys(volume) if volume.key?('localpath')
         SystemDebug.debug(SystemDebug.services, 'volume', volume)
 
           unless volume[:localpath].nil?

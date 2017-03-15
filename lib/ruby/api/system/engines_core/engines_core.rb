@@ -14,6 +14,10 @@ require '/opt/engines/lib/ruby/service_manager/service_definitions.rb'
 
 class EnginesCore < ErrorsApi
 
+  helpers do
+    require '/opt/engines/lib/ruby/api/system/deal_with_json.rb'
+ 
+  end
   require_relative 'engines_core_errors.rb'
   include EnginesCoreErrors
 

@@ -6,7 +6,7 @@ class SoftwareServiceDefinition
   def SoftwareServiceDefinition.from_yaml( yaml )
     begin
       # p yaml.path
-      serviceDefinition = SystemUtils.symbolize_keys(YAML::load( yaml ))
+      serviceDefinition = symbolize_keys(YAML::load( yaml ))
       serviceDefinition[:persistent] =  serviceDefinition[:persistent] unless serviceDefinition.key?(:persistent)
       return serviceDefinition
     rescue Exception=>e
