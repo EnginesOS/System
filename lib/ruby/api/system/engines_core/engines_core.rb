@@ -11,7 +11,7 @@ require '/opt/engines/lib/ruby/containers/system_service.rb'
 require '/opt/engines/lib/ruby/containers/managed_utility/managed_utility.rb'
 require '/opt/engines/lib/ruby/managed_services/service_definitions/software_service_definition.rb'
 require '/opt/engines/lib/ruby/service_manager/service_definitions.rb'
-require '/opt/engines/lib/ruby/api/system/deal_with_json.rb'
+require '/opt/engines/lib/ruby/system/deal_with_json.rb'
 class EnginesCore < ErrorsApi
 
 
