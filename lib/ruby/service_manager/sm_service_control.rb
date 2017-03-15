@@ -26,7 +26,7 @@ module SmServiceControl
       return r if r.is_a?(EnginesError)
       return system_registry_client.add_to_services_registry(service_hash)
     end
-     true
+    true
   rescue StandardError => e
     handle_exception(e)
   end
@@ -48,11 +48,10 @@ module SmServiceControl
       return r
       #  return system_registry_client.remove_from_managed_engine(service_hash)
     end
-   
     service_hash[:remove_all_data] = service_query[:remove_all_data]
-    return r if (r = remove_from_managed_service(service_hash)).is_a?(EnginesError) && !service_query.key?(:force)
-    return r if ( r = system_registry_client.remove_from_managed_engine(service_hash)).is_a?(EnginesError)
-    return system_registry_client.remove_from_services_registry(service_hash)
+    remove_from_managed_service(service_hash) ## continue if service_query.key?(:force)
+    system_registry_client.remove_from_managed_engine(service_hash)
+    system_registry_client.remove_from_services_registry(service_hash)
   rescue StandardError => e
     handle_exception(e)
   end
@@ -69,7 +68,7 @@ module SmServiceControl
     else
       @last_error = system_registry_client.last_error.to_s
     end
-     r
+    r
   rescue StandardError => e
     handle_exception(e)
   end
