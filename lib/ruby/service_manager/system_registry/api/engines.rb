@@ -32,6 +32,7 @@ module Engines
     STDERR.puts('sm add_to_managed_engines_registry ' + service_hash.to_s)
     r = 'engine/services/add'
     r += address_params(service_hash, full_path)
+    STDERR.puts('sm add_to_managed_engines_registry ' + r.to_s)
     rest_post(r,{:api_vars => service_hash} )
   end
 
