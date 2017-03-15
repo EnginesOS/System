@@ -1,6 +1,6 @@
 require 'rubytree'
 
-require_relative 'system_registry/system_registry_client.rb'
+#require_relative 'system_registry/system_registry_client.rb'
 require_relative '../templater/templater.rb'
 require_relative '../system/system_access.rb'
 
