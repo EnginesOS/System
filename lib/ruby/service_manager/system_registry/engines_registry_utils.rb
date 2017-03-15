@@ -1,21 +1,7 @@
 
 module EnginesRegistryUtils
 
-  #  
-#  def pe_sh_path(ahash)
-  # :parent_engine,:service_handle
-#     ahash[:parent_engine] + '/'+  ahash[:service_handle]
-#  end
-#
 
-#def st_path(ahash)
-  #  :publisher_namespace,:type_path
-#  ahash[:publisher_namespace] + '/'+  ahash[:type_path]
-#end
-  #def pe_sh_st_path(ahash)
-  # :parent_engine,:service_handle,:publisher_namespace,:type_path
-  #  pe_sh_path(ahash) + '/' + st_path(ahash)
-  #end
 
 def address_params(hash,param_symbols)
   r = ''
