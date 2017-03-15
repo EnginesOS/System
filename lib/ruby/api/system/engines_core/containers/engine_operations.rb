@@ -1,5 +1,5 @@
 module EnginesOperations
-  require_relative 'service_manager_access.rb'
+  #require_relative 'service_manager_access.rb'
   #@return boolean indicating sucess
   #@params [Hash] :engine_name
   #Retrieves all persistent service registered to :engine_name and destroys the underlying service (fs db etc)
@@ -86,30 +86,9 @@ module EnginesOperations
     @docker_api.build_engine(engine_name, build_archive_filename, builder)
   end
   
-  private
-  def remove_engine(engine_name, reinstall = false)
-      r = ''
-      engine = loadManagedEngine(engine_name)
-      SystemDebug.debug(SystemDebug.containers,:delete_engines,engine_name,engine, :resinstall,reinstall)
-      params = {
-        engine_name: engine_name,
-        container_type: 'container', # Force This
-        parent_engine: engine_name,
-        reinstall: reinstall
-      }
-      unless engine.is_a?(ManagedEngine) # DO NOT MESS with this logi used in roll back and only works if no engine DO NOT MESS with this logic
-        return true if service_manager.remove_engine_from_managed_engine(params)
-        return log_error_mesg('Failed to find Engine',params)
-      end
 
-     #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
-       service_manager.remove_engine_services(params)
-        engine.delete_image if engine.has_image? == true
-    SystemDebug.debug(SystemDebug.containers,:engine_image_deleted,engine)
-        return r if reinstall == true
-        return engine.delete_engine
-       r
-    end
+
+   
 #  def delete_image_dependancies(params)
 #      r = ''
 #      params[:parent_engine] = params[:engine_name]
