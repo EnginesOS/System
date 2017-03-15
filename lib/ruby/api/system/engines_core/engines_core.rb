@@ -12,6 +12,7 @@ require '/opt/engines/lib/ruby/containers/managed_utility/managed_utility.rb'
 require '/opt/engines/lib/ruby/managed_services/service_definitions/software_service_definition.rb'
 require '/opt/engines/lib/ruby/service_manager/service_definitions.rb'
 require '/opt/engines/lib/ruby/system/deal_with_json.rb'
+require '/opt/engines/lib/ruby/managed_services/service_definitions/service_top_level.rb'
 class EnginesCore < ErrorsApi
 
 
@@ -70,9 +71,6 @@ class EnginesCore < ErrorsApi
 
   require_relative 'system_operations.rb'
   include SystemOperations
-
-  #  require_relative 'result_checks.rb'
-  #  include ResultChecks
 
   require_relative 'domain_operations.rb'
   include DomainOperations
@@ -238,9 +236,6 @@ class EnginesCore < ErrorsApi
     # FIXME: @registry_handler.api_dissconnect
     @system_api.api_shutdown(reason)
   end
- # private
-  def service_manager
-    @service_manager ||= ServiceManager.new(self)
-  end
+ 
   protected
 end

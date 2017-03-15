@@ -12,7 +12,7 @@ class ServiceManager  < ErrorsApi
   require_relative 'sm_service_control.rb'
   require_relative 'sm_engine_services.rb'
   require_relative 'sm_service_forced_methods.rb'
-  require_relative 'sm_registry_tree.rb'
+ # require_relative 'sm_registry_tree.rb'
   require_relative 'sm_orphan_services.rb'
   require_relative 'sm_subservices.rb'
   require_relative 'sm_service_info.rb'
@@ -32,7 +32,7 @@ class ServiceManager  < ErrorsApi
   include SMSubservices
   include SmServiceInfo
   include SmServiceForcedMethods
-  include SmRegistryTree
+  #include SmRegistryTree
   include SmOrphanServices
   include SmEngineServices
   include SMAttachedServices
@@ -44,12 +44,13 @@ class ServiceManager  < ErrorsApi
   include SmPublicKeyAccess
 
   require '/opt/engines/lib/ruby/exceptions/registry_exception.rb'
+  require '/opt/engines/lib/ruby/managed_services/service_definitions/service_top_level.rb'
   
   private 
   def system_registry_client
      @system_registry ||= SystemRegistryClient.new(@core_api)
    end
-#  require_relative 'registry_client.rb'
-#  include RegistryClient
 
+  # WTF why not  SoftwareServiceDefinition.set_top_level_service_params(service_hash, container_name)
+ 
 end

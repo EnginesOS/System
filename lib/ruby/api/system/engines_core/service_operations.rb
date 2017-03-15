@@ -100,7 +100,7 @@ module ServiceOperations
     return log_error_mesg('Attached Service passed no variables ' +  service_hash.to_s, service_hash) unless service_hash.key?(:variables)
     SystemDebug.debug(SystemDebug.services, "osapicreate_and_register_managed_service", service_hash)
     service_hash[:variables][:parent_engine] = service_hash[:parent_engine] unless service_hash[:variables].has_key?(:parent_engine)
-    ServiceDefinitions.set_top_level_service_params(service_hash, service_hash[:parent_engine])
+    set_top_level_service_params(service_hash, service_hash[:parent_engine])
 
     return r unless ( r = check_engine_service_hash(service_hash))
 

@@ -185,7 +185,7 @@ class DockerConnection < ErrorsApi
 
   def handle_resp(resp, expect_json)
     STDERR.puts(" Bad Request " + resp.status.to_s + " : " + @request_params.to_s ) if resp.status  == 400
-    STDERR.puts(" RESPOSE " + resp.status.to_s + " : " + resp.body ) if resp.status  > 400
+    #STDERR.puts(" RESPOSE " + resp.status.to_s + " : " + resp.body ) if resp.status  > 400
     return log_error_mesg("error:" + resp.status.to_s,resp.body ).to_json  if resp.status  >= 400
     return true if resp.status  == 204 # nodata but all good happens on del
     return log_error_mesg("Un exepect response from docker", resp, resp.body, resp.headers.to_s )   unless resp.status  == 200 ||  resp.status  == 201

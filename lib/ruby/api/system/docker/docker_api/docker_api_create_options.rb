@@ -181,9 +181,6 @@ module DockerApiCreateOptions
       'HostConfig' => host_config_options(container)
     }
     set_entry_point(container, top_level)
-
-    # top_level['Entrypoint'] = command  unless container.conf_self_start
-    STDERR.puts("CREATE OPS" + top_level.to_s)
     top_level
   end
 
