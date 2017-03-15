@@ -49,6 +49,7 @@ module SmServiceControl
     system_registry_client.remove_from_managed_engine(service_hash)
     system_registry_client.remove_from_services_registry(service_hash)
   rescue StandardError => e
+    log_exception(e)
     handle_exception(e)
   end
 
