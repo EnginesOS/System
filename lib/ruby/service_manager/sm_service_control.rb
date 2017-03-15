@@ -26,7 +26,7 @@ module SmServiceControl
       return r if r.is_a?(EnginesError)
       return system_registry_client.add_to_services_registry(service_hash)
     end
-    return true
+     true
   rescue StandardError => e
     handle_exception(e)
   end
@@ -43,7 +43,7 @@ module SmServiceControl
 
     if service_hash[:shared] == true
       SystemDebug.debug(SystemDebug.services,  :delete_shared_service, service_hash)
-      r =  remove_shared_service_from_engine(service_query)
+      r = remove_shared_service_from_engine(service_query)
       SystemDebug.debug(SystemDebug.services,  :DELETED_shared_service, service_hash)
       return r
       #  return system_registry_client.remove_from_managed_engine(service_hash)
@@ -69,7 +69,7 @@ module SmServiceControl
     else
       @last_error = system_registry_client.last_error.to_s
     end
-    return r
+     r
   rescue StandardError => e
     handle_exception(e)
   end

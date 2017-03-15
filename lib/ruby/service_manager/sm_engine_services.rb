@@ -140,7 +140,7 @@ module SmEngineServices
       SystemDebug.debug(SystemDebug.services, :remove_service, service)
       if params[:remove_all_data] || service[:shared] #&& ! (service.key?(:shared) && service[:shared])
         service[:remove_all_data] = params[:remove_all_data]
-        return r  if (r = delete_service(service)).is_a?(EnginesError)
+        return r if (r = delete_service(service)).is_a?(EnginesError)
       else
         return r if (r = orphanate_service(service)).is_a?(EnginesError)
       end
