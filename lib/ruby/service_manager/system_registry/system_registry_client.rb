@@ -5,8 +5,8 @@ class SystemRegistryClient < ErrorsApi
   end
 
   def api_shutdown
-
   end
+
   require_relative 'api/xcon_rset.rb'
   require_relative 'api/configurations.rb'
   require_relative 'api/services.rb'
@@ -20,7 +20,7 @@ class SystemRegistryClient < ErrorsApi
   require_relative 'engines_registry_utils.rb'
   require '/opt/engines/lib/ruby/system/deal_with_json.rb'
   require '/opt/engines/lib/ruby/exceptions/registry_exception.rb'
-  
+
   include EnginesRegistryUtils
   include EnginesRegistryClientErrors
   include Configurations
@@ -30,8 +30,9 @@ class SystemRegistryClient < ErrorsApi
   include Registry
   include Subservices
   include Shares
- def get_registry()
-   system_registry_tree
- end
- 
+
+  def get_registry()
+    system_registry_tree
+  end
+
 end
