@@ -61,7 +61,7 @@ def rest_post(path,params = nil, lheaders=nil)
     lheaders = headers if lheaders.nil?
     r = parse_xcon_response(connection.request({read_timeout: time_out, headers: lheaders, method: :post, path: @route_prefix + path, body: query_hash(params).to_json }))
     return r
-  rescue   Excon::Error::Socket => e
+  rescue Excon::Error::Socket => e
     reopen_connection
     retry
   end

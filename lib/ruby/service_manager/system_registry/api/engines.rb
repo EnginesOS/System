@@ -38,7 +38,7 @@ module Engines
     params[:container_type] = 'container' unless params.key?(:container_type)
     r = 'engine/services/del'
     r += address_params(params,[:container_type,:parent_engine,:service_handle,:publisher_namespace,:type_path])
-    rest_delete(r )
+    rest_delete(r)
   end
 
   def update_registered_managed_engine(params)
