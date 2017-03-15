@@ -1,4 +1,5 @@
 module SharedServices
+  require_relative 'private/shared_volumes.rb'
   def attach_existing_service_to_engine(shared_service_params)
     r = ''
     existing_service = shared_service_params[ :existing_service]
@@ -26,31 +27,14 @@ module SharedServices
     if shared_service[:type_path] == 'filesystem/local/filesystem'
       shared_service[:variables][:volume_src] = existing_service[:variables][:volume_src] + '/' +  shared_service[:variables][:volume_src]
       return r unless (r = attach_shared_volume(shared_service))
-
     end
     shared_service.delete(:existing)
     system_registry_client.add_share_to_managed_engines_registry(shared_service)
-
     rescue StandardError => e
       handle_exception(e, shared_service)
   end
 
-  def attach_shared_volume(shared_service)
-    engine = @core_api.loadManagedEngine(shared_service[:parent_engine])
-    #used by the builder whn no engine to add volume to def
-    return engine unless  engine.is_a?(ManagedEngine)
-    # Volume.complete_service_hash(shared_service)
-    true
-    rescue StandardError => e
-      handle_exception(e, shared_service)
-  end
 
-  def dettach_shared_volume(service_hash)
-    engine = @core_api.loadManagedEngine(service_hash[:parent_engine])
-    return engine unless engine.is_a?(ManagedEngine)
-
-    system_registry_client.remove_from_managed_engine(service_hash) if engine.del_volume(service_hash)
-  end
 
   def remove_shared_service_from_engine(service_query)
     r = ''
