@@ -47,8 +47,6 @@ class ManagedUtility< ManagedContainer
   end
 
   def execute_command(command_name, command_params)
-    
-   STDERR.puts('FSCONFIGURAT IN ' + read_state.to_s)
    stop_container
     return log_error_mesg('Utility ' + container_name + ' in use ' ,  command_name) if is_active?
     #FIXMe need to check if running
@@ -57,20 +55,14 @@ class ManagedUtility< ManagedContainer
     return log_error_mesg('No such command: ' + command_name.to_s, command_name, command_params) unless @commands.key?(command_name)
     command = command_details(command_name)
     return log_error_mesg('Missing params' + r.to_s, r) if (r = check_params(command, command_params)) == false
-    STDERR.puts('FSCONFIGURAT IN ' + read_state.to_s)
     r = destroy_container
-   # return r if r.is_a?(EnginesError) #if has_container?
-    STDERR.puts('FSCONFIGURAT IN ' + r.to_s)
     @container_api.wait_for('nocontainer') unless read_state == 'nocontainer'
     @container_api.destroy_container(self) unless read_state == 'nocontainer'
     clear_configs
-    STDERR.puts('FSCONFIGURAT execute ' + command.to_s + ' With:' + command_params.to_s)
     apply_templates(command, command_params)
     save_state
     create_container()
-    STDERR.puts('FSCONFIGURAT IN ' + read_state.to_s)
     start_container
-    STDERR.puts('FSCONFIGURAT IN ' + read_state.to_s)
     @container_api.wait_for('stopped') unless read_state == 'stopped'
     r = logs_container #_as_result
     # destroy_container
