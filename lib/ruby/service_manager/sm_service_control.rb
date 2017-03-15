@@ -9,14 +9,14 @@ module SmServiceControl
     r = ''
     SystemDebug.debug(SystemDebug.services, :sm_create_and_register_service, service_hash)
     #register with Engine
-    unless ServiceDefinitions.is_soft_service?(service_hash)
+    unless is_soft_service?(service_hash)
       system_registry_client.add_to_managed_engines_registry(service_hash)
       # FIXME not checked because of builder createing services prior to engine
       SystemDebug.debug(SystemDebug.services, :create_and_register_service_register, service_hash)
     end
     return true if service_hash.key?(:shared) && service_hash[:shared] == true
     # add to service and register with service
-    if ServiceDefinitions.is_service_persistent?(service_hash)
+    if is_service_persistent?(service_hash)
       SystemDebug.debug(SystemDebug.services,  :create_and_register_service_persistr, service_hash)
       return r if ( r = add_to_managed_service(service_hash)).is_a?(EnginesError)
       return system_registry_client.add_to_services_registry(service_hash)
