@@ -42,9 +42,9 @@ module SmRegistryTree
     handle_exception(e)
   end
 
-  def get_registry()
+ def get_registry()
     system_registry_client.get_registry()
   rescue StandardError => e
-    handle_exception(e)
+   handle_exception(e)
   end
 end

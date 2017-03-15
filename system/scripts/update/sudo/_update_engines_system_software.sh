@@ -30,7 +30,7 @@ if ! test -z "$engines_updates"
  	for engine_update in $engines_updates
  	 do
  	 	chown engines /opt/engines/system/updates/to_run/engines/$engine_update
- 	    echo chown engines /opt/engines/system/updates/to_run/engines/$engine_update 
+ 	    echo chown -R engines /opt/engines/system/updates/to_run/engines/$engine_update 
 	done
  fi
  su -l engines /opt/engines/system/scripts/update/finish_engines_system_update.sh

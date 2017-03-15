@@ -1,4 +1,5 @@
 module SmEngineServices
+  require_relative 'private/service_container_actions.rb'
   #def find_engine_services(params)
   #  system_registry_client.find_engine_services(params)
   #end
@@ -22,8 +23,6 @@ module SmEngineServices
   #on recepit of an empty array any non critical error will be in  this object's  [ServiceManager] last_error method
   def get_engine_persistent_services(params)
     system_registry_client.get_engine_persistent_services(params)
-  rescue StandardError => e
-    handle_exception(e)
   end
 
   #@return [Array] of all service_hashs marked persistence false for :engine_name
@@ -101,8 +100,8 @@ module SmEngineServices
     handle_exception(e)
   end
 
-  def remove_engine_from_managed_engines_registry(params)
-    system_registry_client.remove_from_managed_engines_registry(params)
+  def remove_engine_from_managed_engine(params)
+    system_registry_client.remove_from_managed_engine(params)
   rescue StandardError => e
     handle_exception(e)
   end
@@ -130,18 +129,23 @@ module SmEngineServices
   def rm_remove_engine_services(params)
     clear_error
     r = ''
-    services = system_registry_client.get_engine_persistent_services(params)
-  
+    begin
+    services = get_engine_persistent_services(params)  #system_registry_client.
+    rescue StandardError => e
+        #handle_exception(e)
+      return true
+    end
     return true unless services.is_a?(Array)
     services.each do | service |
       SystemDebug.debug(SystemDebug.services, :remove_service, service)
       if params[:remove_all_data] || service[:shared] #&& ! (service.key?(:shared) && service[:shared])
         service[:remove_all_data] = params[:remove_all_data]
-        return r  if (r = delete_service(service)).is_a?(EnginesError)
+        return r if (r = delete_service(service)).is_a?(EnginesError)
       else
         return r if (r = orphanate_service(service)).is_a?(EnginesError)
+        return r if (r = remove_from_managed_service(service)).is_a?(EnginesError)
       end
-      return r if (r = remove_from_managed_engines_registry(service)).is_a?(EnginesError)
+     # return r if (r = remove_from_managed_service(service)).is_a?(EnginesError)
     end
     true
 

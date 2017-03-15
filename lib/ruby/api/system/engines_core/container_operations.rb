@@ -4,8 +4,8 @@ module ContainerOperations
     File.exist?(completed_flag_file)
   end
 
-  def  init_engine_dirs(engine)
-    @system_api.init_engine_dirs(engine)    
+  def  init_engine_dirs(engine_name)
+    @system_api.init_engine_dirs(engine_name)    
   end
   
   def image_exist?(container_name)

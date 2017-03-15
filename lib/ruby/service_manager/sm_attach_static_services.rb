@@ -12,7 +12,7 @@ module SmAttachStaticServices
 
       yaml = File.read(service_file)
       service_hash = YAML::load(yaml)
-      service_hash = SystemUtils.symbolize_keys(service_hash)
+      service_hash = symbolize_keys(service_hash)
       service_hash[:container_type] = container.ctype
       SystemDebug.debug(SystemDebug.services, :loaded_service_hash, service_hash)
       ServiceDefinitions.set_top_level_service_params(service_hash, container.container_name)

@@ -7,15 +7,15 @@ class RegistryException < StandardError
   end
 
   def initialize( hash)
-  unless hash.nil?
+   if hash.is_a?(Hash)
       @status = hash[:status]
       @level = hash[:error_type].to_sym
       @params = hash[:params]
       super(hash[:error_mesg])
-    else
-      @level = :nil
-      super
-    end
+    else      
+     @level = :nil
+     super(hash.to_s)      
+    end   
   end
 
 end

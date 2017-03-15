@@ -7,16 +7,16 @@ module ManagedContainerDns
     return false unless has_api?
     return true unless @conf_register_dns
     r = @container_api.register_with_dns(self)
-    return r unless @conf_zero_conf
-    return @container_api.register_with_zeroconf(self) if r
+#    return r unless @conf_zero_conf
+#    return @container_api.register_with_zeroconf(self) if r
      r
   end
   def deregister_with_dns# MUst register each time as IP Changes
   return false unless has_api?
   return true unless @conf_register_dns
   r = @container_api.deregister_with_dns(self)
-  return r unless @conf_zero_conf
-  return @container_api.deregister_with_zeroconf(self) if r
+#  return r unless @conf_zero_conf
+#  return @container_api.deregister_with_zeroconf(self) if r
    r
 end
   def fqdn

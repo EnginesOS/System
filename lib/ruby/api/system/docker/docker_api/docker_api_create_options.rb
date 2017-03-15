@@ -4,7 +4,7 @@ module DockerApiCreateOptions
   end
 
   def create_options(container)
-    @top_level ||= build_top_level(container)
+    @top_level = build_top_level(container)
   rescue StandardError => e
     log_exception(e)
   end
@@ -18,7 +18,7 @@ module DockerApiCreateOptions
     return {} if container.mapped_ports.nil?
     eports = {}
     container.mapped_ports.each_value do |port|
-      port = SystemUtils.symbolize_keys(port)
+      port = symbolize_keys(port)
       if port[:port].is_a?(String) && port[:port].include?('-')
         expose_port_range(eports, port)
       else
@@ -40,7 +40,7 @@ module DockerApiCreateOptions
   end
 
   def mount_string(volume)
-    volume = SystemUtils.symbolize_keys(volume)
+    volume = symbolize_keys(volume)
     perms = 'ro'
     if volume[:permissions] == 'rw'
       perms = 'rw'
@@ -71,7 +71,7 @@ module DockerApiCreateOptions
   end
 
   def container_volumes(container)
-    return  container.volumes_from unless container.volumes_from.nil?
+    return container.volumes_from unless container.volumes_from.nil?
     []
   end
 
@@ -81,12 +81,12 @@ module DockerApiCreateOptions
   end
 
   def container_get_dns_servers(container)
-    return  get_dns_servers  if container.on_host_net? == false
+    return get_dns_servers if container.on_host_net? == false
     ''
   end
 
   def container_dns_search(container)
-    return get_dns_search  if container.on_host_net? == false
+    return get_dns_search if container.on_host_net? == false
     ''
   end
 
@@ -135,7 +135,7 @@ module DockerApiCreateOptions
     bindings = {}
     return bindings if container.mapped_ports.nil?
     container.mapped_ports.each_value do |port|
-      port = SystemUtils.symbolize_keys(port)
+      port = symbolize_keys(port)
       if port[:port].is_a?(String) && port[:port].include?('-')
         add_port_range(bindings, port)
       else
@@ -169,7 +169,7 @@ module DockerApiCreateOptions
       'OpenStdin' => false,
       'StdinOnce' => false,
       'Env' => envs(container),
-    #  'Entrypoint' => entry_point(container),
+      #  'Entrypoint' => entry_point(container),
       'Image' => container.image,
       'Labels' => get_labels(container),
       'Volumes' => {},
@@ -181,8 +181,9 @@ module DockerApiCreateOptions
       'HostConfig' => host_config_options(container)
     }
     set_entry_point(container, top_level)
-   
-   # top_level['Entrypoint'] = command  unless container.conf_self_start
+
+    # top_level['Entrypoint'] = command  unless container.conf_self_start
+    STDERR.puts("CREATE OPS" + top_level.to_s)
     top_level
   end
 

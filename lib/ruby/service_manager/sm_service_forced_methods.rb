@@ -1,5 +1,5 @@
 module SmServiceForcedMethods
-  require_relative 'service_container_actions.rb'
+  require_relative 'private/service_container_actions.rb'
   def register_non_persistent_service(service_hash)
     ServiceDefinitions.set_top_level_service_params(service_hash,service_hash[:parent_engine])
     clear_error

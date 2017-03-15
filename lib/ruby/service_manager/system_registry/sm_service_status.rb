@@ -1,2 +1,0 @@
-module Sm_service_status
-end

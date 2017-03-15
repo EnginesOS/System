@@ -23,7 +23,7 @@ module CoreServiceImportExport
     
     service_hash =  params[:service_connection]
     return log_error_mesg("imported failed No service Connection",params) unless service_hash.is_a?(Hash)
-   SystemUtils.symbolize_keys(service_hash)
+   symbolize_keys(service_hash)
     ahash = find_engine_service_hash(service_hash)
     return log_error_mesg("cannot import into share service",params) if ahash[:shared] == true
     SystemDebug.debug(SystemDebug.export_import, :export_service_hahs, service_hash)
