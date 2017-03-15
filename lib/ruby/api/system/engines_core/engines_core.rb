@@ -30,7 +30,7 @@ class EnginesCore < ErrorsApi
 
   require_relative '../memory_statistics.rb'
 
-  require_relative 'container_config_loader.rb'
+  require_relative 'system/container_config_loader.rb'
   include ContainerConfigLoader
 
   require_relative 'containers/core_service_import_export.rb'
