@@ -7,7 +7,7 @@ module TemplateOperations
 
   def fillin_template_for_service_def(service_hash)
     r = ''
-    return r unless ( r = check_service_hash(service_hash))
+    check_service_hash(service_hash)
     service_def =  SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:publisher_namespace])
     container = loadManagedEngine(service_hash[:parent_engine])
     return container if container.is_a?(EnginesError)

@@ -194,17 +194,7 @@ class EnginesCore < ErrorsApi
     FirstRunWizard.required?
   end
 
-#  def software_service_definition(params)
-#    clear_error
-#    r = ''
-#    return r unless (r = check_service_hash(params))
-#     SoftwareServiceDefinition.find(params[:type_path],params[:publisher_namespace] )
-#  rescue StandardError => e
-#    p :error
-#    p params
-#    log_exception(e)
-#    nil
-#  end
+
 
   def get_build_report(engine_name)
     @system_api.get_build_report(engine_name)
