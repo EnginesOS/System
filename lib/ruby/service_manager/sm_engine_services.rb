@@ -1,5 +1,5 @@
 module SmEngineServices
-  require_relative 'service_container_actions.rb'
+  require_relative 'private/service_container_actions.rb'
   #def find_engine_services(params)
   #  system_registry_client.find_engine_services(params)
   #end
@@ -144,7 +144,7 @@ module SmEngineServices
       else
         return r if (r = orphanate_service(service)).is_a?(EnginesError)
       end
-      return r if (r = remove_from_managed_engine(service)).is_a?(EnginesError)
+      return r if (r = remove_from_managed_service(service)).is_a?(EnginesError)
     end
     true
 
