@@ -143,8 +143,9 @@ module SmEngineServices
         return r if (r = delete_service(service)).is_a?(EnginesError)
       else
         return r if (r = orphanate_service(service)).is_a?(EnginesError)
+        return r if (r = remove_from_managed_service(service)).is_a?(EnginesError)
       end
-      return r if (r = remove_from_managed_service(service)).is_a?(EnginesError)
+     # return r if (r = remove_from_managed_service(service)).is_a?(EnginesError)
     end
     true
 
