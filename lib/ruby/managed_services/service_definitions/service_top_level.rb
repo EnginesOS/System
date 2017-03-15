@@ -41,11 +41,10 @@ rescue StandardError => e
 end
 
 def is_service_persistent?(service_hash)
-  # unless service_hash.key?(:persistent) alway s check dont trust service_hash
+  #  alway s check dont trust service_hash
   persist = software_service_persistence(service_hash)
   return log_error_mesg('Failed to get persistence status for ', service_hash)  if persist.nil?
   service_hash[:persistent] = persist
-  #end
   service_hash[:persistent]
 rescue StandardError => e
   log_exception(e)
