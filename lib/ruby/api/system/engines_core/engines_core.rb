@@ -71,9 +71,6 @@ class EnginesCore < ErrorsApi
   require_relative 'system_operations.rb'
   include SystemOperations
 
-  #  require_relative 'result_checks.rb'
-  #  include ResultChecks
-
   require_relative 'domain_operations.rb'
   include DomainOperations
 
@@ -238,9 +235,6 @@ class EnginesCore < ErrorsApi
     # FIXME: @registry_handler.api_dissconnect
     @system_api.api_shutdown(reason)
   end
- # private
-  def service_manager
-    @service_manager ||= ServiceManager.new(self)
-  end
+ 
   protected
 end

@@ -9,7 +9,5 @@ module RegistryOperations
     @registry_handler.force_registry_restart
   end
   
-  def get_registry
-    @service_manager.get_registry
-  end
+  
 end

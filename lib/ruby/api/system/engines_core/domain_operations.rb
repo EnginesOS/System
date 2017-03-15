@@ -1,6 +1,6 @@
 module DomainOperations
   require '/opt/engines/lib/ruby/system/dnshosting.rb'
-
+  require_relative 'service_manager_access.rb'
   def add_domain_service(params)
 
     # if domain name ends with .local check for and create if needed avahi
@@ -57,7 +57,7 @@ module DomainOperations
       service_hash[:variables][:ip] =  get_ext_ip_for_hosted_dns()
     end
     #   STDERR.puts(' ADD DOMAIN VARIABLE ' + params.to_s)
-    @service_manager.create_and_register_service(service_hash)
+    service_manager.create_and_register_service(service_hash)
 
   rescue StandardError => e
     log_error_mesg('Add self hosted domain exception', params.to_s)
@@ -93,12 +93,12 @@ module DomainOperations
     service_hash[:container_type] = 'system'
     service_hash[:publisher_namespace] = 'EnginesSystem'
     service_hash[:type_path] = 'dns'
-    @service_manager.delete_service(service_hash)
+    service_manager.delete_service(service_hash)
     #@service_manager.deregister_non_persistent_service(service_hash)
     service_hash[:variables][:domain_name] = params[:domain_name]
     service_hash[:service_handle] = params[:domain_name] + '_dns'
     #   STDERR.puts(' UPDATE DOMAIN VARIABLES ' + service_hash.to_s)
-    @service_manager.create_and_register_service(service_hash)
+    service_manager.create_and_register_service(service_hash)
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
@@ -122,7 +122,7 @@ module DomainOperations
     publisher_namespace: 'EnginesSystem',
     type_path: 'dns',
     }
-    @service_manager.delete_service(service_hash)
+    service_manager.delete_service(service_hash)
 
   rescue StandardError => e
     log_exception(e)
