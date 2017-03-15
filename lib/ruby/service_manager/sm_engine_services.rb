@@ -133,7 +133,7 @@ module SmEngineServices
     services = get_engine_persistent_services(params)  #system_registry_client.
     rescue StandardError => e
         #handle_exception(e)
-      true
+      return true
     end
     return true unless services.is_a?(Array)
     services.each do | service |
