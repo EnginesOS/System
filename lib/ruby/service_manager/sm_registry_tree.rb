@@ -28,7 +28,7 @@ module SmRegistryTree
 
   #@return [Tree::TreeNode] representing the services configuration tree as dettached and frozen from the parent Tree
   #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
-  def service_configurations_tree
+  def get_configurations_tree
     system_registry_client.service_configurations_registry
   rescue StandardError => e
     handle_exception(e)
