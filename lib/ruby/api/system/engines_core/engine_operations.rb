@@ -9,49 +9,15 @@ module EnginesOperations
     SystemDebug.debug(SystemDebug.containers,:delete_engines,params)
     # return log_error_mesg('Failed to remove engine as has container ',params) if
     params[:container_type] = 'container' # Force This
-    return r if (r = delete_image_dependancies(params) ).is_a?(EnginesError)
+    #   return r if (r = delete_image_dependancies(params) ).is_a?(EnginesError)
     engine_name = params[:engine_name]
     reinstall = false
     reinstall = params[:reinstall] = true if params.key?(:reinstall)
      remove_engine(engine_name, reinstall)
   end
 
-  def remove_engine(engine_name, reinstall = false)
-    r = ''
-    engine = loadManagedEngine(engine_name)
-    SystemDebug.debug(SystemDebug.containers,:delete_engines,engine_name,engine, :resinstall,reinstall)
-    params = {
-      engine_name: engine_name,
-      container_type: 'container', # Force This
-      parent_engine: engine_name,
-      reinstall: reinstall
-    }
-    unless engine.is_a?(ManagedEngine) # used in roll back and only works if no engine do mess with this logic
-      return true if service_manager.remove_engine_from_managed_engine(params)
-      return log_error_mesg('Failed to find Engine',params)
-    end
-
-    engine.delete_image if engine.has_image? == true
-
-    SystemDebug.debug(SystemDebug.containers,:engine_image_deleted,engine)
-    unless(r = service_manager.rm_remove_engine_services(params)).is_a?(EnginesError) #remove_engine_from_managed_engines_registry(params)
-      return r if ( r = service_manager.remove_engine_from_managed_engine(params)).is_a?(EnginesError)
-      return r if reinstall == true
-      return engine.delete_engine
-    end
-     r
-  end
-
-  def delete_image_dependancies(params)
-    r = ''
-    params[:parent_engine] = params[:engine_name]
-   
-    SystemDebug.debug(SystemDebug.containers, :delete_image_dependancies, params)
-    return r if (r = service_manager.rm_remove_engine_services(params)).is_a?(EnginesError)
-     true
-  rescue StandardError => e
-    log_exception(e)
-  end
+  
+  
 
   #install from fresh copy of blueprint in repository
   def reinstall_engine(engine)
@@ -121,5 +87,40 @@ module EnginesOperations
   def docker_build_engine(engine_name, build_archive_filename , builder)
     @docker_api.build_engine(engine_name, build_archive_filename, builder)
   end
+  
+  private
+  def remove_engine(engine_name, reinstall = false)
+      r = ''
+      engine = loadManagedEngine(engine_name)
+      SystemDebug.debug(SystemDebug.containers,:delete_engines,engine_name,engine, :resinstall,reinstall)
+      params = {
+        engine_name: engine_name,
+        container_type: 'container', # Force This
+        parent_engine: engine_name,
+        reinstall: reinstall
+      }
+      unless engine.is_a?(ManagedEngine) # used in roll back and only works if no engine DO NOT MESS with this logic
+        return true if service_manager.remove_engine_from_managed_engine(params)
+        return log_error_mesg('Failed to find Engine',params)
+      end
+  SystemDebug.debug(SystemDebug.containers,:engine_image_deleted,engine)
+      unless(r = service_manager.rm_remove_engine_services(params)).is_a?(EnginesError) #remove_engine_from_managed_engines_registry(params)
+        return r if ( r = service_manager.remove_engine_from_managed_engine(params)).is_a?(EnginesError)
+        engine.delete_image if engine.has_image? == true
+        return r if reinstall == true
+        return engine.delete_engine
+      end
+       r
+    end
+#  def delete_image_dependancies(params)
+#      r = ''
+#      params[:parent_engine] = params[:engine_name]
+#     
+#      SystemDebug.debug(SystemDebug.containers, :delete_image_dependancies, params)
+#      return r if (r = service_manager.rm_remove_engine_services(params)).is_a?(EnginesError)
+#       true
+#    rescue StandardError => e
+#      log_exception(e)
+#    end
 
 end
