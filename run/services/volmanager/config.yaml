@@ -6,7 +6,7 @@ ctype: service
 persistent: true
 conf_self_start: true
 last_error: 
-memory: '16'
+memory: '32'
 hostname: volmanager
 domain_name: 
 environments: []
