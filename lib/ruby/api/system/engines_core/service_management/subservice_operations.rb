@@ -34,8 +34,5 @@ module SubserviceOperations
       return r unless  (r = check_sub_service_hash(params))
       service_manager.subservices_provided(params)
     end
-    
-
-
 
 end

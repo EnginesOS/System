@@ -101,15 +101,13 @@ module ServiceOperations
     SystemDebug.debug(SystemDebug.services, "osapicreate_and_register_managed_service", service_hash)
     service_hash[:variables][:parent_engine] = service_hash[:parent_engine] unless service_hash[:variables].has_key?(:parent_engine)
     set_top_level_service_params(service_hash, service_hash[:parent_engine])
-
     return r unless ( r = check_engine_service_hash(service_hash))
-
     if service_hash[:type_path] == 'filesystem/local/filesystem'
       engine = loadManagedEngine(service_hash[:parent_engine])
       engine.add_volume(service_hash) if engine.is_a?(ManagedEngine)
     end
     SystemDebug.debug(SystemDebug.services,"calling service ", service_hash)
-    return service_manager.create_and_register_service(service_hash)
+    service_manager.create_and_register_service(service_hash)
   end
 
 end

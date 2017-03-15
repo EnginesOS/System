@@ -16,8 +16,7 @@ module EnginesOperations
      remove_engine(engine_name, reinstall)
   end
 
-  
-  
+
 
   #install from fresh copy of blueprint in repository
   def reinstall_engine(engine)
@@ -35,7 +34,6 @@ module EnginesOperations
     }
     return true if @build_thread.alive?
      log_error(params[:engine_name], 'Build Failed to start')
-
   rescue  StandardError => e
     log_exception(e)
   end
@@ -99,17 +97,17 @@ module EnginesOperations
         parent_engine: engine_name,
         reinstall: reinstall
       }
-      unless engine.is_a?(ManagedEngine) # used in roll back and only works if no engine DO NOT MESS with this logic
+      unless engine.is_a?(ManagedEngine) # DO NOT MESS with this logi used in roll back and only works if no engine DO NOT MESS with this logic
         return true if service_manager.remove_engine_from_managed_engine(params)
         return log_error_mesg('Failed to find Engine',params)
       end
-  SystemDebug.debug(SystemDebug.containers,:engine_image_deleted,engine)
-       service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
+
+     #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
        service_manager.remove_engine_services(params)
         engine.delete_image if engine.has_image? == true
+    SystemDebug.debug(SystemDebug.containers,:engine_image_deleted,engine)
         return r if reinstall == true
         return engine.delete_engine
-
        r
     end
 #  def delete_image_dependancies(params)

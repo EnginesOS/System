@@ -39,10 +39,10 @@ class EnginesCore < ErrorsApi
   require_relative 'container_states.rb'
   include ContainerStates
 
-  require_relative 'available_services.rb'
+  require_relative 'service_management/available_services.rb'
   include AvailableServices
 
-  require_relative 'service_configurations.rb'
+  require_relative 'service_management/service_configurations.rb'
   include ServiceConfigurations
 
   require_relative 'service_hash_checks.rb'
@@ -51,22 +51,22 @@ class EnginesCore < ErrorsApi
   require_relative 'engine_operations.rb'
   include EnginesOperations
 
-  require_relative 'engine_service_operations.rb'
+  require_relative 'service_management/engine_service_operations.rb'
   include EngineServiceOperations
 
   require_relative 'container_operations.rb'
   include ContainerOperations
 
-  require_relative 'service_operations.rb'
+  require_relative 'service_management/service_operations.rb'
   include ServiceOperations
 
-  require_relative 'domain_operations.rb'
+  require_relative 'service_management/domain_operations.rb'
   include DomainOperations
 
-  require_relative 'subservice_operations.rb'
+  require_relative 'service_management/subservice_operations.rb'
   include SubserviceOperations
 
-  require_relative 'orphan_operations.rb'
+  require_relative 'service_management/orphan_operations.rb'
   include OrphanOperations
 
   require_relative 'system_operations.rb'
@@ -75,13 +75,13 @@ class EnginesCore < ErrorsApi
   require_relative 'domain_operations.rb'
   include DomainOperations
 
-  require_relative 'registry_trees.rb'
+  require_relative 'service_management/registry_trees.rb'
   include RegistryTrees
 
   require_relative 'engines_core_preferences.rb'
   include  EnginesCorePreferences
 
-  require_relative 'service_manager_operations.rb'
+  require_relative 'service_management/service_manager_operations.rb'
   include ServiceManagerOperations
 
   require_relative 'docker_operations.rb'
@@ -102,7 +102,7 @@ class EnginesCore < ErrorsApi
   require_relative 'engines_core_version.rb'
   include EnginesCoreVersion
 
-  require_relative 'certificate_actions.rb'
+  require_relative 'system/certificate_actions.rb'
   include CertificateActions
   def self.command_is_system_service?
     return true if $PROGRAM_NAME.end_with?('system_service.rb')

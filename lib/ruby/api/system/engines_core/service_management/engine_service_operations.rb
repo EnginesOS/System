@@ -26,7 +26,7 @@ module EngineServiceOperations
       container_type: 'service'
     }
     SystemDebug.debug(SystemDebug.services,  :engine_persistent_services, params)
-     service_manager.get_engine_persistent_services(params)
+    service_manager.get_engine_persistent_services(params)
   rescue StandardError => e
     log_exception(e,service_name)
   end
@@ -96,7 +96,6 @@ module EngineServiceOperations
       existing = get_service_entry(existing)
       return existing if existing.is_a?(EnginesError)
       params[:existing_service] = existing
-
     end
 
     trim_to_editable_variables(params[:existing_service])
@@ -112,19 +111,17 @@ module EngineServiceOperations
       end
       return true
     end
-     r
+    r
   end
 
   def add_file_share(service_hash)
     SystemDebug.debug(SystemDebug.services, 'Add File Service ' + service_hash[:variables][:name].to_s + ' ' + service_hash.to_s)
-    #  Default to engine
-
     # service_hash = Volume.complete_service_hash(service_hash)
 
     SystemDebug.debug(SystemDebug.services,'complete_VOLUME_FOR SHARE_service_hash', service_hash)
     engine = loadManagedEngine(service_hash[:parent_engine])
     return engine if engine.is_a?(EnginesError)
-      engine.add_shared_volume(service_hash)
+    engine.add_shared_volume(service_hash)
 
   rescue StandardError => e
     SystemUtils.log_exception(e)
@@ -141,28 +138,16 @@ module EngineServiceOperations
   end
 
   def get_service_pubkey(engine, cmd)
-
     container = loadManagedService(engine)
     return container if container.is_a?(EnginesError)
-
     return service_manager.load_service_pubkey(container, cmd) unless container.is_running?
-
-    args = []
-    args[0] = '/home/get_pubkey.sh'
-    args[1] = cmd
-
-    result =  exec_in_container({:container => container, :command_line => args, :log_error => true, :timeout =>30 , :data=>''})
-
-    return result unless result.is_a?(Hash)
-
-    return result[:stdout] if result[:result] == 0
-
+    args = ['/home/get_pubkey.sh', cmd]
+    result = exec_in_container({:container => container, :command_line => args, :log_error => true, :timeout =>30 , :data=>''})
+    return result[:stdout] if result.is_a?(Hash) &&result[:result] == 0
     log_error_mesg('Get pub key failed',result)
-    return service_manager.load_service_pubkey(container, cmd)
+    service_manager.load_service_pubkey(container, cmd)
   rescue StandardError => e
     log_exception(e)
-
-    # docker exec ' + service + ' /home/get_pubkey.sh ' + cmd
   end
 
 end
