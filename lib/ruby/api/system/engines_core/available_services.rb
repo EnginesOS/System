@@ -2,7 +2,7 @@ module AvailableServices
 
   require_relative 'service_manager_access.rb'
   require '/opt/engines/lib/ruby/managed_services/system_services/volume_service.rb'
-
+  require '/opt/engines/lib/ruby/managed_services/service_definitions/service_top_level.rb'
  
 
   def load_avail_services_for_type(typename)
@@ -120,7 +120,7 @@ def load_service_definition(filename)
  end
  
   def load_software_service(params)
-    params[:service_container_name]  = ServiceDefinitions.get_software_service_container_name(params)
+    params[:service_container_name]  = get_software_service_container_name(params)
     return params[:service_container_name]  if params[:service_container_name].is_a?(EnginesError)
 
     loadManagedService(params[:service_container_name] )
