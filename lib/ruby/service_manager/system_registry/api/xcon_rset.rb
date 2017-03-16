@@ -1,3 +1,4 @@
+require '/opt/engines/lib/ruby/exceptions/registry_exception.rb'
 def json_parser
   @json_parser ||= FFI_Yajl::Parser.new({:symbolize_keys => true})
 end
