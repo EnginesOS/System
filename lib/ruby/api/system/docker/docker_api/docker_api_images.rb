@@ -32,13 +32,8 @@ module DockerApiImages
     
     headers = { 'X-Registry-Config'  => get_registry_auth, 'Content-Type' =>'plain/text', 'Accept-Encoding' => 'gzip'}
 
-    r =  post_request(request,  nil, false , headers ,600)
-#    req = Net::HTTP::Post.new(request, header)
-#   r = perform_request(req, container, false,  false)
-#    
+      post_request(request,  nil, false , headers ,600)
 
-     true
-  
   end
 
   def  image_exist?(container)
