@@ -7,9 +7,13 @@ module PublicApiSystemFirstRun
     first_run.apply(@core_api)
     return log_error_message(first_run.last_error) unless first_run.sucess
     first_run.sucess
+  rescue StandardError => e
+    handle_exception(e)
   end
 
   def first_run_complete(install_mgmt)
     @system_api.first_run_complete(install_mgmt)
+  rescue StandardError => e
+    handle_exception(e)
   end
 end

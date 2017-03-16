@@ -14,4 +14,11 @@ module EnginesPublicApiErrors
     super
     EnginesPublicApiError.new(e.to_s,:exception)
   end
+  
+  def handle_exception(e)
+    return log_exception(e) unless e.is_a?(RegistryException)
+    STDERR.puts(' Error Level ' + e.level.to_s)
+    #return if e.level == :warning  ||  e.level == :error
+    log_exception(e)
+  end
 end

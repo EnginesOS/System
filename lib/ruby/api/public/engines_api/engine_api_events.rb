@@ -18,12 +18,16 @@ module EngineApiEvents
 
     def start
       @rd
+      rescue StandardError => e
+        handle_exception(e)
     end
 
     def stop
       @system_api.rm_event_listener(self)
       @wr.close #  if @wr.is_open?
       @rd.close #if @rd.is_open?
+      rescue StandardError => e
+        handle_exception(e)
     end
 
   end
@@ -33,6 +37,8 @@ module EngineApiEvents
     @system_api.add_event_listener([stream,'write_event'.to_sym],16)
     stream.start
     stream
+  rescue StandardError => e
+    handle_exception(e)
   end
 
 end

@@ -1,19 +1,27 @@
 module PublicApiBuilder
   def last_build_params
     SystemStatus.last_build_params
+    rescue StandardError => e
+      handle_exception(e)
   end
 
   def last_build_log
     return "none" unless File.exists?(SystemConfig.BuildOutputFile)
     File.read(SystemConfig.BuildOutputFile)
+    rescue StandardError => e
+      handle_exception(e)
   end
 
   def build_status
     SystemStatus.build_status
+    rescue StandardError => e
+      handle_exception(e)
   end
 
   def current_build_params
     SystemStatus.current_build_params
+    rescue StandardError => e
+      handle_exception(e)
   end
 
   #writes stream from build.out to out
@@ -36,6 +44,8 @@ module PublicApiBuilder
       end
       out.write(bytes)
     end
+    rescue StandardError => e
+      handle_exception(e)
   end
 
 end

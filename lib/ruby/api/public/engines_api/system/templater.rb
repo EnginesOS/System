@@ -5,6 +5,8 @@ module PublicApiSystemTemplater
     templater = Templater.new(@core_api.system_value_access,nil)
     env_value = templater.apply_system_variables(env_value)
     env_value
+  rescue StandardError => e
+    handle_exception(e)
   end
 
 end
