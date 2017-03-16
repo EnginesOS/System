@@ -30,7 +30,7 @@ module Services
       ts = File.mtime(SystemConfig.RunDir + '/services/' + service_name + '/running.yaml')
       cache_engine(s, ts)
     end
-     s
+    s
   end
 
   private
@@ -40,13 +40,13 @@ module Services
     services = _list_services(type)
     services.each do |service_name |
       begin
-      service = loadManagedService(service_name) if type == 'service'
-      service = loadSystemService(service_name) if type == 'system_service'
-      ret_val.push(service) if service.is_a?(ManagedService)
+        service = loadManagedService(service_name) if type == 'service'
+        service = loadSystemService(service_name) if type == 'system_service'
+        ret_val.push(service) if service.is_a?(ManagedService)
       rescue # skip bad loads
       end
     end
-     ret_val
+    ret_val
   end
 
   def _list_services(type='service')
@@ -56,7 +56,7 @@ module Services
       yfn = SystemConfig.RunDir + '/' + type +'s/' + contdir + '/config.yaml'
       ret_val.push(contdir) if File.exist?(yfn)
     end
-     ret_val
+    ret_val
   end
 
   def _loadManagedService(service_name, service_type_dir)

@@ -117,7 +117,7 @@ class SystemApi < ErrorsApi
     services.each do |service|
       begin
       result[service.container_name] = service.read_state
-      rescue #skip services down
+      rescue DockerException => e
       end
     end
     result
