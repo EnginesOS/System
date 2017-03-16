@@ -47,7 +47,10 @@ class ManagedUtility< ManagedContainer
   end
 
   def execute_command(command_name, command_params)
-    stop_container
+    begin #FIXME needs to complete if from another install
+      stop_container
+    rescue
+    end
     return log_error_mesg('Utility ' + container_name + ' in use ' ,  command_name) if is_active?
     #FIXMe need to check if running
     r =  ''
@@ -55,9 +58,16 @@ class ManagedUtility< ManagedContainer
     return log_error_mesg('No such command: ' + command_name.to_s, command_name, command_params) unless @commands.key?(command_name)
     command = command_details(command_name)
     return log_error_mesg('Missing params' + r.to_s, r) if (r = check_params(command, command_params)) == false
-    r = destroy_container
+    begin
+      r = destroy_container
+    rescue
+    end
     @container_api.wait_for('nocontainer') unless read_state == 'nocontainer'
-    @container_api.destroy_container(self) unless read_state == 'nocontainer'
+    begin
+      @container_api.destroy_container(self) unless read_state == 'nocontainer'
+    rescue
+    end
+    raise EnginesException.new(error_hash('cant nocontainer Utility ' + command, command_params)) unless read_state == 'nocontainer'
     clear_configs
     apply_templates(command, command_params)
     save_state
@@ -70,8 +80,7 @@ class ManagedUtility< ManagedContainer
       stdout: 'OK',
       result: 0
     }
-  rescue StandardError => e
-    log_exception(e)
+
   end
 
   def construct_cmdline(command, command_params, templater)
