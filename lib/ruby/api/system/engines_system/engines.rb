@@ -2,28 +2,28 @@ module Engines
   def list_managed_engines
     clear_error
     ret_val = []
-      begin
-    Dir.entries(SystemConfig.RunDir + '/containers/').each do |contdir|
-      yfn = SystemConfig.RunDir + '/containers/' + contdir + '/running.yaml'
-      ret_val.push(contdir) if File.exist?(yfn)
-    end
-      rescue
+    begin
+      Dir.entries(SystemConfig.RunDir + '/containers/').each do |contdir|
+        yfn = SystemConfig.RunDir + '/containers/' + contdir + '/running.yaml'
+        ret_val.push(contdir) if File.exist?(yfn)
       end
-     ret_val
+    rescue
+    end
+    ret_val
   end
-  
+
   def init_engine_dirs(engine_name)
     STDERR.puts(' creatng ' + ContainerStateFiles.container_state_dir(engine_name).to_s + '/run')
-     FileUtils.mkdir_p(ContainerStateFiles.container_state_dir(engine_name) + '/run') unless Dir.exist?(ContainerStateFiles.container_state_dir(engine_name)+ '/run')
+    FileUtils.mkdir_p(ContainerStateFiles.container_state_dir(engine_name) + '/run') unless Dir.exist?(ContainerStateFiles.container_state_dir(engine_name)+ '/run')
     FileUtils.mkdir_p(ContainerStateFiles.container_state_dir(engine_name) + '/run/flags') unless Dir.exist?(ContainerStateFiles.container_state_dir(engine_name)+ '/run/flags')
-     FileUtils.mkdir_p(ContainerStateFiles.container_log_dir(engine_name)) unless Dir.exist?(ContainerStateFiles.container_log_dir(engine_name))
-    FileUtils.mkdir_p(ContainerStateFiles.container_ssh_keydir(engine_name)) unless Dir.exist?(ContainerStateFiles.container_ssh_keydir(engine_name))   
+    FileUtils.mkdir_p(ContainerStateFiles.container_log_dir(engine_name)) unless Dir.exist?(ContainerStateFiles.container_log_dir(engine_name))
+    FileUtils.mkdir_p(ContainerStateFiles.container_ssh_keydir(engine_name)) unless Dir.exist?(ContainerStateFiles.container_ssh_keydir(engine_name))
   end
-  
+
   def set_engine_network_properties(engine, params)
     clear_error
     return set_engine_hostname_details(engine, params) if set_engine_web_protocol_properties(engine, params)
- 
+
   end
 
   def set_engine_web_protocol_properties(engine, params)
@@ -41,33 +41,32 @@ module Engines
     elsif protocol.include?('https_and_http')
       engine.enable_http_and_https
     end
-     true
- 
+    true
+
   end
 
   def set_engine_hostname_details(container, params)
     clear_error
-#    p :set_engine_network_properties
-#    p container.container_name
-#    p params
+    #    p :set_engine_network_properties
+    #    p container.container_name
+    #    p params
     #FIXME [:hostname]  silly host_name from gui drop it
     if params.key?(:host_name)
       hostname = params[:host_name]
     else
-      hostname = params[:hostname] 
+      hostname = params[:hostname]
     end
-    
+
     domain_name = params[:domain_name]
     SystemDebug.debug(SystemDebug.services,'Changing Domainame to ', domain_name)
-    
+
     container.remove_nginx_service
     container.set_hostname_details(hostname, domain_name)
     container.save_state
-   # save_container(container)
+    # save_container(container)
     container.add_nginx_service
-     true
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
+    true
+
   end
 
   def getManagedEngines
@@ -75,17 +74,14 @@ module Engines
     Dir.entries(SystemConfig.RunDir + '/containers/').each do |contdir|
       yfn = SystemConfig.RunDir + '/containers/' + contdir + '/running.yaml'
       if File.exist?(yfn)
-        managed_engine = loadManagedEngine(contdir)
-        if managed_engine.is_a?(ManagedEngine)
+        begin
+          managed_engine = loadManagedEngine(contdir)
           ret_val.push(managed_engine)
-        else
-          log_error_mesg('failed to load ', yfn)
+        rescue
         end
       end
     end
-     ret_val
-  rescue StandardError => e
-   next
+    ret_val
   end
 
   def loadManagedEngine(engine_name)
@@ -101,12 +97,11 @@ module Engines
     managed_engine = ManagedEngine.from_yaml(yaml_file, @engines_api.container_api)
     return managed_engine if managed_engine.is_a?(EnginesError)
     cache_engine(managed_engine, ts)
-     managed_engine
+    managed_engine
   end
-  
 
   def delete_engine(container)
     rm_engine_from_cache(container.container_name)
   end
-  
+
 end
