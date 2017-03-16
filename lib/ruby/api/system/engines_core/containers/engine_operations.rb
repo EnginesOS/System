@@ -13,10 +13,8 @@ module EnginesOperations
     engine_name = params[:engine_name]
     reinstall = false
     reinstall = params[:reinstall] = true if params.key?(:reinstall)
-     remove_engine(engine_name, reinstall)
+    remove_engine(engine_name, reinstall)
   end
-
-
 
   #install from fresh copy of blueprint in repository
   def reinstall_engine(engine)
@@ -33,7 +31,7 @@ module EnginesOperations
       engine.reinstall_engine(builder)
     }
     return true if @build_thread.alive?
-     log_error(params[:engine_name], 'Build Failed to start')
+    log_error(params[:engine_name], 'Build Failed to start')
   rescue  StandardError => e
     log_exception(e)
   end
@@ -85,19 +83,16 @@ module EnginesOperations
   def docker_build_engine(engine_name, build_archive_filename , builder)
     @docker_api.build_engine(engine_name, build_archive_filename, builder)
   end
-  
 
-
-   
-#  def delete_image_dependancies(params)
-#      r = ''
-#      params[:parent_engine] = params[:engine_name]
-#     
-#      SystemDebug.debug(SystemDebug.containers, :delete_image_dependancies, params)
-#      return r if (r = service_manager.rm_remove_engine_services(params)).is_a?(EnginesError)
-#       true
-#    rescue StandardError => e
-#      log_exception(e)
-#    end
+  #  def delete_image_dependancies(params)
+  #      r = ''
+  #      params[:parent_engine] = params[:engine_name]
+  #
+  #      SystemDebug.debug(SystemDebug.containers, :delete_image_dependancies, params)
+  #      return r if (r = service_manager.rm_remove_engine_services(params)).is_a?(EnginesError)
+  #       true
+  #    rescue StandardError => e
+  #      log_exception(e)
+  #    end
 
 end

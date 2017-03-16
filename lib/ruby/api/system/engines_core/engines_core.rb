@@ -15,10 +15,6 @@ require '/opt/engines/lib/ruby/system/deal_with_json.rb'
 require '/opt/engines/lib/ruby/managed_services/service_definitions/service_top_level.rb'
 class EnginesCore < ErrorsApi
 
-
-    
- 
- 
   require_relative 'errors/engines_core_errors.rb'
   include EnginesCoreErrors
 
@@ -119,7 +115,7 @@ class EnginesCore < ErrorsApi
   require_relative '../engines_system/engines_system.rb'
   require '/opt/engines/lib/ruby/service_manager/service_manager.rb'
   require_relative '../registry_handler.rb'
-  require_relative 'engines_core_error.rb'
+  require_relative 'errors/engines_core_error.rb'
 
   def initialize
     Signal.trap('HUP', proc { dump_stats })  #api_shutdown })
@@ -140,14 +136,11 @@ class EnginesCore < ErrorsApi
 
   def api_shutdown
     SystemDebug.debug(SystemDebug.system,  :BEING_SHUTDOWN)
-
     @registry_handler.api_shutdown
-
   end
 
   def dump_heap_stats
     ObjectSpace.garbage_collect
-    # STDERR.puts('dumping heap')
     file = File.open("/engines/var/run/heap.dump", 'w')
     ObjectSpace.dump_all(output: file)
     file.close
@@ -216,8 +209,6 @@ class EnginesCore < ErrorsApi
     }
     return true if @build_thread.alive?
     log_error(params[:engine_name], 'Build Failed to start')
-  rescue StandardError => e
-    log_excepton(e)
   end
 
   def shutdown(reason)

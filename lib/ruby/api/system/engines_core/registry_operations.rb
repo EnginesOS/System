@@ -8,6 +8,5 @@ module RegistryOperations
     log_error_mesg("Forcing registry restart ", nil)
     @registry_handler.force_registry_restart
   end
-  
-  
+
 end

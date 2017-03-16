@@ -5,9 +5,6 @@ module ServiceHashChecks
     check_hash(service_hash)
     # FIXME: Kludge
     # Klugde to avoid gui bugss
-    #    unless service_hash.key?(:parent_engine)
-    #      service_hash[:parent_engine] = service_hash[:engine_name]
-    #    end
     service_hash[:container_type] = "container" unless service_hash.key?(:container_type)
     # End of Kludge
     raise EnginesException.new({error_mesg: 'No parent engine',  error_type: :error , params: service_hash}) unless service_hash.key?(:parent_engine)
@@ -18,7 +15,6 @@ module ServiceHashChecks
   end
 
   def check_sub_service_hash(service_hash)
-    r = ''
     check_service_hash(service_hash)
     raise EnginesException.new({error_mesg: 'No parent service',  error_type: :error , params: service_hash}) unless service_hash.key?(:parent_service)
     true
