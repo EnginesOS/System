@@ -6,15 +6,15 @@ module EngineApiDependancies
     container.dependant_on.each do |service_name|
       SystemDebug.debug(SystemDebug.containers, :checking_depends,  service_name)
       service = engines_core.loadManagedService(service_name)
-      return log_error_mesg('Failed to load ', service_name) if service.is_a?(EnginesError)
+      raise EnginesException.new(error_hash('Failed to load ', service_name)) if service.is_a?(EnginesError)
       unless service.is_running?
         if service.has_container?
           if service.is_active?
-            return log_error_mesg('Failed to unpause ', service_name) if !service.unpause_container
+            raise EnginesException.new(error_hash('Failed to unpause ', service_name)) if !service.unpause_container
           else
-            return log_error_mesg('Failed to start ', service_name) if !service.start_container
+            raise EnginesException.new(error_hash('Failed to start ', service_name)) if !service.start_container
           end
-          return log_error_mesg('Failed to create ', service_name) if !service.create_container
+          raise EnginesException.new(error_hash('Failed to create ', service_name)) if !service.create_container
         end
       end
       retries = 0
@@ -23,7 +23,7 @@ module EngineApiDependancies
       while !has_service_started?(service_name)
         sleep 2
         retries += 1
-        return log_error_mesg('Time out in waiting for Service Dependancy ' + service_name + ' to start ', service_name) if retries > 20
+        raise EnginesException.new(error_hash('Time out in waiting for Service Dependancy ' + service_name + ' to start ', service_name)) if retries > 20
       end
     end
      true

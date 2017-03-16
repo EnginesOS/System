@@ -1,10 +1,8 @@
 module ContainerApiDockerActions
   def destroy_container(container)
     clear_error
-    r = ''
     return true if (r = @docker_api.destroy_container(container))
     return true unless container.has_container?
-    return r
   rescue StandardError => e
     container.last_error = 'Failed To Destroy ' + e.to_s
     log_exception(e)
@@ -58,7 +56,7 @@ module ContainerApiDockerActions
     clear_error
     enough_ram = have_enough_ram?(container)
     return enough_ram if enough_ram.is_a?(EnginesError)
-    return log_error_mesg("Insuficient free memory to start",container) unless enough_ram
+    raise EnginesException.new(error_hash("Insuficient free memory to start",container)) unless enough_ram
     start_dependancies(container) if container.dependant_on.is_a?(Array)
     @docker_api.start_container(container)
   end

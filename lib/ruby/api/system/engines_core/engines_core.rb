@@ -208,7 +208,7 @@ class EnginesCore < ErrorsApi
       @build_controller.build_engine(params)
     }
     return true if @build_thread.alive?
-    log_error(params[:engine_name], 'Build Failed to start')
+    raise EnginesException.new(error_hash(params[:engine_name], 'Build Failed to start'))
   end
 
   def shutdown(reason)

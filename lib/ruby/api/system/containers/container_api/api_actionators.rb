@@ -31,10 +31,7 @@ module ApiActionators
       return true if result[:stdout].start_with?('true') || result[:stdout].start_with?('"true')
       return result[:stdout]
     end
-     log_error_mesg('Error on performing action ' + c.container_name.to_s + ':' + actionator_name.to_s + result[:stderr] ,result)
-  rescue StandardError =>e
-    log_exception(e)
-
+    raise EnginesException.new(error_hash('Error on performing action ' + c.container_name.to_s + ':' + actionator_name.to_s , result))
   end
 
   def list_params(params)

@@ -156,8 +156,6 @@ rescue StandardError => e
       end
     end
      r
-rescue StandardError => e
-  SystemUtils.log_exception(e)
   end
 
   def run_server_script(script_name , script_data=false, script_timeout = @@server_script_timeout)
@@ -176,12 +174,8 @@ STDERR.puts('RUN SERVER SCRIPT cmd'  + cmd.to_s)
     end
   rescue Timeout::Error
     STDERR.puts('Timeout on Running Server Script ' + script_name )
-    return  log_error_mesg('Timeout on Running Server Script ' + script_name , script_name)
+    raise EnginesException.new(error_hash('Timeout on Running Server Script ' + script_name , script_name))
     #system('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/restart_mgmt engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/restart_mgmt.sh')
-  rescue StandardError => e
-    STDERR.puts( 'Except ' + e.to_s + ' ' + e.backtrace.to_s)
-     log_exception(e)
-
   end
 
 end

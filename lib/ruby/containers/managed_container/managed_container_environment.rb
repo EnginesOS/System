@@ -1,18 +1,15 @@
 module ManagedContainerEnvironment
   def update_environment(key, value, add=false)
   #  SystemDebug.debug(SystemDebug.containers, :update_environment, key, value, @environments)
-    return log_error_mesg('No envionment varaibles') if @environments.nil?
+    raise EnginesException.new(error_hash('No envionment varaibles')) if @environments.nil?
     
-    @environments.each do |environment| 
-     
-    if environment.name.to_s == key.to_s
-     
+    @environments.each do |environment|      
+    if environment.name.to_s == key.to_s     
       SystemDebug.debug(SystemDebug.containers, :update_environment, "Changed")
-      return log_error_mesg(' variable ' + environment.name + ' immutable' )  if environment.immutable == true
+      raise EnginesException.new(error_hash('Locked variable ', environment.name ))  if environment.immutable == true
       environment.value = value 
       return true
-    end
-   
+    end   
     end
     
     if add == true
@@ -21,7 +18,7 @@ module ManagedContainerEnvironment
       @environments.push(env)
       return true
     end
-     log_error_mesg('no matching variable ' + key.to_s )  
+    raise EnginesException.new(error_hash('no matching variable ' + key.to_s ))  
   rescue StandardError => e
     log_exception(e,:update_environment,key,value, add)
   end

@@ -59,16 +59,14 @@ module DomainOperations
     #   STDERR.puts(' ADD DOMAIN VARIABLE ' + params.to_s)
     service_manager.create_and_register_service(service_hash)
 
-  rescue StandardError => e
-    log_error_mesg('Add self hosted domain exception', params.to_s)
-    log_exception(e)
+ 
   end
 
   def update_domain(params)
-    r = ''
+
     #   STDERR.puts(' UPDATE DOMAIN VARIABLES ' + params.to_s)
     old_domain_name = params[:original_domain_name]
-    return r if ( r = DNSHosting.update_domain(old_domain_name, params)).is_a?(EnginesError)
+     DNSHosting.update_domain(old_domain_name, params)
     return true unless params[:self_hosted]
     service_hash =  {}
     service_hash[:parent_engine] = 'system'
@@ -104,12 +102,11 @@ module DomainOperations
   end
 
   def remove_domain(params)
-    r = ''
     domain_name = params
     domain_name = params[:domain_name] unless params.is_a?(String)
     params = domain_name(domain_name)
-    return log_error_mesg('Domain not found' + domain_name) if params.nil?
-    return log_error_mesg('no params') if params.nil?
+    raise EnginesException.new(error_hash('Domain not found' + domain_name)) if params.nil?
+    raise EnginesException.new(error_hash('no params')) if params.nil?
     return r unless ( r = DNSHosting.rm_domain(domain_name) )
     return true if params[:self_hosted] == false
     service_hash = {
@@ -123,7 +120,6 @@ module DomainOperations
     type_path: 'dns',
     }
     service_manager.delete_service(service_hash)
-
   rescue StandardError => e
     log_exception(e)
   end

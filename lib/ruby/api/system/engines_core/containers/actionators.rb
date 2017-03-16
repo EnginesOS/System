@@ -13,9 +13,7 @@ module Actionators
     SystemDebug.debug(SystemDebug.actions, engine, actionator_name,params)
     return engine.perform_action(actionator_name, params) if engine.is_running?
     @last_error = "Engine not running"
-    return  EnginesCoreError.new('Engine not running',:warning)
-  rescue StandardError => e
-    log_exception( e,'perform_engine_action',engine.container_name,actionator_name,params)
+    raise EnginesException.new(warning_hash('Engine not running', engine.container_name))
   end
 
   def list_service_actionators(service)
@@ -25,11 +23,11 @@ module Actionators
       service_def = SoftwareServiceDefinition.find(service.type_path,service.publisher_namespace)
     end
     unless service_def.is_a?(Hash)
-      return log_error_mesg('list_actionators not a service def ',service_def)
+      raise EnginesException.new(error_hash('list_actionators not a service def ',service_def))
 
     end
     unless service_def.key?(:actionators)
-      return log_error_mesg('list_actionators no actionators',service_def)
+      raise EnginesException.new(error_hash('list_actionators no actionators',service_def))
     end
     unless service_def[:actionators].is_a?(Array)
       #    SystemDebug.debug(SystemDebug.actions,service.container_name,service_def[:actionators],service_def)
@@ -37,9 +35,6 @@ module Actionators
     end
     # SystemDebug.debug(SystemDebug.actions,service.container_name,service_def[:actionators],service_def)
     service_def[:actionators]
-
-  rescue StandardError => e
-    log_exception(e,'list_actionators',service)
   end
 
   def perform_service_action(service_name,actionator_name,params)

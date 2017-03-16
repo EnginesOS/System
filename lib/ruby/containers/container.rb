@@ -74,5 +74,24 @@ class Container < ErrorsApi
     end
   end
 
+
+def error_hash(mesg, params = nil)
+  r = error_type_hash(mesg, params)
+  r[:error_type] = :error
+  r
+end
+
+def warning_hash(mesg, params = nil)
+  r = error_type_hash(mesg, params)
+  r[:error_type] = :warning
+  r
+end
+
+def error_type_hash(mesg, params = nil)
+  {error_mesg: mesg,
+    system: :container,
+    params: params }
+end
+  
 end
 

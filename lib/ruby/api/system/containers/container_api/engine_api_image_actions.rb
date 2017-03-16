@@ -8,8 +8,6 @@ module EngineApiImageActions
     #    # only delete if del all otherwise backup
     #    # NO Image well delete the rest
     #return ContainerStateFiles.delete_container_configs(volbuilder, container) unless @docker_api.image_exist?(container.image)
-    log_error_mesg("Image Still exists" + container)
-  rescue StandardError => e
-    log_exception(e)
+    raise EnginesException.new(error_hash("Image Still exists", container.image_name))
   end
 end

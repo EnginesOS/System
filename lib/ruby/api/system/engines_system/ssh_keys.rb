@@ -1,7 +1,7 @@
 module SshKeys
   def generate_engines_user_ssh_key
     newkey = regen_system_ssh_key # SystemUtils.run_command(SystemConfig.generate_ssh_private_keyfile)
-    return log_error_mesg("Not an RSA key",newkey) unless newkey.include?('-----BEGIN RSA PRIVATE KEY-----')
+    raise EnginesException.new(error_hash("Not an RSA key", newkey)) unless newkey.include?('-----BEGIN RSA PRIVATE KEY-----')
      newkey
   rescue StandardError => e
     SystemUtils.log_exception(e)

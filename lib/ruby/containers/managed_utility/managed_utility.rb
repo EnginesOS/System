@@ -47,7 +47,7 @@ class ManagedUtility< ManagedContainer
   end
 
   def execute_command(command_name, command_params)
-   stop_container
+    stop_container
     return log_error_mesg('Utility ' + container_name + ' in use ' ,  command_name) if is_active?
     #FIXMe need to check if running
     r =  ''
@@ -95,7 +95,7 @@ class ManagedUtility< ManagedContainer
 
   def apply_volume_templates(command_params, templater)
     @volumes.each_value do |volume|
-    volume = symbolize_keys(volume)
+      volume = symbolize_keys(volume)
       volume[:remotepath] = templater.apply_hash_variables(volume[:remotepath] , command_params)
       volume[:localpath] = templater.apply_hash_variables(volume[:localpath] , command_params)
       volume[:permissions]= templater.apply_hash_variables(volume[:permissions] , command_params)
@@ -152,4 +152,9 @@ class ManagedUtility< ManagedContainer
     FileUtils.rm(ContainerStateFiles.container_state_dir(self) + '/running.yaml.bak')   if File.exist?(ContainerStateFiles.container_state_dir(self) + '/running.yaml.bak')
   end
 
+  def error_type_hash(mesg, params = nil)
+    {error_mesg: mesg,
+      system: :managed_utility,
+      params: params }
+  end
 end

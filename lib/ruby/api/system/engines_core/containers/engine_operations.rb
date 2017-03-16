@@ -5,9 +5,8 @@ module EnginesOperations
   #Retrieves all persistent service registered to :engine_name and destroys the underlying service (fs db etc)
   # They are removed from the tree if delete is sucessful
   def delete_engine(params)
-    r = ''
     SystemDebug.debug(SystemDebug.containers,:delete_engines,params)
-    # return log_error_mesg('Failed to remove engine as has container ',params) if
+
     params[:container_type] = 'container' # Force This
     #   return r if (r = delete_image_dependancies(params) ).is_a?(EnginesError)
     engine_name = params[:engine_name]
@@ -31,9 +30,8 @@ module EnginesOperations
       engine.reinstall_engine(builder)
     }
     return true if @build_thread.alive?
-    log_error(params[:engine_name], 'Build Failed to start')
-  rescue  StandardError => e
-    log_exception(e)
+    raise EnginesException.new(error_hash(params[:engine_name], 'Build Failed to start'))
+  
   end
 
   def set_container_runtime_properties(container,params)
@@ -68,8 +66,7 @@ module EnginesOperations
     end
     container.create_container
 
-  rescue StandardError => e
-    log_exception(e)
+ 
   end
 
   def set_engine_network_properties(container, params)

@@ -128,7 +128,6 @@ module SmEngineServices
   #@return true on success and false on fail
   def remove_managed_services(params)
     clear_error
-    r = ''
     begin
     services = get_engine_persistent_services(params)  #system_registry_client.
     rescue StandardError => e

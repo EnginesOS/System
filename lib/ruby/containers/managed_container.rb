@@ -169,5 +169,9 @@ end
   rescue StandardError => e
     log_exception(e)
   end
-
+    def error_type_hash(mesg, params = nil)
+      {error_mesg: mesg,
+        system: :managed_container,
+        params: params }
+    end
 end

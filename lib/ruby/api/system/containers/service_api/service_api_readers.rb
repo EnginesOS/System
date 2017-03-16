@@ -8,8 +8,7 @@ module ServiceApiReaders
         thr.join
       end
     rescue Timeout::Error
-      log_error_mesg('Timeout on running reader',cmd)
-      return {}
+    raise EnginesException.new(error_hash('Timeout on running reader', cmd))
     end
     @last_error = result[:stderr] # Dont log just set
      result

@@ -23,7 +23,7 @@ module AvailableServices
             STDERR.puts('looking at  ' + dir + '/' + service_dir_entry )
             if service.nil? == false
               if service.is_a?(String)
-                log_error_mesg('service yaml load error', service)
+                raise EnginesException.new(error_hash('service yaml load error', service))
               else
                 service = SoftwareServiceDefinition.summary(service)
                 if service[:persistent] == true

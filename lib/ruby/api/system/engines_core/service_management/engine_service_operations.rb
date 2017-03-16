@@ -52,7 +52,6 @@ module EngineServiceOperations
   end
 
   def service_is_registered?(service_hash)
-    r = ''
     check_service_hash(service_hash)
     service_manager.service_is_registered?(service_hash)
   rescue StandardError => e
@@ -103,7 +102,7 @@ module EngineServiceOperations
     unless r.is_a?(EnginesError)
       if service_hash[:type_path] == 'filesystem/local/filesystem'
         result = add_file_share(params)
-        return log_error_mesg('failed to create fs',self) if result.is_a?(EnginesError)
+        raise EnginesException.new(error_hash('failed to create fs', self)) if result.is_a?(EnginesError)
       end
       return true
     end
@@ -148,7 +147,6 @@ module EngineServiceOperations
   
   
 def remove_engine(engine_name, reinstall = false)
-    r = ''
     engine = loadManagedEngine(engine_name)
     SystemDebug.debug(SystemDebug.containers,:delete_engines,engine_name,engine, :resinstall,reinstall)
     params = {
@@ -159,7 +157,7 @@ def remove_engine(engine_name, reinstall = false)
     }
     unless engine.is_a?(ManagedEngine) # DO NOT MESS with this logi used in roll back and only works if no engine DO NOT MESS with this logic
       return true if service_manager.remove_engine_from_managed_engine(params)
-      return log_error_mesg('Failed to find Engine',params)
+      raise EnginesException.new(error_hash('Failed to find Engine',params))
     end
 
    #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)

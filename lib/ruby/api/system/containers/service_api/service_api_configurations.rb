@@ -11,7 +11,7 @@ module ServiceApiConfigurations
       params[:variables] = symbolize_keys(variables_hash)      
       return params
     end
-     log_error_mesg('Error on retrieving Configuration',result)
+  raise EnginesException.new(error_hash('Error on retrieving Configuration', result))
 
   end
 

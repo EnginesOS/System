@@ -56,13 +56,13 @@ class ManagedEngine < ManagedContainer
   def plugins_path
     return '/plugins/'
   end
- 
+
   def extract_plugins
     false
   end
 
-  def add_shared_volume(service_hash)    
-    vol = {} 
+  def add_shared_volume(service_hash)
+    vol = {}
     vol[:volume_name] = service_hash[:owner] + '_' + service_hash[:service_handle]
     vol[:localpath] = service_hash[:variables][:volume_src]
     vol[:remotepath] = service_hash[:variables][:engine_path]
@@ -74,6 +74,12 @@ class ManagedEngine < ManagedContainer
   end
 
   def engine_attached_services
-     @container_api.engine_attached_services(self)
+    @container_api.engine_attached_services(self)
+  end
+
+  def error_type_hash(mesg, params = nil)
+    {error_mesg: mesg,
+      system: :managed_engine,
+      params: params }
   end
 end

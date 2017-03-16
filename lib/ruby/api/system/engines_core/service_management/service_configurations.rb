@@ -2,7 +2,7 @@ module ServiceConfigurations
   require_relative 'service_manager_access.rb'
   def retrieve_service_configuration(config)
     r = retrieve_configuration(config)
-     r
+    r
   end
 
   def get_service_configurations_hashes(service_hash)
@@ -27,15 +27,14 @@ module ServiceConfigurations
 
   def update_service_configuration(service_param)
     # configurator = ConfigurationsApi.new(self)
-    r = ''
     r = update_configuration_on_service(service_param)
     return service_manager.update_service_configuration(service_param) unless r.is_a?(EnginesError)
-     log_error_mesg('Failed to update configuration on service ' + service_param.to_s, r)
+    raise EnginesException.new(error_hash('Failed to update configuration on service ' + service_param.to_s, r))
 
   end
 
   def retrieve_configuration(service_param)
-    return log_error_mesg('Missing service name', service_param) unless service_param.key?(:service_name)
+    raise EnginesException.new(error_hash('Missing service name', service_param)) unless service_param.key?(:service_name)
     service = loadManagedService(service_param[:service_name])
     return service unless service.is_a?(ManagedService)
     if service.is_running?
@@ -47,7 +46,7 @@ module ServiceConfigurations
       ret_val = get_service_configuration(service_param)
     end
 
-     ret_val
+    ret_val
   end
 
   private
@@ -80,7 +79,7 @@ module ServiceConfigurations
   end
 
   def update_configuration_on_service(service_param)
-    return log_error_mesg('Missing Service name',service_param) unless service_param.key?(:service_name)
+    raise EnginesException.new(error_hash('Missing Service name', service_param)) unless service_param.key?(:service_name)
     service = loadManagedService(service_param[:service_name])
     return service  unless service.is_a?(ManagedService)
     service_param[:publisher_namespace] = service.publisher_namespace.to_s  # need as saving in config tree
@@ -98,11 +97,10 @@ module ServiceConfigurations
     # set config on reunning service
     configurator_result =  service.run_configurator(service_param)
 
-    return log_error_mesg('Service configurator erro@core_api.r Got:', configurator_result.to_s, " For:" +service_param.to_s) unless configurator_result.is_a?(Hash)
+    raise EnginesException.new(error_hash('Service configurator erro@core_api.r Got:', configurator_result.to_s, " For:" +service_param.to_s)) unless configurator_result.is_a?(Hash)
     service_manager.update_service_configuration(service_param)
-    return log_error_mesg('Service configurator error @core_ap Got:', configurator_result.to_s, " For:" +service_param.to_s ) unless configurator_result[:result] == 0 || configurator_result[:stderr].start_with?('Warning')
-
-     true
+    raise EnginesException.new(error_hash('Service configurator error @core_ap Got:', configurator_result.to_s, " For:" +service_param.to_s )) unless configurator_result[:result] == 0 || configurator_result[:stderr].start_with?('Warning')
+    true
   end
 
 end
