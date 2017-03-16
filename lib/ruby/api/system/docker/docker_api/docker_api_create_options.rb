@@ -5,8 +5,6 @@ module DockerApiCreateOptions
 
   def create_options(container)
     @top_level = build_top_level(container)
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def get_protocol_str(port)
@@ -48,9 +46,7 @@ module DockerApiCreateOptions
       perms = 'ro'
     end
     volume[:localpath] + ':' + volume[:remotepath] + ':' + perms
-  rescue StandardError => e
-    STDERR.puts(' vol ' + volume.to_s)
-    log_exception(e, volume)
+ 
   end
 
   def get_dns_search
@@ -279,8 +275,6 @@ module DockerApiCreateOptions
       container_logdetails = '/var/log'
     end
     container_logdetails
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
 
   def envs(container)

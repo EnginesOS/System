@@ -172,7 +172,7 @@ class DockerConnection < ErrorsApi
   private
 
   def handle_resp(resp, expect_json)
-    raise EnginesException.new(docker_error_hash(resp, @request_params)) if resp.status  >= 400
+    raise DockerException.new(docker_error_hash(resp, @request_params)) if resp.status  >= 400
     # STDERR.puts(" Bad Request " + resp.status.to_s + " : " + @request_params.to_s ) if resp.status  == 400
     #STDERR.puts(" RESPOSE " + resp.status.to_s + " : " + resp.body ) if resp.status  > 400
     # return log_error_mesg("error:" + resp.status.to_s,resp.body ).to_json  if resp.status  >= 400

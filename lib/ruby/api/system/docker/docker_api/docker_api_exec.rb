@@ -44,9 +44,7 @@ module DockerApiExec
           return_result[:stderr] =  return_result[:stderr].to_s + r[:stderr].to_s
         end
       end
-    rescue StandardError =>e
-      STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s + ' ' + e.backtrace.to_s)
-      return
+   
     end
 
   end
@@ -128,9 +126,7 @@ module DockerApiExec
     stream_handler.result[:result] = get_exec_result(exec_id)
     stream_handler.result
 
-  rescue StandardError => e
-    STDERR.puts('DOCKER EXECep  ' + params.to_s + ': with :' + request_params.to_s)
-    log_exception(e)
+  
   end
 
   private

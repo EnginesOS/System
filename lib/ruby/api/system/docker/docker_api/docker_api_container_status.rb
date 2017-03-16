@@ -4,20 +4,7 @@ module DockerApiContainerStatus
     # container.set_cont_id if container.container_id.to_s == '-1' || container.container_id.nil?
     request = '/containers/' + container.container_name.to_s + '/json'
     return get_request(request, true)
-  rescue StandardError => e
-    log_exception(e)
 
-    #    id = container_id_from_name(container)
-    #    return EnginesDockerApiError.new('Missing Container id', :warning) if id == -1
-    #    request='/containers/' + id.to_s + '/json'
-    #    r =  get_request(request)
-    #    SystemDebug.debug(SystemDebug.containers,'inspect_container_by_name',container.container_name,r)
-    #    return r  if r.is_a?(EnginesError)
-    #    r = r[0] if r.is_a?(Array)
-    #    return EnginesDockerApiError.new('No Such Container', :warning) if r.key?('RepoTags') #No container by that name and it will return images by that name WTF
-    #    return r
-    #  rescue StandardError  => e
-    #    log_exception(e)
   end
 
   def inspect_container(container)
@@ -29,8 +16,7 @@ module DockerApiContainerStatus
       request = '/containers/' + container.container_id.to_s + '/json'
     end
     get_request(request, true)
-  rescue StandardError => e
-    log_exception(e)
+
   end
 
   def ps_container(container)
@@ -53,13 +39,13 @@ module DockerApiContainerStatus
       end
     end
 
-    raise EnginesException.new(error_hash('no such engine', id)) if r == true # happens on a destroy
+    raise DockerException.new(error_hash('no such engine', id)) if r == true # happens on a destroy
 
-    raise EnginesException.new(error_hash(' 409 twice for '  , request)) unless r.is_a?(Hash)
+    raise DockerException.new(error_hash(' 409 twice for '  , request)) unless r.is_a?(Hash)
 
-    raise EnginesException.new(error_hash('not a managed engine', r)) unless r.key?(:Config)
-    raise EnginesException.new(error_hash('not a managed engine', r)) unless r[:Config].key?(:Labels)
-    raise EnginesException.new(error_hash('not a managed engine', r)) unless r[:Config][:Labels].key?(:container_type)
+    raise DockerException.new(error_hash('not a managed engine', r)) unless r.key?(:Config)
+    raise DockerException.new(error_hash('not a managed engine', r)) unless r[:Config].key?(:Labels)
+    raise DockerException.new(error_hash('not a managed engine', r)) unless r[:Config][:Labels].key?(:container_type)
 
     [r[:Config][:Labels][:container_name], r[:Config][:Labels][:container_type]]
 
