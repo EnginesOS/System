@@ -1,3 +1,11 @@
+class FakeContainer
+    attr_reader :container_name, :ctype
+    def initialize(name, type = 'container')
+      @container_name = name
+      @ctype = type         
+    end
+  end
+  
 module Engines
   def list_managed_engines
     clear_error
@@ -11,13 +19,16 @@ module Engines
     end
     ret_val
   end
-
+  
+  
+  
   def init_engine_dirs(engine_name)
-    STDERR.puts(' creatng ' + ContainerStateFiles.container_state_dir(engine_name).to_s + '/run')
-    FileUtils.mkdir_p(ContainerStateFiles.container_state_dir(engine_name) + '/run') unless Dir.exist?(ContainerStateFiles.container_state_dir(engine_name)+ '/run')
-    FileUtils.mkdir_p(ContainerStateFiles.container_state_dir(engine_name) + '/run/flags') unless Dir.exist?(ContainerStateFiles.container_state_dir(engine_name)+ '/run/flags')
-    FileUtils.mkdir_p(ContainerStateFiles.container_log_dir(engine_name)) unless Dir.exist?(ContainerStateFiles.container_log_dir(engine_name))
-    FileUtils.mkdir_p(ContainerStateFiles.container_ssh_keydir(engine_name)) unless Dir.exist?(ContainerStateFiles.container_ssh_keydir(engine_name))
+   c = FakeContainer.new(engine_name)
+    STDERR.puts(' creating ' + ContainerStateFiles.container_state_dir(c).to_s + '/run')
+    FileUtils.mkdir_p(ContainerStateFiles.container_state_dir(c) + '/run') unless Dir.exist?(ContainerStateFiles.container_state_dir(c)+ '/run')
+    FileUtils.mkdir_p(ContainerStateFiles.container_state_dir(c) + '/run/flags') unless Dir.exist?(ContainerStateFiles.container_state_dir(c)+ '/run/flags')
+    FileUtils.mkdir_p(ContainerStateFiles.container_log_dir(c)) unless Dir.exist?(ContainerStateFiles.container_log_dir(c))
+    FileUtils.mkdir_p(ContainerStateFiles.container_ssh_keydir(c)) unless Dir.exist?(ContainerStateFiles.container_ssh_keydir(c))
   end
 
   def set_engine_network_properties(engine, params)
