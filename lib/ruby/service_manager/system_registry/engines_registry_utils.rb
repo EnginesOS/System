@@ -11,7 +11,6 @@ module EnginesRegistryUtils
     end
     SystemDebug.debug(SystemDebug.services,r.to_s)
     r
-  rescue StandardError => e
-    log_exception(e, hash)
+
   end
 end

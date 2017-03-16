@@ -26,8 +26,7 @@ module SmServiceControl
        system_registry_client.add_to_services_registry(service_hash)
     end
     true
-  rescue StandardError => e
-    handle_exception(e)
+
   end
 
   #remove service matching the service_hash from both the managed_engine registry and the service registry
@@ -36,6 +35,7 @@ module SmServiceControl
     clear_error
     r = ''
     complete_service_query = set_top_level_service_params(service_query,service_query[:parent_engine])
+      STDERR.puts('delete_service ' + complete_service_query.to_s)
     service_hash = system_registry_client.find_engine_service_hash(complete_service_query)
     return service_hash unless service_hash.is_a?(Hash)
 
@@ -48,9 +48,6 @@ module SmServiceControl
     remove_from_managed_service(service_hash) ## continue if service_query.key?(:force)
     system_registry_client.remove_from_managed_engine(service_hash)
     system_registry_client.remove_from_services_registry(service_hash)
-  rescue StandardError => e
-    log_exception(e)
-    handle_exception(e)
   end
 
   def update_attached_service(params)
@@ -60,13 +57,9 @@ module SmServiceControl
     system_registry_client.update_attached_service(params)
     remove_from_managed_service(params)
     add_to_managed_service(params)   
-  rescue StandardError => e
-    handle_exception(e)
   end
 
   def clear_service_from_registry(service)
     system_registry_client.clear_service_from_registry(service)
-  rescue StandardError => e
-    handle_exception(e)
   end
 end

@@ -120,9 +120,6 @@ module SmEngineServices
 
     return  entry unless entry.is_a?(Hash)
     entry[:variables][:cron_job]
-
-  rescue StandardError => e
-    handle_exception(e)
   end
 
   #@ remove an engine matching :engine_name from the service registry, all non persistent serices are removed
@@ -150,9 +147,6 @@ module SmEngineServices
       end
     end
     true
-
-  rescue StandardError => e
-    handle_exception(e)
   end
 
 end

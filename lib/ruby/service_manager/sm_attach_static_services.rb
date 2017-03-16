@@ -40,8 +40,6 @@ module SmAttachStaticServices
       end
     end
     true
-    rescue StandardError => e
-      handle_exception(e)
   end
 
 end

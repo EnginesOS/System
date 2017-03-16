@@ -30,8 +30,6 @@ module SharedServices
     end
     shared_service.delete(:existing)
     system_registry_client.add_share_to_managed_engines_registry(shared_service)
-    rescue StandardError => e
-      handle_exception(e, shared_service)
   end
 
 
@@ -57,8 +55,6 @@ module SharedServices
     existing_service_hash[:variables].each_pair.each do |name, value |
       shared_service[:variables][name] = value unless shared_service[:variables].key?(name)
     end
-  rescue StandardError => e
-    log_exception(e,shared_service)
   end
 
 end

@@ -19,7 +19,7 @@ class EnginesCore < ErrorsApi
     
  
  
-  require_relative 'engines_core_errors.rb'
+  require_relative 'errors/engines_core_errors.rb'
   include EnginesCoreErrors
 
   # require_relative '../dns_api.rb'

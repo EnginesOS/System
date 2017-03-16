@@ -15,22 +15,16 @@ module SmServiceConfigurations
     else
       return true
     end
-  rescue StandardError => e
-    handle_exception(e)
   end
 
   #@Returns an Array of Configuration hashes resgistered against the service [String] service_name
   #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
   def get_service_configurations_hashes(service_name)
     system_registry_client.get_service_configurations_hashes(service_name)
-  rescue StandardError => e
-    handle_exception(e)
   end
 
   def get_service_configuration(service_name)
     system_registry_client.get_service_configuration(service_name)
-  rescue StandardError => e
-    handle_exception(e)
   end
 
   def get_pending_service_configurations_hashes(service_name)
@@ -40,7 +34,5 @@ module SmServiceConfigurations
       retval.push(config) if config.key?(:pending)
     end
     return retval
-  rescue StandardError => e
-    handle_exception(e)
   end
 end
