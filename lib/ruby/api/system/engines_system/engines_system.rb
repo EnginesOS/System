@@ -118,6 +118,7 @@ class SystemApi < ErrorsApi
       begin
       result[service.container_name] = service.read_state
       rescue DockerException => e
+        next
       end
     end
     result
