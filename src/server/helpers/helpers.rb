@@ -32,7 +32,7 @@ helpers do
   end
 
   def return_true(s = 200)
-    return return_error if r.is_a?(EnginesError)
+    return return_error(s) if r.is_a?(EnginesError)
     return_text('true', s)
   end
 
