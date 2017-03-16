@@ -3,5 +3,4 @@ module Registry
   def system_registry_tree
     rest_get('tree', nil)
   end
-
 end

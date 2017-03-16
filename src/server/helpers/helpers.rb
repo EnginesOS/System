@@ -6,6 +6,7 @@ require_relative 'params.rb'
   end
 
   def return_json(r, s=202)
+    return return_error if r.is_a?(EnginesError)
     status(s)
     return empty_json if r.nil?
   #  STDERR.puts("JSON " + r.to_s)
@@ -13,6 +14,7 @@ require_relative 'params.rb'
   end
 
   def return_json_array(r, s=202)
+    return return_error if r.is_a?(EnginesError)
     status(s)
     return empty_array if r.nil?  
     return empty_array if r.is_a?(FalseClass)  
@@ -21,15 +23,22 @@ require_relative 'params.rb'
   end
 
   def return_text(r, s=202)
+    return return_error if r.is_a?(EnginesError)
     content_type 'text/plain'
-   # STDERR.puts("text " + r.to_s)
+    STDERR.puts("text " + r.to_s)
     status(s)
     r.to_s
   end
 
   def return_true(s = 200)   
+    return return_error if r.is_a?(EnginesError)
     return_text('true', s)
-  end
+    end
+    
+    def return_error(error)
+      status(404) # FixMe take this from the error if avail
+      error.to_json
+    end
 
   def json_parser
     # @json_parser = Yajl::Parser.new(:symbolize_keys => true) if @json_parser.nil?

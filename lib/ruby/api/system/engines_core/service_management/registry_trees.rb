@@ -17,7 +17,6 @@ module RegistryTrees
   end
 
   def get_shares_tree
-
     service_manager.shares_tree
   end
 

@@ -8,8 +8,7 @@
 get '/v0/system/keys/user/:user_name/generate' do
   generated_key = engines_api.generate_engines_user_ssh_key
   return log_error(request, generated_key) if generated_key.is_a?(EnginesError)
-  content_type 'text/plain'
-  generated_key.to_s
+  return_text(generated_key)
 end
 # @!group /system/keys/user
 # @method upload_user_key
@@ -19,17 +18,13 @@ end
 # @param :public_key
 # @return [true]
 post '/v0/system/keys/user/:user_name' do
-  content_type 'text/plain'
-  p_params = post_params(request)
-  params.merge!(p_params)
+  params.merge!(post_params(request))
   cparams = assemble_params(params, [:user_name],  :public_key)
   return log_error(request, cparams, params) if cparams.is_a?(EnginesError)
   update_key = cparams[:public_key] #symbolize_keys(params)
   r = engines_api.update_public_key(update_key)
   return log_error(request, r, cparams) if r.is_a?(EnginesError)
-  content_type 'text/plain'
-  status(202)
-  r.to_s
+  return_text(r)
 end
 
 # @method get_user_key
@@ -39,8 +34,6 @@ end
 get '/v0/system/keys/user/:user_name' do
   public_key = engines_api.get_public_key
   return log_error(request, public_key) if public_key.is_a?(EnginesError)
-  status(202)
-  content_type 'text/plain'
-  public_key.to_s
+  return_text(public_key)
 end
 # @!endgroup

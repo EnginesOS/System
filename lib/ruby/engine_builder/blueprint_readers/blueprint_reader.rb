@@ -64,7 +64,7 @@ class BluePrintReader
 
   def clean_path(path)
     # FIXME: remove preceeding ./(s) and /(s) as well as obliterate any /../ or preceeding ../ and any ' ' or ';' or '&' or '|' etc
-    return path
+     path
   end
 
   def process_blueprint
@@ -218,13 +218,11 @@ class BluePrintReader
   end
 
   def read_services
-
     log_build_output('Read Services')
     services = @blueprint[:software][:service_configurations]
     return true unless services.is_a?(Array) # not an error just nada
     services.each do |service|
       service[:publisher_namespace] = 'EnginesSystem' if service.key?(:publisher_namespace) == false || service[:publisher_namespace].nil?
-      service[:service_type] = service[:type_path]
       add_service(service)
     end
   rescue StandardError => e
@@ -254,7 +252,6 @@ class BluePrintReader
   def read_lang_fw_values
     log_build_output('Read Framework Settings')
     @framework = @blueprint[:software][:framework]
-
     @runtime = @blueprint[:software][:language]
     @memory = @blueprint[:software][:required_memory]
   rescue StandardError => e
@@ -295,7 +292,7 @@ class BluePrintReader
         return false
       end
     end
-    return true
+     true
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
@@ -350,7 +347,7 @@ class BluePrintReader
       end
       # FIXME: need to strip any ../ and any preceeding ./ in clean_path
     end
-    return true
+     true
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
@@ -367,7 +364,7 @@ class BluePrintReader
         @single_chmods.push(directory)
       end
     end
-    return true
+     true
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
@@ -450,7 +447,7 @@ class BluePrintReader
       # @mapped_ports.push(WorkPort.work_port_hash(name, portnum, external, false, type))
       @mapped_ports[name] = WorkPort.work_port_hash(name, portnum, external, true, type)
     end
-    return true
+     true
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end

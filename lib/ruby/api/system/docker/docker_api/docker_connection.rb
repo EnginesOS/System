@@ -158,7 +158,7 @@ class DockerConnection < ErrorsApi
     SystemDebug.debug(SystemDebug.docker,' Get ' + uri.to_s)
     rheaders = default_headers if rheaders.nil?
     r = connection.request(request_params({method: :get,path: uri,read_timeout: timeout,headers: rheaders}))
-    return handle_resp(r,expect_json) unless headers.nil?
+    return handle_resp(r,expect_json) unless rheaders.nil?
     handle_resp(connection.request(request_params(method: :get,
     path: uri)),
     expect_json

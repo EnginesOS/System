@@ -100,10 +100,13 @@ module SmEngineServices
     handle_exception(e)
   end
 
-  def remove_engine_from_managed_engine(params)
-    system_registry_client.remove_from_managed_engine(params)
-  rescue StandardError => e
-    handle_exception(e)
+  def remove_engine_services(params)
+   services = find_engine_services_hashes(params)
+   return services unless services.is_a?(Array)
+    services.each do |s|
+    system_registry_client.remove_from_managed_engine(s)
+  end
+ 
   end
 
   def get_cron_entry(cronjob, container)
@@ -117,16 +120,13 @@ module SmEngineServices
 
     return  entry unless entry.is_a?(Hash)
     entry[:variables][:cron_job]
-
-  rescue StandardError => e
-    handle_exception(e)
   end
 
   #@ remove an engine matching :engine_name from the service registry, all non persistent serices are removed
   #@ if :remove_all_data is true all data is deleted and all persistent services removed
   #@ if :remove_all_data is not specified then the Persistant services registered with the engine are moved to the orphan services tree
   #@return true on success and false on fail
-  def rm_remove_engine_services(params)
+  def remove_managed_services(params)
     clear_error
     r = ''
     begin
@@ -140,17 +140,13 @@ module SmEngineServices
       SystemDebug.debug(SystemDebug.services, :remove_service, service)
       if params[:remove_all_data] || service[:shared] #&& ! (service.key?(:shared) && service[:shared])
         service[:remove_all_data] = params[:remove_all_data]
-        return r if (r = delete_service(service)).is_a?(EnginesError)
+        delete_service(service)
       else
-        return r if (r = orphanate_service(service)).is_a?(EnginesError)
-        return r if (r = remove_from_managed_service(service)).is_a?(EnginesError)
+         orphanate_service(service)
+         remove_from_managed_service(service)
       end
-     # return r if (r = remove_from_managed_service(service)).is_a?(EnginesError)
     end
     true
-
-  rescue StandardError => e
-    handle_exception(e)
   end
 
 end

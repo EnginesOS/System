@@ -8,8 +8,6 @@ module SmPublicKeyAccess
     return '' unless File.exists?(kfn)
     k = File.read(kfn)
     k.split(' ')[1]
-  rescue StandardError => e
-    handle_exception(e)
   end
 
 end

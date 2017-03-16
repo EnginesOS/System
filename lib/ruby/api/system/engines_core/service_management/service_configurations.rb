@@ -68,7 +68,6 @@ module ServiceConfigurations
       avail[definition_key][:service_name] = service_hash[:service_name]
       avail[definition_key][:type_path] = service_hash[:type_path]
       avail[definition_key][:publisher_namespace] = service_hash[:publisher_namespace]
-
       avail[definition_key][:configurator_name] = definition[:name]
       avail[definition_key][:variables] = definition_params_to_variables(definition[:params].keys)
       avail[definition_key][:no_save] = definition[:no_save]

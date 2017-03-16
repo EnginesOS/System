@@ -3,6 +3,11 @@ touch /opt/engines/run/system/flags/update_engines_running
 
 sudo -n /opt/engines/system/scripts/update/sudo/_update_engines_system_software.sh 
 
+if test -f /opt/engines/run/system/flags/update_pending
+ then
+	rm /opt/engines/run/system/flags/update_pending
+fi
+
 echo "Stopping"
 
 docker stop system 
@@ -47,10 +52,7 @@ if test -f /opt/engines/run/system/flags/update_engines_running
 	rm /opt/engines/run/system/flags/update_engines_running
 fi
 
-if test -f /opt/engines/run/system/flags/update_pending
- then
-	rm /opt/engines/run/system/flags/update_pending
-fi
+
 
 if test $1 = '-f'
  then 

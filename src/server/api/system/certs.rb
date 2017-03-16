@@ -16,7 +16,6 @@ end
 get '/v0/system/certs/:cert_name' do
   cert = engines_api.get_cert(params[:cert_name])
   return log_error(request, cert) if cert.is_a?(EnginesError)
-  content_type 'text/plain'
   return_text(cert)
 end
 

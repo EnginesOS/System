@@ -4,8 +4,6 @@ def attach_shared_volume(shared_service)
   return engine unless  engine.is_a?(ManagedEngine)
   # Volume.complete_service_hash(shared_service)
   true
-  rescue StandardError => e
-    handle_exception(e, shared_service)
 end
 
 #def dettach_shared_volume(service_hash)

@@ -1,4 +1,3 @@
-
 require_relative 'private/service_container_actions.rb'
 
 module SmOrphanServices
@@ -6,8 +5,6 @@ module SmOrphanServices
     SystemDebug.debug(SystemDebug.orphans, :Orphanate, params)
     params[:fresh] = false
     system_registry_client.orphanate_service(params)
-  rescue StandardError => e
-    handle_exception(e)
   end
 
   ## ????
@@ -21,8 +18,6 @@ module SmOrphanServices
   def rollback_orphaned_service(service_hash)
     SystemDebug.debug(SystemDebug.orphans, :rollback_orphaned_service, service_hash)
     system_registry_client.rollback_orphaned_service(service_hash)
-  rescue StandardError => e
-    handle_exception(e)
   end
 
   #@returns [Hash] suitable for use  to attach as a service
@@ -34,8 +29,6 @@ module SmOrphanServices
     service_hash[:freed_orphan] = true
     #resuse_service_hash = @service_manager.reparent_orphan(service_hash)
     service_hash
-  rescue StandardError => e
-    handle_exception(e)
   end
 
   def match_orphan_service(service_hash)
@@ -45,15 +38,10 @@ module SmOrphanServices
       return true if res[:publisher_namespace] == service_hash[:publisher_namespace]
     end
     false
-  rescue StandardError => e
-    handle_exception(e)
   end
 
   def retrieve_orphan(params)
-    #  STDERR.puts('retrice ORPHA ' + params.to_s)
     system_registry_client.retrieve_orphan(params)
-  rescue StandardError => e
-    handle_exception(e)
   end
 
   #@ removes underly service and remove entry from orphaned services
@@ -61,17 +49,14 @@ module SmOrphanServices
   def remove_orphaned_service(service_query_hash)
     SystemDebug.debug(SystemDebug.orphans, :remove_orphaned_service, service_query_hash)
     clear_error
-    r = ''
     service_hash = retrieve_orphan(service_query_hash)
-
     if service_query_hash[:remove_all_data] == false
       service_hash[:remove_all_data] = false
     else
       service_hash[:remove_all_data] = true
     end
-    return system_registry_client.release_orphan(service_hash) if ( r = remove_from_managed_service(service_hash))
-  rescue StandardError => e
-    handle_exception(e)
+    remove_from_managed_service(service_hash)
+    return system_registry_client.release_orphan(service_hash)
   end
 
   #@return an [Array] of service_hashs of Orphaned persistent services matching @params [Hash]
@@ -83,8 +68,6 @@ module SmOrphanServices
   #on recepit of an empty array any non critical error will be in  this object's  [ServiceManager] last_error method
   def get_orphaned_services(params)
     system_registry_client.get_orphaned_services(params)
-  rescue StandardError => e
-    handle_exception(e)
   end
 
   def connect_orphan_service(service_hash)
@@ -93,11 +76,8 @@ module SmOrphanServices
     orphan = retrieve_orphan(orphan_search)
     merge_variables(service_hash,orphan)
     service_hash = reparent_orphan(service_hash, service_hash[:parent_engine])
-    r = create_and_register_service(service_hash)
-    r = release_orphan(orphan) if r.is_a?(TrueClass)
-    r
-  rescue StandardError => e
-    handle_exception(e)
+    create_and_register_service(service_hash)
+    release_orphan(orphan)
   end
 
 end

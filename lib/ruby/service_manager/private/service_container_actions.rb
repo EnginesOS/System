@@ -13,8 +13,6 @@ def add_to_managed_service(service_hash)
   r = service.add_consumer(service_hash)
   SystemDebug.debug(SystemDebug.services, :add_to_managed_result, r)
   r
-rescue StandardError => e
-  log_exception(e)
 end
 
 # Calls remove service on the service_container to remove the service associated by the hash
@@ -28,6 +26,4 @@ def remove_from_managed_service(service_hash)
   return service.remove_consumer(service_hash) if service.persistent == false || service.is_running?
   return log_error_mesg('Cant remove persistent service if service is stopped ', service_hash) if service.persistent
   true
-rescue StandardError => e
-  log_exception(e)
 end
