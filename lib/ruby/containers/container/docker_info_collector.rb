@@ -7,9 +7,6 @@ module DockerInfoCollector
     collect_docker_info if @docker_info_cache.nil?
     return false if @docker_info_cache.nil?
     @docker_info_cache
-  rescue StandardError => e
-    STDERR.puts('Exceptions ' + e.to_s + ':' + @docker_info_cache.to_s )
-    log_exception(e)
   end
 
   def expire_engine_info
@@ -26,8 +23,6 @@ module DockerInfoCollector
      false
   rescue
     return nil
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def set_cont_id
@@ -73,12 +68,10 @@ module DockerInfoCollector
       return -1 if info.key?(:RepoTags) #No container by that name and it will return images by that name WTF
       @container_id = info[:Id] if info.key?(:Id)
       SystemDebug.debug(SystemDebug.containers,@container_id)
-
     end
     save_state unless cid == @container_id
       @container_id
-  rescue StandardError => e
-    log_exception(e)
+
   end
 
   def running_user
@@ -87,8 +80,6 @@ module DockerInfoCollector
     return -1 unless info.key?(:Config)
     return -1 unless info[:Config].key?(:User)
       info[:Config][:User]
-  rescue StandardError => e
-     log_exception(e,info)
   end
   protected
 
