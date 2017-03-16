@@ -35,7 +35,7 @@ module EnginesDockerApiErrors
 
   def error_type_hash(mesg, params = nil)
     {error_mesg: mesg,
-      system: :engines_core,
+      system: :docker_api,
       params: params }
   end
 end
