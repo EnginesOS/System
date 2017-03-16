@@ -14,18 +14,12 @@ module TemplateOperations
     templater.fill_in_service_def_values(service_def)
     #FIXME make service_handle_field unique
     service_def
-  rescue StandardError => e
-    p service_hash
-    p service_def
-    log_exception(e)
   end
 
   def get_resolved_string(env_value)
     templater = Templater.new(system_value_access,nil)
     env_value = templater.apply_system_variables(env_value)
     env_value
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def get_resolved_engine_string(env_value, container)

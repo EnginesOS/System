@@ -79,7 +79,10 @@ class SystemApi < ErrorsApi
     engines = getManagedEngines #list_managed_engines
     return  engines if engines.is_a?(EnginesError)
     engines.each do |engine|
+      begin
       result[engine.container_name] = engine.read_state
+    rescue #skip services down
+    end
     end
     result
   end
@@ -88,7 +91,10 @@ class SystemApi < ErrorsApi
     result = {}
     engines =  getManagedEngines # list_managed_services
     engines.each do |engine|
+      begin
       result[engine.container_name] = engine.status
+    rescue #skip services down
+    end
     end
     result
   end
@@ -97,7 +103,10 @@ class SystemApi < ErrorsApi
     result = {}
     services =  getManagedServices # list_managed_services
     services.each do |service|
+      begin
       result[service.container_name] = service.status
+    rescue #skip services down
+    end
     end
     return result
   end
@@ -106,7 +115,11 @@ class SystemApi < ErrorsApi
     result = {}
     services =  getManagedServices # list_managed_services
     services.each do |service|
+      begin
       result[service.container_name] = service.read_state
+      rescue DockerException => e
+        next
+      end
     end
     result
   end

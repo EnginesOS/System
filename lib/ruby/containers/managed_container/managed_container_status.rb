@@ -14,6 +14,9 @@ module ManagedContainerStatus
     end
     
      state
+  rescue EnginesException =>e
+    expire_engine_info
+    'nocontainer'
   end
   
 # raw=true means dont check state for error
@@ -37,10 +40,13 @@ module ManagedContainerStatus
       @last_error = ''
     end
      state
-  rescue Exception=>e
-    STDERR.puts 'excetpion ' + e.to_s + ':' + @last_result.to_s
-    log_exception(e)
-     'nocontainer'
+#  rescue Exception=>e
+#    STDERR.puts 'excetpion ' + e.to_s + ':' + @last_result.to_s
+#    log_exception(e)
+#     'nocontainer'
+    rescue EnginesException =>e
+      expire_engine_info
+      'nocontainer'
   end
 
   def is_startup_complete?

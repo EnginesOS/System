@@ -48,8 +48,11 @@ module SmEngineServices
     services = get_engine_nonpersistent_services(params)
     return services  unless services.is_a?(Array)
     services.each do |service_hash|
+      begin
       system_registry_client.remove_from_services_registry(service_hash)
       remove_from_managed_service(service_hash)
+      rescue
+      end
     end
     true
   rescue StandardError => e
@@ -92,8 +95,11 @@ module SmEngineServices
     SystemDebug.debug(SystemDebug.services,:register_non_persistent, services)
     return services  unless services.is_a?(Array)
     services.each do |service_hash|
+      begin
       register_non_persistent_service(service_hash)
       SystemDebug.debug(SystemDebug.services,:register_non_persistent,service_hash)
+      rescue
+      end
     end
     true
   rescue StandardError => e
@@ -128,7 +134,6 @@ module SmEngineServices
   #@return true on success and false on fail
   def remove_managed_services(params)
     clear_error
-    r = ''
     begin
     services = get_engine_persistent_services(params)  #system_registry_client.
     rescue StandardError => e

@@ -6,7 +6,7 @@ module UserAuth
     rows = auth_database.execute( 'select authtoken from systemaccess where username=' + "'" + params[:user_name].to_s +
     "' and password = '" +  params[:password].to_s + "';")
       
-    return log_error_mesg("failed to select",nil,'unauthorised', params) unless rows.count > 0
+    raise EnginesException.new(error_hash("failed to select", params)) unless rows.count > 0
     rows[0]
   end
 

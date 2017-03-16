@@ -10,8 +10,7 @@ module DockerApiContainerOps
     r = get_request(request)
     return true if r.is_a?(Hash)
      false
-  rescue StandardError => e
-     false
+
   end
 
   def destroy_container(container)
@@ -21,8 +20,6 @@ module DockerApiContainerOps
       request = '/containers/' + container.container_id.to_s
     end
      delete_request(request)
-  rescue StandardError => e
-    log_exception(e)
   end
 
   require_relative 'docker_api_create_options.rb'

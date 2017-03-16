@@ -6,9 +6,7 @@ module EnginesServerHost
     return result if result.is_a?(EnginesError)
     return -1 if result[:result] != 0
      result[:stdout].to_i
-  rescue StandardError => e
-    log_exception(e)
-    return -1
+
   end
   
   def restart_engines_system_service
@@ -16,23 +14,17 @@ module EnginesServerHost
     # FIXME: check a status flag after sudo side post ssh run ie when we know it's definititly happenging
     return true if res.status == 'run'
      false
-    rescue StandardError => e
-      SystemUtils.log_exception(e)
   end
   def recreate_engines_system_service
     res = Thread.new { run_server_script('recreate_system_service') }
     # FIXME: check a status flag after sudo side post ssh run ie when we know it's definititly happenging
     return true if res.status == 'run'
      false
-    rescue StandardError => e
-      SystemUtils.log_exception(e)
   end
   def halt_base_os(reason)
     log_error_mesg("Shutdown Due to:" + reason.to_s)
     File.delete(SystemConfig.BuildRunningParamsFile) if File.exist?(SystemConfig.BuildRunningParamsFile)
     res = Thread.new { run_server_script('power_off_base_os') }
-    rescue StandardError => e
-      SystemUtils.log_exception(e)
   end
 
   def available_ram
@@ -133,8 +125,7 @@ module EnginesServerHost
       end
     end
      r
-rescue StandardError => e
-  SystemUtils.log_exception(e)
+
   end
 
   def get_disk_statistics
@@ -156,8 +147,6 @@ rescue StandardError => e
       end
     end
      r
-rescue StandardError => e
-  SystemUtils.log_exception(e)
   end
 
   def run_server_script(script_name , script_data=false, script_timeout = @@server_script_timeout)
@@ -176,12 +165,8 @@ STDERR.puts('RUN SERVER SCRIPT cmd'  + cmd.to_s)
     end
   rescue Timeout::Error
     STDERR.puts('Timeout on Running Server Script ' + script_name )
-    return  log_error_mesg('Timeout on Running Server Script ' + script_name , script_name)
+    raise EnginesException.new(error_hash('Timeout on Running Server Script ' + script_name , script_name))
     #system('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/restart_mgmt engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/restart_mgmt.sh')
-  rescue StandardError => e
-    STDERR.puts( 'Except ' + e.to_s + ' ' + e.backtrace.to_s)
-     log_exception(e)
-
   end
 
 end

@@ -73,12 +73,8 @@ module ServiceManagerOperations
       next unless service_hash.is_a?(Hash)
       next unless service_hash[:variables].is_a?(Hash)
       sites.push(service_hash[:variables][:fqdn])
-
     end
      sites
-  rescue StandardError => e
-    log_exception(e)
-    return sites
   end
 
 end

@@ -3,15 +3,13 @@ module SystemSettings
     f = SystemConfig.NoRemoteExceptionLoggingFlagFile
     return File.delete(f) if File.exists?(f)
      true
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
+ 
   end
 
   def disable_remote_exception_logging
     FileUtils.touch(SystemConfig.NoRemoteExceptionLoggingFlagFile)
      true
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
+ 
   end
   
  def system_hostname  

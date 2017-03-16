@@ -8,8 +8,7 @@ def add_to_managed_service(service_hash)
   service =  @core_api.load_software_service(service_hash)
   return service unless service.is_a?(ManagedService)
   return true if service.is_soft_service? && !service.is_running?
-  return log_error_mesg('Cant add to service if service is stopped: ' + service.container_name.to_s ,service_hash) unless service.is_running? 
-  SystemDebug.debug(SystemDebug.services, :add_to_managed_service, service)
+  raise EnginesException.new(error_hash('Cant add to service if service is stopped: ' + service.container_name.to_s, params)) unless service.is_running?
   r = service.add_consumer(service_hash)
   SystemDebug.debug(SystemDebug.services, :add_to_managed_result, r)
   r

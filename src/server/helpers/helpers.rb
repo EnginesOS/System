@@ -1,24 +1,25 @@
 helpers do
-require_relative 'params.rb'
-
+  require_relative 'params.rb'
   def engines_api
     $engines_api
   end
 
   def return_json(r, s=202)
     return return_error if r.is_a?(EnginesError)
+    content_type 'application/json'
     status(s)
     return empty_json if r.nil?
-  #  STDERR.puts("JSON " + r.to_s)
+    #  STDERR.puts("JSON " + r.to_s)
     r.to_json
   end
 
   def return_json_array(r, s=202)
     return return_error if r.is_a?(EnginesError)
+    content_type 'application/json'
     status(s)
-    return empty_array if r.nil?  
-    return empty_array if r.is_a?(FalseClass)  
-  #  STDERR.puts("JSON " + r.to_s)
+    return empty_array if r.nil?
+    return empty_array if r.is_a?(FalseClass)
+    #  STDERR.puts("JSON " + r.to_s)
     r.to_json
   end
 
@@ -30,15 +31,16 @@ require_relative 'params.rb'
     r.to_s
   end
 
-  def return_true(s = 200)   
-    return return_error if r.is_a?(EnginesError)
+  def return_true(s = 200)
+    return return_error(s) if r.is_a?(EnginesError)
     return_text('true', s)
-    end
-    
-    def return_error(error)
-      status(404) # FixMe take this from the error if avail
-      error.to_json
-    end
+  end
+
+  def return_error(error)
+    status(404) # FixMe take this from the error if avail
+    content_type 'application/json'
+    error.to_json
+  end
 
   def json_parser
     # @json_parser = Yajl::Parser.new(:symbolize_keys => true) if @json_parser.nil?
@@ -49,9 +51,11 @@ require_relative 'params.rb'
   def empty_array
     @empty_array ||= [].to_json
   end
+
   def empty_json
     @empty_json ||= {}.to_json
-   end
+  end
+
   def log_exception(e, *args)
     e_str = e.to_s()
     e.backtrace.each do |bt|
@@ -65,7 +69,7 @@ require_relative 'params.rb'
     f = File.open('/tmp/exceptions.' + Process.pid.to_s, 'a+')
     f.puts(e_str)
     f.close
-     false
+    false
   end
 
   def log_error(request, error_object, *args)
@@ -89,7 +93,7 @@ require_relative 'params.rb'
     else
       status(code)
     end
-     error_mesg.to_json
+    error_mesg.to_json
   end
 
   def get_engine(engine_name)
@@ -105,15 +109,13 @@ require_relative 'params.rb'
 
     service = engines_api.loadManagedService(service_name)
     return service if service.is_a?(ManagedService) || service.is_a?(EnginesError)
-     log_error('Load Service failed !!!' + service_name, service)
+    log_error('Load Service failed !!!' + service_name, service)
   end
 
   def  downcase_keys(hash)
     return hash unless hash.is_a? Hash
     hash.map{|k,v| [k.downcase, downcase_keys(v)] }.to_h
   end
-
- 
 
   def managed_containers_to_json(containers)
     if containers.is_a?(Array)

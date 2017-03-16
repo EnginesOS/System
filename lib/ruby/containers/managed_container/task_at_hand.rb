@@ -220,8 +220,7 @@ module TaskAtHand
     SystemDebug.debug(SystemDebug.engine_tasks, :WITH, @last_error.to_s, msg.to_s)
     task_complete(:failed)
      false
-  rescue StandardError => e
-    log_exception(e)
+
   end
 
   def wait_for_container_task(timeout=90)
@@ -234,8 +233,7 @@ module TaskAtHand
       return log_error_mesg('timeout expire') if loop > timeout * 2
     end
      true
-  rescue StandardError => e
-    log_exception(e)
+
   end
 
   private
@@ -289,8 +287,7 @@ module TaskAtHand
 
   require_relative 'task_timeouts.rb'
   def task_set_timeout(task)
-    TaskTimeouts.task_set_timeout(task)
-   
+    TaskTimeouts.task_set_timeout(task)   
   end
 
   def set_task_at_hand(state)

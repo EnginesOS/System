@@ -8,9 +8,9 @@ module ServiceHashChecks
     service_hash[:container_type] = "container" unless service_hash.key?(:container_type)
     # End of Kludge
     raise EnginesException.new({error_mesg: 'No parent engine',  error_type: :error , params: service_hash}) unless service_hash.key?(:parent_engine)
-    raise EnginesException.new({error_mesg: 'nil parent_engine',  error_type: :error , params: service_hash}) if service_hash[:parent_engine].nil? || service_hash[:parent_engine] == ''
+    raise EnginesException.new({error_mesg: 'nil parent_engine',  error_type: :error , params: service_hash}) if service_hash[:parent_engine].nil? || service_hash[:parent_engine].nil?
     raise EnginesException.new({error_mesg: 'No container type path',  error_type: :error , params: service_hash}) unless service_hash.key?(:container_type)
-    raise EnginesException.new({error_mesg: 'nil container type path',  error_type: :error , params: service_hash})  if service_hash[:container_type].nil? || service_hash[:container_type] == ''
+    raise EnginesException.new({error_mesg: 'nil container type path',  error_type: :error , params: service_hash})  if service_hash[:container_type].nil? || service_hash[:container_type].nil?
     true
   end
 
@@ -41,9 +41,9 @@ module ServiceHashChecks
   def check_service_hash(service_hash)
     check_hash(service_hash)
     raise EnginesException.new({error_mesg: 'No publisher name space',error_type: :error , params: service_hash}) unless service_hash.key?(:publisher_namespace)
-    raise EnginesException.new({error_mesg: 'nil publisher name space', error_type: :error , params: service_hash}) if service_hash[:publisher_namespace].nil? || service_hash[:publisher_namespace] == ''
+    raise EnginesException.new({error_mesg: 'nil publisher name space', error_type: :error , params: service_hash}) if service_hash[:publisher_namespace].nil? || service_hash[:publisher_namespace].nil?
     raise EnginesException.new({error_mesg: 'No type path', error_type: :error , params: service_hash}) unless service_hash.key?(:type_path)
-    raise EnginesException.new({error_mesg: 'nil type path', error_type: :error , params: service_hash}) if service_hash[:type_path].nil? || service_hash[:type_path] == ''
+    raise EnginesException.new({error_mesg: 'nil type path', error_type: :error , params: service_hash}) if service_hash[:type_path].nil? || service_hash[:type_path].nil?
     true
   end
 

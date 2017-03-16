@@ -7,8 +7,7 @@ module DockerApiImages
     return true if r.is_a?(Hash) && r.key?(:Id)
 
       false
-  rescue StandardError => e
-    log_exception(e)
+ 
   end
 
   def find_images(search)
@@ -33,14 +32,8 @@ module DockerApiImages
     
     headers = { 'X-Registry-Config'  => get_registry_auth, 'Content-Type' =>'plain/text', 'Accept-Encoding' => 'gzip'}
 
-    r =  post_request(request,  nil, false , headers ,600)
-#    req = Net::HTTP::Post.new(request, header)
-#   r = perform_request(req, container, false,  false)
-#    
+      post_request(request,  nil, false , headers ,600)
 
-     true
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def  image_exist?(container)
@@ -51,21 +44,18 @@ module DockerApiImages
     #    return true if r.is_a?(Hash) && r.key?('Id')
     #    STDERR.puts(' image_exist? res ' + r.to_s )
     #    return  false
-  rescue StandardError => e
-    log_exception(e)
+ 
   end
 
   def delete_container_image(container)
     request = '/images/' + container.image
      delete_request(request)
-  rescue StandardError => e
-    log_exception(e)
+  
   end
 
   def delete_image(image_name)
     request = '/images/' + image_name
      delete_request(request)
-  rescue StandardError => e
-    log_exception(e)
+  
   end
 end

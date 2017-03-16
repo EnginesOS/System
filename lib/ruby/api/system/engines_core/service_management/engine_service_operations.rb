@@ -10,8 +10,7 @@ module EngineServiceOperations
     r = service_manager.get_engine_persistent_services(params)
 
     r
-  rescue StandardError => e
-    log_exception(e,container_name)
+  
   end
 
   def engines_services_to_backup(engine_name)
@@ -27,8 +26,7 @@ module EngineServiceOperations
     }
     SystemDebug.debug(SystemDebug.services,  :engine_persistent_services, params)
     service_manager.get_engine_persistent_services(params)
-  rescue StandardError => e
-    log_exception(e,service_name)
+  
   end
 
   def service_attached_services(service_name)
@@ -37,8 +35,7 @@ module EngineServiceOperations
       container_type: 'service'
     }
     find_engine_services_hashes(params)
-  rescue StandardError => e
-    log_exception(e,service_name)
+  
   end
 
   def engine_attached_services(container_name)
@@ -47,30 +44,25 @@ module EngineServiceOperations
       container_type: 'container'
     }
     find_engine_services_hashes(params)
-  rescue StandardError => e
-    log_exception(e,container_name)
+  
   end
 
   def service_is_registered?(service_hash)
-    r = ''
     check_service_hash(service_hash)
     service_manager.service_is_registered?(service_hash)
-  rescue StandardError => e
-    log_exception(e,service_hash)
+ 
   end
 
   def get_engine_persistent_services(service_hash)
     check_engine_hash(service_hash)
     service_manager.get_engine_persistent_services(service_hash)
-  rescue StandardError => e
-    log_exception(e,service_hash)
+ 
   end
 
   def find_engine_services(service_query)
      check_engine_hash(service_query)
     find_engine_services_hashes(service_query)
-  rescue StandardError => e
-    log_exception(e,service_query)
+  
     #return sm.find_engine_services(params)
   end
 
@@ -78,8 +70,7 @@ module EngineServiceOperations
     SystemDebug.debug(SystemDebug.services,'core attach existing service', params)
      check_engine_hash(params)
     service_manager.attach_existing_service_to_engine(params)
-  rescue StandardError => e
-    log_exception(e,params)
+  
 
   end
 
@@ -103,7 +94,7 @@ module EngineServiceOperations
     unless r.is_a?(EnginesError)
       if service_hash[:type_path] == 'filesystem/local/filesystem'
         result = add_file_share(params)
-        return log_error_mesg('failed to create fs',self) if result.is_a?(EnginesError)
+        raise EnginesException.new(error_hash('failed to create fs', self)) if result.is_a?(EnginesError)
       end
       return true
     end
@@ -119,8 +110,7 @@ module EngineServiceOperations
     return engine if engine.is_a?(EnginesError)
     engine.add_shared_volume(service_hash)
 
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
+ 
   end
 
   def trim_to_editable_variables(params)
@@ -129,8 +119,7 @@ module EngineServiceOperations
       key = variable[:name]
       params[:variables].delete(key) if variable[:immutable] == true
     end
-  rescue StandardError => e
-    log_exception(e,params,variables)
+ 
   end
 
   def get_service_pubkey(engine, cmd)
@@ -142,13 +131,11 @@ module EngineServiceOperations
     return result[:stdout] if result.is_a?(Hash) &&result[:result] == 0
     log_error_mesg('Get pub key failed',result)
     service_manager.load_service_pubkey(container, cmd)
-  rescue StandardError => e
-    log_exception(e)
+  
   end
   
   
 def remove_engine(engine_name, reinstall = false)
-    r = ''
     engine = loadManagedEngine(engine_name)
     SystemDebug.debug(SystemDebug.containers,:delete_engines,engine_name,engine, :resinstall,reinstall)
     params = {
@@ -159,7 +146,7 @@ def remove_engine(engine_name, reinstall = false)
     }
     unless engine.is_a?(ManagedEngine) # DO NOT MESS with this logi used in roll back and only works if no engine DO NOT MESS with this logic
       return true if service_manager.remove_engine_from_managed_engine(params)
-      return log_error_mesg('Failed to find Engine',params)
+      raise EnginesException.new(error_hash('Failed to find Engine',params))
     end
 
    #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)

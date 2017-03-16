@@ -6,8 +6,7 @@ module DockerApiContainerActions
       request = '/containers/' + container.container_id.to_s + '/start'
     end
      post_request(request)
-  rescue StandardError => e
-    log_exception(e)
+ 
   end
 
   def pause_container(container)
@@ -17,8 +16,7 @@ module DockerApiContainerActions
       request = '/containers/' + container.container_id.to_s + '/pause'
     end
      post_request(request)
-  rescue StandardError => e
-    log_exception(e)
+ 
   end
 
   def unpause_container(container)
@@ -28,9 +26,6 @@ module DockerApiContainerActions
       request = '/containers/' + container.container_id.to_s + '/unpause'
     end
      post_request(request)
-  rescue StandardError => e
-    log_exception(e)
-
   end
 
   def stop_container(container)
@@ -42,7 +37,5 @@ module DockerApiContainerActions
       request = '/containers/' + container.container_id.to_s + '/stop?t=' + stop_timeout.to_s
     end
      post_request(request)
-  rescue StandardError => e
-    log_exception(e)
   end
 end

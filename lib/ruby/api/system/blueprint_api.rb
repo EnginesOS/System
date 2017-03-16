@@ -10,9 +10,7 @@ class BlueprintApi < ErrorsApi
     f.write(blueprint.to_json)
     f.close
      true
-  rescue StandardError => e
-    log_error_mesg('Blueprint save Failure', container)
-    log_exception(e)
+  
   end
 
   def self.load_blueprint_file(blueprint_file_name)
@@ -20,9 +18,7 @@ class BlueprintApi < ErrorsApi
     json_hash = deal_with_json(blueprint_file.read)
     blueprint_file.close
      json_hash
-    rescue StandardError => e
-        SystemUtils.log_error_mesg('Blueprint Parse Failure', blueprint_file)
-    SystemUtils.log_exception(e)
+    
   end
 
   def load_blueprint(container)
@@ -32,8 +28,6 @@ class BlueprintApi < ErrorsApi
     statefile = state_dir + '/blueprint.json'
     return log_error_mesg("No Blueprint File Found", statefile) unless File.exist?(statefile)
     BlueprintApi.load_blueprint_file(statefile)
-  rescue StandardError => e
-    log_error_mesg('Blueprint Parse Failure', statefile)
-    log_exception(e)
+  
   end
 end

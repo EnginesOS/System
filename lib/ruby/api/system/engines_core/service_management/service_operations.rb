@@ -71,7 +71,7 @@ module ServiceOperations
 
     ahash = find_engine_service_hash(service_hash)
     return ahash if ahash.is_a?(EnginesError)
-    return log_error_mesg("Cannot update a shared service",service_hash) if ahash[:shared] == true
+    raise EnginesException.new(error_hash("Cannot update a shared service",service_hash)) if ahash[:shared] == true
     service_manager.update_attached_service(service_hash)
   end
 
@@ -82,14 +82,18 @@ module ServiceOperations
   protected
 
   def create_and_register_managed_service(service_hash)
-    return log_error_mesg('Attached Service passed no variables ' +  service_hash.to_s, service_hash) unless service_hash.key?(:variables)
+    raise EnginesException.new(error_hash('Attached Service passed no variables ' +  service_hash.to_s, service_hash)) unless service_hash.key?(:variables)
     SystemDebug.debug(SystemDebug.services, "osapicreate_and_register_managed_service", service_hash)
     service_hash[:variables][:parent_engine] = service_hash[:parent_engine] unless service_hash[:variables].has_key?(:parent_engine)
     set_top_level_service_params(service_hash, service_hash[:parent_engine])
     check_engine_service_hash(service_hash)
     if service_hash[:type_path] == 'filesystem/local/filesystem'
+      begin
       engine = loadManagedEngine(service_hash[:parent_engine])
       engine.add_volume(service_hash) if engine.is_a?(ManagedEngine)
+      rescue
+        #will fail on build
+      end
     end
     SystemDebug.debug(SystemDebug.services,"calling service ", service_hash)
     service_manager.create_and_register_service(service_hash)

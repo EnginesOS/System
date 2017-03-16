@@ -2,24 +2,25 @@
 #require 'objspace'
 require '/opt/engines/lib/ruby/containers/container.rb'
 require '/opt/engines/lib/ruby/containers/managed_container.rb'
+
 class ManagedService < ManagedContainer
 
   require_relative 'managed_service/managed_service_configurations.rb'
-  include    ManagedServiceConfigurations
+  include ManagedServiceConfigurations
   require_relative 'managed_service/managed_service_consumers.rb'
-  include    ManagedServiceConsumers
+  include ManagedServiceConsumers
   require_relative 'managed_service/managed_service_readers.rb'
-  include    ManagedServiceReaders
+  include ManagedServiceReaders
   require_relative 'managed_service/managed_service_container_info.rb'
-  include    ManagedServiceContainerInfo
+  include ManagedServiceContainerInfo
   require_relative 'managed_service/managed_service_controls.rb'
-  include    ManagedServiceControls
+  include ManagedServiceControls
   require_relative 'managed_service/managed_service_image_controls.rb'
-  include    ManagedServiceImageControls
+  include ManagedServiceImageControls
   require_relative 'managed_service/managed_service_on_action.rb'
   include ManagedServiceOnAction
   @ctype='service'
-  @soft_service  = false
+  @soft_service = false
   def lock_values
     super
     @ctype = 'service' if @ctype.nil?
@@ -27,17 +28,14 @@ class ManagedService < ManagedContainer
   end
 
   def ctype
-     @ctype
+    @ctype
   end
 
   def is_soft_service?
-      return true unless @soft_service.is_a?(FalseClass)
-       false
+    return true unless @soft_service.is_a?(FalseClass)
+    false
   end
 
-#  def state
-#    read_state
-#  end
 
   def initialize(name, memory, hostname, domain_name, image, volumes, web_port, eports, dbs, environments, framework, runtime)
     @last_error = 'None'
@@ -63,11 +61,17 @@ class ManagedService < ManagedContainer
     { :publisher_namespace => @publisher_namespace,
       :type_path => @type_path
     }
-  
+
   end
-  
+
   def destroy
     log_error_mesg('Cannot call destroy on a service',self)
+  end
+
+  def error_type_hash(mesg, params = nil)
+    {error_mesg: mesg,
+      system: :managed_service,
+      params: params }
   end
 
   #Sets @last_error to msg + object.to_s (truncated to 256 chars)

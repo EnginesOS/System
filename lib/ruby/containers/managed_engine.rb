@@ -3,7 +3,6 @@ class ManagedEngine < ManagedContainer
 
   def initialize(build_params, runtime_params , core_api)
     @container_mutex = Mutex.new
-
     @memory = build_params[:memory]
     @hostname = build_params[:host_name]
     @domain_name = build_params[:domain_name]
@@ -56,24 +55,30 @@ class ManagedEngine < ManagedContainer
   def plugins_path
     return '/plugins/'
   end
- 
+
   def extract_plugins
     false
   end
 
-  def add_shared_volume(service_hash)    
-    vol = {} 
-    vol[:volume_name] = service_hash[:owner] + '_' + service_hash[:service_handle]
-    vol[:localpath] = service_hash[:variables][:volume_src]
-    vol[:remotepath] = service_hash[:variables][:engine_path]
-    vol[:permissions] = service_hash[:variables][:permissions]
-    vol[:user] = service_hash[:variables][:user]
-    vol[:group] = service_hash[:variables][:group]
-    @volumes[ vol[:volume_name] ] = vol
+  def add_shared_volume(service_hash)
+    @volumes[ vol[:volume_name] ] = {
+      volume_name: service_hash[:owner] + '_' + service_hash[:service_handle],
+      localpath: service_hash[:variables][:volume_src],
+      remotepath: service_hash[:variables][:engine_path],
+      permissions: service_hash[:variables][:permissions],
+      user: service_hash[:variables][:user],
+      group: service_hash[:variables][:group]
+    }
     save_state
   end
 
   def engine_attached_services
-     @container_api.engine_attached_services(self)
+    @container_api.engine_attached_services(self)
+  end
+
+  def error_type_hash(mesg, params = nil)
+    {error_mesg: mesg,
+      system: :managed_engine,
+      params: params }
   end
 end

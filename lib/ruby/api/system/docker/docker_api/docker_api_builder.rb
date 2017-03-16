@@ -86,7 +86,7 @@ module DockerApiBuilder
      r
   rescue StandardError => e
     stream_handler.close unless stream_handler.nil?
-    log_exception(e)
+    raise e
   end
 
 end

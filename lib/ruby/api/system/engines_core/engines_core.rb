@@ -162,10 +162,6 @@ class EnginesCore < ErrorsApi
     names.concat(list_managed_services)
     names.concat(list_system_services)
     names
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
-    failed('Gui', 'reserved_engine_names', 'failed')
-    []
   end
 
   def reserved_ports
@@ -208,7 +204,7 @@ class EnginesCore < ErrorsApi
       @build_controller.build_engine(params)
     }
     return true if @build_thread.alive?
-    log_error(params[:engine_name], 'Build Failed to start')
+    raise EnginesException.new(error_hash(params[:engine_name], 'Build Failed to start'))
   end
 
   def shutdown(reason)

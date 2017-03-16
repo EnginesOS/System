@@ -43,16 +43,14 @@ module AvailableServices
     #p :avail_services
     #p avail_services.to_s
      avail_services
-  rescue StandardError => e
-    log_exception(e)
+
   end
 
 
 
   def list_attached_services_for(objectName, identifier)
     service_manager.list_attached_services_for(objectName, identifier)
-  rescue StandardError => e
-    log_exception(e)
+ 
   end
 
 #
@@ -63,8 +61,7 @@ def load_service_definition(filename)
   s = SoftwareServiceDefinition.from_yaml(yaml_file)
   yaml_file.close
   s
- rescue StandardError => e
-   log_exception(e)
+
  end
  
   def load_software_service(params)
@@ -72,7 +69,6 @@ def load_service_definition(filename)
     return params[:service_container_name]  if params[:service_container_name].is_a?(EnginesError)
 
     loadManagedService(params[:service_container_name] )
-  rescue StandardError => e
-    log_exception(e)
+
   end
 end

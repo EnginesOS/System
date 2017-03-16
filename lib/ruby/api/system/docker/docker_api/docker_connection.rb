@@ -34,11 +34,7 @@ class DockerConnection < ErrorsApi
   end
 
   def initialize
-    #@response_parser =
-
     @connection = nil
-  rescue StandardError => e
-    log_exception(e)
   end
 
   require "base64"
@@ -65,17 +61,14 @@ class DockerConnection < ErrorsApi
     body: params),
     expect_json)
 
-  rescue StandardError => e
-    log_exception(e,uri)
+  
   end
 
   def connection
-
     @connection = Excon.new('unix:///', :socket => '/var/run/docker.sock',
     debug_request: true,
     debug_response: true,
     persistent: true) if @connection.nil?
-   
     @connection
   end
 
@@ -87,8 +80,6 @@ class DockerConnection < ErrorsApi
     debug_response: true,
     persistent: true)
     @connection
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def stream_connection(stream_reader)
@@ -103,7 +94,6 @@ class DockerConnection < ErrorsApi
     else
       excon_params[:response_block] = stream_reader.process_response
     end
-
     excon_params[:socket] = '/var/run/docker.sock'
     Excon.new('unix:///', excon_params )
   end
@@ -145,9 +135,7 @@ class DockerConnection < ErrorsApi
     end
   rescue  Excon::Error::Socket => e
     STDERR.puts(' docker socket stream close ')
-    stream_handler.close
-  rescue StandardError => e
-    log_exception(e)
+    stream_handler.close 
   end
 
   def request_params(params)
@@ -158,11 +146,7 @@ class DockerConnection < ErrorsApi
     SystemDebug.debug(SystemDebug.docker,' Get ' + uri.to_s)
     rheaders = default_headers if rheaders.nil?
     r = connection.request(request_params({method: :get,path: uri,read_timeout: timeout,headers: rheaders}))
-    return handle_resp(r,expect_json) unless rheaders.nil?
-    handle_resp(connection.request(request_params(method: :get,
-    path: uri)),
-    expect_json
-    )
+    return handle_resp(r,expect_json)
   rescue  Excon::Error::Socket => e
     STDERR.puts(' docker socket close ')
     reopen_connection
@@ -184,22 +168,14 @@ class DockerConnection < ErrorsApi
   private
 
   def handle_resp(resp, expect_json)
-    STDERR.puts(" Bad Request " + resp.status.to_s + " : " + @request_params.to_s ) if resp.status  == 400
-    #STDERR.puts(" RESPOSE " + resp.status.to_s + " : " + resp.body ) if resp.status  > 400
-    return log_error_mesg("error:" + resp.status.to_s,resp.body ).to_json  if resp.status  >= 400
+    raise DockerException.new(docker_error_hash(resp, @request_params)) if resp.status  >= 400
+    
     return true if resp.status  == 204 # nodata but all good happens on del
-    return log_error_mesg("Un exepect response from docker", resp, resp.body, resp.headers.to_s )   unless resp.status  == 200 ||  resp.status  == 201
-   
+     log_error_mesg("Un exepect response from docker", resp, resp.body, resp.headers.to_s )   unless resp.status  == 200 ||  resp.status  == 201
     return resp.body unless expect_json == true
-
     hash = deal_with_json(resp.body)
     SystemDebug.debug(SystemDebug.docker,' RESPOSE ' + resp.status.to_s + ' : ' + hash.to_s.slice(0..256))
-   
     hash
-  rescue StandardError => e
-    log_error_mesg("Un exepect response content " +   resp.to_s)
-    return log_exception(e).json if expect_json == true
-    log_exception(e).to_s
   end
 
 end

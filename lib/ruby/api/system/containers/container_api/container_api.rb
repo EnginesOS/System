@@ -1,4 +1,5 @@
 class ContainerApi < ErrorsApi
+  
   require_relative '../../container_state_files.rb'
   require_relative '../service_hash_builders.rb'
   require '/opt/engines/lib/ruby/system/deal_with_json.rb'
@@ -6,8 +7,6 @@ class ContainerApi < ErrorsApi
   require_relative 'engine_api_errors.rb'
   include EngineApiErrors
   
-#  require_relative 'api_result_checks.rb'
-#  include ApiResultChecks
   require_relative 'container_api_events.rb' 
   include ContainerApiEvents
   
@@ -44,12 +43,10 @@ class ContainerApi < ErrorsApi
   require_relative  'container_api_schedules.rb'
   include ContainerApiSchedules
 
-
-    
   def initialize(_docker_api, _system_api, _engines_core)
     @docker_api = _docker_api
     @system_api = _system_api
-    @engines_core =  _engines_core
+    @engines_core = _engines_core
   end
   
   def system_value_access    

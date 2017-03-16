@@ -21,9 +21,7 @@ class Container < ErrorsApi
     return SystemUtils.log_error_mesg(" Failed to Load yaml ", yaml) if container.nil?
     container.container_api = container_api
     container.post_load
-    return container
-  rescue Exception => e
-    SystemUtils.log_error_mesg(" Failed to Load yaml " + e.to_s, yaml)
+    container
   end
 
   attr_reader :container_id,\
@@ -74,5 +72,24 @@ class Container < ErrorsApi
     end
   end
 
+
+def error_hash(mesg, params = nil)
+  r = error_type_hash(mesg, params)
+  r[:error_type] = :error
+  r
+end
+
+def warning_hash(mesg, params = nil)
+  r = error_type_hash(mesg, params)
+  r[:error_type] = :warning
+  r
+end
+
+def error_type_hash(mesg, params = nil)
+  {error_mesg: mesg,
+    system: :container,
+    params: params }
+end
+  
 end
 

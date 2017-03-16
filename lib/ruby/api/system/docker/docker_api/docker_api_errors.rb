@@ -14,5 +14,28 @@ module EnginesDockerApiErrors
     super
      EnginesDockerApiError.new(e.to_s,:exception)
   end
+  def error_hash(res, params = nil)
+    r = error_type_hash(mesg, params)
+    r[:error_type] = :error
+    r
+  end
+  def docker_error_hash(res, params = nil)
+    e = res.body unless res.nil?
+    e ||=  ''
+    r = error_type_hash(e, params)
+    r[:status] = res.status unless res.nil?
+    r[:error_type] = :error
+    r
+  end
+  def warning_hash(mesg, params = nil)
+    r = error_type_hash(mesg, params)
+    r[:error_type] = :warning
+    r
+  end
 
+  def error_type_hash(mesg, params = nil)
+    {error_mesg: mesg,
+      system: :docker_api,
+      params: params }
+  end
 end

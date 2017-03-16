@@ -45,6 +45,7 @@ def create_zeroconf_service_hash(engine)
     parent_engine: engine.container_name,
     hostname: engine_hostname(engine),
     name: engine_hostname(engine),
+    overwrite: true
     }
   }
   SystemDebug.debug(SystemDebug.containers, :created_zeroconfdns_service_hash, service_hash)
