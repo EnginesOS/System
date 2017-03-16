@@ -43,8 +43,7 @@ class VolumeService < ManagedService
   
     
   rescue  Exception=>e
-    log_error_mesg('Failed to Delete FS:' + service_hash.to_s ,service_hash)
-    SystemUtils.log_exception(e,service_hash)
+    raise EnginesException.new(error_hash('Failed to Delete FS:' + service_hash.to_s, service_hash))
   end
 
   def reregister_consumers

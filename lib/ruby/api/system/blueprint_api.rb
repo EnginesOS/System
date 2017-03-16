@@ -24,9 +24,9 @@ class BlueprintApi < ErrorsApi
   def load_blueprint(container)
     clear_error
     state_dir = ContainerStateFiles.container_state_dir(container)
-    return log_error_mesg('No Statedir', container) unless File.directory?(state_dir)
+    raise EnginesException.new(error_hash('No Statedir', container.container_name)) unless File.directory?(state_dir)
     statefile = state_dir + '/blueprint.json'
-    return log_error_mesg("No Blueprint File Found", statefile) unless File.exist?(statefile)
+    raise EnginesException.new(error_hash("No Blueprint File Found", statefile)) unless File.exist?(statefile)
     BlueprintApi.load_blueprint_file(statefile)
   
   end

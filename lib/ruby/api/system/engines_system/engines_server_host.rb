@@ -106,8 +106,6 @@ module EnginesServerHost
     ret_val[:running] = -1
     ret_val[:idle] = -1
      ret_val
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
 
   def get_network_statistics

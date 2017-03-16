@@ -5,8 +5,7 @@ module Actionators
 
   def list_engine_actionators(engine)
     @system_api.load_engine_actionators(engine)
-  rescue StandardError => e
-    log_exception(e,'list_actionators', engine)
+ 
   end
 
   def perform_engine_action(engine, actionator_name, params)

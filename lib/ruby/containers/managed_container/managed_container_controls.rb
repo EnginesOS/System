@@ -60,8 +60,6 @@ module ManagedContainerControls
     SystemDebug.debug(SystemDebug.containers,@setState, @docker_info_cache.class.name,  @docker_info_cache)
     true
     }
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def recreate_container
@@ -162,7 +160,5 @@ module ManagedContainerControls
     SystemDebug.debug(SystemDebug.containers,  :inprogress_run)
     clear_error
      save_state
-  rescue StandardError  => e
-    log_exception(e)
   end
 end

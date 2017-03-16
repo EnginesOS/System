@@ -22,8 +22,7 @@ module ContainerStatus
     end
    # SystemDebug.debug(SystemDebug.containers,  'no_matching state_info', info.class.name, info)
      'nocontainer'
-  rescue StandardError => e
-    log_exception(e)
+
   end
 
   def is_paused?

@@ -40,9 +40,6 @@ module SharedServices
     system_registry_client.remove_from_managed_engine(ahash)
     SystemDebug.debug(SystemDebug.services,  :remove_shared_service_from_share_reg, ahash)
     system_registry_client.remove_from_shares_registry(ahash)
-
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def merge_variables(shared_service,existing_service_hash)

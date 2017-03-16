@@ -221,38 +221,38 @@ class SystemUtils
     return '/sys/fs/cgroup/memory/system.slice/docker-' + container_id_str + '.scope'
     # old pre docker 1.9. return '/sys/fs/cgroup/memory/system.slice/docker-' + container_id_str + '.scope'
   end
-def  SystemUtils.deal_with_json(res)
-   return self.symbolize_keys(res) if res.is_a?(Hash)
-   return self.symbolize_keys_array_members(res) if res.is_a?(Array)
-   return self.symbolize_tree(res) if res.is_a?(Tree::TreeNode)
-   return self.boolean_if_true_false_str(res) if res.is_a?(String)
-   return res
- rescue  StandardError => e
-   STDERR.puts('SystemUtils.deal_with_json ' + e.to_s) 
- end
-def SystemUtils.symbolize_keys_array_members(array)
-  return array if array.count == 0
-  return array unless array[0].is_a?(Hash)
-  retval = []
-  i = 0
-  array.each do |hash|
-    retval[i] = array[i]
-    next if hash.nil?
-    next unless hash.is_a?(Hash)
-    retval[i] = symbolize_keys(hash)
-    i += 1
-  end
-  return retval
-
-rescue  StandardError => e
-  log_exception(e)
-end
- 
- # Use when json is on cmdline '' to avoid confusion as in exec_create script.sh arg.json
- # so appears as exec_create script.sh 'arg.json' and does not throw parse errors 
-  def SystemUtils.hash_variables_as_json_str(service_hash_variables)
-    json_str = service_hash_variables.to_json
-    return  json_str
-
-  end
+#def  SystemUtils.deal_with_json(res)
+#   return self.symbolize_keys(res) if res.is_a?(Hash)
+#   return self.symbolize_keys_array_members(res) if res.is_a?(Array)
+#   return self.symbolize_tree(res) if res.is_a?(Tree::TreeNode)
+#   return self.boolean_if_true_false_str(res) if res.is_a?(String)
+#   return res
+# rescue  StandardError => e
+#   STDERR.puts('SystemUtils.deal_with_json ' + e.to_s) 
+# end
+#def SystemUtils.symbolize_keys_array_members(array)
+#  return array if array.count == 0
+#  return array unless array[0].is_a?(Hash)
+#  retval = []
+#  i = 0
+#  array.each do |hash|
+#    retval[i] = array[i]
+#    next if hash.nil?
+#    next unless hash.is_a?(Hash)
+#    retval[i] = symbolize_keys(hash)
+#    i += 1
+#  end
+#  return retval
+#
+#rescue  StandardError => e
+#  log_exception(e)
+#end
+# 
+# # Use when json is on cmdline '' to avoid confusion as in exec_create script.sh arg.json
+# # so appears as exec_create script.sh 'arg.json' and does not throw parse errors 
+#  def SystemUtils.hash_variables_as_json_str(service_hash_variables)
+#    json_str = service_hash_variables.to_json
+#    return  json_str
+#
+#  end
 end

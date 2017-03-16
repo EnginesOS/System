@@ -28,7 +28,7 @@ module TemplateOperations
     SystemDebug.debug(SystemDebug.templater,  ' get_resolved_engine_string ' + value.to_s + 'from ', env_value)
     value
   rescue StandardError => e
-    log_exception(e,env_value,container)
+    raise EnginesException.new(error_hash(e, env_value, container.container_name))
   end
 
 end

@@ -30,9 +30,6 @@ module ContainerNetworkMetrics
         end
          ret_val
       end
-    rescue StandardError => e
-      log_exception(e)
-      return error_result
     end
 
 end

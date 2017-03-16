@@ -137,80 +137,40 @@ class SystemStatus
 
   def self.last_build_params
     unless File.exist?(SystemConfig.BuildBuiltFile)
-      SystemUtils.log_error_mesg('No last_build_params', SystemConfig.BuildBuiltFile)
-      return 
+      raise EnginesException.new(error_hash('No last_build_params', SystemConfig.BuildBuiltFile))
     end
     param_file = File.new(SystemConfig.BuildBuiltFile, 'r')
     param_raw = param_file.read
     YAML.load(param_raw)
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
-
+  
   end
 
   def self.last_build_failure_params
     unless File.exist?(SystemConfig.BuildFailedFile)
-      SystemUtils.log_error_mesg('No last_build_failure_params ', SystemConfig.BuildFailedFile)
-      return 
+      raise EnginesException.new(error_hash('No last_build_failure_params ', SystemConfig.BuildFailedFile))
     end
     param_file = File.new(SystemConfig.BuildFailedFile, 'r')
     param_raw = param_file.read
     YAML.load(param_raw)
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
-
   end
 
   def self.is_remote_exception_logging?
      ! File.exist?(SystemConfig.NoRemoteExceptionLoggingFlagFile)
-    #   return true unless File.exist?(SystemConfig.NoRemoteExceptionLoggingFlagFile)
-    #     false
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
-
-  #  def self.get_system_load_info
-  #    ret_val = {}
-  #    loadavg_info = File.read('/proc/loadavg')
-  #
-  #    values = loadavg_info.split(' ')
-  #    ret_val[:one] = values[0]
-  #    ret_val[:five] = values[1]
-  #    ret_val[:fifteen] = values[2]
-  #    run_idle = values[3].split('/')
-  #    ret_val[:running] = run_idle[0]
-  #    ret_val[:idle] = run_idle[1]
-  #    ret_val
-  #  rescue StandardError => e
-  #    SystemUtils.log_exception(e)
-  #    ret_val[:one] = -1
-  #    ret_val[:five] = -1
-  #    ret_val[:fifteen] = -1
-  #    ret_val[:running] = -1
-  #    ret_val[:idle] = -1
-  #    return ret_val
-  #  rescue StandardError => e
-  #    SystemUtils.log_exception(e)
-  #  end
-
+  
   def self.is_base_system_upto_date?
     # FIX ME
     # in future check state of /opt/engines/run/system/flags/update_pending
      ! File.exists?('/opt/engines/run/system/flags/base_os_update_pending')
     #return true unless File.exists?('/opt/engines/run/system/flags/base_os_update_pending')
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
 
   def self.is_engines_system_upto_date?
-
     if self.get_engines_system_release == 'current'
       SystemUtils.execute_command('/opt/engines/system/scripts/system/engines_system_update_status.sh')
     end
     return true unless File.exist?(SystemConfig.EnginesUpdateStatusFile)
     false
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
 
 end

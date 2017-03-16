@@ -17,16 +17,12 @@ module FirstRunComplete
         STDERR.puts('FIRST RUN Thread Exception' + e.to_s + ':' + e.backtrace.to_s)
       end
     end
-     true
-  rescue StandardError => e
-    log_exception(e, event_hash)
+     true  
   end
   
   private 
   def mark_complete
    FileUtils.touch(SystemConfig.FirstRunRan)
    disable_service('firstrun')
-  rescue StandardError => e
-    STDERR.puts('FIRST RUN Thread Exception' + e.to_s + ':' + e.backtrace.to_s)
   end
 end

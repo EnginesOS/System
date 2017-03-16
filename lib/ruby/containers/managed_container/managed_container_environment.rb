@@ -19,7 +19,6 @@ module ManagedContainerEnvironment
       return true
     end
     raise EnginesException.new(error_hash('no matching variable ' + key.to_s ))  
-  rescue StandardError => e
-    log_exception(e,:update_environment,key,value, add)
+  
   end
 end

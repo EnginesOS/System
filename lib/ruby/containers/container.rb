@@ -18,7 +18,7 @@ class Container < ErrorsApi
   @conf_register_dns = true
   def self.from_yaml(yaml, container_api)
     container = YAML::load(yaml)
-    return SystemUtils.log_error_mesg(" Failed to Load yaml ", yaml) if container.nil?
+    raise EnginesException.new(error_hash(" Failed to Load yaml ", yaml[0..256])) if container.nil?
     container.container_api = container_api
     container.post_load
     container

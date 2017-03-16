@@ -25,38 +25,11 @@ module RunningContainerStatistics
       time_f = process[9]
       cpu_time = add_time(cpu_time, time_f)
     end
-    #    ps_lines = ps_container
-    #    pnt
-    #    pcnt = -1
-    #    rss = 0
-    #    vss = 0
-    #    h = m = s = 0
-    #    ps_lines.each_line.each do |line|
-    #      if pcnt > 0 # skip the fist line with is a header
-    #        fields = line.split  #  [6]rss [10] time
-    #        if fields.nil? == false && fields.count >11
-    #          rss += fields[7].to_i
-    #          vss += fields[6].to_i
-    #          time_f = fields[11]
-    #          next if time_f.nil?
-    #          c_HMS = time_f.split(':')
-    #          if c_HMS.length == 3
-    #            h += c_HMS[0].to_i
-    #            m += c_HMS[1].to_i
-    #            s += c_HMS[2].to_i
-    #          else
-    #            m += c_HMS[0].to_i
-    #            s += c_HMS[1].to_i
-    #          end
-    #        end
-    #      end
-    #      pcnt += 1
-    #    end
+
     cpu = 3600 * cpu_time[2] + 60 * cpu_time[1] + cpu_time[0]
     statistics = ContainerStatistics.new(read_state, pcnt, started, stopped, rss, vss, cpu)
     statistics
-  rescue => e
-    log_exception(e)
+ 
   end
 
   def get_container_memory_stats()

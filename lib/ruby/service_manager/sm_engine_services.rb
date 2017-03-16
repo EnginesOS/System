@@ -6,16 +6,12 @@ module SmEngineServices
   def find_engine_services_hashes(params)
     clear_error
     system_registry_client.find_engine_services_hashes(params)
-  rescue StandardError => e
-    handle_exception(e)
   end
   #
 
   def find_engine_service_hash(params)
     clear_error
     system_registry_client.find_engine_service_hash(params)
-  rescue StandardError => e
-    handle_exception(e)
   end
 
   #@return [Array] of all service_hashs marked persistence true for :engine_name
@@ -32,8 +28,6 @@ module SmEngineServices
   #on recepit of an empty array any non critical error will be in  this object's  [ServiceManager] last_error method
   def get_engine_nonpersistent_services(params)
     system_registry_client.get_engine_nonpersistent_services(params)
-  rescue StandardError => e
-    handle_exception(e)
   end
 
   #service manager get non persistent services for engine_name
@@ -55,8 +49,6 @@ module SmEngineServices
       end
     end
     true
-  rescue StandardError => e
-    handle_exception(e)
   end
 
   def list_persistent_services(engine)
@@ -65,10 +57,7 @@ module SmEngineServices
       parent_engine: engine.container_name,
       container_type: engine.ctype
     }
-    services = get_engine_persistent_services(params)
-    services
-  rescue StandardError => e
-    handle_exception(e)
+      get_engine_persistent_services(params)
   end
 
   def list_non_persistent_services(engine)
@@ -77,9 +66,7 @@ module SmEngineServices
       parent_engine: engine.container_name,
       container_type: engine.ctype
     }
-    get_engine_nonpersistent_services(params)
-  rescue StandardError => e
-    handle_exception(e)
+    get_engine_nonpersistent_services(params)  
   end
 
   #service manager get non persistent services for engine_name
@@ -102,8 +89,6 @@ module SmEngineServices
       end
     end
     true
-  rescue StandardError => e
-    handle_exception(e)
   end
 
   def remove_engine_services(params)
@@ -153,5 +138,4 @@ module SmEngineServices
     end
     true
   end
-
 end
