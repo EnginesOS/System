@@ -31,7 +31,7 @@ module ContainerApiDockerActions
   end
 
   def stop_container(container)
-    clear_error   
+    clear_error
     @docker_api.stop_container(container)
     rotate_log(container)
   end
@@ -39,7 +39,7 @@ module ContainerApiDockerActions
   def rotate_log(container)
     @system_api.rotate_container_log(container.container_id)
   end
-  
+
   def ps_container(container)
     @docker_api.ps_container(container)
   end
@@ -60,5 +60,7 @@ module ContainerApiDockerActions
 
   def image_exist?(container_name)
     @docker_api.image_exist?(container_name)
+  rescue DockerExecption => e
+    false
   end
 end

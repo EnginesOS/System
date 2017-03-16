@@ -35,7 +35,7 @@ module ApiActionators
   end
 
   def list_params(params)
-    return ' ' if params.nil?
+    return if params.nil?
     r = ' '
     params.each do |param|
       r += param.to_s + ' '
