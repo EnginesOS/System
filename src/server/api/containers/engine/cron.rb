@@ -42,8 +42,10 @@ end
 get '/v0/schedule/engine/:engine_name/:cron_job/run' do
   engine = get_engine(params[:engine_name])
   return log_error(request, engine, params) if engine.is_a?(EnginesError)  
-  
+ begin 
   r = engine.run_cronjob(params[:cron_job])
-  return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
   return_text(r)
+ rescue EnginesException => e
+   return_error(e) 
+   end
 end
