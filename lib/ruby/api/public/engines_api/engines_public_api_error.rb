@@ -3,6 +3,5 @@ class EnginesPublicApiError < EnginesError
     super
     @sub_system = 'engine_public_api'
   end
-
 end
 
