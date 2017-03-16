@@ -22,12 +22,12 @@ module DockerInfoCollector
     return docker_info[:NetworkSettings][:IPAddress] unless docker_info.is_a?(FalseClass)
     false
   rescue
-    return nil
+    nil
   end
 
   def set_cont_id
     if @container_id.to_s == '-1'  || @container_id.to_s == '' || @container_id.is_a?(FalseClass)
-      @container_id =  read_container_id
+      @container_id = read_container_id
       save_state unless @container_id.to_s == '-1'
     end
   end
@@ -70,7 +70,6 @@ module DockerInfoCollector
     @container_id
   rescue EnginesException => e
     clear_cid
-
   end
 
   def running_user
@@ -94,7 +93,7 @@ module DockerInfoCollector
     @docker_info_cache
 
   rescue EnginesException => e
-    @docker_info_cache=il
+    @docker_info_cache = nil
   end
 
 end

@@ -6,21 +6,21 @@ require '/opt/engines/lib/ruby/containers/managed_container.rb'
 class ManagedService < ManagedContainer
 
   require_relative 'managed_service/managed_service_configurations.rb'
-  include    ManagedServiceConfigurations
+  include ManagedServiceConfigurations
   require_relative 'managed_service/managed_service_consumers.rb'
-  include    ManagedServiceConsumers
+  include ManagedServiceConsumers
   require_relative 'managed_service/managed_service_readers.rb'
-  include    ManagedServiceReaders
+  include ManagedServiceReaders
   require_relative 'managed_service/managed_service_container_info.rb'
-  include    ManagedServiceContainerInfo
+  include ManagedServiceContainerInfo
   require_relative 'managed_service/managed_service_controls.rb'
-  include    ManagedServiceControls
+  include ManagedServiceControls
   require_relative 'managed_service/managed_service_image_controls.rb'
-  include    ManagedServiceImageControls
+  include ManagedServiceImageControls
   require_relative 'managed_service/managed_service_on_action.rb'
   include ManagedServiceOnAction
   @ctype='service'
-  @soft_service  = false
+  @soft_service = false
   def lock_values
     super
     @ctype = 'service' if @ctype.nil?
@@ -36,9 +36,6 @@ class ManagedService < ManagedContainer
     false
   end
 
-  #  def state
-  #    read_state
-  #  end
 
   def initialize(name, memory, hostname, domain_name, image, volumes, web_port, eports, dbs, environments, framework, runtime)
     @last_error = 'None'
