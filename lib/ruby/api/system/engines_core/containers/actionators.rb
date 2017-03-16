@@ -5,7 +5,7 @@ module Actionators
 
   def list_engine_actionators(engine)
     @system_api.load_engine_actionators(engine)
- 
+
   end
 
   def perform_engine_action(engine, actionator_name, params)
@@ -40,8 +40,7 @@ module Actionators
     SystemDebug.debug(SystemDebug.actions,service_name,actionator_name,params)
     service = loadManagedService(service_name)
     return service.perform_action(actionator_name,params) if service.is_running?
-    @last_error = "Service not running"
-    EnginesCoreError.new('Service not running',:warning)
+    raise EnginesException.new(warning_hash('Service not running', service.container_name))
   end
 
 end

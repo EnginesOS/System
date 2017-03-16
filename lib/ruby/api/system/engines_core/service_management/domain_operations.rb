@@ -1,6 +1,7 @@
 module DomainOperations
   require '/opt/engines/lib/ruby/system/dnshosting.rb'
   require_relative 'service_manager_access.rb'
+
   def add_domain_service(params)
 
     # if domain name ends with .local check for and create if needed avahi
@@ -14,17 +15,14 @@ module DomainOperations
 
   def update_domain_service(params)
     update_domain(params)
-
   end
 
   def remove_domain_service(params)
     remove_domain(params)
-
   end
 
   def list_domains
     DNSHosting.list_domains
-
   end
 
   def domain_name(domain_name)
@@ -57,15 +55,12 @@ module DomainOperations
     end
     #   STDERR.puts(' ADD DOMAIN VARIABLE ' + params.to_s)
     service_manager.create_and_register_service(service_hash)
-
- 
   end
 
   def update_domain(params)
-
     #   STDERR.puts(' UPDATE DOMAIN VARIABLES ' + params.to_s)
     old_domain_name = params[:original_domain_name]
-     DNSHosting.update_domain(old_domain_name, params)
+    DNSHosting.update_domain(old_domain_name, params)
     return true unless params[:self_hosted]
     service_hash =  {}
     service_hash[:parent_engine] = 'system'
@@ -96,7 +91,6 @@ module DomainOperations
     service_hash[:service_handle] = params[:domain_name] + '_dns'
     #   STDERR.puts(' UPDATE DOMAIN VARIABLES ' + service_hash.to_s)
     service_manager.create_and_register_service(service_hash)
-
   end
 
   def remove_domain(params)
@@ -108,17 +102,16 @@ module DomainOperations
     return r unless ( r = DNSHosting.rm_domain(domain_name) )
     return true if params[:self_hosted] == false
     service_hash = {
-    parent_engine: 'system',
-    variables:  {
-    domain_name: domain_name
-    },
-    service_handle: domain_name + '_dns',
-    container_type: 'system',
-    publisher_namespace: 'EnginesSystem',
-    type_path: 'dns',
+      parent_engine: 'system',
+      variables:  {
+      domain_name: domain_name
+      },
+      service_handle: domain_name + '_dns',
+      container_type: 'system',
+      publisher_namespace: 'EnginesSystem',
+      type_path: 'dns',
     }
     service_manager.delete_service(service_hash)
-  
   end
   private
 

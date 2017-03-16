@@ -28,7 +28,7 @@ module ServiceConfigurations
   def update_service_configuration(service_param)
     # configurator = ConfigurationsApi.new(self)
     update_configuration_on_service(service_param)
-    service_manager.update_service_configuration(service_param) 
+    service_manager.update_service_configuration(service_param)
   end
 
   def retrieve_configuration(service_param)

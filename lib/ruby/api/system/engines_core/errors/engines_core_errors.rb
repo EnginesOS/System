@@ -1,5 +1,6 @@
 require_relative 'engines_core_error.rb'
 require '/opt/engines/lib/ruby/exceptions/engines_exception.rb'
+
 module EnginesCoreErrors
   def log_warn_mesg(mesg,*objs)
     EnginesCoreError.new(mesg.to_s,:warning)

@@ -18,15 +18,12 @@ module TemplateOperations
 
   def get_resolved_string(env_value)
     templater = Templater.new(system_value_access,nil)
-    env_value = templater.apply_system_variables(env_value)
-    env_value
+    templater.apply_system_variables(env_value)
   end
 
   def get_resolved_engine_string(env_value, container)
     templater = Templater.new(system_value_access,container)
-    value = templater.apply_build_variables(env_value)
-    SystemDebug.debug(SystemDebug.templater,  ' get_resolved_engine_string ' + value.to_s + 'from ', env_value)
-    value
+    templater.apply_build_variables(env_value)
   rescue StandardError => e
     raise EnginesException.new(error_hash(e, env_value, container.container_name))
   end

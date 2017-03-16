@@ -15,7 +15,7 @@ module DockerOperations
     @docker_api.docker_exec(params) #params[:container], params[:command_line], params[:log_error], params[:data])
   end
 
-  def  container_name_and_type_from_id(id)
+  def container_name_and_type_from_id(id)
     @docker_api.container_name_and_type_from_id(id)
   end
 end

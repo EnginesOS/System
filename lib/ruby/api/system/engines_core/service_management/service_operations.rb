@@ -8,17 +8,17 @@ module ServiceOperations
   end
 
   def force_reregister_attached_service(service_query)
-   check_service_hash(service_query)
+    check_service_hash(service_query)
     service_manager.force_reregister_attached_service(service_query)
   end
 
   def force_deregister_attached_service(service_query)
-     check_service_hash(service_query)
+    check_service_hash(service_query)
     service_manager.force_deregister_attached_service(service_query)
   end
 
   def force_register_attached_service(service_query)
-     check_service_hash(service_query)
+    check_service_hash(service_query)
     service_manager.force_register_attached_service(service_query)
   end
 
@@ -31,9 +31,9 @@ module ServiceOperations
   #Attach the service defined in service_hash [Hash]
   #@return boolean indicating sucess
   def create_and_register_service(service_hash)
-  #  service_hash = SystemUtils.symbolize_keys(service_hash)
+    #  service_hash = SystemUtils.symbolize_keys(service_hash)
     SystemDebug.debug(SystemDebug.services, :attach_ing_create_and_egister_service, service_hash)
-     create_and_register_managed_service(service_hash)
+    create_and_register_managed_service(service_hash)
   end
 
   def dettach_service(service_hash)
@@ -61,7 +61,7 @@ module ServiceOperations
   def get_registered_against_service(service_hash)
 
     clear_error
-   check_service_hash(service_hash)
+    check_service_hash(service_hash)
     service_manager.get_registered_against_service(service_hash)
   end
 
@@ -89,8 +89,8 @@ module ServiceOperations
     check_engine_service_hash(service_hash)
     if service_hash[:type_path] == 'filesystem/local/filesystem'
       begin
-      engine = loadManagedEngine(service_hash[:parent_engine])
-      engine.add_volume(service_hash) if engine.is_a?(ManagedEngine)
+        engine = loadManagedEngine(service_hash[:parent_engine])
+        engine.add_volume(service_hash) if engine.is_a?(ManagedEngine)
       rescue
         #will fail on build
       end

@@ -31,7 +31,6 @@ module EnginesOperations
     }
     return true if @build_thread.alive?
     raise EnginesException.new(error_hash(params[:engine_name], 'Build Failed to start'))
-  
   end
 
   def set_container_runtime_properties(container,params)
@@ -65,8 +64,6 @@ module EnginesOperations
       return r unless r == true
     end
     container.create_container
-
- 
   end
 
   def set_engine_network_properties(container, params)
