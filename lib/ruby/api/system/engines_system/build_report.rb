@@ -5,8 +5,7 @@ module BuildReport
     state_dir = SystemConfig.RunDir + '/containers/' + engine_name
     return File.read(state_dir + '/buildreport.txt') if File.exist?(state_dir + '/buildreport.txt')
     raise EnginesException.new(error_hash('No Build Report'))
-  rescue StandardError => e
-    log_exception(e)
+ 
   end
 
   def save_build_report(container, build_report)
@@ -16,8 +15,6 @@ module BuildReport
     f.puts(build_report)
     f.close
     true
-  rescue StandardError => e
-    log_exception(e)
   end
 
 end

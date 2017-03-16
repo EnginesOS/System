@@ -5,8 +5,7 @@ module Certificates
     return certs_service if certs_service.is_a?(EnginesError)
 
     certs_service.perform_action('import_cert',params[:domain_name], params[:certificate] + params[:key])
-  rescue StandardError =>e
-    log_exception(e)
+ 
   end
 
   def remove_cert(domain_name)
@@ -20,16 +19,14 @@ module Certificates
     certs_service = loadManagedService('cert_auth')
     return certs_service if certs_service.is_a?(EnginesError)
     certs_service.perform_action('list_certs',nil)
-  rescue StandardError =>e
-    log_exception(e)
+ 
   end
 
   def get_system_ca
     certs_service = loadManagedService('cert_auth')
     return certs_service if certs_service.is_a?(EnginesError)
     certs_service.perform_action('system_ca',nil)
-  rescue StandardError =>e
-    log_exception(e)
+  
   end
   
   
@@ -71,8 +68,7 @@ module Certificates
 
     domain_name = 'engines' if domain_name == 'default'
     certs_service.perform_action('fetch_cert', domain_name)
-  rescue StandardError =>e
-    log_exception(e)
+  
 
   end
 
