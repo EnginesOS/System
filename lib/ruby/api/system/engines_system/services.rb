@@ -9,14 +9,10 @@ module Services
 
   def list_managed_services
     _list_services
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def list_system_services
     _list_services('system_service')
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def loadSystemService(service_name)
@@ -34,9 +30,7 @@ module Services
       ts = File.mtime(SystemConfig.RunDir + '/services/' + service_name + '/running.yaml')
       cache_engine(s, ts)
     end
-    return s
-  rescue StandardError => e
-    return nil
+     s
   end
 
   private
@@ -45,11 +39,14 @@ module Services
     ret_val = []
     services = _list_services(type)
     services.each do |service_name |
+      begin
       service = loadManagedService(service_name) if type == 'service'
       service = loadSystemService(service_name) if type == 'system_service'
       ret_val.push(service) if service.is_a?(ManagedService)
+      rescue # skip bad loads
+      end
     end
-    return ret_val
+     ret_val
   end
 
   def _list_services(type='service')
@@ -59,7 +56,7 @@ module Services
       yfn = SystemConfig.RunDir + '/' + type +'s/' + contdir + '/config.yaml'
       ret_val.push(contdir) if File.exist?(yfn)
     end
-    return ret_val
+     ret_val
   end
 
   def _loadManagedService(service_name, service_type_dir)
