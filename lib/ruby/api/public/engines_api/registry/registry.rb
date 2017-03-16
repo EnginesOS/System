@@ -4,7 +4,7 @@ module PublicApiRegistry
   end
 
   def managed_service_tree
-   @core_api.managed_service_tree
+    @core_api.managed_service_tree
   end
 
   def get_managed_engine_tree
@@ -18,6 +18,4 @@ module PublicApiRegistry
   def get_shares_tree
     @core_api.get_shares_tree
   end
-  
- 
 end

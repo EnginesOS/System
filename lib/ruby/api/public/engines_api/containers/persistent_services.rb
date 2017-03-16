@@ -1,6 +1,5 @@
 module PublicApiContainersPersistentServices
   def create_and_register_persistent_service(service_hash)
-    
     @core_api.create_and_register_service(service_hash)
   end
 

@@ -1,5 +1,4 @@
 module PublicApiSubServices
-  
   def services_subservices(params)
     @core_api.services_subservices(params)
   end
@@ -27,5 +26,5 @@ module PublicApiSubServices
   def subservices_provided(params)
     @core_api.subservices_provided(params)
   end
-  
+
 end

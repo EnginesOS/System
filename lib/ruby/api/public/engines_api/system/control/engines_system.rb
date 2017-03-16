@@ -10,7 +10,7 @@ module PublicApiSystemControlEnginesSystem
   def restart_engines_system_service
     @core_api.restart_engines_system_service
   end
-  
+
   def dump_heap_stats
     @core_api.dump_heap_stats
   end

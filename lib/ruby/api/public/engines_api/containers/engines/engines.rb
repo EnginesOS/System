@@ -1,27 +1,26 @@
 module PublicApiEngines
   def list_managed_engines
-     @system_api.list_managed_engines
-   end
+    @system_api.list_managed_engines
+  end
+
   def getManagedEngines
     @system_api.getManagedEngines
   end
-  
+
   def get_engines_states
     @system_api.get_engines_states
   end
-  
-  
+
   def get_engines_status
     @system_api.get_engines_status
   end
-   
+
   def  build_engine(params)
     @core_api.build_engine(params)
-      end
-      
+  end
+
   def delete_engine(params)
-  #  params[:remove_all_data] = true
     @core_api.delete_engine(params)
   end
-  
+
 end
