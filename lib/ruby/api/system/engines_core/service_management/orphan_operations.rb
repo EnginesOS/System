@@ -10,8 +10,6 @@ module OrphanOperations
   def remove_orphaned_service(service_hash)
     check_engine_hash(service_hash)
     service_manager.remove_orphaned_service(service_hash)
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def  match_orphan_service(service_hash)

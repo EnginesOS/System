@@ -24,8 +24,7 @@ module DomainOperations
 
   def list_domains
     DNSHosting.list_domains
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
+
   end
 
   def domain_name(domain_name)
@@ -97,8 +96,7 @@ module DomainOperations
     service_hash[:service_handle] = params[:domain_name] + '_dns'
     #   STDERR.puts(' UPDATE DOMAIN VARIABLES ' + service_hash.to_s)
     service_manager.create_and_register_service(service_hash)
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
+
   end
 
   def remove_domain(params)
@@ -120,8 +118,7 @@ module DomainOperations
     type_path: 'dns',
     }
     service_manager.delete_service(service_hash)
-  rescue StandardError => e
-    log_exception(e)
+  
   end
   private
 

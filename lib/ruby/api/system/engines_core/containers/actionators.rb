@@ -43,8 +43,6 @@ module Actionators
     return service.perform_action(actionator_name,params) if service.is_running?
     @last_error = "Service not running"
     EnginesCoreError.new('Service not running',:warning)
-  rescue StandardError => e
-    log_exception( e,'perform_service_action',service_name,actionator_name,params)
   end
 
 end

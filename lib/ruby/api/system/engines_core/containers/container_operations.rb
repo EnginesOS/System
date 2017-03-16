@@ -11,7 +11,7 @@ module ContainerOperations
   def image_exist?(container_name)
     @docker_api.image_exist?(container_name)
   rescue StandardError => e
-    log_exception(e)
+    false
   end
 
   def container_type(container_name)

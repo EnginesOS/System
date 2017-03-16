@@ -88,8 +88,7 @@ module EnginesOperations
   #      SystemDebug.debug(SystemDebug.containers, :delete_image_dependancies, params)
   #      return r if (r = service_manager.rm_remove_engine_services(params)).is_a?(EnginesError)
   #       true
-  #    rescue StandardError => e
-  #      log_exception(e)
+
   #    end
 
 end

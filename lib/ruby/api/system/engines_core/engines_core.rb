@@ -162,10 +162,6 @@ class EnginesCore < ErrorsApi
     names.concat(list_managed_services)
     names.concat(list_system_services)
     names
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
-    failed('Gui', 'reserved_engine_names', 'failed')
-    []
   end
 
   def reserved_ports

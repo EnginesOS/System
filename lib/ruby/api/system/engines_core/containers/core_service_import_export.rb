@@ -30,8 +30,7 @@ module CoreServiceImportExport
     end
     return engine if engine.is_a?(EnginesError)
       engine.import_service_data(params)
-  rescue StandardError => e
-    log_exception(e,'import service',params)
+  
   end
 
 end
