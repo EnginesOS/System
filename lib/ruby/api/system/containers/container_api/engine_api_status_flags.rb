@@ -1,7 +1,6 @@
 module EngineApiStatusFlags
   def restart_required?(container)
      File.exist?(ContainerStateFiles.restart_flag_file(container))
-
   end
 
   def rebuild_required?(container)
@@ -21,8 +20,6 @@ module EngineApiStatusFlags
   def is_startup_complete(container)
     clear_error
      @system_api.is_startup_complete(container)
-  rescue StandardError => e
-    log_exception(e)
   end
 
 end

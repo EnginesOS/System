@@ -27,7 +27,5 @@ module EngineApiDependancies
       end
     end
      true
-    rescue StandardError => e     
-       log_exception(e)
   end
 end

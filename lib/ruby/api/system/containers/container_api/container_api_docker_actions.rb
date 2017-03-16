@@ -3,9 +3,6 @@ module ContainerApiDockerActions
     clear_error
     return true if (r = @docker_api.destroy_container(container))
     return true unless container.has_container?
-  rescue StandardError => e
-    container.last_error = 'Failed To Destroy ' + e.to_s
-    log_exception(e)
   end
 
   def unpause_container(container)

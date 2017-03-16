@@ -40,7 +40,6 @@ module EngineApiServiceRegistration
   end
 
   def engine_persistent_services(container)
-
     return engines_core.engine_persistent_services(container.container_name) if container.ctype != 'service'
      engines_core.service_persistent_services(container.container_name)
   end

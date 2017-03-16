@@ -27,7 +27,7 @@ module Actionators
 
     end
     unless service_def.key?(:actionators)
-      raise EnginesException.new(error_hash('list_actionators no actionators',service_def))
+      raise EnginesException.new(warning_hash('list_actionators no actionators',service_def))
     end
     unless service_def[:actionators].is_a?(Array)
       #    SystemDebug.debug(SystemDebug.actions,service.container_name,service_def[:actionators],service_def)

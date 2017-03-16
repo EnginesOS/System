@@ -8,23 +8,18 @@ module ServiceApiReaders
         thr.join
       end
     rescue Timeout::Error
-    raise EnginesException.new(error_hash('Timeout on running reader', cmd))
+      raise EnginesException.new(error_hash('Timeout on running reader', cmd))
     end
     @last_error = result[:stderr] # Dont log just set
-     result
+    result
   end
 
   def get_readers(container)
-
     service_def = SoftwareServiceDefinition.find(container.type_path, container.publisher_namespace )
-
     return [] unless service_def.key?(:actionators)
     return [] unless service_def[:actionators].is_a?(Hash)
     return [] unless  service_def[:actionators].key?(:readers)
-     service_def[:actionators][:readers]
-
+    service_def[:actionators][:readers]
   end
-rescue StandardError => e
-   log_exception(e)
 
 end

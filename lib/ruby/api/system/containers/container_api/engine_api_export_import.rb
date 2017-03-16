@@ -54,7 +54,6 @@ module EngineApiExportImport
     rescue Timeout::Error
       raise EnginesException.new(error_hash('Import Timeout on Running Action ', cmd))
     end
-  rescue StandardError => e
-    log_exception(e,'import service',service_params,params)
+  
   end
 end

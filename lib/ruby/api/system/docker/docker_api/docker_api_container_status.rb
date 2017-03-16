@@ -28,7 +28,7 @@ module DockerApiContainerStatus
     else
       request = '/containers/' + container.container_id.to_s + '/json'
     end
-     get_request(request, true)
+    get_request(request, true)
   rescue StandardError => e
     log_exception(e)
   end
@@ -37,39 +37,34 @@ module DockerApiContainerStatus
     id = container.container_id
     id = container_id_from_name(container) if id == -1
     request = '/containers/'  + id + '/top?ps_args=aux'
-    r =  get_request(request)
-    SystemDebug.debug(SystemDebug.containers,'ps_container',container.container_name,r)
-     r
-    rescue StandardError => e
-      log_exception(e)
+    get_request(request)
   end
-  
+
   def container_name_and_type_from_id(id)
     request = '/containers/' + id.to_s + '/json'
-    r =  get_request(request)
-    if r.is_a?(FalseClass) # 409 conflict occurs if ask too soon ?
-      sleep 0.2 
-       log_error_mesg(' 409 ' + id.to_s )      
+    r = ''
+    begin
       r =  get_request(request)
+    rescue DockerException => e
+      if e.status == 409
+        sleep 0.2
+        r =  get_request(request)
+      else raise e
+      end
     end
-    
-    return log_error_mesg('no such engine') if r == true # happens on a destroy
-    return r if r.is_a?(EnginesError) 
-    return log_error_mesg(' 409 twice for ' + request.to_s) if r == false
 
-    return log_error_mesg('not a managed engine') unless r.key?(:Config)
-    return log_error_mesg('not a managed engine') unless r[:Config].key?(:Labels)
-    return log_error_mesg('not a managed engine') unless r[:Config][:Labels].key?(:container_type)
-      
-    ret = []
-      ret[0] = r[:Config][:Labels][:container_name]
-      ret[1] = r[:Config][:Labels][:container_type]
+    raise EnginesException.new(error_hash('no such engine', id)) if r == true # happens on a destroy
 
-        ret
-rescue StandardError => e
-  log_exception(e)
+    raise EnginesException.new(error_hash(' 409 twice for '  , request)) unless r.is_a?(Hash)
+
+    raise EnginesException.new(error_hash('not a managed engine', r)) unless r.key?(:Config)
+    raise EnginesException.new(error_hash('not a managed engine', r)) unless r[:Config].key?(:Labels)
+    raise EnginesException.new(error_hash('not a managed engine', r)) unless r[:Config][:Labels].key?(:container_type)
+
+    [r[:Config][:Labels][:container_name], r[:Config][:Labels][:container_type]]
+
   end
-  
+
   def container_id_from_name(container)
     # request='/containers/json?son?all=false&name=/' + container.container_name
     request='/containers/' + container.container_name + '/json'
@@ -85,15 +80,13 @@ rescue StandardError => e
       end
     end
     -1
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def logs_container(container, count)
-    return log_error_mesg(' No Container ID ', container) if container.container_id == -1 
+    return log_error_mesg(' No Container ID ', container) if container.container_id == -1
     #    GET /containers/4fa6e0f0c678/logs?stderr=1&stdout=1&timestamps=1&follow=1&tail=10&since=1428990821 HTTP/1.1
     request = '/containers/' + container.container_id .to_s + '/logs?stderr=1&stdout=1&timestamps=1&follow=0&tail=' + count.to_s
-   r = get_request(request, false)
+    r = get_request(request, false)
     result = {}
     DockerUtils.docker_stream_as_result(r , result)
     result

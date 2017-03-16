@@ -27,16 +27,13 @@ module ServiceConfigurations
 
   def update_service_configuration(service_param)
     # configurator = ConfigurationsApi.new(self)
-    r = update_configuration_on_service(service_param)
-    return service_manager.update_service_configuration(service_param) unless r.is_a?(EnginesError)
-    raise EnginesException.new(error_hash('Failed to update configuration on service ' + service_param.to_s, r))
-
+    update_configuration_on_service(service_param)
+    service_manager.update_service_configuration(service_param) 
   end
 
   def retrieve_configuration(service_param)
     raise EnginesException.new(error_hash('Missing service name', service_param)) unless service_param.key?(:service_name)
     service = loadManagedService(service_param[:service_name])
-    return service unless service.is_a?(ManagedService)
     if service.is_running?
       ret_val = service.retrieve_configurator(service_param)
       #    STDERR.puts('Retrived retrieve_configuration '+ service_param.to_s + ret_val.class.name + ':' + ret_val.to_s )
@@ -45,13 +42,12 @@ module ServiceConfigurations
       #  STDERR.puts('Retrived retrieve_configuration '+ service_param.to_s + ret_val.class.name + ':' + ret_val.to_s )
       ret_val = get_service_configuration(service_param)
     end
-
     ret_val
   end
 
   private
 
-  def  definition_params_to_variables(params)
+  def definition_params_to_variables(params)
     variables =  {}
     params.each do | param_name|
       variables[param_name] = ''

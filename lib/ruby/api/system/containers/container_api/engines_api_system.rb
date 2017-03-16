@@ -24,7 +24,6 @@ module EnginesApiSystem
 
   def have_enough_ram?(container)
     free_ram = @system_api.available_ram
-    return free_ram if free_ram.is_a?(EnginesError)
     ram_needed = SystemConfig.MinimumFreeRam .to_i + container.memory.to_i * 0.7
     return true if free_ram > ram_needed
     return false
@@ -38,8 +37,7 @@ module EnginesApiSystem
     ContainerStateFiles.clear_container_var_run(container)
     start_dependancies(container) if container.dependant_on.is_a?(Hash)
     container.pull_image if container.ctype != 'container'
-    r = @docker_api.create_container(container)
-    return r if r.is_a?(EnginesDockerError)
+    @docker_api.create_container(container)
      true
   end
 
@@ -55,7 +53,7 @@ module EnginesApiSystem
    # STDERR.puts(' retreive cron entry from engine registry ' + cron_entry.to_s + ' from ' + cronjob.to_s )
     raise EnginesException.new(error_hash('nil cron line ' + cronjob.to_s )) if cron_entry.nil?
     r = @engines_core.exec_in_container({:container => container, :command_line => cron_entry.split(" "), :log_error => true, :data=>nil })    
-     return r.to_s if r.is_a?(EnginesError)
+    raise EnginesException.new(error_hash('Cron job un expected result', r)) unless r.is_a?(Hash)
       r[:stdout] + r[:stderr] 
   end
 

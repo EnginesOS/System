@@ -2,22 +2,22 @@ module DockerUtils
   def self.process_request(stream_reader) #data , result, ostream=nil, istream=nil)
     @stream_reader = stream_reader
 
-   # to_send = @stream_reader.data
+    # to_send = @stream_reader.data
     return_result = @stream_reader.result
 
     lambda do |socket|
-  
+
       write_thread = Thread.start do
-        begin          
+        begin
           unless @stream_reader.i_stream.nil?
             IO.copy_stream(@stream_reader.i_stream,socket) unless @stream_reader.i_stream.eof?
           else
             #   unless stream_reader.data.nil?
 
             unless stream_reader.data.nil? ||  stream_reader.data.length == 0
-          
+
               if stream_reader.data.length < Excon.defaults[:chunk_size]
-           
+
                 socket.send(stream_reader.data,0)
                 stream_reader.data = ''
               else
@@ -28,10 +28,10 @@ module DockerUtils
                     socket.send(stream_reader.data,0)
                     stream_reader.data = ''
                   end
-                end               
+                end
               end
             end
-          end       
+          end
           socket.close_write
         rescue StandardError => e
           STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
@@ -40,11 +40,11 @@ module DockerUtils
 
       read_thread = Thread.start do
         begin
-        
+
           while chunk = socket.readpartial(16384)
             if  @stream_reader.o_stream.nil?
               DockerUtils.docker_stream_as_result(chunk, return_result)
-           
+
             else
               r = DockerUtils.decode_from_docker_chunk(chunk)
               @stream_reader.o_stream.write(r[:stdout]) unless r.nil?
@@ -87,41 +87,41 @@ module DockerUtils
     while r.length >0
       if r[0].nil?
         return h if r.length == 1
-      #STDERR.puts('Skipping nil ')
+        #STDERR.puts('Skipping nil ')
         r = r[1..-1]
         next
       end
       if r.start_with?("\u0001\u0000\u0000\u0000")
         dst = :stdout
         #   STDERR.puts('STDOUT ' + r.to_s)
-       # ls = r[0,7]
+        # ls = r[0,7]
         r = r[8..-1]
-      #STDERR.puts('STDOUT ' + r.to_s)
+        #STDERR.puts('STDOUT ' + r.to_s)
       elsif r.start_with?("\u0002\u0000\u0000\u0000")
         dst = :stderr
-      #  ls = r[0,7]
+        #  ls = r[0,7]
         r = r[8..-1]
-       # r.slice!(8,r.length-1)
-       
+        # r.slice!(8,r.length-1)
+
       elsif r.start_with?("\u0000\u0000\u0000\u0000")
         dst = :stdout
-       # ls = r[0,7]
-         r = r[8..-1]
-  #STDERR.puts('STDOUT \0\0\0')
-       # r.slice!(8,r.length-1) 
+        # ls = r[0,7]
+        r = r[8..-1]
+        #STDERR.puts('STDOUT \0\0\0')
+        # r.slice!(8,r.length-1)
       else
         # r = r[7..-1]
-       # ls = r[0,7]     
-  #STDERR.puts('UNMATCHED')
+        # ls = r[0,7]
+        #STDERR.puts('UNMATCHED')
         dst = :stdout
         unmatched = true
       end
       return h if r.nil?
       unless unmatched == true
-        next_chunk = r.index("\u0000\u0000\u0000")        
+        next_chunk = r.index("\u0000\u0000\u0000")
         unless next_chunk.nil?
           length =  next_chunk - 1
-        else       
+        else
           length = r.length
         end
       else
@@ -134,10 +134,10 @@ module DockerUtils
 
     # This is actually set elsewhere after exec complete
     h[:result] = 0
-h[:stdout].force_encoding(Encoding::UTF_8) unless h[:stdout].nil?
-h[:stderr].force_encoding(Encoding::UTF_8) unless h[:stderr].nil?
-h
-rescue StandardError =>e
-  log_exception(e)
+    h[:stdout].force_encoding(Encoding::UTF_8) unless h[:stdout].nil?
+    h[:stderr].force_encoding(Encoding::UTF_8) unless h[:stderr].nil?
+    h
+  rescue StandardError =>e
+    log_exception(e)
   end
 end
