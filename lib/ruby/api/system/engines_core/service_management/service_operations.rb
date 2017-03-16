@@ -88,8 +88,12 @@ module ServiceOperations
     set_top_level_service_params(service_hash, service_hash[:parent_engine])
     check_engine_service_hash(service_hash)
     if service_hash[:type_path] == 'filesystem/local/filesystem'
+      begin
       engine = loadManagedEngine(service_hash[:parent_engine])
       engine.add_volume(service_hash) if engine.is_a?(ManagedEngine)
+      rescue
+        #will fail on build
+      end
     end
     SystemDebug.debug(SystemDebug.services,"calling service ", service_hash)
     service_manager.create_and_register_service(service_hash)
