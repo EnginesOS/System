@@ -17,6 +17,8 @@ module ContainerApiDockerActions
 
   def image_exist?(container_name)
     @docker_api.image_exist?(container_name)
+  rescue 
+    false
   end
 
   def inspect_container_by_name(container)

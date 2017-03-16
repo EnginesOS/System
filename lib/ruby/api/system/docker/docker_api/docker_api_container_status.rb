@@ -16,7 +16,6 @@ module DockerApiContainerStatus
       request = '/containers/' + container.container_id.to_s + '/json'
     end
     get_request(request, true)
-
   end
 
   def ps_container(container)
@@ -66,6 +65,8 @@ module DockerApiContainerStatus
       end
     end
     -1
+rescue 
+   -1
   end
 
   def logs_container(container, count)
