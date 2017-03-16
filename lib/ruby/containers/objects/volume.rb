@@ -8,7 +8,7 @@ class Volume < StaticService #Latter will include group and perhaps other attrib
     r = {}
       r[:volume_name] = service_hash[:variables][:service_name]
       r[:permissions] = service_hash[:variables][:permissions]
-      r[:service_type] = 'fs'
+    #  r[:service_type] = 'fs'
       r[:remotepath]  = service_hash[:variables][:engine_path]
        r[:localpath] = service_hash[:variables][:volume_src]
     r[:permissions] = 'rw'

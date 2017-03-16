@@ -23,6 +23,43 @@ class VersionedBlueprintReader < BluePrintReader
       SystemUtils.log_exception(e)
   end
    
+  def read_sed_strings
+    log_build_output('Read Sed Strings')
+    @sed_strings = {}
+    @sed_strings[:src_file] = []
+    @sed_strings[:dest_file] = []
+    @sed_strings[:sed_str] = []
+    @sed_strings[:tmp_file] = []
+    log_build_output('set sed strings')
+    seds = @blueprint[:software][:replacement_strings]
+    return true unless seds.is_a?(Array) # not an error just nada
+    n = 0
+    seds.each do |sed|
+      file = clean_path(sed[:source_file])
+      dest = clean_path(sed[:destination_file])
+      tmp_file = '/tmp/' + File.basename(file) + '.' + n.to_s
+      if file.match(/^_TEMPLATES.*/).nil? == false
+        template_file = file.gsub(/^_TEMPLATES/, '')
+      else
+        template_file = nil
+      end
+      if template_file.nil? == false
+        src_file = '/home/engines/templates/' + template_file
+      else
+        src_file = '/home/app/' + file
+      end
+      dest_file = '/home/app/' + dest
+      sedstr = sed[:string]
+      @sed_strings[:src_file].push(src_file)
+      @sed_strings[:dest_file].push(dest_file)
+      @sed_strings[:tmp_file].push(tmp_file)
+      @sed_strings[:sed_str].push(sedstr)
+      n += 1
+    end
+  rescue StandardError => e
+    SystemUtils.log_exception(e)
+  end
+  
   def read_web_port_overide
     if @blueprint[:software][:base].key?(:framework_port_overide) == true
       @web_port = @blueprint[:software][:base][:framework_port_overide]

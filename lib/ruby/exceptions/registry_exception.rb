@@ -1,21 +1,7 @@
-class RegistryException < StandardError
-  attr_reader :level, :params, :status
-  def initialize(msg="Engines Exception", level=:error, *params)
-    @level = level
-    @params = params
-    super(msg)
-  end
-
+class RegistryException < EnginesException
+  attr_reader :status
   def initialize( hash)
-  unless hash.nil?
-      @status = hash[:status]
-      @level = hash[:error_type].to_sym
-      @params = hash[:params]
-      super(hash[:error_mesg])
-    else
-      @level = :nil
-      super
-    end
+    @status = hash[:status] if hash.is_a?(Hash)
+    super(hash)
   end
-
 end

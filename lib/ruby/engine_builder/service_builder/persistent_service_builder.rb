@@ -4,7 +4,7 @@ module PersistantServiceBuilder
     SystemDebug.debug(SystemDebug.builder,:services ,services)
     services.each do | service_hash |
       SystemDebug.debug(SystemDebug.builder,:servicer_hash,service_hash)
-      service_def = SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:publisher_namespace])
+      service_def = software_service_definition(service_hash)
       return log_error_mesg('no matching service definition for ' + service_hash.to_s ,self) if service_def.nil?
       if service_def[:persistent] 
         service_hash[:persistent] = true        
@@ -18,7 +18,7 @@ module PersistantServiceBuilder
 
   def process_persistent_service(service_hash, environ, use_existing)
     SystemDebug.debug(SystemDebug.builder,:service ,service_hash)
-    service_hash = ServiceDefinitions.set_top_level_service_params(service_hash, @engine_name)
+    service_hash = set_top_level_service_params(service_hash, @engine_name)
     return log_error_mesg("Problem with service hash", service_hash) if service_hash.is_a?(FalseClass)
     existing = match_service_to_existing(service_hash, use_existing)
     if existing.is_a?(Hash)

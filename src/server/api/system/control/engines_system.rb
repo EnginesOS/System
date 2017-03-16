@@ -20,7 +20,6 @@ end
 get '/v0/system/control/engines_system/restart' do
   restart = engines_api.restart_engines_system_service
   return log_error(request, restart) if restart.is_a?(EnginesError)
-    status(202)
   return_text(restart)
 end
 # @method recreate_engines_system

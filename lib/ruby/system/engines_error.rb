@@ -1,4 +1,5 @@
 class EnginesError # < FalseClass
+  require '/opt/engines/lib/ruby/exceptions/engines_exception.rb'
   attr_accessor :source, :error_type, :error_mesg, :sub_system
 
   def initialize(message, type, system = 'global')

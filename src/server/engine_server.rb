@@ -89,7 +89,7 @@ begin
   @@last_error =''
 
   before do
-    content_type 'application/json' unless  request.path.end_with?('stream')
+   # content_type 'application/json' unless  request.path.end_with?('stream')
     pass if request.path.start_with?('/v0/system/login/')
     pass if request.path.start_with?('/v0/unauthenticated')
     pass if request.path.start_with?('/v0/cron/engine/')  && source_is_service?(request,'cron')

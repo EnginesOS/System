@@ -36,7 +36,7 @@ module ManagedContainerControls
       expire_engine_info
     else
       task_failed('setup')
-      log_error_mesg('Cannot create container as container exists ',state)
+      raise EnginesException.new(warning_hash('Cannot create container as container exists ', state))
     end
     return true if ret_val
     task_failed('setup')
@@ -125,7 +125,6 @@ module ManagedContainerControls
   end
 
   def rebuild_container
-    r = ''
     return false unless has_api?
     @container_mutex.synchronize {
     return r unless (r = prep_task(:reinstall))
@@ -155,7 +154,6 @@ module ManagedContainerControls
   private
 
   def prep_task(action_sym)
-r = ''
     unless task_at_hand.nil?
       SystemDebug.debug(SystemDebug.containers,  'saved task at hand', task_at_hand, 'next',action_sym )
     end
@@ -163,7 +161,7 @@ r = ''
     return r unless (r = in_progress(action_sym))
     SystemDebug.debug(SystemDebug.containers,  :inprogress_run)
     clear_error
-    return save_state
+     save_state
   rescue StandardError  => e
     log_exception(e)
   end

@@ -8,10 +8,10 @@ module ServiceApiConfigurations
       #variables = SystemUtils.hash_string_to_hash(result[:stdout])
       #FIXMe dont use JSON.pars
       variables_hash = deal_with_json(result[:stdout])
-      params[:variables] = SystemUtils.symbolize_keys(variables_hash)      
+      params[:variables] = symbolize_keys(variables_hash)      
       return params
     end
-     log_error_mesg('Error on retrieving Configuration',result)
+  raise EnginesException.new(error_hash('Error on retrieving Configuration', result))
 
   end
 

@@ -7,14 +7,11 @@ module DockerInfoCollector
     collect_docker_info if @docker_info_cache.nil?
     return false if @docker_info_cache.nil?
     @docker_info_cache
-  rescue StandardError => e
-    STDERR.puts('Exceptions ' + e.to_s + ':' + @docker_info_cache.to_s )
-    log_exception(e)
   end
 
   def expire_engine_info
     @docker_info_cache = nil
-     true
+    true
   end
 
   # @return a containers ip address as a [String]
@@ -23,16 +20,14 @@ module DockerInfoCollector
   def get_ip_str
     #
     return docker_info[:NetworkSettings][:IPAddress] unless docker_info.is_a?(FalseClass)
-     false
+    false
   rescue
-    return nil
-  rescue StandardError => e
-    log_exception(e)
+    nil
   end
 
   def set_cont_id
     if @container_id.to_s == '-1'  || @container_id.to_s == '' || @container_id.is_a?(FalseClass)
-      @container_id =  read_container_id
+      @container_id = read_container_id
       save_state unless @container_id.to_s == '-1'
     end
   end
@@ -55,10 +50,7 @@ module DockerInfoCollector
       #    ContainerStateFiles.read_container_id(self)
       info = @container_api.inspect_container_by_name(self) # docker_info
       return -1 if info.nil?
-       if info.is_a?(EnginesError)
-         STDERR.puts(EnginesError.to_s)
-         return -1
-       end
+
       SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ' ,info)
       if info.is_a?(Array)
         SystemDebug.debug(SystemDebug.containers,'array')
@@ -69,16 +61,15 @@ module DockerInfoCollector
       if info.is_a?(Hash)
         SystemDebug.debug(SystemDebug.containers,'hash')
       end
-    return -1 unless info.is_a?(Hash)
+      return -1 unless info.is_a?(Hash)
       return -1 if info.key?(:RepoTags) #No container by that name and it will return images by that name WTF
       @container_id = info[:Id] if info.key?(:Id)
       SystemDebug.debug(SystemDebug.containers,@container_id)
-
     end
     save_state unless cid == @container_id
-      @container_id
-  rescue StandardError => e
-    log_exception(e)
+    @container_id
+  rescue EnginesException => e
+    clear_cid
   end
 
   def running_user
@@ -86,9 +77,7 @@ module DockerInfoCollector
     return -1 unless info.is_a?(Hash)
     return -1 unless info.key?(:Config)
     return -1 unless info[:Config].key?(:User)
-      info[:Config][:User]
-  rescue StandardError => e
-     log_exception(e,info)
+    info[:Config][:User]
   end
   protected
 
@@ -97,11 +86,14 @@ module DockerInfoCollector
     # SystemDebug.debug(SystemDebug.containers,  :collect_docker_info )
     return false if @docker_info_cache == false && @setState == 'nocontainer'
     @docker_info_cache =  @container_api.inspect_container(self) if @docker_info_cache.nil?
- 
+
     if  @docker_info_cache.is_a?(Array)
       @docker_info_cache = @docker_info_cache[0]
     end
-     @docker_info_cache
+    @docker_info_cache
+
+  rescue EnginesException => e
+    @docker_info_cache = nil
   end
 
 end

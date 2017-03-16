@@ -10,11 +10,12 @@ require '/opt/engines/lib/ruby/containers/managed_service.rb'
 require '/opt/engines/lib/ruby/containers/system_service.rb'
 require '/opt/engines/lib/ruby/containers/managed_utility/managed_utility.rb'
 require '/opt/engines/lib/ruby/managed_services/service_definitions/software_service_definition.rb'
-require '/opt/engines/lib/ruby/service_manager/service_definitions.rb'
-
+#require '/opt/engines/lib/ruby/service_manager/service_definitions.rb'
+require '/opt/engines/lib/ruby/system/deal_with_json.rb'
+require '/opt/engines/lib/ruby/managed_services/service_definitions/service_top_level.rb'
 class EnginesCore < ErrorsApi
 
-  require_relative 'engines_core_errors.rb'
+  require_relative 'errors/engines_core_errors.rb'
   include EnginesCoreErrors
 
   # require_relative '../dns_api.rb'
@@ -25,64 +26,61 @@ class EnginesCore < ErrorsApi
 
   require_relative '../memory_statistics.rb'
 
-  require_relative 'container_config_loader.rb'
+  require_relative 'system/container_config_loader.rb'
   include ContainerConfigLoader
 
-  require_relative 'core_service_import_export.rb'
+  require_relative 'containers/core_service_import_export.rb'
   include CoreServiceImportExport
 
-  require_relative 'container_states.rb'
+  require_relative 'containers/container_states.rb'
   include ContainerStates
 
-  require_relative 'available_services.rb'
+  require_relative 'service_management/available_services.rb'
   include AvailableServices
 
-  require_relative 'service_configurations.rb'
+  require_relative 'service_management/service_configurations.rb'
   include ServiceConfigurations
 
   require_relative 'service_hash_checks.rb'
   include ServiceHashChecks
 
-  require_relative 'engine_operations.rb'
+  require_relative 'containers/engine_operations.rb'
   include EnginesOperations
 
-  require_relative 'engine_service_operations.rb'
+  require_relative 'service_management/engine_service_operations.rb'
   include EngineServiceOperations
 
-  require_relative 'container_operations.rb'
+  require_relative 'containers/container_operations.rb'
   include ContainerOperations
 
-  require_relative 'service_operations.rb'
+  require_relative 'service_management/service_operations.rb'
   include ServiceOperations
 
-  require_relative 'domain_operations.rb'
+  require_relative 'service_management/domain_operations.rb'
   include DomainOperations
 
-  require_relative 'subservice_operations.rb'
+  require_relative 'service_management/subservice_operations.rb'
   include SubserviceOperations
 
-  require_relative 'orphan_operations.rb'
+  require_relative 'service_management/orphan_operations.rb'
   include OrphanOperations
 
-  require_relative 'system_operations.rb'
+  require_relative 'system/system_operations.rb'
   include SystemOperations
 
-  #  require_relative 'result_checks.rb'
-  #  include ResultChecks
-
-  require_relative 'domain_operations.rb'
+  require_relative 'service_management/domain_operations.rb'
   include DomainOperations
 
-  require_relative 'registry_trees.rb'
+  require_relative 'service_management/registry_trees.rb'
   include RegistryTrees
 
   require_relative 'engines_core_preferences.rb'
   include  EnginesCorePreferences
 
-  require_relative 'service_manager_operations.rb'
+  require_relative 'service_management/service_manager_operations.rb'
   include ServiceManagerOperations
 
-  require_relative 'docker_operations.rb'
+  require_relative 'containers/docker_operations.rb'
   include DockerOperations
 
   require_relative 'registry_operations.rb'
@@ -94,13 +92,13 @@ class EnginesCore < ErrorsApi
   require_relative 'core_build_controller.rb'
   include CoreBuildController
 
-  require_relative 'actionators.rb'
+  require_relative 'containers/actionators.rb'
   include Actionators
 
   require_relative 'engines_core_version.rb'
   include EnginesCoreVersion
 
-  require_relative 'certificate_actions.rb'
+  require_relative 'system/certificate_actions.rb'
   include CertificateActions
   def self.command_is_system_service?
     return true if $PROGRAM_NAME.end_with?('system_service.rb')
@@ -117,7 +115,7 @@ class EnginesCore < ErrorsApi
   require_relative '../engines_system/engines_system.rb'
   require '/opt/engines/lib/ruby/service_manager/service_manager.rb'
   require_relative '../registry_handler.rb'
-  require_relative 'engines_core_error.rb'
+  require_relative 'errors/engines_core_error.rb'
 
   def initialize
     Signal.trap('HUP', proc { dump_stats })  #api_shutdown })
@@ -138,14 +136,11 @@ class EnginesCore < ErrorsApi
 
   def api_shutdown
     SystemDebug.debug(SystemDebug.system,  :BEING_SHUTDOWN)
-
     @registry_handler.api_shutdown
-
   end
 
   def dump_heap_stats
     ObjectSpace.garbage_collect
-    # STDERR.puts('dumping heap')
     file = File.open("/engines/var/run/heap.dump", 'w')
     ObjectSpace.dump_all(output: file)
     file.close
@@ -157,9 +152,7 @@ class EnginesCore < ErrorsApi
     params = params_from_gui.dup
     SystemDebug.debug(SystemDebug.first_run,params)
     first_run = FirstRunWizard.new(params)
-
     first_run.apply(self)
-
     @last_error = first_run.last_error unless first_run.sucess
     first_run.sucess
   end
@@ -169,10 +162,6 @@ class EnginesCore < ErrorsApi
     names.concat(list_managed_services)
     names.concat(list_system_services)
     names
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
-    failed('Gui', 'reserved_engine_names', 'failed')
-    []
   end
 
   def reserved_ports
@@ -194,17 +183,7 @@ class EnginesCore < ErrorsApi
     FirstRunWizard.required?
   end
 
-  def software_service_definition(params)
-    clear_error
-    r = ''
-    return r unless (r = check_service_hash(params))
-    return SoftwareServiceDefinition.find(params[:type_path],params[:publisher_namespace] )
-  rescue StandardError => e
-    p :error
-    p params
-    log_exception(e)
-    nil
-  end
+
 
   def get_build_report(engine_name)
     @system_api.get_build_report(engine_name)
@@ -225,18 +204,13 @@ class EnginesCore < ErrorsApi
       @build_controller.build_engine(params)
     }
     return true if @build_thread.alive?
-    log_error(params[:engine_name], 'Build Failed to start')
-  rescue StandardError => e
-    log_excepton(e)
+    raise EnginesException.new(error_hash(params[:engine_name], 'Build Failed to start'))
   end
 
   def shutdown(reason)
     # FIXME: @registry_handler.api_dissconnect
     @system_api.api_shutdown(reason)
   end
- # private
-  def service_manager
-    @service_manager ||= ServiceManager.new(self)
-  end
+ 
   protected
 end

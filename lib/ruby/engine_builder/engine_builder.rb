@@ -36,6 +36,9 @@ class EngineBuilder < ErrorsApi
   require_relative 'builder/check_build_params.rb'
   include CheckBuildParams
 
+  require_relative 'builder/container_creation.rb'
+  include  ContainerCreation
+
   require_relative '../templater/templater.rb'
 
   attr_reader   :templater,
@@ -67,14 +70,16 @@ class EngineBuilder < ErrorsApi
     @core_api = core_api
     @container = nil
     @build_params = params
+
   end
-  
+
   def setup_build
-    
- #   r  = check_build_params
+
+    #   r  = check_build_params
     #return r if r.is_a?(EnginesError)
     return log_error_mesg('empty container name', @build_params) if @build_params[:engine_name].nil? || @build_params[:engine_name] == ''
     @build_params[:engine_name].freeze
+    @build_params[:image] = @build_params[:engine_name].gsub(/[-_]/,'')
     @build_name = File.basename(@build_params[:repository_url]).sub(/\.git$/, '')
     @web_port = SystemConfig.default_webport
     @memory = @build_params[:memory]
@@ -95,7 +100,7 @@ class EngineBuilder < ErrorsApi
     SystemDebug.debug(SystemDebug.builder, :builder_init, @build_params)
     @service_builder = ServiceBuilder.new(@core_api, @templater, @build_params[:engine_name],  @attached_services)
     SystemDebug.debug(SystemDebug.builder, :builder_init__service_builder, @build_params)
-    return self
+    self
   rescue StandardError => e
     log_exception(e)
     abort_build
@@ -111,9 +116,9 @@ class EngineBuilder < ErrorsApi
     log_build_output('Starting Rebuild')
     return log_error_mesg('Failed to Backup Last build', self) unless backup_lastbuild
     return log_error_mesg('Failed to setup rebuild', self) unless setup_rebuild
-    return build_container
-    rescue StandardError => e
-      abort_build
+    build_container
+  rescue StandardError => e
+    abort_build
   end
 
   def build_failed(errmesg)
@@ -132,43 +137,30 @@ class EngineBuilder < ErrorsApi
     version = 0
     unless @blueprint.key?(:schema)
       require_relative 'blueprint_readers/0/versioned_blueprint_reader.rb'
-    else 
-     STDERR.puts('BP Schema :' + @blueprint[:schema].to_s + ':' )
+    else
+      STDERR.puts('BP Schema :' + @blueprint[:schema].to_s + ':' )
       version =  @blueprint[:schema][:version][:major]
-        unless File.exist?('/opt/engines/lib/ruby/engine_builder/blueprint_readers/' + version.to_s + '/versioned_blueprint_reader.rb')
-         log_build_errors('Failed to create Managed Container invalid blueprint schema')
-         return post_failed_build_clean_up
-        end
+      unless File.exist?('/opt/engines/lib/ruby/engine_builder/blueprint_readers/' + version.to_s + '/versioned_blueprint_reader.rb')
+        log_build_errors('Failed to create Managed Container invalid blueprint schema')
+        return post_failed_build_clean_up
+      end
       require_relative 'blueprint_readers/' + version.to_s + '/versioned_blueprint_reader.rb'
     end
-    
+
     log_build_output('Using Blueprint Schema ' + version.to_s + ' ' +  @blueprint[:origin].to_s )
-    
+
     @blueprint_reader = VersionedBlueprintReader.new(@build_params[:engine_name], @blueprint, self)
     return post_failed_build_clean_up unless @blueprint_reader.process_blueprint
     true
   rescue Exception => e
     log_build_errors('Failed to create Managed Container Problem with blueprint: ' + e.to_s)
     log_build_errors("dbg " + e.backtrace.to_s)
-            return post_failed_build_clean_up
-     
+    return post_failed_build_clean_up
+
   end
 
   def setup_engine_dirs
     SystemUtils.run_system('/opt/engines/system/scripts/system/create_container_dir.sh ' + @build_params[:engine_name])
-  end
-
-  def create_engine_container
-    log_build_output('Creating Deploy Image')
-    @container = create_managed_container
-    unless @container.is_a?(ManagedEngine)
-      log_build_errors('Failed to create Managed Container')
-      return post_failed_build_clean_up
-    end
-    @service_builder.create_non_persistent_services(@blueprint_reader.services)
-    true
-  rescue StandardError => e
-    abort_build
   end
 
   def save_build_result
@@ -179,8 +171,8 @@ class EngineBuilder < ErrorsApi
     FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.out',ContainerStateFiles.container_state_dir(@container) + '/build.log')
     FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.err',ContainerStateFiles.container_state_dir(@container) + '/build.err')
     true
-    rescue StandardError => e
-      log_exception(e)
+  rescue StandardError => e
+    log_exception(e)
   end
 
   def wait_for_engine
@@ -210,8 +202,8 @@ class EngineBuilder < ErrorsApi
       return false
     end
     true
-    rescue StandardError => e
-      log_exception(e)
+  rescue StandardError => e
+    log_exception(e)
   end
 
   def build_container
@@ -229,7 +221,7 @@ class EngineBuilder < ErrorsApi
     save_build_result
     close_all
     SystemStatus.build_complete(build_params)
-    return @container
+    @container
   rescue StandardError => e
     log_exception(e)
     post_failed_build_clean_up
@@ -243,7 +235,7 @@ class EngineBuilder < ErrorsApi
     backup = dir + '.backup'
     FileUtils.rm_rf(backup) if Dir.exist?(backup)
     FileUtils.mv(dir, backup) if Dir.exist?(dir)
-    return true
+    true
   rescue StandardError => e
     log_exception(e)
   end
@@ -251,7 +243,7 @@ class EngineBuilder < ErrorsApi
   def load_blueprint
     log_build_output('Reading Blueprint')
     json_hash = BlueprintApi.load_blueprint_file(basedir + '/blueprint.json')
-    return SystemUtils.symbolize_keys(json_hash)
+    return symbolize_keys(json_hash)
   rescue StandardError => e
     log_exception(e)
   end
@@ -261,19 +253,8 @@ class EngineBuilder < ErrorsApi
     g = Git.clone(@build_params[:repository_url], @build_name, :path => SystemConfig.DeploymentDir)
   rescue StandardError => e
     log_error_mesg('Problem cloning Git', g)
-    abort_build
     log_exception(e)
-  end
-
-  def launch_deploy(managed_container)
-    log_build_output('Launching Engine')
-    r = managed_container.create_container
-    return log_error_mesg('Failed to Launch ', @container) if @container.is_a?(EnginesError)
-    save_engine_built_configuration(managed_container)
-    return r
-  rescue StandardError => e
     abort_build
-    log_exception(e)
   end
 
   def get_blueprint_from_repo
@@ -288,9 +269,9 @@ class EngineBuilder < ErrorsApi
     return log_error_mesg('Failed to Load Blue print',self) unless get_blueprint_from_repo
     log_build_output('Cloned Blueprint')
     build_container
-    rescue StandardError => e
-      abort_build
-      log_exception(e)
+  rescue StandardError => e
+    log_exception(e)
+    abort_build
   end
 
   def post_failed_build_clean_up
@@ -301,6 +282,7 @@ class EngineBuilder < ErrorsApi
     # FIXME: need to re orphan here if using an orphan Well this should happen on the fresh
     # FIXME: don't delete shared service but remove share entry
     SystemDebug.debug(SystemDebug.builder, :Clean_up_Failed_build)
+    SystemDebug.debug(SystemDebug.builder, "Called From",caller[0..5])
     SystemDebug.debug(SystemDebug.builder, caller.to_s)
     # FIXME: Stop it if started (ie vol builder failure)
     # FIXME: REmove container if created
@@ -321,7 +303,9 @@ class EngineBuilder < ErrorsApi
     @result_mesg = @result_mesg.to_s + ' Roll Back Complete'
     SystemDebug.debug(SystemDebug.builder,'Roll Back Complete')
     close_all
-    return false
+
+  rescue StandardError => e
+    log_exception(e)
   end
 
   def setup_rebuild
@@ -333,8 +317,8 @@ class EngineBuilder < ErrorsApi
     f.write(blueprint.to_json)
     f.close
   rescue StandardError => e
-    abort_build
     log_exception(e)
+    abort_build
   end
 
   #app_is_persistent
@@ -342,27 +326,6 @@ class EngineBuilder < ErrorsApi
   def running_logs()
     return @container.logs_container unless @container.nil?
     return nil
-  end
-
-  def create_managed_container
-    log_build_output('Creating ManagedEngine')
-    @build_params[:web_port] = @web_port
-    @build_params[:volumes] = @service_builder.volumes
-    @build_params[:image] = @build_params[:engine_name].gsub(/[-_]/,'')
-    @container = ManagedEngine.new(@build_params, @blueprint_reader, @core_api.container_api)
-    @container.save_state # no running.yaml throws a no such container so save so others can use
-    log_build_errors('Failed to save blueprint ' + @blueprint.to_s) unless @container.save_blueprint(@blueprint)
-    log_build_output('Launching ' + @container.to_s)
-    @core_api.init_engine_dirs(@container)
-    return log_build_errors('Error Failed to Launch') unless launch_deploy(@container)
-
-    log_build_output('Applying Volume settings and Log Permissions' + @container.to_s)
-    return log_build_errors('Error Failed to Apply FS' + @container.to_s) unless @service_builder.run_volume_builder(@container, @web_user)
-    flag_restart_required(@container) if @has_post_install == true
-    return @container
-  rescue StandardError => e
-    abort_build
-    log_exception(e)
   end
 
   def engine_environment
@@ -379,27 +342,25 @@ class EngineBuilder < ErrorsApi
     f.close
     File.chmod(0660,restart_flag_file)
     FileUtils.chown(nil,'containers',restart_flag_file)
-    rescue StandardError => e
-     
-      log_exception(e)
+  rescue StandardError => e
+    log_exception(e)
+    abort_build
   end
 
   def log_error_mesg(m,o)
-    
     log_build_errors(m.to_s + o.to_s)
     super
   end
 
   def abort_build
     post_failed_build_clean_up
-    return true
   end
 
   def basedir
     SystemConfig.DeploymentDir + '/' + @build_name.to_s
-    rescue StandardError => e
+  rescue StandardError => e
+    log_exception(e)
     abort_build
-      log_exception(e)
   end
 
   private
@@ -422,13 +383,14 @@ class EngineBuilder < ErrorsApi
     return true
   rescue StandardError => e
     log_exception(e)
+    abort_build
   end
 
   protected
 
   def log_exception(e)
-    log_build_errors(e.to_s)
-    build_failed(e.to_s)
+    log_build_errors('Engine Build Aborted Due to:' + e.to_s)
+    @result_mesg = 'Error.' + e.to_s
     super
   end
 end

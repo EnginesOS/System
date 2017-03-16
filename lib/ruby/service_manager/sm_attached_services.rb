@@ -28,8 +28,6 @@ module SMAttachedServices
     end
     SystemDebug.debug(SystemDebug.services, :no_object_name_match, objectName)
     nil
-  rescue StandardError => e
-    handle_exception(e)
   end
 
 end

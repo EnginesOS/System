@@ -38,16 +38,16 @@ class ManagedContainer < Container
 
   require_relative 'managed_container/managed_container_certificates.rb'
   include ManagedContainerCertificates
-  
+
   require_relative 'managed_container/managed_container_schedules.rb'
-   include ManagedContainerSchedules
-  
+  include ManagedContainerSchedules
+
   @conf_self_start = false
   @conf_zero_conf=false
   @restart_required = false
   @rebuild_required = false
   @large_temp = false
-  
+
   attr_accessor  :volumes_from, :command, :restart_required, :rebuild_required, :environments, :volumes, :image_repo,:capabilities
 
   def initialize
@@ -73,18 +73,16 @@ class ManagedContainer < Container
     @status[:state] = read_state
     @status[:set_state] = @setState
     @status[:progress_to] = task_at_hand
-    @status[:error] = false   
+    @status[:error] = false
     @status[:oom] = @out_of_memory
     @status[:had_oom] = @had_out_memory
     @status[:restart_required] = restart_required?
     @status[:error] = true if @status[:state] !=  @status[:set_state] &&  @status[:progress_to].nil?
     #@status[:error] = false unless  @status[:progress_to].nil?
-#    elsif @status[:progress_to].nil?
-#      @status[:error] = false
-#    end
-
+    #    elsif @status[:progress_to].nil?
+    #      @status[:error] = false
+    #    end
     @status
-
   end
 
   def post_load
@@ -100,7 +98,7 @@ class ManagedContainer < Container
     return @container_id unless @container_id == -1
     return @container_id if setState == 'noncontainer'
     @container_id = read_container_id
-     @container_id
+    @container_id
   end
 
   def repo
@@ -130,7 +128,7 @@ class ManagedContainer < Container
   end
 
   def engine_environment
-     @environments
+    @environments
   end
 
   #  def to_s
@@ -140,22 +138,20 @@ class ManagedContainer < Container
     s = self.dup
     envs = []
     unless environments.nil?
-    s.environments.each do |env|
-      envs.push(env.to_h)
-    end
+      s.environments.each do |env|
+        envs.push(env.to_h)
+      end
     end
     s.environments = envs
-  unless volumes.nil?
-    s.volumes.each_key do | key|
-      s.volumes[key] = s.volumes[key].to_h
+    unless volumes.nil?
+      s.volumes.each_key do | key|
+        s.volumes[key] = s.volumes[key].to_h
+      end
     end
-end
     s.instance_variables.each_with_object({}) do |var, hash|
       next if var.to_s.delete("@") == 'container_api'
       hash[var.to_s.delete("@")] = s.instance_variable_get(var)
     end
-  rescue StandardError => e
-    log_exception(e, @container_name)
   end
 
   def lock_values
@@ -170,4 +166,9 @@ end
     log_exception(e)
   end
 
+  def error_type_hash(mesg, params = nil)
+    {error_mesg: mesg,
+      system: :managed_container,
+      params: params }
+  end
 end

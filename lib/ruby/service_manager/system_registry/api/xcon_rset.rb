@@ -1,5 +1,4 @@
-#require 'rest-client'
-
+require '/opt/engines/lib/ruby/exceptions/registry_exception.rb'
 def json_parser
   @json_parser ||= FFI_Yajl::Parser.new({:symbolize_keys => true})
 end
@@ -12,11 +11,11 @@ end
 
 def connection(content_type = nil)
   @connection ||=  Excon.new(base_url,
-  :debug_request => true,
-  :debug_response => true,
-  :ssl_verify_peer => false,
-  :persistent => true,
-  :headers => headers)
+  debug_request:  true,
+  debug_response: true,
+  ssl_verify_peer: false,
+  persistent: true,
+  headers: headers)
 rescue StandardError => e
   STDERR.puts('Failed to open base url to registry' + @base_url.to_s)
   STDERR.puts e.backtrace.to_s
@@ -61,9 +60,9 @@ def rest_post(path,params = nil, lheaders=nil)
   begin
     SystemDebug.debug(SystemDebug.registry,'POST  ', path.to_s + '?' + params.to_s)
     lheaders = headers if lheaders.nil?
-    r = parse_xcon_response( connection.request(read_timeout: time_out, headers: lheaders, method: :post, path: @route_prefix + path, body: query_hash(params).to_json  ))
+    r = parse_xcon_response(connection.request({read_timeout: time_out, headers: lheaders, method: :post, path: @route_prefix + path, body: query_hash(params).to_json }))
     return r
-  rescue   Excon::Error::Socket => e
+  rescue Excon::Error::Socket => e
     reopen_connection
     retry
   end
@@ -100,31 +99,36 @@ end
 private
 #
 
-
 def parse_xcon_response(resp)
   raise RegistryException.new({status: 500 , error_mesg: 'Server Error', exception: :exception})  if resp.nil?
-# STDERR.puts('1 ' + resp.status.to_s + ':' + resp.headers.to_s + " __ " + resp.body.to_s)
-  if resp.status > 399
-    raise RegistryException.new(
-    {status: resp.status,
-      error_type: :error,
-      error_mesg: 'Route Not Found',
-      params: resp.body
-    }) unless resp.headers['Content-Type'] == 'application/json'
-    r = deal_with_json(resp.body)
-    r[:status] = resp.status
-    raise RegistryException.new(r)
-  end
-#  STDERR.puts('2 ' + resp.status.to_s + ':' + resp.body.to_s)
-  #return parse_error(resp) if resp.status > 399
+  # STDERR.puts('1 ' + resp.status.to_s + ':' + resp.headers.to_s + " __ " + resp.body.to_s)
+  error_result_exception(resp) if resp.status > 399
   r = resp.body
   return if r.nil?
   r.strip!
   return r if resp.headers['Content-Type'] == 'plain/text'
   r = deal_with_json(r)
   r = r[:BooleanResult] if r.is_a?(Hash) && r.key?(:BooleanResult)
-  #STDERR.puts( resp.status.to_s + ':' + r.class.name)
   r
+end
+
+def error_result_exception(resp)
+  raise RegistryException.new(
+  {status: resp.status,
+    error_type: :error,
+    error_mesg: 'Route Not Found',
+    params: resp.body
+  }) if resp.headers.nil? || !  resp.headers['Content-Type'] == 'application/json'
+  r = deal_with_json(resp.body)
+  r = {} if r.nil?
+  r[:status] = resp.status if r.is_a?(Hash)
+  raise RegistryException.new(
+  {status: resp.status,
+    error_type: :warning,
+    error_mesg: 'Route Not Found',
+    params: resp.body
+  })  if r == '<h1>Not Found</h1>'
+  raise RegistryException.new(r)
 end
 
 def base_url
