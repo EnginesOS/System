@@ -2,14 +2,14 @@ module Engines
   def list_managed_engines
     clear_error
     ret_val = []
+      begin
     Dir.entries(SystemConfig.RunDir + '/containers/').each do |contdir|
       yfn = SystemConfig.RunDir + '/containers/' + contdir + '/running.yaml'
       ret_val.push(contdir) if File.exist?(yfn)
     end
+      rescue
+      end
      ret_val
-  rescue StandardError => e
-    log_exception(e)
-     next
   end
   
   def init_engine_dirs(engine_name)
