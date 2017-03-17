@@ -38,6 +38,7 @@ module EnginesApiSystem
     start_dependancies(container) if container.dependant_on.is_a?(Hash)
     container.pull_image if container.ctype != 'container'
     @docker_api.create_container(container)
+    sleep(5)
     start_container(container)
     true
   end
