@@ -76,7 +76,7 @@ class ManagedUtility< ManagedContainer
     sleep(10)
     @container_api.wait_for('stopped') unless read_state == 'stopped'
     begin
-      r = logs_container #_as_result
+      r = @container_api.logs_container(self) #_as_result
       return r if r.is_a?(Hash)
     rescue EnginesError =>e
       STDERR.puts(e.to_s  + "\n" + e.backtrace.to_s)
