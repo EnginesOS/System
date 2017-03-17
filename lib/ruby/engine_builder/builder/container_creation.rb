@@ -24,6 +24,7 @@ module ContainerCreation
     flag_restart_required(@container) if @has_post_install == true
     return log_build_errors('Error Failed to Launch') unless launch_deploy(@container)
     log_build_output('Applying Volume settings and Log Permissions' + @container.to_s)
+    sleep(10)
     return log_build_errors('Error Failed to Apply FS' + @container.to_s) unless @service_builder.run_volume_builder(@container, @web_user)
     @container
   rescue StandardError => e
