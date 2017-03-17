@@ -27,6 +27,7 @@ module ContainerCreation
     log_build_errors('Error Failed to Apply FS' + @container.to_s) unless @service_builder.run_volume_builder(@container, @web_user)
     @container
   rescue StandardError => e
+    STDERR.puts("create_managed_container ERRo")
     log_exception(e)
     abort_build
   end
@@ -40,10 +41,9 @@ module ContainerCreation
       log_build_output('Failed to create Engine container from Image')
       return log_error_mesg(' Failed to create Engine container from Image')
     end
-    return log_error_mesg('Failed to Launch ', @container) if @container.is_a?(EnginesError)
     save_engine_built_configuration(managed_container)
-
   rescue StandardError => e
+    STDERR.puts("DEPLOY ERRo")
     log_exception(e)
     abort_build
   end
