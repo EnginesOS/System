@@ -3,8 +3,8 @@ class ManagedUtility< ManagedContainer
     # Basically parent super but no lock on image
     expire_engine_info
     begin
-    info = @container_api.inspect_container_by_name(self)
-    @container_id = info[:Id] if info.is_a?(Hash)
+      info = @container_api.inspect_container_by_name(self)
+      @container_id = info[:Id] if info.is_a?(Hash)
     rescue
     end
     set_running_user
@@ -48,10 +48,10 @@ class ManagedUtility< ManagedContainer
   end
 
   def execute_command(command_name, command_params)
-#    begin #FIXME needs to complete if from another install
-#      stop_container
-#    rescue
-#    end
+    #    begin #FIXME needs to complete if from another install
+    #      stop_container
+    #    rescue
+    #    end
     raise EnginesException.new(error_hash('Utility ' + container_name + ' in use ' ,  command_name)) if is_active?
     #FIXMe need to check if running
     r =  ''
@@ -73,15 +73,15 @@ class ManagedUtility< ManagedContainer
     apply_templates(command, command_params)
     save_state
     create_container()
-
+    start_container
     @container_api.wait_for('stopped') unless read_state == 'stopped'
-    r = logs_container #_as_result
-    # destroy_container
-    {
-      stdout: 'OK',
-      result: 0
-    }
-
+    begin
+      r = logs_container #_as_result
+      return r if r.is_a?(Hash)
+    rescue
+      {stderr: 'Failed', result: -1}
+    end
+    {stdout: 'OK', result: 0}
   end
 
   def construct_cmdline(command, command_params, templater)
