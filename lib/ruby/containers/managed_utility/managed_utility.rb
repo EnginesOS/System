@@ -33,7 +33,7 @@ class ManagedUtility< ManagedContainer
 
   def on_create(event_hash)
     @container_mutex.synchronize {
-      SystemDebug.debug(SystemDebug.container_events,:ON_Create_CALLED,event_hash)
+      SystemDebug.debug(SystemDebug.container_events,:ON_Create_CALLED, event_hash)
       @container_id = event_hash[:id]
         STDERR.puts('ID SET YTO' + @container_id.to_s )
       @out_of_memory = false
@@ -78,13 +78,14 @@ class ManagedUtility< ManagedContainer
     sleep(10)
     @container_api.wait_for('stopped') unless read_state == 'stopped'
     begin
-      r = @container_api.logs_container(self) #_as_result
+      r = @container_api.logs_container(self, 100) #_as_result
       return r if r.is_a?(Hash)
+      {stdout: r.to_s, result: 0}
     rescue EnginesError =>e
       STDERR.puts(e.to_s  + "\n" + e.backtrace.to_s)
       {stderr: 'Failed', result: -1}
     end
-    {stdout: 'OK', result: 0}
+    
   end
 
   def construct_cmdline(command, command_params, templater)
