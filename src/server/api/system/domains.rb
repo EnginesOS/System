@@ -28,6 +28,6 @@ end
 get '/v0/system/domains/' do
   domains = engines_api.list_domains()
   STDERR.puts('LISR DOMAIN Params ' + domains.to_s )
-  return_json_array([domains])
+  return_json_array(domains)
 end
 # @!endgroup

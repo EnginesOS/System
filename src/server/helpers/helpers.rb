@@ -5,7 +5,7 @@ helpers do
   end
 
   def return_json(r, s=202)
-    return return_error if r.is_a?(EnginesError)
+    return return_error(r) if r.is_a?(EnginesError)
     content_type 'application/json'
     status(s)
     return empty_json if r.nil?
@@ -14,17 +14,16 @@ helpers do
   end
 
   def return_json_array(r, s=202)
-    return return_error if r.is_a?(EnginesError)
+    return return_error(r) if r.is_a?(EnginesError)
     content_type 'application/json'
     status(s)
     return empty_array if r.nil?
     return empty_array if r.is_a?(FalseClass)
-    #  STDERR.puts("JSON " + r.to_s)
-    r
+    r.to_json
   end
 
   def return_text(r, s=202)
-    return return_error if r.is_a?(EnginesError)
+    return return_error(r) if r.is_a?(EnginesError)
     content_type 'text/plain'
     STDERR.puts("text " + r.to_s)
     status(s)
@@ -37,8 +36,8 @@ helpers do
   end
 
   def return_error(error)
-    status(404) # FixMe take this from the error if avail
     content_type 'application/json'
+    status(404) # FixMe take this from the error if avail
     error.to_json
   end
 
