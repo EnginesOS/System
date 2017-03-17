@@ -2,8 +2,11 @@ class ManagedUtility< ManagedContainer
   def post_load
     # Basically parent super but no lock on image
     expire_engine_info
+    begin
     info = @container_api.inspect_container_by_name(self)
     @container_id = info[:Id] if info.is_a?(Hash)
+    rescue
+    end
     set_running_user
     domain_name = SystemConfig.internal_domain
     @conf_self_start.freeze

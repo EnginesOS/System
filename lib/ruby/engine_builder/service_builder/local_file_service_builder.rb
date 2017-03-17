@@ -1,7 +1,6 @@
 module LocalFileServiceBuilder
-  def run_volume_builder(container,username)
+  def run_volume_builder(container, username)
     clear_error
-
     volbuilder = @core_api.loadManagedUtility('fsconfigurator')
     util_params = {
       volume: '/',
