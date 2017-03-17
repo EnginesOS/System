@@ -21,8 +21,6 @@ module DockerImages
       next unless image.is_a?(Hash) && image.key?(:Id)
       @docker_comms.delete_image(image[:Id])
     end
-    #    cmd = 'docker rmi $( docker images -f \'dangling=true\' -q) &'
-    #    Thread.new { SystemUtils.execute_command(cmd) }
     true # often warning not error
   end
 
