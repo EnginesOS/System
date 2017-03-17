@@ -1,12 +1,12 @@
 module EnginesApiAccess
   def has_api?
     raise EnginesException.new(error_hash('No connection to Engines OS System', nil)) if @container_api.nil?
-     true
+    true
   end
 
   def logs_container(count=100)
     return false unless has_api?
-     @container_api.logs_container(self,count)
+    @container_api.logs_container(self, count)
   end
 
   def ps_container

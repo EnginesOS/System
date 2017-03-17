@@ -3,8 +3,8 @@ class ManagedUtility< ManagedContainer
     # Basically parent super but no lock on image
     expire_engine_info
     begin
-    info = @container_api.inspect_container_by_name(self)
-    @container_id = info[:Id] if info.is_a?(Hash)
+      info = @container_api.inspect_container_by_name(self)
+      @container_id = info[:Id] if info.is_a?(Hash)
     rescue
     end
     set_running_user
@@ -31,35 +31,36 @@ class ManagedUtility< ManagedContainer
   def on_start
   end
 
-  def  on_create(event_hash)
+  def on_create(event_hash)
     @container_mutex.synchronize {
-      SystemDebug.debug(SystemDebug.container_events,:ON_Create_CALLED,event_hash)
+      SystemDebug.debug(SystemDebug.container_events,:ON_Create_CALLED, event_hash)
       @container_id = event_hash[:id]
+        STDERR.puts('ID SET YTO' + @container_id.to_s )
       @out_of_memory = false
       @had_out_memory = false
       save_state
     }
+    start_container
   end
 
   def command_details(command_name)
     raise EnginesException.new(error_hash('No Commands', command_name)) unless @commands.is_a?(Hash)
     return @commands[command_name] if @commands.key?(command_name)
     raise EnginesException.new(error_hash('Command not found _',  command_name.to_s ))
-  
   end
 
   def execute_command(command_name, command_params)
-#    begin #FIXME needs to complete if from another install
-#      stop_container
-#    rescue
-#    end
+    #    begin #FIXME needs to complete if from another install
+    #      stop_container
+    #    rescue
+    #    end
     raise EnginesException.new(error_hash('Utility ' + container_name + ' in use ' ,  command_name)) if is_active?
     #FIXMe need to check if running
     r =  ''
     #  command_name = command_name.to_sym unless @commands.key?(command_name)
     raise EnginesException.new(error_hash('No such command: ' + command_name.to_s,  command_params)) unless @commands.key?(command_name)
     command = command_details(command_name)
-    raise EnginesException.new(error_hash('Missing params' + r.to_s, r)) unless (r = check_params(command, command_params)) == true
+    raise EnginesException.new(error_hash('Missing params in Exe' + command_params.to_s, r)) unless (r = check_params(command, command_params)) == true
     begin
       r = destroy_container
     rescue
@@ -74,15 +75,17 @@ class ManagedUtility< ManagedContainer
     apply_templates(command, command_params)
     save_state
     create_container()
-    start_container
+    sleep(10)
     @container_api.wait_for('stopped') unless read_state == 'stopped'
-    r = logs_container #_as_result
-    # destroy_container
-    {
-      stdout: 'OK',
-      result: 0
-    }
-
+    begin
+      r = @container_api.logs_container(self, 100) #_as_result
+      return r if r.is_a?(Hash)
+      {stdout: r.to_s, result: 0}
+    rescue EnginesError =>e
+      STDERR.puts(e.to_s  + "\n" + e.backtrace.to_s)
+      {stderr: 'Failed', result: -1}
+    end
+    
   end
 
   def construct_cmdline(command, command_params, templater)
@@ -129,16 +132,15 @@ class ManagedUtility< ManagedContainer
     templater.apply_hash_variables(text, values_hash)
   end
 
-  def check_params(cmd, parrams)
+  def check_params(cmd, params)
     r = true
+    STDERR.puts('Command ' + cmd.to_s + ':' + params.to_s)
     cmd[:requires].each do |required_param|
       next if params.key?(required_param.to_sym)
       r = 'Missing:' if r == true
       r +=  ' ' + required_param.to_s
     end
     r
-    rescue
-      false
   end
 
   def container_logs_as_result

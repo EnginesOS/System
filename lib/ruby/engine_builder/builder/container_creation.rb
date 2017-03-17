@@ -7,7 +7,6 @@ module ContainerCreation
       return post_failed_build_clean_up
     end
     @service_builder.create_non_persistent_services(@blueprint_reader.services)
-    true
   rescue StandardError => e
     abort_build
   end
@@ -22,11 +21,13 @@ module ContainerCreation
     log_build_output('Launching ' + @container.to_s)
     @core_api.init_engine_dirs(@build_params[:engine_name])
     flag_restart_required(@container) if @has_post_install == true
-    return log_build_errors('Error Failed to Launch') unless launch_deploy(@container)
+    log_build_errors('Error Failed to Launch') unless launch_deploy(@container)
     log_build_output('Applying Volume settings and Log Permissions' + @container.to_s)
-    return log_build_errors('Error Failed to Apply FS' + @container.to_s) unless @service_builder.run_volume_builder(@container, @web_user)
+    sleep(10)
+    log_build_errors('Error Failed to Apply FS' + @container.to_s) unless @service_builder.run_volume_builder(@container, @web_user)
     @container
   rescue StandardError => e
+    STDERR.puts("create_managed_container ERRo")
     log_exception(e)
     abort_build
   end
@@ -40,10 +41,9 @@ module ContainerCreation
       log_build_output('Failed to create Engine container from Image')
       return log_error_mesg(' Failed to create Engine container from Image')
     end
-    return log_error_mesg('Failed to Launch ', @container) if @container.is_a?(EnginesError)
     save_engine_built_configuration(managed_container)
-
   rescue StandardError => e
+    STDERR.puts("DEPLOY ERRo")
     log_exception(e)
     abort_build
   end

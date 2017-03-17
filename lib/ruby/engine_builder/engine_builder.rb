@@ -178,8 +178,6 @@ class EngineBuilder < ErrorsApi
   def wait_for_engine
     cnt = 0
     lcnt = 5
-  
-
     log_build_output('Starting Engine')
     while @container.is_startup_complete? == false && @container.is_running?
       cnt += 1
@@ -225,6 +223,7 @@ class EngineBuilder < ErrorsApi
     return false unless create_engine_image
     return false unless create_engine_container
     @service_builder.release_orphans
+    sleep 10
     wait_for_engine
     save_build_result
     close_all

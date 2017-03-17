@@ -26,7 +26,7 @@ module DockerInfoCollector
   end
 
   def set_cont_id
-    if @container_id.to_s == '-1'  || @container_id.to_s == '' || @container_id.is_a?(FalseClass)
+    if @container_id.to_s == '-1'  || @container_id.to_s == '' || @container_id.is_a?(FalseClass)|| @container_id.is_a?(TrueClass)
       @container_id = read_container_id
       save_state unless @container_id.to_s == '-1'
     end
@@ -45,9 +45,6 @@ module DockerInfoCollector
     @container_id = ContainerStateFiles.read_container_id(self)
     SystemDebug.debug(SystemDebug.containers, 'read container from file ',  @container_id)
     if @container_id == -1 && setState != 'nocontainer'
-      #    sleep 1
-
-      #    ContainerStateFiles.read_container_id(self)
       info = @container_api.inspect_container_by_name(self) # docker_info
       return -1 if info.nil?
 
@@ -70,6 +67,7 @@ module DockerInfoCollector
     @container_id
   rescue EnginesException => e
     clear_cid
+    -1
   end
 
   def running_user
@@ -93,7 +91,7 @@ module DockerInfoCollector
     @docker_info_cache
 
   rescue EnginesException => e
-    @docker_info_cache = nil
+    @docker_info_cache = nil    
   end
 
 end

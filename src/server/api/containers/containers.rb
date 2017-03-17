@@ -107,7 +107,7 @@ end
 
 get '/v0/containers/check_and_act' do
   r = engines_api.containers_check_and_act
-  return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
+  return log_error(request, r) if r.is_a?(EnginesError)
   return_json(r)
 end
 
