@@ -72,8 +72,7 @@ class ManagedUtility< ManagedContainer
     clear_configs
     apply_templates(command, command_params)
     save_state
-    create_container()
-    start_container
+    create_container()  
     @container_api.wait_for('stopped') unless read_state == 'stopped'
     begin
       r = logs_container #_as_result
