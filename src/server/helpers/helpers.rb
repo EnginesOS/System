@@ -9,7 +9,7 @@ helpers do
     content_type 'application/json'
     status(s)
     return empty_json if r.nil?
-    STDERR.puts("JSON " + r.to_json)
+    # STDERR.puts("JSON " + r.to_json)
     r.to_json
   end
 
@@ -17,7 +17,7 @@ helpers do
     return return_error_array(r) if r.is_a?(EnginesError)
     content_type 'application/json'
     status(s)
-    STDERR.puts("json arry _" + r.to_s + '_')
+    #STDERR.puts("json arry _" + r.to_s + '_')
     return empty_array if r.nil? || r == ''
     return empty_array if r.is_a?(FalseClass)
     r.to_json
@@ -26,7 +26,7 @@ helpers do
   def return_text(r, s=202)
     return return_error(r) if r.is_a?(EnginesError)
     content_type 'text/plain'
-    STDERR.puts("text " + r.to_s)
+    #  STDERR.puts("text " + r.to_s)
     status(s)
     r.to_s
   end
@@ -36,7 +36,7 @@ helpers do
     return_text('true', s)
   end
 
-  def return_error(error, nil_result)
+  def return_error(error, nil_result = nil)
     content_type 'application/json'
     status(404) # FixMe take this from the error if avail
     STDERR.puts("JSON EROOR" + error.to_s)
@@ -50,8 +50,7 @@ helpers do
 
   def json_parser
     # @json_parser = Yajl::Parser.new(:symbolize_keys => true) if @json_parser.nil?
-    @json_parser = FFI_Yajl::Parser.new({:symbolize_keys => true}) if @json_parser.nil?
-    @json_parser
+    @json_parser ||= FFI_Yajl::Parser.new({:symbolize_keys => true})
   end
 
   def empty_array
@@ -103,10 +102,10 @@ helpers do
   end
 
   def get_engine(engine_name)
-     engines_api.loadManagedEngine(engine_name)
-    rescue StandardError => e
-      log_error('Load Service failed !!!' + engine_name, e.to_s)
-      nil
+    engines_api.loadManagedEngine(engine_name)
+  rescue StandardError => e
+    log_error('Load Service failed !!!' + engine_name, e.to_s)
+    nil
   end
 
   def get_service(service_name)
