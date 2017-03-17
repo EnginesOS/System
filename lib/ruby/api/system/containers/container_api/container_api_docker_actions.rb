@@ -29,8 +29,6 @@ module ContainerApiDockerActions
     clear_error
     return @docker_api.inspect_container_by_name(container) if container.container_id == -1
     @docker_api.inspect_container(container)
-    rescue EnginesException => e
-      clear_cid
   end
 
   def stop_container(container)
