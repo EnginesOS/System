@@ -137,11 +137,13 @@ begin
   require_relative 'api/routes.rb'
   
   def post_params(request)
-      json_parser.parse(request.env["rack.input"].read)
+    r = request.env["rack.input"].read
+      json_parser.parse(r)
     #deal_with_jason(request.env["rack.input"].read )
   rescue StandardError => e
     log_error(request, e, e.backtrace.to_s)
-  
+  STDERR.puts(' POST Parse Error ' + e.to_s + ' on ' + r.to_s )
+    {}
   end
 
 rescue StandardError => e
