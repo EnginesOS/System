@@ -10,6 +10,8 @@ module DockerApiContainerOps
     r = get_request(request)
     return true if r.is_a?(Hash)
     false
+  rescue
+    false
   end
 
   def destroy_container(container)
