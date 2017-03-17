@@ -39,6 +39,7 @@ helpers do
   def return_error(error)
     content_type 'application/json'
     status(404) # FixMe take this from the error if avail
+    return empty_json if error.nil?
     error.to_json
   end
 
