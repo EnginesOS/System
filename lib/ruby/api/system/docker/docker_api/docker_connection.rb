@@ -142,6 +142,7 @@ class DockerConnection < ErrorsApi
 
   def get_request(uri,  expect_json = true, rheaders = nil, timeout = 60)
     SystemDebug.debug(SystemDebug.docker,' Get ' + uri.to_s)
+    STDERR.puts('GET TRUE REQUEST ' + caller[0..5].to_s)  if url.start_with?('/containers/true/') 
     rheaders = default_headers if rheaders.nil?
     r = connection.request(request_params({method: :get,path: uri,read_timeout: timeout,headers: rheaders}))
     return handle_resp(r,expect_json)
