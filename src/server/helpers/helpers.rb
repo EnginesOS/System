@@ -9,6 +9,7 @@ helpers do
     content_type 'application/json'
     status(s)
     return empty_json if r.nil?
+    return empty_json if r == "'null'"
     STDERR.puts("JSON " + r.to_json)
     r.to_json
   end

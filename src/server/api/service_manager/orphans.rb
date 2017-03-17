@@ -23,7 +23,6 @@ end
 # @overload get '/v0/service_manager/orphan_service/:publisher_namespace/:type_path:/:parent_engine/:service_handle'
 # @return [Hash] Orphan Service Hash
 get '/v0/service_manager/orphan_service/:publisher_namespace/*' do
-
   #splats = params['splat']
   # pparams =  {}
   # pparams[:publisher_namespace] = params[:publisher_namespace]
@@ -31,11 +30,9 @@ get '/v0/service_manager/orphan_service/:publisher_namespace/*' do
   params[:service_handle] = File.basename(params[:type_path])
   params[:type_path] = File.dirname(params[:type_path])
   params[:parent_engine] = File.basename(params['splat'][0])
-
   cparams = assemble_params(params, [:publisher_namespace, :type_path, :service_handle, :parent_engine], [])
   return log_error(request, cparams, params) if cparams.is_a?(EnginesError)
   r = engines_api.retrieve_orphan(cparams)
-
   return log_error(request, r) if r.is_a?(EnginesError)
   return_json(r)
 end
