@@ -70,12 +70,10 @@ begin
   #require_relative 'utils.rb'
 
   class Application < Sinatra::Base
-
     @events_s = nil
     set :sessions, true
     set :logging, true
     set :run, true
-
   end
   #unless @@engines_api
   ObjectSpace.trace_object_allocations_start
@@ -89,7 +87,7 @@ begin
   @@last_error =''
 
   before do
-   # content_type 'application/json' unless  request.path.end_with?('stream')
+    # content_type 'application/json' unless  request.path.end_with?('stream')
     pass if request.path.start_with?('/v0/system/login/')
     pass if request.path.start_with?('/v0/unauthenticated')
     pass if request.path.start_with?('/v0/cron/engine/')  && source_is_service?(request,'cron')
@@ -102,9 +100,11 @@ begin
   end
 
   def source_is_service?(request,service_name)
+
     service = get_service(service_name)
-    return false if service.is_a?(EnginesError)
     return true if request.ip.to_s == service.get_ip_str
+    false
+  rescue
     false
   end
 
@@ -119,7 +119,7 @@ begin
 
   rescue StandardError => e
     STDERR.puts('Exception failed to open  sql_lite_database: ' + e.to_s)
-     false
+    false
   end
   #
   #  def save_curr_events_stream(events_stream )
@@ -133,16 +133,16 @@ begin
   #       end
   #
   require_relative 'helpers/helpers.rb'
-  
+
   require_relative 'api/routes.rb'
-  
+
   def post_params(request)
     r = request.env["rack.input"].read
-      json_parser.parse(r)
+    json_parser.parse(r)
     #deal_with_jason(request.env["rack.input"].read )
   rescue StandardError => e
     log_error(request, e, e.backtrace.to_s)
-  STDERR.puts(' POST Parse Error ' + e.to_s + ' on ' + r.to_s )
+    STDERR.puts(' POST Parse Error ' + e.to_s + ' on ' + r.to_s )
     {}
   end
 
@@ -152,8 +152,8 @@ rescue StandardError => e
   p e.backtrace.to_s
   #status(501)
   r = EnginesError.new('Unhandled Exception'+ e.to_s + '\n' + e.backtrace.to_s, :error, 'api')
- # status(404)
+  # status(404)
   STDERR.puts('Unhandled Exception'+ e.to_s + '\n' + e.backtrace.to_s )
- r.to_json
+  r.to_json
 
 end
