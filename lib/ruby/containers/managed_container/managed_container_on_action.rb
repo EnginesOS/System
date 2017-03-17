@@ -27,18 +27,12 @@ module ManagedContainerOnAction
       @out_of_memory = false
       @had_out_memory = false
       @has_run = false
-      start_container
       @container_api.apply_schedules(self)
       save_state
       return true if @consumer_less
-      #return if what == 'create'
-     # register_with_dns # MUst register each time as IP Changes
-
-      # @container_api.register_non_persistent_services(self)
       SystemDebug.debug(SystemDebug.container_events,:ON_Create_Finised,event_hash)
-      true
     }
-
+    start_container
   end
 
   def on_stop(what)
