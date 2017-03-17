@@ -76,7 +76,7 @@ begin
     set :run, true
   end
   #unless @@engines_api
-  ObjectSpace.trace_object_allocations_start
+  #ObjectSpace.trace_object_allocations_start
   core_api = EnginesCore.new
 
   # end
