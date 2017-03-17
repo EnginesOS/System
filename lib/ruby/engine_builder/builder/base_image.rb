@@ -26,8 +26,9 @@ def read_base_image_from_dockerfile
 #      @last_error = ' ' + tail_of_build_log
 #      return post_failed_build_clean_up
 #    end
-  #  true
+    true
     rescue StandardError => e
       log_build_errors(e)
-      return post_failed_build_clean_up
+     # return post_failed_build_clean_up
+    true
   end
