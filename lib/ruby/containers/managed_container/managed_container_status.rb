@@ -22,8 +22,7 @@ module ManagedContainerStatus
 # raw=true means dont check state for error
   def read_state(raw=false)
     #return 'nocontainer' if @setState == 'nocontainer'  # FIXME: this will not support notification of change
-    if docker_info.is_a?(FalseClass)
-     
+    if docker_info.is_a?(FalseClass)     
       state = 'nocontainer'
     else
       state = super()
@@ -47,6 +46,7 @@ module ManagedContainerStatus
     rescue EnginesException =>e
       expire_engine_info
       'nocontainer'
+      clear_cid
       raise e
   end
 
