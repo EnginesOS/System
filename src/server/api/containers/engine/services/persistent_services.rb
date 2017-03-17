@@ -5,7 +5,7 @@
 # @return [Array]
 get '/v0/containers/engine/:engine_name/services/persistent/' do
   engine = get_engine(params[:engine_name])
-  return log_error(request, engine, params) if engine.is_a?(EnginesError)
+  return log_error(request, engine, params) if engine.nil?
   r = engines_api.list_persistent_services(engine)
   
   return log_error(request, r, params[:engine_name]) if r.is_a?(EnginesError)

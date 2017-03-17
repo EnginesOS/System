@@ -4,7 +4,7 @@
 # @return [String] true|false
 get '/v0/cron/engine/:engine_name/:cron_job/run' do
   engine = get_engine(params[:engine_name])
-  return log_error(request, engine, params) if engine.is_a?(EnginesError)
+  return log_error(request, engine, params) if engine.nil?
   r = engine.run_cronjob(params[:cron_job])
   return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
   return_text(r)
@@ -16,7 +16,7 @@ end
 # @return [String] true|false
 get '/v0/schedule/engine/:engine_name/:cron_job' do
   engine = get_engine(params[:engine_name])
-  return log_error(request, engine, params) if engine.is_a?(EnginesError)
+  return log_error(request, engine, params) if engine.nil?
 
   case params[:cron_job]
   when 'restart'
@@ -41,7 +41,7 @@ end
 # @method run_engine_schedule_action 
 get '/v0/schedule/engine/:engine_name/:cron_job/run' do
   engine = get_engine(params[:engine_name])
-  return log_error(request, engine, params) if engine.is_a?(EnginesError)  
+  return log_error(request, engine, params) if engine.nil?
  begin 
   r = engine.run_cronjob(params[:cron_job])
   return_text(r)

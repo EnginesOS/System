@@ -6,7 +6,7 @@
 # @return [true]
 get '/v0/containers/engine/:engine_name/create' do
   engine = get_engine(params[:engine_name])
-  return log_error(request, engine, params) if engine.is_a?(EnginesError)
+  return log_error(request, engine, params) if engine.nil?
   r = engine.create_container
   return log_error(request, r) if r.is_a?(EnginesError)
   return_text(r)
@@ -20,7 +20,7 @@ end
 # @return [true]
 get '/v0/containers/engine/:engine_name/recreate' do
   engine = get_engine(params[:engine_name])
-  return log_error(request, engine, params) if engine.is_a?(EnginesError)
+  return log_error(request, engine, params) if engine.nil?
   r = engine.recreate_container
   return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
   return_text(r)
@@ -31,7 +31,7 @@ end
 # @return [true]
 get '/v0/containers/engine/:engine_name/stop' do
   engine = get_engine(params[:engine_name])
-  return log_error(request, engine, params) if engine.is_a?(EnginesError)
+  return log_error(request, engine, params) if engine.nil?
   r = engine.stop_container
   return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
   return_text(r)
@@ -42,7 +42,7 @@ end
 # @return [true]
 get '/v0/containers/engine/:engine_name/halt' do
   engine = get_engine(params[:engine_name])
-  return log_error(request, engine, params) if engine.is_a?(EnginesError)
+  return log_error(request, engine, params) if engine.nil?
   r = engine.halt_container
   return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
   return_text(r)
@@ -53,7 +53,7 @@ end
 # @return [true]
 get '/v0/containers/engine/:engine_name/start' do
   engine = get_engine(params[:engine_name])
-  return log_error(request, engine, params) if engine.is_a?(EnginesError)
+  return log_error(request, engine, params) if engine.nil?
   r = engine.start_container
   return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
   return_text(r)
@@ -64,7 +64,7 @@ end
 # @return [true]
 get '/v0/containers/engine/:engine_name/restart' do
   engine = get_engine(params[:engine_name])
-  return log_error(request, engine, params) if engine.is_a?(EnginesError)
+  return log_error(request, engine, params) if engine.nil?
   r = engine.restart_container
   return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
   return_text(r)
@@ -75,7 +75,7 @@ end
 # @return [true]
 get '/v0/containers/engine/:engine_name/pause' do
   engine = get_engine(params[:engine_name])
-  return log_error(request, engine, params) if engine.is_a?(EnginesError)
+  return log_error(request, engine, params) if engine.nil?
   r = engine.pause_container
   return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
   return_text(r)
@@ -86,7 +86,7 @@ end
 # @return [true]
 get '/v0/containers/engine/:engine_name/unpause' do
   engine = get_engine(params[:engine_name])
-  return log_error(request, engine, params) if engine.is_a?(EnginesError)
+  return log_error(request, engine, params) if engine.nil?
   r = engine.unpause_container
   return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
   return_text(r)
@@ -98,7 +98,7 @@ end
 # @return [true]
 get '/v0/containers/engine/:engine_name/reinstall' do
   engine = get_engine(params[:engine_name])
-  return log_error(request, engine, params) if engine.is_a?(EnginesError)
+  return log_error(request, engine, params) if engine.nil?
   r = engines_api.reinstall_engine(engine)
   return log_error(request, r) if r.is_a?(EnginesError)
   return_text(r)
@@ -110,7 +110,7 @@ end
 # @return [true]
 delete '/v0/containers/engine/:engine_name/destroy' do
   engine = get_engine(params[:engine_name])
-  return log_error(request, engine, params) if engine.is_a?(EnginesError)
+  return log_error(request, engine, params) if engine.nil?
   r = engine.destroy_container
   return log_error(request, r,  engine.last_error) if r.is_a?(EnginesError)
   return_text(r)

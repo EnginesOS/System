@@ -16,7 +16,7 @@ end
 # @return [Hash] :state :set_state :progress_to :error
 get '/v0/containers/engine/:engine_name/status' do
   engine = get_engine(params[:engine_name])
-  return log_error(request, engine, params) if engine.is_a?(EnginesError)
+  return log_error(request, engine, params) if engine.nil?
   r = engine.status
   return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
   return_json(r)
@@ -27,7 +27,7 @@ end
 # @return [String] engine state
 get '/v0/containers/engine/:engine_name/state' do
   engine = get_engine(params[:engine_name])
-  return log_error(request, engine, params) if engine.is_a?(EnginesError)
+  return log_error(request, engine, params) if engine.nil?
   r = engine.read_state
   return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
   return_text(r)
@@ -38,7 +38,7 @@ end
 # @return [Hash] 
 get '/v0/containers/engine/:engine_name/blueprint' do
   engine = get_engine(params[:engine_name])
-  return log_error(request, engine, params) if engine.is_a?(EnginesError)
+  return log_error(request, engine, params) if engine.nil?
   r = engine.load_blueprint
   return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
   return_json(r)
@@ -58,7 +58,7 @@ end
 # @return [String] 
 get '/v0/containers/engine/:engine_name/websites' do
   engine = get_engine(params[:engine_name])
-   return log_error(request, engine, params) if engine.is_a?(EnginesError)
+   return log_error(request, engine, params) if engine.nil?
    r = engine.web_sites
   return log_error(request, r) if r.is_a?(EnginesError)
   return_json(r)
@@ -69,7 +69,7 @@ end
 # @return [String] 
 get '/v0/containers/engine/:engine_name/logs' do
   engine = get_engine(params[:engine_name])
-   return log_error(request, engine, params) if engine.is_a?(EnginesError)
+   return log_error(request, engine, params) if engine.nil?
    r = engine.logs_container()
   return log_error(request, r) if r.is_a?(EnginesError)
   
@@ -81,7 +81,7 @@ end
 # @return [Hash] keys Processes:[Array] Titles:[Array]
 get '/v0/containers/engine/:engine_name/ps' do
   engine = get_engine(params[:engine_name])
-  return log_error(request, engine, params) if engine.is_a?(EnginesError)
+  return log_error(request, engine, params) if engine.nil?
   r = engine.ps_container
   return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
   return_json(r)

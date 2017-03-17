@@ -32,7 +32,7 @@ post '/v0/containers/engine/:engine_name/properties/runtime' do
   cparams = assemble_params(p_params, [:engine_name], [], [:memory, :environment_variables]) # :all)
   return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
   engine = get_engine(cparams[:engine_name])
-  return log_error(request, engine, p_params) if engine.is_a?(EnginesError)
+  return log_error(request, engine, p_params) if engine.nil?
   r = engines_api.set_container_runtime_properties(engine, cparams) #Utils.symbolize_keys(params))
   return log_error(request , r, cparams) if r.is_a?(EnginesError)
   return_text(r)

@@ -10,7 +10,7 @@ get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/
   hash = engine_service_hash_from_params(params)
   engine = get_engine(params[:engine_name])
   r = ''
-  return log_error(request, engine, params) if engine.is_a?(EnginesError)
+  return log_error(request, engine, params) if engine.nil?
   stream do |out|
     r = engine.export_service_data(hash,out)
   end
@@ -31,7 +31,7 @@ post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace
   hash[:datafile] = params['file'][:tempfile]
 
   # hash[:data] = Base64.encode64( p_params['api_vars']['data'])
-  return log_error(request, engine, hash) if engine.is_a?(EnginesError)
+  return log_error(request, engine, hash) if engine.nil?
   r = engine.import_service_data(hash,File.new(hash[:datafile].path,'rb'))
   return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
   return_text(r)
@@ -50,7 +50,7 @@ post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace
   engine = get_engine(params[:engine_name])
   hash[:import_method] = :replace
   hash[:datafile] = params['file'][:tempfile]
-  return log_error(request, engine, hash) if engine.is_a?(EnginesError)
+  return log_error(request, engine, hash) if engine.nil?
   # hash[:data] =Base64.encode64( p_params['api_vars']['data'])
   r = engine.import_service_data(hash, File.new(hash[:datafile].path,'rb'))
   return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
