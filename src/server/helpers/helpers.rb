@@ -9,7 +9,6 @@ helpers do
     content_type 'application/json'
     status(s)
     return empty_json if r.nil?
-    return empty_json if r == "'null'"
     STDERR.puts("JSON " + r.to_json)
     r.to_json
   end
@@ -19,7 +18,7 @@ helpers do
     content_type 'application/json'
     status(s)
     STDERR.puts("json arry _" + r.to_s + '_')
-    return empty_array if r.nil? || r == '' 
+    return empty_array if r.nil? || r == ''
     return empty_array if r.is_a?(FalseClass)
     r.to_json
   end
@@ -44,9 +43,10 @@ helpers do
     return nil_result if error.nil?
     error.to_json
   end
+
   def return_error_array(error)
     return_error(error, empty_array)
-   end
+  end
 
   def json_parser
     # @json_parser = Yajl::Parser.new(:symbolize_keys => true) if @json_parser.nil?
@@ -103,18 +103,17 @@ helpers do
   end
 
   def get_engine(engine_name)
-    eng = engines_api.loadManagedEngine(engine_name)
-    # STDERR.puts("engine class " + eng.class.name + ':' + eng.to_json.to_s)
-    return eng # if eng.is_a?(ManagedEngine)
-    #    log_error('Load failed !!!', eng, eng.class.name, engine_name)
-
-    #    return eng
+     engines_api.loadManagedEngine(engine_name)
+    rescue StandardError => e
+      log_error('Load Service failed !!!' + engine_name, e.to_s)
+      nil
   end
 
   def get_service(service_name)
-    service = engines_api.loadManagedService(service_name)
-    return service if service.is_a?(ManagedService) || service.is_a?(EnginesError)
-    log_error('Load Service failed !!!' + service_name, service)
+    engines_api.loadManagedService(service_name)
+  rescue StandardError => e
+    log_error('Load Service failed !!!' + service_name, e)
+    nil
   end
 
   def  downcase_keys(hash)
@@ -123,18 +122,20 @@ helpers do
   end
 
   def managed_containers_to_json(containers)
+    return_json_array(containers, 404) if containers.nil?
     if containers.is_a?(Array)
       res = []
-      containers.each do |container|
-        res.push(container.to_h)
+      containers.each do |c|
+        res.push(c.to_h)
       end
       return return_json_array(res)
     end
-    return_json(container.to_h)
+    return_json(c.to_h)
   end
 
-  def managed_container_as_json(container)
-    return_json(container.to_h)
+  def managed_container_as_json(c)
+    return_json(c, 404) if c.nil?
+    return_json(c.to_h)
   end
 
   use Warden::Manager do |config|

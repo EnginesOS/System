@@ -1,8 +1,6 @@
 module PublicApiEngine
   def loadManagedEngine(engine_name)   #vc engines system
     @system_api.loadManagedEngine(engine_name)
-  rescue StandardError => e
-    handle_exception(e)
   end
 
   def get_resolved_engine_string #ex

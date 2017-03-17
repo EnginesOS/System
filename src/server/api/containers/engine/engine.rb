@@ -7,7 +7,6 @@
 # @return [Hash]
 get '/v0/containers/engine/:engine_name' do
   engine = get_engine(params[:engine_name])
-  return log_error(request,engine, params[:engine_name]) if engine.is_a?(EnginesError)
   managed_container_as_json(engine)
 end
 
