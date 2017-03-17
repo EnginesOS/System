@@ -14,6 +14,7 @@ get '/v0/service_manager/orphan_services/:publisher_namespace/*' do
   params[:type_path] = params['splat'][0] if params.key?('splat') && params['splat'].is_a?(Array)
   cparams = assemble_params(params, [:publisher_namespace, :type_path], [])
   r = engines_api.get_orphaned_services(cparams)
+  STDERR.puts( 'Orphans ' + r.to_s)
   return_json_array(r)
 end
 # @method get_orphan_service
