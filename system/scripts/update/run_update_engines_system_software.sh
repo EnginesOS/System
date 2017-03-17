@@ -53,7 +53,7 @@ if test -f /opt/engines/run/system/flags/update_engines_running
 fi
 
 
-if test $? -gt 0
+if test $# -gt 0
 then
 	if test $1 = '-f'
  	then 
