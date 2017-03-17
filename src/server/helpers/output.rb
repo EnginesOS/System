@@ -3,7 +3,7 @@ def return_json(r, s=202)
   content_type 'application/json'
   status(s)
   return empty_json if r.nil?
-  # STDERR.puts("JSON " + r.to_json)
+  STDERR.puts("JSON " + r.to_json)
   r.to_json
 end
 
@@ -11,7 +11,7 @@ def return_json_array(r, s=202)
   return return_error_array(r) if r.is_a?(EnginesError)
   content_type 'application/json'
   status(s)
-  #STDERR.puts("json arry _" + r.to_s + '_')
+  STDERR.puts("json arry _" + r.to_s + '_')
   return empty_array if r.nil? || r == ''
   return empty_array if r.is_a?(FalseClass)
   r.to_json
@@ -20,7 +20,7 @@ end
 def return_text(r, s=202)
   return return_error(r) if r.is_a?(EnginesError)
   content_type 'text/plain'
-  #  STDERR.puts("text " + r.to_s)
+  STDERR.puts("text " + r.to_s)
   status(s)
   r.to_s
 end
