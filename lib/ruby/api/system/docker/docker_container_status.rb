@@ -1,5 +1,5 @@
 module DockerContainerStatus
-  require_relative 'docker_exec.rb'
+
   def ps_container(container)
     @docker_comms.ps_container(container)  
   end
