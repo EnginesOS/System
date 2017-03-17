@@ -47,6 +47,7 @@ module ManagedContainerStatus
     rescue EnginesException =>e
       expire_engine_info
       'nocontainer'
+      raise e
   end
 
   def is_startup_complete?

@@ -30,8 +30,7 @@ module DockerApiBuilder
       @io_stream.close unless @io_stream.nil?
       @stream.reset unless @stream.nil?
     rescue StandardError => e
-      #  STDERR.puts('stream close Exception' + + e.to_s)
-      return nil
+  
     end
 
     def is_hijack?
@@ -47,7 +46,7 @@ module DockerApiBuilder
       lambda do |chunk , c , t|
         begin
           #hash = JSON.parse(chunk)
-          hash =   @parser.parse(chunk)  #do |hash|
+          hash =  @parser.parse(chunk)  #do |hash|
           hash = deal_with_json(chunk)
           @builder.log_build_output(hash[:stream]) if hash.key?(:stream)
           @builder.log_build_errors(hash[:errorDetail]) if hash.key?(:errorDetail)

@@ -1,18 +1,16 @@
 module LocalFileServiceBuilder
-  def run_volume_builder(container,username)
+  def run_volume_builder(container, username)
     clear_error
-
     volbuilder = @core_api.loadManagedUtility('fsconfigurator')
-    util_params = {}
-    util_params[:volume] = '/'
-    util_params[:fw_user] = username.to_s
-    util_params[:target] = container.container_name
-    util_params[:target_container] = container.container_name
-    util_params[:data_gid] = container.data_gid.to_s
-      STDERR.puts('VOL BUILD PARAMS ' + util_params.to_s)
-    result =  volbuilder.execute_command(:setup_engine, util_params)
-    return result if result.is_a?(EnginesError)
-    #return true if result[:stdout] == 'OK'
+    util_params = {
+      volume: '/',
+      fw_user: username.to_s,
+      target: container.container_name,
+      target_container: container.container_name,
+      data_gid: container.data_gid.to_s
+    }
+    STDERR.puts('VOL BUILD PARAMS ' + util_params.to_s)
+    result = volbuilder.execute_command(:setup_engine, util_params)
     return true if result[:result] == 0
     return log_error_mesg('volbuild problem ' + result.to_s, result)
 
@@ -28,11 +26,11 @@ module LocalFileServiceBuilder
     service_hash = Volume.complete_service_hash(service_hash)
     SystemDebug.debug(SystemDebug.builder,:complete_VOLUME_service_hash, service_hash)
     if service_hash[:share] == true
-       @volumes[service_hash[:service_owner] + '_' + service_hash[:variables][:service_name]] = vol
-  else
-    @volumes[service_hash[:variables][:service_name]] = Volume.volume_hash(service_hash)
-end
-     true
+      @volumes[service_hash[:service_owner] + '_' + service_hash[:variables][:service_name]] = vol
+    else
+      @volumes[service_hash[:variables][:service_name]] = Volume.volume_hash(service_hash)
+    end
+    true
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end

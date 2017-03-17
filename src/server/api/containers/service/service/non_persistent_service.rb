@@ -54,16 +54,4 @@ get '/v0/containers/service/:service_name/service/non_persistent/:publisher_name
   return_json(r)
 end
 
-#
-#get '/v0/containers/service/:service_name/service/non_persistent/' do
-#  service = get_service(params[:service_name])
-#  r = engines_api.list_non_persistent_services(service)
-#
-#  unless r.is_a?(FalseClass)
-#    return r.to_json
-#  else
-#    return log_error('pause')
-#  end
-#end
-
 # @!endgroup

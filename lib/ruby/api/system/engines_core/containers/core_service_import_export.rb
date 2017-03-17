@@ -14,12 +14,10 @@ module CoreServiceImportExport
   end
 
   def import_service(params)
-   
     raise EnginesException.new(error_hash("imported failed No service Connection", params)) unless params.key?(:service_connection)
-    
     service_hash =  params[:service_connection]
     raise EnginesException.new(error_hash("imported failed No service Connection", params)) unless service_hash.is_a?(Hash)
-   symbolize_keys(service_hash)
+    symbolize_keys(service_hash)
     ahash = find_engine_service_hash(service_hash)
     raise EnginesException.new(error_hash("cannot import into share service", params)) if ahash[:shared] == true
     SystemDebug.debug(SystemDebug.export_import, :export_service_hahs, service_hash)
@@ -29,8 +27,7 @@ module CoreServiceImportExport
       engine = loadManagedService(service_hash[:parent_engine])
     end
     return engine if engine.is_a?(EnginesError)
-      engine.import_service_data(params)
-  
+    engine.import_service_data(params)
   end
 
 end

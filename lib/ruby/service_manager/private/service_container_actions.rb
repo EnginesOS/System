@@ -23,6 +23,6 @@ def remove_from_managed_service(service_hash)
   service =  @core_api.load_software_service(service_hash)
   return service unless service.is_a?(ManagedService)
   return service.remove_consumer(service_hash) if service.persistent == false || service.is_running?
-  return log_error_mesg('Cant remove persistent service if service is stopped ', service_hash) if service.persistent
+  raise EnginesException.new(error_hash('Cant remove persistent service if service is stopped ', service_hash)) if service.persistent
   true
 end

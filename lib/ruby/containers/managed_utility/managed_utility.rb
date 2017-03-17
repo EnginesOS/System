@@ -2,8 +2,11 @@ class ManagedUtility< ManagedContainer
   def post_load
     # Basically parent super but no lock on image
     expire_engine_info
+    begin
     info = @container_api.inspect_container_by_name(self)
     @container_id = info[:Id] if info.is_a?(Hash)
+    rescue
+    end
     set_running_user
     domain_name = SystemConfig.internal_domain
     @conf_self_start.freeze
@@ -39,25 +42,24 @@ class ManagedUtility< ManagedContainer
   end
 
   def command_details(command_name)
-    return log_error_mesg('No Commands') unless @commands.is_a?(Hash)
+    raise EnginesException.new(error_hash('No Commands', command_name)) unless @commands.is_a?(Hash)
     return @commands[command_name] if @commands.key?(command_name)
-    log_error_mesg('Command not found _' + command_name.to_s + '_')
-  rescue StandardError => e
-    log_exception(e)
+    raise EnginesException.new(error_hash('Command not found _',  command_name.to_s ))
+  
   end
 
   def execute_command(command_name, command_params)
-    begin #FIXME needs to complete if from another install
-      stop_container
-    rescue
-    end
-    return log_error_mesg('Utility ' + container_name + ' in use ' ,  command_name) if is_active?
+#    begin #FIXME needs to complete if from another install
+#      stop_container
+#    rescue
+#    end
+    raise EnginesException.new(error_hash('Utility ' + container_name + ' in use ' ,  command_name)) if is_active?
     #FIXMe need to check if running
     r =  ''
     #  command_name = command_name.to_sym unless @commands.key?(command_name)
-    return log_error_mesg('No such command: ' + command_name.to_s, command_name, command_params) unless @commands.key?(command_name)
+    raise EnginesException.new(error_hash('No such command: ' + command_name.to_s,  command_params)) unless @commands.key?(command_name)
     command = command_details(command_name)
-    return log_error_mesg('Missing params' + r.to_s, r) if (r = check_params(command, command_params)) == false
+    raise EnginesException.new(error_hash('Missing params' + r.to_s, r)) unless (r = check_params(command, command_params)) == true
     begin
       r = destroy_container
     rescue
@@ -87,8 +89,6 @@ class ManagedUtility< ManagedContainer
     command = templater.apply_hash_variables(command, command_params)
     #FixME as will not honor "value with spaces in braces"
     @command = command[:command].split(' ')
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def apply_templates(command, command_params)
@@ -98,8 +98,6 @@ class ManagedUtility< ManagedContainer
     apply_env_templates(command_params, templater) unless @environments.nil?
     apply_volume_templates(command_params, templater) unless @volumes.nil?
     apply_volume_from_templates(command_params, templater) unless @volumes_from.nil?
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def apply_volume_templates(command_params, templater)
@@ -109,8 +107,6 @@ class ManagedUtility< ManagedContainer
       volume[:localpath] = templater.apply_hash_variables(volume[:localpath] , command_params)
       volume[:permissions]= templater.apply_hash_variables(volume[:permissions] , command_params)
     end
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def apply_volume_from_templates(command_params  , templater)
@@ -121,23 +117,16 @@ class ManagedUtility< ManagedContainer
     end
     @volumes_from = vols
     @volumes_from = nil if vols.size == 0
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def apply_env_templates(command_params, templater)
     environments.each do |env|
       env.value = templater.apply_hash_variables(env.value, command_params)
     end
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def resolved_strings(text, values_hash,templater)
-    env_value = templater.apply_hash_variables(text, values_hash)
-    return env_value
-  rescue StandardError => e
-    log_exception(e)
+    templater.apply_hash_variables(text, values_hash)
   end
 
   def check_params(cmd, parrams)
@@ -148,8 +137,8 @@ class ManagedUtility< ManagedContainer
       r +=  ' ' + required_param.to_s
     end
     r
-  rescue StandardError => e
-    #    log_exception(e)
+    rescue
+      false
   end
 
   def container_logs_as_result

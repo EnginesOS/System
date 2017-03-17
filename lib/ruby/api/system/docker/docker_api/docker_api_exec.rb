@@ -29,7 +29,7 @@ module DockerApiExec
       end
       return false if  @data.nil?
       return false if  @data.length == 0
-      return true
+      true
     end
 
     def process_response()
@@ -44,9 +44,7 @@ module DockerApiExec
           return_result[:stderr] =  return_result[:stderr].to_s + r[:stderr].to_s
         end
       end
-   
     end
-
   end
 
   class DockerStreamReader
@@ -83,15 +81,13 @@ module DockerApiExec
     end
 
     def has_data?
-       false
+      false
     end
   end
 
   def docker_exec(params)
     r = create_docker_exec(params) #container, commands, have_data)
-
     return r unless r.is_a?(Hash)
-
     exec_id = r[:Id]
     request_params = {}
     request_params["Detach"] = false
@@ -125,8 +121,6 @@ module DockerApiExec
     return r if r.is_a?(EnginesError)
     stream_handler.result[:result] = get_exec_result(exec_id)
     stream_handler.result
-
-  
   end
 
   private
@@ -138,7 +132,6 @@ module DockerApiExec
   end
 
   def create_docker_exec(params) #container, commands, have_data)
-
     request_params = {}
     if params.key?(:data) || params.key?(:data_stream)
       request_params["AttachStdin"] = true
@@ -153,9 +146,7 @@ module DockerApiExec
     request_params[ "Cmd"] =   format_commands(params[:command_line])
 
     request = '/containers/'  + params[:container].container_id.to_s + '/exec'
-
-     post_request(request,  request_params)
-    
+    post_request(request,  request_params)
   end
 
   def format_commands(commands)

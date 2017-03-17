@@ -15,7 +15,7 @@ class Templater
      t =  resolve_hash_value(match, values_hash)
       t
       }
-      return text
+       text
     rescue StandardError => e
       SystemUtils.log_exception(e)
   end
@@ -25,9 +25,7 @@ class Templater
         name.sub!(/[\)]/, '')
     return values_hash[name.to_sym] if values_hash.key?(name.to_sym)
   return values_hash[name.to_s] if values_hash.key?(name.to_s)
-    return ''
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
+     ''
   end
   
   def resolve_system_variable(match)
@@ -39,11 +37,7 @@ class Templater
     rescue 
       return ''
     end
-    val = var_method.call
-    return val
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
-    return ''
+     var_method.call
   end
 
   def apply_blueprint_variables(template)
@@ -51,9 +45,7 @@ class Templater
     template.gsub!(/_Engines_Blueprint\([a-z,].*\)/) { |match|
       resolve_blueprint_variable(match)
     }
-    return template
-    rescue StandardError => e
-      SystemUtils.log_exception(e)
+    template    
   end
 
   def resolve_blueprint_variable(match)
@@ -71,10 +63,10 @@ class Templater
     end
     #    p :got_val
     #    p val
-    return val
+     val
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    return ''
+     ''
   end
 
   def resolve_system_function(match)

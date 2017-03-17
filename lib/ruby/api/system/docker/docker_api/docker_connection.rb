@@ -60,8 +60,6 @@ class DockerConnection < ErrorsApi
     headers: rheaders,
     body: params),
     expect_json)
-
-  
   end
 
   def connection
@@ -135,7 +133,7 @@ class DockerConnection < ErrorsApi
     end
   rescue  Excon::Error::Socket => e
     STDERR.puts(' docker socket stream close ')
-    stream_handler.close 
+    stream_handler.close
   end
 
   def request_params(params)
@@ -168,10 +166,10 @@ class DockerConnection < ErrorsApi
   private
 
   def handle_resp(resp, expect_json)
+    raise DockerException.new({params: @request_params}) if resp.nil?
     raise DockerException.new(docker_error_hash(resp, @request_params)) if resp.status  >= 400
-    
     return true if resp.status  == 204 # nodata but all good happens on del
-     log_error_mesg("Un exepect response from docker", resp, resp.body, resp.headers.to_s )   unless resp.status  == 200 ||  resp.status  == 201
+    log_error_mesg("Un exepect response from docker", resp, resp.body, resp.headers.to_s )   unless resp.status  == 200 ||  resp.status  == 201
     return resp.body unless expect_json == true
     hash = deal_with_json(resp.body)
     SystemDebug.debug(SystemDebug.docker,' RESPOSE ' + resp.status.to_s + ' : ' + hash.to_s.slice(0..256))

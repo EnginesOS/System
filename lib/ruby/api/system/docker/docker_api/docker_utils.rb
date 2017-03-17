@@ -1,10 +1,7 @@
 module DockerUtils
   def self.process_request(stream_reader) #data , result, ostream=nil, istream=nil)
     @stream_reader = stream_reader
-
-    # to_send = @stream_reader.data
     return_result = @stream_reader.result
-
     lambda do |socket|
 
       write_thread = Thread.start do
@@ -12,12 +9,8 @@ module DockerUtils
           unless @stream_reader.i_stream.nil?
             IO.copy_stream(@stream_reader.i_stream,socket) unless @stream_reader.i_stream.eof?
           else
-            #   unless stream_reader.data.nil?
-
             unless stream_reader.data.nil? ||  stream_reader.data.length == 0
-
               if stream_reader.data.length < Excon.defaults[:chunk_size]
-
                 socket.send(stream_reader.data,0)
                 stream_reader.data = ''
               else
@@ -37,14 +30,11 @@ module DockerUtils
           STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
         end
       end
-
       read_thread = Thread.start do
         begin
-
           while chunk = socket.readpartial(16384)
             if  @stream_reader.o_stream.nil?
               DockerUtils.docker_stream_as_result(chunk, return_result)
-
             else
               r = DockerUtils.decode_from_docker_chunk(chunk)
               @stream_reader.o_stream.write(r[:stdout]) unless r.nil?
@@ -53,7 +43,6 @@ module DockerUtils
           end
         rescue EOFError
           write_thread.kill
-
         rescue StandardError => e
           STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
         end
@@ -67,7 +56,6 @@ module DockerUtils
     end
   rescue StandardError => e
     STDERR.puts('PROCESS Execp' + e.to_s + ' ' + e.backtrace.to_s )
-
   end
 
   def self.decode_from_docker_chunk(chunk)
@@ -83,7 +71,6 @@ module DockerUtils
     return h if r.nil?
     h[:stderr] = "" unless h.key?(:stderr)
     h[:stdout] = "" unless h.key?(:stdout)
-
     while r.length >0
       if r[0].nil?
         return h if r.length == 1
@@ -137,7 +124,5 @@ module DockerUtils
     h[:stdout].force_encoding(Encoding::UTF_8) unless h[:stdout].nil?
     h[:stderr].force_encoding(Encoding::UTF_8) unless h[:stderr].nil?
     h
-  rescue StandardError =>e
-    log_exception(e)
   end
 end

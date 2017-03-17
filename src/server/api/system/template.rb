@@ -6,7 +6,6 @@
 # @param :template_string
 # @return [String] :template_string with template macros resolved
 post '/v0/system/template' do
-  # engine = get_engine(params[:engine_name])
   params = post_params(request)
   cparams = assemble_params(params, [],  :string)
   return log_error(request, cparams, params) if cparams.is_a?(EnginesError)

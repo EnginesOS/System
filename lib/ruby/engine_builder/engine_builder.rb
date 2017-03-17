@@ -178,6 +178,8 @@ class EngineBuilder < ErrorsApi
   def wait_for_engine
     cnt = 0
     lcnt = 5
+  
+
     log_build_output('Starting Engine')
     while @container.is_startup_complete? == false && @container.is_running?
       cnt += 1
@@ -194,13 +196,19 @@ class EngineBuilder < ErrorsApi
       end
       sleep 1
     end
+    unless @container.is_running?
+        begin
+          l = @container.logs_container.to_s
+        rescue
+          l = ''
+        end
+        log_build_output('Engine Stopped:' + l.to_s)
+        @result_mesg = 'Engine Stopped! ' + l.to_s
+        return false
+      end
+      
     log_build_output('') # force EOL to end the ...
-    if @container.is_running? == false
 
-      log_build_output('Engine Stopped:' + @container.logs_container.to_s)
-      @result_mesg = 'Engine Stopped! ' + @container.logs_container.to_s
-      return false
-    end
     true
   rescue StandardError => e
     log_exception(e)
@@ -347,7 +355,7 @@ class EngineBuilder < ErrorsApi
     abort_build
   end
 
-  def log_error_mesg(m,o)
+  def log_error_mesg(m, o = nil)
     log_build_errors(m.to_s + o.to_s)
     super
   end

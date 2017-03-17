@@ -17,6 +17,22 @@ class EnginesRegistryError < EnginesError
     @registry_source = error_hash[:source]
   end
 
-
+  def error_hash(mesg, params = nil)
+     r = error_type_hash(mesg, params)
+     r[:error_type] = :error
+     r
+   end
+ 
+   def warning_hash(mesg, params = nil)
+     r = error_type_hash(mesg, params)
+     r[:error_type] = :warning
+     r
+   end
+ 
+   def error_type_hash(mesg, params = nil)
+     {error_mesg: mesg,
+       system: :registry,
+       params: params }
+   end
 
 end

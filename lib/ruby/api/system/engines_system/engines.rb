@@ -1,11 +1,11 @@
 class FakeContainer
-    attr_reader :container_name, :ctype
-    def initialize(name, type = 'container')
-      @container_name = name
-      @ctype = type         
-    end
+  attr_reader :container_name, :ctype
+  def initialize(name, type = 'container')
+    @container_name = name
+    @ctype = type
   end
-  
+end
+
 module Engines
   def list_managed_engines
     clear_error
@@ -19,11 +19,9 @@ module Engines
     end
     ret_val
   end
-  
-  
-  
+
   def init_engine_dirs(engine_name)
-   c = FakeContainer.new(engine_name)
+    c = FakeContainer.new(engine_name)
     STDERR.puts(' creating ' + ContainerStateFiles.container_state_dir(c).to_s + '/run')
     FileUtils.mkdir_p(ContainerStateFiles.container_state_dir(c) + '/run') unless Dir.exist?(ContainerStateFiles.container_state_dir(c)+ '/run')
     FileUtils.mkdir_p(ContainerStateFiles.container_state_dir(c) + '/run/flags') unless Dir.exist?(ContainerStateFiles.container_state_dir(c)+ '/run/flags')
@@ -33,8 +31,7 @@ module Engines
 
   def set_engine_network_properties(engine, params)
     clear_error
-    return set_engine_hostname_details(engine, params) if set_engine_web_protocol_properties(engine, params)
-
+    set_engine_hostname_details(engine, params) if set_engine_web_protocol_properties(engine, params)
   end
 
   def set_engine_web_protocol_properties(engine, params)
@@ -53,7 +50,6 @@ module Engines
       engine.enable_http_and_https
     end
     true
-
   end
 
   def set_engine_hostname_details(container, params)
@@ -77,7 +73,6 @@ module Engines
     # save_container(container)
     container.add_nginx_service
     true
-
   end
 
   def getManagedEngines

@@ -12,8 +12,6 @@ module ManagedServiceOnAction
     created_and_started if @created == true
     reregister_consumers
     SystemDebug.debug(SystemDebug.container_events,:ON_start_complete_MS,event_hash)
-  rescue StandardError => e
-    log_exception(e)
   end
   
   def created_and_started
@@ -24,8 +22,7 @@ module ManagedServiceOnAction
             next if configuration[:no_save] == true
             run_configurator(configuration)
           end
-        end
-           
+        end      
         SystemDebug.debug(SystemDebug.container_events,:ON_StartCreate_MS_compl)
         @created = false
   end
@@ -34,10 +31,6 @@ module ManagedServiceOnAction
     SystemDebug.debug(SystemDebug.container_events,:ON_Create_MS,event_hash)
     super
     @created = true
-    
-   
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def wait_for_startup

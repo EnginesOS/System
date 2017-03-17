@@ -11,7 +11,7 @@ module FirstRunCerts
     config_param[:variables][:person] = ca_params[:ssl_person_name]
     config_param[:variables][:domainname] =  ca_params[:domain_name] #ca_params[:default_domain]
     return true if @api.update_service_configuration(config_param)
-     log_error_mesg('create_ca ', @api.last_error)
+    log_error_mesg('create_ca ', @api.last_error)
   end
 
   def create_default_cert(params)
@@ -34,16 +34,15 @@ module FirstRunCerts
     service_param[:variables][:domainname] =  params[:domain_name] #params[:default_domain]
     service_param[:variables][:service_handle] = 'default_ssl_cert'
     return true if @api.create_and_register_service(service_param)
-     log_error_mesg('create_default_cert ', @api.last_error)
+    log_error_mesg('create_default_cert ', @api.last_error)
   end
 
   def setup_certs
-    
     create_ca(@first_run_params)
-     create_default_cert(@first_run_params)
+    create_default_cert(@first_run_params)
     return log_error_mesg('create_default_cert ','/opt/engines/bin/install_ca.sh') unless SystemUtils.execute_command('/opt/engines/system/scripts/ssh/install_ca.sh')
     return log_error_mesg('create_default_cert ','/opt/engines/bin/install_cert.sh engines') unless SystemUtils.execute_command('/opt/engines/system/scripts/ssh/install_cert.sh engines')
-    return true
+    true
   end
 
 end

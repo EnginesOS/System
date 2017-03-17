@@ -1,5 +1,4 @@
 module EngineApiDependancies
-
   def start_dependancies(container)
     SystemDebug.debug(SystemDebug.containers, :checking_depends,container.dependant_on)
     return true unless container.dependant_on.is_a?(Array)
@@ -26,6 +25,6 @@ module EngineApiDependancies
         raise EnginesException.new(error_hash('Time out in waiting for Service Dependancy ' + service_name + ' to start ', service_name)) if retries > 20
       end
     end
-     true
+    true
   end
 end

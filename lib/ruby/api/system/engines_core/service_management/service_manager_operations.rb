@@ -14,10 +14,11 @@ module ServiceManagerOperations
     service_manager.find_engine_service_hash(params)
   end
 
-  def  find_engine_services_hashes(hash)
+  def find_engine_services_hashes(hash)
     hash[:container_type] = 'container'
     service_manager.find_engine_services_hashes(hash)
-   
+  rescue
+    
   end
 
   def find_service_service_hash(params)
@@ -62,19 +63,16 @@ module ServiceManagerOperations
   end
 
   def taken_hostnames
-
     sites = []
     hashes = service_manager.all_engines_registered_to('nginx')
-
     return sites unless hashes.is_a?(Array)
-
     hashes.each do |service_hash|
       SystemDebug.debug(SystemDebug.services,  'service_hash is a' + service_hash.class.name)
       next unless service_hash.is_a?(Hash)
       next unless service_hash[:variables].is_a?(Hash)
       sites.push(service_hash[:variables][:fqdn])
     end
-     sites
+    sites
   end
 
 end

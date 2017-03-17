@@ -41,18 +41,25 @@ class SystemService < ManagedService
 
   def forced_recreate
     SystemDebug.debug(SystemDebug.system,'Forced recreate  System Service ' + container_name)
-    unpause_container
+    begin
+      unpause_container
+    rescue
+    end
+    begin
     stop_container
+      rescue
+      end
+    begin
     destroy_container
+    rescue
+    end
     @container_api.create_container(self)         #start as engine/container or will end up in a loop getting configurations and consumers
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def inspect_container
     SystemDebug.debug(SystemDebug.system,:system_service_inspect_container)
 
-    return false  if has_api? == false
+    return false if has_api? == false
     if @docker_info.nil? || @docker_info.is_a?(FalseClass)
       #  @container_api.inspect_container(self)
       @docker_info =  @container_api.inspect_container(self)
@@ -63,12 +70,10 @@ class SystemService < ManagedService
           pull_image
         end
         SystemUtils.log_output('Creating system service' + container_name.to_s,10)
-        return log_error_mesg('Failed to Create System Service',self) if @container_api.create_container(self)
-        return log_error_mesg('System Service Failed to start',self) unless @container_api.inspect_container(self)
+        @container_api.create_container(self)     
         @docker_info = @last_result
         if @docker_info.is_a?(FalseClass)
-          p :panic
-          exit
+          raise EnginesException.new(error_hash('failed to create system service',container_name ))
         end
       end
     end
@@ -76,6 +81,5 @@ class SystemService < ManagedService
     SystemDebug.debug(SystemDebug.system,:system_service_inspected_container)
     @docker_info
   end
-rescue StandardError => e
-  log_exception(e)
+
 end

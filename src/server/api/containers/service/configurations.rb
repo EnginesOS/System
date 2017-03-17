@@ -39,5 +39,5 @@ post '/v0/containers/service/:service_name/configuration/:configurator_name' do
   cparams[:publisher_namespace]  = service.publisher_namespace
   r = engines_api.update_service_configuration(cparams)
   return log_error(request, r, r) if r.is_a?(FalseClass) || r.is_a?(EnginesError)
-  return_text(r.to_s)
+  return_text(r)
 end 

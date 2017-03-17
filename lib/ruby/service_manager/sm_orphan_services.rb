@@ -11,8 +11,6 @@ module SmOrphanServices
   def release_orphan(params)
     SystemDebug.debug(SystemDebug.orphans, :release_orphan, params)
     system_registry_client.release_orphan(params)
-  rescue StandardError => e
-    handle_exception(e)
   end
 
   def rollback_orphaned_service(service_hash)

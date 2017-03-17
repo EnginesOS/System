@@ -17,9 +17,7 @@ def connection(content_type = nil)
   persistent: true,
   headers: headers)
 rescue StandardError => e
-  STDERR.puts('Failed to open base url to registry' + @base_url.to_s)
-  STDERR.puts e.backtrace.to_s
-  log_exception(e, params, path)
+  raise EnginesException.new(error_hash('Failed to open base url to registry' , @base_url.to_s))
 end
 
 def reopen_connection
@@ -31,6 +29,8 @@ def reopen_connection
   persistent: true,
   headers: headers)
   @connection
+  rescue StandardError => e
+    raise EnginesException.new(error_hash('Failed to re open base url to registry' , @base_url.to_s))
 end
 
 def rest_get(path,params = nil,time_out=120, _headers = nil)
@@ -134,6 +134,6 @@ end
 def base_url
   'http://' + @core_api.get_registry_ip + ':4567'
 rescue  StandardError => e
-  log_exception(e)
+  raise EnginesException.new('Cannot Deterine Base URL')
 end
 

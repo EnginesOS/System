@@ -1,60 +1,17 @@
 helpers do
   require_relative 'params.rb'
+  require_relative 'output.rb'
   def engines_api
     $engines_api
   end
 
-  def return_json(r, s=202)
-    return return_error if r.is_a?(EnginesError)
-    content_type 'application/json'
-    status(s)
-    return empty_json if r.nil?
-    #  STDERR.puts("JSON " + r.to_s)
-    r.to_json
-  end
-
-  def return_json_array(r, s=202)
-    return return_error if r.is_a?(EnginesError)
-    content_type 'application/json'
-    status(s)
-    return empty_array if r.nil?
-    return empty_array if r.is_a?(FalseClass)
-    #  STDERR.puts("JSON " + r.to_s)
-    r.to_json
-  end
-
-  def return_text(r, s=202)
-    return return_error if r.is_a?(EnginesError)
-    content_type 'text/plain'
-    STDERR.puts("text " + r.to_s)
-    status(s)
-    r.to_s
-  end
-
-  def return_true(s = 200)
-    return return_error(s) if r.is_a?(EnginesError)
-    return_text('true', s)
-  end
-
-  def return_error(error)
-    status(404) # FixMe take this from the error if avail
-    content_type 'application/json'
-    error.to_json
-  end
 
   def json_parser
     # @json_parser = Yajl::Parser.new(:symbolize_keys => true) if @json_parser.nil?
-    @json_parser = FFI_Yajl::Parser.new({:symbolize_keys => true}) if @json_parser.nil?
-    @json_parser
+    @json_parser ||= FFI_Yajl::Parser.new({:symbolize_keys => true})
   end
 
-  def empty_array
-    @empty_array ||= [].to_json
-  end
-
-  def empty_json
-    @empty_json ||= {}.to_json
-  end
+ 
 
   def log_exception(e, *args)
     e_str = e.to_s()
@@ -97,19 +54,17 @@ helpers do
   end
 
   def get_engine(engine_name)
-    eng = engines_api.loadManagedEngine(engine_name)
-    # STDERR.puts("engine class " + eng.class.name + ':' + eng.to_json.to_s)
-    return eng # if eng.is_a?(ManagedEngine)
-    #    log_error('Load failed !!!', eng, eng.class.name, engine_name)
-
-    #    return eng
+    engines_api.loadManagedEngine(engine_name)
+  rescue StandardError => e
+    log_error('Load Service failed !!!' + engine_name, e.to_s)
+    nil
   end
 
   def get_service(service_name)
-
-    service = engines_api.loadManagedService(service_name)
-    return service if service.is_a?(ManagedService) || service.is_a?(EnginesError)
-    log_error('Load Service failed !!!' + service_name, service)
+    engines_api.loadManagedService(service_name)
+  rescue StandardError => e
+    log_error('Load Service failed !!!' + service_name, e)
+    nil
   end
 
   def  downcase_keys(hash)
@@ -118,18 +73,20 @@ helpers do
   end
 
   def managed_containers_to_json(containers)
+    return_json_array(containers, 404) if containers.nil?
     if containers.is_a?(Array)
       res = []
-      containers.each do |container|
-        res.push(managed_container_as_json(container))
+      containers.each do |c|
+        res.push(c.to_h)
       end
-      return res.to_json
+      return return_json_array(res)
     end
-    return managed_container_as_json(containers)
+    return_json(c.to_h)
   end
 
-  def managed_container_as_json(container)
-    container.to_h.to_json
+  def managed_container_as_json(c)
+    return_json(c, 404) if c.nil?
+    return_json(c.to_h)
   end
 
   use Warden::Manager do |config|

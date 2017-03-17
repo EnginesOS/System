@@ -8,9 +8,7 @@ module EngineServiceOperations
     }
     SystemDebug.debug(SystemDebug.services, :engine_persistent_services, params)
     r = service_manager.get_engine_persistent_services(params)
-
     r
-  
   end
 
   def engines_services_to_backup(engine_name)
@@ -26,7 +24,6 @@ module EngineServiceOperations
     }
     SystemDebug.debug(SystemDebug.services,  :engine_persistent_services, params)
     service_manager.get_engine_persistent_services(params)
-  
   end
 
   def service_attached_services(service_name)
@@ -35,7 +32,6 @@ module EngineServiceOperations
       container_type: 'service'
     }
     find_engine_services_hashes(params)
-  
   end
 
   def engine_attached_services(container_name)
@@ -44,34 +40,28 @@ module EngineServiceOperations
       container_type: 'container'
     }
     find_engine_services_hashes(params)
-  
   end
 
   def service_is_registered?(service_hash)
     check_service_hash(service_hash)
     service_manager.service_is_registered?(service_hash)
- 
   end
 
   def get_engine_persistent_services(service_hash)
     check_engine_hash(service_hash)
     service_manager.get_engine_persistent_services(service_hash)
- 
   end
 
   def find_engine_services(service_query)
-     check_engine_hash(service_query)
+    check_engine_hash(service_query)
     find_engine_services_hashes(service_query)
-  
     #return sm.find_engine_services(params)
   end
 
   def attach_existing_service_to_engine(params)
     SystemDebug.debug(SystemDebug.services,'core attach existing service', params)
-     check_engine_hash(params)
+    check_engine_hash(params)
     service_manager.attach_existing_service_to_engine(params)
-  
-
   end
 
   def connect_share_service(service_hash)
@@ -109,8 +99,6 @@ module EngineServiceOperations
     engine = loadManagedEngine(service_hash[:parent_engine])
     return engine if engine.is_a?(EnginesError)
     engine.add_shared_volume(service_hash)
-
- 
   end
 
   def trim_to_editable_variables(params)
@@ -119,7 +107,6 @@ module EngineServiceOperations
       key = variable[:name]
       params[:variables].delete(key) if variable[:immutable] == true
     end
- 
   end
 
   def get_service_pubkey(engine, cmd)
@@ -131,11 +118,9 @@ module EngineServiceOperations
     return result[:stdout] if result.is_a?(Hash) &&result[:result] == 0
     log_error_mesg('Get pub key failed',result)
     service_manager.load_service_pubkey(container, cmd)
-  
   end
-  
-  
-def remove_engine(engine_name, reinstall = false)
+
+  def remove_engine(engine_name, reinstall = false)
     engine = loadManagedEngine(engine_name)
     SystemDebug.debug(SystemDebug.containers,:delete_engines,engine_name,engine, :resinstall,reinstall)
     params = {
@@ -149,13 +134,13 @@ def remove_engine(engine_name, reinstall = false)
       raise EnginesException.new(error_hash('Failed to find Engine',params))
     end
 
-   #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
-     service_manager.remove_engine_services(params)
-      engine.delete_image if engine.has_image? == true
-  SystemDebug.debug(SystemDebug.containers,:engine_image_deleted,engine)
-      return r if reinstall == true
-      return engine.delete_engine
-     r
-end
+    #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
+    service_manager.remove_engine_services(params)
+    engine.delete_image if engine.has_image? == true
+    SystemDebug.debug(SystemDebug.containers,:engine_image_deleted,engine)
+    return r if reinstall == true
+    return engine.delete_engine
+    r
+  end
 
 end

@@ -6,7 +6,6 @@
 # @return [Hash]  :is_building :did_build_fail
 get '/v0/engine_builder/status' do
   r = engines_api.build_status
-
   return log_error(request, r) if r.is_a?(EnginesError)
   return_json(r)
 end
@@ -28,7 +27,7 @@ end
 get '/v0/engine_builder/last_build/log' do
   r = engines_api.last_build_log
   return log_error(request, r) if r.is_a?(EnginesError)
-  return_json(r)
+  return_text(r)
 end
 # @method get_last_build_param
 # @overload get '/v0/engine_builder/last_build/params'

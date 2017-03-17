@@ -61,11 +61,10 @@ class ManagedService < ManagedContainer
     { :publisher_namespace => @publisher_namespace,
       :type_path => @type_path
     }
-
   end
 
   def destroy
-    log_error_mesg('Cannot call destroy on a service',self)
+    raise EnginesException.new(error_hash('Cannot call destroy on a service', container_name))
   end
 
   def error_type_hash(mesg, params = nil)

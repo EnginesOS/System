@@ -16,7 +16,7 @@ end
 
 get '/v0/system/status' do
   s_status = SystemStatus.system_status
-  return log_error(request,s_status ) if s_status.is_a?(EnginesError)
+  return log_error(request, s_status) if s_status.is_a?(EnginesError)
   return_json(s_status)
 end
 
@@ -28,8 +28,7 @@ end
 
 get '/v0/system/status/update' do
   ustatus = SystemStatus.system_update_status
-  return log_error(request,ustatus ) if ustatus.is_a?(EnginesError)
-  status(202)
+  return log_error(request, ustatus) if ustatus.is_a?(EnginesError)
   return_json(ustatus)
 end
 # @!endgroup

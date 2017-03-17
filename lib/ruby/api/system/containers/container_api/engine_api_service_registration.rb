@@ -3,31 +3,35 @@ module EngineApiServiceRegistration
     service_hash = create_dns_service_hash(container)
     return false if service_hash.is_a?(Hash) == false
     begin
-     engines_core.create_and_register_service(service_hash)
+      engines_core.create_and_register_service(service_hash)
     rescue
     end
   end
+
   def deregister_with_dns(container)
     service_hash = create_dns_service_hash(container)
     return false if service_hash.is_a?(Hash) == false
-     engines_core.dettach_service(service_hash)
+    engines_core.dettach_service(service_hash)
   end
+
   def deregister_with_zeroconf(container)
     service_hash = create_zeroconf_service_hash(container)
     return false if service_hash.is_a?(Hash) == false
     begin
-     engines_core.dettach_service(service_hash)
-      rescue
-      end
-  end
-  def register_with_zeroconf(container)
-    service_hash = create_zeroconf_service_hash(container)
-     false if service_hash.is_a?(Hash) == false
-    begin
-    return engines_core.create_and_register_service(service_hash)
+      engines_core.dettach_service(service_hash)
     rescue
     end
   end
+
+  def register_with_zeroconf(container)
+    service_hash = create_zeroconf_service_hash(container)
+    false if service_hash.is_a?(Hash) == false
+    begin
+      return engines_core.create_and_register_service(service_hash)
+    rescue
+    end
+  end
+
   # Called by Managed Containers
   def register_non_persistent_services(engine)
     engines_core.register_non_persistent_services(engine)
@@ -50,7 +54,7 @@ module EngineApiServiceRegistration
 
   def engine_persistent_services(container)
     return engines_core.engine_persistent_services(container.container_name) if container.ctype != 'service'
-     engines_core.service_persistent_services(container.container_name)
+    engines_core.service_persistent_services(container.container_name)
   end
 
 end

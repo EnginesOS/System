@@ -5,8 +5,7 @@ module DockerApiContainerActions
     else
       request = '/containers/' + container.container_id.to_s + '/start'
     end
-     post_request(request)
- 
+    post_request(request)
   end
 
   def pause_container(container)
@@ -15,8 +14,7 @@ module DockerApiContainerActions
     else
       request = '/containers/' + container.container_id.to_s + '/pause'
     end
-     post_request(request)
- 
+    post_request(request)
   end
 
   def unpause_container(container)
@@ -25,7 +23,7 @@ module DockerApiContainerActions
     else
       request = '/containers/' + container.container_id.to_s + '/unpause'
     end
-     post_request(request)
+    post_request(request)
   end
 
   def stop_container(container)
@@ -36,6 +34,6 @@ module DockerApiContainerActions
       stop_timeout = container.stop_timeout unless container.stop_timeout.nil?
       request = '/containers/' + container.container_id.to_s + '/stop?t=' + stop_timeout.to_s
     end
-     post_request(request)
+    post_request(request)
   end
 end
