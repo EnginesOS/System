@@ -1,6 +1,5 @@
 module DockerImages
 
-  require_relative 'docker_exec.rb'
   def pull_image(container)
     @docker_comms.pull_image(container)
   end
