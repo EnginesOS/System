@@ -37,10 +37,7 @@ module EnginesApiSystem
     ContainerStateFiles.clear_container_var_run(container)
     start_dependancies(container) if container.dependant_on.is_a?(Hash)
     container.pull_image if container.ctype != 'container'
-    @docker_api.create_container(container)
-    sleep(5)
-    start_container(container)
-    true
+    @docker_api.create_container(container) 
   end
 
   def container_cid_file(container)
