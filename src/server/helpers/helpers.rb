@@ -127,7 +127,9 @@ helpers do
     return_json(container.to_h)
   end
 
- 
+  def managed_container_as_json(container)
+    return_json(container.to_h)
+  end
 
   use Warden::Manager do |config|
     config.scope_defaults :default,
