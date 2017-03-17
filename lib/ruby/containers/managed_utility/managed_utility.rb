@@ -128,7 +128,7 @@ class ManagedUtility< ManagedContainer
     templater.apply_hash_variables(text, values_hash)
   end
 
-  def check_params(cmd, parrams)
+  def check_params(cmd, params)
     r = true
     cmd[:requires].each do |required_param|
       next if params.key?(required_param.to_sym)
