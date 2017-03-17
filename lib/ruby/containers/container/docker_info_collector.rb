@@ -67,6 +67,7 @@ module DockerInfoCollector
     @container_id
   rescue EnginesException => e
     clear_cid
+    -1
   end
 
   def running_user

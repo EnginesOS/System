@@ -99,6 +99,8 @@ class ManagedContainer < Container
     return @container_id if setState == 'noncontainer'
     @container_id = read_container_id
     @container_id
+  rescue 
+    -1
   end
 
   def repo
