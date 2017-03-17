@@ -45,7 +45,6 @@ class ManagedUtility< ManagedContainer
     raise EnginesException.new(error_hash('No Commands', command_name)) unless @commands.is_a?(Hash)
     return @commands[command_name] if @commands.key?(command_name)
     raise EnginesException.new(error_hash('Command not found _',  command_name.to_s ))
-  
   end
 
   def execute_command(command_name, command_params)
@@ -59,7 +58,7 @@ class ManagedUtility< ManagedContainer
     #  command_name = command_name.to_sym unless @commands.key?(command_name)
     raise EnginesException.new(error_hash('No such command: ' + command_name.to_s,  command_params)) unless @commands.key?(command_name)
     command = command_details(command_name)
-    raise EnginesException.new(error_hash('Missing params' + r.to_s, r)) unless (r = check_params(command, command_params)) == true
+    raise EnginesException.new(error_hash('Missing params in Exe' + command_params.to_s, r)) unless (r = check_params(command, command_params)) == true
     begin
       r = destroy_container
     rescue
@@ -74,7 +73,7 @@ class ManagedUtility< ManagedContainer
     apply_templates(command, command_params)
     save_state
     create_container()
-    start_container
+
     @container_api.wait_for('stopped') unless read_state == 'stopped'
     r = logs_container #_as_result
     # destroy_container
@@ -137,8 +136,6 @@ class ManagedUtility< ManagedContainer
       r +=  ' ' + required_param.to_s
     end
     r
-    rescue
-      false
   end
 
   def container_logs_as_result
