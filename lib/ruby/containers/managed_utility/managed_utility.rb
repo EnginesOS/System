@@ -31,7 +31,7 @@ class ManagedUtility< ManagedContainer
   def on_start
   end
 
-  def  on_create(event_hash)
+  def on_create(event_hash)
     @container_mutex.synchronize {
       SystemDebug.debug(SystemDebug.container_events,:ON_Create_CALLED,event_hash)
       @container_id = event_hash[:id]
@@ -39,6 +39,7 @@ class ManagedUtility< ManagedContainer
       @had_out_memory = false
       save_state
     }
+    start_container
   end
 
   def command_details(command_name)
