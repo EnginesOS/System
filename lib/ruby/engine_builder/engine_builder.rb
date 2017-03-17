@@ -347,7 +347,7 @@ class EngineBuilder < ErrorsApi
     abort_build
   end
 
-  def log_error_mesg(m,o)
+  def log_error_mesg(m, o = nil)
     log_build_errors(m.to_s + o.to_s)
     super
   end

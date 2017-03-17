@@ -28,6 +28,8 @@ module DockerApiImages
 
     headers = { 'X-Registry-Config'  => get_registry_auth, 'Content-Type' =>'plain/text', 'Accept-Encoding' => 'gzip'}
     post_request(request,  nil, false , headers ,600)
+  rescue
+    false #No new fresh ?
   end
 
   def image_exist?(container)
