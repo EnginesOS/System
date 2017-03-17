@@ -29,7 +29,6 @@ end
 get '/v0/system/status/update' do
   ustatus = SystemStatus.system_update_status
   return log_error(request,ustatus ) if ustatus.is_a?(EnginesError)
-  status(202)
   return_json(ustatus)
 end
 # @!endgroup

@@ -30,7 +30,6 @@ end
 get '/v0/system/reserved/engine_names' do
   engine_names = engines_api.reserved_engine_names
   return log_error(request, engine_names) if engine_names.is_a?(EnginesError)
-  status(202)
   return_json_array(engine_names)
 end
 # @!endgroup
