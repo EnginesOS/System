@@ -9,8 +9,7 @@ module DockerApiContainerOps
     end
     r = get_request(request)
     return true if r.is_a?(Hash)
-     false
-
+    false
   end
 
   def destroy_container(container)
@@ -19,14 +18,14 @@ module DockerApiContainerOps
     else
       request = '/containers/' + container.container_id.to_s
     end
-     delete_request(request)
+    delete_request(request)
   end
 
   require_relative 'docker_api_create_options.rb'
   include DockerApiCreateOptions
 
   def create_container(container)
-    request_params = create_options(container)   
+    request_params = create_options(container)
     request = '/containers/create?name=' + container.container_name
     post_request(request, request_params)
   end

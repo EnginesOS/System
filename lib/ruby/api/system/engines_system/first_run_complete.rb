@@ -6,9 +6,9 @@ module FirstRunComplete
     Thread.start do
       begin
         first_run.stop_container
-        first_run.destroy_container    
-        unless install_mgmt == true        
-         mark_complete
+        first_run.destroy_container
+        unless install_mgmt == true
+          mark_complete
         else
           mgmt = @engines_api.loadManagedService('mgmt')
           mark_complete unless mgmt.create_service.is_a?(EnginesError)
@@ -17,12 +17,13 @@ module FirstRunComplete
         STDERR.puts('FIRST RUN Thread Exception' + e.to_s + ':' + e.backtrace.to_s)
       end
     end
-     true  
+    true
   end
-  
-  private 
+
+  private
+
   def mark_complete
-   FileUtils.touch(SystemConfig.FirstRunRan)
-   disable_service('firstrun')
+    FileUtils.touch(SystemConfig.FirstRunRan)
+    disable_service('firstrun')
   end
 end

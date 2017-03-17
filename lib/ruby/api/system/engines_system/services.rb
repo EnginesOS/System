@@ -36,8 +36,8 @@ module Services
   private
 
   def get_services_by_type(type='service')
-    ret_val = []
     services = _list_services(type)
+    ret_val = []
     services.each do |service_name |
       begin
         service = loadManagedService(service_name) if type == 'service'
@@ -60,7 +60,6 @@ module Services
   end
 
   def _loadManagedService(service_name, service_type_dir)
-
     raise EnginesException.new(error_hash('No Service Name', service_type_dir)) if service_name.nil? || service_name.length == 0
     raise EnginesException.new(error_hash("no System api to attach ", @engines_api.to_s)) if @engines_api.service_api.nil?
 

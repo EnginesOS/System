@@ -25,8 +25,8 @@ module EnginesApiSystem
   def have_enough_ram?(container)
     free_ram = @system_api.available_ram
     ram_needed = SystemConfig.MinimumFreeRam .to_i + container.memory.to_i * 0.7
-    return true if free_ram > ram_needed
-    return false
+    return false if free_ram < ram_needed
+    true 
   end
 
   def create_container(container)
@@ -46,9 +46,7 @@ module EnginesApiSystem
   end
   
   def run_cronjob(cronjob, container)
-     return false unless container.is_running?
-   
-    #retreive cron entry from engine registry
+     return false unless container.is_running?   
     cron_entry = @engines_core.retreive_cron_entry(cronjob, container)
    # STDERR.puts(' retreive cron entry from engine registry ' + cron_entry.to_s + ' from ' + cronjob.to_s )
     raise EnginesException.new(error_hash('nil cron line ' + cronjob.to_s )) if cron_entry.nil?

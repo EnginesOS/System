@@ -127,7 +127,6 @@ class DockerEventWatcher  < ErrorsApi
 #  end
 
   def start
-
     req = Net::HTTP::Get.new('/events')
     client = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
     client.continue_timeout = 300
@@ -196,17 +195,12 @@ class DockerEventWatcher  < ErrorsApi
   def add_event_listener(listener, event_mask = nil, container_id = nil)
     event = EventListener.new(listener,event_mask, container_id)
     SystemDebug.debug(SystemDebug.container_events,'ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
-    @event_listeners[event.hash_name] = event
-  
-  rescue StandardError => e
-    log_exception(e)
+    @event_listeners[event.hash_name] = event  
   end
 
   def rm_event_listener(listener)
     SystemDebug.debug(SystemDebug.container_events,'REMOVED listenter ' + listener.class.name + ':' + listener.object_id.to_s)
     @event_listeners.delete(listener.object_id.to_s) if @event_listeners.key?(listener.object_id.to_s)
-  rescue StandardError => e
-    log_exception(e)
   end
 
   private

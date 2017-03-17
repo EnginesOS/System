@@ -4,7 +4,6 @@ module DockerApiContainerStatus
     # container.set_cont_id if container.container_id.to_s == '-1' || container.container_id.nil?
     request = '/containers/' + container.container_name.to_s + '/json'
     return get_request(request, true)
-
   end
 
   def inspect_container(container)
@@ -39,15 +38,11 @@ module DockerApiContainerStatus
     end
 
     raise DockerException.new(error_hash('no such engine', id)) if r == true # happens on a destroy
-
     raise DockerException.new(error_hash(' 409 twice for '  , request)) unless r.is_a?(Hash)
-
     raise DockerException.new(error_hash('not a managed engine', r)) unless r.key?(:Config)
     raise DockerException.new(error_hash('not a managed engine', r)) unless r[:Config].key?(:Labels)
     raise DockerException.new(error_hash('not a managed engine', r)) unless r[:Config][:Labels].key?(:container_type)
-
     [r[:Config][:Labels][:container_name], r[:Config][:Labels][:container_type]]
-
   end
 
   def container_id_from_name(container)
@@ -65,8 +60,8 @@ module DockerApiContainerStatus
       end
     end
     -1
-rescue 
-   -1
+  rescue
+    -1
   end
 
   def logs_container(container, count)

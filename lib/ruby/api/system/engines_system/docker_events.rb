@@ -2,7 +2,6 @@ module DockerEvents
   require '/opt/engines/lib/ruby/api/system/docker/docker_api/event_watcher/docker_event_watcher.rb'
 
   def fill_in_event_system_values(event_hash)
-
     if event_hash.key?(:Actor) && event_hash[:Actor][:Attributes].is_a?(Hash)
       event_hash[:container_name] = event_hash[:Actor][:Attributes][:container_name]
       event_hash[:container_type] = event_hash[:Actor][:Attributes][:container_type]
@@ -17,7 +16,6 @@ module DockerEvents
   end
 
   def container_event(event_hash)
-
     return log_error_mesg('Nil event hash passed to container event','') if event_hash.nil?
     r = fill_in_event_system_values(event_hash)
     SystemDebug.debug(SystemDebug.container_events,'2 CONTAINER EVENTS' + event_hash.to_s + ':' + r.to_s)
@@ -58,9 +56,7 @@ module DockerEvents
     end
 
   rescue StandardError => e
-
     log_exception(e, event_hash)
-
   end
 
   def no_container(event_hash)
@@ -68,7 +64,7 @@ module DockerEvents
     #FIXME track non system containers here
     #use to clear post build crash
     #alert if present when not building
-     true
+    true
   end
 
   def inform_container_tracking(container_name,ctype,event_name)
@@ -78,7 +74,6 @@ module DockerEvents
     inform_container_monitor(container_name,ctype,event_name)
   rescue StandardError =>e
     log_exception(e)
-
   end
 
   def get_event_container(container_name,ctype)
@@ -88,10 +83,9 @@ module DockerEvents
       c = loadManagedService(container_name)  if ctype == 'service'
     end
     return false if c.nil?
-     c
+    c
   rescue StandardError =>e
     log_exception(e)
-
   end
 
   def inform_container(container_name,ctype,event_name,event_hash)
@@ -100,26 +94,21 @@ module DockerEvents
     return false if c.is_a?(FalseClass)
     SystemDebug.debug(SystemDebug.container_events, 'informed _container',container_name,event_name)
     c.process_container_event(event_name,event_hash)
-     true
+    true
   rescue StandardError =>e
     log_exception(e)
   end
 
   def start_docker_event_listener(listeners = nil)
     @docker_event_listener = DockerEventWatcher.new(self,listeners )
-    
     @event_listener_thread = Thread.new do
- 
-        @docker_event_listener.start
-     STDERR.puts( ' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-      end
-  
+      @docker_event_listener.start
+      STDERR.puts( ' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+    end
     @docker_event_listener
   rescue StandardError =>e
     log_exception(e)
   end
-  
-   
 
   def add_event_listener(listener,mask, container_id = nil )
     @docker_event_listener.add_event_listener(listener,mask, container_id )

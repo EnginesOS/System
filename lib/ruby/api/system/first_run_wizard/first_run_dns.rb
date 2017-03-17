@@ -7,14 +7,14 @@ module FirstRunDNS
     config_hash[:variables][:hostname] =  params[:hostname]
     config_hash[:variables][:domain_name] =  params[:domain_name]
     return true if @api.update_service_configuration(config_hash)
-     log_error_mesg('Hostname configurator ', config_hash)
+    log_error_mesg('Hostname configurator ', config_hash)
   end
 
   def get_domain_params(params)
     domain_hash = {}
     domain_hash[:domain_name] = params[:domain_name]
     domain_hash[:default_domain] = params[:domain_name]
- 
+
     if params[:networking] == 'zeroconf'
       domain_hash[:self_hosted] = true
       domain_hash[:internal_only] = true
@@ -30,8 +30,7 @@ module FirstRunDNS
       domain_hash[:self_hosted] = false
       configure_dyndns_service(params)
     end
-
-     domain_hash
+    domain_hash
   end
 
   def configure_dyndns_service(params)
@@ -48,7 +47,6 @@ module FirstRunDNS
     dyndns_service.create_service
     return true if dyndns_service.is_running?
     dyndns_service.start_container
-
   end
 
   def set_default_email_domain(domain_name)
@@ -59,22 +57,20 @@ module FirstRunDNS
     config_hash[:variables][:domain_name] = domain_name
     config_hash[:variables][:deliver_local] = false
     return true if @api.update_service_configuration(config_hash)
-     log_error_mesg('smtp default domain configurator ', config_hash)
+    log_error_mesg('smtp default domain configurator ', config_hash)
   end
 
   def setup_dns
-
     domain_hash = get_domain_params(@first_run_params)
     return log_error_mesg('Fail to add nill domain ', domain_hash) if domain_hash[:domain_name].nil?
     return log_error_mesg('Fail to add domain ' + @api.last_error, domain_hash) unless @api.add_domain_service(domain_hash)
     return r unless (r = apply_hostname(@first_run_params))
     return log_error_mesg('Fail to set default domain ' + @api.last_error, domain_hash.to_s) unless @api.set_default_domain(domain_hash)
-    return set_default_email_domain(domain_hash[:default_domain])
-
+    set_default_email_domain(domain_hash[:default_domain])
   end
 
   def validate_dns_params(params)
     return log_error_mesg('Can have empty default domain',params) if params[:domain_name].nil?
-    return true
+    true
   end
 end

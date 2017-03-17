@@ -46,7 +46,6 @@ module DockerApiCreateOptions
       perms = 'ro'
     end
     volume[:localpath] + ':' + volume[:remotepath] + ':' + perms
- 
   end
 
   def get_dns_search
@@ -153,7 +152,6 @@ module DockerApiCreateOptions
   end
 
   def build_top_level(container)
-
     top_level = {
       'Hostname' => hostname(container),
       'Domainame' =>  container_domain_name(container),
@@ -226,7 +224,6 @@ module DockerApiCreateOptions
     mounts.push(ssh_keydir_mount(container))
     cm = cert_mounts(container)
     mounts.concat(cm) unless cm.nil?
-
     mounts
   end
 

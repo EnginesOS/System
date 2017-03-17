@@ -8,7 +8,7 @@ class EnginesException < StandardError
 
   def initialize( hash)
     if hash.is_a?(Hash)
-      hash[:error_type] == :error if hash[:error_type].nil?      
+      hash[:error_type] = :error unless hash.key?(:error_type).nil?      
       @level = hash[:error_type].to_sym
       @params = hash[:params]
       @source = hash[:source]

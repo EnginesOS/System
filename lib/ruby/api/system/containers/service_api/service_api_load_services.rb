@@ -1,7 +1,6 @@
 module ServiceApiLoadServices
   def load_and_attach_pre_services(container)
     dirname = container_services_dir(container) + '/pre/'
-
     engines_core.load_and_attach_services(dirname, container)
   end
 

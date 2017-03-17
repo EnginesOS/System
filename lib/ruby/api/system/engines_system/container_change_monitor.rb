@@ -7,7 +7,7 @@ module ContainerChangeMonitor
   end
 
   def add_changed(container_name,ctype,event_name)
-    register  = change_register
+    register = change_register
     return if ctype.nil?
     return unless register.key?(ctype)
     register[ctype][container_name] = event_name # unless register[ctype][container_name].nil?
@@ -19,13 +19,13 @@ module ContainerChangeMonitor
       @change_register['service'] = {}
       @change_register['container'] = {}
     end
-     @change_register
+    @change_register
   end
 
   def get_changed_containers
     ret = change_register.dup
     @change_register = nil
-     ret
+    ret
   end
 
 end
