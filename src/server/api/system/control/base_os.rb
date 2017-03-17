@@ -7,9 +7,7 @@
 get '/v0/system/control/base_os/restart' do
   restart = engines_api.restart_base_os
   return log_error(request, restart) if restart.is_a?(EnginesError)
-  status(202)
-  content_type 'text/plain'
-  restart.to_s
+  return_text(restart)
 end
 # @method shutdown_base_os
 # @overload post '/v0/system/control/base_os/shutdown'

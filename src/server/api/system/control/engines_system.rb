@@ -9,9 +9,7 @@
 get '/v0/system/control/engines_system/update' do
   update = engines_api.update_engines_system_software
   return log_error(request, update, 'Might just be update to date update') if update.is_a?(EnginesError)
-    status(202)
-  content_type 'text/plain'
-    update.to_s    
+  return_text(update)
 end
 # @method restart_engines_system
 # @overload get '/v0/system/control/engines_system/restart'
@@ -34,11 +32,11 @@ end
 # @method dump_engines_system_heap_stats
 # @overload get '/v0/system/control/engines_system/heap_stats'
 #  dump the heap stats engines system post CG output is written to /tmp/big/heap.dump
-#  admin has access to this via ssh login 
-#  the path is /opt/engines/tmp/system_service/system/heap.dump 
+#  admin has access to this via ssh login
+#  the path is /opt/engines/tmp/system_service/system/heap.dump
 # @return [true]
- get '/v0/system/control/engines_system/heap_stats' do
-      dump_stats = engines_api.dump_heap_stats
-   return_text(dump_stats)
+get '/v0/system/control/engines_system/heap_stats' do
+  dump_stats = engines_api.dump_heap_stats
+  return_text(dump_stats)
 end
 # @!endgroup

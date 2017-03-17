@@ -20,7 +20,7 @@ helpers do
     return empty_array if r.nil?
     return empty_array if r.is_a?(FalseClass)
     #  STDERR.puts("JSON " + r.to_s)
-    r.to_json
+    r
   end
 
   def return_text(r, s=202)
@@ -106,7 +106,6 @@ helpers do
   end
 
   def get_service(service_name)
-
     service = engines_api.loadManagedService(service_name)
     return service if service.is_a?(ManagedService) || service.is_a?(EnginesError)
     log_error('Load Service failed !!!' + service_name, service)
@@ -121,16 +120,14 @@ helpers do
     if containers.is_a?(Array)
       res = []
       containers.each do |container|
-        res.push(managed_container_as_json(container))
+        res.push(container.to_h)
       end
-      return res.to_json
+      return return_json_array(res)
     end
-    return managed_container_as_json(containers)
+    return_json(container.to_h)
   end
 
-  def managed_container_as_json(container)
-    container.to_h.to_json
-  end
+ 
 
   use Warden::Manager do |config|
     config.scope_defaults :default,
