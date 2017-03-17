@@ -78,7 +78,8 @@ class ManagedUtility< ManagedContainer
     begin
       r = logs_container #_as_result
       return r if r.is_a?(Hash)
-    rescue
+    rescue EnginesError =>e
+      STDERR.puts(e.to_s  + "\n" + e.backtrace.to_s)
       {stderr: 'Failed', result: -1}
     end
     {stdout: 'OK', result: 0}
