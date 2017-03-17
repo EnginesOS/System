@@ -3,45 +3,35 @@ module DockerContainerActions
   
   def create_container(container, create_only = false)
    r = @docker_comms.create_container(container)
- #   STDERR.puts(' CREATED ' + r.to_s)
-   return r if create_only == true || r.is_a?(EnginesError) 
-  # STDERR.puts(' CREATED AND NOW STARTING ')
-    @docker_comms.start_container(container)
-  rescue StandardError => e
-    container.last_error = ('Failed To Create ')
-    log_exception(e)
+
+
   end
 
   def start_container(container)
     @docker_comms.start_container(container)
-  rescue StandardError => e
-    log_exception(e)
+
   end
 
   def stop_container(container)
     @docker_comms.stop_container(container)
-  rescue StandardError => e
-    log_exception(e)
+
   end
 
   def pause_container(container)
     @docker_comms.pause_container(container)
-  rescue StandardError => e
-    log_exception(e)
+ 
   end
 
   def unpause_container(container)
     @docker_comms.unpause_container(container)
-  rescue StandardError => e
-    log_exception(e)
+
   end
 
   def signal_container_process(pid, signal, container)
     clear_error
     cmds =['kill','-' + signal, pid]
     @docker_comms.docker_exec({:container => container, :command_line=>cmds, :log_error=>false})
-  rescue StandardError => e
-    log_exception(e)
+ 
   end
 
   def destroy_container(container)
@@ -50,9 +40,7 @@ module DockerContainerActions
     #end
     clean_up_dangling_images
     return true
-  rescue StandardError => e
-    container.last_error = 'Failed To Destroy ' + e.to_s
-    log_exception(e)
+
   end
 
 end
