@@ -18,7 +18,8 @@ helpers do
     return return_error_array(r) if r.is_a?(EnginesError)
     content_type 'application/json'
     status(s)
-    return empty_array if r.nil?
+    STDERR.puts("json arry _" + r.to_s + '_')
+    return empty_array if r.nil? || r = '' 
     return empty_array if r.is_a?(FalseClass)
     r.to_json
   end
