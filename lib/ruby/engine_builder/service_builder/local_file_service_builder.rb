@@ -1,6 +1,7 @@
 module LocalFileServiceBuilder
   def run_volume_builder(container, username)
     clear_error
+    STDERR.puts('VOL BUILD PARAMS ' + util_params.to_s)
     volbuilder = @core_api.loadManagedUtility('fsconfigurator')
     util_params = {
       volume: '/',
@@ -9,8 +10,10 @@ module LocalFileServiceBuilder
       target_container: container.container_name,
       data_gid: container.data_gid.to_s
     }
-    STDERR.puts('VOL BUILD PARAMS ' + util_params.to_s)
+    STDERR.puts('fsconfigurator ' + volbuilder.read_state)
     result = volbuilder.execute_command(:setup_engine, util_params)
+    STDERR.puts('fsconfigurator ' + volbuilder.read_state)
+    
     return true if result[:result] == 0
     return log_error_mesg('volbuild problem ' + result.to_s, result)
 
