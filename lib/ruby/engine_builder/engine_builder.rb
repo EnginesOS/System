@@ -223,6 +223,7 @@ class EngineBuilder < ErrorsApi
     return false unless create_engine_image
     return false unless create_engine_container
     @service_builder.release_orphans
+    sleep 10
     wait_for_engine
     save_build_result
     close_all
