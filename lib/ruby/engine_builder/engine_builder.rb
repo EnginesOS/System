@@ -204,9 +204,7 @@ class EngineBuilder < ErrorsApi
         @result_mesg = 'Engine Stopped! ' + l.to_s
         return false
       end
-      
     log_build_output('') # force EOL to end the ...
-
     true
   rescue StandardError => e
     log_exception(e)

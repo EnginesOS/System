@@ -20,7 +20,7 @@ module EngineApiDependancies
       # FixME
       # use event queue
       while !has_service_started?(service_name)
-        sleep 2
+        sleep 0.2
         retries += 1
         raise EnginesException.new(error_hash('Time out in waiting for Service Dependancy ' + service_name + ' to start ', service_name)) if retries > 20
       end

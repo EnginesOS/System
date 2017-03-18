@@ -31,7 +31,7 @@ module DockerApiContainerStatus
       r =  get_request(request)
     rescue DockerException => e
       if e.status == 409
-        sleep 0.2
+        sleep 0.1
         r =  get_request(request)
       else raise e
       end
