@@ -150,7 +150,7 @@ rescue StandardError => e
   p e
   p e.backtrace.to_s
   #status(501)
-  r = EnginesError.new('Unhandled Exception'+ e.to_s + '\n' + e.backtrace.to_s, :error, 'api')
+  #  r = EnginesError.new('Unhandled Exception'+ e.to_s + '\n' + e.backtrace.to_s, :error, 'api')
   # status(404)
   STDERR.puts('Unhandled Exception'+ e.to_s + '\n' + e.backtrace.to_s )
   r.to_json
