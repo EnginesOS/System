@@ -22,6 +22,7 @@ module ManagedContainerOnAction
   end
 
   def on_create(event_hash)
+    STDERR.puts('CREATE EVent on ' + container_name)
     @container_mutex.synchronize {
       SystemDebug.debug(SystemDebug.container_events,:ON_Create_CALLED,event_hash)
       @container_id = event_hash[:id]
@@ -36,7 +37,6 @@ module ManagedContainerOnAction
   end
 
   def on_stop(what)
-
     SystemDebug.debug(SystemDebug.container_events,:ONStop_CALLED,what)
     @had_out_memory = @out_of_memory
     @out_of_memory = false
@@ -49,7 +49,6 @@ module ManagedContainerOnAction
   end
 
   def out_of_mem(what)
-
     SystemDebug.debug(SystemDebug.container_events,:OUTOF_MEM_CALLED,what)
     @out_of_memory = true
     @had_out_memory = true
