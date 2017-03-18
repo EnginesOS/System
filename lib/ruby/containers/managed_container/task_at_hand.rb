@@ -42,8 +42,8 @@ module TaskAtHand
 
     case action
     when :create
-              @steps = [:create,:start]
-             @steps_to_go = 2
+      @steps = [:create,:start]
+      @steps_to_go = 2
       return desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
     when :stop
       return desired_state(step, final_state, curr_state) if curr_state== 'running'
@@ -51,7 +51,7 @@ module TaskAtHand
       return desired_state(step, final_state, curr_state) if curr_state== 'stopped'
     when :pause
       return desired_state(step, final_state, curr_state) if curr_state== 'running'
- 
+
     when :restart
       if curr_state == 'running'
         @steps = [:stop,:start]
@@ -96,7 +96,7 @@ module TaskAtHand
 
     return log_error_mesg(@container_name + ' not in matching state want _' + tasks_final_state(action).to_s + '_but in ' + curr_state.class.name + ' ',curr_state )
 
-     true
+    true
 
     # Perhaps ?return clear_task_at_hand
   rescue StandardError => e
@@ -106,21 +106,30 @@ module TaskAtHand
   def process_container_event(event,event_hash)
     expire_engine_info
     SystemDebug.debug(SystemDebug.container_events, :PROCESS_CONTAINER_vents, @container_name,  event,event_hash)
-    return on_create(event_hash) if event == 'create'
-    
-    return  on_start('start') if event == 'start'
-    return on_start('unpause') if event == 'unpause'
-    return on_stop('die') if event == 'die'
-    return on_stop('die') if event == 'kill'
-    return on_stop('stop') if event == 'stop'
-    return  on_stop('pause') if event == 'pause'
-    return  out_of_mem('oom') if event == 'oom'
-    rescue StandardError => e
-       log_exception(e)
+    case event
+    when 'create'
+      on_create(event_hash)
+    when 'start'
+      on_start('start')
+    when 'unpause'
+      on_start('unpause')
+    when 'die'
+      on_stop('die')
+    when 'kill'
+      on_stop('die')
+    when 'stop'
+      on_stop('stop')
+    when 'pause'
+      on_stop('pause')
+    when 'oom'
+      out_of_mem('oom')
+    end
+  rescue StandardError => e
+    log_exception(e)
   end
-  
+
   def task_complete(action)
-    
+
     @steps_to_go = 0 if @steps_to_go.nil?
     SystemDebug.debug(SystemDebug.engine_tasks, :task_complete, ' ', action.to_s + ' as action for task ' +  task_at_hand.to_s + " " + @steps_to_go.to_s + '-1 stesp remaining step completed ',@steps)
 
@@ -129,7 +138,7 @@ module TaskAtHand
     return save_state unless @last_task == :delete_image && @steps_to_go <= 0
     # FixMe Kludge unless docker event listener
     delete_engine
-     true
+    true
   rescue StandardError => e
     log_exception(e)
   end
@@ -153,7 +162,7 @@ module TaskAtHand
   rescue StandardError => e
     return nil unless File.exist?(fn)
     log_exception(e)
-     nil
+    nil
     # @task_at_hand
   end
 
@@ -185,7 +194,7 @@ module TaskAtHand
   rescue StandardError => e
     # log_exception(e) Dont log exception
     # well perhaps a perms or disk error but definitly not no such file
-     true  #possbile exception such file (another process alsop got the eot mesg and removed)
+    true  #possbile exception such file (another process alsop got the eot mesg and removed)
   end
 
   def wait_for_task(task)
@@ -209,7 +218,7 @@ module TaskAtHand
   rescue StandardError => e
     return true unless File.exist?(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
     log_exception(e)
-  
+
   end
 
   def task_failed(msg)
@@ -219,7 +228,7 @@ module TaskAtHand
     @last_error = @container_api.last_error unless @container_api.nil?
     SystemDebug.debug(SystemDebug.engine_tasks, :WITH, @last_error.to_s, msg.to_s)
     task_complete(:failed)
-     false
+    false
 
   end
 
@@ -232,7 +241,7 @@ module TaskAtHand
       loop += 1
       return log_error_mesg('timeout expire') if loop > timeout * 2
     end
-     true
+    true
 
   end
 
@@ -278,21 +287,22 @@ module TaskAtHand
       SystemDebug.debug(SystemDebug.engine_tasks, :expired_task, task, ' after ' , task_set_timeout(task))
       return true
     end
-     false
+    false
     # no file problem with mtime etc means task has finished in progress and task file has dissapppeared
   rescue StandardError => e
     # SystemDebug.debug(SystemDebug.engine_tasks, e, e.backtrace)
-     true
+    true
   end
 
   require_relative 'task_timeouts.rb'
+
   def task_set_timeout(task)
-    TaskTimeouts.task_set_timeout(task)   
+    TaskTimeouts.task_set_timeout(task)
   end
 
   def set_task_at_hand(state)
     @task_at_hand = state
-   return unless Dir.exist?(ContainerStateFiles.container_state_dir(self)) # happens on reinstall
+    return unless Dir.exist?(ContainerStateFiles.container_state_dir(self)) # happens on reinstall
     f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand','w+')
     f.write(state)
     f.close
