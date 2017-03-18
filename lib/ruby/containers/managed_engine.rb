@@ -60,6 +60,7 @@ class ManagedEngine < ManagedContainer
   
   def volume_service_builder=(builder)
    raise EnginesException,ew('Error alread run', :error) unless @volume_service_builder.nil?
+    STDERR.puts('@service_builder.run_volume_builder ' +  @volume_service_builder.to_s )  
     @volume_service_builder = builder
   end
 
