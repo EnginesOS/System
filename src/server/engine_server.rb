@@ -1,5 +1,5 @@
 require 'gctools/oobgc'
-require '/opt/engines/lib/ruby/api/system/engines_error.rb'
+require '/opt/engines/lib/ruby/system/engines_error.rb'
 begin
 
   require 'sinatra'
