@@ -12,6 +12,7 @@ begin
 
   require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
   require '/opt/engines/lib/ruby/api/system/first_run_wizard/first_run_wizard.rb'
+  require '/opt/engines/lib/ruby/api/system/engines_error.rb'
   require 'objspace'
   require 'warden'
   require "sqlite3"
@@ -150,9 +151,8 @@ rescue StandardError => e
   p e
   p e.backtrace.to_s
   #status(501)
-  #  r = EnginesError.new('Unhandled Exception'+ e.to_s + '\n' + e.backtrace.to_s, :error, 'api')
+   r = EnginesError.new('Unhandled Exception'+ e.to_s + '\n' + e.backtrace.to_s, :error, 'api')
   # status(404)
   STDERR.puts('Unhandled Exception'+ e.to_s + '\n' + e.backtrace.to_s )
   r.to_json
-
 end
