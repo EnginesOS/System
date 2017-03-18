@@ -76,6 +76,7 @@ class ManagedUtility< ManagedContainer
     clear_configs
     apply_templates(command, command_params)
     save_state
+    STDERR.puts('Created')
     create_container()
     sleep(10)
     @container_api.wait_for('stopped') unless read_state == 'stopped'
