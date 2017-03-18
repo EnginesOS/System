@@ -29,6 +29,7 @@ class ManagedUtility< ManagedContainer
   end
 
   def on_start
+    STDERR.puts('MANAGE UTIL on event')
   end
 
   def on_create(event_hash)
@@ -40,6 +41,7 @@ class ManagedUtility< ManagedContainer
       @had_out_memory = false
       save_state
     }
+    STDERR.puts('MANAGE UTIL create event')
     start_container
   end
 
