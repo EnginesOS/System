@@ -49,7 +49,7 @@ class ManagedEngine < ManagedContainer
     restart_required?
   end
   
-  def on_start
+  def on_start(event_hash)
     super
     return if @volume_service_builder.nil? || @volume_service_builder.is_a?(FalseClass)  
     STDERR.puts('@service_builder.run_volume_builder ' )  

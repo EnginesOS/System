@@ -28,13 +28,13 @@ class ManagedUtility< ManagedContainer
     volumes.delete(:state_dir)
   end
 
-  def on_start
+  def on_start(event_hash)
     STDERR.puts('MANAGE UTIL on event')
   end
 
   def on_create(event_hash)
     @container_mutex.synchronize {
-      SystemDebug.debug(SystemDebug.container_events,:ON_Create_CALLED, event_hash)
+      SystemDebug.debug(SystemDebug.container_events, :ON_Create_CALLED, event_hash)
       @container_id = event_hash[:id]
         STDERR.puts('ID SET YTO' + @container_id.to_s )
       @out_of_memory = false
