@@ -15,6 +15,7 @@ module ServiceApiConfigurations
   end
 
   def run_configurator(c, configurator_params)
+    return {stderr: 'Not Running', result: -1} unless c.is_running?
     #  STDERR.puts( "CONFIGURAT[:variables].to_json " + configurator_params[:variables].to_json.to_s)
     cmd = ['/home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh']
     #  STDERR.puts( 'CONFIGURAT cmd /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh')
