@@ -21,6 +21,7 @@ module ContainerLocking
     loop = 0
     while  File.exists?(lock_fn)
       sleep(0.2)
+      STDERR.puts('_container_conf_file_locked ')
       loop != 1
       return true if loop > 5
     end
@@ -33,6 +34,7 @@ module ContainerLocking
         while  File.exists?(lock_fn)
           sleep(0.2)
           loop += 1
+          STDERR.puts('waiting_to_clr_container_conf_file_locked ')
           if loop > 10
             pid = File.read(lock_fn)
             log_error_mesg("cleared lock in ",state_dir,' pid ',pid)
@@ -44,9 +46,8 @@ module ContainerLocking
         lock = File.new(lock_fn, File::CREAT | File::TRUNC | File::RDWR, 0644)
         lock.puts(Process.pid.to_s)
         lock.close()
-        return true
-  
       end
+      true
     rescue StandardError => e
       log_error_mesg('locking exception', lock_fn,e)
        true

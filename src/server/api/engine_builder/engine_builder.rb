@@ -65,11 +65,7 @@ cnt=1
           out  << bytes          
           out  << "."          
           bytes = ''
-          #         STDERR.puts('FOLLOW BUILDER GOT first EOF')
           sleep 2
-#          STDERR.puts('FOLLOW BUILDER GOT 3nd EOF')
-#          IO.select([build_log_file])       
-#          STDERR.puts('FOLLOW BUILDER GOT 2nd EOF')
           retry if File.exist?(SystemConfig.BuildRunningParamsFile)
           if build_over == false         
             build_over = true
