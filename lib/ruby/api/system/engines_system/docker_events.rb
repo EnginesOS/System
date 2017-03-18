@@ -20,7 +20,7 @@ module DockerEvents
     r = fill_in_event_system_values(event_hash)
     SystemDebug.debug(SystemDebug.container_events,'2 CONTAINER EVENTS' + event_hash.to_s + ':' + r.to_s)
 
-    if event_hash[:container_type] == 'service' ||  event_hash[:container_type] == 'system_service'
+    if event_hash[:container_type] == 'service' ||  event_hash[:container_type] == 'system_service'||  event_hash[:container_type] == 'utility'
       # Enable Cold load of service from config.yaml
       return no_container(event_hash) unless File.exist?(SystemConfig.RunDir + '/' + event_hash[:container_type] + 's/' + event_hash[:container_name] + '/config.yaml')
     else
