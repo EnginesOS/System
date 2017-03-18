@@ -71,19 +71,22 @@ get '/v0/containers/engine/:engine_name/logs' do
   engine = get_engine(params[:engine_name])
    return log_error(request, engine, params) if engine.nil?
    r = engine.logs_container()
-  return log_error(request, r) if r.is_a?(EnginesError)
-  
+  return log_error(request, r) if r.is_a?(EnginesError)  
   return_json(r)
 end
+
 # @method get_engine_ps
 # @overload get '/v0/containers/engine/:engine_name/ps' 
 # get engine process lists
 # @return [Hash] keys Processes:[Array] Titles:[Array]
 get '/v0/containers/engine/:engine_name/ps' do
+  begin
   engine = get_engine(params[:engine_name])
   return log_error(request, engine, params) if engine.nil?
   r = engine.ps_container
-  return log_error(request, r, engine.last_error) if r.is_a?(EnginesError)
   return_json(r)
+  rescue 
+    log_error(request  , 'Container not running',  'Container not running') 
+  end
 end
 
