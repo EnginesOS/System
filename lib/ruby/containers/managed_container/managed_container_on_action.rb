@@ -1,6 +1,7 @@
 module ManagedContainerOnAction
   def on_start(what)
     @container_mutex.synchronize {
+      set_running_user
       SystemDebug.debug(SystemDebug.container_events,:ONSTART_CALLED,what)
       @out_of_memory = false
       if @consumer_less
@@ -15,9 +16,9 @@ module ManagedContainerOnAction
       @has_run = true
       save_state
       @container_api.register_non_persistent_services(self)
-      true
+      save_state
     }
-  
+
   end
 
   def on_create(event_hash)
@@ -28,8 +29,7 @@ module ManagedContainerOnAction
       @had_out_memory = false
       @has_run = false
       @container_api.apply_schedules(self)
-      save_state
-      return true if @consumer_less
+      save_state    
       SystemDebug.debug(SystemDebug.container_events,:ON_Create_Finised,event_hash)
     }
     start_container

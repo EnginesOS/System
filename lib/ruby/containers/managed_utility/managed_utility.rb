@@ -33,6 +33,7 @@ class ManagedUtility< ManagedContainer
   end
 
   def on_create(event_hash)
+    STDERR.puts('MANAGE UTIL create event')
     @container_mutex.synchronize {
       SystemDebug.debug(SystemDebug.container_events, :ON_Create_CALLED, event_hash)
       @container_id = event_hash[:id]
@@ -44,6 +45,7 @@ class ManagedUtility< ManagedContainer
     STDERR.puts('MANAGE UTIL create event')
     start_container
   end
+  
 
   def command_details(command_name)
     raise EnginesException.new(error_hash('No Commands', command_name)) unless @commands.is_a?(Hash)
