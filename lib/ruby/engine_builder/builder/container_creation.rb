@@ -15,13 +15,14 @@ module ContainerCreation
     log_build_output('Creating ManagedEngine')
     @build_params[:web_port] = @web_port
     @build_params[:volumes] = @service_builder.volumes
+    @build_params[:service_builder] = @service_builder
     @container = ManagedEngine.new(@build_params, @blueprint_reader, @core_api.container_api)
     @container.save_state # no running.yaml throws a no such container so save so others can use
     log_build_errors('Failed to save blueprint ' + @blueprint.to_s) unless @container.save_blueprint(@blueprint)
     log_build_output('Launching ' + @container.to_s)
     @core_api.init_engine_dirs(@build_params[:engine_name])
     flag_restart_required(@container) if @has_post_install == true
-    @container.volume_service_builder = @service_builder
+
     log_build_errors('Error Failed to Launch') unless launch_deploy(@container)
    # log_build_output('Applying Volume settings and Log Permissions' + @container.to_s)
   #  log_build_errors('Error Failed to Apply FS' + @container.to_s) unless @service_builder.run_volume_builder(@container, @web_user)    

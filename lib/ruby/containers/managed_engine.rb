@@ -30,7 +30,7 @@ class ManagedEngine < ManagedContainer
     @ctype = 'container'
     @conf_self_start = true
     @capabilities = runtime_params.capabilities
-    @volume_service_builder = nil
+    @volume_service_builder = build_params[:service_builder]
     expire_engine_info
     save_state # no running.yaml throws a no such container so save so others can use
 
@@ -59,9 +59,9 @@ class ManagedEngine < ManagedContainer
   end
   
   def volume_service_builder=(builder)
-   raise EnginesException,ew('Error alread run', :error) unless @volume_service_builder.nil?
+   #raise EnginesException,ew('Error alread run', :error) unless @volume_service_builder.nil?
     STDERR.puts(' SET @service_builder.run_volume_builder ' +  builder.to_s )  
-    @volume_service_builder = builder
+ #   @volume_service_builder = builder
   end
 
   def load_blueprint
