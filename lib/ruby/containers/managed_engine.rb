@@ -51,6 +51,7 @@ class ManagedEngine < ManagedContainer
   
   def on_start(event_hash)
     super
+    STDERR.puts('@service_builder.run_volume_builder ' +  @volume_service_builder.to_s )  
     return if @volume_service_builder.nil? || @volume_service_builder.is_a?(FalseClass)  
     STDERR.puts('@service_builder.run_volume_builder ' )  
     @service_builder.run_volume_builder(self, @cont_userid)    
