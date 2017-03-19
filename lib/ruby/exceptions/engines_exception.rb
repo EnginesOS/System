@@ -8,7 +8,7 @@ class EnginesException < StandardError
 
   def initialize( hash)
     if hash.is_a?(Hash)
-      hash[:error_type] = :error unless hash.key?(:error_type).nil?      
+      hash[:error_type] = :error unless hash.key?(:error_type).nil?
       @level = hash[:error_type].to_sym
       @params = hash[:params]
       @source = hash[:source]
@@ -21,6 +21,8 @@ class EnginesException < StandardError
       super(hash.to_s)
     end
   end
-  
 
+  def to_h
+    self.instance_variables.each_with_object({}) { |var, hash| hash[var.to_s.delete("@")] = self.instance_variable_get(var) }
+  end
 end
