@@ -11,7 +11,8 @@ class EnginesException < StandardError
       hash[:error_type] = :error unless hash.key?(:error_type).nil?
       @level = hash[:error_type].to_sym
       @params = hash[:params]
-      @source = hash[:source]
+      @source = caller[0..10].to_s
+  #    @source = hash[:source]
       @system = hash[:system]
       @module = hash[:module]
       @status = hash[:status]
