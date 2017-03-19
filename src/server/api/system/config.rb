@@ -23,7 +23,7 @@ post '/v0/system/config/default_domain' do
   cparams = assemble_params(post_s, [], [:default_domain])
   default_domain = cparams[:default_domain]
     r = engines_api.set_default_domain(default_domain)
-  return_text(r)
+  return_text(true)
     rescue StandardError =>e
       log_error(request, e)
     end
