@@ -5,13 +5,10 @@ helpers do
     $engines_api
   end
 
-
   def json_parser
     # @json_parser = Yajl::Parser.new(:symbolize_keys => true) if @json_parser.nil?
     @json_parser ||= FFI_Yajl::Parser.new({:symbolize_keys => true})
   end
-
- 
 
   def log_exception(e, *args)
     e_str = e.to_s()
@@ -37,13 +34,17 @@ helpers do
     else
       error_mesg[:route] = request.fullpath
     end
-    error_mesg[:error_object] = error_object
-    error_mesg[:mesg] = args[0] unless args.count == 0
-    error_mesg[:args] = args.to_s unless args.count == 0
+    if error_object.is_a?(EnginesException)
+      error_mesg[:error_object] = error_object
+    else
+      error_mesg[:error_object] = {}
+      error_mesg[:error_object][:mesg] = args[0] unless args.count == 0
+      error_mesg[:error_object][:args] = args.to_s unless args.count == 0
+    end
     code = args[args.count-1] if args[args.count-1].is_a?(Fixnum)
     STDERR.puts error_object.to_s + caller[0..10].to_s
     #  body args.to_s + ':' + engines_api.last_error.to_s
-    if error_mesg[:mesg] == 'unauthorised'
+    if error_mesg[:error_object][:mesg] == 'unauthorised'
       status(403)
     else
       status(code)
