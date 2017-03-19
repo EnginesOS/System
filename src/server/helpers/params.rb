@@ -6,7 +6,7 @@ def error_hash(mesg, *params)
     params: params,
     source: caller[1..4],
     system:  'api',
-    error_mesg: msg
+    error_mesg: mesg
   }
 end
 
