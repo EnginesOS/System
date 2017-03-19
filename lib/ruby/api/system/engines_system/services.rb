@@ -63,6 +63,7 @@ module Services
     raise EnginesException.new(error_hash("no System api to attach ", @engines_api.to_s)) if @engines_api.service_api.nil?
 
     yam1_file_name = SystemConfig.RunDir + service_type_dir + service_name + '/running.yaml'
+      STDERR.puts(' loasing  ' + yam1_file_name.to_s)
     raise EnginesException.new(error_hash('Engine File Locked', yam_file_name)) if is_container_conf_file_locked?(SystemConfig.RunDir + service_type_dir + service_name)
     unless File.exist?(yam1_file_name)
       raise EnginesException.new(error_hash('failed to create service file ', SystemConfig.RunDir + service_type_dir + '/' + service_name.to_s)) unless ContainerStateFiles.build_running_service(service_name, SystemConfig.RunDir + service_type_dir,@engines_api.system_value_access)
