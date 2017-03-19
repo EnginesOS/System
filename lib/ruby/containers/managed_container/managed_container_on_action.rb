@@ -15,7 +15,11 @@ module ManagedContainerOnAction
       end
       @has_run = true
       save_state
+      begin
       @container_api.register_non_persistent_services(self)
+      rescue
+       return on_stop unless is_running?
+      end
       save_state
     }
 
