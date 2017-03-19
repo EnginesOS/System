@@ -60,7 +60,6 @@ module AvailableServices
 
   def load_software_service(params)
     params[:service_container_name]  = get_software_service_container_name(params)
-    return params[:service_container_name]  if params[:service_container_name].is_a?(EnginesError)
     loadManagedService(params[:service_container_name] )
   end
 end

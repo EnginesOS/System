@@ -8,7 +8,6 @@ module DockerEvents
       return event_hash
     end
     cn_and_t = @engines_api.container_name_and_type_from_id(event_hash[:id])
-    return cn_and_t if cn_and_t.is_a?(EnginesError)
     raise EnginesException.new(error_hash('cn_and_t Not an array' + cn_and_t.to_s + ':' +  cn_and_t.class.name)) unless cn_and_t.is_a?(Array)
     event_hash[:container_name] = cn_and_t[0]
     event_hash[:container_type] = cn_and_t[1]

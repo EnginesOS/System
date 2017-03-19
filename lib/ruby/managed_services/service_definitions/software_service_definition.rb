@@ -26,8 +26,7 @@ class SoftwareServiceDefinition
   def SoftwareServiceDefinition.get_software_service_container_name(params)
     server_service =  self.software_service_definition(params)
     raise EnginesException.new(error_hash('Failed to load service definitions',params)) if server_service.nil? || server_service == false
-    return server_service if server_service.is_a?(EnginesError)
-    return server_service[:service_container]
+    server_service[:service_container]
   end
 
   def SoftwareServiceDefinition.consumer_params(service_hash)
@@ -44,7 +43,6 @@ class SoftwareServiceDefinition
   def SoftwareServiceDefinition.configurators(service_hash)
     service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
     return service_def if service_def.nil?
-    return service_def if service_def.is_a?(EnginesError)
     service_def = service_def[:configurators]
     service_def
 
@@ -65,7 +63,6 @@ class SoftwareServiceDefinition
     ret_val = []
     service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
     SystemDebug.debug(SystemDebug.services,:SERVICE_Constants,:loaded,service_hash[:type_path],service_hash[:publisher_namespace],service_def)
-    return service_def if service_def.is_a?(EnginesError)
     return ret_val unless service_def.key?(:constants)
     SystemDebug.debug(SystemDebug.services,:SERVICE_Constants,:with,service_def[:constants])
     constants = service_def[:constants]
@@ -182,8 +179,6 @@ class SoftwareServiceDefinition
 
   def SoftwareServiceDefinition.is_soft_service?(service_hash)
     service = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
-    return service if service.is_a?(EnginesError)
-
     return false unless service.key?(:soft_service)
     service_hash[:soft_service] = service[:soft_service]
     service[:soft_service]
@@ -191,7 +186,6 @@ class SoftwareServiceDefinition
 
   def SoftwareServiceDefinition.service_handle_field(params)
     service = SoftwareServiceDefinition.find(params[:type_path],params[:publisher_namespace])
-    return service if service.is_a?(EnginesError)
     service[:service_handle_field]
   end
 

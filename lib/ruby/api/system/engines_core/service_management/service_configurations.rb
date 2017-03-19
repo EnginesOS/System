@@ -7,12 +7,8 @@ module ServiceConfigurations
 
   def get_service_configurations_hashes(service_hash)
     defs = SoftwareServiceDefinition.configurators(service_hash)
-    return defs if defs.is_a?(EnginesError)
     avail = service_defs_to_configurations(defs,service_hash)
-    return avail if avail.is_a?(EnginesError)
-
     configured = service_manager.get_service_configurations_hashes(service_hash)
-    return configured  if configured.is_a?(EnginesError)
     if configured.is_a?(Array)
       configured.each do | configuration |
         avail[ configuration[:configurator_name].to_sym ] = configuration
@@ -76,8 +72,13 @@ module ServiceConfigurations
 
   def update_configuration_on_service(service_param)
     raise EnginesException.new(error_hash('Missing Service name', service_param)) unless service_param.key?(:service_name)
-    service = loadManagedService(service_param[:service_name])
-    return service  unless service.is_a?(ManagedService)
+    STDERR.puts( ' loadManagedService ' + service_param.to_s + 'so loading ' + service_param[:service_name].to_s)
+    begin
+      service = loadManagedService(service_param[:service_name])
+    rescue
+      STDERR.puts( ' loadSystemService ' + service_param.to_s + 'so loading ' + service_param[:service_name].to_s)
+      service = loadSystemService(service_param[:service_name])
+    end
     service_param[:publisher_namespace] = service.publisher_namespace.to_s  # need as saving in config tree
     service_param[:type_path] = service.type_path.to_s
     # setting stopped contianer is ok as call can know the state, used to boot strap a config

@@ -9,7 +9,6 @@ module TemplateOperations
     check_service_hash(service_hash)
     service_def =  SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:publisher_namespace])
     container = loadManagedEngine(service_hash[:parent_engine])
-    return container if container.is_a?(EnginesError)
     templater = Templater.new(system_value_access, container)
     templater.fill_in_service_def_values(service_def)
     #FIXME make service_handle_field unique

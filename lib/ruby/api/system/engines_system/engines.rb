@@ -101,7 +101,6 @@ module Engines
     yaml_file = File.read(yaml_file_name)
     ts = File.mtime(yaml_file_name)
     managed_engine = ManagedEngine.from_yaml(yaml_file, @engines_api.container_api)
-    return managed_engine if managed_engine.is_a?(EnginesError)
     cache_engine(managed_engine, ts)
     managed_engine
   end

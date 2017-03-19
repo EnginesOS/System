@@ -21,20 +21,19 @@ module ServiceApiConfigurations
     #  STDERR.puts( 'CONFIGURAT cmd /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh')
     #cmd = 'docker_exec -u ' + container.cont_userid.to_s + ' ' +  container.container_name.to_s + ' /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh \'' + SystemUtils.hash_variables_as_json_str(configurator_params).to_s + '\''
     result = @engines_core.exec_in_container({:container => c, :command_line => cmd, :log_error => true , :timeout => @@configurator_timeout, :data=> configurator_params[:variables].to_json })
-    @last_error = result[:stderr] unless result.is_a?(EnginesError)# Dont log just set
     result
   end
 
   def update_service_configuration(configuration)
-    engines_core.update_service_configuration(configuration)
+    @engines_core.update_service_configuration(configuration)
   end
 
   def get_pending_service_configurations_hashes(service_hash)
-    engines_core.get_pending_service_configurations_hashes(service_hash)
+    @engines_core.get_pending_service_configurations_hashes(service_hash)
   end
 
   #({service_name: @container_name})
   def get_service_configurations_hashes(service_hash)
-    engines_core.get_service_configurations_hashes(service_hash)
+    @engines_core.get_service_configurations_hashes(service_hash)
   end
 end 

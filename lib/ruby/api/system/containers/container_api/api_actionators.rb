@@ -16,9 +16,7 @@ module ApiActionators
               result = engines_core.exec_in_container({:container => c, :command_line => cmds, :log_error => true , :data => data})
             #  STDERR.puts('/home/actionators/' + actionator_name + '.sh' + data.to_s)
               # result = SystemUtils.execute_command(cmd, false, data)
-            end
-          
-    return result if result.is_a?(EnginesError)
+            end   
 
     if result[:result] != 0
       raise EnginesException.new(error_hash('Error on performing action ' + c.container_name.to_s + ':' + actionator_name.to_s , result))

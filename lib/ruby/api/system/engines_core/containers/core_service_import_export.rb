@@ -9,7 +9,6 @@ module CoreServiceImportExport
     else
       engine = loadManagedService(service_hash[:parent_engine])
     end
-    return engine if engine.is_a?(EnginesError)
     engine.export_service_data(service_hash)
   end
 
@@ -26,7 +25,6 @@ module CoreServiceImportExport
     else
       engine = loadManagedService(service_hash[:parent_engine])
     end
-    return engine if engine.is_a?(EnginesError)
     engine.import_service_data(params)
   end
 

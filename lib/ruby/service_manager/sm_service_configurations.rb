@@ -14,6 +14,9 @@ module SmServiceConfigurations
     else
       return true
     end
+rescue StandardError =>e
+  log_exception(e)
+  raise e
   end
 
   #@Returns an Array of Configuration hashes resgistered against the service [String] service_name

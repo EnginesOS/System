@@ -213,7 +213,6 @@ class DockerEventWatcher  < ErrorsApi
         next unless hash[:id] == listener.container_id
       end
       log_exeception(r) if (r = listener.trigger(hash)).is_a?(StandardError)
-      log_error_mesg('Trigger error',r,hash) if r.is_a?(EnginesError)
     end
   rescue StandardError => e
     SystemDebug.debug(SystemDebug.container_events,hash.to_s + ':' + e.to_s + ':' +  e.backtrace.to_s)

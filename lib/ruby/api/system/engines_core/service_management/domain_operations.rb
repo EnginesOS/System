@@ -33,7 +33,7 @@ module DomainOperations
   def add_domain(params)
     r = 0
     # STDERR.puts(' ADD DOMAIN VARIABLE ' + params.to_s)
-    return r  if ( r = DNSHosting.add_domain(params)).is_a?(EnginesError)
+    DNSHosting.add_domain(params)
     return true unless params[:self_hosted]
     service_hash = {
       parent_engine: 'system',

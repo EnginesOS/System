@@ -1,6 +1,7 @@
 module PublicApiConfig
   def set_default_domain(params)
     SystemDebug.debug(SystemDebug.system,  :set_default_domain, params)
+    SystemDebug.debug(SystemDebug.first_run, 'set_default_domain Domain')
     preferences = SystemPreferences.new
     preferences.set_default_domain(params)
   end

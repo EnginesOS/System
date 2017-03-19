@@ -26,7 +26,6 @@ module Services
       s = loadSystemService(service_name)
     else
       s = _loadManagedService(service_name,  '/services/')
-      return s if is_a?(EnginesError)
       ts = File.mtime(SystemConfig.RunDir + '/services/' + service_name + '/running.yaml')
       cache_engine(s, ts)
     end
@@ -72,7 +71,7 @@ module Services
     STDERR.puts('Panic nill  engine_api'  ) if @engines_api.nil?
     managed_service = SystemService.from_yaml(yaml_file, @engines_api.service_api) if service_type_dir ==  '/system_services/'
     managed_service = ManagedService.from_yaml(yaml_file, @engines_api.service_api)
-    raise EnginesException.new(error_hash('Failed to load', yaml_file)) if managed_service.nil?
+    raise EnginesException.new(error_hash('Failed to load ' + yam1_file_name.to_s , yaml_file)) if managed_service.nil?
     managed_service
   end
 

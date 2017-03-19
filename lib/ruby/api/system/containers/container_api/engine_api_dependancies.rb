@@ -5,7 +5,6 @@ module EngineApiDependancies
     container.dependant_on.each do |service_name|
       SystemDebug.debug(SystemDebug.containers, :checking_depends,  service_name)
       service = engines_core.loadManagedService(service_name)
-      raise EnginesException.new(error_hash('Failed to load ', service_name)) if service.is_a?(EnginesError)
       unless service.is_running?
         if service.has_container?
           if service.is_active?

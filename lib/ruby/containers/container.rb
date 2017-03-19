@@ -18,7 +18,8 @@ class Container < ErrorsApi
   @conf_register_dns = true
   def self.from_yaml(yaml, container_api)
     container = YAML::load(yaml)
-    raise EnginesException.new(error_hash(" Failed to Load yaml ", yaml[0..256])) if container.nil?
+    raise EnginesException.new(error_hash('Failed to Load yaml' + @container_name.to_s, yaml[0..256])) if container.nil?
+    raise EnginesException.new(error_hash('Failed to Load yaml' + @container_name.to_s, yaml[0..256])) if container.is_a?(FalseClass)
     container.container_api = container_api
     container.post_load
     container
@@ -46,7 +47,7 @@ class Container < ErrorsApi
 
   def on_host_net?
     return true if @host_network.is_a?(TrueClass)
-     false
+    false
   end
 
   def to_h
@@ -72,24 +73,23 @@ class Container < ErrorsApi
     end
   end
 
+  def error_hash(mesg, params = nil)
+    r = error_type_hash(mesg, params)
+    r[:error_type] = :error
+    r
+  end
 
-def error_hash(mesg, params = nil)
-  r = error_type_hash(mesg, params)
-  r[:error_type] = :error
-  r
-end
+  def warning_hash(mesg, params = nil)
+    r = error_type_hash(mesg, params)
+    r[:error_type] = :warning
+    r
+  end
 
-def warning_hash(mesg, params = nil)
-  r = error_type_hash(mesg, params)
-  r[:error_type] = :warning
-  r
-end
+  def error_type_hash(mesg, params = nil)
+    {error_mesg: mesg,
+      system: :container,
+      params: params }
+  end
 
-def error_type_hash(mesg, params = nil)
-  {error_mesg: mesg,
-    system: :container,
-    params: params }
-end
-  
 end
 

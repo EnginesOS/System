@@ -35,9 +35,7 @@ module ManagedServiceConsumers
     return true if @persistent == true
     raise EnginesException.new(error_hash('Cant register consumers as not running ', self.container_name))  if is_running? == false
     registered_hashes = registered_consumers
-   # return true if registered_hashes.nil? 
-    return true if registered_hashes.is_a?(EnginesError) # no consumers
-    
+    return true unless registered_hashes.is_a?(Array)
     registered_hashes.each do |service_hash|      
       add_consumer_to_service(service_hash) if service_hash[:persistent] == false
     end
