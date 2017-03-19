@@ -47,7 +47,7 @@ helpers do
     STDERR.puts error_mesg.to_s + caller[0..10].to_s
     
     #  body args.to_s + ':' + engines_api.last_error.to_s
-    if error_mesg[:error_object].message == 'unauthorised'
+    if error_mesg[:error_object][:error_mesg] == 'unauthorised'
       status(403)
     else
       status(code)
