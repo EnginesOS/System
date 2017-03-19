@@ -62,10 +62,16 @@ module DomainOperations
     old_domain_name = params[:original_domain_name]
     DNSHosting.update_domain(old_domain_name, params)
     return true unless params[:self_hosted]
-    service_hash =  {}
-    service_hash[:parent_engine] = 'system'
-    service_hash[:variables] = {}
-
+    service_hash = {
+      parent_engine: 'system',
+      container_type: 'system',
+      publisher_namespace: 'EnginesSystem',
+      type_path: 'dns',
+      service_handle: params[:domain_name] + '_dns',
+      variables: {
+      domain_name: params[:domain_name]
+      }
+    }
     if params.key?(:original_domain_name)
       service_hash[:variables][:domain_name] = old_domain_name
       service_hash[:service_handle] = old_domain_name + '_dns'
@@ -81,16 +87,11 @@ module DomainOperations
       service_hash[:variables][:ip_type] = 'gw'
       service_hash[:variables][:ip] =  get_ext_ip_for_hosted_dns()
     end
-
-    service_hash[:container_type] = 'system'
-    service_hash[:publisher_namespace] = 'EnginesSystem'
-    service_hash[:type_path] = 'dns'
-    service_manager.delete_service(service_hash)
-    #@service_manager.deregister_non_persistent_service(service_hash)
-    service_hash[:variables][:domain_name] = params[:domain_name]
-    service_hash[:service_handle] = params[:domain_name] + '_dns'
-    #   STDERR.puts(' UPDATE DOMAIN VARIABLES ' + service_hash.to_s)
-    service_manager.create_and_register_service(service_hash)
+    begin
+      service_manager.delete_service(service_hash)
+    rescue
+      service_manager.create_and_register_service(service_hash)
+    end
   end
 
   def remove_domain(params)
