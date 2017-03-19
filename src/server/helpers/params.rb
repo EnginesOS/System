@@ -2,7 +2,7 @@ require '/opt/engines/lib/ruby/exceptions/engines_exception.rb'
 
 def error_hash(mesg, *parms)
   {
-    error_type: error,
+    error_type: :error,
     params: params,
     source: caller[1..4],
     system:  'api',
