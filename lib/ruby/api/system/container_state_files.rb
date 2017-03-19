@@ -127,8 +127,7 @@ class ContainerStateFiles
     SystemConfig.RunDir + '/services-disabled/' + service_name
   end
 
-  def self.container_state_dir(container)
-    return  SystemConfig.RunDir + '/utilities/' + container.container_name if container.ctype == 'utility'
+  def self.container_state_dir(container) 
     SystemConfig.RunDir + '/' + container.ctype + 's/' + container.container_name
   end
 
