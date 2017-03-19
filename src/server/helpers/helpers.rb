@@ -30,7 +30,6 @@ helpers do
   end
 
   def log_error(request, error_object, *args)
-    # return EnginesError.new(msg.to_s,:error)
     code = 404
     error_mesg = {}
     if request.is_a?(String)

@@ -5,9 +5,12 @@
 # @return [true|false]
 
 get '/v0/system/status/first_run_required' do
-  first_run_required = engines_api.first_run_required?
-  return log_error(request,status ) if first_run_required.is_a?(EnginesError)
-  return_text(first_run_required) # no checky as true or false
+  begin
+    first_run_required = engines_api.first_run_required?
+    return_text(first_run_required) # no checky as true or false
+  rescue StandardError =>e
+    log_error(request, e)
+  end
 end
 
 # @method get_system_status
@@ -15,9 +18,12 @@ end
 # @return [Hash] :is_rebooting :is_base_system_updating :is_engines_system_updating :needs_reboot
 
 get '/v0/system/status' do
-  s_status = SystemStatus.system_status
-  return log_error(request, s_status) if s_status.is_a?(EnginesError)
-  return_json(s_status)
+  begin
+    s_status = SystemStatus.system_status
+    return_json(s_status)
+  rescue StandardError =>e
+    log_error(request, e)
+  end
 end
 
 # @method get_system_update_status
@@ -27,8 +33,11 @@ end
 # :base_os true|String with required updates listed
 
 get '/v0/system/status/update' do
-  ustatus = SystemStatus.system_update_status
-  return log_error(request, ustatus) if ustatus.is_a?(EnginesError)
-  return_json(ustatus)
+  begin
+    ustatus = SystemStatus.system_update_status
+    return_json(ustatus)
+  rescue StandardError =>e
+    log_error(request, e)
+  end
 end
 # @!endgroup

@@ -4,11 +4,13 @@
 # Return the non persistent services registered to the service (which this service consumes)
 # @return [Array]
 get '/v0/containers/service/:service_name/services/non_persistent/' do
-  service = get_service(params[:service_name])
-  return log_error(request, service, params) if service.is_a?(EnginesError)
-  r = engines_api.list_non_persistent_services(service)
-  return log_error(request, r) if r.is_a?(EnginesError)
-  return_json(r)
+  begin
+    service = get_service(params[:service_name])
+    r = engines_api.list_non_persistent_services(service)
+    return_json(r)
+  rescue StandardError =>e
+    log_error(request, e)
+  end
 end
 
 # @method get_service_non_persistent_services_by_type
@@ -17,10 +19,13 @@ end
 # @return [Array]
 
 get '/v0/containers/service/:service_name/services/non_persistent/:publisher_namespace/*' do
-  hash = service_service_hash_from_params(params, true)
-  r = engines_api.find_engine_service_hashes(hash) #find_engine_services_hashes(hash)
-  return log_error(request, r, hash) if r.is_a?(EnginesError)
-  return_json(r)
+  begin
+    hash = service_service_hash_from_params(params, true)
+    r = engines_api.find_engine_service_hashes(hash) #find_engine_services_hashes(hash)
+    return_json(r)
+  rescue StandardError =>e
+    log_error(request, e)
+  end
 end
 
 # @!endgroup

@@ -14,12 +14,14 @@
 # @param :attached_services Array of Hash :publisher_namespace :type_path :create_type :parent_engine :service_handle
 # @return [true]
 post '/v0/containers/engines/build' do
-  p_params = post_params(request)
-  cparams = assemble_params(p_params, [], :all)
-  return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
-  r = engines_api.build_engine(cparams)
-  return log_error(request, r, cparams) if r.is_a?(EnginesError)
-  return_text(r)
+  begin
+    p_params = post_params(request)
+    cparams = assemble_params(p_params, [], :all)
+    r = engines_api.build_engine(cparams)
+    return_text(r)
+  rescue StandardError =>e
+    log_error(request, e)
+  end
 end
 
 # @!endgroup

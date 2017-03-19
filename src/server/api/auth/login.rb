@@ -5,6 +5,7 @@
 # @overload get '/v0/system/login/:user_name/:password'
 # @return [String] Authentication token
 get '/v0/system/login/:user_name/:password' do 
+  begin
  # auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if @auth_db.nil?
  # auth_db = sql_lite_database
   content_type 'text/plain'
@@ -17,22 +18,37 @@ get '/v0/system/login/:user_name/:password' do
 # 
 #  $token = rows[0]
   return $token
+    rescue StandardError =>e
+      log_error(request, e)
+    end
 end
 
 # @clears Authentication token
 get '/v0/logout' do
+  begin
   $token = ''
+  rescue StandardError =>e
+    log_error(request, e)
+  end
 end
 
 # Called in response to an unauthorised post request
 # returns error hash
 post '/v0/unauthenticated' do     
+  begin
     log_error(request,nil,'unauthorised', params)
+    rescue StandardError =>e
+      log_error(request, e)
+    end
   end
 
 # Called in response to an unauthorised get request
 # returns error hash   
   get  '/v0/unauthenticated' do     
+    begin
   log_error(request,nil,'unauthorised', params)
+      rescue StandardError =>e
+        log_error(request, e)
+      end
 end
 
