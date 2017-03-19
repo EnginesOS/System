@@ -11,8 +11,8 @@ def error_hash(mesg, *parms)
 end
 
 def assemble_params(ps, address_params, required_params=nil, accept_params=nil )
-  # STDERR.puts( 'assemble_params Address params ' + ps.to_s + ' address keys required ' + address_params.to_s)
-  return nil if ps.nil?
+  
+  raise EnginesException.new(error_hash('No params Supplied')) if ps.nil?
   #  STDERR.puts('posted ' + params.to_s)
   #ps = Utils.symbolize_keys(ps)
   ps = deal_with_json(ps)
