@@ -15,9 +15,10 @@ module EnginesDockerApiErrors
     EnginesDockerApiError.new(e.to_s,:exception)
   end
 
-  def error_hash(res, params = nil)
+  def error_hash(res, params , status)
     r = error_type_hash(mesg, params)
     r[:error_type] = :error
+      r[:status] = status
     r
   end
 

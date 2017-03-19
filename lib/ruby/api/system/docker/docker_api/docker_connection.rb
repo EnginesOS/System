@@ -167,7 +167,7 @@ class DockerConnection < ErrorsApi
   private
 
   def handle_resp(resp, expect_json)
-    raise DockerException.new({params: @request_params}) if resp.nil?
+    raise DockerException.new({params: @request_param, status: 500}) if resp.nil?
     raise DockerException.new(docker_error_hash(resp, @request_params)) if resp.status  >= 400
     return true if resp.status  == 204 # nodata but all good happens on del
     log_error_mesg("Un exepect response from docker", resp, resp.body, resp.headers.to_s )   unless resp.status  == 200 ||  resp.status  == 201
