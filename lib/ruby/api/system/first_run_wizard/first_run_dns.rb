@@ -8,7 +8,6 @@ module FirstRunDNS
       domain_name:  params[:domain_name]
       }
     })
-
   end
 
   def get_domain_params(params)
@@ -35,7 +34,7 @@ module FirstRunDNS
   end
 
   def configure_dyndns_service(params)
-    c@api.update_service_configuration( {
+    @api.update_service_configuration( {
       service_name: 'dyndns',
       configurator_name: 'dyndns_settings',
       variables: {
