@@ -37,7 +37,7 @@ helpers do
       error_mesg[:route] = request.fullpath
     end
     if error_object.is_a?(EnginesException)
-      error_mesg[:error_object] = error_object
+      error_mesg[:error_object] = error_object.to_h
     else
       error_mesg[:error_object] = {}
       error_mesg[:error_object][:mesg] = args[0] unless args.count == 0
