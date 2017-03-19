@@ -72,6 +72,7 @@ module ServiceConfigurations
 
   def update_configuration_on_service(service_param)
     raise EnginesException.new(error_hash('Missing Service name', service_param)) unless service_param.key?(:service_name)
+      STDERR.puts( ' loadManagedService ' + service_param.to_s)
     service = loadManagedService(service_param[:service_name])
     return service  unless service.is_a?(ManagedService)
     service_param[:publisher_namespace] = service.publisher_namespace.to_s  # need as saving in config tree
