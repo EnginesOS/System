@@ -1,6 +1,6 @@
 require '/opt/engines/lib/ruby/exceptions/engines_exception.rb'
 
-def error_hash(mesg, *parms)
+def error_hash(mesg, *params)
   {
     error_type: :error,
     params: params,
