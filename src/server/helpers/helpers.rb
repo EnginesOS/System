@@ -44,7 +44,7 @@ helpers do
       error_mesg[:error_object][:args] = args.to_s unless args.count == 0
     end
     code = error_mesg[:error_object][:status] if   error_mesg[:error_object].key?(:status)
-    STDERR.puts error_mesg.to_s + caller[0..10].to_s
+    STDERR.puts error_mesg.to_s
     
     #  body args.to_s + ':' + engines_api.last_error.to_s
     if error_mesg[:error_object][:error_mesg] == 'unauthorised'
