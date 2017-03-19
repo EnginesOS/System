@@ -71,7 +71,6 @@ module EngineServiceOperations
       existing = service_hash
       existing[:parent_engine] = existing[:owner]
       existing = get_service_entry(existing)
-      return existing if existing.is_a?(EnginesError)
       params[:existing_service] = existing
     end
 
@@ -81,11 +80,9 @@ module EngineServiceOperations
       params[:variables][k] = params[:existing_service][:variables][k]
     end
     r = attach_existing_service_to_engine(params)
-    unless r.is_a?(EnginesError)
-      if service_hash[:type_path] == 'filesystem/local/filesystem'
-        result = add_file_share(params)
-        raise EnginesException.new(error_hash('failed to create fs', self)) if result.is_a?(EnginesError)
-      end
+    if service_hash[:type_path] == 'filesystem/local/filesystem'
+      result = add_file_share(params)
+      #raise EnginesException.new(error_hash('failed to create fs', self)) if result.is_a?(EnginesError)
       return true
     end
     r
@@ -97,7 +94,6 @@ module EngineServiceOperations
 
     SystemDebug.debug(SystemDebug.services,'complete_VOLUME_FOR SHARE_service_hash', service_hash)
     engine = loadManagedEngine(service_hash[:parent_engine])
-    return engine if engine.is_a?(EnginesError)
     engine.add_shared_volume(service_hash)
   end
 
@@ -111,7 +107,6 @@ module EngineServiceOperations
 
   def get_service_pubkey(engine, cmd)
     container = loadManagedService(engine)
-    return container if container.is_a?(EnginesError)
     return service_manager.load_service_pubkey(container, cmd) unless container.is_running?
     args = ['/home/get_pubkey.sh', cmd]
     result = exec_in_container({:container => container, :command_line => args, :log_error => true, :timeout =>30 , :data=>''})

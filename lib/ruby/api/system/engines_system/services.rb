@@ -26,7 +26,6 @@ module Services
       s = loadSystemService(service_name)
     else
       s = _loadManagedService(service_name,  '/services/')
-      return s if is_a?(EnginesError)
       ts = File.mtime(SystemConfig.RunDir + '/services/' + service_name + '/running.yaml')
       cache_engine(s, ts)
     end

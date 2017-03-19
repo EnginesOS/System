@@ -102,11 +102,10 @@ module DockerApiExec
 
     headers = {}
     headers['Content-type'] = 'application/json'
-    unless params.key?(:data) || params.key?(:data_stream)
-      result = {}
+    unless params.key?(:data) || params.key?(:data_stream)     
       stream_reader = DockerStreamReader.new(params[:stream])
+      result = {}
       r =  post_stream_request(request, nil, stream_reader,  headers ,  request_params.to_json  )
-      return r if r.is_a?(EnginesError)
       stream_reader.result[:result] = get_exec_result(exec_id)
       return stream_reader.result # DockerUtils.docker_stream_as_result(r, result)
     end
@@ -118,7 +117,6 @@ module DockerApiExec
     headers['Upgrade'] = 'tcp'
 
     r =   post_stream_request(request, nil, stream_handler,  headers , request_params.to_json )
-    return r if r.is_a?(EnginesError)
     stream_handler.result[:result] = get_exec_result(exec_id)
     stream_handler.result
   end
@@ -127,7 +125,6 @@ module DockerApiExec
 
   def  get_exec_result(exec_id)
     r  = get_request('/exec/' + exec_id.to_s + '/json')
-    return -1 if r.is_a?(EnginesError)
     r[:ExitCode]
   end
 

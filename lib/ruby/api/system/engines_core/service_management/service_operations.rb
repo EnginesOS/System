@@ -68,9 +68,7 @@ module ServiceOperations
   def update_attached_service(service_hash)
     clear_error
     check_engine_service_hash(service_hash)
-
     ahash = find_engine_service_hash(service_hash)
-    return ahash if ahash.is_a?(EnginesError)
     raise EnginesException.new(error_hash("Cannot update a shared service",service_hash)) if ahash[:shared] == true
     service_manager.update_attached_service(service_hash)
   end

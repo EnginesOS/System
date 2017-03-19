@@ -6,9 +6,7 @@ module EnginesOperations
   # They are removed from the tree if delete is sucessful
   def delete_engine(params)
     SystemDebug.debug(SystemDebug.containers,:delete_engines,params)
-
     params[:container_type] = 'container' # Force This
-    #   return r if (r = delete_image_dependancies(params) ).is_a?(EnginesError)
     engine_name = params[:engine_name]
     reinstall = false
     reinstall = params[:reinstall] = true if params.key?(:reinstall)
@@ -19,7 +17,6 @@ module EnginesOperations
   def reinstall_engine(engine)
     clear_error
     r =   engine.destroy_container(true) if engine.has_container?
-    return r if r.is_a?(EnginesError)
     params = {
       engine_name: engine.container_name,
       reinstall: true
@@ -78,14 +75,5 @@ module EnginesOperations
     @docker_api.build_engine(engine_name, build_archive_filename, builder)
   end
 
-  #  def delete_image_dependancies(params)
-  #      r = ''
-  #      params[:parent_engine] = params[:engine_name]
-  #
-  #      SystemDebug.debug(SystemDebug.containers, :delete_image_dependancies, params)
-  #      return r if (r = service_manager.rm_remove_engine_services(params)).is_a?(EnginesError)
-  #       true
-
-  #    end
 
 end

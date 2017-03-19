@@ -14,7 +14,7 @@ module ContainerChecks
       if containers_status[container_name][:error] == true
         begin
           result[container_name] = act_on(container_name, ctype)
-        rescue EnginesError => e
+        rescue StandardError => e
         end
       else
         result[container_name] = 'ok'
