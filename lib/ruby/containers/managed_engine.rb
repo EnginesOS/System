@@ -37,7 +37,6 @@ class ManagedEngine < ManagedContainer
   end
 
   attr_reader :plugins_path, :extract_plugins, :web_root
-  
 
   def lock_values
     @ctype = 'container' if @ctype.nil?
@@ -48,20 +47,23 @@ class ManagedEngine < ManagedContainer
   def restart_complete_install?
     restart_required?
   end
-  
+
   def on_start(event_hash)
-    STDERR.puts('ONS TART @service_builder.run_volume_builder  is a' +  @volume_service_builder.to_s )  
-    super 
-    return if @volume_service_builder.nil? || @volume_service_builder.is_a?(FalseClass)  
-    STDERR.puts('Running @service_builder.run_volume_builder ' )  
-    @volume_service_builder.run_volume_builder(self, @cont_userid)    
-    @volume_service_builder = false
+    set_running_user
+    STDERR.puts('ONS TART @service_builder.run_volume_builder  is a' +  @volume_service_builder.to_s )
+    unless @volume_service_builder.nil? || @volume_service_builder.is_a?(FalseClass)
+      STDERR.puts('Running @service_builder.run_volume_builder ' )
+      @volume_service_builder.run_volume_builder(self, @cont_userid)
+      @volume_service_builder = false
+    end
+    super
+
   end
-  
+
   def volume_service_builder=(builder)
-   #raise EnginesException,ew('Error alread run', :error) unless @volume_service_builder.nil?
-    STDERR.puts(' SET @service_builder.run_volume_builder ' +  builder.to_s )  
- #   @volume_service_builder = builder
+    #raise EnginesException,ew('Error alread run', :error) unless @volume_service_builder.nil?
+    STDERR.puts(' SET @service_builder.run_volume_builder ' +  builder.to_s )
+    #   @volume_service_builder = builder
   end
 
   def load_blueprint

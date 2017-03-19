@@ -1,4 +1,7 @@
 class ManagedUtility< ManagedContainer
+  require_relative 'managed_utility_on_action.rb'
+  include ManagedUtilityOnAction
+  
   def post_load
     # Basically parent super but no lock on image
     expire_engine_info
@@ -32,21 +35,8 @@ class ManagedUtility< ManagedContainer
     STDERR.puts('MANAGE UTIL on event')
   end
 
-  def on_create(event_hash)
-    STDERR.puts('MANAGE UTIL create event')
-    @container_mutex.synchronize {
-      SystemDebug.debug(SystemDebug.container_events, :ON_Create_CALLED, event_hash)
-      @container_id = event_hash[:id]
-        STDERR.puts('ID SET YTO' + @container_id.to_s )
-      @out_of_memory = false
-      @had_out_memory = false
-      save_state
-    }
-    STDERR.puts('MANAGE UTIL create event')
-    start_container
-  end
   
-
+  
   def command_details(command_name)
     raise EnginesException.new(error_hash('No Commands', command_name)) unless @commands.is_a?(Hash)
     return @commands[command_name] if @commands.key?(command_name)
