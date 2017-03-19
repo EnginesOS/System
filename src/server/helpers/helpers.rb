@@ -44,7 +44,7 @@ helpers do
     code = args[args.count-1] if args[args.count-1].is_a?(Fixnum)
     STDERR.puts error_object.to_s + caller[0..10].to_s
     #  body args.to_s + ':' + engines_api.last_error.to_s
-    if error_mesg[:error_object][:mesg] == 'unauthorised'
+    if error_mesg[:error_object].mesg == 'unauthorised'
       status(403)
     else
       status(code)
