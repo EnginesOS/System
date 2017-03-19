@@ -28,7 +28,9 @@ helpers do
 
   def log_error(request, error_object, *args)
     code = 404
-    error_mesg = {}
+    error_mesg = {
+      error_object: {}
+    }
     if request.is_a?(String)
       error_mesg[:route] = request
     else
@@ -42,7 +44,8 @@ helpers do
       error_mesg[:error_object][:args] = args.to_s unless args.count == 0
     end
     code = args[args.count-1] if args[args.count-1].is_a?(Fixnum)
-    STDERR.puts error_object.to_s + caller[0..10].to_s
+    STDERR.puts error_mesg.to_s + caller[0..10].to_s
+    
     #  body args.to_s + ':' + engines_api.last_error.to_s
     if error_mesg[:error_object].message == 'unauthorised'
       status(403)
