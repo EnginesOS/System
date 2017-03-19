@@ -161,6 +161,7 @@ delete '/v0/containers/engine/:engine_name/delete/*' do
     else
       rparams[:remove_all_data] = false
     end
+    STDERR.puts(' Destroy ' + rparams.to_s)
     r =  engines_api.delete_engine(rparams)
     return_text(r)
   rescue StandardError =>e

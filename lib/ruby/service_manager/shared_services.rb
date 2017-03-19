@@ -1,6 +1,7 @@
 module SharedServices
   require_relative 'private/shared_volumes.rb'
   def attach_existing_service_to_engine(shared_service_params)
+    STDERR.puts( 'attach_existing_service_to_engine ' + shared_service_params.to_s)
     existing_service = shared_service_params[ :existing_service]
     shared_service = shared_service_params.dup
     shared_service.delete(:existing_service)
