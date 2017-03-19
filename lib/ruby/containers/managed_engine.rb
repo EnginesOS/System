@@ -30,12 +30,14 @@ class ManagedEngine < ManagedContainer
     @ctype = 'container'
     @conf_self_start = true
     @capabilities = runtime_params.capabilities
+    @volume_service_builder = build_params[:service_builder]
     expire_engine_info
     save_state # no running.yaml throws a no such container so save so others can use
 
   end
 
-  attr_reader :plugins_path, :extract_plugins,:web_root
+  attr_reader :plugins_path, :extract_plugins, :web_root
+  
 
   def lock_values
     @ctype = 'container' if @ctype.nil?
@@ -45,6 +47,21 @@ class ManagedEngine < ManagedContainer
 
   def restart_complete_install?
     restart_required?
+  end
+  
+  def on_start(event_hash)
+    STDERR.puts('ONS TART @service_builder.run_volume_builder  is a' +  @volume_service_builder.to_s )  
+    super 
+    return if @volume_service_builder.nil? || @volume_service_builder.is_a?(FalseClass)  
+    STDERR.puts('Running @service_builder.run_volume_builder ' )  
+    @volume_service_builder.run_volume_builder(self, @cont_userid)    
+    @volume_service_builder = false
+  end
+  
+  def volume_service_builder=(builder)
+   #raise EnginesException,ew('Error alread run', :error) unless @volume_service_builder.nil?
+    STDERR.puts(' SET @service_builder.run_volume_builder ' +  builder.to_s )  
+ #   @volume_service_builder = builder
   end
 
   def load_blueprint

@@ -19,9 +19,8 @@ module DockerEvents
     return log_error_mesg('Nil event hash passed to container event','') if event_hash.nil?
     r = fill_in_event_system_values(event_hash)
     SystemDebug.debug(SystemDebug.container_events,'2 CONTAINER EVENTS' + event_hash.to_s + ':' + r.to_s)
-    return r if r.is_a?(EnginesError)
 
-    if event_hash[:container_type] == 'service' ||  event_hash[:container_type] == 'system_service'
+    if event_hash[:container_type] == 'service' ||  event_hash[:container_type] == 'system_service'||  event_hash[:container_type] == 'utility'
       # Enable Cold load of service from config.yaml
       return no_container(event_hash) unless File.exist?(SystemConfig.RunDir + '/' + event_hash[:container_type] + 's/' + event_hash[:container_name] + '/config.yaml')
     else
@@ -71,16 +70,24 @@ module DockerEvents
     SystemDebug.debug(SystemDebug.container_events, 'inform_container_tracking',container_name,ctype,event_name)
     c = get_event_container(container_name,ctype)
     c.task_complete(event_name) unless c.is_a?(FalseClass)
-    inform_container_monitor(container_name,ctype,event_name)
+    inform_container_monitor(container_name, ctype, event_name)
   rescue StandardError =>e
     log_exception(e)
   end
 
-  def get_event_container(container_name,ctype)
+  def get_event_container(container_name, ctype)
     c = container_from_cache(container_name)
     if c.nil?
-      c = loadManagedEngine(container_name)  if ctype == 'container'
-      c = loadManagedService(container_name)  if ctype == 'service'
+      case ctype
+      when 'container'        
+      c = loadManagedEngine(container_name)
+      when 'service'
+      c = loadManagedService(container_name)
+      when   'utility'
+      c = loadManagedUtility(container_name)
+      else 
+        log_error_mesg('Failed to find ' + container_name.to_s +  ctype.to_s)
+      end
     end
     return false if c.nil?
     c
@@ -88,12 +95,12 @@ module DockerEvents
     log_exception(e)
   end
 
-  def inform_container(container_name,ctype,event_name,event_hash)
+  def inform_container(container_name, ctype, event_name, event_hash)
     SystemDebug.debug(SystemDebug.container_events, 'recevied inform_container',container_name,event_name)
-    c = get_event_container(container_name,ctype)
+    c = get_event_container(container_name, ctype)
     return false if c.is_a?(FalseClass)
     SystemDebug.debug(SystemDebug.container_events, 'informed _container',container_name,event_name)
-    c.process_container_event(event_name,event_hash)
+    c.process_container_event(event_name, event_hash)
     true
   rescue StandardError =>e
     log_exception(e)

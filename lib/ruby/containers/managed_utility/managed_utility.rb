@@ -28,13 +28,14 @@ class ManagedUtility< ManagedContainer
     volumes.delete(:state_dir)
   end
 
-  def on_start
+  def on_start(event_hash)
     STDERR.puts('MANAGE UTIL on event')
   end
 
   def on_create(event_hash)
+    STDERR.puts('MANAGE UTIL create event')
     @container_mutex.synchronize {
-      SystemDebug.debug(SystemDebug.container_events,:ON_Create_CALLED, event_hash)
+      SystemDebug.debug(SystemDebug.container_events, :ON_Create_CALLED, event_hash)
       @container_id = event_hash[:id]
         STDERR.puts('ID SET YTO' + @container_id.to_s )
       @out_of_memory = false
@@ -44,6 +45,7 @@ class ManagedUtility< ManagedContainer
     STDERR.puts('MANAGE UTIL create event')
     start_container
   end
+  
 
   def command_details(command_name)
     raise EnginesException.new(error_hash('No Commands', command_name)) unless @commands.is_a?(Hash)
@@ -76,7 +78,9 @@ class ManagedUtility< ManagedContainer
     clear_configs
     apply_templates(command, command_params)
     save_state
+    STDERR.puts('Creat FSCONFIG')
     create_container()
+    STDERR.puts('Created FSCONFIG')
     sleep(10)
     @container_api.wait_for('stopped') unless read_state == 'stopped'
     begin

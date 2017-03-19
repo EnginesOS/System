@@ -42,9 +42,9 @@ module SharedServices
     system_registry_client.remove_from_shares_registry(ahash)
   end
 
-  def merge_variables(shared_service,existing_service_hash)
+  def merge_variables(shared_service, existing_service_hash)
     shared_service[:variables] = {} unless shared_service.key?(:variables)
-    eisting_service_hash[:variables].each_pair.each do |name, value |
+    existing_service_hash[:variables].each_pair.each do |name, value |
       shared_service[:variables][name] = value unless shared_service[:variables].key?(name)
     end
   end

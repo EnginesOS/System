@@ -5,12 +5,14 @@
 # @return [Hash]
 
 get '/v0/containers/service/:service_name/consumer/:parent_engine/:service_handle' do
-  service = get_service(params[:service_name])
-  return log_error(request, service, params) if service.is_a?(EnginesError)
-  cparams = address_params(params, [:service_name,:service_handle,:parent_engine])
-  r = service.registered_consumer(cparams)
-  return log_error(request, r, service.last_error) if r.is_a?(EnginesError)
-  return_json(r)
+  begin
+    service = get_service(params[:service_name])
+    cparams = address_params(params, [:service_name,:service_handle,:parent_engine])
+    r = service.registered_consumer(cparams)
+    return_json(r)
+  rescue StandardError =>e
+    log_error(request, e)
+  end
 end
 
 # @!endgroup

@@ -7,27 +7,39 @@
 # @param :internal_only optional
 # @return  [true]
 post '/v0/system/domains/' do
-  p_params = post_params(request)
-  cparams = assemble_params(p_params, [], :all)
- # STDERR.puts('ADD DOMAIN Params ' + cparams.to_s )
-  r = engines_api.add_domain(cparams)
-  return_text(r)
+  begin
+    p_params = post_params(request)
+    cparams = assemble_params(p_params, [], :all)
+    # STDERR.puts('ADD DOMAIN Params ' + cparams.to_s )
+    r = engines_api.add_domain(cparams)
+    return_text(r)
+  rescue StandardError =>e
+    log_error(request, e)
+  end
 end
 # @method delete_domain_name
 # @overload delete '/v0/system/domains/:domain_name'
 # delete the domain name :domain_name
 # @return  [true]
 delete '/v0/system/domains/:domain_name' do
-  r = engines_api.remove_domain(params[:domain_name])
-  return_text(r)
+  begin
+    r = engines_api.remove_domain(params[:domain_name])
+    return_text(r)
+  rescue StandardError =>e
+    log_error(request, e)
+  end
 end
 # @method list_domain_names
 # @overload get '/v0/system/domains/'
 #  list the domains
 # @return  [Array] Array of [Hash] :domain_name :self_hosted :internal_only
 get '/v0/system/domains/' do
-  domains = engines_api.list_domains()
-  STDERR.puts('LISR DOMAIN Params ' + domains.to_s )
-  return_json_array(domains)
+  begin
+    domains = engines_api.list_domains()
+    STDERR.puts('LISR DOMAIN Params ' + domains.to_s )
+    return_json_array(domains)
+  rescue StandardError =>e
+    log_error(request, e)
+  end
 end
 # @!endgroup

@@ -1,14 +1,10 @@
 module PublicApiPersistentServices
   def get_registered_against_service(service_hash)
     return @core_api.get_registered_against_service(service_hash)
-  rescue StandardError => e
-    handle_exception(e)
   end
 
   def retrieve_service_hash(query_hash)
     @core_api.retrieve_service_hash(query_hash)
-  rescue StandardError => e
-    handle_exception(e)
   end
 
 end
