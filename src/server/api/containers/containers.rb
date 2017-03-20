@@ -36,6 +36,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
             else
               #     STDERR.puts('PERIOD')
               out <<  {:no_op => true}.to_json#unless lock_timer == true
+              out <<  '\n'
             end
           end if timer.nil?
 
