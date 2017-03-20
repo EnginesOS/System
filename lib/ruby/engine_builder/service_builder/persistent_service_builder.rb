@@ -103,7 +103,7 @@ module PersistantServiceBuilder
 #        result = add_file_service(service_hash)
 #       log_error_mesg('failed to create fs',self) unless result
 #      end
-    existing[:owner] =  existing[:parent_engine]  
+    service_hash[:owner] =  existing[:parent_engine]  
     service_hash[:existing_service] = existing
    
     if  @core_api.connect_share_service(service_hash)     
