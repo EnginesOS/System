@@ -93,6 +93,7 @@ end
 post '/v0/system/config/remote_exception_logging/enable' do
   begin
   r = engines_api.enable_remote_exception_logging
+  STDERR.puts('post /v0/system/config/remote_exception_logging/enable ' + r.to_s)
   return_text(r)
     rescue StandardError =>e
       log_error(request, e)
@@ -105,6 +106,7 @@ end
 post '/v0/system/config/remote_exception_logging/disable' do
   begin
   r = engines_api.disable_remote_exception_logging
+    STDERR.puts('post /v0/system/config/remote_exception_logging/enable ' + r.to_s)
   return_text(r)
     rescue StandardError =>e
       log_error(request, e)
