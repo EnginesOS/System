@@ -93,7 +93,7 @@ module EngineServiceOperations
     # service_hash = Volume.complete_service_hash(service_hash)
 
     SystemDebug.debug(SystemDebug.services,'complete_VOLUME_FOR SHARE_service_hash', service_hash)
-    engine = loadManagedEngine(service_hash[:parent_engine])
+    engine = loadManagedEngine(service_hash[:service_owner])
     engine.add_shared_volume(service_hash)
   end
 
