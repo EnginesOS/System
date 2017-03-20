@@ -89,10 +89,11 @@ module EngineServiceOperations
   end
 
   def add_file_share(service_hash)
-    SystemDebug.debug(SystemDebug.services, 'Add File Service ' + service_hash[:variables][:name].to_s + ' ' + service_hash.to_s)
+    SystemDebug.debug(SystemDebug.services, [:variables][:name].to_s + ' ' + service_hash.to_s)
     # service_hash = Volume.complete_service_hash(service_hash)
 
     SystemDebug.debug(SystemDebug.services,'complete_VOLUME_FOR SHARE_service_hash', service_hash)
+    STDERR.puts('Add File Service ' + service_hash.to_s)
     engine = loadManagedEngine(service_hash[:service_owner])
     engine.add_shared_volume(service_hash)
   end
