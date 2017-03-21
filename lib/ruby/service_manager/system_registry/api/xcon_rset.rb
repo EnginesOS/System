@@ -123,7 +123,9 @@ def error_result_exception(resp)
   r = deal_with_json(resp.body)
   r = {} if r.nil?
   r[:status] = resp.status if r.is_a?(Hash)
-STDERR.puts('Registry Exception from non json result ' ) 
+    
+STDERR.puts('Registry Exception from  json result ' + r.to_s )
+ 
   raise RegistryException.new(
   {status: resp.status,
     error_type: :warning,
