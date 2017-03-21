@@ -113,6 +113,7 @@ def parse_xcon_response(resp)
 end
 
 def error_result_exception(resp)
+
   raise RegistryException.new(
   {status: resp.status,
     error_type: :error,
@@ -122,6 +123,7 @@ def error_result_exception(resp)
   r = deal_with_json(resp.body)
   r = {} if r.nil?
   r[:status] = resp.status if r.is_a?(Hash)
+STDERR.puts('Registry Exception ' +  resp.body.to_s + ' as hash ' +  r.to_set )  
   raise RegistryException.new(
   {status: resp.status,
     error_type: :warning,
