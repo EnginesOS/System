@@ -59,20 +59,19 @@ class ManagedUtility< ManagedContainer
       r = destroy_container
     rescue
     end
-    @container_api.wait_for('nocontainer') unless read_state == 'nocontainer'
+    @container_api.wait_for('nocontainer') if has_container?
     begin
-      @container_api.destroy_container(self) unless read_state == 'nocontainer'
+      @container_api.destroy_container(self) if has_container?
     rescue
     end
-    raise EnginesException.new(error_hash('cant nocontainer Utility ' + command, command_params)) unless read_state == 'nocontainer'
+    raise EnginesException.new(error_hash('cant nocontainer Utility ' + command, command_params)) if has_container?
     clear_configs
     apply_templates(command, command_params)
     save_state
     STDERR.puts('Creat FSCONFIG')
     create_container()
     STDERR.puts('Created FSCONFIG')
-    sleep(10)
-    @container_api.wait_for('stopped') unless read_state == 'stopped'
+    @container_api.wait_for('stopped') unless is_stopped?
     begin
       r = @container_api.logs_container(self, 100) #_as_result
       return r if r.is_a?(Hash)

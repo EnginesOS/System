@@ -1,7 +1,7 @@
 module ManagedContainerStatus
   def is_service?
     return true if @ctype == 'service'
-    return false
+    false
   end
   
   def read_state
@@ -16,11 +16,7 @@ module ManagedContainerStatus
     expire_engine_info
     'nocontainer'
   end
-  
-  def has_container?
-    return true unless read_state == 'nocontainer'
-  end
-  
+
 # raw=true means dont check state for error
   def read_state(raw=false)
     #return 'nocontainer' if @setState == 'nocontainer'  # FIXME: this will not support notification of change
@@ -60,8 +56,7 @@ module ManagedContainerStatus
   def is_error?    
     return false unless task_at_hand.nil? 
     return false if in_two_step?
-    state = read_state
-    return true if @setState != state
+    return true if @setState != read_state
      false
   end
 

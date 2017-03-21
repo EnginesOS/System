@@ -38,7 +38,7 @@ module ContainerCreation
   def launch_deploy(managed_container)
     log_build_output('Launching Engine')
     managed_container.create_container
-    if managed_container.read_state == 'nocontainer'
+    unless managed_container.has_container?
       log_build_output('Failed to create Engine container from Image')
       return log_error_mesg(' Failed to create Engine container from Image')
     end
