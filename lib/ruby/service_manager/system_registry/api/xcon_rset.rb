@@ -119,18 +119,18 @@ def error_result_exception(resp)
     error_type: :error,
     error_mesg: 'Route Not Found',
     params: resp.body
-  }) if resp.headers.nil? || !  resp.headers['content-type'] == 'application/json'
+  }) if resp.headers.nil? || resp.headers['Content-Type'] != 'application/json'
   r = deal_with_json(resp.body)
   r = {} if r.nil?
   r[:status] = resp.status if r.is_a?(Hash)
-
+STDERR.puts('Registry Exception from non json result ' ) 
   raise RegistryException.new(
   {status: resp.status,
     error_type: :warning,
     error_mesg: 'Route Not Found',
     params: resp.body
-  })  if STDERR.puts('Registry Exception ' +  resp.body.to_s  + ' head ' + resp.headers.to_s  )   unless resp.nil?  r == '<h1>Not Found</h1>'
-  
+  })   unless resp.nil? 
+STDERR.puts('Registry Exception from R ' )  
   raise RegistryException.new(r)
 end
 
