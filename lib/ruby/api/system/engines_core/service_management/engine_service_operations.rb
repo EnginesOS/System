@@ -136,7 +136,11 @@ module EngineServiceOperations
     end
 
     #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
+    begin
     service_manager.remove_engine_services(params)
+    rescue EnginesException => e
+      raise e unless e.is_a_warning?
+    end
     engine.delete_image if engine.has_image? == true
     SystemDebug.debug(SystemDebug.containers,:engine_image_deleted,engine)
     return r if reinstall == true
