@@ -61,7 +61,6 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
               #            end
               #            jason_event = JSON.parse(bytes)
               if out.closed?
-
                 has_data = finialise_events_stream(events_stream, timer)
                 STDERR.puts('OUT IS CLOSED but have '  + jason_event.to_s)
                 next

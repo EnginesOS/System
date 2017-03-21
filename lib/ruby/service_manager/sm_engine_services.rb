@@ -39,7 +39,11 @@ module SmEngineServices
       parent_engine: engine.container_name,
       container_type: engine.ctype
     }
+    services = nil
+    begin
     services = get_engine_nonpersistent_services(params)
+    rescue
+    end
     return services  unless services.is_a?(Array)
     services.each do |service_hash|
       begin
