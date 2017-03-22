@@ -85,7 +85,7 @@ module DockerInfoCollector
     return false if @docker_info_cache == false && @setState == 'nocontainer'
     @docker_info_cache =  @container_api.inspect_container(self) if @docker_info_cache.nil?
 
-    if  @docker_info_cache.is_a?(Array)
+    if @docker_info_cache.is_a?(Array)
       @docker_info_cache = @docker_info_cache[0]
     end
     @docker_info_cache
