@@ -71,7 +71,7 @@ module ManagedContainerControls
   def unpause_container
     return false unless has_api?
     @container_mutex.synchronize {
-      return r unless (r = prep_task(:unpause))
+      return false unless (r = prep_task(:unpause))
       return task_failed('unpause') unless super
       true
     }

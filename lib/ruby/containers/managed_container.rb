@@ -58,10 +58,10 @@ class ManagedContainer < Container
   end
 
   # Note desired state is teh next step and not the final result desired state is stepped through
-  def log_error_mesg(msg, *objects)
-    #task_failed(msg)
-    super
-  end
+  #  def log_error_mesg(msg, *objects)
+  #    #task_failed(msg)
+  #    super
+  #  end
 
   def set_state
     @setState
@@ -69,7 +69,6 @@ class ManagedContainer < Container
 
   def status
     @status = {} if @status.nil?
-
     @status[:state] = read_state
     @status[:set_state] = @setState
     @status[:progress_to] = task_at_hand
@@ -77,11 +76,7 @@ class ManagedContainer < Container
     @status[:oom] = @out_of_memory
     @status[:had_oom] = @had_out_memory
     @status[:restart_required] = restart_required?
-    @status[:error] = true if @status[:state] !=  @status[:set_state] &&  @status[:progress_to].nil?
-    #@status[:error] = false unless  @status[:progress_to].nil?
-    #    elsif @status[:progress_to].nil?
-    #      @status[:error] = false
-    #    end
+    @status[:error] = true if @status[:state] != @status[:set_state] && @status[:progress_to].nil?
     @status
   end
 
@@ -96,10 +91,13 @@ class ManagedContainer < Container
 
   def container_id
     return @container_id unless @container_id == -1
-    return @container_id if setState == 'noncontainer'
-    @container_id = read_container_id
+    if has_container?
+      @container_id = read_container_id
+    else
+      @container_id == -1
+    end
     @container_id
-  rescue 
+  rescue
     -1
   end
 
@@ -164,7 +162,7 @@ class ManagedContainer < Container
     @image.freeze
     @repository = '' if @repository.nil?
     @repository.freeze
-  
+
   end
 
   def error_type_hash(mesg, params = nil)

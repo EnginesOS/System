@@ -131,7 +131,7 @@ class DockerConnection < ErrorsApi
       stream_handler.close
       return r
     end
-  rescue  Excon::Error::Socket => e
+  rescue  Excon::Error::Socket
     STDERR.puts(' docker socket stream close ')
     stream_handler.close
   end
@@ -146,7 +146,7 @@ class DockerConnection < ErrorsApi
     rheaders = default_headers if rheaders.nil?
     r = connection.request(request_params({method: :get, path: uri, read_timeout: timeout, headers: rheaders}))
     return handle_resp(r, expect_json)
-  rescue  Excon::Error::Socket => e
+  rescue  Excon::Error::Socket
     STDERR.puts(' docker socket close ')
     reopen_connection
     retry
@@ -158,7 +158,7 @@ class DockerConnection < ErrorsApi
       path: uri})),
     false
     )
-  rescue  Excon::Error::Socket => e
+  rescue  Excon::Error::Socket
     STDERR.puts('docker socket close ')
     reopen_connection
     retry

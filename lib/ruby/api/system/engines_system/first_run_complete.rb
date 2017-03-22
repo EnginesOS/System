@@ -10,6 +10,7 @@ module FirstRunComplete
           mark_complete
         else
           mgmt = @engines_api.loadManagedService('mgmt')
+          mgmt.create_container
         end
       rescue StandardError => e
         STDERR.puts('FIRST RUN Thread Exception' + e.to_s + ':' + e.backtrace.to_s)

@@ -24,7 +24,7 @@ module PublicApiServices
   end
 
   def remove_service(service)
-
+  STDERR.puts(' REMOVE SERVICE ' + service.to_s + ' Does NOTHING PUBLIC API ' + caller[0..10].to_s)  
   end
 
 end

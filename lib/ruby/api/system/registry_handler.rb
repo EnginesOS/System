@@ -35,21 +35,20 @@ class RegistryHandler < ErrorsApi
     return @registry_ip unless @registry_ip.is_a?(FalseClass)
     registry_service = @system_api.loadSystemService('registry') # FIXME: Panic if this fails
     unless registry_service.is_running?
-      fix_problem
+      fix_problem(registry_service)
       sleep 12
       @registry_ip = registry_service.get_ip_str
       force_recreate unless registry_service.is_running?
     end
     @registry_ip = registry_service.get_ip_str
     @registry_ip
-  rescue Exception => e
+  rescue Exception
     @registry_ip = false
-    fix_problem
+    fix_problem(registry_service)
     #FixME need to deal with config.yaml / running.yaml
   end
 
   def fix_problem(registry_service)
-    recreate = !registry_service.has_container?
     create_c(registry_service) unless registry_service.has_container?
     unpause_c(registry_service) if registry_service.is_paused?
     start_c(registry_service) if registry_service.is_stopped?
@@ -64,7 +63,7 @@ class RegistryHandler < ErrorsApi
     end
     wait_for_startup
     SystemDebug.debug(SystemDebug.registry, :registry_is_up)
-  rescue Exception => e
+  rescue Exception
     @registry_ip = false
     force_registry_recreate
   end

@@ -65,7 +65,7 @@ module DockerInfoCollector
     end
     save_state unless cid == @container_id
     @container_id
-  rescue EnginesException => e
+  rescue EnginesException
     clear_cid
     -1
   end
@@ -90,7 +90,7 @@ module DockerInfoCollector
     end
     @docker_info_cache
 
-  rescue EnginesException => e
+  rescue EnginesException
     @docker_info_cache = nil    
   end
 

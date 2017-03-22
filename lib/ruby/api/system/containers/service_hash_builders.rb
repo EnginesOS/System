@@ -1,8 +1,8 @@
 #@return [Hash] completed dns service_hash for engine on the engines.internal dns for
 #@param engine [ManagedContainer]
-def hostname(engine)
-
-end
+#def hostname(engine)
+#
+#end
 
 def engine_hostname(engine)
   if engine.ctype == 'service'

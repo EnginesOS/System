@@ -27,19 +27,17 @@ module EngineServiceOperations
   end
 
   def service_attached_services(service_name)
-    params = {
+    find_engine_services_hashes({
       parent_engine: service_name,
       container_type: 'service'
-    }
-    find_engine_services_hashes(params)
+    })
   end
 
   def engine_attached_services(container_name)
-    params = {
-      parent_engine: service_name,
+    p find_engine_services_hashes({
+      parent_engine: container_name,
       container_type: 'container'
-    }
-    find_engine_services_hashes(params)
+    })
   end
 
   def service_is_registered?(service_hash)
@@ -66,14 +64,12 @@ module EngineServiceOperations
 
   def connect_share_service(service_hash)
     params =  service_hash.dup
-
     unless service_hash.key?(:existing_service)
       existing = service_hash
       existing[:parent_engine] = existing[:owner]
       existing = get_service_entry(existing)
       params[:existing_service] = existing
     end
-
     trim_to_editable_variables(params[:existing_service])
     params[:variables].keys do | k |
       next unless params[:existing_service][:variables].keys(k)
@@ -81,9 +77,8 @@ module EngineServiceOperations
     end
     r = attach_existing_service_to_engine(params)
     if service_hash[:type_path] == 'filesystem/local/filesystem'
-      result = add_file_share(params)
+      return add_file_share(params)
       #raise EnginesException.new(error_hash('failed to create fs', self)) if result.is_a?(EnginesError)
-      return true
     end
     r
   end
@@ -99,7 +94,7 @@ module EngineServiceOperations
       engine = loadManagedEngine(service_hash[:parent_engine])
       engine.add_shared_volume(service_hash)
     rescue
-      return
+      
     end
   end
 

@@ -17,7 +17,7 @@ def connection(content_type = nil)
   persistent: true,
   headers: headers)
 rescue StandardError => e
-  raise EnginesException.new(error_hash('Failed to open base url to registry' , @base_url.to_s))
+  raise EnginesException.new(error_hash('Failed to open base url to registry ' + e.to_s, @base_url.to_s))
 end
 
 def reopen_connection
@@ -30,7 +30,7 @@ def reopen_connection
   headers: headers)
   @connection
   rescue StandardError => e
-    raise EnginesException.new(error_hash('Failed to re open base url to registry' , @base_url.to_s))
+    raise EnginesException.new(error_hash('Failed to re open base url to registry' + e.to_s , @base_url.to_s))
 end
 
 def rest_get(path,params = nil,time_out=120, _headers = nil)
@@ -63,6 +63,7 @@ def rest_post(path,params = nil, lheaders=nil)
     r = parse_xcon_response(connection.request({read_timeout: time_out, headers: lheaders, method: :post, path: @route_prefix + path, body: query_hash(params).to_json }))
     return r
   rescue Excon::Error::Socket => e
+  STDERR.puts e.class.name 
     reopen_connection
     retry
   end
@@ -74,6 +75,7 @@ def rest_put(path,params = nil, lheaders=nil)
   r = parse_xcon_response( connection.request(read_timeout: time_out, headers: lheaders, method: :put, path: @route_prefix + path, query: query_hash(params).to_json ))
   return r
 rescue Excon::Error::Socket => e
+  STDERR.puts e.class.name 
   reopen_connection
   retry
 end
@@ -91,6 +93,7 @@ def rest_delete(path, params = nil, lheaders=nil)
   r =  parse_xcon_response( connection.request(read_timeout: time_out, headers: lheaders, method: :delete, path: @route_prefix + path, query: q))
   return r
 rescue Excon::Error::Socket => e
+  STDERR.puts e.class.name 
   reopen_connection
   retry
   #end
@@ -139,6 +142,6 @@ end
 def base_url
   'http://' + @core_api.get_registry_ip + ':4567'
 rescue  StandardError => e
-  raise EnginesException.new('Cannot Deterine Base URL')
+  raise EnginesException.new('Cannot Deterine Base URL' + e.to_s)
 end
 

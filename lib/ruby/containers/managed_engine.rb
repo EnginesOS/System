@@ -57,7 +57,6 @@ class ManagedEngine < ManagedContainer
       @volume_service_builder = false
     end
     super
-
   end
 
   def volume_service_builder=(builder)

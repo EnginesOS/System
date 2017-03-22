@@ -60,7 +60,6 @@ class SystemApi < ErrorsApi
   def initialize(api)
     @engines_api = api
     @engines_conf_cache = {}
-
     create_event_listener
   end
 
@@ -116,7 +115,7 @@ class SystemApi < ErrorsApi
     services.each do |service|
       begin
         result[service.container_name] = service.read_state
-      rescue DockerException => e
+      rescue DockerException
         next
       end
     end

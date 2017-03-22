@@ -26,7 +26,7 @@ begin
   def create_table
 
     #  STDERR.puts('init db')
-    rows = sql_lite_database.execute <<-SQL
+    sql_lite_database.execute <<-SQL
             create table systemaccess (
               username varchar(30),
               email varchar(128),
@@ -61,7 +61,7 @@ begin
   rescue StandardError => e
     #@auth_db.close
     # @auth_db = nil
-    # STDERR.puts('init db error ' + e.to_s)
+    STDERR.puts('init db error ' + e.to_s)
     return
   end
 
@@ -84,7 +84,7 @@ begin
   $engines_api = PublicApi.new(core_api)
   STDERR.puts('CREATED ENGINES API +++++++++++++++++++++++++++++++++++++++++++')
 
-  @@last_error =''
+  @@last_error = ''
 
   before do
     # content_type 'application/json' unless  request.path.end_with?('stream')

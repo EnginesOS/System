@@ -51,8 +51,7 @@ module DockerEvents
     when 'die'
       inform_container_tracking(event_hash[:container_name] ,event_hash[:container_type] ,event_hash[:status])
     else
-      SystemDebug.debug(SystemDebug.container_events, 'Untracked event',event_name.to_s,c_name.to_s,ctype.to_s )
-      tracked = false
+      SystemDebug.debug(SystemDebug.container_events, 'Untracked event', event_name.to_s, c_name.to_s, ctype.to_s )
     end
 
   rescue StandardError => e
@@ -67,8 +66,8 @@ module DockerEvents
     true
   end
 
-  def inform_container_tracking(container_name,ctype,event_name)
-    SystemDebug.debug(SystemDebug.container_events, 'inform_container_tracking',container_name,ctype,event_name)
+  def inform_container_tracking(container_name, ctype, event_name)
+    SystemDebug.debug(SystemDebug.container_events, 'inform_container_tracking', container_name, ctype, event_name)
     c = get_event_container(container_name,ctype)
     c.task_complete(event_name) unless c.is_a?(FalseClass)
     inform_container_monitor(container_name, ctype, event_name)

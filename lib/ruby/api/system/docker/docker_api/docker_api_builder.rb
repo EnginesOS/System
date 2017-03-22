@@ -29,8 +29,6 @@ module DockerApiBuilder
     def close
       @io_stream.close unless @io_stream.nil?
       @stream.reset unless @stream.nil?
-    rescue StandardError => e
-  
     end
 
     def is_hijack?
@@ -45,13 +43,10 @@ module DockerApiBuilder
     def process_response()
       lambda do |chunk , c , t|
         begin
-          #hash = JSON.parse(chunk)
           hash =  @parser.parse(chunk)  #do |hash|
           hash = deal_with_json(chunk)
           @builder.log_build_output(hash[:stream]) if hash.key?(:stream)
           @builder.log_build_errors(hash[:errorDetail]) if hash.key?(:errorDetail)
-          #   end
-
         rescue StandardError =>e
           #   STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s)
         end
@@ -63,7 +58,7 @@ module DockerApiBuilder
 
     def process_request(*args)
       @io_stream.read(Excon.defaults[:chunk_size]).to_s
-    rescue StandardError => e
+    rescue StandardError
       STDERR.puts('PROCESS REQUEST got nilling')
        nil
     end

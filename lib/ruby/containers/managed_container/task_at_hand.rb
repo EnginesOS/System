@@ -153,7 +153,7 @@ module TaskAtHand
       return nil
     end
 
-    r = read_state(raw=true)
+    r = read_state(raw = true)
     if tasks_final_state(task) == r
       clear_task_at_hand
       return nil

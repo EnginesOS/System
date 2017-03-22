@@ -60,7 +60,7 @@ module ContainerApiDockerActions
 
   def image_exist?(container_name)
     @docker_api.image_exist?(container_name)
-  rescue DockerExecption => e
+  rescue DockerExecption
     false
   end
 end

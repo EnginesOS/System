@@ -3,7 +3,6 @@
 #@param service_hash [Hash]
 def add_to_managed_service(service_hash)
   clear_error
-  result = false
   SystemDebug.debug(SystemDebug.services, :add_to_managed_service, service_hash)
   service =  @core_api.load_software_service(service_hash)
   return service unless service.is_a?(ManagedService)

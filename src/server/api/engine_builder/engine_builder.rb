@@ -60,7 +60,6 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream'  do
     has_data = true
     build_over = false
     stream :keep_open do |out|
-      cnt=1
       while has_data == true
         begin
           bytes = build_log_file.read_nonblock(1000)

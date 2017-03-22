@@ -12,7 +12,7 @@ get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/
     engine = get_engine(params[:engine_name])
     return log_error(request, engine, params) if engine.nil?
     stream do |out|
-      r = engine.export_service_data(hash,out)
+      engine.export_service_data(hash,out)
     end
   rescue StandardError =>e
     log_error(request, e)

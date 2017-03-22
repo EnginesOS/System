@@ -100,7 +100,7 @@ helpers do
     config.failure_app = self
   end
 
-  Warden::Manager.before_failure do |env,opts|
+  Warden::Manager.before_failure do |env, opts|
     env['REQUEST_METHOD'] = 'POST'
   end
 
