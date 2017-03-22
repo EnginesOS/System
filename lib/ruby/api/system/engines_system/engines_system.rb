@@ -110,10 +110,7 @@ class SystemApi < ErrorsApi
   end
 
   def get_services_states
-    STDERR.puts(' get_services_states ')
     services =  getManagedServices # list_managed_services
-    STDERR.puts(' get_services_states ' + services.to_s)
-    
     result = {}
     services.each do |service|
       begin
@@ -122,7 +119,6 @@ class SystemApi < ErrorsApi
         next
       end
     end
-    STDERR.puts(' get_services_states ' + result.to_s )
     result
   end
 end
