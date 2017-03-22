@@ -107,8 +107,8 @@ module SmEngineServices
         STDERR.puts(' rm ' + s.to_s)
         system_registry_client.remove_from_managed_engine(s)
       else
-        orphanicate(s)
         STDERR.puts(' orphanicate' + s.to_s)
+        orphanicate(s)
       end
     end
   end

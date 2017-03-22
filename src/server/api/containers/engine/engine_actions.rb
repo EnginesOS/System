@@ -156,15 +156,15 @@ delete '/v0/containers/engine/:engine_name/delete/*' do
     rparams[:engine_name] = params[:engine_name]
     # splats = params['splat']
     unless params['splat'].nil? || params['splat'].count == 0
-      rparams[:remove_all_data] = true  if params['splat'][0] == 'all'
-      rparams[:remove_all_data] = false  if params['splat'][0] == 'none'
+      rparams[:remove_all_data] = true if params['splat'][0] == 'all'
+      rparams[:remove_all_data] = false if params['splat'][0] == 'none'
     else
       rparams[:remove_all_data] = false
     end
     STDERR.puts(' Destroy ' + rparams.to_s)
-    r =  engines_api.delete_engine(rparams)
+    r = engines_api.delete_engine(rparams)
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end

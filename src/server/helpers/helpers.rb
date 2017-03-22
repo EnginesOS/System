@@ -39,7 +39,7 @@ helpers do
     if error_object.is_a?(EnginesException)
       error_mesg[:error_object] = error_object.to_h
     else
-      error_mesg[:error_object] = {}
+      error_mesg[:error_object] = error_object.to_h
       error_mesg[:error_object][:mesg] = args[0] unless args.count == 0
       error_mesg[:error_object][:args] = args.to_s unless args.count == 0
     end
