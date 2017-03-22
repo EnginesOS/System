@@ -96,10 +96,13 @@ module SmEngineServices
   end
 
   def remove_engine_services(params)
+    
     STDERR.puts('remove_engine_services ' + params.to_s)
     services = find_engine_services_hashes(params)
     return services unless services.is_a?(Array)
+    STDERR.puts('remove_engine_services ' + services.to_s)
     services.each do |s|
+      STDERR.puts('remove_engine_service ' + service.to_s)
       if params[:remove_all_data] == true || s[:persistence] == false
         STDERR.puts(' rm ' + s.to_s)
         system_registry_client.remove_from_managed_engine(s)
