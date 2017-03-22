@@ -121,14 +121,15 @@ module EngineServiceOperations
     service_manager.load_service_pubkey(container, cmd)
   end
 
-  def remove_engine(engine_name, reinstall = false)
+  def remove_engine(engine_name, reinstall = false, remove_all_data = true)
     engine = loadManagedEngine(engine_name)
     SystemDebug.debug(SystemDebug.containers,:delete_engines,engine_name,engine, :resinstall,reinstall)
     params = {
       engine_name: engine_name,
       container_type: 'container', # Force This
       parent_engine: engine_name,
-      reinstall: reinstall
+      reinstall: reinstall,
+      remove_all_data: remove_all_data
     }
     unless engine.is_a?(ManagedEngine) # DO NOT MESS with this logi used in roll back and only works if no engine DO NOT MESS with this logic
       return true if service_manager.remove_engine_from_managed_engine(params)
