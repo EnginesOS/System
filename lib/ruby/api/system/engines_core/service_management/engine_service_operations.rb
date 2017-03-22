@@ -131,6 +131,7 @@ module EngineServiceOperations
       reinstall: reinstall,
       remove_all_data: remove_all_data
     }
+    STDERR.puts(' Remove engine ' + params.to_s )
     unless engine.is_a?(ManagedEngine) # DO NOT MESS with this logi used in roll back and only works if no engine DO NOT MESS with this logic
       return true if service_manager.remove_engine_from_managed_engine(params)
       raise EnginesException.new(error_hash('Failed to find Engine',params))
