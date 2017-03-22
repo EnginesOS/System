@@ -67,6 +67,9 @@ class ManagedContainer < Container
     @setState
   end
 
+  def to_s
+    @container_name.to_s + '-set to:' +  @setState + ':' + status.to_s
+  end
   def status
     @status = {} if @status.nil?
     @status[:state] = read_state
