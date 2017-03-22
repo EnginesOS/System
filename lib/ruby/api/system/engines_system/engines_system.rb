@@ -119,6 +119,7 @@ class SystemApi < ErrorsApi
         next
       end
     end
+    STDERR.puts(' get_services_states ' + result.to_s )
     result
   end
 end
