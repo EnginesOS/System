@@ -57,6 +57,7 @@ helpers do
   end
 
   def fake_exception(error)
+    STDERR.puts('faking it' + error.to_s)
     send_encoded_exception(request: 'string_exception', exception: error, status: 500)
   end
 
