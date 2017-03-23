@@ -103,13 +103,13 @@ module SmEngineServices
     STDERR.puts('remove_engine_services ' + services.to_s)
     services.each do |s|
       STDERR.puts('remove_engine_service ' + s.to_s)
-      if params[:remove_all_data] == true || s[:persistence] == false
+   #   if params[:remove_all_data] == true || s[:persistence] == false
         STDERR.puts(' rm ' + s.to_s)
-        system_registry_client.remove_from_managed_engine(s)
-      else
-        STDERR.puts(' orphanicate' + s.to_s)
-        orphanate_service(s)
-      end
+    #    system_registry_client.remove_from_managed_engine(s)
+    #  else
+    #    STDERR.puts(' orphanicate' + s.to_s)
+   #     orphanate_service(s)
+   #   end
     end
   end
 
