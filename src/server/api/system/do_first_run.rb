@@ -28,3 +28,4 @@ post '/v0/system/do_first_run' do
     log_error(request, e)
   end
 end
+# @!endgroup

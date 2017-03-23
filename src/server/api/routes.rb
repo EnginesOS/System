@@ -1,5 +1,5 @@
 after do
-  GC::OOB.run()
+  GC::OOB.run
 end
 require_relative 'auth/login.rb'
 require_relative 'containers/routes.rb'

@@ -7,11 +7,11 @@ helpers do
 
   def json_parser
     # @json_parser = Yajl::Parser.new(:symbolize_keys => true) if @json_parser.nil?
-    @json_parser ||= FFI_Yajl::Parser.new({:symbolize_keys => true})
+    @json_parser ||= FFI_Yajl::Parser.new(symbolize_keys: true)
   end
 
   def log_exception(e, *args)
-    e_str = e.to_s()
+    e_str = e.to_s
     e.backtrace.each do |bt|
       e_str += bt + ' \n'
     end
@@ -47,8 +47,8 @@ helpers do
     elsif error_object.is_a?(Exception)
       error_mesg[:error_object] = error_object.to_s
       error_mesg[:source] = error_object.backtrace.to_s
-      error_mesg[:error_object][:error_mesg] = args[0] unless args.count == 0
-      error_mesg[:error_object][:args] = args.to_s unless args.count == 0
+      error_mesg[:error_object][:error_mesg] = args[0] unless args.count.zero?
+      error_mesg[:error_object][:args] = args.to_s unless args.count.zero?
       status(500)
     else
       error_mesg[:error_object] = error_object
@@ -79,7 +79,7 @@ helpers do
 
   def downcase_keys(hash)
     return hash unless hash.is_a? Hash
-    hash.map{|k,v| [k.downcase, downcase_keys(v)] }.to_h
+    hash.map{|k, v| [k.downcase, downcase_keys(v)] }.to_h
   end
 
   def managed_containers_to_json(containers)
@@ -101,10 +101,8 @@ helpers do
 
   use Warden::Manager do |config|
     config.scope_defaults :default,
-    # Set your authorization strategy
-    strategies: [:access_token],
-    # Route to redirect to when warden.authenticate! returns a false answer.
-    action: '/v0/unauthenticated'
+    strategies: [:access_token], # Set your authorization strategy
+    action: '/v0/unauthenticated' # Route to redirect to when warden.authenticate! returns a false answer.
     config.failure_app = self
   end
 
@@ -117,11 +115,11 @@ helpers do
     def valid?
       # Validate that the access token is properly formatted.
       # Currently only checks that it's actually a string.
-      request.env["HTTP_ACCESS_TOKEN"].is_a?(String) | params['access_token'].is_a?(String)
+      request.env['HTTP_ACCESS_TOKEN'].is_a?(String) | params['access_token'].is_a?(String)
     end
 
-    def is_token_valid?(token, ip =nil)
-      $engines_api.is_token_valid?(token, ip =nil)
+    def is_token_valid?(token, ip = nil)
+      $engines_api.is_token_valid?(token, ip)
     end
 
     def authenticate!
@@ -129,8 +127,8 @@ helpers do
       # Your actual access token should be generated using one of the several great libraries
       # for this purpose and stored in a database, this is just to show how Warden should be
       # set up.
-      STDERR.puts("NO HTTP_ACCESS_TOKEN in header ") if request.env["HTTP_ACCESS_TOKEN"].nil?
-      access_granted = is_token_valid?(request.env["HTTP_ACCESS_TOKEN"]) # == $token
+      STDERR.puts('NO HTTP_ACCESS_TOKEN in header ') if request.env['HTTP_ACCESS_TOKEN'].nil?
+      access_granted = is_token_valid?(request.env['HTTP_ACCESS_TOKEN']) # == $token
       !access_granted ? fail!('Could not log in') : success!(access_granted)
     end
   end

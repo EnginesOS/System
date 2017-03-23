@@ -128,11 +128,10 @@ end
 # @return [true]
 delete '/v0/containers/service/:service_name/delete' do
   begin
-    r =  engines_api.remove_service(params[:service_name])
+    r = engines_api.remove_service(params[:service_name])
     return_text(r)
   rescue StandardError => e
     log_error(request, e)
   end
 end
-
 # @!endgroup

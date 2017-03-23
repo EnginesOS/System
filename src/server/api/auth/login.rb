@@ -35,11 +35,11 @@ end
 
 # Called in response to an unauthorised get request
 # returns error hash
-get  '/v0/unauthenticated' do
+get '/v0/unauthenticated' do
   begin
     log_error(request, nil, 'unauthorised', params)
   rescue StandardError => e
     log_error(request, e)
   end
 end
-
+# @!endgroup

@@ -23,14 +23,14 @@ end
 get '/v0/containers/engine/:engine_name/services/persistent/:publisher_namespace/*' do
   begin
     hash = engine_service_hash_from_params(params, true)
-    r = engines_api.find_engine_service_hashes(hash) #find_engine_services_hashes(hash)
+    r = engines_api.find_engine_service_hashes(hash)
     return_json_array(r)
   rescue StandardError => e
     log_error(request, e)
   end
 end
 
-#@method add_engine_persistent_share_service
+# @method add_engine_persistent_share_service
 # @overload post '/v0/containers/engine/:engine_name/services/persistent/share/:owner/:publisher_namespace/:type_path/:service_handle'
 #  add persistent services in the :publisher_namespace and :type_path  :service_handle registered to the engine with posted params
 # post api_vars :variables
@@ -42,7 +42,7 @@ post '/v0/containers/engine/:engine_name/services/persistent/share/:owner/:publi
     path_hash = engine_service_hash_from_params(params, false)
     path_hash[:owner] = params[:owner]
     p_params.merge!(path_hash)
-    cparams = assemble_params(p_params, [:parent_engine,:owner, :publisher_namespace, :type_path, :service_handle], :all)
+    cparams = assemble_params(p_params, [:parent_engine, :owner, :publisher_namespace, :type_path, :service_handle], :all)
     r = engines_api.connect_share_service(cparams)
     return_text(r)
   rescue StandardError => e
@@ -61,7 +61,7 @@ post '/v0/containers/engine/:engine_name/services/persistent/orphan/:owner/:publ
     path_hash = engine_service_hash_from_params(params, false)
     path_hash[:owner] = params[:owner]
     p_params.merge!(path_hash)
-    cparams = assemble_params(p_params, [:parent_engine,:owner, :publisher_namespace, :type_path, :service_handle], :all)
+    cparams = assemble_params(p_params, [:parent_engine, :owner, :publisher_namespace, :type_path, :service_handle], :all)
     r = engines_api.connect_orphan_service(cparams)
     return_text(r)
   rescue StandardError => e
@@ -96,7 +96,7 @@ end
 delete '/v0/containers/engine/:engine_name/services/persistent/:remove_all_data/:publisher_namespace/*' do
   begin
     path_hash = engine_service_hash_from_params(params, false)
-    cparams = assemble_params(path_hash, [:parent_engine, :publisher_namespace, :type_path, :service_handle,:remove_all_data], [])
+    cparams = assemble_params(path_hash, [:parent_engine, :publisher_namespace, :type_path, :service_handle, :remove_all_data], [])
     r = engines_api.remove_persistent_service(cparams)
     return_text(r)
   rescue StandardError => e

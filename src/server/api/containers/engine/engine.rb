@@ -89,7 +89,7 @@ get '/v0/containers/engine/:engine_name/logs' do
   begin
     engine = get_engine(params[:engine_name])
     return log_error(request, engine, params) if engine.nil?
-    r = engine.logs_container()
+    r = engine.logs_container
     return_json(r)
   rescue StandardError => e
     log_error(request, e)
@@ -110,4 +110,5 @@ get '/v0/containers/engine/:engine_name/ps' do
     log_error(request, 'Container not running', 'Container not running')
   end
 end
+# @!endgroup
 

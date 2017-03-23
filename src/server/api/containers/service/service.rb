@@ -60,7 +60,7 @@ end
 get '/v0/containers/service/:service_name/logs' do
   begin
     service = get_service(params[:service_name])
-    r = service.logs_container()
+    r = service.logs_container
     return_json(r)
   rescue StandardError => e
     log_error(request, e)
@@ -74,7 +74,6 @@ end
 # @return [Hash]
 get '/v0/containers/service/:service_name/service_definition' do
   begin
-    #STDERR.puts('/v0/containers/service/:service_name/service_definition' )
     cparams = assemble_params(params, [:service_name], [])
     r = get_service(cparams[:service_name])
     pparams = {}
@@ -99,6 +98,4 @@ get '/v0/containers/service/:service_name/ps' do
     log_error(request, e)
   end
 end
-
 # @!endgroup
-

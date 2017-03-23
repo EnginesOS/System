@@ -27,7 +27,7 @@ post '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_name
     path_hash = engine_service_hash_from_params(params, true)
     p_params.merge!(path_hash)
     cparams = assemble_params(p_params, [:parent_engine, :publisher_namespace, :type_path], :all)
-    r =  engines_api.create_and_register_service(cparams)
+    r = engines_api.create_and_register_service(cparams)
     return_text(r)
   rescue StandardError => e
     log_error(request, e)
@@ -58,7 +58,7 @@ end
 get '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/*' do
   begin
     hash = engine_service_hash_from_params(params, true)
-    r = engines_api.find_engine_service_hashes(hash) #find_engine_services_hashes(hash)
+    r = engines_api.find_engine_service_hashes(hash)
     return_json(r)
   rescue StandardError => e
     log_error(request, e)

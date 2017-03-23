@@ -26,7 +26,7 @@ end
 get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/*/register' do
   begin
     hash = engine_service_hash_from_params(params)
-    service_hash =  engines_api.find_engine_service_hash(hash)
+    service_hash = engines_api.find_engine_service_hash(hash)
     r = engines_api.force_register_attached_service(service_hash)
     return_text(r)
   rescue StandardError => e
@@ -41,7 +41,7 @@ get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namesp
   begin
 
     hash = engine_service_hash_from_params(params)
-    service_hash =  engines_api.find_engine_service_hash(hash)
+    service_hash = engines_api.find_engine_service_hash(hash)
     r = engines_api.force_reregister_attached_service(service_hash)
     return_text(r)
   rescue StandardError => e
@@ -55,7 +55,7 @@ end
 get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/*/deregister' do
   begin
     hash = engine_service_hash_from_params(params)
-    service_hash =  engines_api.find_engine_service_hash(hash)
+    service_hash = engines_api.find_engine_service_hash(hash)
     r = engines_api.force_deregister_attached_service(service_hash)
     return_text(r)
   rescue StandardError => e

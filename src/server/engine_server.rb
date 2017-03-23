@@ -4,7 +4,7 @@ require '/opt/engines/lib/ruby/system/engines_error.rb'
 begin
 
   require 'sinatra'
-  require "sinatra/streaming"
+  require 'sinatra/streaming'
   require 'json'
   require 'yajl'
   require '/opt/engines/lib/ruby/system/system_debug.rb'
@@ -16,7 +16,7 @@ begin
 
   require 'objspace'
   require 'warden'
-  require "sqlite3"
+  require 'sqlite3'
   require 'ffi_yajl'
 
   def init_db
@@ -31,7 +31,7 @@ begin
               email varchar(128),
               password varchar(30),
               authtoken varchar(128),
-              ip_addr varchar(64), 
+              ip_addr varchar(64),
               ip_mask varchar(64),
               uid int,
               guid int
@@ -43,18 +43,18 @@ begin
   end
 
   def set_first_user
-    rows = sql_lite_database.execute( "select authtoken from systemaccess" )
+    rows = sql_lite_database.execute("select authtoken from systemaccess")
     return if rows.count > 0
     toke = SecureRandom.hex(128)
     sql_lite_database.execute("INSERT INTO systemaccess (username, password, email, authtoken, uid,guid)
-                          VALUES (?, ?, ?, ?, ?, ?)", ["admin", 'EnginesDemo', '', toke.to_s ,1,0])
+                          VALUES (?, ?, ?, ?, ?, ?)", ['admin', 'EnginesDemo', '', toke.to_s, 1, 0])
     STDERR.puts('init db')
   rescue StandardError => e
     STDERR.puts('init db error ' + e.to_s)
     return
   end
 
-  # FIXME remove this once all installs have proper auth
+  # FIXME: remove this once all installs have proper auth
   init_db
 
   class Application < Sinatra::Base
@@ -75,11 +75,11 @@ begin
   before do
     pass if request.path.start_with?('/v0/system/login/')
     pass if request.path.start_with?('/v0/unauthenticated')
-    pass if request.path.start_with?('/v0/cron/engine/')  && source_is_service?(request,'cron')
-    pass if request.path.start_with?('/v0/cron/service/')  && source_is_service?(request,'cron')
-    pass if request.path.start_with?('/v0/schedule/engine/')  && source_is_service?(request,'cron')
-    pass if request.path.start_with?('/v0/schedule/service/')  && source_is_service?(request,'cron')
-    pass if request.path.start_with?('/v0/backup/')  && source_is_service?(request,'backup')
+    pass if request.path.start_with?('/v0/cron/engine/') && source_is_service?(request, 'cron')
+    pass if request.path.start_with?('/v0/cron/service/') && source_is_service?(request, 'cron')
+    pass if request.path.start_with?('/v0/schedule/engine/') && source_is_service?(request, 'cron')
+    pass if request.path.start_with?('/v0/schedule/service/') && source_is_service?(request, 'cron')
+    pass if request.path.start_with?('/v0/backup/') && source_is_service?(request, 'backup')
     pass if request.path.start_with?('/v0/system/do_first_run') && FirstRunWizard.required?
     env['warden'].authenticate!(:access_token)
   end
@@ -103,17 +103,17 @@ begin
   require_relative 'api/routes.rb'
 
   def post_params(request)
-    r = request.env["rack.input"].read
+    r = request.env['rack.input'].read
     json_parser.parse(r)
   rescue StandardError => e
     log_error(request, e, e.backtrace.to_s)
-    STDERR.puts(' POST Parse Error ' + e.to_s + ' on ' + r.to_s )
+    STDERR.puts(' POST Parse Error ' + e.to_s + ' on ' + r.to_s)
     {}
   end
 
 rescue StandardError => e
   p e
-  r = EnginesError.new('Unhandled Exception'+ e.to_s + '\n' + e.backtrace.to_s, :error, 'api')
-  STDERR.puts('Unhandled Exception'+ e.to_s + '\n' + e.backtrace.to_s )
+  r = EnginesError.new('Unhandled Exception' + e.to_s + '\n' + e.backtrace.to_s, :error, 'api')
+  STDERR.puts('Unhandled Exception' + e.to_s + '\n' + e.backtrace.to_s )
   r.to_json
 end

@@ -29,3 +29,4 @@ get '/v0/containers/engine/:engine_name/metrics/memory' do
     log_error(request, e)
   end
 end
+# @!endgroup
