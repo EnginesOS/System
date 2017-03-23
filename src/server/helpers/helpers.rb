@@ -63,7 +63,7 @@ helpers do
       status_code = 401
       STDERR.puts('faking unauthorised')
     else
-      status_code = 404
+      status_code = 401
     end
     status_code = api_exception[:status] if api_exception.key?(:status)
     error_mesg = {
