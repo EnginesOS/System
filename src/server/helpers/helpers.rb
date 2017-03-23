@@ -50,9 +50,10 @@ helpers do
       status_code = 500
     end
     STDERR.puts error_mesg.to_s
-    return_json(error_mesg,  status_code)
-  rescue Exception =>e
-    send_encoded_exception(request: 'send_encoded_exception', exception: e, status: 500)
+    return_json(error_mesg, status_code)
+  rescue Exception => e
+    STDERR.puts e.to_s + '  ' + e.backtrace.to_s
+  #  send_encoded_exception(request: 'send_encoded_exception', exception: e, status: 500)
   end
 
   def get_engine(engine_name)
