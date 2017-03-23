@@ -40,7 +40,7 @@ helpers do
       error_mesg[:query] = request.query_string
       error_mesg[:params] = request.params
     end
-    STDERR.puts('send_encoded_exception with request ' + request.to_s)
+    STDERR.puts('send_encoded_exception with request ' + api_exception.to_s)
     if api_exception[:exception].is_a?(EnginesException)
       error_mesg[:error_object] = api_exception[:exception].to_h
       error_mesg[:params] = api_exception[:params].to_s
@@ -49,6 +49,8 @@ helpers do
       error_mesg[:source] = api_exception[:exception].backtrace.to_s
       error_mesg[:error_mesg] = api_exception[:exception].to_s
       status_code = 500
+    elsif api_exception[:exception].to_s == 'unauthorised'
+      status_code = 401
     end
     STDERR.puts error_mesg.to_s
     return_json(error_mesg, status_code)
@@ -63,7 +65,7 @@ helpers do
       status_code = 403
       STDERR.puts('faking unauthorised')
     else
-      status_code = 403
+      status_code = 404
     end
     status_code = api_exception[:status] if api_exception.key?(:status)
     error_mesg = {
