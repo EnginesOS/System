@@ -71,16 +71,16 @@ helpers do
 
   def get_engine(engine_name)
     engines_api.loadManagedEngine(engine_name)
-  rescue StandardError => e
-    log_error('Load Service failed !!!' + engine_name, e.to_s)
-    nil
+#  rescue StandardError => e
+#    log_error('Load Service failed !!!' + engine_name, e.to_s)
+#    nil
   end
 
   def get_service(service_name)
     engines_api.loadManagedService(service_name)
-  rescue StandardError => e
-    log_error('Load Service failed !!!' + service_name, e)
-    nil
+#  rescue StandardError => e
+#    log_error('Load Service failed !!!' + service_name, e)
+#    nil
   end
 
   def downcase_keys(hash)
