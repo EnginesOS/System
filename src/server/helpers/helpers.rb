@@ -47,6 +47,7 @@ helpers do
     # StandardError Exception
     else
       error_mesg[:error_object] = error_object.to_s
+      error_mesg[:source] = error_object.backtrace.to_s
       error_mesg[:error_object][:mesg] = args[0] unless args.count == 0
       error_mesg[:error_object][:args] = args.to_s unless args.count == 0
       status(500)
