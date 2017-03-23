@@ -78,7 +78,7 @@ get '/v0/containers/engine/:engine_name/websites' do
     r = engine.web_sites
     return_json(r)
   rescue StandardError => e
-    log_error(request, e)
+    return_json(nil)
   end
 end
 # @method get_engine_logs
