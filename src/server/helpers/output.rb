@@ -28,6 +28,7 @@ def return_true(s = 200)
 end
 
 def return_error(error, nil_result = nil)
+  STDERR.puts(' RETURN ERROR!!!!!!!!' )
   content_type 'application/json'
   # FIXME: take this from the error if avail
   status(404)
