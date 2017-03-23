@@ -3,7 +3,7 @@ if Process.euid != 21000
   exit
 end
 require 'rubygems'
-require 'json'
+#require 'json'
 require 'yajl'
 require 'ffi_yajl'
 

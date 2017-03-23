@@ -60,7 +60,7 @@ helpers do
         error_mesg[:error_object][:error_mesg] = 'unauthorised'
         status(403)
       else
-        status(501)
+        status(403)
       end
     end
     STDERR.puts error_mesg.to_s
