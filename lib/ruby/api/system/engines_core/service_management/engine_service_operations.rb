@@ -134,6 +134,7 @@ module EngineServiceOperations
 
     #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
     begin
+      STDERR.puts(' Remove engine calling service_manager.remove_engine_services' + params.to_s )
     service_manager.remove_engine_services(params)
     rescue EnginesException => e
       raise e unless e.is_a_warning?

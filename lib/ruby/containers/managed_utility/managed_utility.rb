@@ -73,8 +73,9 @@ class ManagedUtility< ManagedContainer
       r = @container_api.logs_container(self, 100) #_as_result
       return r if r.is_a?(Hash)
       {stdout: r.to_s, result: 0}
-    rescue StandardError =>e
+    rescue StandardError => e
       STDERR.puts(e.to_s  + "\n" + e.backtrace.to_s)
+    STDERR.puts('FSCONFIG EXCEPTION' + e.to_s)
       {stderr: 'Failed', result: -1}
     end
 
