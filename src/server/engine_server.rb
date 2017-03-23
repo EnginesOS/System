@@ -99,8 +99,7 @@ begin
     env['warden'].authenticate!(:access_token)
   end
 
-  def source_is_service?(request,service_name)
-
+  def source_is_service?(request, service_name)
     service = get_service(service_name)
     return true if request.ip.to_s == service.get_ip_str
     false
@@ -116,7 +115,6 @@ begin
 
   def sql_lite_database
     engines_api.auth_database
-
   rescue StandardError => e
     STDERR.puts('Exception failed to open  sql_lite_database: ' + e.to_s)
     false
@@ -133,7 +131,6 @@ begin
   #       end
   #
   require_relative 'helpers/helpers.rb'
-
   require_relative 'api/routes.rb'
 
   def post_params(request)
