@@ -37,7 +37,9 @@ end
 # returns error hash
 get '/v0/unauthenticated' do
   begin
-    send_encoded_exception(request: nil, exception: 'unauthorised', params: params)
+   # send_encoded_exception(request: nil, exception: 'unauthorised', params: params)
+    status(403)
+    return ''
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
