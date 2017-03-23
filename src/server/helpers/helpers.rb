@@ -37,7 +37,7 @@ helpers do
     else
       error_mesg[:route] = request.fullpath
     end
-    error_mesg[:method] = request.method
+  #  error_mesg[:method] = request.method
     #error_mesg[:params_trunc]
     STDERR.puts('send_encoded_exception with request ' + request.to_s)
     if api_exception[:exception].is_a?(EnginesException)
