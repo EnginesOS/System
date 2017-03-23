@@ -10,7 +10,7 @@ get '/v0/containers/engine/:engine_name/actions/' do
     return log_error(request, engine, params) if engine.nil?
     list = engines_api.list_engine_actionators(engine)
     return_json_array(list)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -25,7 +25,7 @@ get '/v0/containers/engine/:engine_name/action/:action_name' do
     return log_error(request, engine, params) if engine.nil?
     action = engines_api.get_engine_actionator(engine, params[:action_name])
     return_json(action)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -47,7 +47,7 @@ post '/v0/containers/engine/:engine_name/action/:action_name' do
     action = engines_api.perform_engine_action(engine, params[:action_name], cparams)
     SystemDebug.debug(SystemDebug.actions, 'action Res', action)
     return_json(action)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end 

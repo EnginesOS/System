@@ -8,7 +8,7 @@ get '/v0/containers/service/:service_name/configurations/' do
     service = get_service(params[:service_name])
     list = service.get_service_configurations()
     return_json_array(list)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -18,9 +18,9 @@ end
 get '/v0/containers/service/:service_name/configuration/:configurator_name' do
   begin
     service = get_service(params[:service_name])
-    config = service.retrieve_configurator({configurator_name:  params[:configurator_name] })
+    config = service.retrieve_configurator({configurator_name: params[:configurator_name]})
     return_json(config)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -39,7 +39,7 @@ post '/v0/containers/service/:service_name/configuration/:configurator_name' do
     cparams[:publisher_namespace]  = service.publisher_namespace
     r = engines_api.update_service_configuration(cparams)
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end 

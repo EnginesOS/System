@@ -8,7 +8,7 @@ get '/v0/cron/engine/:engine_name/:cron_job/run' do
     return log_error(request, engine, params) if engine.nil?
     r = engine.run_cronjob(params[:cron_job])
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -34,10 +34,10 @@ get '/v0/schedule/engine/:engine_name/:cron_job' do
     when 'unpause'
       r = engine.unpause_container
     else
-      log_error(request, params[:cron_job],params[:engine_name])
+      log_error(request, params[:cron_job], params[:engine_name])
     end
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -49,7 +49,7 @@ get '/v0/schedule/engine/:engine_name/:cron_job/run' do
     return log_error(request, engine, params) if engine.nil?
     r = engine.run_cronjob(params[:cron_job])
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end

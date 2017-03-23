@@ -10,10 +10,9 @@ post '/v0/system/domains/' do
   begin
     p_params = post_params(request)
     cparams = assemble_params(p_params, [], :all)
-    # STDERR.puts('ADD DOMAIN Params ' + cparams.to_s )
     r = engines_api.add_domain(cparams)
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -25,7 +24,7 @@ delete '/v0/system/domains/:domain_name' do
   begin
     r = engines_api.remove_domain(params[:domain_name])
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -35,10 +34,9 @@ end
 # @return  [Array] Array of [Hash] :domain_name :self_hosted :internal_only
 get '/v0/system/domains/' do
   begin
-    domains = engines_api.list_domains()
-    STDERR.puts('LISR DOMAIN Params ' + domains.to_s )
+    domains = engines_api.list_domains
     return_json_array(domains)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end

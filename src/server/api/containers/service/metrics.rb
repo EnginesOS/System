@@ -9,7 +9,7 @@ get '/v0/containers/service/:service_name/metrics/network' do
     service = get_service(params[:service_name])
     r = engines_api.get_container_network_metrics(service)
     return_json(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -23,7 +23,7 @@ get '/v0/containers/service/:service_name/metrics/memory' do
     service = get_service(params[:service_name])
     r = engines_api.container_memory_stats(service)
     return_json(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end

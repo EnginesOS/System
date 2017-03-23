@@ -11,7 +11,7 @@ get '/v0/system/version/release' do
   begin
     release = SystemStatus.get_engines_system_release
     return_text(release)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -26,7 +26,7 @@ get '/v0/system/version/api' do
   begin
     api = engines_api.api_version
     return_text(api)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -40,7 +40,7 @@ get '/v0/system/version/ident' do
   begin
     ident = engines_api.version_string
     return_text(ident)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -54,7 +54,7 @@ get '/v0/system/version/system' do
   begin
     system = engines_api.system_version
     return_text(system)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -70,7 +70,7 @@ get '/v0/system/version/base_os' do
     base_os = SystemUtils.get_os_release_data
     base_os =  downcase_keys(base_os)
     return_json(base_os)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end

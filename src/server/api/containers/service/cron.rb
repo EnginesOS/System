@@ -7,7 +7,7 @@ get '/v0/cron/service/:service_name/:cron_job/run' do
     service = get_service(params[:service_name])
     r = service.run_cronjob(params[:cron_job])
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -34,10 +34,10 @@ get '/v0/schedule/service/:service_name/:cron_job' do
     when 'create'
       r = service.create_container
     else
-      log_error(request, params[:cron_job],params[:service_name])
+      log_error(request, params[:cron_job], params[:service_name])
     end
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -48,7 +48,7 @@ get '/v0/schedule/service/:service_name/:cron_job/run' do
     service = get_service(params[:service_name])
     r = service.run_cronjob(params[:cron_job])
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end

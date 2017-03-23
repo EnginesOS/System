@@ -7,8 +7,8 @@
 get '/v0/system/status/first_run_required' do
   begin
     first_run_required = engines_api.first_run_required?
-    return_text(first_run_required) # no checky as true or false
-  rescue StandardError =>e
+    return_text(first_run_required)
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -21,7 +21,7 @@ get '/v0/system/status' do
   begin
     s_status = SystemStatus.system_status
     return_json(s_status)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -36,7 +36,7 @@ get '/v0/system/status/update' do
   begin
     ustatus = SystemStatus.system_update_status
     return_json(ustatus)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end

@@ -12,9 +12,9 @@ get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/
     engine = get_engine(params[:engine_name])
     return log_error(request, engine, params) if engine.nil?
     stream do |out|
-      engine.export_service_data(hash,out)
+      engine.export_service_data(hash, out)
     end
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -25,18 +25,14 @@ end
 # @return [true]
 post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/overwrite' do
   begin
-    #  p_params = request.env["rack.input"].read
-    #  STDERR.puts(' upload post '  + p_params.to_s + ' params '  + params.to_s)
     hash = {}
     hash[:service_connection] =  engine_service_hash_from_params(params)
     engine = get_engine(params[:engine_name])
     hash[:datafile] = params['file'][:tempfile]
-
-    # hash[:data] = Base64.encode64( p_params['api_vars']['data'])
     return log_error(request, engine, hash) if engine.nil?
-    r = engine.import_service_data(hash,File.new(hash[:datafile].path,'rb'))
+    r = engine.import_service_data(hash, File.new(hash[:datafile].path,'rb'))
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -48,18 +44,15 @@ end
 # @return [true]
 post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/replace' do
   begin
-    #  p_params = request.env["rack.input"].read
-    #  STDERR.puts(' upload post '  + p_params.to_s + ' params '  + params.to_s)
     hash = {}
     hash[:service_connection] =  engine_service_hash_from_params(params)
     engine = get_engine(params[:engine_name])
     hash[:import_method] = :replace
     hash[:datafile] = params['file'][:tempfile]
     return log_error(request, engine, hash) if engine.nil?
-    # hash[:data] =Base64.encode64( p_params['api_vars']['data'])
-    r = engine.import_service_data(hash, File.new(hash[:datafile].path,'rb'))
+    r = engine.import_service_data(hash, File.new(hash[:datafile].path, 'rb'))
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -74,7 +67,7 @@ get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/
     hash = engine_service_hash_from_params(params)
     r = engines_api.find_engine_service_hash(hash)
     return_json(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -93,7 +86,7 @@ post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace
     cparams = assemble_params(p_params, [:parent_engine,:publisher_namespace, :type_path, :service_handle], :all)
     r = engines_api.update_attached_service(cparams)
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end

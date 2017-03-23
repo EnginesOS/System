@@ -7,7 +7,7 @@ get '/v0/system/domains/:domain_name' do
   begin
     domain_name = engines_api.domain_name(params[:domain_name])
     return_json(domain_name)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -23,10 +23,9 @@ post '/v0/system/domains/:domain_name' do
     post_s = post_params(request)
     post_s[:domain_name] = params['domain_name']
     cparams = assemble_params(post_s, [:domain_name], :all)
-    # STDERR.puts('EDIT DOMAIN Params ' + cparams.to_s )
     r = engines_api.update_domain(cparams)
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end

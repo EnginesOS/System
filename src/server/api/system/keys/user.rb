@@ -9,7 +9,7 @@ get '/v0/system/keys/user/:user_name/generate' do
   begin
     generated_key = engines_api.generate_engines_user_ssh_key
     return_text(generated_key)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -23,11 +23,11 @@ end
 post '/v0/system/keys/user/:user_name' do
   begin
     params.merge!(post_params(request))
-    cparams = assemble_params(params, [:user_name],  :public_key)
+    cparams = assemble_params(params, [:user_name], :public_key)
     update_key = cparams[:public_key] #symbolize_keys(params)
     r = engines_api.update_public_key(update_key)
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -40,7 +40,7 @@ get '/v0/system/keys/user/:user_name' do
   begin
     public_key = engines_api.get_public_key
     return_text(public_key)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end

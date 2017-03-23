@@ -7,7 +7,7 @@ get '/v0/containers/services/' do
   begin
     engines = engines_api.getManagedServices
     managed_containers_to_json(engines)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -21,7 +21,7 @@ get '/v0/containers/services/container_name' do
   begin
     container_names = engines_api.list_managed_services
     return_json_array(container_names)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -35,7 +35,7 @@ get '/v0/containers/services/state' do
   begin
     states = engines_api.get_services_states
     return_json(states)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -47,7 +47,7 @@ get '/v0/containers/services/status' do
   begin
     status = engines_api.get_services_status
     return_json(status)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -59,7 +59,7 @@ get '/v0/containers/services/system' do
   begin
     states = engines_api.list_system_services
     return_json_array(states)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end

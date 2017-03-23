@@ -8,7 +8,7 @@ get '/v0/containers/engine/:engine_name' do
   begin
     engine = get_engine(params[:engine_name])
     managed_container_as_json(engine)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -23,7 +23,7 @@ get '/v0/containers/engine/:engine_name/status' do
     return log_error(request, engine, params) if engine.nil?
     r = engine.status
     return_json(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -37,7 +37,7 @@ get '/v0/containers/engine/:engine_name/state' do
     return log_error(request, engine, params) if engine.nil?
     r = engine.read_state
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -51,7 +51,7 @@ get '/v0/containers/engine/:engine_name/blueprint' do
     return log_error(request, engine, params) if engine.nil?
     r = engine.load_blueprint
     return_json(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -63,7 +63,7 @@ get '/v0/containers/engine/:engine_name/build_report' do
   begin
     r = engines_api.get_build_report(params[:engine_name])
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -77,7 +77,7 @@ get '/v0/containers/engine/:engine_name/websites' do
     return log_error(request, engine, params) if engine.nil?
     r = engine.web_sites
     return_json(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end

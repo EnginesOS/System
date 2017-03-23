@@ -19,7 +19,7 @@ post '/v0/containers/engines/build' do
     cparams = assemble_params(p_params, [], :all)
     r = engines_api.build_engine(cparams)
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end

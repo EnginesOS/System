@@ -8,7 +8,7 @@ get '/v0/system/config/default_domain' do
   begin
     default_domain = engines_api.get_default_domain
     return_text(default_domain)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -24,7 +24,7 @@ post '/v0/system/config/default_domain' do
     default_domain = cparams[:default_domain]
     engines_api.set_default_domain(default_domain)
     return_text(true)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -38,7 +38,7 @@ get '/v0/system/config/default_site' do
   begin
     default_site = engines_api.get_default_site
     return_text(default_site)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -54,7 +54,7 @@ post '/v0/system/config/default_site' do
     default_site = cparams[:default_site]
     r = engines_api.set_default_site(default_site)
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -70,7 +70,7 @@ post '/v0/system/config/hostname' do
     hostname = cparams[:host_name]
     r = engines_api.set_hostname(hostname)
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -82,7 +82,7 @@ get '/v0/system/config/hostname' do
   begin
     hostname = engines_api.system_hostname
     return_text(hostname)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -93,9 +93,8 @@ end
 post '/v0/system/config/remote_exception_logging/enable' do
   begin
     r = engines_api.enable_remote_exception_logging
-    STDERR.puts('post /v0/system/config/remote_exception_logging/enable ' + r.to_s)
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -106,9 +105,8 @@ end
 post '/v0/system/config/remote_exception_logging/disable' do
   begin
     r = engines_api.disable_remote_exception_logging
-    STDERR.puts('post /v0/system/config/remote_exception_logging/enable ' + r.to_s)
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -120,7 +118,7 @@ get '/v0/system/config/remote_exception_logging' do
   begin
     r = SystemStatus.is_remote_exception_logging?
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
