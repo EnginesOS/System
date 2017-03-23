@@ -20,7 +20,7 @@ post '/v0/containers/engines/build' do
     r = engines_api.build_engine(cparams)
     return_text(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 

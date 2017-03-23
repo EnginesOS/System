@@ -7,7 +7,7 @@ get '/v0/containers/engines/' do
     engines = engines_api.getManagedEngines
     managed_containers_to_json(engines)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method get_engines_container_name
@@ -20,7 +20,7 @@ get '/v0/containers/engines/container_name' do
     container_names = engines_api.list_managed_engines
     return_json_array(container_names)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method get_engines_status
@@ -32,7 +32,7 @@ get '/v0/containers/engines/status' do
     status = engines_api.get_engines_status
     return_json(status)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method get_engines_state
@@ -44,7 +44,7 @@ get '/v0/containers/engines/state' do
     states = engines_api.get_engines_states
     return_json(states)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @!endgroup

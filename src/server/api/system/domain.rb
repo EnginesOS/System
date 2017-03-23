@@ -8,7 +8,7 @@ get '/v0/system/domains/:domain_name' do
     domain_name = engines_api.domain_name(params[:domain_name])
     return_json(domain_name)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method update_domain_name
@@ -26,7 +26,7 @@ post '/v0/system/domains/:domain_name' do
     r = engines_api.update_domain(cparams)
     return_text(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @!endgroup

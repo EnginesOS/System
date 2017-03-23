@@ -9,7 +9,7 @@ get '/v0/engine_builder/status' do
     r = engines_api.build_status
     return_json(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -22,7 +22,7 @@ get '/v0/engine_builder/params' do
     r = engines_api.current_build_params
     return_json(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -35,7 +35,7 @@ get '/v0/engine_builder/last_build/log' do
     r = engines_api.last_build_log
     return_text(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method get_last_build_param
@@ -47,7 +47,7 @@ get '/v0/engine_builder/last_build/params' do
     r = engines_api.last_build_params
     return_json(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method follow_build
@@ -96,7 +96,7 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream'  do
       end
     end
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @!endgroup

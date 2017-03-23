@@ -9,10 +9,9 @@
 get '/v0/system/control/engines_system/update' do
   begin
     update = engines_api.update_engines_system_software
-    return send_encoded_exception(request, update, 'Might just be update to date update') if update.is_a?(EnginesError)
     return_text(update)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method restart_engines_system
@@ -24,7 +23,7 @@ get '/v0/system/control/engines_system/restart' do
     restart = engines_api.restart_engines_system_service
     return_text(restart)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method recreate_engines_system
@@ -36,7 +35,7 @@ get '/v0/system/control/engines_system/recreate' do
     recreate = engines_api.recreate_engines_system_service
     return_text(recreate)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method dump_engines_system_heap_stats
@@ -50,7 +49,7 @@ get '/v0/system/control/engines_system/heap_stats' do
     dump_stats = engines_api.dump_heap_stats
     return_text(dump_stats)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @!endgroup

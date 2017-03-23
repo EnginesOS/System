@@ -15,7 +15,7 @@ post '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_names
     r = engines_api.update_attached_service(cparams)
     return_text(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -30,7 +30,7 @@ get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namesp
     r = engines_api.force_register_attached_service(service_hash)
     return_text(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method engine_force_reregister_non_persistent_service
@@ -45,7 +45,7 @@ get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namesp
     r = engines_api.force_reregister_attached_service(service_hash)
     return_text(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method engine_force_deregister_non_persistent_service
@@ -59,7 +59,7 @@ get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namesp
     r = engines_api.force_deregister_attached_service(service_hash)
     return_text(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -72,7 +72,7 @@ get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namesp
     r = engines_api.find_engine_service_hash(hash)
     return_json(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @!endgroup

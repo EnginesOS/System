@@ -9,7 +9,7 @@ get '/v0/registry/engines/' do
     engines = engines_api.get_managed_engine_tree
     return_json(engines)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method get_configurations_tree
@@ -21,7 +21,7 @@ get '/v0/registry/configurations/' do
     configurations = engines_api.get_configurations_tree
     return_json(configurations)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method get_managed_service_tree
@@ -33,7 +33,7 @@ get '/v0/registry/services/' do
     services = engines_api.managed_service_tree
     return_json(services)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method get_orphan_services_tree
@@ -45,7 +45,7 @@ get '/v0/registry/orphans/' do
     orphans = engines_api.get_orphaned_services_tree
     return_json(orphans)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method get_share_services_tree
@@ -57,6 +57,6 @@ get '/v0/registry/shares/' do
     shares = engines_api.get_shares_tree
     return_json(shares)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end

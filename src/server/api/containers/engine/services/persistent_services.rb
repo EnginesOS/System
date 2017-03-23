@@ -6,12 +6,11 @@
 get '/v0/containers/engine/:engine_name/services/persistent/' do
   begin
     engine = get_engine(params[:engine_name])
-    return send_encoded_exception(request, engine, params) if engine.nil?
     r = engines_api.list_persistent_services(engine)
     return_json_array(r)
   rescue StandardError => e
     return return_json_array(nil) if e.is_a?(EnginesException) && e.level == :warning
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -26,7 +25,7 @@ get '/v0/containers/engine/:engine_name/services/persistent/:publisher_namespace
     r = engines_api.find_engine_service_hashes(hash)
     return_json_array(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -46,7 +45,7 @@ post '/v0/containers/engine/:engine_name/services/persistent/share/:owner/:publi
     r = engines_api.connect_share_service(cparams)
     return_text(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method add_engine_persistent_orphan_service
@@ -65,7 +64,7 @@ post '/v0/containers/engine/:engine_name/services/persistent/orphan/:owner/:publ
     r = engines_api.connect_orphan_service(cparams)
     return_text(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -84,7 +83,7 @@ post '/v0/containers/engine/:engine_name/services/persistent/:publisher_namespac
     r = engines_api.create_and_register_persistent_service(cparams)
     return_text(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method del_engine_persistent_service
@@ -100,7 +99,7 @@ delete '/v0/containers/engine/:engine_name/services/persistent/:remove_all_data/
     r = engines_api.remove_persistent_service(cparams)
     return_text(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -115,7 +114,7 @@ delete '/v0/containers/engine/:engine_name/services/persistent/shared/:owner/:pu
     r = engines_api.dettach_share_service(cparams)
     return_text(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @!endgroup

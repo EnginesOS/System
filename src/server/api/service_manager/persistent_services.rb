@@ -11,7 +11,7 @@ get '/v0/service_manager/persistent_services/:publisher_namespace/*' do
     r = engines_api.get_registered_against_service(cparams)
     return_json_array(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 

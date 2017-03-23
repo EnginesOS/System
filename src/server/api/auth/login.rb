@@ -10,7 +10,7 @@ get '/v0/system/login/:user_name/:password' do
     $token = engines_api.user_login(params)
     return $token
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -19,7 +19,7 @@ get '/v0/logout' do
   begin
     $token = ''
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -29,7 +29,7 @@ post '/v0/unauthenticated' do
   begin
     send_encoded_exception(request, nil, 'unauthorised', params)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -37,9 +37,9 @@ end
 # returns error hash
 get '/v0/unauthenticated' do
   begin
-    send_encoded_exception(request, nil, 'unauthorised', params)
+    send_encoded_exception(request: nil, exception: 'unauthorised', params: params)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @!endgroup

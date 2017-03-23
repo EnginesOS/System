@@ -9,7 +9,7 @@ get '/v0/system/control/base_os/restart' do
     restart = engines_api.restart_base_os
     return_text(restart)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method shutdown_base_os
@@ -26,7 +26,7 @@ post '/v0/system/control/base_os/shutdown' do
     r = engines_api.halt_base_os(shutdown)
     return_text(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method update_base_os
@@ -38,7 +38,7 @@ get '/v0/system/control/base_os/update' do
     system_update = engines_api.update_base_os
     return_text(system_update)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @!endgroup

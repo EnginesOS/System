@@ -9,7 +9,7 @@ get '/v0/system/certs/system_ca' do
     system_ca = engines_api.get_system_ca
     return_text(system_ca)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -21,7 +21,7 @@ get '/v0/system/certs/:cert_name' do
     cert = engines_api.get_cert(params[:cert_name])
     return_text(cert)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -33,7 +33,7 @@ get '/v0/system/certs/default' do
     cert = engines_api.get_cert('engines')
     return_json(cert)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -46,7 +46,7 @@ get '/v0/system/certs/' do
     certs = engines_api.list_certs
     return_json_array(certs)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method delete_certificate
@@ -58,7 +58,7 @@ delete '/v0/system/certs/:cert_name' do |cert_name|
     r = engines_api.remove_cert(cert_name)
     return_text(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -78,7 +78,7 @@ post '/v0/system/certs/default' do
     r = engines_api.upload_ssl_certificate(cparams)
     return_text(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method upload_certificate
@@ -96,7 +96,7 @@ post '/v0/system/certs/' do
     r = engines_api.upload_ssl_certificate(cparams)
     return_text(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method generate_certificate
@@ -110,7 +110,7 @@ post '/v0/system/certs/generate' do
     r = engines_api.generate_cert(cparams)
     return_text(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @!endgroup

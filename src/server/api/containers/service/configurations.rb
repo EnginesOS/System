@@ -9,7 +9,7 @@ get '/v0/containers/service/:service_name/configurations/' do
     list = service.get_service_configurations
     return_json_array(list)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method get_service_configuration
@@ -21,7 +21,7 @@ get '/v0/containers/service/:service_name/configuration/:configurator_name' do
     config = service.retrieve_configurator(configurator_name: params[:configurator_name])
     return_json(config)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method set_service_configuration
@@ -40,7 +40,7 @@ post '/v0/containers/service/:service_name/configuration/:configurator_name' do
     r = engines_api.update_service_configuration(cparams)
     return_text(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @!endgroup

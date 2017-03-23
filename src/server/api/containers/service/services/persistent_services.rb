@@ -9,7 +9,7 @@ get '/v0/containers/service/:service_name/services/persistent/' do
     r = engines_api.list_persistent_services(service)
     return_json(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -24,7 +24,7 @@ get '/v0/containers/service/:service_name/services/persistent/:publisher_namespa
     r = engines_api.find_engine_service_hashes(hash)
     return_json(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 

@@ -11,7 +11,7 @@ get '/v0/containers/service/:service_name/consumer/:parent_engine/:service_handl
     r = service.registered_consumer(cparams)
     return_json(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 

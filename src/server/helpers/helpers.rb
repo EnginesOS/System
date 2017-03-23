@@ -25,8 +25,10 @@ helpers do
     false
   end
 
-  def send_encoded_exception(request, error_object, *args)    
-    code = 404
+  def send_encoded_exception(api_exception)#request, error_object, *args)
+    api_exception[:exception] = fake_exception(api_exception[:exception]) unless api_exception[:exception].is_a?(Exception)
+    status_code = 404
+    status_code = api_exception[:status] if api_exception.key?(:status)
     error_mesg = {
       error_object: {}
     }
@@ -35,52 +37,30 @@ helpers do
     else
       error_mesg[:route] = request.fullpath
     end
-    if error_object.is_a?(EnginesException)
-      error_mesg[:error_object] = error_object.to_h
-      code = error_mesg[:error_object][:status] if error_mesg[:error_object].key?(:status)
-      #error_mesg[:method]
-      #error_mesg[:params_trunc]
-      if error_mesg[:error_object][:error_mesg] == 'unauthorised'
-        status(404)
-      else
-        status(code)
-      end
-      # StandardError Exception
+    error_mesg[:method] = request.method
+    #error_mesg[:params_trunc]
+      STDERR.puts('send_encoded_exception with request ' + request.to_s)
+    if api_exception[:exception].is_a?(EnginesException)
+      error_mesg[:error_object] = api_exception[:exception].to_h
+      error_mesg[:params] = api_exception[:params].to_s
     elsif error_object.is_a?(Exception)
-      error_mesg[:error_object] = error_object.to_s
-      error_mesg[:source] = error_object.backtrace.to_s
-      error_mesg[:error_mesg] = args[0] unless args.count.zero?
-      error_mesg[:args] = args.to_s unless args.count.zero?
-      #error_mesg[:method]
-      #error_mesg[:params_trunc]
-      status(500)
-    else
-      STDERR.puts( 'R to ' + request.to_s + ' oBJ ' +  error_object.to_s )
-    STDERR.puts( caller[0..9].to_s )
-      error_mesg[:error_object] = error_object
-      if error_object == 'unauthorised'
-        error_mesg[:error_object][:error_mesg] = 'unauthorised'
-        status(403)
-      else
-        status(403)
-      end
+      error_mesg[:error_object] = api_exception[:exception].to_h
+      error_mesg[:source] = api_exception[:exception].backtrace.to_s
+      error_mesg[:error_mesg] = api_exception[:exception].to_s
+      status_code = 500
     end
     STDERR.puts error_mesg.to_s
-    error_mesg.to_json
+    return_json(error_mesg,  status_code)
+  rescue Exception =>e
+    send_encoded_exception(request: 'send_encoded_exception', exception: e, status: 500)
   end
 
   def get_engine(engine_name)
     engines_api.loadManagedEngine(engine_name)
-#  rescue StandardError => e
-#    log_error('Load Service failed !!!' + engine_name, e.to_s)
-#    nil
   end
 
   def get_service(service_name)
     engines_api.loadManagedService(service_name)
-#  rescue StandardError => e
-#    log_error('Load Service failed !!!' + service_name, e)
-#    nil
   end
 
   def downcase_keys(hash)
@@ -112,9 +92,9 @@ helpers do
     config.failure_app = self
   end
 
-#  Warden::Manager.before_failure do |env, opts|
-#    env['REQUEST_METHOD'] = 'POST'
-#  end
+  #  Warden::Manager.before_failure do |env, opts|
+  #    env['REQUEST_METHOD'] = 'POST'
+  #  end
 
   # Implement your Warden stratagey to validate and authorize the access_token.
   Warden::Strategies.add(:access_token) do

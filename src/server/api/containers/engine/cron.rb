@@ -5,11 +5,10 @@
 get '/v0/cron/engine/:engine_name/:cron_job/run' do
   begin
     engine = get_engine(params[:engine_name])
-    return send_encoded_exception(request, engine, params) if engine.nil?
     r = engine.run_cronjob(params[:cron_job])
     return_text(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -20,8 +19,6 @@ end
 get '/v0/schedule/engine/:engine_name/:cron_job' do
   begin
     engine = get_engine(params[:engine_name])
-    return send_encoded_exception(request, engine, params) if engine.nil?
-
     case params[:cron_job]
     when 'restart'
       r = engine.restart_container
@@ -38,7 +35,7 @@ get '/v0/schedule/engine/:engine_name/:cron_job' do
     end
     return_text(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -46,11 +43,10 @@ end
 get '/v0/schedule/engine/:engine_name/:cron_job/run' do
   begin
     engine = get_engine(params[:engine_name])
-    return send_encoded_exception(request, engine, params) if engine.nil?
     r = engine.run_cronjob(params[:cron_job])
     return_text(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @!endgroup

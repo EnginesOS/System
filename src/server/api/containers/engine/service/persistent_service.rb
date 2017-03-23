@@ -15,7 +15,7 @@ get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/
       engine.export_service_data(hash, out)
     end
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method engine_import_persistent_service
@@ -29,11 +29,10 @@ post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace
     hash[:service_connection] = engine_service_hash_from_params(params)
     engine = get_engine(params[:engine_name])
     hash[:datafile] = params['file'][:tempfile]
-    return send_encoded_exception(request, engine, hash) if engine.nil?
     r = engine.import_service_data(hash, File.new(hash[:datafile].path, 'rb'))
     return_text(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -49,11 +48,10 @@ post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace
     engine = get_engine(params[:engine_name])
     hash[:import_method] = :replace
     hash[:datafile] = params['file'][:tempfile]
-    return send_encoded_exception(request, engine, hash) if engine.nil?
     r = engine.import_service_data(hash, File.new(hash[:datafile].path, 'rb'))
     return_text(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -68,7 +66,7 @@ get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/
     r = engines_api.find_engine_service_hash(hash)
     return_json(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -87,7 +85,7 @@ post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace
     r = engines_api.update_attached_service(cparams)
     return_text(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 

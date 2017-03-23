@@ -8,7 +8,7 @@ get '/v0/service_manager/orphan_services/' do
     orphans = engines_api.get_orphaned_services_tree
     return_json(orphans)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method get_orphan_services_by_type
@@ -22,7 +22,7 @@ get '/v0/service_manager/orphan_services/:publisher_namespace/*' do
     STDERR.puts('Orphans _' + r.to_s + '_')
     return_json_array(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method get_orphan_service
@@ -38,7 +38,7 @@ get '/v0/service_manager/orphan_service/:publisher_namespace/*' do
     r = engines_api.retrieve_orphan(cparams)
     return_json(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method delete_orphan_service
@@ -56,7 +56,7 @@ delete '/v0/service_manager/orphan_service/:publisher_namespace/*' do
     r = engines_api.remove_orphaned_service(service_hash)
     return_text(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @!endgroup

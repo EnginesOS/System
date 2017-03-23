@@ -12,7 +12,7 @@ get '/v0/system/version/release' do
     release = SystemStatus.get_engines_system_release
     return_text(release)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -27,7 +27,7 @@ get '/v0/system/version/api' do
     api = engines_api.api_version
     return_text(api)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -41,7 +41,7 @@ get '/v0/system/version/ident' do
     ident = engines_api.version_string
     return_text(ident)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -55,7 +55,7 @@ get '/v0/system/version/system' do
     system = engines_api.system_version
     return_text(system)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -71,7 +71,7 @@ get '/v0/system/version/base_os' do
     base_os = downcase_keys(base_os)
     return_json(base_os)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 

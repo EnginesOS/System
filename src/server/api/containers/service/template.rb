@@ -12,7 +12,7 @@ post '/v0/containers/service/:service_name/template' do
     resolved_string = engines_api.get_resolved_engine_string(cparams[:template_string], service)
     return_text(resolved_string)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @!endgroup

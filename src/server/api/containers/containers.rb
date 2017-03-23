@@ -62,7 +62,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
       STDERR.puts('Stream EVENTS Exception' + e.to_s + e.backtrace.to_s)
     end
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method check_and_act_on_containers
@@ -82,7 +82,7 @@ get '/v0/containers/check_and_act' do
     r = engines_api.containers_check_and_act
     return_json(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 

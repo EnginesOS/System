@@ -10,7 +10,7 @@ get '/v0/containers/service/:service_name/actions/' do
     list = engines_api.list_service_actionators(service)
     return_json_array(list)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method get_service_action
@@ -24,7 +24,7 @@ get '/v0/containers/service/:service_name/action/:action_name' do
     action = engines_api.get_service_actionator(service, params[:action_name])
     return_json(action)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 
 end
@@ -42,7 +42,7 @@ post '/v0/containers/service/:service_name/action/:action_name' do
     action = engines_api.perform_service_action(service, p_params[:action_name], cparams)
     return_json(action)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @!endgroup

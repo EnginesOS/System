@@ -9,7 +9,7 @@ get '/v0/containers/service/:service_name' do
     service = get_service(params[:service_name])
     managed_container_as_json(service)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -23,7 +23,7 @@ get '/v0/containers/service/:service_name/status' do
     r = service.status
     return_json(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method get_service_state
@@ -36,7 +36,7 @@ get '/v0/containers/service/:service_name/state' do
     r = service.read_state
     return_text(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -50,7 +50,7 @@ get '/v0/containers/service/:service_name/websites' do
     r = service.web_sites
     return_json_array(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method get_service_logs
@@ -63,7 +63,7 @@ get '/v0/containers/service/:service_name/logs' do
     r = service.logs_container
     return_json(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -82,7 +82,7 @@ get '/v0/containers/service/:service_name/service_definition' do
     r = engines_api.get_service_definition(pparams)
     return_json(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method get_service_ps
@@ -95,7 +95,7 @@ get '/v0/containers/service/:service_name/ps' do
     r = service.ps_container
     return_json(r)
   rescue StandardError => e
-    send_encoded_exception(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @!endgroup
