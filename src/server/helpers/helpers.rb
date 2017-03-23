@@ -41,7 +41,7 @@ helpers do
       #error_mesg[:method]
       #error_mesg[:params_trunc]
       if error_mesg[:error_object][:error_mesg] == 'unauthorised'
-        status(403)
+        status(404)
       else
         status(code)
       end

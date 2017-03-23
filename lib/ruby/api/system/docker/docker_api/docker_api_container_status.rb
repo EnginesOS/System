@@ -37,11 +37,11 @@ module DockerApiContainerStatus
       end
     end
 
-    raise DockerException.new(error_hash('no such engine', id, 403)) if r == true # happens on a destroy
+    raise DockerException.new(error_hash('no such engine', id, 404)) if r == true # happens on a destroy
     raise DockerException.new(error_hash(' 409 twice for '  , request, 409)) unless r.is_a?(Hash)
-    raise DockerException.new(error_hash('not a managed engine', r, 403)) unless r.key?(:Config)
-    raise DockerException.new(error_hash('not a managed engine', r, 403)) unless r[:Config].key?(:Labels)
-    raise DockerException.new(error_hash('not a managed engine', r, 403)) unless r[:Config][:Labels].key?(:container_type)
+    raise DockerException.new(error_hash('not a managed engine', r, 404)) unless r.key?(:Config)
+    raise DockerException.new(error_hash('not a managed engine', r, 404)) unless r[:Config].key?(:Labels)
+    raise DockerException.new(error_hash('not a managed engine', r, 404)) unless r[:Config][:Labels].key?(:container_type)
     [r[:Config][:Labels][:container_name], r[:Config][:Labels][:container_type]]
   end
 
