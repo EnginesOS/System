@@ -54,7 +54,7 @@ class DockerEventWatcher  < ErrorsApi
   require 'yajl'
   require 'net_x/http_unix'
   require 'socket'
-  require 'json'
+ # require 'json'
   require_relative 'event_mask.rb'
 
   def initialize(system, event_listeners = nil )

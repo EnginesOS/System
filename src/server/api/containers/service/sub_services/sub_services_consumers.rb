@@ -13,8 +13,8 @@ end
 post '/v0/containers/service/:service_name/sub_service/:engine_name/:service_handle/:sub_handle' do
   begin
     params.merge!(post_params(request))
-    params = assemble_params(params, [:service_name,:engine_name,:service_handle,:sub_handle], nil, :all)
-    r = engines_api.update_subservice(params)
+    params = assemble_params(params, [:service_name, :engine_name, :service_handle, :sub_handle], nil, :all)
+    engines_api.update_subservice(params)
     return_true
   rescue StandardError => e
     log_error(request, e)
@@ -25,7 +25,7 @@ post '/v0/containers/service/:service_name/sub_services/:engine_name/:service_ha
   begin
     params.merge!(post_params(request))
     params = assemble_params(params, [:service_name, :engine_name, :service_handle, :sub_handle], nil, :all)
-    r = engines_api.attach_subservice(params)
+    engines_api.attach_subservice(params)
     return_true
   rescue StandardError => e
     log_error(request, e)
@@ -36,7 +36,7 @@ delete '/v0/containers/service/:service_name/sub_services/:engine_name/:service_
   begin
     params.merge!(post_params(request))
     params = assemble_params(params, [:service_name, :engine_name, :service_handle, :sub_handle])
-    r = engines_api.remove_subservice(params)
+    engines_api.remove_subservice(params)
     return_true
   rescue StandardError => e
     log_error(request, e)
@@ -52,4 +52,4 @@ get '/v0/containers/service/:service_name/sub_service/:engine_name/:service_hand
     log_error(request, e)
   end
 end
-
+# @!endgroup

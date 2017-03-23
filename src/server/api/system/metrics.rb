@@ -8,7 +8,7 @@
 #
 get '/v0/system/metrics/memory' do
   begin
-    memory_info =  engines_api.get_system_memory_info
+    memory_info = engines_api.get_system_memory_info
     return_json(memory_info)
   rescue StandardError => e
     log_error(request, e)
@@ -44,7 +44,7 @@ end
 get '/v0/system/metrics/memory/statistics' do
   begin
     memory_statistics = MemoryStatistics.total_memory_statistics(engines_api)
-    return_json( memory_statistics)
+    return_json(memory_statistics)
   rescue StandardError => e
     log_error(request, e)
   end

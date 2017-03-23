@@ -68,7 +68,7 @@ require '/opt/engines/lib/ruby/system/system_utils.rb'
 get '/v0/system/version/base_os' do
   begin
     base_os = SystemUtils.get_os_release_data
-    base_os =  downcase_keys(base_os)
+    base_os = downcase_keys(base_os)
     return_json(base_os)
   rescue StandardError => e
     log_error(request, e)

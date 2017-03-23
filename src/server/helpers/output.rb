@@ -1,4 +1,4 @@
-def return_json(r, s=202)
+def return_json(r, s = 202)
   return return_error(r) if r.is_a?(EnginesError)
   content_type 'application/json'
   status(s)
@@ -6,7 +6,7 @@ def return_json(r, s=202)
   r.to_json
 end
 
-def return_json_array(r, s=202)
+def return_json_array(r, s = 202)
   return return_error_array(r) if r.is_a?(EnginesError)
   content_type 'application/json'
   status(s)
@@ -15,7 +15,7 @@ def return_json_array(r, s=202)
   r.to_json
 end
 
-def return_text(r, s=202)
+def return_text(r, s = 202)
   return return_error(r) if r.is_a?(EnginesError)
   content_type 'text/plain'
   status(s)
@@ -29,7 +29,7 @@ end
 
 def return_error(error, nil_result = nil)
   content_type 'application/json'
-  # FixMe take this from the error if avail
+  # FIXME: take this from the error if avail
   status(404)
   return nil_result if error.nil?
   error.to_json

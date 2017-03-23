@@ -56,7 +56,7 @@ end
 # @return  [text/event-stream]
 get '/v0/engine_builder/follow_stream', provides: 'text/event-stream'  do
   begin
-    build_log_file =  File.new(SystemConfig.BuildOutputFile, 'r')
+    build_log_file = File.new(SystemConfig.BuildOutputFile, 'r')
     has_data = true
     build_over = false
     stream :keep_open do |out|
@@ -75,7 +75,7 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream'  do
           unless out.closed?
             bytes.force_encoding(Encoding::UTF_8) unless bytes.nil?
             out  << bytes
-            out  << "."
+            out  << '.'
             bytes = ''
             sleep 2
             retry if File.exist?(SystemConfig.BuildRunningParamsFile)
@@ -89,7 +89,7 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream'  do
           has_data = false
         rescue IOError
           has_data = false
-          out  << bytes  unless out.closed?
+          out << bytes  unless out.closed?
           build_log_file.close
           out.close unless out.closed?
         end

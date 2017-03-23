@@ -56,7 +56,7 @@ post '/v0/unauthenticated/bootstrap/first_run/complete' do
     cparams = assemble_params(p_params, [], :all)
     i = true
     i = false if cparams[:install_mgmt] == 'false' || cparams[:install_mgmt] == false
-    return_text( engines_api.first_run_complete(i) )
+    return_text(engines_api.first_run_complete(i))
   rescue StandardError => e
     log_error(request, e)
   end
@@ -73,3 +73,4 @@ get '/v0/unauthenticated/system_ca' do
     log_error(request, e)
   end
 end
+# @!endgroup

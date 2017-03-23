@@ -10,7 +10,7 @@ def error_hash(mesg, *params)
   }
 end
 
-def assemble_params(ps, address_params, required_params=nil, accept_params=nil )
+def assemble_params(ps, address_params, required_params = nil, accept_params = nil )
   raise EnginesException.new(error_hash('No params Supplied')) if ps.nil?
   ps = deal_with_json(ps)
   a_params = match_address_params(ps, address_params)
@@ -42,7 +42,7 @@ end
 def optional_params(params, keys)
   mparams = params[:api_vars]
   mparams = params if mparams.nil?
-  match_params(mparams, keys )
+  match_params(mparams, keys)
 end
 
 def match_address_params(params, keys)
@@ -55,7 +55,7 @@ def match_params(params, keys, is_required = false)
   cparams =  {}
   if keys.is_a?(Array)
     for key in keys
-      return false  unless  check_required(params, key, is_required)
+      return false unless check_required(params, key, is_required)
       cparams[key.to_sym] = params[key] unless params[key].nil?
     end
   else
@@ -77,11 +77,11 @@ def check_required(params, key, is_required)
 end
 
 def service_hash_from_params(params, search)
-  unless search
+  if search
+    params[:type_path] = params['splat'][0]
+  else
     params[:type_path] = File.dirname(params['splat'][0])
     params[:service_handle] = File.basename(params['splat'][0])
-  else
-    params[:type_path] =  params['splat'][0]
   end
   params
 end
@@ -99,4 +99,3 @@ def service_service_hash_from_params(params, search = false)
   hash[:container_type] = 'service'
   hash
 end
-
