@@ -178,6 +178,7 @@ class EngineBuilder < ErrorsApi
   def wait_for_engine
     cnt = 0
     lcnt = 5
+    return @container unless @container.is_a?(ManagedEngine)
     log_build_output('Starting Engine')
     while @container.is_startup_complete? == false && @container.is_running?
       cnt += 1
