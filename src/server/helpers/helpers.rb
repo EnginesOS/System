@@ -26,7 +26,7 @@ helpers do
   end
 
   def send_encoded_exception(api_exception)#request, error_object, *args)
-    api_exception[:exception] = fake_exception(api_exception[:exception]) unless api_exception[:exception].is_a?(Exception)
+    api_exception[:exception] = fake_exception(api_exception) unless api_exception[:exception].is_a?(Exception)
     status_code = 404
     status_code = api_exception[:status] if api_exception.key?(:status)
     error_mesg = {
@@ -56,9 +56,20 @@ helpers do
     #  send_encoded_exception(request: 'send_encoded_exception', exception: e, status: 500)
   end
 
-  def fake_exception(error)
-    STDERR.puts('faking it' + error.to_s)
-    send_encoded_exception(request: 'string_exception', exception: error, status: 500)
+  def fake_exception(api_exception)
+    STDERR.puts('faking it' + api_exception.to_s)
+    status_code = 404
+       status_code = api_exception[:status] if api_exception.key?(:status)
+       error_mesg = {
+         error_object: {}
+       }
+       if request.is_a?(String)
+         error_mesg[:route] = request
+       else
+         error_mesg[:route] = request.fullpath
+       end
+    error_mesg[:error_object] = api_exception[:exception].to_s
+    return_json(error_mesg, status_code)
   end
 
   def get_engine(engine_name)
