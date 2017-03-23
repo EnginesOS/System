@@ -48,12 +48,13 @@ helpers do
     elsif error_object.is_a?(Exception)
       error_mesg[:error_object] = error_object.to_s
       error_mesg[:source] = error_object.backtrace.to_s
-      error_mesg[:error_object][:mesg] = args[0] unless args.count == 0
+      error_mesg[:error_object][:error_mesg] = args[0] unless args.count == 0
       error_mesg[:error_object][:args] = args.to_s unless args.count == 0
       status(500)
     else
       error_mesg[:error_object] = error_object
-      if error_mesg[:error_object][:error_mesg] == 'unauthorised'
+      if error_object == 'unauthorised' 
+        error_mesg[:error_object][:error_mesg] = 'unauthorised' 
         status(403)
       else
         status(500)
