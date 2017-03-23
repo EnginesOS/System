@@ -60,10 +60,10 @@ helpers do
   def fake_exception(api_exception)
     STDERR.puts('faking it' + api_exception.to_s)
     if api_exception.to_s == 'unauthorised'
-      status_code = 401
+      status_code = 403
       STDERR.puts('faking unauthorised')
     else
-      status_code = 401
+      status_code = 403
     end
     status_code = api_exception[:status] if api_exception.key?(:status)
     error_mesg = {
