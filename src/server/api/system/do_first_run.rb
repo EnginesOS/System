@@ -25,7 +25,7 @@ post '/v0/system/do_first_run' do
     r = engines_api.set_first_run_parameters(cparams)
     return_json(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 # @!endgroup

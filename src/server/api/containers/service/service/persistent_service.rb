@@ -12,7 +12,7 @@ get '/v0/containers/service/:service_name/service/persistent/:publisher_namespac
     content_type 'binary/octet-stream'
     r.b
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 # @method service_import_persistent_service
@@ -25,13 +25,13 @@ get '/v0/containers/service/:service_name/service/persistent/:publisher_namespac
 
     hash = {}
     hash[:service_connection] = service_service_hash_from_params(params)
-    return log_error(request, 'Service not found', hash) if hash[:service_connection].is_a?(FalseClass)
+    return send_encoded_exception(request, 'Service not found', hash) if hash[:service_connection].is_a?(FalseClass)
     service = get_service(params[:service_name])
     hash[:data] = params[:data]
     r = service.import_service_data(hash)
     return_text(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 # @method service_replace_persistent_service
@@ -43,14 +43,14 @@ get '/v0/containers/service/:service_name/service/persistent/:publisher_namespac
   begin
     hash = {}
     hash[:service_connection] = service_service_hash_from_params(params)
-    return log_error(request, 'Service not found', hash) if hash[:service_connection].is_a?(FalseClass)
+    return send_encoded_exception(request, 'Service not found', hash) if hash[:service_connection].is_a?(FalseClass)
     service = get_service(params[:service_name])
     hash[:import_method] = :replace
     hash[:data] = params[:data]
     r = service.import_service_data(hash)
     return_text(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 
@@ -64,7 +64,7 @@ get '/v0/containers/service/:service_name/service/persistent/:publisher_namespac
     r = engines_api.find_service_service_hash(hash)
     return_json(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 # @!endgroup

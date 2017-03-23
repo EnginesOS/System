@@ -6,12 +6,12 @@
 get '/v0/containers/engine/:engine_name/services/non_persistent/' do
   begin
     engine = get_engine(params[:engine_name])
-    return log_error(request, engine, params) if engine.nil?
+    return send_encoded_exception(request, engine, params) if engine.nil?
     r = engines_api.list_non_persistent_services(engine)
     return_json_array(r)
   rescue StandardError => e
     return return_json_array(nil) if e.is_a?(EnginesException) && e.level == :warning
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 
@@ -30,7 +30,7 @@ post '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_name
     r = engines_api.create_and_register_service(cparams)
     return_text(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 
@@ -46,7 +46,7 @@ delete '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_na
     r = engines_api.dettach_service(cparams)
     return_text(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 
@@ -61,7 +61,7 @@ get '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_names
     r = engines_api.find_engine_service_hashes(hash)
     return_json(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 

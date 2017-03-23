@@ -9,7 +9,7 @@ get '/v0/containers/engine/:engine_name' do
     engine = get_engine(params[:engine_name])
     managed_container_as_json(engine)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 
@@ -20,11 +20,11 @@ end
 get '/v0/containers/engine/:engine_name/status' do
   begin
     engine = get_engine(params[:engine_name])
-    return log_error(request, engine, params) if engine.nil?
+    return send_encoded_exception(request, engine, params) if engine.nil?
     r = engine.status
     return_json(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 # @method get_engine_state
@@ -34,11 +34,11 @@ end
 get '/v0/containers/engine/:engine_name/state' do
   begin
     engine = get_engine(params[:engine_name])
-    return log_error(request, engine, params) if engine.nil?
+    return send_encoded_exception(request, engine, params) if engine.nil?
     r = engine.read_state
     return_text(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 # @method get_engine_blueprint
@@ -48,11 +48,11 @@ end
 get '/v0/containers/engine/:engine_name/blueprint' do
   begin
     engine = get_engine(params[:engine_name])
-    return log_error(request, engine, params) if engine.nil?
+    return send_encoded_exception(request, engine, params) if engine.nil?
     r = engine.load_blueprint
     return_json(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 # @method get_engine_build_report
@@ -64,7 +64,7 @@ get '/v0/containers/engine/:engine_name/build_report' do
     r = engines_api.get_build_report(params[:engine_name])
     return_text(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 # @method get_engine_websites
@@ -74,7 +74,7 @@ end
 get '/v0/containers/engine/:engine_name/websites' do
   begin
     engine = get_engine(params[:engine_name])
-    return log_error(request, engine, params) if engine.nil?
+    return send_encoded_exception(request, engine, params) if engine.nil?
     r = engine.web_sites
     return_json(r)
   rescue StandardError => e
@@ -88,11 +88,11 @@ end
 get '/v0/containers/engine/:engine_name/logs' do
   begin
     engine = get_engine(params[:engine_name])
-    return log_error(request, engine, params) if engine.nil?
+    return send_encoded_exception(request, engine, params) if engine.nil?
     r = engine.logs_container
     return_json(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 
@@ -103,11 +103,11 @@ end
 get '/v0/containers/engine/:engine_name/ps' do
   begin
     engine = get_engine(params[:engine_name])
-    return log_error(request, engine, params) if engine.nil?
+    return send_encoded_exception(request, engine, params) if engine.nil?
     r = engine.ps_container
     return_json(r)
   rescue
-    log_error(request, 'Container not running', 'Container not running')
+    send_encoded_exception(request, 'Container not running', 'Container not running')
   end
 end
 # @!endgroup

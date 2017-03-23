@@ -10,7 +10,7 @@ get '/v0/service_manager/available_services/managed_engine' do
     avail = engines_api.load_avail_services_for_type('ManagedEngine')
     return_json(avail)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 # @method services_available_for_managed_engine
@@ -23,7 +23,7 @@ get '/v0/service_manager/available_services/managed_engine/:managed_engine' do
     avail = engines_api.load_avail_services_for_type('ManagedEngine')
     return_json(avail)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 # @method services_available_for_type
@@ -37,7 +37,7 @@ get '/v0/service_manager/available_services/type/*' do
     avail = engines_api.load_avail_services_for_type(type_path)
     return_json(avail)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 

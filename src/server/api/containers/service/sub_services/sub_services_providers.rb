@@ -5,7 +5,7 @@ get '/v0/containers/service/sub_service_providers/:service_handle/:publisher_nam
     r = engines_api.subservice_provided(params)
     return_json(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 
@@ -16,7 +16,7 @@ get '/v0/containers/services/sub_service_providers/:publish_namespace/*' do
     r = engines_api.subservices_provided(params)
     return_json(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 # @!endgroup

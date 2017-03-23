@@ -10,7 +10,7 @@ get '/v0/system/reserved/ports' do
     reserved_ports = engines_api.reserved_ports
     return_json_array(reserved_ports)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 
@@ -24,7 +24,7 @@ get '/v0/system/reserved/hostnames' do
     reserved_hostnames = engines_api.taken_hostnames
     return_json_array(reserved_hostnames)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 
@@ -38,7 +38,7 @@ get '/v0/system/reserved/engine_names' do
     engine_names = engines_api.reserved_engine_names
     return_json_array(engine_names)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 # @!endgroup

@@ -9,7 +9,7 @@ get '/v0/system/config/default_domain' do
     default_domain = engines_api.get_default_domain
     return_text(default_domain)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 # @method set_default_domain
@@ -25,7 +25,7 @@ post '/v0/system/config/default_domain' do
     engines_api.set_default_domain(default_domain)
     return_text(true)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 # @!group /system/config/
@@ -39,7 +39,7 @@ get '/v0/system/config/default_site' do
     default_site = engines_api.get_default_site
     return_text(default_site)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 # @method set_default_site
@@ -55,7 +55,7 @@ post '/v0/system/config/default_site' do
     r = engines_api.set_default_site(default_site)
     return_text(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 # @method set_hostname
@@ -71,7 +71,7 @@ post '/v0/system/config/hostname' do
     r = engines_api.set_hostname(hostname)
     return_text(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 # @method get_hostname
@@ -83,7 +83,7 @@ get '/v0/system/config/hostname' do
     hostname = engines_api.system_hostname
     return_text(hostname)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 # @method enable_remote_exception_logging
@@ -95,7 +95,7 @@ post '/v0/system/config/remote_exception_logging/enable' do
     r = engines_api.enable_remote_exception_logging
     return_text(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 # @method disable_remote_exception_logging
@@ -107,7 +107,7 @@ post '/v0/system/config/remote_exception_logging/disable' do
     r = engines_api.disable_remote_exception_logging
     return_text(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 # @method get_remote_exception_logging
@@ -119,7 +119,7 @@ get '/v0/system/config/remote_exception_logging' do
     r = SystemStatus.is_remote_exception_logging?
     return_text(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 # @!endgroup

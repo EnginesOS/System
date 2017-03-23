@@ -10,7 +10,7 @@ get '/v0/containers/service/:service_name/consumers/' do
     r = service.registered_consumers
     return_json_array(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 
@@ -26,7 +26,7 @@ get '/v0/containers/service/:service_name/consumers/:parent_engine' do
     r = service.registered_consumers(cparams)
     return_json_array(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 

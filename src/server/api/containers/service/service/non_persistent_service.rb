@@ -11,7 +11,7 @@ get '/v0/containers/service/:service_name/service/non_persistent/:publisher_name
     r = engines_api.force_register_attached_service(service_hash)
     return_text(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 # @method service_force_reregister_non_persistent_service
@@ -25,7 +25,7 @@ get '/v0/containers/service/:service_name/service/non_persistent/:publisher_name
     r = engines_api.force_reregister_attached_service(service_hash)
     return_text(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 # @method service_force_deregister_non_persistent_service
@@ -39,7 +39,7 @@ get '/v0/containers/service/:service_name/service/non_persistent/:publisher_name
     r = engines_api.force_deregister_attached_service(service_hash)
     return_text(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 # @method service_get_non_persistent_service
@@ -51,7 +51,7 @@ get '/v0/containers/service/:service_name/service/non_persistent/:publisher_name
     r = engines_api.find_service_service_hash(hash)
     return_json(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 

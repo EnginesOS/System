@@ -10,7 +10,7 @@ get '/v0/containers/service/:service_name/metrics/network' do
     r = engines_api.get_container_network_metrics(service)
     return_json(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 # @method get_service_metrics_memory
@@ -24,7 +24,7 @@ get '/v0/containers/service/:service_name/metrics/memory' do
     r = engines_api.container_memory_stats(service)
     return_json(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 

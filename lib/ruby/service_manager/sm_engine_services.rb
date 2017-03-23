@@ -95,8 +95,7 @@ module SmEngineServices
     true
   end
 
-  def remove_engine_services(params)
-    
+  def remove_engine_services(params)    
     STDERR.puts('remove_engine_services ' + params.to_s)
     services = find_engine_services_hashes(params)
     return services unless services.is_a?(Array)

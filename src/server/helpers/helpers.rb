@@ -25,7 +25,7 @@ helpers do
     false
   end
 
-  def log_error(request, error_object, *args)
+  def send_encoded_exception(request, error_object, *args)    
     code = 404
     error_mesg = {
       error_object: {}

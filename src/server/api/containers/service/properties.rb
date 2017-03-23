@@ -16,7 +16,7 @@ post '/v0/containers/service/:service_name/properties/network' do
     r = engines_api.set_container_network_properties(service, cparams)
     return_text(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 # @method set_service_properties_runtime
@@ -34,7 +34,7 @@ post '/v0/containers/service/:service_name/properties/runtime' do
     r = engines_api.set_container_runtime_properties(service, cparams)
     return_text(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 # @!endgroug

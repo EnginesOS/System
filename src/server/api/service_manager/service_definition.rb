@@ -11,7 +11,7 @@ get '/v0/service_manager/service_definitions/:publisher_namespace/*' do
     r = engines_api.get_service_definition(cparams)
     return_json(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 

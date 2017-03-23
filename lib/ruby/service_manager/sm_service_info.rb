@@ -8,9 +8,7 @@ module SmServiceInfo
   end
 
   def is_service_running?(service_name)
-    service = @core_api.loadManagedService(service_name)
-    return service unless service.is_a?(ManagedService)
-    service.is_running?
+    @core_api.loadManagedService(service_name).is_running?
   end
 
   #Test whether a service hash is registered

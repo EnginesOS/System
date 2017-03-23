@@ -8,7 +8,7 @@ get '/v0/system/control/registry/restart' do
     restart_registry = engines_api.force_registry_restart
     return_text(restart_registry)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request, e)
   end
 end
 
