@@ -61,6 +61,7 @@ helpers do
     STDERR.puts('faking it' + api_exception.to_s)
     if api_exception.to_s == 'unauthorised'
       status_code = 401
+      STDERR.puts('faking unauthorised')
     else
       status_code = 404
     end
