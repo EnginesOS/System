@@ -10,6 +10,7 @@ get '/v0/containers/engine/:engine_name/services/persistent/' do
     r = engines_api.list_persistent_services(engine)
     return_json_array(r)
   rescue StandardError =>e
+    return return_json_array(nil) if e.is_a?(EnginesException) && e.level == :warning
     log_error(request, e)
   end
 end

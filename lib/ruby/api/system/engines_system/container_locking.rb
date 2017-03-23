@@ -5,13 +5,13 @@ module ContainerLocking
   def lock_has_expired(lock_fn)
      return true if File.mtime(lock_fn) <  Time.now + @@lock_timeout
       false
-   rescue StandardError => e
+   rescue StandardError
       true
    end
    
   def unlock_container_conf_file(state_dir)
     File.delete(state_dir + '/lock') if  File.exists?(state_dir + '/lock')
-  rescue StandardError => e
+  rescue StandardError
      false
   end
 

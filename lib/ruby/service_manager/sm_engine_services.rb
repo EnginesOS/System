@@ -39,12 +39,16 @@ module SmEngineServices
       parent_engine: engine.container_name,
       container_type: engine.ctype
     }
-    services = get_engine_nonpersistent_services(params)
+    services = nil
+    begin
+      services = get_engine_nonpersistent_services(params)
+    rescue
+    end
     return services  unless services.is_a?(Array)
     services.each do |service_hash|
       begin
-      system_registry_client.remove_from_services_registry(service_hash)
-      remove_from_managed_service(service_hash)
+        system_registry_client.remove_from_services_registry(service_hash)
+        remove_from_managed_service(service_hash)
       rescue
       end
     end
@@ -57,7 +61,7 @@ module SmEngineServices
       parent_engine: engine.container_name,
       container_type: engine.ctype
     }
-      get_engine_persistent_services(params)
+    get_engine_persistent_services(params)
   end
 
   def list_non_persistent_services(engine)
@@ -66,7 +70,7 @@ module SmEngineServices
       parent_engine: engine.container_name,
       container_type: engine.ctype
     }
-    get_engine_nonpersistent_services(params)  
+    get_engine_nonpersistent_services(params)
   end
 
   #service manager get non persistent services for engine_name
@@ -83,8 +87,8 @@ module SmEngineServices
     return services  unless services.is_a?(Array)
     services.each do |service_hash|
       begin
-      register_non_persistent_service(service_hash)
-      SystemDebug.debug(SystemDebug.services,:register_non_persistent,service_hash)
+        register_non_persistent_service(service_hash)
+        SystemDebug.debug(SystemDebug.services,:register_non_persistent,service_hash)
       rescue
       end
     end
@@ -92,12 +96,21 @@ module SmEngineServices
   end
 
   def remove_engine_services(params)
-   services = find_engine_services_hashes(params)
-   return services unless services.is_a?(Array)
+    
+    STDERR.puts('remove_engine_services ' + params.to_s)
+    services = find_engine_services_hashes(params)
+    return services unless services.is_a?(Array)
+    STDERR.puts('remove_engine_services ' + services.to_s)
     services.each do |s|
-    system_registry_client.remove_from_managed_engine(s)
-  end
- 
+      STDERR.puts('remove_engine_service ' + s.to_s)
+   #   if params[:remove_all_data] == true || s[:persistence] == false
+        STDERR.puts(' rm ' + s.to_s)
+    #    system_registry_client.remove_from_managed_engine(s)
+    #  else
+    #    STDERR.puts(' orphanicate' + s.to_s)
+   #     orphanate_service(s)
+   #   end
+    end
   end
 
   def get_cron_entry(cronjob, container)
@@ -118,11 +131,12 @@ module SmEngineServices
   #@ if :remove_all_data is not specified then the Persistant services registered with the engine are moved to the orphan services tree
   #@return true on success and false on fail
   def remove_managed_services(params)
+    STDERR.puts(' remove_managed_services ' + params.to_s)
     clear_error
     begin
-    services = get_engine_persistent_services(params)  #system_registry_client.
-    rescue StandardError => e
-        #handle_exception(e)
+      services = get_engine_persistent_services(params)  #system_registry_client.
+    rescue # StandardError => e
+      #handle_exception(e)
       return true
     end
     return true unless services.is_a?(Array)
@@ -132,8 +146,8 @@ module SmEngineServices
         service[:remove_all_data] = params[:remove_all_data]
         delete_service(service)
       else
-         orphanate_service(service)
-         remove_from_managed_service(service)
+        orphanate_service(service)
+        remove_from_managed_service(service)
       end
     end
     true

@@ -11,7 +11,7 @@ module SystemSettings
   end
 
   def system_hostname
-    res =  run_server_script('get_hostname')
+    res = run_server_script('get_hostname')
     return res[:stdout].strip if res[:result] == 0
     log_error_mesg('fail to get hosthame ' + res[:stderr])
     'unknown'

@@ -65,7 +65,7 @@ module DockerInfoCollector
     end
     save_state unless cid == @container_id
     @container_id
-  rescue EnginesException => e
+  rescue EnginesException
     clear_cid
     -1
   end
@@ -85,12 +85,12 @@ module DockerInfoCollector
     return false if @docker_info_cache == false && @setState == 'nocontainer'
     @docker_info_cache =  @container_api.inspect_container(self) if @docker_info_cache.nil?
 
-    if  @docker_info_cache.is_a?(Array)
+    if @docker_info_cache.is_a?(Array)
       @docker_info_cache = @docker_info_cache[0]
     end
     @docker_info_cache
 
-  rescue EnginesException => e
+  rescue EnginesException
     @docker_info_cache = nil    
   end
 

@@ -19,7 +19,7 @@ def assemble_params(ps, address_params, required_params=nil, accept_params=nil )
   a_params = match_address_params(ps, address_params)
   raise EnginesException.new(error_hash('Missing Address Parameters ' + address_params.to_s + ' but only have:' + ps.to_s)) if a_params == false
 
-  unless  required_params.nil? || required_params.empty?
+  unless required_params.nil? || required_params.empty?
     if required_params == :all
       a_params.merge!(ps[:api_vars]) if ps.key?(:api_vars)
       return a_params

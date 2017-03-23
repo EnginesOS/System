@@ -38,20 +38,33 @@ helpers do
     end
     if error_object.is_a?(EnginesException)
       error_mesg[:error_object] = error_object.to_h
-    else
-      error_mesg[:error_object] = {}
-      error_mesg[:error_object][:mesg] = args[0] unless args.count == 0
+      code = error_mesg[:error_object][:status] if error_mesg[:error_object].key?(:status)
+      if error_mesg[:error_object][:error_mesg] == 'unauthorised'
+        status(403)
+      else
+        status(code)
+      end
+      # StandardError Exception
+    elsif error_object.is_a?(Exception)
+      error_mesg[:error_object] = error_object.to_s
+      error_mesg[:source] = error_object.backtrace.to_s
+      error_mesg[:error_object][:error_mesg] = args[0] unless args.count == 0
       error_mesg[:error_object][:args] = args.to_s unless args.count == 0
-    end
-    code = error_mesg[:error_object][:status] if   error_mesg[:error_object].key?(:status)
-    STDERR.puts error_mesg.to_s
-    
-    #  body args.to_s + ':' + engines_api.last_error.to_s
-    if error_mesg[:error_object][:error_mesg] == 'unauthorised'
-      status(403)
+      status(500)
     else
-      status(code)
+      error_mesg[:error_object] = error_object
+      if error_object == 'unauthorised' 
+        error_mesg[:error_object][:error_mesg] = 'unauthorised' 
+        status(403)
+      else
+        status(500)
+      end
     end
+
+    STDERR.puts error_mesg.to_s
+
+    #  body args.to_s + ':' + engines_api.last_error.to_s
+
     error_mesg.to_json
   end
 
@@ -100,7 +113,7 @@ helpers do
     config.failure_app = self
   end
 
-  Warden::Manager.before_failure do |env,opts|
+  Warden::Manager.before_failure do |env, opts|
     env['REQUEST_METHOD'] = 'POST'
   end
 

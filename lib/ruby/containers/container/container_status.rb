@@ -22,12 +22,10 @@ module ContainerStatus
     end
    # SystemDebug.debug(SystemDebug.containers,  'no_matching state_info', info.class.name, info)
      'nocontainer'
-
   end
 
   def is_paused?
-    state = read_state
-    return true if state == 'paused'
+    return true if read_state == 'paused'
      false
   end
 
@@ -42,10 +40,15 @@ module ContainerStatus
       return false
     end
   end
+  
+  def is_stopped?
+     return true if read_state == 'stopped'
+      false
+   end
+  
 
   def is_running?
-    state = read_state
-    return true if state == 'running'
+    return true if read_state == 'running'
      false
   end
 

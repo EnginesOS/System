@@ -14,9 +14,9 @@ module SmServiceConfigurations
     else
       return true
     end
-rescue StandardError =>e
-  log_exception(e)
-  raise e
+  rescue StandardError =>e
+    log_exception(e)
+    raise e
   end
 
   #@Returns an Array of Configuration hashes resgistered against the service [String] service_name
@@ -32,9 +32,10 @@ rescue StandardError =>e
   def get_pending_service_configurations_hashes(service_name)
     hashes = system_registry_client.get_service_configurations_hashes(service_name)
     return unless hashes.is_a?(Array)
+    retval = []
     hashes.each do |config|
       retval.push(config) if config.key?(:pending)
     end
-    return retval
+    retval
   end
 end

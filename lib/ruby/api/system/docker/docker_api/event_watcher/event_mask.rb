@@ -57,7 +57,6 @@ class EventMask
     elsif event_hash[:Type] = 'network'
       mask |= @@network_event
     end
-
     mask
   rescue StandardError => e
     SystemDebug.debug(SystemDebug.container_events,event_hash.to_s + ':' + e.to_s + ':' +  e.backtrace.to_s)

@@ -1,5 +1,6 @@
 def attach_shared_volume(shared_service)
-  engine = @core_api.loadManagedEngine(shared_service[:parent_engine])
+  STDERR.puts(' attach_shared_volume ' + shared_service.to_s)
+  engine = @core_api.loadManagedEngine(shared_service[:service_owner_handle])
   #used by the builder whn no engine to add volume to def
   #  return engine unless engine.is_a?(ManagedEngine)
   # Volume.complete_service_hash(shared_service)

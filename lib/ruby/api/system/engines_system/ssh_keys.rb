@@ -6,12 +6,12 @@ module SshKeys
   end
 
   def update_public_key(key)
-    r =  run_server_script('update_system_access', key)
+   run_server_script('update_system_access', key)
     true
   end
 
   def regen_system_ssh_key
-    r=   run_server_script('regen_private')
+    r = run_server_script('regen_private')
     r[:stdout]
   end
 

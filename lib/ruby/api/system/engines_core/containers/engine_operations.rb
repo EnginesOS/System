@@ -4,13 +4,17 @@ module EnginesOperations
   #@params [Hash] :engine_name
   #Retrieves all persistent service registered to :engine_name and destroys the underlying service (fs db etc)
   # They are removed from the tree if delete is sucessful
-  def delete_engine(params)
-    SystemDebug.debug(SystemDebug.containers,:delete_engines,params)
+  def delete_engine( params )
+
+    SystemDebug.debug(SystemDebug.containers, :delete_engines, params)
     params[:container_type] = 'container' # Force This
     engine_name = params[:engine_name]
     reinstall = false
     reinstall = params[:reinstall] = true if params.key?(:reinstall)
-    remove_engine(engine_name, reinstall)
+    if loadManagedEngine(engine_name).has_container?
+      raise EnginesException.new(error_hash('Container Exists Please Destroy engine first' , params)) unless reinstall.is_a?(TrueClass)
+    end
+    remove_engine(engine_name, reinstall, params[:remove_all_data])
   end
 
   #install from fresh copy of blueprint in repository
@@ -74,6 +78,5 @@ module EnginesOperations
   def docker_build_engine(engine_name, build_archive_filename , builder)
     @docker_api.build_engine(engine_name, build_archive_filename, builder)
   end
-
 
 end

@@ -26,7 +26,6 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
           has_data = true
 
           timer = EventMachine::PeriodicTimer.new(25) do
-
             if out.closed?
               # has_data = finialise_events_stream(events_stream)
               STDERR.puts('NOOP found OUT IS CLOSED: ' + timer.to_s)
@@ -36,12 +35,11 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
             else
               #     STDERR.puts('PERIOD')
               out <<  {:no_op => true}.to_json#unless lock_timer == true
+              out <<  '\n'
             end
           end if timer.nil?
-
           events_stream = engines_api.container_events_stream
           out.callback {  finialise_events_stream(events_stream, timer)}
-
           while has_data == true
             #   STDERR.puts('WHILE HAS DATA ' + events_stream.to_s + ':' + events_stream.class.name + ':' + events_stream.rd.class.name + ':' + events_stream.rd.to_s + ':' + events_stream.rd.inspect)
             begin
@@ -60,7 +58,6 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
               #            end
               #            jason_event = JSON.parse(bytes)
               if out.closed?
-
                 has_data = finialise_events_stream(events_stream, timer)
                 STDERR.puts('OUT IS CLOSED but have '  + jason_event.to_s)
                 next

@@ -18,7 +18,7 @@ module ManagedContainerOnAction
       begin
       @container_api.register_non_persistent_services(self)
       rescue
-       return on_stop unless is_running?
+       return on_stop(nil) unless is_running?
       end
       save_state
     }

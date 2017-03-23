@@ -57,7 +57,6 @@ class ManagedEngine < ManagedContainer
       @volume_service_builder = false
     end
     super
-
   end
 
   def volume_service_builder=(builder)
@@ -80,8 +79,9 @@ class ManagedEngine < ManagedContainer
   end
 
   def add_shared_volume(service_hash)
-    @volumes[ vol[:volume_name] ] = {
-      volume_name: service_hash[:owner] + '_' + service_hash[:service_handle],
+    volume_name = service_hash[:owner] + '_' + service_hash[:service_handle]
+    @volumes[volume_name] = {
+      volume_name: volume_name,
       localpath: service_hash[:variables][:volume_src],
       remotepath: service_hash[:variables][:engine_path],
       permissions: service_hash[:variables][:permissions],

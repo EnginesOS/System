@@ -9,7 +9,7 @@ module ManagedServiceOnAction
         begin
         @container_api.update_service_configuration(configuration)
         rescue 
-          return on_stop unless is_running?
+          return on_stop(nil) unless is_running?
         end
       end
     end
@@ -46,11 +46,11 @@ module ManagedServiceOnAction
   end
   
   def on_stop(what)
-    super
+    super(what)
   end
 
   def out_of_mem(what)
-    super
+    super(what)
   end
 
 end

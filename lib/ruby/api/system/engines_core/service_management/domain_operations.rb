@@ -10,7 +10,6 @@ module DomainOperations
     # also self host .local regardless so windows can point to dns and pretend to understand
     # bonjournoe without happing it installed and there fore bypass the cname issue with windows
     add_domain(params)
-
   end
 
   def update_domain_service(params)
@@ -31,7 +30,6 @@ module DomainOperations
   end
 
   def add_domain(params)
-    r = 0
     # STDERR.puts(' ADD DOMAIN VARIABLE ' + params.to_s)
     DNSHosting.add_domain(params)
     return true unless params[:self_hosted]
@@ -45,7 +43,6 @@ module DomainOperations
       publisher_namespace: 'EnginesSystem',
       type_path: 'dns'
     }
-
     if params[:internal_only]
       service_hash[:variables][:ip_type] = 'lan'
       service_hash[:variables][:ip] =  get_lan_ip_for_hosted_dns()

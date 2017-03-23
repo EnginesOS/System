@@ -2,7 +2,7 @@ module ContainerControls
   def start_container
     #expire_engine_info
     r = true
-    return true if read_state == 'running'
+    return true if is_running?
     raise EnginesException.new(warning_hash('Can\'t Start Container as is running', container_name)) unless read_state == 'stopped'
     r = @container_api.start_container(self)
   ensure
@@ -17,7 +17,7 @@ module ContainerControls
   def stop_container
     #expire_engine_info
     r = true
-    return true if read_state == 'stopped'
+    return true if is_stopped?
     raise EnginesException.new(warning_hash('Can\'t Stop Container as not running', container_name)) unless read_state == 'running'
     r = @container_api.stop_container(self)
   ensure
@@ -28,7 +28,7 @@ module ContainerControls
   def pause_container
     #expire_engine_info
     r = true
-    return true if read_state == 'paused'
+    return true if is_paused?
     raise EnginesException.new(warning_hash('Can\'t Pause Container as not running', container_name)) unless is_running?
     r = @container_api.pause_container(self)
   ensure
@@ -39,7 +39,7 @@ module ContainerControls
   def unpause_container
     #expire_engine_info
     r = true
-    return true if read_state == 'running'
+    return true if is_running?
     raise EnginesException.new(warning_hash("Can\'t unpause as not paused", self)) unless is_paused?
     r = @container_api.unpause_container(self)
   ensure
@@ -49,7 +49,7 @@ module ContainerControls
 
   def destroy_container()
     expire_engine_info
-    if read_state == 'nocontainer'
+    unless has_container?
       @container_id = '-1'
       return true
     end

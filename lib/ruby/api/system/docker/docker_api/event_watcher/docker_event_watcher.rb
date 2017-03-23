@@ -129,9 +129,8 @@ class DockerEventWatcher  < ErrorsApi
   def start
     req = Net::HTTP::Get.new('/events')
     client = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
-    client.continue_timeout = 300
-    client.read_timeout = 300
-    parser = nil
+    client.continue_timeout = 3000
+    client.read_timeout = 3000
 
     client.request(req) do |resp|
       json_part = nil
@@ -141,7 +140,6 @@ class DockerEventWatcher  < ErrorsApi
           #   STDERR.puts('event  cunk ' + chunk.to_s )
           SystemDebug.debug(SystemDebug.container_events,chunk.to_s )
           next if chunk.nil?
-          r = ''
           chunk.gsub!(/\s+$/, '')
           chunk = json_part.to_s + chunk unless json_part.nil?
           unless chunk.end_with?('}')
@@ -154,7 +152,7 @@ class DockerEventWatcher  < ErrorsApi
           end 
          # STDERR.puts('DOCKER SENT json ' + chunk.to_s )
           #      hash =  parser.parse(chunk)# do |hash|
-          hash =  deal_with_json(chunk)
+          hash = deal_with_json(chunk)
           next unless hash.is_a?(Hash)
           #  STDERR.puts('trigger' + hash.to_s )
           next if hash.key?(:from) && hash[:from].length >= 64
@@ -162,7 +160,6 @@ class DockerEventWatcher  < ErrorsApi
           # next
           #end
           trigger(hash)
-
         rescue StandardError => e
           STDERR.puts('EXCEPTION docker Event Stream as close ' + e.to_s)
           log_error_mesg('Chunk error on docker Event Stream _' + chunk.to_s + '_')

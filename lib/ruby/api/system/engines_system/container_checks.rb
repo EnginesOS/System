@@ -14,7 +14,7 @@ module ContainerChecks
       if containers_status[container_name][:error] == true
         begin
           result[container_name] = act_on(container_name, ctype)
-        rescue StandardError => e
+        rescue StandardError
         end
       else
         result[container_name] = 'ok'
@@ -31,7 +31,7 @@ module ContainerChecks
     else
       container = loadSystemService(container_name)
     end
-    r = container.correct_current_state
+    container.correct_current_state
     'fixed'
   end
 end

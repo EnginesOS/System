@@ -26,7 +26,7 @@ begin
   def create_table
 
     #  STDERR.puts('init db')
-    rows = sql_lite_database.execute <<-SQL
+    sql_lite_database.execute <<-SQL
             create table systemaccess (
               username varchar(30),
               email varchar(128),
@@ -61,7 +61,7 @@ begin
   rescue StandardError => e
     #@auth_db.close
     # @auth_db = nil
-    # STDERR.puts('init db error ' + e.to_s)
+    STDERR.puts('init db error ' + e.to_s)
     return
   end
 
@@ -84,7 +84,7 @@ begin
   $engines_api = PublicApi.new(core_api)
   STDERR.puts('CREATED ENGINES API +++++++++++++++++++++++++++++++++++++++++++')
 
-  @@last_error =''
+  @@last_error = ''
 
   before do
     # content_type 'application/json' unless  request.path.end_with?('stream')
@@ -99,8 +99,7 @@ begin
     env['warden'].authenticate!(:access_token)
   end
 
-  def source_is_service?(request,service_name)
-
+  def source_is_service?(request, service_name)
     service = get_service(service_name)
     return true if request.ip.to_s == service.get_ip_str
     false
@@ -116,7 +115,6 @@ begin
 
   def sql_lite_database
     engines_api.auth_database
-
   rescue StandardError => e
     STDERR.puts('Exception failed to open  sql_lite_database: ' + e.to_s)
     false
@@ -133,7 +131,6 @@ begin
   #       end
   #
   require_relative 'helpers/helpers.rb'
-
   require_relative 'api/routes.rb'
 
   def post_params(request)

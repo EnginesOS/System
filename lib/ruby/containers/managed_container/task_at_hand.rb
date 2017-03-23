@@ -153,7 +153,7 @@ module TaskAtHand
       return nil
     end
 
-    r = read_state(raw=true)
+    r = read_state(raw = true)
     if tasks_final_state(task) == r
       clear_task_at_hand
       return nil
@@ -172,7 +172,6 @@ module TaskAtHand
   end
 
   def clear_task_at_hand
-
     @steps_to_go -= 1
     if  @steps_to_go > 0
       SystemDebug.debug(SystemDebug.engine_tasks, 'Multistep Task ' + @task_at_hand.to_s )
@@ -252,27 +251,27 @@ module TaskAtHand
     when :create
       return 'running'
     when :stop
-      return  'stopped'
+      return 'stopped'
     when :start
-      return    'running'
+      return 'running'
     when :pause
-      return   'paused'
+      return 'paused'
     when :restart
-      return    'stopped'
+      return 'stopped'
     when :unpause
-      return    'running'
+      return 'running'
     when :reinstall
-      return    'running'
+      return 'running'
     when :recreate
-      return    'running'
+      return 'running'
     when :rebuild
-      return    'running'
+      return 'running'
     when :build
-      return    'running'
+      return 'running'
     when :delete
-      return  'nocontainer'
+      return 'nocontainer'
     when :destroy
-      return   'nocontainer'
+      return 'nocontainer'
     end
   rescue StandardError => e
     log_exception(e)
