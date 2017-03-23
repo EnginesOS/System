@@ -6,7 +6,7 @@ require_relative 'container.rb'
 
 class ManagedContainer < Container
   require 'yajl'
-  require 'json'
+#  require 'json'
   require_relative 'managed_container/task_at_hand.rb'
   include TaskAtHand
   require_relative 'managed_container/managed_container_controls.rb'

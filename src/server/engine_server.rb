@@ -5,7 +5,7 @@ begin
 
   require 'sinatra'
   require 'sinatra/streaming'
-  require 'json'
+#  require 'json'
   require 'yajl'
   require '/opt/engines/lib/ruby/system/system_debug.rb'
   require '/opt/engines/lib/ruby/system/deal_with_json.rb'
