@@ -39,7 +39,7 @@ helpers do
     end
     error_mesg[:method] = request.method
     #error_mesg[:params_trunc]
-      STDERR.puts('send_encoded_exception with request ' + request.to_s)
+    STDERR.puts('send_encoded_exception with request ' + request.to_s)
     if api_exception[:exception].is_a?(EnginesException)
       error_mesg[:error_object] = api_exception[:exception].to_h
       error_mesg[:params] = api_exception[:params].to_s
@@ -53,7 +53,11 @@ helpers do
     return_json(error_mesg, status_code)
   rescue Exception => e
     STDERR.puts e.to_s + '  ' + e.backtrace.to_s
-  #  send_encoded_exception(request: 'send_encoded_exception', exception: e, status: 500)
+    #  send_encoded_exception(request: 'send_encoded_exception', exception: e, status: 500)
+  end
+
+  def fake_exception(error)
+    send_encoded_exception(request: 'string_exception', exception: error, status: 500)
   end
 
   def get_engine(engine_name)
