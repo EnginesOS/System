@@ -44,7 +44,7 @@ helpers do
     if api_exception[:exception].is_a?(EnginesException)
       error_mesg[:error_object] = api_exception[:exception].to_h
       error_mesg[:params] = api_exception[:params].to_s
-    elsif error_object.is_a?(Exception)
+    elsif api_exception[:exception].is_a?(Exception)
       error_mesg[:error_object] = api_exception[:exception].to_h
       error_mesg[:source] = api_exception[:exception].backtrace.to_s
       error_mesg[:error_mesg] = api_exception[:exception].to_s
