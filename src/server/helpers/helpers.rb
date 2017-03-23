@@ -55,6 +55,8 @@ helpers do
       #error_mesg[:params_trunc]
       status(500)
     else
+      STDERR.puts( 'R to ' + request.to_s + ' oBJ ' +  error_object.to_s )
+    STDERR.puts( caller[0..9].to_s )
       error_mesg[:error_object] = error_object
       if error_object == 'unauthorised'
         error_mesg[:error_object][:error_mesg] = 'unauthorised'
