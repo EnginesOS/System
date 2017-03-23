@@ -75,7 +75,7 @@ helpers do
       error_mesg[:route] = request.fullpath
     end
     error_mesg[:error_object] = api_exception[:exception].to_s
-    return_json(error_mesg, status_code)
+    return_text(error_mesg, status_code)
   end
 
   def get_engine(engine_name)
