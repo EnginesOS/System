@@ -38,6 +38,8 @@ helpers do
     if error_object.is_a?(EnginesException)
       error_mesg[:error_object] = error_object.to_h
       code = error_mesg[:error_object][:status] if error_mesg[:error_object].key?(:status)
+      #error_mesg[:method]
+      #error_mesg[:params_trunc]
       if error_mesg[:error_object][:error_mesg] == 'unauthorised'
         status(403)
       else
@@ -47,8 +49,10 @@ helpers do
     elsif error_object.is_a?(Exception)
       error_mesg[:error_object] = error_object.to_s
       error_mesg[:source] = error_object.backtrace.to_s
-      error_mesg[:error_object][:error_mesg] = args[0] unless args.count.zero?
-      error_mesg[:error_object][:args] = args.to_s unless args.count.zero?
+      error_mesg[:error_mesg] = args[0] unless args.count.zero?
+      error_mesg[:args] = args.to_s unless args.count.zero?
+      #error_mesg[:method]
+      #error_mesg[:params_trunc]
       status(500)
     else
       error_mesg[:error_object] = error_object
@@ -56,7 +60,7 @@ helpers do
         error_mesg[:error_object][:error_mesg] = 'unauthorised'
         status(403)
       else
-        status(500)
+        status(501)
       end
     end
     STDERR.puts error_mesg.to_s
@@ -106,9 +110,9 @@ helpers do
     config.failure_app = self
   end
 
-  Warden::Manager.before_failure do |env, opts|
-    env['REQUEST_METHOD'] = 'POST'
-  end
+#  Warden::Manager.before_failure do |env, opts|
+#    env['REQUEST_METHOD'] = 'POST'
+#  end
 
   # Implement your Warden stratagey to validate and authorize the access_token.
   Warden::Strategies.add(:access_token) do
