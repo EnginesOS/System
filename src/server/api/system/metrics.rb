@@ -8,9 +8,9 @@
 #
 get '/v0/system/metrics/memory' do
   begin
-    memory_info =  engines_api.get_system_memory_info #engines_api.get_system_memory_info
+    memory_info =  engines_api.get_system_memory_info
     return_json(memory_info)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -29,7 +29,7 @@ get '/v0/system/metrics/load' do
   begin
     load_info = engines_api.get_system_load_info
     return_json(load_info)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -45,7 +45,7 @@ get '/v0/system/metrics/memory/statistics' do
   begin
     memory_statistics = MemoryStatistics.total_memory_statistics(engines_api)
     return_json( memory_statistics)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -59,7 +59,7 @@ get '/v0/system/metrics/disks' do
   begin
     disk_statistics = engines_api.get_disk_statistics
     return_json(disk_statistics)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -72,7 +72,7 @@ get '/v0/system/metrics/network' do
   begin
     net_statistics = engines_api.get_network_statistics
     return_json(net_statistics)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end

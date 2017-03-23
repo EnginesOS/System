@@ -11,7 +11,7 @@ get '/v0/containers/service/:service_name/service/persistent/:publisher_namespac
     r = service.export_service_data(hash)
     content_type 'binary/octet-stream'
     r.b
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -24,13 +24,13 @@ get '/v0/containers/service/:service_name/service/persistent/:publisher_namespac
   begin
 
     hash = {}
-    hash[:service_connection] =  service_service_hash_from_params(params)
-    return log_error(request, 'Service not found', hash) if hash[:service_connection] .is_a?(FalseClass)
+    hash[:service_connection] = service_service_hash_from_params(params)
+    return log_error(request, 'Service not found', hash) if hash[:service_connection].is_a?(FalseClass)
     service = get_service(params[:service_name])
-    hash[:data]  = params[:data]
+    hash[:data] = params[:data]
     r = service.import_service_data(hash)
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -42,14 +42,14 @@ end
 get '/v0/containers/service/:service_name/service/persistent/:publisher_namespace/*/replace' do
   begin
     hash = {}
-    hash[:service_connection] =  service_service_hash_from_params(params)
-    return log_error(request, 'Service not found', hash) if  hash[:service_connection].is_a?(FalseClass)
+    hash[:service_connection] = service_service_hash_from_params(params)
+    return log_error(request, 'Service not found', hash) if hash[:service_connection].is_a?(FalseClass)
     service = get_service(params[:service_name])
-    hash[:import_method] == :replace
+    hash[:import_method] = :replace
     hash[:data] = params[:data]
     r = service.import_service_data(hash)
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -63,7 +63,7 @@ get '/v0/containers/service/:service_name/service/persistent/:publisher_namespac
     hash = service_service_hash_from_params(params)
     r = engines_api.find_service_service_hash(hash)
     return_json(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end

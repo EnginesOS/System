@@ -8,10 +8,10 @@
 post '/v0/system/template' do
   begin
     params = post_params(request)
-    cparams = assemble_params(params, [],  :string)
+    cparams = assemble_params(params, [], :string)
     resolved_string = engines_api.get_resolved_string(cparams[:string])
     return_text(resolved_string)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end

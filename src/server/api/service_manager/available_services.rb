@@ -9,7 +9,7 @@ get '/v0/service_manager/available_services/managed_engine' do
   begin
     avail = engines_api.load_avail_services_for_type('ManagedEngine')
     return_json(avail)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -22,7 +22,7 @@ get '/v0/service_manager/available_services/managed_engine/:managed_engine' do
   begin
     avail = engines_api.load_avail_services_for_type('ManagedEngine')
     return_json(avail)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -36,7 +36,7 @@ get '/v0/service_manager/available_services/type/*' do
     type_path = params[:splat][0]
     avail = engines_api.load_avail_services_for_type(type_path)
     return_json(avail)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end

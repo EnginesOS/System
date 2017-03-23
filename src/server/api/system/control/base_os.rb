@@ -8,7 +8,7 @@ get '/v0/system/control/base_os/restart' do
   begin
     restart = engines_api.restart_base_os
     return_text(restart)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -21,11 +21,11 @@ end
 post '/v0/system/control/base_os/shutdown' do
   begin
     p_params = post_params(request)
-    cparams = assemble_params(p_params, [],  [:reason])
-    shutdown = cparams[:reason] #symbolize_keys(params)
+    cparams = assemble_params(p_params, [], [:reason])
+    shutdown = cparams[:reason]
     r = engines_api.halt_base_os(shutdown)
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -37,7 +37,7 @@ get '/v0/system/control/base_os/update' do
   begin
     system_update = engines_api.update_base_os
     return_text(system_update)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end

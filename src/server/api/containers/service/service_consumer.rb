@@ -7,10 +7,10 @@
 get '/v0/containers/service/:service_name/consumer/:parent_engine/:service_handle' do
   begin
     service = get_service(params[:service_name])
-    cparams = address_params(params, [:service_name,:service_handle,:parent_engine])
+    cparams = address_params(params, [:service_name, :service_handle, :parent_engine])
     r = service.registered_consumer(cparams)
     return_json(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end

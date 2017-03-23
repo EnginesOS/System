@@ -24,7 +24,7 @@ post '/v0/system/do_first_run' do
     cparams = assemble_params(p_params, [], :all)
     r = engines_api.set_first_run_parameters(cparams)
     return_json(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end

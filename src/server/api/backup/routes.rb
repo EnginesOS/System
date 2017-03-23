@@ -5,7 +5,7 @@ get '/v0/backup/system_files' do
     stream do |out|
       r = engines_api.backup_system_files(out)
     end
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -17,7 +17,7 @@ get '/v0/backup/system_db' do
     stream do |out|
       r = engines_api.backup_system_db(out)
     end
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -28,7 +28,7 @@ get '/v0/backup/registry' do
     stream do |out|
       engines_api.backup_system_registry(out)
     end
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -37,9 +37,9 @@ get '/v0/backup/service/:service_name' do
   begin
     content_type 'application/octet-stream'
     stream do |out|
-      engines_api.backup_service_data(params[:service_name],out)
+      engines_api.backup_service_data(params[:service_name], out)
     end
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -48,7 +48,7 @@ get '/v0/backup/engine/services/:engine_name' do
   begin
     r = engines_api.engines_services_to_backup(params[:engine_name])
     return_json(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -59,7 +59,7 @@ get '/v0/backup/engine/:engine_name' do
     stream do |out|
       engines_api.backup_engine_config(params[:engine_name], out)
     end
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -67,14 +67,12 @@ end
 get '/v0/backup/engine/:engine_name/service/:publisher_namespace/*' do
   begin
     hash = engine_service_hash_from_params(params)
-    # STDERR.puts('Using ' + hash.to_s )
     service_hash = engines_api.find_engine_service_hash(hash)
-    # STDERR.puts('found ' + service_hash.to_s)
     content_type 'application/octet-stream'
     stream do |out|
-      engines_api.backup_engine_service(service_hash,out)
+      engines_api.backup_engine_service(service_hash, out)
     end
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end

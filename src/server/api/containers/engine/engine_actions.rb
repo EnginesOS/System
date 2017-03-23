@@ -10,7 +10,7 @@ get '/v0/containers/engine/:engine_name/create' do
     return log_error(request, engine, params) if engine.nil?
     r = engine.create_container
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -27,7 +27,7 @@ get '/v0/containers/engine/:engine_name/recreate' do
     return log_error(request, engine, params) if engine.nil?
     r = engine.recreate_container
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -41,7 +41,7 @@ get '/v0/containers/engine/:engine_name/stop' do
     return log_error(request, engine, params) if engine.nil?
     r = engine.stop_container
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -55,7 +55,7 @@ get '/v0/containers/engine/:engine_name/halt' do
     return log_error(request, engine, params) if engine.nil?
     r = engine.halt_container
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -69,7 +69,7 @@ get '/v0/containers/engine/:engine_name/start' do
     return log_error(request, engine, params) if engine.nil?
     r = engine.start_container
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -83,7 +83,7 @@ get '/v0/containers/engine/:engine_name/restart' do
     return log_error(request, engine, params) if engine.nil?
     r = engine.restart_container
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -97,7 +97,7 @@ get '/v0/containers/engine/:engine_name/pause' do
     return log_error(request, engine, params) if engine.nil?
     r = engine.pause_container
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -111,7 +111,7 @@ get '/v0/containers/engine/:engine_name/unpause' do
     return log_error(request, engine, params) if engine.nil?
     r = engine.unpause_container
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -126,7 +126,7 @@ get '/v0/containers/engine/:engine_name/reinstall' do
     return log_error(request, engine, params) if engine.nil?
     r = engines_api.reinstall_engine(engine)
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -141,7 +141,7 @@ delete '/v0/containers/engine/:engine_name/destroy' do
     return log_error(request, engine, params) if engine.nil?
     r = engine.destroy_container
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -161,7 +161,6 @@ delete '/v0/containers/engine/:engine_name/delete/*' do
     else
       rparams[:remove_all_data] = false
     end
-    STDERR.puts(' Destroy ' + rparams.to_s)
     r = engines_api.delete_engine(rparams)
     return_text(r)
   rescue StandardError => e

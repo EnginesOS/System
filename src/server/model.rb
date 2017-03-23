@@ -15,8 +15,7 @@ class User
   property :group, String, :length => 5..15
   property :token,  String, :length => 64
   property :password, BCryptHash
-  property :email,        String,   :length => 5..200, :required => true,
-                                       :format => :email_address
+  property :email, String, :length => 5..200, :required => true, :format => :email_address
 end
 
 def authenticate(attempted_password)

@@ -8,7 +8,7 @@ get '/v0/system/certs/system_ca' do
   begin
     system_ca = engines_api.get_system_ca
     return_text(system_ca)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -20,7 +20,7 @@ get '/v0/system/certs/:cert_name' do
   begin
     cert = engines_api.get_cert(params[:cert_name])
     return_text(cert)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -32,7 +32,7 @@ get '/v0/system/certs/default' do
   begin
     cert = engines_api.get_cert('engines')
     return_json(cert)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -45,7 +45,7 @@ get '/v0/system/certs/' do
   begin
     certs = engines_api.list_certs
     return_json_array(certs)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -57,7 +57,7 @@ delete '/v0/system/certs/:cert_name' do |cert_name|
   begin
     r = engines_api.remove_cert(cert_name)
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -77,7 +77,7 @@ post '/v0/system/certs/default' do
     cparams[:set_as_default] = true
     r = engines_api.upload_ssl_certificate(cparams)
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -95,7 +95,7 @@ post '/v0/system/certs/' do
     cparams = assemble_params(post_s, [], :all)
     r = engines_api.upload_ssl_certificate(cparams)
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -109,7 +109,7 @@ post '/v0/system/certs/generate' do
     cparams = assemble_params(p_params, [], :all)
     r = engines_api.generate_cert(cparams)
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end

@@ -7,7 +7,7 @@ get '/v0/service_manager/orphan_services/' do
   begin
   orphans = engines_api.get_orphaned_services_tree
   return_json(orphans)
-    rescue StandardError =>e
+    rescue StandardError => e
       log_error(request, e)
     end
 end
@@ -21,7 +21,7 @@ get '/v0/service_manager/orphan_services/:publisher_namespace/*' do
   r = engines_api.get_orphaned_services(cparams)
   STDERR.puts( 'Orphans _' + r.to_s + '_')
   return_json_array(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -30,9 +30,6 @@ end
 # @return [Hash] Orphan Service Hash
 get '/v0/service_manager/orphan_service/:publisher_namespace/*' do
   begin
-  #splats = params['splat']
-  # pparams =  {}
-  # pparams[:publisher_namespace] = params[:publisher_namespace]
   params[:type_path] = File.dirname(params['splat'][0])
   params[:service_handle] = File.basename(params[:type_path])
   params[:type_path] = File.dirname(params[:type_path])
@@ -40,7 +37,7 @@ get '/v0/service_manager/orphan_service/:publisher_namespace/*' do
   cparams = assemble_params(params, [:publisher_namespace, :type_path, :service_handle, :parent_engine], [])
   r = engines_api.retrieve_orphan(cparams)
   return_json(r)
-rescue StandardError =>e
+rescue StandardError => e
   log_error(request, e)
 end
 end
@@ -50,19 +47,15 @@ end
 # @return [true]
 delete '/v0/service_manager/orphan_service/:publisher_namespace/*' do
   begin
-  #  splats = params['splat']
-  #  pparams =  {}
-  # pparams[:publisher_namespace] = params[:publisher_namespace]
   params[:type_path] = File.dirname(params['splat'][0])
   params[:service_handle] = File.basename(params[:type_path])
   params[:type_path] = File.dirname(params[:type_path])
   params[:parent_engine] = File.basename(params['splat'][0])
   cparams = assemble_params(params, [:publisher_namespace, :type_path, :service_handle, :parent_engine], [])
   service_hash = engines_api.retrieve_orphan(cparams)
-  #STDERR.puts('Orphan restrived to DELETE ' + service_hash.to_s  + ' From ' + cparams.to_s)
   r = engines_api.remove_orphaned_service(service_hash)
   return_text(r)
-rescue StandardError =>e
+rescue StandardError => e
   log_error(request, e)
 end
 end

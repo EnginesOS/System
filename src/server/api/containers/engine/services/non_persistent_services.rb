@@ -9,7 +9,7 @@ get '/v0/containers/engine/:engine_name/services/non_persistent/' do
     return log_error(request, engine, params) if engine.nil?
     r = engines_api.list_non_persistent_services(engine)
     return_json_array(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     return return_json_array(nil) if e.is_a?(EnginesException) && e.level == :warning
     log_error(request, e)
   end
@@ -26,10 +26,10 @@ post '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_name
     p_params = post_params(request)
     path_hash = engine_service_hash_from_params(params, true)
     p_params.merge!(path_hash)
-    cparams = assemble_params(p_params, [:parent_engine,:publisher_namespace, :type_path], :all)
+    cparams = assemble_params(p_params, [:parent_engine, :publisher_namespace, :type_path], :all)
     r =  engines_api.create_and_register_service(cparams)
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -45,7 +45,7 @@ delete '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_na
     cparams = assemble_params(path_hash, [:parent_engine, :publisher_namespace, :type_path, :service_handle], [])
     r = engines_api.dettach_service(cparams)
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -60,7 +60,7 @@ get '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_names
     hash = engine_service_hash_from_params(params, true)
     r = engines_api.find_engine_service_hashes(hash) #find_engine_services_hashes(hash)
     return_json(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end

@@ -13,11 +13,11 @@ post '/v0/containers/engine/:engine_name/properties/network' do
     p_params = post_params(request)
     p_params[:engine_name] = params[:engine_name]
     engine = get_engine(p_params[:engine_name])
-    return log_error(request ,'failed to load ') unless engine.is_a?(ManagedEngine)
+    return log_error(request, 'failed to load ') unless engine.is_a?(ManagedEngine)
     cparams = assemble_params(p_params, [:engine_name], :all) # [:memory, :environment_variables])
     r = engines_api.set_container_network_properties(engine, cparams)
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -32,12 +32,12 @@ post '/v0/containers/engine/:engine_name/properties/runtime' do
   begin
     p_params = post_params(request)
     p_params[:engine_name] = params[:engine_name]
-    cparams = assemble_params(p_params, [:engine_name], [], [:memory, :environment_variables]) # :all)
+    cparams = assemble_params(p_params, [:engine_name], [], [:memory, :environment_variables])
     engine = get_engine(cparams[:engine_name])
     return log_error(request, engine, p_params) if engine.nil?
-    r = engines_api.set_container_runtime_properties(engine, cparams) #Utils.symbolize_keys(params))
+    r = engines_api.set_container_runtime_properties(engine, cparams)
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end

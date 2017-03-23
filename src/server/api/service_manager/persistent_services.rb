@@ -10,7 +10,7 @@ get '/v0/service_manager/persistent_services/:publisher_namespace/*' do
     cparams = assemble_params(params, [:publisher_namespace, :type_path], [])
     r = engines_api.get_registered_against_service(cparams)
     return_json_array(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end

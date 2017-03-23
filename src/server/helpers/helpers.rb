@@ -18,7 +18,6 @@ helpers do
     e_str += ':' + args.to_s
     @@last_error = e_str.to_s
     STDERR.puts e_str
-
     SystemUtils.log_output(e_str, 10)
     f = File.open('/tmp/exceptions.' + Process.pid.to_s, 'a+')
     f.puts(e_str)
@@ -53,18 +52,14 @@ helpers do
       status(500)
     else
       error_mesg[:error_object] = error_object
-      if error_object == 'unauthorised' 
-        error_mesg[:error_object][:error_mesg] = 'unauthorised' 
+      if error_object == 'unauthorised'
+        error_mesg[:error_object][:error_mesg] = 'unauthorised'
         status(403)
       else
         status(500)
       end
     end
-
     STDERR.puts error_mesg.to_s
-
-    #  body args.to_s + ':' + engines_api.last_error.to_s
-
     error_mesg.to_json
   end
 
@@ -82,7 +77,7 @@ helpers do
     nil
   end
 
-  def  downcase_keys(hash)
+  def downcase_keys(hash)
     return hash unless hash.is_a? Hash
     hash.map{|k,v| [k.downcase, downcase_keys(v)] }.to_h
   end
@@ -134,7 +129,6 @@ helpers do
       # Your actual access token should be generated using one of the several great libraries
       # for this purpose and stored in a database, this is just to show how Warden should be
       # set up.
-
       STDERR.puts("NO HTTP_ACCESS_TOKEN in header ") if request.env["HTTP_ACCESS_TOKEN"].nil?
       access_granted = is_token_valid?(request.env["HTTP_ACCESS_TOKEN"]) # == $token
       !access_granted ? fail!('Could not log in') : success!(access_granted)

@@ -10,7 +10,7 @@ get '/v0/containers/engine/:engine_name/metrics/network' do
     return log_error(request, engine, params) if engine.nil?
     r = engines_api.get_container_network_metrics(engine)
     return_json(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -25,7 +25,7 @@ get '/v0/containers/engine/:engine_name/metrics/memory' do
     return log_error(request, engine, params) if engine.nil?
     r = engines_api.container_memory_stats(engine)
     return_json(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end

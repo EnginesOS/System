@@ -8,7 +8,7 @@ get '/v0/containers/service/:service_name' do
   begin
     service = get_service(params[:service_name])
     managed_container_as_json(service)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -22,7 +22,7 @@ get '/v0/containers/service/:service_name/status' do
     service = get_service(params[:service_name])
     r = service.status
     return_json(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -35,7 +35,7 @@ get '/v0/containers/service/:service_name/state' do
     service = get_service(params[:service_name])
     r = service.read_state
     return_text(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -49,7 +49,7 @@ get '/v0/containers/service/:service_name/websites' do
     service = get_service(params[:service_name])
     r = service.web_sites
     return_json_array(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -62,7 +62,7 @@ get '/v0/containers/service/:service_name/logs' do
     service = get_service(params[:service_name])
     r = service.logs_container()
     return_json(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -82,7 +82,7 @@ get '/v0/containers/service/:service_name/service_definition' do
     pparams[:type_path] = r.type_path
     r = engines_api.get_service_definition(pparams)
     return_json(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
@@ -95,7 +95,7 @@ get '/v0/containers/service/:service_name/ps' do
     service = get_service(params[:service_name])
     r = service.ps_container
     return_json(r)
-  rescue StandardError =>e
+  rescue StandardError => e
     log_error(request, e)
   end
 end
