@@ -36,10 +36,10 @@ helpers do
       error_mesg[:route] = request
     else
       error_mesg[:route] = request.fullpath
+      error_mesg[:method] = request.request_method
+      error_mesg[:query] = request.query_string
+      error_mesg[:params] = request.params
     end
-    error_mesg[:method] = request.request_method
-    error_mesg[:query] = request.query_string
-    error_mesg[:params] = request.params
     STDERR.puts('send_encoded_exception with request ' + request.to_s)
     if api_exception[:exception].is_a?(EnginesException)
       error_mesg[:error_object] = api_exception[:exception].to_h
@@ -60,15 +60,15 @@ helpers do
   def fake_exception(api_exception)
     STDERR.puts('faking it' + api_exception.to_s)
     status_code = 404
-       status_code = api_exception[:status] if api_exception.key?(:status)
-       error_mesg = {
-         error_object: {}
-       }
-       if request.is_a?(String)
-         error_mesg[:route] = request
-       else
-         error_mesg[:route] = request.fullpath
-       end
+    status_code = api_exception[:status] if api_exception.key?(:status)
+    error_mesg = {
+      error_object: {}
+    }
+    if request.is_a?(String)
+      error_mesg[:route] = request
+    else
+      error_mesg[:route] = request.fullpath
+    end
     error_mesg[:error_object] = api_exception[:exception].to_s
     return_json(error_mesg, status_code)
   end
