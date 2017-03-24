@@ -18,7 +18,7 @@ module SmOrphanServices
     system_registry_client.rollback_orphaned_service(service_hash)
   end
 
-  #@returns [Hash] suitable for use  to attach as a service
+  # @returns [Hash] suitable for use  to attach as a service
 
   def reparent_orphan(service_hash,engine_name )
     service_hash[:old_parent] =  service_hash[:parent_engine]
@@ -42,8 +42,8 @@ module SmOrphanServices
     system_registry_client.retrieve_orphan(params)
   end
 
-  #@ removes underly service and remove entry from orphaned services
-  #@returns boolean indicating success
+  # @ removes underly service and remove entry from orphaned services
+  # @returns boolean indicating success
   def remove_orphaned_service(service_query_hash)
     SystemDebug.debug(SystemDebug.orphans, :remove_orphaned_service, service_query_hash)
     clear_error
@@ -57,12 +57,12 @@ module SmOrphanServices
     return system_registry_client.release_orphan(service_hash)
   end
 
-  #@return an [Array] of service_hashs of Orphaned persistent services matching @params [Hash]
+  # @return an [Array] of service_hashs of Orphaned persistent services matching @params [Hash]
   # required keys
   # :publisher_namespace
   # optional
   #:path_type
-  #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
+  # @return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
   #on recepit of an empty array any non critical error will be in  this object's  [ServiceManager] last_error method
   def orphaned_services(params)
     system_registry_client.orphaned_services(params)

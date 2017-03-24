@@ -1,8 +1,8 @@
 module SmServiceInfo
   ###READERS
   #list the Provider namespaces as an Array of Strings
-  #@return [Array]
-  #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
+  # @return [Array]
+  # @return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
   def list_providers_in_use
     system_registry_client.list_providers_in_use
   end
@@ -12,7 +12,7 @@ module SmServiceInfo
   end
 
   #Test whether a service hash is registered
-  #@return's false on failure with error (if applicable) accessible from this object's  [ServiceManager] last_error method
+  # @return's false on failure with error (if applicable) accessible from this object's  [ServiceManager] last_error method
   def service_is_registered?(service_hash)
     system_registry_client.service_is_registered?(service_hash)
   end
@@ -21,7 +21,7 @@ module SmServiceInfo
     system_registry_client.all_engines_registered_to(service_type)
   end
 
-  #@return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
+  # @return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
   def get_registered_against_service(params)
     clear_error
     system_registry_client.get_registered_against_service(params)

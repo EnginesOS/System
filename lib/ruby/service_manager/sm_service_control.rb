@@ -1,8 +1,8 @@
 module SmServiceControl
-  #@ Attach service called by builder and create service
+  # @ Attach service called by builder and create service
   #if persisttant it is added to the Service Registry Tree
-  #@ All are added to the ManagesEngine/Service Tree
-  #@ return true if successful or false if failed
+  # @ All are added to the ManagesEngine/Service Tree
+  # @ return true if successful or false if failed
   # no_engien used by  service builder it ignore no engine error
   def create_and_register_service(service_hash) # , no_engine = false)
     clear_error
@@ -28,7 +28,7 @@ module SmServiceControl
   end
 
   #remove service matching the service_hash from both the managed_engine registry and the service registry
-  #@return false
+  # @return false
   def delete_service(service_query)
     clear_error
     complete_service_query = set_top_level_service_params(service_query,service_query[:parent_engine])

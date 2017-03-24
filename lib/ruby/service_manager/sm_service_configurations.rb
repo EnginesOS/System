@@ -19,8 +19,8 @@ module SmServiceConfigurations
     raise e
   end
 
-  #@Returns an Array of Configuration hashes resgistered against the service [String] service_name
-  #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
+  # @Returns an Array of Configuration hashes resgistered against the service [String] service_name
+  # @return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
   def retrieve_service_configurations_hashes(service_name)
     system_registry_client.retrieve_service_configurations_hashes(service_name)
   end

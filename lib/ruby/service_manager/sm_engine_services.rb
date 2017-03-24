@@ -14,17 +14,17 @@ module SmEngineServices
     system_registry_client.find_engine_service_hash(params)
   end
 
-  #@return [Array] of all service_hashs marked persistence true for :engine_name
-  #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
+  # @return [Array] of all service_hashs marked persistence true for :engine_name
+  # @return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
   #on recepit of an empty array any non critical error will be in  this object's  [ServiceManager] last_error method
   def get_engine_persistent_services(params)
     system_registry_client.get_engine_persistent_services(params)
   end
 
-  #@return [Array] of all service_hashs marked persistence false for :engine_name
+  # @return [Array] of all service_hashs marked persistence false for :engine_name
   # required keys
   # :engine_name
-  #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
+  # @return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
   #on recepit of an empty array any non critical error will be in  this object's  [ServiceManager] last_error method
   def get_engine_nonpersistent_services(params)
     system_registry_client.get_engine_nonpersistent_services(params)
@@ -125,10 +125,10 @@ module SmEngineServices
     entry[:variables][:cron_job]
   end
 
-  #@ remove an engine matching :engine_name from the service registry, all non persistent serices are removed
-  #@ if :remove_all_data is true all data is deleted and all persistent services removed
-  #@ if :remove_all_data is not specified then the Persistant services registered with the engine are moved to the orphan services tree
-  #@return true on success and false on fail
+  # @ remove an engine matching :engine_name from the service registry, all non persistent serices are removed
+  # @ if :remove_all_data is true all data is deleted and all persistent services removed
+  # @ if :remove_all_data is not specified then the Persistant services registered with the engine are moved to the orphan services tree
+  # @return true on success and false on fail
   def remove_managed_services(params)
     STDERR.puts(' remove_managed_services ' + params.to_s)
     clear_error

@@ -29,7 +29,7 @@ module ServiceOperations
   end
 
   #Attach the service defined in service_hash [Hash]
-  #@return boolean indicating sucess
+  # @return boolean indicating sucess
   def create_and_register_service(service_hash)
     #  service_hash = SystemUtils.symbolize_keys(service_hash)
     SystemDebug.debug(SystemDebug.services, :attach_ing_create_and_egister_service, service_hash)
@@ -57,7 +57,7 @@ module ServiceOperations
     service_manager.find_service_consumers(service_query)
   end
 
-  #@return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
+  # @return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
   def get_registered_against_service(service_hash)
 
     clear_error

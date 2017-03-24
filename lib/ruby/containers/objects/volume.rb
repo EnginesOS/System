@@ -14,7 +14,7 @@ class Volume < StaticService #Latter will include group and perhaps other attrib
     r[:permissions] = 'rw'
    # @name = service_hash[:variables][:service_name]
   #  @vol_permissions  = service_hash[:variables][:permissions]
-    #@vol_permissions  = PermissionRights.new(service_hash[:parent_engine] , '', '')
+    # @vol_permissions  = PermissionRights.new(service_hash[:parent_engine] , '', '')
   #  @serviceType = 'fs'
 #    @remotepath = service_hash[:variables][:engine_path]
 #    @localpath = service_hash[:variables][:volume_src]

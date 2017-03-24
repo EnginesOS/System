@@ -1,6 +1,6 @@
 module SmAttachStaticServices
-  #@returns boolean
-  #load persistent and non persistent service definitions off disk and registers them
+  # @returns boolean
+  # load persistent and non persistent service definitions off disk and registers them
   def load_and_attach_static_services(dirname,container)
     clear_error
     container.environments  = [] if container.environments.nil?

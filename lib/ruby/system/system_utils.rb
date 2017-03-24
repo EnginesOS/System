@@ -60,7 +60,7 @@ class SystemUtils
   #Execute @param cmd [String]
   #if sucessful exit code == 0 @return
   #else
-  #@return stdout and stderr from cmd
+  # @return stdout and stderr from cmd
   def SystemUtils.run_system(cmd)
     @@last_error = ''
     begin
@@ -95,7 +95,7 @@ class SystemUtils
   end
 
   #Execute @param cmd [String]
-  #@return hash
+  # @return hash
   #:result_code = command exit/result code
   #:stdout = what was written to standard out
   #:stderr = what was written to standard err
@@ -178,7 +178,7 @@ class SystemUtils
   end
 
   #Execute @param cmd [String]
-  #@return stdout and stderr from cmd
+  # @return stdout and stderr from cmd
   #No indication of success
   def SystemUtils.run_command(cmd)
     @@last_error = ''

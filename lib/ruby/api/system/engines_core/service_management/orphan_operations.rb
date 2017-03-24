@@ -1,6 +1,6 @@
 module OrphanOperations
   require_relative 'service_manager_access.rb'
-  #@return an [Array] of service_hashs of Orphaned persistent services match @params [Hash]
+  # @return an [Array] of service_hashs of Orphaned persistent services match @params [Hash]
   #:path_type :publisher_namespace
   def orphaned_services(service_hash)
     check_service_hash(service_hash)

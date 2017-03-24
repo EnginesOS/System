@@ -1,7 +1,7 @@
 module DockerOperations
   require '/opt/engines/lib/ruby/api/system/docker/docker_api.rb'
 
-  #@returns [Boolean]
+  # @returns [Boolean]
   # whether pulled or no false if no new image
   def pull_image(image_name)
     @docker_api.pull_image(image_name)
