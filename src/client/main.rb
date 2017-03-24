@@ -3,7 +3,7 @@ if Process.euid != 21000
   exit
 end
 require 'rubygems'
-#require 'json'
+#require 'json_parser'
 require 'yajl'
 require 'ffi_yajl'
 
@@ -41,8 +41,8 @@ rescue StandardError => e
   log_exception(e)
 end
 
-def read_stdin_json
-  JSON.parse(read_stdin_data, :create_additons => true )
+def read_stdin_json_parser
+  json_parser.parse(read_stdin_data, :create_additons => true )
 end
 
 def perform_get
@@ -57,7 +57,7 @@ def perform_del
   exit
 end
 
-def perform_post(params, content_type='application/json')
+def perform_post(params, content_type='application/json_parser')
   post_params = {}
   post_params[:api_vars] = params
   rest_post(@route,post_params, content_type)
@@ -69,8 +69,11 @@ def perform_delete(params=nil)
   exit
 end
 
-def handle_resp(resp, expect_json=true)
-  parser = FFI_Yajl::Parser.new({:symbolize_keys => true})
+def json_parser_parser
+   @json_parser_parser ||= FFI_Yajl::Parser.new(symbolize_keys: true)
+ end
+
+def handle_resp(resp, expect_json_parser=true)
 
   if resp.status  >= 400
     log_error("Error " + resp.status.to_s)
@@ -82,15 +85,15 @@ def handle_resp(resp, expect_json=true)
   unless resp.status  >= 200
     log_error("Un exepect response from system" + resp.status.to_s + ' ' + resp.body.to_s + ' ' + resp.headers.to_s)
   end
-
-  return resp.body.to_s unless expect_json == true
+  resp.body
+ # return resp.body.to_s unless expect_json_parser == true
 #  hashes = []
-  hash =   parser.parse(resp.body) # do |hash |
+  #  hash =   json_parser_parser.parse(resp.body) # do |hash |
   #   hashes.push(hash)
   #   end
-  json = hash.to_json
-  return 'Error ' + resp.body.to_s if json.nil?
-  return json
+  #  json_parser = hash.to_json_parser
+  #  return 'Error ' + resp.body.to_s if json_parser.nil?
+ # return json_parser
 rescue StandardError => e
   log_error(e.to_s + ' with :' + resp.to_s)
   log_error(e.backtrace.to_s)
@@ -105,9 +108,9 @@ def write_response(r)
   if r.headers['Content-Type'] == 'application/octet-stream'
     STDOUT.write( r.body.b)
   else
-    expect_json = false
-    expect_json = true if r.headers['Content-Type'] == 'application/json' || r.body.start_with?('{')
-    puts handle_resp(r, expect_json)
+    expect_json_parser = false
+    expect_json_parser = true if r.headers['Content-Type'] == 'application/json_parser' || r.body.start_with?('{')
+    puts handle_resp(r, expect_json_parser)
   #  puts 'got'  + r.headers.to_s
   #  puts 'got'  + r.body
   end

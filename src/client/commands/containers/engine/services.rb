@@ -6,7 +6,7 @@ n = 4
  if ARGV[3] == 'add'
 post = true
 #STDERR.puts  @route
-params_data = read_stdin_json
+params_data = read_stdin_json_parser
 
 
 n = 4

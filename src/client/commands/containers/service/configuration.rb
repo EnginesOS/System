@@ -2,7 +2,7 @@
 case  ARGV[3]
 when 'run'
 @route += '/' + ARGV[4]
-params_data = read_stdin_json
+params_data = read_stdin_json_parser
 p params_data
 perform_post(params_data)
 end

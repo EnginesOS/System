@@ -38,9 +38,9 @@ when 'update'
   cmd = ARGV[4]
 cmd = nil
 post = true
-content_type='application/json'
+content_type='application/json_parser'
 STDERR.puts  @route
-params = read_stdin_json
+params = read_stdin_json_parser
 n = 5
 
 end

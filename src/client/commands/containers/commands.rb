@@ -4,7 +4,7 @@ case ARGV[1]
 when 'changed'
   perform_get
 when 'events'
-get_json_stream(@route + '/stream' )
+get_json_parser_stream(@route + '/stream' )
  
 end
 perform_get
