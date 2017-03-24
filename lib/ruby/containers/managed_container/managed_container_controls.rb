@@ -19,7 +19,7 @@ module ManagedContainerControls
     else
       return false unless prep_task(:destroy)
     end
-    return task_failed('destroy') unless super
+    return task_failed('destroy') unless super() # need () to avoid passing as super(reinstall)
     clear_cid
   end
 
