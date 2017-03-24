@@ -33,7 +33,7 @@ module SmServiceControl
     clear_error
     complete_service_query = set_top_level_service_params(service_query,service_query[:parent_engine])
       STDERR.puts('delete_service ' + complete_service_query.to_s)
-    service_hash = system_registry_client.find_engine_service_hash(complete_service_query)
+    service_hash = retrieve_engine_service_hash(complete_service_query)
     return service_hash unless service_hash.is_a?(Hash)
 
     if service_hash[:shared] == true

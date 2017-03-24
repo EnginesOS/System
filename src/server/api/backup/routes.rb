@@ -67,7 +67,7 @@ end
 get '/v0/backup/engine/:engine_name/service/:publisher_namespace/*' do
   begin
     hash = engine_service_hash_from_params(params)
-    service_hash = engines_api.find_engine_service_hash(hash)
+    service_hash = engines_api.retrieve_engine_service_hash(hash)
     content_type 'application/octet-stream'
     stream do |out|
       engines_api.backup_engine_service(service_hash, out)

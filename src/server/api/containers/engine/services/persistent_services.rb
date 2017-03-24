@@ -22,7 +22,7 @@ end
 get '/v0/containers/engine/:engine_name/services/persistent/:publisher_namespace/*' do
   begin
     hash = engine_service_hash_from_params(params, true)
-    r = engines_api.find_engine_service_hashes(hash)
+    r = engines_api.retrieve_engine_service_hashes(hash)
     return_json_array(r)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)

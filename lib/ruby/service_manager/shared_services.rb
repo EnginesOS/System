@@ -33,7 +33,7 @@ module SharedServices
   end
 
   def remove_shared_service_from_engine(service_query)
-    ahash = find_engine_service_hash(service_query)
+    ahash = retrieve_engine_service_hash(service_query)
     return ahash unless ahash.is_a?(Hash)
     raise EnginesException.new(error_hash('Not a Shared Service",service_query,ahash')) unless ahash[:shared] == true
     # return dettach_shared_volume(ahash) if ahash[:type_path] == 'filesystem/local/filesystem'

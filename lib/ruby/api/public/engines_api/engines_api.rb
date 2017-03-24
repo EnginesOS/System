@@ -18,8 +18,8 @@ class PublicApi < ErrorsApi
   require_relative 'containers/service_hash.rb'
   #find_service_service_hash
   #find_service_service_hashes
-  #find_engine_service_hash
-  #find_engine_service_hashes
+  #retrieve_engine_service_hash
+  #retrieve_engine_service_hashes
   include PublicApiContainersServiceHash
 
   require_relative 'containers/properties.rb'

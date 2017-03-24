@@ -9,9 +9,9 @@ module ServiceManagerOperations
     service_manager.deregister_non_persistent_services(engine)
   end
 
-  def find_engine_service_hash(params)
+  def retrieve_engine_service_hash(params)
     params[:container_type] = 'container'
-    service_manager.find_engine_service_hash(params)
+    service_manager.retrieve_engine_service_hash(params)
   end
 
   def find_engine_services_hashes(hash)
@@ -23,7 +23,7 @@ module ServiceManagerOperations
 
   def find_service_service_hash(params)
     params[:container_type] = 'service' #was container CNP error?
-    find_engine_service_hash(params)
+    retrieve_engine_service_hash(params)
   end
 
   def list_persistent_services(engine)

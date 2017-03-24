@@ -16,19 +16,19 @@ module SmServiceForcedMethods
 
   def force_register_attached_service(service_query)
     complete_service_query = set_top_level_service_params(service_query, service_query[:parent_engine])
-    service_hash = system_registry_client.find_engine_service_hash(complete_service_query)
+    service_hash = retrieve_engine_service_hash(complete_service_query)
     add_to_managed_service(service_hash)
   end
 
   def force_deregister_attached_service(service_query)
     complete_service_query = set_top_level_service_params(service_query, service_query[:parent_engine])
-    service_hash = system_registry_client.find_engine_service_hash(complete_service_query)
+    service_hash = retrieve_engine_service_hash(complete_service_query)
     remove_from_managed_service(service_hash)
   end
 
   def force_reregister_attached_service(service_query)
     complete_service_query = set_top_level_service_params(service_query, service_query[:parent_engine])
-    service_hash = system_registry_client.find_engine_service_hash(complete_service_query)
+    service_hash = retrieve_engine_service_hash(complete_service_query)
     remove_from_managed_service(service_hash)
     add_to_managed_service(service_hash)
   end

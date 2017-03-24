@@ -9,9 +9,9 @@ module SmEngineServices
   end
   #
 
-  def find_engine_service_hash(params)
+  def retrieve_engine_service_hash(params)
     clear_error
-    system_registry_client.find_engine_service_hash(params)
+    system_registry_client.retrieve_engine_service_hash(params)
   end
 
   # @return [Array] of all service_hashs marked persistence true for :engine_name
@@ -95,34 +95,31 @@ module SmEngineServices
     true
   end
 
-  def remove_engine_services(params)    
+  def remove_engine_services(params)
     STDERR.puts('remove_engine_services ' + params.to_s)
     services = find_engine_services_hashes(params)
     return services unless services.is_a?(Array)
     STDERR.puts('remove_engine_services ' + services.to_s)
     services.each do |s|
       STDERR.puts('remove_engine_service ' + s.to_s)
-   #   if params[:remove_all_data] == true || s[:persistence] == false
-        STDERR.puts(' rm ' + s.to_s)
-    #    system_registry_client.remove_from_managed_engine(s)
-    #  else
-    #    STDERR.puts(' orphanicate' + s.to_s)
-   #     orphanate_service(s)
-   #   end
+      #   if params[:remove_all_data] == true || s[:persistence] == false
+      STDERR.puts(' rm ' + s.to_s)
+      #    system_registry_client.remove_from_managed_engine(s)
+      #  else
+      #    STDERR.puts(' orphanicate' + s.to_s)
+      #     orphanate_service(s)
+      #   end
     end
   end
 
   def retrieve_cron_entry(cronjob, container)
-    entry = find_engine_service_hash({
+    retrieve_engine_service_hash({
       parent_engine: container.container_name,
       publisher_namespace: 'EnginesSystem',
       type_path: 'cron',
       container_type: container.ctype,
       container_name: container.container_name,
-      service_handle:  cronjob})
-
-    return  entry unless entry.is_a?(Hash)
-    entry[:variables][:cron_job]
+      service_handle:  cronjob})[:variables][:cron_job]
   end
 
   # @ remove an engine matching :engine_name from the service registry, all non persistent serices are removed
