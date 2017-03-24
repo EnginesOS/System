@@ -26,10 +26,10 @@ module SmAttachStaticServices
           create_and_register_service(service_hash)
         else
           SystemDebug.debug(SystemDebug.services, :attaching, service_hash)
-          service_hash =  system_registry_client.get_service_entry(service_hash)
+          service_hash = get_service_entry(service_hash)
         end
       else
-        service_hash = system_registry_client.get_service_entry(service_hash)
+        service_hash = get_service_entry(service_hash)
       end
       if service_hash.is_a?(Hash)
         SystemDebug.debug(SystemDebug.services, :post_entry_service_hash, service_hash)

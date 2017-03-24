@@ -112,7 +112,7 @@ module SmEngineServices
     end
   end
 
-  def get_cron_entry(cronjob, container)
+  def retrieve_cron_entry(cronjob, container)
     entry = find_engine_service_hash({
       parent_engine: container.container_name,
       publisher_namespace: 'EnginesSystem',

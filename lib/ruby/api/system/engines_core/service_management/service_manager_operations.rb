@@ -59,7 +59,7 @@ module ServiceManagerOperations
   end
 
   def retreive_cron_entry(cronjob, container)
-    service_manager.get_cron_entry(cronjob, container)
+    service_manager.retrieve_cron_entry(cronjob, container)
   end
 
   def taken_hostnames
