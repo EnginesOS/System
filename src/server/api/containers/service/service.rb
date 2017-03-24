@@ -45,7 +45,7 @@ end
 get '/v0/containers/service/:service_name/websites' do
   begin
     service = get_service(params[:service_name])
-    return_json_array(ervice.web_sites)
+    return_json_array(service.web_sites)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
