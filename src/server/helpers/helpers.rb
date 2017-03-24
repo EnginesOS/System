@@ -2,7 +2,8 @@ helpers do
   require_relative 'params.rb'
   require_relative 'output.rb'
   def engines_api
-    $engines_api
+    #$engines_api
+    @engines_api ||= PublicApi.new(core_api)
   end
 
   def json_parser
@@ -102,27 +103,18 @@ helpers do
     config.failure_app = self
   end
 
-  #  Warden::Manager.before_failure do |env, opts|
-  #    env['REQUEST_METHOD'] = 'POST'
-  #  end
-
   # Implement your Warden stratagey to validate and authorize the access_token.
   Warden::Strategies.add(:access_token) do
     def valid?
-      # Validate that the access token is properly formatted.
-      # Currently only checks that it's actually a string.
-      request.env['HTTP_ACCESS_TOKEN'].is_a?(String) | params['access_token'].is_a?(String)
+      request.env['HTTP_ACCESS_TOKEN'].is_a?(String)
     end
 
     def is_token_valid?(token, ip = nil)
-      $engines_api.is_token_valid?(token, ip)
+      #$
+      engines_api.is_token_valid?(token, ip)
     end
 
     def authenticate!
-      # Authorize request if HTTP_ACCESS_TOKEN matches 'youhavenoprivacyandnosecrets'
-      # Your actual access token should be generated using one of the several great libraries
-      # for this purpose and stored in a database, this is just to show how Warden should be
-      # set up.
       STDERR.puts('NO HTTP_ACCESS_TOKEN in header ') if request.env['HTTP_ACCESS_TOKEN'].nil?
       access_granted = is_token_valid?(request.env['HTTP_ACCESS_TOKEN'])
       !access_granted ? fail!('Could not log in') : success!(access_granted)
