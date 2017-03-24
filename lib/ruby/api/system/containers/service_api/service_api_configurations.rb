@@ -1,7 +1,6 @@
 module ServiceApiConfigurations
   @@configurator_timeout = 10
   def retrieve_configurator(c, params)
-    # cmd = 'docker_exec -u ' + c.cont_userid + ' ' +  c.container_name + ' /home/configurators/read_' + params[:configurator_name].to_s + '.sh '
     cmd =  '/home/configurators/read_' + params[:configurator_name].to_s + '.sh'
     result =  @engines_core.exec_in_container({:container => c, :command_line => [cmd], :log_error => true, :timeout => @@configurator_timeout})
     if result[:result] == 0
