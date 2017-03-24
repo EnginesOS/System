@@ -3,7 +3,7 @@ module ClientHTTPStream
   require 'net/http'
 
 #used by events
-def get_json_parser_stream(path)
+def get_json_stream(path)
   require 'yajl'
   chunk = ''
 
@@ -20,7 +20,7 @@ options = {use_ssl => uri.scheme == 'https', :verify_mode => OpenSSL::SSL::VERIF
         begin
           next if chunk == "\0" || chunk == "\n"
           hash = parser.parse(chunk)  #do |hash|
-            p hash.to_json_parser
+            p hash.to_json
             #  end
           #dont panic on bad json_parser as it is the \0 keep alive
         rescue StandardError => e

@@ -6,7 +6,7 @@ require 'excon'
 require 'yajl'
 
 ##used by events
-#def get_json_parser_stream(path)
+#def get_json_stream(path)
 #  require 'yajl'
 #  chunk = ''
 #
@@ -21,7 +21,7 @@ require 'yajl'
 #        begin
 #          next if chunk == "\0" || chunk == "\n"
 #          hash = parser.parse(chunk) do |hash|
-#            p hash.to_json_parser
+#            p hash.to_json
 #          end
 #          #dont panic on bad json_parser as it is the \0 keep alive
 #        rescue StandardError => e
@@ -88,9 +88,9 @@ end
 def rest_del(uri,params=nil)
 
   if params.nil?
-    connection.request(:method => :delete,:path => uri) #,:body => params.to_json_parser)
+    connection.request(:method => :delete,:path => uri) #,:body => params.to_json)
   else
-    connection.request(:method => :delete,:path => uri,:body => params.to_json_parser)
+    connection.request(:method => :delete,:path => uri,:body => params.to_json)
   end
 rescue StandardError => e
 
@@ -101,9 +101,9 @@ end
 def rest_get(uri,params=nil,time_out=120)
 
   if params.nil?
-    connection.request(:read_timeout => time_out,:method => :get,:path => uri) #,:body => params.to_json_parser)
+    connection.request(:read_timeout => time_out,:method => :get,:path => uri) #,:body => params.to_json)
   else
-    connection.request(:read_timeout => time_out,:method => :get,:path => uri,:body => params.to_json_parser)
+    connection.request(:read_timeout => time_out,:method => :get,:path => uri,:body => params.to_json)
   end
 rescue StandardError => e
 
@@ -114,7 +114,7 @@ def rest_post(uri, params, content_type,time_out = 120 )
 
   begin
     unless params.nil?
-      r =  connection(content_type).request(:read_timeout => time_out,:method => :post,:path => uri, :body => params.to_json_parser) #,:body => params.to_json_parser)
+      r =  connection(content_type).request(:read_timeout => time_out,:method => :post,:path => uri, :body => params.to_json) #,:body => params.to_json)
     else
       r =  connection(content_type).request(:read_timeout => time_out,:method => :post,:path => uri)
     end
@@ -135,9 +135,9 @@ def rest_delete(uri, params=nil)
   # params = add_access(params)
   begin
     if params.nil?
-      r =  connection.request(:method => :delete,:path => uri) #,:body => params.to_json_parser)
+      r =  connection.request(:method => :delete,:path => uri) #,:body => params.to_json)
     else
-      r =  connection.request(:method => :delete,:path => uri,:body => params.to_json_parser)
+      r =  connection.request(:method => :delete,:path => uri,:body => params.to_json)
     end
     write_response(r)
     exit

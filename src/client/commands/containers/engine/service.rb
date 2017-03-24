@@ -40,7 +40,7 @@ cmd = nil
 post = true
 content_type='application/json_parser'
 STDERR.puts  @route
-params = read_stdin_json_parser
+params = read_stdin_json
 n = 5
 
 end
