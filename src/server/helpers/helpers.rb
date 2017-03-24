@@ -140,7 +140,7 @@ helpers do
       # for this purpose and stored in a database, this is just to show how Warden should be
       # set up.
       STDERR.puts('NO HTTP_ACCESS_TOKEN in header ') if request.env['HTTP_ACCESS_TOKEN'].nil?
-      access_granted = is_token_valid?(request.env['HTTP_ACCESS_TOKEN']) # == $token
+      access_granted = is_token_valid?(request.env['HTTP_ACCESS_TOKEN'])
       !access_granted ? fail!('Could not log in') : success!(access_granted)
     end
   end
