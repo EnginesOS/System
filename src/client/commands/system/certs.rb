@@ -12,7 +12,7 @@ when 'generate'
 @route += '/generate'
 params_data = read_stdin_data
 
-   perform_post(json_parser.parse(params_data), :create_additons => true )
+   perform_post(json_parser.parse(params_data))
  
 when 'default'
   @route += '/default'
