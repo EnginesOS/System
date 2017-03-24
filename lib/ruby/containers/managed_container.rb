@@ -6,7 +6,7 @@ require_relative 'container.rb'
 
 class ManagedContainer < Container
   require 'yajl'
-  require 'json'
+#  require 'json'
   require_relative 'managed_container/task_at_hand.rb'
   include TaskAtHand
   require_relative 'managed_container/managed_container_controls.rb'
@@ -58,18 +58,21 @@ class ManagedContainer < Container
   end
 
   # Note desired state is teh next step and not the final result desired state is stepped through
-  def log_error_mesg(msg, *objects)
-    #task_failed(msg)
-    super
-  end
+  #  def log_error_mesg(msg, *objects)
+  #    #task_failed(msg)
+  #    super
+  #  end
 
   def set_state
     @setState
   end
 
+  def to_s
+    @container_name.to_s + '-set to:' +  @setState + ':' + status.to_s
+  end
+  
   def status
     @status = {} if @status.nil?
-
     @status[:state] = read_state
     @status[:set_state] = @setState
     @status[:progress_to] = task_at_hand
@@ -77,11 +80,7 @@ class ManagedContainer < Container
     @status[:oom] = @out_of_memory
     @status[:had_oom] = @had_out_memory
     @status[:restart_required] = restart_required?
-    @status[:error] = true if @status[:state] !=  @status[:set_state] &&  @status[:progress_to].nil?
-    #@status[:error] = false unless  @status[:progress_to].nil?
-    #    elsif @status[:progress_to].nil?
-    #      @status[:error] = false
-    #    end
+    @status[:error] = true if @status[:state] != @status[:set_state] && @status[:progress_to].nil?
     @status
   end
 
@@ -99,6 +98,8 @@ class ManagedContainer < Container
     return @container_id if setState == 'noncontainer'
     @container_id = read_container_id
     @container_id
+  rescue
+    -1
   end
 
   def repo
@@ -162,8 +163,7 @@ class ManagedContainer < Container
     @image.freeze
     @repository = '' if @repository.nil?
     @repository.freeze
-  rescue StandardError => e
-    log_exception(e)
+
   end
 
   def error_type_hash(mesg, params = nil)

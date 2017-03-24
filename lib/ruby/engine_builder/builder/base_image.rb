@@ -19,13 +19,16 @@ def read_base_image_from_dockerfile
       return post_failed_build_clean_up
     end
     log_build_output('Pull base Image')
-    if @core_api.pull_image(base_image_name) == false
-      log_build_errors('Failed Pull Image:' + base_image_name + ' from  DockerHub')
-      @last_error = ' ' + tail_of_build_log
-      return post_failed_build_clean_up
-    end
+#    if
+      @core_api.pull_image(base_image_name) #== false
+   
+#      log_build_errors('Failed Pull Image:' + base_image_name + ' from  DockerHub')
+#      @last_error = ' ' + tail_of_build_log
+#      return post_failed_build_clean_up
+#    end
     true
     rescue StandardError => e
       log_build_errors(e)
-      return post_failed_build_clean_up
+     # return post_failed_build_clean_up
+    true
   end

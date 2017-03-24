@@ -1,9 +1,9 @@
 module Shares
-  def shares_registry_tree
+  def shared_services_registry_tree
     rest_get('shares/tree', nil)
   end
 
-  def remove_from_shares_registry(shared_service)
+  def remove_from_shared_services_registry(shared_service)
     rest_post('shares/del', shared_service )
   end
 

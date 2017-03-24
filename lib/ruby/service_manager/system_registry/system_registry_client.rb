@@ -31,7 +31,7 @@ class SystemRegistryClient < ErrorsApi
   include Subservices
   include Shares
 
-  def get_registry()
+  def registry_root()
     system_registry_tree
   end
 

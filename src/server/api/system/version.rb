@@ -8,9 +8,11 @@ require '/opt/engines/lib/ruby/api/system/system_status.rb'
 # @return  [String]  as in current|master|beta-rc etc
 
 get '/v0/system/version/release' do
-  release = SystemStatus.get_engines_system_release
-  return log_error(request, release) if release.is_a?(EnginesError)
-  return_text(release)
+  begin
+    return_text(SystemStatus.get_engines_system_release)
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
 end
 
 # @method get_system_version_api
@@ -20,9 +22,11 @@ end
 #
 
 get '/v0/system/version/api' do
-  api = engines_api.api_version
-  return log_error(request, api) if api.is_a?(EnginesError)
-  return_text(api)
+  begin
+    return_text(engines_api.api_version)
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
 end
 
 # @method get_system_version_ident
@@ -31,9 +35,11 @@ end
 # @return [String] $release-$system-$api
 #  string format $release-$system-$api
 get '/v0/system/version/ident' do
-  ident = engines_api.version_string
-  return log_error(request, ident) if ident.is_a?(EnginesError)
-  return_text(ident)
+  begin
+    return_text(engines_api.version_string)
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
 end
 
 # @method get_system_version_system
@@ -42,9 +48,11 @@ end
 # @return [String] system version
 # system version
 get '/v0/system/version/system' do
-  system = engines_api.system_version
-  return log_error(request, system) if system.is_a?(EnginesError)
-  return_text(system)
+  begin
+    return_text(engines_api.system_version)
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
 end
 
 require '/opt/engines/lib/ruby/system/system_utils.rb'
@@ -54,11 +62,12 @@ require '/opt/engines/lib/ruby/system/system_utils.rb'
 # @return [Hash] :name :version :id :id_like :pretty_name :version_id :home_url :support_url :bug_report_url
 # keys set by OS
 get '/v0/system/version/base_os' do
-  base_os = SystemUtils.get_os_release_data
-
-  return log_error(request, base_os) if base_os.is_a?(EnginesError)
-  base_os =  downcase_keys(base_os)
-  return_json(base_os)
+  begin
+    base_os = downcase_keys(SystemUtils.get_os_release_data)
+    return_json(base_os)
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
 end
 
 # @!endgroup

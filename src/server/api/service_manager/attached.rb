@@ -1,1 +1,1 @@
-#/service_manager/attached/class_name
+# /service_manager/attached/class_name

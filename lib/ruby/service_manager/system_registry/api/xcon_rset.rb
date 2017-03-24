@@ -17,9 +17,7 @@ def connection(content_type = nil)
   persistent: true,
   headers: headers)
 rescue StandardError => e
-  STDERR.puts('Failed to open base url to registry' + @base_url.to_s)
-  STDERR.puts e.backtrace.to_s
-  log_exception(e, params, path)
+  raise EnginesException.new(error_hash('Failed to open base url to registry ' + e.to_s, @base_url.to_s))
 end
 
 def reopen_connection
@@ -31,6 +29,8 @@ def reopen_connection
   persistent: true,
   headers: headers)
   @connection
+  rescue StandardError => e
+    raise EnginesException.new(error_hash('Failed to re open base url to registry' + e.to_s , @base_url.to_s))
 end
 
 def rest_get(path,params = nil,time_out=120, _headers = nil)
@@ -63,6 +63,7 @@ def rest_post(path,params = nil, lheaders=nil)
     r = parse_xcon_response(connection.request({read_timeout: time_out, headers: lheaders, method: :post, path: @route_prefix + path, body: query_hash(params).to_json }))
     return r
   rescue Excon::Error::Socket => e
+  STDERR.puts e.class.name 
     reopen_connection
     retry
   end
@@ -74,6 +75,7 @@ def rest_put(path,params = nil, lheaders=nil)
   r = parse_xcon_response( connection.request(read_timeout: time_out, headers: lheaders, method: :put, path: @route_prefix + path, query: query_hash(params).to_json ))
   return r
 rescue Excon::Error::Socket => e
+  STDERR.puts e.class.name 
   reopen_connection
   retry
 end
@@ -91,6 +93,7 @@ def rest_delete(path, params = nil, lheaders=nil)
   r =  parse_xcon_response( connection.request(read_timeout: time_out, headers: lheaders, method: :delete, path: @route_prefix + path, query: q))
   return r
 rescue Excon::Error::Socket => e
+  STDERR.puts e.class.name 
   reopen_connection
   retry
   #end
@@ -112,28 +115,33 @@ def parse_xcon_response(resp)
   r
 end
 
-def error_result_exception(resp)
+def error_result_exception(resp) 
+  STDERR.puts('Registry Exception ' +  resp.body.to_s  + ' head ' + resp.headers.to_s  )   unless resp.nil? 
   raise RegistryException.new(
   {status: resp.status,
     error_type: :error,
     error_mesg: 'Route Not Found',
     params: resp.body
-  }) if resp.headers.nil? || !  resp.headers['Content-Type'] == 'application/json'
+  }) if resp.headers.nil? || resp.headers['Content-Type'] != 'application/json'
   r = deal_with_json(resp.body)
   r = {} if r.nil?
   r[:status] = resp.status if r.is_a?(Hash)
+    
+STDERR.puts('Registry Exception from  json result ' + r.to_s )
+ 
   raise RegistryException.new(
-  {status: resp.status,
+  {status: 404,
     error_type: :warning,
     error_mesg: 'Route Not Found',
-    params: resp.body
-  })  if r == '<h1>Not Found</h1>'
+    params: 'nil'
+  }) if resp.nil? 
+STDERR.puts('Registry Exception from R ' )  
   raise RegistryException.new(r)
 end
 
 def base_url
-  'http://' + @core_api.get_registry_ip + ':4567'
+  'http://' + @core_api.registry_root_ip + ':4567'
 rescue  StandardError => e
-  log_exception(e)
+  raise EnginesException.new('Cannot Deterine Base URL' + e.to_s)
 end
 

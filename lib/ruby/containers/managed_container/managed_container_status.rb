@@ -1,29 +1,26 @@
 module ManagedContainerStatus
   def is_service?
     return true if @ctype == 'service'
-    return false
+    false
   end
   
   def read_state
-    state = super
-   
+    state = super   
     if state == 'na'     
       expire_engine_info
       SystemDebug.debug(SystemDebug.containers, container_name,'in na',  :info, @docker_info_cache)
       return 'nocontainer'
-    end
-    
+    end    
      state
   rescue EnginesException =>e
     expire_engine_info
     'nocontainer'
   end
-  
+
 # raw=true means dont check state for error
   def read_state(raw=false)
     #return 'nocontainer' if @setState == 'nocontainer'  # FIXME: this will not support notification of change
-    if docker_info.is_a?(FalseClass)
-     
+    if docker_info.is_a?(FalseClass)     
       state = 'nocontainer'
     else
       state = super()
@@ -47,6 +44,8 @@ module ManagedContainerStatus
     rescue EnginesException =>e
       expire_engine_info
       'nocontainer'
+      clear_cid
+      raise e
   end
 
   def is_startup_complete?
@@ -57,8 +56,7 @@ module ManagedContainerStatus
   def is_error?    
     return false unless task_at_hand.nil? 
     return false if in_two_step?
-    state = read_state
-    return true if @setState != state
+    return true if @setState != read_state
      false
   end
 

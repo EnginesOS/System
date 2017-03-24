@@ -1,25 +1,26 @@
 module EnginesOperations
   #require_relative 'service_manager_access.rb'
-  #@return boolean indicating sucess
-  #@params [Hash] :engine_name
+  # @return boolean indicating sucess
+  # @params [Hash] :engine_name
   #Retrieves all persistent service registered to :engine_name and destroys the underlying service (fs db etc)
   # They are removed from the tree if delete is sucessful
-  def delete_engine(params)
-    SystemDebug.debug(SystemDebug.containers,:delete_engines,params)
+  def delete_engine( params )
 
+    SystemDebug.debug(SystemDebug.containers, :delete_engines, params)
     params[:container_type] = 'container' # Force This
-    #   return r if (r = delete_image_dependancies(params) ).is_a?(EnginesError)
     engine_name = params[:engine_name]
     reinstall = false
     reinstall = params[:reinstall] = true if params.key?(:reinstall)
-    remove_engine(engine_name, reinstall)
+    if loadManagedEngine(engine_name).has_container?
+      raise EnginesException.new(error_hash('Container Exists Please Destroy engine first' , params)) unless reinstall.is_a?(TrueClass)
+    end
+    remove_engine(engine_name, reinstall, params[:remove_all_data])
   end
 
   #install from fresh copy of blueprint in repository
   def reinstall_engine(engine)
     clear_error
     r =   engine.destroy_container(true) if engine.has_container?
-    return r if r.is_a?(EnginesError)
     params = {
       engine_name: engine.container_name,
       reinstall: true
@@ -31,7 +32,6 @@ module EnginesOperations
     }
     return true if @build_thread.alive?
     raise EnginesException.new(error_hash(params[:engine_name], 'Build Failed to start'))
-  
   end
 
   def set_container_runtime_properties(container,params)
@@ -65,8 +65,6 @@ module EnginesOperations
       return r unless r == true
     end
     container.create_container
-
- 
   end
 
   def set_engine_network_properties(container, params)
@@ -80,15 +78,5 @@ module EnginesOperations
   def docker_build_engine(engine_name, build_archive_filename , builder)
     @docker_api.build_engine(engine_name, build_archive_filename, builder)
   end
-
-  #  def delete_image_dependancies(params)
-  #      r = ''
-  #      params[:parent_engine] = params[:engine_name]
-  #
-  #      SystemDebug.debug(SystemDebug.containers, :delete_image_dependancies, params)
-  #      return r if (r = service_manager.rm_remove_engine_services(params)).is_a?(EnginesError)
-  #       true
-
-  #    end
 
 end

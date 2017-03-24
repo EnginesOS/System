@@ -13,8 +13,8 @@ class BuildController
     @engine_builder = nil
   end
 
-  def build_from_docker(params)
-  end
+#  def build_from_docker(params)
+#  end
 
   def abort_build
     SystemDebug.debug(SystemDebug.builder, :abort_build)
@@ -114,7 +114,7 @@ class BuildController
  
   end
 
-  def build_failed(params,err)
+  def build_failed(params, err)
    
     params[:error] = err.to_s
     @build_error = err

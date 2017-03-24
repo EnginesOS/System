@@ -23,7 +23,7 @@ require 'yajl'
 #          hash = parser.parse(chunk) do |hash|
 #            p hash.to_json
 #          end
-#          #dont panic on bad json as it is the \0 keep alive
+#          #dont panic on bad json_parser as it is the \0 keep alive
 #        rescue StandardError => e
 #          p e
 #          STDERR.puts('_'+ chunk + '_')
@@ -68,7 +68,7 @@ require 'yajl'
 
 
 
-def connection(content_type = 'application/json')
+def connection(content_type = 'application/json_parser')
   headers = {}
   headers['content_type'] = content_type
   headers['ACCESS_TOKEN'] = load_token

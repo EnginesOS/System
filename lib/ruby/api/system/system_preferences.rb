@@ -5,8 +5,7 @@ class SystemPreferences
     else
       @preferences = {}
     end
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
+
   end
 
   def set_default_domain(params)
@@ -15,19 +14,11 @@ class SystemPreferences
     return false if domain_name.to_s == '' 
     @preferences[:default_domain] = domain_name # params[:default_domain]
     save_preferences
-    
-    #return true #EnginesOSapiResult.success(params[:default_domain], :default_domain)
-  rescue StandardError => e
-    log_exception(e)
-  
   end
 
   def get_default_domain
     return 'unset' unless @preferences.key?(:default_domain)
      @preferences[:default_domain]
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
-
   end
 
   def save_preferences
@@ -38,7 +29,5 @@ class SystemPreferences
     f = File.new(SystemConfig.SystemPreferencesFile, File::CREAT | File::TRUNC | File::RDWR, 0644)
     f.puts(serialized_object)
     f.close
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
 end

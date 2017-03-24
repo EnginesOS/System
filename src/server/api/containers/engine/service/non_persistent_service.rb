@@ -7,15 +7,15 @@
 # @return [true|false]
 
 post '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/*' do
-  p_params = post_params(request)
-   path_hash = engine_service_hash_from_params(params, false)
-   p_params.merge!(path_hash)
-   cparams = assemble_params(p_params, [:parent_engine,:publisher_namespace, :type_path, :service_handle], :all)
-   return log_error(request,cparams,p_params) if cparams.is_a?(EnginesError)
- 
-  r = engines_api.update_attached_service(cparams)
-  return log_error(request, r, hash) if r.is_a?(EnginesError)
-  return_text(r)
+  begin
+    p_params = post_params(request)
+    path_hash = engine_service_hash_from_params(params, false)
+    p_params.merge!(path_hash)
+    cparams = assemble_params(p_params, [:parent_engine,:publisher_namespace, :type_path, :service_handle], :all)
+    return_text(engines_api.update_attached_service(cparams))
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
 end
 
 # @method engine_force_register_non_persistent_service
@@ -23,49 +23,51 @@ end
 # force register the non persistent service
 # @return [true|false]
 get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/*/register' do
-
-  hash = engine_service_hash_from_params(params)
-  service_hash =  engines_api.find_engine_service_hash(hash)
-  return log_error(request, service_hash, hash)  if service_hash.is_a?(EnginesError)
-  r = engines_api.force_register_attached_service(service_hash)
-  return log_error(request, r, hash) if r.is_a?(EnginesError)
-  return_text(r)
-
+  begin
+    hash = engine_service_hash_from_params(params)
+    service_hash = engines_api.retrieve_engine_service_hash(hash)
+    return_text(engines_api.force_register_attached_service(service_hash))
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
 end
 # @method engine_force_reregister_non_persistent_service
 # @overload get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/reregister'
 # force reregister the non persistent service
 # @return [true|false]
 get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/*/reregister' do
+  begin
 
-  hash = engine_service_hash_from_params(params)
-  service_hash =  engines_api.find_engine_service_hash(hash)
-  return log_error(request, service_hash, hash) if service_hash.is_a?(EnginesError)
-  r = engines_api.force_reregister_attached_service(service_hash)
-  return log_error(request, r, hash) if r.is_a?(EnginesError)
-  return_text(r)
+    hash = engine_service_hash_from_params(params)
+    service_hash = engines_api.retrieve_engine_service_hash(hash)
+    return_text(engines_api.force_reregister_attached_service(service_hash))
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
 end
 # @method engine_force_deregister_non_persistent_service
 # @overload get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle/deregister'
 # force deregister the non persistent service
 # @return [true|false]
 get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/*/deregister' do
-
-  hash = engine_service_hash_from_params(params)
-  service_hash =  engines_api.find_engine_service_hash(hash)
-  return log_error(request, service_hash, hash) if service_hash.is_a?(EnginesError)
-  r = engines_api.force_deregister_attached_service(service_hash)
-  return log_error(request, r, hash) if r.is_a?(EnginesError)
-  return_text(r)
+  begin
+    hash = engine_service_hash_from_params(params)
+    service_hash = engines_api.retrieve_engine_service_hash(hash)
+    return_text(engines_api.force_deregister_attached_service(service_hash))
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
 end
 
 # @method engine_get_non_persistent_service
 # @overload get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/:type_path/:service_handle'
 #  @return [Hash]
 get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/*' do
-  hash = engine_service_hash_from_params(params)
-  r = engines_api.find_engine_service_hash(hash)
-  return log_error(request, r, hash) if r.is_a?(EnginesError)
-  return_json(r)
+  begin
+    hash = engine_service_hash_from_params(params)
+    return_json(engines_api.retrieve_engine_service_hash(hash))
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
 end
 # @!endgroup

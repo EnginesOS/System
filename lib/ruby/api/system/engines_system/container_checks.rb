@@ -1,6 +1,5 @@
 module ContainerChecks
   def containers_check_and_act
-
     services_status = get_services_status
     results = check_and_act(services_status, 'service')
     engines_status = get_engines_status
@@ -12,11 +11,10 @@ module ContainerChecks
   def check_and_act(containers_status, ctype)
     result = {}
     containers_status.keys.each do |container_name|
-
       if containers_status[container_name][:error] == true
         begin
           result[container_name] = act_on(container_name, ctype)
-        rescue EnginesError => e
+        rescue StandardError
         end
       else
         result[container_name] = 'ok'
@@ -33,13 +31,7 @@ module ContainerChecks
     else
       container = loadSystemService(container_name)
     end
-
-    return container if container.is_a?(EnginesError)
-
-    r = container.correct_current_state
-    return r if r.is_a?(EnginesError)
-
+    container.correct_current_state
     'fixed'
-
   end
 end

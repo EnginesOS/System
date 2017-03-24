@@ -6,23 +6,23 @@ module ManagedContainerControls
   end
 
   def update_memory(new_memory)
-     super   
-     @memory = new_memory
-    save_state 
-     update_environment('Memory',new_memory,true)
-   end
-   
-  def destroy_container(reinstall=false)
+    super
+    @memory = new_memory
+    save_state
+    update_environment('Memory', new_memory, true)
+  end
+
+  def destroy_container(reinstall = false)
     return false unless has_api?
     if reinstall == true
       return false unless prep_task(:reinstall)
     else
       return false unless prep_task(:destroy)
     end
-    return clear_cid if super()
-    task_failed('destroy')
+    return task_failed('destroy') unless super() # need () to avoid passing as super(reinstall)
+    clear_cid
   end
-  
+
   def delete_engine
     @container_api.delete_engine(self)
   end
@@ -46,22 +46,19 @@ module ManagedContainerControls
     return false unless has_api?
     SystemDebug.debug(SystemDebug.containers, :teask_preping)
     @container_mutex.synchronize {
-    return false unless prep_task(:create)
-    SystemDebug.debug(SystemDebug.containers,  :teask_preped)
-    expire_engine_info
-    @container_id = -1
-    save_state
-    return task_failed('create') unless super
-    save_state #save new containerid)
-    SystemDebug.debug(SystemDebug.containers,  :create_super_ran)
-    SystemDebug.debug(SystemDebug.containers,@setState, @docker_info_cache.class.name,  @docker_info_cache)
-    expire_engine_info
-    state = read_state
-    SystemDebug.debug(SystemDebug.containers,@setState, @docker_info_cache.class.name,  @docker_info_cache)
-    true
+      return false unless prep_task(:create)
+      SystemDebug.debug(SystemDebug.containers, :teask_preped)
+      expire_engine_info
+      @container_id = -1
+      save_state
+      return task_failed('create') unless super
+      save_state #save new containerid)
+      SystemDebug.debug(SystemDebug.containers,  :create_super_ran)
+      SystemDebug.debug(SystemDebug.containers,@setState, @docker_info_cache.class.name,  @docker_info_cache)
+      expire_engine_info
+      SystemDebug.debug(SystemDebug.containers,@setState, @docker_info_cache.class.name,  @docker_info_cache)
+      true
     }
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def recreate_container
@@ -70,22 +67,22 @@ module ManagedContainerControls
     return task_failed('create/recreate') unless create_container
     true
   end
-  
+
   def unpause_container
     return false unless has_api?
     @container_mutex.synchronize {
-    return r unless (r = prep_task(:unpause))
-    return task_failed('unpause') unless super
-    true
+      return false unless (r = prep_task(:unpause))
+      return task_failed('unpause') unless super
+      true
     }
   end
 
   def pause_container
     return false unless has_api?
     @container_mutex.synchronize {
-    return r unless (r = prep_task(:pause))
-    return task_failed('pause') unless super
-    true
+      return r unless (r = prep_task(:pause))
+      return task_failed('pause') unless super
+      true
     }
   end
 
@@ -93,27 +90,27 @@ module ManagedContainerControls
     SystemDebug.debug(SystemDebug.containers,  :stop_read_sta, read_state)
     return false unless has_api?
     @container_mutex.synchronize {
-    return r unless (r = prep_task(:stop))
-    return task_failed('stop') unless super
-    true
+      return r unless (r = prep_task(:stop))
+      return task_failed('stop') unless super
+      true
     }
   end
+
   def halt_container
     @container_mutex.synchronize {
-    return r unless (r = prep_task(:stop))
-     super
-    true
+      return r unless (r = prep_task(:stop))
+      super
+      true
     }
   end
 
   def start_container
-
     return false unless has_api?
     @container_mutex.synchronize {
-    return r unless (r = prep_task(:start))
-    return task_failed('start') unless super
-    @restart_required = false
-    true
+      return r unless (r = prep_task(:start))
+      return task_failed('start') unless super
+      @restart_required = false
+      true
     }
   end
 
@@ -127,18 +124,18 @@ module ManagedContainerControls
   def rebuild_container
     return false unless has_api?
     @container_mutex.synchronize {
-    return r unless (r = prep_task(:reinstall))
-    ret_val = @container_api.rebuild_image(self)
-    expire_engine_info
-    return true if ret_val
-    task_failed('rebuild')
+      return r unless (r = prep_task(:reinstall))
+      ret_val = @container_api.rebuild_image(self)
+      expire_engine_info
+      return true if ret_val
+      task_failed('rebuild')
     }
   end
 
   def correct_current_state
     case @setState
     when 'stopped'
-      return stop_container if is_running?      
+      return stop_container if is_running?
     when 'running'
       return start_container unless is_active?
       return unpause_container if is_paused?
@@ -150,7 +147,7 @@ module ManagedContainerControls
       return 'fail'
     end
   end
-  
+
   private
 
   def prep_task(action_sym)
@@ -161,8 +158,6 @@ module ManagedContainerControls
     return r unless (r = in_progress(action_sym))
     SystemDebug.debug(SystemDebug.containers,  :inprogress_run)
     clear_error
-     save_state
-  rescue StandardError  => e
-    log_exception(e)
+    save_state
   end
 end

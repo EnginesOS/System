@@ -5,39 +5,26 @@ module PublicApiBackup
 
   def backup_system_db(out)
     @system_api.backup_system_db(out)
-    rescue StandardError => e
-      handle_exception(e)
   end
 
   def backup_system_registry(out)
     @system_api.backup_system_registry(out)
-    rescue StandardError => e
-      handle_exception(e)
   end
 
   def backup_service_data(service_name,out)
     @system_api.backup_service_data(service_name,out)
-    rescue StandardError => e
-      handle_exception(e)
   end
 
   def backup_engine_config(engine_name, out)
     @system_api.backup_engine_config(engine_name, out)
-    rescue StandardError => e
-      handle_exception(e)
   end
 
   def backup_engine_service(service_hash,out)
     engine = loadManagedEngine(service_hash[:parent_engine])
-    return engines if engine.is_a?(EnginesError)
     engine.export_service_data(service_hash,out)
-    rescue StandardError => e
-      handle_exception(e)
   end
 
   def engines_services_to_backup(engine_name)
     @system_api.engines_services_to_backup(engine_name)
-    rescue StandardError => e
-      handle_exception(e)
   end
 end

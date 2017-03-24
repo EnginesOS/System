@@ -18,8 +18,8 @@ class PublicApi < ErrorsApi
   require_relative 'containers/service_hash.rb'
   #find_service_service_hash
   #find_service_service_hashes
-  #find_engine_service_hash
-  #find_engine_service_hashes
+  #retrieve_engine_service_hash
+  #retrieve_engine_service_hashes
   include PublicApiContainersServiceHash
 
   require_relative 'containers/properties.rb'
@@ -109,11 +109,11 @@ class PublicApi < ErrorsApi
 
   require_relative 'registry/registry.rb'
   #resistry
-  #  get_managed_engine_tree#ex
-  #  get_configurations_tree#ex
-  #  managed_service_tree#ex#ex
-  #  get_orphaned_services_tree#ex
-  #  get_shares_tree #ex
+  #  managed_enginess_registry#ex
+  #  service_configurations_registry#ex
+  #  managed_services_registry#ex#ex
+  #  orphaned_services_registry#ex
+  #  get_shared_services_registry #ex
   include PublicApiRegistry
 
   #service_manager

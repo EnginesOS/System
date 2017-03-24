@@ -10,9 +10,11 @@ require '/opt/engines/lib/ruby/containers/managed_service.rb'
 require '/opt/engines/lib/ruby/containers/system_service.rb'
 require '/opt/engines/lib/ruby/containers/managed_utility/managed_utility.rb'
 require '/opt/engines/lib/ruby/managed_services/service_definitions/software_service_definition.rb'
+
 #require '/opt/engines/lib/ruby/service_manager/service_definitions.rb'
 require '/opt/engines/lib/ruby/system/deal_with_json.rb'
 require '/opt/engines/lib/ruby/managed_services/service_definitions/service_top_level.rb'
+
 class EnginesCore < ErrorsApi
 
   require_relative 'errors/engines_core_errors.rb'
@@ -183,8 +185,6 @@ class EnginesCore < ErrorsApi
     FirstRunWizard.required?
   end
 
-
-
   def get_build_report(engine_name)
     @system_api.get_build_report(engine_name)
   end
@@ -198,7 +198,6 @@ class EnginesCore < ErrorsApi
   end
 
   def build_engine(params)
-
     @build_controller = BuildController.new(self)  unless @build_controller
     @build_thread = Thread.new {
       @build_controller.build_engine(params)
@@ -211,6 +210,6 @@ class EnginesCore < ErrorsApi
     # FIXME: @registry_handler.api_dissconnect
     @system_api.api_shutdown(reason)
   end
- 
+
   protected
 end

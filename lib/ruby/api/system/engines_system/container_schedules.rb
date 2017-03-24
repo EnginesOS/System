@@ -14,49 +14,50 @@ module ContainerSchedules
     end
   end
 
-  def create_cron_service(container, schedule)      
-      t= {
-      publisher_namespace: 'EnginesSystem', 
+  def create_cron_service(container, schedule)
+    t= {
+      publisher_namespace: 'EnginesSystem',
       type_path:  schedule_type_path(schedule),
       parent_engine: container.container_name,
       container_type: container_ctype(container.ctype),
       service_handle: schedule[:label],
-      variables: { 
-        action_type: schedule_type(schedule),
-        cron_job: schedule_instruction(schedule),
-        title: schedule[:label],
-        :when => cron_line(schedule[:timespec]),
-        parent_engine: container.container_name } }      
-    @engines_api.create_and_register_service(t) 
+      variables: {
+      action_type: schedule_type(schedule),
+      cron_job: schedule_instruction(schedule),
+      title: schedule[:label],
+      :when => cron_line(schedule[:timespec]),
+      parent_engine: container.container_name } }
+    @engines_api.create_and_register_service(t)
   end
-  
+
   def container_ctype(ctype)
     return 'engine' if ctype == 'container'
-    ctype    
+    ctype
   end
-  
+
   def schedule_type_path(schedule)
     return 'schedule' unless  schedule[:instruction] == 'action'
     'cron'
   end
+
   def schedule_type(schedule)
     return 'schedule' unless  schedule[:instruction] == 'action'
     schedule[:instruction]
-  end  
+  end
+
   def schedule_instruction(schedule)
     return schedule[:instruction] unless  schedule[:instruction] == "action"
     #r = schedule[:actionator]
-   format_actioncron_job( schedule[:actionator])
-
+    format_actioncron_job( schedule[:actionator])
   end
+
   def format_actioncron_job(actionator)
-  '/home/actionators/' + actionator[:name] + '.sh ' + actionator[:params].to_json.to_s
+    '/home/actionators/' + actionator[:name] + '.sh ' + actionator[:params].to_json.to_s
   end
 
   def cron_line(timespec)
     SystemDebug.debug(SystemDebug.schedules, 'Creating cron  timespec:' , timespec)
     timespec[:minute] + ' ' + timespec[:hour] + ' ' + timespec[:day_of_month] + ' ' + timespec[:month] + ' ' + timespec[:day_of_week]
-
   end
 
 end

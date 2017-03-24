@@ -1,18 +1,15 @@
 module PublicApiConfig
   def set_default_domain(params)
     SystemDebug.debug(SystemDebug.system,  :set_default_domain, params)
+    SystemDebug.debug(SystemDebug.first_run, 'set_default_domain Domain')
     preferences = SystemPreferences.new
     preferences.set_default_domain(params)
-  rescue StandardError => e
-    handle_exception(e)
   end
 
   # WTF SystemPreferences ??
   def get_default_domain()
     preferences = SystemPreferences.new
     preferences.get_default_domain
-  rescue StandardError => e
-    handle_exception(e)
   end
 
   def set_hostname(hostname)
@@ -23,8 +20,6 @@ module PublicApiConfig
       hostname: hostname,
       domain_name: get_default_domain
       }})
-  rescue StandardError => e
-    handle_exception(e)
   end
 
   def set_default_site(params)
@@ -37,8 +32,6 @@ module PublicApiConfig
       default_site_url: default_site_url
       }
     })
-  rescue StandardError => e
-    handle_exception(e)
   end
 
   def get_default_site()
@@ -52,8 +45,6 @@ module PublicApiConfig
       return vars[:default_site_url] if vars.key?(:default_site_url)
     end
     ''
-  rescue StandardError => e
-    handle_exception(e)
   end
 
   def system_hostname
@@ -62,26 +53,22 @@ module PublicApiConfig
 
   # FIXME should use System
   def enable_remote_exception_logging
-    f = SystemConfig.NoRemoteExceptionLoggingFlagFile
-    return File.delete(f) if File.exists?(f)
-    true
-  rescue StandardError => e
-    handle_exception(e)
+    @core_api.enable_remote_exception_logging
+#    f = SystemConfig.NoRemoteExceptionLoggingFlagFile
+#    return File.delete(f) if File.exists?(f)
+#    true
   end
 
   # FIXME should use System
   def disable_remote_exception_logging
-    FileUtils.touch(SystemConfig.NoRemoteExceptionLoggingFlagFile)
-    true
-  rescue StandardError => e
-    handle_exception(e)
+#    FileUtils.touch(SystemConfig.NoRemoteExceptionLoggingFlagFile)
+#    true
+    @core_api.disable_remote_exception_logging
   end
 
   # FIXME should use System
   def is_remote_exception_logging?
     SystemStatus.is_remote_exception_logging?
-  rescue StandardError => e
-    handle_exception(e)
   end
 
 end

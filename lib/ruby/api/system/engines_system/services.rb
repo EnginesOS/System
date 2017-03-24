@@ -1,10 +1,10 @@
 module Services
   def getManagedServices
-    get_services_by_type(type='service')
+    get_services_by_type('service')
   end
 
   def getSystemServices
-    get_services_by_type(type='system_service')
+    get_services_by_type('system_service')
   end
 
   def list_managed_services
@@ -26,7 +26,6 @@ module Services
       s = loadSystemService(service_name)
     else
       s = _loadManagedService(service_name,  '/services/')
-      return s if is_a?(EnginesError)
       ts = File.mtime(SystemConfig.RunDir + '/services/' + service_name + '/running.yaml')
       cache_engine(s, ts)
     end
@@ -36,8 +35,8 @@ module Services
   private
 
   def get_services_by_type(type='service')
-    ret_val = []
     services = _list_services(type)
+    ret_val = []
     services.each do |service_name |
       begin
         service = loadManagedService(service_name) if type == 'service'
@@ -60,7 +59,6 @@ module Services
   end
 
   def _loadManagedService(service_name, service_type_dir)
-
     raise EnginesException.new(error_hash('No Service Name', service_type_dir)) if service_name.nil? || service_name.length == 0
     raise EnginesException.new(error_hash("no System api to attach ", @engines_api.to_s)) if @engines_api.service_api.nil?
 
@@ -73,7 +71,7 @@ module Services
     STDERR.puts('Panic nill  engine_api'  ) if @engines_api.nil?
     managed_service = SystemService.from_yaml(yaml_file, @engines_api.service_api) if service_type_dir ==  '/system_services/'
     managed_service = ManagedService.from_yaml(yaml_file, @engines_api.service_api)
-    raise EnginesException.new(error_hash('Failed to load', yaml_file)) if managed_service.nil?
+    raise EnginesException.new(error_hash('Failed to load ' + yam1_file_name.to_s , yaml_file)) if managed_service.nil?
     managed_service
   end
 

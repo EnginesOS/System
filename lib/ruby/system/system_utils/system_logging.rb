@@ -13,7 +13,7 @@ module SystemLogging
      return false
    end
 
-   #@Logs to passeenger std out the @msg followed by @object.to_s
+   # @Logs to passeenger std out the @msg followed by @object.to_s
    #Logs are written to apache/error.log
    # error mesg is truncated to 512 bytes
    # returns nothing

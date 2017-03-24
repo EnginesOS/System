@@ -5,14 +5,10 @@ module ServiceConfigurations
     r
   end
 
-  def get_service_configurations_hashes(service_hash)
+  def retrieve_service_configurations_hashes(service_hash)
     defs = SoftwareServiceDefinition.configurators(service_hash)
-    return defs if defs.is_a?(EnginesError)
     avail = service_defs_to_configurations(defs,service_hash)
-    return avail if avail.is_a?(EnginesError)
-
-    configured = service_manager.get_service_configurations_hashes(service_hash)
-    return configured  if configured.is_a?(EnginesError)
+    configured = service_manager.retrieve_service_configurations_hashes(service_hash)
     if configured.is_a?(Array)
       configured.each do | configuration |
         avail[ configuration[:configurator_name].to_sym ] = configuration
@@ -21,14 +17,14 @@ module ServiceConfigurations
     avail.values
   end
 
-  def get_pending_service_configurations_hashes(service_hash)
-    service_manager.get_pending_service_configurations_hashes(service_hash)
+  def pending_service_configurations_hashes(service_hash)
+    service_manager.pending_service_configurations_hashes(service_hash)
   end
 
   def update_service_configuration(service_param)
     # configurator = ConfigurationsApi.new(self)
     update_configuration_on_service(service_param)
-    service_manager.update_service_configuration(service_param) 
+    service_manager.update_service_configuration(service_param)
   end
 
   def retrieve_configuration(service_param)
@@ -40,7 +36,7 @@ module ServiceConfigurations
       return retval unless ret_val.is_a?(Hash)
     else
       #  STDERR.puts('Retrived retrieve_configuration '+ service_param.to_s + ret_val.class.name + ':' + ret_val.to_s )
-      ret_val = get_service_configuration(service_param)
+      ret_val = retrieve_service_configuration(service_param)
     end
     ret_val
   end
@@ -70,14 +66,19 @@ module ServiceConfigurations
     avail
   end
 
-  def get_service_configuration(service_param)
-    service_manager.get_service_configuration(service_param)
+  def retrieve_service_configuration(service_param)
+    service_manager.retrieve_service_configuration(service_param)
   end
 
   def update_configuration_on_service(service_param)
     raise EnginesException.new(error_hash('Missing Service name', service_param)) unless service_param.key?(:service_name)
-    service = loadManagedService(service_param[:service_name])
-    return service  unless service.is_a?(ManagedService)
+    STDERR.puts( ' loadManagedService ' + service_param.to_s + 'so loading ' + service_param[:service_name].to_s)
+    begin
+      service = loadManagedService(service_param[:service_name])
+    rescue
+      STDERR.puts( ' loadSystemService ' + service_param.to_s + 'so loading ' + service_param[:service_name].to_s)
+      service = loadSystemService(service_param[:service_name])
+    end
     service_param[:publisher_namespace] = service.publisher_namespace.to_s  # need as saving in config tree
     service_param[:type_path] = service.type_path.to_s
     # setting stopped contianer is ok as call can know the state, used to boot strap a config
@@ -93,9 +94,9 @@ module ServiceConfigurations
     # set config on reunning service
     configurator_result =  service.run_configurator(service_param)
 
-    raise EnginesException.new(error_hash('Service configurator erro@core_api.r Got:', configurator_result.to_s, " For:" +service_param.to_s)) unless configurator_result.is_a?(Hash)
+    raise EnginesException.new(error_hash('Service configurator erro@core_api.r Got:' + configurator_result.to_s, " For:" +service_param.to_s)) unless configurator_result.is_a?(Hash)
     service_manager.update_service_configuration(service_param)
-    raise EnginesException.new(error_hash('Service configurator error @core_ap Got:', configurator_result.to_s, " For:" +service_param.to_s )) unless configurator_result[:result] == 0 || configurator_result[:stderr].start_with?('Warning')
+    raise EnginesException.new(error_hash('Service configurator error @core_ap Got:' + configurator_result.to_s, " For:" +service_param.to_s )) unless configurator_result[:result] == 0 || configurator_result[:stderr].start_with?('Warning')
     true
   end
 

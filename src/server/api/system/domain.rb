@@ -4,10 +4,11 @@
 # get the details for :domain_name
 # @return  [Hash] :domain_name :self_hosted :internal_only
 get '/v0/system/domains/:domain_name' do
-  domain_name = engines_api.domain_name(params[:domain_name])
-
-  return log_error(request, domain_name) if domain_name.is_a?(EnginesError)
-  return_json(domain_name)
+  begin
+    return_json(engines_api.domain_name(params[:domain_name]))
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
 end
 # @method update_domain_name
 # @overload post '/v0/system/domains/:domain_name'
@@ -17,14 +18,13 @@ end
 # @param :internal_only optional
 # @return  [true]
 post '/v0/system/domains/:domain_name' do
-  post_s = post_params(request)
-  post_s[:domain_name] = params['domain_name']
-
-  cparams = assemble_params(post_s, [:domain_name], :all)
-  return log_error(request, cparams, post_s) if cparams.is_a?(EnginesError)
- # STDERR.puts('EDIT DOMAIN Params ' + cparams.to_s )
-  r = engines_api.update_domain(cparams)
-  return log_error(request, r, cparams) if r.is_a?(EnginesError)
-  return_text(r)
+  begin
+    post_s = post_params(request)
+    post_s[:domain_name] = params['domain_name']
+    cparams = assemble_params(post_s, [:domain_name], :all)
+    return_text(engines_api.update_domain(cparams))
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
 end
 # @!endgroup

@@ -49,7 +49,7 @@ commands:
   requires:
   - :target
 last_error: 
-memory: '128'
+memory: '28'
 hostname: 
 domain_name: 
 host_network: false

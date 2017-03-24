@@ -26,7 +26,6 @@ module EngineApiExportImport
   end
 
   def import_service_data(container, service_params, stream=nil)
-
     service_hash = service_params[:service_connection]
     SystemDebug.debug(SystemDebug.export_import, :import_service, service_params,service_params[:import_method])
     cmd_dir = SystemConfig.BackupScriptsRoot + '/' + service_hash[:publisher_namespace] + '/' + service_hash[:type_path] + '/' + service_hash[:service_handle] + '/'
@@ -54,6 +53,6 @@ module EngineApiExportImport
     rescue Timeout::Error
       raise EnginesException.new(error_hash('Import Timeout on Running Action ', cmd))
     end
-  
+
   end
 end

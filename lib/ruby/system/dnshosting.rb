@@ -13,18 +13,15 @@ module DNSHosting
     Socket.ip_address_list.each do |addr|
       return addr.ip_address if addr.ipv4? && addr.ipv4_loopback? == false
     end
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
+ 
   end
 
   def self.save_domains(domains)
     domain_file = File.open(SystemConfig.DomainsFile, 'w')
     domain_file.write(domains.to_yaml)
     domain_file.close
-    return true
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
-
+     true
+  
   end
 
   def self.load_domains
@@ -38,30 +35,18 @@ module DNSHosting
     domains = YAML::load(domains_file)
     domains_file.close
     SystemDebug.debug(SystemDebug.system,:loading_domain_list, domains.to_s)
-    return {} if domains == false
-    return domains
-  rescue StandardError => e
-    domains = {}
-    p 'failed_to_load_domains'
-    SystemUtils.log_exception(e)
-    return domains
+     domains
   end
 
   def self.list_domains
     domains = DNSHosting.load_domains
-    return domains
-  rescue StandardError => e
-    domains = {}
-    p :error_listing_domains
-    return  SystemUtils.log_exception(e)
+     domains
   end
 
   def self.add_domain(params)
     domains = load_domains
     domains[params[:domain_name]] = params
-    return save_domains(domains)
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
+    save_domains(domains)
   end
 
   def self.rm_domain(domain)
@@ -70,10 +55,10 @@ module DNSHosting
   #  domain = params[:domain_name] unless domain.is_a?(String)      
     domains = load_domains
     if domains.key?(domain)
-      return r unless ( r = domains.delete(domain)) 
+       domains.delete(domain)
       return save_domains(domains)
     else
-     return SystemUtils.log_error_mesg('failed_to_find_domain' + domain + 'in ' + domains.to_s)
+      raise EnginesException.new(error_hash('failed_to_find_domain' + domain + 'in ', domains.to_s))
     end
   end
 
@@ -83,7 +68,5 @@ module DNSHosting
     params.delete(:original_domain_name) if params.key?(:original_domain_name)
     domains[params[:domain_name]] = params
     save_domains(domains)
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
 end

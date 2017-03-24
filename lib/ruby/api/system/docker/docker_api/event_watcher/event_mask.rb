@@ -1,5 +1,5 @@
 class EventMask
-  
+
   @@container_event = 1
   @@engine_target  = 2
   @@service_target = 4
@@ -14,10 +14,8 @@ class EventMask
   @@container_pull = 2048
   @@build_event = 4096
   @@container_attach  = 8192
-
   @@service_action = @@container_action | @@service_target
   @@engine_action = @@container_action | @@engine_target
-  
   def self.event_mask(event_hash)
     mask = 0
     if event_hash[:Type] = 'container'
@@ -59,10 +57,9 @@ class EventMask
     elsif event_hash[:Type] = 'network'
       mask |= @@network_event
     end
-
-     mask
-    rescue StandardError => e
-         SystemDebug.debug(SystemDebug.container_events,event_hash.to_s + ':' + e.to_s + ':' +  e.backtrace.to_s)
-          e
+    mask
+  rescue StandardError => e
+    SystemDebug.debug(SystemDebug.container_events,event_hash.to_s + ':' + e.to_s + ':' +  e.backtrace.to_s)
+    e
   end
 end

@@ -5,11 +5,12 @@
 #  :in :out
 # @return [Hash]
 get '/v0/containers/service/:service_name/metrics/network' do
-  service = get_service(params[:service_name])
-  return log_error(request, service, params) if service.is_a?(EnginesError)
-  r = engines_api.get_container_network_metrics(service)
-  return log_error(request, r) if r.is_a?(EnginesError)
-  return_json(r)
+  begin
+    service = get_service(params[:service_name])
+    return_json(engines_api.get_container_network_metrics(service))
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
 end
 # @method get_service_metrics_memory
 # @overload get '/v0/containers/service/:service_name/metrics/memory'
@@ -17,11 +18,12 @@ end
 #   :maximum :current :limit
 # @return [Hash]
 get '/v0/containers/service/:service_name/metrics/memory' do
-  service = get_service(params[:service_name])
-  return log_error(request, service, params) if service.is_a?(EnginesError)
-  r = engines_api.container_memory_stats(service)
-  return log_error(request, r) if r.is_a?(EnginesError)
-  return_json(r)
+  begin
+    service = get_service(params[:service_name])
+    return_json(engines_api.container_memory_stats(service))
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
 end
 
 # @!endgroup

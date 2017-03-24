@@ -5,11 +5,13 @@
 # Return System Memory usage
 #  values are integers and in bytes
 # @return [Hash] :total :free :buffers :file_cache :active :inactive :swap_total :swap_free
-#  
+#
 get '/v0/system/metrics/memory' do
-  memory_info =  engines_api.get_system_memory_info #engines_api.get_system_memory_info
-  return log_error(request, memory_info) if memory_info.is_a?(EnginesError)
-  return_json(memory_info)
+  begin
+    return_json(engines_api.get_system_memory_info)
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
 end
 
 # @method get_system_metrics_load
@@ -23,43 +25,54 @@ end
 # @return [Hash]  :one :five :fithteen :running :idle
 
 get '/v0/system/metrics/load' do
-  load_info = engines_api.get_system_load_info
-  return log_error(request, load_info) if load_info.is_a?(EnginesError)
-  return_json(load_info)
+  begin
+    load_info = engines_api.get_system_load_info
+    return_json(load_info)
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
 end
 
 # @method get_system_metrics_memory_statistics
 # @overload get '/v0/system/metrics/memory/statistics'
 # Return memory statistics for all containers
-#  services and applications are [Hash]s 
+#  services and applications are [Hash]s
 #  container_name: Hash [:maximum, :current, :limit]
 # @return [Hash] :containers Hash :applications :services
 
-
 get '/v0/system/metrics/memory/statistics' do
-  memory_statistics = MemoryStatistics.total_memory_statistics(engines_api)
-  return log_error(request, memory_statistics) if memory_statistics.is_a?(EnginesError)
-  return_json( memory_statistics)
+  begin
+    memory_statistics = MemoryStatistics.total_memory_statistics(engines_api)
+    return_json(memory_statistics)
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
 end
 
 # @method get_system_metrics_disk
 # @overload get '/v0/system/metrics/disks'
 #    1k blocks
 # @return [Hash]  :device_name = [Hash]  :type :blocks :used :available :usage :mount
-#  
+#
 get '/v0/system/metrics/disks' do
-  disk_statistics = engines_api.get_disk_statistics
-  return log_error(request, disk_statistics) if disk_statistics.is_a?(EnginesError)
-  return_json(disk_statistics)
+  begin
+    disk_statistics = engines_api.get_disk_statistics
+    return_json(disk_statistics)
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
 end
 
 # @method get_system_metrics_network
 # @overload get '/v0/system/metrics/network'
 # @return [Hash] :tx :rx
-#  
+#
 get '/v0/system/metrics/network' do
-  net_statistics = engines_api.get_network_statistics
-  return log_error(request, net_statistics) if net_statistics.is_a?(EnginesError)
-  return_json(net_statistics)
+  begin
+    net_statistics = engines_api.get_network_statistics
+    return_json(net_statistics)
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
 end
 # @!endgroup

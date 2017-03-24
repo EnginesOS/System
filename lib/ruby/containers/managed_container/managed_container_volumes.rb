@@ -10,8 +10,6 @@ module ManagedContainerVolumes
     @volumes[service_hash[:variables][:name]] = vol
 end
     save_state
-  rescue StandardError => e
-    log_exception(e,service_hash)
   end
 
 def del_volume(service_hash)
@@ -21,8 +19,6 @@ def del_volume(service_hash)
       @volumes.delete(service_hash[:variables][:name])
     save_state
   end
-  rescue StandardError => e
-      log_exception(e,service_hash)
 end
 
 end

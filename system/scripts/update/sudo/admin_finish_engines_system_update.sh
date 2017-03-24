@@ -19,7 +19,7 @@ if ! test -d  $system_updates_dir/$update_id
 
    if test -f $system_updates_dir/$update_id/updater.sh
    then
- 		$system_updates_dir/$update_id/updater.sh >> $system_updates_dir/$update_id/update_log
+ 		$system_updates_dir/$update_id/updater.sh &>> $system_updates_dir/$update_id/update_log
  		if test $? -eq 0
    then
   	echo Problem with $update_id

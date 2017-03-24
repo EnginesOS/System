@@ -1,0 +1,12 @@
+parent_engine: ldap
+publisher_namespace: EnginesSystem
+type_path: nginx
+service_handle: ldap_admin
+service_container_name: nginx
+container_type: service
+persistent: false
+variables:
+ proto: https
+ port: 8000
+ fqdn: ldap._Engines_System(default_domain)
+ internal_dir: /

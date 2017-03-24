@@ -19,10 +19,12 @@
 # @param :dynamic_dns_password when :networking = dynamic_dns
 # @return [true]
 post '/v0/system/do_first_run' do
-  p_params = post_params(request)
-  cparams = assemble_params(p_params, [], :all)
-  return log_error(request, cparams, p_params) if cparams.is_a?(EnginesError)
-  r = engines_api.set_first_run_parameters(cparams)
-  log_error(request, r, engines_api.last_error) if r.is_a?(EnginesError)
-  return_json(r)
+  begin
+    p_params = post_params(request)
+    cparams = assemble_params(p_params, [], :all)
+    return_json(engines_api.set_first_run_parameters(cparams))
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
 end
+# @!endgroup

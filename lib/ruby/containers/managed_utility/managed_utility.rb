@@ -1,11 +1,16 @@
 class ManagedUtility< ManagedContainer
+  require_relative 'managed_utility_on_action.rb'
+  include ManagedUtilityOnAction
   def post_load
     # Basically parent super but no lock on image
     expire_engine_info
-    info = @container_api.inspect_container_by_name(self)
-    @container_id = info[:Id] if info.is_a?(Hash)
+    begin
+      info = @container_api.inspect_container_by_name(self)
+      @container_id = info[:Id] if info.is_a?(Hash)
+    rescue
+    end
     set_running_user
-    domain_name = SystemConfig.internal_domain
+    @domain_name = SystemConfig.internal_domain
     @conf_self_start.freeze
     @container_name.freeze
     @data_uid.freeze
@@ -25,61 +30,55 @@ class ManagedUtility< ManagedContainer
     volumes.delete(:state_dir)
   end
 
-  def on_start
-  end
-
-  def  on_create(event_hash)
-    @container_mutex.synchronize {
-      SystemDebug.debug(SystemDebug.container_events,:ON_Create_CALLED,event_hash)
-      @container_id = event_hash[:id]
-      @out_of_memory = false
-      @had_out_memory = false
-      save_state
-    }
+  def on_start(event_hash)
+    STDERR.puts('MANAGE UTIL on event')
   end
 
   def command_details(command_name)
-    return log_error_mesg('No Commands') unless @commands.is_a?(Hash)
+    raise EnginesException.new(error_hash('No Commands', command_name)) unless @commands.is_a?(Hash)
     return @commands[command_name] if @commands.key?(command_name)
-    log_error_mesg('Command not found _' + command_name.to_s + '_')
-  rescue StandardError => e
-    log_exception(e)
+    raise EnginesException.new(error_hash('Command not found _',  command_name.to_s ))
   end
 
   def execute_command(command_name, command_params)
-    begin #FIXME needs to complete if from another install
-      stop_container
-    rescue
-    end
-    return log_error_mesg('Utility ' + container_name + ' in use ' ,  command_name) if is_active?
+    #    begin #FIXME needs to complete if from another install
+    #      stop_container
+    #    rescue
+    #    end
+    raise EnginesException.new(error_hash('Utility ' + container_name + ' in use ' ,  command_name)) if is_active?
     #FIXMe need to check if running
     r =  ''
     #  command_name = command_name.to_sym unless @commands.key?(command_name)
-    return log_error_mesg('No such command: ' + command_name.to_s, command_name, command_params) unless @commands.key?(command_name)
+    raise EnginesException.new(error_hash('No such command: ' + command_name.to_s,  command_params)) unless @commands.key?(command_name)
     command = command_details(command_name)
-    return log_error_mesg('Missing params' + r.to_s, r) if (r = check_params(command, command_params)) == false
+    raise EnginesException.new(error_hash('Missing params in Exe' + command_params.to_s, r)) unless (r = check_params(command, command_params)) == true
     begin
-      r = destroy_container
+      destroy_container
+      @container_id = -1
     rescue
     end
-    @container_api.wait_for('nocontainer') unless read_state == 'nocontainer'
+    @container_api.wait_for('nocontainer') if has_container?
     begin
-      @container_api.destroy_container(self) unless read_state == 'nocontainer'
+      @container_api.destroy_container(self) if has_container?
     rescue
     end
-    raise EnginesException.new(error_hash('cant nocontainer Utility ' + command, command_params)) unless read_state == 'nocontainer'
+    raise EnginesException.new(error_hash('cant nocontainer Utility ' + command.to_s, command_params.to_s)) if has_container?
     clear_configs
     apply_templates(command, command_params)
     save_state
+    STDERR.puts('Create FSCONFIG')
     create_container()
-    start_container
-    @container_api.wait_for('stopped') unless read_state == 'stopped'
-    r = logs_container #_as_result
-    # destroy_container
-    {
-      stdout: 'OK',
-      result: 0
-    }
+    STDERR.puts('Created FSCONFIG')
+    @container_api.wait_for('stopped') unless is_stopped?
+    begin
+      r = @container_api.logs_container(self, 100) #_as_result
+      return r if r.is_a?(Hash)
+      {stdout: r.to_s, result: 0}
+    rescue StandardError => e
+      STDERR.puts(e.to_s  + "\n" + e.backtrace.to_s)
+    STDERR.puts('FSCONFIG EXCEPTION' + e.to_s)
+      {stderr: 'Failed', result: -1}
+    end
 
   end
 
@@ -87,8 +86,6 @@ class ManagedUtility< ManagedContainer
     command = templater.apply_hash_variables(command, command_params)
     #FixME as will not honor "value with spaces in braces"
     @command = command[:command].split(' ')
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def apply_templates(command, command_params)
@@ -98,8 +95,6 @@ class ManagedUtility< ManagedContainer
     apply_env_templates(command_params, templater) unless @environments.nil?
     apply_volume_templates(command_params, templater) unless @volumes.nil?
     apply_volume_from_templates(command_params, templater) unless @volumes_from.nil?
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def apply_volume_templates(command_params, templater)
@@ -109,8 +104,6 @@ class ManagedUtility< ManagedContainer
       volume[:localpath] = templater.apply_hash_variables(volume[:localpath] , command_params)
       volume[:permissions]= templater.apply_hash_variables(volume[:permissions] , command_params)
     end
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def apply_volume_from_templates(command_params  , templater)
@@ -121,35 +114,27 @@ class ManagedUtility< ManagedContainer
     end
     @volumes_from = vols
     @volumes_from = nil if vols.size == 0
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def apply_env_templates(command_params, templater)
     environments.each do |env|
       env.value = templater.apply_hash_variables(env.value, command_params)
     end
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def resolved_strings(text, values_hash,templater)
-    env_value = templater.apply_hash_variables(text, values_hash)
-    return env_value
-  rescue StandardError => e
-    log_exception(e)
+    templater.apply_hash_variables(text, values_hash)
   end
 
-  def check_params(cmd, parrams)
+  def check_params(cmd, params)
     r = true
+    STDERR.puts('Command ' + cmd.to_s + ':' + params.to_s)
     cmd[:requires].each do |required_param|
       next if params.key?(required_param.to_sym)
       r = 'Missing:' if r == true
       r +=  ' ' + required_param.to_s
     end
     r
-  rescue StandardError => e
-    #    log_exception(e)
   end
 
   def container_logs_as_result

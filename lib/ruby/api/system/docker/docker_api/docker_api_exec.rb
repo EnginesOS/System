@@ -29,7 +29,7 @@ module DockerApiExec
       end
       return false if  @data.nil?
       return false if  @data.length == 0
-      return true
+      true
     end
 
     def process_response()
@@ -44,9 +44,7 @@ module DockerApiExec
           return_result[:stderr] =  return_result[:stderr].to_s + r[:stderr].to_s
         end
       end
-   
     end
-
   end
 
   class DockerStreamReader
@@ -83,15 +81,13 @@ module DockerApiExec
     end
 
     def has_data?
-       false
+      false
     end
   end
 
   def docker_exec(params)
     r = create_docker_exec(params) #container, commands, have_data)
-
     return r unless r.is_a?(Hash)
-
     exec_id = r[:Id]
     request_params = {}
     request_params["Detach"] = false
@@ -106,11 +102,10 @@ module DockerApiExec
 
     headers = {}
     headers['Content-type'] = 'application/json'
-    unless params.key?(:data) || params.key?(:data_stream)
-      result = {}
+    unless params.key?(:data) || params.key?(:data_stream)     
       stream_reader = DockerStreamReader.new(params[:stream])
+      result = {}
       r =  post_stream_request(request, nil, stream_reader,  headers ,  request_params.to_json  )
-      return r if r.is_a?(EnginesError)
       stream_reader.result[:result] = get_exec_result(exec_id)
       return stream_reader.result # DockerUtils.docker_stream_as_result(r, result)
     end
@@ -122,23 +117,18 @@ module DockerApiExec
     headers['Upgrade'] = 'tcp'
 
     r =   post_stream_request(request, nil, stream_handler,  headers , request_params.to_json )
-    return r if r.is_a?(EnginesError)
     stream_handler.result[:result] = get_exec_result(exec_id)
     stream_handler.result
-
-  
   end
 
   private
 
   def  get_exec_result(exec_id)
     r  = get_request('/exec/' + exec_id.to_s + '/json')
-    return -1 if r.is_a?(EnginesError)
     r[:ExitCode]
   end
 
   def create_docker_exec(params) #container, commands, have_data)
-
     request_params = {}
     if params.key?(:data) || params.key?(:data_stream)
       request_params["AttachStdin"] = true
@@ -153,9 +143,7 @@ module DockerApiExec
     request_params[ "Cmd"] =   format_commands(params[:command_line])
 
     request = '/containers/'  + params[:container].container_id.to_s + '/exec'
-
-     post_request(request,  request_params)
-    
+    post_request(request,  request_params)
   end
 
   def format_commands(commands)

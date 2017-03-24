@@ -67,6 +67,7 @@ class BuilderPublic
   end
 
   def logs_container
+    # FIXME 
     sleep(4)
     @builder.running_logs
   end

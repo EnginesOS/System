@@ -1,7 +1,7 @@
 module SmAttachStaticServices
-  #@returns boolean
-  #load persistent and non persistent service definitions off disk and registers them
-  def load_and_attach_services(dirname,container)
+  # @returns boolean
+  # load persistent and non persistent service definitions off disk and registers them
+  def load_and_attach_static_services(dirname,container)
     clear_error
     container.environments  = [] if container.environments.nil?
     curr_service_file = ''
@@ -26,17 +26,15 @@ module SmAttachStaticServices
           create_and_register_service(service_hash)
         else
           SystemDebug.debug(SystemDebug.services, :attaching, service_hash)
-          service_hash =  system_registry_client.get_service_entry(service_hash)
+          service_hash = get_service_entry(service_hash)
         end
       else
-        service_hash = system_registry_client.get_service_entry(service_hash)
+        service_hash = get_service_entry(service_hash)
       end
       if service_hash.is_a?(Hash)
         SystemDebug.debug(SystemDebug.services, :post_entry_service_hash, service_hash)
         new_envs = SoftwareServiceDefinition.service_environments(service_hash)
-        envs = EnvironmentVariable.merge_envs(new_envs,container.environments ) unless new_envs.nil?
-        # envs.concat(new_envs) if !new_envs.nil?
-
+        EnvironmentVariable.merge_envs(new_envs, container.environments ) unless new_envs.nil?
       end
     end
     true

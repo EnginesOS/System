@@ -1,0 +1,29 @@
+--- !ruby/object:ManagedService
+container_name: ldap
+publisher_namespace: EnginesSystem
+type_path: ldap
+ctype: service
+persistent: true
+conf_self_start: true
+last_error: 
+memory: '64'
+hostname: ldap
+domain_name: engines.local
+host_network: false
+soft_service: false
+environments: []
+image: engines/ldap:_Engines_System(release)
+volumes: 
+ configuration: 
+  name: ip_file
+  remotepath: "/home/net/"
+  localpath: "/opt/engines/etc/net/"
+  permissions: "ro"
+mapped_ports:
+repo: na
+last_result: 
+setState: nocontainer
+nginxored: false
+conf_register_site: false
+conf_register_dns: true
+

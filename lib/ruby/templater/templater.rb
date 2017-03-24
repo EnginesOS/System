@@ -7,43 +7,34 @@ class Templater
     @builder_public = builder_public
   end
 
-  
   def apply_hash_variables(text, values_hash)
-   
-    return text unless text.is_a?(String) 
+    return text unless text.is_a?(String)
     text.gsub!(/_Engines_Template\([(0-9a-z_A-Z]*\)/) { |match|
-     t =  resolve_hash_value(match, values_hash)
+      t =  resolve_hash_value(match, values_hash)
       t
-      }
-      return text
-    rescue StandardError => e
-      SystemUtils.log_exception(e)
-  end
-  
-  def resolve_hash_value(match, values_hash)
-    name = match.sub!(/_Engines_Template\(/, '')
-        name.sub!(/[\)]/, '')
-    return values_hash[name.to_sym] if values_hash.key?(name.to_sym)
-  return values_hash[name.to_s] if values_hash.key?(name.to_s)
-    return ''
+    }
+    text
   rescue StandardError => e
     SystemUtils.log_exception(e)
   end
-  
-  def resolve_system_variable(match)
 
+  def resolve_hash_value(match, values_hash)
+    name = match.sub!(/_Engines_Template\(/, '')
+    name.sub!(/[\)]/, '')
+    return values_hash[name.to_sym] if values_hash.key?(name.to_sym)
+    return values_hash[name.to_s] if values_hash.key?(name.to_s)
+    ''
+  end
+
+  def resolve_system_variable(match)
     name = match.sub!(/_Engines_System\(/, '')
     name.sub!(/[\)]/, '')
     begin
-    var_method = @system_access.method(name.to_sym)
-    rescue 
+      var_method = @system_access.method(name.to_sym)
+    rescue
       return ''
     end
-    val = var_method.call
-    return val
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
-    return ''
+    var_method.call
   end
 
   def apply_blueprint_variables(template)
@@ -51,9 +42,7 @@ class Templater
     template.gsub!(/_Engines_Blueprint\([a-z,].*\)/) { |match|
       resolve_blueprint_variable(match)
     }
-    return template
-    rescue StandardError => e
-      SystemUtils.log_exception(e)
+    template
   end
 
   def resolve_blueprint_variable(match)
@@ -69,12 +58,10 @@ class Templater
       val = hash[key.to_sym]
       hash = val if val.nil? == false
     end
-    #    p :got_val
-    #    p val
-    return val
+    val
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    return ''
+    ''
   end
 
   def resolve_system_function(match)
@@ -89,7 +76,7 @@ class Templater
     var_method.call(args)
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    return ''
+    ''
   end
 
   def resolve_build_variable(match)
@@ -99,7 +86,7 @@ class Templater
     var_method = @builder_public.method(name.to_sym)
     var_method.call
   rescue StandardError => e
-    return 'no match for _Engines_Builder(' + name.to_s + e.to_s + e.backtrace.to_s
+    'no match for _Engines_Builder(' + name.to_s + e.to_s + e.backtrace.to_s
   end
 
   def resolve_engines_variable(match)
@@ -110,10 +97,10 @@ class Templater
         return environment.value
       end
     end
-    return ''
+    ''
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    return ''
+    ''
   end
 
   def set_system_access(system)
@@ -138,11 +125,11 @@ class Templater
         #        SystemUtils.log_error_mesg('nil or empty engines variables ' + template.to_s, @builder_public.engine_environment.to_s)
       end
     end
-    return template
+    template
   rescue StandardError => e
     p template
     SystemUtils.log_exception(e)
-    return template
+    template
   end
 
   def apply_engines_variables(template)
@@ -151,9 +138,9 @@ class Templater
       resolve_engines_variable(match)
     }
     return template
-    rescue StandardError => e
-      p 'problem with ' + template.to_s
-      SystemUtils.log_exception(e)
+  rescue StandardError => e
+    p 'problem with ' + template.to_s
+    SystemUtils.log_exception(e)
   end
 
   def apply_system_variables(template)
