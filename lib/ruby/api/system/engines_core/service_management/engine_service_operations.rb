@@ -114,7 +114,7 @@ module EngineServiceOperations
     service_manager.load_service_pubkey(container, cmd)
   end
 
-  def remove_engine(engine_name, reinstall = false, remove_all_data = true)
+  def remove_engine(engine_name, reinstall = false, remove_all_data = 'all')
     engine = loadManagedEngine(engine_name)
     SystemDebug.debug(SystemDebug.containers,:delete_engines,engine_name,engine, :resinstall,reinstall)
     params = {

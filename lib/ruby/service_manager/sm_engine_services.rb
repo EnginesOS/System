@@ -102,7 +102,7 @@ module SmEngineServices
     STDERR.puts('remove_engine_services ' + services.to_s)
     services.each do |s|
       STDERR.puts('remove_engine_service ' + s.to_s)
-      #   if params[:remove_all_data] == true || s[:persistence] == false
+      #   if params[:remove_all_data] == 'all' || s[:persistence] == false
       STDERR.puts(' rm ' + s.to_s)
       #    system_registry_client.remove_from_managed_engine(s)
       #  else
@@ -138,7 +138,7 @@ module SmEngineServices
     return true unless services.is_a?(Array)
     services.each do | service |
       SystemDebug.debug(SystemDebug.services, :remove_service, service)
-      if params[:remove_all_data] || service[:shared] #&& ! (service.key?(:shared) && service[:shared])
+      if params[:remove_all_data] == 'all' || service[:shared] #&& ! (service.key?(:shared) && service[:shared])
         service[:remove_all_data] = params[:remove_all_data]
         delete_service(service)
       else

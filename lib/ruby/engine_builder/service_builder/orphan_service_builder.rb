@@ -24,7 +24,7 @@ module OrphansServiceBuilder
 
   def release_orphans()
     @orphans.each do |service_hash|
-      service_hash[:remove_all_data] = false
+      service_hash[:remove_all_data] = 'all'
       @core_api.release_orphan(service_hash)
     end
   end
