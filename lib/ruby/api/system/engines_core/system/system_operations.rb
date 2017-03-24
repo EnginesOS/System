@@ -3,10 +3,6 @@ module SystemOperations
     @system_api.restart_system
   end
 
-  #  def restart_engines_system
-  #    @system_api.restart_engines_system
-  #  end
-
   def restart_engines_system_service
     @system_api.restart_engines_system_service
   end
@@ -19,10 +15,6 @@ module SystemOperations
     @system_api.update_base_os
   end
 
-  #  def generate_engines_user_ssh_key
-  #    test_system_api_result(@system_api.regen_system_ssh_key)
-  #  end
-
   def update_public_key(key)
     @system_api.update_public_key(key)
   end
@@ -30,10 +22,6 @@ module SystemOperations
   def generate_engines_user_ssh_key
     @system_api.generate_engines_user_ssh_key
   end
-
-  #  def system_update
-  #    @system_api.update_system
-  #  end
 
   def enable_remote_exception_logging
     @system_api.enable_remote_exception_logging

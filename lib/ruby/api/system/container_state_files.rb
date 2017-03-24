@@ -9,7 +9,7 @@ class ContainerStateFiles
     yaml_file = File.new(yam1_file_name, 'w+')
     yaml_file.write(running_config)
     yaml_file.close
-     true
+    true
   end
 
   def self.schedules_dir(container)
@@ -43,7 +43,7 @@ class ContainerStateFiles
     r.gsub!(/\s+/, '').strip
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    return '-1'
+    '-1'
   end
 
   def self.create_container_dirs(container)
@@ -69,7 +69,7 @@ class ContainerStateFiles
       FileUtils.chown(nil, 'containers',key_dir)
       FileUtils.chmod('g+w', key_dir)
     end
-     true
+    true
   end
 
   def self.key_dir(container)
@@ -78,7 +78,7 @@ class ContainerStateFiles
 
   def self.clear_container_var_run(container)
     File.unlink(ContainerStateFiles.container_state_dir(container) + '/startup_complete') if File.exist?(ContainerStateFiles.container_state_dir(container) + '/startup_complete')
-     true
+    true
   end
 
   def self.container_cid_file(container)
@@ -90,18 +90,14 @@ class ContainerStateFiles
     File.delete(cidfile) if File.exist?(cidfile)
     result = volbuilder.execute_command(:remove, {target: container.container_name} )
 
-      FileUtils.rm_rf(ContainerStateFiles.container_state_dir(container))
-      SystemUtils.run_system('/opt/engines/system/scripts/system/clear_container_dir.sh ' + container.container_name)
-      return true
-#    else
-#      container.last_error = 'Failed to Delete state and logs:' + result.to_s
-#      SystemUtils.log_error_mesg('Failed to Delete state and logs:' + result.to_s, container)
-#    end
+    FileUtils.rm_rf(ContainerStateFiles.container_state_dir(container))
+    SystemUtils.run_system('/opt/engines/system/scripts/system/clear_container_dir.sh ' + container.container_name)
+    true
   end
 
   def self.destroy_container(container)
     return File.delete(ContainerStateFiles.container_cid_file(container)) if File.exist?(ContainerStateFiles.container_cid_file(container))
-     true # File may or may not exist
+    true # File may or may not exist
   end
 
   def self.container_log_dir(container)
@@ -116,7 +112,7 @@ class ContainerStateFiles
   def self.clear_cid_file(container)
     cidfile = container_cid_file(container)
     File.delete(cidfile) if File.exist?(cidfile)
-     true
+    true
   end
 
   def self.container_service_dir(service_name)
@@ -127,7 +123,7 @@ class ContainerStateFiles
     SystemConfig.RunDir + '/services-disabled/' + service_name
   end
 
-  def self.container_state_dir(container) 
+  def self.container_state_dir(container)
     SystemConfig.RunDir + '/' + container.ctype + 's/' + container.container_name
   end
 

@@ -1,6 +1,6 @@
 module BaseOsSystem
   def update_base_os
-    res = Thread.new { run_server_script('update_base_os') }
+    res = Thread.new { run_server_script('update_base_os', false, 600) }
     # FIXME: check a status flag after sudo side post ssh run ie when we know it's definititly happenging
     return true if res.status == 'run'
   end

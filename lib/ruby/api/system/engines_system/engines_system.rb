@@ -6,9 +6,9 @@ class SystemApi < ErrorsApi
   require "/opt/engines/lib/ruby/containers/system_service.rb"
 
   require '/opt/engines/lib/ruby/system/engines_error.rb'
-  require_relative 'engines_system_error.rb'
-  require_relative 'engines_system_errors.rb'
-  include EnginesSystemErrors
+#  require_relative 'engines_system_error.rb'
+#  require_relative 'engines_system_errors.rb'
+#  include EnginesSystemErrors
 
   require_relative 'base_os_system.rb'
   include BaseOsSystem

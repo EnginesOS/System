@@ -20,9 +20,11 @@ module CertificateActions
   end
 
   def containers_certificates(container)
-    q = {container_type:  container.ctype, parent_engine: container.container_name, publisher_namespace: 'EnginesSytem', type_path: 'cert_auth' }
-    r = find_engine_services_hashes(q)
-    r
+    find_engine_services_hashes({
+      container_type:  container.ctype, 
+      parent_engine: container.container_name,
+      publisher_namespace: 'EnginesSytem',
+      type_path: 'cert_auth' })
   end
 
 end
