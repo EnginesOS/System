@@ -45,9 +45,9 @@ helpers do
       error_mesg[:error_object] = api_exception[:exception].to_h
       error_mesg[:params] = api_exception[:params].to_s
     elsif api_exception[:exception].is_a?(Exception)
-      error_mesg[:error_object] = api_exception[:exception].to_h
+    error_mesg[:error_object] = {error_mesg: api_exception[:exception].to_s, error_type: :failure}
       error_mesg[:source] = api_exception[:exception].backtrace.to_s
-      error_mesg[:error_mesg] = api_exception[:exception].to_s
+    #  error_mesg[:error_mesg] = api_exception[:exception].to_s
       status_code = 500
     elsif api_exception[:exception].to_s == 'unauthorised'
       status_code = 401
