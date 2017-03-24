@@ -1,6 +1,6 @@
 module PublicApiPersistentServices
-  def get_registered_against_service(service_hash)
-    return @core_api.get_registered_against_service(service_hash)
+  def registered_with_service(service_hash)
+    return @core_api.registered_with_service(service_hash)
   end
 
   def retrieve_service_hash(query_hash)

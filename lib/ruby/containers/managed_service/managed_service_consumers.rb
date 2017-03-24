@@ -16,7 +16,7 @@ module ManagedServiceConsumers
       publisher_namespace: @publisher_namespace,
       type_path: @type_path
       }
-       @container_api.get_registered_against_service(params)
+       @container_api.registered_with_service(params)
     end    
     registered_consumer(params)   
   end

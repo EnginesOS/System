@@ -35,7 +35,7 @@ module Services
     rest_get(r)
   end
 
-  def get_registered_against_service(params)
+  def registered_with_service(params)
     r = 'service/registered' + address_params(params, [:publisher_namespace, :type_path])
     rest_get(r)
   end
@@ -47,7 +47,7 @@ module Services
 
   # @return an Array of Strings of the Provider names in use
   # returns nil on failure
-  def list_providers_in_use
+  def providers_in_use
     rest_get('services/providers/in_use/',nil)
   end
 

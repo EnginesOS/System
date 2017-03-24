@@ -47,8 +47,8 @@ module ServiceOperations
     find_engine_service_hash(query_hash)
   end
 
-  def list_providers_in_use
-    service_manager.list_providers_in_use
+  def providers_in_use
+    service_manager.providers_in_use
   end
 
   #returns
@@ -58,11 +58,11 @@ module ServiceOperations
   end
 
   # @return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
-  def get_registered_against_service(service_hash)
+  def registered_with_service(service_hash)
 
     clear_error
     check_service_hash(service_hash)
-    service_manager.get_registered_against_service(service_hash)
+    service_manager.registered_with_service(service_hash)
   end
 
   def update_attached_service(service_hash)

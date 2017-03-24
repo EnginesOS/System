@@ -1,11 +1,11 @@
 module ServiceApiConsumers
   @@consumer_timeout=8
   def get_registered_consumer(params)
-    engines_core.get_registered_against_service(params)
+    engines_core.registered_with_service(params)
   end
 
-  def get_registered_against_service(params)
-    engines_core.get_registered_against_service(params)
+  def registered_with_service(params)
+    engines_core.registered_with_service(params)
   end
 
   def add_consumer_to_service(c, service_hash)

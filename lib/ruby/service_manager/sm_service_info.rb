@@ -3,8 +3,8 @@ module SmServiceInfo
   #list the Provider namespaces as an Array of Strings
   # @return [Array]
   # @return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
-  def list_providers_in_use
-    system_registry_client.list_providers_in_use
+  def providers_in_use
+    system_registry_client.providers_in_use
   end
 
   def is_service_running?(service_name)
@@ -22,9 +22,9 @@ module SmServiceInfo
   end
 
   # @return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
-  def get_registered_against_service(params)
+  def registered_with_service(params)
     clear_error
-    system_registry_client.get_registered_against_service(params)
+    system_registry_client.registered_with_service(params)
   end
 
   def get_service_entry(service_hash)
