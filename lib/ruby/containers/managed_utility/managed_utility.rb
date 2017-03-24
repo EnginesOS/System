@@ -53,12 +53,14 @@ class ManagedUtility< ManagedContainer
     command = command_details(command_name)
     raise EnginesException.new(error_hash('Missing params in Exe' + command_params.to_s, r)) unless (r = check_params(command, command_params)) == true
     begin
-      r = destroy_container
+      destroy_container
+      @container_id = -1
     rescue
     end
     @container_api.wait_for('nocontainer') if has_container?
     begin
       @container_api.destroy_container(self) if has_container?
+      @container_id = -1
     rescue
     end
     raise EnginesException.new(error_hash('cant nocontainer Utility ' + command, command_params)) if has_container?

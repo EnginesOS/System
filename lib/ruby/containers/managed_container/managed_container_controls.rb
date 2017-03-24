@@ -9,18 +9,18 @@ module ManagedContainerControls
     super
     @memory = new_memory
     save_state
-    update_environment('Memory',new_memory,true)
+    update_environment('Memory', new_memory, true)
   end
 
-  def destroy_container(reinstall=false)
+  def destroy_container(reinstall = false)
     return false unless has_api?
     if reinstall == true
       return false unless prep_task(:reinstall)
     else
       return false unless prep_task(:destroy)
     end
-    return clear_cid if super()
-    task_failed('destroy')
+    return task_failed('destroy') unless super
+    clear_cid
   end
 
   def delete_engine
@@ -47,7 +47,7 @@ module ManagedContainerControls
     SystemDebug.debug(SystemDebug.containers, :teask_preping)
     @container_mutex.synchronize {
       return false unless prep_task(:create)
-      SystemDebug.debug(SystemDebug.containers,  :teask_preped)
+      SystemDebug.debug(SystemDebug.containers, :teask_preped)
       expire_engine_info
       @container_id = -1
       save_state
