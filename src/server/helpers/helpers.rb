@@ -3,7 +3,7 @@ helpers do
   require_relative 'output.rb'
   def engines_api
     #$engines_api
-    @engines_api ||= PublicApi.new(core_api)
+    @@engines_api ||= PublicApi.new(core_api)
   end
 
   def json_parser
@@ -111,7 +111,7 @@ helpers do
 
     def is_token_valid?(token, ip = nil)
       #$
-      engines_api.is_token_valid?(token, ip)
+      @@engines_api.is_token_valid?(token, ip)
     end
 
     def authenticate!
