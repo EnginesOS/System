@@ -6,8 +6,7 @@
 get '/v0/containers/service/:service_name/services/non_persistent/' do
   begin
     service = get_service(params[:service_name])
-    r = engines_api.list_non_persistent_services(service)
-    return_json(r)
+    return_json(engines_api.list_non_persistent_services(service))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -21,8 +20,7 @@ end
 get '/v0/containers/service/:service_name/services/non_persistent/:publisher_namespace/*' do
   begin
     hash = service_service_hash_from_params(params, true)
-    r = engines_api.retrieve_engine_service_hashes(hash)
-    return_json(r)
+    return_json(ngines_api.retrieve_engine_service_hashes(hash))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

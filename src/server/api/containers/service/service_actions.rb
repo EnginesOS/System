@@ -7,8 +7,7 @@
 get '/v0/containers/service/:service_name/create' do
   begin
     service = get_service(params[:service_name])
-    r = service.create_service
-    return_text(r)
+    return_text(service.create_service)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -22,8 +21,7 @@ end
 get '/v0/containers/service/:service_name/recreate' do
   begin
     service = get_service(params[:service_name])
-    r = service.recreate
-    return_text(r)
+    return_text(service.recreate)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -35,8 +33,7 @@ end
 get '/v0/containers/service/:service_name/stop' do
   begin
     service = get_service(params[:service_name])
-    r = service.stop_container
-    return_text(r)
+    return_text(service.stop_container)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -48,8 +45,7 @@ end
 get '/v0/containers/service/:service_name/halt' do
   begin
     service = get_service(params[:service_name])
-    r = service.halt_container
-    return_text(r)
+    return_text(service.halt_container)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -61,8 +57,7 @@ end
 get '/v0/containers/service/:service_name/start' do
   begin
     service = get_service(params[:service_name])
-    r = service.start_container
-    return_text(r)
+    return_text(service.start_container)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -74,8 +69,7 @@ end
 get '/v0/containers/service/:service_name/restart' do
   begin
     service = get_service(params[:service_name])
-    r = service.restart_container
-    return_text(r)
+    return_text(service.restart_container)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -87,8 +81,7 @@ end
 get '/v0/containers/service/:service_name/pause' do
   begin
     service = get_service(params[:service_name])
-    r = service.pause_container
-    return_text(r)
+    return_text(service.pause_container)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -100,8 +93,7 @@ end
 get '/v0/containers/service/:service_name/unpause' do
   begin
     service = get_service(params[:service_name])
-    r = service.unpause_container
-    return_text(r)
+    return_text(service.unpause_container)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -114,8 +106,7 @@ end
 delete '/v0/containers/service/:service_name/destroy' do
   begin
     service = get_service(params[:service_name])
-    r = service.destroy_container
-    return_text(r)
+    return_text(service.destroy_container)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -128,8 +119,7 @@ end
 # @return [true]
 delete '/v0/containers/service/:service_name/delete' do
   begin
-    r = engines_api.remove_service(params[:service_name])
-    return_text(r)
+    return_text(engines_api.remove_service(params[:service_name]))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

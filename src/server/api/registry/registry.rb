@@ -6,8 +6,7 @@
 # @return [RubyTree]
 get '/v0/registry/engines/' do
   begin
-    engines = engines_api.managed_engines_registry
-    return_json(engines)
+    return_json(engines_api.managed_engines_registry)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -17,9 +16,8 @@ end
 # Return configurations registry tree
 # @return [RubyTree]
 get '/v0/registry/configurations/' do
-  begin
-    configurations = engines_api.service_configurations_registry
-    return_json(configurations)
+  begin 
+    return_json(engines_api.service_configurations_registry)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -30,8 +28,7 @@ end
 # @return [RubyTree]
 get '/v0/registry/services/' do
   begin
-    services = engines_api.managed_services_registry
-    return_json(services)
+    return_json(engines_api.managed_services_registry)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -42,8 +39,7 @@ end
 # @return  [RubyTree]
 get '/v0/registry/orphans/' do
   begin
-    orphans = engines_api.orphaned_services_registry
-    return_json(orphans)
+    return_json(engines_api.orphaned_services_registry)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -54,8 +50,7 @@ end
 # @return [RubyTree]
 get '/v0/registry/shares/' do
   begin
-    shares = engines_api.shared_services_registry
-    return_json(shares)
+    return_json(engines_api.shared_services_registry)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

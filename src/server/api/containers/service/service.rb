@@ -20,8 +20,7 @@ end
 get '/v0/containers/service/:service_name/status' do
   begin
     service = get_service(params[:service_name])
-    r = service.status
-    return_json(r)
+    return_json(service.status)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -33,8 +32,7 @@ end
 get '/v0/containers/service/:service_name/state' do
   begin
     service = get_service(params[:service_name])
-    r = service.read_state
-    return_text(r)
+    return_text(service.read_state)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -47,8 +45,7 @@ end
 get '/v0/containers/service/:service_name/websites' do
   begin
     service = get_service(params[:service_name])
-    r = service.web_sites
-    return_json_array(r)
+    return_json_array(ervice.web_sites)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -60,8 +57,7 @@ end
 get '/v0/containers/service/:service_name/logs' do
   begin
     service = get_service(params[:service_name])
-    r = service.logs_container
-    return_json(r)
+    return_json(service.logs_container)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -76,11 +72,11 @@ get '/v0/containers/service/:service_name/service_definition' do
   begin
     cparams = assemble_params(params, [:service_name], [])
     r = get_service(cparams[:service_name])
-    pparams = {}
-    pparams[:publisher_namespace] = r.publisher_namespace
-    pparams[:type_path] = r.type_path
-    r = engines_api.get_service_definition(pparams)
-    return_json(r)
+    pparams = {
+      publisher_namespace:  r.publisher_namespace,
+      type_path: r.type_path
+    }
+    return_json(engines_api.get_service_definition(pparams))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -92,8 +88,7 @@ end
 get '/v0/containers/service/:service_name/ps' do
   begin
     service = get_service(params[:service_name])
-    r = service.ps_container
-    return_json(r)
+    return_json(service.ps_container)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

@@ -6,8 +6,7 @@
 # @return [String] default_domain
 get '/v0/system/config/default_domain' do
   begin
-    default_domain = engines_api.get_default_domain
-    return_text(default_domain)
+    return_text( engines_api.get_default_domain)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -23,7 +22,7 @@ post '/v0/system/config/default_domain' do
     cparams = assemble_params(post_s, [], [:default_domain])
     default_domain = cparams[:default_domain]
     engines_api.set_default_domain(default_domain)
-    return_text(true)
+    return_true
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -36,8 +35,7 @@ end
 # @return [String] default_site
 get '/v0/system/config/default_site' do
   begin
-    default_site = engines_api.get_default_site
-    return_text(default_site)
+    return_text(engines_api.get_default_site)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -52,8 +50,7 @@ post '/v0/system/config/default_site' do
     post_s = post_params(request)
     cparams = assemble_params(post_s, [], [:default_site])
     default_site = cparams[:default_site]
-    r = engines_api.set_default_site(default_site)
-    return_text(r)
+    return_text(engines_api.set_default_site(default_site))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -68,8 +65,7 @@ post '/v0/system/config/hostname' do
     post_s = post_params(request)
     cparams = assemble_params(post_s, [], [:host_name])
     hostname = cparams[:host_name]
-    r = engines_api.set_hostname(hostname)
-    return_text(r)
+    return_text(engines_api.set_hostname(hostname))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -80,8 +76,7 @@ end
 # @return [String] hostname
 get '/v0/system/config/hostname' do
   begin
-    hostname = engines_api.system_hostname
-    return_text(hostname)
+    return_text(engines_api.system_hostname)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -92,8 +87,7 @@ end
 # @return [true]
 post '/v0/system/config/remote_exception_logging/enable' do
   begin
-    r = engines_api.enable_remote_exception_logging
-    return_text(r)
+    return_text(engines_api.enable_remote_exception_logging)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -104,8 +98,7 @@ end
 # @return [true]
 post '/v0/system/config/remote_exception_logging/disable' do
   begin
-    r = engines_api.disable_remote_exception_logging
-    return_text(r)
+    return_text(engines_api.disable_remote_exception_logging)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -116,8 +109,7 @@ end
 # @return [true|false] remote_exception_logging setting
 get '/v0/system/config/remote_exception_logging' do
   begin
-    r = SystemStatus.is_remote_exception_logging?
-    return_text(r)
+    return_text(SystemStatus.is_remote_exception_logging?)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

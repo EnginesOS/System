@@ -31,8 +31,7 @@ post '/v0/containers/service/:service_name/properties/runtime' do
     p_params[:service_name] = params[:service_name]
     service = get_service(p_params[:service_name])
     cparams = assemble_params(p_params, [:service_name], :all)
-    r = engines_api.set_container_runtime_properties(service, cparams)
-    return_text(r)
+    return_text(engines_api.set_container_runtime_properties(service, cparams))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

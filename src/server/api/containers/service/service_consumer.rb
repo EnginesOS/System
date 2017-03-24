@@ -8,8 +8,7 @@ get '/v0/containers/service/:service_name/consumer/:parent_engine/:service_handl
   begin
     service = get_service(params[:service_name])
     cparams = address_params(params, [:service_name, :service_handle, :parent_engine])
-    r = service.registered_consumer(cparams)
-    return_json(r)
+    return_json(service.registered_consumer(cparams))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

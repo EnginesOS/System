@@ -7,8 +7,7 @@
 get '/v0/containers/service/:service_name/consumers/' do
   begin
     service = get_service(params[:service_name])
-    r = service.registered_consumers
-    return_json_array(r)
+    return_json_array(service.registered_consumers)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

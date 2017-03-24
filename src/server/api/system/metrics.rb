@@ -8,8 +8,7 @@
 #
 get '/v0/system/metrics/memory' do
   begin
-    memory_info = engines_api.get_system_memory_info
-    return_json(memory_info)
+    return_json(engines_api.get_system_memory_info)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

@@ -9,8 +9,7 @@ post '/v0/containers/service/:service_name/template' do
     p_params = post_params(request)
     service = get_service(params[:service_name])
     cparams = assemble_params(p_params, :service_name, :template_string)
-    resolved_string = engines_api.get_resolved_engine_string(cparams[:template_string], service)
-    return_text(resolved_string)
+    return_text(engines_api.get_resolved_engine_string(cparams[:template_string], service))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

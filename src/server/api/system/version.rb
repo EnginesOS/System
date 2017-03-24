@@ -9,8 +9,7 @@ require '/opt/engines/lib/ruby/api/system/system_status.rb'
 
 get '/v0/system/version/release' do
   begin
-    release = SystemStatus.get_engines_system_release
-    return_text(release)
+    return_text(SystemStatus.get_engines_system_release)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -24,8 +23,7 @@ end
 
 get '/v0/system/version/api' do
   begin
-    api = engines_api.api_version
-    return_text(api)
+    return_text(engines_api.api_version)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -38,8 +36,7 @@ end
 #  string format $release-$system-$api
 get '/v0/system/version/ident' do
   begin
-    ident = engines_api.version_string
-    return_text(ident)
+    return_text(engines_api.version_string)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -52,8 +49,7 @@ end
 # system version
 get '/v0/system/version/system' do
   begin
-    system = engines_api.system_version
-    return_text(system)
+    return_text(engines_api.system_version)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -67,8 +63,7 @@ require '/opt/engines/lib/ruby/system/system_utils.rb'
 # keys set by OS
 get '/v0/system/version/base_os' do
   begin
-    base_os = SystemUtils.get_os_release_data
-    base_os = downcase_keys(base_os)
+    base_os = downcase_keys(SystemUtils.get_os_release_data)
     return_json(base_os)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)

@@ -5,8 +5,7 @@
 get '/v0/cron/service/:service_name/:cron_job/run' do
   begin
     service = get_service(params[:service_name])
-    r = service.run_cronjob(params[:cron_job])
-    return_text(r)
+    return_text(service.run_cronjob(params[:cron_job]))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -46,8 +45,7 @@ end
 get '/v0/schedule/service/:service_name/:cron_job/run' do
   begin
     service = get_service(params[:service_name])
-    r = service.run_cronjob(params[:cron_job])
-    return_text(r)
+    return_text(service.run_cronjob(params[:cron_job]))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

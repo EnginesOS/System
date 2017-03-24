@@ -13,8 +13,7 @@ get '/v0/containers/services/sub_service_providers/:publish_namespace/*' do
   begin
     params[:type_path] = params['splat'][0]
     params = assemble_params(params, [ :publisher_namespace, :type_path])
-    r = engines_api.subservices_provided(params)
-    return_json(r)
+    return_json(engines_api.subservices_provided(params))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

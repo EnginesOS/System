@@ -6,8 +6,7 @@
 
 get '/v0/system/certs/system_ca' do
   begin
-    system_ca = engines_api.get_system_ca
-    return_text(system_ca)
+    return_text( engines_api.get_system_ca)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -18,8 +17,7 @@ end
 # @return [String] PEM encoded Public certificate
 get '/v0/system/certs/:cert_name' do
   begin
-    cert = engines_api.get_cert(params[:cert_name])
-    return_text(cert)
+    return_text(engines_api.get_cert(params[:cert_name]))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -30,8 +28,7 @@ end
 # @return [String] PEM encoded Public certificate
 get '/v0/system/certs/default' do
   begin
-    cert = engines_api.get_cert('engines')
-    return_json(cert)
+    return_json(engines_api.get_cert('engines'))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -43,8 +40,7 @@ end
 # certificate name is the domain name / hostname the cert was created/uploaded against
 get '/v0/system/certs/' do
   begin
-    certs = engines_api.list_certs
-    return_json_array(certs)
+    return_json_array(engines_api.list_certs)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -55,8 +51,7 @@ end
 # @return [true]
 delete '/v0/system/certs/:cert_name' do |cert_name|
   begin
-    r = engines_api.remove_cert(cert_name)
-    return_text(r)
+    return_text(engines_api.remove_cert(cert_name))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -75,8 +70,7 @@ post '/v0/system/certs/default' do
     post_s = post_params(request)
     cparams = assemble_params(post_s, [], :all)
     cparams[:set_as_default] = true
-    r = engines_api.upload_ssl_certificate(cparams)
-    return_text(r)
+    return_text(engines_api.upload_ssl_certificate(cparams))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -93,8 +87,7 @@ post '/v0/system/certs/' do
   begin
     post_s = post_params(request)
     cparams = assemble_params(post_s, [], :all)
-    r = engines_api.upload_ssl_certificate(cparams)
-    return_text(r)
+    return_text(engines_api.upload_ssl_certificate(cparams))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -107,8 +100,7 @@ post '/v0/system/certs/generate' do
   begin
     p_params = post_params(request)
     cparams = assemble_params(p_params, [], :all)
-    r = engines_api.generate_cert(cparams)
-    return_text(r)
+    return_text(engines_api.generate_cert(cparams))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

@@ -7,8 +7,7 @@
 # @return [String]
 get '/v0/system/keys/user/:user_name/generate' do
   begin
-    generated_key = engines_api.generate_engines_user_ssh_key
-    return_text(generated_key)
+    return_text(engines_api.generate_engines_user_ssh_key)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -25,8 +24,7 @@ post '/v0/system/keys/user/:user_name' do
     params.merge!(post_params(request))
     cparams = assemble_params(params, [:user_name], :public_key)
     update_key = cparams[:public_key]
-    r = engines_api.update_public_key(update_key)
-    return_text(r)
+    return_text(engines_api.update_public_key(update_key))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -38,8 +36,7 @@ end
 # @return [String]
 get '/v0/system/keys/user/:user_name' do
   begin
-    public_key = engines_api.get_public_key
-    return_text(public_key)
+    return_text(engines_api.get_public_key)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

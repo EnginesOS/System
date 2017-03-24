@@ -6,8 +6,7 @@
 # @return [true]
 get '/v0/system/control/base_os/restart' do
   begin
-    restart = engines_api.restart_base_os
-    return_text(restart)
+    return_text(engines_api.restart_base_os)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -23,8 +22,7 @@ post '/v0/system/control/base_os/shutdown' do
     p_params = post_params(request)
     cparams = assemble_params(p_params, [], [:reason])
     shutdown = cparams[:reason]
-    r = engines_api.halt_base_os(shutdown)
-    return_text(r)
+    return_text(engines_api.halt_base_os(shutdown))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -35,8 +33,7 @@ end
 # @return [true|false]
 get '/v0/system/control/base_os/update' do
   begin
-    system_update = engines_api.update_base_os
-    return_text(system_update)
+    return_text(engines_api.update_base_os)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
