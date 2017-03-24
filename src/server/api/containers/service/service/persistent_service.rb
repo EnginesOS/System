@@ -42,7 +42,7 @@ get '/v0/containers/service/:service_name/service/persistent/:publisher_namespac
     service = get_service(params[:service_name])
     hash[:import_method] = :replace
     hash[:data] = params[:data]
-    return_text(ervice.import_service_data(hash))
+    return_text(service.import_service_data(hash))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
