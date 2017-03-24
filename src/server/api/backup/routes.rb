@@ -3,7 +3,7 @@ get '/v0/backup/system_files' do
     content_type 'application/octet-stream'
     r = ''
     stream do |out|
-      r = engines_api.backup_system_files(out)
+      engines_api.backup_system_files(out)
     end
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
@@ -15,7 +15,7 @@ get '/v0/backup/system_db' do
     content_type 'application/octet-stream'
     r = ''
     stream do |out|
-      r = engines_api.backup_system_db(out)
+     engines_api.backup_system_db(out)
     end
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
@@ -46,8 +46,7 @@ end
 
 get '/v0/backup/engine/services/:engine_name' do
   begin
-    r = engines_api.engines_services_to_backup(params[:engine_name])
-    return_json(r)
+    return_json(engines_api.engines_services_to_backup(params[:engine_name]))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

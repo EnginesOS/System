@@ -7,8 +7,7 @@
 get '/v0/containers/engine/:engine_name/actions/' do
   begin
     engine = get_engine(params[:engine_name])
-    list = engines_api.list_engine_actionators(engine)
-    return_json_array(list)
+    return_json_array(engines_api.list_engine_actionators(engine))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -21,8 +20,7 @@ end
 get '/v0/containers/engine/:engine_name/action/:action_name' do
   begin
     engine = get_engine(params[:engine_name])
-    action = engines_api.get_engine_actionator(engine, params[:action_name])
-    return_json(action)
+    return_json(engines_api.get_engine_actionator(engine, params[:action_name]))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -40,10 +38,7 @@ post '/v0/containers/engine/:engine_name/action/:action_name' do
     p_params[:engine_name] = params[:engine_name]
     engine = get_engine(params[:engine_name])
     cparams = assemble_params(p_params, [:engine_name], :all)
-    SystemDebug.debug(SystemDebug.actions, 'action', params[:action_name], cparams)
-    action = engines_api.perform_engine_action(engine, params[:action_name], cparams)
-    SystemDebug.debug(SystemDebug.actions, 'action Res', action)
-    return_json(action)
+    return_json(engines_api.perform_engine_action(engine, params[:action_name], cparams))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

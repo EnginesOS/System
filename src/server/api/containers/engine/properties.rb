@@ -14,8 +14,7 @@ post '/v0/containers/engine/:engine_name/properties/network' do
     p_params[:engine_name] = params[:engine_name]
     engine = get_engine(p_params[:engine_name])
     cparams = assemble_params(p_params, [:engine_name], :all) # [:memory, :environment_variables])
-    r = engines_api.set_container_network_properties(engine, cparams)
-    return_text(r)
+    return_text(engines_api.set_container_network_properties(engine, cparams))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -33,8 +32,7 @@ post '/v0/containers/engine/:engine_name/properties/runtime' do
     p_params[:engine_name] = params[:engine_name]
     cparams = assemble_params(p_params, [:engine_name], [], [:memory, :environment_variables])
     engine = get_engine(cparams[:engine_name])
-    r = engines_api.set_container_runtime_properties(engine, cparams)
-    return_text(r)
+    return_text(engines_api.set_container_runtime_properties(engine, cparams))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

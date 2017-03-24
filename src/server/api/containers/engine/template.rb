@@ -11,8 +11,7 @@ post '/v0/containers/engine/:engine_name/template' do
     p_params[:engine_name] = params[:engine_name]
     engine = get_engine(params[:engine_name])
     cparams = assemble_params(p_params, [:engine_name], :template_string)
-    resolved_string = engines_api.get_resolved_engine_string(cparams[:template_string], engine)
-    return_text(resolved_string)
+    return_text(engines_api.get_resolved_engine_string(cparams[:template_string], engine))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

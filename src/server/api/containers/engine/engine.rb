@@ -20,8 +20,7 @@ end
 get '/v0/containers/engine/:engine_name/status' do
   begin
     engine = get_engine(params[:engine_name])
-    r = engine.status
-    return_json(r)
+    return_json( engine.status)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -33,8 +32,7 @@ end
 get '/v0/containers/engine/:engine_name/state' do
   begin
     engine = get_engine(params[:engine_name])
-    r = engine.read_state
-    return_text(r)
+    return_text(engine.read_state)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -46,8 +44,7 @@ end
 get '/v0/containers/engine/:engine_name/blueprint' do
   begin
     engine = get_engine(params[:engine_name])
-    r = engine.load_blueprint
-    return_json(r)
+    return_json(engine.load_blueprint)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -58,8 +55,7 @@ end
 # @return [String]
 get '/v0/containers/engine/:engine_name/build_report' do
   begin
-    r = engines_api.get_build_report(params[:engine_name])
-    return_text(r)
+    return_text(engines_api.get_build_report(params[:engine_name]))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -71,8 +67,7 @@ end
 get '/v0/containers/engine/:engine_name/websites' do
   begin
     engine = get_engine(params[:engine_name])
-    r = engine.web_sites
-    return_json(r)
+    return_json(engine.web_sites)
   rescue StandardError => e
     return_json(nil)
   end
@@ -84,8 +79,7 @@ end
 get '/v0/containers/engine/:engine_name/logs' do
   begin
     engine = get_engine(params[:engine_name])
-    r = engine.logs_container
-    return_json(r)
+    return_json(engine.logs_container)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -98,8 +92,7 @@ end
 get '/v0/containers/engine/:engine_name/ps' do
   begin
     engine = get_engine(params[:engine_name])
-    r = engine.ps_container
-    return_json(r)
+    return_json(engine.ps_container)
   rescue
     send_encoded_exception(request, 'Container not running', 'Container not running')
   end

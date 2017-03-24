@@ -5,8 +5,7 @@
 get '/v0/cron/engine/:engine_name/:cron_job/run' do
   begin
     engine = get_engine(params[:engine_name])
-    r = engine.run_cronjob(params[:cron_job])
-    return_text(r)
+    return_text(engine.run_cronjob(params[:cron_job]))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -43,8 +42,7 @@ end
 get '/v0/schedule/engine/:engine_name/:cron_job/run' do
   begin
     engine = get_engine(params[:engine_name])
-    r = engine.run_cronjob(params[:cron_job])
-    return_text(r)
+    return_text(engine.run_cronjob(params[:cron_job]))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

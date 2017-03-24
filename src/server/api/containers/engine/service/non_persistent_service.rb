@@ -12,8 +12,7 @@ post '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_names
     path_hash = engine_service_hash_from_params(params, false)
     p_params.merge!(path_hash)
     cparams = assemble_params(p_params, [:parent_engine,:publisher_namespace, :type_path, :service_handle], :all)
-    r = engines_api.update_attached_service(cparams)
-    return_text(r)
+    return_text(engines_api.update_attached_service(cparams))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -27,8 +26,7 @@ get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namesp
   begin
     hash = engine_service_hash_from_params(params)
     service_hash = engines_api.retrieve_engine_service_hash(hash)
-    r = engines_api.force_register_attached_service(service_hash)
-    return_text(r)
+    return_text(engines_api.force_register_attached_service(service_hash))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -42,8 +40,7 @@ get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namesp
 
     hash = engine_service_hash_from_params(params)
     service_hash = engines_api.retrieve_engine_service_hash(hash)
-    r = engines_api.force_reregister_attached_service(service_hash)
-    return_text(r)
+    return_text(engines_api.force_reregister_attached_service(service_hash))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -56,8 +53,7 @@ get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namesp
   begin
     hash = engine_service_hash_from_params(params)
     service_hash = engines_api.retrieve_engine_service_hash(hash)
-    r = engines_api.force_deregister_attached_service(service_hash)
-    return_text(r)
+    return_text(engines_api.force_deregister_attached_service(service_hash))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -69,8 +65,7 @@ end
 get '/v0/containers/engine/:engine_name/service/non_persistent/:publisher_namespace/*' do
   begin
     hash = engine_service_hash_from_params(params)
-    r = engines_api.retrieve_engine_service_hash(hash)
-    return_json(r)
+    return_json(engines_api.retrieve_engine_service_hash(hash))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
