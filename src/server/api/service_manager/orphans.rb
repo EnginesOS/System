@@ -5,7 +5,7 @@
 # @return [Array] Orphan Service Hashes
 get '/v0/service_manager/orphan_services/' do
   begin
-    orphans = engines_api.get_orphaned_services_tree
+    orphans = engines_api.orphaned_services_registry
     return_json(orphans)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
@@ -18,7 +18,7 @@ get '/v0/service_manager/orphan_services/:publisher_namespace/*' do
   begin
     params[:type_path] = params['splat'][0] if params.key?('splat') && params['splat'].is_a?(Array)
     cparams = assemble_params(params, [:publisher_namespace, :type_path], [])
-    r = engines_api.get_orphaned_services(cparams)
+    r = engines_api.orphaned_services(cparams)
     STDERR.puts('Orphans _' + r.to_s + '_')
     return_json_array(r)
   rescue StandardError => e

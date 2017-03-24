@@ -51,7 +51,7 @@ module DomainOperations
       service_hash[:variables][:ip] =  get_ext_ip_for_hosted_dns()
     end
     #   STDERR.puts(' ADD DOMAIN VARIABLE ' + params.to_s)
-    service_manager.create_and_register_service(service_hash)
+    create_and_register_service(service_hash)
   end
 
   def update_domain(params)
@@ -85,9 +85,9 @@ module DomainOperations
       service_hash[:variables][:ip] =  get_ext_ip_for_hosted_dns()
     end
     begin
-      service_manager.delete_service(service_hash)
-    rescue
-      service_manager.create_and_register_service(service_hash)
+      dettach_service(service_hash)
+    ensure
+      create_and_register_service(service_hash)
     end
   end
 
@@ -109,15 +109,15 @@ module DomainOperations
       publisher_namespace: 'EnginesSystem',
       type_path: 'dns',
     }
-    service_manager.delete_service(service_hash)
+    dettach_service(service_hash)
   end
   private
 
-  def get_lan_ip_for_hosted_dns()
+  def get_lan_ip_for_hosted_dns
     DNSHosting.get_local_ip
   end
 
-  def get_ext_ip_for_hosted_dns()
+  def get_ext_ip_for_hosted_dns
     open('https://jsonip.com/') { |s| JSON::parse(s.string,:symbolize_keys => true)[:ip] }
   end
 

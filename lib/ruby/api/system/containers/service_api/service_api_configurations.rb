@@ -27,12 +27,12 @@ module ServiceApiConfigurations
     @engines_core.update_service_configuration(configuration)
   end
 
-  def get_pending_service_configurations_hashes(service_hash)
-    @engines_core.get_pending_service_configurations_hashes(service_hash)
+  def pending_service_configurations_hashes(service_hash)
+    @engines_core.pending_service_configurations_hashes(service_hash)
   end
 
   #({service_name: @container_name})
-  def get_service_configurations_hashes(service_hash)
-    @engines_core.get_service_configurations_hashes(service_hash)
+  def retrieve_service_configurations_hashes(service_hash)
+    @engines_core.retrieve_service_configurations_hashes(service_hash)
   end
 end 

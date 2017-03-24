@@ -26,7 +26,7 @@ module DockerApiImages
       container = nil
     end
 
-    headers = { 'X-Registry-Config'  => get_registry_auth, 'Content-Type' =>'plain/text', 'Accept-Encoding' => 'gzip'}
+    headers = { 'X-Registry-Config'  => registry_root_auth, 'Content-Type' =>'plain/text', 'Accept-Encoding' => 'gzip'}
     post_request(request,  nil, false , headers ,600)
   rescue
     false #No new fresh ?

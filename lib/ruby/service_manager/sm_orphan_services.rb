@@ -64,8 +64,8 @@ module SmOrphanServices
   #:path_type
   #@return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
   #on recepit of an empty array any non critical error will be in  this object's  [ServiceManager] last_error method
-  def get_orphaned_services(params)
-    system_registry_client.get_orphaned_services(params)
+  def orphaned_services(params)
+    system_registry_client.orphaned_services(params)
   end
 
   def connect_orphan_service(service_hash)

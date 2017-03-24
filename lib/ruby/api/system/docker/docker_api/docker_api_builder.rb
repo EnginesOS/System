@@ -68,7 +68,7 @@ module DockerApiBuilder
     stream_handler = nil
     options =  build_options(engine_name)
     header = {
-      'X-Registry-Config' => get_registry_auth,
+      'X-Registry-Config' => registry_root_auth,
       'Content-Type' => 'application/tar',
       'Accept-Encoding' => 'gzip',
       'Accept' => '*/*',

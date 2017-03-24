@@ -2,7 +2,7 @@ module SMAttachedServices
   #@return [Array] of service hash for ObjectName matching the name  identifier
   #@objectName [String]
   #@identifier [String]
-  def list_attached_services_for(objectName,identifier)
+  def services_attached_to(objectName,identifier)
     clear_error
     SystemDebug.debug(SystemDebug.services,'services_on_objects_',objectName)
     SystemDebug.debug(SystemDebug.services,'services_on_objects_',identifier)

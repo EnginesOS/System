@@ -13,8 +13,8 @@ module ManagedServiceConfigurations
     raise EnginesException.new(error_hash('service missing cont_userid ', configurator_params)) if check_cont_uid == false
     @container_api.retrieve_configurator(self, configurator_params)
   end
-  def get_service_configurations
-      @container_api.get_service_configurations_hashes(
+  def retrieve_service_configurations
+      @container_api.retrieve_service_configurations_hashes(
         {service_name: @container_name,
           type_path: @type_path, 
           publisher_namespace: 

@@ -4,10 +4,10 @@ class RegistryHandler < ErrorsApi
     @registry_ip = false
   end
 
-  #  # FIXME: take out or get_registry ip ..
+  #  # FIXME: take out or registry_root ip ..
   #  def start
   #    @registry_ip = false
-  #    get_registry_ip
+  #    registry_root_ip
   #  end
 
   def force_registry_restart
@@ -30,7 +30,7 @@ class RegistryHandler < ErrorsApi
     true
   end
 
-  def get_registry_ip
+  def registry_root_ip
     STDERR.puts( 'Registry IP ' + @registry_ip.to_s)
     return @registry_ip unless @registry_ip.is_a?(FalseClass)
     registry_service = @system_api.loadSystemService('registry') # FIXME: Panic if this fails

@@ -11,7 +11,7 @@ module Orphans
     rest_get(r)
   end
 
-  def get_orphaned_services(params)
+  def orphaned_services(params)
     r = 'services/orphans/'
     r += address_params(params, [:publisher_namespace, :type_path])
     rest_get(r)

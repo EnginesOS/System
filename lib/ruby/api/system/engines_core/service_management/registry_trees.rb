@@ -1,26 +1,26 @@
 module RegistryTrees
   require_relative 'service_manager_access.rb'
-  def get_orphaned_services_tree
-    service_manager.get_orphaned_services_tree
+  def orphaned_services_registry
+    service_manager.orphaned_services_registry
   end
 
-  def managed_service_tree
-    service_manager.managed_service_tree
+  def managed_services_registry
+    service_manager.managed_services_registry
   end
 
-  def get_managed_engine_tree
-    service_manager.get_managed_engine_tree
+  def managed_enginess_registry
+    service_manager.managed_enginess_registry
   end
 
-  def get_configurations_tree
-    service_manager.get_configurations_tree
+  def service_configurations_registry
+    service_manager.service_configurations_registry
   end
 
-  def get_shares_tree
-    service_manager.shares_tree
+  def get_shared_services_registry
+    service_manager.shared_services_registry
   end
 
-  def get_registry
-    service_manager.get_registry
+  def registry_root
+    service_manager.registry_root
   end
 end
