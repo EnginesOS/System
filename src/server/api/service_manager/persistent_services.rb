@@ -8,10 +8,9 @@ get '/v0/service_manager/persistent_services/:publisher_namespace/*' do
   begin
     params[:type_path] = params['splat'][0]
     cparams = assemble_params(params, [:publisher_namespace, :type_path], [])
-    r = engines_api.get_registered_against_service(cparams)
-    return_json_array(r)
+    return_json_array(engines_api.registered_with_service(cparams))
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 

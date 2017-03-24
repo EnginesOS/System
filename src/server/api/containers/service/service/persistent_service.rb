@@ -8,11 +8,10 @@ get '/v0/containers/service/:service_name/service/persistent/:publisher_namespac
     content_type 'application/octet-stream'
     hash = service_service_hash_from_params(params)
     service = get_service(params[:service_name])
-    r = service.export_service_data(hash)
     content_type 'binary/octet-stream'
-    r.b
+    service.export_service_data(hash).b
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method service_import_persistent_service
@@ -22,16 +21,13 @@ end
 # @return [true]
 get '/v0/containers/service/:service_name/service/persistent/:publisher_namespace/*/import' do
   begin
-
     hash = {}
     hash[:service_connection] = service_service_hash_from_params(params)
-    return log_error(request, 'Service not found', hash) if hash[:service_connection].is_a?(FalseClass)
     service = get_service(params[:service_name])
     hash[:data] = params[:data]
-    r = service.import_service_data(hash)
-    return_text(r)
+    return_text(service.import_service_data(hash))
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method service_replace_persistent_service
@@ -43,14 +39,12 @@ get '/v0/containers/service/:service_name/service/persistent/:publisher_namespac
   begin
     hash = {}
     hash[:service_connection] = service_service_hash_from_params(params)
-    return log_error(request, 'Service not found', hash) if hash[:service_connection].is_a?(FalseClass)
     service = get_service(params[:service_name])
     hash[:import_method] = :replace
     hash[:data] = params[:data]
-    r = service.import_service_data(hash)
-    return_text(r)
+    return_text(ervice.import_service_data(hash))
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -61,10 +55,9 @@ end
 get '/v0/containers/service/:service_name/service/persistent/:publisher_namespace/*' do
   begin
     hash = service_service_hash_from_params(params)
-    r = engines_api.find_service_service_hash(hash)
-    return_json(r)
+    return_json(engines_api.find_service_service_hash(hash))
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @!endgroup

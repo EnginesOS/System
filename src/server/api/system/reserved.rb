@@ -7,10 +7,9 @@
 #  array of integers
 get '/v0/system/reserved/ports' do
   begin
-    reserved_ports = engines_api.reserved_ports
-    return_json_array(reserved_ports)
+    return_json_array(engines_api.reserved_ports)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -21,10 +20,9 @@ end
 #  array of taken fqdn hostnames
 get '/v0/system/reserved/hostnames' do
   begin
-    reserved_hostnames = engines_api.taken_hostnames
-    return_json_array(reserved_hostnames)
+    return_json_array(engines_api.taken_hostnames)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -35,10 +33,9 @@ end
 #  array of taken  and reserved engine_names
 get '/v0/system/reserved/engine_names' do
   begin
-    engine_names = engines_api.reserved_engine_names
-    return_json_array(engine_names)
+    return_json_array(engines_api.reserved_engine_names)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @!endgroup

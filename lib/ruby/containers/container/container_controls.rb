@@ -47,7 +47,7 @@ module ContainerControls
     r
   end
 
-  def destroy_container()
+  def destroy_container() 
     expire_engine_info
     unless has_container?
       @container_id = '-1'

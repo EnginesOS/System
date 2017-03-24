@@ -25,7 +25,7 @@ module PersistantServiceBuilder
       service_hash[:fresh] = false
       @first_build = false
       SystemDebug.debug(SystemDebug.builder,:existing_service ,service_hash)
-      return attach_existing_service_to_engine(service_hash, existing) if existing[:shared] == true
+      return share_service_to_engine(service_hash, existing) if existing[:shared] == true
       service_hash = existing #Orphan case    
     elsif @core_api.match_orphan_service(service_hash) == true #auto orphan pick up
       SystemDebug.debug(SystemDebug.builder,:orphan_service ,service_hash)
@@ -93,12 +93,12 @@ module PersistantServiceBuilder
         SystemUtils.log_exception(e)
   end
 
-  def attach_existing_service_to_engine(service_hash, existing)
-    SystemDebug.debug(SystemDebug.builder, :attach_existing_service_to_engine, service_hash, existing)
+  def share_service_to_engine(service_hash, existing)
+    SystemDebug.debug(SystemDebug.builder, :share_service_to_engine, service_hash, existing)
 #    params =  service_hash.dup
 #    params[ :existing_service] = existing
 #    trim_to_editable_variables(params)
-#    if @core_api.attach_existing_service_to_engine(params) 
+#    if @core_api.share_service_to_engine(params) 
 #      if service_hash[:type_path] == 'filesystem/local/filesystem'
 #        result = add_file_service(service_hash)
 #       log_error_mesg('failed to create fs',self) unless result
@@ -113,7 +113,7 @@ module PersistantServiceBuilder
       return true
     end
    # end
-    return log_error_mesg('failed to attach_existing_service_to_engine(params)',params)
+    return log_error_mesg('failed to share_service_to_engine(params)',params)
     rescue Exception => e
         SystemUtils.log_exception(e)
   end

@@ -8,7 +8,8 @@ get '/v0/containers/services/' do
     engines = engines_api.getManagedServices
     managed_containers_to_json(engines)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
+#    send_encoded_exception(request: request, exception: e , status: 404)
   end
 end
 
@@ -19,10 +20,9 @@ end
 #
 get '/v0/containers/services/container_name' do
   begin
-    container_names = engines_api.list_managed_services
-    return_json_array(container_names)
+    return_json_array(engines_api.list_managed_services)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -33,10 +33,9 @@ end
 
 get '/v0/containers/services/state' do
   begin
-    states = engines_api.get_services_states
-    return_json(states)
+    return_json(engines_api.get_services_states)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method get_services_status
@@ -45,10 +44,9 @@ end
 # @return  [Hash] [:container_name => service_status] service_status Hash :state :set_state :progress_to :error
 get '/v0/containers/services/status' do
   begin
-    status = engines_api.get_services_status
-    return_json(status)
+    return_json(engines_api.get_services_status)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method get_system_services
@@ -57,10 +55,9 @@ end
 # @return [Array] system services
 get '/v0/containers/services/system' do
   begin
-    states = engines_api.list_system_services
-    return_json_array(states)
+    return_json_array(engines_api.list_system_services)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @!endgroup

@@ -5,10 +5,9 @@
 # @return [true]
 get '/v0/system/control/registry/restart' do
   begin
-    restart_registry = engines_api.force_registry_restart
-    return_text(restart_registry)
+    return_text(engines_api.force_registry_restart)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 

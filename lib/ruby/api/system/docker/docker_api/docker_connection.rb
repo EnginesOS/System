@@ -39,7 +39,7 @@ class DockerConnection < ErrorsApi
 
   require "base64"
 
-  def get_registry_auth
+  def registry_root_auth
     r = {"auth"=> "","email" => "","username" => '','password' => '' }
     Base64.encode64(r.to_json).gsub(/\n/, '')
   end

@@ -8,10 +8,9 @@ get '/v0/service_manager/service_definitions/:publisher_namespace/*' do
   begin
     params[:type_path] = params['splat'][0]
     cparams = assemble_params(params, [:publisher_namespace, :type_path], [])
-    r = engines_api.get_service_definition(cparams)
-    return_json(r)
+  return_json(engines_api.get_service_definition(cparams))
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 

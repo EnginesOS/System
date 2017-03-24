@@ -1,7 +1,6 @@
 module ServiceApiConfigurations
   @@configurator_timeout = 10
   def retrieve_configurator(c, params)
-    # cmd = 'docker_exec -u ' + c.cont_userid + ' ' +  c.container_name + ' /home/configurators/read_' + params[:configurator_name].to_s + '.sh '
     cmd =  '/home/configurators/read_' + params[:configurator_name].to_s + '.sh'
     result =  @engines_core.exec_in_container({:container => c, :command_line => [cmd], :log_error => true, :timeout => @@configurator_timeout})
     if result[:result] == 0
@@ -28,12 +27,12 @@ module ServiceApiConfigurations
     @engines_core.update_service_configuration(configuration)
   end
 
-  def get_pending_service_configurations_hashes(service_hash)
-    @engines_core.get_pending_service_configurations_hashes(service_hash)
+  def pending_service_configurations_hashes(service_hash)
+    @engines_core.pending_service_configurations_hashes(service_hash)
   end
 
   #({service_name: @container_name})
-  def get_service_configurations_hashes(service_hash)
-    @engines_core.get_service_configurations_hashes(service_hash)
+  def retrieve_service_configurations_hashes(service_hash)
+    @engines_core.retrieve_service_configurations_hashes(service_hash)
   end
 end 

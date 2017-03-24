@@ -114,6 +114,7 @@ module TaskAtHand
     when 'unpause'
       on_start('unpause')
     when 'die'
+      STDERR.puts('IT DIED')
       on_stop('die')
     when 'kill'
       on_stop('die')

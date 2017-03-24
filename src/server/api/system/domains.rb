@@ -10,10 +10,9 @@ post '/v0/system/domains/' do
   begin
     p_params = post_params(request)
     cparams = assemble_params(p_params, [], :all)
-    r = engines_api.add_domain(cparams)
-    return_text(r)
+    return_text(engines_api.add_domain(cparams))
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method delete_domain_name
@@ -22,10 +21,9 @@ end
 # @return  [true]
 delete '/v0/system/domains/:domain_name' do
   begin
-    r = engines_api.remove_domain(params[:domain_name])
-    return_text(r)
+    return_text(engines_api.remove_domain(params[:domain_name]))
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method list_domain_names
@@ -34,10 +32,9 @@ end
 # @return  [Array] Array of [Hash] :domain_name :self_hosted :internal_only
 get '/v0/system/domains/' do
   begin
-    domains = engines_api.list_domains
-    return_json_array(domains)
+    return_json_array(engines_api.list_domains)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @!endgroup

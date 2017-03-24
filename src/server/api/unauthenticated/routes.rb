@@ -8,7 +8,7 @@ get '/v0/unauthenticated/bootstrap/mgmt/url' do
   begin
     'https://' + engines_api.system_hostname.to_s + '.' + engines_api.get_default_domain.to_s + ':10443'
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -22,7 +22,7 @@ get '/v0/unauthenticated/bootstrap/mgmt/status' do
     engine = get_service('mgmt')
     return_json(engine.status)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # starting
@@ -37,7 +37,7 @@ get '/v0/unauthenticated/bootstrap/mgmt/state' do
     engine = get_service('mgmt')
     return_json(engine.read_state)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
   # starting
   # running
@@ -58,7 +58,7 @@ post '/v0/unauthenticated/bootstrap/first_run/complete' do
     i = false if cparams[:install_mgmt] == 'false' || cparams[:install_mgmt] == false
     return_text(engines_api.first_run_complete(i))
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method system_ca
@@ -70,7 +70,7 @@ get '/v0/unauthenticated/system_ca' do
     system_ca = engines_api.get_system_ca
     return_text(system_ca)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @!endgroup

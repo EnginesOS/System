@@ -2,11 +2,9 @@ get '/v0/containers/service/:service_name/sub_services' do
   begin
     #  opt_param = [:engine_name, :service_handle]
     params = assemble_params(params, [:service_name], nil, [:engine_name, :service_handle])
-    r = engines_api.services_subservices(params)
-    return empty_array if r.nil?
-    return_json(r)
+    return_json_array(engines_api.services_subservices(params))
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -17,7 +15,7 @@ post '/v0/containers/service/:service_name/sub_service/:engine_name/:service_han
     engines_api.update_subservice(params)
     return_true
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -28,7 +26,7 @@ post '/v0/containers/service/:service_name/sub_services/:engine_name/:service_ha
     engines_api.attach_subservice(params)
     return_true
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -39,17 +37,16 @@ delete '/v0/containers/service/:service_name/sub_services/:engine_name/:service_
     engines_api.remove_subservice(params)
     return_true
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
 get '/v0/containers/service/:service_name/sub_service/:engine_name/:service_handle/:sub_handle' do
   begin
     params = assemble_params(params, [:service_name, :engine_name, :service_handle, :sub_handle])
-    r = engines_api.attached_subservice(params)
-    return_json(r)
+    return_json(engines_api.attached_subservice(params))
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @!endgroup

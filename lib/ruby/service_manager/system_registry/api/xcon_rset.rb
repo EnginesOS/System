@@ -130,7 +130,7 @@ def error_result_exception(resp)
 STDERR.puts('Registry Exception from  json result ' + r.to_s )
  
   raise RegistryException.new(
-  {status: 403,
+  {status: 404,
     error_type: :warning,
     error_mesg: 'Route Not Found',
     params: 'nil'
@@ -140,7 +140,7 @@ STDERR.puts('Registry Exception from R ' )
 end
 
 def base_url
-  'http://' + @core_api.get_registry_ip + ':4567'
+  'http://' + @core_api.registry_root_ip + ':4567'
 rescue  StandardError => e
   raise EnginesException.new('Cannot Deterine Base URL' + e.to_s)
 end

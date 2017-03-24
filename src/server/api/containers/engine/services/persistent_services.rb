@@ -6,12 +6,10 @@
 get '/v0/containers/engine/:engine_name/services/persistent/' do
   begin
     engine = get_engine(params[:engine_name])
-    return log_error(request, engine, params) if engine.nil?
-    r = engines_api.list_persistent_services(engine)
-    return_json_array(r)
+    return_json_array(engines_api.list_persistent_services(engine))
   rescue StandardError => e
     return return_json_array(nil) if e.is_a?(EnginesException) && e.level == :warning
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -23,10 +21,10 @@ end
 get '/v0/containers/engine/:engine_name/services/persistent/:publisher_namespace/*' do
   begin
     hash = engine_service_hash_from_params(params, true)
-    r = engines_api.find_engine_service_hashes(hash)
+    r = engines_api.retrieve_engine_service_hashes(hash)
     return_json_array(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -43,10 +41,9 @@ post '/v0/containers/engine/:engine_name/services/persistent/share/:owner/:publi
     path_hash[:owner] = params[:owner]
     p_params.merge!(path_hash)
     cparams = assemble_params(p_params, [:parent_engine, :owner, :publisher_namespace, :type_path, :service_handle], :all)
-    r = engines_api.connect_share_service(cparams)
-    return_text(r)
+    return_text(engines_api.connect_share_service(cparams))
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method add_engine_persistent_orphan_service
@@ -62,10 +59,9 @@ post '/v0/containers/engine/:engine_name/services/persistent/orphan/:owner/:publ
     path_hash[:owner] = params[:owner]
     p_params.merge!(path_hash)
     cparams = assemble_params(p_params, [:parent_engine, :owner, :publisher_namespace, :type_path, :service_handle], :all)
-    r = engines_api.connect_orphan_service(cparams)
-    return_text(r)
+    return_text(engines_api.connect_orphan_service(cparams))
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -81,10 +77,9 @@ post '/v0/containers/engine/:engine_name/services/persistent/:publisher_namespac
     path_hash = engine_service_hash_from_params(params, true)
     p_params.merge!(path_hash)
     cparams = assemble_params(p_params, [:parent_engine, :publisher_namespace, :type_path], :all)
-    r = engines_api.create_and_register_persistent_service(cparams)
-    return_text(r)
+    return_text(engines_api.create_and_register_persistent_service(cparams))
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method del_engine_persistent_service
@@ -97,10 +92,9 @@ delete '/v0/containers/engine/:engine_name/services/persistent/:remove_all_data/
   begin
     path_hash = engine_service_hash_from_params(params, false)
     cparams = assemble_params(path_hash, [:parent_engine, :publisher_namespace, :type_path, :service_handle, :remove_all_data], [])
-    r = engines_api.remove_persistent_service(cparams)
-    return_text(r)
+    return_text(engines_api.remove_persistent_service(cparams))
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -112,10 +106,9 @@ delete '/v0/containers/engine/:engine_name/services/persistent/shared/:owner/:pu
   begin
     path_hash = engine_service_hash_from_params(params, false)
     cparams = assemble_params(path_hash, [:engine_name, :owner, :publisher_namespace, :type_path, :service_handle], [])
-    r = engines_api.dettach_share_service(cparams)
-    return_text(r)
+    return_text(engines_api.dettach_share_service(cparams))
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @!endgroup

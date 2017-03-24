@@ -9,10 +9,9 @@ post '/v0/system/template' do
   begin
     params = post_params(request)
     cparams = assemble_params(params, [], :string)
-    resolved_string = engines_api.get_resolved_string(cparams[:string])
-    return_text(resolved_string)
+    return_text(engines_api.get_resolved_string(cparams[:string]))
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @!endgroup

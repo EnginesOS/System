@@ -6,10 +6,9 @@
 
 get '/v0/system/status/first_run_required' do
   begin
-    first_run_required = engines_api.first_run_required?
-    return_text(first_run_required)
+    return_text(engines_api.first_run_required?)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -19,10 +18,9 @@ end
 
 get '/v0/system/status' do
   begin
-    s_status = SystemStatus.system_status
-    return_json(s_status)
+    return_json(SystemStatus.system_status)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -34,10 +32,9 @@ end
 
 get '/v0/system/status/update' do
   begin
-    ustatus = SystemStatus.system_update_status
-    return_json(ustatus)
+    return_json(SystemStatus.system_update_status)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @!endgroup

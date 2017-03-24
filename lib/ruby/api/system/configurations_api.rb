@@ -32,7 +32,7 @@ class ConfiguratidonsApi <ErrorsApi
       ret_val = service.retrieve_configurator(service_param)
       raise EnginesException.new(error_hash('failed to retrieve configuration', ret_val)) unless ret_val.is_a?(Hash)
     else
-      ret_val = @core_api.get_service_configuration(service_param)
+      ret_val = @core_api.retrieve_service_configuration(service_param)
     end
     ret_val
   end

@@ -22,10 +22,9 @@ post '/v0/system/do_first_run' do
   begin
     p_params = post_params(request)
     cparams = assemble_params(p_params, [], :all)
-    r = engines_api.set_first_run_parameters(cparams)
-    return_json(r)
+    return_json(engines_api.set_first_run_parameters(cparams))
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @!endgroup

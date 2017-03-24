@@ -1,7 +1,7 @@
 module SharedServices
   require_relative 'private/shared_volumes.rb'
-  def attach_existing_service_to_engine(shared_service_params)
-    STDERR.puts( 'attach_existing_service_to_engine ' + shared_service_params.to_s)
+  def share_service_to_engine(shared_service_params)
+    STDERR.puts( 'share_service_to_engine ' + shared_service_params.to_s)
     existing_service = shared_service_params[ :existing_service]
     shared_service = shared_service_params.dup
     shared_service.delete(:existing_service)
@@ -33,14 +33,14 @@ module SharedServices
   end
 
   def remove_shared_service_from_engine(service_query)
-    ahash = find_engine_service_hash(service_query)
+    ahash = retrieve_engine_service_hash(service_query)
     return ahash unless ahash.is_a?(Hash)
     raise EnginesException.new(error_hash('Not a Shared Service",service_query,ahash')) unless ahash[:shared] == true
     # return dettach_shared_volume(ahash) if ahash[:type_path] == 'filesystem/local/filesystem'
     SystemDebug.debug(SystemDebug.services,  :remove_shared_service_from_engine, ahash)
     system_registry_client.remove_from_managed_engine(ahash)
     SystemDebug.debug(SystemDebug.services,  :remove_shared_service_from_share_reg, ahash)
-    system_registry_client.remove_from_shares_registry(ahash)
+    system_registry_client.remove_from_shared_services_registry(ahash)
   end
 
   def merge_variables(shared_service, existing_service_hash)

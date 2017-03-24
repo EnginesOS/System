@@ -11,6 +11,7 @@ class VolumeService < ManagedService
 
   def add_volume(service_hash)
     volbuilder = @engines_core.loadManagedUtility('fsconfigurator')
+    
     volbuilder.execute_command(:add_volume, {
       volume: service_hash[:variables][:service_name],
       fw_user: service_hash[:variables][:user],
@@ -20,7 +21,9 @@ class VolumeService < ManagedService
   end
 
   def rm_volume(service_hash)
+    
     volbuilder = @engines_core.loadManagedUtility('fsconfigurator')
+    STDERR.puts('rm VOLUME' + service_hash.to_s)
     volbuilder.drop_log_dir
     volbuilder.drop_state_dir
     volbuilder.execute_command(:remove_volume, {

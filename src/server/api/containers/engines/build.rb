@@ -17,10 +17,9 @@ post '/v0/containers/engines/build' do
   begin
     p_params = post_params(request)
     cparams = assemble_params(p_params, [], :all)
-    r = engines_api.build_engine(cparams)
-    return_text(r)
+    return_text(engines_api.build_engine(cparams))
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 

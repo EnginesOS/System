@@ -14,7 +14,6 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
       timer.cancel unless timer.nil?
       false
     end
-
     begin
       stream :keep_open do | out |
         begin
@@ -62,7 +61,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
       STDERR.puts('Stream EVENTS Exception' + e.to_s + e.backtrace.to_s)
     end
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method check_and_act_on_containers
@@ -79,10 +78,9 @@ end
 
 get '/v0/containers/check_and_act' do
   begin
-    r = engines_api.containers_check_and_act
-    return_json(r)
+    return_json(engines_api.containers_check_and_act)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 

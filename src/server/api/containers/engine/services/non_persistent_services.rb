@@ -6,12 +6,10 @@
 get '/v0/containers/engine/:engine_name/services/non_persistent/' do
   begin
     engine = get_engine(params[:engine_name])
-    return log_error(request, engine, params) if engine.nil?
-    r = engines_api.list_non_persistent_services(engine)
-    return_json_array(r)
+    return_json_array(engines_api.list_non_persistent_services(engine))
   rescue StandardError => e
     return return_json_array(nil) if e.is_a?(EnginesException) && e.level == :warning
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -27,10 +25,9 @@ post '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_name
     path_hash = engine_service_hash_from_params(params, true)
     p_params.merge!(path_hash)
     cparams = assemble_params(p_params, [:parent_engine, :publisher_namespace, :type_path], :all)
-    r = engines_api.create_and_register_service(cparams)
-    return_text(r)
+    return_text(engines_api.create_and_register_service(cparams))
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -43,10 +40,9 @@ delete '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_na
   begin
     path_hash = engine_service_hash_from_params(params, false)
     cparams = assemble_params(path_hash, [:parent_engine, :publisher_namespace, :type_path, :service_handle], [])
-    r = engines_api.dettach_service(cparams)
-    return_text(r)
+    return_text(engines_api.dettach_service(cparams))
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -58,10 +54,9 @@ end
 get '/v0/containers/engine/:engine_name/services/non_persistent/:publisher_namespace/*' do
   begin
     hash = engine_service_hash_from_params(params, true)
-    r = engines_api.find_engine_service_hashes(hash)
-    return_json(r)
+    return_json(engines_api.retrieve_engine_service_hashes(hash))
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 

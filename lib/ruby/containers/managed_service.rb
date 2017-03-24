@@ -75,7 +75,7 @@ class ManagedService < ManagedContainer
 
   #Sets @last_error to msg + object.to_s (truncated to 256 chars)
   #Calls SystemUtils.log_error_msg(msg,object) to log the error
-  #@return none
+  # @return none
   def self.log_error_mesg(msg,object)
     obj_str = object.to_s.slice(0,512)
     SystemUtils.log_error_mesg(msg,object)

@@ -7,11 +7,9 @@
 get '/v0/containers/engine/:engine_name/create' do
   begin
     engine = get_engine(params[:engine_name])
-    return log_error(request, engine, params) if engine.nil?
-    r = engine.create_container
-    return_text(r)
+    return_text(engine.create_container)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -24,11 +22,9 @@ end
 get '/v0/containers/engine/:engine_name/recreate' do
   begin
     engine = get_engine(params[:engine_name])
-    return log_error(request, engine, params) if engine.nil?
-    r = engine.recreate_container
-    return_text(r)
+    return_text(engine.recreate_container)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method stop_engine
@@ -38,11 +34,9 @@ end
 get '/v0/containers/engine/:engine_name/stop' do
   begin
     engine = get_engine(params[:engine_name])
-    return log_error(request, engine, params) if engine.nil?
-    r = engine.stop_container
-    return_text(r)
+    return_text(engine.stop_container)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method halt_engine
@@ -52,11 +46,8 @@ end
 get '/v0/containers/engine/:engine_name/halt' do
   begin
     engine = get_engine(params[:engine_name])
-    return log_error(request, engine, params) if engine.nil?
-    r = engine.halt_container
-    return_text(r)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method start_engine
@@ -66,11 +57,9 @@ end
 get '/v0/containers/engine/:engine_name/start' do
   begin
     engine = get_engine(params[:engine_name])
-    return log_error(request, engine, params) if engine.nil?
-    r = engine.start_container
-    return_text(r)
+    return_text(engine.start_container)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method restart_engine
@@ -80,11 +69,9 @@ end
 get '/v0/containers/engine/:engine_name/restart' do
   begin
     engine = get_engine(params[:engine_name])
-    return log_error(request, engine, params) if engine.nil?
-    r = engine.restart_container
-    return_text(r)
+    return_text(engine.restart_container)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method pause_engine
@@ -94,11 +81,9 @@ end
 get '/v0/containers/engine/:engine_name/pause' do
   begin
     engine = get_engine(params[:engine_name])
-    return log_error(request, engine, params) if engine.nil?
-    r = engine.pause_container
-    return_text(r)
+    return_text(engine.pause_container)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method unpause_engine
@@ -108,11 +93,9 @@ end
 get '/v0/containers/engine/:engine_name/unpause' do
   begin
     engine = get_engine(params[:engine_name])
-    return log_error(request, engine, params) if engine.nil?
-    r = engine.unpause_container
-    return_text(r)
+    return_text(engine.unpause_container)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -123,11 +106,9 @@ end
 get '/v0/containers/engine/:engine_name/reinstall' do
   begin
     engine = get_engine(params[:engine_name])
-    return log_error(request, engine, params) if engine.nil?
-    r = engines_api.reinstall_engine(engine)
-    return_text(r)
+    return_text(engines_api.reinstall_engine(engine))
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -138,11 +119,9 @@ end
 delete '/v0/containers/engine/:engine_name/destroy' do
   begin
     engine = get_engine(params[:engine_name])
-    return log_error(request, engine, params) if engine.nil?
-    r = engine.destroy_container
-    return_text(r)
+    return_text(engine.destroy_container)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method delete_engine
@@ -161,10 +140,9 @@ delete '/v0/containers/engine/:engine_name/delete/*' do
       rparams[:remove_all_data] = true if params['splat'][0] == 'all'
       rparams[:remove_all_data] = false if params['splat'][0] == 'none'
     end
-    r = engines_api.delete_engine(rparams)
-    return_text(r)
+    return_text(engines_api.delete_engine(rparams))
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 

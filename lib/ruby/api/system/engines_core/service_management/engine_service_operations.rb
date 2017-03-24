@@ -56,10 +56,10 @@ module EngineServiceOperations
     #return sm.find_engine_services(params)
   end
 
-  def attach_existing_service_to_engine(params)
+  def share_service_to_engine(params)
     SystemDebug.debug(SystemDebug.services,'core attach existing service', params)
     check_engine_hash(params)
-    service_manager.attach_existing_service_to_engine(params)
+    service_manager.share_service_to_engine(params)
   end
 
   def connect_share_service(service_hash)
@@ -75,7 +75,7 @@ module EngineServiceOperations
       next unless params[:existing_service][:variables].keys(k)
       params[:variables][k] = params[:existing_service][:variables][k]
     end
-    r = attach_existing_service_to_engine(params)
+    r = share_service_to_engine(params)
     if service_hash[:type_path] == 'filesystem/local/filesystem'
       return add_file_share(params)
       #raise EnginesException.new(error_hash('failed to create fs', self)) if result.is_a?(EnginesError)
@@ -134,6 +134,7 @@ module EngineServiceOperations
 
     #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
     begin
+      STDERR.puts(' Remove engine calling service_manager.remove_engine_services' + params.to_s )
     service_manager.remove_engine_services(params)
     rescue EnginesException => e
       raise e unless e.is_a_warning?

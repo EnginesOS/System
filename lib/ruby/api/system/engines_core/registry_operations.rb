@@ -1,7 +1,7 @@
 module RegistryOperations
   require_relative '../registry_handler.rb'
-  def get_registry_ip
-    @registry_handler.get_registry_ip
+  def registry_root_ip
+    @registry_handler.registry_root_ip
   end
 
   def force_registry_restart

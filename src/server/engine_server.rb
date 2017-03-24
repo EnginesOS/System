@@ -67,7 +67,7 @@ begin
   ObjectSpace.trace_object_allocations_start
   core_api = EnginesCore.new
   @events_stream = nil
-  $engines_api = PublicApi.new(core_api)
+ $engines_api = PublicApi.new(core_api)
   STDERR.puts('CREATED ENGINES API +++++++++++++++++++++++++++++++++++++++++++')
 
   @@last_error = ''

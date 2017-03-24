@@ -29,7 +29,7 @@ module ServiceOperations
   end
 
   #Attach the service defined in service_hash [Hash]
-  #@return boolean indicating sucess
+  # @return boolean indicating sucess
   def create_and_register_service(service_hash)
     #  service_hash = SystemUtils.symbolize_keys(service_hash)
     SystemDebug.debug(SystemDebug.services, :attach_ing_create_and_egister_service, service_hash)
@@ -44,11 +44,11 @@ module ServiceOperations
 
   # @ returns  complete service hash matching PNS,SP,PE,SH
   def retrieve_service_hash(query_hash)
-    find_engine_service_hash(query_hash)
+    retrieve_engine_service_hash(query_hash)
   end
 
-  def list_providers_in_use
-    service_manager.list_providers_in_use
+  def providers_in_use
+    service_manager.providers_in_use
   end
 
   #returns
@@ -57,18 +57,17 @@ module ServiceOperations
     service_manager.find_service_consumers(service_query)
   end
 
-  #@return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
-  def get_registered_against_service(service_hash)
-
+  # @return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
+  def registered_with_service(service_hash)
     clear_error
     check_service_hash(service_hash)
-    service_manager.get_registered_against_service(service_hash)
+    service_manager.registered_with_service(service_hash)
   end
 
   def update_attached_service(service_hash)
     clear_error
     check_engine_service_hash(service_hash)
-    ahash = find_engine_service_hash(service_hash)
+    ahash = retrieve_engine_service_hash(service_hash)
     raise EnginesException.new(error_hash("Cannot update a shared service",service_hash)) if ahash[:shared] == true
     service_manager.update_attached_service(service_hash)
   end

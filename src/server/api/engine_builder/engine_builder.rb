@@ -6,10 +6,9 @@
 # @return [Hash]  :is_building :did_build_fail
 get '/v0/engine_builder/status' do
   begin
-    r = engines_api.build_status
-    return_json(r)
+    return_json(engines_api.build_status)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -19,10 +18,9 @@ end
 # @return  [Hash]  :engine_name :memory :repository_url :variables :reinstall :web_port :host_name  :domain_name :attached_services
 get '/v0/engine_builder/params' do
   begin
-    r = engines_api.current_build_params
-    return_json(r)
+    return_json(engines_api.current_build_params)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -32,10 +30,9 @@ end
 # @return [String] last build log
 get '/v0/engine_builder/last_build/log' do
   begin
-    r = engines_api.last_build_log
-    return_text(r)
+    return_text(engines_api.last_build_log)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method get_last_build_param
@@ -44,10 +41,9 @@ end
 # @return  [Hash]  :engine_name :memory :repository_url :variables :reinstall :web_port :host_name  :domain_name :attached_services
 get '/v0/engine_builder/last_build/params' do
   begin
-    r = engines_api.last_build_params
-    return_json(r)
+    return_json(engines_api.last_build_params)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method follow_build
@@ -96,7 +92,7 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream'  do
       end
     end
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @!endgroup

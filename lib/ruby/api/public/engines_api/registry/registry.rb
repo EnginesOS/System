@@ -1,21 +1,21 @@
 module PublicApiRegistry
-  def get_orphaned_services_tree
-    @core_api.get_orphaned_services_tree
+  def orphaned_services_registry
+    @core_api.orphaned_services_registry
   end
 
-  def managed_service_tree
-    @core_api.managed_service_tree
+  def managed_services_registry
+    @core_api.managed_services_registry
   end
 
-  def get_managed_engine_tree
-    @core_api.get_managed_engine_tree
+  def managed_enginess_registry
+    @core_api.managed_enginess_registry
   end
 
-  def get_configurations_tree
-    @core_api.get_configurations_tree
+  def service_configurations_registry
+    @core_api.service_configurations_registry
   end
 
-  def get_shares_tree
-    @core_api.get_shares_tree
+  def get_shared_services_registry
+    @core_api.get_shared_services_registry
   end
 end

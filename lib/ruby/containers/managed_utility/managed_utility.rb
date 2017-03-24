@@ -53,7 +53,8 @@ class ManagedUtility< ManagedContainer
     command = command_details(command_name)
     raise EnginesException.new(error_hash('Missing params in Exe' + command_params.to_s, r)) unless (r = check_params(command, command_params)) == true
     begin
-      r = destroy_container
+      destroy_container
+      @container_id = -1
     rescue
     end
     @container_api.wait_for('nocontainer') if has_container?
@@ -61,11 +62,11 @@ class ManagedUtility< ManagedContainer
       @container_api.destroy_container(self) if has_container?
     rescue
     end
-    raise EnginesException.new(error_hash('cant nocontainer Utility ' + command, command_params)) if has_container?
+    raise EnginesException.new(error_hash('cant nocontainer Utility ' + command.to_s, command_params.to_s)) if has_container?
     clear_configs
     apply_templates(command, command_params)
     save_state
-    STDERR.puts('Creat FSCONFIG')
+    STDERR.puts('Create FSCONFIG')
     create_container()
     STDERR.puts('Created FSCONFIG')
     @container_api.wait_for('stopped') unless is_stopped?
@@ -73,8 +74,9 @@ class ManagedUtility< ManagedContainer
       r = @container_api.logs_container(self, 100) #_as_result
       return r if r.is_a?(Hash)
       {stdout: r.to_s, result: 0}
-    rescue StandardError =>e
+    rescue StandardError => e
       STDERR.puts(e.to_s  + "\n" + e.backtrace.to_s)
+    STDERR.puts('FSCONFIG EXCEPTION' + e.to_s)
       {stderr: 'Failed', result: -1}
     end
 

@@ -1,27 +1,25 @@
 # @!group /containers/service/:service_name/configurations/
 
-# @method get_service_configurations
+# @method retrieve_service_configurations
 # @overload get '/v0/containers/service/:service_name/configurations/'
 # @return [Array] service configurations Hash
 get '/v0/containers/service/:service_name/configurations/' do
   begin
     service = get_service(params[:service_name])
-    list = service.get_service_configurations
-    return_json_array(list)
+    lreturn_json_array(service.retrieve_service_configurations)
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
-# @method get_service_configuration
+# @method retrieve_service_configuration
 # @overload get '/v0/containers/service/:service_name/configuration/:configurator_name'
 # @return [Hash] service configuration Hash
 get '/v0/containers/service/:service_name/configuration/:configurator_name' do
   begin
     service = get_service(params[:service_name])
-    config = service.retrieve_configurator(configurator_name: params[:configurator_name])
-    return_json(config)
+    return_json(service.retrieve_configurator(configurator_name: params[:configurator_name]))
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @method set_service_configuration
@@ -37,10 +35,9 @@ post '/v0/containers/service/:service_name/configuration/:configurator_name' do
     service = get_service(params[:service_name])
     cparams[:type_path] = service.type_path
     cparams[:publisher_namespace] = service.publisher_namespace
-    r = engines_api.update_service_configuration(cparams)
-    return_text(r)
+    return_text(engines_api.update_service_configuration(cparams))
   rescue StandardError => e
-    log_error(request, e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @!endgroup

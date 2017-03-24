@@ -22,7 +22,7 @@ options = {use_ssl => uri.scheme == 'https', :verify_mode => OpenSSL::SSL::VERIF
           hash = parser.parse(chunk)  #do |hash|
             p hash.to_json
             #  end
-          #dont panic on bad json as it is the \0 keep alive
+          #dont panic on bad json_parser as it is the \0 keep alive
         rescue StandardError => e
           p e
           STDERR.puts('_'+ chunk + '_')

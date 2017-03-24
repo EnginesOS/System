@@ -44,8 +44,8 @@ module AvailableServices
     avail_services
   end
 
-  def list_attached_services_for(objectName, identifier)
-    service_manager.list_attached_services_for(objectName, identifier)
+  def services_attached_to(objectName, identifier)
+    service_manager.services_attached_to(objectName, identifier)
   end
 
   #
