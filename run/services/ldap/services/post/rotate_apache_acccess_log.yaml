@@ -1,0 +1,11 @@
+parent_engine: ldap
+publisher_namespace: EnginesSystem
+type_path: log_rotate
+service_handle: rotate_ldap_access_logs
+service_container_name: log_rotate
+container_type: service
+persistent: true
+variables:
+ log_file_path: /services/ldap/apache2/access.log
+ cycle: weekly
+ rotate: 52

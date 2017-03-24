@@ -32,7 +32,7 @@ avahi	 avahi	22026	_avahi
 logview logview 22027 _logview
 logrotate logrotate 22028	_logrotate
 redis redis 22029	_redis
-ldap ldap 22030	_ldap
+ldap ldap 22030	_openldap
 #Frameworks
 www-data	 www-data	22671
 ruby	 ruby			22672
