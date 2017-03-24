@@ -10,21 +10,6 @@ helpers do
     @json_parser ||= FFI_Yajl::Parser.new(symbolize_keys: true)
   end
 
-  def log_exception(e, *args)
-    e_str = e.to_s
-    e.backtrace.each do |bt|
-      e_str += bt + ' \n'
-    end
-    e_str += ':' + args.to_s
-    @@last_error = e_str.to_s
-    STDERR.puts e_str
-    SystemUtils.log_output(e_str, 10)
-    f = File.open('/tmp/exceptions.' + Process.pid.to_s, 'a+')
-    f.puts(e_str)
-    f.close
-    false
-  end
-
   def send_encoded_exception(api_exception)#request, error_object, *args)
     api_exception[:exception] = fake_exception(api_exception) unless api_exception[:exception].is_a?(Exception)
     status_code = 404
@@ -45,9 +30,9 @@ helpers do
       error_mesg[:error_object] = api_exception[:exception].to_h
       error_mesg[:params] = api_exception[:params].to_s
     elsif api_exception[:exception].is_a?(Exception)
-    error_mesg[:error_object] = {error_mesg: api_exception[:exception].to_s, error_type: :failure}
+      error_mesg[:error_object] = {error_mesg: api_exception[:exception].to_s, error_type: :failure}
       error_mesg[:source] = api_exception[:exception].backtrace.to_s
-    #  error_mesg[:error_mesg] = api_exception[:exception].to_s
+      #  error_mesg[:error_mesg] = api_exception[:exception].to_s
       status_code = 500
     elsif api_exception[:exception].to_s == 'unauthorised'
       status_code = 401
@@ -107,7 +92,6 @@ helpers do
   end
 
   def managed_container_as_json(c)
-    return_json(c, 404) if c.nil?
     return_json(c.to_h)
   end
 
