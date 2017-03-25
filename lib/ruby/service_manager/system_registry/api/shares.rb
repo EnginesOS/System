@@ -1,5 +1,5 @@
 module Shares
-  def shared_services_registry_tree
+  def shared_services_registry
     rest_get('shares/tree', nil)
   end
 

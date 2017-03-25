@@ -1,4 +1,5 @@
 class BlueprintApi < ErrorsApi
+  require '/opt/engines/lib/ruby/api/system/container_state_files.rb'
   def save_blueprint(blueprint, container)
     clear_error
     # return log_error_mesg('Cannot save incorrect format',blueprint) unless blueprint.is_a?(Hash)
@@ -9,16 +10,14 @@ class BlueprintApi < ErrorsApi
     f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0644)
     f.write(blueprint.to_json)
     f.close
-     true
-  
+    true
   end
 
   def self.load_blueprint_file(blueprint_file_name)
     blueprint_file = File.open(blueprint_file_name, 'r')
     json_hash = deal_with_json(blueprint_file.read)
     blueprint_file.close
-     json_hash
-    
+    json_hash
   end
 
   def load_blueprint(container)
@@ -28,6 +27,5 @@ class BlueprintApi < ErrorsApi
     statefile = state_dir + '/blueprint.json'
     raise EnginesException.new(error_hash("No Blueprint File Found", statefile)) unless File.exist?(statefile)
     BlueprintApi.load_blueprint_file(statefile)
-  
   end
 end

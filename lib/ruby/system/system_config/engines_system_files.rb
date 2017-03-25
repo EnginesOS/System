@@ -4,52 +4,53 @@ module EnginesSystemFiles
   @@timeZone_fileMapping = ' -v /etc/localtime:/etc/localtime:ro '
   @@NoRemoteExceptionLoggingFlagFile = '/opt/engines/run/system/flags/no_remote_exception_log'
   @@EnginesInternalCA = '/var/lib/engines/cert_auth/public/ca/certs/system_CA.pem'
- 
+
   @@SystemPreferencesFile = '/opt/engines/etc/preferences/settings.yaml'
   @@engines_ssh_private_keyfile = '/home/engines/.ssh/sshaccess'
   @@ManagedEngineMountsFile = '/opt/engines/etc/create_mounts/engines.yaml'
   @@ManagedServiceMountsFile = '/opt/engines/etc/create_mounts/services.yaml'
-  
+
   @@SystemAccessDB = "/home/app/db/production.sqlite3"
-  
   def SystemConfig.SystemAccessDB
     @@SystemAccessDB
   end
-  
+
   def SystemConfig.ReleaseFile
     @@ReleaseFile
   end
+
   def SystemConfig.EnginesInternalCA
-    return @@EnginesInternalCA
+    @@EnginesInternalCA
   end
-  
+
   def SystemConfig.ManagedEngineMountsFile
     @@ManagedEngineMountsFile
   end
+
   def SystemConfig.ManagedServiceMountsFile
-     @@ManagedServiceMountsFile
-   end
+    @@ManagedServiceMountsFile
+  end
 
   #  def SystemConfig.generate_ssh_private_keyfile
   #    return  @@generate_ssh_private_keyfile
   #  end
   def SystemConfig.NoRemoteExceptionLoggingFlagFile
-    return @@NoRemoteExceptionLoggingFlagFile
+    @@NoRemoteExceptionLoggingFlagFile
   end
 
   def SystemConfig.SystemPreferencesFile
-    return @@SystemPreferencesFile
+    @@SystemPreferencesFile
   end
 
   def SystemConfig.engines_ssh_private_keyfile
-    return @@engines_ssh_private_keyfile
+    @@engines_ssh_private_keyfile
   end
 
   def SystemConfig.DomainsFile
-    return @@DomainsFile
+    @@DomainsFile
   end
 
   def SystemConfig.timeZone_fileMapping
-    return @@timeZone_fileMapping
+    @@timeZone_fileMapping
   end
 end

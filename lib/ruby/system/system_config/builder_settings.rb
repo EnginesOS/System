@@ -19,84 +19,86 @@ module BuilderSettings
   @@LanguageFile = '/opt/engines/etc/locale'
   @@DefaultLanguage = 'en_US'
   @@StopScript = '/home/engines/scripts/custom_stop.sh'
-  
   def SystemConfig.LanguageFile
     @@LanguageFile
   end
-  
+
   def SystemConfig.DefaultLanguage
-      @@DefaultLanguage
-    end
-    
+    @@DefaultLanguage
+  end
+
   def SystemConfig.Language
-    return File.read(SystemConfig.LanguageFile).strip if File.exist?(SystemConfig.LanguageFile) 
-    return SystemConfig.DefaultLanguage
+    return File.read(SystemConfig.LanguageFile).strip if File.exist?(SystemConfig.LanguageFile)
+    SystemConfig.DefaultLanguage
   rescue
-    return SystemConfig.DefaultLanguage
-   end
-   
+    SystemConfig.DefaultLanguage
+  end
+
   def SystemConfig.BuildOutputFile
     @@BuildOutputFile
   end
-   def SystemConfig.BackupScriptsSrcRoot
-     @@BackupScriptsSrcRoot
-   end
+
+  def SystemConfig.BackupScriptsSrcRoot
+    @@BackupScriptsSrcRoot
+  end
+
   def SystemConfig.BackupScriptsRoot
     @@BackupScriptsRoot
   end
-  
+
   def SystemConfig.ActionatorDir
     @@ActionatorDir
   end
 
   def SystemConfig.SetupParamsScript
-    return @@SetupParamsScript
+    @@SetupParamsScript
   end
 
   def SystemConfig.CustomApacheConfFile
-    return @@CustomApacheConfFile
+    @@CustomApacheConfFile
   end
 
   def SystemConfig.CustomPHPiniFile
-    return @@CustomPHPiniFile
+    @@CustomPHPiniFile
   end
 
   def SystemConfig.ScriptsDir
-    return @@ScriptsDir
+    @@ScriptsDir
   end
 
   def SystemConfig.PreStartScript
-    return @@PreStartScript
+    @@PreStartScript
   end
 
   def SystemConfig.StartScript
-    return @@StartScript
+    @@StartScript
   end
-
 
   def SystemConfig.StopScript
-    return @@StopScript
+    @@StopScript
   end
+
   def SystemConfig.InstallScript
-    return @@InstallScript
+    @@InstallScript
   end
 
   def SystemConfig.PostInstallScript
-    return @@PostInstallScript
+    @@PostInstallScript
   end
 
   def SystemConfig.BuildFailedFile
-    return @@BuildFailedFile
+    @@BuildFailedFile
   end
 
   def SystemConfig.BuildBuiltFile
-    return  @@BuildBuiltFile
+    @@BuildBuiltFile
   end
 
   def SystemConfig.BuildRunningParamsFile
-    return @@BuildRunningParamsFile
+    @@BuildRunningParamsFile
   end
+
   def SystemConfig.DefaultBuildReportTemplateFile
-     return @@DefaultBuildReportTemplateFile
-   end
+    @@DefaultBuildReportTemplateFile
+  end
 end

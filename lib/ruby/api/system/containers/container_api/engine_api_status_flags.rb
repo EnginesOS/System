@@ -1,20 +1,20 @@
 module EngineApiStatusFlags
   def restart_required?(container)
-    File.exist?(ContainerStateFiles.restart_flag_file(container))
+    File.exist?(@system_api.restart_flag_file(container))
   end
 
   def rebuild_required?(container)
-    File.exist?(ContainerStateFiles.rebuild_flag_file(container))
+    File.exist?(@system_api.rebuild_flag_file(container))
   end
 
   def restart_reason(container)
-    return false unless File.exist?(ContainerStateFiles.restart_flag_file(container))
-    File.read(ContainerStateFiles.restart_flag_file(container))
+    return false unless File.exist?(@system_api.restart_flag_file(container))
+    File.read(@system_api.restart_flag_file(container))
   end
 
   def rebuild_reason(container)
-    return false unless File.exist?(ContainerStateFiles.rebuild_flag_file(container))
-    File.read(ContainerStateFiles.restart_flag_file(container))
+    return false unless File.exist?(@system_api.rebuild_flag_file(container))
+    File.read(@system_api.restart_flag_file(container))
   end
 
   def is_startup_complete(container)

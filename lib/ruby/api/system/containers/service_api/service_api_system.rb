@@ -11,7 +11,7 @@ module ServiceApiSystem
   end
 
   def container_services_dir(container)
-    ContainerStateFiles.container_state_dir(container) + '/services/'
+    @system_api.container_state_dir(container) + '/services/'
   end
 
 end

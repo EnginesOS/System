@@ -57,7 +57,7 @@ module Services
     rest_delete(r)
   end
 
-  def services_registry
+  def managed_services_registry
     rest_get('services/tree', nil)
   end
 end

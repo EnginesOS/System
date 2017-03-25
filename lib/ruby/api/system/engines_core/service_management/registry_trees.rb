@@ -8,15 +8,15 @@ module RegistryTrees
     service_manager.managed_services_registry
   end
 
-  def managed_enginess_registry
-    service_manager.managed_enginess_registry
+  def managed_engines_registry
+    service_manager.managed_engines_registry
   end
 
   def service_configurations_registry
     service_manager.service_configurations_registry
   end
 
-  def get_shared_services_registry
+  def shared_services_registry
     service_manager.shared_services_registry
   end
 

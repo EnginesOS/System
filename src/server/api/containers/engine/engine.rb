@@ -9,7 +9,9 @@ get '/v0/containers/engine/:engine_name' do
     engine = get_engine(params[:engine_name])
     managed_container_as_json(engine)
   rescue StandardError => e
-    send_encoded_exception(request: request, exception: e)
+    return_json(nil)
+    # FIXME: Kludge for Gui on build
+   # send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -20,7 +22,7 @@ end
 get '/v0/containers/engine/:engine_name/status' do
   begin
     engine = get_engine(params[:engine_name])
-    return_json( engine.status)
+    return_json(engine.status)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -94,7 +96,7 @@ get '/v0/containers/engine/:engine_name/ps' do
     engine = get_engine(params[:engine_name])
     return_json(engine.ps_container)
   rescue
-    send_encoded_exception(request, 'Container not running', 'Container not running')
+    send_encoded_exception(request: 'ps', exception: 'Container not running')
   end
 end
 # @!endgroup

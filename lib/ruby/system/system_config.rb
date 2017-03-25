@@ -10,7 +10,7 @@ class SystemConfig
 
   require_relative 'system_config/engines_system_files.rb'
   extend EnginesSystemFiles
-  
+
   require_relative 'system_config/system_version.rb'
   extend SystemVersion
 
@@ -29,49 +29,45 @@ class SystemConfig
   #  @@ServiceMapTemplateDir = '/opt/engines/etc/services/mapping/'
   #  @@ServiceTemplateDir = '/opt/engines/etc/services/providers/'
 
-
-
   @@SMTPHost = 'smtp.engines.internal'
   @@DBHost = 'mysql.engines.internal'
   @@internal_domain = 'engines.internal'
 
   @@MinimumFreeRam = 64
   @@MinimumBuildRam  = @@MinimumFreeRam + 128
-  def self.MinimumBuildRam
-     @@MinimumBuildRam
-   end
-  
-  
+  def SystemConfig.MinimumBuildRam
+    @@MinimumBuildRam
+  end
+
   @@MinimumFreeImageSpace = 2000
-  def self.MinimumFreeImageSpace
+
+  def SystemConfig.MinimumFreeImageSpace
     @@MinimumFreeImageSpace
   end
 
-  def self.MinimumFreeRam
+  def SystemConfig.MinimumFreeRam
     @@MinimumFreeRam
   end
 
-  def self.registry_connect_timeout
-    return 60
+  def SystemConfig.registry_connect_timeout
+    60
   end
 
   def SystemConfig.RegistryPort
-    return @@RegistryPort
+    @@RegistryPort
   end
 
-
   def SystemConfig.default_webport
-    return @@default_webport
+    @@default_webport
   end
 
   def SystemConfig.SMTPHost
-    return @@SMTPHost
+    @@SMTPHost
   end
 
   def SystemConfig.internal_domain
     return @@internal_domain
   end
-
 
   def SystemConfig.DBHost
     return @@DBHost

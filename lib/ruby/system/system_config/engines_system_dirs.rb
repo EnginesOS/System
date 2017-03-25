@@ -15,80 +15,81 @@ module EnginesSystemDirs
   @@CertificatesDir='/var/lib/engines/cert_auth/public/certs/'
   @@KeysDir='/var/lib/engines/cert_auth/public/keys/'
   @@CertificatesDestination='/engines/ssl/public/certs/'
-  @@KeysDestination='/engines/ssl/public/keys/' 
+  @@KeysDestination='/engines/ssl/public/keys/'
   @@DomainsFile = '/opt/engines/etc/domains/domains'
   @@timeZone_fileMapping = ' -v /etc/localtime:/etc/localtime:ro '
   @@NoRemoteExceptionLoggingFlagFile = '/opt/engines/run/system/flags/no_remote_exception_log'
   @@SSHStore = '/opt/engines/etc/ssh/keys'
-
   def SystemConfig.SSHStore
-    return @@SSHStore
+    @@SSHStore
   end
-  
+
   def SystemConfig.CertificatesDestination
     @@CertificatesDestination
   end
- 
+
   def SystemConfig.KeysDir
     @@KeysDir
   end
+
   def SystemConfig.KeysDestination
     @@KeysDestination
   end
-  
+
   def SystemConfig.CertificatesDir
-    return @@CertificatesDir
+    @@CertificatesDir
   end
+
   def SystemConfig.ServiceMapTemplateDir
-    return @@ServiceMapTemplateDir
+    @@ServiceMapTemplateDir
   end
-  
+
   def SystemConfig.EnginesTemp
-    return @@EnginesTemp
+    @@EnginesTemp
   end
 
   def SystemConfig.ServiceTemplateDir
-    return @@ServiceTemplateDir
+    @@ServiceTemplateDir
   end
 
   def SystemConfig.SystemLogRoot
-    return @@SystemLogRoot
+    @@SystemLogRoot
   end
 
   def SystemConfig.galleriesDir
-    return @@galleriesDir
+    @@galleriesDir
   end
 
   def SystemConfig.ContainersDir
-    return @@ContainersDir
+    @@ContainersDir
   end
 
   def SystemConfig.LocalFSVolHome
-    return @@LocalFSVolHome
+    @@LocalFSVolHome
   end
 
   def SystemConfig.CONTFSVolHome
-    return @@CONTFSVolHome
+    @@CONTFSVolHome
   end
 
   def SystemConfig.DeploymentTemplates
-    return @@DeploymentTemplates
+    @@DeploymentTemplates
   end
 
   def SystemConfig.CidDir
-    return @@CidDir
+    @@CidDir
   end
 
   def SystemConfig.DeploymentDir
-    return @@DeploymentDir
+    @@DeploymentDir
   end
 
   def SystemConfig.RunDir
-    return @@RunDir
+    @@RunDir
   end
 
   def SystemConfig.SystemLogRoot
-    return @@SystemLogRoot
+    @@SystemLogRoot
   end
 
 end

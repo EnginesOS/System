@@ -9,27 +9,27 @@ module EnginesSystemFlags
   @@EnginesUpdateStatusFile ='/opt/engines/run/system/flags/update_pending'
   @@FirstRunRan = '/opt/engines/run/system/flags/first_ran'
   def SystemConfig.SystemRebootingFlag
-    return @@SystemRebootingFlag
+    @@SystemRebootingFlag
   end
 
   def SystemConfig.EnginesSystemRebootNeededFlag
-    return @@EnginesSystemRebootNeededFlag
+    @@EnginesSystemRebootNeededFlag
   end
 
   def SystemConfig.EnginesSystemUpdatedFlag
-    return   @@EnginesSystemUpdatedFlag
+    @@EnginesSystemUpdatedFlag
   end
 
   def SystemConfig.EnginesSystemUpdatingFlag
-    return   @@EnginesSystemUpdatingFlag
+    @@EnginesSystemUpdatingFlag
   end
 
   def SystemConfig.SystemUpdatingFlag
-    return   @@SystemUpdatingFlag
+    @@SystemUpdatingFlag
   end
 
   def SystemConfig.SystemUpdatedFlag
-    return   @@SystemUpdatedFlag
+    @@SystemUpdatedFlag
   end
 
   def SystemConfig.EnginesUpdateStatusFile
@@ -37,7 +37,7 @@ module EnginesSystemFlags
   end
 
   def SystemConfig.FirstRunRan
-    return @@FirstRunRan
+    @@FirstRunRan
   end
 
 end
