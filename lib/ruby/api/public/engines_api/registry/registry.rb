@@ -7,8 +7,8 @@ module PublicApiRegistry
     @core_api.managed_services_registry
   end
 
-  def managed_enginess_registry
-    @core_api.managed_enginess_registry
+  def managed_engines_registry
+    @core_api.managed_engines_registry
   end
 
   def service_configurations_registry

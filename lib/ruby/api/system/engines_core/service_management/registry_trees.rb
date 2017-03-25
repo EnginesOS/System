@@ -8,8 +8,8 @@ module RegistryTrees
     service_manager.managed_services_registry
   end
 
-  def managed_enginess_registry
-    service_manager.managed_enginess_registry
+  def managed_engines_registry
+    service_manager.managed_engines_registry
   end
 
   def service_configurations_registry

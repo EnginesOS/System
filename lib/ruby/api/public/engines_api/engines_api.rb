@@ -109,7 +109,7 @@ class PublicApi < ErrorsApi
 
   require_relative 'registry/registry.rb'
   #resistry
-  #  managed_enginess_registry#ex
+  #  managed_engines_registry#ex
   #  service_configurations_registry#ex
   #  managed_services_registry#ex#ex
   #  orphaned_services_registry#ex
