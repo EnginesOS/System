@@ -19,7 +19,44 @@ begin
   require 'sqlite3'
   require 'ffi_yajl'
 
-  
+  def init_db
+    create_table
+    set_first_user
+  end
+
+  def create_table
+    sql_lite_database.execute <<-SQL
+            create table systemaccess (
+              username varchar(30),
+              email varchar(128),
+              password varchar(30),
+              authtoken varchar(128),
+              ip_addr varchar(64),
+              ip_mask varchar(64),
+              uid int,
+              guid int
+            );
+    SQL
+    true
+  rescue
+    true
+  end
+
+  def set_first_user
+    rows = sql_lite_database.execute("select authtoken from systemaccess")
+    return if rows.count > 0
+    toke = SecureRandom.hex(128)
+    sql_lite_database.execute("INSERT INTO systemaccess (username, password, email, authtoken, uid,guid)
+                          VALUES (?, ?, ?, ?, ?, ?)", ['admin', 'EnginesDemo', '', toke.to_s, 1, 0])
+    STDERR.puts('init db')
+  rescue StandardError => e
+    STDERR.puts('init db error ' + e.to_s)
+    return
+  end
+
+  # FIXME: remove this once all installs have proper auth
+  init_db
+
   class Application < Sinatra::Base
     @events_s = nil
     set :sessions, true
