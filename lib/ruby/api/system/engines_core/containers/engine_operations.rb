@@ -29,7 +29,7 @@ module EnginesOperations
   end
 
   def remove_engine_services(params)
-    SystemDebug.debug(SystemDebug.containers,:delete_engines, engine_name,engine, :resinstall, reinstall)
+    SystemDebug.debug(SystemDebug.containers,:delete_engines, params)
     params[:container_type] = 'container'
     STDERR.puts(' Remove engine ' + params.to_s )
     #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
