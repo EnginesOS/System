@@ -29,7 +29,7 @@ module SmServiceControl
 
   #remove service matching the service_hash from both the managed_engine registry and the service registry
   # @return false
-  def delete_service(service_query)
+  def delete_and_remove_service(service_query)
     clear_error
     complete_service_query = set_top_level_service_params(service_query,service_query[:parent_engine])
       STDERR.puts('delete_service ' + complete_service_query.to_s)

@@ -102,13 +102,7 @@ module SmEngineServices
     STDERR.puts('remove_engine_services ' + services.to_s)
     services.each do |s|
       STDERR.puts('remove_engine_service ' + s.to_s)
-      #   if params[:remove_all_data] == 'all' || s[:persistence] == false
-      STDERR.puts(' rm ' + s.to_s)
-      #    system_registry_client.remove_from_managed_engine(s)
-      #  else
-      #    STDERR.puts(' orphanicate' + s.to_s)
-      #     orphanate_service(s)
-      #   end
+      system_registry_client.remove_from_managed_engine(s)
     end
   end
 
@@ -140,10 +134,9 @@ module SmEngineServices
       SystemDebug.debug(SystemDebug.services, :remove_service, service)
       if params[:remove_all_data] == 'all' || service[:shared] #&& ! (service.key?(:shared) && service[:shared])
         service[:remove_all_data] = params[:remove_all_data]
-        delete_service(service)
+        delete_and_remove_service(service)
       else
         orphanate_service(service)
-        remove_from_managed_service(service)
       end
     end
     true
