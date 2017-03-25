@@ -37,10 +37,10 @@ module ServiceManagerOperations
   def load_and_attach_static_services(dirname, container)
     service_manager.load_and_attach_static_services(dirname, container)
   end
-
-  def retrieve_service_configuration(service_param)
-    service_manager.retrieve_service_configuration(service_param)
-  end
+#
+#  def retrieve_service_configuration(service_param)
+#    service_manager.retrieve_service_configuration(service_param)
+#  end
 
   def is_service_running?(service_name)
     service_manager.is_service_running?(service_name)
@@ -48,10 +48,6 @@ module ServiceManagerOperations
 
   def rollback_shared_service(service_hash)
     service_manager.rollback_shared_service(service_hash)
-  end
-
-  def rollback_orphan_service(service_hash)
-    service_manager.rollback_orphan_service(service_hash)
   end
 
   def get_service_entry(service_hash)

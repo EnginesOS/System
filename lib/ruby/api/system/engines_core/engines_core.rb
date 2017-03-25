@@ -83,8 +83,8 @@ class EnginesCore < ErrorsApi
   require_relative 'containers/docker_operations.rb'
   include DockerOperations
 
-  require_relative 'registry_operations.rb'
-  include RegistryOperations
+  require_relative 'registry_container_operations.rb'
+  include RegistryContainerOperations
 
   require_relative 'template_operations.rb'
   include TemplateOperations
