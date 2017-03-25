@@ -10,6 +10,7 @@ module EnginesRegistryUtils
     #  STDERR.puts('address_params val ' + r.to_s)
     end
     SystemDebug.debug(SystemDebug.services,r.to_s)
+  STDERR.puts('address_params val ' + r.to_s)
     r
 
   end

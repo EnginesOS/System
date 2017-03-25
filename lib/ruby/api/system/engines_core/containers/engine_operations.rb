@@ -16,7 +16,7 @@ module EnginesOperations
       end
       #####  ^^^^^^^^^^ DO NOT MESS with this logic ^^^^^^^^
     end
-    STDERR.puts('remove CONTAINER')
+    STDERR.puts('remove CONTAINER ' + params)
     if engine.has_container?
       raise EnginesException.new(error_hash('Container Exists Please Destroy engine first' , params)) unless reinstall.is_a?(TrueClass)
     end
