@@ -36,7 +36,7 @@ module EnginesOperations
     begin
       STDERR.puts('Remove engine calling service_manager.remove_engine_services' + params.to_s )
       service_manager.remove_engine_services(params)
-      service_manager.remove_managed_services(params)
+      service_manager.remove_managed_persistent_services(params)
     rescue EnginesException => e
       raise e unless e.is_a_warning?
     end

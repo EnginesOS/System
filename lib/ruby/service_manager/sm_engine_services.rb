@@ -101,8 +101,12 @@ module SmEngineServices
     return services unless services.is_a?(Array)
     STDERR.puts('remove_engine_services ' + services.to_s)
     services.each do |s|
-      STDERR.puts('remove_engine_service ' + s.to_s)    
-      system_registry_client.remove_from_managed_engine(s)
+      STDERR.puts('remove_engine_service ' + s.to_s)
+      begin
+        system_registry_client.remove_from_managed_engine(s)
+      rescue
+        next
+      end
     end
   end
 
@@ -120,7 +124,7 @@ module SmEngineServices
   # @ if :remove_all_data is true all data is deleted and all persistent services removed
   # @ if :remove_all_data is not specified then the Persistant services registered with the engine are moved to the orphan services tree
   # @return true on success and false on fail
-  def remove_managed_services(params)
+  def remove_managed_persistent_services(params)
     STDERR.puts(' remove_managed_services ' + params.to_s)
     clear_error
     begin
@@ -134,7 +138,11 @@ module SmEngineServices
       SystemDebug.debug(SystemDebug.services, :remove_service, service)
       if params[:remove_all_data] == 'all' || service[:shared] #&& ! (service.key?(:shared) && service[:shared])
         service[:remove_all_data] = params[:remove_all_data]
-        delete_and_remove_service(service)
+        begin
+          delete_and_remove_service(service)
+        rescue
+          next
+        end
       else
         orphanate_service(service)
       end
