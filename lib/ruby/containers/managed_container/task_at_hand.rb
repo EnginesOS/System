@@ -8,13 +8,10 @@ module TaskAtHand
   def desired_state(step, state, curr_state)
     current_set_state = @setState
     @setState = state.to_s
-
     set_task_at_hand(step)
     save_state
-    #       end
-
     SystemDebug.debug(SystemDebug.engine_tasks,  'Task at Hand:' + state.to_s + '  Current set state:' + current_set_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s + ' in ' + curr_state)
-    return true
+    true
   rescue StandardError => e
     log_exception(e)
   end
@@ -27,7 +24,6 @@ module TaskAtHand
       @container_id ==  -1 if curr_state == 'nocontainer'
       return save_state
     end
-
     if @steps_to_go.nil? || @steps_to_go <= 0
       @steps_to_go = 1
       @steps = []
@@ -147,13 +143,11 @@ module TaskAtHand
   def task_at_hand
     fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
     return nil unless File.exist?(fn)
-
     task = File.read(fn)
     if task_has_expired?(task)
       expire_task_at_hand
       return nil
     end
-
     r = read_state(raw = true)
     if tasks_final_state(task) == r
       clear_task_at_hand

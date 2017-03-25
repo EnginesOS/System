@@ -16,7 +16,7 @@ module SmRegistryTree
 
   # @return [Tree::TreeNode] representing the managed engines tree as dettached and frozen from the parent Tree
   # @return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
-  def managed_enginess_registry
+  def managed_engines_registry
     system_registry_client.managed_engines_registry
   end
 

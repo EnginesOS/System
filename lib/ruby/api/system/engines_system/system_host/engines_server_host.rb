@@ -140,7 +140,7 @@ module EnginesServerHost
     r
   end
 
-  def run_server_script(script_name , script_data=false, script_timeout = @@server_script_timeout)
+  def run_server_script(script_name , script_data = false, script_timeout = @@server_script_timeout)
     require '/opt/engines/lib/ruby/system/system_config.rb'
     # FIxME
     # use SystemStatus.get_base_host_ip for IP

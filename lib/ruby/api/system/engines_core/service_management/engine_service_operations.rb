@@ -7,8 +7,7 @@ module EngineServiceOperations
       container_type: 'container'
     }
     SystemDebug.debug(SystemDebug.services, :engine_persistent_services, params)
-    r = service_manager.get_engine_persistent_services(params)
-    r
+    service_manager.get_engine_persistent_services(params)
   end
 
   def engines_services_to_backup(engine_name)
@@ -34,7 +33,7 @@ module EngineServiceOperations
   end
 
   def engine_attached_services(container_name)
-    p find_engine_services_hashes({
+     find_engine_services_hashes({
       parent_engine: container_name,
       container_type: 'container'
     })
@@ -77,8 +76,7 @@ module EngineServiceOperations
     end
     r = share_service_to_engine(params)
     if service_hash[:type_path] == 'filesystem/local/filesystem'
-      return add_file_share(params)
-      #raise EnginesException.new(error_hash('failed to create fs', self)) if result.is_a?(EnginesError)
+      add_file_share(params)
     end
     r
   end
@@ -116,34 +114,6 @@ module EngineServiceOperations
     service_manager.load_service_pubkey(container, cmd)
   end
 
-  def remove_engine(engine_name, reinstall = false, remove_all_data = true)
-    engine = loadManagedEngine(engine_name)
-    SystemDebug.debug(SystemDebug.containers,:delete_engines,engine_name,engine, :resinstall,reinstall)
-    params = {
-      engine_name: engine_name,
-      container_type: 'container', # Force This
-      parent_engine: engine_name,
-      reinstall: reinstall,
-      remove_all_data: remove_all_data
-    }
-    STDERR.puts(' Remove engine ' + params.to_s )
-    unless engine.is_a?(ManagedEngine) # DO NOT MESS with this logi used in roll back and only works if no engine DO NOT MESS with this logic
-      return true if service_manager.remove_engine_from_managed_engine(params)
-      raise EnginesException.new(error_hash('Failed to find Engine',params))
-    end
-
-    #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
-    begin
-      STDERR.puts(' Remove engine calling service_manager.remove_engine_services' + params.to_s )
-    service_manager.remove_engine_services(params)
-    rescue EnginesException => e
-      raise e unless e.is_a_warning?
-    end
-    engine.delete_image if engine.has_image? == true
-    SystemDebug.debug(SystemDebug.containers,:engine_image_deleted,engine)
-    return r if reinstall == true
-    return engine.delete_engine
-    r
-  end
+  
 
 end

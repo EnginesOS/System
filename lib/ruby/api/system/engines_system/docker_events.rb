@@ -1,5 +1,11 @@
 module DockerEvents
   require '/opt/engines/lib/ruby/api/system/docker/docker_api/event_watcher/docker_event_watcher.rb'
+  require '/opt/engines/lib/ruby/system/system_config.rb'
+  def create_event_listener
+    @event_listener_lock = true
+    @docker_event_listener = start_docker_event_listener
+    @docker_event_listener.add_event_listener([self,'container_event'.to_sym],16)
+  end
 
   def fill_in_event_system_values(event_hash)
     if event_hash.key?(:Actor) && event_hash[:Actor][:Attributes].is_a?(Hash)
@@ -15,17 +21,19 @@ module DockerEvents
   end
 
   def container_event(event_hash)
-    return log_error_mesg('Nil event hash passed to container event','') if event_hash.nil?
+    return if event_hash.nil? # log_error_mesg('Nil event hash passed to container event','')
     r = fill_in_event_system_values(event_hash)
     SystemDebug.debug(SystemDebug.container_events,'2 CONTAINER EVENTS' + event_hash.to_s + ':' + r.to_s)
-
+   
+    return if event_hash[:container_type].nil? || event_hash[:container_name].nil?
+      
     if event_hash[:container_type] == 'service' ||  event_hash[:container_type] == 'system_service'||  event_hash[:container_type] == 'utility'
       # Enable Cold load of service from config.yaml
       STDERR.puts( SystemConfig.RunDir + '/' + event_hash[:container_type] + 's/' + event_hash[:container_name] + '/running.yaml')
       return no_container(event_hash) unless File.exist?(SystemConfig.RunDir + '/' + event_hash[:container_type] + 's/' + event_hash[:container_name] + '/config.yaml')
     else
       # engines always have a running.yaml
-      STDERR.puts( SystemConfig.RunDir + '/' + event_hash[:container_type] + 's/' + event_hash[:container_name] + '/running.yaml')
+      STDERR.puts(SystemConfig.RunDir.to_s + '/' + event_hash[:container_type].to_s + 's/' + event_hash[:container_name].to_s + '/running.yaml')
       return no_container(event_hash) unless File.exist?(SystemConfig.RunDir + '/' + event_hash[:container_type] + 's/' + event_hash[:container_name] + '/running.yaml')
     end
 
@@ -79,13 +87,13 @@ module DockerEvents
     c = container_from_cache(container_name)
     if c.nil?
       case ctype
-      when 'container'        
-      c = loadManagedEngine(container_name)
+      when 'container'
+        c = loadManagedEngine(container_name)
       when 'service'
-      c = loadManagedService(container_name)
+        c = loadManagedService(container_name)
       when   'utility'
-      c = loadManagedUtility(container_name)
-      else 
+        c = loadManagedUtility(container_name)
+      else
         log_error_mesg('Failed to find ' + container_name.to_s +  ctype.to_s)
       end
     end

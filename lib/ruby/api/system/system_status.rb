@@ -49,7 +49,6 @@ class SystemStatus
   end
 
   def self.build_failed(params)
-
     param_file = File.new(SystemConfig.BuildFailedFile, 'w+')
     param_file.puts(params.to_yaml)
     param_file.close
@@ -60,7 +59,6 @@ class SystemStatus
   end
 
   def self.build_complete(params)
-
     param_file = File.new(SystemConfig.BuildBuiltFile, 'w+')
     param_file.puts(params.to_yaml)
     param_file.close
@@ -142,7 +140,6 @@ class SystemStatus
     param_file = File.new(SystemConfig.BuildBuiltFile, 'r')
     param_raw = param_file.read
     YAML.load(param_raw)
-  
   end
 
   def self.last_build_failure_params

@@ -16,7 +16,7 @@ module ServiceRollBack
   end
 
   def roll_back_new_service(service_hash)
-    service_hash[:remove_all_data] = true
+    service_hash[:remove_all_data] = 'all'
     @core_api.dettach_service(service_hash)
   end
 

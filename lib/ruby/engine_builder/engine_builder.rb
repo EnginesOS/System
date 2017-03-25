@@ -5,7 +5,7 @@ require 'yajl'
 require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 
 class EngineBuilder < ErrorsApi
-
+  require '/opt/engines/lib/ruby/api/system/container_state_files.rb'
   require_relative 'builder_public.rb'
 
   require_relative 'docker_file_builder/docker_file_builder.rb'
@@ -126,7 +126,7 @@ class EngineBuilder < ErrorsApi
     SystemStatus.build_failed(@build_params)
     #log_build_errors(errmesg)
     log_build_errors('Engine Build Aborted Due to:' + errmesg.to_s)
-    @result_mesg = 'Error.' + errmesg
+    @result_mesg = 'Error.' + errmesg.to_s
     post_failed_build_clean_up
   end
 

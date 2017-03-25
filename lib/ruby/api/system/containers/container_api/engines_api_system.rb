@@ -9,9 +9,9 @@ module EnginesApiSystem
 
   def delete_engine(container)
     SystemDebug.debug(SystemDebug.containers,  :container_api_delete_engine,container)
-    @system_api.delete_engine(container)
+    @system_api.rm_engine_from_cache(container.container_name)
     volbuilder = @engines_core.loadManagedUtility('fsconfigurator')
-    ContainerStateFiles.delete_container_configs(volbuilder, container)
+    @system_api.delete_container_configs(volbuilder, container)
   end
 
   def get_container_network_metrics(container)
@@ -32,9 +32,9 @@ module EnginesApiSystem
   def create_container(container)
     clear_error
     raise EnginesException.new(error_hash('Failed To create container exists by the same name', container)) if container.ctype != 'system_service' && container.has_container?
-    raise EnginesException.new(error_hash('Failed to create state files', self)) unless ContainerStateFiles.create_container_dirs(container)
-    ContainerStateFiles.clear_cid_file(container)
-    ContainerStateFiles.clear_container_var_run(container)
+    raise EnginesException.new(error_hash('Failed to create state files', self)) unless @system_api.create_container_dirs(container)
+    @system_api.clear_cid_file(container)
+    @system_api.clear_container_var_run(container)
     start_dependancies(container) if container.dependant_on.is_a?(Hash)
     container.pull_image if container.ctype != 'container'
     @docker_api.create_container(container) 

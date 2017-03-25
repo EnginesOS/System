@@ -5,7 +5,6 @@ class SystemPreferences
     else
       @preferences = {}
     end
-
   end
 
   def set_default_domain(params)

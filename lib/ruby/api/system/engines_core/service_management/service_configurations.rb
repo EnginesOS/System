@@ -1,8 +1,7 @@
 module ServiceConfigurations
   require_relative 'service_manager_access.rb'
   def retrieve_service_configuration(config)
-    r = retrieve_configuration(config)
-    r
+    retrieve_configuration(config)
   end
 
   def retrieve_service_configurations_hashes(service_hash)
@@ -92,7 +91,7 @@ module ServiceConfigurations
       service_param.delete(:pending)
     end
     # set config on reunning service
-    configurator_result =  service.run_configurator(service_param)
+    configurator_result = service.run_configurator(service_param)
 
     raise EnginesException.new(error_hash('Service configurator erro@core_api.r Got:' + configurator_result.to_s, " For:" +service_param.to_s)) unless configurator_result.is_a?(Hash)
     service_manager.update_service_configuration(service_param)

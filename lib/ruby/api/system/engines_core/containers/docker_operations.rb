@@ -11,8 +11,8 @@ module DockerOperations
     @docker_api.clean_up_dangling_images
   end
 
-  def exec_in_container( params ) #container, commandline, log_error = false, data = nil)
-    @docker_api.docker_exec(params) #params[:container], params[:command_line], params[:log_error], params[:data])
+  def exec_in_container(params)
+    @docker_api.docker_exec(params)
   end
 
   def container_name_and_type_from_id(id)

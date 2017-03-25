@@ -1,6 +1,6 @@
 module EnginesCoreVersion
   def api_version
-    return SystemConfig.api_version
+    SystemConfig.api_version
   end
 
   def version_string

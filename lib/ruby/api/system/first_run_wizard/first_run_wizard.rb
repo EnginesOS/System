@@ -17,12 +17,10 @@ class FirstRunWizard <ErrorsApi
   end
 
   def apply(api)
-    return false if @has_ran == true 
+    return false if @has_ran == true
     @api = api
     SystemDebug.debug(SystemDebug.first_run,:applyin, @first_run_params)
     return log_error_mesg('failed to validate first run params') unless validate_params(@first_run_params)
-    # return false unless set_passwords
-
     return false unless setup_dns
     return false unless setup_certs
     return false unless setup_system_password(@first_run_params[:system_password], @first_run_params[:admin_email])
@@ -31,16 +29,12 @@ class FirstRunWizard <ErrorsApi
   end
 
   def mark_as_run
-    @has_ran = true 
-    #f = File.new(SystemConfig.FirstRunRan, 'w')
-    #  date = DateTime.now
-    #  f.puts(date.to_s)
-    #   f.close
+    @has_ran = true
   end
 
   def FirstRunWizard.required?
     return true if File.exist?(SystemConfig.FirstRunRan) == false
-     false
+    false
   end
   # FIXME: and put in it's own class or even service
 

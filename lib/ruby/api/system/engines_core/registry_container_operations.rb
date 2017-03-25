@@ -1,4 +1,4 @@
-module RegistryOperations
+module RegistryContainerOperations
   require_relative '../registry_handler.rb'
   def registry_root_ip
     @registry_handler.registry_root_ip

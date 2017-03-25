@@ -20,7 +20,7 @@ module PublicApiEngines
   end
 
   def delete_engine(params)
-    @core_api.delete_engine(params)
+    @core_api.delete_engine_and_services(params)
   end
 
 end
