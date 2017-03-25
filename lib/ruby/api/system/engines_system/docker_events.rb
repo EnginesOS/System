@@ -1,6 +1,6 @@
 module DockerEvents
   require '/opt/engines/lib/ruby/api/system/docker/docker_api/event_watcher/docker_event_watcher.rb'
-
+  require '/opt/engines/lib/ruby/system/system_config.rb'
   def create_event_listener
     @event_listener_lock = true
     @docker_event_listener = start_docker_event_listener
@@ -31,7 +31,7 @@ module DockerEvents
       return no_container(event_hash) unless File.exist?(SystemConfig.RunDir + '/' + event_hash[:container_type] + 's/' + event_hash[:container_name] + '/config.yaml')
     else
       # engines always have a running.yaml
-      STDERR.puts( SystemConfig.RunDir + '/' + event_hash[:container_type] + 's/' + event_hash[:container_name] + '/running.yaml')
+      STDERR.puts(SystemConfig.RunDir.to_s + '/' + event_hash[:container_type].to_s + 's/' + event_hash[:container_name].to_s + '/running.yaml')
       return no_container(event_hash) unless File.exist?(SystemConfig.RunDir + '/' + event_hash[:container_type] + 's/' + event_hash[:container_name] + '/running.yaml')
     end
 
