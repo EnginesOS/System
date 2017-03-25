@@ -24,9 +24,8 @@ module EnginesOperations
     remove_engine_services(params) #engine_name, reinstall, params[:remove_all_data])
     engine.delete_image if engine.has_image? == true
     SystemDebug.debug(SystemDebug.containers, :engine_image_deleted, engine)
-    return if reinstall == true
+    return if params[:reinstall] == true
     engine.delete_engine
-    rm_engine_from_cache(params[:engine_name])
   end
 
   def remove_engine_services(params)
