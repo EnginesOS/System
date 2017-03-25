@@ -6,40 +6,39 @@ module EnginesOperations
   # They are removed from the tree if delete is sucessful
   def delete_engine_and_services(params)
     SystemDebug.debug(SystemDebug.containers, :delete_engines, params)
-    params[:container_type] = 'container' # Force This      
-      begin
-    engine = loadManagedEngine(params[:engine_name])     
-    ##### DO NOT MESS with this logi used in roll back and only works if no engine
-         unless engine.is_a?(ManagedEngine) 
-           return true if service_manager.remove_engine_from_managed_engine(params)
-           raise EnginesException.new(error_hash('Failed to find Engine', params))
-         end
-    #####  ^^^^^^^^^^ DO NOT MESS with this logic ^^^^^^^^
+    params[:container_type] = 'container' # Force This
+    begin
+      engine = loadManagedEngine(params[:engine_name])
+      ##### DO NOT MESS with this logi used in roll back and only works if no engine
+      unless engine.is_a?(ManagedEngine)
+        return true if service_manager.remove_engine_from_managed_engine(params)
+        raise EnginesException.new(error_hash('Failed to find Engine', params))
       end
-      
+      #####  ^^^^^^^^^^ DO NOT MESS with this logic ^^^^^^^^
+    end
+
     if engine.has_container?
       raise EnginesException.new(error_hash('Container Exists Please Destroy engine first' , params)) unless reinstall.is_a?(TrueClass)
     end
-    remove_engine_services(params) #engine_name, reinstall, params[:remove_all_data])      
+    remove_engine_services(params) #engine_name, reinstall, params[:remove_all_data])
     engine.delete_image if engine.has_image? == true
     SystemDebug.debug(SystemDebug.containers, :engine_image_deleted, engine)
     return if reinstall == true
     engine.delete_engine
   end
-  
-  def remove_engine_services(params)
-      SystemDebug.debug(SystemDebug.containers,:delete_engines, engine_name,engine, :resinstall, reinstall)
-      params[:container_type] = 'container'
-      STDERR.puts(' Remove engine ' + params.to_s )
- #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
-      begin
-        STDERR.puts('Remove engine calling service_manager.remove_engine_services' + params.to_s )
-      service_manager.remove_engine_services(params)
-      rescue EnginesException => e
-        raise e unless e.is_a_warning?
-      end
 
+  def remove_engine_services(params)
+    SystemDebug.debug(SystemDebug.containers,:delete_engines, engine_name,engine, :resinstall, reinstall)
+    params[:container_type] = 'container'
+    STDERR.puts(' Remove engine ' + params.to_s )
+    #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
+    begin
+      STDERR.puts('Remove engine calling service_manager.remove_engine_services' + params.to_s )
+      service_manager.remove_engine_services(params)
+    rescue EnginesException => e
+      raise e unless e.is_a_warning?
     end
+  end
 
   #install from fresh copy of blueprint in repository
   def reinstall_engine(engine)
@@ -57,7 +56,7 @@ module EnginesOperations
   end
 
   def set_container_runtime_properties(container,params)
-     raise EnginesException.new(error_hash(params[:engine_name],'Container is active')) if container.is_active?
+    raise EnginesException.new(error_hash(params[:engine_name],'Container is active')) if container.is_active?
     if params.key?(:environment_variables) && ! params[:environment_variables].nil?
       new_variables = params[:environment_variables]
       new_variables.each_pair do |new_env_name, new_env_value|
