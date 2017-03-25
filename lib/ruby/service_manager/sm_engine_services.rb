@@ -97,7 +97,8 @@ module SmEngineServices
 
   def remove_engine_non_persistent_services(params)
     STDERR.puts('remove_engine_services ' + params.to_s)
-    services = list_non_persistent_services(engine) # find_engine_services_hashes(params)
+    
+    services = get_engine_nonpersistent_services(params) # find_engine_services_hashes(params)
     return services unless services.is_a?(Array)
     STDERR.puts('remove_engine_services ' + services.to_s)
     services.each do |s|
