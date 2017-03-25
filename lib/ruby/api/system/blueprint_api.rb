@@ -1,4 +1,5 @@
 class BlueprintApi < ErrorsApi
+  require '/opt/engines/lib/ruby/api/system/container_state_files.rb'
   def save_blueprint(blueprint, container)
     clear_error
     # return log_error_mesg('Cannot save incorrect format',blueprint) unless blueprint.is_a?(Hash)
