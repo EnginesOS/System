@@ -30,6 +30,7 @@ module SharedServices
     end
     shared_service.delete(:existing)
     system_registry_client.add_share_to_managed_engines_registry(shared_service)
+    system_registry_client.add_to_managed_engines_registry(shared_service)
   end
 
   def remove_shared_service_from_engine(service_query)
