@@ -1,10 +1,4 @@
-class FakeContainer
-  attr_reader :container_name, :ctype
-  def initialize(name, type = 'container')
-    @container_name = name
-    @ctype = type
-  end
-end
+
 
 module Engines
   def list_managed_engines
