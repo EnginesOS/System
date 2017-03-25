@@ -35,21 +35,21 @@ class SystemConfig
 
   @@MinimumFreeRam = 64
   @@MinimumBuildRam  = @@MinimumFreeRam + 128
-  def self.MinimumBuildRam
+  def SystemConfig.MinimumBuildRam
     @@MinimumBuildRam
   end
 
   @@MinimumFreeImageSpace = 2000
 
-  def self.MinimumFreeImageSpace
+  def SystemConfig.MinimumFreeImageSpace
     @@MinimumFreeImageSpace
   end
 
-  def self.MinimumFreeRam
+  def SystemConfig.MinimumFreeRam
     @@MinimumFreeRam
   end
 
-  def self.registry_connect_timeout
+  def SystemConfig.registry_connect_timeout
     60
   end
 

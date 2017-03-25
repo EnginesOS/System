@@ -11,46 +11,46 @@ module EnginesSystemFiles
   @@ManagedServiceMountsFile = '/opt/engines/etc/create_mounts/services.yaml'
 
   @@SystemAccessDB = "/home/app/db/production.sqlite3"
-  def self.SystemAccessDB
+  def SystemConfig.SystemAccessDB
     @@SystemAccessDB
   end
 
-  def self.ReleaseFile
+  def SystemConfig.ReleaseFile
     @@ReleaseFile
   end
 
-  def self.EnginesInternalCA
+  def SystemConfig.EnginesInternalCA
     @@EnginesInternalCA
   end
 
-  def self.ManagedEngineMountsFile
+  def SystemConfig.ManagedEngineMountsFile
     @@ManagedEngineMountsFile
   end
 
-  def self.ManagedServiceMountsFile
+  def SystemConfig.ManagedServiceMountsFile
     @@ManagedServiceMountsFile
   end
 
   #  def SystemConfig.generate_ssh_private_keyfile
   #    return  @@generate_ssh_private_keyfile
   #  end
-  def self.NoRemoteExceptionLoggingFlagFile
+  def SystemConfig.NoRemoteExceptionLoggingFlagFile
     @@NoRemoteExceptionLoggingFlagFile
   end
 
-  def self.SystemPreferencesFile
+  def SystemConfig.SystemPreferencesFile
     @@SystemPreferencesFile
   end
 
-  def self.engines_ssh_private_keyfile
+  def SystemConfig.engines_ssh_private_keyfile
     @@engines_ssh_private_keyfile
   end
 
-  def self.DomainsFile
+  def SystemConfig.DomainsFile
     @@DomainsFile
   end
 
-  def self.timeZone_fileMapping
+  def SystemConfig.timeZone_fileMapping
     @@timeZone_fileMapping
   end
 end
