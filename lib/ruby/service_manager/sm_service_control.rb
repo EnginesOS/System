@@ -31,7 +31,7 @@ module SmServiceControl
   # @return false
   def delete_and_remove_service(service_query)
     clear_error
-    complete_service_query = set_top_level_service_params(service_query,service_query[:parent_engine])
+    complete_service_query = set_top_level_service_params(service_query, service_query[:parent_engine])
       STDERR.puts('delete_service ' + complete_service_query.to_s)
     service_hash = retrieve_engine_service_hash(complete_service_query)
     return service_hash unless service_hash.is_a?(Hash)
@@ -48,7 +48,7 @@ module SmServiceControl
 
   def update_attached_service(params)
     clear_error
-    set_top_level_service_params(params,params[:parent_engine])
+    set_top_level_service_params(params, params[:parent_engine])
     system_registry_client.update_attached_service(params)
     remove_from_managed_service(params)
     add_to_managed_service(params)   
