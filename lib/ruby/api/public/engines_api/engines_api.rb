@@ -113,7 +113,7 @@ class PublicApi < ErrorsApi
   #  service_configurations_registry#ex
   #  managed_services_registry#ex#ex
   #  orphaned_services_registry#ex
-  #  get_shared_services_registry #ex
+  #  shared_services_registry #ex
   include PublicApiRegistry
 
   #service_manager

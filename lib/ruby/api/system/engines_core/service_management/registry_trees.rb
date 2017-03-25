@@ -16,7 +16,7 @@ module RegistryTrees
     service_manager.service_configurations_registry
   end
 
-  def get_shared_services_registry
+  def shared_services_registry
     service_manager.shared_services_registry
   end
 
