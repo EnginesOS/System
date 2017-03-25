@@ -16,7 +16,7 @@ module BuildReport
 
   def save_build_report(container, build_report)
     clear_error
-    f = File.new(container_state_dir(FakeContainer.new(engine_name)) + '/buildreport.txt', File::CREAT | File::TRUNC | File::RDWR, 0644)
+    f = File.new(container_state_dir(container) + '/buildreport.txt', File::CREAT | File::TRUNC | File::RDWR, 0644)
     f.puts(build_report)
     f.close
     true
