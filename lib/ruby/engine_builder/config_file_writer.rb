@@ -4,13 +4,11 @@ class ConfigFileWriter
     file_list.each do |file|
       return false unless process_dockerfile_tmpl(templater, file)
     end
-    return true
-    rescue StandardError => e
-      log_exception(e)
+    true
   end
 
   def self.write_templated_file(templater, filename, content)
-  return   SystemUtils.log_error("NO Content " , filename , content) if content.nil?
+    return SystemUtils.log_error("NO Content " , filename , content) if content.nil?
     content.gsub!(/\r/, '')
     dir = File.dirname(filename)
     FileUtils.mkdir_p(dir) unless Dir.exist?(dir)
@@ -18,10 +16,7 @@ class ConfigFileWriter
     content = templater.process_templated_string(content)
     out_file.write(content)
     out_file.close
-    return true
-  rescue StandardError => e
-    SystemUtils.log_error("Exception with " + filename.to_s )
-    SystemUtils.log_exception(e)
+    true
   end
 
   def self.process_dockerfile_tmpl(templater,filename)
@@ -31,8 +26,6 @@ class ConfigFileWriter
     out_file = File.new(output_filename, 'wb', :crlf_newline => false)
     out_file.write(template)
     out_file.close
-    return true
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
+    true
   end
 end
