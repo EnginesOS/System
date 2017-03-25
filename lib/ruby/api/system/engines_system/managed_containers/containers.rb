@@ -17,7 +17,7 @@ end
 #    container.last_result = ''
 
     serialized_object = YAML.dump(container)
-    state_dir = ContainerStateFiles.container_state_dir(container)
+    state_dir = container_state_dir(container)
     FileUtils.mkdir_p(state_dir)  if Dir.exist?(state_dir) == false
     statefile = state_dir + '/running.yaml'
     # BACKUP Current file with rename
@@ -50,15 +50,15 @@ end
 
   def is_startup_complete(container)
     clear_error
-     File.exist?(ContainerStateFiles.container_state_dir(container) + '/run/flags/startup_complete')
+     File.exist?(container_state_dir(container) + '/run/flags/startup_complete')
   end
 
   def write_actionators(container, actionators)
     return true if actionators.nil?
-    Dir.mkdir_p(ContainerStateFiles.actionator_dir(container)) unless Dir.exist?(ContainerStateFiles.actionator_dir(container))
+    Dir.mkdir_p(actionator_dir(container)) unless Dir.exist?(actionator_dir(container))
     serialized_object = YAML.dump(actionators)
 
-    f = File.new(ContainerStateFiles.actionator_dir(container) + '/actionators.yaml', File::CREAT | File::TRUNC | File::RDWR, 0644)
+    f = File.new(actionator_dir(container) + '/actionators.yaml', File::CREAT | File::TRUNC | File::RDWR, 0644)
     f.puts(serialized_object)
     f.flush()
     f.close
@@ -71,9 +71,9 @@ end
   end
 
   def load_engine_actionators(container)
-    SystemDebug.debug(SystemDebug.actions,container,ContainerStateFiles.actionator_dir(container) + '/actionators.yaml')
-    return {} unless File.exist?(ContainerStateFiles.actionator_dir(container) + '/actionators.yaml')
-    yaml =  File.read(ContainerStateFiles.actionator_dir(container) + '/actionators.yaml')
+    SystemDebug.debug(SystemDebug.actions,container,actionator_dir(container) + '/actionators.yaml')
+    return {} unless File.exist?(actionator_dir(container) + '/actionators.yaml')
+    yaml =  File.read(actionator_dir(container) + '/actionators.yaml')
     actionators = YAML::load(yaml)
     SystemDebug.debug(SystemDebug.actions,container,actionators)
     return actionators if actionators.is_a?(Hash)

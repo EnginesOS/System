@@ -1,7 +1,7 @@
 module ContainerSchedules
   def schedules(container)
-    return nil unless File.exist?(ContainerStateFiles.schedules_file(container))
-    YAML::load(File.read(ContainerStateFiles.schedules_file(container) ))
+    return nil unless File.exist?(schedules_file(container))
+    YAML::load(File.read(schedules_file(container) ))
   end
 
   def apply_schedules(container)

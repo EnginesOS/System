@@ -1,7 +1,6 @@
 module ContainerStateFiles
-  require_relative 'system_config/engines_system_flags.rb'
-  require_relative 'system_config/engines_system_dirs.rb'
-  require_relative 'system_config/engines_system_files.rb'
+  require_relative 'system_config.rb'
+
   
   def build_running_service(service_name, service_type_dir,system_value_access)
     config_template_file_name = service_type_dir + service_name + '/config.yaml'
@@ -41,7 +40,7 @@ module ContainerStateFiles
   end
 
   def read_container_id(container)
-    cidfile = ContainerStateFiles.container_cid_file(container)
+    cidfile = container_cid_file(container)
     return -1 unless  File.exist?(cidfile)
     r = File.read(cidfile)
     r.gsub!(/\s+/, '').strip
@@ -51,7 +50,7 @@ module ContainerStateFiles
   end
 
   def create_container_dirs(container)
-    state_dir = ContainerStateFiles.container_state_dir(container)
+    state_dir = container_state_dir(container)
     unless File.directory?(state_dir)
       Dir.mkdir(state_dir)
       Dir.mkdir(state_dir + '/run') unless Dir.exist?(state_dir + '/run')
@@ -60,14 +59,14 @@ module ContainerStateFiles
       FileUtils.chmod_R('u+r', state_dir + '/run')
       FileUtils.chmod_R('g+w', state_dir + '/run')
     end
-    log_dir = ContainerStateFiles.container_log_dir(container)
+    log_dir = container_log_dir(container)
     Dir.mkdir(log_dir) unless File.directory?(log_dir)
     if container.is_service?
       Dir.mkdir(state_dir + '/configurations/') unless File.directory?(state_dir + '/configurations')
       Dir.mkdir(state_dir + '/configurations/default') unless File.directory?(state_dir + '/configurations/default')
     end
 
-    key_dir =  ContainerStateFiles.key_dir(container)
+    key_dir =  key_dir(container)
     unless Dir.exist?(key_dir)
       Dir.mkdir(key_dir)  unless File.directory?(key_dir)
       FileUtils.chown(nil, 'containers',key_dir)
@@ -81,7 +80,7 @@ module ContainerStateFiles
   end
 
   def clear_container_var_run(container)
-    File.unlink(ContainerStateFiles.container_state_dir(container) + '/startup_complete') if File.exist?(ContainerStateFiles.container_state_dir(container) + '/startup_complete')
+    File.unlink(container_state_dir(container) + '/startup_complete') if File.exist?(container_state_dir(container) + '/startup_complete')
     true
   end
 
@@ -94,13 +93,13 @@ module ContainerStateFiles
     File.delete(cidfile) if File.exist?(cidfile)
     result = volbuilder.execute_command(:remove, {target: container.container_name} )
 
-    FileUtils.rm_rf(ContainerStateFiles.container_state_dir(container))
+    FileUtils.rm_rf(container_state_dir(container))
     SystemUtils.run_system('/opt/engines/system/scripts/system/clear_container_dir.sh ' + container.container_name)
     true
   end
 
   def destroy_container(container)
-    return File.delete(ContainerStateFiles.container_cid_file(container)) if File.exist?(ContainerStateFiles.container_cid_file(container))
+    return File.delete(container_cid_file(container)) if File.exist?(container_cid_file(container))
     true # File may or may not exist
   end
 

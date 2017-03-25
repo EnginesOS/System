@@ -9,7 +9,7 @@ module BuildReport
 
   def save_build_report(container, build_report)
     clear_error
-    state_dir = ContainerStateFiles.container_state_dir(container)
+    state_dir = container_state_dir(container)
     f = File.new(state_dir  + '/buildreport.txt', File::CREAT | File::TRUNC | File::RDWR, 0644)
     f.puts(build_report)
     f.close
