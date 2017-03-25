@@ -27,9 +27,12 @@ class SystemApi < ErrorsApi
   
   require_relative 'managed_containers/managed_container_status.rb'
   include ManagedContainerStatus
-  
+ 
   require_relative 'managed_containers/cache.rb'
   include Cache
+    
+  require_relative 'managed_containers/container_state_files.rb'
+  include ContainerStateFiles
   
   require_relative 'managed_containers/containers'
   include Containers
