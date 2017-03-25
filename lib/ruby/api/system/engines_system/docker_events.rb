@@ -1,6 +1,12 @@
 module DockerEvents
   require '/opt/engines/lib/ruby/api/system/docker/docker_api/event_watcher/docker_event_watcher.rb'
 
+  def create_event_listener
+    @event_listener_lock = true
+    @docker_event_listener = start_docker_event_listener
+    @docker_event_listener.add_event_listener([self,'container_event'.to_sym],16)
+  end
+
   def fill_in_event_system_values(event_hash)
     if event_hash.key?(:Actor) && event_hash[:Actor][:Attributes].is_a?(Hash)
       event_hash[:container_name] = event_hash[:Actor][:Attributes][:container_name]
@@ -79,13 +85,13 @@ module DockerEvents
     c = container_from_cache(container_name)
     if c.nil?
       case ctype
-      when 'container'        
-      c = loadManagedEngine(container_name)
+      when 'container'
+        c = loadManagedEngine(container_name)
       when 'service'
-      c = loadManagedService(container_name)
+        c = loadManagedService(container_name)
       when   'utility'
-      c = loadManagedUtility(container_name)
-      else 
+        c = loadManagedUtility(container_name)
+      else
         log_error_mesg('Failed to find ' + container_name.to_s +  ctype.to_s)
       end
     end

@@ -77,7 +77,6 @@ end
     actionators = YAML::load(yaml)
     SystemDebug.debug(SystemDebug.actions,container,actionators)
     return actionators if actionators.is_a?(Hash)
-     {}
   end
 
 end

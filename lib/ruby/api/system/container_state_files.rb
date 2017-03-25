@@ -17,23 +17,23 @@ class ContainerStateFiles
   end
 
   def self.schedules_file(container)
-    return self.schedules_dir(container) + '/schedules.yaml'
+     self.schedules_dir(container) + '/schedules.yaml'
   end
 
   def self.actionator_dir(container)
-    return self.container_state_dir(container) + '/actionators/'
+     self.container_state_dir(container) + '/actionators/'
   end
 
   def self.container_flag_dir(container)
-    return self.container_state_dir(container) + '/run/flags/'
+     self.container_state_dir(container) + '/run/flags/'
   end
 
   def self.restart_flag_file(container)
-    return self.container_flag_dir(container) + 'restart_required'
+     self.container_flag_dir(container) + 'restart_required'
   end
 
   def self.rebuild_flag_file(container)
-    return self.container_flag_dir(container) + 'rebuild_required'
+     self.container_flag_dir(container) + 'rebuild_required'
   end
 
   def self.read_container_id(container)
