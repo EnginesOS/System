@@ -1,6 +1,5 @@
 module ContainerStateFiles
   require_relative 'system_config.rb'
-
   
   def build_running_service(service_name, service_type_dir,system_value_access)
     config_template_file_name = service_type_dir + service_name + '/config.yaml'
