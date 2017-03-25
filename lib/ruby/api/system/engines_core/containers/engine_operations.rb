@@ -6,43 +6,34 @@ module EnginesOperations
   # They are removed from the tree if delete is sucessful
   def delete_engine_and_services(params)
     SystemDebug.debug(SystemDebug.containers, :delete_engines, params)
-    params[:container_type] = 'container' # Force This
-    engine_name = params[:engine_name]
-    reinstall = false
-    reinstall = params[:reinstall] = true if params.key?(:reinstall)
-    if loadManagedEngine(engine_name).has_container?
+    params[:container_type] = 'container' # Force This      
+      begin
+    engine = loadManagedEngine(params[:engine_name])     
+    ##### DO NOT MESS with this logi used in roll back and only works if no engine
+         unless engine.is_a?(ManagedEngine) 
+           return true if service_manager.remove_engine_from_managed_engine(params)
+           raise EnginesException.new(error_hash('Failed to find Engine', params))
+         end
+    #####  ^^^^^^^^^^ DO NOT MESS with this logic ^^^^^^^^
+      end
+      
+    if engine.has_container?
       raise EnginesException.new(error_hash('Container Exists Please Destroy engine first' , params)) unless reinstall.is_a?(TrueClass)
     end
-    remove_engine_services(engine_name, reinstall, params[:remove_all_data])
-      
+    remove_engine_services(params) #engine_name, reinstall, params[:remove_all_data])      
     engine.delete_image if engine.has_image? == true
     SystemDebug.debug(SystemDebug.containers, :engine_image_deleted, engine)
     return if reinstall == true
     engine.delete_engine
   end
   
-  def remove_engine_services(engine_name, reinstall = false, remove_all_data = 'all')
-      engine = loadManagedEngine(engine_name)
+  def remove_engine_services(params)
       SystemDebug.debug(SystemDebug.containers,:delete_engines, engine_name,engine, :resinstall, reinstall)
-      params = {
-        engine_name: engine_name,
-        container_type: 'container', # Force This
-        parent_engine: engine_name,
-        reinstall: reinstall,
-        remove_all_data: remove_all_data
-      }
+      params[:container_type] = 'container'
       STDERR.puts(' Remove engine ' + params.to_s )
-      
- ##### DO NOT MESS with this logi used in roll back and only works if no engine
-      unless engine.is_a?(ManagedEngine) 
-        return true if service_manager.remove_engine_from_managed_engine(params)
-        raise EnginesException.new(error_hash('Failed to find Engine',params))
-      end
- #####  ^^^^^^^^^^ DO NOT MESS with this logic ^^^^^^^^
-      
-      #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
+ #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
       begin
-        STDERR.puts(' Remove engine calling service_manager.remove_engine_services' + params.to_s )
+        STDERR.puts('Remove engine calling service_manager.remove_engine_services' + params.to_s )
       service_manager.remove_engine_services(params)
       rescue EnginesException => e
         raise e unless e.is_a_warning?
