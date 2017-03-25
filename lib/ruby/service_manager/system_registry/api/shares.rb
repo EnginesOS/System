@@ -9,7 +9,7 @@ module Shares
   end
 
   def add_share_to_managed_engines_registry(shared_service)
-    r = 'shares/add' + address_params(service_hash, [:service_owner, :parent_engine, :service_handle, :publisher_namespace, :type_path])
-    rest_post(r, shared_service )
+    r = 'shares/add' + address_params(shared_service, [:service_owner, :parent_engine, :service_handle, :publisher_namespace, :type_path])
+    rest_post(r, shared_service)
   end
 end
