@@ -7,7 +7,7 @@ module EnginesOperations
   def delete_engine_and_services(params)
     SystemDebug.debug(SystemDebug.containers, :delete_engines, params)
     params[:container_type] = 'container' # Force This
-    params[:parent_name] = params[:parent_engine]
+    params[:parent_engine] = params[:engine_name]
     begin
       engine = loadManagedEngine(params[:engine_name])
       ##### DO NOT MESS with this logi used in roll back and only works if no engine
@@ -17,7 +17,7 @@ module EnginesOperations
       end
       #####  ^^^^^^^^^^ DO NOT MESS with this logic ^^^^^^^^
     end
-    STDERR.puts('remove CONTAINER ' + params.to_s)
+    STDERR.puts('remove CONTAINER ' + params)
     if engine.has_container?
       raise EnginesException.new(error_hash('Container Exists Please Destroy engine first' , params)) unless reinstall.is_a?(TrueClass)
     end
