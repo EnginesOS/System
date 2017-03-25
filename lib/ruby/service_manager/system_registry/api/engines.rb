@@ -24,6 +24,8 @@ module Engines
     params[:persistent] = true
     r =  'engine/services/persistent'
     r += address_params(params, [:container_type, :parent_engine])
+      STDERR.puts('get_engine_persistent_services' + r.to_s)
+    end
     rest_get(r)
   end
 
