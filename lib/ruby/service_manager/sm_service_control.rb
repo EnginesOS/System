@@ -37,8 +37,8 @@ module SmServiceControl
     return service_hash unless service_hash.is_a?(Hash)
 
     if service_hash[:shared] == true
-      return remove_shared_service_from_engine(service_query)     
-      #  return system_registry_client.remove_from_managed_engine(service_hash)
+       remove_shared_service_from_engine(service_query)     
+        return system_registry_client.remove_from_managed_engine(service_hash)
     end
     service_hash[:remove_all_data] = service_query[:remove_all_data]
     remove_from_managed_service(service_hash) ## continue if service_query.key?(:force)
