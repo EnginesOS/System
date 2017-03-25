@@ -146,6 +146,7 @@ module SmEngineServices
         end
       else
         orphanate_service(service)
+        system_registry_client.remove_from_managed_engine(service_hash)
       end
     end
     true
