@@ -7,6 +7,7 @@ module EnginesOperations
   def delete_engine_and_services(params)
     SystemDebug.debug(SystemDebug.containers, :delete_engines, params)
     params[:container_type] = 'container' # Force This
+    params[:parent_name] = params[:engine_name]
     begin
       engine = loadManagedEngine(params[:engine_name])
       ##### DO NOT MESS with this logi used in roll back and only works if no engine
