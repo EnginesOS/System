@@ -21,10 +21,12 @@ module DockerEvents
   end
 
   def container_event(event_hash)
-    return log_error_mesg('Nil event hash passed to container event','') if event_hash.nil?
+    return if event_hash.nil? # log_error_mesg('Nil event hash passed to container event','')
     r = fill_in_event_system_values(event_hash)
     SystemDebug.debug(SystemDebug.container_events,'2 CONTAINER EVENTS' + event_hash.to_s + ':' + r.to_s)
-
+   
+    return if event_hash[:container_type].nil? || event_hash[:container_name].nil?
+      
     if event_hash[:container_type] == 'service' ||  event_hash[:container_type] == 'system_service'||  event_hash[:container_type] == 'utility'
       # Enable Cold load of service from config.yaml
       STDERR.puts( SystemConfig.RunDir + '/' + event_hash[:container_type] + 's/' + event_hash[:container_name] + '/running.yaml')
