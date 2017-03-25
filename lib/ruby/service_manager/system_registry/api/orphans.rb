@@ -19,13 +19,13 @@ module Orphans
 
   def orphanate_service(params)
     r = 'services/orphans/add/'
-    r += address_params(params, full_path)
+    r += address_params(params, [:parent_engine, :service_handle, :publisher_namespace, :type_path])
     rest_post(r, {:api_vars => params})
   end
 
   def release_orphan(params)
     r = 'services/orphans/del/'
-    r += address_params(params, full_path)
+    r += address_params(params, [:parent_engine, :service_handle, :publisher_namespace, :type_path])
     rest_delete(r)
   end
 
