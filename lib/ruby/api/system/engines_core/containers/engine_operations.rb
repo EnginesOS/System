@@ -16,7 +16,7 @@ module EnginesOperations
       end
       #####  ^^^^^^^^^^ DO NOT MESS with this logic ^^^^^^^^
     end
-
+    STDERR.puts('remove CONTAINER')
     if engine.has_container?
       raise EnginesException.new(error_hash('Container Exists Please Destroy engine first' , params)) unless reinstall.is_a?(TrueClass)
     end
@@ -25,6 +25,7 @@ module EnginesOperations
     SystemDebug.debug(SystemDebug.containers, :engine_image_deleted, engine)
     return if reinstall == true
     engine.delete_engine
+    rm_engine_from_cache(params[:engine_name])
   end
 
   def remove_engine_services(params)

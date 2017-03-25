@@ -105,8 +105,8 @@ module Engines
     managed_engine
   end
 
-  def delete_engine(container)
-    rm_engine_from_cache(container.container_name)
-  end
+#  def delete_engine(container)
+#    rm_engine_from_cache(container.container_name)
+#  end
 
 end
