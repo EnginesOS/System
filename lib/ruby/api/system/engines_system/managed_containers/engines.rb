@@ -1,6 +1,13 @@
 
 
 module Engines
+  class FakeContainer
+    attr_reader :container_name, :ctype
+    def initialize(name, type = 'container')
+      @container_name = name
+      @ctype = type
+    end
+  end
   def list_managed_engines
     clear_error
     ret_val = []

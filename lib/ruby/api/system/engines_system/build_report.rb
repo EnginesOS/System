@@ -1,4 +1,11 @@
 module BuildReport
+  class FakeContainer
+    attr_reader :container_name, :ctype
+    def initialize(name, type = 'container')
+      @container_name = name
+      @ctype = type
+    end
+  end
   def get_build_report(engine_name)
     clear_error
     raise EnginesException.new(error_hash('get_build_report passed nil engine_name', engine_name)) if engine_name.nil?

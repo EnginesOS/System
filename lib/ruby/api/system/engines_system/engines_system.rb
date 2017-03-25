@@ -1,12 +1,6 @@
 class SystemApi < ErrorsApi
   
-  class FakeContainer
-    attr_reader :container_name, :ctype
-    def initialize(name, type = 'container')
-      @container_name = name
-      @ctype = type
-    end
-  end
+
   
   require '/opt/engines/lib/ruby/containers/container.rb'
   require '/opt/engines/lib/ruby/containers/managed_container.rb'
