@@ -39,7 +39,7 @@ module ServiceOperations
   def dettach_service(service_hash)
     check_service_hash(service_hash)
     SystemDebug.debug(SystemDebug.services,:dettach_service, service_hash)
-    service_manager.delete_service(service_hash)
+    service_manager.delete_and_remove_service(service_hash)
   end
 
   # @ returns  complete service hash matching PNS,SP,PE,SH

@@ -4,9 +4,6 @@ module ManagedServiceConsumers
     return true if !is_running? && @soft_service
     raise EnginesException.new(error_hash('Cannot remove consumer if Service is not running ', service_hash)) unless is_running?
     raise EnginesException.new(error_hash('service missing cont_userid ', service_hash)) if check_cont_uid == false
-    return rm_consumer_from_service(service_hash) unless @persistent
-    return orphanate_service(service_hash) if service_hash.has_key?(:remove_all_data) && service_hash[:remove_all_data] == 'none'
-    return rm_consumer_from_service(service_hash) if service_hash.has_key?(:remove_all_data) && service_hash[:remove_all_data] == 'all'
     rm_consumer_from_service(service_hash)
   end
 

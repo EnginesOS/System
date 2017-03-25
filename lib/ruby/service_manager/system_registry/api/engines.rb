@@ -24,6 +24,7 @@ module Engines
     params[:persistent] = true
     r =  'engine/services/persistent'
     r += address_params(params, [:container_type, :parent_engine])
+      STDERR.puts('get_engine_persistent_services' + r.to_s)
     rest_get(r)
   end
 
@@ -38,9 +39,10 @@ module Engines
 
   def remove_from_managed_engine(params)
     params[:container_type] = 'container' unless params.key?(:container_type)
-    STDERR.puts('PARAMAS FOR DELEparams' + params.to_s)
+  
     r = 'engine/services/del'
     r += address_params(params, [:container_type, :parent_engine, :service_handle, :publisher_namespace, :type_path])
+      STDERR.puts('PARAMAS FOR DELEparams' + r.to_s)
     rest_delete(r)
   end
 

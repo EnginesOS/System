@@ -1,12 +1,13 @@
-class FakeContainer
-  attr_reader :container_name, :ctype
-  def initialize(name, type = 'container')
-    @container_name = name
-    @ctype = type
-  end
-end
+
 
 module Engines
+  class FakeContainer
+    attr_reader :container_name, :ctype
+    def initialize(name, type = 'container')
+      @container_name = name
+      @ctype = type
+    end
+  end
   def list_managed_engines
     clear_error
     ret_val = []
@@ -105,8 +106,8 @@ module Engines
     managed_engine
   end
 
-  def delete_engine(container)
-    rm_engine_from_cache(container.container_name)
-  end
+#  def delete_engine(container)
+#    rm_engine_from_cache(container.container_name)
+#  end
 
 end

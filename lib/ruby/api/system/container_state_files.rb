@@ -85,15 +85,15 @@ class ContainerStateFiles
     SystemConfig.CidDir + '/' + container.container_name + '.cid'
   end
 
-  def self.delete_container_configs(volbuilder, container)
-    cidfile = SystemConfig.CidDir + '/' + container.container_name + '.cid'
-    File.delete(cidfile) if File.exist?(cidfile)
-    result = volbuilder.execute_command(:remove, {target: container.container_name} )
-
-    FileUtils.rm_rf(ContainerStateFiles.container_state_dir(container))
-    SystemUtils.run_system('/opt/engines/system/scripts/system/clear_container_dir.sh ' + container.container_name)
-    true
-  end
+#  def self.delete_container_configs(volbuilder, container)
+#    cidfile = SystemConfig.CidDir + '/' + container.container_name + '.cid'
+#    File.delete(cidfile) if File.exist?(cidfile)
+#    result = volbuilder.execute_command(:remove, {target: container.container_name} )
+#
+#    FileUtils.rm_rf(ContainerStateFiles.container_state_dir(container))
+#    SystemUtils.run_system('/opt/engines/system/scripts/system/clear_container_dir.sh ' + container.container_name)
+#    true
+#  end
 
   def self.destroy_container(container)
     return File.delete(ContainerStateFiles.container_cid_file(container)) if File.exist?(ContainerStateFiles.container_cid_file(container))
