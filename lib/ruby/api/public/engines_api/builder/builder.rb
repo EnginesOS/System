@@ -34,7 +34,7 @@ module PublicApiBuilder
         build_log_file.close
         return 'Maybe ' + e.to_s
       end
-      out.write(bytes)
+      out.write(bytes.force_encoding(Encoding::UTF_8))
     end
   end
 
