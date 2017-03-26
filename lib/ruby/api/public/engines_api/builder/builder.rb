@@ -26,7 +26,7 @@ module PublicApiBuilder
       rescue IO::WaitReadable
         retry
       rescue EOFError
-        out.write(bytes)
+        out.write(bytes.force_encoding(Encoding::UTF_8))
         return 'OK'
         build_log_file.close
       rescue => e
