@@ -1,6 +1,5 @@
 module ServiceRollBack
   def service_roll_back
-
     @attached_services.each do |service_hash|
       if service_hash[:shared]
         rollback_shared_service(service_hash)
@@ -10,7 +9,7 @@ module ServiceRollBack
         roll_back_new_service(service_hash)
       end
     end
-    return true
+    true
     rescue StandardError => e
       log_exception(e)
   end

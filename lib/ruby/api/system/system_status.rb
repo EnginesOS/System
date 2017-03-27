@@ -1,7 +1,6 @@
 class SystemStatus
   def self.is_base_system_updating?
-    return false unless File.exist?(SystemConfig.SystemUpdatingFlag)
-    false
+    File.exist?(SystemConfig.SystemUpdatingFlag)
   end
 
   # return [String] representing the address of public host interface (ie ifconfig eth0)
@@ -53,9 +52,6 @@ class SystemStatus
     param_file.puts(params.to_yaml)
     param_file.close
     File.delete(SystemConfig.BuildRunningParamsFile) if File.exist?(SystemConfig.BuildRunningParamsFile)
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
-    return {}
   end
 
   def self.build_complete(params)
@@ -63,9 +59,6 @@ class SystemStatus
     param_file.puts(params.to_yaml)
     param_file.close
     File.delete(SystemConfig.BuildRunningParamsFile) if File.exist?(SystemConfig.BuildRunningParamsFile)
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
-    return {}
   end
 
   def self.build_starting(params)
@@ -74,9 +67,6 @@ class SystemStatus
     param_file.close
     File.delete(SystemConfig.BuildFailedFile) if File.exist?(SystemConfig.BuildFailedFile)
     #  File.delete(SystemConfig.BuildBuiltFile) if File.exist?(SystemConfig.BuildBuiltFile)
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
-
   end
 
   def self.build_status
@@ -84,9 +74,6 @@ class SystemStatus
     is_building:  SystemStatus.is_building?,
     did_build_fail:  SystemStatus.did_build_fail?
    }
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
-
   end
 
   def self.get_engines_system_release
@@ -107,8 +94,6 @@ class SystemStatus
       needs_engines_update: !self.is_engines_system_upto_date?,
       needs_base_update: !self.is_base_system_upto_date?
     }
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
 
   # called by per session and post update
@@ -117,8 +102,6 @@ class SystemStatus
       needs_engines_update:  !self.is_engines_system_upto_date?,
       needs_base_update:  !self.is_base_system_upto_date?
     }
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
 
   def self.current_build_params
@@ -128,9 +111,6 @@ class SystemStatus
     param_file = File.new(SystemConfig.BuildRunningParamsFile, 'r')
     param_raw = param_file.read
     YAML.load(param_raw)
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
-
   end
 
   def self.last_build_params
@@ -166,8 +146,7 @@ class SystemStatus
     if self.get_engines_system_release == 'current'
       SystemUtils.execute_command('/opt/engines/system/scripts/system/engines_system_update_status.sh')
     end
-    return true unless File.exist?(SystemConfig.EnginesUpdateStatusFile)
-    false
+    ! File.exist?(SystemConfig.EnginesUpdateStatusFile)
   end
 
 end
