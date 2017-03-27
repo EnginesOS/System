@@ -29,8 +29,8 @@ module DockerApiContainerOps
   def create_container(container)
     request_params = create_options(container)
     request = '/containers/create?name=' + container.container_name
-    STDERR.puts('/containers/create?name=' +  container.container_name)
-    STDERR.puts('opts' + request_params.to_s)
+   # STDERR.puts('/containers/create?name=' +  container.container_name)
+   # STDERR.puts('opts' + request_params.to_s)
     post_request(request, request_params)
   end
 end

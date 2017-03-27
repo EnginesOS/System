@@ -17,7 +17,7 @@ module EnginesOperations
       end
       #####  ^^^^^^^^^^ DO NOT MESS with this logic ^^^^^^^^
     end
-    STDERR.puts('remove CONTAINER ' + params.to_s)
+
     if engine.has_container?
       raise EnginesException.new(error_hash('Container Exists Please Destroy engine first' , params)) unless reinstall.is_a?(TrueClass)
     end
@@ -31,10 +31,8 @@ module EnginesOperations
   def remove_engine_services(params)
     SystemDebug.debug(SystemDebug.containers, :delete_engines, params)
     params[:container_type] = 'container'
-    STDERR.puts(' Remove engine ' + params.to_s )
     #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
-    begin
-      STDERR.puts('Remove engine calling service_manager.remove_engine_services' + params.to_s )
+    begin    
       service_manager.remove_managed_persistent_services(params)
       service_manager.remove_engine_non_persistent_services(params)
     rescue EnginesException => e

@@ -76,7 +76,7 @@ class DockerEventWatcher  < ErrorsApi
 
   def reopen_connection
     @events_connection.reset
-    STDERR.puts(' REOPEN doker.sock connection ')
+    #    STDERR.puts(' REOPEN doker.sock connection ')
     @events_connection = Excon.new('unix:///', :socket => '/var/run/docker.sock',
     :debug_request => true,
     :debug_response => true,

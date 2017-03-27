@@ -31,7 +31,7 @@ class RegistryHandler < ErrorsApi
   end
 
   def registry_root_ip
-    STDERR.puts( 'Registry IP ' + @registry_ip.to_s)
+    #   STDERR.puts( 'Registry IP ' + @registry_ip.to_s)
     return @registry_ip unless @registry_ip.is_a?(FalseClass)
     registry_service = @system_api.loadSystemService('registry') # FIXME: Panic if this fails
     unless registry_service.is_running?

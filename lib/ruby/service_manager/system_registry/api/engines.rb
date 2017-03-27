@@ -24,16 +24,16 @@ module Engines
     params[:persistent] = true
     r =  'engine/services/persistent'
     r += address_params(params, [:container_type, :parent_engine])
-      STDERR.puts('get_engine_persistent_services' + r.to_s)
+    #   STDERR.puts('get_engine_persistent_services' + r.to_s)
     rest_get(r)
   end
 
   def add_to_managed_engines_registry(service_hash)
     SystemDebug.debug(SystemDebug.services, 'sm add_to_managed_engines_registry ', service_hash)
-    STDERR.puts('sm add_to_managed_engines_registry ' + service_hash.to_s)
+    #    STDERR.puts('sm add_to_managed_engines_registry ' + service_hash.to_s)
     r = 'engine/services/add'
     r += address_params(service_hash, [:container_type, :parent_engine, :service_handle, :publisher_namespace, :type_path])
-    STDERR.puts('sm add_to_managed_engines_registry ' + r.to_s)
+    #   STDERR.puts('sm add_to_managed_engines_registry ' + r.to_s)
     rest_post(r,{:api_vars => service_hash} )
   end
 
@@ -42,7 +42,7 @@ module Engines
   
     r = 'engine/services/del'
     r += address_params(params, [:container_type, :parent_engine, :service_handle, :publisher_namespace, :type_path])
-      STDERR.puts('PARAMAS FOR DELEparams' + r.to_s)
+      #     STDERR.puts('PARAMAS FOR DELEparams' + r.to_s)
     rest_delete(r)
   end
 

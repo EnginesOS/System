@@ -23,7 +23,6 @@ module Engines
 
   def init_engine_dirs(engine_name)
     c = FakeContainer.new(engine_name)
-    STDERR.puts(' creating ' + container_state_dir(c).to_s + '/run')
     FileUtils.mkdir_p(container_state_dir(c) + '/run') unless Dir.exist?(container_state_dir(c)+ '/run')
     FileUtils.mkdir_p(container_state_dir(c) + '/run/flags') unless Dir.exist?(container_state_dir(c)+ '/run/flags')
     FileUtils.mkdir_p(container_log_dir(c)) unless Dir.exist?(container_log_dir(c))

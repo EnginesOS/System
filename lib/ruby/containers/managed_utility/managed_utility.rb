@@ -31,7 +31,7 @@ class ManagedUtility< ManagedContainer
   end
 
   def on_start(event_hash)
-    STDERR.puts('MANAGE UTIL on event')
+    #    STDERR.puts('MANAGE UTIL on event')
   end
 
   def command_details(command_name)
@@ -66,9 +66,9 @@ class ManagedUtility< ManagedContainer
     clear_configs
     apply_templates(command, command_params)
     save_state
-    STDERR.puts('Create FSCONFIG')
+    #   STDERR.puts('Create FSCONFIG')
     create_container()
-    STDERR.puts('Created FSCONFIG')
+    #   STDERR.puts('Created FSCONFIG')
     @container_api.wait_for('stopped') unless is_stopped?
     begin
       r = @container_api.logs_container(self, 100) #_as_result
