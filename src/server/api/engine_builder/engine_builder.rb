@@ -50,7 +50,7 @@ end
 # @overload get '/v0/engine_builder/follow_stream'
 # Follow the current build
 # @return  [text/event-stream]
-get '/v0/engine_builder/follow_stream', provides: 'text/event-stream'  do
+get '/v0/engine_builder/follow_stream', provides: 'text/event-stream ;charset=ASCII-8BIT'  do
   begin
     build_log_file = File.new(SystemConfig.BuildOutputFile, 'r')
     has_data = true
