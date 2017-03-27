@@ -50,7 +50,7 @@ end
 # @overload get '/v0/engine_builder/follow_stream'
 # Follow the current build
 # @return  [text/event-stream]
-get '/v0/engine_builder/follow_stream', provides: 'text/event-stream'  do
+get '/v0/engine_builder/follow_stream', provides: 'text/event-stream;charset=ascii-8bit'  do
   begin
     build_log_file = File.new(SystemConfig.BuildOutputFile, 'r')
     has_data = true
@@ -59,7 +59,7 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream'  do
       while has_data == true
         begin
           bytes = build_log_file.read_nonblock(1000)
-          bytes.force_encoding(Encoding::UTF_8) unless bytes.nil?
+          bytes.encode(Encoding::ASCII_8BIT) unless bytes.nil?
           out << bytes
           bytes = ''
         rescue IO::WaitReadable
@@ -69,7 +69,7 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream'  do
           retry
         rescue EOFError
           unless out.closed?
-            bytes.force_encoding(Encoding::UTF_8) unless bytes.nil?
+            bytes.encode(Encoding::ASCII_8BIT) unless bytes.nil? #UTF_8) unless bytes.nil?
             out  << bytes
             out  << '.'
             bytes = ''
@@ -88,6 +88,8 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream'  do
           out << bytes  unless out.closed?
           build_log_file.close
           out.close unless out.closed?
+        rescue StandardError => e
+        out << bytes  unless out.closed?
         end
       end
     end

@@ -50,7 +50,7 @@ class ManagedEngine < ManagedContainer
 
   def on_start(event_hash)
     set_running_user
-    STDERR.puts('ONS TART @service_builder.run_volume_builder  is a' +  @volume_service_builder.to_s )
+    #    STDERR.puts('ONS TART @service_builder.run_volume_builder  is a' +  @volume_service_builder.to_s )
     unless @volume_service_builder.nil? || @volume_service_builder.is_a?(FalseClass)
       STDERR.puts('Running @service_builder.run_volume_builder ' )
       @volume_service_builder.run_volume_builder(self, @cont_userid)
@@ -61,8 +61,8 @@ class ManagedEngine < ManagedContainer
 
   def volume_service_builder=(builder)
     #raise EnginesException,ew('Error alread run', :error) unless @volume_service_builder.nil?
-    STDERR.puts(' SET @service_builder.run_volume_builder ' +  builder.to_s )
-    #   @volume_service_builder = builder
+    #   STDERR.puts(' SET @service_builder.run_volume_builder ' +  builder.to_s )
+       @volume_service_builder = builder
   end
 
   def load_blueprint

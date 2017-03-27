@@ -1,11 +1,13 @@
 module SharedServices
   require_relative 'private/shared_volumes.rb'
   def share_service_to_engine(shared_service_params)
-    STDERR.puts( 'share_service_to_engine ' + shared_service_params.to_s)
+    #    STDERR.puts( 'share_service_to_engine ' + shared_service_params.to_s)
     existing_service = shared_service_params[:existing_service]
     shared_service = shared_service_params.dup
     shared_service.delete(:existing_service)
     shared_service[:service_owner] = existing_service[:parent_engine]
+     # FIXME: should raise error if not persistent
+    shared_service[:persistent] = existing_service[:persistent]
     shared_service[:service_owner_handle] = existing_service[:service_handle]
     SystemDebug.debug(SystemDebug.services,'sm using existing service', shared_service_params,existing_service,shared_service)
     service_query = shared_service.dup

@@ -18,9 +18,9 @@ def set_top_level_service_params(service_hash, container_name)
   return service_hash if service_hash.key?(:service_handle) && ! service_hash[:service_handle].nil?
 
   if service_def.key?(:service_handle_field) && !service_def[:service_handle_field].nil?
-    handle_field_sym = service_def[:service_handle_field].to_sym
+    handle_field_sym = service_def[:service_handle_field].to_sym    
     raise EnginesException.new(error_hash('Missing Service Handle field in variables', handle_field_sym)) unless service_hash[:variables].key?(handle_field_sym)
-    service_hash[:service_handle] = service_hash[:variables][handle_field_sym]
+    service_hash[:service_handle] = service_hash[:variables][handle_field_sym]   
   else
     service_hash[:service_handle] = container_name
   end

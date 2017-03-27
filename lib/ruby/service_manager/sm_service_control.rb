@@ -18,11 +18,11 @@ module SmServiceControl
     if is_service_persistent?(service_hash)
       SystemDebug.debug(SystemDebug.services, :create_and_register_service_persistr, service_hash)
       add_to_managed_service(service_hash)
-       system_registry_client.add_to_services_registry(service_hash)
+      system_registry_client.add_to_services_registry(service_hash)
     else
       SystemDebug.debug(SystemDebug.services, :create_and_register_service_nonpersistr, service_hash)
-     add_to_managed_service(service_hash)
-       system_registry_client.add_to_services_registry(service_hash)
+      add_to_managed_service(service_hash)
+      system_registry_client.add_to_services_registry(service_hash)
     end
     true
   end
@@ -32,13 +32,13 @@ module SmServiceControl
   def delete_and_remove_service(service_query)
     clear_error
     complete_service_query = set_top_level_service_params(service_query, service_query[:parent_engine])
-      STDERR.puts('delete_service ' + complete_service_query.to_s)
+    #  STDERR.puts('delete_service ' + complete_service_query.to_s)
     service_hash = retrieve_engine_service_hash(complete_service_query)
     return service_hash unless service_hash.is_a?(Hash)
 
     if service_hash[:shared] == true
-       remove_shared_service_from_engine(service_query)     
-        return system_registry_client.remove_from_managed_engine(service_hash)
+      remove_shared_service_from_engine(service_query)
+      return system_registry_client.remove_from_managed_engine(service_hash)
     end
     service_hash[:remove_all_data] = service_query[:remove_all_data]
     remove_from_managed_service(service_hash) ## continue if service_query.key?(:force)
@@ -49,9 +49,21 @@ module SmServiceControl
   def update_attached_service(params)
     clear_error
     set_top_level_service_params(params, params[:parent_engine])
+    if params[:persistent] == false
+      system_registry_client.update_attached_service(params)
+      remove_from_managed_service(params)
+      add_to_managed_service(params)
+    else
+      update_persistent_service(params)
+    end
+  end
+
+  def update_persistent_service(params)
+    # FIXME: check if variables are editable    
+    extisting_variables = retrieve_engine_service_hash(params)[:variables]
+    params[:variables].merge!(extisting_variables)
+    update_on_managed_service(params)
     system_registry_client.update_attached_service(params)
-    remove_from_managed_service(params)
-    add_to_managed_service(params)   
   end
 
   def clear_service_from_registry(service)

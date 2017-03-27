@@ -71,7 +71,6 @@ module ServiceConfigurations
 
   def update_configuration_on_service(service_param)
     raise EnginesException.new(error_hash('Missing Service name', service_param)) unless service_param.key?(:service_name)
-    STDERR.puts( ' loadManagedService ' + service_param.to_s + 'so loading ' + service_param[:service_name].to_s)
     begin
       service = loadManagedService(service_param[:service_name])
     rescue
@@ -83,7 +82,6 @@ module ServiceConfigurations
     # setting stopped contianer is ok as call can know the state, used to boot strap a config
     unless service.is_running?
       service_param[:pending] = true
-      STDERR.puts("core update  config " + service_param.to_s)
       service_manager.update_service_configuration(service_param)
       return true
     end
