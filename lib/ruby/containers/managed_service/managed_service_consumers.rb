@@ -10,19 +10,19 @@ module ManagedServiceConsumers
   def registered_consumers(params = nil)
     if params.nil?
       params = {
-      publisher_namespace: @publisher_namespace,
-      type_path: @type_path
+        publisher_namespace: @publisher_namespace,
+        type_path: @type_path
       }
-       @container_api.registered_with_service(params)
-    end    
-    registered_consumer(params)   
+      @container_api.registered_with_service(params)
+    end
+    registered_consumer(params)
   end
 
   def registered_consumer(params)
     service_params = {
-    publisher_namespace: @publisher_namespace,
-    type_path: @type_path,
-    parent_engine: params[:parent_engine]
+      publisher_namespace: @publisher_namespace,
+      type_path: @type_path,
+      parent_engine: params[:parent_engine]
     }
     service_params[:service_handle] = params[:service_handle] if params.key?(:service_handle)
     @container_api.get_registered_consumer(service_params)
@@ -33,10 +33,10 @@ module ManagedServiceConsumers
     raise EnginesException.new(error_hash('Cant register consumers as not running ', self.container_name))  if is_running? == false
     registered_hashes = registered_consumers
     return true unless registered_hashes.is_a?(Array)
-    registered_hashes.each do |service_hash|      
+    registered_hashes.each do |service_hash|
       add_consumer_to_service(service_hash) if service_hash[:persistent] == false
     end
-     true
+    true
   end
 
   def add_consumer(service_hash)
@@ -62,12 +62,18 @@ module ManagedServiceConsumers
     #for a reason
     return result unless result
     save_state
-     result
+    result
+  end
+
+  def update_consumer(service_hash)
+    raise EnginesException.new(error_hash('service missing cont_userid '+ container_name, service_hash)) unless check_cont_uid
+    raise EnginesException.new(error_hash('service startup not complete ' + container_name, service_hash)) unless is_startup_complete?
+    @container_api.update_consumer_on_service(self, service_hash)
   end
 
   private
 
-  def add_consumer_to_service(service_hash) 
+  def add_consumer_to_service(service_hash)
     raise EnginesException.new(error_hash('service missing cont_userid '+ container_name, service_hash)) unless check_cont_uid
     raise EnginesException.new(error_hash('service startup not complete ' + container_name, service_hash)) unless is_startup_complete?
     @container_api.add_consumer_to_service(self, service_hash)
