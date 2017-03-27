@@ -17,6 +17,7 @@ module ServiceApiConsumers
   end
   
   def update_consumer_on_service(c, service_hash)
+    raise EnginesException.new(error_hash('cannot not update consumer on non persistent service ' + service_hash, result)) unless @persistent == true
     cmd = ['/home/update_service.sh']
     SystemDebug.debug(SystemDebug.services,  :update_consumer_on_service, cmd.to_s)
     result = engines_core.exec_in_container({:container => c, :command_line => cmd, :log_error => true , :timeout => @@consumer_timeout, :data => service_hash.to_json})
