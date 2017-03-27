@@ -24,7 +24,7 @@ class RegistryHandler < ErrorsApi
       sleep 1
       wait += 1
       SystemDebug.debug(SystemDebug.registry,:wait_for_start)
-      return force_recreate if wait > 120
+      return force_registry_recreate if wait > 120
     end
     SystemDebug.debug(SystemDebug.registry, :restarted_registry)
     true
@@ -38,7 +38,7 @@ class RegistryHandler < ErrorsApi
       fix_problem(registry_service)
       sleep 12
       @registry_ip = registry_service.get_ip_str
-      force_recreate unless registry_service.is_running?
+      force_registry_recreate unless registry_service.is_running?
     end
     @registry_ip = registry_service.get_ip_str
     @registry_ip
@@ -94,7 +94,7 @@ class RegistryHandler < ErrorsApi
     end
   end
 
-  def force_recreate
+  def force_registry_recreate
     log_error_mesg("Forcing registry recreate", nil)
     @registry_ip = false
     registry_service = @system_api.loadSystemService('registry')
