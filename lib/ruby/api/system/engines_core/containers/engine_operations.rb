@@ -19,7 +19,7 @@ module EnginesOperations
     end
 
     if engine.has_container?
-      raise EnginesException.new(error_hash('Container Exists Please Destroy engine first' , params)) unless reinstall.is_a?(TrueClass)
+      raise EnginesException.new(error_hash('Container Exists Please Destroy engine first' , params)) unless params[:reinstall] .is_a?(TrueClass)
     end
     remove_engine_services(params) #engine_name, reinstall, params[:remove_all_data])
     engine.delete_image if engine.has_image? == true
