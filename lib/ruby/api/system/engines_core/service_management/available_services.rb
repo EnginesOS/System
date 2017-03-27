@@ -10,7 +10,7 @@ module AvailableServices
       non_persistent: []
     }
     dir = SystemConfig.ServiceMapTemplateDir + '/' + typename
-    STDERR.puts('looking at  ' + dir  )
+   # STDERR.puts('looking at  ' + dir  )
     if Dir.exist?(dir)
       Dir.foreach(dir) do |service_dir_entry|
         begin
@@ -19,7 +19,7 @@ module AvailableServices
           end
           if service_dir_entry.end_with?('.yaml')
             service = load_service_definition(dir + '/' + service_dir_entry)
-            STDERR.puts('looking at  ' + dir + '/' + service_dir_entry )
+        #    STDERR.puts('looking at  ' + dir + '/' + service_dir_entry )
             if service.nil? == false
               if service.is_a?(String)
                 log_error_mesg('service yaml load error', service)

@@ -150,7 +150,7 @@ module EnginesServerHost
       cmd = '/opt/engines/system/scripts/ssh/' + script_name + '.sh'
     end
 
-    STDERR.puts('RUN SERVER SCRIPT cmd'  + cmd.to_s)
+   # STDERR.puts('RUN SERVER SCRIPT cmd'  + cmd.to_s)
     Timeout.timeout(script_timeout) do
       return SystemUtils.execute_command(cmd, false, script_data)
     end

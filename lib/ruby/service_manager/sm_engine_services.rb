@@ -96,13 +96,13 @@ module SmEngineServices
   end
 
   def remove_engine_non_persistent_services(params)
-    STDERR.puts('remove_engine_services ' + params.to_s)
+    #   STDERR.puts('remove_engine_services ' + params.to_s)
     
     services = get_engine_nonpersistent_services(params) # find_engine_services_hashes(params)
     return services unless services.is_a?(Array)
-    STDERR.puts('remove_engine_services ' + services.to_s)
+    #   STDERR.puts('remove_engine_services ' + services.to_s)
     services.each do |s|
-      STDERR.puts('remove_engine_service ' + s.to_s)
+      #    STDERR.puts('remove_engine_service ' + s.to_s)
       begin
         system_registry_client.remove_from_managed_engine(s)
       rescue
@@ -126,7 +126,7 @@ module SmEngineServices
   # @ if :remove_all_data is not specified then the Persistant services registered with the engine are moved to the orphan services tree
   # @return true on success and false on fail
   def remove_managed_persistent_services(params)
-    STDERR.puts(' remove_managed_services ' + params.to_s)
+    #   STDERR.puts(' remove_managed_services ' + params.to_s)
     clear_error
     begin
       services = get_engine_persistent_services(params)  #system_registry_client.
