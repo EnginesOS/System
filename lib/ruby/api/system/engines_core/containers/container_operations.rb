@@ -30,15 +30,12 @@ module ContainerOperations
 
   def web_sites_for(container)
     urls = []
-    params = {}
-    params[:parent_engine] = container.container_name
-    if container.ctype == 'container'
-      params[:container_type] = 'container'
-    else
-      params[:container_type] = 'service'
-    end
-    params[:publisher_namespace]='EnginesSystem'
-    params[:type_path]='nginx'
+    params = {
+      parent_engine: container.container_name,
+      publisher_namespace: 'EnginesSystem',
+      type_path: 'nginx',
+      container_type: container.ctype
+    }    
     sites = find_engine_services(params)
     return urls if sites.is_a?(Array) == false
     sites.each do |site|
