@@ -7,8 +7,10 @@ module CoreBuildController
   def build_stopped()
     @build_thread.join unless @build_thread.nil?
     @build_thread.terminate unless @build_thread.nil?
+    @build_thread.exit unless @build_thread.nil?
     @build_thread = nil
     @current_builder = nil
+    STDERR.puts('BUIL STOPPED')
   end
 
   def abort_build()
