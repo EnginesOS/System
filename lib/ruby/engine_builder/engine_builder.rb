@@ -71,7 +71,7 @@ class EngineBuilder < ErrorsApi
     {
       level: :error,
       system: 'Engines Builder',
-      error_mesg: mesg,
+      error_mesg: msg,
       source: caller[1..6],
       error_log: tail_of_build_error_log,
       build_log: tail_of_build_log,
@@ -83,7 +83,7 @@ class EngineBuilder < ErrorsApi
     {
       level: :warning,
       system: 'Engines Builder',
-      error_mesg: mesg,
+      error_mesg: msg,
       params: params
     }
   end
