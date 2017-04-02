@@ -28,6 +28,8 @@ module CoreBuildController
 
   def build_engine(params)
     @build_controller = BuildController.new(self)  unless @build_controller
+    @build_thread.exit unless @build_thread.nil?
+    
     @build_thread = Thread.new { @build_controller.build_engine(params) }
     return true if @build_thread.alive?
     raise EnginesException.new(error_hash(params[:engine_name], 'Build Failed to start'))
