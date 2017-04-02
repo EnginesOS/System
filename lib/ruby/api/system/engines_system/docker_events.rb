@@ -37,29 +37,29 @@ module DockerEvents
       return no_container(event_hash) unless File.exist?(SystemConfig.RunDir + '/' + event_hash[:container_type] + 's/' + event_hash[:container_name] + '/running.yaml')
     end
 
-    inform_container(event_hash[:container_name] ,event_hash[:container_type] ,event_hash[:status],event_hash)
+    inform_container(event_hash[:container_name], event_hash[:container_type], event_hash[:status], event_hash)
 
     case event_hash[:status]
     when 'start'
-      inform_container_tracking(event_hash[:container_name] ,event_hash[:container_type] ,event_hash[:status])
+      inform_container_tracking(event_hash[:container_name], event_hash[:container_type], event_hash[:status])
     when 'oom'
-      inform_container_tracking(event_hash[:container_name] ,event_hash[:container_type] ,event_hash[:status])
+      inform_container_tracking(event_hash[:container_name], event_hash[:container_type], event_hash[:status])
     when 'stop'
-      inform_container_tracking(event_hash[:container_name] ,event_hash[:container_type] ,event_hash[:status])
+      inform_container_tracking(event_hash[:container_name], event_hash[:container_type], event_hash[:status])
     when 'pause'
-      inform_container_tracking(event_hash[:container_name] ,event_hash[:container_type] ,event_hash[:status])
+      inform_container_tracking(event_hash[:container_name], event_hash[:container_type], event_hash[:status])
     when 'unpause'
-      inform_container_tracking(event_hash[:container_name] ,event_hash[:container_type] ,event_hash[:status])
+      inform_container_tracking(event_hash[:container_name], event_hash[:container_type], event_hash[:status])
     when 'create'
-      inform_container_tracking(event_hash[:container_name] ,event_hash[:container_type] ,event_hash[:status])
+      inform_container_tracking(event_hash[:container_name], event_hash[:container_type], event_hash[:status])
     when 'destroy'
-      inform_container_tracking(event_hash[:container_name] ,event_hash[:container_type] ,event_hash[:status])
+      inform_container_tracking(event_hash[:container_name], event_hash[:container_type], event_hash[:status])
     when 'killed'
-      inform_container_tracking(event_hash[:container_name] ,event_hash[:container_type] ,event_hash[:status])
+      inform_container_tracking(event_hash[:container_name], event_hash[:container_type], event_hash[:status])
     when 'die'
-      inform_container_tracking(event_hash[:container_name] ,event_hash[:container_type] ,event_hash[:status])
+      inform_container_tracking(event_hash[:container_name], event_hash[:container_type], event_hash[:status])
     else
-      SystemDebug.debug(SystemDebug.container_events, 'Untracked event', event_name.to_s, c_name.to_s, ctype.to_s )
+      SystemDebug.debug(SystemDebug.container_events, 'Untracked event', event_hash.to_s )
     end
 
   rescue StandardError => e
