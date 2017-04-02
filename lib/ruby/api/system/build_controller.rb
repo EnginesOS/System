@@ -61,8 +61,8 @@ class BuildController
     return build_failed(params, 'No Builder') unless @engine_builder.is_a?(EngineBuilder)
     @engine = @engine_builder.build_from_blue_print
     @build_error = @engine_builder.last_error
-    return build_failed(@build_params, @build_error) unless @engine.is_a?(ManagedEngine)
-    return build_failed(@build_params, @build_error) unless @engine.is_active?
+#    return build_failed(@build_params, @build_error) unless @engine.is_a?(ManagedEngine)
+#    return build_failed(@build_params, @build_error) unless @engine.is_active?
     build_complete(@build_params)
   end
 
@@ -94,7 +94,9 @@ class BuildController
   end
 
   def build_complete(build_params)
-    SystemStatus.build_complete(build_params)
+    bp = build_params.dup
+    bp.delete(:service_builder)
+    SystemStatus.build_complete(bp)
     @core_api.build_stopped()
     true
   end
