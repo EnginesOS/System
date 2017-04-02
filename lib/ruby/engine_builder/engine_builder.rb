@@ -281,7 +281,7 @@ class EngineBuilder < ErrorsApi
         @container.delete_image if @container.has_image?
       end
       @service_builder.service_roll_back
-      @core_api.remove_engine(@build_params[:engine_name])
+      @core_api.delete_engine_and_services(@build_params)
     end
 
     #    params = {}
