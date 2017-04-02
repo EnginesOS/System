@@ -2,7 +2,7 @@ module ContainerCreation
   def create_engine_container
     log_build_output('Creating Deploy Image')
     @container = create_managed_container
-    raise EngineBuilderException.new('Failed to create Managed Container') unless @container.is_a?(ManagedEngine)
+    raise EngineBuilderException.new(error_hash('Failed to create Managed Container')) unless @container.is_a?(ManagedEngine)
     @service_builder.create_non_persistent_services(@blueprint_reader.services)
   end
 
@@ -28,7 +28,7 @@ module ContainerCreation
   def launch_deploy(managed_container)
     log_build_output('Launching Engine')
     managed_container.create_container
-    raise EngineBuilderException.new('Failed to create Engine container from Image') unless managed_container.has_container?     
+    raise EngineBuilderException.new(error_hash('Failed to create Engine container from Image')) unless managed_container.has_container?     
     save_engine_built_configuration(managed_container)
   end
 

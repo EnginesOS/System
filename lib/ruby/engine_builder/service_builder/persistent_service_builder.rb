@@ -4,7 +4,7 @@ module PersistantServiceBuilder
     services.each do | service_hash |
       SystemDebug.debug(SystemDebug.builder,:servicer_hash,service_hash)
       service_def = software_service_definition(service_hash)
-      raise EngineBuilderException.new('no matching service definition for ' + service_hash.to_s ,self) if service_def.nil?
+      raise EngineBuilderException.new(error_hash('no matching service definition for ' + service_hash.to_s, self)) if service_def.nil?
       if service_def[:persistent]
         service_hash[:persistent] = true
         process_persistent_service(service_hash, environ, use_existing)
@@ -33,13 +33,13 @@ module PersistantServiceBuilder
       service_hash[:fresh] = true
     else # elseif over attach to existing true attached to existing
       service_hash[:fresh] = false
-      raise EngineBuilderException.new('Failed to build cannot over write ' + service_hash[:service_handle].to_s + ' Service Found', self)
+      raise EngineBuilderException.new(error_hash('Failed to build cannot over write ' + service_hash[:service_handle].to_s + ' Service Found', self))
     end
 
     if service_hash[:type_path] == 'filesystem/local/filesystem'
       SystemDebug.debug(SystemDebug.builder,:local_file_service ,service_hash)
       result = add_file_service(service_hash)
-      raise EngineBuilderException.new('failed to create fs',self) unless result
+      raise EngineBuilderException.new(error_hash('failed to create fs', self)) unless result
     end
     SystemDebug.debug(SystemDebug.builder,:builder_attach_service, service_hash)
     @templater.fill_in_dynamic_vars(service_hash)
@@ -55,7 +55,7 @@ module PersistantServiceBuilder
 
   def match_service_to_existing(service_hash, use_existing)
     return false if use_existing.nil?
-    raise EngineBuilderException.new(" Existing Attached services should be an array", use_existing) unless use_existing.is_a?(Array)
+    raise EngineBuilderException.new(error_hash(" Existing Attached services should be an array", use_existing)) unless use_existing.is_a?(Array)
     use_existing.each do |existing_service|
       SystemDebug.debug(SystemDebug.builder, :create_type, existing_service)
       next if existing_service[:create_type] == 'new'
@@ -101,7 +101,7 @@ module PersistantServiceBuilder
       return true
     end
     # end
-    raise EngineBuilderException.new('failed to share_service_to_engine(params)', params)
+    raise EngineBuilderException.new(error_hash('failed to share_service_to_engine(params)', params))
 
   end
 

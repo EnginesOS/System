@@ -145,7 +145,7 @@ class EngineBuilder < ErrorsApi
       #   STDERR.puts('BP Schema :' + @blueprint[:schema].to_s + ':' )
       version =  @blueprint[:schema][:version][:major]
       unless File.exist?('/opt/engines/lib/ruby/engine_builder/blueprint_readers/' + version.to_s + '/versioned_blueprint_reader.rb')
-        raise EngineBuilderException.new('Failed to create Managed Container invalid blueprint schema')
+        raise EngineBuilderException.new(error_hash('Failed to create Managed Container invalid blueprint schema'))
       end
       require_relative 'blueprint_readers/' + version.to_s + '/versioned_blueprint_reader.rb'
     end
@@ -196,7 +196,7 @@ class EngineBuilder < ErrorsApi
       rescue
         l = ''
       end
-      raise EngineBuilderException.new('Engine Stopped:' + l.to_s)
+      raise EngineBuilderException.new(error_hash('Engine Stopped:' + l.to_s))
     end
     log_build_output('') # force EOL to end the ...
     true

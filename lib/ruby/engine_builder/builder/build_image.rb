@@ -1,7 +1,7 @@
 def create_engine_image
   build_init
   if @core_api.image_exist?(@build_params[:engine_name]) == false
-    raise EngineBuilderException.new('Built Image not found')
+    raise EngineBuilderException.new(error_hash('Built Image not found'))
   end
 end
 

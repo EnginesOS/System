@@ -230,7 +230,7 @@ class BluePrintReader
       end
       pkg_module_type = pkg_module[:module_type]
       if pkg_module_type.nil? == true
-        raise EngineBuilderException.new('pkg Module missing module_type', pkg_module)
+        raise EngineBuilderException.new(error_hash('pkg Module missing module_type', pkg_module))
       end
       modname = pkg_module[:module_name]
       if pkg_module_type == 'pear'
@@ -244,7 +244,7 @@ class BluePrintReader
       elsif pkg_module_type == 'npm'
         @npm_modules.push(modname)
       else
-        raise EngineBuilderException.new('pkg module_type ' + pkg_module_type + ' Unknown for ' + modname)
+        raise EngineBuilderException.new(error_hash('pkg module_type ' + pkg_module_type + ' Unknown for ' + modname))
       end
     end
      true
