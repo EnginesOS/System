@@ -42,14 +42,17 @@ module SmEngineServices
     services = nil
     begin
       services = get_engine_nonpersistent_services(params)
+      STDERR.puts('removing_services ' + serivces.to_s)
     rescue
+      return # No services
     end
-    return services  unless services.is_a?(Array)
+
     services.each do |service_hash|
       begin
         system_registry_client.remove_from_services_registry(service_hash)
         remove_from_managed_service(service_hash)
-      rescue
+      rescue StandardError => e
+        STDERR.puts('removing_services excepti' + e.to_s + ':' + e.backtrace.to_s)
       end
     end
     true
