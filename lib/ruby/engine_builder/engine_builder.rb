@@ -3,7 +3,7 @@ require 'git'
 require 'fileutils'
 require 'yajl'
 require '/opt/engines/lib/ruby/api/system/errors_api.rb'
-require '/opt/engines/lib/ruby/exceptions/engne_builder_exception.rb'
+require '/opt/engines/lib/ruby/exceptions/engine_builder_exception.rb'
 class EngineBuilder < ErrorsApi
   require '/opt/engines/lib/ruby/api/system/container_state_files.rb'
   require_relative 'builder_public.rb'
