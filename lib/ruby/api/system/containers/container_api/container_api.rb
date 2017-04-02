@@ -10,6 +10,9 @@ class ContainerApi < ErrorsApi
   require_relative 'container_api_events.rb' 
   include ContainerApiEvents
   
+  require_relative 'engines_api_system.rb'
+  include EnginesApiSystem
+  
   require_relative 'container_api_docker_actions.rb'
   include ContainerApiDockerActions
 
@@ -28,8 +31,7 @@ class ContainerApi < ErrorsApi
   require_relative 'engine_api_image_actions.rb'
   include EngineApiImageActions
 
-  require_relative 'engines_api_system.rb'
-  include EnginesApiSystem
+
   
   require_relative 'core_api_access.rb'
   include CoreApiAccess
