@@ -3,7 +3,6 @@ module SMAttachedServices
   # @objectName [String]
   # @identifier [String]
   def services_attached_to(objectName, identifier)
-    clear_error
     SystemDebug.debug(SystemDebug.services, 'services_on_objects_', objectName)
     SystemDebug.debug(SystemDebug.services, 'services_on_objects_', identifier)
     params = {}

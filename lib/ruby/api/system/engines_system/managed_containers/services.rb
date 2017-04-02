@@ -49,7 +49,6 @@ module Services
   end
 
   def _list_services(type='service')
-    clear_error
     ret_val = []
     Dir.foreach(SystemConfig.RunDir + '/' + type +'s/') do |contdir|
       yfn = SystemConfig.RunDir + '/' + type +'s/' + contdir + '/config.yaml'

@@ -1,7 +1,6 @@
 class BlueprintApi < ErrorsApi
   require '/opt/engines/lib/ruby/api/system/container_state_files.rb'
   def save_blueprint(blueprint, container)
-    clear_error
     # return log_error_mesg('Cannot save incorrect format',blueprint) unless blueprint.is_a?(Hash)
     SystemDebug.debug(SystemDebug.builder, blueprint.class.name)
     state_dir = ContainerStateFiles.container_state_dir(container)
@@ -21,7 +20,6 @@ class BlueprintApi < ErrorsApi
   end
 
   def load_blueprint(container)
-    clear_error
     state_dir = ContainerStateFiles.container_state_dir(container)
     raise EnginesException.new(error_hash('No Statedir', container.container_name)) unless File.directory?(state_dir)
     statefile = state_dir + '/blueprint.json'

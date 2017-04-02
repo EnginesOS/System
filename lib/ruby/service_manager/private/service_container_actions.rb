@@ -2,7 +2,6 @@
 #@return result boolean
 #@param service_hash [Hash]
 def add_to_managed_service(service_hash)
-  clear_error
   SystemDebug.debug(SystemDebug.services, :add_to_managed_service, service_hash)
   service =  @core_api.load_software_service(service_hash)
   return service unless service.is_a?(ManagedService)
@@ -25,7 +24,6 @@ end
 # @param service_hash [Hash]
 # remove persistent services only if service is up
 def remove_from_managed_service(service_hash)
-  clear_error
   service =  @core_api.load_software_service(service_hash)
   return service unless service.is_a?(ManagedService)
   return service.remove_consumer(service_hash) if service.persistent == false || service.is_running?
