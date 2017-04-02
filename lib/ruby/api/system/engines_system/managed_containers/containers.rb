@@ -7,7 +7,7 @@ def rotate_container_log(container_id, retention = 10)
 end
   
   def save_container(container)
-    clear_error
+
     # FIXME:
 #    api = container.container_api.dup
 #    container.container_api = nil
@@ -49,7 +49,6 @@ end
 
 
   def is_startup_complete(container)
-    clear_error
      File.exist?(container_state_dir(container) + '/run/flags/startup_complete')
   end
 

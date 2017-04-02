@@ -9,7 +9,6 @@ module Engines
     end
   end
   def list_managed_engines
-    clear_error
     ret_val = []
     begin
       Dir.entries(SystemConfig.RunDir + '/containers/').each do |contdir|
@@ -30,13 +29,10 @@ module Engines
   end
 
   def set_engine_network_properties(engine, params)
-    clear_error
     set_engine_hostname_details(engine, params) if set_engine_web_protocol_properties(engine, params)
   end
 
   def set_engine_web_protocol_properties(engine, params)
-    clear_error
-
     protocol = params[:http_protocol]
     raise EnginesException.new(error_hash('no protocol field')) if protocol.nil?
     protocol.downcase
@@ -53,7 +49,6 @@ module Engines
   end
 
   def set_engine_hostname_details(container, params)
-    clear_error
     #    p :set_engine_network_properties
     #    p container.container_name
     #    p params

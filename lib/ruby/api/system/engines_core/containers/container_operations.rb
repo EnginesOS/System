@@ -29,7 +29,6 @@ module ContainerOperations
   end
 
   def web_sites_for(container)
-    clear_error
     urls = []
     params = {}
     params[:parent_engine] = container.container_name

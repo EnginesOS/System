@@ -5,7 +5,6 @@ module SmServiceControl
   # @ return true if successful or false if failed
   # no_engien used by  service builder it ignore no engine error
   def create_and_register_service(service_hash) # , no_engine = false)
-    clear_error
     SystemDebug.debug(SystemDebug.services, :sm_create_and_register_service, service_hash)
     #register with Engine
     unless is_soft_service?(service_hash)
@@ -30,7 +29,6 @@ module SmServiceControl
   #remove service matching the service_hash from both the managed_engine registry and the service registry
   # @return false
   def delete_and_remove_service(service_query)
-    clear_error
     complete_service_query = set_top_level_service_params(service_query, service_query[:parent_engine])
     #  STDERR.puts('delete_service ' + complete_service_query.to_s)
     service_hash = retrieve_engine_service_hash(complete_service_query)
@@ -47,7 +45,6 @@ module SmServiceControl
   end
 
   def update_attached_service(params)
-    clear_error
     set_top_level_service_params(params, params[:parent_engine])
     if params[:persistent] == false
       system_registry_client.update_attached_service(params)

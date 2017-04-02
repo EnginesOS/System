@@ -94,7 +94,6 @@ class DockerFileBuilder
     write_line('VOLUME /home/fs/')
     write_clear_env_variables
     @docker_file.close
-
   end
 
   def finalise_files

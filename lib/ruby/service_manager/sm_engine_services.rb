@@ -4,19 +4,15 @@ module SmEngineServices
   #  system_registry_client.find_engine_services(params)
   #end
   def find_engine_services_hashes(params)
-    clear_error
     system_registry_client.find_engine_services_hashes(params)
   end
   #
 
   def retrieve_engine_service_hash(params)
-    clear_error
     system_registry_client.retrieve_engine_service_hash(params)
   end
 
   # @return [Array] of all service_hashs marked persistence true for :engine_name
-  # @return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
-  #on recepit of an empty array any non critical error will be in  this object's  [ServiceManager] last_error method
   def get_engine_persistent_services(params)
     system_registry_client.get_engine_persistent_services(params)
   end
@@ -24,8 +20,8 @@ module SmEngineServices
   # @return [Array] of all service_hashs marked persistence false for :engine_name
   # required keys
   # :engine_name
-  # @return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
-  #on recepit of an empty array any non critical error will be in  this object's  [ServiceManager] last_error method
+ 
+
   def get_engine_nonpersistent_services(params)
     system_registry_client.get_engine_nonpersistent_services(params)
   end
@@ -34,17 +30,13 @@ module SmEngineServices
   #for each servie_hash load_service_container and remove hash
   #remove from service registry even if container is down
   def deregister_non_persistent_services(engine)
-    clear_error
-    params = {
+    begin
+      services = get_engine_nonpersistent_services({
       parent_engine: engine.container_name,
       container_type: engine.ctype
-    }
-    services = nil
-    begin
-      services = get_engine_nonpersistent_services(params)
-      STDERR.puts('removing_services ' + services.to_s)
-    rescue
-      STDERR.puts('NO services ' +  engine.container_name.to_s)
+    })
+    rescue StandardError => e
+      STDERR.puts('NO services ' +  engine.container_name.to_s + ';' + e.to_s + ':' + e.backtrace.to_s)
       return # No services
     end
 
@@ -60,33 +52,27 @@ module SmEngineServices
   end
 
   def list_persistent_services(engine)
-    clear_error
-    params = {
+    get_engine_persistent_services({
       parent_engine: engine.container_name,
       container_type: engine.ctype
-    }
-    get_engine_persistent_services(params)
+    })
   end
 
   def list_non_persistent_services(engine)
-    clear_error
-    params = {
+    get_engine_nonpersistent_services({
       parent_engine: engine.container_name,
       container_type: engine.ctype
-    }
-    get_engine_nonpersistent_services(params)
+    })
   end
 
   #service manager get non persistent services for engine_name
   #for each servie_hash load_service_container and add hash
   #add to service registry even if container is down
   def register_non_persistent_services(engine)
-    clear_error
-    params = {
+    services = get_engine_nonpersistent_services({
       parent_engine: engine.container_name,
       container_type: engine.ctype
-    }
-    services = get_engine_nonpersistent_services(params)
+    })
     SystemDebug.debug(SystemDebug.services,:register_non_persistent, services)
     return services  unless services.is_a?(Array)
     services.each do |service_hash|
@@ -130,8 +116,6 @@ module SmEngineServices
   # @ if :remove_all_data is not specified then the Persistant services registered with the engine are moved to the orphan services tree
   # @return true on success and false on fail
   def remove_managed_persistent_services(params)
-    #   STDERR.puts(' remove_managed_services ' + params.to_s)
-    clear_error
     begin
       services = get_engine_persistent_services(params)  #system_registry_client.
     rescue # StandardError => e

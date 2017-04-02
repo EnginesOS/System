@@ -6,7 +6,7 @@ module FirstRunPasswords
     service_param[:variables] = {}
     service_param[:variables][:db_master_pass] = password
     return true if @api.update_service_configuration(service_param)
-    log_error_mesg('mysql_password_configurator ', @api.last_error)
+
   end
 
   def console_password_configurator(password)
@@ -16,20 +16,20 @@ module FirstRunPasswords
     service_param[:variables] = Hash.new
     service_param[:variables][:console_password] = password
     return true if @api.update_service_configuration(service_param)
-    log_error_mesg('console_password_configurator ', @api.last_error)
+
   end
 
   def setup_ssh_key
 
     if @first_run_params.key?(:ssh_key) == true
-      return log_error_mesg('Fail to setup ssh key ', api.last_error) unless ssh_key_configurator(@first_run_params[:ssh_key])
+      ssh_key_configurator(@first_run_params[:ssh_key])
     end
     true
   end
 
   def setup_system_password(password, email)
     return true if @api.init_system_password(password, email)
-    log_error_mesg('system_password_configurator ', @api.last_error)
+  
   end
 
   def ssh_key_configurator(key)
@@ -39,7 +39,7 @@ module FirstRunPasswords
     service_param[:variables] = {}
     service_param[:variables][:ssh_master_key] = key
     return true if @api.update_service_configuration(service_param)
-    log_error_mesg('ssh_key_configurator ', @api.last_error)
+
   end
 
   def set_passwords()
