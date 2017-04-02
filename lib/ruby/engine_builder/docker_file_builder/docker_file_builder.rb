@@ -26,7 +26,7 @@ class DockerFileBuilder
   def count_layer
     @layer_count += 1
     if @layer_count > @max_layers
-      raise EngineBuilderException.new("More than 75 layers!")
+      raise EngineBuilderException.new(error_hash("More than 75 layers!"))
     end
   end
 

@@ -33,8 +33,8 @@ class SystemConfig
   @@DBHost = 'mysql.engines.internal'
   @@internal_domain = 'engines.internal'
 
-  @@MinimumFreeRam = 64
-  @@MinimumBuildRam  = @@MinimumFreeRam + 128
+  @@MinimumFreeRam = 32
+  @@MinimumBuildRam  = @@MinimumFreeRam + 150
   def SystemConfig.MinimumBuildRam
     @@MinimumBuildRam
   end
