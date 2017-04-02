@@ -96,7 +96,7 @@ class BuildController
   def build_complete(build_params)
     bp = build_params.dup
     bp.delete(:service_builder)
-    SystemStatus.build_complete(bp)
+    SystemStatus.build_complete(bp)    
     @core_api.build_stopped()
     true
   end
