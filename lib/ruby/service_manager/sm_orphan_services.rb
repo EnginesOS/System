@@ -46,7 +46,6 @@ module SmOrphanServices
   # @returns boolean indicating success
   def remove_orphaned_service(service_query_hash)
     SystemDebug.debug(SystemDebug.orphans, :remove_orphaned_service, service_query_hash)
-    clear_error
     service_hash = retrieve_orphan(service_query_hash)
     if service_query_hash[:remove_all_data] == 'none'
       service_hash[:remove_all_data] = 'none'
@@ -62,8 +61,6 @@ module SmOrphanServices
   # :publisher_namespace
   # optional
   #:path_type
-  # @return's nil on failure with error accessible from this object's  [ServiceManager] last_error method
-  #on recepit of an empty array any non critical error will be in  this object's  [ServiceManager] last_error method
   def orphaned_services(params)
     system_registry_client.orphaned_services(params)
   end

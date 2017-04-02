@@ -2,7 +2,6 @@ module ServiceOperations
 
   require_relative 'service_manager_access.rb'
   def signal_service_process(pid, sig, name)
-    clear_error
     container = loadManagedService(name)
     @docker_api.signal_container_process(pid, sig, container)
   end
@@ -59,13 +58,11 @@ module ServiceOperations
 
   # @return an [Array] of service_hashes regsitered against the Service params[:publisher_namespace] params[:type_path]
   def registered_with_service(service_hash)
-    clear_error
     check_service_hash(service_hash)
     service_manager.registered_with_service(service_hash)
   end
 
   def update_attached_service(service_hash)
-    clear_error
     check_engine_service_hash(service_hash)
     ahash = retrieve_engine_service_hash(service_hash)
     raise EnginesException.new(error_hash("Cannot update a shared service",service_hash)) if ahash[:shared] == true

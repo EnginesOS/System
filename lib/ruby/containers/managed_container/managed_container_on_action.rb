@@ -22,7 +22,6 @@ module ManagedContainerOnAction
       end
       save_state
     }
-
   end
 
   def on_create(event_hash)
@@ -35,29 +34,26 @@ module ManagedContainerOnAction
       @has_run = false
       @container_api.apply_schedules(self)
       save_state    
-      SystemDebug.debug(SystemDebug.container_events,:ON_Create_Finised,event_hash)
+      SystemDebug.debug(SystemDebug.container_events, :ON_Create_Finised, event_hash)
     }
     start_container
   end
 
   def on_stop(what)
-    SystemDebug.debug(SystemDebug.container_events,:ONStop_CALLED,what)
+    SystemDebug.debug(SystemDebug.container_events, :ONStop_CALLED, what)
     @had_out_memory = @out_of_memory
     @out_of_memory = false
     save_state
-    return true if @consumer_less
+    #return true if @consumer_less    
     # deregister_with_dns # Really its in the following nowMUst register each time as IP Changes
     @container_api.deregister_non_persistent_services(self)
-    true
-
   end
 
   def out_of_mem(what)
-    SystemDebug.debug(SystemDebug.container_events,:OUTOF_MEM_CALLED,what)
+    SystemDebug.debug(SystemDebug.container_events, :OUTOF_MEM_CALLED, what)
     @out_of_memory = true
     @had_out_memory = true
     save_state
-
   end
 
 end

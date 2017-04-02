@@ -2,7 +2,6 @@ module ContainerNetworkMetrics
   # FIXME: Kludge should read from network namespace /proc ?
   def get_container_network_metrics(container)
     ret_val = {}
-    clear_error
 
     def error_result
       ret_val = {}

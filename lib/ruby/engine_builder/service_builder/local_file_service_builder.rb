@@ -1,6 +1,5 @@
 module LocalFileServiceBuilder
   def run_volume_builder(container, username)
-    clear_error
     volbuilder = @core_api.loadManagedUtility('fsconfigurator')
     result = volbuilder.execute_command(:setup_engine, {
     volume: '/',
@@ -29,7 +28,6 @@ module LocalFileServiceBuilder
   protected
 
   def get_volbuild_volmaps(container)
-    clear_error
     state_dir = SystemConfig.RunDir + '/containers/' + container.container_name + '/run/'
     log_dir = SystemConfig.SystemLogRoot + '/containers/' + container.container_name
     volume_option = ' -v ' + state_dir + ':/client/state:rw '

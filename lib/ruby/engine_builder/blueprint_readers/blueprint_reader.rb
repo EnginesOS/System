@@ -11,7 +11,6 @@ class BluePrintReader
 
   attr_reader :persistent_files,
   :persistent_dirs,
-  :last_error,
   :mapped_ports,
   :environments,
   :recursive_chmods,

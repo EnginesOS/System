@@ -99,9 +99,9 @@ module TaskAtHand
     log_exception(e)
   end
 
-  def process_container_event(event,event_hash)
+  def process_container_event(event, event_hash)
     expire_engine_info
-    SystemDebug.debug(SystemDebug.container_events, :PROCESS_CONTAINER_vents, @container_name,  event,event_hash)
+    SystemDebug.debug(SystemDebug.container_events, :PROCESS_CONTAINER_vents, @container_name, event, event_hash)
     case event
     when 'create'
       on_create(event_hash)

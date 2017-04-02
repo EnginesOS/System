@@ -1,5 +1,4 @@
 module DockerImages
-
   def pull_image(container)
     @docker_comms.pull_image(container)
   end
@@ -9,7 +8,6 @@ module DockerImages
   end
 
   def delete_image(container)
-    clear_error
     @docker_comms.delete_container_image(container)
   end
 

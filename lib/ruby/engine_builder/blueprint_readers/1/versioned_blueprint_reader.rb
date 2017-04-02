@@ -110,8 +110,7 @@ class VersionedBlueprintReader < BluePrintReader
        end
        pkg_module_type = pkg_module[:type]
        if pkg_module_type.nil? == true
-         @last_error = 'pkg Module missing type'
-         return false
+         raise EngineBuilderException.new(error_hash('pkg Module missing type'))
        end
        
        modname = pkg_module[:name]
@@ -128,8 +127,7 @@ class VersionedBlueprintReader < BluePrintReader
        elsif pkg_module_type == 'npm'
          @npm_modules.push(modname)
        else
-         @last_error = 'pkg module_type ' + pkg_module_type + ' Unknown for ' + modname
-         return false
+         raise EngineBuilderException.new(error_hash('pkg module_type ' + pkg_module_type + ' Unknown for ' + modname))
        end
      end
       true

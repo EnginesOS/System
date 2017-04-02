@@ -42,7 +42,6 @@ module EnginesOperations
 
   #install from fresh copy of blueprint in repository
   def reinstall_engine(engine)
-    clear_error
     engine.destroy_container(true) if engine.has_container?
     params = {
       engine_name: engine.container_name,
