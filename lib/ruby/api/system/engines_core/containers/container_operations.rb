@@ -36,6 +36,7 @@ module ContainerOperations
       type_path: 'nginx',
       container_type: container.ctype
     }    
+    STDERR.puts(' WEB SITEs ' + params.to_s)
     sites = find_engine_services(params)
     return urls if sites.is_a?(Array) == false
     sites.each do |site|
