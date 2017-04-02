@@ -67,7 +67,7 @@ module DockerEvents
   end
 
   def no_container(event_hash)
-    SystemDebug.debug(SystemDebug.container_events,'A NO Managed CONTAINER EVENT')
+    SystemDebug.debug(SystemDebug.container_events, 'A NO Managed CONTAINER EVENT')
     #FIXME track non system containers here
     #use to clear post build crash
     #alert if present when not building
