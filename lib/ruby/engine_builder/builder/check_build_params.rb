@@ -1,5 +1,6 @@
 module CheckBuildParams
   def check_build_params(params)
+    raise EngineBuilderException.new('empty container name', params) if params[:engine_name].nil? || params[:engine_name] == ''
     check_name(params)
     check_host(params)
     true

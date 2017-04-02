@@ -95,10 +95,7 @@ class EngineBuilder < ErrorsApi
   end
 
   def setup_build
-
-    #   r  = check_build_params
-    #return r if r.is_a?(EnginesError)
-    return log_error_mesg('empty container name', @build_params) if @build_params[:engine_name].nil? || @build_params[:engine_name] == ''
+    check_build_params(@build_params)
     @build_params[:engine_name].freeze
     @build_params[:image] = @build_params[:engine_name].gsub(/[-_]/,'')
     @build_name = File.basename(@build_params[:repository_url]).sub(/\.git$/, '')
@@ -108,11 +105,11 @@ class EngineBuilder < ErrorsApi
     @result_mesg = 'Aborted Due to Errors'
     @first_build = true
     @attached_services = []
-    return "error" unless create_templater
-    return "error" unless process_supplied_envs(@build_params[:variables])
+    create_templater
+    process_supplied_envs(@build_params[:variables])
     @runtime =  ''
-    return "error" unless create_build_dir
-    return "error" unless setup_log_output
+    create_build_dir
+    setup_log_output
     @rebuild = false
     @data_uid = '11111'
     @data_gid = '11111'
@@ -125,31 +122,23 @@ class EngineBuilder < ErrorsApi
   end
 
   def volumes
-    return @service_builder.volumes
+     @service_builder.volumes
   end
 
   def rebuild_managed_container(engine)
     @engine = engine
     @rebuild = true
     log_build_output('Starting Rebuild')
-    return log_error_mesg('Failed to Backup Last build', self) unless backup_lastbuild
-    return log_error_mesg('Failed to setup rebuild', self) unless setup_rebuild
+    backup_lastbuild
+    setup_rebuild
     build_container
   end
 
-  def build_failed(errmesg)
-    @build_params[:error_mesg] = errmesg
-    SystemStatus.build_failed(@build_params)
-    #log_build_errors(errmesg)
-    log_build_errors('Engine Build Aborted Due to:' + errmesg.to_s)
-    @result_mesg = 'Error.' + errmesg.to_s
-    post_failed_build_clean_up
-  end
+
 
   def process_blueprint
     log_build_output('Reading Blueprint')
     @blueprint = load_blueprint
-    return post_failed_build_clean_up if @blueprint.nil? || @blueprint == false
     version = 0
     unless @blueprint.key?(:schema)
       require_relative 'blueprint_readers/0/versioned_blueprint_reader.rb'
@@ -157,8 +146,7 @@ class EngineBuilder < ErrorsApi
       #   STDERR.puts('BP Schema :' + @blueprint[:schema].to_s + ':' )
       version =  @blueprint[:schema][:version][:major]
       unless File.exist?('/opt/engines/lib/ruby/engine_builder/blueprint_readers/' + version.to_s + '/versioned_blueprint_reader.rb')
-        log_build_errors('Failed to create Managed Container invalid blueprint schema')
-        return post_failed_build_clean_up
+        raise EngineBuilderException.new('Failed to create Managed Container invalid blueprint schema')
       end
       require_relative 'blueprint_readers/' + version.to_s + '/versioned_blueprint_reader.rb'
     end
@@ -209,9 +197,7 @@ class EngineBuilder < ErrorsApi
       rescue
         l = ''
       end
-      log_build_output('Engine Stopped:' + l.to_s)
-      @result_mesg = 'Engine Stopped! ' + l.to_s
-      return false
+      raise EngineBuilderException.new('Engine Stopped:' + l.to_s)
     end
     log_build_output('') # force EOL to end the ...
     true
@@ -234,7 +220,8 @@ class EngineBuilder < ErrorsApi
     SystemStatus.build_complete(@build_params)
     @container
   rescue StandardError => e
-    log_exception(e)
+    #log_exception(e)
+    log_build_errors('Engine Build Aborted Due to:' + e.to_s)
     post_failed_build_clean_up
     raise e
   ensure
@@ -293,9 +280,8 @@ class EngineBuilder < ErrorsApi
         @container.destroy_container if @container.has_container?
         @container.delete_image if @container.has_image?
       end
-
-      return log_error_mesg('Failed to remove ' + @service_builder.last_error.to_s ,self) unless @service_builder.service_roll_back
-      return log_error_mesg('Failed to remove ' + @core_api.last_error.to_s ,self) unless @core_api.remove_engine(@build_params[:engine_name])
+      @service_builder.service_roll_back
+      @core_api.remove_engine(@build_params[:engine_name])
     end
 
     #    params = {}
@@ -345,9 +331,6 @@ class EngineBuilder < ErrorsApi
     super
   end
 
-  def abort_build
-    post_failed_build_clean_up
-  end
 
   def basedir
     SystemConfig.DeploymentDir + '/' + @build_name.to_s

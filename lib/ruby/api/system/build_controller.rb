@@ -101,7 +101,7 @@ class BuildController
     @build_error = err
     @core_api.build_stopped()
     SystemUtils.log_error_mesg(err.to_s, params)
-    Thread.new { SystemStatus.build_failed(params) }
+    SystemStatus.build_failed(params) 
     raise EngnesException.new(error_hash(params[:engine_name] +  err.to_s + params.to_s, :build_error))
   end
 

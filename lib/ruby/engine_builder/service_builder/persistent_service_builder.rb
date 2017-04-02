@@ -4,7 +4,7 @@ module PersistantServiceBuilder
     services.each do | service_hash |
       SystemDebug.debug(SystemDebug.builder,:servicer_hash,service_hash)
       service_def = software_service_definition(service_hash)
-      return log_error_mesg('no matching service definition for ' + service_hash.to_s ,self) if service_def.nil?
+      raise EngineBuilderException.new('no matching service definition for ' + service_hash.to_s ,self) if service_def.nil?
       if service_def[:persistent]
         service_hash[:persistent] = true
         process_persistent_service(service_hash, environ, use_existing)
