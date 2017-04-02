@@ -15,7 +15,7 @@ module ServiceManagerOperations
   end
 
   def find_engine_services_hashes(hash)
-    hash[:container_type] = 'container' unless params.key?(:container_type)
+    hash[:container_type] = 'container' unless hash.key?(:container_type)
     service_manager.find_engine_services_hashes(hash)   
   end
   
