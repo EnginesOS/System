@@ -3,8 +3,6 @@ module BuildOutput
     SystemDebug.debug(SystemDebug.builder,'setup_log_output ')
     @log_file = File.new(SystemConfig.DeploymentDir + '/build.out', File::CREAT | File::TRUNC | File::RDWR, 0644)
     @err_file = File.new(SystemConfig.DeploymentDir + '/build.err', File::CREAT | File::TRUNC | File::RDWR, 0644)
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def log_build_output(line)
@@ -13,9 +11,6 @@ module BuildOutput
     line.force_encoding(Encoding::UTF_8)
     @log_file.puts(line)
     @log_file.flush
-  rescue StandardError => e
-    log_exception(e)
-    
   end
 
   def log_build_errors(line)
@@ -26,15 +21,11 @@ module BuildOutput
     @result_mesg = 'Error.' + line.to_s
     @build_error = @result_mesg
      false
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def add_to_build_output(word)
     @log_file.write(word)
-    @log_file.flush
-  rescue
-    
+    @log_file.flush    
   end
 
   def close_all
@@ -43,9 +34,7 @@ module BuildOutput
       log_build_output('Build Finished')
       @log_file.close
     end
-    @err_file.close unless @log_file.nil? && @err_file.closed?   
-    rescue StandardError => e
-    log_exception(e)
+    @err_file.close unless @log_file.nil? && @err_file.closed?       
   end
 
   # used to fill in erro mesg with last ten lines

@@ -1,27 +1,18 @@
 module BuildReport
   def get_build_report_template(blueprint)
-    
-    if @blueprint_reader.install_report_template.nil? 
-      return get_default_build_report_template
-    else
-      return @blueprint_reader.install_report_template
-    end
-  rescue
-    return ' Template load error '
+    return get_default_build_report_template if @blueprint_reader.install_report_template.nil?
+    @blueprint_reader.install_report_template
   end
 
   def get_default_build_report_template
-    return File.read(SystemConfig.DefaultBuildReportTemplateFile)
+    File.read(SystemConfig.DefaultBuildReportTemplateFile)
   rescue Exception => e
     p e
-    return ' No Default Template'
+    ' No Default Template'
   end
 
   def generate_build_report(templater, blueprint)
     report_template = get_build_report_template(blueprint)
-    report = templater.process_templated_string(report_template)
-    return report
-  rescue
-    return ' Template generation error '
+    templater.process_templated_string(report_template)    
   end
 end

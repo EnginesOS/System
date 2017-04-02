@@ -4,9 +4,6 @@ module SaveEngineConfiguration
     write_schedules(mc, @blueprint_reader.schedules) if @blueprint_reader.respond_to?(:schedules)
     write_services(mc, @service_builder.attached_services)
     write_variables(mc, @blueprint_reader.environments)
-    true
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def write_schedules(container, schedules)
@@ -18,8 +15,6 @@ module SaveEngineConfiguration
     f.puts(serialized_object)
     f.flush()
     f.close
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def write_actionators(container, actionators)
@@ -31,12 +26,9 @@ module SaveEngineConfiguration
     f.puts(serialized_object)
     f.flush()
     f.close
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def  write_services(mc, attached_services)
-
   end
 
   def write_variables(mc, environments)

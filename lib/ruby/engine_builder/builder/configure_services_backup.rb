@@ -6,8 +6,6 @@ module ConfigureServicesBackup
       script_src_dir = SystemConfig.BackupScriptsSrcRoot + '/' + service[:publisher_namespace] + '/' + service[:type_path]
       install_backup_scripts(service, script_src_dir)
       end
-    rescue StandardError => e
-      log_exception(e)
   end
 
   def install_backup_scripts(service, script_src_dir)
@@ -22,6 +20,4 @@ module ConfigureServicesBackup
         write_software_script_file(destdir + script_src_file, script_src)      
       end
   end
-rescue StandardError => e
-  log_exception(e)
 end

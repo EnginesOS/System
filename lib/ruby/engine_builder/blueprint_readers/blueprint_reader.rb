@@ -96,41 +96,26 @@ class BluePrintReader
     read_apache_httpd_configurations
     read_apache_htaccess_files
     read_install_report_template
-
-    return true
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
 
   def read_install_report_template
     @install_report_template = @blueprint[:software][:installation_report_template]
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
 
   def read_apache_htaccess_files
     @apache_htaccess_files = @blueprint[:software][:apache_htaccess_files] if @blueprint[:software][:apache_htaccess_files].is_a?(Array)
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
 
   def read_custom_php_inis
     @custom_php_inis = @blueprint[:software][:custom_php_inis] if @blueprint[:software][:custom_php_inis].is_a?(Array)
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
 
   def read_apache_httpd_configurations
     @apache_httpd_configurations = @blueprint[:software][:apache_httpd_configurations] if  @blueprint[:software][:apache_httpd_configurations].is_a?(Array)
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
 
   def read_templates
     @template_files = @blueprint[:software][:template_files] if @blueprint[:software][:template_files].is_a?(Array)
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
-    # STDERR.puts('TEMPLATES ' + @template_files.to_s )
   end
 
   def read_scripts
@@ -138,44 +123,31 @@ class BluePrintReader
     @custom_stop_script =  @blueprint[:software][:custom_stop_script].gsub(/\r/, '') if @blueprint[:software].key?(:custom_stop_script)
     @custom_install_script =  @blueprint[:software][:custom_install_script].gsub(/\r/, '') if @blueprint[:software].key?(:custom_install_script)
     @custom_post_install_script =  @blueprint[:software][:custom_post_install_script].gsub(/\r/, '') if  @blueprint[:software].key?(:custom_post_install_script)
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
 
   def read_sql_seed
     return true unless @blueprint[:software].key?(:database_seed_file) # && @blueprint[:software][:database_seed_file][:content].nil? == false
     database_seed_file = @blueprint[:software][:database_seed_file] #[:content]
     @database_seed = database_seed_file unless database_seed_file.nil?
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
 
   def read_web_root
     @web_root = @blueprint[:software][:web_root_directory] if @blueprint[:software].key?(:web_root_directory)
-    SystemDebug.debug(SystemDebug.builder,  ' @web_root ',  @web_root)
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
+    SystemDebug.debug(SystemDebug.builder,  ' @web_root ',  @web_root) 
   end
 
   def read_deployment_type
     @deployment_type = @blueprint[:software][:deployment_type]
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
 
   def re_set_service(service_cnt, service_hash)
     @services[service_cnt] = service_hash
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
-    # services[service_cnt]=service_hash
   end
 
   def read_web_port_overide
     if @blueprint[:software].key?(:framework_port_overide) == true
       @web_port = @blueprint[:software][:framework_port_overide]
     end
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
 
   def read_persistent_dirs
@@ -186,8 +158,6 @@ class BluePrintReader
     pds.each do |dir|
       @persistent_dirs.push(dir[:path])
     end
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
 
   def read_persistent_files
@@ -201,8 +171,6 @@ class BluePrintReader
       src_paths.push(path)
     end
     @persistent_files[:src_paths] = src_paths
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
 
   def read_rake_list
@@ -213,8 +181,6 @@ class BluePrintReader
     rake_cmds.each do |rake_cmd|
       @rake_actions.push(rake_cmd)
     end
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
 
   def read_services
@@ -225,17 +191,12 @@ class BluePrintReader
       service[:publisher_namespace] = 'EnginesSystem' if service.key?(:publisher_namespace) == false || service[:publisher_namespace].nil?
       add_service(service)
     end
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
 
   def add_service(service_hash)
     SystemDebug.debug(SystemDebug.builder, :add_service, service_hash)
     @builder.templater.fill_in_dynamic_vars(service_hash)
     @services.push(service_hash)
-    return true
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
 
   def read_os_packages
@@ -245,8 +206,6 @@ class BluePrintReader
     ospackages.each do |package|
       @os_packages.push(package[:package])
     end
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
 
   def read_lang_fw_values
@@ -254,8 +213,6 @@ class BluePrintReader
     @framework = @blueprint[:software][:framework]
     @runtime = @blueprint[:software][:language]
     @memory = @blueprint[:software][:required_memory]
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
 
   def read_pkg_modules
@@ -293,8 +250,6 @@ class BluePrintReader
       end
     end
      true
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
 
   def read_app_packages
@@ -322,15 +277,12 @@ class BluePrintReader
         @cont_user = archive_details[:destination]
       end
     end
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
 
   def add_capability(capability)
     @capabilities = [] if @capabilities.nil?
     @capabilities.push(capability)
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
+  
   end
 
   def read_write_permissions_recursive
@@ -338,7 +290,6 @@ class BluePrintReader
     @recursive_chmods = []
     log_build_output('set permissions recussive')
     chmods = @blueprint[:software][:file_write_permissions]
-
     return true unless chmods.is_a?(Array) # not an error just nada
     chmods.each do |chmod|
       if chmod[:recursive] == true
@@ -348,8 +299,6 @@ class BluePrintReader
       # FIXME: need to strip any ../ and any preceeding ./ in clean_path
     end
      true
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
 
   def read_write_permissions_single
@@ -365,8 +314,6 @@ class BluePrintReader
       end
     end
      true
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
 
   def read_worker_commands
@@ -382,8 +329,6 @@ class BluePrintReader
         @worker_commands.push(worker[:command])
       end
     end
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
 
   def read_sed_strings
@@ -418,9 +363,7 @@ class BluePrintReader
       @sed_strings[:tmp_file].push(tmp_file)
       @sed_strings[:sed_str].push(sedstr)
       n += 1
-    end
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
+    end  
   end
 
   def read_mapped_ports
@@ -448,8 +391,6 @@ class BluePrintReader
       @mapped_ports[name] = WorkPort.work_port_hash(name, portnum, external, true, type)
     end
      true
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
 
   def blueprint_env_varaibles
@@ -493,8 +434,6 @@ class BluePrintReader
       ev = EnvironmentVariable.new(name, value, ask, mandatory, build_time_only, label, immutable)
       @environments.push(ev)
     end
-  rescue StandardError => e
-    SystemUtils.log_exception(e)
   end
 
   def read_actionators
@@ -512,8 +451,5 @@ class BluePrintReader
       SystemDebug.debug(SystemDebug.builder,'No actionators')
       @actionators = nil
     end
-  rescue StandardError => e
-    @actionators = nil
-    SystemUtils.log_exception(e)
   end
 end
