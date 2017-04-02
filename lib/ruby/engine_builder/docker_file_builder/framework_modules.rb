@@ -35,7 +35,7 @@ module FrameworkModules
   end
 
   def write_apache_modules
-    return false if @blueprint_reader.apache_modules.count < 1
+    return false if @blueprint_reader.apache_modules.empty?
     write_line('#Apache Modules')
     ap_modules_str = ''
     @blueprint_reader.apache_modules.each do |ap_module|

@@ -9,7 +9,7 @@ module LocalFileServiceBuilder
     target_container: container.container_name,
     data_gid: container.data_gid.to_s
   })
-    raise EngineBuilderException.new('volbuild problem ' + result.to_s, result) unless result[:result] == 0
+    raise EngineBuilderException.new(error_hash('volbuild problem ' + result.to_s, result)) unless result[:result] == 0
   end
 
   def add_file_service(service_hash)
