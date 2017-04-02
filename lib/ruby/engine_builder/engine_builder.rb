@@ -3,7 +3,7 @@ require 'git'
 require 'fileutils'
 require 'yajl'
 require '/opt/engines/lib/ruby/api/system/errors_api.rb'
-
+require '/opt/engines/lib/ruby/exceptions/engine_builder_exception.rb'
 class EngineBuilder < ErrorsApi
   require '/opt/engines/lib/ruby/api/system/container_state_files.rb'
   require_relative 'builder_public.rb'
@@ -58,6 +58,7 @@ class EngineBuilder < ErrorsApi
   :build_error
 
   attr_accessor :app_is_persistent
+
   class BuildError < StandardError
     attr_reader :parent_exception, :method_name
     def initialize(parent)
@@ -66,11 +67,31 @@ class EngineBuilder < ErrorsApi
     end
   end
 
+  def error_hash(msg, params = nil)
+    {
+      level: :error,
+      system: 'Engines Builder',
+      error_mesg: mesg,
+      source: caller[1..6],
+      error_log: tail_of_build_error_log,
+      build_log: tail_of_build_log,
+      params: params
+    }
+  end
+
+  def warning_hash(msg, params = nil)
+    {
+      level: :warning,
+      system: 'Engines Builder',
+      error_mesg: mesg,
+      params: params
+    }
+  end
+
   def initialize(params, core_api)
     @core_api = core_api
     @container = nil
     @build_params = params
-
   end
 
   def setup_build
@@ -101,9 +122,6 @@ class EngineBuilder < ErrorsApi
     @service_builder = ServiceBuilder.new(@core_api, @templater, @build_params[:engine_name],  @attached_services)
     SystemDebug.debug(SystemDebug.builder, :builder_init__service_builder, @build_params)
     self
-  rescue StandardError => e
-    log_exception(e)
-    abort_build
   end
 
   def volumes
@@ -117,8 +135,6 @@ class EngineBuilder < ErrorsApi
     return log_error_mesg('Failed to Backup Last build', self) unless backup_lastbuild
     return log_error_mesg('Failed to setup rebuild', self) unless setup_rebuild
     build_container
-  rescue StandardError => e
-    abort_build
   end
 
   def build_failed(errmesg)
@@ -138,7 +154,7 @@ class EngineBuilder < ErrorsApi
     unless @blueprint.key?(:schema)
       require_relative 'blueprint_readers/0/versioned_blueprint_reader.rb'
     else
-   #   STDERR.puts('BP Schema :' + @blueprint[:schema].to_s + ':' )
+      #   STDERR.puts('BP Schema :' + @blueprint[:schema].to_s + ':' )
       version =  @blueprint[:schema][:version][:major]
       unless File.exist?('/opt/engines/lib/ruby/engine_builder/blueprint_readers/' + version.to_s + '/versioned_blueprint_reader.rb')
         log_build_errors('Failed to create Managed Container invalid blueprint schema')
@@ -150,13 +166,7 @@ class EngineBuilder < ErrorsApi
     log_build_output('Using Blueprint Schema ' + version.to_s + ' ' +  @blueprint[:origin].to_s )
 
     @blueprint_reader = VersionedBlueprintReader.new(@build_params[:engine_name], @blueprint, self)
-    return post_failed_build_clean_up unless @blueprint_reader.process_blueprint
-    true
-  rescue Exception => e
-    log_build_errors('Failed to create Managed Container Problem with blueprint: ' + e.to_s)
-    log_build_errors("dbg " + e.backtrace.to_s)
-    return post_failed_build_clean_up
-
+    @blueprint_reader.process_blueprint
   end
 
   def setup_engine_dirs
@@ -171,8 +181,6 @@ class EngineBuilder < ErrorsApi
     FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.out',ContainerStateFiles.container_state_dir(@container) + '/build.log')
     FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.err',ContainerStateFiles.container_state_dir(@container) + '/build.err')
     true
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def wait_for_engine
@@ -196,41 +204,39 @@ class EngineBuilder < ErrorsApi
       sleep 1
     end
     unless @container.is_running?
-        begin
-          l = @container.logs_container.to_s
-        rescue
-          l = ''
-        end
-        log_build_output('Engine Stopped:' + l.to_s)
-        @result_mesg = 'Engine Stopped! ' + l.to_s
-        return false
+      begin
+        l = @container.logs_container.to_s
+      rescue
+        l = ''
       end
+      log_build_output('Engine Stopped:' + l.to_s)
+      @result_mesg = 'Engine Stopped! ' + l.to_s
+      return false
+    end
     log_build_output('') # force EOL to end the ...
     true
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def build_container
-    SystemDebug.debug(SystemDebug.builder,  ' Starting build with params ',  @build_params)
+    SystemDebug.debug(SystemDebug.builder,  ' Starting build with params ', @build_params)
 
-    return false unless meets_physical_requirements
-    return false unless process_blueprint
-    return false unless setup_build_dir
-    return false unless get_base_image
-    return false unless setup_engine_dirs
-    return false unless create_engine_image
-    return false unless create_engine_container
+    meets_physical_requirements
+    process_blueprint
+    setup_build_dir
+    get_base_image
+    setup_engine_dirs
+    create_engine_image
+    create_engine_container
     @service_builder.release_orphans
-    sleep 10
     wait_for_engine
     save_build_result
     close_all
-    SystemStatus.build_complete(build_params)
+    SystemStatus.build_complete(@build_params)
     @container
   rescue StandardError => e
     log_exception(e)
     post_failed_build_clean_up
+    raise e
   ensure
     File.delete('/opt/engines/run/system/flags/building_params') if File.exist?('/opt/engines/run/system/flags/building_params')
     close_all
@@ -242,42 +248,31 @@ class EngineBuilder < ErrorsApi
     FileUtils.rm_rf(backup) if Dir.exist?(backup)
     FileUtils.mv(dir, backup) if Dir.exist?(dir)
     true
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def load_blueprint
     log_build_output('Reading Blueprint')
     json_hash = BlueprintApi.load_blueprint_file(basedir + '/blueprint.json')
-    return symbolize_keys(json_hash)
-  rescue StandardError => e
-    log_exception(e)
+    symbolize_keys(json_hash)
   end
 
   def clone_repo
     log_build_output('Clone Blueprint Repository')
     g = Git.clone(@build_params[:repository_url], @build_name, :path => SystemConfig.DeploymentDir)
-  rescue StandardError => e
-    log_error_mesg('Problem cloning Git', g)
-    log_exception(e)
-    abort_build
   end
 
   def get_blueprint_from_repo
     log_build_output('Backup last build')
-    return log_error_mesg('Failed to Backup Last build', self) unless backup_lastbuild
+    backup_lastbuild
     log_build_output('Cloning Blueprint')
     clone_repo
   end
 
   def build_from_blue_print
-    return log_error_mesg('Failed backup last build',self) unless backup_lastbuild
-    return log_error_mesg('Failed to Load Blue print',self) unless get_blueprint_from_repo
+    backup_lastbuild
+    get_blueprint_from_repo
     log_build_output('Cloned Blueprint')
     build_container
-  rescue StandardError => e
-    log_exception(e)
-    abort_build
   end
 
   def post_failed_build_clean_up
@@ -310,8 +305,6 @@ class EngineBuilder < ErrorsApi
     SystemDebug.debug(SystemDebug.builder,'Roll Back Complete')
     close_all
 
-  rescue StandardError => e
-    log_exception(e)
   end
 
   def setup_rebuild
@@ -322,20 +315,17 @@ class EngineBuilder < ErrorsApi
     f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0644)
     f.write(blueprint.to_json)
     f.close
-  rescue StandardError => e
-    log_exception(e)
-    abort_build
   end
 
   #app_is_persistent
   #used by builder public
   def running_logs()
     return @container.logs_container unless @container.nil?
-    return nil
+    nil
   end
 
   def engine_environment
-    return @blueprint_reader.environments
+    @blueprint_reader.environments
   end
 
   def flag_restart_required(mc)
@@ -348,9 +338,6 @@ class EngineBuilder < ErrorsApi
     f.close
     File.chmod(0660,restart_flag_file)
     FileUtils.chown(nil,'containers',restart_flag_file)
-  rescue StandardError => e
-    log_exception(e)
-    abort_build
   end
 
   def log_error_mesg(m, o = nil)
@@ -364,9 +351,6 @@ class EngineBuilder < ErrorsApi
 
   def basedir
     SystemConfig.DeploymentDir + '/' + @build_name.to_s
-  rescue StandardError => e
-    log_exception(e)
-    abort_build
   end
 
   private
@@ -386,10 +370,7 @@ class EngineBuilder < ErrorsApi
       @set_environments = custom_env_hash
       @environments = []
     end
-    return true
-  rescue StandardError => e
-    log_exception(e)
-    abort_build
+    true
   end
 
   protected

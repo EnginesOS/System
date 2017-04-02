@@ -14,9 +14,7 @@ module OrphansServiceBuilder
       SystemDebug.debug(SystemDebug.orphans, :from_reparent, build_vars)
       service_hash[:variables][:engine_path] = build_vars[:variables][:engine_path] if service_hash[:type_path] == 'filesystem/local/filesystem'
     end
-    return service_hash
-    rescue StandardError => e
-      log_exception(e)
+     service_hash
   end
 
   def reparent_orphan(service_hash)

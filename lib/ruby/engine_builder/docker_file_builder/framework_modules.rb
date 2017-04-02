@@ -8,10 +8,6 @@ module FrameworkModules
       next if @builder.first_build == false && ! rake_action[:always_run]
       write_build_script('run_rake_task.sh ' + rake_cmd ) unless rake_cmd.nil?
     end
-    return true 
-   
-  rescue Exception => e
-    SystemUtils.log_exception(e)
   end
 
   def write_pear_modules
@@ -23,9 +19,6 @@ module FrameworkModules
       end
       write_build_script('install_pear_mods.sh  ' + pear_mods)
     end
-    return true 
-  rescue Exception => e
-    SystemUtils.log_exception(e)
   end
 
   def write_pecl_modules
@@ -38,9 +31,7 @@ module FrameworkModules
       end
       write_build_script('install_pecl_mods.sh  ' + pecl_mods)
     end
-    return true 
-  rescue Exception => e
-    SystemUtils.log_exception(e)
+    
   end
 
   def write_apache_modules
@@ -51,8 +42,7 @@ module FrameworkModules
       ap_modules_str += ap_module + ' ' unless ap_module.nil?
     end
     write_line('RUN a2enmod ' + ap_modules_str)
-    rescue Exception => e
-      SystemUtils.log_exception(e)
+  
   end
 
   def write_npm_modules
@@ -63,8 +53,7 @@ module FrameworkModules
       npm_modules_str += npm_module + ' ' unless npm_module.nil?
     end
     write_build_script('install_npm_modules.sh ' +  npm_modules_str)
-    rescue Exception => e
-      SystemUtils.log_exception(e)
+
   end
   
   def write_php_modules
@@ -75,8 +64,6 @@ module FrameworkModules
       php_modules_str += php_module + ' ' unless php_module.nil?
     end
     write_build_script('install_php_modules.sh ' +  php_modules_str)
-    rescue Exception => e
-      SystemUtils.log_exception(e)
-
+   
   end
 end

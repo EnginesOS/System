@@ -2,13 +2,8 @@ module ContainerCreation
   def create_engine_container
     log_build_output('Creating Deploy Image')
     @container = create_managed_container
-    unless @container.is_a?(ManagedEngine)
-      log_build_errors('Failed to create Managed Container')
-      return post_failed_build_clean_up
-    end
+    raise EngineBuilderException.new('Failed to create Managed Container') unless @container.is_a?(ManagedEngine)
     @service_builder.create_non_persistent_services(@blueprint_reader.services)
-  rescue StandardError => e
-    abort_build
   end
 
   def create_managed_container
@@ -18,19 +13,14 @@ module ContainerCreation
     @build_params[:service_builder] = @service_builder
     @container = ManagedEngine.new(@build_params, @blueprint_reader, @core_api.container_api)
     @container.save_state # no running.yaml throws a no such container so save so others can use
-    log_build_errors('Failed to save blueprint ' + @blueprint.to_s) unless @container.save_blueprint(@blueprint)
+    @container.save_blueprint(@blueprint)
     log_build_output('Launching ' + @container.to_s)
     @core_api.init_engine_dirs(@build_params[:engine_name])
     flag_restart_required(@container) if @has_post_install == true
-
-    log_build_errors('Error Failed to Launch') unless launch_deploy(@container)
+    launch_deploy(@container)
    # log_build_output('Applying Volume settings and Log Permissions' + @container.to_s)
   #  log_build_errors('Error Failed to Apply FS' + @container.to_s) unless @service_builder.run_volume_builder(@container, @web_user)    
     @container
-  rescue StandardError => e
-    STDERR.puts("create_managed_container ERRo")
-    log_exception(e)
-    abort_build
   end
 
   private
@@ -38,15 +28,8 @@ module ContainerCreation
   def launch_deploy(managed_container)
     log_build_output('Launching Engine')
     managed_container.create_container
-    unless managed_container.has_container?
-      log_build_output('Failed to create Engine container from Image')
-      return log_error_mesg(' Failed to create Engine container from Image')
-    end
+    raise EngineBuilderException.new('Failed to create Engine container from Image') unless managed_container.has_container?     
     save_engine_built_configuration(managed_container)
-  rescue StandardError => e
-    STDERR.puts("DEPLOY ERRo")
-    log_exception(e)
-    abort_build
   end
 
 end
