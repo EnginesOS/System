@@ -175,7 +175,7 @@ class EngineBuilder < ErrorsApi
     lcnt = 5
     return @container unless @container.is_a?(ManagedEngine)
     log_build_output('Starting Engine')
-    sleep 2 unless @container.is_running?
+    sleep 5 unless @container.is_running?
     
     while @container.is_startup_complete? == false && @container.is_running?
       cnt += 1
