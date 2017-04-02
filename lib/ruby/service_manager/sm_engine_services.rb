@@ -42,8 +42,9 @@ module SmEngineServices
     services = nil
     begin
       services = get_engine_nonpersistent_services(params)
-      STDERR.puts('removing_services ' + serivces.to_s)
+      STDERR.puts('removing_services ' + services.to_s)
     rescue
+      STDERR.puts('NO services ' +  engine.container_name.to_s)
       return # No services
     end
 

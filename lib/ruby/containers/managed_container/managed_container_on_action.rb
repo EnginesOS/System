@@ -22,7 +22,6 @@ module ManagedContainerOnAction
       end
       save_state
     }
-
   end
 
   def on_create(event_hash)
@@ -48,8 +47,6 @@ module ManagedContainerOnAction
     #return true if @consumer_less    
     # deregister_with_dns # Really its in the following nowMUst register each time as IP Changes
     @container_api.deregister_non_persistent_services(self)
-    true
-
   end
 
   def out_of_mem(what)
@@ -57,7 +54,6 @@ module ManagedContainerOnAction
     @out_of_memory = true
     @had_out_memory = true
     save_state
-
   end
 
 end
