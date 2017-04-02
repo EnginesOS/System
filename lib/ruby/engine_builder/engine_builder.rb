@@ -133,8 +133,6 @@ class EngineBuilder < ErrorsApi
     build_container
   end
 
-
-
   def process_blueprint
     log_build_output('Reading Blueprint')
     @blueprint = load_blueprint
@@ -170,39 +168,39 @@ class EngineBuilder < ErrorsApi
     true
   end
 
-  def wait_for_engine
-    cnt = 0
-    lcnt = 5
-    return @container unless @container.is_a?(ManagedEngine)
-    log_build_output('Starting Engine')
-    sleep 15 unless @container.is_running?
-    
-    while @container.is_startup_complete? == false && @container.is_running?
-      cnt += 1
-      if cnt == 120
-        log_build_output('') # force EOL to end the ...
-        log_build_output('Startup still running')
-        break
-      end
-      if lcnt == 5
-        add_to_build_output('.')
-        lcnt = 0
-      else
-        lcnt += 1
-      end
-      sleep 1
-    end
-    unless @container.is_running?
-      begin
-        l = @container.logs_container.to_s
-      rescue
-        l = ''
-      end
-      raise EngineBuilderException.new(error_hash('Engine Stopped:' + l.to_s))
-    end
-    log_build_output('') # force EOL to end the ...
-    true
-  end
+#  def wait_for_engine
+#    cnt = 0
+#    lcnt = 5
+#    return @container unless @container.is_a?(ManagedEngine)
+#    log_build_output('Starting Engine')
+#
+#    
+#    while ! @container.is_startup_complete? false && @container.is_running?
+#      cnt += 1
+#      if cnt == 120
+#        log_build_output('') # force EOL to end the ...
+#        log_build_output('Startup still running')
+#        break
+#      end
+#      if lcnt == 5
+#        add_to_build_output('.')
+#        lcnt = 0
+#      else
+#        lcnt += 1
+#      end
+#      sleep 1
+#    end
+#    unless @container.is_running?
+#      begin
+#        l = @container.logs_container.to_s
+#      rescue
+#        l = ''
+#      end
+#      raise EngineBuilderException.new(error_hash('Engine Stopped:' + l.to_s))
+#    end
+#    log_build_output('') # force EOL to end the ...
+#    true
+#  end
 
   def build_container
     SystemDebug.debug(SystemDebug.builder,  ' Starting build with params ', @build_params)
@@ -216,7 +214,7 @@ class EngineBuilder < ErrorsApi
     GC::OOB.run
     create_engine_container
     @service_builder.release_orphans
-    wait_for_engine
+    #  wait_for_engine
     save_build_result
     close_all
  #   SystemStatus.build_complete(@build_params)
