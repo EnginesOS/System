@@ -95,7 +95,6 @@ class EngineBuilder < ErrorsApi
   end
 
   def setup_build
-    check_build_params(@build_params)
     @build_params[:engine_name].freeze
     @build_params[:image] = @build_params[:engine_name].gsub(/[-_]/,'')
     @build_name = File.basename(@build_params[:repository_url]).sub(/\.git$/, '')
@@ -217,7 +216,7 @@ class EngineBuilder < ErrorsApi
     wait_for_engine
     save_build_result
     close_all
-    SystemStatus.build_complete(@build_params)
+ #   SystemStatus.build_complete(@build_params)
     @container
   rescue StandardError => e
     #log_exception(e)
