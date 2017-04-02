@@ -211,6 +211,7 @@ class EngineBuilder < ErrorsApi
     get_base_image
     setup_engine_dirs
     create_engine_image
+    GC.run
     create_engine_container
     @service_builder.release_orphans
     wait_for_engine
