@@ -1,4 +1,4 @@
-require 'yajl'
+#require 'yajl'
 
 class SoftwareServiceDefinition
   attr_reader :accepts,
@@ -49,14 +49,14 @@ class SoftwareServiceDefinition
   end
 
   def self.summary(definition)
-    r = {}
-    r[:title] = definition[:title]
-    r[:persistent] = definition[:persistent]
-    r[:publisher_namespace] = definition[:publisher_namespace]
-    r[:type_path] = definition[:type_path]
-    r[:description] = definition[:description]
-    r[:service_container] = definition[:service_container]
-    r
+    {
+      title: definition[:title],
+      persistent: definition[:persistent],
+      publisher_namespace: definition[:publisher_namespace],
+      type_path: definition[:type_path],
+      description: definition[:description],
+      service_container: definition[:service_container]
+    }
   end
 
   def SoftwareServiceDefinition.service_constants(service_hash)

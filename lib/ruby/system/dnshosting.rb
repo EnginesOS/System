@@ -1,5 +1,6 @@
 require 'socket'
-require 'yajl'
+
+#require 'yajl'
 require 'open-uri'
 
 # require '/opt/engines/lib/ruby/system/SystemUtils.rb'
@@ -13,15 +14,14 @@ module DNSHosting
     Socket.ip_address_list.each do |addr|
       return addr.ip_address if addr.ipv4? && addr.ipv4_loopback? == false
     end
- 
+
   end
 
   def self.save_domains(domains)
     domain_file = File.open(SystemConfig.DomainsFile, 'w')
     domain_file.write(domains.to_yaml)
     domain_file.close
-     true
-  
+    true
   end
 
   def self.load_domains
@@ -35,12 +35,12 @@ module DNSHosting
     domains = YAML::load(domains_file)
     domains_file.close
     SystemDebug.debug(SystemDebug.system,:loading_domain_list, domains.to_s)
-     domains
+    domains
   end
 
   def self.list_domains
     domains = DNSHosting.load_domains
-     domains
+    domains
   end
 
   def self.add_domain(params)
@@ -51,11 +51,11 @@ module DNSHosting
 
   def self.rm_domain(domain)
     r = ''
-  #  domain = params
-  #  domain = params[:domain_name] unless domain.is_a?(String)      
+    #  domain = params
+    #  domain = params[:domain_name] unless domain.is_a?(String)
     domains = load_domains
     if domains.key?(domain)
-       domains.delete(domain)
+      domains.delete(domain)
       return save_domains(domains)
     else
       raise EnginesException.new(error_hash('failed_to_find_domain' + domain + 'in ', domains.to_s))

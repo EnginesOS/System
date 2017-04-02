@@ -51,7 +51,7 @@ class DockerEventWatcher  < ErrorsApi
     end
 
   end
-  require 'yajl'
+  
   require 'net_x/http_unix'
   require 'socket'
  # require 'json'
