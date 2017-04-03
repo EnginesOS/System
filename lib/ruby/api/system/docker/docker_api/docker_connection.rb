@@ -2,7 +2,7 @@ class DockerConnection < ErrorsApi
   
   require 'net_x/http_unix'
   require 'socket'
-  require 'ffi_yajl'
+  require 'yajl'
   require 'rubygems'
   require 'excon'
 
@@ -28,12 +28,12 @@ class DockerConnection < ErrorsApi
   require_relative 'docker_api_builder.rb'
   include DockerApiBuilder
 
-#  def response_parser
-#    FFI_Yajl::Parser.new({:symbolize_keys => true})
-#  end
+  def response_parser
+    @parser ||= Yajl::Parser.new({:symbolize_keys => true})
+  end
 
   def initialize
-    @connection = nil
+    @connection = nil   
   end
 
   require "base64"
@@ -171,7 +171,8 @@ class DockerConnection < ErrorsApi
     return true if resp.status  == 204 # nodata but all good happens on del
     log_error_mesg("Un exepect response from docker", resp, resp.body, resp.headers.to_s ) unless resp.status == 200 || resp.status == 201
     return resp.body unless expect_json == true
-    hash = deal_with_json(resp.body)
+    hash = response_parser.parse(resp.body)
+    #hash = deal_with_json(resp.body)
     SystemDebug.debug(SystemDebug.docker,' RESPOSE ' + resp.status.to_s + ' : ' + hash.to_s.slice(0..256))
     hash
   end
