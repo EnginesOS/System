@@ -13,7 +13,8 @@ class EventMask
   @@container_event = 1024
   @@container_pull = 2048
   @@build_event = 4096
-  @@container_attach  = 8192
+  @@container_attach = 8192
+  @@utility_target = 16384  
   @@service_action = @@container_action | @@service_target
   @@engine_action = @@container_action | @@engine_target
   def self.event_mask(event_hash)
@@ -21,15 +22,17 @@ class EventMask
     if event_hash[:Type] = 'container'
       mask |= @@container_event
       if event_hash.key?(:from)
-        return  mask |= @@build_event if event_hash[:from].nil?
-        return  mask |= @@build_event if event_hash[:from].length == 64
-        if event_hash[:from].start_with?('engines/')
+        return mask |= @@build_event if event_hash[:from].nil?
+        return mask |= @@build_event if event_hash[:from].length == 64
+        if event_hash[:container_type] == 'service'
           mask |= @@service_target
-        else
+        elsif event_hash[:container_type] == 'container'
           mask |= @@engine_target
+        elsif event_hash[:container_type] == 'utility'
+          mask |= @@utility_target
         end
       end
-      return  0  if event_hash[:status].nil?
+      return 0 if event_hash[:status].nil?
 
       if event_hash[:status].start_with?('exec')
         mask |= @@container_exec
@@ -59,7 +62,7 @@ class EventMask
     end
     mask
   rescue StandardError => e
-    SystemDebug.debug(SystemDebug.container_events,event_hash.to_s + ':' + e.to_s + ':' +  e.backtrace.to_s)
+    SystemDebug.debug(SystemDebug.container_events, event_hash.to_s + ':' + e.to_s + ':' +  e.backtrace.to_s)
     e
   end
 end
