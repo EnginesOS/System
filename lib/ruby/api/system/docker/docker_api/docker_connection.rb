@@ -2,7 +2,7 @@ class DockerConnection < ErrorsApi
   
   require 'net_x/http_unix'
   require 'socket'
-  require 'yajl'
+  require 'ffi_yajl'
   require 'rubygems'
   require 'excon'
 
@@ -29,7 +29,7 @@ class DockerConnection < ErrorsApi
   include DockerApiBuilder
 
   def response_parser
-    @parser ||= Yajl::Parser.new({:symbolize_keys => true})
+    @parser ||= FFI_Yajl::Parser.new({:symbolize_keys => true})
   end
 
   def initialize
