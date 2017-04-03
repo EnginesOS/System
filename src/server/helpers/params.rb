@@ -12,7 +12,7 @@ end
 
 def assemble_params(ps, address_params, required_params = nil, accept_params = nil )
   raise EnginesException.new(error_hash('No params Supplied')) if ps.nil?
-  ps = deal_with_json(ps)
+  ps = json_parser.parse(ps) # was deal_with_json(ps)
   a_params = match_address_params(ps, address_params)
   raise EnginesException.new(error_hash('Missing Address Parameters ' + address_params.to_s + ' but only have:' + ps.to_s)) if a_params == false
 
