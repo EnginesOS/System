@@ -1,4 +1,5 @@
 #!/bin/bash
+echo clear_container_dir /opt/engines/run/containers/$1 >/tmp/cler_container_dir
 
 if test $# -eq 1
   then
