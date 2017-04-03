@@ -30,14 +30,12 @@ module ContainerOperations
 
   def web_sites_for(container)
     urls = []
-    params = {
+    sites = find_engine_services({
       parent_engine: container.container_name,
       publisher_namespace: 'EnginesSystem',
       type_path: 'nginx',
       container_type: container.ctype
-    }    
-    STDERR.puts(' WEB SITEs ' + params.to_s)
-    sites = find_engine_services(params)
+    })
     return urls if sites.is_a?(Array) == false
     sites.each do |site|
       SystemDebug.debug(SystemDebug.containers,  site.to_s) unless  site.is_a?(Hash)
@@ -61,7 +59,7 @@ module ContainerOperations
     return engine.get_container_network_metrics if engine.is_a?(ManagedEngine)
     engine = @system_api.loadManagedService(engine_name)
     return engine.get_container_network_metrics if engine.is_a?(ManagedService)
-    raise EnginesException.new(error_hash("Failed to load network stats",engine_name))
+    raise EnginesException.new(error_hash("Failed to load network stats", engine_name))
   end
 
 end

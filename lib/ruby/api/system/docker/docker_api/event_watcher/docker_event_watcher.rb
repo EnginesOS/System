@@ -1,6 +1,7 @@
 class DockerEventWatcher  < ErrorsApi
   class EventListener
-    require '/opt/engines/lib/ruby/system/deal_with_json.rb'
+    require 'yajl'
+    #require '/opt/engines/lib/ruby/system/deal_with_json.rb'
     attr_accessor :container_id, :event_mask
     # @@container_id
     def initialize(listener, event_mask, container_id = nil)
@@ -51,7 +52,7 @@ class DockerEventWatcher  < ErrorsApi
     end
 
   end
-  require 'yajl'
+  
   require 'net_x/http_unix'
   require 'socket'
  # require 'json'
@@ -152,7 +153,9 @@ class DockerEventWatcher  < ErrorsApi
           end 
          # STDERR.puts('DOCKER SENT json ' + chunk.to_s )
           #      hash =  parser.parse(chunk)# do |hash|
-          hash = deal_with_json(chunk)
+          parser = Yajl::Parser.new({:symbolize_keys => true}) if parser.nil?
+          #hash = deal_with_json(chunk)
+          hash = parser.parse(chunk)
           next unless hash.is_a?(Hash)
           #  STDERR.puts('trigger' + hash.to_s )
           next if hash.key?(:from) && hash[:from].length >= 64
