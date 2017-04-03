@@ -143,17 +143,17 @@ module TaskAtHand
   def task_at_hand
     fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
     return nil unless File.exist?(fn)
-    task = File.read(fn)
-    if task_has_expired?(task)
+    @task_at_hand = File.read(fn)
+    if task_has_expired?(@task_at_hand)
       expire_task_at_hand
       return nil
     end
     r = read_state(raw = true)
-    if tasks_final_state(task) == r
+    if tasks_final_state(@task_at_hand) == r
       clear_task_at_hand
       return nil
     end
-    task
+    @task_at_hand
   rescue StandardError => e
     return nil unless File.exist?(fn)
     log_exception(e)
