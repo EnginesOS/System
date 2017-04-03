@@ -48,4 +48,11 @@ get '/v0/system/control/engines_system/heap_stats' do
     send_encoded_exception(request: request, exception: e)
   end
 end
+get '/v0/system/control/engines_system/threads' do
+  begin
+    return_text(engines_api.dump_threads)
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+end
 # @!endgroup
