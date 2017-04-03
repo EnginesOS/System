@@ -1,5 +1,3 @@
-
-
 module Engines
   class FakeContainer
     attr_reader :container_name, :ctype
@@ -8,6 +6,7 @@ module Engines
       @ctype = type
     end
   end
+
   def list_managed_engines
     ret_val = []
     begin
@@ -93,15 +92,20 @@ module Engines
     yaml_file_name = SystemConfig.RunDir + '/containers/' + engine_name + '/running.yaml'
     raise EnginesException.new(error_hash('No Engine file', engine_name)) unless File.exist?(yaml_file_name)
     raise EnginesException.new(error_hash('Engine File Locked',yaml_file_name)) if is_container_conf_file_locked?(SystemConfig.RunDir + '/containers/' + engine_name)
-    yaml_file = File.read(yaml_file_name)
-    ts = File.mtime(yaml_file_name)
-    managed_engine = ManagedEngine.from_yaml(yaml_file, @engines_api.container_api)
-    cache_engine(managed_engine, ts)
-    managed_engine
+    yaml_file = File.new(yaml_file_name, 'r')
+    begin
+      ts = File.mtime(yaml_file_name)
+      managed_engine = ManagedEngine.from_yaml(yaml_file.read, @engines_api.container_api)
+      yaml_file.close
+      cache_engine(managed_engine, ts)
+      managed_engine
+    ensure
+      yaml_file.close unless yaml_file.nil?
+    end
   end
 
-#  def delete_engine(container)
-#    rm_engine_from_cache(container.container_name)
-#  end
+  #  def delete_engine(container)
+  #    rm_engine_from_cache(container.container_name)
+  #  end
 
 end

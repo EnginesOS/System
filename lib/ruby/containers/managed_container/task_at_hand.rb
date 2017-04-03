@@ -143,7 +143,14 @@ module TaskAtHand
   def task_at_hand
     fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
     return nil unless File.exist?(fn)
-    @task_at_hand = File.read(fn)
+    thf = File.new(fn, 'r')
+    begin
+      @task_at_hand = nil
+      @task_at_hand = thf.read
+    ensure
+      thf.close
+    end
+
     if task_has_expired?(@task_at_hand)
       expire_task_at_hand
       return nil
@@ -212,18 +219,15 @@ module TaskAtHand
   rescue StandardError => e
     return true unless File.exist?(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
     log_exception(e)
-
   end
 
   def task_failed(msg)
     clear_task_at_hand
     SystemDebug.debug(SystemDebug.engine_tasks,:TASK_FAILES______Doing, @task_at_hand)
-
     @last_error = @container_api.last_error unless @container_api.nil?
     SystemDebug.debug(SystemDebug.engine_tasks, :WITH, @last_error.to_s, msg.to_s)
     task_complete(:failed)
     false
-
   end
 
   def wait_for_container_task(timeout=90)
@@ -236,7 +240,6 @@ module TaskAtHand
       return log_error_mesg('timeout expire') if loop > timeout * 2
     end
     true
-
   end
 
   private
