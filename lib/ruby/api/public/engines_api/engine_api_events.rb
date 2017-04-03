@@ -13,12 +13,15 @@ module EngineApiEvents
     rescue StandardError => e
       p e.to_s
       p e.backtrace.to_s
-      return    end
+      return
+    end
 
     def start
       @rd
     rescue StandardError => e
-      handle_exception(e)
+      p e.to_s
+      p e.backtrace.to_s
+      return
     end
 
     def stop
@@ -26,14 +29,15 @@ module EngineApiEvents
       @wr.close #  if @wr.is_open?
       @rd.close #if @rd.is_open?
     rescue StandardError => e
-      handle_exception(e)
+      p e.to_s
+      p e.backtrace.to_s
+      return
     end
-
   end
 
   def container_events_stream
     stream = EventsStreamWriter.new(@system_api )
-    @system_api.add_event_listener([stream, 'write_event'.to_sym], 6) #was 16
+    @system_api.add_event_listener([stream, 'write_event'.to_sym], 6) # was 16
     stream.start
     stream
   end

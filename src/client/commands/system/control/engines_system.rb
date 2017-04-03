@@ -7,6 +7,9 @@ when 'update'
 when 'recreate'
   @route += '/' + ARGV[3]
 
+when 'dump_threads'
+  @route += '/' + ARGV[3]
+
 when 'heap_stats'
   @route += '/' + ARGV[3]
 end
