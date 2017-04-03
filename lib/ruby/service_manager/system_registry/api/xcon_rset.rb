@@ -1,4 +1,6 @@
 require '/opt/engines/lib/ruby/exceptions/registry_exception.rb'
+require 'ffi_yajl'
+
 def json_parser
   @json_parser ||= FFI_Yajl::Parser.new({:symbolize_keys => true})
 end
@@ -29,8 +31,8 @@ def reopen_connection
   persistent: true,
   headers: headers)
   @connection
-  rescue StandardError => e
-    raise EnginesException.new(error_hash('Failed to re open base url to registry' + e.to_s , @base_url.to_s))
+rescue StandardError => e
+  raise EnginesException.new(error_hash('Failed to re open base url to registry' + e.to_s , @base_url.to_s))
 end
 
 def rest_get(path,params = nil,time_out=120, _headers = nil)
@@ -63,7 +65,7 @@ def rest_post(path,params = nil, lheaders=nil)
     r = parse_xcon_response(connection.request({read_timeout: time_out, headers: lheaders, method: :post, path: @route_prefix + path, body: query_hash(params).to_json }))
     return r
   rescue Excon::Error::Socket => e
-  STDERR.puts e.class.name 
+    STDERR.puts e.class.name
     reopen_connection
     retry
   end
@@ -75,7 +77,7 @@ def rest_put(path,params = nil, lheaders=nil)
   r = parse_xcon_response( connection.request(read_timeout: time_out, headers: lheaders, method: :put, path: @route_prefix + path, query: query_hash(params).to_json ))
   return r
 rescue Excon::Error::Socket => e
-  STDERR.puts e.class.name 
+  STDERR.puts e.class.name
   reopen_connection
   retry
 end
@@ -93,7 +95,7 @@ def rest_delete(path, params = nil, lheaders=nil)
   r =  parse_xcon_response( connection.request(read_timeout: time_out, headers: lheaders, method: :delete, path: @route_prefix + path, query: q))
   return r
 rescue Excon::Error::Socket => e
-  STDERR.puts e.class.name 
+  STDERR.puts e.class.name
   reopen_connection
   retry
   #end
@@ -110,32 +112,38 @@ def parse_xcon_response(resp)
   return if r.nil?
   r.strip!
   return r if resp.headers['Content-Type'] == 'plain/text'
-  r = deal_with_json(r)
+  #r = deal_with_json(r)
+  r = json_parser.parse(r)
   r = r[:BooleanResult] if r.is_a?(Hash) && r.key?(:BooleanResult)
   r
 end
 
-def error_result_exception(resp) 
-  STDERR.puts('Registry Exception ' +  resp.body.to_s  + ' head ' + resp.headers.to_s  )   unless resp.nil? 
+def error_result_exception(resp)
+  STDERR.puts('Registry Exception ' +  resp.body.to_s  + ' head ' + resp.headers.to_s  )   unless resp.nil?
   raise RegistryException.new(
   {status: resp.status,
     error_type: :error,
     error_mesg: 'Route Not Found',
     params: resp.body
   }) if resp.headers.nil? || resp.headers['Content-Type'] != 'application/json'
-  r = deal_with_json(resp.body)
-  r = {} if r.nil?
+  # r = deal_with_json(resp.body)
+  begin
+    r = json_parser.parse(resp.body)
+  rescue
+    r = {}
+  end
+  r = {} unless r.is_a?(Hash)
   r[:status] = resp.status if r.is_a?(Hash)
-    
-STDERR.puts('Registry Exception from  json result ' + r.to_s )
- 
+
+  STDERR.puts('Registry Exception from  json result ' + r.to_s )
+
   raise RegistryException.new(
   {status: 404,
     error_type: :warning,
     error_mesg: 'Route Not Found',
     params: 'nil'
-  }) if resp.nil? 
-STDERR.puts('Registry Exception from R ' )  
+  }) if resp.nil?
+  STDERR.puts('Registry Exception from R ' )
   raise RegistryException.new(r)
 end
 

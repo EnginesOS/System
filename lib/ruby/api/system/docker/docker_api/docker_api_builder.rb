@@ -43,8 +43,8 @@ module DockerApiBuilder
     def process_response()
       lambda do |chunk , c , t|
         begin
-          hash =  @parser.parse(chunk)  #do |hash|
-          hash = deal_with_json(chunk)
+          hash = @parser.parse(chunk)  #do |hash|
+         # hash = deal_with_json(chunk)
           @builder.log_build_output(hash[:stream].force_encoding(Encoding::UTF_8)) if hash.key?(:stream)
           @builder.log_build_errors(hash[:errorDetail].force_encoding(Encoding::UTF_8)) if hash.key?(:errorDetail)
         rescue StandardError =>e
@@ -52,7 +52,7 @@ module DockerApiBuilder
         end
       end
     rescue StandardError =>e
-      #  STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s)
+        STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s)
       return
     end
 
