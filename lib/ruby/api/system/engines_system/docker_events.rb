@@ -76,9 +76,9 @@ module DockerEvents
 
   def inform_container_tracking(container_name, ctype, event_name)
     SystemDebug.debug(SystemDebug.container_events, 'inform_container_tracking', container_name, ctype, event_name)
-    c = get_event_container(container_name,ctype)
+    c = get_event_container(container_name, ctype)
     c.task_complete(event_name) unless c.is_a?(FalseClass)
-    inform_container_monitor(container_name, ctype, event_name)
+ #   inform_container_monitor(container_name, ctype, event_name)
   rescue StandardError =>e
     log_exception(e)
   end
@@ -126,8 +126,8 @@ module DockerEvents
     log_exception(e)
   end
 
-  def add_event_listener(listener,mask, container_id = nil )
-    @docker_event_listener.add_event_listener(listener,mask, container_id )
+  def add_event_listener(listener, mask, container_id = nil )
+    @docker_event_listener.add_event_listener(listener, mask, container_id )
   end
 
   def rm_event_listener(listener)
