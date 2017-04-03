@@ -153,7 +153,7 @@ class DockerEventWatcher  < ErrorsApi
           end 
          # STDERR.puts('DOCKER SENT json ' + chunk.to_s )
           #      hash =  parser.parse(chunk)# do |hash|
-          parser = Yajl::Parser.new({:symbolize_keys => true}) if parser.is_nil?
+          parser = Yajl::Parser.new({:symbolize_keys => true}) if parser.nil?
           #hash = deal_with_json(chunk)
           hash = parser.parse(chunk)
           next unless hash.is_a?(Hash)
