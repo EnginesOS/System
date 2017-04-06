@@ -23,7 +23,6 @@ def return_text(r, s = 202)
 end
 
 def return_true(s = 200)
-  return return_error(s) if r.is_a?(EnginesError)
   return_text('true', s)
 end
 
