@@ -35,6 +35,7 @@ class DockerFileBuilder
     write_environment_variables
     write_stack_env
     write_file_service
+    write_repos
     write_os_packages
     write_user_local = true
     setup_user_local if write_user_local
@@ -248,7 +249,15 @@ class DockerFileBuilder
     true
 
   end
-
+  
+  def wrte_repos
+    write_line('#Repositories')
+    @blueprint_reader.external_repositories.each do |repo|
+      write_line('RUN  add-apt-repository  -y  ' + repo[:url] + ";\\")
+    end
+    write_line('RUN  apt-get -y update ')
+  end
+  
   def write_os_packages
     packages = ''
     write_line('#OS Packages')
