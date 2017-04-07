@@ -19,8 +19,7 @@ module ServiceApiConfigurations
     cmd = ['/home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh']
     #  STDERR.puts( 'CONFIGURAT cmd /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh')
     #cmd = 'docker_exec -u ' + container.cont_userid.to_s + ' ' +  container.container_name.to_s + ' /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh \'' + SystemUtils.hash_variables_as_json_str(configurator_params).to_s + '\''
-    result = @engines_core.exec_in_container({:container => c, :command_line => cmd, :log_error => true , :timeout => @@configurator_timeout, :data=> configurator_params[:variables].to_json })
-    result
+    @engines_core.exec_in_container({:container => c, :command_line => cmd, :log_error => true , :timeout => @@configurator_timeout, :data=> configurator_params[:variables].to_json })
   end
 
   def update_service_configuration(configuration)

@@ -1,7 +1,7 @@
 module ContainerApiDockerActions
   def destroy_container(container)
     clear_error
-     @docker_api.destroy_container(container)
+    @docker_api.destroy_container(container)
     ! container.has_container?
   end
 
@@ -17,7 +17,7 @@ module ContainerApiDockerActions
 
   def image_exist?(container_name)
     @docker_api.image_exist?(container_name)
-  rescue 
+  rescue
     false
   end
 
