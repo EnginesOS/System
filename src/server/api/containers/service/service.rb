@@ -47,7 +47,8 @@ get '/v0/containers/service/:service_name/websites' do
     service = get_service(params[:service_name])
     return_json_array(service.web_sites)
   rescue StandardError => e
-    send_encoded_exception(request: request, exception: e)
+    return_json(nil)
+    #send_encoded_exception(request: request, exception: e)
   end
 end
 # @method get_service_logs
