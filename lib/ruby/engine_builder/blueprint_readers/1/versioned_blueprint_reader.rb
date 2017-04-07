@@ -156,9 +156,14 @@ def read_actionators
    @schedules = @blueprint[:software][:schedules]
  end
  
+ def read_repos
+   @external_repositories = @blueprint[:software][:external_repositories] if @blueprint[:software].key?(:external_repositories)
+ end
+ 
 def process_blueprint
   super
   read_schedules
+  read_repos
 end
     
 end
