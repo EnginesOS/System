@@ -2,30 +2,30 @@
 
 class SoftwareServiceDefinition
   attr_reader :accepts,
-  def SoftwareServiceDefinition.from_yaml( yaml )
+  def SoftwareServiceDefinition.from_yaml(yaml)
     begin
       # p yaml.path
-      serviceDefinition = symbolize_keys(YAML::load( yaml ))
-      serviceDefinition[:persistent] =  serviceDefinition[:persistent] unless serviceDefinition.key?(:persistent)
+      serviceDefinition = symbolize_keys(YAML::load(yaml))
+      serviceDefinition[:persistent] = serviceDefinition[:persistent] unless serviceDefinition.key?(:persistent)
       return serviceDefinition
     rescue Exception=>e
-      raise EnginesException.new(error_hash('Problem loading Yaml',yaml))
+      raise EnginesException.new(self.error_hash('Problem loading Yaml', yaml))
     end
   end
 
   def self.software_service_definition(params)
-    SystemUtils.log_error_mesg('Missing params',  params.to_s) if params[:publisher_namespace].nil?
-    SystemUtils.log_error_mesg('Missing params',  params.to_s) if params[:type_path].nil?
+    SystemUtils.log_error_mesg('Missing params', params.to_s) if params[:publisher_namespace].nil?
+    SystemUtils.log_error_mesg('Missing params', params.to_s) if params[:type_path].nil?
 
     SoftwareServiceDefinition.find(params[:type_path], params[:publisher_namespace] )
   rescue Exception=>e
-    raise EnginesException.new(error_hash('Problem Service defl', params))
+    raise EnginesException.new(self.error_hash('Problem Service defl', params))
   end
 
-  #Find the assigned service container_name from teh service definition file
+  # Find the assigned service container_name from teh service definition file
   def SoftwareServiceDefinition.get_software_service_container_name(params)
     server_service =  self.software_service_definition(params)
-    raise EnginesException.new(error_hash('Failed to load service definitions',params)) if server_service.nil? || server_service == false
+    raise EnginesException.new(self.error_hash('Failed to load service definitions',params)) if server_service.nil? || server_service == false
     server_service[:service_container]
   end
 
@@ -110,7 +110,7 @@ class SoftwareServiceDefinition
         end                                                      #(name,value,setatrun,mandatory,build_time_only,label,immutable)
       end
     else
-      raise EnginesException.new(error_hash('Failed to load service definition', service_hash))
+      raise EnginesException.new(self.error_hash('Failed to load service definition', service_hash))
     end
     SystemDebug.debug(SystemDebug.builder, :COMPLETE_SERVICE_ENVS, retval)
     return retval
@@ -125,12 +125,12 @@ class SoftwareServiceDefinition
     if Dir.exist?(dir)
       service_def = SoftwareServiceDefinition.load_service_def(dir,service_type)
       if service_def == nil
-        raise EnginesException.new(error_hash('Nil Service type', provider.to_s + '/' + service_type.to_s ))
+        raise EnginesException.new(self.error_hash('Nil Service type', provider.to_s + '/' + service_type.to_s ))
       end
       return service_def #.to_h
     end
 
-    raise EnginesException.new(error_hash('No Dir', dir.to_s + ':'  + service_type.to_s + ':'+ provider.to_s ))
+    raise EnginesException.new(self.error_hash('No Dir', dir.to_s + ':'  + service_type.to_s + ':'+ provider.to_s ))
     #  rescue Exception=>e
     #    SystemDebug.debug(SystemDebug.services,:SERVICE_EXCEPT,:loaded,service_hash[:type_path],service_hash[:publisher_namespace])
     #    SystemUtils.log_error_mesg('Error ' ,provider.to_s + '/' + service_type.to_s )
@@ -145,7 +145,7 @@ class SoftwareServiceDefinition
       yaml = File.read(filename)
       return SoftwareServiceDefinition.from_yaml(yaml)
     end
-    raise EnginesException.new(error_hash('No Such Definitions File!', dir.to_s + '/' + service_type.to_s + ' ' + filename.to_s))
+    raise EnginesException.new(self.error_hash('No Such Definitions File!', dir.to_s + '/' + service_type.to_s + ' ' + filename.to_s))
   end
 
   def search_dir(dir,service_type)
@@ -189,4 +189,15 @@ class SoftwareServiceDefinition
     service[:service_handle_field]
   end
 
+  def self.error_hash(mesg, params = nil)
+    r = self.error_type_hash(mesg, params)
+    r[:error_type] = :error
+    r
+  end
+
+  def self.error_type_hash(mesg, params = nil)
+    {error_mesg: mesg,
+      system: :engines_core,
+      params: params }
+  end
 end
