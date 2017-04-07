@@ -249,15 +249,15 @@ class DockerFileBuilder
     true
 
   end
-  
-  def wrte_repos
+
+  def write_repos
     write_line('#Repositories')
     @blueprint_reader.external_repositories.each do |repo|
       write_line('RUN  add-apt-repository  -y  ' + repo[:url] + ";\\")
     end
     write_line('RUN  apt-get -y update ')
   end
-  
+
   def write_os_packages
     packages = ''
     write_line('#OS Packages')
