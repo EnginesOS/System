@@ -72,7 +72,6 @@ class DockerFileBuilder
     prepare_persitant_source
     write_data_permissions
     finalise_files
-
   end
 
   def write_app_templates
@@ -105,13 +104,11 @@ class DockerFileBuilder
   def prepare_persitant_source
     write_line('RUN mv /home/fs /home/fs_src')
     write_line('VOLUME /home/fs_src/')
-    true
   end
 
   def setup_persitant_app
     write_line('RUN cp -rp /home/app /home/app_src')
     write_line('VOLUME /home/app_src/')
-    true
   end
 
   def write_permissions
@@ -133,8 +130,6 @@ class DockerFileBuilder
     @blueprint_reader.environments.each do |env|
       write_line('ENV ' + env.name + ' .') if env.build_time_only
     end
-    true
-
   end
 
   def write_environment_variables
@@ -149,9 +144,7 @@ class DockerFileBuilder
       write_env(env.name,env.value.to_s) if env.value.nil? == false && env.value.to_s.length > 0 # env statement must have two arguments
     end
     write_env('WWW_DIR', @blueprint_reader.web_root.to_s) unless @blueprint_reader.web_root.nil?
-
     write_locale_env
-
   end
 
   def write_locale_env
@@ -162,7 +155,6 @@ class DockerFileBuilder
     end
     write_env('LC_ALL', lang)
     write_env('LANG', lang)
-
   end
 
   def write_persistent_dirs
@@ -175,7 +167,6 @@ class DockerFileBuilder
       paths += path + ' ' unless path.nil?
     end
     write_build_script('persistent_dirs.sh  ' + paths)
-
   end
 
   def write_data_permissions
@@ -191,11 +182,9 @@ class DockerFileBuilder
   end
 
   def write_database_seed
-
     if @blueprint_reader.database_seed.nil? == false && @blueprint_reader.database_seed != ''
       ConfigFileWriter.write_templated_file(@builder.templater, @builder.basedir + '/home/database_seed', @blueprint_reader.database_seed)
     end
-    true
   end
 
   def write_persistent_files
@@ -215,7 +204,6 @@ class DockerFileBuilder
       paths += path + ' '
     end
     write_build_script('persistent_files.sh   ' + paths)
-
   end
 
   def write_file_service
@@ -228,8 +216,6 @@ class DockerFileBuilder
         # write_line('RUN mkdir -p $CONTFSVolHome/$VOLDIR' )
       end
     end
-    true
-
   end
 
   def write_sed_strings
@@ -246,8 +232,6 @@ class DockerFileBuilder
       write_line('     cp ' + tmp_file + ' ' + dest_file)
       n += 1
     end
-    true
-
   end
 
   def write_repos
@@ -276,13 +260,10 @@ class DockerFileBuilder
     @blueprint_reader.mapped_ports.each_value do |port|
       write_line('EXPOSE ' + port[:port].to_s)
     end
-    true
-
   end
 
   def deploy_dir
     SystemConfig.DeploymentTemplates + '/' + @blueprint_reader.framework
-
   end
 
   def build_dir
@@ -296,15 +277,12 @@ class DockerFileBuilder
     builder_frag = frame_build_docker_frag.read
     @docker_file.write(builder_frag)
     frame_build_docker_frag.close
-    return true
-
   end
 
   def chown_home_app
     write_line('#Chown App Dir')
     log_build_output('Dockerfile:Chown')
     write_build_script('chown_app_dir.sh  ')
-
   end
 
   def write_write_permissions_single
@@ -317,7 +295,6 @@ class DockerFileBuilder
       paths += path + ' ' unless path.nil?
     end
     write_build_script('write_permissions.sh ' + paths)
-
   end
 
   def write_write_permissions_recursive
@@ -329,7 +306,6 @@ class DockerFileBuilder
       dirs += directory + ' ' unless directory.nil?
     end
     write_build_script('recursive_write_permissions.sh ' + dirs)
-
   end
 
   def write_app_archives
@@ -365,8 +341,6 @@ class DockerFileBuilder
       args += ' \'' + path_to_extracted + '\' '
       write_build_script('package_installer.sh' + args )
     end
-    true
-
   end
 
   def write_container_user
@@ -375,7 +349,6 @@ class DockerFileBuilder
     # FIXME: needs to by dynamic
     write_env('data_gid', @builder.data_gid.to_s)
     write_env('data_uid', @builder.data_uid.to_s)
-
   end
 
   def write_stack_env
