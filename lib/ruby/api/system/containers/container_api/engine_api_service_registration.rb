@@ -50,6 +50,8 @@ module EngineApiServiceRegistration
   def add_nginx_service(container)
     service_hash = create_nginx_service_hash(container)
     engines_core.create_and_register_service(service_hash)
+  rescue
+     # sometimes duplicates nginx record
   end
 
   def engine_persistent_services(container)
