@@ -89,7 +89,8 @@ class SystemApi < ErrorsApi
   def initialize(api)
     @engines_api = api
     @engines_conf_cache = {}
-    create_event_listener
+   
+    create_event_listener unless api.command_is_system_service?
   end
 
 
