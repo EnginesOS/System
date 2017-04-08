@@ -1,13 +1,10 @@
 #require '/opt/engines/lib/ruby/containers/ManagedContainer.rb'
 require 'thread'
-
 require '/opt/engines/lib/ruby/containers/managed_service.rb'
-
-
 
 class SystemService < ManagedService
   require_relative 'system_service_on_action.rb'
-   include ManagedContainerOnAction
+  include ManagedContainerOnAction
   @ctype = 'system_service'
   def lock_values
     @ctype = 'system_service' if @ctype.nil?
@@ -51,11 +48,11 @@ class SystemService < ManagedService
     rescue
     end
     begin
-    stop_container
-      rescue
-      end
+      stop_container
+    rescue
+    end
     begin
-    destroy_container
+      destroy_container
     rescue
     end
     @container_api.create_container(self)         #start as engine/container or will end up in a loop getting configurations and consumers
@@ -75,7 +72,7 @@ class SystemService < ManagedService
           pull_image
         end
         SystemUtils.log_output('Creating system service' + container_name.to_s,10)
-        @container_api.create_container(self)     
+        @container_api.create_container(self)
         @docker_info = @last_result
         if @docker_info.is_a?(FalseClass)
           raise EnginesException.new(error_hash('failed to create system service',container_name ))
