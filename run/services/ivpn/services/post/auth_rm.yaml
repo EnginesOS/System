@@ -1,0 +1,12 @@
+parent_engine: ivpn
+publisher_namespace: EnginesSystem
+type_path: auth
+service_handle: ivpn_rm
+container_type: service
+persistent: false
+variables:
+ engine: ivpn
+ pubkey: "_Engines_System(pubkey(ivpn_rm))"
+ service: ivpn
+ command: rm
+
