@@ -95,6 +95,7 @@ class EngineBuilder < ErrorsApi
   end
 
   def setup_build
+    check_build_params(@build_params)
     @build_params[:engine_name].freeze
     @build_params[:image] = @build_params[:engine_name].gsub(/[-_]/,'')
     @build_name = File.basename(@build_params[:repository_url]).sub(/\.git$/, '')
@@ -118,6 +119,11 @@ class EngineBuilder < ErrorsApi
     @service_builder = ServiceBuilder.new(@core_api, @templater, @build_params[:engine_name],  @attached_services)
     SystemDebug.debug(SystemDebug.builder, :builder_init__service_builder, @build_params)
     self
+  rescue StandardError => e
+    #log_exception(e)
+    log_build_errors('Engine Build Aborted Due to:' + e.to_s)
+    post_failed_build_clean_up
+    raise e
   end
 
   def volumes
@@ -167,40 +173,6 @@ class EngineBuilder < ErrorsApi
     FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.err',ContainerStateFiles.container_state_dir(@container) + '/build.err')
     true
   end
-
-#  def wait_for_engine
-#    cnt = 0
-#    lcnt = 5
-#    return @container unless @container.is_a?(ManagedEngine)
-#    log_build_output('Starting Engine')
-#
-#    
-#    while ! @container.is_startup_complete? false && @container.is_running?
-#      cnt += 1
-#      if cnt == 120
-#        log_build_output('') # force EOL to end the ...
-#        log_build_output('Startup still running')
-#        break
-#      end
-#      if lcnt == 5
-#        add_to_build_output('.')
-#        lcnt = 0
-#      else
-#        lcnt += 1
-#      end
-#      sleep 1
-#    end
-#    unless @container.is_running?
-#      begin
-#        l = @container.logs_container.to_s
-#      rescue
-#        l = ''
-#      end
-#      raise EngineBuilderException.new(error_hash('Engine Stopped:' + l.to_s))
-#    end
-#    log_build_output('') # force EOL to end the ...
-#    true
-#  end
 
   def build_container
     SystemDebug.debug(SystemDebug.builder,  ' Starting build with params ', @build_params)

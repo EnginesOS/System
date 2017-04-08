@@ -23,7 +23,6 @@ class BuildController
     @build_params = params
     SystemStatus.build_starting(@build_params)
     @engine_builder = get_engine_builder(@build_params)
-    @engine_builder.check_build_params(params)
     @engine = @engine_builder.build_from_blue_print
     SystemDebug.debug(SystemDebug.builder, :build_error,  @engine_builder.build_error.to_s) unless  @engine_builder.build_error.nil?
     build_complete(@build_params)

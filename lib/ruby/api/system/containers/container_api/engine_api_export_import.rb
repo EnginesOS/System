@@ -1,8 +1,8 @@
 module EngineApiExportImport
   require "base64"
-  @@export_timeout=120
+  @@export_timeout = 120
 
-  def export_service_data(container, service_hash, stream=nil)
+  def export_service_data(container, service_hash, stream = nil)
     SystemDebug.debug(SystemDebug.export_import, :export_service, service_hash)
     cmd_dir = SystemConfig.BackupScriptsRoot + '/' + service_hash[:publisher_namespace] + '/' + service_hash[:type_path] + '/' + service_hash[:service_handle] + '/'
 
@@ -53,6 +53,5 @@ module EngineApiExportImport
     rescue Timeout::Error
       raise EnginesException.new(error_hash('Import Timeout on Running Action ', cmd))
     end
-
   end
 end

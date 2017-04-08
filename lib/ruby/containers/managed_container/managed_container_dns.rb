@@ -6,19 +6,14 @@ module ManagedContainerDns
   def register_with_dns # MUst register each time as IP Changes
     return false unless has_api?
     return true unless @conf_register_dns
-    r = @container_api.register_with_dns(self)
-    return r unless @conf_zero_conf
-    return @container_api.register_with_zeroconf(self) if r
-    r
+   @container_api.register_with_dns(self)
+   @container_api.register_with_zeroconf(self) unless @conf_zero_conf
   end
 
   def deregister_with_dns# MUst register each time as IP Changes
     return false unless has_api?
-    return true unless @conf_register_dns
-    r = @container_api.deregister_with_dns(self)
-    return r unless @conf_zero_conf
-    return @container_api.deregister_with_zeroconf(self) if r
-    r
+    @container_api.deregister_with_dns(self) if @conf_register_dns
+    @container_api.deregister_with_zeroconf(self) unless @conf_zero_conf
   end
 
   def fqdn
@@ -29,11 +24,11 @@ module ManagedContainerDns
   def set_hostname_details(host_name, domain_name)
     @hostname = host_name
     @domain_name = domain_name
-    true
+    save_state
   end
 
   def domain_name
-    @domain_name = SystemConfig.internal_domain if @domain_name.nil?
+    @domain_name ||= SystemConfig.internal_domain if @domain_name.nil?
     @domain_name
   end
 

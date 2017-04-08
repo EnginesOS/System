@@ -16,9 +16,7 @@ module ManagedContainerEnvironment
       SystemDebug.debug(SystemDebug.containers, :update_environment, "added")
       env = EnvironmentVariable.new(key.to_s,value)
       @environments.push(env)
-      return true
     end
     raise EnginesException.new(error_hash('no matching variable ' + key.to_s ))  
-  
   end
 end
