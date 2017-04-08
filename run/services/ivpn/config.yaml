@@ -1,0 +1,44 @@
+--- !ruby/object:ManagedService
+container_name: ivpn
+ctype: service
+publisher_namespace: EnginesSystem
+type_path: vpn/ivpn
+persistent: true
+last_error: 
+memory: '56'
+hostname: ivpn
+domain_name: 
+environments: []
+image: engines/ivpn:_Engines_System(release)
+volumes:
+ ssl_certs: 
+  name: ssl_certs
+  remotepath: "/etc/ssl/"
+  localpath: "/opt/engines/etc/ivpn/ssl/"
+  permissions: "ro"
+port: 
+mapped_ports:
+ nat-t:
+  name: nat-t
+  port: 4500
+  publicFacing: true
+  external: 4500
+  proto_type: udp
+ ike: 
+  name: ike
+  port: 500
+  proto_type: udp
+  publicFacing: true
+  external: 500
+repo: na
+last_result: 
+setState: nocontainer
+nginxored: false
+conf_register_site: false
+conf_register_dns: false
+conf_zero_conf: false
+conf_self_start: true
+dependant_on:
+- "dns"
+- "auth"
+- "syslog"

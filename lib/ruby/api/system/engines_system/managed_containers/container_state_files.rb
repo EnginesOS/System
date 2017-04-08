@@ -68,9 +68,9 @@ module ContainerSystemStateFiles
     key_dir =  key_dir(container)
     unless Dir.exist?(key_dir)
       Dir.mkdir(key_dir)  unless File.directory?(key_dir)
-    end
       FileUtils.chown(nil, 'containers', key_dir)
       FileUtils.chmod('g+w', key_dir)
+    end
       STDERR.puts(' key dir 1 ' + key_dir.to_s)
     true
   end
