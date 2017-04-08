@@ -90,7 +90,7 @@ class SystemApi < ErrorsApi
     @engines_api = api
     @engines_conf_cache = {}
    
-    create_event_listener unless api.command_is_system_service?
+    create_event_listener unless $PROGRAM_NAME.end_with?('system_service.rb')
   end
 
 
