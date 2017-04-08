@@ -5,7 +5,7 @@ require '/opt/engines/lib/ruby/containers/container.rb'
 require '/opt/engines/lib/ruby/containers/managed_container.rb'
 require '/opt/engines/lib/ruby/containers/managed_engine.rb'
 require '/opt/engines/lib/ruby/containers/managed_service.rb'
-require '/opt/engines/lib/ruby/containers/system_service.rb'
+require '/opt/engines/lib/ruby/containers/system_service/system_service.rb'
 require '/opt/engines/lib/ruby/containers/managed_utility/managed_utility.rb'
 require '/opt/engines/lib/ruby/managed_services/service_definitions/software_service_definition.rb'
 #require '/opt/engines/lib/ruby/system/deal_with_json.rb'
@@ -81,11 +81,12 @@ class EnginesCore < ErrorsApi
 
   require_relative 'engines_core_version.rb'
   include EnginesCoreVersion
+  
   def self.command_is_system_service?
     return true if $PROGRAM_NAME.end_with?('system_service.rb')
   end
 
-  unless self.command_is_system_service?
+  unless $PROGRAM_NAME.end_with?('system_service.rb')
     require_relative 'user_auth.rb'
     include UserAuth
   end

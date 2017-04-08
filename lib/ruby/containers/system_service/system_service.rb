@@ -1,8 +1,13 @@
 #require '/opt/engines/lib/ruby/containers/ManagedContainer.rb'
 require 'thread'
+
 require '/opt/engines/lib/ruby/containers/managed_service.rb'
 
+
+
 class SystemService < ManagedService
+  require_relative 'system_service_on_action.rb'
+   include ManagedContainerOnAction
   @ctype = 'system_service'
   def lock_values
     @ctype = 'system_service' if @ctype.nil?

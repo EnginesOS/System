@@ -11,9 +11,8 @@ module TaskAtHand
     set_task_at_hand(step)
     save_state
     SystemDebug.debug(SystemDebug.engine_tasks,  'Task at Hand:' + state.to_s + '  Current set state:' + current_set_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s + ' in ' + curr_state)
-    true
-  rescue StandardError => e
-    log_exception(e)
+    # rescue StandardError => e
+    #   log_exception(e)
   end
 
   def in_progress(action)
@@ -92,11 +91,9 @@ module TaskAtHand
 
     return log_error_mesg(@container_name + ' not in matching state want _' + tasks_final_state(action).to_s + '_but in ' + curr_state.class.name + ' ',curr_state )
 
-    true
-
     # Perhaps ?return clear_task_at_hand
-  rescue StandardError => e
-    log_exception(e)
+ # rescue StandardError => e
+ #   log_exception(e)
   end
 
   def process_container_event(event, event_hash)
@@ -121,8 +118,8 @@ module TaskAtHand
     when 'oom'
       out_of_mem('oom')
     end
-  rescue StandardError => e
-    log_exception(e)
+#  rescue StandardError => e
+#    log_exception(e)
   end
 
   def task_complete(action)
@@ -136,8 +133,8 @@ module TaskAtHand
     # FixMe Kludge unless docker event listener
     delete_engine
     true
-  rescue StandardError => e
-    log_exception(e)
+ # rescue StandardError => e
+ #   log_exception(e)
   end
 
   def task_at_hand
@@ -271,8 +268,8 @@ module TaskAtHand
     when :destroy
       return 'nocontainer'
     end
-  rescue StandardError => e
-    log_exception(e)
+ # rescue StandardError => e
+#    log_exception(e)
   end
 
   def task_has_expired?(task)

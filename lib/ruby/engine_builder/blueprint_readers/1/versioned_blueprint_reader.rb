@@ -3,8 +3,9 @@ class VersionedBlueprintReader < BluePrintReader
   @schema = 1
   attr_reader   :first_run_url,
                 :continuous_deployment,
-                :schedules
-  
+                :schedules ,
+                :external_repositories
+                
   def read_scripts
     return unless @blueprint[:software].key?(:scripts)
     @custom_start_script =  @blueprint[:software][:scripts][:start][:content].gsub(/\r/, '') if @blueprint[:software][:scripts].key?(:start)
