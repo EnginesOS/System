@@ -81,11 +81,11 @@ class EnginesCore < ErrorsApi
 
   require_relative 'engines_core_version.rb'
   include EnginesCoreVersion
-  def self.command_is_system_service?
+  def command_is_system_service?
     return true if $PROGRAM_NAME.end_with?('system_service.rb')
   end
 
-  unless self.command_is_system_service?
+  unless command_is_system_service?
     require_relative 'user_auth.rb'
     include UserAuth
   end
