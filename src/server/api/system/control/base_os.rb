@@ -38,4 +38,35 @@ get '/v0/system/control/base_os/update' do
     send_encoded_exception(request: request, exception: e)
   end
 end
+# @method set system timezone
+# @overload get '/v0/system/control/base_os/timezone'
+# set system timezone
+# post param :timezone
+# @return [true|false]
+post '/v0/system/control/base_os/timezone' do
+  begin
+    post_s = post_params(request)
+    cparams = assemble_params(post_s, [], [:timezone])
+
+    return_text(engines_api.set_timezone(cparams[:timezone]))
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+end
+# @method set system locale
+# @overload get '/v0/system/control/base_os/locale'
+# set system locale
+# post param :locale
+# @return [true|false]
+post '/v0/system/control/base_os/locale' do
+  begin
+    post_s = post_params(request)
+    cparams = assemble_params(post_s, [], [:locale])
+
+    return_text(engines_api.set_locale(cparams[:locale]))
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+
+end
 # @!endgroup
