@@ -63,7 +63,9 @@ module SmServiceControl
     system_registry_client.update_attached_service(params)
   end
 
-  def clear_service_from_registry(service)
+  def clear_service_from_registry(service)    
     system_registry_client.clear_service_from_registry(service)
+  rescue EnginesException => e
+    raise e unless e.level == :warning
   end
 end
