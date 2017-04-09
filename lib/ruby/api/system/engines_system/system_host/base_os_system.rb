@@ -12,4 +12,12 @@ module BaseOsSystem
     # return true if res.status == 'run'
     true
   end
+  
+  def set_locale(locale)
+    
+  end
+  
+  def set_timezone(tz)
+    
+  end
 end
