@@ -1,4 +1,4 @@
-module ManagedContainerOnAction
+module SystemSystemOnAction
   def on_start(what)
     @container_mutex.synchronize {
       set_running_user

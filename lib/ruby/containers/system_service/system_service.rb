@@ -4,7 +4,7 @@ require '/opt/engines/lib/ruby/containers/managed_service.rb'
 
 class SystemService < ManagedService
   require_relative 'system_service_on_action.rb'
-  include ManagedContainerOnAction
+  include SystemSystemOnAction
   @ctype = 'system_service'
   def lock_values
     @ctype = 'system_service' if @ctype.nil?
