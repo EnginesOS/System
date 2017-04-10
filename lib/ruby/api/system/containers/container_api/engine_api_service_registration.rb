@@ -3,7 +3,6 @@ module EngineApiServiceRegistration
     service_hash = create_dns_service_hash(container)
     begin
       engines_core.create_and_register_service(service_hash)
-    rescue
     end
   end
 
