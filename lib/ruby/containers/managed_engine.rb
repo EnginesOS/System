@@ -21,7 +21,7 @@ class ManagedEngine < ManagedContainer
     @conf_register_dns = true
     @conf_zero_conf = true
     @deployment_type = runtime_params.deployment_type
-    @host_network=false
+    @host_network = false
     @web_port = build_params[:web_port]
     @web_root = runtime_params.web_root
     @last_result = ''
@@ -50,6 +50,7 @@ class ManagedEngine < ManagedContainer
 
   def on_start(event_hash)
     set_running_user
+    STDERR.puts('ONSTART_CALLED' + container_name.to_s + ';' + event_hash.to_s)
     #    STDERR.puts('ONS TART @service_builder.run_volume_builder  is a' +  @volume_service_builder.to_s )
     unless @volume_service_builder.nil? || @volume_service_builder.is_a?(FalseClass)
       STDERR.puts('Running @service_builder.run_volume_builder ' )
