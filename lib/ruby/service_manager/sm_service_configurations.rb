@@ -14,7 +14,7 @@ module SmServiceConfigurations
     else
       return true
     end
-  rescue StandardError =>e
+  rescue StandardError => e
     log_exception(e)
     raise e
   end

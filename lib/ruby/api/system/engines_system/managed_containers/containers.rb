@@ -1,20 +1,19 @@
 module Containers
-  
   # @param container_log file
   # @param retentioncount
-def rotate_container_log(container_id, retention = 10)
-  run_server_script('rotate_container_log',container_id.to_s + ' ' + retention.to_s)   
-end
-  
+  def rotate_container_log(container_id, retention = 10)
+    run_server_script('rotate_container_log',container_id.to_s + ' ' + retention.to_s)
+  end
+
   def save_container(container)
 
     # FIXME:
-#    api = container.container_api.dup
-#    container.container_api = nil
-#    last_result = container.last_result
-#    #  last_error = container.last_error
-#    # save_last_result_and_error(container)
-#    container.last_result = ''
+    #    api = container.container_api.dup
+    #    container.container_api = nil
+    #    last_result = container.last_result
+    #    #  last_error = container.last_error
+    #    # save_last_result_and_error(container)
+    #    container.last_result = ''
 
     serialized_object = YAML.dump(container)
     state_dir = container_state_dir(container)
@@ -37,7 +36,7 @@ end
     end
     unlock_container_conf_file(state_dir)
     cache_engine( container, ts) unless cache_update_ts(container, ts)
-     true
+    true
   rescue StandardError => e
     unlock_container_conf_file(state_dir)
     container.last_error = last_error
@@ -47,9 +46,8 @@ end
     unlock_container_conf_file(state_dir)
   end
 
-
   def is_startup_complete(container)
-     File.exist?(container_state_dir(container) + '/run/flags/startup_complete')
+    File.exist?(container_state_dir(container) + '/run/flags/startup_complete')
   end
 
   def write_actionators(container, actionators)
@@ -62,11 +60,11 @@ end
     f.flush()
     f.close
   end
-  
+
   def get_engine_actionator(container,action)
     actionators = load_engine_actionators(container)
     SystemDebug.debug(SystemDebug.actions,container,actionators[action]) #.to_sym])
-     actionators[action] #.to_sym]
+    actionators[action] #.to_sym]
   end
 
   def load_engine_actionators(container)
