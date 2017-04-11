@@ -1,0 +1,14 @@
+parent_engine: ivpn
+publisher_namespace: EnginesSystem
+type_path: auth
+service_handle: ivpn_cert
+container_type: service
+persistent: true
+variables:
+ country: Australia
+ state: NSW
+ organisation: engines
+ city: sydney
+ person: james
+ cert_name: ipvpn
+ domainame: ivpn.engines.org
