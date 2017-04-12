@@ -4,6 +4,7 @@ ctype: service
 publisher_namespace: EnginesSystem
 type_path: vpn/ivpn
 persistent: true
+capabilities: all
 last_error: 
 memory: '56'
 hostname: ivpn
