@@ -6,8 +6,8 @@ ADD engines home/engines
 ENV HOME /home/app
 ENV CONTFSVolHome /home/fs/
 RUN	apt-get update -y ;\
-	apt-get install -y sshd ;\
-	adduser -q --disabled-password -uid -d /home/app -M -g 22671 xuser;\
+	apt-get install -y openssh-server ;\
+	adduser -q --disabled-password -uid 22671 --home /home/app -M  xuser;\
 	chown $ContUser /opt $HOME
 
 ADD sshd.conf /etc/	
