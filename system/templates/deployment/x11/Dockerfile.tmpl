@@ -1,0 +1,22 @@
+FROM  engines/frameworkbuild:_Engines_System(release)
+ADD build_scripts /build_scripts
+
+ADD home home
+ADD engines home/engines
+ENV HOME /home/app
+ENV CONTFSVolHome /home/fs/
+RUN	apt-get update -y ;\
+	apt-get install -y sshd ;\
+	/usr/sbin/useradd -d /home/app -g 22671 xuser;\
+	usermod -G containers -a xuser  #grant access to /run/flags etc;\
+	chown $ContUser /opt $HOME
+
+ADD sshd.conf /etc/	
+ENV ContUser xuser
+
+
+
+
+
+
+
