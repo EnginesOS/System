@@ -5,6 +5,8 @@ ENV ContUser xuser
 
 ADD home home
 ADD engines home/engines
+ADD sudoers /etc/sudoers.d/engines
+
 ENV HOME /home/app
 ENV CONTFSVolHome /home/fs/
 RUN	apt-get update -y ;\
@@ -12,7 +14,7 @@ RUN	apt-get update -y ;\
 	adduser -q --disabled-password -uid 22671 --home /home/app  xuser;\
 	chown $ContUser /opt $HOME
 
-ADD sshd.conf /etc/	
+ADD sshd_config /etc/ssh/	
 
 
 
