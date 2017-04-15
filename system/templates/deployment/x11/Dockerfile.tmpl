@@ -7,8 +7,7 @@ ENV HOME /home/app
 ENV CONTFSVolHome /home/fs/
 RUN	apt-get update -y ;\
 	apt-get install -y sshd ;\
-	/usr/sbin/useradd -d /home/app -g 22671 xuser;\
-	usermod -G containers -a xuser  #grant access to /run/flags etc;\
+	adduser -q --disabled-password -uid -d /home/app -M -g 22671 xuser;\
 	chown $ContUser /opt $HOME
 
 ADD sshd.conf /etc/	
