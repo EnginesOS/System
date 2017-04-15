@@ -10,10 +10,6 @@ ADD sudoers /etc/sudoers.d/engines
 ENV HOME /home/app
 ENV CONTFSVolHome /home/fs/
 RUN	apt-get update -y ;\
-	apt-get install -y openssh-server ;\
-	adduser -q --disabled-password -uid 22671 --home /home/app  xuser;\
-	 usermod -G data-user -a xuser;\
-	  usermod -G containers -a xuser;\
 	chown $ContUser /opt $HOME
 
 ADD sshd_config /etc/ssh/	
