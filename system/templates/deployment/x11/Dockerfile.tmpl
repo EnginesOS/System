@@ -1,17 +1,19 @@
 FROM  engines/frameworkbuild:_Engines_System(release)
 ADD build_scripts /build_scripts
 
+ENV ContUser xuser
+
 ADD home home
 ADD engines home/engines
 ENV HOME /home/app
 ENV CONTFSVolHome /home/fs/
 RUN	apt-get update -y ;\
 	apt-get install -y openssh-server ;\
-	adduser -q --disabled-password -uid 22671 --home /home/app -M  xuser;\
+	adduser -q --disabled-password -uid 22671 --home /home/app  xuser;\
 	chown $ContUser /opt $HOME
 
 ADD sshd.conf /etc/	
-ENV ContUser xuser
+
 
 
 
