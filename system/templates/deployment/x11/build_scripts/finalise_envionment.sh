@@ -5,7 +5,7 @@ apt-get -y clean
 
 if ! test -z $command
  then
-  echo "$command &" >/home/app/.profile
+  echo "$X11COMMAND &" >/home/app/.profile
 fi 
 
 mkdir  -p /var/log/apache2/ 
