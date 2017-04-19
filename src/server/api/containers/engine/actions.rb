@@ -38,7 +38,10 @@ post '/v0/containers/engine/:engine_name/action/:action_name' do
     p_params[:engine_name] = params[:engine_name]
     engine = get_engine(params[:engine_name])
     cparams = assemble_params(p_params, [:engine_name], :all)
-    return_json(engines_api.perform_engine_action(engine, params[:action_name], cparams))
+    action = engines_api.get_engine_actionator(engine, params[:action_name])
+    r = engines_api.perform_engine_action(engine, params[:action_name], cparams)
+   return return_json(r) if action[:return_type] == 'json'
+    return_text(r)  
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
