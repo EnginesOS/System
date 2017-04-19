@@ -41,6 +41,7 @@ post '/v0/containers/engine/:engine_name/action/:action_name' do
     action = engines_api.get_engine_actionator(engine, params[:action_name])
     r = engines_api.perform_engine_action(engine, params[:action_name], cparams)
    return return_json(r) if action[:return_type] == 'json'
+     STDERR.puts('action ret ' + r.to_s )
     return_text(r)  
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
