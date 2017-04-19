@@ -1,0 +1,22 @@
+FROM  engines/x11:_Engines_System(release)
+ADD build_scripts /build_scripts
+
+
+
+ADD home home
+ADD engines home/engines
+
+ENV HOME /home/app
+ENV CONTFSVolHome /home/fs/
+RUN	apt-get update -y ;\
+	chown $ContUser /opt $HOME
+
+
+
+
+
+
+
+
+
+

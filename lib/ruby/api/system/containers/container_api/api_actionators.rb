@@ -1,14 +1,15 @@
 module ApiActionators
   @@action_timeout = 20
-  def perform_action(c, actionator_name, params, data = nil)
-    SystemDebug.debug(SystemDebug.actions, actionator_name, params)
+  def perform_action(c, actionator, params, data = nil)
+    SystemDebug.debug(SystemDebug.actions, actionator, params)
     if params.nil? || params.is_a?(String)
       args = params
     else
       args = params.to_json
     end
+    
     #  STDERR.puts('/home/actionators/' + actionator_name + '.sh ' + params.to_json + ' .  ' + data.to_s )
-    cmds = ['/home/actionators/' + actionator_name + '.sh',args.to_s]
+    cmds = ['/home/actionators/' + actionator[:name] + '.sh',args.to_s]
     if data.nil?
       result = engines_core.exec_in_container({:container => c, :command_line => cmds, :log_error => true, :data=>nil })
       #      result = SystemUtils.execute_command(cmd)
@@ -23,7 +24,7 @@ module ApiActionators
     end
     if result[:stdout].start_with?('{') || result[:stdout].start_with?('"{')
       begin
-        return deal_with_json(result[:stdout])
+        return deal_with_json(result[:stdout]) if actionator[:return_type]
       rescue
         return result[:stdout]
       end

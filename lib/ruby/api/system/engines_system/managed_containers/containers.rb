@@ -61,7 +61,11 @@ module Containers
     f.close
   end
 
-  def get_engine_actionator(container,action)
+  def get_service_actionator(container, action)
+    get_engine_actionator(container, action)
+  end
+
+  def get_engine_actionator(container, action)
     actionators = load_engine_actionators(container)
     SystemDebug.debug(SystemDebug.actions,container,actionators[action]) #.to_sym])
     actionators[action] #.to_sym]

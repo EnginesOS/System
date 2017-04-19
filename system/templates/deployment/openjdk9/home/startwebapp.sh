@@ -9,6 +9,6 @@ env CATALINA_PID=/tmp/catalina.pid  /usr/bin/java -Djava.util.logging.config.fil
 echo $! 
  touch /engines/var/run/flags/startup_complete
  wait `cat /tmp/catalina.pid`
- rm / /engines/var/run/flags/startup_complete
+ rm /engines/var/run/flags/startup_complete
 	
 
