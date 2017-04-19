@@ -7,8 +7,8 @@ module PublicApiEngineActionators
     @system_api.get_engine_actionator(engine, action)
   end
 
-  def perform_engine_action(engine, actionator_name, params)
-    @core_api.perform_engine_action(engine, actionator_name, params)
+  def perform_engine_action(engine, actionator, params)
+    @core_api.perform_engine_action(engine, actionator, params)
   end
 
 end
