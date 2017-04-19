@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 apt-get -y remove  build-essential gcc make 
 apt-get -y clean 

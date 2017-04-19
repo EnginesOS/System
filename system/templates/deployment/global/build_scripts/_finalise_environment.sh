@@ -22,7 +22,8 @@ echo "	id $ContUser | grep $data_gid '"
  
  	
 	if test -f /build_scripts/finalise_environment.sh
-		then	
+		then
+			echo "running finalise_environment.sh"
 			/build_scripts/finalise_environment.sh
 	fi
 	
