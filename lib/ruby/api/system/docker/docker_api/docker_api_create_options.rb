@@ -307,7 +307,7 @@ module DockerApiCreateOptions
     local_side =     port[:port].to_s + '/' + get_protocol_str(port)
     remote_side = []
     remote_side[0] = {}
-    remote_side[0]['HostPort'] = port[:external].to_s
+    remote_side[0]['HostPort'] = port[:external].to_s unless port[:external] == 0
     bindings[local_side] = remote_side
   end
 
