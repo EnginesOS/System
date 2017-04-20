@@ -304,14 +304,14 @@ module DockerApiCreateOptions
   end
 
   def add_mapped_port(bindings, port )
-    local_side =     port[:port].to_s + '/' + get_protocol_str(port)
+    local_side = port[:port].to_s + '/' + get_protocol_str(port)
     remote_side = []
     remote_side[0] = {}
     remote_side[0]['HostPort'] = port[:external].to_s unless port[:external] == 0
     bindings[local_side] = remote_side
   end
 
-  def add_exposed_port(eports , port)
+  def add_exposed_port(eports, port)
     port[:proto_type] = 'tcp' if port[:proto_type].nil?
     if port[:proto_type].downcase.include?('and') || port[:proto_type].downcase == 'both'
       eports[port[:port].to_s + '/tcp'] = {}
