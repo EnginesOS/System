@@ -63,7 +63,7 @@ module Containers
 
   def get_service_actionator(container, action)
     actionators = load_service_actionators(container)
-    actionators[action.to_sym] #.to_sym]
+    actionators[action]
   end
   
   def load_service_actionators(container)
@@ -79,7 +79,7 @@ module Containers
     actionators = load_engine_actionators(container)
     SystemDebug.debug(SystemDebug.actions, container, actionators[action]) #.to_sym])
     STDERR.puts('ACRTION ' + action.to_s)
-    actionators[action] #.to_sym] #.to_sym]
+    actionators[action]
   end
 
   def load_engine_actionators(container)
