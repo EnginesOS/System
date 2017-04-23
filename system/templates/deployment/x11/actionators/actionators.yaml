@@ -1,0 +1,26 @@
+create_single_access_key:
+  :name: create_single_access_key
+  :label: Create Single Access key
+  :description: ''
+  :return_type: file
+  :return_file_name: access_key
+  :enable_logging: true
+  :variables:
+  - :name: overwrite_existing
+    :value: 'true'
+    :mandatory: false
+    :input:
+      :type: boolean
+      :label: ''
+      :title: ''
+      :comment: ''
+      :hint: ''
+      :placeholder: ''
+      :validation:
+        :pattern: ''
+        :message: ''
+      :collection:
+        :include_blank: false
+        :items: {}
+  :script:
+    :language: sh
