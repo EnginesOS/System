@@ -9,7 +9,7 @@ module Actionators
   end
 
   def perform_engine_action(engine, actionator_name, params)
-    SystemDebug.debug(SystemDebug.actions, engine, actionator_name,params)
+    SystemDebug.debug(SystemDebug.actions, engine, actionator_name, params)
     actionator = get_engine_actionator(engine, actionator_name)    
     return engine.perform_action(actionator, params) if engine.is_running?
     raise EnginesException.new(warning_hash('Engine not running', engine.container_name))
