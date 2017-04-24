@@ -67,7 +67,7 @@ module Containers
   end
   
   def load_service_actionators(container)
-    SystemDebug.debug(SystemDebug.actions, container,actionator_dir(container) + '/actionators.yaml')
+    SystemDebug.debug(SystemDebug.actions, container, actionator_dir(container) + '/actionators.yaml')
     return {} unless File.exist?(actionator_dir(container) + '/actionators.yaml')
     yaml = File.read(actionator_dir(container) + '/actionators.yaml')
     actionators = YAML::load(yaml)
