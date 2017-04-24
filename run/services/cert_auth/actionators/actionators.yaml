@@ -1,30 +1,30 @@
 fetch_cert:
-  :name: :fetch_cert
+  :name: fetch_cert
   :label: fetch_cert
   :description: ''
   :return_type: file
   :return_file_name: cert
   :enable_logging: true
 import_cert:
-  :name: :import_cert
+  :name: import_cert
   :label: import_cert
   :description: ''
   :return_type: none
   :enable_logging: true
 list_certs:
-  :name: :list_certs
+  :name: list_certs
   :label: list_certs
   :description: ''
   :return_type: none
   :enable_logging: true
 remove_cert:
-  :name: :remove_cert
+  :name: remove_cert
   :label: remove_cert
   :description: ''
   :return_type: none
   :enable_logging: true
 system_ca:
-  :name: :system_ca
+  :name: system_ca
   :label: system_ca
   :description: ''
   :return_type: none
