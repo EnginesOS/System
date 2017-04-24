@@ -11,4 +11,5 @@ variables:
  city: sydney
  person: james
  cert_name: ipvpn
- domainame: ivpn._Engines_System(default_domain)
+ domainame: _Engines_System(default_domain)
+ hostname: ivpn
