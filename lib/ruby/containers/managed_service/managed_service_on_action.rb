@@ -3,7 +3,7 @@ module ManagedServiceOnAction
     SystemDebug.debug(SystemDebug.container_events,:ON_start_MS,event_hash)
     @container_mutex.synchronize {
          set_running_user
-         STDERR.puts('ONSTART_CALLED' + container_name.to_s + ';' + what.to_s)
+         STDERR.puts('ONSTART_CALLED' + container_name.to_s + ';' + event_hash.to_s)
          SystemDebug.debug(SystemDebug.container_events,:ONSTART_CALLED, what)
          @out_of_memory = false
          if @consumer_less
