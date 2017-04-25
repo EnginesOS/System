@@ -12,5 +12,5 @@ variables:
  person: james
  cert_name: ipvpn
  domainname: _Engines_System(default_domain)
- hostname: ivpn
+ hostname: ivpn._Engines_System(default_domain)
  wild: no
