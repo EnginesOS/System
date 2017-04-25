@@ -1,7 +1,7 @@
 module SmAttachStaticServices
   # @returns boolean
   # load persistent and non persistent service definitions off disk and registers them
-  def load_and_attach_static_services(dirname,container)
+  def load_and_attach_static_services(dirname, container)
     container.environments  = [] if container.environments.nil?
     curr_service_file = ''
     SystemDebug.debug(SystemDebug.services,:Globbing,container.container_name,dirname + '/*.yaml')
@@ -16,7 +16,7 @@ module SmAttachStaticServices
       SystemDebug.debug(SystemDebug.services, :loaded_service_hash, service_hash)
       set_top_level_service_params(service_hash, container.container_name)
       if service_hash.has_key?(:shared_service) == false || service_hash[:shared_service] == false
-        templater =  Templater.new(@core_api.system_value_access,container)
+        templater =  Templater.new(@core_api.system_value_access, container)
         templater.proccess_templated_service_hash(service_hash)
         SystemDebug.debug(SystemDebug.services, :templated_service_hash, service_hash)
 

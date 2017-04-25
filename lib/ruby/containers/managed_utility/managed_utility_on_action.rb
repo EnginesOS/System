@@ -15,7 +15,9 @@ module ManagedUtilityOnAction
     end
     
     def on_stop
-      super
+      @had_out_memory = @out_of_memory
+      @out_of_memory = false
+      save_state
       destroy_container
     end
     
