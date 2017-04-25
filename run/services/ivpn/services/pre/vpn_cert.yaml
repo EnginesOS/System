@@ -13,3 +13,4 @@ variables:
  cert_name: ipvpn
  domainame: _Engines_System(default_domain)
  hostname: ivpn
+ wild: no
