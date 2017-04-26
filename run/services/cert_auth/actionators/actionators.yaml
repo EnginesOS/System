@@ -26,7 +26,7 @@ import_cert:
   :name: import_cert
   :label: import_cert
   :description: ''
-  :return_type: none
+  :return_type: text/plain
   :enable_logging: true
   :params:
    cert_name:
@@ -87,7 +87,7 @@ remove_cert:
   :name: remove_cert
   :label: remove_cert
   :description: ''
-  :return_type: none
+  :return_type: text/plain
   :enable_logging: true
   params:
    cert_name:
