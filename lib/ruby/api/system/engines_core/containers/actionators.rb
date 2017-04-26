@@ -2,7 +2,9 @@ module Actionators
   def get_engine_actionator(engine, action)
     @system_api.get_engine_actionator(engine, action)
   end
-
+  def get_service_actionator(engine, action)
+    @system_api.get_service_actionator(engine, action)
+  end
   def list_engine_actionators(engine)
     @system_api.load_engine_actionators(engine)
 
