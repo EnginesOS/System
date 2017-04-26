@@ -15,7 +15,7 @@ list_certs:
   :name: list_certs
   :label: list_certs
   :description: ''
-  :return_type: none
+  :return_type: json
   :enable_logging: true
 remove_cert:
   :name: remove_cert
@@ -27,6 +27,6 @@ system_ca:
   :name: system_ca
   :label: system_ca
   :description: ''
-  :return_type: none
+  :return_type: text
   :return_file_name: system_ca
   :enable_logging: true
