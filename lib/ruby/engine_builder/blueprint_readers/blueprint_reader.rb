@@ -23,6 +23,7 @@ class BluePrintReader
   :pear_modules,
   :apache_modules,
   :php_modules,
+  :lua_modules,
   :pecl_modules,
   :npm_modules,
   :archives_details,
