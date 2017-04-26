@@ -1,0 +1,25 @@
+add_site_vpn:
+  :name: add_site_vpn
+  :label: add_site_vpn
+  :description: ''
+  :return_type: file
+  :return_file_name: cert
+  :enable_logging: true
+rm_site_vpn:
+  :name: rm_site_vpn
+  :label: rm_site_vpn
+  :description: ''
+  :return_type: none
+  :enable_logging: true
+add_user_vpn:
+  :name: add_user_vpn
+  :label: add_user_vpn
+  :description: ''
+  :return_type: none
+  :enable_logging: true
+rm_user_vpn:
+  :name: rm_user_vpn
+  :label: rm_user_vpn
+  :description: ''
+  :return_type: none
+  :enable_logging: true
