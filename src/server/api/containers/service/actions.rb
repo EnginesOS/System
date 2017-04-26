@@ -43,6 +43,7 @@ post '/v0/containers/service/:service_name/action/:action_name' do
     r  = engines_api.perform_service_action( params[:service_name]  , p_params[:action_name], cparams)
     STDERR.puts('action ret type '+ action[:return_type])
     STDERR.puts('action ret ' + r.to_s )
+    STDERR.puts('action ret ' + r.to_json )
     return return_json(r) if action[:return_type] == 'json'
        STDERR.puts('action ret ' + r.to_s )
       return_text(r)  
