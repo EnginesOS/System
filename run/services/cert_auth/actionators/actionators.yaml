@@ -113,3 +113,10 @@ system_ca:
   :return_type: text/plain
   :return_file_name: system_ca
   :enable_logging: true
+download_system_ca:
+  :name: system_ca
+  :label: download system ca
+  :description: ''
+  :return_type: file
+  :return_file_name: engines_ca.pem
+  :enable_logging: true  
