@@ -5,12 +5,78 @@ fetch_cert:
   :return_type: file
   :return_file_name: cert
   :enable_logging: true
+  params:
+   cert_name:
+    name: cert_name
+    value: ''
+    label: Certificate name
+    field_type: ''
+    select_collection: ''
+    tooltip: ''
+    hint: ''
+    placeholder: ''
+    comment: ''
+    regex_validator: ''
+    regex_invalid_message: ''
+    mandatory: true
+    ask_at_build_time: true
+    build_time_only: false
+    immutable: false
 import_cert:
   :name: import_cert
   :label: import_cert
   :description: ''
-  :return_type: none
+  :return_type: text/plain
   :enable_logging: true
+  :params:
+   cert_name:
+    name: cert_name
+    value: ''
+    label: Certificate name
+    field_type: ''
+    select_collection: ''
+    tooltip: ''
+    hint: ''
+    placeholder: ''
+    comment: ''
+    regex_validator: ''
+    regex_invalid_message: ''
+    mandatory: true
+    ask_at_build_time: true
+    build_time_only: false
+    immutable: false
+   cert:
+    name: cert
+    value: ''
+    label: ''
+    field_type: text_field
+    select_collection: ''
+    tooltip: ''
+    hint: ''
+    placeholder: ''
+    comment: ''
+    regex_validator: ''
+    regex_invalid_message: ''
+    mandatory: true
+    ask_at_build_time: false
+    build_time_only: false
+    immutable: false
+   key:
+    name: key
+    value: ''
+    label: ''
+    field_type: text_field
+    select_collection: ''
+    tooltip: ''
+    hint: ''
+    placeholder: ''
+    comment: ''
+    regex_validator: ''
+    regex_invalid_message: ''
+    mandatory: true
+    ask_at_build_time: false
+    build_time_only: false
+    immutable: false  
 list_certs:
   :name: list_certs
   :label: list_certs
@@ -21,12 +87,36 @@ remove_cert:
   :name: remove_cert
   :label: remove_cert
   :description: ''
-  :return_type: none
+  :return_type: text/plain
   :enable_logging: true
+  params:
+   cert_name:
+    name: cert_name
+    value: ''
+    label: Certificate name
+    field_type: ''
+    select_collection: ''
+    tooltip: ''
+    hint: ''
+    placeholder: ''
+    comment: ''
+    regex_validator: ''
+    regex_invalid_message: ''
+    mandatory: true
+    ask_at_build_time: false
+    build_time_only: true
+    immutable: false
 system_ca:
   :name: system_ca
   :label: system_ca
   :description: ''
-  :return_type: text
+  :return_type: text/plain
   :return_file_name: system_ca
   :enable_logging: true
+download_system_ca:
+  :name: system_ca
+  :label: download system ca
+  :description: ''
+  :return_type: file
+  :return_file_name: engines_ca.pem
+  :enable_logging: true  
