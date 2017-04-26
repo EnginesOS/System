@@ -69,7 +69,7 @@ begin
    
       return {} if r.nil?
     json_parser.parse(r)
-      rescue
+      rescue StandardError => e
       STDERR.puts(' POST Parse Error ' + e.to_s + ' on ' + r.to_s)
       {}      
   end
