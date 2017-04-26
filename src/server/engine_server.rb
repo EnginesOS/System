@@ -65,9 +65,10 @@ begin
 
   def post_params(request)
     r = request.env['rack.input'].read
+      return if r.nil?
     json_parser.parse(r)
   rescue StandardError => e
-    log_error(request, e, e.backtrace.to_s)
+    log_error_mesg(request, e, e.backtrace.to_s)
     STDERR.puts(' POST Parse Error ' + e.to_s + ' on ' + r.to_s)
     {}
   end
