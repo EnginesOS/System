@@ -36,6 +36,7 @@ post '/v0/containers/engine/:engine_name/action/:action_name' do
   begin
     p_params = post_params(request)
     p_params[:engine_name] = params[:engine_name]
+    p_params[:action_name] = params[:action_name]  
     engine = get_engine(params[:engine_name])
     cparams = assemble_params(p_params, [:engine_name], :all)
     action = engines_api.get_engine_actionator(engine, params[:action_name])

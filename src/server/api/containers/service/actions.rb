@@ -36,6 +36,7 @@ post '/v0/containers/service/:service_name/action/:action_name' do
   begin
     p_params = post_params(request)
     p_params[:service_name] = params[:service_name]  
+    p_params[:action_name] = params[:action_name]  
     cparams = assemble_params(p_params, [:service_name], :all)
   #  service = get_service(cparams[:service_name])
     return_json(engines_api.perform_service_action( params[:service_name]  , p_params[:action_name], cparams))
