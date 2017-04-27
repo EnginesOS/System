@@ -20,7 +20,7 @@ module ApiActionators
     end
 
     if result[:result] != 0
-      raise EnginesException.new(error_hash('Error on performing action ' + c.container_name.to_s + ':' + actionator_name.to_s , result))
+      raise EnginesException.new(error_hash('Error on performing action ' + c.container_name.to_s + ':' + actionator[:name].to_s , result))
     end
     if result[:stdout].start_with?('{') || result[:stdout].start_with?('"{')
       begin
