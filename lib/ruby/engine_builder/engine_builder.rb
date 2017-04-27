@@ -235,6 +235,7 @@ class EngineBuilder < ErrorsApi
   end
 
   def post_failed_build_clean_up
+    SystemStatus.build_failed(@build_params)
     return close_all if @rebuild
     # remove containers
     # remove persistent services (if created/new)
@@ -247,13 +248,18 @@ class EngineBuilder < ErrorsApi
     # FIXME: Stop it if started (ie vol builder failure)
     # FIXME: REmove container if created
     unless @build_params[:reinstall].is_a?(TrueClass)
+     
+      begin
       if @container.is_a?(ManagedContainer)
         @container.stop_container if @container.is_running?
         @container.destroy_container if @container.has_container?
         @container.delete_image if @container.has_image?
       end
-      @service_builder.service_roll_back
-      @core_api.delete_engine_and_services(@build_params)
+        @service_builder.service_roll_back
+        @core_api.delete_engine_and_services(@build_params)
+        rescue 
+          #dont panic if no container
+      end     
     end
 
     #    params = {}
@@ -261,7 +267,7 @@ class EngineBuilder < ErrorsApi
     #    @core_api.delete_engine(params) # remove engine if created, removes from manged_engines tree (main reason to call)
     @result_mesg = @result_mesg.to_s + ' Roll Back Complete'
     SystemDebug.debug(SystemDebug.builder,'Roll Back Complete')
-    SystemStatus.build_failed(@build_params)
+  
     close_all
 
   end
