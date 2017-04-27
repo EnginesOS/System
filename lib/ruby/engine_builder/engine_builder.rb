@@ -261,6 +261,7 @@ class EngineBuilder < ErrorsApi
     #    @core_api.delete_engine(params) # remove engine if created, removes from manged_engines tree (main reason to call)
     @result_mesg = @result_mesg.to_s + ' Roll Back Complete'
     SystemDebug.debug(SystemDebug.builder,'Roll Back Complete')
+    SystemStatus.build_failed(@build_params)
     close_all
 
   end
