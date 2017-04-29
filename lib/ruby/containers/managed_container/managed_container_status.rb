@@ -16,7 +16,10 @@ module ManagedContainerStatus
     expire_engine_info
     'nocontainer'
   end
-
+  
+  def is_privileged?
+    false
+  end
 # raw=true means dont check state for error
   def read_state(raw=false)
     #return 'nocontainer' if @setState == 'nocontainer'  # FIXME: this will not support notification of change

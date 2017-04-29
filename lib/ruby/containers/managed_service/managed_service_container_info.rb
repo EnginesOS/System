@@ -8,4 +8,8 @@ module ManagedServiceContainerInfo
     end
      true
   end
+  def is_privileged?
+    return true if @privileged == true
+    false    
+  end
 end
