@@ -50,7 +50,7 @@ module DomainOperations
       service_hash[:variables][:ip_type] = 'gw'
       service_hash[:variables][:ip] =  get_ext_ip_for_hosted_dns()
     end
-    #   STDERR.puts(' ADD DOMAIN VARIABLE ' + params.to_s)
+     STDERR.puts(' ADD DOMAIN VARIABLE ' + service_hash.to_s)
     create_and_register_service(service_hash)
   end
 
