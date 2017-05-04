@@ -41,7 +41,7 @@ module EnginesServerHost
 
   def get_system_memory_info
    # r = run_server_script('memory_stats')
-   r = SystemUtils.execute_command('get_system_memory_info', false, nil)
+   r = SystemUtils.execute_command('/opt/engines/system/scripts/ssh/memory_stats.sh', false, nil)
     ret_val = {}
     proc_mem_info = r[:stdout]
     proc_mem_info.split("\n").each do |line|
