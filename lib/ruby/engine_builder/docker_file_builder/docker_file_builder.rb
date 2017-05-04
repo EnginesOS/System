@@ -381,8 +381,8 @@ class DockerFileBuilder
   end
 
   def write_env(name,value, build_only = false)
-    write_line('ENV ' + name.to_s  + ' \'' + value.to_s + '\'')
-    @env_file.puts(name.to_s  + '=' + '\'' + value.to_s  + '\'')
+    write_line('ENV ' + name.to_s  + " \'" + value.to_s + "\'")
+    @env_file.puts(name.to_s  + '=' + "\'" + value.to_s  + "\'")
   end
 
   def write_build_script(cmd)
