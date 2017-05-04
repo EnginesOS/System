@@ -40,9 +40,10 @@ module EnginesServerHost
   end
 
   def get_system_memory_info
-    r = run_server_script('memory_stats')
+   # r = run_server_script('memory_stats')
+    proc_mem_info = SystemUtils.execute_command('get_system_memory_info', false, nil)
     ret_val = {}
-    proc_mem_info = r[:stdout]
+ #   proc_mem_info = r[:stdout]
     proc_mem_info.split("\n").each do |line|
       values = line.split(' ')
 
@@ -63,9 +64,7 @@ module EnginesServerHost
         ret_val[:swap_total] = values[1].to_i
       when 'SwapFree:'
         ret_val[:swap_free] = values[1].to_i
-        return ret_val
       end
-
     end
     ret_val
   rescue StandardError => e
