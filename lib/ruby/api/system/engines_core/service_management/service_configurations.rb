@@ -40,6 +40,10 @@ module ServiceConfigurations
     ret_val
   end
 
+  def retrieve_service_configuration(service_param)
+    service_manager.retrieve_service_configuration(service_param)
+  end
+
   private
 
   def definition_params_to_variables(params)
@@ -63,10 +67,6 @@ module ServiceConfigurations
       avail[definition_key][:no_save] = definition[:no_save]
     end
     avail
-  end
-
-  def retrieve_service_configuration(service_param)
-    service_manager.retrieve_service_configuration(service_param)
   end
 
   def update_configuration_on_service(service_param)

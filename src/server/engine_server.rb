@@ -51,6 +51,7 @@ begin
     false
   rescue
     false
+ 
   end
 
   def sql_lite_database
