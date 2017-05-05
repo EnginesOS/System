@@ -357,7 +357,7 @@ class DockerFileBuilder
     log_build_output('Dockerfile:Stack Environment')
     write_line('#Stack Env')
     write_line('')
-    write_env('Memory' ,@builder.memory.to_s)
+   # write_env('Memory' ,@builder.memory.to_s)
     write_env('Hostname' ,@hostname)
     write_env('Domainname' ,@domain_name)
     write_env('fqdn' ,@hostname + '.' + @domain_name)

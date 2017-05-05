@@ -106,6 +106,7 @@ class EngineBuilder < ErrorsApi
     @first_build = true
     @attached_services = []
     create_templater
+    @build_params[:variables][:Memory] = @build_params.memory.to_s
     process_supplied_envs(@build_params[:variables])
     @runtime =  ''
     create_build_dir
