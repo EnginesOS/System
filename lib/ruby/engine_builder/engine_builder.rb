@@ -106,7 +106,6 @@ class EngineBuilder < ErrorsApi
     @first_build = true
     @attached_services = []
     create_templater
-    @build_params[:variables][:Memory] = @build_params.memory.to_s
     process_supplied_envs(@build_params[:variables])
     @runtime =  ''
     create_build_dir
@@ -159,6 +158,8 @@ class EngineBuilder < ErrorsApi
 
     @blueprint_reader = VersionedBlueprintReader.new(@build_params[:engine_name], @blueprint, self)
     @blueprint_reader.process_blueprint
+    ev = EnvironmentVariable.new('Memory', @memory, false, true, false, memory, true)
+    @blueprint_reader.environments.push(ev)
   end
 
   def setup_engine_dirs
