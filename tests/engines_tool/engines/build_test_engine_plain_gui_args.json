@@ -4,7 +4,7 @@
 	"domain_name": "local",
 	"http_protocol": "http_https",
 	"memory": 64,
-	"repository_url":"https://github.com/EnginesBlueprints/selfoss.git",	
+	"repository_url":"https://github.com/EnginesBlueprints/phpmyadmin",	
 	"variables": {
 		"user": "admin",
 		"password": "password"
