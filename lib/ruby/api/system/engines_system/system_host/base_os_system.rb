@@ -26,6 +26,7 @@ module BaseOsSystem
   
   def get_locale
     locale_str = ENV["LANG"]
+      STDERR.puts('LANG '  + locale_str.to_s)
       return nil if locale_str.nil?
       
     bit = locale_str.split('.')
