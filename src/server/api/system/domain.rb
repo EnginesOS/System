@@ -1,9 +1,9 @@
-# @!group /system/domain/
+# @!group /system/domains/
 # @method get_domain_name
 # @overload get '/v0/system/domains/:domain_name'
 # get the details for :domain_name
 # @return  [Hash] :domain_name :self_hosted :internal_only
-get '/v0/system/domain/:domain_name' do
+get '/v0/system/domains/:domain_name' do
   begin
     return_json(engines_api.domain_name(params[:domain_name]))
   rescue StandardError => e
@@ -11,13 +11,13 @@ get '/v0/system/domain/:domain_name' do
   end
 end
 # @method update_domain_name
-# @overload post '/v0/system/domain/:domain_name'
+# @overload post '/v0/system/domains/:domain_name'
 # update the domain :domain_name
 # @param :domain_name
 # @param :self_hosted
 # @param :internal_only optional
 # @return  [true]
-post '/v0/system/domain/:domain_name' do
+post '/v0/system/domains/:domain_name' do
   begin
     post_s = post_params(request)
     post_s[:domain_name] = params['domain_name']

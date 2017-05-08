@@ -14,7 +14,7 @@ view:
 	engines system domains view testdomain.com | engines_test_expects json domain_name testdomain.com
 
 update:
-	cat update_domain.json | engines system domain update testdomain.com | engines_test_expects bool true
+	cat update_domain.json | engines system domains update testdomain.com | engines_test_expects bool true
 	echo -n " Verify update:"
 	engines system domains view testdomain.com | engines_test_expects json self_hosted true
 
