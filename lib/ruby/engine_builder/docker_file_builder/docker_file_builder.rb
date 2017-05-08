@@ -120,6 +120,7 @@ class DockerFileBuilder
     write_pear_modules
     write_php_modules
     write_npm_modules
+    write_lua_modules
     write_pecl_modules
     write_apache_modules
   end
@@ -137,10 +138,10 @@ class DockerFileBuilder
     write_line('#Environment Variables')
     @blueprint_reader.environments.each do |env|
       write_line('#Blueprint ENVs')
-      if env.value && env.value.nil? == false && env.value.to_s.length > 0
-        SystemDebug.debug(SystemDebug.builder, :env_val, env.value)
-        env.value.gsub!(/ /, "\\ ")
-      end
+      #  if env.value && env.value.nil? == false && env.value.to_s.length > 0
+      #   SystemDebug.debug(SystemDebug.builder, :env_val, env.value)
+      # env.value.gsub!(/ /, "\\ ")
+      # end
       write_env(env.name,env.value.to_s) if env.value.nil? == false && env.value.to_s.length > 0 # env statement must have two arguments
     end
     write_env('WWW_DIR', @blueprint_reader.web_root.to_s) unless @blueprint_reader.web_root.nil?
@@ -356,7 +357,7 @@ class DockerFileBuilder
     log_build_output('Dockerfile:Stack Environment')
     write_line('#Stack Env')
     write_line('')
-    write_env('Memory' ,@builder.memory.to_s)
+   # write_env('Memory' ,@builder.memory.to_s)
     write_env('Hostname' ,@hostname)
     write_env('Domainname' ,@domain_name)
     write_env('fqdn' ,@hostname + '.' + @domain_name)
@@ -380,8 +381,8 @@ class DockerFileBuilder
   end
 
   def write_env(name,value, build_only = false)
-    write_line('ENV ' + name.to_s  + ' \'' + value.to_s + '\'')
-    @env_file.puts(name.to_s  + '=' + '\'' + value.to_s  + '\'')
+    write_line('ENV ' + name.to_s  + " \'" + value.to_s + "\'")
+    @env_file.puts(name.to_s  + '=' + "\'" + value.to_s  + "\'")
   end
 
   def write_build_script(cmd)

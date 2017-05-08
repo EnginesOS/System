@@ -110,10 +110,7 @@ class SystemUtils
     retval[:stderr] = ''
     retval[:result] = -1
     retval[:command] = cmd
-      
 
-       
-      
     Open3.popen3(cmd)  do |_stdin, stdout, stderr, th|
       
       _stdin.write(data) unless data.is_a?(FalseClass)       
@@ -146,9 +143,9 @@ class SystemUtils
         SystemDebug.debug(SystemDebug.execute,'read stderr', oline)
         retval[:stderr] += stderr.read_nonblock(256)
       rescue IO::WaitReadable
-        retry unless th.status == false
-        retval[:result] = th.value.exitstatus
-        return retval
+        retry #unless th.status == false
+       # retval[:result] = th.value.exitstatus
+        #return retval
       rescue EOFError
         if stdout.closed? == false
           stderr_is_open = false

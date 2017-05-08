@@ -32,7 +32,11 @@ def setup_build_dir
   write_env_file
 
   setup_framework_logging
-
+rescue StandardError => e
+  #log_exception(e)
+  log_build_errors('Engine Build Aborted Due to:' + e.to_s)
+  post_failed_build_clean_up
+  raise e
 end
 
 def create_build_dir

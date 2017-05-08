@@ -23,6 +23,7 @@ class BluePrintReader
   :pear_modules,
   :apache_modules,
   :php_modules,
+  :lua_modules,
   :pecl_modules,
   :npm_modules,
   :archives_details,
@@ -220,6 +221,8 @@ class BluePrintReader
     @php_modules = []
     @pecl_modules = []
     @npm_modules = []
+    @lua_modules = []
+      
     pkg_modules = @blueprint[:software][:modules]
     return true unless pkg_modules.is_a?(Array)  # not an error just nada
     pkg_modules.each do |pkg_module|
@@ -242,6 +245,8 @@ class BluePrintReader
         @apache_modules.push(modname)
       elsif pkg_module_type == 'npm'
         @npm_modules.push(modname)
+      elsif pkg_module_type == 'lua'
+        @lua_modules.push(modname)
       else
         raise EngineBuilderException.new(error_hash('pkg module_type ' + pkg_module_type + ' Unknown for ' + modname))
       end

@@ -5,8 +5,9 @@ publisher_namespace: EnginesSystem
 type_path: vpn/ivpn
 persistent: true
 capabilities: all
+privileged: true
 last_error: 
-memory: '56'
+memory: '96'
 hostname: ivpn
 domain_name: 
 environments: []

@@ -102,6 +102,8 @@ class VersionedBlueprintReader < BluePrintReader
      @php_modules = []
      @pecl_modules = []
      @npm_modules = []
+     @lua_modules = []
+         
      pkg_modules = @blueprint[:software][:required_modules]
      return true unless pkg_modules.is_a?(Array)  # not an error just nada
      pkg_modules.each do |pkg_module|
@@ -127,6 +129,8 @@ class VersionedBlueprintReader < BluePrintReader
          @apache_modules.push(modname)
        elsif pkg_module_type == 'npm'
          @npm_modules.push(modname)
+       elsif pkg_module_type == 'lua'
+         @lua_modules.push(modname)
        else
          raise EngineBuilderException.new(error_hash('pkg module_type ' + pkg_module_type + ' Unknown for ' + modname))
        end

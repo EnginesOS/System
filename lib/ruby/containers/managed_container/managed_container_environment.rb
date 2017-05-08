@@ -1,7 +1,7 @@
 module ManagedContainerEnvironment
   def update_environment(key, value, add=false)
   #  SystemDebug.debug(SystemDebug.containers, :update_environment, key, value, @environments)
-    raise EnginesException.new(error_hash('No envionment varaibles')) if @environments.nil?
+    raise EnginesException.new(error_hash('No envionment variables')) if @environments.nil?
     
     @environments.each do |environment|      
     if environment.name.to_s == key.to_s     
