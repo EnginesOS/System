@@ -1,5 +1,5 @@
 class EnvironmentVariable
-  def initialize(name, value, setatrun=false, mandatory=false, build_time_only=false,label=nil, immutable=false,owner=nil)
+  def initialize(name, value, setatrun=false, mandatory=false, build_time_only=false, label=nil, immutable=false,owner=nil)
     #name,value,ask,mandatory,build_time_only
     
     label = name if label.nil?
