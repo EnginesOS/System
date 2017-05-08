@@ -93,6 +93,7 @@ module DockerApiCreateOptions
     end
   end
 
+  
   def host_config_options(container)
     {
       'Binds' => volumes_mounts(container),
@@ -104,7 +105,7 @@ module DockerApiCreateOptions
       'OomKillDisable' => false,
       'LogConfig' => log_config(container),
       'PublishAllPorts' => false,
-      'Privileged' => false,
+      'Privileged' => container.is_privileged?,
       'ReadonlyRootfs' => false,
       'Dns' => container_get_dns_servers(container),
       'DnsSearch' => container_dns_search(container),

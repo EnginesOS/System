@@ -8,8 +8,7 @@ add:
 	cat add_domain.json | engines system domains add | engines_test_expects bool true
 	
 list:
-	engines system domains list | engines_test_expects json testdomain.com
-	
+	engines system domains list | engines_test_expects json testdomain.com	
 	
 view:
 	engines system domains view testdomain.com | engines_test_expects json domain_name testdomain.com

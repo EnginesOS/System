@@ -129,7 +129,7 @@ else
    				if ! test -z  "${!env_name}"
         			then
         				#val=`echo ${!env_name} | sed "/ /s//\\ /g"`
-  	      				echo  "passenger_env_var $env_name ${!env_name};"   >> /home/.env_vars
+  	      				echo  "passenger_env_var $env_name \"${!env_name}\";"   >> /home/.env_vars
   	    		fi
   		done
 	echo " passenger_env_var RAILS_ENV $RAILS_ENV;" >> /home/.env_vars

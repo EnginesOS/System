@@ -56,6 +56,16 @@ module FrameworkModules
 
   end
   
+  def write_lua_modules
+    return if @blueprint_reader.lua_modules.count < 1
+    write_line('#Lua Modules')
+   lua_modules_str = ''
+    @blueprint_reader.lua_modules.each do |lua_module|
+      lua_modules_str += lua_module + ' ' unless lua_module.nil?
+    end
+    write_build_script('install_lua_modules.sh ' +  lua_modules_str)   
+  end
+  
   def write_php_modules
     return if @blueprint_reader.php_modules.count < 1
     write_line('#PHP Modules')
