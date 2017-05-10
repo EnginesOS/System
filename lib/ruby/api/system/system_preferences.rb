@@ -7,17 +7,35 @@ class SystemPreferences
     end
   end
 
+  def set_country_code(country_code)
+    @preferences[:country_code] = country_code
+    save_preferences
+  end
+
+  def set_langauge_code(lang_code)
+    @preferences[:lang_code] = lang_code
+    save_preferences
+  end
+
+  def country_code
+    @preferences[:country_code]
+  end
+
+  def langauge_code
+    @preferences[:lang_code]
+  end
+
   def set_default_domain(params)
     domain_name = params
     domain_name = params[:default_domain] unless domain_name.is_a?(String)
-    return false if domain_name.to_s == '' 
+    return false if domain_name.to_s == ''
     @preferences[:default_domain] = domain_name # params[:default_domain]
     save_preferences
   end
 
   def get_default_domain
     return 'unset' unless @preferences.key?(:default_domain)
-     @preferences[:default_domain]
+    @preferences[:default_domain]
   end
 
   def save_preferences

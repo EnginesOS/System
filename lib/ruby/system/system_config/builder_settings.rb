@@ -17,7 +17,8 @@ module BuilderSettings
   @@BackupScriptsRoot = '/home/services/'
   @@BackupScriptsSrcRoot = '/opt/engines/system/templates/services/backup/'
   @@LanguageFile = '/opt/engines/etc/locale'
-  @@DefaultLanguage = 'en_US'
+  @@DefaultLanguage = 'en'
+  @@DefaultCountry = 'US'
   @@StopScript = '/home/engines/scripts/custom_stop.sh'
   def SystemConfig.LanguageFile
     @@LanguageFile
@@ -26,7 +27,9 @@ module BuilderSettings
   def SystemConfig.DefaultLanguage
     @@DefaultLanguage
   end
-
+  def SystemConfig.DefaultCounry
+    @@DefaultCountry
+  end
   def SystemConfig.Language
     return File.read(SystemConfig.LanguageFile).strip if File.exist?(SystemConfig.LanguageFile)
     SystemConfig.DefaultLanguage
