@@ -21,7 +21,8 @@ update_base_os
 update_engines_console_password
 update_engines_system_software
 update_system_access
-
+set_locale
+set_timezone
 
 
 
