@@ -26,7 +26,7 @@ class SystemPreferences
   end
 
   def langauge_code
-    if @preferences.key?(:lang_code)
+    unless @preferences.key?(:lang_code)
       @preferences[:lang_code] = SystemConfig.DefaultLanguage
       save_preferences
     end
