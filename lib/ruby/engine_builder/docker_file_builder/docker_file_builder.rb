@@ -165,6 +165,7 @@ class DockerFileBuilder
 
     write_env('LANGUAGE', lang + '_' + country + ':' + lang)
     write_env('LANG', lang + '_' + country + '.UTF8')
+    write_env('LC_ALL', lang + '_' + country + ':' + lang)
   end
 
   def write_persistent_dirs
