@@ -8,7 +8,7 @@ generate:
 	
 upload:
 	engines system keys user engines > /tmp/pubkey
-	cat /tmp/pubkey 
+	cat /tmp/pubkey  |engines system keys user set | engines_test_expects bool true
 	
 public:
 	engines system keys user engines| engines_test_expects regex "^ssh-rsa .*"

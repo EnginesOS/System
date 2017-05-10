@@ -1,4 +1,4 @@
-TESTS=list view set_default default add remove  system_ca 
+TESTS=list view set_default default add remove  system_ca generate 
 
 tests:
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
@@ -29,4 +29,5 @@ remove:
 system_ca:
 	engines system cert system_ca | engines_test_expects regex "[-].*BEGIN CERTIFICATE*"
 
-	
+generate:
+	cat cert_params.json | engines system certs generate

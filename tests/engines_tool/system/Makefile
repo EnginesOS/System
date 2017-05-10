@@ -1,4 +1,4 @@
-SUBDIRS= certs config control domains metrics reserved system_status template version 
+SUBDIRS= certs config keys control domains metrics reserved system_status template version 
 #do_first_run
 
 tests:

@@ -21,6 +21,7 @@ end
 # replaced the existing ssh public key
 # @param :public_key
 # @return [true]
+# test cd /opt/engines/tests/engines_tool/system/keys/user/; make upload
 post '/v0/system/keys/user/:user_name' do
   begin
     params.merge!(post_params(request))
