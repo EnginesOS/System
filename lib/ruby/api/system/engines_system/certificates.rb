@@ -26,9 +26,10 @@ module Certificates
   def generate_cert(params)
     certs_service = loadManagedService('cert_auth')
     actionator = get_service_actionator(certs_service, 'fetch_cert')
-    c = certs_service.perform_action(actionator, params[:variables][:domainname])
-    if c == 'a_cert'
-      #bail if not overrite
+    c = certs_service.perform_action(actionator, params[:domainname])
+    if c == 'a_cert' && ! params[:overwrite]
+      # FixME
+      #raise EnginesException(....) instead of return false
       return false
     end
     params[:type_path] = 'cert_auth'
