@@ -165,7 +165,7 @@ class SystemUtils
     end
    # File.delete('/tmp/import') if File.exist?('/tmp/import')
 
-    return retval
+     retval
   rescue Exception=>e
   #  File.delete('/tmp/import') if File.exist?('/tmp/import')
     SystemUtils.log_exception(e)

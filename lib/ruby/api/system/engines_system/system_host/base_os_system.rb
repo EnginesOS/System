@@ -32,20 +32,17 @@ module BaseOsSystem
   
   def get_locale
     locale_str = ENV["LANG"]
-      STDERR.puts('LANG '  + locale_str.to_s)
-      return nil if locale_str.nil?
-      
+    STDERR.puts('LANG '  + locale_str.to_s)
+      return nil if locale_str.nil?     
     bit = locale_str.split('.')
     bits = bit[0].split('_')
  {
     lang_code: bits[0],
     country_code: bits[1]
   }
-
   end
   
   def get_timezone
-    Time.now.getlocal.zone
-    
+    Time.now.getlocal.zone    
   end
 end

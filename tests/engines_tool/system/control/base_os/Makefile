@@ -1,4 +1,4 @@
-TESTS=update
+TESTS=update locale timezone
 #restart shutdown
 
 tests:
