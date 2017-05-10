@@ -26,12 +26,16 @@ module Certificates
   def generate_cert(params)
     certs_service = loadManagedService('cert_auth')
     actionator = get_service_actionator(certs_service, 'fetch_cert')
-    c = certs_service.perform_action(actionator, params[:domainname])
-    if c == 'a_cert' && ! params[:overwrite]
+    begin
+    certs_service.perform_action(actionator, params[:domainname])
+     
+    return false unless params.key?(:overwrite)
       # FixME
       #raise EnginesException(....) instead of return false
-      return false
+    rescue
+      #no cert exception is what we want 
     end
+    
     params[:type_path] = 'cert_auth'
     params[:service_container_name] = 'cert_auth'
     params[:persistent] = true
