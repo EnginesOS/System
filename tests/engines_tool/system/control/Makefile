@@ -1,4 +1,4 @@
-SUBDIRS=
+SUBDIRS=base_os engines_system registry
 #base_os engines_system registry
 
 tests:
