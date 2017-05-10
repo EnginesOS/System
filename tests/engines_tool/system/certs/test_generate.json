@@ -1,6 +1,6 @@
 {
   "parent_engine": "system",
-  "container_type": "system",,
+  "container_type": "system",
   "service_handle": "atestdomain.com.au",
   "wild": "yes",
   "cert_name": "At test",

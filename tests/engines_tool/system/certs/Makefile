@@ -30,4 +30,4 @@ system_ca:
 	engines system cert system_ca | engines_test_expects regex "[-].*BEGIN CERTIFICATE*"
 
 generate:
-	cat cert_params.json | engines system certs generate
+	cat test_generate.json | engines system certs generate
