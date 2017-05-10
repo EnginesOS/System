@@ -27,6 +27,7 @@ class FirstRunWizard <ErrorsApi
     prefs = SystemPreferences
     prefs.set_country_code(@first_run_params[:country_code]) if @first_run_params.key?(:country_code)
     prefs.set_langauge_code(@first_run_params[:lang_code]) if @first_run_params.key?(:lang_code)
+    @api.set_timezone(@first_run_params[:timezone]) if @first_run_params.key?(:timezone)
     @sucess = true
     mark_as_run
   end
