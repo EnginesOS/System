@@ -147,16 +147,17 @@ class SystemUtils
        # retval[:result] = th.value.exitstatus
         #return retval
       rescue EOFError
-        if stdout.closed? == false
-          stderr_is_open = false
-          retry unless th.status == false
-          retval[:result] = th.value.exitstatus
-          return retval
-        elsif stderr.closed? == false
+        retry if stdout.closed? == false
+#        if stdout.closed? == false
+#          stderr_is_open = false
+#          retry unless th.status == false
+#          retval[:result] = th.value.exitstatus
+#          return retval
+#        elsif stderr.closed? == false
           retval[:stderr] += stderr.read_nonblock(1000)
           retval[:result] = th.value.exitstatus
            return retval 
-        end
+      #  end
       end
      # File.delete('/tmp/import') if File.exist?('/tmp/import')
  
