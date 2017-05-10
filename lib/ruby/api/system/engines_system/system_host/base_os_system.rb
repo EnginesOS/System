@@ -15,7 +15,7 @@ module BaseOsSystem
  # :country_code , :lang_code
   def set_locale(locale)
     ENV['LANG'] = locale[:lang_code].to_s + '_' + locale[:country_code].to_s  + '.UTF-8'
-    ENV['LANGUAGE'] = locale[:lang_code].to_s + '_' + locale[:country_code].to_s  + ':' + locale[:lang_code].to_s 
+    ENV['LANGUAGE'] = locale[:country_code].to_s  + ':' + locale[:lang_code].to_s 
     run_server_script('set_locale',  ENV['LANG'].to_s + ' ' + ENV['LANGUAGE'].to_s)
   end
   
