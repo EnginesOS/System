@@ -27,7 +27,7 @@ module BuilderSettings
   def SystemConfig.DefaultLanguage
     @@DefaultLanguage
   end
-  def SystemConfig.DefaultCounry
+  def SystemConfig.DefaultCountry
     @@DefaultCountry
   end
   def SystemConfig.Language

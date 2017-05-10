@@ -18,10 +18,18 @@ class SystemPreferences
   end
 
   def country_code
+    unless @preferences.key?(:country_code)
+      @preferences[:country_code] = SystemConfig.DefaultCountry
+      save_preferences
+    end
     @preferences[:country_code]
   end
 
   def langauge_code
+    if @preferences.key?(:lang_code)
+      @preferences[:lang_code] = SystemConfig.DefaultLanguage
+      save_preferences
+    end
     @preferences[:lang_code]
   end
 
