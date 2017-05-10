@@ -29,18 +29,19 @@ get '/v0/system/control/engines_system/restart' do
   end
 end
 
-# @method recreate_engines_system
-# @overload get '/v0/system/control/engines_system/recreate'
-#  Recreate the engines system container
-# @return [true]
-# test cd /opt/engines/tests/engines_tool/system/control/engines_system; make recreate
-get '/v0/system/control/engines_system/recreate' do
-  begin
-    return_text(engines_api.recreate_engines_system_service)
-  rescue StandardError => e
-    send_encoded_exception(request: request, exception: e)
-  end
-end
+# NO LONGER POSSIBLE DUE TO LISTENER ?
+## @method recreate_engines_system
+## @overload get '/v0/system/control/engines_system/recreate'
+##  Recreate the engines system container
+## @return [true]
+## test cd /opt/engines/tests/engines_tool/system/control/engines_system; make recreate
+#get '/v0/system/control/engines_system/recreate' do
+#  begin
+#    return_text(engines_api.recreate_engines_system_service)
+#  rescue StandardError => e
+#    send_encoded_exception(request: request, exception: e)
+#  end
+#end
 
 # @method dump_engines_system_heap_stats
 # @overload get '/v0/system/control/engines_system/heap_stats'
@@ -48,6 +49,7 @@ end
 #  admin has access to this via ssh login
 #  the path is /opt/engines/tmp/system_service/system/heap.dump
 # @return [true]
+# test cd /opt/engines/tests/engines_tool/system/control/engines_system; make heap_dump
 get '/v0/system/control/engines_system/heap_stats' do
   begin
     return_text(engines_api.dump_heap_stats)
@@ -56,12 +58,11 @@ get '/v0/system/control/engines_system/heap_stats' do
   end
 end
 
-# @method dump_engines_system_heap_stats
-# @overload get '/v0/system/control/engines_system/heap_stats'
-#  dump the heap stats engines system post CG output is written to /tmp/big/heap.dump
-#  admin has access to this via ssh login
-#  the path is /opt/engines/tmp/system_service/system/heap.dump
+# @method dump_engines_system_dump_threads
+# @overload get '/v0/system/control/engines_system/dump_threads'
+# List of Thread ObjectIDs
 # @return [String]
+# test cd /opt/engines/tests/engines_tool/system/control/engines_system; make dump_threads
 get '/v0/system/control/engines_system/dump_threads' do
   begin
     return_text(engines_api.dump_threads)

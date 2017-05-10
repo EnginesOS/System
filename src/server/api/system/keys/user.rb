@@ -5,6 +5,7 @@
 # replaced the existing ssh key
 # returns the private key
 # @return [String]
+# test cd /opt/engines/tests/engines_tool/system/keys/user/; make generate
 get '/v0/system/keys/user/:user_name/generate' do
   begin
     return_text(engines_api.generate_engines_user_ssh_key)
@@ -12,6 +13,7 @@ get '/v0/system/keys/user/:user_name/generate' do
     send_encoded_exception(request: request, exception: e)
   end
 end
+
 # @!group /system/keys/user
 # @method upload_user_key
 # @overload post '/v0/system/keys/user/:user_name'
@@ -34,6 +36,7 @@ end
 # @overload get '/v0/system/keys/user/:user_name'
 # return public access key for :user_name (only valid user is 'engines')
 # @return [String]
+# test cd /opt/engines/tests/engines_tool/system/keys/user/; make public
 get '/v0/system/keys/user/:user_name' do
   begin
     return_text(engines_api.get_public_key)
