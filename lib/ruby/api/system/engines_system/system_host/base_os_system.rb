@@ -14,7 +14,7 @@ module BaseOsSystem
   end
  # :country_code , :lang_code
   def set_locale(locale)
-    prefs = Preferences.new
+    prefs = SystemPreferences.new
     prefs.set_country_code(locale[:country_code])
     prefs.set_langauge_code(locale[:lang_code])
     ENV['LANG'] = locale[:lang_code].to_s + '_' + locale[:country_code].to_s  + '.UTF-8'
