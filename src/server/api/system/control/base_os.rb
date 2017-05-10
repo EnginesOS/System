@@ -76,7 +76,7 @@ post '/v0/system/control/base_os/locale' do
   begin
     post_s = post_params(request)
     cparams = assemble_params(post_s, [], [:country_code, :lang_code])
-    return_json(engines_api.set_locale(cparams))
+    return_text(engines_api.set_locale(cparams))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -88,7 +88,7 @@ end
 # @return [String]
 get '/v0/system/control/base_os/locale' do
   begin
-    return_text(engines_api.get_locale())
+    return_json(engines_api.get_locale())
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
