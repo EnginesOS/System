@@ -23,7 +23,10 @@ class FirstRunWizard <ErrorsApi
     return log_error_mesg('failed to validate first run params') unless validate_params(@first_run_params)
     return false unless setup_dns
     return false unless setup_certs
-    return false unless setup_system_password(@first_run_params[:system_password], @first_run_params[:admin_email])      
+    return false unless setup_system_password(@first_run_params[:system_password], @first_run_params[:admin_email])   
+    prefs = SystemPreferences
+    prefs.set_country_code(@first_run_params[:country_code]) if @first_run_params.key?(:country_code)
+    prefs.set_langauge_code(@first_run_params[:lang_code]) if @first_run_params.key?(:lang_code)
     @sucess = true
     mark_as_run
   end

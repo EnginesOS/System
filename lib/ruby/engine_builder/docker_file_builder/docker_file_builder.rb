@@ -149,13 +149,22 @@ class DockerFileBuilder
   end
 
   def write_locale_env
-    unless @build_params[:langauge].nil?
-      lang =  @build_params[:langauge]
+    prefs = SystemPreferences.new
+    unless @build_params[:lang_code].nil?
+      lang =  @build_params[:lang_code]
     else
-      lang = SystemConfig.Language
+      lang = prefs.langauge_code
+      lang = SystemConfig.DefaultLanguage if lang.nil?
     end
-    write_env('LC_ALL', lang)
-    write_env('LANG', lang)
+    unless @build_params[:country_code].nil?
+         lang =  @build_params[:country_code]
+       else
+         country = prefs.country_code
+         country = SystemConfig.DefaultCountry if country.nil?
+       end
+
+    write_env('LANGUAGE', lang + '_' + country + ':' + lang)
+    write_env('LANG', lang + '_' + country + '.UTF8')
   end
 
   def write_persistent_dirs
