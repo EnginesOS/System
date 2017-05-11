@@ -8,3 +8,6 @@ status:
 	
 first_run_required:
 	 engines system status first_run_required |engines_test_expects bool
+	 
+system_update_status:
+	engines system status update  |engines_test_expects json needs_engines_update 

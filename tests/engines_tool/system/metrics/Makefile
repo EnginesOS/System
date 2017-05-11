@@ -14,3 +14,6 @@ mem_stats:
 
 disk:
 	engines system metrics disks |engines_test_expects json
+	
+network:
+	engines system metrics network|engines_test_expects json

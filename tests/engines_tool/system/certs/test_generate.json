@@ -3,6 +3,7 @@
   "container_type": "system",
   "service_handle": "btestdomain.com.au",
   "wild": "yes",
+  "overwrite" : true,
   "cert_name": "At test",
   "country": "AU",
   "state": "Test",

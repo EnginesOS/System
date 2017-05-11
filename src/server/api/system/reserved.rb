@@ -5,6 +5,7 @@
 #
 # @return [Array]
 #  array of integers
+# test cd /opt/engines/tests/engines_tool/system/reserved ; make ports
 get '/v0/system/reserved/ports' do
   begin
     return_json_array(engines_api.reserved_ports)
@@ -18,6 +19,7 @@ end
 #
 # @return [Array]
 #  array of taken fqdn hostnames
+# test cd /opt/engines/tests/engines_tool/system/reserved ; make hostnames
 get '/v0/system/reserved/hostnames' do
   begin
     return_json_array(engines_api.taken_hostnames)
@@ -31,6 +33,7 @@ end
 #
 # @return [Array]
 #  array of taken  and reserved engine_names
+# test cd /opt/engines/tests/engines_tool/system/reserved ; make engine_names
 get '/v0/system/reserved/engine_names' do
   begin
     return_json_array(engines_api.reserved_engine_names)
