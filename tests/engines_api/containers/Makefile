@@ -1,8 +1,8 @@
-TESTS=changed
+TESTS=check_and_act
 
 tests:
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 
-	
-changed:
-	engines containers changed | engines_test_expects json service
+
+check_and_act:
+	engines containers check_and_act | engines_test_expects json mysql_server

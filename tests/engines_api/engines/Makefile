@@ -32,6 +32,7 @@ build_gui:
 build_check:
 	echo -n build check
 	engines engine_builder status |engines_test_expects json is_building true
+	engines engine_builder params |engines_test_expects json 
 	echo -n :follow
 	engines engine_builder follow |engines_test_expects  regex "*Build Successful*"
 	echo -n :last build Params

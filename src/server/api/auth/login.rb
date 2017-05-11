@@ -14,6 +14,7 @@ get '/v0/system/login/:user_name/:password' do
 end
 
 # @clears Authentication token
+# FIXMe this is a no-op
 get '/v0/system/logout' do
   begin
     status(403)

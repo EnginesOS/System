@@ -1,4 +1,4 @@
-TESTS=state stop start pause unpause  template mem_stat net_stat\
+TESTS=state stop start pause unpause engine status blueprint websites logs ps template mem_stat net_stat\
 	blueprint build_report properties_net properties_run\
 	actions services \
 	 destroy recreate delete reinstall 
@@ -14,7 +14,7 @@ services:
 	cd services ; make -s tests ; cd ..
 
 state:
-	engines engine testengine state 	|engines_test_expects text is running
+	engines engine testengine state |engines_test_expects text is running
 	
 stop:
 	engines engine testengine stop  |engines_test_expects bool true
@@ -98,6 +98,25 @@ reinstall:
 	engines engine testengine reinstall | engines_test_expects bool true
 	echo -n " Checking:"
 	engines engine testengine state | engines_test_expects text is running
+	
+engine:
+	engines engine testengine  | engines_test_expects json memory
+	
+status:
+	engines engine testengine status | engines_test_expects json state
+	
+blueprint:
+	 engines engine testengine blueprint| engines_test_expects json schema
+
+websites:
+	 engines engine testengine websites | engines_test_expects regex ".*http.*"
+
+logs:
+	engines engine testengine logs | engines_test_expects json stderr
+
+ps:
+	engines engine testengine ps | engines_test_expects json Processes
+	
 	
 delete:
 	engines engine testengine stop  | engines_test_expects bool true

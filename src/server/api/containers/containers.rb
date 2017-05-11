@@ -6,7 +6,7 @@
 # @return [text/event-stream]
 # stream is in the format
 #  Do not use the "from" key
-
+# test FixME there is none
 get '/v0/containers/events/stream', provides: 'text/event-stream' do
   begin
     def finialise_events_stream(events_stream, timer)
@@ -64,6 +64,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
     send_encoded_exception(request: request, exception: e)
   end
 end
+
 # @method check_and_act_on_containers
 # @overload get '/v0/containers/check_and_act'
 #
@@ -75,7 +76,7 @@ end
 # fixed returned to set state
 # failed could not return to set state
 # error set if failed
-
+# test cd /opt/engines/tests/engines_api/containers ; make check_and_act
 get '/v0/containers/check_and_act' do
   begin
     return_json(engines_api.containers_check_and_act)
