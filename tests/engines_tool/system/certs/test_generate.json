@@ -9,6 +9,6 @@
   "city": "testviller",
   "organisation":"Tests are us",
   "person":"Mr tests",
-  "domainname": "atestdomain.com.au",
+  "domain_name": "atestdomain.com.au",
   "alt_names": "www www.atestdomain.com.au testing.atestdomain.com.au"
     }
