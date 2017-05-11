@@ -52,11 +52,11 @@ module Certificates
       variables: {
       wild: params[:wild],
       cert_name: params[:domain_name],
-      country: params[:ssl_country],
-      state: params[:ssl_state],
-      city: params[:ssl_city],
-      organisation: params[:ssl_organisation_name],
-      person: params[:ssl_person_name],
+      country: params[:country],
+      state: params[:state],
+      city: params[:city],
+      organisation: params[:organisation],
+      person: params[:person],
       domainname:  params[:domain_name], #params[:default_domain]
       service_handle: params[:domain_name]
       }
