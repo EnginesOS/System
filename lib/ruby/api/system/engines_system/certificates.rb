@@ -37,7 +37,7 @@ module Certificates
       c = certs_service.perform_action(actionator, params[:container_type] +'_' + params[:parent_engine]  + '_' + params[:domain_name])
 
       STDERR.puts('GTO c ' + c.to_s)
-      if c.include?('----')
+      if c.include?('BEGIN CERTIFICATE')
         return false unless params.key?(:overwrite)
       end
       # FixME
