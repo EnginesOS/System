@@ -5,7 +5,7 @@
 #  Restart the base OS
 # @return [true]
 # not in auto tests
-# test cd /opt/engines/tests/engines_tool/system/control/base_os; make restart
+# test cd /opt/engines/tests/engines_api/system/control/base_os; make restart
 get '/v0/system/control/base_os/restart' do
   begin
     return_text(engines_api.restart_base_os)
@@ -20,7 +20,7 @@ end
 #  :reason
 # @return [true]
 # not in auto tests
-# test cd /opt/engines/tests/engines_tool/system/control/base_os; make shutdown
+# test cd /opt/engines/tests/engines_api/system/control/base_os; make shutdown
 post '/v0/system/control/base_os/shutdown' do
   begin
     p_params = post_params(request)
@@ -35,7 +35,7 @@ end
 # @overload get '/v0/system/control/base_os/update'
 # update the base OS
 # @return [true|false]
-# test cd /opt/engines/tests/engines_tool/system/control/base_os; make update
+# test cd /opt/engines/tests/engines_api/system/control/base_os; make update
 get '/v0/system/control/base_os/update' do
   begin
     return_text(engines_api.update_base_os)
@@ -48,7 +48,7 @@ end
 # set system timezone
 # post param :timezone
 # @return [true|false]
-# test cd /opt/engines/tests/engines_tool/system/control/base_os; make timezone
+# test cd /opt/engines/tests/engines_api/system/control/base_os; make timezone
 post '/v0/system/control/base_os/timezone' do
   begin
     post_s = post_params(request)
@@ -63,7 +63,7 @@ end
 # @overload get '/v0/system/control/base_os/timezone'
 # get system timezone
 # @return [String]
-# test cd /opt/engines/tests/engines_tool/system/control/base_os; make timezone
+# test cd /opt/engines/tests/engines_api/system/control/base_os; make timezone
 get '/v0/system/control/base_os/timezone' do
   begin
     return_text(engines_api.get_timezone())
@@ -77,7 +77,7 @@ end
 # set system locale
 # post param :locale
 # @return [true|false]
-# test cd /opt/engines/tests/engines_tool/system/control/base_os; make locale
+# test cd /opt/engines/tests/engines_api/system/control/base_os; make locale
 post '/v0/system/control/base_os/locale' do
   begin
     post_s = post_params(request)
@@ -92,7 +92,7 @@ end
 # @overload get '/v0/system/control/base_os/locale'
 # set system locale
 # @return [String]
-# test cd /opt/engines/tests/engines_tool/system/control/base_os; make locale
+# test cd /opt/engines/tests/engines_api/system/control/base_os; make locale
 get '/v0/system/control/base_os/locale' do
   begin
     return_json(engines_api.get_locale())

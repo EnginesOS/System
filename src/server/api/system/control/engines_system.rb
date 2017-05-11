@@ -7,7 +7,7 @@
 #  false > no udpdate available
 #  EnginesError > an error occurred
 # @return [true|false]
-# test cd /opt/engines/tests/engines_tool/system/control/engines_system; make update
+# test cd /opt/engines/tests/engines_api/system/control/engines_system; make update
 get '/v0/system/control/engines_system/update' do
   begin
     return_text(engines_api.update_engines_system_software)
@@ -20,7 +20,7 @@ end
 # @overload get '/v0/system/control/engines_system/restart'
 #  Restart the engines system
 # @return [true]
-# test cd /opt/engines/tests/engines_tool/system/control/engines_system; make restart
+# test cd /opt/engines/tests/engines_api/system/control/engines_system; make restart
 get '/v0/system/control/engines_system/restart' do
   begin
     return_text(engines_api.restart_engines_system_service)
@@ -34,7 +34,7 @@ end
 ## @overload get '/v0/system/control/engines_system/recreate'
 ##  Recreate the engines system container
 ## @return [true]
-## test cd /opt/engines/tests/engines_tool/system/control/engines_system; make recreate
+## test cd /opt/engines/tests/engines_api/system/control/engines_system; make recreate
 #get '/v0/system/control/engines_system/recreate' do
 #  begin
 #    return_text(engines_api.recreate_engines_system_service)
@@ -49,7 +49,7 @@ end
 #  admin has access to this via ssh login
 #  the path is /opt/engines/tmp/system_service/system/heap.dump
 # @return [true]
-# test cd /opt/engines/tests/engines_tool/system/control/engines_system; make heap_dump
+# test cd /opt/engines/tests/engines_api/system/control/engines_system; make heap_dump
 get '/v0/system/control/engines_system/heap_stats' do
   begin
     return_text(engines_api.dump_heap_stats)
@@ -62,7 +62,7 @@ end
 # @overload get '/v0/system/control/engines_system/dump_threads'
 # List of Thread ObjectIDs
 # @return [String]
-# test cd /opt/engines/tests/engines_tool/system/control/engines_system; make dump_threads
+# test cd /opt/engines/tests/engines_api/system/control/engines_system; make dump_threads
 get '/v0/system/control/engines_system/dump_threads' do
   begin
     return_text(engines_api.dump_threads)
