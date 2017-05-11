@@ -25,21 +25,27 @@ module Certificates
 
   def generate_cert(params)
     certs_service = loadManagedService('cert_auth')
-    actionator = get_service_actionator(certs_service, 'fetch_cert')
-    begin
-    certs_service.perform_action(actionator, params[:domain_name])
-     
-    return false unless params.key?(:overwrite)
-      # FixME
-      #raise EnginesException(....) instead of return false
-    rescue
-      #no cert exception is what we want 
-    end
     
     params[:type_path] = 'cert_auth'
     params[:service_container_name] = 'cert_auth'
     params[:persistent] = true
     params[:publisher_namespace] = 'EnginesSystem'
+    params[:service_handle] = params[:domain_name]
+  
+    begin
+      actionator = get_service_actionator(certs_service, 'fetch_cert')
+      c = certs_service.perform_action(actionator, params[:domain_name])
+      if c.include?('----')      
+    return false unless params.key?(:overwrite)
+      end
+      # FixME
+      #return raise EnginesException(....) instead of return false
+      @engines_api.dettach_service(params)
+    rescue
+      #no cert exception is what we want 
+    end
+    
+    
 
     @engines_api.create_and_register_service({
       parent_engine: params[:parent_engine],
