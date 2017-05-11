@@ -107,6 +107,7 @@ post '/v0/system/certs/generate' do
   begin
     p_params = post_params(request)
     cparams = assemble_params(p_params, [], :all)
+      STDERR.puts(params.to_s)
     return_text(engines_api.generate_cert(cparams))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
