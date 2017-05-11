@@ -35,6 +35,8 @@ module Certificates
     begin
       actionator = get_service_actionator(certs_service, 'fetch_cert')
       c = certs_service.perform_action(actionator, params[:domain_name])
+        
+      STDERR.puts('GTO c ' + c.to_s)
       if c.include?('----')      
     return false unless params.key?(:overwrite)
       end
