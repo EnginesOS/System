@@ -14,7 +14,7 @@ get '/v0/system/login/:user_name/:password' do
 end
 
 # @clears Authentication token
-get '/v0/logout' do
+get '/v0/system/logout' do
   begin
     status(403)
     ''
