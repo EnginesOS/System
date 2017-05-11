@@ -1,4 +1,4 @@
-TESTS=status first_run_required
+TESTS=status first_run_required system_update_status
 
 tests:
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)

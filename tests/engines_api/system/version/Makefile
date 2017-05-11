@@ -7,10 +7,10 @@ release:
 	engines system version release |engines_test_expects text is current
 	
 api:
-	engines system version api  |engines_test_expects text is 0.0
+	engines system version api  |engines_test_expects text is 0.2
 
 ident:
-	engines system version ident |engines_test_expects text is current-0.0-0.0
+	engines system version ident |engines_test_expects text is current-0.2-0.3
 	
 system:
 	engines system version system|engines_test_expects text is 0.0
