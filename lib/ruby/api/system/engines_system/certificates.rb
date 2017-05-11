@@ -27,7 +27,7 @@ module Certificates
     certs_service = loadManagedService('cert_auth')
     actionator = get_service_actionator(certs_service, 'fetch_cert')
     begin
-    certs_service.perform_action(actionator, params[:domainname])
+    certs_service.perform_action(actionator, params[:domain_name])
      
     return false unless params.key?(:overwrite)
       # FixME
