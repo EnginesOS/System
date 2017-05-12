@@ -13,6 +13,10 @@ actions:
 services:	
 	cd services ; make -s tests ; cd ..
 
+
+cron:	
+	cd cron ; make -s tests ; cd ..
+
 state:
 	engines engine testengine state |engines_test_expects text is running
 	

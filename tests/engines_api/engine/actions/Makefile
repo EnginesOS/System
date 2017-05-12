@@ -14,7 +14,7 @@ action:
 	engines engine prosody action list_users | engines_test_expects json name list_users
 
 action_perform:
-	echo '{"username":"test","password":"pass"}' | engines engine prosody action perform add_user  | engines_test_expects test "Successfully added test"
+	echo '{"username":"test","password":"pass"}' | engines engine prosody action perform add_user  | engines_test_expects text "Successfully added test"
  	
 clean_up:
 	engines engine prosody stop 
