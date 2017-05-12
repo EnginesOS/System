@@ -47,4 +47,14 @@ get '/v0/schedule/engine/:engine_name/:cron_job/run' do
     send_encoded_exception(request: request, exception: e)
   end
 end
+
+get '/v0/schedule/engine/:engine_name/cron_jobs' do
+begin
+  engine = get_engine(params[:engine_name])
+  return_json(engine.cron_jobs)
+rescue StandardError => e
+  send_encoded_exception(request: request, exception: e)
+end
+end
+
 # @!endgroup
