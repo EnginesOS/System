@@ -1,4 +1,4 @@
-TESTS=prepare cron_job run_cron_job schedule clean_up
+TESTS=prepare cron_job cron_jobs schedules run_cron_job schedule clean_up
 
 tests:
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)

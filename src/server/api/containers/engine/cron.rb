@@ -55,6 +55,16 @@ begin
 rescue StandardError => e
   send_encoded_exception(request: request, exception: e)
 end
+
+  
+  get '/v0/schedule/engine/:engine_name/schedules' do
+  begin
+    engine = get_engine(params[:engine_name])
+    return_json(engine.schedules)
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+  end
 end
 
 # @!endgroup
