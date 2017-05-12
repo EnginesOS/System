@@ -38,15 +38,15 @@ get '/v0/schedule/engine/:engine_name/:cron_job' do
   end
 end
 
-# @method run_engine_schedule_action
-get '/v0/schedule/engine/:engine_name/:cron_job/run' do
-  begin
-    engine = get_engine(params[:engine_name])
-    return_text(engine.run_cronjob(params[:cron_job]))
-  rescue StandardError => e
-    send_encoded_exception(request: request, exception: e)
-  end
-end
+## @method run_engine_schedule_action
+#get '/v0/schedule/engine/:engine_name/:cron_job/run' do
+#  begin
+#    engine = get_engine(params[:engine_name])
+#    return_text(engine.run_cronjob(params[:cron_job]))
+#  rescue StandardError => e
+#    send_encoded_exception(request: request, exception: e)
+#  end
+#end
 
 get '/v0/schedule/engine/:engine_name/cron_jobs' do
 begin
