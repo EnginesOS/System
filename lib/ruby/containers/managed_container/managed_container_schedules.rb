@@ -1,6 +1,6 @@
 module ManagedContainerSchedules
   
   def schedules
-    @container_api.schedule(self)       
+    @container_api.schedules(self)       
   end
 end
