@@ -157,12 +157,11 @@ class DockerFileBuilder
       lang = SystemConfig.DefaultLanguage if lang.nil?
     end
     unless @build_params[:country_code].nil?
-         lang =  @build_params[:country_code]
-       else
-         country = prefs.country_code
-         country = SystemConfig.DefaultCountry if country.nil?
-       end
-
+      lang = @build_params[:country_code]
+    else
+      country = prefs.country_code
+      country = SystemConfig.DefaultCountry if country.nil?
+    end
     write_env('LANGUAGE', lang + '_' + country + ':' + lang)
     write_env('LANG', lang + '_' + country + '.UTF8')
     write_env('LC_ALL', lang + '_' + country + '.UTF8')
@@ -367,7 +366,7 @@ class DockerFileBuilder
     log_build_output('Dockerfile:Stack Environment')
     write_line('#Stack Env')
     write_line('')
-   # write_env('Memory' ,@builder.memory.to_s)
+    # write_env('Memory' ,@builder.memory.to_s)
     write_env('Hostname' ,@hostname)
     write_env('Domainname' ,@domain_name)
     write_env('fqdn' ,@hostname + '.' + @domain_name)
