@@ -7,6 +7,9 @@ prepare:
 	cat prosody_build_params.json | engines engines build
 	engines engine_builder follow >/dev/null
 
+schedules:
+	engines schedule engine  prosody schedules | engines_test_expects array  
+
 cron_job:
 
 run_cron_job:

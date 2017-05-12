@@ -61,7 +61,7 @@ module ServiceManagerOperations
     service_manager.retrieve_cron_entry(cronjob, container)
   end
 
-  def retreive_cron_jobs( container)
+  def retreive_cron_jobs(container)
     service_manager.retrieve_cron_jobs(container)
   end
 
