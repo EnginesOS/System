@@ -1,7 +1,7 @@
 TESTS=state stop start pause unpause engine status blueprint websites logs ps template mem_stat net_stat\
 	blueprint build_report properties_net properties_run\
 	actions services \
-	 destroy recreate delete reinstall 
+	halt start restart create recreate destroy delete reinstall 
  
 	
 tests:
@@ -30,6 +30,11 @@ start:
 	echo -n " Checking:"
 	engines engine testengine state | engines_test_expects text is running
 	
+restart:
+	engines engine testengine restart | engines_test_expects bool true
+	echo -n " Checking:"
+	engines engine testengine state | engines_test_expects text is running
+		
 pause:
 	engines engine testengine pause | engines_test_expects bool true
 	echo -n " Checking:"
@@ -88,8 +93,16 @@ destroy:
 	engines engine testengine destroy  | engines_test_expects bool true
 	echo -n " Checking:"
 	engines engine testengine state | engines_test_expects text is nocontainer
+
+create:
+	engines engine testengine stop  | engines_test_expects bool true
+	engines engine testengine destroy  | engines_test_expects bool true
+	engines engine testengine create  | engines_test_expects bool true
+	echo -n " Checking:"
+	engines engine testengine state | engines_test_expects text is running
 	
 recreate:
+	engines engine testengine stop | engines_test_expects bool true
 	engines engine testengine recreate | engines_test_expects bool true
 	echo -n " Checking:"
 	engines engine testengine state | engines_test_expects text is running
@@ -101,7 +114,7 @@ reinstall:
 	echo -n " Checking:"
 	engines engine testengine state | engines_test_expects text is running
 	
-engine:
+engine:stop
 	engines engine testengine  | engines_test_expects json memory
 	
 status:
@@ -119,6 +132,11 @@ logs:
 ps:
 	engines engine testengine ps | engines_test_expects json Processes
 	
+halt
+	engines engine testengine halt | engines_test_expects bool true
+	echo -n " Checking:"
+	engines engine testengine status | engines_test_expects json state stopped
+	engines engine testengine status | engines_test_expects json set_state running
 	
 delete:
 	engines engine testengine stop  | engines_test_expects bool true
