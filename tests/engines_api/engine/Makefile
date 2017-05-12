@@ -49,9 +49,7 @@ mem_stat:
 net_stat:
 	engines engine testengine net_stat | engines_test_expects json in
 	
-	
-blueprint:
-	engines engine testengine blueprint | engines_test_expects json software
+
 		
 build_report:
 	engines engine testengine build_report | engines_test_expects text built
