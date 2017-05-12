@@ -37,6 +37,7 @@ class DockerFileBuilder
     write_file_service
     write_repos
     write_os_packages
+    write_modules
     write_user_local = true
     setup_user_local if write_user_local
     set_user('$ContUser')
@@ -58,7 +59,6 @@ class DockerFileBuilder
     write_rake_list
     write_line('')
     set_user('0')
-    write_modules
     write_permissions
     write_line('')
     write_line('RUN mkdir -p /home/fs/local/')
@@ -80,7 +80,7 @@ class DockerFileBuilder
 
   def setup_user_local
     write_line('RUN ln -s /usr/local/ /home/local;\\')
-    write_line('     chown -R $ContUser /usr/local/')
+    write_line('     chown -R $ContUser /usr/local/ ')
   end
 
   def finalise_docker_file
