@@ -6,7 +6,7 @@ require '/opt/engines/lib/ruby/api/system/system_status.rb'
 # @overload get '/v0/system/version/release'
 #  as in current|master|beta-rc etc
 # @return  [String]  as in current|master|beta-rc etc
-
+# test cd /opt/engines/tests/engines_api/system/version ; make release
 get '/v0/system/version/release' do
   begin
     return_text(SystemStatus.get_engines_system_release)
@@ -20,7 +20,7 @@ end
 # api version
 # @return [String] api version
 #
-
+# test cd /opt/engines/tests/engines_api/system/version ; make api
 get '/v0/system/version/api' do
   begin
     return_text(engines_api.api_version)
@@ -34,6 +34,7 @@ end
 #
 # @return [String] $release-$system-$api
 #  string format $release-$system-$api
+# test cd /opt/engines/tests/engines_api/system/version ; make ident
 get '/v0/system/version/ident' do
   begin
     return_text(engines_api.version_string)
@@ -47,6 +48,7 @@ end
 #
 # @return [String] system version
 # system version
+# test cd /opt/engines/tests/engines_api/system/version ; make system
 get '/v0/system/version/system' do
   begin
     return_text(engines_api.system_version)
@@ -61,6 +63,7 @@ require '/opt/engines/lib/ruby/system/system_utils.rb'
 # @overload get '/v0/system/version/base_os'
 # @return [Hash] :name :version :id :id_like :pretty_name :version_id :home_url :support_url :bug_report_url
 # keys set by OS
+# test cd /opt/engines/tests/engines_api/system/version ; make base_os
 get '/v0/system/version/base_os' do
   begin
     base_os = downcase_keys(SystemUtils.get_os_release_data)

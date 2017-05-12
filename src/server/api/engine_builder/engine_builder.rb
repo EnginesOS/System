@@ -4,6 +4,7 @@
 # @overload get '/v0/engine_builder/status'
 # Return builder status as Json
 # @return [Hash]  :is_building :did_build_fail
+# test cd  /opt/engines/tests/engines_api/engines ; make build_check
 get '/v0/engine_builder/status' do
   begin
     return_json(engines_api.build_status)
@@ -16,6 +17,7 @@ end
 # @overload get '/v0/engine_builder/params'
 # Return current build params
 # @return  [Hash]  :engine_name :memory :repository_url :variables :reinstall :web_port :host_name  :domain_name :attached_services
+# test cd  /opt/engines/tests/engines_api/engines ; make build_check
 get '/v0/engine_builder/params' do
   begin
     return_json(engines_api.current_build_params)
@@ -28,6 +30,7 @@ end
 # @overload get '/v0/engine_builder/last_build/log'
 # Return last build log as String
 # @return [String] last build log
+# test cd  /opt/engines/tests/engines_api/engines ; make build_check
 get '/v0/engine_builder/last_build/log' do
   begin
     return_text(engines_api.last_build_log)
@@ -39,6 +42,7 @@ end
 # @overload get '/v0/engine_builder/last_build/params'
 # Return the last build  params as json
 # @return  [Hash]  :engine_name :memory :repository_url :variables :reinstall :web_port :host_name  :domain_name :attached_services
+# test cd  /opt/engines/tests/engines_api/engines ; make build_check
 get '/v0/engine_builder/last_build/params' do
   begin
     return_json(engines_api.last_build_params)
@@ -50,6 +54,7 @@ end
 # @overload get '/v0/engine_builder/follow_stream'
 # Follow the current build
 # @return  [text/event-stream]
+# test cd  /opt/engines/tests/engines_api/engines ; make build_check
 get '/v0/engine_builder/follow_stream', provides: 'text/event-stream;charset=ascii-8bit'  do
   begin
     build_log_file = File.new(SystemConfig.BuildOutputFile, 'r')

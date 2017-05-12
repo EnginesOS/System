@@ -16,12 +16,12 @@ module ServiceManagerOperations
 
   def find_engine_services_hashes(hash)
     hash[:container_type] = 'container' unless hash.key?(:container_type)
-    service_manager.find_engine_services_hashes(hash)   
+    service_manager.find_engine_services_hashes(hash)
   end
-  
+
   def find_service_services_hashes(hash)
-    hash[:container_type] = 'service' 
-    service_manager.find_engine_services_hashes(hash)   
+    hash[:container_type] = 'service'
+    service_manager.find_engine_services_hashes(hash)
   end
 
   def find_service_service_hash(params)
@@ -40,10 +40,10 @@ module ServiceManagerOperations
   def load_and_attach_static_services(dirname, container)
     service_manager.load_and_attach_static_services(dirname, container)
   end
-#
-#  def retrieve_service_configuration(service_param)
-#    service_manager.retrieve_service_configuration(service_param)
-#  end
+  #
+  #  def retrieve_service_configuration(service_param)
+  #    service_manager.retrieve_service_configuration(service_param)
+  #  end
 
   def is_service_running?(service_name)
     service_manager.is_service_running?(service_name)
@@ -59,6 +59,10 @@ module ServiceManagerOperations
 
   def retreive_cron_entry(cronjob, container)
     service_manager.retrieve_cron_entry(cronjob, container)
+  end
+
+  def retreive_cron_jobs(container)
+    service_manager.retrieve_cron_jobs(container)
   end
 
   def taken_hostnames

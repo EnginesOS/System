@@ -4,6 +4,7 @@
 # @overload get '/v0/containers/engine/:engine_name/actions/'
 # return an of the registered action Hashes
 # @return [Array] Hash
+# test cd /opt/engines/tests/engines_api/engine/actions ; make actions
 get '/v0/containers/engine/:engine_name/actions/' do
   begin
     engine = get_engine(params[:engine_name])
@@ -12,11 +13,12 @@ get '/v0/containers/engine/:engine_name/actions/' do
     send_encoded_exception(request: request, exception: e)
   end
 end
+
 # @method get_engine_action
 # @overload get '/v0/containers/engine/:engine_name/action/:action_name'
 # return engine action
 # @return [Hash]
-
+# test cd /opt/engines/tests/engines_api/engine/actions ; make action
 get '/v0/containers/engine/:engine_name/action/:action_name' do
   begin
     engine = get_engine(params[:engine_name])
@@ -32,6 +34,7 @@ end
 #  post params to include action specific parameters
 # @param action specific keys
 # @return [Hash] action specific keys
+# test cd /opt/engines/tests/engines_api/engine/actions ; make action_perform
 post '/v0/containers/engine/:engine_name/action/:action_name' do
   begin
     p_params = post_params(request)

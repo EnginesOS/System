@@ -42,3 +42,4 @@ when 'version'
   require_relative 'version.rb'
 end
 
+perform_get()

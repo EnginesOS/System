@@ -11,6 +11,32 @@ get '/v0/cron/engine/:engine_name/:cron_job/run' do
   end
 end
 
+# @method run_engine_schedule_action
+get '/v0/schedule/engine/:engine_name/:cron_job/run' do
+  begin
+    engine = get_engine(params[:engine_name])
+    return_text(engine.run_cronjob(params[:cron_job]))
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+end
+
+get '/v0/schedule/engine/:engine_name/cron_jobs' do
+  begin
+    engine = get_engine(params[:engine_name])
+    return_json(engine.cron_jobs)
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+end
+get '/v0/schedule/engine/:engine_name/schedules' do
+  begin
+    engine = get_engine(params[:engine_name])
+    return_json(engine.schedules)
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+end
 # @method run_engine_schedule_container_ask
 # @overload   get '/v0/schedule/engine/:engine_name/:cron_job'
 #  run cron_job for engine
@@ -30,19 +56,9 @@ get '/v0/schedule/engine/:engine_name/:cron_job' do
     when 'unpause'
       r = engine.unpause_container
     else
-      send_encoded_exception(request, params[:cron_job], params[:engine_name])
+      send_encoded_exception(request: request, exception: nil, params:  params)
     end
     return_text(r)
-  rescue StandardError => e
-    send_encoded_exception(request: request, exception: e)
-  end
-end
-
-# @method run_engine_schedule_action
-get '/v0/schedule/engine/:engine_name/:cron_job/run' do
-  begin
-    engine = get_engine(params[:engine_name])
-    return_text(engine.run_cronjob(params[:cron_job]))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

@@ -1,4 +1,5 @@
 # @!group /containers/engines/
+
 # @method build_engine
 # @overload post '/v0/containers/engines/build'
 # start app build process
@@ -13,6 +14,7 @@
 # @param :domain_name a-z,.,0-9
 # @param :attached_services Array of Hash :publisher_namespace :type_path :create_type :parent_engine :service_handle
 # @return [true]
+# test cd /opt/engines/tests/engines_api/engines ; make builder 
 post '/v0/containers/engines/build' do
   begin
     p_params = post_params(request)

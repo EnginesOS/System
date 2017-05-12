@@ -53,7 +53,9 @@ def create_service()
   lang = prefs.langauge_code
   lang = SystemConfig.DefaultLanguage if lang.nil?  
   [EnvironmentVariable.new('LANGUAGE', lang + '_' + country + ':' + lang) , 
-  EnvironmentVariable.new('LANG', lang + '_' + country + '.UTF8' ) ]
+  EnvironmentVariable.new('LANG', lang + '_' + country + '.UTF8' ),
+  EnvironmentVariable.new('LC_ALL', lang + '_' + country + '.UTF8' )
+  ]
  end
  
  def setup_service_keys

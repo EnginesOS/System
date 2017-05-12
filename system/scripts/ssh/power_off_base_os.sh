@@ -4,7 +4,7 @@
  	then
 		sudo  -n /opt/engines/system/scripts/ssh/sudo/_power_off_base_os.sh  
 		echo restarting
-		exit
+		exit 0
 	fi
 	
 exit 127
