@@ -27,7 +27,9 @@ module BaseOsSystem
   
   def set_timezone(tz)
     ENV['TZ'] = tz
-    run_server_script('set_timezone', tz)
+    r = run_server_script('set_timezone', tz)
+    return true if r[:result] =0 
+    true
   end
   
   def get_locale
