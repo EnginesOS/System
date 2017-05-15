@@ -5,8 +5,8 @@ module FirstRunDNS
       service_name: 'system',
       configurator_name: 'hostname',
       variables: {
-      hostname:  params[:hostname],
-      domain_name:  params[:domain_name]
+      hostname: params[:hostname],
+      domain_name: params[:domain_name]
       }
     })
     SystemDebug.debug(SystemDebug.first_run, 'set hostname')
@@ -46,7 +46,7 @@ module FirstRunDNS
       password: params[:dynamic_dns_password]
       }
       })
-    dyndns_service  =  @api.loadManagedService('dyndns')
+    dyndns_service = @api.loadManagedService('dyndns')
     dyndns_service.create_service
     return true if dyndns_service.is_running?
     dyndns_service.start_container
@@ -54,7 +54,7 @@ module FirstRunDNS
 
   def set_default_email_domain(domain_name)
     @api.update_service_configuration({
-      service_name:  'smtp',
+      service_name: 'smtp',
       configurator_name: 'default_domain',
       variables: {
       domain_name: domain_name,
