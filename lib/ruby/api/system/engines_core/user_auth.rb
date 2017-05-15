@@ -70,8 +70,8 @@ module UserAuth
     false
   end
 
-  def init_system_password(password,email, token = nil)
-    SystemDebug.debug(SystemDebug.first_run,:applyin, password,email)
+  def init_system_password(password, email, token = nil)
+    SystemDebug.debug(SystemDebug.first_run,:applyin, password, email)
     set_system_user_password('admin',password,email, token)
   end
 
