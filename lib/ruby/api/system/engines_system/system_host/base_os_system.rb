@@ -29,7 +29,7 @@ module BaseOsSystem
     ENV['TZ'] = tz
     r = run_server_script('set_timezone', tz)
     return r unless r[:result] == 0 
-      
+
     true
   end
   
