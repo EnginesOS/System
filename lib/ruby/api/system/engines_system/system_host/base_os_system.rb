@@ -46,8 +46,8 @@ module BaseOsSystem
   
   def get_timezone
     r = run_server_script('get_timezone')
-      return r unless r[:stderr] == '' 
-      r[:stdout]
+      return r unless r[:result] == 0 
+      r[:stdout].strip
 #    olsontz = File.read('/etc/timezone')
 #    Time.now.getlocal.zone    
 #    olsontz = `if [ -f /etc/timezone ]; then
