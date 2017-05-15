@@ -23,7 +23,7 @@ update_engines_system_software
 update_system_access
 set_locale
 set_timezone
-
+get_timezone
 
 
 
