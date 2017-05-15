@@ -46,6 +46,7 @@ module ManagedContainerControls
     return false unless has_api?
     SystemDebug.debug(SystemDebug.containers, :teask_preping)
     @container_mutex.synchronize {
+      @container_api.set_locale(self)
       return false unless prep_task(:create)
       SystemDebug.debug(SystemDebug.containers, :teask_preped)
       expire_engine_info

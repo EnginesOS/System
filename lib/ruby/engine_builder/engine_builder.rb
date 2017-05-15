@@ -175,12 +175,31 @@ class EngineBuilder < ErrorsApi
     FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.err',ContainerStateFiles.container_state_dir(@container) + '/build.err')
     true
   end
+  
+  def set_locale
+  
+      prefs = SystemPreferences.new
+      unless @build_params[:lang_code].nil?
+        lang =  @build_params[:lang_code]
+      else
+        lang = prefs.langauge_code    
+      end
+      unless @build_params[:country_code].nil?
+        lang = @build_params[:country_code]
+      else
+        country = prefs.country_code
+      end
+    @blueprint_reader.environments.EnvironmentVariable.new('LANGUAGE', lang + '_' + country + ':' + lang)
+    @blueprint_reader.environments.EnvironmentVariable.new('LANG', lang + '_' + country + '.UTF8')
+    @blueprint_reader.environments.EnvironmentVariable.new('LC_ALL', lang + '_' + country + '.UTF8')
+
+  end
 
   def build_container
     SystemDebug.debug(SystemDebug.builder,  ' Starting build with params ', @build_params)
-
     meets_physical_requirements
     process_blueprint
+    set_locale
     setup_build_dir
     get_base_image
     setup_engine_dirs

@@ -145,27 +145,10 @@ class DockerFileBuilder
       write_env(env.name,env.value.to_s) if env.value.nil? == false && env.value.to_s.length > 0 # env statement must have two arguments
     end
     write_env('WWW_DIR', @blueprint_reader.web_root.to_s) unless @blueprint_reader.web_root.nil?
-    write_locale_env
+   # write_locale_env
   end
 
-  def write_locale_env
-    prefs = SystemPreferences.new
-    unless @build_params[:lang_code].nil?
-      lang =  @build_params[:lang_code]
-    else
-      lang = prefs.langauge_code
-      lang = SystemConfig.DefaultLanguage if lang.nil?
-    end
-    unless @build_params[:country_code].nil?
-      lang = @build_params[:country_code]
-    else
-      country = prefs.country_code
-      country = SystemConfig.DefaultCountry if country.nil?
-    end
-    write_env('LANGUAGE', lang + '_' + country + ':' + lang)
-    write_env('LANG', lang + '_' + country + '.UTF8')
-    write_env('LC_ALL', lang + '_' + country + '.UTF8')
-  end
+
 
   def write_persistent_dirs
     log_build_output('setup persistent Dirs')
