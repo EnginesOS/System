@@ -20,7 +20,7 @@ locale:
 	engines system control base_os set locale AU en
 	
 timezone:
-	engines system control base_os timezone | engines_test_expects text AEST
+	engines system control base_os timezone | engines_test_expects text Australia/SydneyT
 	engines system control base_os set timezone US/Eastern
-	engines system control base_os timezone | engines_test_expects text EDT
+	engines system control base_os timezone | engines_test_expects text US/Eastern
 	engines system control base_os set timezone Australia/Sydney 
