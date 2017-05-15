@@ -7,7 +7,7 @@ module  ContainerApiLocale
   end
 
   def add_locale_envs(container)
-    SystemPreferences.new
+    prefs = SystemPreferences.new
     lang = prefs.langauge_code
     country = prefs.country_code
     container.environments.push(EnvironmentVariable.new('LANGUAGE', lang + '_' + country + ':' + lang))
