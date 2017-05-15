@@ -176,6 +176,7 @@ module DockerApiCreateOptions
       'HostConfig' => host_config_options(container)
     }
     set_entry_point(container, top_level)
+    STDERR.puts(' CREATE ' + top_level.to_s)
     top_level
   end
 
@@ -281,7 +282,7 @@ module DockerApiCreateOptions
       next if env.build_time_only
       envs.push(env.name.to_s + '=' + env.value.to_s)
     end
-    STDERR.puts('ENVS ' + envs.to_s)
+ 
     envs
   end
 
