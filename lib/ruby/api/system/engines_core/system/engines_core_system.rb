@@ -51,7 +51,10 @@ module EnginesCoreSystem
       MemoryStatistics.container_memory_stats(engine)
     end
   
-  
+  def get_timezone
+       @system_api.get_timezone
+     end
+     
     def shutdown(reason)
       # FIXME: @registry_handler.api_dissconnect
       @system_api.api_shutdown(reason)
