@@ -11,7 +11,7 @@ module  ContainerApiLocale
     lang = prefs.langauge_code
     country = prefs.country_code
   #  container.environments.push(EnvironmentVariable.new('LANGUAGE', lang + '_' + country + ':' + lang))
-    container.environments.push(EnvironmentVariable.new('LANG', lang + '_' + country + '.UTF8'))
-    container.environments.push(EnvironmentVariable.new('LC_ALL', lang + '_' + country + '.UTF8'))
+  #  container.environments.push(EnvironmentVariable.new('LANG', lang + '_' + country + '.UTF8'))
+  #  container.environments.push(EnvironmentVariable.new('LC_ALL', lang + '_' + country + '.UTF8'))
   end
 end
