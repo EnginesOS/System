@@ -281,7 +281,7 @@ module DockerApiCreateOptions
       next if env.build_time_only
       envs.push(env.name.to_s + '=' + env.value.to_s)
     end
-    
+    STDERR.puts('ENVS ' + env.to_s)
     envs
   end
 
