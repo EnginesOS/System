@@ -25,7 +25,7 @@ def check_regex(exp)
 end
 
 def check_text(key, value)
-  STDERR.puts(' KEY ' + key.to_s + ' VAL ' + value.to_s + ' Data ' + @data.to_s) 
+ 
   if key == nil || key == 'is'
     return true if @data == value
   else
