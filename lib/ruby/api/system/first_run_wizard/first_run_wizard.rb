@@ -32,9 +32,8 @@ class FirstRunWizard <ErrorsApi
     sleep 25
     return false unless setup_certs
     return false unless setup_system_password(@first_run_params[:system_password], @first_run_params[:admin_email])   
-    p
     @sucess = true
-    mark_as_run unless @@debug_flags & SystemDebug.first_run
+    mark_as_run unless @@debug_flags & SystemDebug.debug(SystemDebug.first_run)
     
   end
 
