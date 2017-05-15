@@ -1,7 +1,7 @@
 #!/bin/bash
 if -test -f /opt/engines/run/system/flags/first_start_complete
  then
-  echo 'First Start already ran`
+  echo 'First Start already ran'
   exit 127
  fi
   
