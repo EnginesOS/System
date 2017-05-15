@@ -29,7 +29,7 @@ class FirstRunWizard <ErrorsApi
     prefs.set_langauge_code(@first_run_params[:lang_code]) if @first_run_params.key?(:lang_code)
     @api.set_timezone(@first_run_params[:timezone]) if @first_run_params.key?(:timezone)
     @sucess = true
-    mark_as_run
+    mark_as_run unless @@debug_flags & SystemDebug.first_run
   end
 
   def mark_as_run
