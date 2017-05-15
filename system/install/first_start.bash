@@ -1,26 +1,32 @@
 #!/bin/bash
-
-system_service.rb system stop
-system_service.rb registry stop
-system_service.rb registry destroy
-system_service.rb registry create
-system_service.rb system destroy
-system_service.rb system create
-engines service syslog create
-engines service dns stop
-engines service dns destroy 
-engines service dns create
-engines service auth stop
-engines service auth destroy
-engines service auth create
-engines service cron create
-engines service mysql_server create
-engines service backup create
-engines service logrotate create
-engines service ftp create
-engines service backup create
-engines service nginx create
-engines service smtp create
-engines service mgmt create 
+if -test -f /opt/engines/run/system/flags/first_start_complete
+ then
+  echo 'First Start already ran`
+  exit 127
+ fi
+  
+system_service.rb system stop  >&/tmp/first_start.log
+system_service.rb registry stop >>&/tmp/first_start.log
+system_service.rb registry destroy >>&/tmp/first_start.log
+system_service.rb registry create >>&/tmp/first_start.log
+system_service.rb system destroy >>&/tmp/first_start.log
+system_service.rb system create >>&/tmp/first_start.log
+engines service syslog create >>&/tmp/first_start.log
+engines service dns stop >>&/tmp/first_start.log
+engines service dns destroy  >>&/tmp/first_start.log
+engines service dns create >>&/tmp/first_start.log
+engines service auth stop >>&/tmp/first_start.log
+engines service auth destroy >>&/tmp/first_start.log
+engines service auth create >>&/tmp/first_start.log
+engines service cron create >>&/tmp/first_start.log
+engines service mysql_server create >>&/tmp/first_start.log
+engines service backup create >>&/tmp/first_start.log
+engines service logrotate create >>&/tmp/first_start.log
+engines service ftp create >>&/tmp/first_start.log
+engines service backup create >>&/tmp/first_start.log
+engines service nginx create >>&/tmp/first_start.log
+engines service smtp create >>&/tmp/first_start.log
+ touch /opt/engines/run/system/flags/first_start_complete
+ cat /tmp/first_start.log
  
  

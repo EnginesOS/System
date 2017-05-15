@@ -6,11 +6,15 @@ module FirstRunComplete
       begin
         first_run.stop_container
         first_run.destroy_container
+        
+        SystemUtils.execute_command('/opt/engines/system/install/first_start.bash')
+        
         unless install_mgmt == true
           mark_complete
         else
           mgmt = @engines_api.loadManagedService('mgmt')
           mgmt.create_container
+          
         end
       rescue StandardError => e
         STDERR.puts('FIRST RUN Thread Exception' + e.to_s + ':' + e.backtrace.to_s)
