@@ -1,3 +1,4 @@
 #!/bin/bash
-
-sudo  -n   /opt/engines/system/scripts/ssh/sudo/_set_locale.sh $1 $2
+opts=`cat -`
+echo $opts >/tmp/set_locale
+sudo  -n   /opt/engines/system/scripts/ssh/sudo/_set_locale.sh $opts
