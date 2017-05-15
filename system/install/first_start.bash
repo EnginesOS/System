@@ -17,6 +17,9 @@ engines service dns create >>&/tmp/first_start.log
 engines service syslog stop >>&/tmp/first_start.log
 engines service syslog destroy >>&/tmp/first_start.log
 engines service syslog create >>&/tmp/first_start.log
+engines service cert_auth stop >>&/tmp/first_start.log
+engines service cert_auth destroy >>&/tmp/first_start.log
+engines service cert_auth create >>&/tmp/first_start.log
 engines service auth stop >>&/tmp/first_start.log
 engines service auth destroy >>&/tmp/first_start.log
 engines service auth create >>&/tmp/first_start.log

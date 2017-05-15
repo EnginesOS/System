@@ -26,10 +26,10 @@ class FirstRunWizard <ErrorsApi
     prefs.set_langauge_code(@first_run_params[:lang_code]) if @first_run_params.key?(:lang_code)
     @api.set_timezone(@first_run_params[:timezone]) if @first_run_params.key?(:timezone)
     return false unless setup_dns
-    certs = @api.loadManagedService('cert_auth')
-    certs.create_container
+   # certs = @api.loadManagedService('cert_auth')
+   # certs.create_container
     # FIXMe Kludge
-    sleep 125
+   # sleep 125
     return false unless setup_certs
     return false unless setup_system_password(@first_run_params[:admin_password], @first_run_params[:admin_email])   
     @sucess = true
