@@ -6,26 +6,27 @@ class SystemAccess
   #This Class is the public face of the system
   #release etc
   def release
-    return SystemUtils.system_release
+     SystemUtils.system_release
   end
 
   def pgsql_host
-    return 'pgsql.engines.internal'
+     'pgsql.engines.internal'
   end
-
+  
   def mysql_host
-    return SystemConfig.DBHost
+     SystemConfig.DBHost
   end
 
   def mongo_host
-    return 'mongo.engines.internal'
+     'mongo.engines.internal'
   end
 
   def smtp_host
-    return SystemConfig.SMTPHost
+     SystemConfig.SMTPHost
   end
 
   def timezone_country_city
+  #  olsontz = File.read('/etc/timezone')
     olsontz = `if [ -f /etc/timezone ]; then
       cat /etc/timezone
     elif [ -h /etc/localtime ]; then
@@ -35,11 +36,11 @@ class SystemAccess
       find /usr/share/zoneinfo/ -type f -exec md5sum {} \\; | grep "^$checksum" | sed "s/.*\\/usr\\/share\\/zoneinfo\\///" | head -n 1
     fi`.chomp
     return "  " if olsontz.nil?
-    return olsontz
+     olsontz
   end
 
   def  timezone
-    return Time.now.getlocal.zone
+     Time.now.getlocal.zone
   end
 
   def hrs_from_gmt
@@ -50,12 +51,11 @@ class SystemAccess
 
   def default_domain
     prefs = SystemPreferences.new()
-    return  prefs.get_default_domain
+      prefs.get_default_domain
   end
 
   def publickey
-    pk = @engines_api.get_public_key()
-    pk
+     @engines_api.get_public_key()
   end
   
   def pubkey(type)
@@ -65,13 +65,13 @@ class SystemAccess
     cmd = args[1]
     cmd.gsub!(/\)/, '')
 
-    return @engines_api.get_service_pubkey(engine, cmd)
+     @engines_api.get_service_pubkey(engine, cmd)
   end
 
   def random cnt
     len = cnt.to_i
     rnd = SecureRandom.hex(len)   
-    return rnd.byteslice(0,len)
+     rnd.byteslice(0,len)
   end
 
   # where ssh goes

@@ -27,7 +27,9 @@ module BaseOsSystem
   
   def set_timezone(tz)
     ENV['TZ'] = tz
-    run_server_script('set_timezone', tz)
+    r = run_server_script('set_timezone', tz)
+    return r unless r[:stderr] == '' 
+    true
   end
   
   def get_locale
@@ -43,6 +45,20 @@ module BaseOsSystem
   end
   
   def get_timezone
-    Time.now.getlocal.zone    
+    r = run_server_script('get_timezone')
+      return r unless r[:result] == 0 
+      r[:stdout].strip
+#    olsontz = File.read('/etc/timezone')
+#    Time.now.getlocal.zone    
+#    olsontz = `if [ -f /etc/timezone ]; then
+#         cat /etc/timezone
+#       elif [ -h /etc/localtime ]; then
+#         readlink /etc/localtime | sed "s/\\/usr\\/share\\/zoneinfo\\///"
+#       else
+#         checksum=\`md5sum /etc/localtime | cut -d' ' -f1\`
+#         find /usr/share/zoneinfo/ -type f -exec md5sum {} \\; | grep "^$checksum" | sed "s/.*\\/usr\\/share\\/zoneinfo\\///" | head -n 1
+#       fi`.chomp
+#       return "  " if olsontz.nil?
+   #    olsontz
   end
 end
