@@ -7,12 +7,19 @@ if test -f /opt/engines/run/system/flags/first_start_complete
   
 system_service.rb system stop  >/tmp/first_start.log
 system_service.rb registry stop >>/tmp/first_start.log
+sleep 5
 system_service.rb registry destroy >>/tmp/first_start.log
+sleep 5
 system_service.rb registry create >>/tmp/first_start.log
+sleep 5
 system_service.rb registry start >>/tmp/first_start.log
+sleep 5
 system_service.rb system destroy >>/tmp/first_start.log
+sleep 5
 system_service.rb system create >>/tmp/first_start.log
+sleep 5
 system_service.rb system start >>/tmp/first_start.log
+sleep 5
 engines service dns stop >> /tmp/first_start.log
 engines service dns destroy  >>/tmp/first_start.log
 engines service dns create >> /tmp/first_start.log
