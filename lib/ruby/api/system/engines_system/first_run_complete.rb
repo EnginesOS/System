@@ -8,14 +8,14 @@ module FirstRunComplete
         first_run.destroy_container
         
         SystemUtils.execute_command('/opt/engines/system/install/first_start.bash')
-        
-        unless install_mgmt == true
-          mark_complete
-        else
-          mgmt = @engines_api.loadManagedService('mgmt')
-          mgmt.create_container
-          
-        end
+        FileUtils.touch('/opt/engines/run/system/flags/install_mgmt') if install_mgmt == true
+#        unless install_mgmt == true
+#          mark_complete
+#        else
+#          mgmt = @engines_api.loadManagedService('mgmt')
+#          mgmt.create_container
+#          
+#        end
       rescue StandardError => e
         STDERR.puts('FIRST RUN Thread Exception' + e.to_s + ':' + e.backtrace.to_s)
       end
