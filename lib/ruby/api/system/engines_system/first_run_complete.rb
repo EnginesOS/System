@@ -6,9 +6,9 @@ module FirstRunComplete
       begin
         first_run.stop_container
         first_run.destroy_container
-        
-        SystemUtils.execute_command('/opt/engines/system/install/first_start.bash')
         FileUtils.touch('/opt/engines/run/system/flags/install_mgmt') if install_mgmt == true
+        run_server_script('first_start')
+      
 #        unless install_mgmt == true
 #          mark_complete
 #        else

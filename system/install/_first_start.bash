@@ -4,7 +4,7 @@ if test -f /opt/engines/run/system/flags/first_start_complete
   echo 'First Start already ran'
   exit 127
  fi
-  
+sleep 5 
 system_service.rb system stop  >/tmp/first_start.log
 system_service.rb registry stop &>>/tmp/first_start.log
 sleep 5
