@@ -89,6 +89,9 @@ end
   def docker_ip
     # FixME read docker0 ip or cmd line option
     '172.17.0.1'
+#    require 'socket'
+#    
+#    addr_infos = Socket.ip_address_list
   end
 def system_hostname
   @engines_api.system_hostname
