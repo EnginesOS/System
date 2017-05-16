@@ -65,7 +65,7 @@ module ManagedServiceOnAction
          @created = true
          save_state    
          SystemDebug.debug(SystemDebug.container_events, :ON_Create_Finised, event_hash)
-       }
+       }       
        start_container
   end
 
