@@ -1,43 +1,43 @@
 module UserAuth
   require "sqlite3"
 
-#  WS in engines Server is needed?
-#  def init_db
-#      create_table
-#      set_first_user
-#    end
-#  
-#    def create_table
-#      sql_lite_database.execute <<-SQL
-#              create table systemaccess (
-#                username varchar(30),
-#                email varchar(128),
-#                password varchar(30),
-#                authtoken varchar(128),
-#                ip_addr varchar(64),
-#                ip_mask varchar(64),
-#                uid int,
-#                guid int
-#              );
-#      SQL
-#      true
-#    rescue
-#      true
-#    end
-#  
-#    def set_first_user
-#      rows = sql_lite_database.execute("select authtoken from systemaccess")
-#      return if rows.count > 0
-#      toke = SecureRandom.hex(128)
-#      sql_lite_database.execute("INSERT INTO systemaccess (username, password, email, authtoken, uid,guid)
-#                            VALUES (?, ?, ?, ?, ?, ?)", ['admin', 'EnginesDemo', '', toke.to_s, 1, 0])
-#      STDERR.puts('init db')
-#    rescue StandardError => e
-#      STDERR.puts('init db error ' + e.to_s)
-#      return
-#    end
-#  
-#    
+  #  WS in engines Server is needed?
+  #  def init_db
+  #      create_table
+  #      set_first_user
+  #    end
+  #
+  #    def create_table
+  #      sql_lite_database.execute <<-SQL
+  #              create table systemaccess (
+  #                username varchar(30),
+  #                email varchar(128),
+  #                password varchar(30),
+  #                authtoken varchar(128),
+  #                ip_addr varchar(64),
+  #                ip_mask varchar(64),
+  #                uid int,
+  #                guid int
+  #              );
+  #      SQL
+  #      true
+  #    rescue
+  #      true
+  #    end
+  #
+  #    def set_first_user
+  #      rows = sql_lite_database.execute("select authtoken from systemaccess")
+  #      return if rows.count > 0
+  #      toke = SecureRandom.hex(128)
+  #      sql_lite_database.execute("INSERT INTO systemaccess (username, password, email, authtoken, uid,guid)
+  #                            VALUES (?, ?, ?, ?, ?, ?)", ['admin', 'EnginesDemo', '', toke.to_s, 1, 0])
+  #      STDERR.puts('init db')
+  #    rescue StandardError => e
+  #      STDERR.puts('init db error ' + e.to_s)
+  #      return
+  #    end
+  #
+  #
   def user_login(params)
     rows = auth_database.execute( 'select authtoken from systemaccess where username=' + "'" + params[:user_name].to_s +
     "' and password = '" +  params[:password].to_s + "';")
@@ -72,31 +72,32 @@ module UserAuth
 
   def init_system_password(password, email, token = nil)
     SystemDebug.debug(SystemDebug.first_run,:applyin, password, email)
-    set_system_user_password('admin',password,email, token)
+    set_system_user_password('admin', password, email, token)
   end
 
-  def set_system_user_password(user,password,email, token= nil)
-    rws = auth_database.execute("Select * from systemaccess where  username = '" + user.to_s + "';")
+  def set_system_user_password(user, password, email, token)
+    rws = auth_database.execute("Select authtoken from systemaccess where  username = '" + user.to_s + "';")
 
     if rws.count == 0
       authtoken = SecureRandom.hex(128)
-      auth_database.execute("INSERT INTO systemaccess (username, password, email, authtoken, uid)
-                 VALUES (?, ?, ?, ?,?)", [username, password, email.to_s, authtoken,0,0])
+      auth_database.execute('INSERT INTO systemaccess (username, password, email, authtoken, uid)
+                 VALUES (?, ?, ?, ?, ?)', [username, password, email.to_s, authtoken, 0])
 
-      SystemDebug.debug(SystemDebug.first_run,:applyin, "UPDATE systemaccess SET password = '" \
+      SystemDebug.debug(SystemDebug.first_run,:applyin, 'INSERT INTO systemaccess ...' \
       + password.to_s + "',email='" + email.to_s + \
       "INSERT INTO systemaccess (username, password, email, authtoken, uid)
-    VALUES (?, ?, ?, ?,?)", [username, password, email.to_s, authtoken,0,0])
+    VALUES (?, ?, ?, ?, ?)", [username, password, email.to_s, authtoken,0,0])
     else
-      authtoken = SecureRandom.hex(128)
-      auth_database.execute("UPDATE systemaccess SET password = '" \
+      #authtoken = SecureRandom.hex(128)
+      token = rws[0] if token.nil? # FIXMe should be if first run?
+      auth_database.execute("UPDATE systemaccess SET password = '"\
       + password.to_s + "',email='" + email.to_s + \
       ", authtoken ='" + authtoken.to_s + "' " + \
-      " where username = 'admin' and authtoken = '" + token.to_s + '";')
+      " where username = '" + user + " and authtoken = '" + token.to_s + "';")
       SystemDebug.debug(SystemDebug.first_run,:applyin, "UPDATE systemaccess SET password = '" \
       + password.to_s + "',email='" + email.to_s + \
       ", authtoken ='" + authtoken.to_s + "' " + \
-      " where username = 'admin' and authtoken = '" + token.to_s + '";')
+      " where username = 'admin'" )
     end
 
   rescue StandardError => e
