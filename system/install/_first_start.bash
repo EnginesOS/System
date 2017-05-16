@@ -44,12 +44,12 @@ sleep 5
 echo "Syslog Started" &>>/tmp/first_start.log
 /opt/engines/bin/engines service mysql_server create &>>/tmp/first_start.log
 echo "mysql_server Started" &>>/tmp/first_start.log
-/opt/engines/bin/engines service auth create &>>/tmp/first_start.log
-echo "auth Started" &>>/tmp/first_start.log
+/opt/engines/bin/engines service volmanager create &>>/tmp/first_start.log
+echo "volmanger Started" &>>/tmp/first_start.log
 /opt/engines/bin/engines service cron create &>>/tmp/first_start.log
 echo "cron Started" &>>/tmp/first_start.log
-/opt/engines/bin/engines service volmanger create &>>/tmp/first_start.log
-echo "volmanger Started" &>>/tmp/first_start.log
+/opt/engines/bin/engines service auth create &>>/tmp/first_start.log
+echo "auth Started" &>>/tmp/first_start.log
 /opt/engines/bin/engines service backup create &>>/tmp/first_start.log
 echo "backup Started" &>>/tmp/first_start.log
 /opt/engines/bin/engines service log_rotate create &>>/tmp/first_start.log
@@ -61,7 +61,7 @@ echo "nginx Started" &>>/tmp/first_start.log
 /opt/engines/bin/engines service smtp create &>>/tmp/first_start.log
 echo "smtp Started" &>>/tmp/first_start.log
 
- if test -f /opt//opt/engines/bin/engines/run/system/flags/install_mgmt
+ if test -f /opt/engines/bin/engines/run/system/flags/install_mgmt
   then
   	/opt/engines/bin/engines service mgmt create &>>/tmp/first_start.log
   	echo "mgmt Started" &>>/tmp/first_start.log
