@@ -16,9 +16,9 @@ system_service.rb registry start &>>/tmp/first_start.log
 echo "Registry Started">>/tmp/first_start.log
 sleep 10
 system_service.rb system destroy &>>/tmp/first_start.log
-sleep 5
+sleep 15
 system_service.rb system create >>/tmp/first_start.log
-sleep 5
+sleep 15
 system_service.rb system start &>>/tmp/first_start.log
 echo "System Started" &>>/tmp/first_start.log
 sleep 15

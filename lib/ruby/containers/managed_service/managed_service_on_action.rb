@@ -62,11 +62,11 @@ module ManagedServiceOnAction
          @had_out_memory = false
          @has_run = false
          @container_api.apply_schedules(self)
+         @created = true
          save_state    
          SystemDebug.debug(SystemDebug.container_events, :ON_Create_Finised, event_hash)
        }
        start_container
-    @created = true
   end
 
   def wait_for_startup
