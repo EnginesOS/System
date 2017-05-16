@@ -16,9 +16,9 @@ sleep 5
 echo "Registry Started">>/tmp/first_start.log
 sleep 10
 /opt/engines/bin/system_service.rb system destroy &>>/tmp/first_start.log
-sleep 15
+sleep 25
 /opt/engines/bin/system_service.rb system create >>/tmp/first_start.log
-sleep 15
+sleep 25
 /opt/engines/bin/system_service.rb system start &>>/tmp/first_start.log
 echo "System Started" &>>/tmp/first_start.log
 sleep 15
@@ -33,16 +33,15 @@ sleep 5
 /opt/engines/bin/engines service cert_auth stop &>>/tmp/first_start.log
 /opt/engines/bin/engines service cert_auth destroy& >>/tmp/first_start.log
 /opt/engines/bin/engines service cert_auth create &>>/tmp/first_start.log
-/opt/engines/bin/engines service auth stop &>>/tmp/first_start.log
-/opt/engines/bin/engines service auth destroy &>>/tmp/first_start.log
+/opt/engines/bin/engines service mysql_server create &>>/tmp/first_start.log
 /opt/engines/bin/engines service auth create &>>/tmp/first_start.log
 /opt/engines/bin/engines service cron create &>>/tmp/first_start.log
-/opt/engines/bin/engines service mysql_server create &>>/tmp/first_start.log
 /opt/engines/bin/engines service backup create &>>/tmp/first_start.log
 /opt/engines/bin/engines service log_rotate create &>>/tmp/first_start.log
 /opt/engines/bin/engines service ftp create &>>/tmp/first_start.log
 /opt/engines/bin/engines service backup create &>>/tmp/first_start.log
 /opt/engines/bin/engines service nginx create &>>/tmp/first_start.log
+/opt/engines/bin/engines service volmanger create &>>/tmp/first_start.log
 /opt/engines/bin/engines service smtp create &>>/tmp/first_start.log
 
  if test -f /opt//opt/engines/bin/engines/run/system/flags/install_mgmt
