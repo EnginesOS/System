@@ -8,7 +8,7 @@ module ServiceApiConsumers
     engines_core.registered_with_service(params)
   end
 
-  def add_consumer_to_service(c, service_hash)
+  def add_consumer_to_service(c, service_hash)    
     cmd = ['/home/add_service.sh']
     SystemDebug.debug(SystemDebug.services,  :add_consumer_to_service, cmd.to_s)
     result = engines_core.exec_in_container(

@@ -66,5 +66,14 @@ def create_service()
    SystemDebug.debug(SystemDebug.containers, :keys, keys )
     SystemUtils.run_command('/opt/engines/system/scripts/system/setup_service_keys.sh ' + container_name  + keys)
  end
- 
+
+def wait_for_startup
+  unless is_startup_complete?
+    n=0
+    while n < 20
+      n = n + 1
+      sleep(0.5) unless is_startup_complete?
+    end
+  end
+end
 end
