@@ -50,4 +50,4 @@ engines service smtp create &>>/tmp/first_start.log
   	engines service mgmt create
   fi
  
- 
+ touch /opt/engines/run/system/flags/first_start_complete
