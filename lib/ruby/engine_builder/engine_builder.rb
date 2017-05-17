@@ -179,6 +179,8 @@ class EngineBuilder < ErrorsApi
   end
 
   def set_locale
+    STDERR.puts("LANGUAGE " + @build_params[:lang_code].to_s)
+        STDERR.puts("country_code " + @build_params[:country_code].to_s)
     prefs = SystemPreferences.new
     unless @build_params[:lang_code].nil?
       lang =  @build_params[:lang_code]
@@ -190,9 +192,11 @@ class EngineBuilder < ErrorsApi
     else
       country = prefs.country_code
     end
-    @blueprint_reader.environments.push(EnvironmentVariable.new('LANGUAGE', lang + '_' + country + ':' + lang))
-    @blueprint_reader.environments.push(EnvironmentVariable.new('LANG', lang + '_' + country + '.UTF8'))
-    @blueprint_reader.environments.push(EnvironmentVariable.new('LC_ALL', lang + '_' + country + '.UTF8'))
+    STDERR.puts("LANGUAGE " + lang.to_s)
+    STDERR.puts("country_code " + country.to_s)
+    @blueprint_reader.environments.push(EnvironmentVariable.new('LANGUAGE', lang.to_s + '_' + country.to_s + ':' + lang.to_s))
+    @blueprint_reader.environments.push(EnvironmentVariable.new('LANG', lang.to_s + '_' + country.to_s + '.UTF8'))
+    @blueprint_reader.environments.push(EnvironmentVariable.new('LC_ALL', lang.to_s + '_' + country.to_s + '.UTF8'))
   end
 
   def build_container
@@ -215,6 +219,7 @@ class EngineBuilder < ErrorsApi
   rescue StandardError => e
     #log_exception(e)
     log_build_errors('Engine Build Aborted Due to:' + e.to_s)
+    STDERR.puts(e.backtrace.to_s)
     post_failed_build_clean_up
     raise e
   ensure
