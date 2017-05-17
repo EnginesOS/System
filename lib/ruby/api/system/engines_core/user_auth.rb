@@ -81,24 +81,27 @@ module UserAuth
 
     if rws.nil? || rws.count == 0
       authtoken = SecureRandom.hex(128)
-      auth_database.execute('INSERT INTO systemaccess (username, password, email, authtoken, uid)
-                 VALUES (?, ?, ?, ?, ?)', [user, password, email.to_s, authtoken, 0])
-
-      SystemDebug.debug(SystemDebug.first_run,:applyin, 'INSERT INTO systemaccess ...' \
-      + password.to_s + "',email='" + email.to_s + \
-      "INSERT INTO systemaccess (username, password, email, authtoken, uid)
-    VALUES (?, ?, ?, ?, ?)", [user, password, email.to_s, authtoken,0,0])
+      query = 'INSERT INTO systemaccess (username, password, email, authtoken, uid)
+                 VALUES (?, ?, ?, ?, ?)'
+    SystemDebug.debug(SystemDebug.first_run,:applyin,  query, [user, password, email.to_s, authtoken, 0])
+      auth_database.execute(query, [user, password, email.to_s, authtoken, 0])
     else
       #authtoken = SecureRandom.hex(128)
       token = rws[0] if token.nil? # FIXMe should be if first run?
-      auth_database.execute("UPDATE systemaccess SET password = '"\
+      raise EnginesException.new(
+      level: :error,
+      params: nil,
+      status: nil,
+      system: 'user auth',
+      error_mesg: 'token missmatch') if token != rws[0]
+
+      query = "UPDATE systemaccess SET password = '"\
       + password.to_s + "',email='" + email.to_s + \
       ", authtoken ='" + authtoken.to_s + "' " + \
-      " where username = '" + user + " and authtoken = '" + token.to_s + "';")
-      SystemDebug.debug(SystemDebug.first_run,:applyin, "UPDATE systemaccess SET password = '" \
-      + password.to_s + "',email='" + email.to_s + \
-      ", authtoken ='" + authtoken.to_s + "' " + \
-      " where username = 'admin'" )
+      " where username = '" + user + " and authtoken = '" + token.to_s + "';"
+      SystemDebug.debug(SystemDebug.first_run,:applyin,  query)
+      auth_database.execute(query)
+
     end
 
   rescue StandardError => e
