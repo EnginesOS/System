@@ -180,18 +180,12 @@ class EngineBuilder < ErrorsApi
 
   def set_locale
     STDERR.puts("LANGUAGE " + @build_params[:lang_code].to_s)
-        STDERR.puts("country_code " + @build_params[:country_code].to_s)
+    STDERR.puts("country_code " + @build_params[:country_code].to_s)
     prefs = SystemPreferences.new
-    unless @build_params[:lang_code].nil?
-      lang =  @build_params[:lang_code]
-    else
-      lang = prefs.langauge_code
-    end
-    unless @build_params[:country_code].nil?
-      lang = @build_params[:country_code]
-    else
-      country = prefs.country_code
-    end
+    lang =  @build_params[:lang_code]
+    lang = prefs.langauge_code if lang.nil?
+    country_code = @build_params[:country_code]
+    country = prefs.country_code if country_code.nil?
     STDERR.puts("LANGUAGE " + lang.to_s)
     STDERR.puts("country_code " + country.to_s)
     @blueprint_reader.environments.push(EnvironmentVariable.new('LANGUAGE', lang.to_s + '_' + country.to_s + ':' + lang.to_s))
