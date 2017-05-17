@@ -88,7 +88,7 @@ module UserAuth
       update_local_token(authtoken) if user == 'admin'
     else
       #authtoken = SecureRandom.hex(128)
-      token = rws[0]['authtoken'] if token.nil? # FIXMe should be if first run?
+      token = rws[0][0] if token.nil? # FIXMe should be if first run?
       raise EnginesException.new(
       level: :error,
       params: nil,
