@@ -48,7 +48,9 @@ echo "Syslog Started" &>>/tmp/first_start.log
 
 sleep 5
 /opt/engines/bin/engines service cert_auth stop &>>/tmp/first_start.log
+sleep 5
 /opt/engines/bin/engines service cert_auth destroy& >>/tmp/first_start.log
+sleep 5
 /opt/engines/bin/engines service cert_auth create &>>/tmp/first_start.log
 echo "Cert Auth Started" &>>/tmp/first_start.log
 
@@ -81,7 +83,7 @@ echo "nginx Started" &>>/tmp/first_start.log
 echo "smtp Started" &>>/tmp/first_start.log
 
 
- if test -f /opt/engines/bin/engines/run/system/flags/install_mgmt
+ if test -f /opt/engines/run/system/flags/install_mgmt
   then
   	/opt/engines/bin/engines service mgmt create &>>/tmp/first_start.log
   	echo "mgmt Started" &>>/tmp/first_start.log
