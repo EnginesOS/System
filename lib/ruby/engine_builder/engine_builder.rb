@@ -184,7 +184,7 @@ class EngineBuilder < ErrorsApi
     prefs = SystemPreferences.new
     lang =  @build_params[:lang_code]
     lang = prefs.langauge_code if lang.nil?
-    country_code = @build_params[:country_code]
+    country = @build_params[:country_code]
     country = prefs.country_code if country_code.nil?
     STDERR.puts("LANGUAGE " + lang.to_s)
     STDERR.puts("country_code " + country.to_s)
