@@ -99,7 +99,7 @@ module UserAuth
       query = "UPDATE systemaccess SET password = '"\
       + password.to_s + "',email='" + email.to_s + \
       ", authtoken ='" + token.to_s + "' " + \
-      " where username = '" + user + " and authtoken = '" + authtoken.to_s + "';"
+      " where username = '" + user + "' and authtoken = '" + authtoken.to_s + "';"
       SystemDebug.debug(SystemDebug.first_run,:applyin,  query)
       auth_database.execute(query)
       update_local_token(authtoken) if user == 'admin'
