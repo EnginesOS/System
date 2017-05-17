@@ -85,8 +85,7 @@ module UserAuth
     SystemDebug.debug(SystemDebug.first_run,:applyin,  query, [user, password, email.to_s, authtoken, 0])
       auth_database.execute(query, [user, password, email.to_s, authtoken, 0])
       update_local_token(authtoken) if user == 'admin'
-    else
-      #authtoken = SecureRandom.hex(128)
+    else      
       token = rws[0][0] if token.nil? # FIXMe should be if first run?
       raise EnginesException.new(
       level: :error,
@@ -112,9 +111,13 @@ SystemDebug.debug(SystemDebug.first_run,"Exception " ,e)
   end
 
   def update_local_token(token)
+    SystemDebug.debug(SystemDebug.first_run, ' Save Token', token)
     toke_file = File.new('/home/engines/.engines_token', 'w+')
     toke_file.puts(token)
     toke_file.close
+    rescue StandardError => e
+  SystemDebug.debug(SystemDebug.first_run,"Exception " ,e)
+      log_error_mesg(e.to_s)
   end
     
 end
