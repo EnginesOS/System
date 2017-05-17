@@ -189,9 +189,9 @@ class EngineBuilder < ErrorsApi
       else
         country = prefs.country_code
       end
-    @blueprint_reader.environments.EnvironmentVariable.new('LANGUAGE', lang + '_' + country + ':' + lang)
-    @blueprint_reader.environments.EnvironmentVariable.new('LANG', lang + '_' + country + '.UTF8')
-    @blueprint_reader.environments.EnvironmentVariable.new('LC_ALL', lang + '_' + country + '.UTF8')
+    @blueprint_reader.environments.push(EnvironmentVariable.new('LANGUAGE', lang + '_' + country + ':' + lang))
+    @blueprint_reader.environments.push(EnvironmentVariable.new('LANG', lang + '_' + country + '.UTF8'))
+    @blueprint_reader.environments.push(EnvironmentVariable.new('LC_ALL', lang + '_' + country + '.UTF8'))
 
   end
 
