@@ -73,20 +73,21 @@ module UserAuth
   def init_system_password(password, email, token = nil)
     SystemDebug.debug(SystemDebug.first_run,:applyin, password, email)
     set_system_user_password('admin', password, email, token)
+    SystemDebug.debug(SystemDebug.first_run,:applied, password, email)
   end
 
   def set_system_user_password(user, password, email, token)
     rws = auth_database.execute("Select authtoken from systemaccess where  username = '" + user.to_s + "';")
 
-    if rws.count == 0
+    if rws.nil? || rws.count == 0
       authtoken = SecureRandom.hex(128)
       auth_database.execute('INSERT INTO systemaccess (username, password, email, authtoken, uid)
-                 VALUES (?, ?, ?, ?, ?)', [username, password, email.to_s, authtoken, 0])
+                 VALUES (?, ?, ?, ?, ?)', [user, password, email.to_s, authtoken, 0])
 
       SystemDebug.debug(SystemDebug.first_run,:applyin, 'INSERT INTO systemaccess ...' \
       + password.to_s + "',email='" + email.to_s + \
       "INSERT INTO systemaccess (username, password, email, authtoken, uid)
-    VALUES (?, ?, ?, ?, ?)", [username, password, email.to_s, authtoken,0,0])
+    VALUES (?, ?, ?, ?, ?)", [user, password, email.to_s, authtoken,0,0])
     else
       #authtoken = SecureRandom.hex(128)
       token = rws[0] if token.nil? # FIXMe should be if first run?
