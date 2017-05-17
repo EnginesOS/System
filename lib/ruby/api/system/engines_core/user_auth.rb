@@ -113,7 +113,7 @@ SystemDebug.debug(SystemDebug.first_run,"Exception " ,e)
   end
 
   def update_local_token(token)
-    toke_file = File.new('/home/engines/.engines_token' + 'w+')
+    toke_file = File.new('/home/engines/.engines_token', 'w+')
     toke_file.puts(token)
     toke_file.close
   end
