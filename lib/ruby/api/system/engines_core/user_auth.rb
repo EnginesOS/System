@@ -74,6 +74,7 @@ module UserAuth
     SystemDebug.debug(SystemDebug.first_run,:applyin, password, email)
     set_system_user_password('admin', password, email, token)
     SystemDebug.debug(SystemDebug.first_run,:applied, password, email)
+    
   end
 
   def set_system_user_password(user, password, email, token)
@@ -87,7 +88,7 @@ module UserAuth
       update_local_token(authtoken) if user == 'admin'
     else
       #authtoken = SecureRandom.hex(128)
-      token = rws[0] if token.nil? # FIXMe should be if first run?
+      token = rws[0]['authtoken'] if token.nil? # FIXMe should be if first run?
       raise EnginesException.new(
       level: :error,
       params: nil,
@@ -105,6 +106,7 @@ module UserAuth
     end
 
   rescue StandardError => e
+SystemDebug.debug(SystemDebug.first_run,"Exception " ,e)
     log_error_mesg(e.to_s)
     auth_database.close
     true

@@ -28,8 +28,7 @@ module FirstRunPasswords
   end
 
   def setup_system_password(password, email)
-    return true if @api.init_system_password(password, email)
-  
+     @api.init_system_password(password, email)  
   end
 
   def ssh_key_configurator(key)
