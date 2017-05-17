@@ -4,6 +4,9 @@ if test -f /opt/engines/bin/engines/run/system/flags/first_start_complete
   echo 'First Start already ran'
   exit 127
  fi
+ 
+DOCKER_IP=`ifconfig  docker0  |grep "inet " |cut -f2 -d: |awk {'print $1}'`
+export DOCKER_IP
 sleep 5 
 /opt/engines/bin/system_service.rb system stop  >/tmp/first_start.log
 echo "System Stopped" &>>/tmp/first_start.log
