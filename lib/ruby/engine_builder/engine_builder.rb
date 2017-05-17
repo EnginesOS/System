@@ -1,9 +1,11 @@
 require 'rubygems'
 require 'git'
 require 'fileutils'
+
 #require 'yajl'
 require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 require '/opt/engines/lib/ruby/exceptions/engine_builder_exception.rb'
+
 class EngineBuilder < ErrorsApi
   require '/opt/engines/lib/ruby/api/system/container_state_files.rb'
   require_relative 'builder_public.rb'
@@ -127,7 +129,7 @@ class EngineBuilder < ErrorsApi
   end
 
   def volumes
-     @service_builder.volumes
+    @service_builder.volumes
   end
 
   def rebuild_managed_container(engine)
@@ -175,24 +177,22 @@ class EngineBuilder < ErrorsApi
     FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.err',ContainerStateFiles.container_state_dir(@container) + '/build.err')
     true
   end
-  
+
   def set_locale
-  
-      prefs = SystemPreferences.new
-      unless @build_params[:lang_code].nil?
-        lang =  @build_params[:lang_code]
-      else
-        lang = prefs.langauge_code    
-      end
-      unless @build_params[:country_code].nil?
-        lang = @build_params[:country_code]
-      else
-        country = prefs.country_code
-      end
+    prefs = SystemPreferences.new
+    unless @build_params[:lang_code].nil?
+      lang =  @build_params[:lang_code]
+    else
+      lang = prefs.langauge_code
+    end
+    unless @build_params[:country_code].nil?
+      lang = @build_params[:country_code]
+    else
+      country = prefs.country_code
+    end
     @blueprint_reader.environments.push(EnvironmentVariable.new('LANGUAGE', lang + '_' + country + ':' + lang))
     @blueprint_reader.environments.push(EnvironmentVariable.new('LANG', lang + '_' + country + '.UTF8'))
     @blueprint_reader.environments.push(EnvironmentVariable.new('LC_ALL', lang + '_' + country + '.UTF8'))
-
   end
 
   def build_container
@@ -210,7 +210,7 @@ class EngineBuilder < ErrorsApi
     #  wait_for_engine
     save_build_result
     close_all
- #   SystemStatus.build_complete(@build_params)
+    #   SystemStatus.build_complete(@build_params)
     @container
   rescue StandardError => e
     #log_exception(e)
@@ -270,18 +270,18 @@ class EngineBuilder < ErrorsApi
     # FIXME: Stop it if started (ie vol builder failure)
     # FIXME: REmove container if created
     unless @build_params[:reinstall].is_a?(TrueClass)
-     
+
       begin
-      if @container.is_a?(ManagedContainer)
-        @container.stop_container if @container.is_running?
-        @container.destroy_container if @container.has_container?
-        @container.delete_image if @container.has_image?
-      end
+        if @container.is_a?(ManagedContainer)
+          @container.stop_container if @container.is_running?
+          @container.destroy_container if @container.has_container?
+          @container.delete_image if @container.has_image?
+        end
         @service_builder.service_roll_back
         @core_api.delete_engine_and_services(@build_params)
-        rescue 
-          #dont panic if no container
-      end     
+      rescue
+        #dont panic if no container
+      end
     end
 
     #    params = {}
@@ -289,7 +289,7 @@ class EngineBuilder < ErrorsApi
     #    @core_api.delete_engine(params) # remove engine if created, removes from manged_engines tree (main reason to call)
     @result_mesg = @result_mesg.to_s + ' Roll Back Complete'
     SystemDebug.debug(SystemDebug.builder,'Roll Back Complete')
-  
+
     close_all
 
   end
@@ -331,7 +331,6 @@ class EngineBuilder < ErrorsApi
     log_build_errors(m.to_s + o.to_s)
     super
   end
-
 
   def basedir
     SystemConfig.DeploymentDir + '/' + @build_name.to_s
