@@ -78,7 +78,7 @@ module UserAuth
 
   def set_system_user_password(user, password, email, token)
     rws = auth_database.execute("Select authtoken from systemaccess where  username = '" + user.to_s + "';")
-    authtoken = SecureRandom.hex(128)
+    authtoken = SecureRandom.hex(64)
     if rws.nil? || rws.count == 0      
       query = 'INSERT INTO systemaccess (username, password, email, authtoken, uid)
                  VALUES (?, ?, ?, ?, ?)'
