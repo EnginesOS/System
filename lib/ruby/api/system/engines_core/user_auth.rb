@@ -94,7 +94,7 @@ module UserAuth
       params: nil,
       status: nil,
       system: 'user auth',
-      error_mesg: 'token missmatch') if token != rws[0]
+      error_mesg: 'token missmatch') if token != rws[0][0]
 
       query = "UPDATE systemaccess SET password = '"\
       + password.to_s + "',email='" + email.to_s + \
