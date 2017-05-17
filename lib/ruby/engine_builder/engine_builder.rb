@@ -237,7 +237,8 @@ class EngineBuilder < ErrorsApi
   end
 
   def clone_repo
-    log_build_output('Clone Blueprint Repository')
+    log_build_output('Clone Blueprint Repository ' + @build_params[:repository_url])
+    SystemDebug.debug(SystemDebug.builder, "get_blueprint_from_repo",@build_params[:repository_url], @build_name,  SystemConfig.DeploymentDir)
     g = Git.clone(@build_params[:repository_url], @build_name, :path => SystemConfig.DeploymentDir)
   end
 
