@@ -8,11 +8,12 @@ module EngineApiDependancies
       unless service.is_running?
         if service.has_container?
           if service.is_active?
-            raise EnginesException.new(error_hash('Failed to unpause ', service_name)) if !service.unpause_container
+            raise EnginesException.new(error_hash('Failed to unpause ', service_name))  unless service.unpause_container
           else
-            raise EnginesException.new(error_hash('Failed to start ', service_name)) if !service.start_container
+            raise EnginesException.new(error_hash('Failed to start ', service_name)) unless service.start_container
           end
-          raise EnginesException.new(error_hash('Failed to create ', service_name)) if !service.create_container
+        else  
+          raise EnginesException.new(error_hash('Failed to create ', service_name)) unless service.create_container
         end
       end
       retries = 0

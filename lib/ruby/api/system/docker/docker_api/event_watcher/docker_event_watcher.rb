@@ -162,7 +162,7 @@ class DockerEventWatcher  < ErrorsApi
             SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
           # next
           #end
-          trigger(hash)
+          Thread.new {trigger(hash)}
         rescue StandardError => e
           STDERR.puts('EXCEPTION docker Event Stream as close ' + e.to_s)
           log_error_mesg('Chunk error on docker Event Stream _' + chunk.to_s + '_')
@@ -189,7 +189,8 @@ class DockerEventWatcher  < ErrorsApi
     client.finish unless client.nil?
     @system.start_docker_event_listener(@event_listeners)
   ensure
-    @system.start_docker_event_listener(@event_listeners)
+    STDERR.puts('CLOSED docker Event Stream @event_listeners ENSURE')
+    @system.start_docker_event_listener(@event_listeners)    
   end
 
   def add_event_listener(listener, event_mask = nil, container_id = nil)

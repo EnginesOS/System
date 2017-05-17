@@ -118,6 +118,7 @@ module TaskAtHand
     when 'oom'
       out_of_mem('oom')
     end
+    true
 #  rescue StandardError => e
 #    log_exception(e)
   end

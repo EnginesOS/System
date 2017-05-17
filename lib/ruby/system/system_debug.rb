@@ -29,8 +29,8 @@ class SystemDebug
     require '/opt/engines/etc/debug/debug_flags.rb'
   else
     @@debug_flags = 0
-  @@debug_flags = @@actions# @@docker# @@builder  | @@docker | @@services | @@registry |@@containers
-   #   @@debug_flags =  @@orphans| @@first_run # @@schedules#| @@services | @@registry
+    @@debug_flags =  @@first_run |@@container_events |@@builder # @@actions# @@docker# @@builder  | @@docker | @@services | @@registry |@@containers
+    #   @@debug_flags =  @@orphans| @@first_run # @@schedules#| @@services | @@registry
     #  @@debug_flags =  @@container_events| @@builder|@@templater| @@services | @@export_import# |@@first_run # @@containers# |@@container_events |@@first_run # @@orphans | @@builder |@@export_import | @@services| @@container_events|  @@server |@@templater| @@services | @@export_import |@@builder|@@execute|@@engine_tasks | @@orphans  |@@containers
   end
 
@@ -117,8 +117,8 @@ class SystemDebug
   def self.debug(*args)
     return true if @@debug_flags == 0
     mask = args[0]
-    self.print_debug(args) unless mask & @@debug_flags == 0
-    return true
+    return self.print_debug(args) unless mask & @@debug_flags == 0
+    true
   end
 
   def self.print_debug(args)
@@ -127,6 +127,7 @@ class SystemDebug
       mesg += arg.to_s + ' '
     end
     STDERR.puts(mesg )
+    false
   end
 
 end

@@ -31,7 +31,8 @@ class ContainerApi < ErrorsApi
   require_relative 'engine_api_image_actions.rb'
   include EngineApiImageActions
 
-
+  require_relative 'container_api_locale.rb'
+  include ContainerApiLocale
   
   require_relative 'core_api_access.rb'
   include CoreApiAccess
