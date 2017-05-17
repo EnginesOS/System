@@ -78,13 +78,13 @@ module UserAuth
 
   def set_system_user_password(user, password, email, token)
     rws = auth_database.execute("Select authtoken from systemaccess where  username = '" + user.to_s + "';")
-
-    if rws.nil? || rws.count == 0
-      authtoken = SecureRandom.hex(128)
+    authtoken = SecureRandom.hex(128)
+    if rws.nil? || rws.count == 0      
       query = 'INSERT INTO systemaccess (username, password, email, authtoken, uid)
                  VALUES (?, ?, ?, ?, ?)'
     SystemDebug.debug(SystemDebug.first_run,:applyin,  query, [user, password, email.to_s, authtoken, 0])
       auth_database.execute(query, [user, password, email.to_s, authtoken, 0])
+      update_local_token(authtoken) if user == 'admin'
     else
       #authtoken = SecureRandom.hex(128)
       token = rws[0] if token.nil? # FIXMe should be if first run?
@@ -97,11 +97,11 @@ module UserAuth
 
       query = "UPDATE systemaccess SET password = '"\
       + password.to_s + "',email='" + email.to_s + \
-      ", authtoken ='" + authtoken.to_s + "' " + \
-      " where username = '" + user + " and authtoken = '" + token.to_s + "';"
+      ", authtoken ='" + token.to_s + "' " + \
+      " where username = '" + user + " and authtoken = '" + authtoken.to_s + "';"
       SystemDebug.debug(SystemDebug.first_run,:applyin,  query)
       auth_database.execute(query)
-
+      update_local_token(authtoken) if user == 'admin'
     end
 
   rescue StandardError => e
@@ -110,4 +110,10 @@ module UserAuth
     true
   end
 
+  def update_local_token(token)
+    toke_file = File.new('/home/engines/.engines_token' + 'w+')
+    toke_file.puts(token)
+    toke_file.close
+  end
+    
 end
