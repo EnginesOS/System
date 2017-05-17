@@ -38,6 +38,8 @@ module ManagedServiceConsumers
     end
     true
   end
+  
+
 
   def add_consumer(service_hash)
     raise EnginesException.new(error_hash('Invalid service_hash ',  service_hash)) unless service_hash.is_a?(Hash)
@@ -47,6 +49,7 @@ module ManagedServiceConsumers
     return true if !is_running? && @soft_service
 
     raise EnginesException.new(error_hash('service not running' , @container_name)) unless is_running?
+    wait_for_startup
     unless @persistent
       result = add_consumer_to_service(service_hash)
     else
@@ -75,7 +78,10 @@ module ManagedServiceConsumers
 
   def add_consumer_to_service(service_hash)
     raise EnginesException.new(error_hash('service missing cont_userid '+ container_name, service_hash)) unless check_cont_uid
-    raise EnginesException.new(error_hash('service startup not complete ' + container_name, service_hash)) unless is_startup_complete?
+   # unless is_startup_complete?
+   #   return if @soft_service == true
+      raise EnginesException.new(error_hash('service startup not complete ' + container_name, service_hash))  unless is_startup_complete?
+   # end
     @container_api.add_consumer_to_service(self, service_hash)
   end
 

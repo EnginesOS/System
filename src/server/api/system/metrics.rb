@@ -5,7 +5,7 @@
 # Return System Memory usage
 #  values are integers and in bytes
 # @return [Hash] :total :free :buffers :file_cache :active :inactive :swap_total :swap_free
-#
+# test cd /opt/engines/tests/engines_api/system/metrics ; make memory
 get '/v0/system/metrics/memory' do
   begin
     return_json(engines_api.get_system_memory_info)
@@ -23,7 +23,7 @@ end
 #   :running is the number of preocesses running
 #   :idle is the number of idle processes
 # @return [Hash]  :one :five :fithteen :running :idle
-
+# test cd /opt/engines/tests/engines_api/system/metrics ; make load
 get '/v0/system/metrics/load' do
   begin
     load_info = engines_api.get_system_load_info
@@ -39,7 +39,7 @@ end
 #  services and applications are [Hash]s
 #  container_name: Hash [:maximum, :current, :limit]
 # @return [Hash] :containers Hash :applications :services
-
+# test cd /opt/engines/tests/engines_api/system/metrics ; make mem_stats
 get '/v0/system/metrics/memory/statistics' do
   begin
     memory_statistics = MemoryStatistics.total_memory_statistics(engines_api)
@@ -53,7 +53,7 @@ end
 # @overload get '/v0/system/metrics/disks'
 #    1k blocks
 # @return [Hash]  :device_name = [Hash]  :type :blocks :used :available :usage :mount
-#
+# test cd /opt/engines/tests/engines_api/system/metrics ; make disk
 get '/v0/system/metrics/disks' do
   begin
     disk_statistics = engines_api.get_disk_statistics
@@ -66,7 +66,7 @@ end
 # @method get_system_metrics_network
 # @overload get '/v0/system/metrics/network'
 # @return [Hash] :tx :rx
-#
+# test cd /opt/engines/tests/engines_api/system/metrics ; make network
 get '/v0/system/metrics/network' do
   begin
     net_statistics = engines_api.get_network_statistics

@@ -17,16 +17,17 @@ def create_service()
        envs = shared_envs
      else
        #envs.concat(shared_envs)
-       envs = EnvironmentVariable.merge_envs(shared_envs,envs)
+       envs = EnvironmentVariable.merge_envs(shared_envs, envs)
      end
    end
    if envs.is_a?(Array)
      if@environments.is_a?(Array)   
-       @environments =  EnvironmentVariable.merge_envs(envs,@environments)    
-     else
-       @environments = envs
+       @environments =  EnvironmentVariable.merge_envs(envs, @environments)    
+      # @environments = envs ??
+       @environments = EnvironmentVariable.merge_envs( @environments, iso_envs )    
      end
    end
+   
      create_container
      save_state()
   rescue EnginesException =>e
@@ -44,6 +45,19 @@ def create_service()
  end
  
  private
+ 
+ def iso_envs
+  prefs = SystemPreferences.new
+  country = prefs.country_code
+  country = SystemConfig.DefaultCountry if country.nil?
+  lang = prefs.langauge_code
+  lang = SystemConfig.DefaultLanguage if lang.nil?  
+  [EnvironmentVariable.new('LANGUAGE', lang + '_' + country + ':' + lang) , 
+  EnvironmentVariable.new('LANG', lang + '_' + country + '.UTF8' ),
+  EnvironmentVariable.new('LC_ALL', lang + '_' + country + '.UTF8' )
+  ]
+ end
+ 
  def setup_service_keys
    keys = ''
        @system_keys.each do |key|
@@ -52,5 +66,14 @@ def create_service()
    SystemDebug.debug(SystemDebug.containers, :keys, keys )
     SystemUtils.run_command('/opt/engines/system/scripts/system/setup_service_keys.sh ' + container_name  + keys)
  end
- 
+
+def wait_for_startup
+  unless is_startup_complete?
+    n=0
+    while n < 20
+      n = n + 1
+      sleep(0.5) unless is_startup_complete?
+    end
+  end
+end
 end

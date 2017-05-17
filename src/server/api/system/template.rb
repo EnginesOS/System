@@ -5,6 +5,7 @@
 # Resolve Template string
 # @param :template_string
 # @return [String] :template_string with template macros resolved
+# test cd  /opt/engines/tests/engines_api/system/template; make tests
 post '/v0/system/template' do
   begin
     params = post_params(request)

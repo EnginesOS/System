@@ -37,6 +37,7 @@ class DockerFileBuilder
     write_file_service
     write_repos
     write_os_packages
+    write_modules
     write_user_local = true
     setup_user_local if write_user_local
     set_user('$ContUser')
@@ -58,7 +59,6 @@ class DockerFileBuilder
     write_rake_list
     write_line('')
     set_user('0')
-    write_modules
     write_permissions
     write_line('')
     write_line('RUN mkdir -p /home/fs/local/')
@@ -80,7 +80,7 @@ class DockerFileBuilder
 
   def setup_user_local
     write_line('RUN ln -s /usr/local/ /home/local;\\')
-    write_line('     chown -R $ContUser /usr/local/')
+    write_line('     chown -R $ContUser /usr/local/ ')
   end
 
   def finalise_docker_file
@@ -145,18 +145,10 @@ class DockerFileBuilder
       write_env(env.name,env.value.to_s) if env.value.nil? == false && env.value.to_s.length > 0 # env statement must have two arguments
     end
     write_env('WWW_DIR', @blueprint_reader.web_root.to_s) unless @blueprint_reader.web_root.nil?
-    write_locale_env
+   # write_locale_env
   end
 
-  def write_locale_env
-    unless @build_params[:langauge].nil?
-      lang =  @build_params[:langauge]
-    else
-      lang = SystemConfig.Language
-    end
-    write_env('LC_ALL', lang)
-    write_env('LANG', lang)
-  end
+
 
   def write_persistent_dirs
     log_build_output('setup persistent Dirs')
@@ -357,7 +349,7 @@ class DockerFileBuilder
     log_build_output('Dockerfile:Stack Environment')
     write_line('#Stack Env')
     write_line('')
-   # write_env('Memory' ,@builder.memory.to_s)
+    # write_env('Memory' ,@builder.memory.to_s)
     write_env('Hostname' ,@hostname)
     write_env('Domainname' ,@domain_name)
     write_env('fqdn' ,@hostname + '.' + @domain_name)

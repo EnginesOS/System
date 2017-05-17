@@ -7,7 +7,7 @@ module SmServiceControl
   def create_and_register_service(service_hash) # , no_engine = false)
     SystemDebug.debug(SystemDebug.services, :sm_create_and_register_service, service_hash)
     #register with Engine
-    unless is_soft_service?(service_hash)
+    unless service_hash[:soft_service] == true
       system_registry_client.add_to_managed_engines_registry(service_hash)
       # FIXME not checked because of builder createing services prior to engine
       SystemDebug.debug(SystemDebug.services, :create_and_register_service_register, service_hash)

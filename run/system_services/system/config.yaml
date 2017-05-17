@@ -37,6 +37,11 @@ volumes:
   remotepath: "/var/run/docker.sock"
   localpath: "/var/run/docker.sock"
   permissions: rw
+ token: 
+  name: token
+  remotepath: "/home/engines/.engines_token"
+  localpath: "/home/engines/.engines_token"
+  permissions: rw
  build_dirs: 
   name: build_dirs
   remotepath: "/home/engines/deployment"

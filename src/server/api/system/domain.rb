@@ -1,8 +1,10 @@
 # @!group /system/domains/
+
 # @method get_domain_name
 # @overload get '/v0/system/domains/:domain_name'
 # get the details for :domain_name
 # @return  [Hash] :domain_name :self_hosted :internal_only
+# test cd /opt/engines/tests/engines_api/system/domains ; make view
 get '/v0/system/domains/:domain_name' do
   begin
     return_json(engines_api.domain_name(params[:domain_name]))
@@ -10,6 +12,7 @@ get '/v0/system/domains/:domain_name' do
     send_encoded_exception(request: request, exception: e)
   end
 end
+
 # @method update_domain_name
 # @overload post '/v0/system/domains/:domain_name'
 # update the domain :domain_name
@@ -17,6 +20,7 @@ end
 # @param :self_hosted
 # @param :internal_only optional
 # @return  [true]
+#test cd /opt/engines/tests/engines_api/system/domains ; make update
 post '/v0/system/domains/:domain_name' do
   begin
     post_s = post_params(request)

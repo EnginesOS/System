@@ -1,0 +1,15 @@
+{
+  "parent_engine": "system",
+  "container_type": "system",
+  "service_handle": "btestdomain.com.au",
+  "wild": "yes",
+  "overwrite" : true,
+  "cert_name": "At test",
+  "country": "AU",
+  "state": "Test",
+  "city": "testviller",
+  "organisation":"Tests are us",
+  "person":"Mr tests",
+  "domain_name": "btestdomain.com.au",
+  "alt_names": "www www.atestdomain.com.au testing.atestdomain.com.au"
+    }

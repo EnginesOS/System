@@ -3,7 +3,7 @@
 # @method system_ca
 # @overload get '/v0/system/certs/system_ca'
 # @return [String] PEM encoded Public certificate
-
+# test /opt/engines/tests/engines_api/system/cert ; make system_ca
 get '/v0/system/certs/system_ca' do
   begin
     return_text( engines_api.get_system_ca)
@@ -15,6 +15,7 @@ end
 # @method get certificate
 # @overload get '/v0/system/certs/:cert_name'
 # @return [String] PEM encoded Public certificate
+# test /opt/engines/tests/engines_api/system/cert ; make view
 get '/v0/system/certs/:cert_name' do
   begin
     return_text(engines_api.get_cert(params[:cert_name]))
@@ -26,6 +27,7 @@ end
 # @method default_certificate
 # @overload get '/v0/system/certs/default'
 # @return [String] PEM encoded Public certificate
+# test /opt/engines/tests/engines_api/system/cert ; make default
 get '/v0/system/certs/default' do
   begin
     return_json(engines_api.get_cert('engines'))
@@ -38,6 +40,7 @@ end
 # @overload get '/v0/system/certs/'
 # @return [Array] of certificate names
 # certificate name is the domain name / hostname the cert was created/uploaded against
+# test /opt/engines/tests/engines_api/system/cert ; make list
 get '/v0/system/certs/' do
   begin
     return_json_array(engines_api.list_certs)
@@ -49,6 +52,7 @@ end
 # @overload delete '/v0/system/certs/:cert_name'
 # delete certificate :cert_name
 # @return [true]
+# test /opt/engines/tests/engines_api/system/cert ; make remove 
 delete '/v0/system/certs/:cert_name' do |cert_name|
   begin
     return_text(engines_api.remove_cert(cert_name))
@@ -65,6 +69,7 @@ end
 # @param :key
 # @param :password - optional
 # @return [true]
+# test /opt/engines/tests/engines_api/system/cert ; make set_default
 post '/v0/system/certs/default' do
   begin
     post_s = post_params(request)
@@ -83,6 +88,7 @@ end
 # @param :key
 # @param :password - optional
 # @return [true]
+# test /opt/engines/tests/engines_api/system/cert ; make add
 post '/v0/system/certs/' do
   begin
     post_s = post_params(request)
@@ -92,14 +98,15 @@ post '/v0/system/certs/' do
     send_encoded_exception(request: request, exception: e)
   end
 end
+
 # @method generate_certificate
 # @overload post '/v0/system/certs/generate'
 # generTE certificate and key in PEM for domain_name
-
+# test /opt/engines/tests/engines_api/system/cert ; make generate
 post '/v0/system/certs/generate' do
   begin
     p_params = post_params(request)
-    cparams = assemble_params(p_params, [], :all)
+    cparams = assemble_params(p_params, [], :all)   
     return_text(engines_api.generate_cert(cparams))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)

@@ -12,12 +12,56 @@ module BaseOsSystem
     # return true if res.status == 'run'
     true
   end
-  
+
+  # :country_code , :lang_code
   def set_locale(locale)
-    
+    prefs = SystemPreferences.new
+    prefs.set_country_code(locale[:country_code])
+    prefs.set_langauge_code(locale[:lang_code])
+    ENV['LANG'] = locale[:lang_code].to_s + '_' + locale[:country_code].to_s  + '.UTF-8'
+    ENV['LC_ALL'] = locale[:lang_code].to_s + '_' + locale[:country_code].to_s  + '.UTF-8'
+    ENV['LANGUAGE'] = locale[:country_code].to_s  + ':' + locale[:lang_code].to_s
+    run_server_script('set_locale',  ENV['LANG'].to_s + ' ' + ENV['LANGUAGE'].to_s)
+    SystemUtils.execute_command('/opt/engines/system/scripts/ssh/set_locale.sh ' + ENV['LANG'].to_s + ' ' + ENV['LANGUAGE'].to_s, false,  false, nil)
+    r = run_server_script('set_locale',  ENV['LANG'].to_s + ' ' + ENV['LANGUAGE'].to_s)
+    return r unless r[:result] == 0
+    true
   end
-  
+
   def set_timezone(tz)
-    
+    ENV['TZ'] = tz
+    r = run_server_script('set_timezone', tz)
+    return r unless r[:stderr] == ''
+    true
+  end
+
+  def get_locale
+    locale_str = ENV["LANG"]
+    STDERR.puts('LANG '  + locale_str.to_s)
+    return nil if locale_str.nil?
+    bit = locale_str.split('.')
+    bits = bit[0].split('_')
+    {
+      lang_code: bits[0],
+      country_code: bits[1]
+    }
+  end
+
+  def get_timezone
+    r = run_server_script('get_timezone')
+    return r unless r[:result] == 0
+    r[:stdout].strip
+    #    olsontz = File.read('/etc/timezone')
+    #    Time.now.getlocal.zone
+    #    olsontz = `if [ -f /etc/timezone ]; then
+    #         cat /etc/timezone
+    #       elif [ -h /etc/localtime ]; then
+    #         readlink /etc/localtime | sed "s/\\/usr\\/share\\/zoneinfo\\///"
+    #       else
+    #         checksum=\`md5sum /etc/localtime | cut -d' ' -f1\`
+    #         find /usr/share/zoneinfo/ -type f -exec md5sum {} \\; | grep "^$checksum" | sed "s/.*\\/usr\\/share\\/zoneinfo\\///" | head -n 1
+    #       fi`.chomp
+    #       return "  " if olsontz.nil?
+    #    olsontz
   end
 end

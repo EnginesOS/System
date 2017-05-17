@@ -80,7 +80,7 @@ class BuildController
       environment: environment
     }
     get_engine_builder(@build_params)
-    @engine_builder.setup_build
+    #@engine_builder.setup_build
   end
 
   def build_failed(params, err)

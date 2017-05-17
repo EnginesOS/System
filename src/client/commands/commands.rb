@@ -17,6 +17,8 @@ when 'service_manager'
   require_relative 'service_manager/commands.rb'
 when 'system'
   require_relative 'system/commands.rb'
+when 'schedule'
+  require_relative 'schedules.rb'
 
 end
 command_usage

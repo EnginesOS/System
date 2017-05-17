@@ -1,4 +1,4 @@
-puts 'argv3' +  ARGV[3].to_s
+#puts 'argv3' +  ARGV[3].to_s
 case ARGV[3]
 
 when 'generate'

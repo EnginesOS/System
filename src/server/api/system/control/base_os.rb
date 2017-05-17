@@ -4,6 +4,8 @@
 # @overload get '/v0/system/control/base_os/restart'
 #  Restart the base OS
 # @return [true]
+# not in auto tests
+# test cd /opt/engines/tests/engines_api/system/control/base_os; make restart
 get '/v0/system/control/base_os/restart' do
   begin
     return_text(engines_api.restart_base_os)
@@ -17,6 +19,8 @@ end
 # @param :reason
 #  :reason
 # @return [true]
+# not in auto tests
+# test cd /opt/engines/tests/engines_api/system/control/base_os; make shutdown
 post '/v0/system/control/base_os/shutdown' do
   begin
     p_params = post_params(request)
@@ -31,6 +35,7 @@ end
 # @overload get '/v0/system/control/base_os/update'
 # update the base OS
 # @return [true|false]
+# test cd /opt/engines/tests/engines_api/system/control/base_os; make update
 get '/v0/system/control/base_os/update' do
   begin
     return_text(engines_api.update_base_os)
@@ -43,6 +48,7 @@ end
 # set system timezone
 # post param :timezone
 # @return [true|false]
+# test cd /opt/engines/tests/engines_api/system/control/base_os; make timezone
 post '/v0/system/control/base_os/timezone' do
   begin
     post_s = post_params(request)
@@ -53,17 +59,43 @@ post '/v0/system/control/base_os/timezone' do
     send_encoded_exception(request: request, exception: e)
   end
 end
+# @method get system timezone
+# @overload get '/v0/system/control/base_os/timezone'
+# get system timezone
+# @return [String]
+# test cd /opt/engines/tests/engines_api/system/control/base_os; make timezone
+get '/v0/system/control/base_os/timezone' do
+  begin
+    return_text(engines_api.get_timezone())
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+end
+
 # @method set system locale
 # @overload get '/v0/system/control/base_os/locale'
 # set system locale
 # post param :locale
 # @return [true|false]
+# test cd /opt/engines/tests/engines_api/system/control/base_os; make locale
 post '/v0/system/control/base_os/locale' do
   begin
     post_s = post_params(request)
-    cparams = assemble_params(post_s, [], [:locale])
+    cparams = assemble_params(post_s, [], [:country_code, :lang_code])
+    return_text(engines_api.set_locale(cparams))
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
 
-    return_text(engines_api.set_locale(cparams[:locale]))
+end
+# @method get system locale
+# @overload get '/v0/system/control/base_os/locale'
+# set system locale
+# @return [String]
+# test cd /opt/engines/tests/engines_api/system/control/base_os; make locale
+get '/v0/system/control/base_os/locale' do
+  begin
+    return_json(engines_api.get_locale())
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

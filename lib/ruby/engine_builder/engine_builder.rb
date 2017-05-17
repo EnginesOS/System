@@ -1,9 +1,11 @@
 require 'rubygems'
 require 'git'
 require 'fileutils'
+
 #require 'yajl'
 require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 require '/opt/engines/lib/ruby/exceptions/engine_builder_exception.rb'
+
 class EngineBuilder < ErrorsApi
   require '/opt/engines/lib/ruby/api/system/container_state_files.rb'
   require_relative 'builder_public.rb'
@@ -127,7 +129,7 @@ class EngineBuilder < ErrorsApi
   end
 
   def volumes
-     @service_builder.volumes
+    @service_builder.volumes
   end
 
   def rebuild_managed_container(engine)
@@ -176,11 +178,26 @@ class EngineBuilder < ErrorsApi
     true
   end
 
+  def set_locale
+    STDERR.puts("LANGUAGE " + @build_params[:lang_code].to_s)
+    STDERR.puts("country_code " + @build_params[:country_code].to_s)
+    prefs = SystemPreferences.new
+    lang =  @build_params[:lang_code]
+    lang = prefs.langauge_code if lang.nil?
+    country_code = @build_params[:country_code]
+    country = prefs.country_code if country_code.nil?
+    STDERR.puts("LANGUAGE " + lang.to_s)
+    STDERR.puts("country_code " + country.to_s)
+    @blueprint_reader.environments.push(EnvironmentVariable.new('LANGUAGE', lang.to_s + '_' + country.to_s + ':' + lang.to_s))
+    @blueprint_reader.environments.push(EnvironmentVariable.new('LANG', lang.to_s + '_' + country.to_s + '.UTF8'))
+    @blueprint_reader.environments.push(EnvironmentVariable.new('LC_ALL', lang.to_s + '_' + country.to_s + '.UTF8'))
+  end
+
   def build_container
     SystemDebug.debug(SystemDebug.builder,  ' Starting build with params ', @build_params)
-
     meets_physical_requirements
     process_blueprint
+    set_locale
     setup_build_dir
     get_base_image
     setup_engine_dirs
@@ -191,11 +208,12 @@ class EngineBuilder < ErrorsApi
     #  wait_for_engine
     save_build_result
     close_all
- #   SystemStatus.build_complete(@build_params)
+    #   SystemStatus.build_complete(@build_params)
     @container
   rescue StandardError => e
     #log_exception(e)
     log_build_errors('Engine Build Aborted Due to:' + e.to_s)
+    STDERR.puts(e.backtrace.to_s)
     post_failed_build_clean_up
     raise e
   ensure
@@ -218,7 +236,8 @@ class EngineBuilder < ErrorsApi
   end
 
   def clone_repo
-    log_build_output('Clone Blueprint Repository')
+    log_build_output('Clone Blueprint Repository ' + @build_params[:repository_url])
+    SystemDebug.debug(SystemDebug.builder, "get_blueprint_from_repo",@build_params[:repository_url], @build_name,  SystemConfig.DeploymentDir)
     g = Git.clone(@build_params[:repository_url], @build_name, :path => SystemConfig.DeploymentDir)
   end
 
@@ -250,18 +269,18 @@ class EngineBuilder < ErrorsApi
     # FIXME: Stop it if started (ie vol builder failure)
     # FIXME: REmove container if created
     unless @build_params[:reinstall].is_a?(TrueClass)
-     
+
       begin
-      if @container.is_a?(ManagedContainer)
-        @container.stop_container if @container.is_running?
-        @container.destroy_container if @container.has_container?
-        @container.delete_image if @container.has_image?
-      end
+        if @container.is_a?(ManagedContainer)
+          @container.stop_container if @container.is_running?
+          @container.destroy_container if @container.has_container?
+          @container.delete_image if @container.has_image?
+        end
         @service_builder.service_roll_back
         @core_api.delete_engine_and_services(@build_params)
-        rescue 
-          #dont panic if no container
-      end     
+      rescue
+        #dont panic if no container
+      end
     end
 
     #    params = {}
@@ -269,7 +288,7 @@ class EngineBuilder < ErrorsApi
     #    @core_api.delete_engine(params) # remove engine if created, removes from manged_engines tree (main reason to call)
     @result_mesg = @result_mesg.to_s + ' Roll Back Complete'
     SystemDebug.debug(SystemDebug.builder,'Roll Back Complete')
-  
+
     close_all
 
   end
@@ -311,7 +330,6 @@ class EngineBuilder < ErrorsApi
     log_build_errors(m.to_s + o.to_s)
     super
   end
-
 
   def basedir
     SystemConfig.DeploymentDir + '/' + @build_name.to_s
