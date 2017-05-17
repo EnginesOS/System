@@ -185,7 +185,7 @@ class EngineBuilder < ErrorsApi
     lang =  @build_params[:lang_code]
     lang = prefs.langauge_code if lang.nil?
     country = @build_params[:country_code]
-    country = prefs.country_code if country_code.nil?
+    country = prefs.country_code if country.nil?
     STDERR.puts("LANGUAGE " + lang.to_s)
     STDERR.puts("country_code " + country.to_s)
     @blueprint_reader.environments.push(EnvironmentVariable.new('LANGUAGE', lang.to_s + '_' + country.to_s + ':' + lang.to_s))
