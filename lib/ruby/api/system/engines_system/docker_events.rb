@@ -26,19 +26,31 @@ module DockerEvents
   end
 
   def wait_for(container, what, timeout)
+
     pipe_in, pipe_out = IO.pipe
     event_listener = WaitForContainerListener.new(what, pipe_out)
     @system_api.add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.cont_id)
-    pipe_in.read
+    unless is_aready?(what, container.state)
+      pipe_in.read
+    end
     pipe_in.close
     pipe_out.close
     STDERR.puts(e.to_s)
     STDERR.puts(e.backtrace.to_s)
-    @system_api.rm_event_listener(event_listener)    
-    rescue StandardError => e
-      @system_api.rm_event_listener(event_listener)
-      STDERR.puts(e.to_s)
-      STDERR.puts(e.backtrace.to_s)
+    @system_api.rm_event_listener(event_listener)
+  rescue StandardError => e
+    @system_api.rm_event_listener(event_listener)
+    STDERR.puts(e.to_s)
+    STDERR.puts(e.backtrace.to_s)
+  end
+
+  def is_aready?(what, statein)
+    return true if what == statein
+    return true if what + 'ed' == statein
+    return true if what == 'unpause' && statein != 'paused'
+    return true if what == 'create' && statein != 'nocontainer'
+    return true if what == 'destroy' && statein == 'nocontainer'
+    false
   end
 
   def fill_in_event_system_values(event_hash)
