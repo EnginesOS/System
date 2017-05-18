@@ -47,8 +47,10 @@ module DockerEvents
   end
 
   def is_aready?(what, statein)
+    STDERR.puts(' What ' + what.to_s )
+    STDERR.puts(' statein ' + statein.to_s )
     return true if what == statein
-    whated = what + 'ed'
+    whated = what.to_s + 'ed'
     return true if whated == statein
     return true if what == 'unpause' && statein != 'paused'
     return true if what == 'create' && statein != 'nocontainer'
