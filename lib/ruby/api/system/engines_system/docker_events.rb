@@ -22,7 +22,7 @@ module DockerEvents
       STDERR.puts(' WAIT FOR GOT ' + event_hash.to_s )
 
       if event_hash[:status] == @what
-        'ok' >> @pipe
+        @pipe << 'ok' 
       end
     end
   end
