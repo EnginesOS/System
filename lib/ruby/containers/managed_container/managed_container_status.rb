@@ -54,7 +54,7 @@ module ManagedContainerStatus
 
   def is_startup_complete?
     return false unless has_api?
-    @container_api.is_startup_complete(self)
+    @container_api.is_startup_complete?(self)
   end
 
   def is_error?
