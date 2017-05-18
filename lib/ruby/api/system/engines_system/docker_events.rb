@@ -19,6 +19,8 @@ module DockerEvents
     end
 
     def read_event(event_hash)
+      STDERR.puts(' WAIT FOR GOT ' + event_hash.to_s )
+      
       if event_hash[:status] == @what
         'ok' >> @pipe
       end
@@ -29,7 +31,7 @@ module DockerEvents
 
     pipe_in, pipe_out = IO.pipe
     event_listener = WaitForContainerListener.new(what, pipe_out)
-    add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.cont_id)
+    add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.container_id)
     unless is_aready?(what, container.state)
       pipe_in.read
     end
