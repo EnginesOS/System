@@ -20,36 +20,37 @@ module DockerEvents
 
     def read_event(event_hash)
       STDERR.puts(' WAIT FOR GOT ' + event_hash.to_s )
-      
+
       if event_hash[:status] == @what
         'ok' >> @pipe
       end
     end
   end
 
-  def wait_for(container, what, timeout)    
-   return true if is_aready?(what, container.read_state)
+  def wait_for(container, what, timeout)
+    return true if is_aready?(what, container.read_state)
+    event_listener = nil
     Timeout::timeout(timeout) do
-    pipe_in, pipe_out = IO.pipe
-    event_listener = WaitForContainerListener.new(what, pipe_out)
-    add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.container_id)
-    unless is_aready?(what, container.read_state)
-      STDERR.puts(' Wait on READ ' + container.container_name.to_s + ' for ' + what )
-      pipe_in.read
+      pipe_in, pipe_out = IO.pipe
+      event_listener = WaitForContainerListener.new(what, pipe_out)
+      add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.container_id)
+      unless is_aready?(what, container.read_state)
+        STDERR.puts(' Wait on READ ' + container.container_name.to_s + ' for ' + what )
+        pipe_in.read
+      end
+      pipe_in.close
+      pipe_out.close
+      rm_event_listener(event_listener)
     end
-    pipe_in.close
-    pipe_out.close
-    rm_event_listener(event_listener)    
-  end
-  true
-rescue Timeout::Error
-rm_event_listener(event_listener)
-false
-      rescue StandardError => e
-        rm_event_listener(event_listener)
-        STDERR.puts(e.to_s)
-        STDERR.puts(e.backtrace.to_s)
-        false
+    true
+  rescue Timeout::Error
+    rm_event_listener(event_listener) unless event_listener.nil?
+    false
+  rescue StandardError => e
+    rm_event_listener(event_listener)
+    STDERR.puts(e.to_s)
+    STDERR.puts(e.backtrace.to_s)
+    false
   end
 
   def is_aready?(what, statein)

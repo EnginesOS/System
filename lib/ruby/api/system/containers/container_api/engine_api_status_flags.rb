@@ -21,17 +21,20 @@ module EngineApiStatusFlags
     clear_error
     @system_api.is_startup_complete?(container)
   end
- 
+
   def wait_for_startup(c, timeout = 5)
-  wait_for(c, 'start', timeout)
-  return true if is_startup_complete?(c)
-   sfn = @system_api.container_state_dir(c) + '/run/flags/startup_complete'
- 
-  while ! File.exist?(sfn)
-sleep 0.5
-  end
-
-  true
-
+    wait_for(c, 'start', timeout)
+    return true if is_startup_complete?(c)
+    begin
+      Timeout::timeout(timeout) do
+        sfn = @system_api.container_state_dir(c) + '/run/flags/startup_complete'
+        while ! File.exist?(sfn)
+          sleep 0.5
+        end
+      end
+    rescue Timeout::Error
+      return false
+    end
+    true
   end
 end
