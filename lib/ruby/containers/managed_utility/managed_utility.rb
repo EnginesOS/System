@@ -57,7 +57,7 @@ class ManagedUtility< ManagedContainer
       @container_id = -1
     rescue
     end
-    @container_api.wait_for(self, 'nocontainer') if has_container?
+    wait_for('nocontainer') if has_container?
     begin
       @container_api.destroy_container(self) if has_container?
     rescue
@@ -69,14 +69,14 @@ class ManagedUtility< ManagedContainer
     #   STDERR.puts('Create FSCONFIG')
     create_container()
     #   STDERR.puts('Created FSCONFIG')
-    @container_api.wait_for(self, 'stopped') unless is_stopped?
+    wait_for( 'stopped') unless is_stopped?
     begin
       r = @container_api.logs_container(self, 100) #_as_result
       return r if r.is_a?(Hash)
       {stdout: r.to_s, result: 0}
     rescue StandardError => e
       STDERR.puts(e.to_s  + "\n" + e.backtrace.to_s)
-    STDERR.puts('FSCONFIG EXCEPTION' + e.to_s)
+      STDERR.puts('FSCONFIG EXCEPTION' + e.to_s)
       {stderr: 'Failed', result: -1}
     end
 

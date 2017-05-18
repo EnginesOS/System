@@ -40,6 +40,7 @@ module DockerEvents
     STDERR.puts(e.to_s)
     STDERR.puts(e.backtrace.to_s)
     rm_event_listener(event_listener)
+  
   rescue StandardError => e
     rm_event_listener(event_listener)
     STDERR.puts(e.to_s)
