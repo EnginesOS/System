@@ -37,8 +37,6 @@ module DockerEvents
     end
     pipe_in.close
     pipe_out.close
-    STDERR.puts(e.to_s)
-    STDERR.puts(e.backtrace.to_s)
     rm_event_listener(event_listener)
   
   rescue StandardError => e
