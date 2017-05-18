@@ -20,36 +20,46 @@ module DockerEvents
 
     def read_event(event_hash)
       STDERR.puts(' WAIT FOR GOT ' + event_hash.to_s )
-      
       if event_hash[:status] == @what
-        'ok' >> @pipe
+        STDERR.puts('writing OK')
+        @pipe << 'ok'
+        @pipe.close
       end
     end
   end
 
-  def wait_for(container, what, timeout)    
-   return true if is_aready?(what, container.read_state)
-    Timeout::timeout(timeout) do
+  def wait_for(container, what, timeout)
+    return true if is_aready?(what, container.read_state)
+    event_listener = nil
     pipe_in, pipe_out = IO.pipe
-    event_listener = WaitForContainerListener.new(what, pipe_out)
-    add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.container_id)
-    unless is_aready?(what, container.read_state)
-      STDERR.puts(' Wait on READ ' + container.container_name.to_s + ' for ' + what )
-      pipe_in.read
+    Timeout::timeout(timeout) do
+      event_listener = WaitForContainerListener.new(what, pipe_out)
+      add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.container_id)
+      unless is_aready?(what, container.read_state)
+        STDERR.puts(' Wait on READ ' + container.container_name.to_s + ' for ' + what )
+        begin
+       d =  pipe_in.read      
+       puts.STDERR.puts(' READ ' + d.to_s)
+        rescue
+        end
+      end
+      pipe_in.close     
+      rm_event_listener(event_listener)
     end
+    true
+  rescue Timeout::Error
+    STDERR.puts(' Wait for timeout on ' + container.container_name.to_s + ' for ' + what )
+    rm_event_listener(event_listener) unless event_listener.nil?
     pipe_in.close
     pipe_out.close
-    rm_event_listener(event_listener)    
-  end
-  true
-rescue Timeout::Error
-rm_event_listener(event_listener)
-false
-      rescue StandardError => e
-        rm_event_listener(event_listener)
-        STDERR.puts(e.to_s)
-        STDERR.puts(e.backtrace.to_s)
-        false
+    false
+  rescue StandardError => e
+    rm_event_listener(event_listener)
+    STDERR.puts(e.to_s)
+    STDERR.puts(e.backtrace.to_s)
+    pipe_in.close
+    pipe_out.close
+    false
   end
 
   def is_aready?(what, statein)
