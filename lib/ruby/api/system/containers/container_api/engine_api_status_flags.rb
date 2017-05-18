@@ -26,14 +26,12 @@ module EngineApiStatusFlags
   wait_for(c, 'start', timeout)
   return true if is_startup_complete?(c)
    sfn = @system_api.container_state_dir(c) + '/run/flags/startup_complete'
-   sf =  IO.open(sfn)
+ 
   while ! File.exist?(sfn)
-    STDERR.puts(' SELECT ON ' + sfn)
-    IO.select(sf)
+sleep 0.5
   end
-  sf.close
+
   true
-  ensure
-    sf.close unless sf.nil?
+
   end
 end
