@@ -17,9 +17,25 @@ module EngineApiStatusFlags
     File.read(@system_api.restart_flag_file(container))
   end
 
-  def is_startup_complete(container)
+  def is_startup_complete?(container)
     clear_error
-    @system_api.is_startup_complete(container)
+    @system_api.is_startup_complete?(container)
   end
 
+  def wait_for_startup(c, timeout = 5)
+   return false unless wait_for(c, 'start', timeout)
+    return true if is_startup_complete?(c)
+    begin
+      Timeout::timeout(timeout) do
+        sfn = @system_api.container_state_dir(c) + '/run/flags/startup_complete'
+        while ! File.exist?(sfn)
+          STDERR.puts('Sleep ' + c.container_name)
+          sleep 0.5         
+        end
+      end
+    rescue Timeout::Error
+      return false
+    end
+    true
+  end
 end

@@ -1,8 +1,8 @@
 module ContainerOperations
-  def has_container_started?(container_name)
-    completed_flag_file = SystemConfig.RunDir + '/containers/' + container_name + '/run/flags/startup_complete'
-    File.exist?(completed_flag_file)
-  end
+#  def has_container_started?(container_name)
+#    completed_flag_file = SystemConfig.RunDir + '/containers/' + container_name + '/run/flags/startup_complete'
+#    File.exist?(completed_flag_file)
+#  end
 
   def init_engine_dirs(engine_name)
     @system_api.init_engine_dirs(engine_name)    

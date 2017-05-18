@@ -168,7 +168,7 @@ class DockerEventWatcher  < ErrorsApi
           log_error_mesg('Chunk error on docker Event Stream _' + chunk.to_s + '_')
           log_exception(e,chunk)
           json_part = ''
-          next
+          nextlog_exeception
           # @system.start_docker_event_listener
         end
       end
@@ -210,10 +210,10 @@ class DockerEventWatcher  < ErrorsApi
     r = ''
     @event_listeners.values.each do |listener|
       unless listener.container_id.nil?
-        #   STDERR.puts('matching ' + listener.container_id.to_s)
+          STDERR.puts('matching ' + listener.container_id.to_s + ' with ' + hash[:id].to_s)
         next unless hash[:id] == listener.container_id
       end
-      log_exeception(r) if (r = listener.trigger(hash)).is_a?(StandardError)
+      log_exception(r) if (r = listener.trigger(hash)).is_a?(StandardError)
     end
   rescue StandardError => e
     SystemDebug.debug(SystemDebug.container_events,hash.to_s + ':' + e.to_s + ':' +  e.backtrace.to_s)
