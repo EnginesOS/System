@@ -48,7 +48,8 @@ module DockerEvents
 
   def is_aready?(what, statein)
     return true if what == statein
-    return true if what + 'ed' == statein
+    whated = what + 'ed'
+    return true if whated == statein
     return true if what == 'unpause' && statein != 'paused'
     return true if what == 'create' && statein != 'nocontainer'
     return true if what == 'destroy' && statein == 'nocontainer'
