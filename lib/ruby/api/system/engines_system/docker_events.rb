@@ -20,9 +20,9 @@ module DockerEvents
 
     def read_event(event_hash)
       STDERR.puts(' WAIT FOR GOT ' + event_hash.to_s )
-
       if event_hash[:status] == @what
-        @pipe << 'ok' 
+        STDERR.puts('writing OK')
+        @pipe << 'ok'
       end
     end
   end
@@ -30,8 +30,8 @@ module DockerEvents
   def wait_for(container, what, timeout)
     return true if is_aready?(what, container.read_state)
     event_listener = nil
+    pipe_in, pipe_out = IO.pipe
     Timeout::timeout(timeout) do
-      pipe_in, pipe_out = IO.pipe
       event_listener = WaitForContainerListener.new(what, pipe_out)
       add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.container_id)
       unless is_aready?(what, container.read_state)
@@ -44,12 +44,17 @@ module DockerEvents
     end
     true
   rescue Timeout::Error
+    STDERR.puts(' Wait for timeout on ' + container.container_name.to_s + ' for ' + what )
     rm_event_listener(event_listener) unless event_listener.nil?
+    pipe_in.close
+    pipe_out.close
     false
   rescue StandardError => e
     rm_event_listener(event_listener)
     STDERR.puts(e.to_s)
     STDERR.puts(e.backtrace.to_s)
+    pipe_in.close
+    pipe_out.close
     false
   end
 
