@@ -51,7 +51,6 @@ module DockerEvents
     STDERR.puts(' What ' + what.to_s )
     STDERR.puts(' statein ' + statein.to_s )
     return true if what == statein
-    return true if whated == statein
     return true if what == 'stop' && statein == 'stopped'
     return true if what == 'start' && statein == 'running'
     return true if what == 'unpause' && statein != 'paused'
