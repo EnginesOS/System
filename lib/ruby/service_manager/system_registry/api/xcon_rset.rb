@@ -54,6 +54,8 @@ rescue  Excon::Error::Socket => e
   STDERR.puts e.class.name + ' with path:' + path.to_s + "\n" + 'params:' + q.to_s + ':::' + req.to_s  + ':' + e.to_s
   cnt+=1
   retry if cnt< 5
+rescue StandardError => e
+  raise EnginesException.new(error_hash('reg exception ' + e.to_s, @base_url.to_s))
 end
 
 def time_out
@@ -70,6 +72,8 @@ def rest_post(path,params = nil, lheaders=nil)
     STDERR.puts e.class.name
     reopen_connection
     retry
+  rescue StandardError => e
+    raise EnginesException.new(error_hash('reg exception ' + e.to_s, @base_url.to_s))
   end
 end
 
@@ -82,6 +86,8 @@ rescue Excon::Error::Socket => e
   STDERR.puts e.class.name
   reopen_connection
   retry
+  rescue StandardError => e
+    raise EnginesException.new(error_hash('reg exception ' + e.to_s, @base_url.to_s))
 end
 
 def query_hash(params)
@@ -100,6 +106,8 @@ rescue Excon::Error::Socket => e
   STDERR.puts e.class.name
   reopen_connection
   retry
+  rescue StandardError => e
+    raise EnginesException.new(error_hash('reg exception ' + e.to_s, @base_url.to_s))
   #end
 end
 
