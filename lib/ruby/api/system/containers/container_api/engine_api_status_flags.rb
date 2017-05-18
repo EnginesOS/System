@@ -29,8 +29,8 @@ module EngineApiStatusFlags
       Timeout::timeout(timeout) do
         sfn = @system_api.container_state_dir(c) + '/run/flags/startup_complete'
         while ! File.exist?(sfn)
-          sleep 0.5
           STDERR.puts('Sleep')
+          sleep 0.5         
         end
       end
     rescue Timeout::Error
