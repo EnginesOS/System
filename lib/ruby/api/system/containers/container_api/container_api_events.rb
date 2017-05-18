@@ -1,14 +1,7 @@
 module ContainerApiEvents
-  
-  def wait_for(state, delay=10)
-    
-#   case state
-#    when 'stopped'
-#   
-#  end
-# FixME Big Kludge
-    sleep(delay)
 
+  def wait_for(container, what, timeout)
+    @system_api.wait_for(container, what, timeout)
   end
-    
+  
 end
