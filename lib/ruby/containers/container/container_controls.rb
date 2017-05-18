@@ -25,7 +25,7 @@ module ContainerControls
     r
   end
   
-  def wait_for(what, timeout = 20)
+  def wait_for(what, timeout = 10)
     @container_api.wait_for(self, what, timeout)
   end
 

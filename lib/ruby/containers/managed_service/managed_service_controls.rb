@@ -68,12 +68,14 @@ def create_service()
  end
 
 def wait_for_startup
-  unless is_startup_complete?
-    n=0
-    while n < 20
-      n = n + 1
-      sleep(0.5) unless is_startup_complete?
-    end
-  end
+  @container_api.wait_for_startup(self)
+ 
+#  unless is_startup_complete?
+#    n=0
+#    while n < 20
+#      n = n + 1
+#      sleep(0.5) unless is_startup_complete?
+#    end
+#  end
 end
 end
