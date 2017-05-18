@@ -67,8 +67,8 @@ def create_service()
     SystemUtils.run_command('/opt/engines/system/scripts/system/setup_service_keys.sh ' + container_name  + keys)
  end
 
-def wait_for_startup
-  @container_api.wait_for_startup(self)
+def wait_for_startup(timeout = 60)
+  @container_api.wait_for_startup(self, timeout)
  
 #  unless is_startup_complete?
 #    n=0

@@ -16,14 +16,16 @@ module EngineApiDependancies
           raise EnginesException.new(error_hash('Failed to create ', service_name)) unless service.create_container
         end
       end
-      retries = 0
+     # retries = 0
       # FixME
       # use event queue
-      while !has_service_started?(service_name)
-        sleep 0.5
-        retries += 1
-        raise EnginesException.new(error_hash('Time out in waiting for Service Dependancy ' + service_name + ' to start ', service_name)) if retries > 220
-      end
+     # service =  @engines_core.loadManagedService(service_name)
+      raise EnginesException.new(error_hash('Time out in waiting for Service Dependancy ' + service_name + ' to start ', service_name)) unless service.wait_for_startup(120)
+#      while !has_service_started?(service_name)
+#        sleep 0.5
+#        retries += 1
+#        raise EnginesException.new(error_hash('Time out in waiting for Service Dependancy ' + service_name + ' to start ', service_name)) if retries > 220
+#      end
     end
   end
 end

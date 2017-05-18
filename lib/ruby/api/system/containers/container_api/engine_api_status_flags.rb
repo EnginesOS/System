@@ -17,9 +17,9 @@ module EngineApiStatusFlags
     File.read(@system_api.restart_flag_file(container))
   end
 
-  def is_startup_complete(container)
+  def is_startup_complete?(container)
     clear_error
-    @system_api.is_startup_complete(container)
+    @system_api.is_startup_complete?(container)
   end
  
   def wait_for_startup(c, timeout = 5)
