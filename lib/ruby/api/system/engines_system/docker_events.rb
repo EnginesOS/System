@@ -27,9 +27,8 @@ module DockerEvents
     end
   end
 
-  def wait_for(container, what, timeout)
-    
-   return if is_aready?(what, container.read_state)
+  def wait_for(container, what, timeout)    
+   return true if is_aready?(what, container.read_state)
     Timeout::timeout(timeout) do
     pipe_in, pipe_out = IO.pipe
     event_listener = WaitForContainerListener.new(what, pipe_out)
@@ -45,11 +44,11 @@ module DockerEvents
 rescue Timeout::Error
 rm_event_listener(event_listener)
 false
-    #  rescue StandardError => e
-    #    rm_event_listener(event_listener)
-    #    STDERR.puts(e.to_s)
-    #    STDERR.puts(e.backtrace.to_s)
-    #    false
+      rescue StandardError => e
+        rm_event_listener(event_listener)
+        STDERR.puts(e.to_s)
+        STDERR.puts(e.backtrace.to_s)
+        false
   end
 
   def is_aready?(what, statein)
