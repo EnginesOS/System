@@ -18,21 +18,23 @@ def connection(content_type = nil)
   ssl_verify_peer: false,
   persistent: true,
   headers: headers)
+rescue Errno::EHOSTUNREACH
+  @core_api.fix_registry_problem
+  retry
 rescue StandardError => e
   raise EnginesException.new(error_hash('Failed to open base url to registry ' + e.to_s, @base_url.to_s))
 end
 
 def reopen_connection
   @connection.reset
-  @connection = Excon.new(base_url,
-  debug_request: true,
-  debug_response: true,
-  ssl_verify_peer: false,
-  persistent: true,
-  headers: headers)
+  @connection = nil
+  @connection = connection
+  #  debug_request: true,
+  #  debug_response: true,
+  #  ssl_verify_peer: false,
+  #  persistent: true,
+  #  headers: headers)
   @connection
-rescue StandardError => e
-  raise EnginesException.new(error_hash('Failed to re open base url to registry' + e.to_s , @base_url.to_s))
 end
 
 def rest_get(path,params = nil,time_out=120, _headers = nil)
