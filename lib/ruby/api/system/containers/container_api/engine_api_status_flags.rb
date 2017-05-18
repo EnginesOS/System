@@ -26,6 +26,7 @@ module EngineApiStatusFlags
   wait_for(c, 'start', timeout)
   return true if is_startup_complete?(c)
   while ! File.exist?(container_state_dir(container) + '/run/flags/startup_complete')
+    STDERR.puts(' SELECT ON ' + container_state_dir(container) + '/run/flags/startup_complete')
     IO.select(IO.open(container_state_dir(container)))
   end
   true
