@@ -23,6 +23,7 @@ module DockerEvents
       if event_hash[:status] == @what
         STDERR.puts('writing OK')
         @pipe << 'ok'
+        @pipe.close
       end
     end
   end
@@ -36,10 +37,10 @@ module DockerEvents
       add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.container_id)
       unless is_aready?(what, container.read_state)
         STDERR.puts(' Wait on READ ' + container.container_name.to_s + ' for ' + what )
-        pipe_in.read
+       d =  pipe_in.read
+       puts.STDERR.puts(' READ ' + d.to_s)
       end
-      pipe_in.close
-      pipe_out.close
+      pipe_in.close     
       rm_event_listener(event_listener)
     end
     true
