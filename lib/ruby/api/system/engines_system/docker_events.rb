@@ -9,7 +9,7 @@ module DockerEvents
   end
 
   class WaitForContainerListener
-    def initalize(what, pipe)
+    def initialize(what, pipe)
       @what = what
       @pipe = pipe
     end
