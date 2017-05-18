@@ -37,8 +37,11 @@ module DockerEvents
       add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.container_id)
       unless is_aready?(what, container.read_state)
         STDERR.puts(' Wait on READ ' + container.container_name.to_s + ' for ' + what )
-       d =  pipe_in.read
+        begin
+       d =  pipe_in.read      
        puts.STDERR.puts(' READ ' + d.to_s)
+        rescue
+        end
       end
       pipe_in.close     
       rm_event_listener(event_listener)
