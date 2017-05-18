@@ -19,13 +19,8 @@ class RegistryHandler < ErrorsApi
     #      restart_thread = Thread.new {
     registry_service.stop_container
     registry_service.start_container
-    wait = 0
-    while registry_service.is_startup_complete? == false
-      sleep 1
-      wait += 1
-      SystemDebug.debug(SystemDebug.registry,:wait_for_start)
-      return force_registry_recreate if wait > 120
-    end
+    force_registry_recreate unless registry_service.wait_for_startup('start', 30)
+    
     SystemDebug.debug(SystemDebug.registry, :restarted_registry)
     true
   end
@@ -48,11 +43,14 @@ class RegistryHandler < ErrorsApi
     #FixME need to deal with config.yaml / running.yaml
   end
 
-  def fix_problem(registry_service)
-    create_c(registry_service) unless registry_service.has_container?
-    unpause_c(registry_service) if registry_service.is_paused?
-    start_c(registry_service) if registry_service.is_stopped?
-    unless registry_service.is_running?
+  def fix_problem(registry_service = nil)
+    registry_service = @system_api.loadSystemService('registry') if registry_service.nil?
+    registry_service.create_container unless registry_service.has_container?
+    registry_service.upause_container if registry_service.is_paused?
+    registry_service.start_container if registry_service.is_stopped?
+   STDERR.puts(' waited 15 for start') unless registry_service.wait_for('start', 15)
+    unless registry_service.wait_for_startup(40)
+      STDERR.puts(' waited 40 for startup  complete')
       @registry_ip = false
       unless registry_service.has_container?
         force_registry_recreate
@@ -61,8 +59,9 @@ class RegistryHandler < ErrorsApi
         raise EnginesException.new('Fatal Unable to Start Registry Service: ', registry_service.last_error)
       end
     end
-    wait_for_startup
+  #  wait_for_startup(40)
     SystemDebug.debug(SystemDebug.registry, :registry_is_up)
+    true
   rescue Exception
     @registry_ip = false
     force_registry_recreate
@@ -70,29 +69,29 @@ class RegistryHandler < ErrorsApi
 
   private
 
-  def create_c(reg)
-    reg.create_container
-    wait_for_startup
-  end
+#  def create_c(reg)
+#    reg.create_container
+#    wait_for_startup
+#  end
+#
+#  def unpause_c(reg)
+#    reg.unpause_container
+#    wait_for_startup
+#  end
+#
+#  def start_c(reg)
+#    reg.start_container
+#    wait_for_startup
+#  end
 
-  def unpause_c(reg)
-    reg.unpause_container
-    wait_for_startup
-  end
-
-  def start_c(reg)
-    reg.start_container
-    wait_for_startup
-  end
-
-  def wait_for_startup
-    while !registry_service.is_startup_complete?
-      sleep 1
-      wait += 1
-      SystemDebug.debug(SystemDebug.registry, :wait_for_start_up)
-      break if wait > 5
-    end
-  end
+#  def wait_for_startup
+#    while !registry_service.is_startup_complete?
+#      sleep 1
+#      wait += 1
+#      SystemDebug.debug(SystemDebug.registry, :wait_for_start_up)
+#      break if wait > 5
+#    end
+#  end
 
   def force_registry_recreate
     log_error_mesg("Forcing registry recreate", nil)
