@@ -44,7 +44,11 @@ def create_service()
    raise e
  end
  
- private
+  def wait_for_startup(timeout = 60)
+    @container_api.wait_for_startup(self, timeout)
+    end 
+    
+
  
  def iso_envs
   prefs = SystemPreferences.new
@@ -58,6 +62,8 @@ def create_service()
   ]
  end
  
+private
+
  def setup_service_keys
    keys = ''
        @system_keys.each do |key|
@@ -67,9 +73,7 @@ def create_service()
     SystemUtils.run_command('/opt/engines/system/scripts/system/setup_service_keys.sh ' + container_name  + keys)
  end
 
-def wait_for_startup(timeout = 60)
-  @container_api.wait_for_startup(self, timeout)
- 
+
 #  unless is_startup_complete?
 #    n=0
 #    while n < 20
@@ -77,5 +81,5 @@ def wait_for_startup(timeout = 60)
 #      sleep(0.5) unless is_startup_complete?
 #    end
 #  end
-end
+
 end
