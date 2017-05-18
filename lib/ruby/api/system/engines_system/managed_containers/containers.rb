@@ -46,7 +46,7 @@ module Containers
     unlock_container_conf_file(state_dir)
   end
 
-  def is_startup_complete(container)
+  def is_startup_complete?(container)
     File.exist?(container_state_dir(container) + '/run/flags/startup_complete')
   end
 
