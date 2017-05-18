@@ -29,7 +29,7 @@ module DockerEvents
 
     pipe_in, pipe_out = IO.pipe
     event_listener = WaitForContainerListener.new(what, pipe_out)
-    @system_api.add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.cont_id)
+    add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.cont_id)
     unless is_aready?(what, container.state)
       pipe_in.read
     end
@@ -37,9 +37,9 @@ module DockerEvents
     pipe_out.close
     STDERR.puts(e.to_s)
     STDERR.puts(e.backtrace.to_s)
-    @system_api.rm_event_listener(event_listener)
+    rm_event_listener(event_listener)
   rescue StandardError => e
-    @system_api.rm_event_listener(event_listener)
+    rm_event_listener(event_listener)
     STDERR.puts(e.to_s)
     STDERR.puts(e.backtrace.to_s)
   end
@@ -162,7 +162,7 @@ module DockerEvents
   end
 
   def start_docker_event_listener(listeners = nil)
-    @docker_event_listener = DockerEventWatcher.new(self,listeners )
+    @docker_event_listener = DockerEventWatcher.new(self, listeners)
     @event_listener_thread.exit unless @event_listener_thread.nil?
     @event_listener_thread = Thread.new do
       @docker_event_listener.start
