@@ -48,8 +48,9 @@ class RegistryHandler < ErrorsApi
     registry_service.create_container unless registry_service.has_container?
     registry_service.upause_container if registry_service.is_paused?
     registry_service.start_container if registry_service.is_stopped?
-    registry_service.wait_for('start', 4)
-    unless registry_service.wait_for_startup(20)
+   STDERR.puts(' waited 15 for start') unless registry_service.wait_for('start', 15)
+    unless registry_service.wait_for_startup(40)
+      STDERR.puts(' waited 40 for startup  complete')
       @registry_ip = false
       unless registry_service.has_container?
         force_registry_recreate
@@ -58,8 +59,9 @@ class RegistryHandler < ErrorsApi
         raise EnginesException.new('Fatal Unable to Start Registry Service: ', registry_service.last_error)
       end
     end
-    wait_for_startup(40)
+  #  wait_for_startup(40)
     SystemDebug.debug(SystemDebug.registry, :registry_is_up)
+    true
   rescue Exception
     @registry_ip = false
     force_registry_recreate
