@@ -24,6 +24,10 @@ module ContainerControls
     expire_engine_info
     r
   end
+  
+  def wait_for(what, timeout = 20)
+    @container_api.wait_for(self, what, timeout)
+  end
 
   def pause_container
     expire_engine_info
