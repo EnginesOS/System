@@ -46,7 +46,7 @@ when 'destroy'
   perform_delete
 when 'delete'
 
- return perform_delete
+  perform_delete
 end
 @route += '/' + ARGV[3] if ARGV.count > 3
 perform_get
