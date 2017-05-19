@@ -108,10 +108,17 @@ module DockerApiCreateOptions
       'ReadonlyRootfs' => false,
       'Dns' => container_get_dns_servers(container),
       'DnsSearch' => container_dns_search(container),
-      'NetworkMode' => container_network_mode(container)
+      'NetworkMode' => container_network_mode(container),
+      'RestartPolicy' => restart_policy(container)
     }
   end
 
+  def restart_policy(container)
+    return {'Name' => 'unless-stopped'} if container.ctype == 'system_service'
+    return {'Name' => 'on-failure', ' MaximumRetryCount' => 2} if container.ctype == 'service'
+    {}
+  end
+  
   def log_config(container)
     #return { "Type" => 'json-file', "Config" => {}}
     return { "Type" => 'json-file', "Config" => { "max-size" =>"5m", "max-file" => '10' } } if container.ctype == 'service'
