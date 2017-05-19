@@ -94,8 +94,9 @@ get '/v0/containers/service/:service_name/ps' do
     send_encoded_exception(request: request, exception: e)
   end
 end
-# @method wait_for_engine
-# @overload get '/v0/containers/engine/:engine_name/wait_for/:what'
+
+# @method wait_for_service
+# @overload get '/v0/containers/service/:service/wait_for/:what'
 # 
 # @return true|false
 # test cd /opt/engines/tests/engines_api/service ; make service wait_for
@@ -103,6 +104,20 @@ get '/v0/containers/service/:service_name/wait_for/:what' do
   begin
     service = get_service(params[:service_name])
     return_boolean(service.wait_for(params[:what], 120))
+  rescue StandardError => e
+ send_encoded_exception(request: request, exception: e)
+  end
+end
+
+# @method wait_for_service_statup
+# @overload get '/v0/containers/service/:service/wait_for_statup'
+# 
+# @return true|false
+# test cd /opt/engines/tests/engines_api/service ; make service wait_for_startup
+get '/v0/containers/service/:service_name/wait_for_statup' do
+  begin
+    service = get_service(params[:service_name])
+    return_boolean(service.wait_for_startup(120))
   rescue StandardError => e
  send_encoded_exception(request: request, exception: e)
   end
