@@ -68,8 +68,8 @@ def rest_post(path, params = nil, lheaders = nil)
   begin
     SystemDebug.debug(SystemDebug.registry,'POST  ', path.to_s + '?' + params.to_s)
     lheaders = headers if lheaders.nil?
-    r = parse_xcon_response(connection.request({read_timeout: time_out, headers: lheaders, method: :post, path: @route_prefix + path, body: query_hash(params).to_json }))
-    return r
+    r = parse_xcon_response(connection.request({read_timeout: time_out, headers: lheaders, method: :post, path: @route_prefix + path.to_s, body: query_hash(params).to_json }))
+    r
   rescue Excon::Error::Socket => e
     STDERR.puts e.class.name
     reopen_connection
