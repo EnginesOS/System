@@ -43,6 +43,6 @@ when 'status'
 when 'mem_stat' 
 p MemoryStatistics.container_memory_stats(service)
 when 'wait_for'
-  p service.wait_for(ARGV[1],ARGV[2].to_i)
+  p service.wait_for(ARGV[2],ARGV[3].to_i)
 end 
 
