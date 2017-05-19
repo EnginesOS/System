@@ -101,7 +101,7 @@ end
 # test cd /opt/engines/tests/engines_api/service ; make service wait_for
 get '/v0/containers/service/:service_name/wait_for/:what' do
   begin
-    service = get_engine(params[:engine_name])
+    service = get_service(params[:service_name])
     return_boolean(service.wait_for(params[:what], 120))
   rescue StandardError => e
  send_encoded_exception(request: request, exception: e)
