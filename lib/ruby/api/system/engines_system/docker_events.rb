@@ -108,23 +108,7 @@ module DockerEvents
 
     case event_hash[:status]
     when 'start','oom','stop','pause','unpause','create','destroy','killed','die'
-      inform_container_tracking(event_hash[:container_name], event_hash[:container_type], event_hash[:status])
-      #    when 'oom'
-      #      inform_container_tracking(event_hash[:container_name], event_hash[:container_type], event_hash[:status])
-      #    when 'stop'
-      #      inform_container_tracking(event_hash[:container_name], event_hash[:container_type], event_hash[:status])
-      #    when 'pause'
-      #      inform_container_tracking(event_hash[:container_name], event_hash[:container_type], event_hash[:status])
-      #    when 'unpause'
-      #      inform_container_tracking(event_hash[:container_name], event_hash[:container_type], event_hash[:status])
-      #    when 'create'
-      #      inform_container_tracking(event_hash[:container_name], event_hash[:container_type], event_hash[:status])
-      #    when 'destroy'
-      #      inform_container_tracking(event_hash[:container_name], event_hash[:container_type], event_hash[:status])
-      #    when 'killed'
-      #      inform_container_tracking(event_hash[:container_name], event_hash[:container_type], event_hash[:status])
-      #    when 'die'
-      #      inform_container_tracking(event_hash[:container_name], event_hash[:container_type], event_hash[:status])
+      inform_container_tracking(event_hash[:container_name], event_hash[:container_type], event_hash[:status])    
     else
       SystemDebug.debug(SystemDebug.container_events, 'Untracked event', event_hash.to_s )
     end
