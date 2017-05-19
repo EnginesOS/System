@@ -2,13 +2,13 @@ class DockerEventWatcher  < ErrorsApi
   class EventListener
     require 'yajl'
     #require '/opt/engines/lib/ruby/system/deal_with_json.rb'
-    attr_accessor :container_id, :event_mask
-    # @@container_id
-    def initialize(listener, event_mask, container_id = nil)
+    attr_accessor :container_name, :event_mask
+
+    def initialize(listener, event_mask, container_name = nil)
       @object =  listener[0]
       @method = listener[1]
       @event_mask = event_mask
-      @container_id = container_id
+      @container_name = container_name
     end
 
     def hash_name
@@ -193,8 +193,8 @@ class DockerEventWatcher  < ErrorsApi
     @system.start_docker_event_listener(@event_listeners)    
   end
 
-  def add_event_listener(listener, event_mask = nil, container_id = nil)
-    event = EventListener.new(listener,event_mask, container_id)
+  def add_event_listener(listener, event_mask = nil, container_name = nil)
+    event = EventListener.new(listener, event_mask, container_name)
     SystemDebug.debug(SystemDebug.container_events,'ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
     @event_listeners[event.hash_name] = event  
   end
@@ -209,9 +209,9 @@ class DockerEventWatcher  < ErrorsApi
   def trigger(hash)
     r = ''
     @event_listeners.values.each do |listener|
-      unless listener.container_id.nil?
-          STDERR.puts('matching ' + listener.container_id.to_s + ' with ' + hash[:id].to_s)
-        next unless hash[:id] == listener.container_id
+      unless listener.container_name.nil?
+          STDERR.puts('matching ' + listener.container_name.to_s + ' with ' + hash[:id].to_s)
+        next unless hash[:id] == listener.container_name
       end
       log_exception(r) if (r = listener.trigger(hash)).is_a?(StandardError)
     end

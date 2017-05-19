@@ -34,7 +34,7 @@ module DockerEvents
     pipe_in, pipe_out = IO.pipe
     Timeout::timeout(timeout) do
       event_listener = WaitForContainerListener.new(what, pipe_out)
-      add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.container_id)
+      add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.container_name)
       unless is_aready?(what, container.read_state)
         STDERR.puts(' Wait on READ ' + container.container_name.to_s + ' for ' + what )
         begin
