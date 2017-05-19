@@ -8,7 +8,7 @@ if test -f /opt/engines/bin/engines/run/system/flags/first_start_complete
 DOCKER_IP=`ifconfig  docker0  |grep "inet " |cut -f2 -d: |awk {'print $1}'`
 export DOCKER_IP
 
-sleep 5 
+
 /opt/engines/bin/system_service.rb system stop  >/tmp/first_start.log
 echo "System Stopped" &>>/tmp/first_start.log
 /opt/engines/bin/system_service.rb registry stop &>>/tmp/first_start.log
@@ -34,27 +34,34 @@ sleep 25
 /opt/engines/bin/system_service.rb system start &>>/tmp/first_start.log
 echo "System Started" &>>/tmp/first_start.log
 
-sleep 15
+sleep 25
 /opt/engines/bin/engines service dns stop &>> /tmp/first_start.log
+/opt/engines/bin/engines service dns wait_for stop 20
 /opt/engines/bin/engines service dns destroy  &>>/tmp/first_start.log
+/opt/engines/bin/engines service dns wait_for destroy 10
 /opt/engines/bin/engines service dns create &>> /tmp/first_start.log
+/opt/engines/bin/engines service dns wait_for_startup 30
 echo "DNS Started" &>>/tmp/first_start.log
 
-sleep 5
 /opt/engines/bin/engines service syslog stop &>>/tmp/first_start.log
+/opt/engines/bin/engines service syslog wait_for stop 20
 /opt/engines/bin/engines service syslog destroy &>> /tmp/first_start.log
+/opt/engines/bin/engines service syslog wait_for destroy 20
 /opt/engines/bin/engines service syslog create &>> /tmp/first_start.log
+/opt/engines/bin/engines service syslog  wait_for_startup 20
 echo "Syslog Started" &>>/tmp/first_start.log
 
-sleep 5
+
 /opt/engines/bin/engines service cert_auth stop &>>/tmp/first_start.log
-sleep 5
+/opt/engines/bin/engines service cert_auth wait_for stop 20
 /opt/engines/bin/engines service cert_auth destroy& >>/tmp/first_start.log
-sleep 5
+/opt/engines/bin/engines service cert_auth wait_for destroy 20
 /opt/engines/bin/engines service cert_auth create &>>/tmp/first_start.log
+/opt/engines/bin/engines service cert_auth wait_for_startup 20
 echo "Cert Auth Started" &>>/tmp/first_start.log
 
 /opt/engines/bin/engines service mysql_server create &>>/tmp/first_start.log
+/opt/engines/bin/engines service mysql_server wait_for_startup 180
 echo "mysql_server Started" &>>/tmp/first_start.log
 
 /opt/engines/bin/engines service volmanager create &>>/tmp/first_start.log
@@ -62,6 +69,7 @@ echo "volmanger Started" &>>/tmp/first_start.log
 
 /opt/engines/bin/engines service cron create &>>/tmp/first_start.log
 echo "cron Started" &>>/tmp/first_start.log
+
 
 /opt/engines/bin/engines service auth create &>>/tmp/first_start.log
 echo "auth Started" &>>/tmp/first_start.log
