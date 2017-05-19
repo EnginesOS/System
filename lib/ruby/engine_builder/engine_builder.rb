@@ -306,8 +306,9 @@ class EngineBuilder < ErrorsApi
   #app_is_persistent
   #used by builder public
   def running_logs()
-    return @container.logs_container unless @container.nil?
-    nil
+    return nil unless @container.nil?
+    @container.wait_for_startup(4)
+    @container.logs_container   
   end
 
   def engine_environment
