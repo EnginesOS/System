@@ -96,8 +96,7 @@ module DockerApiCreateOptions
   
   def host_config_options(container)
     {
-      'Binds' => volumes_mounts(container),
-      'PortBindings' => port_bindings(container),
+      'Binds' => volumes_mounts(container),      
       'Memory' => container_memory(container),
       'MemorySwap' => container_memory(container) * 2,
       'VolumesFrom' => container_volumes(container),
@@ -142,13 +141,13 @@ module DockerApiCreateOptions
   end
 
   def hostname(container)
-    return nil if container.on_host_net? == true
+  #  return nil if container.on_host_net? == true
     return container.container_name if container.hostname.nil?
     container.hostname
   end
 
   def container_domain_name(container)
-    return SystemConfig.internal_domain if container.on_host_net? == false
+    return SystemConfig.internal_domain# if container.on_host_net? == false
     nil
   end
 
@@ -168,16 +167,20 @@ module DockerApiCreateOptions
       'Volumes' => {},
       'WorkingDir' => '',
       'NetworkDisabled' => false,
-      'ExposedPorts' => exposed_ports(container),
+     
       'StopSignal' => 'SIGTERM',
       #       "StopTimeout": 10,
+      'Hostname' => hostname(container),
+      'Domainame' => container_domain_name(container),
       'HostConfig' => host_config_options(container)
     }
-    top_level['Hostname'] = hostname(container) unless hostname(container).nil?
-    top_level['Domainame'] = container_domain_name(container) unless container_domain_name(container).nil?
+    top_level['ExposedPorts'] = exposed_ports(container) unless container.on_host_net? 
+    top_level['HostConfig']['PortBindings'] = port_bindings(container) unless container.on_host_net?
+    #  top_level['Hostname'] = hostname(container) #unless hostname(container).nil?
+    # top_level['Domainame'] = container_domain_name(container)# unless container_domain_name(container).nil?
  
     set_entry_point(container, top_level)
-    STDERR.puts(' CREATE ' + top_level.to_s)
+    STDERR.puts(' CREATE ' + top_level.to_json)
     top_level
   end
 
