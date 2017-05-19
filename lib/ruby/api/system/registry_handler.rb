@@ -31,7 +31,7 @@ class RegistryHandler < ErrorsApi
     registry_service = @system_api.loadSystemService('registry') # FIXME: Panic if this fails
     unless registry_service.is_running?
       fix_problem(registry_service)
-      sleep 12
+
       @registry_ip = registry_service.get_ip_str
       force_registry_recreate unless registry_service.is_running?
     end
