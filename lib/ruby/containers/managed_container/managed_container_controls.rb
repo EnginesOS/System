@@ -110,6 +110,7 @@ module ManagedContainerControls
       return r unless (r = prep_task(:start))
       return task_failed('start') unless super
       @restart_required = false
+      true
     }
   end
 
@@ -117,6 +118,7 @@ module ManagedContainerControls
     return task_failed('restart/stop') unless stop_container
     wait_for( 'stop')
     task_failed('restart/start') unless start_container
+    true
   end
 
   def rebuild_container
@@ -125,8 +127,8 @@ module ManagedContainerControls
       return r unless (r = prep_task(:reinstall))
       ret_val = @container_api.rebuild_image(self)
       expire_engine_info
-      return true if ret_val
-      task_failed('rebuild')
+      return task_failed('rebuild') unless ret_val
+     true
     }
   end
 

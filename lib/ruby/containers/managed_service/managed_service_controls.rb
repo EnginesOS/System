@@ -37,6 +37,7 @@ def create_service()
 
  def recreate
     destroy_container
+    wait_for('destory')
      create_service
      save_state
  rescue EnginesException =>e

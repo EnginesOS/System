@@ -26,6 +26,10 @@ def return_true(s = 200)
   return_text('true', s)
 end
 
+def return_boolean(v, s = 200)
+  return_text(v.to_s, s)
+end
+
 def return_error(error, nil_result = nil)
   STDERR.puts(' RETURN ERROR!!!!!!!!' )
   content_type 'application/json'

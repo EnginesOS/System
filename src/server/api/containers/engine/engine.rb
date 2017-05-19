@@ -116,14 +116,12 @@ end
 # 
 # @return true|false
 # test cd /opt/engines/tests/engines_api/engine ; make engine wait_for
-get '/v0/containers/engine/:engine_name/wait_for/:wha' do
+get '/v0/containers/engine/:engine_name/wait_for/:what' do
   begin
    engine = get_engine(params[:engine_name])
-   engine.wait_for(params[:what])
+   return_boolean(engine.wait_for(params[:what], 120))
   rescue StandardError => e
-    return_json(nil)
-    # FIXME: Kludge for Gui on build
-   # send_encoded_exception(request: request, exception: e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 # @!endgroup
