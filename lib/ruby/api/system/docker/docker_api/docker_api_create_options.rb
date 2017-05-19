@@ -76,12 +76,12 @@ module DockerApiCreateOptions
   end
 
   def container_get_dns_servers(container)
-    return get_dns_servers if container.on_host_net? == false
+    return get_dns_servers #if container.on_host_net? == false
     ''
   end
 
   def container_dns_search(container)
-    return get_dns_search if container.on_host_net? == false
+    return get_dns_search #if container.on_host_net? == false
     ''
   end
 
