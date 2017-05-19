@@ -79,7 +79,7 @@ class SystemService < ManagedService
         end
       end
     end
-    # Thread.new { sleep 5 ; @docker_info = nil }
+
     SystemDebug.debug(SystemDebug.system,:system_service_inspected_container)
     @docker_info
   end
