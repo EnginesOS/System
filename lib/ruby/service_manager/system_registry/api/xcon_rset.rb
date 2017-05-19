@@ -12,30 +12,34 @@ def headers (content_type = nil)
 end
 
 def connection(content_type = nil)
+  STDERR.puts('open connec' )
   @connection ||=  Excon.new(base_url,
   debug_request:  true,
   debug_response: true,
   ssl_verify_peer: false,
   persistent: true,
   headers: headers)
+rescue Errno::EHOSTUNREACH
+  @core_api.fix_registry_problem
+  retry
 rescue StandardError => e
   raise EnginesException.new(error_hash('Failed to open base url to registry ' + e.to_s, @base_url.to_s))
 end
 
 def reopen_connection
+  STDERR.puts('re open connec' )
   @connection.reset
-  @connection = Excon.new(base_url,
-  debug_request: true,
-  debug_response: true,
-  ssl_verify_peer: false,
-  persistent: true,
-  headers: headers)
+  @connection = nil
+  @connection = connection
+  #  debug_request: true,
+  #  debug_response: true,
+  #  ssl_verify_peer: false,
+  #  persistent: true,
+  #  headers: headers)
   @connection
-rescue StandardError => e
-  raise EnginesException.new(error_hash('Failed to re open base url to registry' + e.to_s , @base_url.to_s))
 end
 
-def rest_get(path,params = nil,time_out=120, _headers = nil)
+def rest_get(path,params = nil, time_out = 120, _headers = nil)
   cnt = 0
   q = query_hash(params)
   #STDERR.puts(' REG GET ' + path.to_s + '?' + q.to_s )
@@ -43,7 +47,7 @@ def rest_get(path,params = nil,time_out=120, _headers = nil)
   lheaders = headers
   lheaders.merge(_headers) unless _headers == nil
   lheaders.delete('Content-Type' ) if  q.nil?
-  req = {time_out: time_out, method: :get, path: @route_prefix + path, headers: lheaders }
+  req = {time_out: time_out, method: :get, path: @route_prefix + path.to_s, headers: lheaders }
   req[:query] = q unless q.nil?
   r = connection.request(req)
   parse_xcon_response(r)
@@ -52,34 +56,40 @@ rescue  Excon::Error::Socket => e
   STDERR.puts e.class.name + ' with path:' + path.to_s + "\n" + 'params:' + q.to_s + ':::' + req.to_s  + ':' + e.to_s
   cnt+=1
   retry if cnt< 5
+rescue StandardError => e
+  raise EnginesException.new(error_hash('reg exception ' + e.to_s, @base_url.to_s))
 end
 
 def time_out
   120
 end
 
-def rest_post(path,params = nil, lheaders=nil)
+def rest_post(path, params = nil, lheaders = nil)
   begin
     SystemDebug.debug(SystemDebug.registry,'POST  ', path.to_s + '?' + params.to_s)
     lheaders = headers if lheaders.nil?
-    r = parse_xcon_response(connection.request({read_timeout: time_out, headers: lheaders, method: :post, path: @route_prefix + path, body: query_hash(params).to_json }))
-    return r
+    r = parse_xcon_response(connection.request({read_timeout: time_out, headers: lheaders, method: :post, path: @route_prefix + path.to_s, body: query_hash(params).to_json }))
+    r
   rescue Excon::Error::Socket => e
     STDERR.puts e.class.name
     reopen_connection
     retry
+  rescue StandardError => e
+    raise EnginesException.new(error_hash('reg exception ' + e.to_s, @base_url.to_s))
   end
 end
 
-def rest_put(path,params = nil, lheaders=nil)
+def rest_put(path, params = nil, lheaders = nil)
   SystemDebug.debug(SystemDebug.registry,'Delete ', path.to_s + '?' + params.to_s)
   lheaders = headers if lheaders.nil?
-  r = parse_xcon_response( connection.request(read_timeout: time_out, headers: lheaders, method: :put, path: @route_prefix + path, query: query_hash(params).to_json ))
-  return r
+  r = parse_xcon_response( connection.request(read_timeout: time_out, headers: lheaders, method: :put, path: @route_prefix + path.to_s, query: query_hash(params).to_json ))
+  r
 rescue Excon::Error::Socket => e
   STDERR.puts e.class.name
   reopen_connection
   retry
+  rescue StandardError => e
+    raise EnginesException.new(error_hash('reg exception ' + e.to_s, @base_url.to_s))
 end
 
 def query_hash(params)
@@ -88,16 +98,18 @@ def query_hash(params)
   params
 end
 
-def rest_delete(path, params = nil, lheaders=nil)
+def rest_delete(path, params = nil, lheaders = nil)
   q = query_hash(params)
   SystemDebug.debug(SystemDebug.registry,'DEL ', path.to_s + '?' + q.to_s)
   lheaders = headers if lheaders.nil?
-  r =  parse_xcon_response( connection.request(read_timeout: time_out, headers: lheaders, method: :delete, path: @route_prefix + path, query: q))
-  return r
+  r = parse_xcon_response( connection.request(read_timeout: time_out, headers: lheaders, method: :delete, path: @route_prefix + path.to_s, query: q))
+  r
 rescue Excon::Error::Socket => e
   STDERR.puts e.class.name
   reopen_connection
   retry
+  rescue StandardError => e
+    raise EnginesException.new(error_hash('reg exception ' + e.to_s, @base_url.to_s))
   #end
 end
 
@@ -105,7 +117,7 @@ private
 #
 
 def parse_xcon_response(resp)
-  raise RegistryException.new({status: 500 , error_mesg: 'Server Error', exception: :exception})  if resp.nil?
+  raise RegistryException.new({status: 500, error_mesg: 'Server Error', exception: :exception})  if resp.nil?
   # STDERR.puts('1 ' + resp.status.to_s + ':' + resp.headers.to_s + " __ " + resp.body.to_s)
   error_result_exception(resp) if resp.status > 399
   r = resp.body
@@ -119,7 +131,7 @@ def parse_xcon_response(resp)
 end
 
 def error_result_exception(resp)
-  STDERR.puts('Registry Exception ' +  resp.body.to_s  + ' head ' + resp.headers.to_s  )   unless resp.nil?
+  STDERR.puts('Registry Exception ' + resp.body.to_s  + ' head ' + resp.headers.to_s  )   unless resp.nil?
   raise RegistryException.new(
   {status: resp.status,
     error_type: :error,
@@ -135,7 +147,7 @@ def error_result_exception(resp)
   r = {} unless r.is_a?(Hash)
   r[:status] = resp.status if r.is_a?(Hash)
 
-  STDERR.puts('Registry Exception from  json result ' + r.to_s )
+  STDERR.puts('Registry Exception from json result ' + r.to_s )
 
   raise RegistryException.new(
   {status: 404,

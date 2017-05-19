@@ -5,7 +5,7 @@ module DockerEvents
   def create_event_listener
     @event_listener_lock = true
     @docker_event_listener = start_docker_event_listener
-    @docker_event_listener.add_event_listener([self,'container_event'.to_sym],16)
+    @docker_event_listener.add_event_listener([self,'container_event'.to_sym],16) unless $PROGRAM_NAME.end_with?('system_service.rb')
   end
 
   class WaitForContainerListener
@@ -34,7 +34,7 @@ module DockerEvents
     pipe_in, pipe_out = IO.pipe
     Timeout::timeout(timeout) do
       event_listener = WaitForContainerListener.new(what, pipe_out)
-      add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.container_id)
+      add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.container_name)
       unless is_aready?(what, container.read_state)
         STDERR.puts(' Wait on READ ' + container.container_name.to_s + ' for ' + what )
         begin

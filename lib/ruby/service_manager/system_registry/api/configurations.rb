@@ -7,7 +7,7 @@ module Configurations
   end
 
   def retrieve_service_configuration(config_hash)
-    r = 'service/configurations'
+    r = 'service/configuration'
     r += address_params(config_hash, [:service_name, :configurator_name] )
     rest_get(r)
   end

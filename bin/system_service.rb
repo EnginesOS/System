@@ -42,5 +42,9 @@ when 'status'
   p service.status
 when 'mem_stat' 
 p MemoryStatistics.container_memory_stats(service)
+when 'wait_for'
+  p service.wait_for(ARGV[2],ARGV[3].to_i)
+when 'wait_for_startup'
+  p service.wait_for_startup(ARGV[2].to_i)  
 end 
 

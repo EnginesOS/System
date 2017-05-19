@@ -1,7 +1,7 @@
 ---
 - :label: start
   :timespec:
-    :minute: "*"
+    :minute: "5"
     :hour: "*/6"
     :day_of_month: "*"
     :month: "*"
