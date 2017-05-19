@@ -211,7 +211,9 @@ class DockerEventWatcher  < ErrorsApi
     @event_listeners.values.each do |listener|
       unless listener.container_name.nil?
           STDERR.puts('matching ' + listener.container_name.to_s + ' with ' + hash[:id].to_s)
-        next unless hash[:id] == listener.container_name
+        next unless hash.key?(:Attributes)
+        next unless hash[:Attributes].key?(:container_name)         
+        next unless hash[:Attributes][:container_name] == listener.container_name
       end
       log_exception(r) if (r = listener.trigger(hash)).is_a?(StandardError)
     end
