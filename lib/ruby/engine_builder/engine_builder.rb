@@ -160,7 +160,7 @@ class EngineBuilder < ErrorsApi
 
     @blueprint_reader = VersionedBlueprintReader.new(@build_params[:engine_name], @blueprint, self)
     @blueprint_reader.process_blueprint
-    ev = EnvironmentVariable.new('Memory', @memory, false, true, false, 'Memory', true)
+    ev = EnvironmentVariable.new('Memory', @memory, false, true, false, 'Memory', false)
     @blueprint_reader.environments.push(ev)
   end
 
