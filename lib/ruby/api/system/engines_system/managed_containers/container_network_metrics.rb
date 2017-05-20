@@ -11,7 +11,7 @@ module ContainerNetworkMetrics
     end
     cmd = ['netstat','--interfaces', '-e','|','grep', 'bytes', '|','head', '-1', '|', 'awk', '{ print $2 \" \" $6}']
 
-    result = @engines_core.exec_in_container({:container => container, :command_line => cmd, :log_error => true })
+    result = @engines_api.exec_in_container({:container => container, :command_line => cmd, :log_error => true })
     if result[:result] != 0
       ret_val = error_result
     else
