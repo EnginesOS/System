@@ -30,8 +30,8 @@ class DockerEventWatcher  < ErrorsApi
 
     def state_from_status(status)
       case status
-      when 'die'
-        return 'stopped'
+#      when 'die'
+#        return 'stopped'
       when 'stop'
         return 'stopped'
       when 'run'
@@ -84,48 +84,7 @@ class DockerEventWatcher  < ErrorsApi
     :persistent => true)
   end
 
-#  def nstart
-#
-#    parser =nil
-#    streamer = lambda do |chunk, remaining_bytes, total_bytes|
-#      begin
-#        r = ''
-#        chunk.strip!
-#        #   parser = FFI_Yajl::Parser.new({:symbolize_keys => true}) if parser.is_nil?
-#        #   STDERR.puts('event  cunk ' + chunk.to_s + chunk.class.name )
-#
-#        deal_with_json(chunk)
-#
-#        trigger(hash)
-#        #        end
-#      rescue StandardError => e
-#        log_error_mesg('Chunk error on docker Event Stream _' + chunk.to_s + '_')
-#        log_exception(e,chunk)
-#        # @system.start_docker_event_listener
-#      end
-#
-#    end
-#    connection.request(:read_timeout => 7200,
-#    :method => :get,
-#    :path => '/events',
-#    :response_block => streamer )
-#    @events_connection.reset
-#
-#    log_error_mesg('Restarting docker Event Stream ')
-#    #  STDERR.puts('Restarting docker Event Stream as close')
-#    @system.start_docker_event_listener(@event_listeners)
-#
-#  rescue  Excon::Error::Socket => e
-#    #    STDERR.puts(' docker socket stream close ')
-#    @events_connection.reset
-#    @system.start_docker_event_listener(@event_listeners)
-#  rescue StandardError => e
-#    log_exception(e)
-#    log_error_mesg('Restarting docker Event Stream post exception ')
-#    #  STDERR.puts('Restarting docker Event Stream post exception due to ' + e.to_s)
-#    @events_connection.reset
-#    @system.start_docker_event_listener(@event_listeners)
-#  end
+
 
   def start
     req = Net::HTTP::Get.new('/events')
