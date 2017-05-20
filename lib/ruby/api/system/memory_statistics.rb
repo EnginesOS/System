@@ -68,7 +68,7 @@ module MemoryStatistics
     {
       maximum: e.to_s,
       current: 0,
-      limit: 0
+      limit: container.memory
     }
   end
 
@@ -76,7 +76,7 @@ module MemoryStatistics
     {
       maximum: 0,
       current: 0,
-      limit: 0
+      limit: container.memory
     }
   end
 
