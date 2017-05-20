@@ -5,6 +5,10 @@ module ManagedContainerControls
     builder.reinstall_engine(self)
   end
 
+  def wait_for_startup(timeout = 60)
+    @container_api.wait_for_startup(self, timeout)
+  end
+
   def update_memory(new_memory)
     super
     @memory = new_memory
@@ -128,21 +132,21 @@ module ManagedContainerControls
       ret_val = @container_api.rebuild_image(self)
       expire_engine_info
       return task_failed('rebuild') unless ret_val
-     true
+      true
     }
   end
 
   def correct_current_state
     case @setState
     when 'stopped'
-       stop_container if is_running?
+      stop_container if is_running?
     when 'running'
-       start_container unless is_active?
-       unpause_container if is_paused?
+      start_container unless is_active?
+      unpause_container if is_paused?
     when 'nocontainer'
       create_container
     when 'paused'
-       pause_container unless is_active?
+      pause_container unless is_active?
     else
       return 'fail'
     end

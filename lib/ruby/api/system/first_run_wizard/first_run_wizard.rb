@@ -28,8 +28,7 @@ class FirstRunWizard <ErrorsApi
     return false unless setup_dns
    # certs = @api.loadManagedService('cert_auth')
    # certs.create_container
-    # FIXMe Kludge
-   # sleep 125
+    
     setup_certs
     setup_system_password(@first_run_params[:admin_password], @first_run_params[:admin_email])   
     @sucess = true

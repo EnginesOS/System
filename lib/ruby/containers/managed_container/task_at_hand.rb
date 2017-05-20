@@ -196,29 +196,6 @@ module TaskAtHand
     true  #possbile exception such file (another process alsop got the eot mesg and removed)
   end
 
-#  def wait_for_task(task)
-#    loops=0
-#    timeout = task_set_timeout(task)
-#    #  p :wait_for_task
-#    SystemDebug.debug(SystemDebug.engine_tasks,  :wait_for_task, task_at_hand)
-#
-#    return true if task_at_hand.nil?
-#
-#    fmtime = File.mtime(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
-#    while   fmtime ==  File.mtime(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
-#      sleep(0.5)
-#      loops+=1
-#      SystemDebug.debug(SystemDebug.engine_tasks, :wft_loop, ' ', task_at_hand)
-#      if loops > timeout * 2
-#        return false
-#      end
-#    end
-#    return true unless File.exist?(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
-#  rescue StandardError => e
-#    return true unless File.exist?(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
-#    log_exception(e)
-#  end
-
   def task_failed(msg)
     clear_task_at_hand
     SystemDebug.debug(SystemDebug.engine_tasks,:TASK_FAILES______Doing, @task_at_hand)
@@ -227,18 +204,7 @@ module TaskAtHand
     task_complete(:failed)
     false
   end
-#
-#  def wait_for_container_task(timeout=90)
-#    fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
-#    return true unless File.exist?(fn)
-#    loop = 0
-#    while File.exist?(fn)
-#      sleep(0.5)
-#      loop += 1
-#      return log_error_mesg('timeout expire') if loop > timeout * 2
-#    end
-#    true
-#  end
+
 
   private
 

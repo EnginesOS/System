@@ -43,9 +43,7 @@ module ManagedServiceControls
     raise e
   end
 
-  def wait_for_startup(timeout = 60)
-    @container_api.wait_for_startup(self, timeout)
-  end
+
 
   def iso_envs
     prefs = SystemPreferences.new
