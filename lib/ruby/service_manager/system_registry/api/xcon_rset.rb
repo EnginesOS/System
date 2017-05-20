@@ -50,7 +50,6 @@ def rest_get(path,params = nil, time_out = 120, _headers = nil)
   req = {time_out: time_out, method: :get, path: @route_prefix + path.to_s, headers: lheaders }
   req[:query] = q unless q.nil?
   r = connection.request(req)
-STDERR.puts(' REG GET ' + path.to_s + '=' + r.to_s )
   parse_xcon_response(r)
 rescue  Excon::Error::Socket => e
   reopen_connection
@@ -119,7 +118,7 @@ private
 
 def parse_xcon_response(resp)
   raise RegistryException.new({status: 500, error_mesg: 'Server Error', exception: :exception})  if resp.nil?
-  # STDERR.puts('1 ' + resp.status.to_s + ':' + resp.headers.to_s + " __ " + resp.body.to_s)
+   STDERR.puts('1 ' + resp.status.to_s + ':' + resp.headers.to_s + " __ " + resp.body.to_s)
   error_result_exception(resp) if resp.status > 399
   r = resp.body
   return if r.nil?
