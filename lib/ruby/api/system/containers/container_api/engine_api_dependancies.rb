@@ -17,7 +17,6 @@ module EngineApiDependancies
         end
       end
       raise EnginesException.new(error_hash('Time out in waiting for Service Dependancy ' + service_name + ' to start ', service_name)) unless wait_for_startup(service, 120)
-
     end
   end
 end
