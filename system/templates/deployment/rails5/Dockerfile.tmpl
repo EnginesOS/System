@@ -7,6 +7,6 @@ ENV WWW_DIR public
 ENV ContUser ruby
 ENV RAILS_ENV production
 ENV SECRET_KEY_BASE	_Engines_System(random(128))
-
+ENV PATH /usr/local/bin:/usr/bin:/bin
 RUN apt-get update;\
 	chown $ContUser /opt

@@ -31,6 +31,9 @@ export DOCKER_IP
 CONTROL_IP=`/opt/engines/bin/system_ip.sh`
 export CONTROL_IP
 
+DOCKER_IP=`ifconfig docker0 |grep "inet addr" |cut -f2 -d: |cut -f1 -d" "`
+export DOCKER_IP
+
 sudo -n /opt/engines/system/scripts/startup/sudo/_check_local-kv.sh  
 
 if test -f /opt/engines/system/startup/flags/replace_keys
@@ -69,74 +72,84 @@ if test -f /usr/bin/pulseaudio
     fi
  fi
  
- docker start registry
- 
+
  if test "`/opt/engines/bin/system_service.rb registry state`" = \"nocontainer\"
  then
 	/opt/engines/bin/system_service.rb registry create
+	/opt/engines/bin/system_service.rb registry wait_for create 60
+	/opt/engines/bin/system_service.rb registry start
  elif test "`/opt/engines/bin/system_service.rb registry state`" = \"stopped\"
   then
 	/opt/engines/bin/system_service.rb registry start
+  else
+  	/opt/engines/bin/system_service.rb registry start
   fi
 
+/opt/engines/bin/system_service.rb registry wait_for_startup 60
 #docker start registry
- count=0
+# count=0
 #ruby /opt/engines/bin/system_service.rb registry start
-sleep 5
-  while ! test -f /opt/engines/run/system_services/registry/run/flags/startup_complete
-  do 
-  	sleep 5
-  	count=`expr $count + 5`
-  		if test $count -gt 120
-  		 then
-  		  echo "ERROR failed to start registry "
-  		  exit
-  		fi
-  done 
+#sleep 5
+#  while ! test -f /opt/engines/run/system_services/registry/run/flags/startup_complete
+#  do 
+#  	sleep 5
+#  	count=`expr $count + 5`
+#  		if test $count -gt 120
+#  		 then
+#  		  echo "ERROR failed to start registry "
+#  		  exit
+#  		fi
+#  done 
 
 if test "`/opt/engines/bin/system_service.rb system state`" = \"nocontainer\"
  then
+	/opt/engines/bin/system_service.rb system create
+	/opt/engines/bin/system_service.rb system wait_for create 60
 	/opt/engines/bin/system_service.rb system create
  elif test "`/opt/engines/bin/system_service.rb system state`" = \"stopped\"
   then
 	/opt/engines/bin/system_service.rb system start
   fi
-  count=0
-  while ! test -f /opt/engines/run/system_services/system/run/flags/startup_complete
-  do 
-  	sleep 5
-  	count=`expr $count + 5`
-  		if test $count -gt 120
-  		 then
-  		  echo "ERROR failed to start system "
-  		  exit
-  		fi
-  done 
-DOCKER_IP=`ifconfig docker0 |grep "inet addr" |cut -f2 -d: |cut -f1 -d" "`
-export DOCKER_IP
- sleep 5
+  
+/opt/engines/bin/system_service.rb registry wait_for_startup 60
+
+# count=0
+# while ! test -f /opt/engines/run/system_services/system/run/flags/startup_complete
+# do 
+# 	sleep 5
+# 	count=`expr $count + 5`
+# 		if test $count -gt 120
+# 		 then
+# 		  echo "ERROR failed to start system "
+# 		  exit
+# 		fi
+# done 
+#
+#sleep 5
  
 #/opt/engines/bin/engines system login test test
   
 
 /opt/engines/bin/engines service dns start 
+/opt/engines/bin/engines service dns wait_for start 60
 count=0
 
- while ! test -f /opt/engines/run/services/dns/run/flags/startup_complete
-  do 
-  	sleep 5
-  	count=`expr $count + 5`
-  		if test $count -gt 120
-  		 then
-  		  echo "ERROR failed to start DNS "
-  		   echo "ERROR failed to start DNS " >/tmp/startup_failed
-  		  exit 127
-  		fi
-  done 
-
+#while ! test -f /opt/engines/run/services/dns/run/flags/startup_complete
+# do 
+# 	sleep 5
+# 	count=`expr $count + 5`
+# 		if test $count -gt 120
+# 		 then
+# 		  echo "ERROR failed to start DNS "
+# 		   echo "ERROR failed to start DNS " >/tmp/startup_failed
+# 		  exit 127
+# 		fi
+# done 
+#
 
 /opt/engines/bin/engines service syslog start
 /opt/engines/bin/engines service  mysql_server start
+opt/engines/bin/engines service mysql_server wait_for start 60
 /opt/engines/bin/engines service nginx start
 
 

@@ -46,7 +46,7 @@ def rest_get(path,params = nil, time_out = 120, _headers = nil)
   SystemDebug.debug(SystemDebug.registry,'GET ', path.to_s + '?' + q.to_s)
   lheaders = headers
   lheaders.merge(_headers) unless _headers == nil
-  lheaders.delete('Content-Type' ) if  q.nil?
+  lheaders.delete('Content-Type' ) if q.nil?
   req = {time_out: time_out, method: :get, path: @route_prefix + path.to_s, headers: lheaders }
   req[:query] = q unless q.nil?
   r = connection.request(req)

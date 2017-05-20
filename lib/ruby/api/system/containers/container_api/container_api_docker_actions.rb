@@ -2,7 +2,7 @@ module ContainerApiDockerActions
   def destroy_container(container)
     clear_error
     @docker_api.destroy_container(container)
-    !container.has_container?
+   # !container.has_container?
   end
 
   def unpause_container(container)
