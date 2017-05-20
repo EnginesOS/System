@@ -59,7 +59,7 @@ module MemoryStatistics
       else
         STDERR.puts('no_cgroup_file for ' + container.container_name + ':' + path.to_s, path)
         SystemUtils.log_error_mesg('no_cgroup_file for ' + container.container_name + ':' + path.to_s, path)
-        ret_val  = self.empty_container_result
+        ret_val  = self.empty_container_result(container)
       end
     end
     ret_val
@@ -72,7 +72,7 @@ module MemoryStatistics
     }
   end
 
-  def self.empty_container_result
+  def self.empty_container_result(container)
     {
       maximum: 0,
       current: 0,
