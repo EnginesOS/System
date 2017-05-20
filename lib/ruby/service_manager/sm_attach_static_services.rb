@@ -4,10 +4,10 @@ module SmAttachStaticServices
   def load_and_attach_static_services(dirname, container)
     container.environments  = [] if container.environments.nil?
     curr_service_file = ''
-    SystemDebug.debug(SystemDebug.services,:Globbing,container.container_name,dirname + '/*.yaml')
+    SystemDebug.debug(SystemDebug.services, :Globbing, container.container_name, dirname + '/*.yaml')
     Dir.glob(dirname + '/*.yaml').each do |service_file|
       curr_service_file = service_file
-      SystemDebug.debug(SystemDebug.services,:Service_dile,container.container_name,curr_service_file)
+      SystemDebug.debug(SystemDebug.services,:Service_dile, container.container_name, curr_service_file)
 
       yaml = File.read(service_file)
       service_hash = YAML::load(yaml)
