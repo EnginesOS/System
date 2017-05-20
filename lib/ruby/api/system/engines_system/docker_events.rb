@@ -38,12 +38,12 @@ module DockerEvents
       unless is_aready?(what, container.read_state)
         STDERR.puts(' Wait on READ ' + container.container_name.to_s + ' for ' + what )
         begin
-       d =  pipe_in.read      
-       puts.STDERR.puts(' READ ' + d.to_s)
+          d =  pipe_in.read
+          puts.STDERR.puts(' READ ' + d.to_s)
         rescue
         end
       end
-      pipe_in.close     
+      pipe_in.close
       rm_event_listener(event_listener)
     end
     true
@@ -107,8 +107,8 @@ module DockerEvents
     inform_container(event_hash[:container_name], event_hash[:container_type], event_hash[:status], event_hash)
 
     case event_hash[:status]
-    when 'start','oom','stop','pause','unpause','create','destroy','killed','die'
-      inform_container_tracking(event_hash[:container_name], event_hash[:container_type], event_hash[:status])    
+    when 'start','oom','stop','pause','unpause','create','destroy','kill','die'
+      inform_container_tracking(event_hash[:container_name], event_hash[:container_type], event_hash[:status])
     else
       SystemDebug.debug(SystemDebug.container_events, 'Untracked event', event_hash.to_s )
     end

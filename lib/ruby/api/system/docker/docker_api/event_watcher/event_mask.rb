@@ -37,7 +37,7 @@ class EventMask
       if event_hash[:status].start_with?('exec')
         mask |= @@container_exec
       elsif event_hash[:status] == 'delete'
-        mask |= @@container_delete
+        mask |= @@container_delete| @@container_action
       elsif event_hash[:status] == 'destroy'
         mask |= @@container_delete | @@container_action
       elsif event_hash[:status] == 'commit'
@@ -47,9 +47,9 @@ class EventMask
         #        elsif event_hash['status'] == 'delete'
         #          mask |= @@container_delete
       elsif event_hash[:status] == 'die'
-        mask |= @@container_die
+        mask |= @@container_die| @@container_action
       elsif event_hash[:status] == 'kill'
-        mask |= @@container_kill
+        mask |= @@container_kill| @@container_action
       elsif event_hash[:status] == 'attach'
         mask |= @@container_attach
       else
