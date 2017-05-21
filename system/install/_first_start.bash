@@ -5,8 +5,6 @@ if test -f /opt/engines/bin/engines/run/system/flags/first_start_complete
   exit 127
  fi
  
-/opt/engines/system/scripts/update/run_update_engines_system_software.sh
- 
 DOCKER_IP=`ifconfig  docker0  |grep "inet " |cut -f2 -d: |awk {'print $1}'`
 export DOCKER_IP
 
@@ -112,6 +110,7 @@ echo "nginx Started" &>>/tmp/first_start.log
 /opt/engines/bin/engines service smtp wait_for_startup 20
 echo "smtp Started" &>>/tmp/first_start.log
 
+/opt/engines/system/scripts/update/run_update_engines_system_software.sh
 
  if test -f /opt/engines/run/system/flags/install_mgmt
   then
