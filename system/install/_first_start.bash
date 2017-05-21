@@ -5,6 +5,8 @@ if test -f /opt/engines/bin/engines/run/system/flags/first_start_complete
   exit 127
  fi
  
+/opt/engines/system/scripts/update/run_update_engines_system_software.sh
+ 
 DOCKER_IP=`ifconfig  docker0  |grep "inet " |cut -f2 -d: |awk {'print $1}'`
 export DOCKER_IP
 
