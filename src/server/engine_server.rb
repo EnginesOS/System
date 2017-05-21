@@ -30,7 +30,7 @@ begin
   @events_stream = nil
  $engines_api = PublicApi.new(core_api)
   STDERR.puts('CREATED ENGINES API +++++++++++++++++++++++++++++++++++++++++++')
-
+  FileUtils.touch('/engines/var/run/flags/startup_complete') 
   @@last_error = ''
 
   before do
