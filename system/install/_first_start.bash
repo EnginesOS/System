@@ -116,5 +116,6 @@ echo "smtp Started" &>>/tmp/first_start.log
   	/opt/engines/bin/engines service mgmt create &>>/tmp/first_start.log
   	echo "mgmt Started" &>>/tmp/first_start.log
   fi
+ crontab  /opt/engines/system/updates/src/etc/crontab 
  
- touch /opt//opt/engines/bin/engines/run/system/flags/first_start_complete
+ touch /opt/engines/bin/engines/run/system/flags/first_start_complete
