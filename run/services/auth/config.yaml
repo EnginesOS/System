@@ -6,7 +6,7 @@ conf_self_start: true
 publisher_namespace: EnginesSystem
 type_path: auth
 last_error: 
-memory: '16'
+memory: '96'
 hostname: auth
 domain_name: 
 environments: []
