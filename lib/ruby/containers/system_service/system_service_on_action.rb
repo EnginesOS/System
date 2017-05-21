@@ -25,6 +25,7 @@ module SystemSystemOnAction
 
   def on_stop(what)
     SystemDebug.debug(SystemDebug.container_events, :ONStop_CALLED, what)
+    return unless what == 'die'
     @had_out_memory = @out_of_memory
     @out_of_memory = false
     save_state

@@ -110,9 +110,11 @@ module TaskAtHand
       STDERR.puts('IT DIED')
       on_stop('die')
     when 'kill'
-      on_stop('die')
+      STDERR.puts('IT KILL')
+      on_stop('kill')
     when 'stop'
       on_stop('stop')
+      STDERR.puts('IT STOP')
     when 'pause'
       on_stop('pause')
     when 'oom'
