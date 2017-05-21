@@ -1,6 +1,7 @@
 module SystemSystemOnAction
   def on_start(what)
     @container_mutex.synchronize {
+      @stop_reason = nil
       set_running_user
       SystemDebug.debug(SystemDebug.container_events,:ONSTART_CALLED,what)
       @out_of_memory = false
@@ -25,6 +26,7 @@ module SystemSystemOnAction
 
   def on_stop(what)
     SystemDebug.debug(SystemDebug.container_events, :ONStop_CALLED, what)
+    @stop_reason = what if @stop_reason.nil?
     return unless what == 'die'
     @had_out_memory = @out_of_memory
     @out_of_memory = false
