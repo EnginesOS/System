@@ -33,11 +33,11 @@ echo "Registry Started">>/tmp/first_start.log
 
 
 /opt/engines/bin/system_service.rb system destroy &>>/tmp/first_start.log
-/opt/engines/bin/system_service.rb system wait_for stop 12
+/opt/engines/bin/system_service.rb system wait_for destroy 20
 echo "System Destroyed" &>>/tmp/first_start.log
 
 /opt/engines/bin/system_service.rb system create &>>/tmp/first_start.log
-/opt/engines/bin/system_service.rb system wait_for create 12
+/opt/engines/bin/system_service.rb system wait_for create 20
 echo "System Created" &>>/tmp/first_start.log
 
 /opt/engines/bin/system_service.rb system start &>>/tmp/first_start.log
@@ -115,11 +115,11 @@ opt/engines/bin/engines service ftp restart &>>/tmp/first_start.log
 /opt/engines/bin/engines service smtp wait_for_startup 20
 echo "smtp Started" &>>/tmp/first_start.log
 
-/opt/engines/system/scripts/update/run_update_engines_system_software.sh &>>/tmp/first_start.log
+#/opt/engines/system/scripts/update/run_update_engines_system_software.sh &>>/tmp/first_start.log
  
  if test -f /opt/engines/run/system/flags/install_mgmt
   then
-  	/opt/engines/bin/engines service mgmt create &>>/tmp/first_start.log
+  	/opt/engines/bin/engines service mgmt create &>>/tmp/first_start.log  	
   	/opt/engines/bin/engines service mgmt wait_for_startup 180 
   	echo "mgmt Started" &>>/tmp/first_start.log
   	echo Management is now at https://$lan_ip:10443/ or https://${ext_ip}:10443/  &>>/tmp/first_start.log 

@@ -5,8 +5,9 @@ begin
 
   require 'sinatra'
   require 'sinatra/streaming'
-#  require 'json'
+  #  require 'json'
   require 'yajl'
+  require 'ffi_yajl'
   require '/opt/engines/lib/ruby/system/system_debug.rb'
   require '/opt/engines/lib/ruby/system/deal_with_json.rb'
   require '/opt/engines/lib/ruby/api/public/engines_api/engines_api.rb'
@@ -16,7 +17,6 @@ begin
 
   require 'objspace'
   require 'warden'
-  require 'ffi_yajl'
 
   class Application < Sinatra::Base
     @events_s = nil
@@ -28,7 +28,7 @@ begin
   ObjectSpace.trace_object_allocations_start
   core_api = EnginesCore.new
   @events_stream = nil
- $engines_api = PublicApi.new(core_api)
+  $engines_api = PublicApi.new(core_api)
   STDERR.puts('CREATED ENGINES API +++++++++++++++++++++++++++++++++++++++++++')
   File.open('/engines/var/run/flags/startup_complete', 'w') {}
   @@last_error = ''
@@ -51,7 +51,7 @@ begin
     false
   rescue
     false
- 
+
   end
 
   def sql_lite_database
@@ -65,14 +65,12 @@ begin
   require_relative 'api/routes.rb'
 
   def post_params(request)
-
     r = request.env['rack.input'].read
-   
-      return {} if r.nil?
+    return {} if r.nil?
     json_parser.parse(r)
-      rescue StandardError => e
-      STDERR.puts(' POST Parse Error ' + e.to_s + ' on ' + r.to_s)
-      {}      
+  rescue StandardError => e
+    STDERR.puts(' POST Parse Error ' + e.to_s + ' on ' + r.to_s)
+    {}
   end
 
 rescue StandardError => e

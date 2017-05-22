@@ -124,7 +124,6 @@ def parse_xcon_response(resp)
   return if r.nil?
   r.strip!
   return r if resp.headers['Content-Type'] == 'plain/text'
-  #r = deal_with_json(r)
   r = json_parser.parse(r)
   r = r[:BooleanResult] if r.is_a?(Hash) && r.key?(:BooleanResult)
   r
@@ -138,7 +137,6 @@ def error_result_exception(resp)
     error_mesg: 'Route Not Found',
     params: resp.body
   }) if resp.headers.nil? || resp.headers['Content-Type'] != 'application/json'
-  # r = deal_with_json(resp.body)
   begin
     r = json_parser.parse(resp.body)
   rescue

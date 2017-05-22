@@ -18,7 +18,6 @@ class SystemRegistryClient < ErrorsApi
   require_relative 'errors/engines_registry_client_errors.rb'
   require_relative 'errors/engines_registry_error.rb'
   require_relative 'engines_registry_utils.rb'
- # require '/opt/engines/lib/ruby/system/deal_with_json.rb'
   require '/opt/engines/lib/ruby/exceptions/registry_exception.rb'
 
   include EnginesRegistryUtils
