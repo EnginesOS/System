@@ -78,6 +78,7 @@ class ManagedContainer < Container
     @status[:progress_to] = task_at_hand
     @status[:error] = false
     @status[:oom] = @out_of_memory
+    @status[:why_stop] = @stop_reason
     @status[:had_oom] = @had_out_memory
     @status[:restart_required] = restart_required?
     @status[:error] = true if @status[:state] != @status[:set_state] && @status[:progress_to].nil?

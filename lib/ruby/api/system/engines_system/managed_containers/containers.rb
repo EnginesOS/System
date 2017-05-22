@@ -14,8 +14,10 @@ module Containers
     #    #  last_error = container.last_error
     #    # save_last_result_and_error(container)
     #    container.last_result = ''
-
+    vb = container.volume_service_builder
+    container.volume_service_builder=(false)
     serialized_object = YAML.dump(container)
+    container.volume_service_builder=(vb)
     state_dir = container_state_dir(container)
     FileUtils.mkdir_p(state_dir)  if Dir.exist?(state_dir) == false
     statefile = state_dir + '/running.yaml'
@@ -63,8 +65,8 @@ module Containers
 
   def get_service_actionator(container, action)
     actionators = load_service_actionators(container)
-    STDERR.puts(' ACITONATORS ' + actionators.to_s)
-    STDERR.puts('LOOKING 4 ' +action.to_s)
+   # STDERR.puts(' ACITONATORS ' + actionators.to_s)
+   # STDERR.puts('LOOKING 4 ' +action.to_s)
     actionators[action]
   end
   
@@ -80,7 +82,7 @@ module Containers
   def get_engine_actionator(container, action)
     actionators = load_engine_actionators(container)
     SystemDebug.debug(SystemDebug.actions, container, actionators[action]) #.to_sym])
-    STDERR.puts('ACRTION ' + action.to_s)
+  #  STDERR.puts('ACRTION ' + action.to_s)
     actionators[action]
   end
 

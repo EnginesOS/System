@@ -4,10 +4,10 @@ module SmAttachStaticServices
   def load_and_attach_static_services(dirname, container)
     container.environments  = [] if container.environments.nil?
     curr_service_file = ''
-    SystemDebug.debug(SystemDebug.services,:Globbing,container.container_name,dirname + '/*.yaml')
+    SystemDebug.debug(SystemDebug.services, :Globbing, container.container_name, dirname + '/*.yaml')
     Dir.glob(dirname + '/*.yaml').each do |service_file|
       curr_service_file = service_file
-      SystemDebug.debug(SystemDebug.services,:Service_dile,container.container_name,curr_service_file)
+      SystemDebug.debug(SystemDebug.services,:Service_dile, container.container_name, curr_service_file)
 
       yaml = File.read(service_file)
       service_hash = YAML::load(yaml)
@@ -19,7 +19,7 @@ module SmAttachStaticServices
         templater =  Templater.new(@core_api.system_value_access, container)
         templater.proccess_templated_service_hash(service_hash)
         SystemDebug.debug(SystemDebug.services, :templated_service_hash, service_hash)
-
+        SystemDebug.debug(SystemDebug.services, 'is registreed ', system_registry_client.service_is_registered?(service_hash)) 
         if service_hash[:persistent] == false || system_registry_client.service_is_registered?(service_hash) == false
           SystemDebug.debug(SystemDebug.services,  :creating_static, service_hash)
           create_and_register_service(service_hash)

@@ -33,7 +33,6 @@ class ManagedEngine < ManagedContainer
     @volume_service_builder = build_params[:service_builder]
     expire_engine_info
     save_state # no running.yaml throws a no such container so save so others can use
-
   end
 
   attr_reader :plugins_path, :extract_plugins, :web_root
@@ -50,10 +49,10 @@ class ManagedEngine < ManagedContainer
 
   def on_start(event_hash)
     set_running_user
-    STDERR.puts('ONSTART_CALLED' + container_name.to_s + ';' + event_hash.to_s)
+  #  STDERR.puts('ONSTART_CALLED' + container_name.to_s + ';' + event_hash.to_s)
     #    STDERR.puts('ONS TART @service_builder.run_volume_builder  is a' +  @volume_service_builder.to_s )
     unless @volume_service_builder.nil? || @volume_service_builder.is_a?(FalseClass)
-      STDERR.puts('Running @service_builder.run_volume_builder ' )
+    #  STDERR.puts('Running @service_builder.run_volume_builder ' )
       @volume_service_builder.run_volume_builder(self, @cont_userid)
       @volume_service_builder = false
     end

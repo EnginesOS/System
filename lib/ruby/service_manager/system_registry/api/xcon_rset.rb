@@ -12,7 +12,7 @@ def headers (content_type = nil)
 end
 
 def connection(content_type = nil)
-  STDERR.puts('open connec' )
+ # STDERR.puts('open connec' )
   @connection ||=  Excon.new(base_url,
   debug_request:  true,
   debug_response: true,
@@ -27,7 +27,7 @@ rescue StandardError => e
 end
 
 def reopen_connection
-  STDERR.puts('re open connec' )
+ # STDERR.puts('re open connec' )
   @connection.reset
   @connection = nil
   @connection = connection
@@ -46,7 +46,7 @@ def rest_get(path,params = nil, time_out = 120, _headers = nil)
   SystemDebug.debug(SystemDebug.registry,'GET ', path.to_s + '?' + q.to_s)
   lheaders = headers
   lheaders.merge(_headers) unless _headers == nil
-  lheaders.delete('Content-Type' ) if  q.nil?
+  lheaders.delete('Content-Type' ) if q.nil?
   req = {time_out: time_out, method: :get, path: @route_prefix + path.to_s, headers: lheaders }
   req[:query] = q unless q.nil?
   r = connection.request(req)
@@ -124,7 +124,6 @@ def parse_xcon_response(resp)
   return if r.nil?
   r.strip!
   return r if resp.headers['Content-Type'] == 'plain/text'
-  #r = deal_with_json(r)
   r = json_parser.parse(r)
   r = r[:BooleanResult] if r.is_a?(Hash) && r.key?(:BooleanResult)
   r
@@ -138,7 +137,6 @@ def error_result_exception(resp)
     error_mesg: 'Route Not Found',
     params: resp.body
   }) if resp.headers.nil? || resp.headers['Content-Type'] != 'application/json'
-  # r = deal_with_json(resp.body)
   begin
     r = json_parser.parse(resp.body)
   rescue

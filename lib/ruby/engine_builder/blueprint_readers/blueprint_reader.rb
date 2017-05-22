@@ -386,7 +386,6 @@ class BluePrintReader
       type = 'tcp' if type.is_a?(String) == false || type.size == 0
       type = 'both' if type == 'TCP and UDP'
       type.downcase!
-
       # FIXME: when public ports supported
       SystemDebug.debug(SystemDebug.builder, 'Port ' + name + ':' + portnum.to_s + ':' + external.to_s + '/' + type)
       # @mapped_ports.push(WorkPort.work_port_hash(name, portnum, external, false, type))
@@ -424,7 +423,6 @@ class BluePrintReader
           if entered_value.nil? == false && entered_value.length != 0 # FIXME: needs to be removed
             value = entered_value
             SystemDebug.debug(SystemDebug.builder, :value_set, value)
-
           end
           log_build_output('Merged supplied Environment Variable:' + name.to_s)
         else

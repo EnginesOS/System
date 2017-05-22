@@ -34,8 +34,9 @@ module Services
 
   private
 
-  def get_services_by_type(type='service')
+  def get_services_by_type(type = 'service')
     services = _list_services(type)
+    return [] unless services.is_a?(Array)
     ret_val = []
     services.each do |service_name |
       begin

@@ -14,7 +14,7 @@ module ManagedUtilityOnAction
       start_container
     end
     
-    def on_stop
+    def on_stop(event_hash)
       @had_out_memory = @out_of_memory
       @out_of_memory = false
       save_state

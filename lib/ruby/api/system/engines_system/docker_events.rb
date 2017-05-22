@@ -5,7 +5,7 @@ module DockerEvents
   def create_event_listener
     @event_listener_lock = true
     @docker_event_listener = start_docker_event_listener
-    @docker_event_listener.add_event_listener([self,'container_event'.to_sym],16) unless $PROGRAM_NAME.end_with?('system_service.rb')
+    @docker_event_listener.add_event_listener([self, 'container_event'.to_sym], 16) unless $PROGRAM_NAME.end_with?('system_service.rb')
   end
 
   class WaitForContainerListener
@@ -19,9 +19,9 @@ module DockerEvents
     end
 
     def read_event(event_hash)
-      STDERR.puts(' WAIT FOR GOT ' + event_hash.to_s )
+     # STDERR.puts(' WAIT FOR GOT ' + event_hash.to_s )
       if event_hash[:status] == @what
-        STDERR.puts('writing OK')
+     #   STDERR.puts('writing OK')
         @pipe << 'ok'
         @pipe.close
       end
@@ -36,20 +36,21 @@ module DockerEvents
       event_listener = WaitForContainerListener.new(what, pipe_out)
       add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.container_name)
       unless is_aready?(what, container.read_state)
-        STDERR.puts(' Wait on READ ' + container.container_name.to_s + ' for ' + what )
+       # STDERR.puts(' Wait on READ ' + container.container_name.to_s + ' for ' + what )
         begin
-       d =  pipe_in.read      
-       puts.STDERR.puts(' READ ' + d.to_s)
+          d =  pipe_in.read
+      #    puts.STDERR.puts(' READ ' + d.to_s)
         rescue
         end
       end
-      pipe_in.close     
+      pipe_in.close
       rm_event_listener(event_listener)
     end
     true
   rescue Timeout::Error
     STDERR.puts(' Wait for timeout on ' + container.container_name.to_s + ' for ' + what )
     rm_event_listener(event_listener) unless event_listener.nil?
+    event_listener = nil
     pipe_in.close
     pipe_out.close
     false
@@ -63,8 +64,8 @@ module DockerEvents
   end
 
   def is_aready?(what, statein)
-    STDERR.puts(' What ' + what.to_s )
-    STDERR.puts(' statein ' + statein.to_s )
+  #  STDERR.puts(' What ' + what.to_s )
+  #  STDERR.puts(' statein ' + statein.to_s )
     return true if what == statein
     return true if what == 'stop' && statein == 'stopped'
     return true if what == 'start' && statein == 'running'
@@ -107,8 +108,8 @@ module DockerEvents
     inform_container(event_hash[:container_name], event_hash[:container_type], event_hash[:status], event_hash)
 
     case event_hash[:status]
-    when 'start','oom','stop','pause','unpause','create','destroy','killed','die'
-      inform_container_tracking(event_hash[:container_name], event_hash[:container_type], event_hash[:status])    
+    when 'start','oom','stop','pause','unpause','create','destroy','kill','die'
+      inform_container_tracking(event_hash[:container_name], event_hash[:container_type], event_hash[:status])
     else
       SystemDebug.debug(SystemDebug.container_events, 'Untracked event', event_hash.to_s )
     end
@@ -167,6 +168,7 @@ module DockerEvents
   end
 
   def start_docker_event_listener(listeners = nil)
+    STDERR.puts( ' Start EVENT LISTENER THREAD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
     @docker_event_listener = DockerEventWatcher.new(self, listeners)
     @event_listener_thread.exit unless @event_listener_thread.nil?
     @event_listener_thread = Thread.new do
@@ -175,6 +177,7 @@ module DockerEvents
     end
     @docker_event_listener
   rescue StandardError =>e
+    STDERR.puts(e.class.name)
     log_exception(e)
   end
 
