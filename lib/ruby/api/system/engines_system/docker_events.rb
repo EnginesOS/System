@@ -176,6 +176,7 @@ module DockerEvents
     end
     @docker_event_listener
   rescue StandardError =>e
+    STDERR.puts(e.class.name)
     log_exception(e)
   end
 
