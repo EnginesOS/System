@@ -22,33 +22,32 @@ class DockerEventWatcher  < ErrorsApi
       return  if  @event_mask == 0 || mask & @event_mask == 0
       hash[:state] = state_from_status( hash[:status] )
       SystemDebug.debug(SystemDebug.container_events,'fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
-      return @object.method(@method).call(hash)
+      @object.method(@method).call(hash)
     rescue StandardError => e
       SystemDebug.debug(SystemDebug.container_events,e.to_s + ':' +  e.backtrace.to_s)
-      return e
+       e
     end
 
     def state_from_status(status)
       case status
       when 'die'
-        return 'stopped'
+        status = 'stopped'
       when 'stop'
-        return 'stopped'
+        status = 'stopped'
       when 'run'
-        return 'running'
+        status = 'running'
       when 'start'
-        return 'running'
+        status = 'running'
       when 'pause'
-        return 'paused'
+        status = 'paused'
       when 'unpause'
-        return 'running'
+        status = 'running'
       when 'delete'
-        return 'nocontainer'
+        status = 'nocontainer'
       when 'destroy'
-        return 'nocontainer'
-      else
-        return status
+        status = 'nocontainer'
       end
+      status
     end
 
   end
