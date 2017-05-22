@@ -50,6 +50,7 @@ module DockerEvents
   rescue Timeout::Error
     STDERR.puts(' Wait for timeout on ' + container.container_name.to_s + ' for ' + what )
     rm_event_listener(event_listener) unless event_listener.nil?
+    event_listener = nil
     pipe_in.close
     pipe_out.close
     false

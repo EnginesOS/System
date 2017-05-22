@@ -8,6 +8,7 @@ module ServiceApiReaders
         thr.join
       end
     rescue Timeout::Error
+    thr.kill
       raise EnginesException.new(error_hash('Timeout on running reader', cmd))
     end
     raise EnginesException.new(error_hash('Invalid Reader Result', result)) unless result.is_a?(Hash)
