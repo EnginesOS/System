@@ -14,8 +14,10 @@ module Containers
     #    #  last_error = container.last_error
     #    # save_last_result_and_error(container)
     #    container.last_result = ''
-   # container.volume_service_builder=(false)
+    vb = container.volume_service_builder
+    container.volume_service_builder=(false)
     serialized_object = YAML.dump(container)
+    container.volume_service_builder=(vb)
     state_dir = container_state_dir(container)
     FileUtils.mkdir_p(state_dir)  if Dir.exist?(state_dir) == false
     statefile = state_dir + '/running.yaml'
