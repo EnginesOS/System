@@ -33,7 +33,6 @@ class ManagedEngine < ManagedContainer
     @volume_service_builder = build_params[:service_builder]
     expire_engine_info
     save_state # no running.yaml throws a no such container so save so others can use
-
   end
 
   attr_reader :plugins_path, :extract_plugins, :web_root
