@@ -1,7 +1,8 @@
 module ManagedContainerApi
   def save_state()
     return false unless has_api?
-    c = self.dup
+    c = self.dup 
+    c.volume_service_builder = false
     @container_api.save_container(c)
   end
 
