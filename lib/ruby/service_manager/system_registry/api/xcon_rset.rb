@@ -12,7 +12,7 @@ def headers (content_type = nil)
 end
 
 def connection(content_type = nil)
-  STDERR.puts('open connec' )
+ # STDERR.puts('open connec' )
   @connection ||=  Excon.new(base_url,
   debug_request:  true,
   debug_response: true,
@@ -27,7 +27,7 @@ rescue StandardError => e
 end
 
 def reopen_connection
-  STDERR.puts('re open connec' )
+ # STDERR.puts('re open connec' )
   @connection.reset
   @connection = nil
   @connection = connection

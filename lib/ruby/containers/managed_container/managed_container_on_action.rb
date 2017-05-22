@@ -3,7 +3,7 @@ module ManagedContainerOnAction
     @container_mutex.synchronize {
       @stop_reason = nil    
       set_running_user
-      STDERR.puts('ONSTART_CALLED' + container_name.to_s + ';' + what.to_s)
+     # STDERR.puts('ONSTART_CALLED' + container_name.to_s + ';' + what.to_s)
       SystemDebug.debug(SystemDebug.container_events,:ONSTART_CALLED, what)
       @out_of_memory = false
       if @consumer_less

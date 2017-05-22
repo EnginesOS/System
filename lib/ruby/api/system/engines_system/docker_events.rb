@@ -19,9 +19,9 @@ module DockerEvents
     end
 
     def read_event(event_hash)
-      STDERR.puts(' WAIT FOR GOT ' + event_hash.to_s )
+     # STDERR.puts(' WAIT FOR GOT ' + event_hash.to_s )
       if event_hash[:status] == @what
-        STDERR.puts('writing OK')
+     #   STDERR.puts('writing OK')
         @pipe << 'ok'
         @pipe.close
       end
@@ -36,10 +36,10 @@ module DockerEvents
       event_listener = WaitForContainerListener.new(what, pipe_out)
       add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.container_name)
       unless is_aready?(what, container.read_state)
-        STDERR.puts(' Wait on READ ' + container.container_name.to_s + ' for ' + what )
+       # STDERR.puts(' Wait on READ ' + container.container_name.to_s + ' for ' + what )
         begin
           d =  pipe_in.read
-          puts.STDERR.puts(' READ ' + d.to_s)
+      #    puts.STDERR.puts(' READ ' + d.to_s)
         rescue
         end
       end
@@ -64,8 +64,8 @@ module DockerEvents
   end
 
   def is_aready?(what, statein)
-    STDERR.puts(' What ' + what.to_s )
-    STDERR.puts(' statein ' + statein.to_s )
+  #  STDERR.puts(' What ' + what.to_s )
+  #  STDERR.puts(' statein ' + statein.to_s )
     return true if what == statein
     return true if what == 'stop' && statein == 'stopped'
     return true if what == 'start' && statein == 'running'

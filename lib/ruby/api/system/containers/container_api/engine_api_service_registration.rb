@@ -2,7 +2,7 @@ module EngineApiServiceRegistration
   def register_with_dns(container)
     service_hash = create_dns_service_hash(container)
     begin
-      STDERR.puts('DNS REG' + service_hash.to_s)
+     # STDERR.puts('DNS REG' + service_hash.to_s)
       engines_core.create_and_register_service(service_hash)
     end
   end
