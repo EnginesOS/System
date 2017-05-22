@@ -149,7 +149,7 @@ class DockerEventWatcher  < ErrorsApi
     @system.start_docker_event_listener(@event_listeners)
   ensure
     STDERR.puts('CLOSED docker Event Stream @event_listeners ENSURE')
-    @system.start_docker_event_listener(@event_listeners)    
+   # @system.start_docker_event_listener(@event_listeners)    
   end
 
   def add_event_listener(listener, event_mask = nil, container_name = nil)
