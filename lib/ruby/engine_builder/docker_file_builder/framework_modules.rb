@@ -11,10 +11,10 @@ module FrameworkModules
   end
 
   def write_pear_modules
-    return true  if @blueprint_reader.pear_modules.nil? 
+    return true  if @blueprint_reader.pear_modules.nil?
     write_line('#Pear modules ')
     log_build_output('Dockerfile:Pear modules ')
-    return true  if @blueprint_reader.pear_modules.nil? 
+    return true  if @blueprint_reader.pear_modules.nil?
     if @blueprint_reader.pear_modules.count > 0
       @blueprint_reader.pear_modules.each do |pear_mod|
         pear_mods += pear_mod + ' ' unless pear_mod.nil
@@ -24,7 +24,7 @@ module FrameworkModules
   end
 
   def write_pecl_modules
-    return true  if @blueprint_reader.pecl_modules.nil? 
+    return true  if @blueprint_reader.pecl_modules.nil?
     write_line('#Pecl modules ')
     log_build_output('Dockerfile:Pecl modules ')
     if @blueprint_reader.pecl_modules.count > 0
@@ -34,7 +34,7 @@ module FrameworkModules
       end
       write_build_script('install_pecl_mods.sh  ' + pecl_mods)
     end
-    
+
   end
 
   def write_apache_modules
@@ -45,7 +45,7 @@ module FrameworkModules
       ap_modules_str += ap_module + ' ' unless ap_module.nil?
     end
     write_line('RUN a2enmod ' + ap_modules_str)
-  
+
   end
 
   def write_npm_modules
@@ -58,17 +58,17 @@ module FrameworkModules
     write_build_script('install_npm_modules.sh ' +  npm_modules_str)
 
   end
-  
+
   def write_lua_modules
     return if @blueprint_reader.lua_modules.nil? || @blueprint_reader.lua_modules.count < 1
     write_line('#Lua Modules')
-   lua_modules_str = ''
+    lua_modules_str = ''
     @blueprint_reader.lua_modules.each do |lua_module|
       lua_modules_str += lua_module + ' ' unless lua_module.nil?
     end
-    write_build_script('install_lua_modules.sh ' +  lua_modules_str)   
+    write_build_script('install_lua_modules.sh ' +  lua_modules_str)
   end
-  
+
   def write_php_modules
     return if @blueprint_reader.php_modules.nil? || @blueprint_reader.php_modules.count < 1
     write_line('#PHP Modules')
@@ -77,6 +77,5 @@ module FrameworkModules
       php_modules_str += php_module + ' ' unless php_module.nil?
     end
     write_build_script('install_php_modules.sh ' +  php_modules_str)
-   
   end
 end
