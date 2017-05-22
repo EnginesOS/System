@@ -144,7 +144,7 @@ class DockerEventWatcher  < ErrorsApi
   rescue StandardError => e
     log_exception(e)
     log_error_mesg('Restarting docker Event Stream post exception ')
-    STDERR.puts('EXCEPTION docker Event Stream post exception due to ' + e.to_s)
+    STDERR.puts('EXCEPTION docker Event Stream post exception due to ' + e.to_s + ' ' + e.class.name)
     client.finish unless client.nil?
     @system.start_docker_event_listener(@event_listeners)
   ensure
