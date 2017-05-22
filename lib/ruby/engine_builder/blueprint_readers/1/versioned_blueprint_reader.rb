@@ -8,10 +8,10 @@ class VersionedBlueprintReader < BluePrintReader
                 
   def read_scripts
     return unless @blueprint[:software].key?(:scripts)
-    @custom_start_script =  @blueprint[:software][:scripts][:start][:content].gsub(/\r/, '') if @blueprint[:software][:scripts].key?(:start)
-    @custom_stop_script =  @blueprint[:software][:scripts][:shutdown][:content].gsub(/\r/, '') if @blueprint[:software][:scripts].key?(:shutdown)
-    @custom_install_script =  @blueprint[:software][:scripts][:install][:content].gsub(/\r/, '') if @blueprint[:software][:scripts].key?(:install)
-    @custom_post_install_script =  @blueprint[:software][:scripts][:post_install][:content].gsub(/\r/, '') if  @blueprint[:software][:scripts].key?(:post_install)
+    @custom_start_script =  @blueprint[:software][:scripts][:start][:content].gsub(/\r/, '') if @blueprint[:software][:scripts].key?(:start) &&  @blueprint[:software][:scripts][:start].key?(:content)
+    @custom_stop_script =  @blueprint[:software][:scripts][:shutdown][:content].gsub(/\r/, '') if @blueprint[:software][:scripts].key?(:shutdown) &&  @blueprint[:software][:scripts][:shutdown].key?(:content)
+    @custom_install_script =  @blueprint[:software][:scripts][:install][:content].gsub(/\r/, '') if @blueprint[:software][:scripts].key?(:install) &&  @blueprint[:software][:scripts][:install].key?(:content)
+    @custom_post_install_script =  @blueprint[:software][:scripts][:post_install][:content].gsub(/\r/, '') if  @blueprint[:software][:scripts].key?(:post_install) &&  @blueprint[:software][:scripts][:post_install].key?(:content)
   end
    
   def read_sed_strings
