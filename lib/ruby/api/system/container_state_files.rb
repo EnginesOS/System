@@ -69,7 +69,7 @@ class ContainerStateFiles
       FileUtils.chown(nil, 'containers',key_dir)
       FileUtils.chmod('g+w', key_dir)
     end
-    STDERR.puts(' key dir 2 ' + key_dir.to_s)
+    #STDERR.puts(' key dir 2 ' + key_dir.to_s)
     true
   end
 

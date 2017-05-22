@@ -12,5 +12,5 @@ engines ALL = (root) NOPASSWD: /opt/engines/system/scripts/ssh/sudo/_rotate_cont
 engines ALL = (root) NOPASSWD: /opt/engines/system/scripts/system/sudo/_rotate_system_log.sh
 engines ALL = (root) NOPASSWD: /opt/engines/system/scripts/ssh/sudo/post_system_update_boot.sh
 engines ALL = (root) NOPASSWD: /opt/engines/bin/restart_docker_and_engines.sh
-
+engines ALL = (root) NOPASSWD: /opt/engines/system/scripts/ssh/sudo/_clear_service_dir.sh
 #NEW

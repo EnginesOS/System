@@ -1,8 +1,9 @@
 module ManagedContainerOnAction
   def on_start(what)
     @container_mutex.synchronize {
+      @stop_reason = nil    
       set_running_user
-      STDERR.puts('ONSTART_CALLED' + container_name.to_s + ';' + what.to_s)
+     # STDERR.puts('ONSTART_CALLED' + container_name.to_s + ';' + what.to_s)
       SystemDebug.debug(SystemDebug.container_events,:ONSTART_CALLED, what)
       @out_of_memory = false
       if @consumer_less
@@ -41,7 +42,8 @@ module ManagedContainerOnAction
   end
 
   def on_stop(what)
-    SystemDebug.debug(SystemDebug.container_events, :ONStop_CALLED, what)
+    SystemDebug.debug(SystemDebug.container_events, :ONStop_CALLED, what)    
+    @stop_reason = what if @stop_reason.nil?
     return unless what == 'die'
     @had_out_memory = @out_of_memory
     @out_of_memory = false

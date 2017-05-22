@@ -44,10 +44,10 @@ post '/v0/containers/engine/:engine_name/action/:action_name' do
     cparams = assemble_params(p_params, [:engine_name], :all)
     action = engines_api.get_engine_actionator(engine, params[:action_name])
     r = engines_api.perform_engine_action(engine, params[:action_name], cparams)
-    STDERR.puts('action ret type '+ action[:return_type])
-    STDERR.puts('action ret ' + r.to_s )
+   # STDERR.puts('action ret type '+ action[:return_type])
+   # STDERR.puts('action ret ' + r.to_s )
    return return_json(r) if action[:return_type] == 'json'
-     STDERR.puts('action ret ' + r.to_s )
+  #   STDERR.puts('action ret ' + r.to_s )
     return_text(r)  
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)

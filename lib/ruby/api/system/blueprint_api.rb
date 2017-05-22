@@ -15,7 +15,6 @@ class BlueprintApi < ErrorsApi
  
   def self.load_blueprint_file(blueprint_file_name)
     blueprint_file = File.open(blueprint_file_name, 'r')
-   # json_hash = deal_with_json(blueprint_file.read)
     parser = Yajl::Parser.new
     json_hash = parser.parse(blueprint_file.read)
     blueprint_file.close

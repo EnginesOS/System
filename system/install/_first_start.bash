@@ -8,7 +8,7 @@ if test -f /opt/engines/bin/engines/run/system/flags/first_start_complete
 DOCKER_IP=`ifconfig  docker0  |grep "inet " |cut -f2 -d: |awk {'print $1}'`
 export DOCKER_IP
 
-/opt/engines/system/scripts/system/clear_service_dir.sh firstrun
+/opt/engines/system/scripts/system/clear_service_dir.sh firstrun &>>/tmp/first_start.log
 
 /opt/engines/bin/system_service.rb system stop  >/tmp/first_start.log
 /opt/engines/bin/system_service.rb system wait_for stop 20
@@ -33,11 +33,11 @@ echo "Registry Started">>/tmp/first_start.log
 
 
 /opt/engines/bin/system_service.rb system destroy &>>/tmp/first_start.log
-/opt/engines/bin/system_service.rb system wait_for stop 12
+/opt/engines/bin/system_service.rb system wait_for destroy 20
 echo "System Destroyed" &>>/tmp/first_start.log
 
 /opt/engines/bin/system_service.rb system create &>>/tmp/first_start.log
-/opt/engines/bin/system_service.rb system wait_for create 12
+/opt/engines/bin/system_service.rb system wait_for create 20
 echo "System Created" &>>/tmp/first_start.log
 
 /opt/engines/bin/system_service.rb system start &>>/tmp/first_start.log
@@ -106,16 +106,26 @@ echo "ftpd Started" &>>/tmp/first_start.log
 /opt/engines/bin/engines service nginx wait_for_startup 20
 echo "nginx Started" &>>/tmp/first_start.log
 
+echo Restart ftp
+opt/engines/bin/engines service ftp restart &>>/tmp/first_start.log
+
+
+
 /opt/engines/bin/engines service smtp create &>>/tmp/first_start.log
 /opt/engines/bin/engines service smtp wait_for_startup 20
 echo "smtp Started" &>>/tmp/first_start.log
 
-
+#/opt/engines/system/scripts/update/run_update_engines_system_software.sh &>>/tmp/first_start.log
+ 
  if test -f /opt/engines/run/system/flags/install_mgmt
   then
-  	/opt/engines/bin/engines service mgmt create &>>/tmp/first_start.log
+  	/opt/engines/bin/engines service mgmt create &>>/tmp/first_start.log  	
+  	/opt/engines/bin/engines service mgmt wait_for_startup 180 
   	echo "mgmt Started" &>>/tmp/first_start.log
+  	echo Management is now at https://$lan_ip:10443/ or https://${ext_ip}:10443/  &>>/tmp/first_start.log 
   fi
- crontab  /opt/engines/system/updates/src/etc/crontab 
- 
+ crontab  /opt/engines/system/updates/src/etc/crontab  &>>/tmp/first_start.log 
+ echo sudo su -l engines  &>>/tmp/first_start.log
+ echo to use the engines management tool on the commandline &>>/tmp/first_start.log 
  touch /opt/engines/bin/engines/run/system/flags/first_start_complete
+ echo Installation complete Ctl-c to exit &>>/tmp/first_start.log

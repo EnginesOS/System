@@ -1,5 +1,6 @@
 module EngineApiExportImport
   require "base64"
+  #FixMe shoudl be based on size and guesstimaed connection speed etc
   @@export_timeout = 120
 
   def export_service_data(container, service_hash, stream = nil)
@@ -21,6 +22,7 @@ module EngineApiExportImport
         raise EnginesException.new(error_hash("failed to export ",service_hash, result))
       end
     rescue Timeout::Error
+      thr.kill
       raise EnginesException.new(error_hash('Export Timeout on Running Action ', params.to_s,cmd))
     end
   end

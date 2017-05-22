@@ -187,7 +187,7 @@ module DockerApiCreateOptions
     # top_level['Domainame'] = container_domain_name(container)# unless container_domain_name(container).nil?
  
     set_entry_point(container, top_level)
-    STDERR.puts(' CREATE ' + top_level.to_json)
+    # STDERR.puts(' CREATE ' + top_level.to_json)
     top_level
   end
 

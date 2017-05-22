@@ -51,7 +51,7 @@ class SystemStatus
     param_file = File.new(SystemConfig.BuildFailedFile, 'w+')
     param_file.puts(params.to_yaml)
     param_file.close
-    STDERR.puts('build failed writen')
+ #   STDERR.puts('build failed writen')
     File.delete(SystemConfig.BuildRunningParamsFile) if File.exist?(SystemConfig.BuildRunningParamsFile)
   end
 
