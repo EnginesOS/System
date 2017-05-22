@@ -21,7 +21,7 @@ module PublicApiSystemControlEnginesSystem
   def dump_threads
     r = ''
     Thread.list.each do |thread|
-      r += thread.to_s + ' '
+      r += thread.to_s + ' ' + thread.status + "\n"
   end
   r
   end
