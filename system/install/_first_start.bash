@@ -8,7 +8,7 @@ if test -f /opt/engines/bin/engines/run/system/flags/first_start_complete
 DOCKER_IP=`ifconfig  docker0  |grep "inet " |cut -f2 -d: |awk {'print $1}'`
 export DOCKER_IP
 
-/opt/engines/system/scripts/system/clear_service_dir.sh firstrun
+/opt/engines/system/scripts/system/clear_service_dir.sh firstrun &>>/tmp/first_start.log
 
 /opt/engines/bin/system_service.rb system stop  >/tmp/first_start.log
 /opt/engines/bin/system_service.rb system wait_for stop 20
