@@ -35,7 +35,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
             begin
               bytes = events_stream.rd.read_nonblock(2048)
               next if bytes.nil?
-              bytes.strip!
+              #bytes.strip!
               if out.closed?
                 has_data = finialise_events_stream(events_stream, timer)
                 STDERR.puts('OUT IS CLOSED but have ' + jason_event.to_s)
