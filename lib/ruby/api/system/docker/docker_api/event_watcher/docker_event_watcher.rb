@@ -124,7 +124,7 @@ class DockerEventWatcher  < ErrorsApi
           log_error_mesg('Chunk error on docker Event Stream _' + chunk.to_s + '_')
           log_exception(e,chunk)
           json_part = ''
-          nextlog_exeception
+          next #log_exeception
           # @system.start_docker_event_listener
         end
       end
@@ -144,8 +144,8 @@ class DockerEventWatcher  < ErrorsApi
     STDERR.puts('EXCEPTION docker Event Stream post exception due to ' + e.to_s + ' ' + e.class.name)
     client.finish unless client.nil?
     @system.start_docker_event_listener(@event_listeners)
-  ensure
-    SystemDebug.debug(SystemDebug.container_events,'CLOSED docker Event Stream @event_listeners ENSURE')
+#  ensure
+  #  SystemDebug.debug(SystemDebug.container_events,'CLOSED docker Event Stream @event_listeners ENSURE')
     # @system.start_docker_event_listener(@event_listeners)
   end
 
