@@ -25,7 +25,7 @@ class DockerEventWatcher  < ErrorsApi
       @object.method(@method).call(hash)
     rescue StandardError => e
       SystemDebug.debug(SystemDebug.container_events,e.to_s + ':' +  e.backtrace.to_s)
-      e
+      raise e
     end
 
     def state_from_status(status)
