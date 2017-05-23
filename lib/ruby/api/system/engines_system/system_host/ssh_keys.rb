@@ -6,7 +6,9 @@ module SshKeys
   end
 
   def update_public_key(key)
-    run_server_script('update_system_access', key)
+    r = run_server_script('update_system_access', key)
+    return false unless r[:result] == 0
+    true
   end
 
   def regen_system_ssh_key
