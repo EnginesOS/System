@@ -7,9 +7,9 @@
 res=`/opt/engines/bin/system_service.rb system wait_for_startup 45`
  if test $res = 'false'
   then
-   res = 127
+   res=127
   else
-   res 0
+   res=0
   fi
 
  res=$?
