@@ -112,7 +112,7 @@ class DockerEventWatcher  < ErrorsApi
           parser = Yajl::Parser.new({:symbolize_keys => true}) if parser.nil?
           #hash = deal_with_json(chunk)
           hash = parser.parse(chunk)
-          STDERR.puts('DOCKER SENT ARRAY') if hash.is_a?(Array)
+          STDERR.puts('DOCKER SENT ARRAY') if hash.is_a?(Array) && ! hash.is_a?(Hash)
           next unless hash.is_a?(Hash)
           #  STDERR.puts('trigger' + hash.to_s )
           next if hash.key?(:from) && hash[:from].length >= 64
