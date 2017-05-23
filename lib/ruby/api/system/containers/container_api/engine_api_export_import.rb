@@ -45,7 +45,7 @@ module EngineApiExportImport
     SystemDebug.debug(SystemDebug.export_import, :import_service, params,service_params)
     begin
       result = {}
-      Timeout.timeout(@@export_timeout) do
+      Timeout.timeout(@@export_timeout) do       
         thr = Thread.new { result = @engines_core.exec_in_container(params) }
         thr.join
         SystemDebug.debug(SystemDebug.export_import, :import_service,'result ' ,result.to_s)
@@ -53,6 +53,7 @@ module EngineApiExportImport
         raise EnginesException.new(error_hash("failed to import ",service_params,params, result))
       end
     rescue Timeout::Error
+      thr.kill
       raise EnginesException.new(error_hash('Import Timeout on Running Action ', cmd))
     end
   end
