@@ -21,7 +21,7 @@ update:
 remove:
 	engines system domains remove testdomain.com | engines_test_expects bool true
 	echo -n " Verify remove:"
-	engines system domains view testdomain.com | engines_test_expects text null
+	engines system domains view testdomain.com | engines_test_expects text '{}'
 
 	
 	
