@@ -30,8 +30,8 @@ class BuilderPublic
   end
 
   def http_protocol
-    return @builder.build_params[:http_protocol].gsub(/_.*/,'') if @builder.build_params[:http_protocol].include?('_')
-    return @builder.build_params[:http_protocol]
+    @builder.build_params[:http_protocol].gsub!(/_.*/,'') if @builder.build_params[:http_protocol].include?('_')
+     @builder.build_params[:http_protocol]
   end
 
   def fqdn
@@ -39,7 +39,7 @@ class BuilderPublic
   end
 
   def domain
-    return domain_name
+    domain_name
   end
 
   def web_port
