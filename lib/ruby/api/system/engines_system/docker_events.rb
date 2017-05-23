@@ -69,7 +69,8 @@ module DockerEvents
     return true if what == statein
     return true if what == 'stop' && statein == 'stopped'
     return true if what == 'start' && statein == 'running'
-    return true if what == 'unpause' && statein != 'paused'
+    return true if what == 'unpause' && statein == 'running'
+    return true if what == 'pause' && statein == 'paused'
     return true if what == 'create' && statein != 'nocontainer'
     return true if what == 'destroy' && statein == 'nocontainer'
     false

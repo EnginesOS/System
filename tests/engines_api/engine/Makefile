@@ -43,7 +43,7 @@ pause:
 unpause:
 	engines engine testengine unpause | engines_test_expects bool true
 	echo -n " Checking:"
-	engines engine testengine wait_for unpause 20  | eengines_test_expects  bool true
+	engines engine testengine wait_for unpause 20  | engines_test_expects  bool true
 	
 template:
 	engines engine testengine template '_Engines_Builder(engine_name)' | engines_test_expects text is testengine
