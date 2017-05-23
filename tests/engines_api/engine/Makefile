@@ -82,7 +82,7 @@ properties_memory:
 	echo -n " Checking:"
 	engines engine testengine state  | engines_test_expects text is running
 	echo -n " Checking:"
-	engines engine testengine state  | engines_test_expects text 577
+	engines engine testengine   | engines_test_expects json memory 177
 	engines engine testengine stop | engines_test_expects bool true
 	cat revert_runtime_properties_memory.json | engines engine testengine properties runtime | engines_test_expects bool true
 	
