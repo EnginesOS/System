@@ -96,10 +96,10 @@ module TaskAtHand
  #   log_exception(e)
   end
 
-  def process_container_event(event, event_hash)
+  def process_container_event(event_hash)
     expire_engine_info
-    SystemDebug.debug(SystemDebug.container_events, :PROCESS_CONTAINER_vents, @container_name, event, event_hash)
-    case event
+    SystemDebug.debug(SystemDebug.container_events, :PROCESS_CONTAINER_vents, @container_name,  event_hash)
+    case event_hash[:status]
     when 'create'
       on_create(event_hash)
     when 'start'
@@ -108,7 +108,7 @@ module TaskAtHand
       on_start('unpause')
     when 'die'
      # STDERR.puts('IT DIED')
-      on_stop('die')
+      on_stop('die', event_hash[:exitCode])
     when 'kill'
     #  STDERR.puts('IT KILL')
       on_stop('kill')

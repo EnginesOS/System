@@ -46,6 +46,7 @@ module SmEngineServices
         remove_from_managed_service(service_hash)
       rescue StandardError => e
         STDERR.puts('removing_services excepti' + e.to_s + ':' + e.backtrace.to_s)
+        next
       end
     end
     true
@@ -80,6 +81,7 @@ module SmEngineServices
         register_non_persistent_service(service_hash)
         SystemDebug.debug(SystemDebug.services,:register_non_persistent,service_hash)
       rescue
+        next
       end
     end
     true

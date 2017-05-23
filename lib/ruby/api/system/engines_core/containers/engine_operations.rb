@@ -51,6 +51,7 @@ module EnginesOperations
     delete_engine_and_services(params)
     builder = BuildController.new(self)
     @build_thread = Thread.new { engine.reinstall_engine(builder) }
+    @build_thread[:name] = 'reinstall engine'
     return true if @build_thread.alive?
     raise EnginesException.new(error_hash(params[:engine_name], 'Build Failed to start'))
   end
