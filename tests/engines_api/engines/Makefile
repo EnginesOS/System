@@ -34,11 +34,13 @@ build_check:
 	engines engine_builder status |engines_test_expects json is_building true
 	engines engine_builder params |engines_test_expects json 
 	echo -n :follow
-	engines engine_builder follow |engines_test_expects  regex "*Build Successful*"
+	engines engine_builder follow >/tmp/test_bld.out
+	 cat /tmp/test_bld.out |engines_test_expects  regex "*Build Successful*"
 	echo -n :last build Params
 	engines engine_builder last_build params  |engines_test_expects json
 	echo -n :last build log
-	engines engine_builder last_build log  | engines_test_expects regex "*Build Successful*"
+	engines engine_builder last_build log  >/tmp/test_bld.out
+	 cat /tmp/test_bld.out | engines_test_expects regex "*Build Successful*"
 	
 
 	
