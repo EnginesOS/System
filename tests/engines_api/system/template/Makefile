@@ -44,9 +44,7 @@ mgmt_host:
 	engines system template '_Engines_System(mgmt_host)' |engines_test_expects regex ".*\..*\..*\."
 	
 release:
-	release=`cat /opt/engines/release`
-	engines system template '_Engines_System(release)' |engines_test_expects text $(release)
+	engines system template '_Engines_System(release)' |engines_test_expects text `cat /opt/engines/release`
 	
 system_hostname:
-	host_name=`engines system config hostname`
-	engines system template '_Engines_System(system_hostname)' |engines_test_expects text $(host_name)
+	engines system template '_Engines_System(system_hostname)' |engines_test_expects text `engines system config hostname`
