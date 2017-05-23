@@ -16,6 +16,7 @@ module EngineApiExportImport
       Timeout.timeout(@@export_timeout) do
         thr = Thread.new { result = @engines_core.exec_in_container(params) }
         #SystemUtils.execute_command(cmd, true) }
+        thr[:name] = 'export:' + params.to_s
         thr.join
         SystemDebug.debug(SystemDebug.export_import, :export_service,service_hash,'result code =' ,result[:result],params)
         return result[:stdout] if result[:result] == 0
@@ -48,6 +49,7 @@ module EngineApiExportImport
       Timeout.timeout(@@export_timeout) do       
         thr = Thread.new { result = @engines_core.exec_in_container(params) }
         thr.join
+        thr[:name] = 'import:' + params.to_s
         SystemDebug.debug(SystemDebug.export_import, :import_service,'result ' ,result.to_s)
         return true if result[:result] == 0
         raise EnginesException.new(error_hash("failed to import ",service_params,params, result))

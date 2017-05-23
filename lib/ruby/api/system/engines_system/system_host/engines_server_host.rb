@@ -9,6 +9,7 @@ module EnginesServerHost
 
   def restart_engines_system_service
     res = Thread.new { run_server_script('restart_system_service') }
+      res[:name] = 'restart_system_service'
     # FIXME: check a status flag after sudo side post ssh run ie when we know it's definititly happenging
     return true if res.status == 'run'
     false
@@ -16,6 +17,7 @@ module EnginesServerHost
 
   def recreate_engines_system_service
     res = Thread.new { run_server_script('recreate_system_service') }
+      res[:name] = 'recreate_system_service'
     # FIXME: check a status flag after sudo side post ssh run ie when we know it's definititly happenging
     return true if res.status == 'run'
     false

@@ -171,8 +171,7 @@ module DockerEvents
     STDERR.puts( ' Start EVENT LISTENER THREAD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
     @docker_event_listener = DockerEventWatcher.new(self, listeners)
     @event_listener_thread.exit unless @event_listener_thread.nil?
-    @event_listener_thread = Thread.new do
-      
+    @event_listener_thread = Thread.new do      
       @docker_event_listener.start
       STDERR.puts( ' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
     end

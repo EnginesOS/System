@@ -5,6 +5,7 @@ module DockerUtils
     lambda do |socket|
 
       write_thread = Thread.start do
+        write_thread[:name] = 'docker_stream_writer'
         begin
           unless @stream_reader.i_stream.nil?
             IO.copy_stream(@stream_reader.i_stream,socket) unless @stream_reader.i_stream.eof?
@@ -31,6 +32,7 @@ module DockerUtils
         end
       end
       read_thread = Thread.start do
+        read_thread[:name] = 'docker_stream_reader'
         begin
           while chunk = socket.readpartial(16384)
             if  @stream_reader.o_stream.nil?
