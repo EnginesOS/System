@@ -36,7 +36,7 @@ module SmEngineServices
       container_type: engine.ctype
     })
     rescue StandardError => e
-      STDERR.puts('NO services ' +  engine.container_name.to_s + ';' + e.to_s + ':' + e.backtrace.to_s)
+      STDERR.puts('NO services ' +  engine.container_name.to_s + ';' + e.to_s)
       return # No services
     end
 
@@ -45,7 +45,7 @@ module SmEngineServices
         system_registry_client.remove_from_services_registry(service_hash)
         remove_from_managed_service(service_hash)
       rescue StandardError => e
-        STDERR.puts('removing_services excepti' + e.to_s + ':' + e.backtrace.to_s)
+        STDERR.puts('removing_services excepti' + service_hash.to_s + ':' + e.to_s)
         next
       end
     end
