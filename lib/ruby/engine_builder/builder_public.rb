@@ -8,7 +8,7 @@ class BuilderPublic
   def engine_name
     @builder.build_params[:engine_name]
   end
-  
+
   def environments
     @builder.environments
   end
@@ -30,8 +30,9 @@ class BuilderPublic
   end
 
   def http_protocol
+    return nil unless @builder.build_params.key?(:http_protocol) || ! @builder.build_params[:http_protocol].nil?
     @builder.build_params[:http_protocol].gsub!(/_.*/,'') if @builder.build_params[:http_protocol].include?('_')
-     @builder.build_params[:http_protocol]
+    @builder.build_params[:http_protocol]
   end
 
   def fqdn
@@ -66,11 +67,11 @@ class BuilderPublic
     @builder.blueprint
   end
 
-#  def logs_container
-#    # FIXME     
-#    # @builder.wait_for_startup(4)
-#    @builder.running_logs
-#  end
+  #  def logs_container
+  #    # FIXME
+  #    # @builder.wait_for_startup(4)
+  #    @builder.running_logs
+  #  end
 
   def data_gid
     @builder.data_gid
@@ -88,8 +89,8 @@ class BuilderPublic
   def memory
     @builder.build_params[:memory]
   end
-#  require 'hmac-md5'
-#  def md5_sum(password)
-#    HMAC::MD5.new(password).digest
-#  end
+  #  require 'hmac-md5'
+  #  def md5_sum(password)
+  #    HMAC::MD5.new(password).digest
+  #  end
 end
