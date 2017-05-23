@@ -132,7 +132,7 @@ logs:
 ps:
 	engines engine testengine ps | engines_test_expects json Processes
 	
-halt
+halt:
 	engines engine testengine halt | engines_test_expects bool true
 	echo -n " Checking:"
 	engines engine testengine status | engines_test_expects json state stopped
