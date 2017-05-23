@@ -23,27 +23,27 @@ state:
 stop:
 	engines engine testengine stop  |engines_test_expects bool true
 	echo -n " Checking:"
-	engines engine testengine state | engines_test_expects text is stopped
+	engines engine testengine wait_for stop 20 | engines_test_expects bool true
 	
 start:
 	engines engine testengine start | engines_test_expects bool true
 	echo -n " Checking:"
-	engines engine testengine state | engines_test_expects text is running
+	engines engine testengine wait_for start 34| engines_test_expects  bool true
 	
 restart:
 	engines engine testengine restart | engines_test_expects bool true
 	echo -n " Checking:"
-	engines engine testengine state | engines_test_expects text is running
+	engines engine testengine wait_for start 34 | engines_test_expects  bool true
 		
 pause:
 	engines engine testengine pause | engines_test_expects bool true
 	echo -n " Checking:"
-	engines engine testengine state | engines_test_expects text is paused
+	engines engine testengine wait_for pause 20 | engines_test_expects  bool true
 	
 unpause:
 	engines engine testengine unpause | engines_test_expects bool true
 	echo -n " Checking:"
-	engines engine testengine state | engines_test_expects text is running
+	engines engine testengine wait_for unpause 20  | eengines_test_expects  bool true
 	
 template:
 	engines engine testengine template '_Engines_Builder(engine_name)' | engines_test_expects text is testengine
@@ -72,6 +72,7 @@ properties_run:
 	
 properties_memory:
 	engines engine testengine stop | engines_test_expects bool true
+	engines engine testengine wait_for stop 20 | engines_test_expects bool true
 	cat runtime_properties_memory.json | engines engine testengine properties runtime | engines_test_expects bool true
 	echo -n " Checking:"
 	engines engine testengine state  | engines_test_expects text is running
@@ -82,6 +83,7 @@ properties_memory:
 	
 properties_env:
 	engines engine testengine stop | engines_test_expects bool true
+	engines engine testengine wait_for stop 20 | engines_test_expects bool true
 	cat runtime_properties_env.json | engines engine testengine properties runtime | engines_test_expects bool true
 	echo -n " Checking:"
 	engines engine testengine state  | engines_test_expects text is running
@@ -90,31 +92,42 @@ properties_env:
 
 destroy:
 	engines engine testengine stop  | engines_test_expects bool true
+	engines engine testengine wait_for stop 20 | engines_test_expects bool true
 	engines engine testengine destroy  | engines_test_expects bool true
+	engines engine testengine wait_for destroy 20 | engines_test_expects bool true
 	echo -n " Checking:"
 	engines engine testengine state | engines_test_expects text is nocontainer
 
 create:
 	engines engine testengine stop  | engines_test_expects bool true
+	engines engine testengine wait_for stop 20 | engines_test_expects bool true
 	engines engine testengine destroy  | engines_test_expects bool true
+	engines engine testengine wait_for destroy 20 | engines_test_expects bool true
 	engines engine testengine create  | engines_test_expects bool true
+	engines engine testengine wait_for start 20 | engines_test_expects bool true
 	echo -n " Checking:"
 	engines engine testengine state | engines_test_expects text is running
 	
 recreate:
 	engines engine testengine stop | engines_test_expects bool true
+	engines engine testengine wait_for stop 20 | engines_test_expects bool true
 	engines engine testengine recreate | engines_test_expects bool true
+	engines engine testengine wait_for start 20 | engines_test_expects bool true
 	echo -n " Checking:"
 	engines engine testengine state | engines_test_expects text is running
 	
 reinstall:
 	engines engine testengine stop  | engines_test_expects bool true
+	engines engine testengine wait_for stop 20 | engines_test_expects bool true
 	engines engine testengine destroy  | engines_test_expects bool true
+	engines engine testengine wait_for destroy 20 | engines_test_expects bool true
 	engines engine testengine reinstall | engines_test_expects bool true
+	engines engine testengine wait_for start 30 | engines_test_expects bool true
+	
 	echo -n " Checking:"
 	engines engine testengine state | engines_test_expects text is running
 	
-engine:stop
+engine:
 	engines engine testengine  | engines_test_expects json memory
 	
 status:
@@ -135,12 +148,15 @@ ps:
 halt:
 	engines engine testengine halt | engines_test_expects bool true
 	echo -n " Checking:"
+	engines engine testengine wait_for stop 20 | engines_test_expects bool true
 	engines engine testengine status | engines_test_expects json state stopped
 	engines engine testengine status | engines_test_expects json set_state running
 	
 delete:
 	engines engine testengine stop  | engines_test_expects bool true
+	engines engine testengine wait_for stop 20 | engines_test_expects bool true
 	engines engine testengine destroy  | engines_test_expects bool true
+	engines engine testengine wait_for destroy 20 | engines_test_expects bool true
 	engines engine testengine delete none | engines_test_expects bool true
 	echo -n " Checking:"
 	engines engine testengine state | engines_test_expects json error_object,error_mesg
