@@ -19,6 +19,7 @@ cron:
 	
 prepare:
 	cat build_test_engine_minimum_args.json  | engines engines build  |engines_test_expects bool true
+	engines engine_builder follow >/tmp/test_bld.out
 	engines engine testengine wait_for_startup 180
 
 state:
