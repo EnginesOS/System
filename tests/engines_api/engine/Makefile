@@ -160,3 +160,10 @@ delete:
 	engines engine testengine delete none | engines_test_expects bool true
 	echo -n " Checking:"
 	engines engine testengine state | engines_test_expects json error_object,error_mesg
+	
+clean:
+	engines engine testengine stop
+	engines engine testengine wait_for stop 20
+	engines engine testengine destroy
+	engines engine testengine wait_for destroy 30
+	engines engine testengine delete all
