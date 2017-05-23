@@ -9,7 +9,7 @@ class EnginesException < StandardError
   def initialize(hash)
 
     if hash.is_a?(Hash)
-      STDERR.puts('Exception from  json' + hash.to_s)
+     # STDERR.puts('Exception from  json' + hash.to_s)
       hash[:error_type] = :error unless hash.key?(:error_type)
       @level = hash[:error_type].to_sym
       @params = hash[:params]
