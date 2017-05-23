@@ -1,1 +1,1 @@
-{"repository_url":"https://github.com/EnginesBlueprints/phpmyadmin.git","engine_name":"testengine","host_name":"testengine","memory":"128","domain_name":"test.com"}
+{"repository_url":"https://github.com/EnginesBlueprints/phpmyadmin.git","http_protocol": "https","engine_name":"testengine","host_name":"testengine","memory":"128","domain_name":"test.com"}
