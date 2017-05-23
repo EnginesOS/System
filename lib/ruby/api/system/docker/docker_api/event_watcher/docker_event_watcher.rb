@@ -118,8 +118,10 @@ class DockerEventWatcher  < ErrorsApi
           SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
           # next
           #end
-         t = Thread.new {trigger(hash)}
-         t[:name] = 'trigger'
+         #t =
+         Thread.new { Thread.current[:trigger] 
+           trigger(hash)}
+       #  t[:name] = 'trigger'
         rescue StandardError => e
           STDERR.puts('EXCEPTION docker Event Stream as close ' + e.to_s)
           log_error_mesg('Chunk error on docker Event Stream _' + chunk.to_s + '_')
