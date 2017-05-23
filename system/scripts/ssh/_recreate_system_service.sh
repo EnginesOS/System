@@ -8,6 +8,8 @@
 
   
   /opt/engines/bin/system_service.rb system create
+  /opt/engines/bin/system_service.rb system wait_for create 20
+  /opt/engines/bin/system_service.rb system start
 res=`/opt/engines/bin/system_service.rb system wait_for_startup 45`
  if test $res = 'false'
   then
