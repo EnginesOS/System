@@ -1,7 +1,7 @@
 TESTS=state stop start pause unpause engine status blueprint websites logs ps template mem_stat net_stat\
 	blueprint build_report properties_net properties_run\
 	actions services \
-	halt start restart create recreate destroy delete reinstall 
+	halt start restart create recreate destroy reinstall delete 
  
 	
 tests:
@@ -117,13 +117,8 @@ recreate:
 	engines engine testengine state | engines_test_expects text is running
 	
 reinstall:
-	engines engine testengine stop  | engines_test_expects bool true
-	engines engine testengine wait_for stop 20 | engines_test_expects bool true
-	engines engine testengine destroy  | engines_test_expects bool true
-	engines engine testengine wait_for destroy 20 | engines_test_expects bool true
 	engines engine testengine reinstall | engines_test_expects bool true
-	engines engine testengine wait_for start 30 | engines_test_expects bool true
-	
+	engines engine testengine wait_for start 30 | engines_test_expects bool true	
 	echo -n " Checking:"
 	engines engine testengine state | engines_test_expects text is running
 	
