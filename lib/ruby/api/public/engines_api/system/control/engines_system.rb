@@ -21,7 +21,9 @@ module PublicApiSystemControlEnginesSystem
   def dump_threads
     r = ''
     Thread.list.each do |thread|
-      r += thread.to_s + ' ' + thread.status + "\n"
+      r += thread.to_s + ' ' + thread.status
+      r += thread[:name] if thread.key?(:name)
+      r += "\n"
   end
   r
   end

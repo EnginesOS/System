@@ -19,9 +19,9 @@ module DockerEvents
     end
 
     def read_event(event_hash)
-     # STDERR.puts(' WAIT FOR GOT ' + event_hash.to_s )
+      # STDERR.puts(' WAIT FOR GOT ' + event_hash.to_s )
       if event_hash[:status] == @what
-     #   STDERR.puts('writing OK')
+        #   STDERR.puts('writing OK')
         @pipe << 'ok'
         @pipe.close
       end
@@ -36,10 +36,10 @@ module DockerEvents
       event_listener = WaitForContainerListener.new(what, pipe_out)
       add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.container_name)
       unless is_aready?(what, container.read_state)
-       # STDERR.puts(' Wait on READ ' + container.container_name.to_s + ' for ' + what )
+        # STDERR.puts(' Wait on READ ' + container.container_name.to_s + ' for ' + what )
         begin
           d =  pipe_in.read
-      #    puts.STDERR.puts(' READ ' + d.to_s)
+          #    puts.STDERR.puts(' READ ' + d.to_s)
         rescue
         end
       end
@@ -64,8 +64,8 @@ module DockerEvents
   end
 
   def is_aready?(what, statein)
-  #  STDERR.puts(' What ' + what.to_s )
-  #  STDERR.puts(' statein ' + statein.to_s )
+    #  STDERR.puts(' What ' + what.to_s )
+    #  STDERR.puts(' statein ' + statein.to_s )
     return true if what == statein
     return true if what == 'stop' && statein == 'stopped'
     return true if what == 'start' && statein == 'running'
@@ -105,7 +105,7 @@ module DockerEvents
       return no_container(event_hash) unless File.exist?(SystemConfig.RunDir + '/' + event_hash[:container_type] + 's/' + event_hash[:container_name] + '/running.yaml')
     end
 
-    inform_container(event_hash[:container_name], event_hash[:container_type], event_hash[:status], event_hash)
+    inform_container(event_hash)
 
     case event_hash[:status]
     when 'start','oom','stop','pause','unpause','create','destroy','kill','die'
@@ -143,7 +143,7 @@ module DockerEvents
         c = loadManagedEngine(container_name)
       when 'service'
         c = loadManagedService(container_name)
-      when   'utility'
+      when  'utility'
         c = loadManagedUtility(container_name)
       else
         log_error_mesg('Failed to find ' + container_name.to_s +  ctype.to_s)
@@ -155,13 +155,14 @@ module DockerEvents
     log_exception(e)
   end
 
-  def inform_container(container_name, ctype, event_name, event_hash)
-    SystemDebug.debug(SystemDebug.container_events, 'recevied inform_container',container_name,event_name)
-    c = get_event_container(container_name, ctype)
+  def inform_container(event_hash)
+
+    SystemDebug.debug(SystemDebug.container_events, 'recevied inform_container', event_hash[:container_name],  event_hash[:status])
+    c = get_event_container(event_hash[:container_name], event_hash[:container_type])
     return false if c.is_a?(FalseClass)
-    SystemDebug.debug(SystemDebug.container_events, 'informing _container',container_name,event_name)
-    c.process_container_event(event_name, event_hash)
-    SystemDebug.debug(SystemDebug.container_events, 'informed _container',container_name,event_name)
+    SystemDebug.debug(SystemDebug.container_events, 'informing _container', event_hash[:container_name],  event_hash[:status])
+    c.process_container_event(event_hash)
+    SystemDebug.debug(SystemDebug.container_events, 'informed _container', event_hash[:container_name],  event_hash[:status])
     true
   rescue StandardError =>e
     log_exception(e)
@@ -175,6 +176,7 @@ module DockerEvents
       @docker_event_listener.start
       STDERR.puts( ' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
     end
+    @event_listener_thread[:name] = 'docker_event_listener'
     @docker_event_listener
   rescue StandardError =>e
     STDERR.puts(e.class.name)

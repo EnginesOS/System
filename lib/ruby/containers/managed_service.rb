@@ -4,7 +4,8 @@ require '/opt/engines/lib/ruby/containers/container.rb'
 require '/opt/engines/lib/ruby/containers/managed_container.rb'
 
 class ManagedService < ManagedContainer
-
+  require_relative 'managed_service/managed_service_api.rb'
+  include ManagedServiceApi
   require_relative 'managed_service/managed_service_configurations.rb'
   include ManagedServiceConfigurations
   require_relative 'managed_service/managed_service_consumers.rb'
