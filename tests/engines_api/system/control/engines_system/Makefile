@@ -17,7 +17,10 @@ recreate:
 	engines system status |engines_test_expects json is_rebooting false
 	
 heap_dump:
-	rm /opt/engines/run/system_services/system/run/heap.dump
+	if test -f /opt/engines/run/system_services/system/run/heap.dump
+	 then
+	    rm /opt/engines/run/system_services/system/run/heap.dump
+	  fi
 	engines system control engines_system heap_stats | engines_test_expects bool true
 	sleep 1
 	ls /opt/engines/run/system_services/system/run/heap.dump | engines_test_expects text /opt/engines/run/system_services/system/run/heap.dump
