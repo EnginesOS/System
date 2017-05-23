@@ -1,4 +1,4 @@
-TESTS=state stop start pause unpause engine status blueprint websites logs ps template mem_stat net_stat\
+TESTS=prepare state stop start pause unpause engine status blueprint websites logs ps template mem_stat net_stat\
 	blueprint build_report properties_net properties_run\
 	actions services \
 	halt start restart create recreate destroy reinstall delete 
@@ -16,6 +16,10 @@ services:
 
 cron:	
 	cd cron ; make -s tests ; cd ..
+	
+prepare:
+	cat build_test_engine_minimum_args.json  | engines engines build  |engines_test_expects bool true
+	engines engine testengine wait_for_startup 180
 
 state:
 	engines engine testengine state |engines_test_expects text is running
@@ -57,7 +61,7 @@ net_stat:
 
 		
 build_report:
-	engines engine testengine build_report | engines_test_expects text built
+	engines engine testengine build_report | engines_test_expects regex '.*testengine.*'
 	
 
 properties_net:
@@ -118,12 +122,12 @@ recreate:
 	
 reinstall:
 	engines engine testengine reinstall | engines_test_expects bool true
-	engines engine testengine wait_for start 30 | engines_test_expects bool true	
+	engines engine testengine wait_for start 120 | engines_test_expects bool true	
 	echo -n " Checking:"
 	engines engine testengine state | engines_test_expects text is running
 	
 engine:
-	engines engine testengine  | engines_test_expects json memory
+	engines engine testengine | engines_test_expects json memory
 	
 status:
 	engines engine testengine status | engines_test_expects json state

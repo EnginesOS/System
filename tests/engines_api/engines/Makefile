@@ -21,6 +21,7 @@ builder:
 	make build_plain
 	echo -n :build_gui
 	make build_gui
+	make clean
 	
 	#build_orphan
 	#build_existing
@@ -42,5 +43,10 @@ build_check:
 	engines engine_builder last_build log  >/tmp/test_bld.out
 	grep "Build Successful"  /tmp/test_bld.out | engines_test_expects regex "*Build Successful*"
 	
-
+clean:
+	engines engine testengine stop
+	engines engine testengine wait_for stop 20
+	engines engine testengine destroy
+	engines engine testengine wait_for destroy 30
+	engines engine testengine delete all
 	
