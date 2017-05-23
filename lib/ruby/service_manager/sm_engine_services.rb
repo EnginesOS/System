@@ -89,8 +89,11 @@ module SmEngineServices
 
   def remove_engine_non_persistent_services(params)
     #   STDERR.puts('remove_engine_services ' + params.to_s)
-    
+    begin
     services = get_engine_nonpersistent_services(params) # find_engine_services_hashes(params)
+    rescue
+      return nil
+    end
     return services unless services.is_a?(Array)
     #   STDERR.puts('remove_engine_services ' + services.to_s)
     services.each do |s|
@@ -102,6 +105,7 @@ module SmEngineServices
       end
     end
   end
+  
   def retrieve_cron_jobs(container)
     retrieve_engine_service_hashes({
           parent_engine: container.container_name,
