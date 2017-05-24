@@ -13,7 +13,7 @@ module ContainerControls
   end
 
   def halt_container
-    #stop_container
+    #stop_container dont want the managedcontainer stuff run
     expire_engine_info
       #  r = true
         return true if is_stopped?
