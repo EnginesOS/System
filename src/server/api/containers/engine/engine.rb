@@ -120,8 +120,11 @@ get '/v0/containers/engine/:engine_name/wait_for/:what' do
   stream do |out|
   begin
     engine = get_engine(params[:engine_name])
-    return_boolean(engine.wait_for(params[:what], 30))
+   r = engine.wait_for(params[:what], 30)
+    out << r.to_s
+    return_boolean(r)
   rescue StandardError => e
+    out << false.to_s
     send_encoded_exception(request: request, exception: e)
   end
   end
