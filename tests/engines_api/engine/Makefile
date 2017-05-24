@@ -66,10 +66,9 @@ build_report:
 	
 
 properties_net:
-	engines engine testengine stop | engines_test_expects bool true
 	cat network_properties.json | engines engine testengine properties network | engines_test_expects bool true
 	echo -n " Checking:"
-	engines engine testengine state  | engines_test_expects text is running
+	engines engine testengine websites  | engines_test_expects regex '.*newemail.test.com.au.*'
 
 properties_run:
 	make properties_memory
