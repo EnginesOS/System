@@ -132,7 +132,7 @@ end
 get '/v0/containers/engine/:engine_name/wait_for/:what/:delay' do
   begin
    engine = get_engine(params[:engine_name])
-   return_boolean(engine.wait_for(params[:what], params[:delay]))
+   return_boolean(engine.wait_for(params[:what], params[:delay].to_i))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
