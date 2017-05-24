@@ -103,7 +103,7 @@ module ManagedContainerControls
 
   def halt_container
     @container_mutex.synchronize {
-      return r unless (r = prep_task(:stop))
+      return r unless (r = prep_task(:halt))
       super
     }
   end

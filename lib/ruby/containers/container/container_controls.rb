@@ -16,7 +16,7 @@ module ContainerControls
     #stop_container dont want the managedcontainer stuff run
     expire_engine_info
       #  r = true
-        return true if is_stopped?
+        return true if is_stopped?        
         raise EnginesException.new(warning_hash("Can\'t Stop " + container_name + ' as is ' + read_state.to_s, container_name)) unless read_state == 'running'
         @container_api.stop_container(self)
       ensure
