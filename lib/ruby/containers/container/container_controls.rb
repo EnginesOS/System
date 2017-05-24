@@ -1,28 +1,38 @@
 module ContainerControls
   def start_container
     expire_engine_info
-    r = true
+   # r = true
     return true if is_running?
     raise EnginesException.new(warning_hash("Can\'t Start " + container_name + ' as is ' + read_state.to_s, container_name)) unless read_state == 'stopped'
-    r = @container_api.start_container(self)
+    #r = 
+    @container_api.start_container(self)
   ensure
     expire_engine_info
-    r
+    #r
+    false
   end
 
   def halt_container
-    stop_container
+    #stop_container
+    expire_engine_info
+      #  r = true
+        return true if is_stopped?
+        raise EnginesException.new(warning_hash("Can\'t Stop " + container_name + ' as is ' + read_state.to_s, container_name)) unless read_state == 'running'
+        @container_api.stop_container(self)
+      ensure
+        expire_engine_info
+        false
   end
 
   def stop_container
     expire_engine_info
-    r = true
+ #   r = true
     return true if is_stopped?
     raise EnginesException.new(warning_hash("Can\'t Stop " + container_name + ' as is ' + read_state.to_s, container_name)) unless read_state == 'running'
-    r = @container_api.stop_container(self)
+    @container_api.stop_container(self)
   ensure
     expire_engine_info
-    r
+    false
   end
   
   def wait_for(what, timeout = 10)
@@ -31,24 +41,28 @@ module ContainerControls
 
   def pause_container
     expire_engine_info
-    r = true
+    # r = true
     return true if is_paused?
     raise EnginesException.new(warning_hash("Can\'t Pause " + container_name + ' as is ' + read_state.to_s, container_name)) unless is_running?
-    r = @container_api.pause_container(self)
+    #r =
+    @container_api.pause_container(self)
   ensure
     expire_engine_info
-    r
+    false
+    # r
   end
 
   def unpause_container
     expire_engine_info
-    r = true
+    #r = true
     return true if is_running?
     raise EnginesException.new(warning_hash("Can\'t unpause " + container_name + ' as is ' + read_state.to_s, container_name)) unless is_paused?
-    r = @container_api.unpause_container(self)
+   # r =
+    @container_api.unpause_container(self)
   ensure
     expire_engine_info
-    r
+  #  r
+    false
   end
 
   def destroy_container() 
