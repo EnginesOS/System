@@ -85,7 +85,7 @@ rescue StandardError => e
   STDERR.puts('Failed to open base url ' + @base_url.to_s)
 end
 
-def rest_del(uri, params=nil, time_out=33)
+def rest_del(uri, params=nil, time_out=23)
 
   if params.nil?
     connection.request(:read_timeout => time_out,:method => :delete,:path => uri) #,:body => params.to_json)
