@@ -95,33 +95,36 @@ get '/v0/containers/service/:service_name/ps' do
   end
 end
 
-
-
 # @method wait_for_service_statup
 # @overload get '/v0/containers/service/:service/wait_for_statup'
-# 
+#
 # @return true|false
 # test cd /opt/engines/tests/engines_api/service ; make service wait_for_startup
 get '/v0/containers/service/:service_name/wait_for_startup/:timeout' do
-  begin
-    service = get_service(params[:service_name])
-    return_boolean(service.wait_for_startup(params[:timeout].to_i))
-  rescue StandardError => e
- send_encoded_exception(request: request, exception: e)
+  stream do |out|
+    begin
+      service = get_service(params[:service_name])
+      out << return_boolean(service.wait_for_startup(params[:timeout].to_i))
+    rescue StandardError => e
+      out <<  send_encoded_exception(request: request, exception: e)
+    end
   end
 end
 
 # @method wait_for_service
 # @overload get '/v0/containers/service/:service/wait_for/:what'
-# 
+#
 # @return true|false
 # test cd /opt/engines/tests/engines_api/service ; make service wait_for
 get '/v0/containers/service/:service_name/wait_for/:what/:timeout' do
-  begin
-    service = get_service(params[:service_name])
-    return_boolean(service.wait_for(params[:what], params[:timeout].to_i))
-  rescue StandardError => e
- send_encoded_exception(request: request, exception: e)
+  stream do |out|
+    begin
+      service = get_service(params[:service_name])
+      out << return_boolean(service.wait_for(params[:what], params[:timeout].to_i))
+    rescue StandardError => e
+      out << send_encoded_exception(request: request, exception: e)
+    end
   end
 end
+
 # @!endgroup
