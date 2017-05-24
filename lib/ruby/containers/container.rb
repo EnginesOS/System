@@ -1,5 +1,6 @@
 require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 require '/opt/engines/lib/ruby/api/system/container_state_files.rb'
+
 class Container < ErrorsApi
   require_relative 'container/container_setup.rb'
   include ContainerSetup
@@ -23,6 +24,10 @@ class Container < ErrorsApi
     container.container_api = container_api
     container.post_load
     container
+  rescue StandardError => e
+    STDERR.puts('Problem ' + e.to_s)
+    STDERR.puts('With: ' + yaml.to_s)
+    raise e
   end
 
   attr_reader :container_id,\

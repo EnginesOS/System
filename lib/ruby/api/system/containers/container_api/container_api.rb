@@ -45,6 +45,9 @@ class ContainerApi < ErrorsApi
   
   require_relative  'container_api_schedules.rb'
   include ContainerApiSchedules
+  
+  require_relative 'volume_builder.rb' 
+    include ContainerApiVolumeBuilder
 
   def initialize(_docker_api, _system_api, _engines_core)
     @docker_api = _docker_api

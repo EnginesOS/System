@@ -10,7 +10,7 @@ module ContainerCreation
     log_build_output('Creating ManagedEngine')
     @build_params[:web_port] = @web_port
     @build_params[:volumes] = @service_builder.volumes
-    @build_params[:service_builder] = @service_builder
+    @build_params[:service_builder] =  true
     @container = ManagedEngine.new(@build_params, @blueprint_reader, @core_api.container_api)
     @container.save_state # no running.yaml throws a no such container so save so others can use
     @container.save_blueprint(@blueprint)
