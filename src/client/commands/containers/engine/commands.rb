@@ -41,15 +41,13 @@ when 'wait_for'
   @route += '/' + ARGV[3] if ARGV.count > 3
   if ARGV.count > 4
     @route += '/' + ARGV[4]
-STDERR.puts(' timeout ' + ARGV[4] )
+    STDERR.puts(' timeout ' + ARGV[4] )
     perform_get(ARGV[4].to_i)
   else
     perform_get
   end
-
+  
+else
+  @route += '/' + ARGV[3] if ARGV.count > 3
+  perform_get
 end
-
-@route += '/' + ARGV[3] if ARGV.count > 3
-
-perform_get
-
