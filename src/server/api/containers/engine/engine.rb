@@ -12,7 +12,7 @@ get '/v0/containers/engine/:engine_name' do
   rescue StandardError => e
     return_json(nil)
     # FIXME: Kludge for Gui on build
-   # send_encoded_exception(request: request, exception: e)
+    # send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -113,29 +113,30 @@ get '/v0/containers/engine/:engine_name/ps' do
 end
 # @method wait_for_engine
 # @overload get '/v0/containers/engine/:engine_name/wait_for/:what'
-# 
+#
 # @return true|false
 # test cd /opt/engines/tests/engines_api/engine ; make engine wait_for
 get '/v0/containers/engine/:engine_name/wait_for/:what' do
   begin
-   engine = get_engine(params[:engine_name])
-   return_boolean(engine.wait_for(params[:what], 120))
+    engine = get_engine(params[:engine_name])
+    return_boolean(engine.wait_for(params[:what], 120))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
 end
 # @method wait_for_engine
 # @overload get '/v0/containers/engine/:engine_name/wait_for/:what'
-# 
+#
 # @return true|false
 # test cd /opt/engines/tests/engines_api/engine ; make engine wait_for
 get '/v0/containers/engine/:engine_name/wait_for/:what/:delay' do
-  begin
-   engine = get_engine(params[:engine_name])
-   return_boolean(engine.wait_for(params[:what], params[:delay].to_i))
-  rescue StandardError => e
-    send_encoded_exception(request: request, exception: e)
+  stream do |out|
+    begin
+      engine = get_engine(params[:engine_name])
+      out << return_boolean(engine.wait_for(params[:what], params[:delay].to_i))
+    rescue StandardError => e
+      send_encoded_exception(request: request, exception: e)
+    end
   end
 end
 # @!endgroup
-
