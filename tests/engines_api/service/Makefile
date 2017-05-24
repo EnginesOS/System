@@ -97,6 +97,12 @@ destroy:
 	engines service email wait_for destroy 20
 	echo -n " Checking:"
 	engines service email state | engines_test_expects text is nocontainer
+	engines service imap stop  | engines_test_expects bool true
+	engines service imap wait_for stop 45
+	engines service imap destroy  | engines_test_expects bool true
+	engines service imap wait_for destroy 20
+	echo -n " Checking:"
+	engines service imap state | engines_test_expects text is nocontainer
 	
 recreate:
 	engines service email stop  | engines_test_expects bool true
