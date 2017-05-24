@@ -98,7 +98,7 @@ rescue StandardError => e
   STDERR.puts e.backtrace.to_s
 end
 
-def rest_get(uri, params=nil, time_out=30)
+def rest_get(uri, time_out = 35 , params=nil)
 
   if params.nil?
     connection.request(:read_timeout => time_out,:method => :get,:path => uri) #,:body => params.to_json)
