@@ -101,9 +101,9 @@ end
 def rest_get(uri, time_out = 35 , params=nil)
 
   if params.nil?
-    connection.request(:read_timeout => time_out,:method => :get,:path => uri) #,:body => params.to_json)
+  connection.request({:read_timeout => time_out,:method => :get,:path => uri}) #,:body => params.to_json)
   else
-    connection.request(:read_timeout => time_out,:method => :get,:path => uri,:body => params.to_json)
+    connection.request({:read_timeout => time_out,:method => :get,:path => uri,:body => params.to_json})
   end
 rescue StandardError => e
 
