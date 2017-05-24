@@ -99,7 +99,7 @@ rescue StandardError => e
 end
 
 def rest_get(uri, time_out = 35 , params=nil)
-
+  STDERR.puts(' timeout ' + time_out.to_s)
   if params.nil?
   connection.request({:read_timeout => time_out,:method => :get,:path => uri}) #,:body => params.to_json)
   else
