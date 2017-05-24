@@ -93,15 +93,15 @@ properties_env:
 
 	
 destroy:
-	engines service email stop  | engines_test_expects text
+	engines service email stop  | engines_test_expects regex '.*'
 	engines service email wait_for stop 45 | engines_test_expects bool true
-	engines service email destroy  | engines_test_expects text
+	engines service email destroy  | engines_test_expects regex '.*'
 	engines service email wait_for destroy 20 | engines_test_expects bool true
 	echo -n " Checking:"
 	engines service email state | engines_test_expects text is nocontainer
-	engines service imap stop  | engines_test_expects text
+	engines service imap stop  | engines_test_expects regex '.*'
 	engines service imap wait_for stop 45 | engines_test_expects bool true
-	engines service imap destroy  | engines_test_expects text
+	engines service imap destroy  | engines_test_expects regex '.*'
 	engines service imap wait_for destroy 20 | engines_test_expects bool true
 	echo -n " Checking:"
 	engines service imap state | engines_test_expects text is nocontainer
