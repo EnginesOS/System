@@ -68,7 +68,7 @@ require 'yajl'
 
 
 
-def connection(read_timeout = 30, content_type = 'application/json_parser')
+def connection( content_type = 'application/json_parser')
   headers = {}
   headers['content_type'] = content_type
   headers['ACCESS_TOKEN'] = load_token
@@ -85,7 +85,7 @@ rescue StandardError => e
   STDERR.puts('Failed to open base url ' + @base_url.to_s)
 end
 
-def rest_del(uri, params=nil, time_out=30)
+def rest_del(uri, params=nil, time_out=33)
 
   if params.nil?
     connection.request(:read_timeout => time_out,:method => :delete,:path => uri) #,:body => params.to_json)
@@ -110,7 +110,7 @@ rescue StandardError => e
   STDERR.puts e.to_s + ' with path:' + uri + "\n" + 'params:' + params.to_s
   STDERR.puts e.backtrace.to_s
 end
-def rest_post(uri, params, content_type,time_out = 30 )
+def rest_post(uri, params, content_type,time_out = 44 )
 
   begin
     unless params.nil?
