@@ -113,7 +113,7 @@ recreate:
 	
 	
 create:
-	engines service create imap | engines_test_expects bool true
+	engines service  imap create | engines_test_expects bool true
 	echo -n " Checking:"
 	engines service email wait_for start 240 | engines_test_expects bool true
 	engines service imap wait_for start 140 | engines_test_expects bool true
