@@ -40,6 +40,7 @@ module EngineApiServiceRegistration
 
   def remove_nginx_service(container)
     service_hash = create_nginx_service_hash(container)
+    STDERR.puts('remove ' + service_hash.to_s)
     engines_core.dettach_service(service_hash)
   end
 
