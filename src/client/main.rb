@@ -46,7 +46,6 @@ def read_stdin_json
 end
 
 def perform_get(time_out = 34)
-  STDERR.puts(' timeout ' + time_out.to_s)
   r = rest_get(@route, time_out)
   write_response(r)
   exit

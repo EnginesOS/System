@@ -41,7 +41,6 @@ when 'wait_for'
   @route += '/' + ARGV[3] if ARGV.count > 3
   if ARGV.count > 4
     @route += '/' + ARGV[4]
-    STDERR.puts(' timeout  cmdline arg' + ARGV[4] )
     perform_get(ARGV[4].to_i + 1)
   else
     perform_get
