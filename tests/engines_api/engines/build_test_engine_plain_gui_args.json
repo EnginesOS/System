@@ -2,7 +2,7 @@
 	"engine_name": "plainguitest",
 	"host_name": "plainguitest",
 	"domain_name": "local",
-	"http_protocol": "http_https",
+	"http_protocol": "https",
 	"memory": 64,
 	"repository_url":"https://github.com/EnginesBlueprints/phpmyadmin",	
 	"variables": {

@@ -36,7 +36,7 @@ module SmEngineServices
       container_type: engine.ctype
     })
     rescue StandardError => e
-      STDERR.puts('NO services ' +  engine.container_name.to_s + ';' + e.to_s + ':' + e.backtrace.to_s)
+      STDERR.puts('NO services ' +  engine.container_name.to_s + ';' + e.to_s)
       return # No services
     end
 
@@ -45,7 +45,7 @@ module SmEngineServices
         system_registry_client.remove_from_services_registry(service_hash)
         remove_from_managed_service(service_hash)
       rescue StandardError => e
-        STDERR.puts('removing_services excepti' + e.to_s + ':' + e.backtrace.to_s)
+        STDERR.puts('removing_services excepti' + service_hash.to_s + ':' + e.to_s)
         next
       end
     end
@@ -89,8 +89,11 @@ module SmEngineServices
 
   def remove_engine_non_persistent_services(params)
     #   STDERR.puts('remove_engine_services ' + params.to_s)
-    
+    begin
     services = get_engine_nonpersistent_services(params) # find_engine_services_hashes(params)
+    rescue
+      return nil
+    end
     return services unless services.is_a?(Array)
     #   STDERR.puts('remove_engine_services ' + services.to_s)
     services.each do |s|
@@ -102,6 +105,7 @@ module SmEngineServices
       end
     end
   end
+  
   def retrieve_cron_jobs(container)
     retrieve_engine_service_hashes({
           parent_engine: container.container_name,

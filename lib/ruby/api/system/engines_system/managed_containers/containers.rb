@@ -36,7 +36,7 @@ module Containers
       ts = Time.now
     end
     unlock_container_conf_file(state_dir)
-    cache_engine( container, ts) unless cache_update_ts(container, ts)
+    cache_engine(container, ts) unless cache_update_ts(container, ts)
     true
   rescue StandardError => e
     unlock_container_conf_file(state_dir)

@@ -69,7 +69,8 @@ module DockerEvents
     return true if what == statein
     return true if what == 'stop' && statein == 'stopped'
     return true if what == 'start' && statein == 'running'
-    return true if what == 'unpause' && statein != 'paused'
+    return true if what == 'unpause' && statein == 'running'
+    return true if what == 'pause' && statein == 'paused'
     return true if what == 'create' && statein != 'nocontainer'
     return true if what == 'destroy' && statein == 'nocontainer'
     false
@@ -129,7 +130,7 @@ module DockerEvents
   def inform_container_tracking(container_name, ctype, event_name)
     SystemDebug.debug(SystemDebug.container_events, 'inform_container_tracking', container_name, ctype, event_name)
     c = get_event_container(container_name, ctype)
-    c.task_complete(event_name) unless c.is_a?(FalseClass)
+    c.task_complete(event_name) if c.is_a?(ManagedContainer)
     #   inform_container_monitor(container_name, ctype, event_name)
   rescue StandardError =>e
     log_exception(e)
@@ -159,7 +160,7 @@ module DockerEvents
 
     SystemDebug.debug(SystemDebug.container_events, 'recevied inform_container', event_hash[:container_name],  event_hash[:status])
     c = get_event_container(event_hash[:container_name], event_hash[:container_type])
-    return false if c.is_a?(FalseClass)
+    return false unless c.is_a?(ManagedContainer)
     SystemDebug.debug(SystemDebug.container_events, 'informing _container', event_hash[:container_name],  event_hash[:status])
     c.process_container_event(event_hash)
     SystemDebug.debug(SystemDebug.container_events, 'informed _container', event_hash[:container_name],  event_hash[:status])

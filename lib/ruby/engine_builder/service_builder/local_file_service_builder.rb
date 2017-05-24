@@ -1,15 +1,5 @@
 module LocalFileServiceBuilder
-  def run_volume_builder(container, username)
-    volbuilder = @core_api.loadManagedUtility('fsconfigurator')
-    result = volbuilder.execute_command(:setup_engine, {
-    volume: '/',
-    fw_user: username.to_s,
-    target: container.container_name,
-    target_container: container.container_name,
-    data_gid: container.data_gid.to_s
-  })
-    raise EngineBuilderException.new(error_hash('volbuild problem ' + result.to_s, result)) unless result[:result] == 0
-  end
+
 
   def add_file_service(service_hash)
     SystemDebug.debug(SystemDebug.builder, 'Add File Service ' + service_hash[:variables][:name].to_s + ' ' + service_hash.to_s)

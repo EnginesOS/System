@@ -142,7 +142,7 @@ end
 
 def apply_templates_to_environments
   @blueprint_reader.environments.each do |env|
-    env.value = @templater.process_templated_string(env.value)
+    env.value = @templater.process_templated_string(env.value) if env.value.is_a?(String)
   end
 
 end
