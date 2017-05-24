@@ -54,7 +54,7 @@ class ManagedEngine < ManagedContainer
     unless @volume_service_builder.nil? || @volume_service_builder.is_a?(FalseClass)
     #  STDERR.puts('Running @service_builder.run_volume_builder ' )
       @volume_service_builder.run_volume_builder(self, @cont_userid)
-      @volume_service_builder = false
+      @save_container = false
     end
     super
   end
