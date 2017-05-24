@@ -79,7 +79,6 @@ def connection(read_timeout = 30, content_type = 'application/json_parser')
   :debug_response => true,
   :ssl_verify_peer => false,
   :persistent => true,
-  :read_timeout => time_out,
   :headers => headers) if @connection.nil?
   @connection
 rescue StandardError => e
@@ -89,9 +88,9 @@ end
 def rest_del(uri, params=nil, time_out=30)
 
   if params.nil?
-    connection(time_out).request(:method => :delete,:path => uri) #,:body => params.to_json)
+    connection.request(:read_timeout => time_out,:method => :delete,:path => uri) #,:body => params.to_json)
   else
-    connection(time_out).request(:method => :delete,:path => uri,:body => params.to_json)
+    connection.request(:read_timeout => time_out,:method => :delete,:path => uri,:body => params.to_json)
   end
 rescue StandardError => e
 
@@ -102,9 +101,9 @@ end
 def rest_get(uri, params=nil, time_out=30)
 
   if params.nil?
-    connection(time_out).request(:read_timeout => time_out,:method => :get,:path => uri) #,:body => params.to_json)
+    connection.request(:read_timeout => time_out,:method => :get,:path => uri) #,:body => params.to_json)
   else
-    connection(time_out).request(:read_timeout => time_out,:method => :get,:path => uri,:body => params.to_json)
+    connection.request(:read_timeout => time_out,:method => :get,:path => uri,:body => params.to_json)
   end
 rescue StandardError => e
 
@@ -115,9 +114,9 @@ def rest_post(uri, params, content_type,time_out = 30 )
 
   begin
     unless params.nil?
-      r =  connection(time_out, content_type).request(:read_timeout => time_out,:method => :post,:path => uri, :body => params.to_json) #,:body => params.to_json)
+      r =  connection(content_type).request(:read_timeout => time_out,:method => :post,:path => uri, :body => params.to_json) #,:body => params.to_json)
     else
-      r =  connection(time_out, content_type).request(:read_timeout => time_out,:method => :post,:path => uri)
+      r =  connection(content_type).request(:read_timeout => time_out,:method => :post,:path => uri)
     end
     write_response(r)
     exit
@@ -132,13 +131,13 @@ def rest_post(uri, params, content_type,time_out = 30 )
   end
 end
 
-def rest_delete(uri, params=nil)
+def rest_delete(uri, params=nil, time_out = 20)
   # params = add_access(params)
   begin
     if params.nil?
-      r =  connection(time_out).request(:method => :delete,:path => uri) #,:body => params.to_json)
+      r =  connection.request(:read_timeout => time_out,:method => :delete,:path => uri) #,:body => params.to_json)
     else
-      r =  connection(time_out).request(:method => :delete,:path => uri,:body => params.to_json)
+      r =  connection.request(:read_timeout => time_out,:method => :delete,:path => uri,:body => params.to_json)
     end
     write_response(r)
     exit
