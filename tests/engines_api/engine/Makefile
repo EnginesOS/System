@@ -79,7 +79,7 @@ properties_memory:
 	engines engine testengine wait_for stop 20 | engines_test_expects bool true
 	cat runtime_properties_memory.json | engines engine testengine properties runtime | engines_test_expects bool true
 	echo -n " Checking:"
-	engines engine testengine state  | engines_test_expects text is running
+	engines engine testengine wait_for start 40  | engines_test_expects bool true
 	echo -n " Checking:"
 	engines engine testengine   | engines_test_expects json memory 177
 	engines engine testengine stop | engines_test_expects bool true
