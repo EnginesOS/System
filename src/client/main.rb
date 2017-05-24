@@ -45,14 +45,14 @@ def read_stdin_json
   json_parser.parse(read_stdin_data)
 end
 
-def perform_get
-  r = rest_get(@route)
+def perform_get(timeout = 30)
+  r = rest_get(@route, timeout)
   write_response(r)
   exit
 end
 
-def perform_del
-  r = rest_del(@route)
+def perform_del(timeout = 30)
+  r = rest_del(@route, timeou)
   write_response(r)
   exit
 end

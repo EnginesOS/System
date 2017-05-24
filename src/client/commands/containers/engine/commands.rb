@@ -36,7 +36,15 @@ when 'destroy'
 when 'delete'
 @route += '/' + ARGV[3] if ARGV.count > 3
    perform_delete
+   
+when 'wait_for'
+@route += '/' + ARGV[3] if ARGV.count > 3
+if ARGV.count > 4
+@route += '/' + ARGV[4]
+end 
+perform_get(ARGV[4].to_i)
 end
+
 @route += '/' + ARGV[3] if ARGV.count > 3
 
 perform_get
