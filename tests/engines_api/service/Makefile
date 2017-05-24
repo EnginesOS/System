@@ -3,7 +3,7 @@
 TESTS=state stop start pause unpause  template mem_stat net_stat\
 	  create dependacies properties_net properties_run\
 	 services consumers configurations\
-	 destroy  recreate \
+	 destroy create stop recreate \
 	 actions destroy
 
 tests:
@@ -107,11 +107,11 @@ destroy:
 	engines service imap state | engines_test_expects text is nocontainer
 	
 recreate:
-	#engines service email stop  | engines_test_expects bool true
-	#engines service email wait_for stop 45 | engines_test_expects bool true
-	engines service email recreate | engines_test_expects bool true
+	#engines service imap stop  | engines_test_expects bool true
+	#engines service imap wait_for stop 45 | engines_test_expects bool true
+	engines service imap recreate | engines_test_expects bool true
 	echo -n " Checking:"
-	engines service email wait_for start 120 | engines_test_expects bool true
+	engines service imap wait_for start 120 | engines_test_expects bool true
 	
 	
 create:
