@@ -23,25 +23,25 @@ state:
 	
 stop:
 	engines service dns stop  |engines_test_expects bool true
-	engines service email wait_for stop 25
+	engines service dns wait_for stop 25
 	echo -n " Checking:"
 	engines service dns state | engines_test_expects text is stopped
 	
 start:
 	engines service dns start | engines_test_expects bool true
-	engines service email wait_for start 25
+	engines service dns wait_for start 25
 	echo -n " Checking:"
 	engines service dns state | engines_test_expects text is running
 	
 pause:
 	engines service dns pause | engines_test_expects bool true
-	engines service email wait_for pause 25
+	engines service dns wait_for pause 25
 	echo -n " Checking:"
 	engines service dns state | engines_test_expects text is paused
 	
 unpause:
 	engines service dns unpause | engines_test_expects bool true
-	engines service email wait_for unpause 25
+	engines service dns wait_for unpause 25
 	echo -n " Checking:"
 	engines service dns state | engines_test_expects text is running
 	
