@@ -104,9 +104,9 @@ get '/v0/containers/service/:service_name/wait_for_startup/:timeout' do
   stream do |out|
     begin
       service = get_service(params[:service_name])
-      out << return_boolean(service.wait_for_startup(params[:timeout].to_i))
+      return_boolean(service.wait_for_startup(params[:timeout].to_i))
     rescue StandardError => e
-      out <<  send_encoded_exception(request: request, exception: e)
+      send_encoded_exception(request: request, exception: e)
     end
   end
 end
@@ -120,9 +120,9 @@ get '/v0/containers/service/:service_name/wait_for/:what/:timeout' do
   stream do |out|
     begin
       service = get_service(params[:service_name])
-      out << return_boolean(service.wait_for(params[:what], params[:timeout].to_i))
+      return_boolean(service.wait_for(params[:what], params[:timeout].to_i))
     rescue StandardError => e
-      out << send_encoded_exception(request: request, exception: e)
+      send_encoded_exception(request: request, exception: e)
     end
   end
 end
