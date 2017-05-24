@@ -1,6 +1,6 @@
 module ContainerApiVolumeBuilder
   def run_volume_builder(container, username)
-    volbuilder = @core_api.loadManagedUtility('fsconfigurator')
+    volbuilder = @engines_core.loadManagedUtility('fsconfigurator')
     result = volbuilder.execute_command(:setup_engine, {
     volume: '/',
     fw_user: username.to_s,
