@@ -163,7 +163,7 @@ delete:
 	
 clean:
 	engines engine testengine stop
-	engines engine testengine wait_for stop 20
+	engines engine testengine wait_for stop 15
 	engines engine testengine destroy
-	engines engine testengine wait_for destroy 30
+	engines engine testengine wait_for destroy 10
 	engines engine testengine delete all
