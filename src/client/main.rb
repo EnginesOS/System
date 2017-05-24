@@ -29,7 +29,7 @@ end
 def read_stdin_data
   stdin_data = ""
   require 'timeout'
-  status = Timeout::timeout(30) do
+  status = Timeout::timeout(63) do
     while STDIN.gets
       stdin_data += $_
     end
