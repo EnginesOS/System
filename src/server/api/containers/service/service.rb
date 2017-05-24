@@ -105,10 +105,10 @@ get '/v0/containers/service/:service_name/wait_for_startup/:timeout' do
     begin
       service = get_service(params[:service_name])
       r = service.wait_for_startup(params[:timeout].to_i)
-      out << r.to_s
+      out << r.to_s unless out.closed?
       return_boolean(r)
     rescue StandardError => e
-      out << false.to_s
+      out << false.to_s unless out.closed?
       send_encoded_exception(request: request, exception: e)
     end
   end
@@ -124,10 +124,10 @@ get '/v0/containers/service/:service_name/wait_for/:what/:timeout' do
     begin
       service = get_service(params[:service_name])
         r = service.wait_for(params[:what], params[:timeout].to_i)
-      out << r.to_s
+      out << r.to_s unless out.closed?
       return_boolean(r)
     rescue StandardError => e
-      out << false.to_s
+      out << false.to_s unless out.closed?
       send_encoded_exception(request: request, exception: e)
     end
   end

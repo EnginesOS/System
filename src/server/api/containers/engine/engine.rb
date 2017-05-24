@@ -121,10 +121,10 @@ get '/v0/containers/engine/:engine_name/wait_for/:what' do
   begin
     engine = get_engine(params[:engine_name])
    r = engine.wait_for(params[:what], 30)
-    out << r.to_s
+    out << r.to_s unless out.closed?
     return_boolean(r)
   rescue StandardError => e
-    out << false.to_s
+    out << false.to_s unless out.closed?
     send_encoded_exception(request: request, exception: e)
   end
   end
@@ -139,10 +139,10 @@ get '/v0/containers/engine/:engine_name/wait_for/:what/:delay' do
     begin
       engine = get_engine(params[:engine_name])
       r = engine.wait_for(params[:what], params[:delay].to_i)
-       out << r.to_s
+       out << r.to_s unless out.closed?
       return_boolean(r)
     rescue StandardError => e
-      out << false.to_s
+      out << false.to_s unless out.closed?
       send_encoded_exception(request: request, exception: e)
     end
   end
