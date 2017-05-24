@@ -53,7 +53,9 @@ module DockerEvents
     event_listener = nil
     pipe_in.close
     pipe_out.close
+    return true if is_aready?(what, container.read_state) #check for last sec call
     false
+    
   rescue StandardError => e
     rm_event_listener(event_listener)
     STDERR.puts(e.to_s)
