@@ -123,7 +123,7 @@ get '/v0/containers/service/:service_name/wait_for/:what/:timeout' do
   stream do |out|
     begin
       service = get_service(params[:service_name])
-        r = service.wait_for(params[:what], params[:timeout].to_i)
+      r = service.wait_for(params[:what], params[:timeout].to_i)
       out << r.to_s unless out.closed?
       return_boolean(r)
     rescue StandardError => e
@@ -141,7 +141,7 @@ get '/v0/containers/service/:service_name/wait_for/:what' do
   stream do |out|
     begin
       service = get_service(params[:service_name])
-        r = service.wait_for(params[:what], 30)
+      r = service.wait_for(params[:what], 30)
       out << r.to_s unless out.closed?
       return_boolean(r)
     rescue StandardError => e
