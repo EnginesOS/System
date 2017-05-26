@@ -1,8 +1,8 @@
 class TaskTimeouts
   @@default_task_timeout =  20
   @@task_timeouts = {}
-  @@task_timeouts[:stop]= 30
-  @@task_timeouts[:start]= 30
+  @@task_timeouts[:stop]= 28
+  @@task_timeouts[:start]= 32
   @@task_timeouts[:restart]= 60
   @@task_timeouts[:recreate]= 120
   @@task_timeouts[:create]= 120
@@ -10,7 +10,7 @@ class TaskTimeouts
   @@task_timeouts[:rebuild]= 200
   @@task_timeouts[:pause]= 20
   @@task_timeouts[:unpause]= 20
-  @@task_timeouts[:destroy]= 30
+  @@task_timeouts[:destroy]= 36
   @@task_timeouts[:delete]= 40
   @@task_timeouts[:running]= 40
         

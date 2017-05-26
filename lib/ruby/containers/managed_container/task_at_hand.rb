@@ -46,7 +46,8 @@ module TaskAtHand
       return desired_state(step, final_state, curr_state) if curr_state== 'stopped'
     when :pause
       return desired_state(step, final_state, curr_state) if curr_state== 'running'
-
+    when :halt
+      return true
     when :restart
       if curr_state == 'running'
         @steps = [:stop,:start]
@@ -92,8 +93,8 @@ module TaskAtHand
     return log_error_mesg(@container_name + ' not in matching state want _' + tasks_final_state(action).to_s + '_but in ' + curr_state.class.name + ' ',curr_state )
 
     # Perhaps ?return clear_task_at_hand
- # rescue StandardError => e
- #   log_exception(e)
+    # rescue StandardError => e
+    #   log_exception(e)
   end
 
   def process_container_event(event_hash)
@@ -107,22 +108,22 @@ module TaskAtHand
     when 'unpause'
       on_start('unpause')
     when 'die'
-     # STDERR.puts('IT DIED')
+      # STDERR.puts('IT DIED')
       on_stop('die', event_hash[:exitCode])
     when 'kill'
-    #  STDERR.puts('IT KILL')
+      #  STDERR.puts('IT KILL')
       on_stop('kill')
     when 'stop'
       on_stop('stop')
-    #  STDERR.puts('IT STOP')
+      #  STDERR.puts('IT STOP')
     when 'pause'
       on_stop('pause')
     when 'oom'
       out_of_mem('oom')
     end
     true
-#  rescue StandardError => e
-#    log_exception(e)
+    #  rescue StandardError => e
+    #    log_exception(e)
   end
 
   def task_complete(action)
@@ -136,8 +137,8 @@ module TaskAtHand
     # FixMe Kludge unless docker event listener
     delete_engine
     true
- # rescue StandardError => e
- #   log_exception(e)
+    # rescue StandardError => e
+    #   log_exception(e)
   end
 
   def task_at_hand
@@ -207,7 +208,6 @@ module TaskAtHand
     false
   end
 
-
   private
 
   def tasks_final_state(task)
@@ -237,8 +237,8 @@ module TaskAtHand
     when :destroy
       return 'nocontainer'
     end
- # rescue StandardError => e
-#    log_exception(e)
+    # rescue StandardError => e
+    #    log_exception(e)
   end
 
   def task_has_expired?(task)

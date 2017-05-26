@@ -101,7 +101,7 @@ def web_path(engine)
   unless  engine.ctype == 'service'
     r = engine.web_root.to_s unless engine.web_root.to_s == ''
   else
-    r = service_hash[:variables][:www_path] = ''
+    r = '' #service_hash[:variables][:www_path] = ''
   end
-  return r
+   r
 end

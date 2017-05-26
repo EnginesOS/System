@@ -68,7 +68,7 @@ require 'yajl'
 
 
 
-def connection(content_type = 'application/json_parser')
+def connection( content_type = 'application/json_parser')
   headers = {}
   headers['content_type'] = content_type
   headers['ACCESS_TOKEN'] = load_token
@@ -85,12 +85,12 @@ rescue StandardError => e
   STDERR.puts('Failed to open base url ' + @base_url.to_s)
 end
 
-def rest_del(uri,params=nil)
+def rest_del(uri, params=nil, time_out=23)
 
   if params.nil?
-    connection.request(:method => :delete,:path => uri) #,:body => params.to_json)
+    connection.request(:read_timeout => time_out,:method => :delete,:path => uri) #,:body => params.to_json)
   else
-    connection.request(:method => :delete,:path => uri,:body => params.to_json)
+    connection.request(:read_timeout => time_out,:method => :delete,:path => uri,:body => params.to_json)
   end
 rescue StandardError => e
 
@@ -98,19 +98,18 @@ rescue StandardError => e
   STDERR.puts e.backtrace.to_s
 end
 
-def rest_get(uri,params=nil,time_out=120)
-
+def rest_get(uri, time_out = 35 , params=nil)
   if params.nil?
-    connection.request(:read_timeout => time_out,:method => :get,:path => uri) #,:body => params.to_json)
+  connection.request({:read_timeout => time_out,:method => :get,:path => uri}) #,:body => params.to_json)
   else
-    connection.request(:read_timeout => time_out,:method => :get,:path => uri,:body => params.to_json)
+    connection.request({:read_timeout => time_out,:method => :get,:path => uri,:body => params.to_json})
   end
 rescue StandardError => e
 
   STDERR.puts e.to_s + ' with path:' + uri + "\n" + 'params:' + params.to_s
   STDERR.puts e.backtrace.to_s
 end
-def rest_post(uri, params, content_type,time_out = 120 )
+def rest_post(uri, params, content_type,time_out = 44 )
 
   begin
     unless params.nil?
@@ -131,13 +130,13 @@ def rest_post(uri, params, content_type,time_out = 120 )
   end
 end
 
-def rest_delete(uri, params=nil)
+def rest_delete(uri, params=nil, time_out = 20)
   # params = add_access(params)
   begin
     if params.nil?
-      r =  connection.request(:method => :delete,:path => uri) #,:body => params.to_json)
+      r =  connection.request(:read_timeout => time_out,:method => :delete,:path => uri) #,:body => params.to_json)
     else
-      r =  connection.request(:method => :delete,:path => uri,:body => params.to_json)
+      r =  connection.request(:read_timeout => time_out,:method => :delete,:path => uri,:body => params.to_json)
     end
     write_response(r)
     exit

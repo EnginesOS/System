@@ -20,7 +20,7 @@ module EngineApiExportImport
         thr.join
         SystemDebug.debug(SystemDebug.export_import, :export_service,service_hash,'result code =' ,result[:result],params)
         return result[:stdout] if result[:result] == 0
-        raise EnginesException.new(error_hash("failed to export ",service_hash, result))
+        raise EnginesException.new(error_hash("failed to export " + result.to_s ,service_hash))
       end
     rescue Timeout::Error
       thr.kill

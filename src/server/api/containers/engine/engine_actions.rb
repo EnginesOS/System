@@ -55,7 +55,7 @@ end
 get '/v0/containers/engine/:engine_name/halt' do
   begin
     engine = get_engine(params[:engine_name])
-    engine.halt_container
+    return_boolean(engine.halt_container)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

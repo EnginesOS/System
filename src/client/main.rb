@@ -29,7 +29,7 @@ end
 def read_stdin_data
   stdin_data = ""
   require 'timeout'
-  status = Timeout::timeout(30) do
+  status = Timeout::timeout(63) do
     while STDIN.gets
       stdin_data += $_
     end
@@ -45,14 +45,14 @@ def read_stdin_json
   json_parser.parse(read_stdin_data)
 end
 
-def perform_get
-  r = rest_get(@route)
+def perform_get(time_out = 34)
+  r = rest_get(@route, time_out)
   write_response(r)
   exit
 end
 
-def perform_del
-  r = rest_del(@route)
+def perform_del(time_out = 35)
+  r = rest_del(@route, time_out)
   write_response(r)
   exit
 end
