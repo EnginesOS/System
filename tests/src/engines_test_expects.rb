@@ -115,10 +115,10 @@ def read_stdin_data
   require 'timeout'
   status = Timeout::timeout(480) do
     
-    #while STDIN.gets
-     # stdin_data += $_
-    #end
-    stdin_data = STDIN.read
+    while STDIN.gets
+      stdin_data += $_
+    end
+    # stdin_data = STDIN.read
   end
   puts "Read " + stdin_data.length.to_s + ' bytes ' + stdin_data
   return nil if stdin_data.nil?
