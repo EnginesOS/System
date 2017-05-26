@@ -55,7 +55,7 @@ def check_array(key, value)
   false
 rescue
   STDERR.puts("json problem with " +@data.to_s)
-  return false
+  false
 end
 
 def hash_has_key(search_key, hash)
@@ -105,7 +105,7 @@ def check_json(key, value)
 
   return false
 rescue StandardError =>e
-  STDERR.puts 'Json Parse Error ' + e.to_s
+  STDERR.puts ('Json Parse Error ' + e.to_s + "\n With " + @data.to_s)
   return false
 end
 
