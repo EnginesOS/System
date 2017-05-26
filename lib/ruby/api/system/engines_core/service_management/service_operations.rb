@@ -92,15 +92,16 @@ module ServiceOperations
     SystemDebug.debug(SystemDebug.services,"calling service ", service_hash)
     service_manager.create_and_register_service(service_hash)
   end
-  def force_register_attached_service(service_hash)
+
+  def force_register_non_persistent_service(service_hash)
     service_manager.force_register_non_persistent_service(service_hash)
   end
 
-  def force_reregister_attached_service(service_hash)
-    service_manager.force_reregister_attached_service(service_hash)
+  def force_reregister_non_persistent_service(service_hash)
+    service_manager.force_reregister_non_persistent_service(service_hash)
   end
 
-  def force_deregister_attached_service(service_hash)
+  def force_deregister_non_persistent_service(service_hash)
     service_manager.force_deregister_non_persistent_service(service_hash)
   end
 
