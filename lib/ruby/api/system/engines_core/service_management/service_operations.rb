@@ -7,8 +7,8 @@ module ServiceOperations
   end
 
   def force_reregister_non_persistent_service(service_query)
-    STDERR.puts(service_query.to_s)
-    check_service_hash('Service hash ' + service_query)
+    STDERR.puts('Service hash ' + service_query.to_s)
+    check_service_hash(service_query)
     service_manager.force_reregister_non_persistent_service(service_query)
   end
 
@@ -18,10 +18,10 @@ module ServiceOperations
     service_manager.force_deregister_non_persistent_service(service_query)
   end
 
-  def force_deregister_non_persistent_service(service_query)
+  def force_register_non_persistent_service(service_query)
     STDERR.puts('Service hash ' + service_query.to_s)
     check_service_hash(service_query)
-    service_manager.force_deregister_non_persistent_service(service_query)
+    service_manager.force_register_non_persistent_service(service_query)
   end
 
   # @return an [Array] of service_hashs of Active persistent services match @params [Hash]
