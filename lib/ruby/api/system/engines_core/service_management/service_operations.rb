@@ -73,6 +73,18 @@ module ServiceOperations
     service_manager.clear_service_from_registry({:parent_engine => service.container_name, :container_type => 'service', :persistence => persistence})
   end
 
+  def force_register_non_persistent_service(service_hash)
+    service_manager.force_register_non_persistent_service(service_hash)
+  end
+
+  def force_reregister_non_persistent_service(service_hash)
+    service_manager.force_reregister_non_persistent_service(service_hash)
+  end
+
+  def force_deregister_non_persistent_service(service_hash)
+    service_manager.force_deregister_non_persistent_service(service_hash)
+  end
+  
   protected
 
   def create_and_register_managed_service(service_hash)
@@ -91,18 +103,6 @@ module ServiceOperations
     end
     SystemDebug.debug(SystemDebug.services,"calling service ", service_hash)
     service_manager.create_and_register_service(service_hash)
-  end
-
-  def force_register_non_persistent_service(service_hash)
-    service_manager.force_register_non_persistent_service(service_hash)
-  end
-
-  def force_reregister_non_persistent_service(service_hash)
-    service_manager.force_reregister_non_persistent_service(service_hash)
-  end
-
-  def force_deregister_non_persistent_service(service_hash)
-    service_manager.force_deregister_non_persistent_service(service_hash)
   end
 
 end
