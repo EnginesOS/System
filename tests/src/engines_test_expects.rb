@@ -25,7 +25,7 @@ def check_regex(exp)
 end
 
 def check_text(key, value)
- 
+
   if key == nil || key == 'is'
     return true if @data == value
   else
@@ -114,11 +114,11 @@ def read_stdin_data
 
   require 'timeout'
   status = Timeout::timeout(480) do
-    while STDIN.is_open?
+    while STDIN.read()
       stdin_data += $_
     end
   end
-   puts "Read " + stdin_data.length.to_s + ' bytes ' + stdin_data
+  puts "Read " + stdin_data.length.to_s + ' bytes ' + stdin_data
   return nil if stdin_data.nil?
   stdin_data.strip!
   return stdin_data
@@ -127,6 +127,10 @@ rescue Timeout::Error
   STDERR.puts "Timeout on data read from stdin"
 rescue StandardError => e
   log_exception(e)
+end
+
+def log_exception(e)
+  STDERR.puts("Exception " + e.to_s + "\n" + e.backtrace.to_s)
 end
 
 key=nil
