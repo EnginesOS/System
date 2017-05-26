@@ -120,7 +120,7 @@ def read_stdin_data
     end
     # stdin_data = STDIN.read
   end
-  puts "Read " + stdin_data.length.to_s + ' bytes ' + stdin_data
+  #   puts "Read " + stdin_data.length.to_s + ' bytes ' + stdin_data
   return nil if stdin_data.nil?
   stdin_data.strip!
   return stdin_data
