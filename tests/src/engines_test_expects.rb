@@ -114,7 +114,7 @@ def read_stdin_data
 
   require 'timeout'
   status = Timeout::timeout(480) do
-    while STDIN.gets
+    while STDIN.is_open?
       stdin_data += $_
     end
   end
