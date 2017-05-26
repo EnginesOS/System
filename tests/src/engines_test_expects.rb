@@ -52,8 +52,9 @@ def check_array(key, value)
     return false
   end
   return true if hash.is_a?(Array)
-  return false
+  false
 rescue
+  STDERR.puts("json problem with " +@data.to_s)
   return false
 end
 
