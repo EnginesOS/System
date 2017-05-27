@@ -1,0 +1,11 @@
+parent_engine: mgmt
+publisher_namespace: EnginesSystem
+type_path: redis
+service_handle: mgmt_redis
+service_container_name: redis
+container_type: service
+persistent: false
+variables:
+ parent_engine: mgmt
+ port: _Engines_System(service_resource(redis,next_port))
+ password: _Engines_System(random(16))

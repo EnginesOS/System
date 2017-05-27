@@ -20,7 +20,13 @@ class SystemAccess
   def mongo_host
      'mongo.engines.internal'
   end
+  
+  def internal_domain
+    'engines.internal'
+   end
+   
 
+ 
   def smtp_host
      SystemConfig.SMTPHost
   end

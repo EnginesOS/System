@@ -29,5 +29,9 @@ module SmServiceInfo
   def get_service_entry(service_hash)
     system_registry_client.get_service_entry(service_hash)
   end
-
+  
+  def service_resource(service_name, what)
+    service = @core_api.loadManagedService(service_name)
+    service.service_resource(what)
+  end
 end

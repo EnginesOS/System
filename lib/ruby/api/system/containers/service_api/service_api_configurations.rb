@@ -34,4 +34,10 @@ module ServiceApiConfigurations
   def retrieve_service_configurations_hashes(service_hash)
     @engines_core.retrieve_service_configurations_hashes(service_hash)
   end
+
+  def service_resource(c, what)
+    cmd = '/home/resources/' + what + '.sh'
+    @engines_core.exec_in_container({:container => c, :command_line => cmd, :log_error => true , :timeout => @@configurator_timeout, :data=> nil })
+  end
+
 end 

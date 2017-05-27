@@ -97,4 +97,7 @@ module ServiceConfigurations
     true
   end
 
+  def service_resource(service_name, what)
+    service_manager.service_resource(service_name, what)
+  end
 end
