@@ -8,10 +8,7 @@ class BuilderPublic
   def engine_name
     @builder.build_params[:engine_name]
   end
-  
-  def service_resource(service_name, what)
-    @builder.service_resource(service_name, what)
-  end
+
   
   def environments
     @builder.environments
