@@ -17,12 +17,11 @@ module ManagedServiceConfigurations
     @container_api.retrieve_service_configurations_hashes(
     {service_name: @container_name,
       type_path: @type_path,
-      publisher_namespace:
-      @publisher_namespace })
+      publisher_namespace: @publisher_namespace })
   end
 
-  def service_resource(self, what)
-    @container_api.service_resource(what)
+  def service_resource(what)
+    @container_api.service_resource(self, what)
   end
 
 end
