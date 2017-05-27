@@ -73,6 +73,7 @@ class Templater
       args.sub!(/\)/, '')
     end
     var_method = @system_access.method(name.to_sym)
+    STDERR.putd('RESOVLE args ' + args.to_s + ' For ' + name.to_s)
     var_method.call(args)
   rescue StandardError => e
     SystemUtils.log_exception(e)

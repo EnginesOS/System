@@ -59,6 +59,10 @@ class SystemAccess
     prefs.get_default_domain
   end
 
+  def internal_domain
+    'engines.internal'
+  end
+
   def publickey
     @engines_api.get_public_key()
   end
