@@ -69,14 +69,15 @@ class Templater
     cmd = name.split('(')
     name = cmd[0]
     if cmd.count > 1
-      args = cmd[1]
-      args.sub!(/\)/, '')
+      cmd[1].sub!(/\)/, '')
+      args = cmd[1].split(',')     
     end
-    var_method = @system_access.method(name.to_sym)
-    STDERR.puts('RESOVLE args ' + args.to_s + ' For ' + name.to_s)
+STDERR.puts('RESOVLE args ' + args.to_s + ' For ' + name.to_s)
+    var_method = @system_access.method(name.to_sym)    
     var_method.call(args)
   rescue StandardError => e
     SystemUtils.log_exception(e)
+STDERR.puts('RESOVLE args EXception ' + e.to_s)
     ''
   end
 

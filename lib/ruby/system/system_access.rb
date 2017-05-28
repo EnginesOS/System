@@ -84,6 +84,7 @@ class SystemAccess
   end
 
   def service_resource(service_name, what)
+    STDERR.puts('SERVICE RESOURCE ')
     @engines_api.service_resource(service_name, what)
   end
 
