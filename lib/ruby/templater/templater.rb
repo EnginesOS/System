@@ -72,12 +72,12 @@ class Templater
       cmd[1].sub!(/\)/, '')
       args = cmd[1]
     end
-STDERR.puts('RESOVLE args ' + args.to_s + ' For ' + name.to_s)
-    var_method = @system_access.method(name.to_sym)    
+    STDERR.puts('RESOVLE args ' + args.to_s + ' For ' + name.to_s)
+    var_method = @system_access.method(name.to_sym)
     var_method.call(args)
   rescue StandardError => e
     SystemUtils.log_exception(e)
-STDERR.puts('RESOVLE args EXception ' + e.to_s)
+    STDERR.puts('RESOVLE args EXception ' + e.to_s)
     ''
   end
 
@@ -147,7 +147,7 @@ STDERR.puts('RESOVLE args EXception ' + e.to_s)
 
   def apply_system_variables(template)
     return template if template.is_a?(String) == false
-    template.gsub!(/_Engines_System\([(0-9a-z_A-Z]*\)\)/) { |match|
+    template.gsub!(/_Engines_System\([(0-9a-z_A-Z,]*\)\)/) { |match|
       #     p :build_function_match
       #     p match
       resolve_system_function(match)

@@ -82,7 +82,7 @@ module ContainerControls
   def create_container
     expire_engine_info
     SystemDebug.debug(SystemDebug.containers,  :create_container,:containerid)
-    raise EnginesException.new(warning_hash('Cannot create container as container exists ', container_name)) if has_container?
+    raise EnginesException.new(warning_hash('Cannot create container as container exists ' + container_name.to_s , container_name)) if has_container?
     @container_id = -1
     @container_api.create_container(self)
   end
