@@ -84,6 +84,7 @@ class DockerEventWatcher  < ErrorsApi
   end
 
   def start
+    STDERR.puts(' STARTINF with ' + @event_listeners.to_s)
     req = Net::HTTP::Get.new('/events')
     client = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
     client.continue_timeout = 3000
