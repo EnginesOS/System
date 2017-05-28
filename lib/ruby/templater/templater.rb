@@ -70,7 +70,11 @@ class Templater
     name = cmd[0]
     if cmd.count > 1
       cmd[1].sub!(/\)/, '')
-      args = cmd[1]
+      if cmd[1].contain(',')
+        args = cmd.split(',')
+      else
+        args = cmd[1]
+      end
     end
     STDERR.puts('RESOVLE args ' + args.to_s + ' For ' + name.to_s)
     var_method = @system_access.method(name.to_sym)
