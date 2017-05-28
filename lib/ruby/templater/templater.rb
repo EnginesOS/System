@@ -78,7 +78,11 @@ class Templater
     end
     STDERR.puts('RESOVLE args ' + args.to_s + ' For ' + name.to_s)
     var_method = @system_access.method(name.to_sym)
-    var_method.call(args)
+    if args.is_a?(Array)
+      return var_method.call(args[0], args[1])
+    else
+      var_method.call(args)
+    end
   rescue StandardError => e
     SystemUtils.log_exception(e)
     STDERR.puts('RESOVLE args EXception ' + e.to_s)
