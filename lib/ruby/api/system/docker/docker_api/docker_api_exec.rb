@@ -99,7 +99,7 @@ module DockerApiExec
     request_params["AttachStderr"] = true
     request_params["Container"] = params[:container].container_name
     request_params["Cmd"] = params[:command_line]
-
+STDERR.puts('docker_exec ' + params.to_s)
     headers = {}
     headers['Content-type'] = 'application/json'
     unless params.key?(:data) || params.key?(:data_stream)     

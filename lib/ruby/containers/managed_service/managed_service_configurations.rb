@@ -21,6 +21,7 @@ module ManagedServiceConfigurations
   end
 
   def service_resource(what)
+    STDERR.puts('SERVICE RESOURCE' + self.container_name)
     @container_api.service_resource(self, what)
   end
 
