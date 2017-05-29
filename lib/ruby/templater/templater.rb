@@ -69,7 +69,7 @@ class Templater
     cmd = name.split('(')
     name = cmd[0]
     if cmd.count > 1
-      cmd[1].sub!(/\)/, '')
+      cmd[1].gsub!(/\)/, '')
       if cmd[1].include?(',')
         args = cmd[1].split(',')
       else
