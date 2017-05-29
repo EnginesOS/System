@@ -1,7 +1,7 @@
 parent_engine: mgmt
 publisher_namespace: EnginesSystem
 type_path: redis
-service_handle: redis-mgmt3
+service_handle: redis-mgmt4
 service_container_name: redis
 container_type: service
 persistent: true

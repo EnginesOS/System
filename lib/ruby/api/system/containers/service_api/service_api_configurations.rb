@@ -39,7 +39,7 @@ module ServiceApiConfigurations
     cmd = '/home/resources/' + what + '.sh'
     STDERR.puts('SERVICE RESOURCE' + cmd.to_s)
     STDERR.puts('SERVICE RESOURCE' + c.container_name)
-    @engines_core.exec_in_container({:container => c, :command_line => cmd, :log_error => true , :timeout => @@configurator_timeout, :data=> nil })
+    @engines_core.exec_in_container({:container => c, :command_line => cmd, :log_error => true , :timeout => @@configurator_timeout, :data=> nil })[:stdout]
   end
 
 end 
