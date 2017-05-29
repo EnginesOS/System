@@ -71,3 +71,4 @@ conf_self_start: true
 dependant_on:
 - 'dns'
 - 'syslog'
+- 'redis'
