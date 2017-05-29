@@ -107,7 +107,7 @@ echo "ftpd Started" &>>/tmp/first_start.log
 echo "nginx Started" &>>/tmp/first_start.log
 
 echo Restart ftp
-opt/engines/bin/engines service ftp restart &>>/tmp/first_start.log
+/opt/engines/bin/engines service ftp restart &>>/tmp/first_start.log
 
 
 
@@ -120,7 +120,7 @@ echo "smtp Started" &>>/tmp/first_start.log
  if test -f /opt/engines/run/system/flags/install_mgmt
   then
   	/opt/engines/bin/engines service mgmt create &>>/tmp/first_start.log  	
-  	/opt/engines/bin/engines service mgmt wait_for_startup 180 
+  	/opt/engines/bin/engines service mgmt wait_for_startup 280 
   	echo "mgmt Started" &>>/tmp/first_start.log
   	echo Management is now at https://$lan_ip:10443/ or https://${ext_ip}:10443/  &>>/tmp/first_start.log 
   fi
