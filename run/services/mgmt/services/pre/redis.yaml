@@ -4,7 +4,7 @@ type_path: redis
 service_handle: redmgmt
 service_container_name: redis
 container_type: service
-persistent: true
+persistent: false
 variables:
  parent_engine: mgmt
  port: _Engines_System(service_resource(redis,next_port))
