@@ -109,7 +109,9 @@ echo "nginx Started" &>>/tmp/first_start.log
 echo Restart ftp
 /opt/engines/bin/engines service ftp restart &>>/tmp/first_start.log
 
-
+/opt/engines/bin/engines service redis create &>>/tmp/first_start.log
+/opt/engines/bin/engines service redis wait_for_startup 20
+echo "redis Started" &>>/tmp/first_start.log
 
 /opt/engines/bin/engines service smtp create &>>/tmp/first_start.log
 /opt/engines/bin/engines service smtp wait_for_startup 20
