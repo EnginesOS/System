@@ -51,6 +51,7 @@ rescue Errno::ECONNREFUSED
   STDERR.puts('Failed to open base url ' + uri.to_s + ' after ' + retries.to_s = ' attempts')
 rescue StandardError => e
   STDERR.puts e.to_s + ' with path:' + uri + "\n" + 'params:' + params.to_s
+  STDERR.puts e.class.name
   STDERR.puts e.backtrace.to_s
 end
 
