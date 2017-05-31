@@ -2,7 +2,7 @@
 container_name: redis
 ctype: service
 conf_self_start: true
-persistent: true
+persistent: false
 publisher_namespace: EnginesSystem
 type_path: redis
 last_error: 
