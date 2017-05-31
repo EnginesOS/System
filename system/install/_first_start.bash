@@ -31,7 +31,8 @@ echo "Registry Created" &>>/tmp/first_start.log
 /opt/engines/bin/system_service.rb registry wait_for_startup 120
 echo "Registry Started">>/tmp/first_start.log
 
-
+/opt/engines/bin/system_service.rb system stop &>>/tmp/first_start.log
+/opt/engines/bin/system_service.rb system wait_for destroy 10
 /opt/engines/bin/system_service.rb system destroy &>>/tmp/first_start.log
 /opt/engines/bin/system_service.rb system wait_for destroy 20
 echo "System Destroyed" &>>/tmp/first_start.log
@@ -106,7 +107,7 @@ echo "ftpd Started" &>>/tmp/first_start.log
 /opt/engines/bin/engines service nginx wait_for_startup 20
 echo "nginx Started" &>>/tmp/first_start.log
 
-echo Restart ftp
+echo Restart ftp &>>/tmp/first_start.log
 /opt/engines/bin/engines service ftp restart &>>/tmp/first_start.log
 
 /opt/engines/bin/engines service redis create &>>/tmp/first_start.log
