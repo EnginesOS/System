@@ -9,6 +9,7 @@ class BuilderPublic
     @builder.build_params[:engine_name]
   end
 
+  
   def environments
     @builder.environments
   end

@@ -127,7 +127,11 @@ class EngineBuilder < ErrorsApi
     post_failed_build_clean_up
     raise e
   end
-
+  
+  def service_resource(service_name, what)
+    @service_builder.service_resource(service_name, what)
+  end
+  
   def volumes
     @service_builder.volumes
   end

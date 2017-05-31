@@ -1,14 +1,17 @@
 module PublicApiContainersNonPersistentServices
   def force_register_attached_service(service_hash)
-    @core_api.register_non_persistent_service(service_hash)
+    STDERR.puts('Service hash ' + service_query.to_s)
+    @core_api.force_register_non_persistent_service(service_hash)
   end
 
   def force_reregister_attached_service(service_hash)
-    @core_api.force_reregister_attached_service(service_hash)
+    STDERR.puts('Service hash ' + service_query.to_s)
+    @core_api.force_reregister_non_persistent_service(service_hash)
   end
 
   def force_deregister_attached_service(service_hash)
-    @core_api.deregister_non_persistent_service(service_hash)
+    STDERR.puts('Service hash ' + service_query.to_s)
+    @core_api.force_deregister_non_persistent_service(service_hash)
   end
 
   def list_non_persistent_services(engine)

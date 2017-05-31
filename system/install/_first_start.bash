@@ -31,7 +31,8 @@ echo "Registry Created" &>>/tmp/first_start.log
 /opt/engines/bin/system_service.rb registry wait_for_startup 120
 echo "Registry Started">>/tmp/first_start.log
 
-
+/opt/engines/bin/system_service.rb system stop &>>/tmp/first_start.log
+/opt/engines/bin/system_service.rb system wait_for destroy 10
 /opt/engines/bin/system_service.rb system destroy &>>/tmp/first_start.log
 /opt/engines/bin/system_service.rb system wait_for destroy 20
 echo "System Destroyed" &>>/tmp/first_start.log
@@ -106,10 +107,12 @@ echo "ftpd Started" &>>/tmp/first_start.log
 /opt/engines/bin/engines service nginx wait_for_startup 20
 echo "nginx Started" &>>/tmp/first_start.log
 
-echo Restart ftp
-opt/engines/bin/engines service ftp restart &>>/tmp/first_start.log
+echo Restart ftp &>>/tmp/first_start.log
+/opt/engines/bin/engines service ftp restart &>>/tmp/first_start.log
 
-
+/opt/engines/bin/engines service redis create &>>/tmp/first_start.log
+/opt/engines/bin/engines service redis wait_for_startup 20
+echo "redis Started" &>>/tmp/first_start.log
 
 /opt/engines/bin/engines service smtp create &>>/tmp/first_start.log
 /opt/engines/bin/engines service smtp wait_for_startup 20
@@ -120,7 +123,7 @@ echo "smtp Started" &>>/tmp/first_start.log
  if test -f /opt/engines/run/system/flags/install_mgmt
   then
   	/opt/engines/bin/engines service mgmt create &>>/tmp/first_start.log  	
-  	/opt/engines/bin/engines service mgmt wait_for_startup 180 
+  	/opt/engines/bin/engines service mgmt wait_for_startup 280 
   	echo "mgmt Started" &>>/tmp/first_start.log
   	echo Management is now at https://$lan_ip:10443/ or https://${ext_ip}:10443/  &>>/tmp/first_start.log 
   fi

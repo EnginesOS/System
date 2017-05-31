@@ -1,4 +1,3 @@
-
 #require '/opt/engines/lib/ruby/managed_services/service_definitions/service_top_level.rb'
 
 class ServiceBuilder < ErrorsApi
@@ -19,7 +18,6 @@ class ServiceBuilder < ErrorsApi
   include NonPersistantServiceBuilder
   require_relative 'service_builder_errors.rb'
   include ServiceBuilderErrors
-  
   def initialize(core_api, templater, engine_name, attached_services)
     @engine_name = engine_name
     @core_api = core_api
@@ -28,6 +26,10 @@ class ServiceBuilder < ErrorsApi
     @volumes = {}
     @orphans = []
     @app_is_persistent = false
+  end
+
+  def service_resource(service_name, what)
+    @core_api.service_resource(service_name, what)
   end
 
 end

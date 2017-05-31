@@ -43,6 +43,10 @@ module ServiceConfigurations
   def retrieve_service_configuration(service_param)
     service_manager.retrieve_service_configuration(service_param)
   end
+  
+  def service_resource(service_name, what)
+    service_manager.service_resource(service_name, what)
+  end
 
   private
 
@@ -96,5 +100,6 @@ module ServiceConfigurations
     raise EnginesException.new(error_hash('Service configurator error @core_ap Got:' + configurator_result.to_s, " For:" +service_param.to_s )) unless configurator_result[:result] == 0 || configurator_result[:stderr].start_with?('Warning')
     true
   end
+
 
 end

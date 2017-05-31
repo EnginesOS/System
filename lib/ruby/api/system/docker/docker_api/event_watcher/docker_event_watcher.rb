@@ -84,6 +84,7 @@ class DockerEventWatcher  < ErrorsApi
   end
 
   def start
+    STDERR.puts(' STARTINF with ' + @event_listeners.to_s)
     req = Net::HTTP::Get.new('/events')
     client = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
     client.continue_timeout = 3000
@@ -133,18 +134,19 @@ class DockerEventWatcher  < ErrorsApi
     end
     log_error_mesg('Restarting docker Event Stream ')
     STDERR.puts('CLOSED docker Event Stream as close')
-    client.finish unless client.nil?
+    # client.finish unless client.nil?
     @system.start_docker_event_listener(@event_listeners)
   rescue Net::ReadTimeout
     log_error_mesg('Restarting docker Event Stream Read Timeout as timeout')
     STDERR.puts('TIMEOUT docker Event Stream as close')
-    client.finish unless client.nil?
     @system.start_docker_event_listener(@event_listeners)
+   # client.finish unless client.nil?
+   
   rescue StandardError => e
     log_exception(e)
     log_error_mesg('Restarting docker Event Stream post exception ')
     STDERR.puts('EXCEPTION docker Event Stream post exception due to ' + e.to_s + ' ' + e.class.name)
-    client.finish unless client.nil?
+   # client.finish unless client.nil?
     @system.start_docker_event_listener(@event_listeners)
 #  ensure
   #  SystemDebug.debug(SystemDebug.container_events,'CLOSED docker Event Stream @event_listeners ENSURE')
