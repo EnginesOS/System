@@ -36,6 +36,7 @@ rescue StandardError => e
 end
 
 def rest_get(uri, time_out = 35, params = nil)
+  retries = 0
   if params.nil?
     connection.request({:read_timeout => time_out, :method => :get, :path => uri})
   else
@@ -45,8 +46,9 @@ rescue Errno::ECONNREFUSED
   if retries < 10
     retries +=1
     sleep 1
-    retry
+    retry    
   end
+  STDERR.puts('Failed to open base url ' + uri.to_s + ' after ' + retries.to_s = ' attempts')
 rescue StandardError => e
   STDERR.puts e.to_s + ' with path:' + uri + "\n" + 'params:' + params.to_s
   STDERR.puts e.backtrace.to_s
