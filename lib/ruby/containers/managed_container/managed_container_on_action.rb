@@ -11,7 +11,9 @@ module ManagedContainerOnAction
         return save_state
       end
       # MUst register post each start as IP Changes (different post reboot)
+      STDERR.puts (' Container ' + self.container_name.to_s + ' reg dns ' + self.conf_register_dns.to_s)
       register_with_dns
+      STDERR.puts(' HAS RUN ' + @has_run.to_s + ' Deplyment type ' + @deployment_type.to_s)
       if  @has_run == false
         add_nginx_service if @deployment_type == 'web'
       end

@@ -6,19 +6,22 @@ module ServiceOperations
     @docker_api.signal_container_process(pid, sig, container)
   end
 
-  def force_reregister_attached_service(service_query)
+  def force_reregister_non_persistent_service(service_query)
+    STDERR.puts('Service hash ' + service_query.to_s)
     check_service_hash(service_query)
-    service_manager.force_reregister_attached_service(service_query)
+    service_manager.force_reregister_non_persistent_service(service_query)
   end
 
-  def force_deregister_attached_service(service_query)
+  def force_deregister_non_persistent_service(service_query)
+    STDERR.puts('Service hash ' + service_query.to_s)
     check_service_hash(service_query)
-    service_manager.force_deregister_attached_service(service_query)
+    service_manager.force_deregister_non_persistent_service(service_query)
   end
 
-  def force_register_attached_service(service_query)
+  def force_register_non_persistent_service(service_query)
+    STDERR.puts('Service hash ' + service_query.to_s)
     check_service_hash(service_query)
-    service_manager.force_register_attached_service(service_query)
+    service_manager.force_register_non_persistent_service(service_query)
   end
 
   # @return an [Array] of service_hashs of Active persistent services match @params [Hash]
@@ -72,7 +75,19 @@ module ServiceOperations
   def clear_service_from_registry(service, persistence=:non_persistent)
     service_manager.clear_service_from_registry({:parent_engine => service.container_name, :container_type => 'service', :persistence => persistence})
   end
-
+#
+#  def force_register_non_persistent_service(service_hash)
+#    service_manager.force_register_non_persistent_service(service_hash)
+#  end
+#
+#  def force_reregister_non_persistent_service(service_hash)
+#    service_manager.force_reregister_non_persistent_service(service_hash)
+#  end
+#
+#  def force_deregister_non_persistent_service(service_hash)
+#    service_manager.force_deregister_non_persistent_service(service_hash)
+#  end
+  
   protected
 
   def create_and_register_managed_service(service_hash)

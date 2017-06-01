@@ -5,14 +5,14 @@ module ManagedContainerDns
   #
   def register_with_dns # MUst register each time as IP Changes
     return false unless has_api?
-    return true unless @conf_register_dns
-   @container_api.register_with_dns(self)
+    STDERR.puts (' Container ' + self.container_name.to_s + ' reg dns ' + self.conf_register_dns.to_s)
+   @container_api.register_with_dns(self) if @conf_register_dns == true
    @container_api.register_with_zeroconf(self) unless @conf_zero_conf
   end
 
   def deregister_with_dns# MUst register each time as IP Changes
     return false unless has_api?
-    @container_api.deregister_with_dns(self) if @conf_register_dns
+    @container_api.deregister_with_dns(self) if @conf_register_dns == true
     @container_api.deregister_with_zeroconf(self) unless @conf_zero_conf
   end
 

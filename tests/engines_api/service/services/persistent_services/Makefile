@@ -12,7 +12,7 @@ persistent_services_type:
 	engines service email services persistent EnginesSystem | engines_test_expects array
 
 persistent_service:
-	engines service email  persistent EnginesSystem  database/sql/mysql email | engines_test_expects json type_path database/sql/mysql
+	engines service email services persistent EnginesSystem  database/sql/mysql email | engines_test_expects json type_path database/sql/mysql
 
 
 service_persistent_export:

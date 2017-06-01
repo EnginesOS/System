@@ -25,7 +25,7 @@ def check_regex(exp)
 end
 
 def check_text(key, value)
- 
+
   if key == nil || key == 'is'
     return true if @data == value
   else
@@ -52,9 +52,10 @@ def check_array(key, value)
     return false
   end
   return true if hash.is_a?(Array)
-  return false
+  false
 rescue
-  return false
+  STDERR.puts("json problem with " +@data.to_s)
+  false
 end
 
 def hash_has_key(search_key, hash)
@@ -104,7 +105,7 @@ def check_json(key, value)
 
   return false
 rescue StandardError =>e
-  STDERR.puts 'Json Parse Error ' + e.to_s
+  STDERR.puts ('Json Parse Error ' + e.to_s + "\n With " + @data.to_s)
   return false
 end
 
@@ -113,11 +114,13 @@ def read_stdin_data
 
   require 'timeout'
   status = Timeout::timeout(480) do
+    
     while STDIN.gets
       stdin_data += $_
     end
+    # stdin_data = STDIN.read
   end
-  # puts "Read " + stdin_data.length.to_s + ' bytes ' + stdin_data
+  #   puts "Read " + stdin_data.length.to_s + ' bytes ' + stdin_data
   return nil if stdin_data.nil?
   stdin_data.strip!
   return stdin_data
@@ -126,6 +129,10 @@ rescue Timeout::Error
   STDERR.puts "Timeout on data read from stdin"
 rescue StandardError => e
   log_exception(e)
+end
+
+def log_exception(e)
+  STDERR.puts("Exception " + e.to_s + "\n" + e.backtrace.to_s)
 end
 
 key=nil

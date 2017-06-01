@@ -90,16 +90,15 @@ module DockerApiExec
     return r unless r.is_a?(Hash)
     exec_id = r[:Id]
     request_params = {}
-    request_params["Detach"] = false
-    request_params["Tty"] = false
+    request_params['Detach'] = false
+    request_params['Tty'] = false
     request = '/exec/' + exec_id + '/start'
-    request_params["User"] = ''
-    request_params["Privileged"] = false
-    request_params["AttachStdout"] = true
-    request_params["AttachStderr"] = true
-    request_params["Container"] = params[:container].container_name
-    request_params["Cmd"] = params[:command_line]
-
+    request_params['User'] = ''
+    request_params['Privileged'] = false
+    request_params['AttachStdout'] = true
+    request_params['AttachStderr'] = true
+    request_params['Container'] = params[:container].container_name
+    request_params['Cmd'] = params[:command_line]
     headers = {}
     headers['Content-type'] = 'application/json'
     unless params.key?(:data) || params.key?(:data_stream)     
@@ -110,7 +109,7 @@ module DockerApiExec
       return stream_reader.result # DockerUtils.docker_stream_as_result(r, result)
     end
 
-    request_params["AttachStdin"] = true
+    request_params['AttachStdin'] = true
     stream_handler = DockerHijackStreamHandler.new(params[:data],params[:data_stream], params[:ostream])
 
     headers['Connection'] = 'Upgrade'
@@ -131,19 +130,20 @@ module DockerApiExec
   def create_docker_exec(params) #container, commands, have_data)
     request_params = {}
     if params.key?(:data) || params.key?(:data_stream)
-      request_params["AttachStdin"] = true
-      request_params["Tty"] =  false
+      request_params['AttachStdin'] = true
+      request_params['Tty'] =  false
     else
-      request_params["AttachStdin"] = false
-      request_params["Tty"] =  false
+      request_params['AttachStdin'] = false
+      request_params['Tty'] =  false
     end
-    request_params[ "AttachStdout"] =  true
-    request_params[ "AttachStderr"] =  true
-    request_params[ "DetachKeys"] =  "ctrl-p,ctrl-q"
-    request_params[ "Cmd"] =   format_commands(params[:command_line])
+    request_params['AttachStdout'] = true
+    request_params['AttachStderr'] = true
+    request_params['DetachKeys'] = 'ctrl-p,ctrl-q'
+    request_params['Cmd'] = format_commands(params[:command_line])
 
-    request = '/containers/'  + params[:container].container_id.to_s + '/exec'
-    post_request(request,  request_params)
+    request = '/containers/' + params[:container].container_id.to_s + '/exec'
+      STDERR.puts('create_docker_exec ' + request_params.to_s + ' request  ' + request.to_s )
+    post_request(request, request_params)
   end
 
   def format_commands(commands)

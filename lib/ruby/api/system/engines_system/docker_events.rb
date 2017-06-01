@@ -53,6 +53,7 @@ module DockerEvents
     event_listener = nil
     pipe_in.close
     pipe_out.close
+    return true if is_aready?(what, container.read_state) #check for last sec call
     false
   rescue StandardError => e
     rm_event_listener(event_listener)
@@ -170,7 +171,7 @@ module DockerEvents
   end
 
   def start_docker_event_listener(listeners = nil)
-    STDERR.puts( ' Start EVENT LISTENER THREAD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+    STDERR.puts( ' Start EVENT LISTENER THREAD !!!!!!!!!!!!!!!!!!!!!!!!!!!!! with ' + listeners.to_s)
     @docker_event_listener = DockerEventWatcher.new(self, listeners)
     @event_listener_thread.exit unless @event_listener_thread.nil?
     @event_listener_thread = Thread.new do

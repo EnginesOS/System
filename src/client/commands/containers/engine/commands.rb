@@ -8,22 +8,19 @@ when 'mem_stat'
 when 'net_stat'
   @route += '/metrics/network'
   perform_get
-
 end
 
 @route += '/' + ARGV[2]
 
 case ARGV[2]
 when 'service'
-require_relative 'service.rb'
+  require_relative 'service.rb'
 when 'services'
-require_relative 'services.rb'
-
+  require_relative 'services.rb'
 when 'actions'
-@route += '/'
+  @route += '/'
 when 'action'
-  require_relative 'action.rb'  
-
+  require_relative 'action.rb'
 when 'properties'
   require_relative 'properties.rb'
 when 'template'
@@ -31,13 +28,19 @@ when 'template'
   params[:template_string] = ARGV[3]
   perform_post(params)
 when 'destroy'
-
   perform_delete
 when 'delete'
-@route += '/' + ARGV[3] if ARGV.count > 3
-   perform_delete
+  @route += '/' + ARGV[3] if ARGV.count > 3
+  perform_delete
+when 'wait_for'
+  @route += '/' + ARGV[3] if ARGV.count > 3
+  if ARGV.count > 4
+    @route += '/' + ARGV[4]
+    perform_get(ARGV[4].to_i + 1)
+  else
+    perform_get
+  end
+else
+  @route += '/' + ARGV[3] if ARGV.count > 3
+  perform_get
 end
-@route += '/' + ARGV[3] if ARGV.count > 3
-
-perform_get
-

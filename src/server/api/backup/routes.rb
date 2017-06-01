@@ -1,7 +1,6 @@
 get '/v0/backup/system_files' do
   begin
     content_type 'application/octet-stream'
-    r = ''
     stream do |out|
       engines_api.backup_system_files(out)
     end
@@ -13,7 +12,6 @@ end
 get '/v0/backup/system_db' do
   begin
     content_type 'application/octet-stream'
-    r = ''
     stream do |out|
      engines_api.backup_system_db(out)
     end
