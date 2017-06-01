@@ -32,18 +32,19 @@ echo "Registry Created" &>>/tmp/first_start.log
 echo "Registry Started">>/tmp/first_start.log
 
 /opt/engines/bin/system_service.rb system stop &>>/tmp/first_start.log
-/opt/engines/bin/system_service.rb system wait_for destroy 10
+/opt/engines/bin/system_service.rb system wait_for stop 30
 /opt/engines/bin/system_service.rb system destroy &>>/tmp/first_start.log
-/opt/engines/bin/system_service.rb system wait_for destroy 20
+/opt/engines/bin/system_service.rb system wait_for destroy 30
 echo "System Destroyed" &>>/tmp/first_start.log
 
 /opt/engines/bin/system_service.rb system create &>>/tmp/first_start.log
-/opt/engines/bin/system_service.rb system wait_for create 20
+/opt/engines/bin/system_service.rb system wait_for create 60
 echo "System Created" &>>/tmp/first_start.log
 
 /opt/engines/bin/system_service.rb system start &>>/tmp/first_start.log
 /opt/engines/bin/system_service.rb system wait_for_startup 120
 echo "System Started" &>>/tmp/first_start.log
+sleep 30
 
 /opt/engines/bin/engines service dns stop &>> /tmp/first_start.log
 /opt/engines/bin/engines service dns wait_for stop 20
@@ -125,7 +126,7 @@ echo "smtp Started" &>>/tmp/first_start.log
   	/opt/engines/bin/engines service mgmt create &>>/tmp/first_start.log  	
   	/opt/engines/bin/engines service mgmt wait_for_startup 280 
   	echo "mgmt Started" &>>/tmp/first_start.log
-  	echo Management is now at https://$lan_ip:10443/ or https://${ext_ip}:10443/  &>>/tmp/first_start.log 
+  	echo "Management is now at https://$lan_ip:10443/ or https://${ext_ip}:10443/"  &>>/tmp/first_start.log 
   fi
  crontab  /opt/engines/system/updates/src/etc/crontab  &>>/tmp/first_start.log 
  echo sudo su -l engines  &>>/tmp/first_start.log

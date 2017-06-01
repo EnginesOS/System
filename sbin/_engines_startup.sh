@@ -16,6 +16,7 @@ if test -f  /opt/engines/run/system/flags/run_post_system_update
   sudo	/opt/engines/system/scripts/ssh/sudo/post_system_update_boot.sh
  fi
 
+rm `find /opt/engines/run -name lock` 
 
 /opt/engines/system/scripts/system/rotate_system_log.sh
 
