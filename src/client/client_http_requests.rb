@@ -2,11 +2,12 @@ require 'rubygems'
 require 'excon'
 require 'yajl'
 
-def connection( content_type = 'application/json_parser')
+def connection(content_type = 'application/json_parser')
   retries = 0
-  headers = {}
-  headers['content_type'] = content_type
-  headers['ACCESS_TOKEN'] = load_token
+  headers = {
+    'content_type' => content_type,
+    'ACCESS_TOKEN' => load_token
+  }
   headers.delete['ACCESS_TOKEN'] if headers['ACCESS_TOKEN'].nil?
   @connection = Excon.new(@base_url,
   :debug_request => true,
@@ -30,6 +31,13 @@ def rest_del(uri, params=nil, time_out=23)
   else
     connection.request(:read_timeout => time_out,:method => :delete,:path => uri, :body => params.to_json)
   end
+rescue Excon::Error::Socket
+  if retries < 10
+    retries +=1
+    sleep 1
+    retry
+  end
+  STDERR.puts('Failed to url ' + uri.to_s + ' after ' + retries.to_s = ' attempts')
 rescue StandardError => e
   STDERR.puts e.to_s + ' delete with path:' + uri + "\n" + 'params:' + params.to_s
   STDERR.puts e.backtrace.to_s
@@ -46,9 +54,9 @@ rescue Excon::Error::Socket
   if retries < 10
     retries +=1
     sleep 1
-    retry    
+    retry
   end
-  STDERR.puts('Failed to open base url ' + uri.to_s + ' after ' + retries.to_s = ' attempts')
+  STDERR.puts('Failed to url ' + uri.to_s + ' after ' + retries.to_s = ' attempts')
 rescue StandardError => e
   STDERR.puts e.to_s + ' with path:' + uri + "\n" + 'params:' + params.to_s
   STDERR.puts e.class.name
@@ -58,12 +66,19 @@ end
 def rest_post(uri, params, content_type,time_out = 44 )
   begin
     unless params.nil?
-      r =  connection(content_type).request(:read_timeout => time_out,:method => :post,:path => uri, :body => params.to_json) #,:body => params.to_json)
+      r = connection(content_type).request(:read_timeout => time_out,:method => :post,:path => uri, :body => params.to_json) #,:body => params.to_json)
     else
-      r =  connection(content_type).request(:read_timeout => time_out,:method => :post,:path => uri)
+      r = connection(content_type).request(:read_timeout => time_out,:method => :post,:path => uri)
     end
     write_response(r)
     exit
+  rescue Excon::Error::Socket
+    if retries < 10
+      retries +=1
+      sleep 1
+      retry
+    end
+    STDERR.puts('Failed to url ' + uri.to_s + ' after ' + retries.to_s = ' attempts')
   rescue StandardError => e
     STDERR.puts e.to_s + ' with path:' + uri + "\n" + 'params:' + params.to_s
     STDERR.puts e.backtrace.to_s
@@ -83,6 +98,13 @@ def rest_delete(uri, params=nil, time_out = 20)
     end
     write_response(r)
     exit
+  rescue Excon::Error::Socket
+    if retries < 10
+      retries +=1
+      sleep 1
+      retry
+    end
+    STDERR.puts('Failed to url ' + uri.to_s + ' after ' + retries.to_s = ' attempts')
   rescue StandardError => e
     STDERR.puts e.to_s + ' with path:' + uri + "\n" + 'params:' + params.to_s
   end
