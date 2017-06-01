@@ -1,30 +1,38 @@
 module EngineApiServiceRegistration
   def register_with_dns(container)
+    if container.conf_register_dns == true
     service_hash = create_dns_service_hash(container)
     begin
      # STDERR.puts('DNS REG' + service_hash.to_s)
       engines_core.create_and_register_service(service_hash)
     end
+    end
   end
 
   def deregister_with_dns(container)
+    if container.conf_register_dns == true
     service_hash = create_dns_service_hash(container)
     engines_core.dettach_service(service_hash)
+    end
   end
 
   def deregister_with_zeroconf(container)
+    if container.conf_register_dns == true
     service_hash = create_zeroconf_service_hash(container)
     begin
       engines_core.dettach_service(service_hash)
     rescue
     end
+    end
   end
 
   def register_with_zeroconf(container)
+    if container.conf_register_dns == true
     service_hash = create_zeroconf_service_hash(container)
     begin
       return engines_core.create_and_register_service(service_hash)
     rescue
+    end
     end
   end
 
