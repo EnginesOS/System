@@ -1,5 +1,5 @@
-TESTS=update restart recreate heap_dump dump_threads
-
+TESTS= heap_dump dump_threads
+#update restart recreate
 tests:
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 	
