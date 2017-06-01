@@ -16,7 +16,7 @@ class Container < ErrorsApi
   include RunningContainerStatistics
   require_relative 'container/engines_api_access.rb'
   include EnginesApiAccess
-  @conf_register_dns = true
+  #@conf_register_dns = true
   def self.from_yaml(yaml, container_api)
     container = YAML::load(yaml)
     raise EnginesException.new(error_hash('Failed to Load yaml' + @container_name.to_s, yaml[0..256])) if container.nil?
