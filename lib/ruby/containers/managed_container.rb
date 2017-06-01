@@ -48,7 +48,7 @@ class ManagedContainer < Container
   @rebuild_required = false
   @large_temp = false
 
-  attr_accessor  :volumes_from, :command, :restart_required, :rebuild_required, :environments, :volumes, :image_repo, :capabilities, :register_with_dns
+  attr_accessor  :volumes_from, :command, :restart_required, :rebuild_required, :environments, :volumes, :image_repo, :capabilities, :conf_register_dns
 
   def initialize
     super
