@@ -15,7 +15,7 @@ def connection( content_type = 'application/json_parser')
   :persistent => true,
   :headers => headers) if @connection.nil?
   @connection
-rescue StandardError => e
+rescue Excon::Error::Socket => e
   if retries < 10
     retries +=1
     sleep 1
@@ -42,7 +42,7 @@ def rest_get(uri, time_out = 35, params = nil)
   else
     connection.request({:read_timeout => time_out, :method => :get, :path => uri, :body => params.to_json})
   end
-rescue Errno::ECONNREFUSED
+rescue Excon::Error::Socket
   if retries < 10
     retries +=1
     sleep 1
