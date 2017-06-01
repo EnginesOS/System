@@ -1,6 +1,6 @@
 class ManagedEngine < ManagedContainer
   require '/opt/engines/lib/ruby/containers/managed_container.rb'
-
+  @conf_register_dns = true
   def initialize(build_params, runtime_params, core_api)
     @container_mutex = Mutex.new
     @memory = build_params[:memory]
