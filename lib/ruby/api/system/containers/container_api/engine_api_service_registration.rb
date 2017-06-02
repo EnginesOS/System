@@ -1,39 +1,39 @@
 module EngineApiServiceRegistration
   def register_with_dns(container)
-    STDERR.puts (' Container ' + container.container_name.to_s + ' reg dns ' + container.conf_register_dns.to_s)
+    STDERR.puts(' Container ' + container.container_name.to_s + ' reg dns ' + container.conf_register_dns.to_s)
     if container.conf_register_dns == true
-    service_hash = create_dns_service_hash(container)
-    begin
-     # STDERR.puts('DNS REG' + service_hash.to_s)
-      engines_core.create_and_register_service(service_hash)
-    end
+      service_hash = create_dns_service_hash(container)
+      begin
+        # STDERR.puts('DNS REG' + service_hash.to_s)
+        engines_core.create_and_register_service(service_hash)
+      end
     end
   end
 
   def deregister_with_dns(container)
     if container.conf_register_dns == true
-    service_hash = create_dns_service_hash(container)
-    engines_core.dettach_service(service_hash)
+      service_hash = create_dns_service_hash(container)
+      engines_core.dettach_service(service_hash)
     end
   end
 
   def deregister_with_zeroconf(container)
     if container.conf_register_dns == true
-    service_hash = create_zeroconf_service_hash(container)
-    begin
-      engines_core.dettach_service(service_hash)
-    rescue
-    end
+      service_hash = create_zeroconf_service_hash(container)
+      begin
+        engines_core.dettach_service(service_hash)
+      rescue
+      end
     end
   end
 
   def register_with_zeroconf(container)
     if container.conf_register_dns == true
-    service_hash = create_zeroconf_service_hash(container)
-    begin
-      return engines_core.create_and_register_service(service_hash)
-    rescue
-    end
+      service_hash = create_zeroconf_service_hash(container)
+      begin
+        return engines_core.create_and_register_service(service_hash)
+      rescue
+      end
     end
   end
 
@@ -57,7 +57,7 @@ module EngineApiServiceRegistration
     service_hash = create_nginx_service_hash(container)
     engines_core.create_and_register_service(service_hash)
   rescue
-     # sometimes duplicates nginx record
+    # sometimes duplicates nginx record
   end
 
   def engine_persistent_services(container)
