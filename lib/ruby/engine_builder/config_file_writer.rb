@@ -4,26 +4,26 @@ class ConfigFileWriter
     file_list.each do |file|
       process_dockerfile_tmpl(templater, file)
     end
-    
+
   end
 
   def self.write_templated_file(templater, filename, content)
-    return SystemUtils.log_error("NO Content " , filename , content) if content.nil?
+    return SystemUtils.log_error("NO Content ", filename , content) if content.nil?
     content.gsub!(/\r/, '')
     dir = File.dirname(filename)
     FileUtils.mkdir_p(dir) unless Dir.exist?(dir)
     out_file  = File.open(filename, 'wb', :crlf_newline => false)
     content = templater.process_templated_string(content)
     out_file.write(content)
-    out_file.close    
+    out_file.close
   end
 
-  def self.process_dockerfile_tmpl(templater,filename)
+  def self.process_dockerfile_tmpl(templater, filename)
     template = File.read(filename)
     template = templater.process_templated_string(template)
     output_filename = filename.sub(/.tmpl/, '')
     out_file = File.new(output_filename, 'wb', :crlf_newline => false)
     out_file.write(template)
-    out_file.close    
+    out_file.close
   end
 end

@@ -17,7 +17,6 @@ module CheckBuildParams
   def check_name(params)
     bad_param('Missing: Engine Name', params) unless params.key?(:engine_name)
     bad_param('Invalid: Engine Name', params) unless acceptable_chars(params[:engine_name])
-
   end
 
   def bad_param(message, params)

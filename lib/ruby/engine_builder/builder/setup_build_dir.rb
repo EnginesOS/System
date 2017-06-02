@@ -79,7 +79,6 @@ def create_php_ini
     end
     write_software_file(SystemConfig.CustomPHPiniFile, contents)
   end
-
 end
 
 def create_apache_config
@@ -88,11 +87,9 @@ def create_apache_config
     contents = ''
     @blueprint_reader.apache_httpd_configurations.each do |httpd_configuration|
       contents = contents + httpd_configuration[:httpd_configuration] + "\n"
-
     end
     write_software_file(SystemConfig.CustomApacheConfFile, contents)
   end
-
 end
 
 def write_env_file
@@ -106,7 +103,6 @@ def write_env_file
     env_file.puts(env[0])
   end
   env_file.close
-
 end
 
 def write_software_file(filename, content)
@@ -116,9 +112,7 @@ end
 
 def create_templater
   builder_public = BuilderPublic.new(self)
-
   @templater = Templater.new(@core_api.system_value_access, builder_public)
-
 end
 
 def read_web_user
@@ -127,7 +121,6 @@ def read_web_user
     #   STDERR.puts("Set web user to:" + @web_user.to_s)
     return @web_user
   end
-
   log_build_output('Read Web User')
   stef = File.open(basedir + '/home/stack.env', 'r')
   while line = stef.gets do
@@ -137,14 +130,12 @@ def read_web_user
     end
   end
   stef.close
-
 end
 
 def apply_templates_to_environments
   @blueprint_reader.environments.each do |env|
     env.value = @templater.process_templated_string(env.value) if env.value.is_a?(String)
   end
-
 end
 
 def read_web_port
@@ -155,11 +146,10 @@ def read_web_port
     if line.include?('PORT')
       i = line.split('=')
       @web_port = i[1].strip
-      SystemDebug.debug(SystemDebug.builder,   :web_port_line, line)
+      SystemDebug.debug(SystemDebug.builder, :web_port_line, line)
     end
   end
   stef.close
-
   #      throw BuildStandardError.new(e,'setting web port')
 end
 
@@ -167,14 +157,12 @@ def setup_default_files
   log_build_output('Setup Default Files')
   log_error_mesg('Failed to setup Global Defaults', self) unless setup_global_defaults
   setup_framework_defaults
-
 end
 
 def setup_global_defaults
   log_build_output('Setup global defaults')
   cmd = 'cp -r ' + SystemConfig.DeploymentTemplates  + '/global/* ' + basedir
   system cmd
-
 end
 
 def setup_framework_defaults
@@ -184,14 +172,12 @@ def setup_framework_defaults
   if @blueprint_reader.framework == 'docker'
     df = File.read(basedir + '/_Dockerfile.tmpl')
     df = 'FROM ' + @blueprint_reader.base_image + "\n" +  'ENV ContUser ' + @blueprint_reader.cont_user + "\n" + df
-
     fw = File.new(basedir  + '/Dockerfile.tmpl','w+')
     fw.write(df)
     fw.close
     return true
   end
   r
-
 end
 
 def setup_framework_logging
@@ -207,5 +193,4 @@ def setup_framework_logging
   Dir.mkdir(local_log_dir) unless Dir.exist?(local_log_dir)
   rmt_log_dir_varfile.close
   ' -v ' + local_log_dir + ':' + rmt_log_dir + ':rw '
-
 end

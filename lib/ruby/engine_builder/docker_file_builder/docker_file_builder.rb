@@ -145,10 +145,8 @@ class DockerFileBuilder
       write_env(env.name,env.value.to_s) if env.value.nil? == false && env.value.to_s.length > 0 # env statement must have two arguments
     end
     write_env('WWW_DIR', @blueprint_reader.web_root.to_s) unless @blueprint_reader.web_root.nil?
-   # write_locale_env
+    # write_locale_env
   end
-
-
 
   def write_persistent_dirs
     log_build_output('setup persistent Dirs')
@@ -372,7 +370,7 @@ class DockerFileBuilder
     end
   end
 
-  def write_env(name,value, build_only = false)
+  def write_env(name, value, build_only = false)
     write_line('ENV ' + name.to_s  + " \'" + value.to_s + "\'")
     @env_file.puts(name.to_s  + '=' + "\'" + value.to_s  + "\'")
   end
