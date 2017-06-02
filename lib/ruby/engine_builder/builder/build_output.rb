@@ -15,17 +15,17 @@ module BuildOutput
 
   def log_build_errors(line)
     line = '' if line.nil?
-      #    line.force_encoding(Encoding::ANSI) # UTF_8)
+    #    line.force_encoding(Encoding::ANSI) # UTF_8)
     @err_file.puts(line.to_s) unless @err_file.nil?
     log_build_output('ERROR:' + line.to_s)
     @result_mesg = 'Error.' + line.to_s
     @build_error = @result_mesg
-     false
+    false
   end
 
   def add_to_build_output(word)
     @log_file.write(word)
-    @log_file.flush    
+    @log_file.flush
   end
 
   def close_all
@@ -34,7 +34,7 @@ module BuildOutput
       log_build_output('Build Finished')
       @log_file.close
     end
-    @err_file.close unless @log_file.nil? && @err_file.closed?       
+    @err_file.close unless @log_file.nil? && @err_file.closed?
   end
 
   # used to fill in erro mesg with last ten lines
@@ -46,7 +46,7 @@ module BuildOutput
     for n in start..lines_count
       retval += lines[n].to_s
     end
-     retval + tail_of_build_error_log
+    retval + tail_of_build_error_log
   end
 
   # used to fill in erro mesg with last ten lines
@@ -58,8 +58,8 @@ module BuildOutput
     for n in start..lines_count
       retval += lines[n].to_s
     end
-     retval
+    retval
   rescue
-     retval
+    retval
   end
 end

@@ -1,6 +1,7 @@
 class BlueprintApi < ErrorsApi
   require 'yajl'
   require '/opt/engines/lib/ruby/api/system/container_state_files.rb'
+
   def save_blueprint(blueprint, container)
     # return log_error_mesg('Cannot save incorrect format',blueprint) unless blueprint.is_a?(Hash)
     SystemDebug.debug(SystemDebug.builder, blueprint.class.name)
@@ -12,7 +13,7 @@ class BlueprintApi < ErrorsApi
     f.close
     true
   end
- 
+
   def self.load_blueprint_file(blueprint_file_name)
     blueprint_file = File.open(blueprint_file_name, 'r')
     parser = Yajl::Parser.new

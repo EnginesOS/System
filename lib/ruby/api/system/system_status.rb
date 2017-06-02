@@ -51,7 +51,7 @@ class SystemStatus
     param_file = File.new(SystemConfig.BuildFailedFile, 'w+')
     param_file.puts(params.to_yaml)
     param_file.close
- #   STDERR.puts('build failed writen')
+    #   STDERR.puts('build failed writen')
     File.delete(SystemConfig.BuildRunningParamsFile) if File.exist?(SystemConfig.BuildRunningParamsFile)
   end
 
@@ -70,10 +70,10 @@ class SystemStatus
   end
 
   def self.build_status
-   {
-    is_building:  SystemStatus.is_building?,
-    did_build_fail:  SystemStatus.did_build_fail?
-   }
+    {
+      is_building:  SystemStatus.is_building?,
+      did_build_fail:  SystemStatus.did_build_fail?
+    }
   end
 
   def self.get_engines_system_release
@@ -132,13 +132,13 @@ class SystemStatus
   end
 
   def self.is_remote_exception_logging?
-     ! File.exist?(SystemConfig.NoRemoteExceptionLoggingFlagFile)
+    ! File.exist?(SystemConfig.NoRemoteExceptionLoggingFlagFile)
   end
-  
+
   def self.is_base_system_upto_date?
     # FIX ME
     # in future check state of /opt/engines/run/system/flags/update_pending
-     ! File.exists?('/opt/engines/run/system/flags/base_os_update_pending')
+    ! File.exists?('/opt/engines/run/system/flags/base_os_update_pending')
     #return true unless File.exists?('/opt/engines/run/system/flags/base_os_update_pending')
   end
 

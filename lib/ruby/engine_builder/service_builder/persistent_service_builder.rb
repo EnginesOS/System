@@ -10,7 +10,6 @@ module PersistantServiceBuilder
         process_persistent_service(service_hash, environ, use_existing)
       end
     end
-
   end
 
   def process_persistent_service(service_hash, environ, use_existing)
@@ -79,7 +78,6 @@ module PersistantServiceBuilder
     s[:shared] = true
     SystemDebug.debug(SystemDebug.builder, :usering_active_Serviec, s)
     s
-
   end
 
   def share_service_to_engine(service_hash, existing)
@@ -92,7 +90,7 @@ module PersistantServiceBuilder
     #        result = add_file_service(service_hash)
     #       log_error_mesg('failed to create fs',self) unless result
     #      end
-    service_hash[:owner] =  existing[:parent_engine]
+    service_hash[:owner] = existing[:parent_engine]
     service_hash[:existing_service] = existing
 
     if  @core_api.connect_share_service(service_hash)
@@ -100,9 +98,6 @@ module PersistantServiceBuilder
       @attached_services.push(service_hash)
       return true
     end
-    # end
     raise EngineBuilderException.new(error_hash('failed to share_service_to_engine(params)', params))
-
   end
-
 end

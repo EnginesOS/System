@@ -24,7 +24,7 @@ class BuildController
     SystemStatus.build_starting(@build_params)
     @engine_builder = get_engine_builder(@build_params)
     @engine = @engine_builder.build_from_blue_print
-    SystemDebug.debug(SystemDebug.builder, :build_error,  @engine_builder.build_error.to_s) unless  @engine_builder.build_error.nil?
+    SystemDebug.debug(SystemDebug.builder, :build_error, @engine_builder.build_error.to_s) unless  @engine_builder.build_error.nil?
     build_complete(@build_params)
   end
 
@@ -60,8 +60,6 @@ class BuildController
     return build_failed(params, 'No Builder') unless @engine_builder.is_a?(EngineBuilder)
     @engine = @engine_builder.build_from_blue_print
     @build_error = @engine_builder.tail_of_build_error_log
-#    return build_failed(@build_params, @build_error) unless @engine.is_a?(ManagedEngine)
-#    return build_failed(@build_params, @build_error) unless @engine.is_active?
     build_complete(@build_params)
   end
 

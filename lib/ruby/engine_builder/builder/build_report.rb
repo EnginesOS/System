@@ -13,6 +13,6 @@ module BuildReport
 
   def generate_build_report(templater, blueprint)
     report_template = get_build_report_template(blueprint)
-    templater.process_templated_string(report_template)    
+    templater.process_templated_string(report_template)
   end
 end

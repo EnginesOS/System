@@ -1,5 +1,5 @@
 class ContainerStateFiles
-  def self.build_running_service(service_name, service_type_dir,system_value_access)
+  def self.build_running_service(service_name, service_type_dir, system_value_access)
     config_template_file_name = service_type_dir + service_name + '/config.yaml'
     return SystemUtils.log_error_mesg('Running exist', service_name) unless File.exist?(config_template_file_name)
     config_template = File.read(config_template_file_name)
@@ -17,23 +17,23 @@ class ContainerStateFiles
   end
 
   def self.schedules_file(container)
-     self.schedules_dir(container) + '/schedules.yaml'
+    self.schedules_dir(container) + '/schedules.yaml'
   end
 
   def self.actionator_dir(container)
-     self.container_state_dir(container) + '/actionators/'
+    self.container_state_dir(container) + '/actionators/'
   end
 
   def self.container_flag_dir(container)
-     self.container_state_dir(container) + '/run/flags/'
+    self.container_state_dir(container) + '/run/flags/'
   end
 
   def self.restart_flag_file(container)
-     self.container_flag_dir(container) + 'restart_required'
+    self.container_flag_dir(container) + 'restart_required'
   end
 
   def self.rebuild_flag_file(container)
-     self.container_flag_dir(container) + 'rebuild_required'
+    self.container_flag_dir(container) + 'rebuild_required'
   end
 
   def self.read_container_id(container)
@@ -85,16 +85,6 @@ class ContainerStateFiles
   def self.container_cid_file(container)
     SystemConfig.CidDir + '/' + container.container_name + '.cid'
   end
-
-#  def self.delete_container_configs(volbuilder, container)
-#    cidfile = SystemConfig.CidDir + '/' + container.container_name + '.cid'
-#    File.delete(cidfile) if File.exist?(cidfile)
-#    result = volbuilder.execute_command(:remove, {target: container.container_name} )
-#
-#    FileUtils.rm_rf(ContainerStateFiles.container_state_dir(container))
-#    SystemUtils.run_system('/opt/engines/system/scripts/system/clear_container_dir.sh ' + container.container_name)
-#    true
-#  end
 
   def self.destroy_container(container)
     return File.delete(ContainerStateFiles.container_cid_file(container)) if File.exist?(ContainerStateFiles.container_cid_file(container))

@@ -12,12 +12,12 @@ module SystemApiBackup
     out << tree.to_yaml
   end
 
-  def backup_service_data(service_name,out)
+  def backup_service_data(service_name, out)
     service = loadManagedService(service_name)
     params = {
       container: service,
-      stream => out, 
-      command_line: ['/home/services/backup.sh'], 
+      stream => out,
+      command_line: ['/home/services/backup.sh'],
       log_error: true }
     result = @engines_api.exec_in_container(params)
     return result if result[:result] !=0
@@ -39,7 +39,7 @@ module SystemApiBackup
     paths
   end
 
-  def backup_engine_service(service_hash,out)
-    @engines_api.backup_engine_service(service_hash,out)
+  def backup_engine_service(service_hash, out)
+    @engines_api.backup_engine_service(service_hash, out)
   end
 end

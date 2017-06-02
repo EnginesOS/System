@@ -21,7 +21,7 @@ class ConfiguratidonsApi <ErrorsApi
     return configurator_result unless configurator_result.is_a?(Hash)
 
     raise EnginesException.new(error_hash('Service configurator error ', configurator_result.to_s)) unless configurator_result[:result] == 0 || configurator_result[:stderr].start_with?('Warning')
-  true
+    true
   end
 
   def retrieve_service_configuration(service_param)

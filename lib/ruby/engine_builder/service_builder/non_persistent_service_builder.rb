@@ -8,8 +8,6 @@ module NonPersistantServiceBuilder
       @core_api.create_and_register_service(service_hash)
       @attached_services.push(service_hash)
     end
-     true
-
+    true
   end
-
 end
