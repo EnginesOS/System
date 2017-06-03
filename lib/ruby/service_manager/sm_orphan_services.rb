@@ -20,7 +20,7 @@ module SmOrphanServices
 
   # @returns [Hash] suitable for use  to attach as a service
 
-  def reparent_orphan(service_hash,engine_name )
+  def reparent_orphan(service_hash,engine_name)
     service_hash[:old_parent] =  service_hash[:parent_engine]
     service_hash[:parent_engine] = engine_name
     service_hash[:fresh] = false

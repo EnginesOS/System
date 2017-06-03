@@ -7,7 +7,7 @@ module Orphans
 
   def retrieve_orphan(params)
     r = 'services/orphan/'
-    r += address_params(params,full_path)
+    r += address_params(params, full_path)
     rest_get(r)
   end
 

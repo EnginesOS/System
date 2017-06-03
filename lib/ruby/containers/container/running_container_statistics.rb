@@ -14,7 +14,7 @@ module RunningContainerStatistics
     cpu = 0
 
     return ContainerStatistics.new(read_state, pcnt, started, stopped, rss, vss, cpu) if ps_json.nil?
-  return ContainerStatistics.new(read_state, pcnt, started, stopped, rss, vss, cpu) if ps_json.is_a?(FalseClass)
+    return ContainerStatistics.new(read_state, pcnt, started, stopped, rss, vss, cpu) if ps_json.is_a?(FalseClass)
     ps_json =  ps_json[0] unless ps_json.is_a?(Hash)
 
     processes = ps_json["Processes"]
@@ -29,7 +29,7 @@ module RunningContainerStatistics
     cpu = 3600 * cpu_time[2] + 60 * cpu_time[1] + cpu_time[0]
     statistics = ContainerStatistics.new(read_state, pcnt, started, stopped, rss, vss, cpu)
     statistics
- 
+
   end
 
   def get_container_memory_stats()
@@ -60,6 +60,6 @@ module RunningContainerStatistics
     cpu_time[0] += s
     cpu_time[1] += m
     cpu_time[2] += h
-     cpu_time
+    cpu_time
   end
 end

@@ -1,6 +1,6 @@
 module BuildOutput
   def setup_log_output
-    SystemDebug.debug(SystemDebug.builder,'setup_log_output ')
+    SystemDebug.debug(SystemDebug.builder, 'setup_log_output ')
     @log_file = File.new(SystemConfig.DeploymentDir + '/build.out', File::CREAT | File::TRUNC | File::RDWR, 0644)
     @err_file = File.new(SystemConfig.DeploymentDir + '/build.err', File::CREAT | File::TRUNC | File::RDWR, 0644)
   end

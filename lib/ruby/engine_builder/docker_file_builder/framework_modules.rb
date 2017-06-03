@@ -55,7 +55,7 @@ module FrameworkModules
     @blueprint_reader.npm_modules.each do |npm_module|
       npm_modules_str += npm_module + ' ' unless npm_module.nil?
     end
-    write_build_script('install_npm_modules.sh ' +  npm_modules_str)
+    write_build_script('install_npm_modules.sh ' + npm_modules_str)
 
   end
 
@@ -66,7 +66,7 @@ module FrameworkModules
     @blueprint_reader.lua_modules.each do |lua_module|
       lua_modules_str += lua_module + ' ' unless lua_module.nil?
     end
-    write_build_script('install_lua_modules.sh ' +  lua_modules_str)
+    write_build_script('install_lua_modules.sh ' + lua_modules_str)
   end
 
   def write_php_modules
@@ -76,6 +76,6 @@ module FrameworkModules
     @blueprint_reader.php_modules.each do |php_module|
       php_modules_str += php_module + ' ' unless php_module.nil?
     end
-    write_build_script('install_php_modules.sh ' +  php_modules_str)
+    write_build_script('install_php_modules.sh ' + php_modules_str)
   end
 end

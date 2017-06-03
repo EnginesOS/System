@@ -10,7 +10,7 @@ class DockerFileBuilder
     @builder = builder
     @docker_file = File.open(@builder.basedir + '/Dockerfile', 'a')
     @layer_count = 0
-    @env_file = File.new(@builder.basedir + '/build.env','w+')
+    @env_file = File.new(@builder.basedir + '/build.env', 'w+')
     # this should be read as it is framework dep
     @max_layers = 75
   end
@@ -64,7 +64,7 @@ class DockerFileBuilder
     write_line('RUN mkdir -p /home/fs/local/')
     write_line('')
 
-    set_user('$ContUser')  unless @blueprint_reader.framework == 'docker'
+    set_user('$ContUser') unless @blueprint_reader.framework == 'docker'
 
     write_run_install_script
     set_user('0')
@@ -87,7 +87,7 @@ class DockerFileBuilder
     write_build_script('_finalise_environment.sh')
     if @blueprint_reader.respond_to?(:continuous_deployment)
       log_build_output("Setting up Continuos Deployment:" + @blueprint_reader.continuous_deployment.to_s ) if @blueprint_reader.continuous_deployment
-      write_line('RUN chown -R $ContUser /home/app; chmod g+w -R /home/app')  if @blueprint_reader.continuous_deployment
+      write_line('RUN chown -R $ContUser /home/app; chmod g+w -R /home/app') if @blueprint_reader.continuous_deployment
     end
     insert_framework_frag_in_dockerfile('builder.end.tmpl')
     write_line('')
@@ -188,7 +188,7 @@ class DockerFileBuilder
     src_paths.each do |path|
       dir = File.dirname(path)
       file = File.basename(path)
-      SystemDebug.debug(SystemDebug.builder,:dir, dir)
+      SystemDebug.debug(SystemDebug.builder, :dir, dir)
       if dir.is_a?(String) == false || dir.length == 0 || dir == '.' || dir == '..'
         path = 'app/' + file
       end
@@ -323,7 +323,7 @@ class DockerFileBuilder
       # Destination can be /opt/ /home/app /home/fs/ /home/local/
       # If none of teh above then it is prefixed with /home/app
       destination = '/home/app/' + destination.to_s  unless destination.start_with?('/opt') || destination.start_with?('/home/fs') || destination.start_with?('/home/app') || destination.start_with?('/home/local')
-      destination = '/home/app' if destination.to_s == '/home/app/'  || destination == '/'  || destination == './'  || destination == ''
+      destination = '/home/app' if destination.to_s == '/home/app/' || destination == '/'  || destination == './'  || destination == ''
 
       path_to_extracted ='/' if path_to_extracted.nil? || path_to_extracted == ''
 
@@ -349,12 +349,12 @@ class DockerFileBuilder
     write_line('#Stack Env')
     write_line('')
     # write_env('Memory' ,@builder.memory.to_s)
-    write_env('Hostname' ,@hostname)
-    write_env('Domainname' ,@domain_name)
-    write_env('fqdn' ,@hostname + '.' + @domain_name)
-    write_env('FRAMEWORK' ,@blueprint_reader.framework)
-    write_env('RUNTIME' ,@blueprint_reader.runtime)
-    write_env('PORT' ,@web_port.to_s)
+    write_env('Hostname', @hostname)
+    write_env('Domainname', @domain_name)
+    write_env('fqdn', @hostname + '.' + @domain_name)
+    write_env('FRAMEWORK', @blueprint_reader.framework)
+    write_env('RUNTIME', @blueprint_reader.runtime)
+    write_env('PORT', @web_port.to_s)
     wports = ''
     n = 0
     return false if @blueprint_reader.mapped_ports.nil?

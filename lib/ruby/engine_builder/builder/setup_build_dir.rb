@@ -9,11 +9,11 @@ def setup_build_dir
   read_web_user
 
   @build_params[:mapped_ports] =  @blueprint_reader.mapped_ports
-  SystemDebug.debug(SystemDebug.builder,   :ports, @build_params[:mapped_ports])
-  SystemDebug.debug(SystemDebug.builder,   :attached_services, @build_params[:attached_services])
+  SystemDebug.debug(SystemDebug.builder, :ports, @build_params[:mapped_ports])
+  SystemDebug.debug(SystemDebug.builder, :attached_services, @build_params[:attached_services])
   @service_builder.required_services_are_running?
 
-  @service_builder.create_persistent_services(@blueprint_reader.services, @blueprint_reader.environments,@build_params[:attached_services]).is_a?(EnginesError)
+  @service_builder.create_persistent_services(@blueprint_reader.services, @blueprint_reader.environments, @build_params[:attached_services]).is_a?(EnginesError)
 
   apply_templates_to_environments
   create_engines_config_files

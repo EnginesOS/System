@@ -1,11 +1,11 @@
 module ManagedServiceOnAction
   def on_start(event_hash)
     @stop_reason = nil
-    SystemDebug.debug(SystemDebug.container_events,:ON_start_MS,event_hash)
+    SystemDebug.debug(SystemDebug.container_events, :ON_start_MS, event_hash)
     @container_mutex.synchronize {
       set_running_user
       #STDERR.puts('ONSTART_CALLED' + container_name.to_s + ';' + event_hash.to_s)
-      SystemDebug.debug(SystemDebug.container_events,:ONSTART_CALLED, event_hash)
+      SystemDebug.debug(SystemDebug.container_events, :ONSTART_CALLED, event_hash)
       @out_of_memory = false
       if @consumer_less
         @has_run = true
@@ -38,7 +38,7 @@ module ManagedServiceOnAction
     end
     created_and_started if @created == true
     reregister_consumers
-    SystemDebug.debug(SystemDebug.container_events,:ON_start_complete_MS,event_hash)
+    SystemDebug.debug(SystemDebug.container_events, :ON_start_complete_MS, event_hash)
   end
 
   def created_and_started
@@ -50,14 +50,14 @@ module ManagedServiceOnAction
         run_configurator(configuration)
       end
     end
-    SystemDebug.debug(SystemDebug.container_events,:ON_StartCreate_MS_compl)
+    SystemDebug.debug(SystemDebug.container_events, :ON_StartCreate_MS_compl)
     @created = false
   end
 
   def on_create(event_hash)
-    SystemDebug.debug(SystemDebug.container_events,:ON_Create_MS,event_hash)
+    SystemDebug.debug(SystemDebug.container_events, :ON_Create_MS,event_hash)
     @container_mutex.synchronize {
-      SystemDebug.debug(SystemDebug.container_events,:ON_Create_CALLED,event_hash)
+      SystemDebug.debug(SystemDebug.container_events, :ON_Create_CALLED,event_hash)
       @container_id = event_hash[:id]
       @out_of_memory = false
       @had_out_memory = false
@@ -70,7 +70,6 @@ module ManagedServiceOnAction
     start_container
   end
 
-
   def on_stop(what, exit_code = 0)
     @exit_code = exit_code
     SystemDebug.debug(SystemDebug.container_events, :ONStop_CALLED, what)
@@ -82,7 +81,6 @@ module ManagedServiceOnAction
     #return true if @consumer_less
     # deregister_with_dns # Really its in the following nowMUst register each time as IP Changes
     @container_api.deregister_non_persistent_services(self)
-
   end
 
   def out_of_mem(what)

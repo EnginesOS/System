@@ -5,13 +5,13 @@ module ContainerStatus
     return 'nocontainer' unless info.is_a?(Hash)
 
     if info.key?(:State)
-      if info[:State][:Running]     
+      if info[:State][:Running]
         if  info[:State][:Paused]
           return 'paused'
         else
           return 'running'
         end
-      elsif info[:State][:Running] == false        
+      elsif info[:State][:Running] == false
         return 'stopped'
       elsif info[:State][:Status] == 'exited'
         return 'stopped'
@@ -20,13 +20,13 @@ module ContainerStatus
         return 'nocontainer'
       end
     end
-   # SystemDebug.debug(SystemDebug.containers,  'no_matching state_info', info.class.name, info)
-     'nocontainer'
+    # SystemDebug.debug(SystemDebug.containers,  'no_matching state_info', info.class.name, info)
+    'nocontainer'
   end
 
   def is_paused?
     return true if read_state == 'paused'
-     false
+    false
   end
 
   def is_active?
@@ -40,22 +40,21 @@ module ContainerStatus
       return false
     end
   end
-  
+
   def is_stopped?
-     return true if read_state == 'stopped'
-      false
-   end
-  
+    return true if read_state == 'stopped'
+    false
+  end
 
   def is_running?
     return true if read_state == 'running'
-     false
+    false
   end
 
   def has_container?
     # return false if has_image? == false NO Cached
     return false if read_state == 'nocontainer'
-     true
+    true
   end
 
 end

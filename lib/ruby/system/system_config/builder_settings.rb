@@ -8,7 +8,7 @@ module BuilderSettings
   @@PreStartScript = '/home/engines/scripts/pre-runnning.sh'
   @@InstallScript = '/home/engines/scripts/custom_install.sh'
   @@StartScript = '/home/engines/scripts/custom_start.sh'
-  @@PostInstallScript= '/home/engines/scripts/post_install.sh'
+  @@PostInstallScript = '/home/engines/scripts/post_install.sh'
   @@ScriptsDir = '/home/engines/scripts/'
   @@CustomPHPiniFile = '/home/engines/configs/php/01-custom.ini'
   @@CustomApacheConfFile = '/home/engines/configs/apache2/extra.conf'
@@ -27,9 +27,11 @@ module BuilderSettings
   def SystemConfig.DefaultLanguage
     @@DefaultLanguage
   end
+
   def SystemConfig.DefaultCountry
     @@DefaultCountry
   end
+
   def SystemConfig.Language
     return File.read(SystemConfig.LanguageFile).strip if File.exist?(SystemConfig.LanguageFile)
     SystemConfig.DefaultLanguage

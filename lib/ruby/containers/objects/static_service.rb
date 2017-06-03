@@ -4,6 +4,6 @@ class StaticService
   end
 
   def serviceType
-    return @serviceType
+    @serviceType
   end
 end

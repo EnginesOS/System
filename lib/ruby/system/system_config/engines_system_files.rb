@@ -1,5 +1,5 @@
 module EnginesSystemFiles
-  @@ReleaseFile= '/opt/engines/release'
+  @@ReleaseFile = '/opt/engines/release'
   @@DomainsFile = '/opt/engines/etc/domains/domains'
   @@timeZone_fileMapping = ' -v /etc/localtime:/etc/localtime:ro '
   @@NoRemoteExceptionLoggingFlagFile = '/opt/engines/run/system/flags/no_remote_exception_log'

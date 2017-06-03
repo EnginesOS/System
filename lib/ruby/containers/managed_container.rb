@@ -1,12 +1,10 @@
 require_relative 'container_statistics.rb'
 require_relative 'ManagedContainerObjects.rb'
 
-#require 'objspace' ??
 require_relative 'container.rb'
 
 class ManagedContainer < Container
-#  require 'yajl'
-#  require 'json'
+
   require_relative 'managed_container/task_at_hand.rb'
   include TaskAtHand
   require_relative 'managed_container/managed_container_controls.rb'
@@ -48,8 +46,7 @@ class ManagedContainer < Container
   @rebuild_required = false
   @large_temp = false
 
-  attr_accessor  :volumes_from, :command, :restart_required, :rebuild_required, :environments, :volumes, :image_repo, :capabilities, :conf_register_dns
-
+  attr_accessor :volumes_from, :command, :restart_required, :rebuild_required, :environments, :volumes, :image_repo, :capabilities, :conf_register_dns
   def initialize
     super
     @container_mutex = Mutex.new
@@ -70,7 +67,7 @@ class ManagedContainer < Container
   def to_s
     @container_name.to_s + '-set to:' +  @setState + ':' + status.to_s
   end
-  
+
   def status
     @status = {} if @status.nil?
     @status[:state] = read_state

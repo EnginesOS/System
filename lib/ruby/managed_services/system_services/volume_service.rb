@@ -5,13 +5,12 @@ class VolumeService < ManagedService
     add_volume(service_hash)
   end
 
-  def rm_consumer_from_service (service_hash)
+  def rm_consumer_from_service(service_hash)
     rm_volume(service_hash)
   end
 
   def add_volume(service_hash)
     volbuilder = @engines_core.loadManagedUtility('fsconfigurator')
-    
     volbuilder.execute_command(:add_volume, {
       volume: service_hash[:variables][:service_name],
       fw_user: service_hash[:variables][:user],
@@ -21,7 +20,6 @@ class VolumeService < ManagedService
   end
 
   def rm_volume(service_hash)
-    
     volbuilder = @engines_core.loadManagedUtility('fsconfigurator')
     #   STDERR.puts('rm VOLUME' + service_hash.to_s)
     volbuilder.drop_log_dir
@@ -50,7 +48,7 @@ class VolumeService < ManagedService
 
   def make_fs_root_dir(dest)
     FileUtils.mkdir_p(dest)
-    FileUtils.chmod('ug=wrx,o=rx',dest)
-    FileUtils.chown(nil,22020,dest)
+    FileUtils.chmod('ug=wrx,o=rx', dest)
+    FileUtils.chown(nil, 22020, dest)
   end
 end

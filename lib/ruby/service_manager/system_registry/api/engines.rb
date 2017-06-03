@@ -1,7 +1,7 @@
 module Engines
   # engines Methods
   def retrieve_engine_service_hash(params)
-    SystemDebug.debug(SystemDebug.services,'sm retrieve_engine_service_hash  ', params)
+    SystemDebug.debug(SystemDebug.services, 'sm retrieve_engine_service_hash  ', params)
     r = 'engine/service'
     r += address_params(params, [:container_type, :parent_engine, :service_handle,:type_path] )
     rest_get(r)
@@ -39,10 +39,10 @@ module Engines
 
   def remove_from_managed_engine(params)
     params[:container_type] = 'container' unless params.key?(:container_type)
-  
+
     r = 'engine/services/del'
     r += address_params(params, [:container_type, :parent_engine, :service_handle, :publisher_namespace, :type_path])
-      #     STDERR.puts('PARAMAS FOR DELEparams' + r.to_s)
+    #     STDERR.puts('PARAMAS FOR DELEparams' + r.to_s)
     rest_delete(r)
   end
 
