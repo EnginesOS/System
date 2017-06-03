@@ -229,7 +229,8 @@ class DockerFileBuilder
     return if @blueprint_reader.external_repositories.nil? || @blueprint_reader.external_repositories.empty?
     write_line('#Repositories')
     @blueprint_reader.external_repositories.each do |repo|
-      write_line('RUN  add-apt-repository  -y  ' + repo[:url] + ";\\")
+      next unless repo.key?(:source)
+      write_line('RUN  add-apt-repository  -y  ' + repo[:source] + ";\\")
     end
     write_line(' apt-get -y update ')
   end
