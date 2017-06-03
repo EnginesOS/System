@@ -57,7 +57,6 @@ def create_template_files
       write_software_file('/home/engines/templates/' + template_hash[:path], template_hash[:content])
     end
   end
-
 end
 
 def create_httaccess
@@ -66,7 +65,6 @@ def create_httaccess
       write_software_file('/home/engines/htaccess_files' + htaccess_hash[:directory] + '/.htaccess', htaccess_hash[:htaccess_content])
     end
   end
-
 end
 
 def create_php_ini
@@ -107,7 +105,6 @@ end
 
 def write_software_file(filename, content)
   ConfigFileWriter.write_templated_file(@templater, basedir + '/' + filename, content)
-
 end
 
 def create_templater
@@ -154,7 +151,8 @@ def read_web_port
 end
 
 def setup_default_files
-  log_build_output('Setup Default Files')
+  STDERR.puts('Setup Default Files ' + basedir.to_s)
+  log_build_output('Setup Default Files ' + basedir.to_s)
   log_error_mesg('Failed to setup Global Defaults', self) unless setup_global_defaults
   setup_framework_defaults
 end
