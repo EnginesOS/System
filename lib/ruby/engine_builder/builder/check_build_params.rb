@@ -11,7 +11,6 @@ module CheckBuildParams
   def check_host(params)
     bad_param('Missing: Hostname', params) unless params.key?(:host_name)
     bad_param('Invalid: Hostname', params) unless acceptable_chars(params[:host_name])
-
   end
 
   def check_name(params)
@@ -21,6 +20,7 @@ module CheckBuildParams
 
   def bad_param(message, params)
     # FIXMe use a builderror
+    SystemStatus.build_failed(params)
     raise EngineBuilderException.new(error_hash(message, params))
   end
 
