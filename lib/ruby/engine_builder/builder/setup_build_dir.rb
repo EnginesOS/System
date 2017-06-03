@@ -150,9 +150,8 @@ def read_web_port
   #      throw BuildStandardError.new(e,'setting web port')
 end
 
-def setup_default_files
-  STDERR.puts('Setup Default Files ' + basedir.to_s)
-  log_build_output('Setup Default Files ' + basedir.to_s)
+def setup_default_files  
+  log_build_output('Setup Default Files ')
   log_error_mesg('Failed to setup Global Defaults', self) unless setup_global_defaults
   setup_framework_defaults
 end
