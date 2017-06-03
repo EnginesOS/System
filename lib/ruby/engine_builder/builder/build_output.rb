@@ -38,6 +38,7 @@ module BuildOutput
       log_build_output('Build Finished')
       @log_file.close
     end
+    return if @err_file.nil? 
     @err_file.close unless @err_file.closed?
   end
 
