@@ -18,11 +18,14 @@ class BuildController
     @core_api.abort_build
   end
 
-  def build_engine(params)
+  def prepare_engine_build(params)
     SystemDebug.debug(SystemDebug.builder, :builder_params, params)
     @build_params = params
     SystemStatus.build_starting(@build_params)
     @engine_builder = get_engine_builder(@build_params)
+  end
+
+  def build_engine()
     @engine = @engine_builder.build_from_blue_print
     SystemDebug.debug(SystemDebug.builder, :build_error, @engine_builder.build_error.to_s) unless  @engine_builder.build_error.nil?
     build_complete(@build_params)
@@ -86,14 +89,14 @@ class BuildController
     @build_error = err
     @core_api.build_stopped()
     SystemUtils.log_error_mesg(err.to_s, params)
-    SystemStatus.build_failed(params) 
+    SystemStatus.build_failed(params)
     raise EngnesException.new(error_hash(params[:engine_name] +  err.to_s + params.to_s, :build_error))
   end
 
   def build_complete(build_params)
     bp = build_params.dup
     bp.delete(:service_builder)
-    SystemStatus.build_complete(bp)    
+    SystemStatus.build_complete(bp)
     @core_api.build_stopped()
     true
   end

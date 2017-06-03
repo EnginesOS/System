@@ -24,15 +24,15 @@ module CoreBuildController
     @system_api.get_build_report(engine_name)
   end
 
-  def save_build_report(container,build_report)
+  def save_build_report(container, build_report)
     @system_api.save_build_report(container, build_report)
   end
 
   def build_engine(params)
-    @build_controller = BuildController.new(self)  unless @build_controller
+    @build_controller = BuildController.new(self) unless @build_controller
     @build_thread.exit unless @build_thread.nil?
-    
-    @build_thread = Thread.new { @build_controller.build_engine(params) }
+    @build_controller.prepare_engine_build(params)
+    @build_thread = Thread.new { @build_controller.build_engine }
     @build_thread[:name]  = 'build engine'
     return true if @build_thread.alive?
     raise EnginesException.new(error_hash(params[:engine_name], 'Build Failed to start'))
