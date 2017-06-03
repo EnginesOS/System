@@ -1,6 +1,5 @@
 module DockerApiContainerStatus
   def inspect_container_by_name(container)
-
     # container.set_cont_id if container.container_id.to_s == '-1' || container.container_id.nil?
     request = '/containers/' + container.container_name.to_s + '/json'
     return get_request(request, true)
@@ -26,19 +25,18 @@ module DockerApiContainerStatus
 
   def container_name_and_type_from_id(id)
     request = '/containers/' + id.to_s + '/json'
-    r = ''
     begin
-      r =  get_request(request)
+      get_request(request)
     rescue DockerException => e
       if e.status == 409
         sleep 0.1
-        r =  get_request(request)
+        get_request(request)
       else raise e
       end
     end
 
     raise DockerException.new(error_hash('no such engine', id, 404)) if r == true # happens on a destroy
-    raise DockerException.new(error_hash(' 409 twice for '  , request, 409)) unless r.is_a?(Hash)
+    raise DockerException.new(error_hash(' 409 twice for ' , request, 409)) unless r.is_a?(Hash)
     raise DockerException.new(error_hash('not a managed engine', r, 404)) unless r.key?(:Config)
     raise DockerException.new(error_hash('not a managed engine', r, 404)) unless r[:Config].key?(:Labels)
     raise DockerException.new(error_hash('not a managed engine', r, 404)) unless r[:Config][:Labels].key?(:container_type)
@@ -69,8 +67,7 @@ module DockerApiContainerStatus
     #    GET /containers/4fa6e0f0c678/logs?stderr=1&stdout=1&timestamps=1&follow=1&tail=10&since=1428990821 HTTP/1.1
     request = '/containers/' + container.container_id .to_s + '/logs?stderr=1&stdout=1&timestamps=1&follow=0&tail=' + count.to_s
     r = get_request(request, false)
-    result = {}
-    DockerUtils.docker_stream_as_result(r , result)
+    DockerUtils.docker_stream_as_result(r, {})
     result
   end
 

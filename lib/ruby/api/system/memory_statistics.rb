@@ -13,9 +13,9 @@ module MemoryStatistics
     system_services = api.getSystemServices
     services.concat(system_services)
     engines_memory_statistics = {
-      containers:  {
+      containers: {
       applications: collect_containers_memory_stats(engines),
-      services:  collect_containers_memory_stats(services),
+      services: collect_containers_memory_stats(services),
       }
     }
     engines_memory_statistics[:containers][:totals] = {
@@ -31,7 +31,7 @@ module MemoryStatistics
     mem_stats = {
       totals: {
       allocated: 0,
-      in_use:  0,
+      in_use: 0,
       peak_sum: 0
       }
     }

@@ -1,13 +1,12 @@
 module ContainerOperations
-#  def has_container_started?(container_name)
-#    completed_flag_file = SystemConfig.RunDir + '/containers/' + container_name + '/run/flags/startup_complete'
-#    File.exist?(completed_flag_file)
-#  end
-
+  #  def has_container_started?(container_name)
+  #    completed_flag_file = SystemConfig.RunDir + '/containers/' + container_name + '/run/flags/startup_complete'
+  #    File.exist?(completed_flag_file)
+  #  end
   def init_engine_dirs(engine_name)
-    @system_api.init_engine_dirs(engine_name)    
+    @system_api.init_engine_dirs(engine_name)
   end
-  
+
   def image_exist?(container_name)
     @docker_api.image_exist?(container_name)
   rescue StandardError
@@ -23,7 +22,7 @@ module ContainerOperations
       return 'container' #FIXME poor assumption
     end
   end
-  
+
   def get_changed_containers
     @system_api.get_changed_containers
   end
@@ -43,7 +42,7 @@ module ContainerOperations
       if site[:variables][:proto] == 'http_https'
         protocol = 'http'
       elsif site[:variables][:proto] == 'https_http'
-        protocol = 'https'      
+        protocol = 'https'
       else
         protocol = site[:variables][:proto]
         protocol = 'http' if protocol.nil?
@@ -51,7 +50,7 @@ module ContainerOperations
       url = protocol.to_s + '://' + site[:variables][:fqdn].to_s
       urls.push(url)
     end
-     urls
+    urls
   end
 
   def get_container_network_metrics(engine_name)

@@ -90,7 +90,7 @@ module Engines
     return engine if engine.is_a?(ManagedEngine)
     yaml_file_name = SystemConfig.RunDir + '/containers/' + engine_name + '/running.yaml'
     raise EnginesException.new(error_hash('No Engine file', engine_name)) unless File.exist?(yaml_file_name)
-    raise EnginesException.new(error_hash('Engine File Locked',yaml_file_name)) if is_container_conf_file_locked?(SystemConfig.RunDir + '/containers/' + engine_name)
+    raise EnginesException.new(error_hash('Engine File Locked', yaml_file_name)) if is_container_conf_file_locked?(SystemConfig.RunDir + '/containers/' + engine_name)
     yaml_file = File.new(yaml_file_name, 'r')
     begin
       ts = File.mtime(yaml_file_name)

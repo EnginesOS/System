@@ -37,22 +37,22 @@ module DockerApiBuilder
 
     def has_data?
       return true unless @io_stream.nil?
-       false
+      false
     end
 
     def process_response()
       lambda do |chunk , c , t|
         begin
           hash = @parser.parse(chunk)  #do |hash|
-         # hash = deal_with_json(chunk)
+          # hash = deal_with_json(chunk)
           @builder.log_build_output(hash[:stream].force_encoding(Encoding::UTF_8)) if hash.key?(:stream)
           @builder.log_build_errors(hash[:errorDetail].force_encoding(Encoding::UTF_8)) if hash.key?(:errorDetail)
         rescue StandardError =>e
-             STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s)
+          STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s)
         end
       end
     rescue StandardError =>e
-        STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s)
+      STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s)
       return
     end
 
@@ -60,7 +60,7 @@ module DockerApiBuilder
       @io_stream.read(Excon.defaults[:chunk_size]).to_s
     rescue StandardError
       STDERR.puts('PROCESS REQUEST got nilling')
-       nil
+      nil
     end
   end
 
@@ -75,9 +75,9 @@ module DockerApiBuilder
       'Content-Length' => File.size(build_archive_filename).to_s
     }
     stream_handler = DockerStreamHandler.new(nil, builder) #File.new(build_archive_filename,'r'))
-    r =  post_stream_request('/build' , options, stream_handler,  header, File.read(build_archive_filename) )
+    r =  post_stream_request('/build' , options, stream_handler, header, File.read(build_archive_filename) )
     stream_handler.close
-     r
+    r
   rescue StandardError => e
     stream_handler.close unless stream_handler.nil?
     raise e

@@ -9,8 +9,8 @@ class DockerApi  < ErrorsApi
     @con = DockerConnection.new
   end
 
-  def get_event_stream(handler,filter=nil )
-    @con.request_stream('/events',filter,handler)
+  def get_event_stream(handler, filter = nil )
+    @con.request_stream('/events', filter, handler)
   end
 
 end

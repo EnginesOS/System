@@ -1,7 +1,5 @@
 module ContainerSystemStateFiles
- 
-  
-  def build_running_service(service_name, service_type_dir,system_value_access)
+  def build_running_service(service_name, service_type_dir, system_value_access)
     config_template_file_name = service_type_dir + service_name + '/config.yaml'
     return SystemUtils.log_error_mesg('Running exist', service_name) unless File.exist?(config_template_file_name)
     config_template = File.read(config_template_file_name)
@@ -19,23 +17,23 @@ module ContainerSystemStateFiles
   end
 
   def schedules_file(container)
-     schedules_dir(container) + '/schedules.yaml'
+    schedules_dir(container) + '/schedules.yaml'
   end
 
   def actionator_dir(container)
-     container_state_dir(container) + '/actionators/'
+    container_state_dir(container) + '/actionators/'
   end
 
   def container_flag_dir(container)
-     container_state_dir(container) + '/run/flags/'
+    container_state_dir(container) + '/run/flags/'
   end
 
   def restart_flag_file(container)
-     container_flag_dir(container) + 'restart_required'
+    container_flag_dir(container) + 'restart_required'
   end
 
   def rebuild_flag_file(container)
-     container_flag_dir(container) + 'rebuild_required'
+    container_flag_dir(container) + 'rebuild_required'
   end
 
   def read_container_id(container)
@@ -76,7 +74,7 @@ module ContainerSystemStateFiles
   end
 
   def key_dir(container)
-    SystemConfig.SSHStore + '/' + container.ctype + 's/'  + container.container_name
+    SystemConfig.SSHStore + '/' + container.ctype + 's/' + container.container_name
   end
 
   def clear_container_var_run(container)

@@ -11,7 +11,7 @@ module DockerApiImages
   def find_images(search)
     request = '/images/json?filter=' + search
     r =  get_request(request, true)
-    return  false unless r.is_a?(Array)
+    return false unless r.is_a?(Array)
     r
   end
 
@@ -27,7 +27,7 @@ module DockerApiImages
     end
 
     headers = { 'X-Registry-Config'  => registry_root_auth, 'Content-Type' =>'plain/text', 'Accept-Encoding' => 'gzip'}
-    post_request(request,  nil, false , headers ,600)
+    post_request(request, nil, false, headers, 600)
   rescue
     false #No new fresh ?
   end

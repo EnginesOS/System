@@ -2,7 +2,7 @@ module Containers
   # @param container_log file
   # @param retentioncount
   def rotate_container_log(container_id, retention = 10)
-    run_server_script('rotate_container_log',container_id.to_s + ' ' + retention.to_s)
+    run_server_script('rotate_container_log', container_id.to_s + ' ' + retention.to_s)
   end
 
   def save_container(container)
@@ -86,11 +86,11 @@ module Containers
   end
 
   def load_engine_actionators(container)
-    SystemDebug.debug(SystemDebug.actions,container,actionator_dir(container) + '/actionators.yaml')
+    SystemDebug.debug(SystemDebug.actions, container, actionator_dir(container) + '/actionators.yaml')
     return {} unless File.exist?(actionator_dir(container) + '/actionators.yaml')
     yaml = File.read(actionator_dir(container) + '/actionators.yaml')
     actionators = YAML::load(yaml)
-    SystemDebug.debug(SystemDebug.actions,container,actionators)
+    SystemDebug.debug(SystemDebug.actions,container ,actionators)
     return actionators if actionators.is_a?(Hash)
   end
 
