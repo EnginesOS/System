@@ -32,12 +32,13 @@ module BuildOutput
   end
 
   def close_all
-    unless @log_file.nil? || @log_file.closed? == true
+    return if @log_file.nil? 
+    unless @log_file.closed?
       log_build_output('Build Result:' + @result_mesg)
       log_build_output('Build Finished')
       @log_file.close
     end
-    @err_file.close unless @log_file.nil? || @err_file.closed?
+    @err_file.close unless @err_file.closed?
   end
 
   # used to fill in erro mesg with last ten lines
