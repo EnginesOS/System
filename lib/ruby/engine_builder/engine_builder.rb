@@ -99,7 +99,7 @@ class EngineBuilder < ErrorsApi
   def setup_build
     check_build_params(@build_params)
     @build_params[:engine_name].freeze
-    @build_params[:image] = @build_params[:engine_name].gsub(/[-_]/,'')
+    @build_params[:image] = @build_params[:engine_name] #.gsub(/[-_]/, '')
     @build_name = File.basename(@build_params[:repository_url]).sub(/\.git$/, '')
     @web_port = SystemConfig.default_webport
     @memory = @build_params[:memory]
@@ -118,7 +118,7 @@ class EngineBuilder < ErrorsApi
     @build_params[:data_uid] =  @data_uid
     @build_params[:data_gid] = @data_gid
     SystemDebug.debug(SystemDebug.builder, :builder_init, @build_params)
-    @service_builder = ServiceBuilder.new(@core_api, @templater, @build_params[:engine_name],  @attached_services)
+    @service_builder = ServiceBuilder.new(@core_api, @templater, @build_params[:engine_name], @attached_services)
     SystemDebug.debug(SystemDebug.builder, :builder_init__service_builder, @build_params)
     self
   rescue StandardError => e
@@ -127,11 +127,11 @@ class EngineBuilder < ErrorsApi
     post_failed_build_clean_up
     raise e
   end
-  
+
   def service_resource(service_name, what)
     @service_builder.service_resource(service_name, what)
   end
-  
+
   def volumes
     @service_builder.volumes
   end
@@ -160,7 +160,7 @@ class EngineBuilder < ErrorsApi
       require_relative 'blueprint_readers/' + version.to_s + '/versioned_blueprint_reader.rb'
     end
 
-    log_build_output('Using Blueprint Schema ' + version.to_s + ' ' +  @blueprint[:origin].to_s )
+    log_build_output('Using Blueprint Schema ' + version.to_s + ' ' + @blueprint[:origin].to_s)
 
     @blueprint_reader = VersionedBlueprintReader.new(@build_params[:engine_name], @blueprint, self)
     @blueprint_reader.process_blueprint
@@ -183,22 +183,22 @@ class EngineBuilder < ErrorsApi
   end
 
   def set_locale
-   ## STDERR.puts("LANGUAGE " + @build_params[:lang_code].to_s)
-   # STDERR.puts("country_code " + @build_params[:country_code].to_s)
+    ## STDERR.puts("LANGUAGE " + @build_params[:lang_code].to_s)
+    # STDERR.puts("country_code " + @build_params[:country_code].to_s)
     prefs = SystemPreferences.new
     lang =  @build_params[:lang_code]
     lang = prefs.langauge_code if lang.nil?
     country = @build_params[:country_code]
     country = prefs.country_code if country.nil?
-  ##  STDERR.puts("LANGUAGE " + lang.to_s)
-  #  STDERR.puts("country_code " + country.to_s)
+    ##  STDERR.puts("LANGUAGE " + lang.to_s)
+    #  STDERR.puts("country_code " + country.to_s)
     @blueprint_reader.environments.push(EnvironmentVariable.new('LANGUAGE', lang.to_s + '_' + country.to_s + ':' + lang.to_s))
     @blueprint_reader.environments.push(EnvironmentVariable.new('LANG', lang.to_s + '_' + country.to_s + '.UTF8'))
     @blueprint_reader.environments.push(EnvironmentVariable.new('LC_ALL', lang.to_s + '_' + country.to_s + '.UTF8'))
   end
 
   def build_container
-    SystemDebug.debug(SystemDebug.builder,  ' Starting build with params ', @build_params)
+    SystemDebug.debug(SystemDebug.builder, 'Starting build with params ', @build_params)
     meets_physical_requirements
     process_blueprint
     set_locale
@@ -241,7 +241,7 @@ class EngineBuilder < ErrorsApi
 
   def clone_repo
     log_build_output('Clone Blueprint Repository ' + @build_params[:repository_url])
-    SystemDebug.debug(SystemDebug.builder, "get_blueprint_from_repo",@build_params[:repository_url], @build_name,  SystemConfig.DeploymentDir)
+    SystemDebug.debug(SystemDebug.builder, "get_blueprint_from_repo",@build_params[:repository_url], @build_name, SystemConfig.DeploymentDir)
     g = Git.clone(@build_params[:repository_url], @build_name, :path => SystemConfig.DeploymentDir)
   end
 
@@ -267,7 +267,7 @@ class EngineBuilder < ErrorsApi
     # deregister non persistent services (if created)
     # FIXME: need to re orphan here if using an orphan Well this should happen on the fresh
     # FIXME: don't delete shared service but remove share entry
-    SystemDebug.debug(SystemDebug.builder, :Clean_up_Failed_build)
+    SystemDebug.debug(SystemDebug.builder, :Clean_up_of_Failed_build)
     SystemDebug.debug(SystemDebug.builder, "Called From",caller[0..5])
     SystemDebug.debug(SystemDebug.builder, caller.to_s)
     # FIXME: Stop it if started (ie vol builder failure)
@@ -292,9 +292,7 @@ class EngineBuilder < ErrorsApi
     #    @core_api.delete_engine(params) # remove engine if created, removes from manged_engines tree (main reason to call)
     @result_mesg = @result_mesg.to_s + ' Roll Back Complete'
     SystemDebug.debug(SystemDebug.builder,'Roll Back Complete')
-
     close_all
-
   end
 
   def setup_rebuild
@@ -312,7 +310,7 @@ class EngineBuilder < ErrorsApi
   def running_logs()
     return nil unless @container.nil?
     @container.wait_for_startup(4)
-    @container.logs_container   
+    @container.logs_container
   end
 
   def engine_environment
@@ -324,13 +322,14 @@ class EngineBuilder < ErrorsApi
     # FixME this should be elsewhere
     restart_flag_file = ContainerStateFiles.restart_flag_file(mc)
     FileUtils.mkdir_p(ContainerStateFiles.container_flag_dir(mc)) unless Dir.exist?(ContainerStateFiles.container_flag_dir(mc))
-    f = File.new(restart_flag_file,'w+')
+    f = File.new(restart_flag_file, 'w+')
     f.puts(restart_reason)
     f.close
-    File.chmod(0660,restart_flag_file)
-    FileUtils.chown(nil,'containers',restart_flag_file)
+    File.chmod(0660, restart_flag_file)
+    FileUtils.chown(nil, 'containers', restart_flag_file)
   end
 
+  #      throw BuildStandardError.new(e,'setting web port')
   def log_error_mesg(m, o = nil)
     log_build_errors(m.to_s + o.to_s)
     super
@@ -343,7 +342,7 @@ class EngineBuilder < ErrorsApi
   private
 
   def process_supplied_envs(custom_env)
-    SystemDebug.debug(SystemDebug.builder,  :custom_env, custom_env)
+    SystemDebug.debug(SystemDebug.builder, custom_env, custom_env)
     if custom_env.nil?
       @set_environments = {}
       @environments = []
@@ -353,7 +352,7 @@ class EngineBuilder < ErrorsApi
       @set_environments = {}
     else
       custom_env_hash = custom_env
-      SystemDebug.debug(SystemDebug.builder,   :Merged_custom_env, custom_env_hash)
+      SystemDebug.debug(SystemDebug.builder, :Merged_custom_env, custom_env_hash)
       @set_environments = custom_env_hash
       @environments = []
     end

@@ -1,21 +1,21 @@
 module MemoryStatistics
   def self.collate_containers_mem(mem_stats)
-     {
-    allocated: mem_stats[:engines][:totals][:allocated] + mem_stats[:services][:totals][:allocated].to_i,
-    in_use: mem_stats[:engines][:totals][:in_use] + mem_stats[:services][:totals][:in_use].to_i,
-    peak_sum: mem_stats[:engines][:totals][:peak_sum] + mem_stats[:services][:totals][:peak_sum].to_i
-     }
+    {
+      allocated: mem_stats[:engines][:totals][:allocated] + mem_stats[:services][:totals][:allocated].to_i,
+      in_use: mem_stats[:engines][:totals][:in_use] + mem_stats[:services][:totals][:in_use].to_i,
+      peak_sum: mem_stats[:engines][:totals][:peak_sum] + mem_stats[:services][:totals][:peak_sum].to_i
+    }
   end
- 
+
   def self.total_memory_statistics(api)
     engines = api.getManagedEngines
     services = api.getManagedServices
     system_services = api.getSystemServices
     services.concat(system_services)
     engines_memory_statistics = {
-      containers:  {
+      containers: {
       applications: collect_containers_memory_stats(engines),
-      services:  collect_containers_memory_stats(services),
+      services: collect_containers_memory_stats(services),
       }
     }
     engines_memory_statistics[:containers][:totals] = {
@@ -31,7 +31,7 @@ module MemoryStatistics
     mem_stats = {
       totals: {
       allocated: 0,
-      in_use:  0,
+      in_use: 0,
       peak_sum: 0
       }
     }

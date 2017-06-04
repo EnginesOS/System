@@ -12,14 +12,14 @@ module DockerUtils
           else
             unless stream_reader.data.nil? ||  stream_reader.data.length == 0
               if stream_reader.data.length < Excon.defaults[:chunk_size]
-                socket.send(stream_reader.data,0)
+                socket.send(stream_reader.data, 0)
                 stream_reader.data = ''
               else
                 while stream_reader.data.length != 0
                   if stream_reader.data.length < Excon.defaults[:chunk_size]
-                    socket.send(stream_reader.data.slice!(0,Excon.defaults[:chunk_size]),0)
+                    socket.send(stream_reader.data.slice!(0, Excon.defaults[:chunk_size]), 0)
                   else
-                    socket.send(stream_reader.data,0)
+                    socket.send(stream_reader.data, 0)
                     stream_reader.data = ''
                   end
                 end

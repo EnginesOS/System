@@ -7,7 +7,7 @@ module SmServiceForcedMethods
   end
 
   def deregister_non_persistent_service(service_hash)
-    service_hash = set_top_level_service_params(service_hash,service_hash[:parent_engine])
+    service_hash = set_top_level_service_params(service_hash, service_hash[:parent_engine])
     remove_from_managed_service(service_hash)
     system_registry_client.remove_from_services_registry(service_hash)
   end

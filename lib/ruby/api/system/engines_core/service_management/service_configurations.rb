@@ -6,7 +6,7 @@ module ServiceConfigurations
 
   def retrieve_service_configurations_hashes(service_hash)
     defs = SoftwareServiceDefinition.configurators(service_hash)
-    avail = service_defs_to_configurations(defs,service_hash)
+    avail = service_defs_to_configurations(defs, service_hash)
     configured = service_manager.retrieve_service_configurations_hashes(service_hash)
     if configured.is_a?(Array)
       configured.each do | configuration |
@@ -43,7 +43,7 @@ module ServiceConfigurations
   def retrieve_service_configuration(service_param)
     service_manager.retrieve_service_configuration(service_param)
   end
-  
+
   def service_resource(service_name, what)
     service_manager.service_resource(service_name, what)
   end
@@ -62,13 +62,14 @@ module ServiceConfigurations
     avail = {}
     defs.each_value do |definition|
       definition_key = definition[:name].to_sym
-      avail[definition_key] = {}
-      avail[definition_key][:service_name] = service_hash[:service_name]
-      avail[definition_key][:type_path] = service_hash[:type_path]
-      avail[definition_key][:publisher_namespace] = service_hash[:publisher_namespace]
-      avail[definition_key][:configurator_name] = definition[:name]
-      avail[definition_key][:variables] = definition_params_to_variables(definition[:params].keys)
-      avail[definition_key][:no_save] = definition[:no_save]
+      avail[definition_key] = {
+        service_name: service_hash[:service_name],
+        type_path: service_hash[:type_path],
+        publisher_namespace: service_hash[:publisher_namespace],
+        configurator_name: definition[:name],
+        variables: definition_params_to_variables(definition[:params].keys),
+        no_save: definition[:no_save]
+      }
     end
     avail
   end
@@ -78,7 +79,7 @@ module ServiceConfigurations
     begin
       service = loadManagedService(service_param[:service_name])
     rescue
-      STDERR.puts( ' loadSystemService ' + service_param.to_s + 'so loading ' + service_param[:service_name].to_s)
+      STDERR.puts(' loadSystemService ' + service_param.to_s + 'so loading ' + service_param[:service_name].to_s)
       service = loadSystemService(service_param[:service_name])
     end
     service_param[:publisher_namespace] = service.publisher_namespace.to_s  # need as saving in config tree
@@ -100,6 +101,5 @@ module ServiceConfigurations
     raise EnginesException.new(error_hash('Service configurator error @core_ap Got:' + configurator_result.to_s, " For:" +service_param.to_s )) unless configurator_result[:result] == 0 || configurator_result[:stderr].start_with?('Warning')
     true
   end
-
 
 end

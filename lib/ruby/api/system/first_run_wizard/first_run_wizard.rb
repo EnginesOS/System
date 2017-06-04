@@ -19,21 +19,21 @@ class FirstRunWizard <ErrorsApi
   def apply(api)
     return false if @has_ran == true
     @api = api
-    SystemDebug.debug(SystemDebug.first_run,:applyin, @first_run_params)
+    SystemDebug.debug(SystemDebug.first_run, :applyin, @first_run_params)
     return log_error_mesg('failed to validate first run params') unless validate_params(@first_run_params)
     refs = SystemPreferences
     prefs.set_country_code(@first_run_params[:country_code]) if @first_run_params.key?(:country_code)
     prefs.set_langauge_code(@first_run_params[:lang_code]) if @first_run_params.key?(:lang_code)
     @api.set_timezone(@first_run_params[:timezone]) if @first_run_params.key?(:timezone)
     return false unless setup_dns
-   # certs = @api.loadManagedService('cert_auth')
-   # certs.create_service
-    
+    # certs = @api.loadManagedService('cert_auth')
+    # certs.create_service
+
     setup_certs
-    setup_system_password(@first_run_params[:admin_password], @first_run_params[:admin_email])   
+    setup_system_password(@first_run_params[:admin_password], @first_run_params[:admin_email])
     @sucess = true
-    mark_as_run #if SystemDebug.debug(SystemDebug.first_run) 
-    true  
+    mark_as_run #if SystemDebug.debug(SystemDebug.first_run)
+    true
   end
 
   def mark_as_run

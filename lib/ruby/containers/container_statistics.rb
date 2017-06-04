@@ -12,30 +12,30 @@ class ContainerStatistics
   # FIXME replace fllowing with attr_readers
   # dont dish this class more will happend here latter (maybe)
   def state
-     @state
+    @state
   end
 
   def proc_cnt
-     @proc_cnt
+    @proc_cnt
   end
 
   def started_ts
-     @started_ts
+    @started_ts
   end
 
   def stopped_ts
-     @stopped_ts
+    @stopped_ts
   end
 
   def VSSMemory
-     @VSSMemory
+    @VSSMemory
   end
 
   def RSSMemory
-     @RSSMemory
+    @RSSMemory
   end
 
   def cpuTime
-     @cpuTime
+    @cpuTime
   end
 end

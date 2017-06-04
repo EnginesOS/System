@@ -3,12 +3,13 @@ module DockerApiCreateOptions
     @top_level = nil
   end
   require '/opt/engines/lib/ruby/api/system/container_state_files.rb'
+
   def create_options(container)
     @top_level = build_top_level(container)
   end
 
   def get_protocol_str(port)
-    return  'tcp'  if port[:proto_type].nil?
+    return 'tcp' if port[:proto_type].nil?
     port[:proto_type]
   end
 
@@ -76,13 +77,11 @@ module DockerApiCreateOptions
   end
 
   def container_get_dns_servers(container)
-    return get_dns_servers #if container.on_host_net? == false
-    ''
+    get_dns_servers
   end
 
   def container_dns_search(container)
-    return get_dns_search #if container.on_host_net? == false
-    ''
+    get_dns_search
   end
 
   def container_network_mode(container)
@@ -93,10 +92,9 @@ module DockerApiCreateOptions
     end
   end
 
-  
   def host_config_options(container)
     {
-      'Binds' => volumes_mounts(container),      
+      'Binds' => volumes_mounts(container),
       'Memory' => container_memory(container),
       'MemorySwap' => container_memory(container) * 2,
       'VolumesFrom' => container_volumes(container),
@@ -118,7 +116,7 @@ module DockerApiCreateOptions
     return {'Name' => 'on-failure', 'MaximumRetryCount' => 2} if container.ctype == 'service'
     {}
   end
-  
+
   def log_config(container)
     #return { "Type" => 'json-file', "Config" => {}}
     return { "Type" => 'json-file', "Config" => { "max-size" =>"5m", "max-file" => '10' } } if container.ctype == 'service'
@@ -148,7 +146,7 @@ module DockerApiCreateOptions
   end
 
   def hostname(container)
-  #  return nil if container.on_host_net? == true
+    #  return nil if container.on_host_net? == true
     return container.container_name if container.hostname.nil?
     container.hostname
   end
@@ -159,7 +157,7 @@ module DockerApiCreateOptions
   end
 
   def build_top_level(container)
-    top_level = {   
+    top_level = {
       'User' => '',
       'AttachStdin' => false,
       'AttachStdout' => false,
@@ -174,18 +172,18 @@ module DockerApiCreateOptions
       'Volumes' => {},
       'WorkingDir' => '',
       'NetworkDisabled' => false,
-     
+
       'StopSignal' => 'SIGTERM',
       #       "StopTimeout": 10,
       'Hostname' => hostname(container),
       'Domainame' => container_domain_name(container),
       'HostConfig' => host_config_options(container)
     }
-    top_level['ExposedPorts'] = exposed_ports(container) unless container.on_host_net? 
+    top_level['ExposedPorts'] = exposed_ports(container) unless container.on_host_net?
     top_level['HostConfig']['PortBindings'] = port_bindings(container) unless container.on_host_net?
     #  top_level['Hostname'] = hostname(container) #unless hostname(container).nil?
     # top_level['Domainame'] = container_domain_name(container)# unless container_domain_name(container).nil?
- 
+
     set_entry_point(container, top_level)
     # STDERR.puts(' CREATE ' + top_level.to_json)
     top_level
@@ -199,10 +197,10 @@ module DockerApiCreateOptions
   end
 
   def get_labels(container)
-    labels = {}
-    labels['container_name'] = container.container_name
-    labels['container_type'] = container.ctype
-    labels
+    {
+      'container_name'  => container.container_name,
+      'container_type' => container.ctype
+    }
   end
 
   def cert_mounts(container)
@@ -219,11 +217,11 @@ module DockerApiCreateOptions
   def system_mounts(container)
     mounts = []
     if container.ctype == 'container'
-      mounts_file_name =  SystemConfig.ManagedEngineMountsFile
+      mounts_file_name = SystemConfig.ManagedEngineMountsFile
     else
-      mounts_file_name =  SystemConfig.ManagedServiceMountsFile
+      mounts_file_name = SystemConfig.ManagedServiceMountsFile
     end
-    mounts_file = File.open(mounts_file_name,'r')
+    mounts_file = File.open(mounts_file_name, 'r')
     volumes = YAML::load(mounts_file)
     mounts_file.close
 
@@ -272,7 +270,7 @@ module DockerApiCreateOptions
     return '/var/log' if container.framework.nil? || container.framework.length == 0
     container_logdetails_file_name = false
     framework_logdetails_file_name = SystemConfig.DeploymentTemplates + '/' + container.framework + '/home/LOG_DIR'
-    SystemDebug.debug(SystemDebug.docker,'Frame logs details', framework_logdetails_file_name)
+    SystemDebug.debug(SystemDebug.docker, 'Frame logs details', framework_logdetails_file_name)
     if File.exist?(framework_logdetails_file_name)
       container_logdetails_file_name = framework_logdetails_file_name
     else
@@ -288,7 +286,7 @@ module DockerApiCreateOptions
   end
 
   def envs(container)
-    envs = []    
+    envs = []
     container.environments.each do |env|
       next if env.build_time_only
       envs.push(env.name.to_s + '=' + env.value.to_s)

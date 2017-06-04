@@ -48,12 +48,12 @@ module Services
   # @return an Array of Strings of the Provider names in use
   # returns nil on failure
   def providers_in_use
-    rest_get('services/providers/in_use/',nil)
+    rest_get('services/providers/in_use/', nil)
   end
 
   def clear_service_from_registry(service_hash)
     r = 'services/clear'
-    r+= address_params(service_hash, [:container_type, :parent_engine, :persistence])
+    r += address_params(service_hash, [:container_type, :parent_engine, :persistence])
     rest_delete(r)
   end
 

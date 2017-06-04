@@ -20,7 +20,6 @@ module SmEngineServices
   # @return [Array] of all service_hashs marked persistence false for :engine_name
   # required keys
   # :engine_name
- 
 
   def get_engine_nonpersistent_services(params)
     system_registry_client.get_engine_nonpersistent_services(params)
@@ -32,9 +31,9 @@ module SmEngineServices
   def deregister_non_persistent_services(engine)
     begin
       services = get_engine_nonpersistent_services({
-      parent_engine: engine.container_name,
-      container_type: engine.ctype
-    })
+        parent_engine: engine.container_name,
+        container_type: engine.ctype
+      })
     rescue StandardError => e
       STDERR.puts('NO services ' +  engine.container_name.to_s + ';' + e.to_s)
       return # No services
@@ -90,7 +89,7 @@ module SmEngineServices
   def remove_engine_non_persistent_services(params)
     #   STDERR.puts('remove_engine_services ' + params.to_s)
     begin
-    services = get_engine_nonpersistent_services(params) # find_engine_services_hashes(params)
+      services = get_engine_nonpersistent_services(params) # find_engine_services_hashes(params)
     rescue
       return nil
     end
@@ -105,16 +104,17 @@ module SmEngineServices
       end
     end
   end
-  
+
   def retrieve_cron_jobs(container)
     retrieve_engine_service_hashes({
-          parent_engine: container.container_name,
-          publisher_namespace: 'EnginesSystem',
-          type_path: 'cron',
-          container_type: container.ctype,
-          container_name: container.container_name
+      parent_engine: container.container_name,
+      publisher_namespace: 'EnginesSystem',
+      type_path: 'cron',
+      container_type: container.ctype,
+      container_name: container.container_name
     })
   end
+
   def retrieve_cron_entry(cronjob, container)
     retrieve_engine_service_hash({
       parent_engine: container.container_name,

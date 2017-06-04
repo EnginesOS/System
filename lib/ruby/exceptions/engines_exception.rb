@@ -1,6 +1,6 @@
 class EnginesException < StandardError
   attr_reader :level, :params, :status, :module, :system, :error_mesg
-  def initialize(msg="Engines Exception", level=:error, *params)
+  def initialize(msg = "Engines Exception", level = :error, *params)
     @level = level
     @params = params
     super(msg)

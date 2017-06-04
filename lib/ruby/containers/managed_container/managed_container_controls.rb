@@ -92,7 +92,7 @@ module ManagedContainerControls
   end
 
   def stop_container
-    SystemDebug.debug(SystemDebug.containers,  :stop_read_sta, read_state)
+    SystemDebug.debug(SystemDebug.containers, :stop_read_sta, read_state)
     return false unless has_api?
     @container_mutex.synchronize {
       return r unless (r = prep_task(:stop))

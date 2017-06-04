@@ -18,7 +18,6 @@ module DockerInfoCollector
   # @return nil if exception
   # @ return false on inspect container error
   def get_ip_str
-    #
     return docker_info[:NetworkSettings][:IPAddress] unless docker_info.is_a?(FalseClass)
     false
   rescue
@@ -43,25 +42,25 @@ module DockerInfoCollector
   def read_container_id
     cid = @container_id
     @container_id = ContainerStateFiles.read_container_id(self)
-    SystemDebug.debug(SystemDebug.containers, 'read container from file ',  @container_id)
+    SystemDebug.debug(SystemDebug.containers, 'read container from file ', @container_id)
     if @container_id == -1 && setState != 'nocontainer'
       info = @container_api.inspect_container_by_name(self) # docker_info
       return -1 if info.nil?
 
-      SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ' ,info)
+      SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ', info)
       if info.is_a?(Array)
-        SystemDebug.debug(SystemDebug.containers,'array')
+        SystemDebug.debug(SystemDebug.containers, 'array')
         info = info[0]
         return -1 if info.nil?
       end
-      SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ' ,info)
+      SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ', info)
       if info.is_a?(Hash)
-        SystemDebug.debug(SystemDebug.containers,'hash')
+        SystemDebug.debug(SystemDebug.containers, 'hash')
       end
       return -1 unless info.is_a?(Hash)
       return -1 if info.key?(:RepoTags) #No container by that name and it will return images by that name WTF
       @container_id = info[:Id] if info.key?(:Id)
-      SystemDebug.debug(SystemDebug.containers,@container_id)
+      SystemDebug.debug(SystemDebug.containers, @container_id)
     end
     save_state unless cid == @container_id
     @container_id
@@ -91,7 +90,7 @@ module DockerInfoCollector
     @docker_info_cache
 
   rescue EnginesException
-    @docker_info_cache = nil    
+    @docker_info_cache = nil
   end
 
 end

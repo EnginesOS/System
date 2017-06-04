@@ -10,7 +10,7 @@ module TaskAtHand
     @setState = state.to_s
     set_task_at_hand(step)
     save_state
-    SystemDebug.debug(SystemDebug.engine_tasks,  'Task at Hand:' + state.to_s + '  Current set state:' + current_set_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s + ' in ' + curr_state)
+    SystemDebug.debug(SystemDebug.engine_tasks, 'Task at Hand:' + state.to_s + '  Current set state:' + current_set_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s + ' in ' + curr_state)
     # rescue StandardError => e
     #   log_exception(e)
   end
@@ -132,7 +132,7 @@ module TaskAtHand
     SystemDebug.debug(SystemDebug.engine_tasks, :task_complete, ' ', action.to_s + ' as action for task ' +  task_at_hand.to_s + " " + @steps_to_go.to_s + '-1 stesp remaining step completed ',@steps)
 
     clear_task_at_hand
-    SystemDebug.debug(SystemDebug.builder, :last_task,   @last_task, :steps_to, @steps_to_go)
+    SystemDebug.debug(SystemDebug.builder, :last_task,  @last_task, :steps_to, @steps_to_go)
     return save_state unless @last_task == :delete_image && @steps_to_go <= 0
     # FixMe Kludge unless docker event listener
     delete_engine
@@ -201,7 +201,7 @@ module TaskAtHand
 
   def task_failed(msg)
     clear_task_at_hand
-    SystemDebug.debug(SystemDebug.engine_tasks,:TASK_FAILES______Doing, @task_at_hand)
+    SystemDebug.debug(SystemDebug.engine_tasks, :TASK_FAILES______Doing, @task_at_hand)
     @last_error = @container_api.last_error unless @container_api.nil?
     SystemDebug.debug(SystemDebug.engine_tasks, :WITH, @last_error.to_s, msg.to_s)
     task_complete(:failed)
@@ -247,7 +247,7 @@ module TaskAtHand
     #SystemDebug.debug(SystemDebug.engine_tasks,mtime,fmtime,task,task_set_timeout(task))
     if mtime < Time.now
       File.delete(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
-      SystemDebug.debug(SystemDebug.engine_tasks, :expired_task, task, ' after ' , task_set_timeout(task))
+      SystemDebug.debug(SystemDebug.engine_tasks, :expired_task, task, ' after ', task_set_timeout(task))
       return true
     end
     false
@@ -266,7 +266,7 @@ module TaskAtHand
   def set_task_at_hand(state)
     @task_at_hand = state
     return unless Dir.exist?(ContainerStateFiles.container_state_dir(self)) # happens on reinstall
-    f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand','w+')
+    f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand', 'w+')
     f.write(state)
     f.close
   rescue StandardError => e

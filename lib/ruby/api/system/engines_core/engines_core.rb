@@ -81,7 +81,6 @@ class EnginesCore < ErrorsApi
 
   require_relative 'engines_core_version.rb'
   include EnginesCoreVersion
-  
   def self.command_is_system_service?
     return true if $PROGRAM_NAME.end_with?('system_service.rb')
   end

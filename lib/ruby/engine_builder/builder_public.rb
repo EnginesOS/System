@@ -9,7 +9,6 @@ class BuilderPublic
     @builder.build_params[:engine_name]
   end
 
-  
   def environments
     @builder.environments
   end
@@ -30,10 +29,10 @@ class BuilderPublic
     @builder.build_params[:repository_url]
   end
 
-  def http_protocol    
-    return nil unless @builder.build_params.key?(:http_protocol) 
+  def http_protocol
+    return nil unless @builder.build_params.key?(:http_protocol)
     return nil if @builder.build_params[:http_protocol].nil?
-    @builder.build_params[:http_protocol].gsub!(/_.*/,'') if @builder.build_params[:http_protocol].include?('_')
+    @builder.build_params[:http_protocol].gsub!(/_.*/, '') if @builder.build_params[:http_protocol].include?('_')
     @builder.build_params[:http_protocol]
   end
 
@@ -79,7 +78,7 @@ class BuilderPublic
     @builder.data_gid
   end
 
-  def  group_uid
+  def group_uid
     @builder.data_gid
 
   end

@@ -24,9 +24,10 @@ module Cache
   def cache_engine( engine, ts)
     ident =  get_ident(engine)
     SystemDebug.debug(SystemDebug.cache, :ADD_TO_CACHE, ident, engine.container_name)
-    @engines_conf_cache[ident.to_sym] = {}
-    @engines_conf_cache[ident.to_sym][:engine] = engine
-    @engines_conf_cache[ident.to_sym][:ts] =  ts
+    @engines_conf_cache[ident.to_sym] = {
+      engine: engine,
+      ts: ts
+    }
     @engines_conf_cache[engine.container_id] = ident
   end
 
@@ -41,7 +42,7 @@ module Cache
   def container_name_from_id(id)
     ident = @engines_conf_cache[id]
     return nil if ident.nil?
-    ident.gsub!(/services\//,'')
+    ident.gsub!(/services\//, '')
     ident
   end
 
@@ -49,16 +50,11 @@ module Cache
     raise EnginesException.new(error_hash('Get ts passed nil Engine ', engine)) if engine.nil?
     yam_file_name = SystemConfig.RunDir + '/' + engine.ctype + 's/' + engine.engine_name + '/running.yaml'
     return  File.mtime(yam_file_name) if File.exist?(yam_file_name)
-    # return 0 if Dir.exist?(SystemConfig.RunDir + '/' + engine.ctype + 's/' + engine.engine_name)
     -1
   end
 
   def container_from_cache(container_ident)
-    # p :container_from_cache
-    #  p container_ident.to_s
     return nil if container_ident.nil?
-    #    c = engine_from_cache('/services/' + container_name)
-    #    return c unless c.nil?
     engine_from_cache(container_ident)
   end
 

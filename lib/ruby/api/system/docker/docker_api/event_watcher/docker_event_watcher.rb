@@ -49,7 +49,6 @@ class DockerEventWatcher  < ErrorsApi
       end
       status
     end
-
   end
 
   require 'net_x/http_unix'
@@ -63,11 +62,12 @@ class DockerEventWatcher  < ErrorsApi
     event_listeners = {} if event_listeners.nil?
     @event_listeners = event_listeners
     # add_event_listener([system, :container_event])
-    SystemDebug.debug(SystemDebug.container_events,'EVENT LISTENER')
+    SystemDebug.debug(SystemDebug.container_events, 'EVENT LISTENER')
   end
 
   def connection
-    @events_connection = Excon.new('unix:///', :socket => '/var/run/docker.sock',
+    @events_connection = Excon.new('unix:///',
+    :socket => '/var/run/docker.sock',
     :debug_request => true,
     :debug_response => true,
     :persistent => true) if @events_connection.nil?
@@ -77,7 +77,8 @@ class DockerEventWatcher  < ErrorsApi
   def reopen_connection
     @events_connection.reset
     #    STDERR.puts(' REOPEN doker.sock connection ')
-    @events_connection = Excon.new('unix:///', :socket => '/var/run/docker.sock',
+    @events_connection = Excon.new('unix:///',
+    :socket => '/var/run/docker.sock',
     :debug_request => true,
     :debug_response => true,
     :persistent => true)
@@ -96,12 +97,12 @@ class DockerEventWatcher  < ErrorsApi
         begin
           # parser = FFI_Yajl::Parser.new({:symbolize_keys => true}) if parser.nil?
           #   STDERR.puts('event  cunk ' + chunk.to_s )
-          SystemDebug.debug(SystemDebug.container_events,chunk.to_s )
+          SystemDebug.debug(SystemDebug.container_events, chunk.to_s )
           next if chunk.nil?
           chunk.gsub!(/\s+$/, '')
           chunk = json_part.to_s + chunk unless json_part.nil?
           unless chunk.end_with?('}')
-            SystemDebug.debug(SystemDebug.container_events,'DOCKER SENT INCOMPLETE json ' + chunk.to_s )
+            SystemDebug.debug(SystemDebug.container_events, 'DOCKER SENT INCOMPLETE json ' + chunk.to_s )
             json_part = chunk
             next
           else
@@ -117,11 +118,11 @@ class DockerEventWatcher  < ErrorsApi
           next unless hash.is_a?(Hash)
           #  STDERR.puts('trigger' + hash.to_s )
           next if hash.key?(:from) && hash[:from].length >= 64
-          SystemDebug.debug(SystemDebug.container_events,'skipped '  + hash.to_s)
+          SystemDebug.debug(SystemDebug.container_events, 'skipped ' + hash.to_s)
           # next
           #end
-         t = Thread.new { trigger(hash)}
-         t[:name] = 'trigger'
+          t = Thread.new { trigger(hash)}
+          t[:name] = 'trigger'
         rescue StandardError => e
           STDERR.puts('EXCEPTION docker Event Stream as close ' + e.to_s)
           log_error_mesg('Chunk error on docker Event Stream _' + chunk.to_s + '_')
@@ -140,27 +141,27 @@ class DockerEventWatcher  < ErrorsApi
     log_error_mesg('Restarting docker Event Stream Read Timeout as timeout')
     STDERR.puts('TIMEOUT docker Event Stream as close')
     @system.start_docker_event_listener(@event_listeners)
-   # client.finish unless client.nil?
-   
+    # client.finish unless client.nil?
+
   rescue StandardError => e
     log_exception(e)
     log_error_mesg('Restarting docker Event Stream post exception ')
     STDERR.puts('EXCEPTION docker Event Stream post exception due to ' + e.to_s + ' ' + e.class.name)
-   # client.finish unless client.nil?
+    # client.finish unless client.nil?
     @system.start_docker_event_listener(@event_listeners)
-#  ensure
-  #  SystemDebug.debug(SystemDebug.container_events,'CLOSED docker Event Stream @event_listeners ENSURE')
+    #  ensure
+    #  SystemDebug.debug(SystemDebug.container_events,'CLOSED docker Event Stream @event_listeners ENSURE')
     # @system.start_docker_event_listener(@event_listeners)
   end
 
   def add_event_listener(listener, event_mask = nil, container_name = nil)
     event = EventListener.new(listener, event_mask, container_name)
-    SystemDebug.debug(SystemDebug.container_events,'ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
+    SystemDebug.debug(SystemDebug.container_events, 'ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
     @event_listeners[event.hash_name] = event
   end
 
   def rm_event_listener(listener)
-    SystemDebug.debug(SystemDebug.container_events,'REMOVED listenter ' + listener.class.name + ':' + listener.object_id.to_s)
+    SystemDebug.debug(SystemDebug.container_events, 'REMOVED listenter ' + listener.class.name + ':' + listener.object_id.to_s)
     @event_listeners.delete(listener.object_id.to_s) if @event_listeners.key?(listener.object_id.to_s)
   end
 

@@ -25,14 +25,14 @@ class SoftwareServiceDefinition
   # Find the assigned service container_name from teh service definition file
   def SoftwareServiceDefinition.get_software_service_container_name(params)
     server_service =  self.software_service_definition(params)
-    raise EnginesException.new(self.error_hash('Failed to load service definitions',params)) if server_service.nil? || server_service == false
+    raise EnginesException.new(self.error_hash('Failed to load service definitions', params)) if server_service.nil? || server_service == false
     server_service[:service_container]
   end
 
   def SoftwareServiceDefinition.consumer_params(service_hash)
     ret_val = []
-    service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
-    SystemDebug.debug(SystemDebug.services,:SERVICE_Constants,:loaded,service_hash[:type_path],service_hash[:publisher_namespace],service_def)
+    service_def = SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:publisher_namespace])
+    SystemDebug.debug(SystemDebug.services,:SERVICE_Constants, :loaded, service_hash[:type_path], service_hash[:publisher_namespace], service_def)
     return ret_val if service_def.nil?
     return ret_val unless service_def.key?(:consumer_params)
     consumer_params = service_def[:consumer_params]
@@ -41,11 +41,10 @@ class SoftwareServiceDefinition
   end
 
   def SoftwareServiceDefinition.configurators(service_hash)
-    service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
+    service_def = SoftwareServiceDefinition.find(service_hash[:type_path] ,service_hash[:publisher_namespace])
     return service_def if service_def.nil?
     service_def = service_def[:configurators]
     service_def
-
   end
 
   def self.summary(definition)
@@ -61,32 +60,31 @@ class SoftwareServiceDefinition
 
   def SoftwareServiceDefinition.service_constants(service_hash)
     ret_val = []
-    service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
-    SystemDebug.debug(SystemDebug.services,:SERVICE_Constants,:loaded,service_hash[:type_path],service_hash[:publisher_namespace],service_def)
+    service_def = SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:publisher_namespace])
+    SystemDebug.debug(SystemDebug.services, :SERVICE_Constants, :loaded, service_hash[:type_path], service_hash[:publisher_namespace], service_def)
     return ret_val unless service_def.key?(:constants)
-    SystemDebug.debug(SystemDebug.services,:SERVICE_Constants,:with,service_def[:constants])
+    SystemDebug.debug(SystemDebug.services, :SERVICE_Constants,:with, service_def[:constants])
     constants = service_def[:constants]
     return retval unless constants.is_a?(Hash)
-    SystemDebug.debug(SystemDebug.services,:SERVICE_Constants, constants)
+    SystemDebug.debug(SystemDebug.services, :SERVICE_Constants, constants)
     constants.values.each do |env_variable_pair|
-      SystemDebug.debug(SystemDebug.services,:env_variable_pair, env_variable_pair)
+      SystemDebug.debug(SystemDebug.services, :env_variable_pair, env_variable_pair)
       name = env_variable_pair[:name]
       value = env_variable_pair[:value]
       # initialize(name, value, setatrun, mandatory, build_time_only,label, immutable)
       owner = []
       owner[0] = 'service_consumer'
       owner[1] = service_hash[:publisher_namespace] + '/' + service_hash[:type_path] + ':' + name
-      env = EnvironmentVariable.new(name,value,false,true,false,service_hash[:type_path] + name,true, owner)
-      SystemDebug.debug(SystemDebug.services,:SERVICE_Constants,:new_env,env)
+      env = EnvironmentVariable.new(name, value, false, true, false, service_hash[:type_path] + name, true, owner)
+      SystemDebug.debug(SystemDebug.services, :SERVICE_Constants, :new_env ,env)
       ret_val.push( env) # env_name , value
     end
     ret_val
-
   end
 
   def SoftwareServiceDefinition.service_environments(service_hash)
     retval = Array.new
-    service_def = SoftwareServiceDefinition.find(service_hash[:type_path],service_hash[:publisher_namespace])
+    service_def = SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:publisher_namespace])
     if  service_def != nil
       owner= []
       owner[0]= 'service_consumer'
@@ -105,7 +103,7 @@ class SoftwareServiceDefinition
           build_time_only = service_variables[value_name.to_sym][:build_time_only]
           setatrun = service_variables[value_name.to_sym][:ask_at_build_time]
           mandatory = service_variables[value_name.to_sym][:mandatory]
-          retval.push( EnvironmentVariable.new(env_name,value,setatrun,mandatory,build_time_only,value_name,immutable,owner)) # env_name , value
+          retval.push( EnvironmentVariable.new(env_name, value, setatrun, mandatory, build_time_only, value_name, immutable, owner)) # env_name , value
 
         end                                                      #(name,value,setatrun,mandatory,build_time_only,label,immutable)
       end
@@ -123,7 +121,7 @@ class SoftwareServiceDefinition
     end
     dir = SystemConfig.ServiceTemplateDir + '/' + provider
     if Dir.exist?(dir)
-      service_def = SoftwareServiceDefinition.load_service_def(dir,service_type)
+      service_def = SoftwareServiceDefinition.load_service_def(dir, service_type)
       if service_def == nil
         raise EnginesException.new(self.error_hash('Nil Service type', provider.to_s + '/' + service_type.to_s ))
       end
@@ -157,7 +155,7 @@ class SoftwareServiceDefinition
     if Dir.exists?(dir)
       Dir.foreach(dir) do |service_dir_entry|
         if Dir.exist?(service_dir_entry) == true && service_dir_entry.start_with?('.') ==false
-          search_dir(root + '/' + service_dir_entry,service_type)
+          search_dir(root + '/' + service_dir_entry, service_type)
         else
           service_name = File.basename(service_type)
           if File.exist?(root + '/' + service_dir_entry + '/' + service_type + '/' + service_name  + '.yaml'   )
@@ -169,7 +167,7 @@ class SoftwareServiceDefinition
   end
 
   def SoftwareServiceDefinition.is_persistent?(params)
-    service = SoftwareServiceDefinition.find(params[:type_path],params[:publisher_namespace])
+    service = SoftwareServiceDefinition.find(params[:type_path], params[:publisher_namespace])
     if service == nil
       return nil
     end
