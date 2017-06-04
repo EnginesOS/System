@@ -25,26 +25,26 @@ end
 
 case ARGV[1]
 when 'restart'
-  p service.restart_container
+  STDOUT.puts service.restart_container.to_s
 when 'start'
-  p service.start_container
+  STDOUT.puts service.start_container.to_s
 when 'create'
-  p service.create_container
+  STDOUT.puts service.create_container.to_s
 when 'stop'
-  p service.stop_container
+  STDOUT.puts service.stop_container.to_s
 when 'destroy'
-  p service.destroy_container
+  STDOUT.puts service.destroy_container.to_s
 when 'state'
-  p service.read_state
+  STDOUT.puts service.read_state.to_s
 when 'set_state'
-  p service.set_state
+  STDOUT.puts service.set_state.to_s
 when 'status'  
-  p service.status
+  STDOUT.puts service.status.to_s
 when 'mem_stat' 
-p MemoryStatistics.container_memory_stats(service)
+STDOUT.puts MemoryStatistics.container_memory_stats(service).to_s
 when 'wait_for'
-  p service.wait_for(ARGV[2],ARGV[3].to_i)
+  STDOUT.puts service.wait_for(ARGV[2],ARGV[3].to_i)
 when 'wait_for_startup'
-  p service.wait_for_startup(ARGV[2].to_i)  
+  STDOUT.puts service.wait_for_startup(ARGV[2].to_i)  
 end 
 
