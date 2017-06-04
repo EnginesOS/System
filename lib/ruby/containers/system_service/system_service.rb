@@ -42,7 +42,7 @@ class SystemService < ManagedService
   end
 
   def forced_recreate
-    SystemDebug.debug(SystemDebug.system,'Forced recreate  System Service ' + container_name)
+    SystemDebug.debug(SystemDebug.system, 'Forced recreate  System Service ' + container_name)
     begin
       unpause_container
     rescue
@@ -59,8 +59,7 @@ class SystemService < ManagedService
   end
 
   def inspect_container
-    SystemDebug.debug(SystemDebug.system,:system_service_inspect_container)
-
+    SystemDebug.debug(SystemDebug.system, :system_service_inspect_container)
     return false if has_api? == false
     if @docker_info.nil? || @docker_info.is_a?(FalseClass)
       #  @container_api.inspect_container(self)
@@ -68,19 +67,18 @@ class SystemService < ManagedService
       # @docker_info = @last_result
       if @docker_info.is_a?(FalseClass)
         unless has_image?
-          SystemUtils.log_output('pulling system service' + container_name.to_s,10)
+          SystemUtils.log_output('pulling system service' + container_name.to_s, 10)
           pull_image
         end
-        SystemUtils.log_output('Creating system service' + container_name.to_s,10)
+        SystemUtils.log_output('Creating system service' + container_name.to_s, 10)
         @container_api.create_container(self)
         @docker_info = @last_result
         if @docker_info.is_a?(FalseClass)
-          raise EnginesException.new(error_hash('failed to create system service',container_name ))
+          raise EnginesException.new(error_hash('failed to create system service', container_name))
         end
       end
     end
-
-    SystemDebug.debug(SystemDebug.system,:system_service_inspected_container)
+    SystemDebug.debug(SystemDebug.system, :system_service_inspected_container)
     @docker_info
   end
 

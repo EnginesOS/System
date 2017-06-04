@@ -1,7 +1,7 @@
 module OrphansServiceBuilder
   def use_orphan(service_hash)
     build_vars = service_hash.dup
-    SystemDebug.debug(SystemDebug.orphans,:attaching_orphan, service_hash)
+    SystemDebug.debug(SystemDebug.orphans, :attaching_orphan, service_hash)
     service_hash = @core_api.retrieve_orphan(service_hash)
     SystemDebug.debug(SystemDebug.orphans, :retrieved_orphan, service_hash)
     #  STDERR.puts('USE ORPHAN;' + service_hash.to_s)

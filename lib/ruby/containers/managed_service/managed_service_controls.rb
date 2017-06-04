@@ -22,7 +22,7 @@ module ManagedServiceControls
       if@environments.is_a?(Array)
         @environments =  EnvironmentVariable.merge_envs(envs, @environments)
         # @environments = envs ??
-        @environments = EnvironmentVariable.merge_envs( @environments, iso_envs )
+        @environments = EnvironmentVariable.merge_envs( @environments, iso_envs)
       end
     end
 
@@ -42,8 +42,6 @@ module ManagedServiceControls
     save_state
     raise e
   end
-
-
 
   def iso_envs
     prefs = SystemPreferences.new

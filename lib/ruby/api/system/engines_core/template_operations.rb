@@ -21,7 +21,7 @@ module TemplateOperations
   end
 
   def get_resolved_engine_string(env_value, container)
-    templater = Templater.new(system_value_access,container)
+    templater = Templater.new(system_value_access, container)
     templater.apply_build_variables(env_value)
   rescue StandardError => e
     raise EnginesException.new(error_hash(e, env_value, container.container_name))

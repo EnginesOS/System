@@ -64,7 +64,7 @@ class BluePrintReader
 
   def clean_path(path)
     # FIXME: remove preceeding ./(s) and /(s) as well as obliterate any /../ or preceeding ../ and any ' ' or ';' or '&' or '|' etc
-     path
+    path
   end
 
   def process_blueprint
@@ -133,7 +133,7 @@ class BluePrintReader
 
   def read_web_root
     @web_root = @blueprint[:software][:web_root_directory] if @blueprint[:software].key?(:web_root_directory)
-    SystemDebug.debug(SystemDebug.builder,  ' @web_root ',  @web_root) 
+    SystemDebug.debug(SystemDebug.builder,  ' @web_root ',  @web_root)
   end
 
   def read_deployment_type
@@ -222,7 +222,7 @@ class BluePrintReader
     @pecl_modules = []
     @npm_modules = []
     @lua_modules = []
-      
+
     pkg_modules = @blueprint[:software][:modules]
     return true unless pkg_modules.is_a?(Array)  # not an error just nada
     pkg_modules.each do |pkg_module|
@@ -251,7 +251,7 @@ class BluePrintReader
         raise EngineBuilderException.new(error_hash('pkg module_type ' + pkg_module_type + ' Unknown for ' + modname))
       end
     end
-     true
+    true
   end
 
   def read_app_packages
@@ -284,7 +284,7 @@ class BluePrintReader
   def add_capability(capability)
     @capabilities = [] if @capabilities.nil?
     @capabilities.push(capability)
-  
+
   end
 
   def read_write_permissions_recursive
@@ -300,7 +300,7 @@ class BluePrintReader
       end
       # FIXME: need to strip any ../ and any preceeding ./ in clean_path
     end
-     true
+    true
   end
 
   def read_write_permissions_single
@@ -315,7 +315,7 @@ class BluePrintReader
         @single_chmods.push(directory)
       end
     end
-     true
+    true
   end
 
   def read_worker_commands
@@ -365,7 +365,7 @@ class BluePrintReader
       @sed_strings[:tmp_file].push(tmp_file)
       @sed_strings[:sed_str].push(sedstr)
       n += 1
-    end  
+    end
   end
 
   def read_mapped_ports
@@ -391,7 +391,7 @@ class BluePrintReader
       # @mapped_ports.push(WorkPort.work_port_hash(name, portnum, external, false, type))
       @mapped_ports[name] = WorkPort.work_port_hash(name, portnum, external, true, type)
     end
-     true
+    true
   end
 
   def blueprint_env_varaibles
@@ -417,7 +417,7 @@ class BluePrintReader
       unless @builder.set_environments.nil?
         log_build_output('Merging supplied Environment Variable:' + name.to_s)
         SystemDebug.debug(SystemDebug.builder, :looking_for_, name)
-        SystemDebug.debug(SystemDebug.builder, 'from ' ,@builder.set_environments )
+        SystemDebug.debug(SystemDebug.builder, 'from ' ,@builder.set_environments)
         if ask && @builder.set_environments.key?(name.to_sym)
           entered_value = @builder.set_environments[name.to_sym]
           if entered_value.nil? == false && entered_value.length != 0 # FIXME: needs to be removed
@@ -438,7 +438,7 @@ class BluePrintReader
 
   def read_actionators
     log_build_output('Read Actionators')
-    SystemDebug.debug(SystemDebug.builder,' readin in actionators', @blueprint[:software][:actionators])
+    SystemDebug.debug(SystemDebug.builder, ' readin in actionators', @blueprint[:software][:actionators])
     #  STDERR.puts(' readin in actionators', @blueprint[:software][:actionators].to_s)
     if @blueprint[:software].key?(:actionators)
       @actionators = {}
@@ -446,9 +446,9 @@ class BluePrintReader
         @actionators[actionator[:name]] = actionator
       end
       #     STDERR.puts('Red actionators', @blueprint[:software][:actionators].to_s)
-      SystemDebug.debug(SystemDebug.builder,@actionators)
+      SystemDebug.debug(SystemDebug.builder, @actionators)
     else
-      SystemDebug.debug(SystemDebug.builder,'No actionators')
+      SystemDebug.debug(SystemDebug.builder, 'No actionators')
       @actionators = nil
     end
   end

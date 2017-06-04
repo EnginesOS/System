@@ -80,7 +80,7 @@ class SystemAccess
   def random cnt
     len = cnt.to_i
     rnd = SecureRandom.hex(len)
-    rnd.byteslice(0,len)
+    rnd.byteslice(0, len)
   end
 
   def service_resource(service_name, what)

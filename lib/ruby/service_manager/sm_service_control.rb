@@ -56,14 +56,14 @@ module SmServiceControl
   end
 
   def update_persistent_service(params)
-    # FIXME: check if variables are editable    
+    # FIXME: check if variables are editable
     extisting_variables = retrieve_engine_service_hash(params)[:variables]
     params[:variables].merge!(extisting_variables)
     update_on_managed_service(params)
     system_registry_client.update_attached_service(params)
   end
 
-  def clear_service_from_registry(service)    
+  def clear_service_from_registry(service)
     system_registry_client.clear_service_from_registry(service)
   rescue EnginesException => e
     raise e unless e.level == :warning

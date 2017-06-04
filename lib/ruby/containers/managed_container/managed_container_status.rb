@@ -8,7 +8,7 @@ module ManagedContainerStatus
     state = super
     if state == 'na'
       expire_engine_info
-      SystemDebug.debug(SystemDebug.containers, container_name,'in na',  :info, @docker_info_cache)
+      SystemDebug.debug(SystemDebug.containers, container_name, 'in na',  :info, @docker_info_cache)
       return 'nocontainer'
     end
     state
@@ -22,8 +22,7 @@ module ManagedContainerStatus
   end
 
   # raw=true means dont check state for error
-  def read_state(raw=false)
-    #return 'nocontainer' if @setState == 'nocontainer'  # FIXME: this will not support notification of change
+  def read_state(raw = false)
     if docker_info.is_a?(FalseClass)
       state = 'nocontainer'
     else
@@ -41,10 +40,6 @@ module ManagedContainerStatus
       @last_error = ''
     end
     state
-    #  rescue Exception=>e
-    #    STDERR.puts 'excetpion ' + e.to_s + ':' + @last_result.to_s
-    #    log_exception(e)
-    #     'nocontainer'
   rescue EnginesException =>e
     expire_engine_info
     'nocontainer'

@@ -11,7 +11,7 @@ module ManagedContainerWebSites
 
   def http_protocol
     return @protocol.gsub(/_.*/,'') if @protocol.include?('_')
-     @protocol.to_s
+    @protocol.to_s
   end
 
   def set_protocol(proto)

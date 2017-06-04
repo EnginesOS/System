@@ -6,10 +6,10 @@ module SharedServices
     shared_service = shared_service_params.dup
     shared_service.delete(:existing_service)
     shared_service[:service_owner] = existing_service[:parent_engine]
-     # FIXME: should raise error if not persistent
+    # FIXME: should raise error if not persistent
     shared_service[:persistent] = existing_service[:persistent]
     shared_service[:service_owner_handle] = existing_service[:service_handle]
-    SystemDebug.debug(SystemDebug.services,'sm using existing service', shared_service_params,existing_service,shared_service)
+    SystemDebug.debug(SystemDebug.services, 'sm using existing service', shared_service_params ,existing_service, shared_service)
     service_query = shared_service.dup
 
     service_query[:service_handle] = existing_service[:service_handle]
@@ -17,15 +17,15 @@ module SharedServices
 
     existing_service_hash = get_service_entry(service_query)
 
-    SystemDebug.debug(SystemDebug.services,'sm using existing service', existing_service_hash)
-    merge_variables(shared_service,existing_service_hash)
+    SystemDebug.debug(SystemDebug.services, 'sm using existing service', existing_service_hash)
+    merge_variables(shared_service, existing_service_hash)
     shared_service[:shared] = true
     shared_service[:service_handle] = shared_service[:parent_engine] + ':' + existing_service[:service_handle]
     shared_service[:container_type] = existing_service[:container_type]
     shared_service[:container_type] = existing_service[:container_type]
     shared_service[:service_container_name] = existing_service[:service_container_name]
 
-    SystemDebug.debug(SystemDebug.services,'sm regsitring ', shared_service)
+    SystemDebug.debug(SystemDebug.services, 'sm regsitring ', shared_service)
     if shared_service[:type_path] == 'filesystem/local/filesystem'
       shared_service[:variables][:volume_src] = existing_service[:variables][:volume_src] + '/' +  shared_service[:variables][:volume_src]
       attach_shared_volume(shared_service)

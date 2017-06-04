@@ -6,7 +6,7 @@ module ManagedServiceImageControls
 
   def pull_image
     raise EnginesException.new(error_hash('no Repo URI' + image)) if @repository.nil? && ! image.include?('/')
-     @container_api.pull_image(self)
+    @container_api.pull_image(self)
   end
 
 end

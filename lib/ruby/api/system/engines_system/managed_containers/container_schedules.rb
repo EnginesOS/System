@@ -7,9 +7,9 @@ module ContainerSchedules
   def apply_schedules(container)
     schedules = schedules(container)
     return true if schedules.nil?
-    SystemDebug.debug(SystemDebug.schedules, 'Creating schedules:' , schedules)
+    SystemDebug.debug(SystemDebug.schedules, 'Creating schedules:', schedules)
     schedules.each do |schedule|
-      SystemDebug.debug(SystemDebug.schedules, 'Creating cro line:' , schedule)
+      SystemDebug.debug(SystemDebug.schedules, 'Creating cro line:', schedule)
       create_cron_service(container, schedule)
     end
   end
@@ -17,7 +17,7 @@ module ContainerSchedules
   def create_cron_service(container, schedule)
     t= {
       publisher_namespace: 'EnginesSystem',
-      type_path:  schedule_type_path(schedule),
+      type_path: schedule_type_path(schedule),
       parent_engine: container.container_name,
       container_type: container_ctype(container.ctype),
       service_handle: schedule[:label],
@@ -36,17 +36,17 @@ module ContainerSchedules
   end
 
   def schedule_type_path(schedule)
-    return 'schedule' unless  schedule[:instruction] == 'action'
+    return 'schedule' unless schedule[:instruction] == 'action'
     'cron'
   end
 
   def schedule_type(schedule)
-    return 'schedule' unless  schedule[:instruction] == 'action'
+    return 'schedule' unless schedule[:instruction] == 'action'
     schedule[:instruction]
   end
 
   def schedule_instruction(schedule)
-    return schedule[:instruction] unless  schedule[:instruction] == "action"
+    return schedule[:instruction] unless schedule[:instruction] == "action"
     #r = schedule[:actionator]
     format_actioncron_job( schedule[:actionator])
   end

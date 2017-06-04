@@ -32,7 +32,7 @@ class BuilderPublic
   def http_protocol
     return nil unless @builder.build_params.key?(:http_protocol)
     return nil if @builder.build_params[:http_protocol].nil?
-    @builder.build_params[:http_protocol].gsub!(/_.*/,'') if @builder.build_params[:http_protocol].include?('_')
+    @builder.build_params[:http_protocol].gsub!(/_.*/, '') if @builder.build_params[:http_protocol].include?('_')
     @builder.build_params[:http_protocol]
   end
 

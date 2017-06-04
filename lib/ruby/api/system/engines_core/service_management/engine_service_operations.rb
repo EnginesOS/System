@@ -21,7 +21,7 @@ module EngineServiceOperations
       persistent: true,
       container_type: 'service'
     }
-    SystemDebug.debug(SystemDebug.services,  :engine_persistent_services, params)
+    SystemDebug.debug(SystemDebug.services, :engine_persistent_services, params)
     service_manager.get_engine_persistent_services(params)
   end
 
@@ -33,7 +33,7 @@ module EngineServiceOperations
   end
 
   def engine_attached_services(container_name)
-     find_engine_services_hashes({
+    find_engine_services_hashes({
       parent_engine: container_name,
       container_type: 'container'
     })
@@ -56,7 +56,7 @@ module EngineServiceOperations
   end
 
   def share_service_to_engine(params)
-    SystemDebug.debug(SystemDebug.services,'core attach existing service', params)
+    SystemDebug.debug(SystemDebug.services, 'core attach existing service', params)
     check_engine_hash(params)
     service_manager.share_service_to_engine(params)
   end
@@ -86,13 +86,13 @@ module EngineServiceOperations
     # service_hash = Volume.complete_service_hash(service_hash)
 
     SystemDebug.debug(SystemDebug.services,'complete_VOLUME_FOR SHARE_service_hash', service_hash)
-  #  STDERR.puts('Add File Service ' + service_hash.to_s)
+    #  STDERR.puts('Add File Service ' + service_hash.to_s)
     # FixME when building an exception is ok, but not once the engine is running
     begin #on build this fails which is ok
       engine = loadManagedEngine(service_hash[:parent_engine])
       engine.add_shared_volume(service_hash)
     rescue
-      
+
     end
   end
 
@@ -113,7 +113,5 @@ module EngineServiceOperations
     log_error_mesg('Get pub key failed',result)
     service_manager.load_service_pubkey(container, cmd)
   end
-
-  
 
 end

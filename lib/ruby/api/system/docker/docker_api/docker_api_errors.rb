@@ -1,24 +1,24 @@
 require_relative 'engines_docker_api_error.rb'
 
 module EnginesDockerApiErrors
-  def log_warn_mesg(mesg,*objs)
-    EnginesDockerApiError.new(mesg.to_s,:warning)
+  def log_warn_mesg(mesg, *objs)
+    EnginesDockerApiError.new(mesg.to_s, :warning)
   end
 
-  def log_error_mesg(mesg,*objs)
+  def log_error_mesg(mesg, *objs)
     super
-    EnginesDockerApiError.new(mesg.to_s,:failure)
+    EnginesDockerApiError.new(mesg.to_s, :failure)
   end
 
-  def log_exception(e,*objs)
+  def log_exception(e, *objs)
     super
     EnginesDockerApiError.new(e.to_s,:exception)
   end
 
-  def error_hash(res, params , status)
+  def error_hash(res, params, status)
     r = error_type_hash(mesg, params)
     r[:error_type] = :error
-      r[:status] = status
+    r[:status] = status
     r
   end
 

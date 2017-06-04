@@ -106,7 +106,7 @@ class ManagedUtility< ManagedContainer
     end
   end
 
-  def apply_volume_from_templates(command_params  , templater)
+  def apply_volume_from_templates(command_params, templater)
     vols = []
     volumes_from.each do |from|
       s = templater.apply_hash_variables(from, command_params)
@@ -122,13 +122,13 @@ class ManagedUtility< ManagedContainer
     end
   end
 
-  def resolved_strings(text, values_hash,templater)
+  def resolved_strings(text, values_hash, templater)
     templater.apply_hash_variables(text, values_hash)
   end
 
   def check_params(cmd, params)
     r = true
- #   STDERR.puts('Command ' + cmd.to_s + ':' + params.to_s)
+    #   STDERR.puts('Command ' + cmd.to_s + ':' + params.to_s)
     cmd[:requires].each do |required_param|
       next if params.key?(required_param.to_sym)
       r = 'Missing:' if r == true

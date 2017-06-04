@@ -99,7 +99,7 @@ class EngineBuilder < ErrorsApi
   def setup_build
     check_build_params(@build_params)
     @build_params[:engine_name].freeze
-    @build_params[:image] = @build_params[:engine_name].gsub(/[-_]/, '')
+    @build_params[:image] = @build_params[:engine_name] #.gsub(/[-_]/, '')
     @build_name = File.basename(@build_params[:repository_url]).sub(/\.git$/, '')
     @web_port = SystemConfig.default_webport
     @memory = @build_params[:memory]

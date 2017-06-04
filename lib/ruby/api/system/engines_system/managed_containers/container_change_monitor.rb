@@ -1,12 +1,12 @@
 module ContainerChangeMonitor
   @change_register = nil
   def inform_container_monitor(container_name, ctype, event_name)
-    SystemDebug.debug(SystemDebug.container_events,:inform_container_monitor,container_name,ctype,event_name)
+    SystemDebug.debug(SystemDebug.container_events, :inform_container_monitor, container_name, ctype, event_name)
     return if event_name.start_with?('exec_')
-    add_changed(container_name, ctype,event_name)
+    add_changed(container_name, ctype, event_name)
   end
 
-  def add_changed(container_name,ctype,event_name)
+  def add_changed(container_name, ctype, event_name)
     register = change_register
     return if ctype.nil?
     return unless register.key?(ctype)
@@ -15,9 +15,10 @@ module ContainerChangeMonitor
 
   def change_register
     if @change_register == nil
-      @change_register = {}
-      @change_register['service'] = {}
-      @change_register['container'] = {}
+      @change_register = {
+        'service' => {},
+        'container' => {}
+      }
     end
     @change_register
   end
