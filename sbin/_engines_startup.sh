@@ -79,8 +79,8 @@ if test `/opt/engines/bin/system_service.rb system state` = nocontainer
  elif test `/opt/engines/bin/system_service.rb system state` = stopped
   then
 	/opt/engines/bin/system_service.rb system start
-  fi
- /opt/engines/bin/system_service.rb registry wait_for_startup 60
+ fi
+/opt/engines/bin/system_service.rb registry wait_for_startup 60
 
 
 /opt/engines/bin/engines service dns start 
@@ -98,7 +98,7 @@ if test `/opt/engines/bin/system_service.rb system state` = nocontainer
 /opt/engines/bin/engines containers check_and_act 
 
 
-if test -f  ~/.complete_install
+if test -f ~/.complete_install
 then
    /opt/engines/system/install/complete_install.sh 
 fi 
