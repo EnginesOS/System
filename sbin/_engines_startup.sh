@@ -1,12 +1,7 @@
 #!/bin/bash
 echo Starting Engines
 
-grep follow_sta ~/.bashrc  
-if test $? -ne 0
-then
-	cat ~/.bashrc  |grep -v follow_star  >/tmp/.t
-	mv /tmp/.t ~/.bashrc
-fi
+
 
 
 . ~/.bashrc
@@ -74,12 +69,12 @@ if test -f /usr/bin/pulseaudio
  fi
  
 
- if test "`/opt/engines/bin/system_service.rb registry state`" = \"nocontainer\"
+ if test "`/opt/engines/bin/system_service.rb registry state`" = nocontainer
  then
 	/opt/engines/bin/system_service.rb registry create
 	/opt/engines/bin/system_service.rb registry wait_for create 60
 	/opt/engines/bin/system_service.rb registry start
- elif test "`/opt/engines/bin/system_service.rb registry state`" = \"stopped\"
+ elif test "`/opt/engines/bin/system_service.rb registry state`" = stopped
   then
 	/opt/engines/bin/system_service.rb registry start
   else
@@ -102,12 +97,12 @@ if test -f /usr/bin/pulseaudio
 #  		fi
 #  done 
 
-if test "`/opt/engines/bin/system_service.rb system state`" = \"nocontainer\"
+if test "`/opt/engines/bin/system_service.rb system state`" = nocontainer
  then
 	/opt/engines/bin/system_service.rb system create
 	/opt/engines/bin/system_service.rb system wait_for create 60
 	/opt/engines/bin/system_service.rb system create
- elif test "`/opt/engines/bin/system_service.rb system state`" = \"stopped\"
+ elif test "`/opt/engines/bin/system_service.rb system state`" = stopped
   then
 	/opt/engines/bin/system_service.rb system start
   fi
