@@ -62,6 +62,7 @@ end
 def create_httaccess
   if @blueprint_reader.apache_htaccess_files
     @blueprint_reader.apache_htaccess_files.each do |htaccess_hash|
+      STDERR.puts(' apache_htaccess_files ' + SystemConfig.htaccessSourceDir + htaccess_hash[:directory].to_s + ' ' + htaccess_hash[:content].to_s)
       write_software_file(SystemConfig.htaccessSourceDir + htaccess_hash[:directory] + '/.htaccess', htaccess_hash[:content])
     end
   end
