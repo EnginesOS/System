@@ -308,7 +308,7 @@ actionators:
  readers:
   backup_keys: 
    name: backup_pass
-   label: 'Back up encryption key password'
+   label: "Back up encryption key password"
    values: 
     key_pass_phrase: 
      name: key_pass_phrase
