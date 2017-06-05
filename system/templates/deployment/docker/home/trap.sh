@@ -28,13 +28,20 @@ then
 	rm -f /engines/var/run/flags/quited
 fi 
 
+custom_stop()
+	{
+	if test -f /home/engines/scripts/custom_stop.sh
+		 then
+		 	/home/engines/scripts/custom_stop.sh
+		 fi
+	}
 
 trap_term()
 	{
 	SIGNAL=15
 	export SIGNAL
 	touch /engines/var/run/flags/sig_term
-		
+	custom_stop
 	if test -f $PID_FILE  #if exists 
 		then
 		if test -f /home/_signal.sh
@@ -81,11 +88,12 @@ trap_quit()
 	SIGNAL=15
 	export SIGNAL
 	touch /engines/var/run/flags/sig_quit
+	custom_stop
 		if test -f $PID_FILE
 			then
 				if test -f /home/_signal.sh
 					then
-						sudo	/home/_signal.sh $SIGNAL	$PID_FILE	
+						sudo	/home/_signal.sh $SIGNAL $PID_FILE	
 					else
 						kill -$SIGNAL `cat  $PID_FILE  `
 				        pid=`cat    $PID_FILE `				
