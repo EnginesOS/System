@@ -46,6 +46,7 @@ end
 def create_engines_config_files
   create_template_files
   create_php_ini
+  create_httaccess
   create_apache_config
   create_scripts
 end
@@ -62,7 +63,7 @@ end
 def create_httaccess
   if @blueprint_reader.apache_htaccess_files
     @blueprint_reader.apache_htaccess_files.each do |htaccess_hash|
-      STDERR.puts(' apache_htaccess_files ' + SystemConfig.htaccessSourceDir + htaccess_hash[:directory].to_s + ' ' + htaccess_hash[:content].to_s)
+      STDERR.puts(' HTTACCES FILE  ' + SystemConfig.htaccessSourceDir + htaccess_hash[:directory].to_s + ' ' + htaccess_hash[:content].to_s)
       write_software_file(SystemConfig.htaccessSourceDir + htaccess_hash[:directory] + '/.htaccess', htaccess_hash[:content])
     end
   end
