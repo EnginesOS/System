@@ -62,7 +62,7 @@ end
 def create_httaccess
   if @blueprint_reader.apache_htaccess_files
     @blueprint_reader.apache_htaccess_files.each do |htaccess_hash|
-      write_software_file('/home/engines/htaccess_files' + htaccess_hash[:directory] + '/.htaccess', htaccess_hash[:htaccess_content])
+      write_software_file('/home/engines/htaccess_files' + htaccess_hash[:directory] + '/.htaccess', htaccess_hash[:content])
     end
   end
 end
@@ -84,7 +84,7 @@ def create_apache_config
     FileUtils.mkdir_p(basedir + File.dirname(SystemConfig.CustomApacheConfFile))
     contents = ''
     @blueprint_reader.apache_httpd_configurations.each do |httpd_configuration|
-      contents = contents + httpd_configuration[:httpd_configuration] + "\n"
+      contents = contents + httpd_configuration[:content] + "\n"
     end
     write_software_file(SystemConfig.CustomApacheConfFile, contents)
   end

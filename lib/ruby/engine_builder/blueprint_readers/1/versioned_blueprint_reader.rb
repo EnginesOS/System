@@ -2,8 +2,7 @@ require_relative '../blueprint_reader.rb'
 
 class VersionedBlueprintReader < BluePrintReader
   @schema = 1
-  attr_reader   :first_run_url,
-  :continuous_deployment,
+  attr_reader :continuous_deployment,
   :schedules ,
   :external_repositories
   def read_scripts
