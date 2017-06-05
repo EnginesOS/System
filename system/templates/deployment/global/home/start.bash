@@ -91,8 +91,15 @@ if test -f /home/engines/scripts/custom_start.sh
 if test -f /home/startwebapp.sh 
 	then
 		/home/startwebapp.sh 
-		 wait_for_debug
-		exit
+		if test -f /home/engines/scripts/blocking.sh
+		 then
+		 	/home/engines/scripts/blocking.sh &
+			 blocking_pid=$!
+		 	echo " $blocking_pid " >>  $PID_FILE
+		fi
+	 wait
+	 wait_for_debug
+	 exit
 	fi
 
 #Apache based 
@@ -144,12 +151,7 @@ if test -f /home/engines/scripts/blocking.sh
 	fi
 fi
 
-if test -f /home/engines/scripts/blocking.sh
-	then
-		 /home/engines/scripts/blocking.sh &
-		 blocking_pid=$!
-		 echo " $blocking_pid " >>  $PID_FILE
-	fi
+
 		
 touch /engines/var/run/flags/startup_complete
  wait 
