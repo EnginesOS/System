@@ -1,8 +1,7 @@
 #!/bin/bash
 
 cd /home
-#	source /home/config_functions.sh
-#	copy_substituted_templates
+
 					
 if test -d /home/engines/templates/
  then
