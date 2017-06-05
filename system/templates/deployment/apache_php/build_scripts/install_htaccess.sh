@@ -1,14 +1,13 @@
 #!/bin/bash
 
 cd /home
-
-					
-if test -d /home/engines/templates/
+			
+if test -d /home/engines/htaccess_files/
  then
-templates=`find /home/engines/templates/ -type f |grep -v keep_me`
-        for file in $templates
+htaccess_files=`find /home/engines/htaccess_files/ -type f |grep -v keep_me`
+        for file in $htaccess_files
         	do     
-                dest_file=`echo $file | sed "/^.*templates\//s///"`
+                dest_file=`echo $file | sed "/^.*htaccess_files\//s///"`
                 dest_dir=`dirname $dest_file`
                 
                 mkdir -p $dest_dir
@@ -20,4 +19,4 @@ templates=`find /home/engines/templates/ -type f |grep -v keep_me`
                  cp $file $dest_file
         done
 fi
-        echo run as `whoami` in `pwd`
+      
