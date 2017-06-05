@@ -168,5 +168,15 @@ class VersionedBlueprintReader < BluePrintReader
     read_schedules
     read_repos
   end
+def read_apache_htaccess_files
+  @apache_htaccess_files = @blueprint[:software][:framework_specific][:apache_htaccess_files] if @blueprint[:software][:apache_htaccess_files].is_a?(Array)
+end
 
+def read_custom_php_inis
+  @custom_php_inis = @blueprint[:software][:framework_specific][:custom_php_inis] if @blueprint[:software][:custom_php_inis].is_a?(Array)
+end
+
+def read_apache_httpd_configurations
+  @apache_httpd_configurations = @blueprint[:software][:framework_specific][:apache_httpd_configurations] if  @blueprint[:software][:apache_httpd_configurations].is_a?(Array)
+end
 end
