@@ -20,6 +20,12 @@ module BuilderSettings
   @@DefaultLanguage = 'en'
   @@DefaultCountry = 'US'
   @@StopScript = '/home/engines/scripts/custom_stop.sh'
+  @@htaccessSourceDir = '/home/engines/htaccess_files/'
+  
+  def SystemConfig.htaccessSourceDir
+    @@htaccessSourceDir
+  end
+  
   def SystemConfig.LanguageFile
     @@LanguageFile
   end
