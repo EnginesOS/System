@@ -24,3 +24,5 @@ mv /tmp/apache2.conf /etc/apache2/apache2.conf
 		then
 			cp /home/engines/configs/apache2/site.conf /etc/apache2/sites-enabled/000-default.conf
 	fi
+	
+/home/build_scripts/install_htacess.sh
