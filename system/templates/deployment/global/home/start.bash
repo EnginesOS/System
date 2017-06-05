@@ -94,7 +94,7 @@ if test -f /home/startwebapp.sh
 		if test -f /home/engines/scripts/blocking.sh
 		 then
 		 	/home/engines/scripts/blocking.sh &
-			 blocking_pid=$!
+			blocking_pid=$!
 		 	echo " $blocking_pid " >>  $PID_FILE
 		fi
 	 wait
@@ -150,7 +150,6 @@ if test -f /home/engines/scripts/blocking.sh
 		nginx &
 	fi
 fi
-
 
 		
 touch /engines/var/run/flags/startup_complete
