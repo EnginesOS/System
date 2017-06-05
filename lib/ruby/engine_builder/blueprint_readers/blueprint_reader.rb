@@ -322,9 +322,10 @@ class BluePrintReader
     log_build_output('Read Workers')
     @worker_commands = []
     return true unless @blueprint[:software].key?(:workers)
-    return true unless @blueprint[:software][:workers].key?(:commands) # not an error just nada
     @blocking_worker = @blueprint[:software][:workers][:blocking] if @blueprint[:software][:workers].key?(:blocking)
-    @blueprint[:software][:workers].each do |worker|
+    return true unless @blueprint[:software][:workers].key?(:commands) # not an error just nada
+   
+    @blueprint[:software][:workers][:commands].each do |worker|
 #      if worker[:name] = @blueprint[:software][:blocking_worker_name]
 #        @blocking_worker = worker[:command]
 #      else
