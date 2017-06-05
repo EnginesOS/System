@@ -24,7 +24,7 @@ if test -f "$VOLDIR/.dynamic_persistence"
 	if ! test -f /home/app/.dynamic_persistence_restored
 	then
  		/home/engines/scripts/restore_dynamic_persistence.sh
- 		 echo "Dyamic persistence restore Complete "
+ 		 echo "Dynamic persistence restore Complete "
  	fi
  fi
 
@@ -70,7 +70,7 @@ if test -f /engines/var/run/flags/restart_required
 if test -f /home/engines/scripts/pre-running.sh
 	then
 	echo "launch pre running"
-		bash	/home/engines/scripts/pre-running.sh
+		bash /home/engines/scripts/pre-running.sh
 fi	
 
 
@@ -110,7 +110,7 @@ if test -f /usr/sbin/apache2ctl
 		then
 		/etc/init.d/apache2 start
 			 /home/engines/scripts/blocking.sh  &
-			 echo  " $!" >> /run/apache2/apache2.pid
+			 echo  " $!" >> $PID_FILE
 	else		
 		/usr/sbin/apache2ctl -DFOREGROUND &
 	fi
@@ -138,7 +138,7 @@ if test -f /home/engines/scripts/blocking.sh
 		then
 		nginx &
 			 /home/engines/scripts/blocking.sh  &
-			 echo  " $!" >> /run/apache2/apache2.pid
+			 echo  " $!" >>  $PID_FILE
 	else		
 		nginx &
 	fi
