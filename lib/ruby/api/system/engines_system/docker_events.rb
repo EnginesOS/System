@@ -110,7 +110,7 @@ module DockerEvents
     inform_container(event_hash)
 
     case event_hash[:status]
-    when 'start','oom','stop','pause','unpause','create','destroy','kill','die'
+    when 'start', 'oom', 'stop', 'pause', 'unpause', 'create', 'destroy', 'kill', 'die'
       inform_container_tracking(event_hash[:container_name], event_hash[:container_type], event_hash[:status])
     else
       SystemDebug.debug(SystemDebug.container_events, 'Untracked event', event_hash.to_s )
