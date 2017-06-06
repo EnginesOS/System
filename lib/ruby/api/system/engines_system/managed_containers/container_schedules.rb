@@ -1,5 +1,6 @@
 module ContainerSchedules
   def schedules(container)
+    STDERR.puts(' SCHEDULES FILE ' + schedules_file(container).to_s)
     return nil unless File.exist?(schedules_file(container))
     YAML::load(File.read(schedules_file(container)))
   end
