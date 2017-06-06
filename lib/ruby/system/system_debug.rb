@@ -35,83 +35,83 @@ class SystemDebug
   end
 
   def self.schedules
-    return @@schedules
+    @@schedules
   end
 
   def self.registry
-    return @@registry
+    @@registry
   end
 
   def self.server
-    return @@server
+    @@server
   end
 
   def self.export_import
-    return @@export_import
+    @@export_import
   end
 
   def self.container_events
-    return @@container_events
+    @@container_events
   end
 
   def self.actions
-    return @@actions
+    @@actions
   end
 
   def self.update
-    return @@update
+    @@update
   end
 
   def self.registry
-    return @@registry
+    @@registry
   end
 
   def self.cache
-    return @@cache
+    @@cache
   end
 
   def self.engine_tasks
-    return @@engine_tasks
+    @@engine_tasks
   end
 
   def self.containers
-    return @@containers
+    @@containers
   end
 
   def self.first_run
-    return @@first_run
+    @@first_run
   end
 
   def self.system
-    return @@system
+    @@system
   end
 
   def self.docker
-    return @@docker
+    @@docker
   end
 
   def self.services
-    return @@services
+    @@services
   end
 
   def self.orphans
-    return @@orphans
+    @@orphans
   end
 
   def self.environment
-    return @@environment
+    @@environment
   end
 
   def self.templater
-    return @@templater
+    @@templater
   end
 
   def self.builder
-    return @@builder
+    @@builder
   end
 
   def self.execute
-    return @@execute
+    @@execute
   end
 
   def self.debug(*args)

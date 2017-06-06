@@ -156,6 +156,7 @@ class VersionedBlueprintReader < BluePrintReader
   def read_schedules
     return true if @blueprint[:software][:schedules].nil?
     @schedules = @blueprint[:software][:schedules]
+    STDERR.puts(' schedules ' + @schedules.to_s)
   end
 
   def read_repos
@@ -171,21 +172,18 @@ class VersionedBlueprintReader < BluePrintReader
   def read_apache_htaccess_files
     if @blueprint[:software].key?(:framework_specific)
       @apache_htaccess_files = @blueprint[:software][:framework_specific][:apache_htaccess_files] if @blueprint[:software][:framework_specific][:apache_htaccess_files].is_a?(Array)
-        STDERR.puts(' htaccess ' + @apache_htaccess_files.to_s)
     end
   end
 
   def read_custom_php_inis
     if @blueprint[:software].key?(:framework_specific)
       @custom_php_inis = @blueprint[:software][:framework_specific][:custom_php_inis] if @blueprint[:software][:framework_specific][:custom_php_inis].is_a?(Array)
-      STDERR.puts(' custom_php_inis ' + @custom_php_inis.to_s)
     end
   end
 
   def read_apache_httpd_configurations
     if @blueprint[:software].key?(:framework_specific)
       @apache_httpd_configurations = @blueprint[:software][:framework_specific][:apache_httpd_configurations] if @blueprint[:software][:framework_specific][:apache_httpd_configurations].is_a?(Array)
-      STDERR.puts(' apache_httpd_configurations ' + @apache_httpd_configurations.to_s)
     end
   end
 end

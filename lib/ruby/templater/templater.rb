@@ -76,7 +76,6 @@ class Templater
         args = cmd[1]
       end
     end
-    STDERR.puts('RESOVLE args ' + args.to_s + ' For ' + name.to_s)
     var_method = @system_access.method(name.to_sym)
     if args.is_a?(Array)
       return var_method.call(args[0], args[1])
