@@ -15,7 +15,7 @@ module ContainerSchedules
   end
 
   def create_cron_service(container, schedule)
-    t= {
+    @engines_api.create_and_register_service({
       publisher_namespace: 'EnginesSystem',
       type_path: schedule_type_path(schedule),
       parent_engine: container.container_name,
@@ -26,8 +26,7 @@ module ContainerSchedules
       cron_job: schedule_instruction(schedule),
       title: schedule[:label],
       :when => cron_line(schedule[:timespec]),
-      parent_engine: container.container_name } }
-    @engines_api.create_and_register_service(t)
+      parent_engine: container.container_name } })
   end
 
   def container_ctype(ctype)
@@ -47,8 +46,7 @@ module ContainerSchedules
 
   def schedule_instruction(schedule)
     return schedule[:instruction] unless schedule[:instruction] == "action"
-    #r = schedule[:actionator]
-    format_actioncron_job( schedule[:actionator])
+    format_actioncron_job(schedule[:actionator])
   end
 
   def format_actioncron_job(actionator)

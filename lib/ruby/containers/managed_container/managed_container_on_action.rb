@@ -27,7 +27,6 @@ module ManagedContainerOnAction
   end
 
   def on_create(event_hash)
-    #    STDERR.puts('CREATE EVent on ' + container_name)
     @container_mutex.synchronize {
       SystemDebug.debug(SystemDebug.container_events, :ON_Create_CALLED, event_hash)
       @container_id = event_hash[:id]
