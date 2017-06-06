@@ -5,7 +5,9 @@ module ContainerSchedules
   end
 
   def apply_schedules(container)
+    STDERR.puts(' SCHEDULES ' + container.container_name)
     schedules = schedules(container)
+    STDERR.puts(' SCHEDULES ' + schedules.to_s)
     return true if schedules.nil?
     SystemDebug.debug(SystemDebug.schedules, 'Creating schedules:', schedules)
     schedules.each do |schedule|
