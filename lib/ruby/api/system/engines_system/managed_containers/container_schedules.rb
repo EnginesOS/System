@@ -6,7 +6,7 @@ module ContainerSchedules
    d =  YAML::load(c)
     STDERR.puts(' SCHEDULES ' + c.to_s)
     STDERR.puts(' SCHEDULES ' + d.to_s)
-    
+    d    
   end
 
   def apply_schedules(container)
