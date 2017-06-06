@@ -1,12 +1,12 @@
 module ContainerSchedules
   def schedules(container)
-    STDERR.puts(' SCHEDULES FILE ' + schedules_file(container).to_s)
+    STDERR.puts('SCHEDULES FILE ' + schedules_file(container).to_s)
     return nil unless File.exist?(schedules_file(container))
-       c =  File.read(schedules_file(container))
-   d =  YAML::load(c)
-    STDERR.puts(' SCHEDULES ' + c.to_s)
-    STDERR.puts(' SCHEDULES ' + d.to_s)
-    d    
+    c = File.read(schedules_file(container))
+    d = YAML::load(c)
+    STDERR.puts('SCHEDULES ' + c.to_s)
+    STDERR.puts('SCHEDULES ' + d.to_s)
+    d
   end
 
   def apply_schedules(container)
