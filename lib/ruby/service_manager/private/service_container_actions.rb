@@ -14,7 +14,7 @@ def update_on_managed_service(service_hash)
   service =  @core_api.load_software_service(service_hash)
   return service unless service.is_a?(ManagedService)
   return true if service.is_soft_service? && !service.is_running?
-  raise EnginesException.new(error_hash('Cant add to service if service is stopped: ' + service.container_name.to_s, params)) unless service.is_running?
+  raise EnginesException.new(error_hash('Cant update service if service is stopped: ' + service.container_name.to_s, params)) unless service.is_running?
   service.update_consumer(service_hash)
 end
 

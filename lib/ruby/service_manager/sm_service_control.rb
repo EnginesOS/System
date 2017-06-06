@@ -60,6 +60,7 @@ module SmServiceControl
     extisting_variables = retrieve_engine_service_hash(params)[:variables]
     params[:variables].merge!(extisting_variables)
     update_on_managed_service(params)
+    STDERR.puts('UPDAED ' + params.to_s)
     system_registry_client.update_attached_service(params)
   end
 
