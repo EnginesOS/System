@@ -26,7 +26,7 @@ module SmAttachStaticServices
           begin
             create_and_register_service(service_hash)
           rescue StandardError => e
-            next
+           #continue and add env vars if duplicate all will procede otherwise get_service_entry will trip an Exception
           end
         else
           SystemDebug.debug(SystemDebug.services, :attaching, service_hash)
