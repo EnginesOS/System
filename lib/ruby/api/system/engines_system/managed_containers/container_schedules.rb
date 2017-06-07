@@ -1,11 +1,20 @@
 module ContainerSchedules
   def schedules(container)
-    return nil unless File.exist?(schedules_file(container))
-    YAML::load(File.read(schedules_file(container)))
+    STDERR.puts(' SCHEDULES FILE ' + schedules_file(container).to_s)
+   # return nil unless File.exist?(schedules_file(container))
+    c = File.read(schedules_file(container))    
+    STDERR.puts(' SCHEDULES data ' + c.to_s)
+    d = YAML::load(c)
+    STDERR.puts(' SCHEDULES hash ' + d.to_s)
+    d
+  rescue StandardError => e
+    puts(' EXCEPTION ' + e.to_s)
   end
 
   def apply_schedules(container)
+    STDERR.puts('SCHEDULES ' + container.container_name)
     schedules = schedules(container)
+    STDERR.puts('SCHEDULES loaded ' + schedules.to_s)
     return true if schedules.nil?
     SystemDebug.debug(SystemDebug.schedules, 'Creating schedules:', schedules)
     schedules.each do |schedule|
@@ -15,7 +24,7 @@ module ContainerSchedules
   end
 
   def create_cron_service(container, schedule)
-    t= {
+    @engines_api.create_and_register_service({
       publisher_namespace: 'EnginesSystem',
       type_path: schedule_type_path(schedule),
       parent_engine: container.container_name,
@@ -26,8 +35,7 @@ module ContainerSchedules
       cron_job: schedule_instruction(schedule),
       title: schedule[:label],
       :when => cron_line(schedule[:timespec]),
-      parent_engine: container.container_name } }
-    @engines_api.create_and_register_service(t)
+      parent_engine: container.container_name } })
   end
 
   def container_ctype(ctype)
@@ -47,8 +55,7 @@ module ContainerSchedules
 
   def schedule_instruction(schedule)
     return schedule[:instruction] unless schedule[:instruction] == "action"
-    #r = schedule[:actionator]
-    format_actioncron_job( schedule[:actionator])
+    format_actioncron_job(schedule[:actionator])
   end
 
   def format_actioncron_job(actionator)

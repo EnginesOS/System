@@ -86,9 +86,7 @@ class ManagedContainer < Container
     @container_mutex = Mutex.new
     i = @container_id
     super
-    if @container_id != -1 && @container_id != i
-      save_state
-    end
+    save_state if @container_id != -1 && @container_id != i
   end
 
   def container_id
