@@ -69,7 +69,7 @@ def rest_post(path, params = nil, lheaders = nil)
     reopen_connection
     retry
   rescue StandardError => e
-    raise EnginesException.new(error_hash('reg exception ' + e.to_s, @base_url.to_s))
+    raise EnginesException.new(error_hash('reg exception ' + path.to_s + "\n" + e.to_s, @base_url.to_s))
   end
 end
 
