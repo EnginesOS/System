@@ -45,7 +45,10 @@ class ManagedUtility< ManagedContainer
     #      stop_container
     #    rescue
     #    end
-    raise EnginesException.new(error_hash('Utility ' + container_name + ' in use ' ,  command_name)) if is_active?
+    if is_active?
+      expire_engine_info
+      raise EnginesException.new(error_hash('Utility ' + container_name + ' in use ', command_name)) if is_active?
+    end 
     #FIXMe need to check if running
     r =  ''
     #  command_name = command_name.to_sym unless @commands.key?(command_name)
