@@ -41,7 +41,7 @@ module ManagedServiceConsumers
 
   def add_consumer(service_hash)
     raise EnginesException.new(error_hash('Invalid service_hash ', service_hash)) unless service_hash.is_a?(Hash)
-    #  service_hash[:persistent] = @persistent
+    service_hash[:persistent] = @persistent unless service_hash.key?(:persistent)
     result = false
     # add/create persistent if fresh == true on not at all or if running create for no persistent
     return true if !is_running? && @soft_service
