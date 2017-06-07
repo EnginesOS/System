@@ -48,6 +48,7 @@ class ManagedUtility< ManagedContainer
     if is_active?
       expire_engine_info
       raise EnginesException.new(error_hash('Utility ' + container_name + ' in use ', command_name)) if is_active?
+      destroy_container
     end 
     #FIXMe need to check if running
     r =  ''
