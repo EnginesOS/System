@@ -5,6 +5,8 @@
 		sudo  -n   /opt/engines/system/scripts/ssh/sudo/_restart_base_os.sh & 
 		echo restarting
 		exit
+	else
+	  sleep 2
 	fi
 	
-exit 127
+exit 
