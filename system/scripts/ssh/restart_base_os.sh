@@ -6,6 +6,7 @@
 		echo restarting
 		exit
 	else
+	/opt/engines/system/scripts/ssh/restart_system_service.sh &
 	  sleep 2
 	fi
 	
