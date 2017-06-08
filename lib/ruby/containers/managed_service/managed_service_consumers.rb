@@ -29,7 +29,7 @@ module ManagedServiceConsumers
   end
 
   def reregister_consumers
-    return true if @persistent == true
+    return true if @persistent == true && @soft_service == false
     raise EnginesException.new(error_hash('Cant register consumers as not running ', self.container_name))  if is_running? == false
     registered_hashes = registered_consumers
     return true unless registered_hashes.is_a?(Array)
