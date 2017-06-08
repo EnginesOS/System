@@ -157,7 +157,7 @@ end
 # @return true|false
 get '/v0/containers/service/:service_name/clear_error' do
  begin
-   engine = get_service(params[:service_name])
+   service = get_service(params[:service_name])
    return_boolean(service.clear_error)
  rescue StandardError => e
    send_encoded_exception(request: request, exception: e)
