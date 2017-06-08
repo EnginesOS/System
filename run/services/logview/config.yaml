@@ -11,7 +11,7 @@ soft_service: true
 domain_name: 
 schedules:
 - title: "Rotate Logs"
-  time_spec: '*/60 * * * *'
+  time_spec: "*/60 * * * *"
   action: start
   environments: []
 image: engines/logview:_Engines_System(release)

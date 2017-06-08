@@ -7,7 +7,7 @@ module SmServiceControl
   def create_and_register_service(service_hash) # , no_engine = false)
     SystemDebug.debug(SystemDebug.services, :sm_create_and_register_service, service_hash)
     #register with Engine
-    unless service_hash[:soft_service] == true
+    unless service_hash[:soft_service] == true && ! is_service_persistent?(service_hash)
       system_registry_client.add_to_managed_engines_registry(service_hash)
       # FIXME not checked because of builder createing services prior to engine
       SystemDebug.debug(SystemDebug.services, :create_and_register_service_register, service_hash)
@@ -58,7 +58,9 @@ module SmServiceControl
   def update_persistent_service(params)
     # FIXME: check if variables are editable
     extisting_variables = retrieve_engine_service_hash(params)[:variables]
-    params[:variables].merge!(extisting_variables)
+    STDERR.puts('UPDATing to ' + extisting_variables.to_s)
+    STDERR.puts('UP DATEONG WITH  ' + params.to_s)
+    params[:variables] = extisting_variables.merge!(params[:variables])      
     update_on_managed_service(params)
     STDERR.puts('UPDAED ' + params.to_s)
     system_registry_client.update_attached_service(params)

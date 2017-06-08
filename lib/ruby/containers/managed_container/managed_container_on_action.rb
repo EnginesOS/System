@@ -30,8 +30,7 @@ module ManagedContainerOnAction
     @container_mutex.synchronize {
       SystemDebug.debug(SystemDebug.container_events, :ON_Create_CALLED, event_hash)
       @container_id = event_hash[:id]
-      @out_of_memory = false
-      @had_out_memory = false
+      clear_error
       @has_run = false
       @container_api.apply_schedules(self)
       save_state    

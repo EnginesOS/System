@@ -1,7 +1,8 @@
 module ContainerSchedules
-  def schedules(container)
+  def load_schedules(container)
     STDERR.puts(' SCHEDULES FILE ' + schedules_file(container).to_s)
    # return nil unless File.exist?(schedules_file(container))
+    STDERR.puts('Reading SCHEDULES data ')
     c = File.read(schedules_file(container))    
     STDERR.puts(' SCHEDULES data ' + c.to_s)
     d = YAML::load(c)
@@ -13,7 +14,7 @@ module ContainerSchedules
 
   def apply_schedules(container)
     STDERR.puts('SCHEDULES ' + container.container_name)
-    schedules = schedules(container)
+    schedules = load_schedules(container)
     STDERR.puts('SCHEDULES loaded ' + schedules.to_s)
     return true if schedules.nil?
     SystemDebug.debug(SystemDebug.schedules, 'Creating schedules:', schedules)
@@ -39,12 +40,16 @@ module ContainerSchedules
     }
     
     STDERR.puts(' CRON SERVIEC HASH ' + t.to_s)
-    
+    begin
     @engines_api.create_and_register_service(t)
+    rescue StandardError => e
+      STDERR.puts('Create Cron service Error ' + e.to_s ) 
+      #FIxMe raise exception except when have existing Entry
+    end
   end
 
   def container_ctype(ctype)
-    return 'engine' if ctype == 'container'
+    ctype = 'engine' if ctype == 'container'
     ctype
   end
 
