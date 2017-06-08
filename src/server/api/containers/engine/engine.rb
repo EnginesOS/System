@@ -147,4 +147,18 @@ get '/v0/containers/engine/:engine_name/wait_for/:what/:delay' do
     end
   end
 end
+
+# @method clear_engine_error
+# @overload get '/v0/containers/engine/:engine_name/clear
+#
+# @return true|false
+
+get '/v0/containers/engine/:engine_name/clear_error' do
+  begin
+    engine = get_engine(params[:engine_name])
+    return_boolean(engine.clear_error)
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+end
 # @!endgroup
