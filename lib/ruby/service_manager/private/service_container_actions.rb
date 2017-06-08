@@ -11,6 +11,7 @@ def add_to_managed_service(service_hash)
 end
 
 def update_on_managed_service(service_hash)
+  SystemDebug.debug(SystemDebug.services, :update_on_managed_service, service_hash)
   service =  @core_api.load_software_service(service_hash)
   return service unless service.is_a?(ManagedService)
   return true if service.is_soft_service? && !service.is_running?
