@@ -37,7 +37,7 @@ class ManagedUtility< ManagedContainer
   def command_details(command_name)
     raise EnginesException.new(error_hash('No Commands', command_name)) unless @commands.is_a?(Hash)
     return @commands[command_name] if @commands.key?(command_name)
-    raise EnginesException.new(error_hash('Command not found _',  command_name.to_s ))
+    raise EnginesException.new(error_hash('Command not found _', command_name.to_s ))
   end
 
   def execute_command(command_name, command_params)
@@ -45,7 +45,11 @@ class ManagedUtility< ManagedContainer
     #      stop_container
     #    rescue
     #    end
-    raise EnginesException.new(error_hash('Utility ' + container_name + ' in use ' ,  command_name)) if is_active?
+    if is_active?
+      expire_engine_info
+      raise EnginesException.new(error_hash('Utility ' + container_name + ' in use ', command_name)) if is_active?
+      destroy_container
+    end
     #FIXMe need to check if running
     r =  ''
     #  command_name = command_name.to_sym unless @commands.key?(command_name)
@@ -69,7 +73,7 @@ class ManagedUtility< ManagedContainer
     #   STDERR.puts('Create FSCONFIG')
     create_container()
     #   STDERR.puts('Created FSCONFIG')
-    wait_for( 'stopped') unless is_stopped?
+    wait_for('stopped') unless is_stopped?
     begin
       r = @container_api.logs_container(self, 100) #_as_result
       return r if r.is_a?(Hash)
@@ -100,9 +104,9 @@ class ManagedUtility< ManagedContainer
   def apply_volume_templates(command_params, templater)
     @volumes.each_value do |volume|
       volume = symbolize_keys(volume)
-      volume[:remotepath] = templater.apply_hash_variables(volume[:remotepath] , command_params)
-      volume[:localpath] = templater.apply_hash_variables(volume[:localpath] , command_params)
-      volume[:permissions]= templater.apply_hash_variables(volume[:permissions] , command_params)
+      volume[:remotepath] = templater.apply_hash_variables(volume[:remotepath], command_params)
+      volume[:localpath] = templater.apply_hash_variables(volume[:localpath], command_params)
+      volume[:permissions] = templater.apply_hash_variables(volume[:permissions], command_params)
     end
   end
 
@@ -118,7 +122,7 @@ class ManagedUtility< ManagedContainer
 
   def apply_env_templates(command_params, templater)
     environments.each do |env|
-      env.value = templater.apply_hash_variables(env.value, command_params)
+      env.value = templater.apply_hash_variables(env. value, command_params)
     end
   end
 
@@ -143,7 +147,7 @@ class ManagedUtility< ManagedContainer
 
   def clear_configs
     FileUtils.rm(ContainerStateFiles.container_state_dir(self) + '/running.yaml') if File.exist?(ContainerStateFiles.container_state_dir(self) + '/running.yaml')
-    FileUtils.rm(ContainerStateFiles.container_state_dir(self) + '/running.yaml.bak')   if File.exist?(ContainerStateFiles.container_state_dir(self) + '/running.yaml.bak')
+    FileUtils.rm(ContainerStateFiles.container_state_dir(self) + '/running.yaml.bak') if File.exist?(ContainerStateFiles.container_state_dir(self) + '/running.yaml.bak')
   end
 
   def error_type_hash(mesg, params = nil)

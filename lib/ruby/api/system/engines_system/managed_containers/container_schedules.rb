@@ -24,18 +24,23 @@ module ContainerSchedules
   end
 
   def create_cron_service(container, schedule)
-    @engines_api.create_and_register_service({
-      publisher_namespace: 'EnginesSystem',
-      type_path: schedule_type_path(schedule),
-      parent_engine: container.container_name,
-      container_type: container_ctype(container.ctype),
-      service_handle: schedule[:label],
-      variables: {
-      action_type: schedule_type(schedule),
-      cron_job: schedule_instruction(schedule),
-      title: schedule[:label],
-      :when => cron_line(schedule[:timespec]),
-      parent_engine: container.container_name } })
+    t = {
+    publisher_namespace: 'EnginesSystem',
+    type_path: schedule_type_path(schedule),
+    parent_engine: container.container_name,
+    container_type: container_ctype(container.ctype),
+    service_handle: schedule[:label],
+    variables: {
+    action_type: schedule_type(schedule),
+    cron_job: schedule_instruction(schedule),
+    title: schedule[:label],
+    :when => cron_line(schedule[:timespec]),
+    parent_engine: container.container_name } 
+    }
+    
+    STDERR.puts(' CRON SERVIEC HASH ' + t.to_s)
+    
+    @engines_api.create_and_register_service(t)
   end
 
   def container_ctype(ctype)

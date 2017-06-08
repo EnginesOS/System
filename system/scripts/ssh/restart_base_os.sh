@@ -7,6 +7,7 @@
 		exit
 	else
 	/opt/engines/system/scripts/ssh/restart_system_service.sh &
+	rm -f /opt/engines/run/system/flags/engines_rebooting  
 	  sleep 2
 	fi
 	
