@@ -39,8 +39,11 @@ module ContainerSchedules
     }
     
     STDERR.puts(' CRON SERVIEC HASH ' + t.to_s)
-    
+    begin
     @engines_api.create_and_register_service(t)
+    rescue
+      #FIxMe raise exception except when have existing Entry
+    end
   end
 
   def container_ctype(ctype)
