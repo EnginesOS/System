@@ -147,7 +147,7 @@ class ManagedUtility< ManagedContainer
 
   def clear_configs
     FileUtils.rm(ContainerStateFiles.container_state_dir(self) + '/running.yaml') if File.exist?(ContainerStateFiles.container_state_dir(self) + '/running.yaml')
-    FileUtils.rm(ContainerStateFiles.container_state_dir(self) + '/running.yaml.bak')   if File.exist?(ContainerStateFiles.container_state_dir(self) + '/running.yaml.bak')
+    FileUtils.rm(ContainerStateFiles.container_state_dir(self) + '/running.yaml.bak') if File.exist?(ContainerStateFiles.container_state_dir(self) + '/running.yaml.bak')
   end
 
   def error_type_hash(mesg, params = nil)
