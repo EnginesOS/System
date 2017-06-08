@@ -62,6 +62,7 @@ module ManagedContainerStatus
   def clear_error
     @out_of_memory = false
     @had_out_memory = false
+    true
   end
 
   def restart_required?
