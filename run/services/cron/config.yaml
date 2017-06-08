@@ -3,6 +3,7 @@ container_name: cron
 ctype: service
 conf_self_start: true
 persistent: false
+soft_service: true
 publisher_namespace: EnginesSystem
 type_path: cron
 last_error: 
