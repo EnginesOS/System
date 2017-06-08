@@ -11,7 +11,7 @@ module SaveEngineConfiguration
     FileUtils.mkdir_p(ContainerStateFiles.schedules_dir(container)) unless Dir.exist?(ContainerStateFiles.schedules_dir(container))
     serialized_object = YAML.dump(schedules)
     f = File.new(ContainerStateFiles.schedules_file(container), File::CREAT | File::TRUNC | File::RDWR, 0644)
-    f.puts(serialized_object)
+    f.write(serialized_object)
     f.flush()
     f.close
   end
