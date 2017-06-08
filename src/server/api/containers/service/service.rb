@@ -150,4 +150,17 @@ get '/v0/containers/service/:service_name/wait_for/:what' do
     end
   end
 end
+
+# method clear_service_error
+# @overload get '/v0/containers/service/:service_name/clear_error
+#
+# @return true|false
+get '/v0/containers/service/:service_name/clear_error' do
+ begin
+   engine = get_service(params[:service_name])
+   return_boolean(service.clear_error)
+ rescue StandardError => e
+   send_encoded_exception(request: request, exception: e)
+ end
+end
 # @!endgroup
