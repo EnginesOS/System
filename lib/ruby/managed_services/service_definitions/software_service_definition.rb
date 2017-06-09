@@ -104,7 +104,6 @@ class SoftwareServiceDefinition
           setatrun = service_variables[value_name.to_sym][:ask_at_build_time]
           mandatory = service_variables[value_name.to_sym][:mandatory]
           retval.push( EnvironmentVariable.new(env_name, value, setatrun, mandatory, build_time_only, value_name, immutable, owner)) # env_name , value
-
         end                                                      #(name,value,setatrun,mandatory,build_time_only,label,immutable)
       end
     else
