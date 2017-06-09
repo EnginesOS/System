@@ -243,6 +243,7 @@ class EngineBuilder < ErrorsApi
     log_build_output('Clone Blueprint Repository ' + @build_params[:repository_url])
     SystemDebug.debug(SystemDebug.builder, "get_blueprint_from_repo",@build_params[:repository_url], @build_name, SystemConfig.DeploymentDir)
     g = Git.clone(@build_params[:repository_url], @build_name, :path => SystemConfig.DeploymentDir)
+      STDERR.puts('GIT GOT ' + g.to_s)
   end
 
   def get_blueprint_from_repo
@@ -257,6 +258,8 @@ class EngineBuilder < ErrorsApi
     get_blueprint_from_repo
     log_build_output('Cloned Blueprint')
     build_container
+  rescue StandardError
+    post_failed_build_clean_up
   end
 
   def post_failed_build_clean_up
@@ -268,7 +271,7 @@ class EngineBuilder < ErrorsApi
     # FIXME: need to re orphan here if using an orphan Well this should happen on the fresh
     # FIXME: don't delete shared service but remove share entry
     SystemDebug.debug(SystemDebug.builder, :Clean_up_of_Failed_build)
-    SystemDebug.debug(SystemDebug.builder, "Called From",caller[0..5])
+    SystemDebug.debug(SystemDebug.builder, "Called From", caller[0..5])
     SystemDebug.debug(SystemDebug.builder, caller.to_s)
     # FIXME: Stop it if started (ie vol builder failure)
     # FIXME: REmove container if created
