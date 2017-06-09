@@ -274,7 +274,7 @@ class EngineBuilder < ErrorsApi
     # FIXME: need to re orphan here if using an orphan Well this should happen on the fresh
     # FIXME: don't delete shared service but remove share entry
     SystemDebug.debug(SystemDebug.builder, :Clean_up_of_Failed_build)
-    SystemDebug.debug(SystemDebug.builder, "Called From", caller[0..5])
+    SystemDebug.debug(SystemDebug.builder, "Called From", caller[0..15])
     SystemDebug.debug(SystemDebug.builder, caller.to_s)
     # FIXME: Stop it if started (ie vol builder failure)
     # FIXME: REmove container if created
