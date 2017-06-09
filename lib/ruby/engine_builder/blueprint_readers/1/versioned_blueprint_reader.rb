@@ -61,6 +61,10 @@ class VersionedBlueprintReader < BluePrintReader
     @framework = @blueprint[:software][:base][:framework]
     @runtime = @blueprint[:software][:base][:framework] # Fix me load langauge from framwork file [:language]
     @memory = @blueprint[:software][:base][:required_memory]
+    if @framework ==  'docker'
+      @base_image = @blueprint[:software][:base][:parent_image]
+      @cont_user = @blueprint[:software][:base][:run_as_user]
+    end
   end
 
   def read_install_report_template

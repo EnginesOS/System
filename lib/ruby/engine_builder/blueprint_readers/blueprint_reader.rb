@@ -273,11 +273,11 @@ class BluePrintReader
       archive_details[:destination] = arc_loc
       archive_details[:path_to_extracted] = arc_dir
       @archives_details.push(archive_details)
-      if archive_details[:extraction_command] == 'docker'
-        @base_image =  archive_details[:source_url]
-        add_capability(archive_details[:path_to_extracted]  )
-        @cont_user = archive_details[:destination]
-      end
+#      if archive_details[:extraction_command] == 'docker'
+#        @base_image = archive_details[:source_url]
+#        add_capability(archive_details[:path_to_extracted])
+#          @cont_user = archive_details[:destination]
+#      end
     end
   end
 
