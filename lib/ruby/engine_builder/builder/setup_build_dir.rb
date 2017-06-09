@@ -7,14 +7,11 @@ def setup_build_dir
     read_web_port
   end
   read_web_user
-
   @build_params[:mapped_ports] =  @blueprint_reader.mapped_ports
   SystemDebug.debug(SystemDebug.builder, :ports, @build_params[:mapped_ports])
   SystemDebug.debug(SystemDebug.builder, :attached_services, @build_params[:attached_services])
   @service_builder.required_services_are_running?
-
   @service_builder.create_persistent_services(@blueprint_reader.services, @blueprint_reader.environments, @build_params[:attached_services]).is_a?(EnginesError)
-
   apply_templates_to_environments
   create_engines_config_files
   index = 0
@@ -137,7 +134,6 @@ def apply_templates_to_environments
 end
 
 def read_web_port
-
   log_build_output('Setting Web port')
   stef = File.open(basedir + '/home/stack.env', 'r')
   while line = stef.gets do
@@ -160,13 +156,13 @@ end
 def setup_global_defaults
   log_build_output('Setup global defaults')
   cmd = 'cp -r ' + SystemConfig.DeploymentTemplates  + '/global/* ' + basedir
-  system cmd
+  system(cmd)
 end
 
 def setup_framework_defaults
   log_build_output('Copy in default templates')
   cmd = 'cp -r ' + SystemConfig.DeploymentTemplates + '/' + @blueprint_reader.framework + '/* ' + basedir
-  r = system cmd
+  r = system(cmd)
   if @blueprint_reader.framework == 'docker'
     df = File.read(basedir + '/_Dockerfile.tmpl')
     df = 'FROM ' + @blueprint_reader.base_image + "\n" + 'ENV ContUser ' + @blueprint_reader.cont_user + "\n" + df
