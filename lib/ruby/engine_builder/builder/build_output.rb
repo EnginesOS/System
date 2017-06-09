@@ -7,7 +7,7 @@ module BuildOutput
 
   def log_build_output(line)
     return if line.nil?
-    return if @log_file.nil?
+    return if @log_file.nil? || @log_file.closed?
     return unless line.is_a?(String)
     line.force_encoding(Encoding::UTF_8)
     @log_file.puts(line)
@@ -18,7 +18,7 @@ module BuildOutput
     line = '' if line.nil?
       return if @err_file.nil?
     #    line.force_encoding(Encoding::ANSI) # UTF_8)
-    @err_file.puts(line.to_s) unless @err_file.nil?
+    @err_file.puts(line.to_s) unless @err_file.nil? || @err_file.closed?
     log_build_output('ERROR:' + line.to_s)
     @result_mesg = 'Error.' + line.to_s
     @build_error = @result_mesg
