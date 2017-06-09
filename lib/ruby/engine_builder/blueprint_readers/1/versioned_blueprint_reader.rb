@@ -160,7 +160,6 @@ class VersionedBlueprintReader < BluePrintReader
   def read_schedules
     return true if @blueprint[:software][:schedules].nil?
     @schedules = @blueprint[:software][:schedules]
-    STDERR.puts(' schedules ' + @schedules.to_s)
   end
 
   def read_repos

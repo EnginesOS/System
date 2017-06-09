@@ -57,7 +57,7 @@ module EnginesOperations
   end
 
   def set_container_runtime_properties(container, params)
-    STDERR.puts('set_container_runtime_properties ' +  params.to_s)
+   # STDERR.puts('set_container_runtime_properties ' +  params.to_s)
     raise EnginesException.new(error_hash(params[:engine_name],'Container is active')) if container.is_active?
     if params.key?(:environment_variables) && ! params[:environment_variables].nil?
       new_variables = params[:environment_variables]
