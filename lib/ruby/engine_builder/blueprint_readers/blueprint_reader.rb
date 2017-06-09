@@ -273,11 +273,11 @@ class BluePrintReader
       archive_details[:destination] = arc_loc
       archive_details[:path_to_extracted] = arc_dir
       @archives_details.push(archive_details)
-      if archive_details[:extraction_command] == 'docker'
-        @base_image =  archive_details[:source_url]
-        add_capability(archive_details[:path_to_extracted]  )
-        @cont_user = archive_details[:destination]
-      end
+#      if archive_details[:extraction_command] == 'docker'
+#        @base_image = archive_details[:source_url]
+#        add_capability(archive_details[:path_to_extracted])
+#          @cont_user = archive_details[:destination]
+#      end
     end
   end
 
@@ -321,15 +321,16 @@ class BluePrintReader
   def read_worker_commands
     log_build_output('Read Workers')
     @worker_commands = []
-    workers = @blueprint[:software][:workers]
-    return true unless workers.is_a?(Array) # not an error just nada
-
-    workers.each do |worker|
-      if worker[:name] = @blueprint[:software][:blocking_worker_name]
-        @blocking_worker = worker[:command]
-      else
+    return true unless @blueprint[:software].key?(:workers)
+    @blocking_worker = @blueprint[:software][:workers][:blocking] if @blueprint[:software][:workers].key?(:blocking)
+    return true unless @blueprint[:software][:workers].key?(:commands) # not an error just nada
+   
+    @blueprint[:software][:workers][:commands].each do |worker|
+#      if worker[:name] = @blueprint[:software][:blocking_worker_name]
+#        @blocking_worker = worker[:command]
+#      else
         @worker_commands.push(worker[:command])
-      end
+   #   end
     end
   end
 

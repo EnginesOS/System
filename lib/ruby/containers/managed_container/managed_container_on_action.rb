@@ -10,10 +10,8 @@ module ManagedContainerOnAction
         @has_run = true
         return save_state
       end
-      # MUst register post each start as IP Changes (different post reboot)
-      STDERR.puts(' Container ' + self.container_name.to_s + ' reg dns ' + self.conf_register_dns.to_s)
-      register_with_dns
-      STDERR.puts(' HAS RUN ' + @has_run.to_s + ' Deplyment type ' + @deployment_type.to_s)
+      # MUst register post each start as IP Changes (different post reboot)     
+      register_with_dns    
       if  @has_run == false
         add_nginx_service if @deployment_type == 'web'
       end
@@ -29,12 +27,10 @@ module ManagedContainerOnAction
   end
 
   def on_create(event_hash)
-    #    STDERR.puts('CREATE EVent on ' + container_name)
     @container_mutex.synchronize {
       SystemDebug.debug(SystemDebug.container_events, :ON_Create_CALLED, event_hash)
       @container_id = event_hash[:id]
-      @out_of_memory = false
-      @had_out_memory = false
+      clear_error
       @has_run = false
       @container_api.apply_schedules(self)
       save_state    

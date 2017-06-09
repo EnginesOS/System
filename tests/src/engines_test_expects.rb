@@ -5,23 +5,18 @@ def check_length(check, len)
 
   case check
   when 'eq'
-
     return true if @data.length == len
-
   when 'gt'
-
     return true if @data.length > len
-
   end
   STDERR.puts('got lenght of ' + @data.length.to_s + ' but expected ' + check + ' ' + len.to_s )
-  return false
+  false
 end
 
 def check_regex(exp)
 
   return true unless @data.match(exp).nil?
-
-  return false
+  false
 end
 
 def check_text(key, value)
@@ -31,7 +26,7 @@ def check_text(key, value)
   else
     return true if @data.include?(value)
   end
-  return false
+  false
 end
 
 def check_boolean(value)
@@ -40,8 +35,7 @@ def check_boolean(value)
   else
     return true if @data.to_s == value
   end
-
-  return false
+  false
 end
 
 def check_array(key, value)
@@ -69,7 +63,7 @@ def hash_has_key(search_key, hash)
     return true
   end
   return true if hash.key?(search_key)
-  return false
+  false
 end
 
 def hash_key_value(search_key, hash)
@@ -83,38 +77,31 @@ def hash_key_value(search_key, hash)
     return hash
   end
   return false unless hash.key?(search_key)
-  return hash[search_key].to_s
+  hash[search_key].to_s
 end
 
 def check_json(key, value)
-
   hash = JSON.parse(@data)
-
   if key.nil?
     key = value
     value = nil
   end
-
   return true if key.nil?
-
   if value.nil?
     return true if hash_has_key(key, hash)
   else
     return true if hash_key_value(key, hash) == value
   end
-
-  return false
+  false
 rescue StandardError =>e
-  STDERR.puts ('Json Parse Error ' + e.to_s + "\n With " + @data.to_s)
-  return false
+  STDERR.puts('Json Parse Error ' + e.to_s + "\n With " + @data.to_s)
+  false
 end
 
 def read_stdin_data
   stdin_data = ""
-
   require 'timeout'
   status = Timeout::timeout(480) do
-    
     while STDIN.gets
       stdin_data += $_
     end
@@ -123,8 +110,7 @@ def read_stdin_data
   #   puts "Read " + stdin_data.length.to_s + ' bytes ' + stdin_data
   return nil if stdin_data.nil?
   stdin_data.strip!
-  return stdin_data
-
+  stdin_data
 rescue Timeout::Error
   STDERR.puts "Timeout on data read from stdin"
 rescue StandardError => e
@@ -135,8 +121,8 @@ def log_exception(e)
   STDERR.puts("Exception " + e.to_s + "\n" + e.backtrace.to_s)
 end
 
-key=nil
-value=nil
+key = nil
+value = nil
 
 if ARGV[0] == 'not'
   @invert = true
@@ -165,30 +151,22 @@ r = false
 case type
 when 'json'
   r = check_json(key, value)
-
 when 'bool'
   r = check_boolean(value)
-
 when 'text'
   r = check_text(key, value)
-
 when 'text_len'
   value =  value.to_i
   r = check_length(key, value)
-
 when 'regex'
   r = check_regex(value)
-
 when 'array'
   r = check_array(key, value)
-
 else
   p 'Unrecognised expect type:' + type.to_s
   exit(-1)
 end
-
 r = !r if @invert
-
 if r == false
   if type.nil?
     puts 'Failed:Got ' + @data.to_s + " but expected:" + type.to_s

@@ -2,8 +2,7 @@ require_relative '../blueprint_reader.rb'
 
 class VersionedBlueprintReader < BluePrintReader
   @schema = 1
-  attr_reader   :first_run_url,
-  :continuous_deployment,
+  attr_reader :continuous_deployment,
   :schedules ,
   :external_repositories
   def read_scripts
@@ -62,6 +61,10 @@ class VersionedBlueprintReader < BluePrintReader
     @framework = @blueprint[:software][:base][:framework]
     @runtime = @blueprint[:software][:base][:framework] # Fix me load langauge from framwork file [:language]
     @memory = @blueprint[:software][:base][:required_memory]
+    if @framework ==  'docker'
+      @base_image = @blueprint[:software][:base][:parent_image]
+      @cont_user = @blueprint[:software][:base][:run_as_user]
+    end
   end
 
   def read_install_report_template
@@ -157,6 +160,7 @@ class VersionedBlueprintReader < BluePrintReader
   def read_schedules
     return true if @blueprint[:software][:schedules].nil?
     @schedules = @blueprint[:software][:schedules]
+    STDERR.puts(' schedules ' + @schedules.to_s)
   end
 
   def read_repos
@@ -169,4 +173,21 @@ class VersionedBlueprintReader < BluePrintReader
     read_repos
   end
 
+  def read_apache_htaccess_files
+    if @blueprint[:software].key?(:framework_specific)
+      @apache_htaccess_files = @blueprint[:software][:framework_specific][:apache_htaccess_files] if @blueprint[:software][:framework_specific][:apache_htaccess_files].is_a?(Array)
+    end
+  end
+
+  def read_custom_php_inis
+    if @blueprint[:software].key?(:framework_specific)
+      @custom_php_inis = @blueprint[:software][:framework_specific][:custom_php_inis] if @blueprint[:software][:framework_specific][:custom_php_inis].is_a?(Array)
+    end
+  end
+
+  def read_apache_httpd_configurations
+    if @blueprint[:software].key?(:framework_specific)
+      @apache_httpd_configurations = @blueprint[:software][:framework_specific][:apache_httpd_configurations] if @blueprint[:software][:framework_specific][:apache_httpd_configurations].is_a?(Array)
+    end
+  end
 end

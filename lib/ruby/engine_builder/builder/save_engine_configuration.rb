@@ -11,7 +11,7 @@ module SaveEngineConfiguration
     FileUtils.mkdir_p(ContainerStateFiles.schedules_dir(container)) unless Dir.exist?(ContainerStateFiles.schedules_dir(container))
     serialized_object = YAML.dump(schedules)
     f = File.new(ContainerStateFiles.schedules_file(container), File::CREAT | File::TRUNC | File::RDWR, 0644)
-    f.puts(serialized_object)
+    f.write(serialized_object)
     f.flush()
     f.close
   end
@@ -20,14 +20,13 @@ module SaveEngineConfiguration
     return true if actionators.nil?
     FileUtils.mkdir_p(ContainerStateFiles.actionator_dir(container)) unless Dir.exist?(ContainerStateFiles.actionator_dir(container))
     serialized_object = YAML.dump(actionators)
-
     f = File.new(ContainerStateFiles.actionator_dir(container) + '/actionators.yaml', File::CREAT | File::TRUNC | File::RDWR, 0644)
-    f.puts(serialized_object)
+    f.write(serialized_object)
     f.flush()
     f.close
   end
 
-  def  write_services(mc, attached_services)
+  def write_services(mc, attached_services)
   end
 
   def write_variables(mc, environments)

@@ -13,9 +13,24 @@ module ManagedServiceConsumers
         publisher_namespace: @publisher_namespace,
         type_path: @type_path
       }
+      alias_services = nil
+        unless @aliases.nil?
+          if @aliases.is_a?(Array)
+            @aliases.each do |type_path|
+              alias_services ||= []
+              params[:type_path] = type_path
+              alias_services  += @container_api.get_registered_consumer(params)
+            end
+          end
+        end
+        unless alias_services.nil?
+          params[:type_path] = @type_path
+          return alias_services + @container_api.registered_with_service(params)
+        end
       @container_api.registered_with_service(params)
+    else
+      registered_consumer(params)
     end
-    registered_consumer(params)
   end
 
   def registered_consumer(params)
@@ -25,11 +40,12 @@ module ManagedServiceConsumers
       parent_engine: params[:parent_engine]
     }
     service_params[:service_handle] = params[:service_handle] if params.key?(:service_handle)
+
     @container_api.get_registered_consumer(service_params)
   end
 
   def reregister_consumers
-    return true if @persistent == true
+    return true if @persistent == true && @soft_service == false
     raise EnginesException.new(error_hash('Cant register consumers as not running ', self.container_name))  if is_running? == false
     registered_hashes = registered_consumers
     return true unless registered_hashes.is_a?(Array)
@@ -41,14 +57,14 @@ module ManagedServiceConsumers
 
   def add_consumer(service_hash)
     raise EnginesException.new(error_hash('Invalid service_hash ', service_hash)) unless service_hash.is_a?(Hash)
-    service_hash[:persistent] = @persistent
+    service_hash[:persistent] = @persistent unless service_hash.key?(:persistent)
     result = false
     # add/create persistent if fresh == true on not at all or if running create for no persistent
     return true if !is_running? && @soft_service
 
     raise EnginesException.new(error_hash('service not running', @container_name)) unless is_running?
     wait_for_startup
-    unless @persistent
+    unless service_hash[:persistent]
       result = add_consumer_to_service(service_hash)
     else
       if service_hash.key?(:fresh) && service_hash[:fresh] == false

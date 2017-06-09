@@ -46,6 +46,7 @@ end
 def create_engines_config_files
   create_template_files
   create_php_ini
+  create_httaccess
   create_apache_config
   create_scripts
 end
@@ -62,7 +63,7 @@ end
 def create_httaccess
   if @blueprint_reader.apache_htaccess_files
     @blueprint_reader.apache_htaccess_files.each do |htaccess_hash|
-      write_software_file('/home/engines/htaccess_files' + htaccess_hash[:directory] + '/.htaccess', htaccess_hash[:htaccess_content])
+      write_software_file(SystemConfig.htaccessSourceDir + htaccess_hash[:directory] + '/.htaccess', htaccess_hash[:content])
     end
   end
 end
@@ -84,7 +85,7 @@ def create_apache_config
     FileUtils.mkdir_p(basedir + File.dirname(SystemConfig.CustomApacheConfFile))
     contents = ''
     @blueprint_reader.apache_httpd_configurations.each do |httpd_configuration|
-      contents = contents + httpd_configuration[:httpd_configuration] + "\n"
+      contents = contents + httpd_configuration[:content] + "\n"
     end
     write_software_file(SystemConfig.CustomApacheConfFile, contents)
   end
@@ -168,8 +169,8 @@ def setup_framework_defaults
   r = system cmd
   if @blueprint_reader.framework == 'docker'
     df = File.read(basedir + '/_Dockerfile.tmpl')
-    df = 'FROM ' + @blueprint_reader.base_image + "\n" +  'ENV ContUser ' + @blueprint_reader.cont_user + "\n" + df
-    fw = File.new(basedir  + '/Dockerfile.tmpl','w+')
+    df = 'FROM ' + @blueprint_reader.base_image + "\n" + 'ENV ContUser ' + @blueprint_reader.cont_user + "\n" + df
+    fw = File.new(basedir  + '/Dockerfile.tmpl', 'w+')
     fw.write(df)
     fw.close
     return true

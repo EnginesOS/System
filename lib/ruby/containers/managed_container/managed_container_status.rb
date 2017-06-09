@@ -59,6 +59,13 @@ module ManagedContainerStatus
     false
   end
 
+  def clear_error
+    @out_of_memory = false
+    @had_out_memory = false
+    save_state
+    true
+  end
+
   def restart_required?
     return false unless has_api?
     @container_api.restart_required?(self)

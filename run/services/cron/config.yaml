@@ -3,12 +3,15 @@ container_name: cron
 ctype: service
 conf_self_start: true
 persistent: false
+soft_service: true
 publisher_namespace: EnginesSystem
 type_path: cron
 last_error: 
 memory: '96'
 hostname: cron
 domain_name: 
+aliases: 
+ - schedule
 environments: []
 image: engines/cron:_Engines_System(release)
 volumes:

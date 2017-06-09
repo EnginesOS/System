@@ -1,6 +1,5 @@
 module EngineApiServiceRegistration
   def register_with_dns(container)
-    STDERR.puts(' Container ' + container.container_name.to_s + ' reg dns ' + container.conf_register_dns.to_s)
     if container.conf_register_dns == true
       service_hash = create_dns_service_hash(container)
       begin

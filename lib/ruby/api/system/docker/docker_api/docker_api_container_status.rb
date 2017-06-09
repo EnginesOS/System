@@ -68,7 +68,6 @@ module DockerApiContainerStatus
     request = '/containers/' + container.container_id .to_s + '/logs?stderr=1&stdout=1&timestamps=1&follow=0&tail=' + count.to_s
     r = get_request(request, false)
     DockerUtils.docker_stream_as_result(r, {})
-    result
   end
 
 end

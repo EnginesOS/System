@@ -26,7 +26,7 @@ module CheckBuildParams
   def acceptable_name_chars(str)
       return false if str.nil?
       return false unless str.match(/^[a-zA-Z]/)
-      return true if str.match(/^[a-zA-Z0-9_]+$/)
+      return true if str.match(/^[a-zA-Z0-9]+$/)
       false
     end
   def acceptable_host_chars(str)

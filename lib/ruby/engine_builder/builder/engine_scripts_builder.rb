@@ -18,7 +18,7 @@ module EngineScriptsBuilder
 
   def create_stop_script
     if @blueprint_reader.custom_start_script
-      write_software_script_file(SystemConfig.StopScript, @blueprint_reader.custom_start_script)
+      write_software_script_file(SystemConfig.StopScript, @blueprint_reader.custom_stop_script)
     end
   end
 

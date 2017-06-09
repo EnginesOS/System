@@ -15,6 +15,7 @@ class EventMask
   @@build_event = 4096
   @@container_attach = 8192
   @@utility_target = 16384  
+  @@container_top = 32768
   @@service_action = @@container_action | @@service_target
   @@engine_action = @@container_action | @@engine_target
   def self.event_mask(event_hash)
@@ -44,6 +45,8 @@ class EventMask
         mask |= @@container_commit
       elsif event_hash[:status] == 'pull'
         mask |= @@container_pull
+      elsif event_hash[:status] == 'top'
+        mask |= @@container_top
         #        elsif event_hash['status'] == 'delete'
         #          mask |= @@container_delete
       elsif event_hash[:status] == 'die'
