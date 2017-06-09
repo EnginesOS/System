@@ -18,9 +18,11 @@ class DockerEventWatcher  < ErrorsApi
     def trigger(hash)
       mask = EventMask.event_mask(hash)
       # STDERR.puts('trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask' + @event_mask.to_s)
-      SystemDebug.debug(SystemDebug.container_events,'trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask' + @event_mask.to_s)
+      SystemDebug.debug(SystemDebug.container_events, 'trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask' + @event_mask.to_s)
       return if @event_mask == 0 || mask & @event_mask == 0
-      hash[:state] = state_from_status( hash[:status] )
+      # skip top
+      return unless @event_mask & 32768 == 0 # @@container_top == 0 
+      hash[:state] = state_from_status(hash[:status])
       SystemDebug.debug(SystemDebug.container_events,'fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
       @object.method(@method).call(hash)
     rescue StandardError => e
@@ -46,6 +48,8 @@ class DockerEventWatcher  < ErrorsApi
         status = 'nocontainer'
       when 'destroy'
         status = 'nocontainer'
+      when 'exec'
+        status = 'running'
       end
       status
     end
