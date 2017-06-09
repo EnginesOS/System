@@ -12,8 +12,11 @@ def setup_build_dir
   SystemDebug.debug(SystemDebug.builder, :attached_services, @build_params[:attached_services])
   @service_builder.required_services_are_running?
   @service_builder.create_persistent_services(@blueprint_reader.services, @blueprint_reader.environments, @build_params[:attached_services]).is_a?(EnginesError)
+  SystemDebug.debug(SystemDebug.builder, 'Services Attachd')
   apply_templates_to_environments
+  SystemDebug.debug(SystemDebug.builder, 'Templates Applies')
   create_engines_config_files
+  SystemDebug.debug(SystemDebug.builder, 'Configs written')
   index = 0
   unless @blueprint_reader.sed_strings.nil? || @blueprint_reader.sed_strings[:sed_str].nil?
     @blueprint_reader.sed_strings[:sed_str].each do |sed_string|
@@ -25,14 +28,17 @@ def setup_build_dir
   @build_params[:app_is_persistent] = @service_builder.app_is_persistent
   dockerfile_builder = DockerFileBuilder.new(@blueprint_reader, @build_params, @web_port, self)
   dockerfile_builder.write_files_for_docker
+  SystemDebug.debug(SystemDebug.builder, 'Docker file  written')
 
   write_env_file
 
+  SystemDebug.debug(SystemDebug.builder, 'Eviron file  written')
   setup_framework_logging
+  SystemDebug.debug(SystemDebug.builder, 'Logging setup')
 rescue StandardError => e
-  #log_exception(e)
   log_build_errors('Engine Build Aborted Due to:' + e.to_s)
   post_failed_build_clean_up
+  log_exception(e)
   raise e
 end
 
@@ -147,7 +153,7 @@ def read_web_port
   #      throw BuildStandardError.new(e,'setting web port')
 end
 
-def setup_default_files  
+def setup_default_files
   log_build_output('Setup Default Files ')
   log_error_mesg('Failed to setup Global Defaults', self) unless setup_global_defaults
   setup_framework_defaults
