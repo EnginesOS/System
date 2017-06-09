@@ -45,6 +45,6 @@ module ServiceHashChecks
     check_service_hash(service_hash)
     raise EnginesException.new({error_mesg: 'No :service_handle',error_type: :error , params: service_hash}) unless service_hash.key?(:service_handle)
     raise EnginesException.new({error_mesg: 'No :variables',error_type: :error , params: service_hash}) unless service_hash.key?(:variables)
-    raise EnginesException.new({error_mesg: 'illegals chars in :service_handle [a-zA-Z0-9_] only ' + service_hash[:service_handle].to_s ,error_type: :error, params: service_hash}) unless service_hash[:service_handle].match(/^[a-zA-Z_0-9]+$/)
+    raise EnginesException.new({error_mesg: 'illegals chars in :service_handle [a-zA-Z0-9_] only ' + service_hash[:service_handle].to_s ,error_type: :error, params: service_hash}) unless service_hash[:service_handle].match(/^[a-zA-Z0-9_]+$/)
   end
 end
