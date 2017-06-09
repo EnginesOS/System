@@ -13,9 +13,24 @@ module ManagedServiceConsumers
         publisher_namespace: @publisher_namespace,
         type_path: @type_path
       }
+      alias_services = nil
+        unless @aliases.nil?
+          if @aliases.is_a?(Array)
+            @aliases.each do |type_path|
+              alias_services ||= []
+              params[:type_path] = type_path
+              alias_services  += @container_api.get_registered_consumer(params)
+            end
+          end
+        end
+        unless alias_services.nil?
+          params[:type_path] = @type_path
+          return alias_services + @container_api.registered_with_service(params)
+        end
       @container_api.registered_with_service(params)
+    else
+      registered_consumer(params)
     end
-    registered_consumer(params)
   end
 
   def registered_consumer(params)
@@ -25,6 +40,7 @@ module ManagedServiceConsumers
       parent_engine: params[:parent_engine]
     }
     service_params[:service_handle] = params[:service_handle] if params.key?(:service_handle)
+
     @container_api.get_registered_consumer(service_params)
   end
 

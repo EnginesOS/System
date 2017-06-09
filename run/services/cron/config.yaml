@@ -10,6 +10,8 @@ last_error:
 memory: '96'
 hostname: cron
 domain_name: 
+aliases: 
+ - schedule
 environments: []
 image: engines/cron:_Engines_System(release)
 volumes:
