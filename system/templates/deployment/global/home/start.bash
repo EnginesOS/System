@@ -1,5 +1,8 @@
 #!/bin/bash
 
+PID_FILE=/var/run/engines.pid	
+export PID_FILE
+
 function wait_for_debug {
 if ! test -z "$Engines_Debug_Run"
  then
@@ -106,9 +109,6 @@ if test -f /home/startwebapp.sh
 
 if test -f /usr/sbin/apache2ctl
  then
-
-	PID_FILE=/run/apache2/apache2.pid
-	export PID_FILE
 	. /home/trap.sh
 
 	mkdir -p /var/log/apache2/ >/dev/null
@@ -120,15 +120,15 @@ if test -f /usr/sbin/apache2ctl
 			 echo  " $!" >> $PID_FILE
 	else		
 		/usr/sbin/apache2ctl -DFOREGROUND &
+	    echo  " $!" >>  $PID_FILE
 	fi
 else
-	PID_FILE=/var/run/nginx.pid
+	
 	if ! test -d /var/log/nginx
 	then
 		mkdir /var/log/nginx
 	fi
-	
-	export PID_FILE
+
 	. /home/trap.sh
 	cp /home/ruby_env /home/.env_vars
  		for env_name in `cat /home/app.env `
@@ -144,10 +144,12 @@ else
 if test -f /home/engines/scripts/blocking.sh 
 		then
 		nginx &
+	    echo  " $!" >>  $PID_FILE
 			 /home/engines/scripts/blocking.sh  &
 			 echo  " $!" >>  $PID_FILE
 	else		
 		nginx &
+	    echo  " $!" >>  $PID_FILE
 	fi
 fi
 
