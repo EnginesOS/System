@@ -8,7 +8,7 @@ class ConfigFileWriter
   end
 
   def self.write_templated_file(templater, filename, content)
-    return SystemUtils.log_error("NO Content ", filename , content) if content.nil?
+    return SystemUtils.log_error('NO Content for ' + filename.to_s) if content.nil?
     content.gsub!(/\r/, '')
     dir = File.dirname(filename)
     FileUtils.mkdir_p(dir) unless Dir.exist?(dir)
