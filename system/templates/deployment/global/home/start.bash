@@ -153,6 +153,6 @@ fi
 
 		
 touch /engines/var/run/flags/startup_complete
- wait 
+ wait `cat  $PID_FILE`
  wait_for_debug
 rm /engines/var/run/flags/startup_complete
