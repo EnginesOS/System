@@ -31,6 +31,7 @@ class DockerFileBuilder
   end
 
   def write_files_for_docker
+    @in_run = false
     write_line('')
     write_environment_variables
     write_stack_env
@@ -51,13 +52,13 @@ class DockerFileBuilder
     set_user('$ContUser')
     write_database_seed
     # write_worker_commands
-    
+
     write_run_start
-      write_sed_strings
-      write_persistent_dirs
-      write_persistent_files
+    write_sed_strings
+    write_persistent_dirs
+    write_persistent_files
     write_run_end
-    
+
     insert_framework_frag_in_dockerfile('builder.mid.tmpl')
     write_line('')
     write_rake_list
@@ -65,7 +66,7 @@ class DockerFileBuilder
     set_user('0')
     write_permissions
     write_line('')
-    write_line('RUN mkdir -p /home/fs/local/')
+    write_run_line('mkdir -p /home/fs/local/')
     write_line('')
 
     set_user('$ContUser') unless @blueprint_reader.framework == 'docker'
@@ -93,13 +94,21 @@ class DockerFileBuilder
     write_build_script('_finalise_environment.sh')
     if @blueprint_reader.respond_to?(:continuous_deployment)
       log_build_output("Setting up Continuos Deployment:" + @blueprint_reader.continuous_deployment.to_s ) if @blueprint_reader.continuous_deployment
-      write_line('RUN chown -R $ContUser /home/app; chmod g+w -R /home/app') if @blueprint_reader.continuous_deployment
+      write_cd if @blueprint_reader.continuous_deployment
     end
     insert_framework_frag_in_dockerfile('builder.end.tmpl')
     write_line('')
-    write_line('VOLUME /home/fs/')
+    write_volume('/home/fs/')
     write_clear_env_variables
     @docker_file.close
+  end
+
+  def write_cd
+    write_run_start()
+    write_run_line('chown -R $ContUser /home/app')
+    write_run_line('chmod g+w -R /home/app')
+    write_run_end()
+
   end
 
   def finalise_files
@@ -108,13 +117,13 @@ class DockerFileBuilder
   end
 
   def prepare_persitant_source
-    write_line('RUN mv /home/fs /home/fs_src')
-    write_line('VOLUME /home/fs_src/')
+    write_run_line('mv /home/fs /home/fs_src')
+    write_volume('/home/fs_src/')
   end
 
   def setup_persitant_app
-    write_line('RUN cp -rp /home/app /home/app_src')
-    write_line('VOLUME /home/app_src/')
+    write_run_line('cp -rp /home/app /home/app_src')
+    write_volume('/home/app_src/')
   end
 
   def write_permissions
@@ -137,7 +146,7 @@ class DockerFileBuilder
     write_line('#Clear env')
     return true if @blueprint_reader.environments.nil?
     @blueprint_reader.environments.each do |env|
-      write_line('ENV ' + env.name + ' .') if env.build_time_only
+      write_line(env.name, '.') if env.build_time_only
     end
   end
 
@@ -176,7 +185,7 @@ class DockerFileBuilder
   def write_run_install_script
     write_line('WORKDIR /home/')
     write_line('#RUN framework and custom installer')
-    write_line('RUN bash /home/setup.sh')
+    write_run_line('bash /home/setup.sh')
     true
   end
 
@@ -256,7 +265,7 @@ class DockerFileBuilder
       end
     end
     if packages.length > 1
-      write_line('RUN apt-get install -y ' + packages)
+      write_run_line('apt-get install -y ' + packages)
     end
     # FIXME: Wrong spot
     #    return false if @blueprint_reader.mapped_ports.nil?
@@ -373,7 +382,8 @@ class DockerFileBuilder
       if n < 0
         wports += ' '
       end
-      write_line('EXPOSE ' + port[:port].to_s)
+      write_expose(port[:port].to_s)
+      count_layer
       wports += port[:port].to_s + ' '
       n += 1
     end
@@ -382,13 +392,29 @@ class DockerFileBuilder
     end
   end
 
+  def write_volume(vol)
+    write_line('VOLUME ' + vol.to_s)
+    count_layer
+  end
+
+  def write_expose(port)
+    write_line('EXPOSE ' + port)
+    count_layer
+  end
+
   def write_env(name, value, build_only = false)
     write_line('ENV ' + name.to_s  + " \'" + value.to_s + "\'")
     @env_file.puts(name.to_s  + '=' + "\'" + value.to_s  + "\'")
+    count_layer
   end
 
   def write_run_line(cmd)
-    if  @first_line == true
+    unless @in_run == true
+      @docker_file.puts("RUN    " + cmd)
+      count_layer
+      return
+    end
+    if @first_line == true
       @docker_file.write("\\\n     " + cmd)
     else
       @docker_file.write(";\\\n     " + cmd)
@@ -396,26 +422,32 @@ class DockerFileBuilder
     @first_line = false
   end
 
-  def write_run_start()
+  def write_run_start(comment = '')
+    @in_run = true
     @first_line = true
+    write_line("\n#Start of Run:" + comment.to_s)
     @docker_file.write('RUN ')
     count_layer
   end
 
   def write_run_end()
-    write_line(' ')
+    write_line("\n#End of Run:\n\n")
+    @in_run = false
   end
 
   def write_build_script(cmd)
-    write_line('RUN  /build_scripts/' + cmd)
+    write_line('RUN /build_scripts/' + cmd)
+    count_layer
   end
 
   def write_line(line)
     @docker_file.puts(line)
-    count_layer unless line.start_with?('#') || line.end_with?('\\') # or whitespace only
+
+    #count_layer unless line.start_with?('#') || line.end_with?('\\') # or whitespace only
   end
 
   def set_user(user)
     write_line('USER ' + user)
+    count_layer
   end
 end
