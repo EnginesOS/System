@@ -251,7 +251,8 @@ class EngineBuilder < ErrorsApi
 
   def download_blueprint
     FileUtils.mkdir_p(basedir)
-    get_http_file(@build_params[:repository_url], File.basename(@build_params[:repository_url]))
+    d = basedir + '/' + File.basename(@build_params[:repository_url])
+    get_http_file(@build_params[:repository_url], d)
   end
 
   def get_http_file(url, d)
