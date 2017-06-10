@@ -51,9 +51,13 @@ class DockerFileBuilder
     set_user('$ContUser')
     write_database_seed
     # write_worker_commands
-    write_sed_strings
-    write_persistent_dirs
-    write_persistent_files
+    
+    write_run_start
+      write_sed_strings
+      write_persistent_dirs
+      write_persistent_files
+    write_run_end
+    
     insert_framework_frag_in_dockerfile('builder.mid.tmpl')
     write_line('')
     write_rake_list
@@ -80,8 +84,8 @@ class DockerFileBuilder
 
   def setup_user_local
     write_run_start()
-    write_run_line(true, 'ln -s /usr/local/ /home/local')
-    write_run_line(false, 'chown -R $ContUser /usr/local/ ')
+    write_run_line('ln -s /usr/local/ /home/local')
+    write_run_line('chown -R $ContUser /usr/local/ ')
     write_run_end()
   end
 
@@ -114,8 +118,10 @@ class DockerFileBuilder
   end
 
   def write_permissions
+    write_run_start()
     write_write_permissions_recursive # recursive firs (as can use to create blank dir)
     write_write_permissions_single
+    write_run_end()
   end
 
   def write_modules
@@ -159,7 +165,7 @@ class DockerFileBuilder
       path.chomp!('/')
       paths += path + ' ' unless path.nil?
     end
-    write_build_script('persistent_dirs.sh  ' + paths)
+    write_run_line('/build_scripts/persistent_dirs.sh  ' + paths)
   end
 
   def write_data_permissions
@@ -196,7 +202,7 @@ class DockerFileBuilder
       end
       paths += path + ' '
     end
-    write_build_script('persistent_files.sh   ' + paths)
+    write_run_line('/build_scripts/persistent_files.sh   ' + paths)
   end
 
   def write_file_service
@@ -215,32 +221,28 @@ class DockerFileBuilder
     n = 0
     write_line('#Sed Strings')
     return true if @blueprint_reader.sed_strings.nil?
-    write_run_start()
-    first = true
+
     @blueprint_reader.sed_strings[:src_file].each do |src_file|
       # src_file = @sed_strings[:src_file][n]
       dest_file = @blueprint_reader.sed_strings[:dest_file][n]
       sed_str = @blueprint_reader.sed_strings[:sed_str][n]
       tmp_file = @blueprint_reader.sed_strings[:tmp_file][n]
-      write_run_line(first, 'cat ' + src_file + " | sed \"" + sed_str + "\" > " + tmp_file)
-      write_run_line(false, 'cp ' + tmp_file + ' ' + dest_file)
+      write_run_line('cat ' + src_file + " | sed \"" + sed_str + "\" > " + tmp_file)
+      write_run_line('cp ' + tmp_file + ' ' + dest_file)
       n += 1
-      first = false
     end
-    write_run_end
+
   end
 
   def write_repos
     return if @blueprint_reader.external_repositories.nil? || @blueprint_reader.external_repositories.empty?
     write_line('#Repositories')
     write_run_start()
-    first = true
     @blueprint_reader.external_repositories.each do |repo|
       next unless repo.key?(:source)
-      write_run_line(first, 'add-apt-repository  -y  ' + repo[:source])
-      first = false 
+      write_run_line('add-apt-repository  -y  ' + repo[:source])
     end
-    write_run_line(first, 'apt-get -y update ')
+    write_run_line('apt-get -y update ')
     write_run_end
   end
 
@@ -316,7 +318,6 @@ class DockerFileBuilder
     write_line('')
     set_user('0')
     write_run_start
-    first = true
     @blueprint_reader.archives_details.each do |archive_details|
       next if archive_details[:extraction_command] == 'docker'
       source_url = archive_details[:source_url].to_s
@@ -342,8 +343,7 @@ class DockerFileBuilder
       args += ' \'' + extraction_command + '\' '
       args += ' \'' + destination + '\' '
       args += ' \'' + path_to_extracted + '\' '
-      write_run_line(first, '/build_scripts/package_installer.sh ' + args)
-      first = false
+      write_run_line('/build_scripts/package_installer.sh ' + args)
     end
     write_run_end
   end
@@ -388,15 +388,17 @@ class DockerFileBuilder
     @env_file.puts(name.to_s  + '=' + "\'" + value.to_s  + "\'")
   end
 
-  def write_run_line(first, cmd)
-    if first == true
+  def write_run_line(cmd)
+    if  @first_line == true
       @docker_file.write("\\\n     " + cmd)
     else
       @docker_file.write(";\\\n     " + cmd)
     end
+    @first_line = false
   end
 
   def write_run_start()
+    @first_line = true
     @docker_file.write('RUN ')
     count_layer
   end
