@@ -80,8 +80,8 @@ class DockerFileBuilder
 
   def setup_user_local
     write_run_start()
-    write_run_line('ln -s /usr/local/ /home/local')
-    write_run_line('chown -R $ContUser /usr/local/ ')
+    write_run_line(true, 'ln -s /usr/local/ /home/local')
+    write_run_line(false, 'chown -R $ContUser /usr/local/ ')
     write_run_end()
   end
 
@@ -216,14 +216,16 @@ class DockerFileBuilder
     write_line('#Sed Strings')
     return true if @blueprint_reader.sed_strings.nil?
     write_run_start()
+    first = true
     @blueprint_reader.sed_strings[:src_file].each do |src_file|
       # src_file = @sed_strings[:src_file][n]
       dest_file = @blueprint_reader.sed_strings[:dest_file][n]
       sed_str = @blueprint_reader.sed_strings[:sed_str][n]
       tmp_file = @blueprint_reader.sed_strings[:tmp_file][n]
-      write_run_line('cat ' + src_file + " | sed \"" + sed_str + "\" > " + tmp_file)
-      write_run_line('cp ' + tmp_file + ' ' + dest_file)
+      write_run_line(first, 'cat ' + src_file + " | sed \"" + sed_str + "\" > " + tmp_file)
+      write_run_line(first, 'cp ' + tmp_file + ' ' + dest_file)
       n += 1
+      first = false
     end
     write_run_end
   end
@@ -232,11 +234,13 @@ class DockerFileBuilder
     return if @blueprint_reader.external_repositories.nil? || @blueprint_reader.external_repositories.empty?
     write_line('#Repositories')
     write_run_start()
+    first = true
     @blueprint_reader.external_repositories.each do |repo|
       next unless repo.key?(:source)
-      write_run_line('add-apt-repository  -y  ' + repo[:source])
+      write_run_line(first, 'add-apt-repository  -y  ' + repo[:source])
+      first = false 
     end
-    write_run_line('apt-get -y update ')
+    write_run_line(false, 'apt-get -y update ')
     write_run_end
   end
 
@@ -312,6 +316,7 @@ class DockerFileBuilder
     write_line('')
     set_user('0')
     write_run_start
+    first = true
     @blueprint_reader.archives_details.each do |archive_details|
       next if archive_details[:extraction_command] == 'docker'
       source_url = archive_details[:source_url].to_s
@@ -337,7 +342,8 @@ class DockerFileBuilder
       args += ' \'' + extraction_command + '\' '
       args += ' \'' + destination + '\' '
       args += ' \'' + path_to_extracted + '\' '
-      write_run_line('/build_scripts/package_installer.sh ' + args)
+      write_run_line(first, '/build_scripts/package_installer.sh ' + args)
+      first = false
     end
     write_run_end
   end
@@ -382,8 +388,12 @@ class DockerFileBuilder
     @env_file.puts(name.to_s  + '=' + "\'" + value.to_s  + "\'")
   end
 
-  def write_run_line(cmd)
-    @docker_file.write(";\\\n     " + cmd)
+  def write_run_line(first, cmd)
+    if first == true
+      @docker_file.write("\\\n     " + cmd)
+    else
+      @docker_file.write(";\\\n     " + cmd)
+    end
   end
 
   def write_run_start()
