@@ -234,7 +234,7 @@ class DockerFileBuilder
     write_run_start()
     @blueprint_reader.external_repositories.each do |repo|
       next unless repo.key?(:source)
-      write_run_line('add-apt-repository  -y  ' + repo[:source] + ";\\")
+      write_run_line('add-apt-repository  -y  ' + repo[:source])
     end
     write_run_line('apt-get -y update ')
     write_run_end
