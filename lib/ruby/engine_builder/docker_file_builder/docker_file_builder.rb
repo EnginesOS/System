@@ -418,7 +418,7 @@ class DockerFileBuilder
     unless @in_run == true
       return @docker_file.puts(cmt)
     end
-    write_run_line("echo \"" + cmd + "\"")
+    write_run_line("echo \"" + cmt + "\"")
 #    if @first_line == true
 #      @docker_file.write("\\\n     " + cmt)
 #    else
