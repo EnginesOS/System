@@ -289,7 +289,10 @@ class DockerFileBuilder
     write_comment('#Framework Frag')
     frame_build_docker_frag = File.open(build_dir + '/Dockerfile.' + frag_name)
     builder_frag = frame_build_docker_frag.read
+    @docker_file.write("\n")
+    write_comment('#Docker Fragment ' + frag_name.to_s)
     @docker_file.write(builder_frag)
+    @docker_file.write("\n")
     frame_build_docker_frag.close
   end
 
