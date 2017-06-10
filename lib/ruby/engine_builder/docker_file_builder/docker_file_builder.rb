@@ -80,7 +80,7 @@ class DockerFileBuilder
 
   def setup_user_local
     write_run_start()
-    write_run_line('ln -s /usr/local/ /home/local;\\')
+    write_run_line('ln -s /usr/local/ /home/local')
     write_run_line('chown -R $ContUser /usr/local/ ')
     write_run_end()
   end
