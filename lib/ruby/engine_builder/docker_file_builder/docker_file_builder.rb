@@ -12,7 +12,7 @@ class DockerFileBuilder
     @layer_count = 0
     @env_file = File.new(@builder.basedir + '/build.env', 'w+')
     # this should be read as it is framework dep
-    @max_layers = 80
+    @max_layers = 75
   end
 
   def log_build_output(line)
@@ -249,10 +249,10 @@ class DockerFileBuilder
 
     end
     # FIXME: Wrong spot
-#    return false if @blueprint_reader.mapped_ports.nil?
-#    @blueprint_reader.mapped_ports.each_value do |port|
-#      write_line('EXPOSE ' + port[:port].to_s)
-#    end
+    #    return false if @blueprint_reader.mapped_ports.nil?
+    #    @blueprint_reader.mapped_ports.each_value do |port|
+    #      write_line('EXPOSE ' + port[:port].to_s)
+    #    end
   end
 
   def deploy_dir
@@ -307,6 +307,7 @@ class DockerFileBuilder
     log_build_output('Dockerfile:App Archives')
     write_line('')
     set_user('0')
+    write_build_script_start
     @blueprint_reader.archives_details.each do |archive_details|
       next if archive_details[:extraction_command] == 'docker'
       source_url = archive_details[:source_url].to_s
@@ -332,8 +333,9 @@ class DockerFileBuilder
       args += ' \'' + extraction_command + '\' '
       args += ' \'' + destination + '\' '
       args += ' \'' + path_to_extracted + '\' '
-      write_build_script('package_installer.sh' + args )
+      write_build_script_line('package_installer.sh' + args)
     end
+        write_build_script_end
   end
 
   def write_container_user
@@ -374,6 +376,19 @@ class DockerFileBuilder
   def write_env(name, value, build_only = false)
     write_line('ENV ' + name.to_s  + " \'" + value.to_s + "\'")
     @env_file.puts(name.to_s  + '=' + "\'" + value.to_s  + "\'")
+  end
+
+  def write_build_script_line(cmd)
+    @docker_file.write(";\\\n     /build_scripts/" + cmd)
+  end
+
+  def write_build_script_start()
+    @docker_file.write('RUN')
+    count_layer
+  end
+
+  def write_build_script_end()
+    write_line(' ')
   end
 
   def write_build_script(cmd)
