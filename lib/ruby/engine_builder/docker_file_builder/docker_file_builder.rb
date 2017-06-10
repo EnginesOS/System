@@ -36,15 +36,22 @@ class DockerFileBuilder
     write_environment_variables
     write_stack_env
     write_file_service
-    write_repos
-    write_os_packages
-    write_modules
+    
+    write_run_start
+     write_repos
+     write_os_packages
+     write_modules
+    write_run_end
+    
     write_user_local = true
     setup_user_local if write_user_local
-    set_user('$ContUser')
-    write_app_archives
     set_user('0')
-    write_app_templates
+    
+    write_run_start
+     write_app_archives
+     write_app_templates
+    write_run_end
+    
     set_user('$ContUser')
     write_container_user
     set_user('0')
@@ -54,20 +61,16 @@ class DockerFileBuilder
     # write_worker_commands
 
     write_run_start
-    write_sed_strings
-    write_persistent_dirs
-    write_persistent_files
+     write_sed_strings
+     write_persistent_dirs
+     write_persistent_files
     write_run_end
 
     insert_framework_frag_in_dockerfile('builder.mid.tmpl')
-    write_line('')
     write_rake_list
-    write_line('')
     set_user('0')
     write_permissions
-    write_line('')
     write_run_line('mkdir -p /home/fs/local/')
-    write_line('')
 
     set_user('$ContUser') unless @blueprint_reader.framework == 'docker'
 
@@ -174,7 +177,7 @@ class DockerFileBuilder
       path.chomp!('/')
       paths += path + ' ' unless path.nil?
     end
-    write_run_line('/build_scripts/persistent_dirs.sh  ' + paths)
+    write_build_script('persistent_dirs.sh  ' + paths)
   end
 
   def write_data_permissions
@@ -211,7 +214,7 @@ class DockerFileBuilder
       end
       paths += path + ' '
     end
-    write_run_line('/build_scripts/persistent_files.sh   ' + paths)
+    write_build_script('persistent_files.sh   ' + paths)
   end
 
   def write_file_service
@@ -246,13 +249,11 @@ class DockerFileBuilder
   def write_repos
     return if @blueprint_reader.external_repositories.nil? || @blueprint_reader.external_repositories.empty?
     write_line('#Repositories')
-    write_run_start()
     @blueprint_reader.external_repositories.each do |repo|
       next unless repo.key?(:source)
       write_run_line('add-apt-repository  -y  ' + repo[:source])
     end
     write_run_line('apt-get -y update ')
-    write_run_end
   end
 
   def write_os_packages
@@ -321,11 +322,8 @@ class DockerFileBuilder
 
   def write_app_archives
     return true if @blueprint_reader.archives_details.nil?
-    write_line('#App Archives')
+    write_run_line('#App Archives')
     log_build_output('Dockerfile:App Archives')
-    write_line('')
-    set_user('0')
-    write_run_start
     @blueprint_reader.archives_details.each do |archive_details|
       next if archive_details[:extraction_command] == 'docker'
       source_url = archive_details[:source_url].to_s
@@ -353,7 +351,6 @@ class DockerFileBuilder
       args += ' \'' + path_to_extracted + '\' '
       write_run_line('/build_scripts/package_installer.sh ' + args)
     end
-    write_run_end
   end
 
   def write_container_user
@@ -410,8 +407,12 @@ class DockerFileBuilder
 
   def write_run_line(cmd)
     unless @in_run == true
-      @docker_file.puts("RUN    " + cmd)
-      count_layer
+      if cmd.begin_with?('#')
+        @docker_file.puts(cmd)
+      else
+        @docker_file.puts('RUN    ' + cmd)
+        count_layer
+      end
       return
     end
     if @first_line == true
@@ -436,8 +437,7 @@ class DockerFileBuilder
   end
 
   def write_build_script(cmd)
-    write_line('RUN /build_scripts/' + cmd)
-    count_layer
+    write_run_line('/build_scripts/' + cmd)    
   end
 
   def write_line(line)
