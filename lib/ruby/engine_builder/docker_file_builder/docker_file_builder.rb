@@ -79,8 +79,10 @@ class DockerFileBuilder
   end
 
   def setup_user_local
-    write_line('RUN ln -s /usr/local/ /home/local;\\')
-    write_line('     chown -R $ContUser /usr/local/ ')
+    write_run_start()
+    write_run_line('ln -s /usr/local/ /home/local;\\')
+    write_run_line('chown -R $ContUser /usr/local/ ')
+    write_run_end()
   end
 
   def finalise_docker_file
@@ -213,26 +215,29 @@ class DockerFileBuilder
     n = 0
     write_line('#Sed Strings')
     return true if @blueprint_reader.sed_strings.nil?
+    write_run_start()
     @blueprint_reader.sed_strings[:src_file].each do |src_file|
       # src_file = @sed_strings[:src_file][n]
       dest_file = @blueprint_reader.sed_strings[:dest_file][n]
       sed_str = @blueprint_reader.sed_strings[:sed_str][n]
       tmp_file = @blueprint_reader.sed_strings[:tmp_file][n]
-      write_line('')
-      write_line('RUN cat ' + src_file + " | sed \"" + sed_str + "\" > " + tmp_file + ' ;\\')
-      write_line('     cp ' + tmp_file + ' ' + dest_file)
+      write_run_line('cat ' + src_file + " | sed \"" + sed_str + "\" > " + tmp_file)
+      write_run_line('cp ' + tmp_file + ' ' + dest_file)
       n += 1
     end
+    write_run_end
   end
 
   def write_repos
     return if @blueprint_reader.external_repositories.nil? || @blueprint_reader.external_repositories.empty?
     write_line('#Repositories')
+    write_run_start()
     @blueprint_reader.external_repositories.each do |repo|
       next unless repo.key?(:source)
-      write_line('RUN  add-apt-repository  -y  ' + repo[:source] + ";\\")
+      write_run_line('add-apt-repository  -y  ' + repo[:source] + ";\\")
     end
-    write_line(' apt-get -y update ')
+    write_run_line('apt-get -y update ')
+    write_run_end
   end
 
   def write_os_packages
@@ -246,7 +251,6 @@ class DockerFileBuilder
     end
     if packages.length > 1
       write_line('RUN apt-get install -y ' + packages)
-
     end
     # FIXME: Wrong spot
     #    return false if @blueprint_reader.mapped_ports.nil?
@@ -307,7 +311,7 @@ class DockerFileBuilder
     log_build_output('Dockerfile:App Archives')
     write_line('')
     set_user('0')
-    write_build_script_start
+    write_run_start
     @blueprint_reader.archives_details.each do |archive_details|
       next if archive_details[:extraction_command] == 'docker'
       source_url = archive_details[:source_url].to_s
@@ -333,9 +337,9 @@ class DockerFileBuilder
       args += ' \'' + extraction_command + '\' '
       args += ' \'' + destination + '\' '
       args += ' \'' + path_to_extracted + '\' '
-      write_build_script_line('package_installer.sh' + args)
+      write_run_line('/build_scripts/package_installer.sh ' + args)
     end
-        write_build_script_end
+    write_run_end
   end
 
   def write_container_user
@@ -378,16 +382,16 @@ class DockerFileBuilder
     @env_file.puts(name.to_s  + '=' + "\'" + value.to_s  + "\'")
   end
 
-  def write_build_script_line(cmd)
-    @docker_file.write(";\\\n     /build_scripts/" + cmd)
+  def write_run_line(cmd)
+    @docker_file.write(";\\\n     " + cmd)
   end
 
-  def write_build_script_start()
+  def write_run_start()
     @docker_file.write('RUN')
     count_layer
   end
 
-  def write_build_script_end()
+  def write_run_end()
     write_line(' ')
   end
 
