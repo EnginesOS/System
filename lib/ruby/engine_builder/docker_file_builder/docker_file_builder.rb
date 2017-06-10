@@ -407,7 +407,7 @@ class DockerFileBuilder
 
   def write_run_line(cmd)
     unless @in_run == true
-      if cmd.begin_with?('#')
+      if cmd.start_with?('#')
         @docker_file.puts(cmd)
       else
         @docker_file.puts('RUN    ' + cmd)
