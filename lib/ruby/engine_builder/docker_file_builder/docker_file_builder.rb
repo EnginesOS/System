@@ -160,7 +160,7 @@ class DockerFileBuilder
     log_build_output('setup persistent Dirs')
     return true if @blueprint_reader.persistent_dirs.nil?
     paths = ''
-    write_line('#Persistant Dirs')
+    write_run_line('#Persistant Dirs')
     @blueprint_reader.persistent_dirs.each do |path|
       path.chomp!('/')
       paths += path + ' ' unless path.nil?
@@ -187,7 +187,7 @@ class DockerFileBuilder
   end
 
   def write_persistent_files
-    write_line('#Persistant Files')
+    write_run_line('#Persistant Files')
     return true if @blueprint_reader.persistent_files.nil?
     log_build_output('set setup_env')
     paths = ''
@@ -219,7 +219,7 @@ class DockerFileBuilder
 
   def write_sed_strings
     n = 0
-    write_line('#Sed Strings')
+    write_run_line('#Sed Strings')
     return true if @blueprint_reader.sed_strings.nil?
 
     @blueprint_reader.sed_strings[:src_file].each do |src_file|
@@ -289,26 +289,25 @@ class DockerFileBuilder
   end
 
   def write_write_permissions_single
-    write_line('')
-    write_line('#Write Permissions Non Recursive')
+    write_run_line('#Write Permissions Non Recursive')
     log_build_output('Dockerfile:Write Permissions Non Recursive')
     return true if @blueprint_reader.single_chmods.nil? == true
     paths = ''
     @blueprint_reader.single_chmods.each do |path|
       paths += path + ' ' unless path.nil?
     end
-    write_build_script('write_permissions.sh ' + paths)
+    write_run_line('/build_scripts/write_permissions.sh ' + paths)
   end
 
   def write_write_permissions_recursive
-    write_line('#Write Permissions  Recursive')
+    write_run_line('#Write Permissions  Recursive')
     log_build_output('Dockerfile:Write Permissions Recursive')
     return true if @blueprint_reader.recursive_chmods.nil? == true
     dirs = ''
     @blueprint_reader.recursive_chmods.each do |directory|
       dirs += directory + ' ' unless directory.nil?
     end
-    write_build_script('recursive_write_permissions.sh ' + dirs)
+    write_run_line('/build_scripts/recursive_write_permissions.sh ' + dirs)
   end
 
   def write_app_archives
