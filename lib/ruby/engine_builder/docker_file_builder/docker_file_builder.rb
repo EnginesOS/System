@@ -181,13 +181,13 @@ class DockerFileBuilder
   end
 
   def write_data_permissions
-    write_line('#Data Permissions')
+    write_run_line('#Data Permissions')
     write_build_script('set_data_permissions.sh')
   end
 
   def write_run_install_script
-    write_line('WORKDIR /home/')
-    write_line('#RUN framework and custom installer')
+    write_run_line('WORKDIR /home/')
+    write_run_line('#RUN framework and custom installer')
     write_run_line('bash /home/setup.sh')
     true
   end
@@ -248,7 +248,7 @@ class DockerFileBuilder
 
   def write_repos
     return if @blueprint_reader.external_repositories.nil? || @blueprint_reader.external_repositories.empty?
-    write_line('#Repositories')
+    write_run_line('#Repositories')
     @blueprint_reader.external_repositories.each do |repo|
       next unless repo.key?(:source)
       write_run_line('add-apt-repository  -y  ' + repo[:source])
@@ -258,7 +258,7 @@ class DockerFileBuilder
 
   def write_os_packages
     packages = ''
-    write_line('#OS Packages')
+    write_run_line('#OS Packages')
     return true if @blueprint_reader.os_packages.nil?
     @blueprint_reader.os_packages.each do |package|
       if package.nil? == false
@@ -293,7 +293,7 @@ class DockerFileBuilder
   end
 
   def chown_home_app
-    write_line('#Chown App Dir')
+    write_run_line('#Chown App Dir')
     log_build_output('Dockerfile:Chown')
     write_build_script('chown_app_dir.sh  ')
   end
