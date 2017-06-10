@@ -12,7 +12,7 @@ class DockerFileBuilder
     @layer_count = 0
     @env_file = File.new(@builder.basedir + '/build.env', 'w+')
     # this should be read as it is framework dep
-    @max_layers = 75
+    @max_layers = 80
   end
 
   def log_build_output(line)
@@ -249,10 +249,10 @@ class DockerFileBuilder
 
     end
     # FIXME: Wrong spot
-    return false if @blueprint_reader.mapped_ports.nil?
-    @blueprint_reader.mapped_ports.each_value do |port|
-      write_line('EXPOSE ' + port[:port].to_s)
-    end
+#    return false if @blueprint_reader.mapped_ports.nil?
+#    @blueprint_reader.mapped_ports.each_value do |port|
+#      write_line('EXPOSE ' + port[:port].to_s)
+#    end
   end
 
   def deploy_dir
