@@ -458,6 +458,7 @@ class DockerFileBuilder
   end
 
   def set_user(user)
+    write_run_end if @in_run == true
     write_line('USER ' + user)
     count_layer
   end
