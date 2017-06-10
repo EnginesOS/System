@@ -37,9 +37,9 @@ module MemoryStatistics
     }
     containers.each do | container|
       next if container.setState != "running"
-      next unless container.is_running?
       container_sym = container.container_name.to_sym
       mem_stats[container_sym] = self.container_memory_stats(container)
+      next unless container.is_running?
       mem_stats[:totals][:allocated] += mem_stats[container_sym][:limit].to_i
       mem_stats[:totals][:in_use] += mem_stats[container_sym][:current].to_i
       mem_stats[:totals][:peak_sum] += mem_stats[container_sym][:maximum].to_i
@@ -48,18 +48,19 @@ module MemoryStatistics
   end
 
   def self.container_memory_stats(container)
-    ret_val = {}
+    return self.empty_container_result(container) unless container.is_active?
     if container && container.container_id.nil? == false && container.container_id != '-1'
-      # path = '/sys/fs/cgroup/memory/docker/' + container.container_id.to_s + '/'
       path = SystemUtils.cgroup_mem_dir(container.container_id.to_s)
       if Dir.exist?(path)
-        ret_val.store(:maximum, File.read(path + '/memory.max_usage_in_bytes').to_i)
-        ret_val.store(:current, File.read(path + '/memory.usage_in_bytes').to_i)
-        ret_val.store(:limit, File.read(path + '/memory.limit_in_bytes').to_i)
+        ret_val = {
+          maximum: File.read(path + '/memory.max_usage_in_bytes').to_i,
+          current: File.read(path + '/memory.usage_in_bytes').to_i,
+          limit: File.read(path + '/memory.limit_in_bytes').to_i
+        }
       else
         STDERR.puts('no_cgroup_file for ' + container.container_name + ':' + path.to_s, path)
         SystemUtils.log_error_mesg('no_cgroup_file for ' + container.container_name + ':' + path.to_s, path)
-        ret_val  = self.empty_container_result(container)
+        ret_val = self.empty_container_result(container)
       end
     end
     ret_val
@@ -85,7 +86,7 @@ module MemoryStatistics
     swp = 0
     swp = mem_stats[:swap_free] unless mem_stats[:swap_free].nil?
     swp /= 2 unless swp == 0
-    (mem_stats[:free] + mem_stats[:file_cache] + swp ) /1024
+    (mem_stats[:free] + mem_stats[:file_cache] + swp ) / 1024
   end
 
 end

@@ -1,21 +1,13 @@
 module ContainerSchedules
   def load_schedules(container)
-    STDERR.puts(' SCHEDULES FILE ' + schedules_file(container).to_s)
-   # return nil unless File.exist?(schedules_file(container))
-    STDERR.puts('Reading SCHEDULES data ')
-    c = File.read(schedules_file(container))    
-    STDERR.puts(' SCHEDULES data ' + c.to_s)
-    d = YAML::load(c)
-    STDERR.puts(' SCHEDULES hash ' + d.to_s)
-    d
+      YAML::load(File.read(schedules_file(container)))
   rescue StandardError => e
     puts(' EXCEPTION ' + e.to_s)
   end
 
   def apply_schedules(container)
-    STDERR.puts('SCHEDULES ' + container.container_name)
     schedules = load_schedules(container)
-    STDERR.puts('SCHEDULES loaded ' + schedules.to_s)
+   # STDERR.puts('SCHEDULES loaded ' + schedules.to_s)
     return true if schedules.nil?
     SystemDebug.debug(SystemDebug.schedules, 'Creating schedules:', schedules)
     schedules.each do |schedule|

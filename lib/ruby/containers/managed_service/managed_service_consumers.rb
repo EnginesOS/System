@@ -92,9 +92,12 @@ module ManagedServiceConsumers
 
   def add_consumer_to_service(service_hash)
     raise EnginesException.new(error_hash('service missing cont_userid '+ container_name, service_hash)) unless check_cont_uid
-    # unless is_startup_complete?
-    #   return if @soft_service == true
-    raise EnginesException.new(error_hash('service startup not complete ' + container_name, service_hash))  unless is_startup_complete?
+     unless is_startup_complete?
+       STDERR.puts('START UP BOT CPMPLEYE ' )
+       STDERR.puts('soft_service' + @soft_service.to_s)
+       return if @soft_service == true
+    raise EnginesException.new(error_hash('service startup not complete ' + container_name, service_hash))
+     end
     # end
     @container_api.add_consumer_to_service(self, service_hash)
   end

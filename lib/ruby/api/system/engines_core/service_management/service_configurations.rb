@@ -79,7 +79,7 @@ module ServiceConfigurations
     begin
       service = loadManagedService(service_param[:service_name])
     rescue
-      STDERR.puts(' loadSystemService ' + service_param.to_s + 'so loading ' + service_param[:service_name].to_s)
+     # STDERR.puts(' loadSystemService ' + service_param.to_s + 'so loading ' + service_param[:service_name].to_s)
       service = loadSystemService(service_param[:service_name])
     end
     service_param[:publisher_namespace] = service.publisher_namespace.to_s  # need as saving in config tree
