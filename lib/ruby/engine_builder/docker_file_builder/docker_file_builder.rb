@@ -223,7 +223,7 @@ class DockerFileBuilder
       sed_str = @blueprint_reader.sed_strings[:sed_str][n]
       tmp_file = @blueprint_reader.sed_strings[:tmp_file][n]
       write_run_line(first, 'cat ' + src_file + " | sed \"" + sed_str + "\" > " + tmp_file)
-      write_run_line(first, 'cp ' + tmp_file + ' ' + dest_file)
+      write_run_line(false, 'cp ' + tmp_file + ' ' + dest_file)
       n += 1
       first = false
     end
@@ -240,7 +240,7 @@ class DockerFileBuilder
       write_run_line(first, 'add-apt-repository  -y  ' + repo[:source])
       first = false 
     end
-    write_run_line(false, 'apt-get -y update ')
+    write_run_line(first, 'apt-get -y update ')
     write_run_end
   end
 
