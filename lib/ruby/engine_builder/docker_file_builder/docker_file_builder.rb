@@ -146,7 +146,7 @@ class DockerFileBuilder
     write_line('#Clear env')
     return true if @blueprint_reader.environments.nil?
     @blueprint_reader.environments.each do |env|
-      write_line(env.name, '.') if env.build_time_only
+      write_env(env.name, '.') if env.build_time_only
     end
   end
 
