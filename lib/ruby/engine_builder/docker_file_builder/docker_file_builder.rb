@@ -387,7 +387,7 @@ class DockerFileBuilder
   end
 
   def write_run_start()
-    @docker_file.write('RUN')
+    @docker_file.write('RUN ')
     count_layer
   end
 
