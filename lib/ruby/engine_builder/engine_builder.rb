@@ -25,8 +25,7 @@ class EngineBuilder < ErrorsApi
   require_relative 'builder/builders.rb'
   include Builders
 
-  require_relative 'builder/builder_blueprint.rb'
-  include BuilderBluePrint
+
 
   require_relative 'builder/configure_services_backup.rb'
   include ConfigureServicesBackup
