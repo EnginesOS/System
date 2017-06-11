@@ -89,12 +89,10 @@ class DockerEventWatcher < ErrorsApi
   def start
     STDERR.puts(' STARTINF with ' + @event_listeners.to_s)
     client = get_client
-    client.request(req) do |resp|
+    client.request(Net::HTTP::Get.new('/events')) do |resp|
       json_part = nil
       resp.read_body do |chunk|
         begin
-          # parser = FFI_Yajl::Parser.new({:symbolize_keys => true}) if parser.nil?
-          #   STDERR.puts('event  cunk ' + chunk.to_s )
           SystemDebug.debug(SystemDebug.container_events, chunk.to_s )
           next if chunk.nil?
           chunk.gsub!(/\s+$/, '')
@@ -155,8 +153,7 @@ class DockerEventWatcher < ErrorsApi
 
   private
 
-  def get_client
-    req = Net::HTTP::Get.new('/events')
+  def get_client    
     client = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
     client.continue_timeout = 3000
     client.read_timeout = 3000
