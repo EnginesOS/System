@@ -1,4 +1,8 @@
 module EngineScriptsBuilder
+  
+  require_relative 'configure_services_backup.rb'
+  include ConfigureServicesBackup
+  
   def create_scripts
     FileUtils.mkdir_p(basedir + SystemConfig.ScriptsDir)
     create_start_script
