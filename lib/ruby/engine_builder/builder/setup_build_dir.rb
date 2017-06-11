@@ -1,4 +1,8 @@
 module BuildDirSetup
+  
+  require_relative 'config_file_writer.rb'
+  require_relative 'docker_file_builder/docker_file_builder.rb'
+  
   def backup_lastbuild
     dir = basedir
     backup = dir + '.backup'

@@ -1,4 +1,4 @@
-
+require 'git'
 module BuilderBluePrint
 
   def load_blueprint
