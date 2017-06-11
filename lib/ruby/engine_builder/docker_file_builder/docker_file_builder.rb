@@ -235,6 +235,7 @@ class DockerFileBuilder
   end
 
   def write_repos
+    return unless @blueprint_reader.respond_to?(:external_repositories)
     return if @blueprint_reader.external_repositories.nil? || @blueprint_reader.external_repositories.empty?
     write_comment('#Repositories')
     @blueprint_reader.external_repositories.each do |repo|
