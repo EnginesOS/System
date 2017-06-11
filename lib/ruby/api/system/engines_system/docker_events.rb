@@ -9,13 +9,14 @@ module DockerEvents
   end
 
   class WaitForContainerListener
-    def initialize(what, pipe)
+    def initialize(what, pipe, emask = 16)
       @what = what
       @pipe = pipe
+      @mask = emask
     end
 
     def mask
-      16
+      @mask
     end
 
     def read_event(event_hash)
@@ -31,19 +32,19 @@ module DockerEvents
   def wait_for(container, what, timeout)
     return true if is_aready?(what, container.read_state)
     event_listener = nil
-    mask = 0
+    mask = 16
     case container.ctype
     when 'container'
-      mask = 2
+      mask |= 2
     when 'service'
-      mask = 4
+      mask |= 4
     when 'utility'
-      mask = 16384
+      mask |= 16384
     end
     pipe_in, pipe_out = IO.pipe
     Timeout::timeout(timeout) do
-      event_listener = WaitForContainerListener.new(what, pipe_out)
-      add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask | mask, container.container_name)
+      event_listener = WaitForContainerListener.new(what, pipe_out, mask)
+      add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.container_name)
       unless is_aready?(what, container.read_state)
         # STDERR.puts(' Wait on READ ' + container.container_name.to_s + ' for ' + what )
         begin
