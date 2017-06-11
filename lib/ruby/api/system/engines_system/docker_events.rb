@@ -53,11 +53,11 @@ module DockerEvents
         # STDERR.puts(' Wait on READ ' + container.container_name.to_s + ' for ' + what )
         begin
           d =  pipe_in.read
-          #    puts.STDERR.puts(' READ ' + d.to_s)
+          puts.STDERR.puts(' READ ' + d.to_s)
         rescue
         end
       end
-      pipe_in.close
+      pipe_in.close unless pipe_in.closed?
       rm_event_listener(event_listener)
     end
     true
