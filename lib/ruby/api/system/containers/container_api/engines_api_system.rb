@@ -12,7 +12,7 @@ module EnginesApiSystem
     @system_api.rm_engine_from_cache(container.container_name)
     volbuilder = @engines_core.loadManagedUtility('fsconfigurator')
     @system_api.delete_container_configs(volbuilder, container)
-    volbuilder.wait_for('destroy', 30)
+ #   volbuilder.wait_for('destroy', 30) Volbuilder already does this
   end
 
   def get_container_network_metrics(container)
