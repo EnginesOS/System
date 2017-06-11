@@ -16,8 +16,7 @@ class DockerEventWatcher < ErrorsApi
     end
 
     def trigger(hash)
-      mask = EventMask.event_mask(hash)
-       STDERR.puts('trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask' + @event_mask.to_s)
+      mask = EventMask.event_mask(hash)       
       SystemDebug.debug(SystemDebug.container_events, 'trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask' + @event_mask.to_s)
       return if @event_mask == 0 || mask & @event_mask == 0
       # skip top
@@ -113,11 +112,9 @@ class DockerEventWatcher < ErrorsApi
             json_part = nil
             #  STDERR.puts('DOCKER SENT COMPLETE json ' + chunk.to_s )
           end
-          STDERR.puts('DOCKER SENT json ' + chunk.to_s )
           parser ||= Yajl::Parser.new({:symbolize_keys => true})
           #hash = deal_with_json(chunk)
           hash = parser.parse(chunk)
-          STDERR.puts('DOCKER SENT ' + hash.to_s)
           SystemDebug.debug(SystemDebug.container_events, 'got ' + hash.to_s)
           STDERR.puts('DOCKER SENT ARRAY') if hash.is_a?(Array) && ! hash.is_a?(Hash)
           next unless hash.is_a?(Hash)

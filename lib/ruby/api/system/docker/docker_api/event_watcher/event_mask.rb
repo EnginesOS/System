@@ -14,7 +14,7 @@ class EventMask
   @@container_pull = 2048
   @@build_event = 4096
   @@container_attach = 8192
-  @@utility_target = 16384  
+  @@utility_target = 16384
   @@container_top = 32768
   @@service_action = @@container_action | @@service_target
   @@engine_action = @@container_action | @@engine_target
@@ -25,14 +25,18 @@ class EventMask
       if event_hash.key?(:from)
         return mask |= @@build_event if event_hash[:from].nil?
         return mask |= @@build_event if event_hash[:from].length == 64
-        if event_hash[:container_type] == 'service'
+      end
+      if hash.key?(:Actor) && hash[:Actor].key?(:Attributes)
+        case event_hash[:Actor][:Attributes][:container_type]
+        when 'service'
           mask |= @@service_target
-        elsif event_hash[:container_type] == 'container'
+        when  'container'
           mask |= @@engine_target
-        elsif event_hash[:container_type] == 'utility'
+        when'utility'
           mask |= @@utility_target
         end
       end
+
       return 0 if event_hash[:status].nil?
 
       if event_hash[:status].start_with?('exec')
