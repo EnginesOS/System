@@ -242,10 +242,23 @@ class EngineBuilder < ErrorsApi
   end
 
   def clone_repo
+    return download_blueprint if @build_params[:repository_url].end_with?('.json')
     log_build_output('Clone Blueprint Repository ' + @build_params[:repository_url])
     SystemDebug.debug(SystemDebug.builder, "get_blueprint_from_repo",@build_params[:repository_url], @build_name, SystemConfig.DeploymentDir)
     g = Git.clone(@build_params[:repository_url], @build_name, :path => SystemConfig.DeploymentDir)
-      STDERR.puts('GIT GOT ' + g.to_s)
+    SystemDebug.debug(SystemDebug.builder, 'GIT GOT ' + g.to_s)
+  end
+
+  def download_blueprint
+    FileUtils.mkdir_p(basedir)
+    d = basedir + '/' + File.basename(@build_params[:repository_url])
+    get_http_file(@build_params[:repository_url], d)
+  end
+
+  def get_http_file(url, d)
+    require 'open-uri'
+    download = open(url)
+    IO.copy_stream(download, d)
   end
 
   def get_blueprint_from_repo

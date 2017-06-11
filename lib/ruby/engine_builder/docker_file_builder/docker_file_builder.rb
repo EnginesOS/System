@@ -1,6 +1,10 @@
 class DockerFileBuilder
+
   require_relative 'framework_modules.rb'
   include FrameworkModules
+
+  require_relative 'docker_commands.rb'
+  require_relative 'file_writer.rb'
   def initialize(reader, build_params, webport, builder)
     @build_params = build_params
     @hostname = @build_params[:host_name]
@@ -31,19 +35,24 @@ class DockerFileBuilder
   end
 
   def write_files_for_docker
-    write_line('')
+    @in_run = false
     write_environment_variables
     write_stack_env
     write_file_service
+
+    write_run_start
     write_repos
     write_os_packages
     write_modules
+
     write_user_local = true
     setup_user_local if write_user_local
-    set_user('$ContUser')
-    write_app_archives
     set_user('0')
+
+    #write_run_start
+    write_app_archives
     write_app_templates
+
     set_user('$ContUser')
     write_container_user
     set_user('0')
@@ -51,18 +60,17 @@ class DockerFileBuilder
     set_user('$ContUser')
     write_database_seed
     # write_worker_commands
+
+    #  write_run_start
     write_sed_strings
     write_persistent_dirs
     write_persistent_files
+
     insert_framework_frag_in_dockerfile('builder.mid.tmpl')
-    write_line('')
     write_rake_list
-    write_line('')
     set_user('0')
     write_permissions
-    write_line('')
-    write_line('RUN mkdir -p /home/fs/local/')
-    write_line('')
+    write_run_line('mkdir -p /home/fs/local/')
 
     set_user('$ContUser') unless @blueprint_reader.framework == 'docker'
 
@@ -79,21 +87,28 @@ class DockerFileBuilder
   end
 
   def setup_user_local
-    write_line('RUN ln -s /usr/local/ /home/local;\\')
-    write_line('     chown -R $ContUser /usr/local/ ')
+    #  write_run_start()
+    write_run_line('ln -s /usr/local/ /home/local')
+    write_run_line('chown -R $ContUser /usr/local/ ')
+
   end
 
   def finalise_docker_file
     write_build_script('_finalise_environment.sh')
     if @blueprint_reader.respond_to?(:continuous_deployment)
       log_build_output("Setting up Continuos Deployment:" + @blueprint_reader.continuous_deployment.to_s ) if @blueprint_reader.continuous_deployment
-      write_line('RUN chown -R $ContUser /home/app; chmod g+w -R /home/app') if @blueprint_reader.continuous_deployment
+      write_cd if @blueprint_reader.continuous_deployment
     end
+    write_run_end if @in_run == true
     insert_framework_frag_in_dockerfile('builder.end.tmpl')
-    write_line('')
-    write_line('VOLUME /home/fs/')
+    write_volume('/home/fs/')
     write_clear_env_variables
     @docker_file.close
+  end
+
+  def write_cd
+    write_run_line('chown -R $ContUser /home/app')
+    write_run_line('chmod g+w -R /home/app')
   end
 
   def finalise_files
@@ -102,13 +117,13 @@ class DockerFileBuilder
   end
 
   def prepare_persitant_source
-    write_line('RUN mv /home/fs /home/fs_src')
-    write_line('VOLUME /home/fs_src/')
+    write_run_line('mv /home/fs /home/fs_src')
+    write_volume('/home/fs_src/')
   end
 
   def setup_persitant_app
-    write_line('RUN cp -rp /home/app /home/app_src')
-    write_line('VOLUME /home/app_src/')
+    write_run_line('cp -rp /home/app /home/app_src')
+    write_volume('/home/app_src/')
   end
 
   def write_permissions
@@ -126,33 +141,27 @@ class DockerFileBuilder
   end
 
   def write_clear_env_variables
-    write_line('#Clear env')
+    write_comment('#Clear env')
     return true if @blueprint_reader.environments.nil?
     @blueprint_reader.environments.each do |env|
-      write_line('ENV ' + env.name + ' .') if env.build_time_only
+      write_env(env.name, '.') if env.build_time_only
     end
   end
 
   def write_environment_variables
     return true if @blueprint_reader.environments.nil?
-    write_line('#Environment Variables')
-    @blueprint_reader.environments.each do |env|
-      write_line('#Blueprint ENVs')
-      #  if env.value && env.value.nil? == false && env.value.to_s.length > 0
-      #   SystemDebug.debug(SystemDebug.builder, :env_val, env.value)
-      # env.value.gsub!(/ /, "\\ ")
-      # end
+    write_comment('#Environment Variables')
+    @blueprint_reader.environments.each do |env|   
       write_env(env.name,env.value.to_s) if env.value.nil? == false && env.value.to_s.length > 0 # env statement must have two arguments
     end
     write_env('WWW_DIR', @blueprint_reader.web_root.to_s) unless @blueprint_reader.web_root.nil?
-    # write_locale_env
   end
 
   def write_persistent_dirs
     log_build_output('setup persistent Dirs')
     return true if @blueprint_reader.persistent_dirs.nil?
     paths = ''
-    write_line('#Persistant Dirs')
+    write_comment('#Persistant Dirs')
     @blueprint_reader.persistent_dirs.each do |path|
       path.chomp!('/')
       paths += path + ' ' unless path.nil?
@@ -161,14 +170,14 @@ class DockerFileBuilder
   end
 
   def write_data_permissions
-    write_line('#Data Permissions')
+    write_comment('#Data Permissions')
     write_build_script('set_data_permissions.sh')
   end
 
   def write_run_install_script
-    write_line('WORKDIR /home/')
-    write_line('#RUN framework and custom installer')
-    write_line('RUN bash /home/setup.sh')
+    write_work_dir('/home/')
+    write_comment('#RUN framework and custom installer')
+    write_run_line('bash /home/setup.sh')
     true
   end
 
@@ -179,7 +188,7 @@ class DockerFileBuilder
   end
 
   def write_persistent_files
-    write_line('#Persistant Files')
+    write_comment('#Persistant Files')
     return true if @blueprint_reader.persistent_files.nil?
     log_build_output('set setup_env')
     paths = ''
@@ -198,11 +207,11 @@ class DockerFileBuilder
   end
 
   def write_file_service
-    write_line('#File Service')
+    write_comment('#File Service')
     if  @builder.volumes.count >0
       @builder.volumes.each_value do |vol|
         dest = File.basename(vol[:remotepath])
-        write_line('#FS Env')
+        write_comment('#FS Env')
         # write_line('RUN mkdir -p $CONTFSVolHome/' + dest)
         # write_line('RUN mkdir -p $CONTFSVolHome/$VOLDIR' )
       end
@@ -211,33 +220,34 @@ class DockerFileBuilder
 
   def write_sed_strings
     n = 0
-    write_line('#Sed Strings')
+    write_comment('#Sed Strings')
     return true if @blueprint_reader.sed_strings.nil?
+
     @blueprint_reader.sed_strings[:src_file].each do |src_file|
       # src_file = @sed_strings[:src_file][n]
       dest_file = @blueprint_reader.sed_strings[:dest_file][n]
       sed_str = @blueprint_reader.sed_strings[:sed_str][n]
       tmp_file = @blueprint_reader.sed_strings[:tmp_file][n]
-      write_line('')
-      write_line('RUN cat ' + src_file + " | sed \"" + sed_str + "\" > " + tmp_file + ' ;\\')
-      write_line('     cp ' + tmp_file + ' ' + dest_file)
+      write_run_line('cat ' + src_file + " | sed \"" + sed_str + "\" > " + tmp_file)
+      write_run_line('cp ' + tmp_file + ' ' + dest_file)
       n += 1
     end
   end
 
   def write_repos
+    return unless @blueprint_reader.respond_to?(:external_repositories)
     return if @blueprint_reader.external_repositories.nil? || @blueprint_reader.external_repositories.empty?
-    write_line('#Repositories')
+    write_comment('#Repositories')
     @blueprint_reader.external_repositories.each do |repo|
       next unless repo.key?(:source)
-      write_line('RUN  add-apt-repository  -y  ' + repo[:source] + ";\\")
+      write_run_line('add-apt-repository  -y  ' + repo[:source])
     end
-    write_line(' apt-get -y update ')
+    write_run_line('apt-get -y update ')
   end
 
   def write_os_packages
     packages = ''
-    write_line('#OS Packages')
+    write_comment('#OS Packages')
     return true if @blueprint_reader.os_packages.nil?
     @blueprint_reader.os_packages.each do |package|
       if package.nil? == false
@@ -245,13 +255,7 @@ class DockerFileBuilder
       end
     end
     if packages.length > 1
-      write_line('RUN apt-get install -y ' + packages)
-
-    end
-    # FIXME: Wrong spot
-    return false if @blueprint_reader.mapped_ports.nil?
-    @blueprint_reader.mapped_ports.each_value do |port|
-      write_line('EXPOSE ' + port[:port].to_s)
+      write_run_line('apt-get install -y ' + packages)
     end
   end
 
@@ -263,50 +267,38 @@ class DockerFileBuilder
     @builder.basedir
   end
 
-  def insert_framework_frag_in_dockerfile(frag_name)
-    log_build_output(frag_name)
-    write_line('#Framework Frag')
-    frame_build_docker_frag = File.open(build_dir + '/Dockerfile.' + frag_name)
-    builder_frag = frame_build_docker_frag.read
-    @docker_file.write(builder_frag)
-    frame_build_docker_frag.close
-  end
-
   def chown_home_app
-    write_line('#Chown App Dir')
+    write_comment('#Chown App Dir')
     log_build_output('Dockerfile:Chown')
     write_build_script('chown_app_dir.sh  ')
   end
 
   def write_write_permissions_single
-    write_line('')
-    write_line('#Write Permissions Non Recursive')
+    write_comment('#Write Permissions Non Recursive')
     log_build_output('Dockerfile:Write Permissions Non Recursive')
     return true if @blueprint_reader.single_chmods.nil? == true
     paths = ''
     @blueprint_reader.single_chmods.each do |path|
       paths += path + ' ' unless path.nil?
     end
-    write_build_script('write_permissions.sh ' + paths)
+    write_run_line('/build_scripts/write_permissions.sh ' + paths)
   end
 
   def write_write_permissions_recursive
-    write_line('#Write Permissions  Recursive')
+    write_comment('#Write Permissions  Recursive')
     log_build_output('Dockerfile:Write Permissions Recursive')
     return true if @blueprint_reader.recursive_chmods.nil? == true
     dirs = ''
     @blueprint_reader.recursive_chmods.each do |directory|
       dirs += directory + ' ' unless directory.nil?
     end
-    write_build_script('recursive_write_permissions.sh ' + dirs)
+    write_run_line('/build_scripts/recursive_write_permissions.sh ' + dirs)
   end
 
   def write_app_archives
     return true if @blueprint_reader.archives_details.nil?
-    write_line('#App Archives')
+    write_comment('#App Archives')
     log_build_output('Dockerfile:App Archives')
-    write_line('')
-    set_user('0')
     @blueprint_reader.archives_details.each do |archive_details|
       next if archive_details[:extraction_command] == 'docker'
       source_url = archive_details[:source_url].to_s
@@ -332,12 +324,13 @@ class DockerFileBuilder
       args += ' \'' + extraction_command + '\' '
       args += ' \'' + destination + '\' '
       args += ' \'' + path_to_extracted + '\' '
-      write_build_script('package_installer.sh' + args )
+      write_run_line('/build_scripts/package_installer.sh ' + args)
     end
   end
 
   def write_container_user
-    write_line('#Container Data User')
+    write_run_end if @in_run == true
+    write_comment('#Container Data User')
     log_build_output('Dockerfile:User')
     # FIXME: needs to by dynamic
     write_env('data_gid', @builder.data_gid.to_s)
@@ -345,8 +338,9 @@ class DockerFileBuilder
   end
 
   def write_stack_env
+    write_run_end if @in_run == true
     log_build_output('Dockerfile:Stack Environment')
-    write_line('#Stack Env')
+    write_comment('#Stack Env')
     write_line('')
     # write_env('Memory' ,@builder.memory.to_s)
     write_env('Hostname', @hostname)
@@ -362,7 +356,8 @@ class DockerFileBuilder
       if n < 0
         wports += ' '
       end
-      write_line('EXPOSE ' + port[:port].to_s)
+      write_expose(port[:port].to_s)
+      count_layer
       wports += port[:port].to_s + ' '
       n += 1
     end
@@ -371,21 +366,4 @@ class DockerFileBuilder
     end
   end
 
-  def write_env(name, value, build_only = false)
-    write_line('ENV ' + name.to_s  + " \'" + value.to_s + "\'")
-    @env_file.puts(name.to_s  + '=' + "\'" + value.to_s  + "\'")
-  end
-
-  def write_build_script(cmd)
-    write_line('RUN  /build_scripts/' + cmd)
-  end
-
-  def write_line(line)
-    @docker_file.puts(line)
-    count_layer unless line.start_with?('#') || line.end_with?('\\') # or whitespace only
-  end
-
-  def set_user(user)
-    write_line('USER ' + user)
-  end
 end

@@ -1,6 +1,6 @@
 module FrameworkModules
   def write_rake_list
-    write_line('#Rake Actions')
+    write_comment('#Rake Actions')
     return true if @blueprint_reader.rake_actions.nil? || @blueprint_reader.rake_actions.count == 0
     rakes = ''
     @blueprint_reader.rake_actions.each do |rake_action|
@@ -12,7 +12,7 @@ module FrameworkModules
 
   def write_pear_modules
     return true  if @blueprint_reader.pear_modules.nil?
-    write_line('#Pear modules ')
+    write_comment('#Pear modules ')
     log_build_output('Dockerfile:Pear modules ')
     return true  if @blueprint_reader.pear_modules.nil?
     if @blueprint_reader.pear_modules.count > 0
@@ -25,7 +25,7 @@ module FrameworkModules
 
   def write_pecl_modules
     return true  if @blueprint_reader.pecl_modules.nil?
-    write_line('#Pecl modules ')
+    write_comment('#Pecl modules ')
     log_build_output('Dockerfile:Pecl modules ')
     if @blueprint_reader.pecl_modules.count > 0
       pecl_mods = ''
@@ -39,18 +39,18 @@ module FrameworkModules
 
   def write_apache_modules
     return true if @blueprint_reader.apache_modules.nil? || @blueprint_reader.apache_modules.empty?
-    write_line('#Apache Modules')
+    write_comment('#Apache Modules')
     ap_modules_str = ''
     @blueprint_reader.apache_modules.each do |ap_module|
       ap_modules_str += ap_module + ' ' unless ap_module.nil?
     end
-    write_line('RUN a2enmod ' + ap_modules_str)
+    write_run_line('a2enmod ' + ap_modules_str)
 
   end
 
   def write_npm_modules
     return if @blueprint_reader.npm_modules.nil? || @blueprint_reader.npm_modules.count < 1
-    write_line('#NPM Modules')
+    write_comment('#NPM Modules')
     npm_modules_str = ''
     @blueprint_reader.npm_modules.each do |npm_module|
       npm_modules_str += npm_module + ' ' unless npm_module.nil?
@@ -61,7 +61,7 @@ module FrameworkModules
 
   def write_lua_modules
     return if @blueprint_reader.lua_modules.nil? || @blueprint_reader.lua_modules.count < 1
-    write_line('#Lua Modules')
+    write_comment('#Lua Modules')
     lua_modules_str = ''
     @blueprint_reader.lua_modules.each do |lua_module|
       lua_modules_str += lua_module + ' ' unless lua_module.nil?
@@ -71,7 +71,7 @@ module FrameworkModules
 
   def write_php_modules
     return if @blueprint_reader.php_modules.nil? || @blueprint_reader.php_modules.count < 1
-    write_line('#PHP Modules')
+    write_comment('#PHP Modules')
     php_modules_str = ''
     @blueprint_reader.php_modules.each do |php_module|
       php_modules_str += php_module + ' ' unless php_module.nil?
