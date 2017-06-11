@@ -15,11 +15,11 @@ class DockerEventWatcher < ErrorsApi
     end
 
     def trigger(hash)
-      mask = EventMask.event_mask(hash)       
+      mask = EventMask.event_mask(hash)
       SystemDebug.debug(SystemDebug.container_events, 'trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask' + @event_mask.to_s)
       return if @event_mask == 0 || (@event_mask & mask) == 0
       # skip top
-      return unless @event_mask & 32768 == 0 # @@container_top == 0 
+      return unless @event_mask & 32768 == 0 # @@container_top == 0
       hash[:state] = state_from_status(hash[:status])
       SystemDebug.debug(SystemDebug.container_events, 'fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
       @object.method(@method).call(hash)
@@ -88,11 +88,7 @@ class DockerEventWatcher < ErrorsApi
 
   def start
     STDERR.puts(' STARTINF with ' + @event_listeners.to_s)
-    req = Net::HTTP::Get.new('/events')
-    client = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
-    client.continue_timeout = 3000
-    client.read_timeout = 3000
-
+    get_client = get_client
     client.request(req) do |resp|
       json_part = nil
       resp.read_body do |chunk|
@@ -109,23 +105,18 @@ class DockerEventWatcher < ErrorsApi
             next
           else
             json_part = nil
-            #  STDERR.puts('DOCKER SENT COMPLETE json ' + chunk.to_s )
           end
           parser ||= Yajl::Parser.new({:symbolize_keys => true})
-          #hash = deal_with_json(chunk)
           hash = parser.parse(chunk)
           SystemDebug.debug(SystemDebug.container_events, 'got ' + hash.to_s)
           STDERR.puts('DOCKER SENT ARRAY') if hash.is_a?(Array) && ! hash.is_a?(Hash)
           STDERR.puts('DOCKER SENT UNKNOWN ' + hash.to_s) unless hash.is_a?(Hash)
           next unless hash.is_a?(Hash)
-          #  STDERR.puts('trigger' + hash.to_s )
           next if hash.key?(:from) && hash[:from].length >= 64
-        # t = Thread.new {trigger(hash)}
-        #  t[:name] = 'trigger'
-           trigger(hash)
+          t = Thread.new {trigger(hash)}
+          t[:name] = 'trigger'
         rescue StandardError => e
-          STDERR.puts('EXCEPTION docker Event Stream as close ' + e.to_s)
-          log_error_mesg('Chunk error on docker Event Stream _' + chunk.to_s + '_')
+          log_error_mesg('EXCEPTION Chunk error on docker Event Stream _' + chunk.to_s + '_')
           log_exception(e,chunk)
           json_part = ''
           next #log_exeception
@@ -163,22 +154,30 @@ class DockerEventWatcher < ErrorsApi
   end
 
   private
-# t = Thread.new { trigger(hash)}
- # t[:name] = 'trigger'
+  
+  def get_client
+    req = Net::HTTP::Get.new('/events')
+    client = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
+    client.continue_timeout = 3000
+    client.read_timeout = 3000
+    client
+  end
+
+  def match_container(hash, container_name)
+    return false unless hash.key?(:Actor)
+    return false unless hash[:Actor].key?(:Attributes)
+    return false unless hash[:Actor][:Attributes].key?(:container_name)
+    return false unless hash[:Actor][:Attributes][:container_name] == container_name
+    true
+  end
+
   def trigger(hash)
     r = ''
     @event_listeners.values.each do |listener|
       unless listener.container_name.nil?
-        # STDERR.puts('matching ' + listener.container_name.to_s )
-        next unless hash.key?(:Actor)
-        next unless hash[:Actor].key?(:Attributes)
-        next unless hash[:Actor][:Attributes].key?(:container_name)
-        #  STDERR.puts('matching ' + listener.container_name.to_s + ' with ' + hash[:Actor][:Attributes][:container_name].to_s)
-        next unless hash[:Actor][:Attributes][:container_name] == listener.container_name
+        next unless match_container(hash, listener.container_name)
       end
-    #   listener.trigger(hash)
-      t = Thread.new { listener.trigger(hash)}
-     # t[:name] = 'trigger:' # + listener.container_name.to_s
+      listener.trigger(hash)
     end
   rescue StandardError => e
     SystemDebug.debug(SystemDebug.container_events, hash.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)
