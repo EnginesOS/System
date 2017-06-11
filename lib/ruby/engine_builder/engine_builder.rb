@@ -17,17 +17,17 @@ class EngineBuilder < ErrorsApi
 
   require_relative 'builder/setup_build_dir.rb'
   include BuildDirSetup
-  
+
   require_relative 'builder/base_image.rb'
   require_relative 'builder/build_image.rb'
   require_relative 'builder/physical_checks.rb'
-  
+
   require_relative 'builder/builders.rb'
   include Builders
-  
+
   require_relative 'builder/builder_blueprint.rb'
   include BuilderBluePrint
-  
+
   require_relative 'builder/configure_services_backup.rb'
   include ConfigureServicesBackup
 
@@ -243,6 +243,14 @@ class EngineBuilder < ErrorsApi
     SystemConfig.DeploymentDir + '/' + @build_name.to_s
   end
 
+  def log_exception(e)
+    STDERR.puts('Build Exception  ' + e.to_s)
+    STDERR.puts('Build Exception  ' + e.backtrace.to_s)
+    log_build_errors('Engine Build Aborted Due to:' + e.to_s)
+    @result_mesg = 'Error.' + e.to_s
+    super
+  end
+
   private
 
   def process_supplied_envs(custom_env)
@@ -263,13 +271,4 @@ class EngineBuilder < ErrorsApi
     true
   end
 
-  protected
-
-  def log_exception(e)
-    STDERR.puts('Build Exception  ' + e.to_s)
-    STDERR.puts('Build Exception  ' + e.backtrace.to_s)
-    log_build_errors('Engine Build Aborted Due to:' + e.to_s)
-    @result_mesg = 'Error.' + e.to_s
-    super
-  end
 end
