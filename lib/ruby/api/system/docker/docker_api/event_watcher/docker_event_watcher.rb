@@ -92,6 +92,7 @@ class DockerEventWatcher < ErrorsApi
       json_part = nil
       resp.read_body do |chunk|
         begin
+          STDERR.puts('.')
           SystemDebug.debug(SystemDebug.container_events, chunk.to_s )
           next if chunk.nil?
           chunk.gsub!(/\s+$/, '')
@@ -114,6 +115,7 @@ class DockerEventWatcher < ErrorsApi
          # t[:name] = 'trigger'
           trigger(hash)
         rescue StandardError => e
+          STDERR.puts('EXCEPTION Chunk error on docker Event Stream _' + chunk.to_s + '_')
           log_error_mesg('EXCEPTION Chunk error on docker Event Stream _' + chunk.to_s + '_')
           log_exception(e, chunk)
           json_part = ''
