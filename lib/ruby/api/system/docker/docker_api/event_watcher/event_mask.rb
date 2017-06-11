@@ -26,7 +26,7 @@ class EventMask
         return mask |= @@build_event if event_hash[:from].nil?
         return mask |= @@build_event if event_hash[:from].length == 64
       end
-      if hash.key?(:Actor) && hash[:Actor].key?(:Attributes)
+      if event_hash.key?(:Actor) && event_hash[:Actor].key?(:Attributes)
         case event_hash[:Actor][:Attributes][:container_type]
         when 'service'
           mask |= @@service_target
