@@ -1,6 +1,10 @@
 class DockerFileBuilder
+
   require_relative 'framework_modules.rb'
   include FrameworkModules
+
+  require_relative 'docker_commands.rb'
+  require_relative 'file_writer.rb'
   def initialize(reader, build_params, webport, builder)
     @build_params = build_params
     @hostname = @build_params[:host_name]
@@ -103,10 +107,8 @@ class DockerFileBuilder
   end
 
   def write_cd
-    #   write_run_start()
     write_run_line('chown -R $ContUser /home/app')
     write_run_line('chmod g+w -R /home/app')
-
   end
 
   def finalise_files
@@ -125,7 +127,6 @@ class DockerFileBuilder
   end
 
   def write_permissions
-    #  write_run_start()
     write_write_permissions_recursive # recursive firs (as can use to create blank dir)
     write_write_permissions_single
   end
@@ -150,16 +151,10 @@ class DockerFileBuilder
   def write_environment_variables
     return true if @blueprint_reader.environments.nil?
     write_comment('#Environment Variables')
-    @blueprint_reader.environments.each do |env|
-      write_comment('#Blueprint ENVs')
-      #  if env.value && env.value.nil? == false && env.value.to_s.length > 0
-      #   SystemDebug.debug(SystemDebug.builder, :env_val, env.value)
-      # env.value.gsub!(/ /, "\\ ")
-      # end
+    @blueprint_reader.environments.each do |env|   
       write_env(env.name,env.value.to_s) if env.value.nil? == false && env.value.to_s.length > 0 # env statement must have two arguments
     end
     write_env('WWW_DIR', @blueprint_reader.web_root.to_s) unless @blueprint_reader.web_root.nil?
-    # write_locale_env
   end
 
   def write_persistent_dirs
@@ -177,12 +172,6 @@ class DockerFileBuilder
   def write_data_permissions
     write_comment('#Data Permissions')
     write_build_script('set_data_permissions.sh')
-  end
-
-  def write_work_dir(wdir)
-    write_run_end if @in_run == true
-    write_line('WORKDIR ' + wdir)
-    count_layer
   end
 
   def write_run_install_script
@@ -243,7 +232,6 @@ class DockerFileBuilder
       write_run_line('cp ' + tmp_file + ' ' + dest_file)
       n += 1
     end
-
   end
 
   def write_repos
@@ -268,11 +256,6 @@ class DockerFileBuilder
     if packages.length > 1
       write_run_line('apt-get install -y ' + packages)
     end
-    # FIXME: Wrong spot
-    #    return false if @blueprint_reader.mapped_ports.nil?
-    #    @blueprint_reader.mapped_ports.each_value do |port|
-    #      write_line('EXPOSE ' + port[:port].to_s)
-    #    end
   end
 
   def deploy_dir
@@ -281,19 +264,6 @@ class DockerFileBuilder
 
   def build_dir
     @builder.basedir
-  end
-
-  def insert_framework_frag_in_dockerfile(frag_name)
-    log_build_output(frag_name)
-    write_run_end if @in_run == true
-    write_comment('#Framework Frag')
-    frame_build_docker_frag = File.open(build_dir + '/Dockerfile.' + frag_name)
-    builder_frag = frame_build_docker_frag.read
-    @docker_file.write("\n")
-    write_comment('#Docker Fragment ' + frag_name.to_s)
-    @docker_file.write(builder_frag)
-    @docker_file.write("\n")
-    frame_build_docker_frag.close
   end
 
   def chown_home_app
@@ -395,75 +365,4 @@ class DockerFileBuilder
     end
   end
 
-  def write_volume(vol)
-    write_run_end if @in_run == true
-    write_line('VOLUME ' + vol.to_s)
-    count_layer
-  end
-
-  def write_expose(port)
-    write_run_end if @in_run == true
-    write_line('EXPOSE ' + port)
-    count_layer
-  end
-
-  def write_env(name, value, build_only = false)
-    write_run_end if @in_run == true
-    write_line('ENV ' + name.to_s  + " \'" + value.to_s + "\'")
-    @env_file.puts(name.to_s  + '=' + "\'" + value.to_s  + "\'")
-    count_layer
-  end
-
-  def write_comment(cmt)
-    unless @in_run == true
-      return @docker_file.puts(cmt)
-    end
-    write_run_line("echo \"" + cmt + "\"")
-#    if @first_line == true
-#      @docker_file.write("\\\n     " + cmt)
-#    else
-#      @docker_file.write(";\\\n     " + cmt)
-#    end
-#    @first_line = false
-  end
-
-  def write_run_line(cmd)
-    write_run_start unless @in_run == true
-    if @first_line == true
-      @docker_file.write("\\\n     " + cmd)
-    else
-      @docker_file.write(";\\\n     " + cmd)
-    end
-    @first_line = false
-  end
-
-  def write_run_start(comment = '')
-    return if @in_run == true
-    @in_run = true
-    @first_line = true
-    write_line("\n#Start of Run:" + comment.to_s)
-    @docker_file.write('RUN ')
-    count_layer
-  end
-
-  def write_run_end
-    write_line("\n#End of Run:\n\n")
-    @in_run = false
-  end
-
-  def write_build_script(cmd)
-    write_run_line('/build_scripts/' + cmd)
-  end
-
-  def write_line(line)
-    @docker_file.puts(line)
-
-    #count_layer unless line.start_with?('#') || line.end_with?('\\') # or whitespace only
-  end
-
-  def set_user(user)
-    write_run_end if @in_run == true
-    write_line('USER ' + user)
-    count_layer
-  end
 end
