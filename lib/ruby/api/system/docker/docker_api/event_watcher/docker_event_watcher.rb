@@ -176,12 +176,12 @@ class DockerEventWatcher < ErrorsApi
         #  STDERR.puts('matching ' + listener.container_name.to_s + ' with ' + hash[:Actor][:Attributes][:container_name].to_s)
         next unless hash[:Actor][:Attributes][:container_name] == listener.container_name
       end
-      log_exception(r) if (r = listener.trigger(hash)).is_a?(StandardError)
+       listener.trigger(hash)
      # t = Thread.new { listener.trigger(hash)}
      # t[:name] = 'trigger:' # + listener.container_name.to_s
     end
   rescue StandardError => e
-    SystemDebug.debug(SystemDebug.container_events,hash.to_s + ':' + e.to_s + ':' +  e.backtrace.to_s)
+    SystemDebug.debug(SystemDebug.container_events, hash.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)
     log_exception(e)
   end
 end
