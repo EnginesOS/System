@@ -1,7 +1,6 @@
 
 module BuilderBluePrint
-  require_relative 'builder/builder_blueprint.rb'
-  include BuilderBluePrint
+
   def load_blueprint
     log_build_output('Reading Blueprint')
     json_hash = BlueprintApi.load_blueprint_file(basedir + '/blueprint.json')

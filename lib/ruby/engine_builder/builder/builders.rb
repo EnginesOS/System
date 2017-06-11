@@ -1,4 +1,8 @@
 module Builders
+  
+  require_relative 'builder/builder_blueprint.rb'
+  include BuilderBluePrint
+  
   def rebuild_managed_container(engine)
     @engine = engine
     @rebuild = true
