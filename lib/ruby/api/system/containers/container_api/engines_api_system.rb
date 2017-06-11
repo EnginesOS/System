@@ -12,7 +12,6 @@ module EnginesApiSystem
     @system_api.rm_engine_from_cache(container.container_name)
     volbuilder = @engines_core.loadManagedUtility('fsconfigurator')
     @system_api.delete_container_configs(volbuilder, container)
-    volbuilder.wait_for('destroy', 30)
   end
 
   def get_container_network_metrics(container)
@@ -26,7 +25,7 @@ module EnginesApiSystem
   def have_enough_ram?(container)
     free_ram = @system_api.available_ram
     ram_needed = SystemConfig.MinimumFreeRam.to_i + container.memory.to_i * 0.7
-   # STDERR.puts(' Fere ' + free_ram.to_s + ' need:' + ram_needed.to_s)
+    # STDERR.puts(' Fere ' + free_ram.to_s + ' need:' + ram_needed.to_s)
     return false if free_ram < ram_needed
     true
   end
@@ -39,7 +38,7 @@ module EnginesApiSystem
     @system_api.clear_container_var_run(container)
     start_dependancies(container) if container.dependant_on.is_a?(Hash)
     container.pull_image if container.ctype != 'container'
-    @docker_api.create_container(container) 
+    @docker_api.create_container(container)
   end
 
   def container_cid_file(container)
@@ -51,7 +50,7 @@ module EnginesApiSystem
     cron_entry = @engines_core.retreive_cron_entry(cronjob, container)
     # STDERR.puts(' retreive cron entry from engine registry ' + cron_entry.to_s + ' from ' + cronjob.to_s )
     raise EnginesException.new(error_hash('nil cron line ' + cronjob.to_s )) if cron_entry.nil?
-    r = @engines_core.exec_in_container({:container => container, :command_line => cron_entry.split(" "), :log_error => true, :data=>nil })
+    r = @engines_core.exec_in_container({:container => container, :command_line => cron_entry.split(" "), :log_error => true, :data => nil})
     raise EnginesException.new(error_hash('Cron job un expected result', r)) unless r.is_a?(Hash)
     r[:stdout] + r[:stderr]
   end
