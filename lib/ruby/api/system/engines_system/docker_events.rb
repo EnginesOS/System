@@ -21,9 +21,9 @@ module DockerEvents
 
     def read_event(event_hash)
       unless @pipe.closed?
-        # STDERR.puts(' WAIT FOR GOT ' + event_hash.to_s )
+         STDERR.puts(' WAIT FOR GOT ' + event_hash.to_s )
         if event_hash[:status] == @what
-          # STDERR.puts('writing OK')
+           STDERR.puts('writing OK')
           @pipe << 'ok'
           @pipe.close
           # else
@@ -51,15 +51,16 @@ module DockerEvents
       event_listener = WaitForContainerListener.new(what, pipe_out, mask)
       add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.container_name)
       unless is_aready?(what, container.read_state)
-        # STDERR.puts(' Wait on READ ' + container.container_name.to_s + ' for ' + what )
+         STDERR.puts(' Wait on READ ' + container.container_name.to_s + ' for ' + what )
         begin
           d = pipe_in.read
-          #STDERR.puts(' READ ' + d.to_s)
+          STDERR.puts(' READ ' + d.to_s)
         rescue
         end
       end
       pipe_in.close unless pipe_in.closed?
       rm_event_listener(event_listener)
+      return true
     end
     true
   rescue Timeout::Error
