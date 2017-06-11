@@ -92,7 +92,7 @@ class DockerEventWatcher < ErrorsApi
       json_part = nil
       resp.read_body do |chunk|
         begin
-          STDERR.puts('.')
+          STDERR.putc('.')
           SystemDebug.debug(SystemDebug.container_events, chunk.to_s )
           next if chunk.nil?
           chunk.gsub!(/\s+$/, '')
@@ -120,8 +120,9 @@ class DockerEventWatcher < ErrorsApi
           log_exception(e, chunk)
           json_part = ''
           next
-        end
-      end
+        end        
+      end      
+      STDERR.puts('END OF read_body')
     end
     log_error_mesg('Restarting docker Event Stream ')
     STDERR.puts('CLOSED docker Event Stream as close')
