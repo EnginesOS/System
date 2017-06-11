@@ -146,7 +146,7 @@ module DockerApiExec
     request_params['Cmd'] = format_commands(params[:command_line])
 
     request = '/containers/' + params[:container].container_id.to_s + '/exec'
-    STDERR.puts('create_docker_exec ' + request_params.to_s + ' request  ' + request.to_s )
+   # STDERR.puts('create_docker_exec ' + request_params.to_s + ' request  ' + request.to_s )
     post_request(request, request_params)
   end
 

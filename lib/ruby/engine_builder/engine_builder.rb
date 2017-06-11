@@ -125,6 +125,7 @@ class EngineBuilder < ErrorsApi
     #log_exception(e)
     log_build_errors('Engine Build Aborted Due to:' + e.to_s)
     post_failed_build_clean_up
+    log_exception(e)
     raise e
   end
 
@@ -219,6 +220,7 @@ class EngineBuilder < ErrorsApi
     log_build_errors('Engine Build Aborted Due to:' + e.to_s)
     STDERR.puts(e.backtrace.to_s)
     post_failed_build_clean_up
+    log_exception(e)
     raise e
   ensure
     File.delete('/opt/engines/run/system/flags/building_params') if File.exist?('/opt/engines/run/system/flags/building_params')
@@ -240,10 +242,23 @@ class EngineBuilder < ErrorsApi
   end
 
   def clone_repo
+    return download_blueprint if @build_params[:repository_url].end_with?('.json')
     log_build_output('Clone Blueprint Repository ' + @build_params[:repository_url])
     SystemDebug.debug(SystemDebug.builder, "get_blueprint_from_repo",@build_params[:repository_url], @build_name, SystemConfig.DeploymentDir)
     g = Git.clone(@build_params[:repository_url], @build_name, :path => SystemConfig.DeploymentDir)
-      STDERR.puts('GIT GOT ' + g.to_s)
+    SystemDebug.debug(SystemDebug.builder, 'GIT GOT ' + g.to_s)
+  end
+
+  def download_blueprint
+    FileUtils.mkdir_p(basedir)
+    d = basedir + '/' + File.basename(@build_params[:repository_url])
+    get_http_file(@build_params[:repository_url], d)
+  end
+
+  def get_http_file(url, d)
+    require 'open-uri'
+    download = open(url)
+    IO.copy_stream(download, d)
   end
 
   def get_blueprint_from_repo
@@ -258,8 +273,9 @@ class EngineBuilder < ErrorsApi
     get_blueprint_from_repo
     log_build_output('Cloned Blueprint')
     build_container
-  rescue StandardError
+  rescue StandardError => e
     post_failed_build_clean_up
+    log_exception(e)
   end
 
   def post_failed_build_clean_up
@@ -271,12 +287,11 @@ class EngineBuilder < ErrorsApi
     # FIXME: need to re orphan here if using an orphan Well this should happen on the fresh
     # FIXME: don't delete shared service but remove share entry
     SystemDebug.debug(SystemDebug.builder, :Clean_up_of_Failed_build)
-    SystemDebug.debug(SystemDebug.builder, "Called From", caller[0..5])
+    SystemDebug.debug(SystemDebug.builder, "Called From", caller[0..15])
     SystemDebug.debug(SystemDebug.builder, caller.to_s)
     # FIXME: Stop it if started (ie vol builder failure)
     # FIXME: REmove container if created
     unless @build_params[:reinstall].is_a?(TrueClass)
-
       begin
         if @container.is_a?(ManagedContainer)
           @container.stop_container if @container.is_running?
@@ -365,6 +380,8 @@ class EngineBuilder < ErrorsApi
   protected
 
   def log_exception(e)
+    STDERR.puts('Build Exception  ' + e.to_s)
+    STDERR.puts('Build Exception  ' + e.backtrace.to_s)
     log_build_errors('Engine Build Aborted Due to:' + e.to_s)
     @result_mesg = 'Error.' + e.to_s
     super

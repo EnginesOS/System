@@ -36,7 +36,7 @@ module SmEngineServices
       })
     rescue StandardError => e
       STDERR.puts('NO services ' +  engine.container_name.to_s + ';' + e.to_s)
-      return # No services
+      false # No services
     end
 
     services.each do |service_hash|

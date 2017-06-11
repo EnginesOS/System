@@ -122,8 +122,8 @@ module TaskAtHand
       out_of_mem('oom')
     end
     true
-    #  rescue StandardError => e
-    #    log_exception(e)
+  rescue StandardError => e
+    log_exception(e)
   end
 
   def task_complete(action)

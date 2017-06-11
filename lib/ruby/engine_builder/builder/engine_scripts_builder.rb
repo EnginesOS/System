@@ -17,7 +17,7 @@ module EngineScriptsBuilder
   end
 
   def create_stop_script
-    if @blueprint_reader.custom_start_script
+    if @blueprint_reader.custom_stop_script
       write_software_script_file(SystemConfig.StopScript, @blueprint_reader.custom_stop_script)
     end
   end
@@ -87,8 +87,9 @@ module EngineScriptsBuilder
   private
 
   def write_software_script_file(scripts_path, content)
+    return if content.nil?
     write_software_file(scripts_path, content)
-    File.chmod(0755, basedir + scripts_path )
+    File.chmod(0755, basedir + scripts_path)
   end
 
 end

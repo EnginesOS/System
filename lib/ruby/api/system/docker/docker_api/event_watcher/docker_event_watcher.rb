@@ -1,7 +1,6 @@
-class DockerEventWatcher  < ErrorsApi
+class DockerEventWatcher < ErrorsApi
   class EventListener
     require 'yajl'
-    #require '/opt/engines/lib/ruby/system/deal_with_json.rb'
     attr_accessor :container_name, :event_mask
 
     def initialize(listener, event_mask, container_name = nil)
@@ -16,17 +15,16 @@ class DockerEventWatcher  < ErrorsApi
     end
 
     def trigger(hash)
-      mask = EventMask.event_mask(hash)
-      # STDERR.puts('trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask' + @event_mask.to_s)
+      mask = EventMask.event_mask(hash)       
       SystemDebug.debug(SystemDebug.container_events, 'trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask' + @event_mask.to_s)
-      return if @event_mask == 0 || mask & @event_mask == 0
+      return if @event_mask == 0 || (@event_mask & mask) == 0
       # skip top
       return unless @event_mask & 32768 == 0 # @@container_top == 0 
       hash[:state] = state_from_status(hash[:status])
-      SystemDebug.debug(SystemDebug.container_events,'fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
+      SystemDebug.debug(SystemDebug.container_events, 'fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
       @object.method(@method).call(hash)
     rescue StandardError => e
-      SystemDebug.debug(SystemDebug.container_events,e.to_s + ':' +  e.backtrace.to_s)
+      SystemDebug.debug(SystemDebug.container_events, e.to_s + ':' + e.backtrace.to_s)
       raise e
     end
 
@@ -70,11 +68,11 @@ class DockerEventWatcher  < ErrorsApi
   end
 
   def connection
-    @events_connection = Excon.new('unix:///',
+    @events_connection ||= Excon.new('unix:///',
     :socket => '/var/run/docker.sock',
     :debug_request => true,
     :debug_response => true,
-    :persistent => true) if @events_connection.nil?
+    :persistent => true)
     @events_connection
   end
 
@@ -113,20 +111,18 @@ class DockerEventWatcher  < ErrorsApi
             json_part = nil
             #  STDERR.puts('DOCKER SENT COMPLETE json ' + chunk.to_s )
           end
-          # STDERR.puts('DOCKER SENT json ' + chunk.to_s )
-          #      hash =  parser.parse(chunk)# do |hash|
-          parser = Yajl::Parser.new({:symbolize_keys => true}) if parser.nil?
+          parser ||= Yajl::Parser.new({:symbolize_keys => true})
           #hash = deal_with_json(chunk)
           hash = parser.parse(chunk)
+          SystemDebug.debug(SystemDebug.container_events, 'got ' + hash.to_s)
           STDERR.puts('DOCKER SENT ARRAY') if hash.is_a?(Array) && ! hash.is_a?(Hash)
+          STDERR.puts('DOCKER SENT UNKNOWN ' + hash.to_s) unless hash.is_a?(Hash)
           next unless hash.is_a?(Hash)
           #  STDERR.puts('trigger' + hash.to_s )
           next if hash.key?(:from) && hash[:from].length >= 64
-          SystemDebug.debug(SystemDebug.container_events, 'skipped ' + hash.to_s)
-          # next
-          #end
-          t = Thread.new { trigger(hash)}
+         t = Thread.new {trigger(hash)}
           t[:name] = 'trigger'
+         #  trigger(hash)
         rescue StandardError => e
           STDERR.puts('EXCEPTION docker Event Stream as close ' + e.to_s)
           log_error_mesg('Chunk error on docker Event Stream _' + chunk.to_s + '_')
@@ -153,9 +149,6 @@ class DockerEventWatcher  < ErrorsApi
     STDERR.puts('EXCEPTION docker Event Stream post exception due to ' + e.to_s + ' ' + e.class.name)
     # client.finish unless client.nil?
     @system.start_docker_event_listener(@event_listeners)
-    #  ensure
-    #  SystemDebug.debug(SystemDebug.container_events,'CLOSED docker Event Stream @event_listeners ENSURE')
-    # @system.start_docker_event_listener(@event_listeners)
   end
 
   def add_event_listener(listener, event_mask = nil, container_name = nil)
@@ -170,7 +163,8 @@ class DockerEventWatcher  < ErrorsApi
   end
 
   private
-
+# t = Thread.new { trigger(hash)}
+ # t[:name] = 'trigger'
   def trigger(hash)
     r = ''
     @event_listeners.values.each do |listener|
@@ -182,10 +176,12 @@ class DockerEventWatcher  < ErrorsApi
         #  STDERR.puts('matching ' + listener.container_name.to_s + ' with ' + hash[:Actor][:Attributes][:container_name].to_s)
         next unless hash[:Actor][:Attributes][:container_name] == listener.container_name
       end
-      log_exception(r) if (r = listener.trigger(hash)).is_a?(StandardError)
+       listener.trigger(hash)
+     # t = Thread.new { listener.trigger(hash)}
+     # t[:name] = 'trigger:' # + listener.container_name.to_s
     end
   rescue StandardError => e
-    SystemDebug.debug(SystemDebug.container_events,hash.to_s + ':' + e.to_s + ':' +  e.backtrace.to_s)
+    SystemDebug.debug(SystemDebug.container_events, hash.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)
     log_exception(e)
   end
 end

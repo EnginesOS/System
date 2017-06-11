@@ -30,7 +30,7 @@ module ServiceApiConsumers
       cmd = ['/home/update_service.sh']
       SystemDebug.debug(SystemDebug.services, :update_consumer_on_service, cmd.to_s)
       result = engines_core.exec_in_container({:container => c, :command_line => cmd, :log_error => true, :timeout => @@consumer_timeout, :data => service_hash.to_json})
-      STDERR.puts('UPDATE SERVICE' + result.to_s)
+   #   STDERR.puts('UPDATE SERVICE' + result.to_s)
       raise EnginesException.new(error_hash('Failed update_consumer_on_service ' + result.to_s, result)) unless result[:result] == 0
     end
   end
@@ -38,7 +38,7 @@ module ServiceApiConsumers
   def rm_consumer_from_service(c, service_hash)
     cmd = ['/home/rm_service.sh']
     result = engines_core.exec_in_container({:container => c, :command_line => cmd, :log_error => true, :timeout => @@consumer_timeout, :data => service_hash.to_json })
-    STDERR.puts('RM SERVICE ' + result.to_s)
+  #  STDERR.puts('RM SERVICE ' + result.to_s)
     raise EnginesException.new(error_hash('Failed add_consumer_to_service ', result)) unless result[:result] == 0
   end
 end

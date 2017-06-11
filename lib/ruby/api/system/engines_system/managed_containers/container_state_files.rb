@@ -90,8 +90,11 @@ module ContainerSystemStateFiles
     cidfile = SystemConfig.CidDir + '/' + container.container_name + '.cid'
     File.delete(cidfile) if File.exist?(cidfile)
     result = volbuilder.execute_command(:remove, {target: container.container_name})
-
-    FileUtils.rm_rf(container_state_dir(container))
+    volbuilder.wait_for('destroy', 30)
+    begin
+      FileUtils.rm_rf(container_state_dir(container))
+    rescue
+    end
     SystemUtils.run_system('/opt/engines/system/scripts/system/clear_container_dir.sh ' + container.container_name)
     true
   end
