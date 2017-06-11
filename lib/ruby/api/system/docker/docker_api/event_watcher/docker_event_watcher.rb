@@ -113,18 +113,16 @@ class DockerEventWatcher < ErrorsApi
             json_part = nil
             #  STDERR.puts('DOCKER SENT COMPLETE json ' + chunk.to_s )
           end
-          # STDERR.puts('DOCKER SENT json ' + chunk.to_s )
-          #      hash =  parser.parse(chunk)# do |hash|
-          parser = Yajl::Parser.new({:symbolize_keys => true}) if parser.nil?
+          STDERR.puts('DOCKER SENT json ' + chunk.to_s )
+          parser ||= Yajl::Parser.new({:symbolize_keys => true})
           #hash = deal_with_json(chunk)
           hash = parser.parse(chunk)
+          STDERR.puts('DOCKER SENT ' + hash.to_s)
+          SystemDebug.debug(SystemDebug.container_events, 'got ' + hash.to_s)
           STDERR.puts('DOCKER SENT ARRAY') if hash.is_a?(Array) && ! hash.is_a?(Hash)
           next unless hash.is_a?(Hash)
           #  STDERR.puts('trigger' + hash.to_s )
           next if hash.key?(:from) && hash[:from].length >= 64
-          SystemDebug.debug(SystemDebug.container_events, 'skipped ' + hash.to_s)
-          # next
-          #end
           t = Thread.new { trigger(hash)}
           t[:name] = 'trigger'
         rescue StandardError => e
