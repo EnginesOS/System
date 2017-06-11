@@ -68,11 +68,11 @@ class DockerEventWatcher < ErrorsApi
   end
 
   def connection
-    @events_connection = Excon.new('unix:///',
+    @events_connection ||= Excon.new('unix:///',
     :socket => '/var/run/docker.sock',
     :debug_request => true,
     :debug_response => true,
-    :persistent => true) if @events_connection.nil?
+    :persistent => true)
     @events_connection
   end
 
@@ -120,7 +120,7 @@ class DockerEventWatcher < ErrorsApi
           next unless hash.is_a?(Hash)
           #  STDERR.puts('trigger' + hash.to_s )
           next if hash.key?(:from) && hash[:from].length >= 64
-         t = Thread.new { trigger(hash)}
+         t = Thread.new {trigger(hash)}
           t[:name] = 'trigger'
          #  trigger(hash)
         rescue StandardError => e
