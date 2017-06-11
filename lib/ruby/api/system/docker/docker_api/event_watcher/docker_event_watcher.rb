@@ -88,7 +88,7 @@ class DockerEventWatcher < ErrorsApi
 
   def start
     STDERR.puts(' STARTINF with ' + @event_listeners.to_s)
-    get_client = get_client
+    client = get_client
     client.request(req) do |resp|
       json_part = nil
       resp.read_body do |chunk|
@@ -154,7 +154,7 @@ class DockerEventWatcher < ErrorsApi
   end
 
   private
-  
+
   def get_client
     req = Net::HTTP::Get.new('/events')
     client = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
@@ -172,7 +172,6 @@ class DockerEventWatcher < ErrorsApi
   end
 
   def trigger(hash)
-    r = ''
     @event_listeners.values.each do |listener|
       unless listener.container_name.nil?
         next unless match_container(hash, listener.container_name)
