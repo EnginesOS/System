@@ -120,8 +120,9 @@ class DockerEventWatcher < ErrorsApi
           next unless hash.is_a?(Hash)
           #  STDERR.puts('trigger' + hash.to_s )
           next if hash.key?(:from) && hash[:from].length >= 64
-          t = Thread.new { trigger(hash)}
-          t[:name] = 'trigger'
+         # t = Thread.new { trigger(hash)}
+         # t[:name] = 'trigger'
+          trigger(hash)
         rescue StandardError => e
           STDERR.puts('EXCEPTION docker Event Stream as close ' + e.to_s)
           log_error_mesg('Chunk error on docker Event Stream _' + chunk.to_s + '_')
@@ -162,7 +163,8 @@ class DockerEventWatcher < ErrorsApi
   end
 
   private
-
+# t = Thread.new { trigger(hash)}
+ # t[:name] = 'trigger'
   def trigger(hash)
     r = ''
     @event_listeners.values.each do |listener|
@@ -174,7 +176,9 @@ class DockerEventWatcher < ErrorsApi
         #  STDERR.puts('matching ' + listener.container_name.to_s + ' with ' + hash[:Actor][:Attributes][:container_name].to_s)
         next unless hash[:Actor][:Attributes][:container_name] == listener.container_name
       end
-      log_exception(r) if (r = listener.trigger(hash)).is_a?(StandardError)
+      #log_exception(r) if (r = listener.trigger(hash)).is_a?(StandardError)
+      t = Thread.new { listener.trigger(hash)}
+      t[:name] = 'trigger:' + listener.container_name.to_s
     end
   rescue StandardError => e
     SystemDebug.debug(SystemDebug.container_events,hash.to_s + ':' + e.to_s + ':' +  e.backtrace.to_s)
