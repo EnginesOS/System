@@ -1,3 +1,12 @@
+
+def backup_lastbuild
+  dir = basedir
+  backup = dir + '.backup'
+  FileUtils.rm_rf(backup) if Dir.exist?(backup)
+  FileUtils.mv(dir, backup) if Dir.exist?(dir)
+  true
+end
+
 def setup_build_dir
   setup_default_files
   ConfigFileWriter.compile_base_docker_files(@templater, basedir)

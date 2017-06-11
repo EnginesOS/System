@@ -19,8 +19,9 @@ class EngineBuilder < ErrorsApi
   require_relative 'builder/base_image.rb'
   require_relative 'builder/build_image.rb'
   require_relative 'builder/physical_checks.rb'
-
-  require_relative 'builder/configure_services_backup.rb'
+  require_relative 'builder/builders.rb'
+  require_relative 'builder/builders.rb'
+  require_relative 'builder/blueprint.rb'
   include ConfigureServicesBackup
 
   require_relative 'builder/save_engine_configuration.rb'
@@ -137,38 +138,6 @@ class EngineBuilder < ErrorsApi
     @service_builder.volumes
   end
 
-  def rebuild_managed_container(engine)
-    @engine = engine
-    @rebuild = true
-    log_build_output('Starting Rebuild')
-    backup_lastbuild
-    setup_rebuild
-    build_container
-  end
-
-  def process_blueprint
-    log_build_output('Reading Blueprint')
-    @blueprint = load_blueprint
-    version = 0
-    unless @blueprint.key?(:schema)
-      require_relative 'blueprint_readers/0/versioned_blueprint_reader.rb'
-    else
-      #   STDERR.puts('BP Schema :' + @blueprint[:schema].to_s + ':' )
-      version =  @blueprint[:schema][:version][:major]
-      unless File.exist?('/opt/engines/lib/ruby/engine_builder/blueprint_readers/' + version.to_s + '/versioned_blueprint_reader.rb')
-        raise EngineBuilderException.new(error_hash('Failed to create Managed Container invalid blueprint schema'))
-      end
-      require_relative 'blueprint_readers/' + version.to_s + '/versioned_blueprint_reader.rb'
-    end
-
-    log_build_output('Using Blueprint Schema ' + version.to_s + ' ' + @blueprint[:origin].to_s)
-
-    @blueprint_reader = VersionedBlueprintReader.new(@build_params[:engine_name], @blueprint, self)
-    @blueprint_reader.process_blueprint
-    ev = EnvironmentVariable.new('Memory', @memory, false, true, false, 'Memory', false)
-    @blueprint_reader.environments.push(ev)
-  end
-
   def setup_engine_dirs
     SystemUtils.run_system('/opt/engines/system/scripts/system/create_container_dir.sh ' + @build_params[:engine_name])
   end
@@ -196,86 +165,6 @@ class EngineBuilder < ErrorsApi
     @blueprint_reader.environments.push(EnvironmentVariable.new('LANGUAGE', lang.to_s + '_' + country.to_s + ':' + lang.to_s))
     @blueprint_reader.environments.push(EnvironmentVariable.new('LANG', lang.to_s + '_' + country.to_s + '.UTF8'))
     @blueprint_reader.environments.push(EnvironmentVariable.new('LC_ALL', lang.to_s + '_' + country.to_s + '.UTF8'))
-  end
-
-  def build_container
-    SystemDebug.debug(SystemDebug.builder, 'Starting build with params ', @build_params)
-    meets_physical_requirements
-    process_blueprint
-    set_locale
-    setup_build_dir
-    get_base_image
-    setup_engine_dirs
-    create_engine_image
-    GC::OOB.run
-    create_engine_container
-    @service_builder.release_orphans
-    #  wait_for_engine
-    save_build_result
-    close_all
-    #   SystemStatus.build_complete(@build_params)
-    @container
-  rescue StandardError => e
-    #log_exception(e)
-    log_build_errors('Engine Build Aborted Due to:' + e.to_s)
-    STDERR.puts(e.backtrace.to_s)
-    post_failed_build_clean_up
-    log_exception(e)
-    raise e
-  ensure
-    File.delete('/opt/engines/run/system/flags/building_params') if File.exist?('/opt/engines/run/system/flags/building_params')
-    close_all
-  end
-
-  def backup_lastbuild
-    dir = basedir
-    backup = dir + '.backup'
-    FileUtils.rm_rf(backup) if Dir.exist?(backup)
-    FileUtils.mv(dir, backup) if Dir.exist?(dir)
-    true
-  end
-
-  def load_blueprint
-    log_build_output('Reading Blueprint')
-    json_hash = BlueprintApi.load_blueprint_file(basedir + '/blueprint.json')
-    symbolize_keys(json_hash)
-  end
-
-  def clone_repo
-    return download_blueprint if @build_params[:repository_url].end_with?('.json')
-    log_build_output('Clone Blueprint Repository ' + @build_params[:repository_url])
-    SystemDebug.debug(SystemDebug.builder, "get_blueprint_from_repo",@build_params[:repository_url], @build_name, SystemConfig.DeploymentDir)
-    g = Git.clone(@build_params[:repository_url], @build_name, :path => SystemConfig.DeploymentDir)
-    SystemDebug.debug(SystemDebug.builder, 'GIT GOT ' + g.to_s)
-  end
-
-  def download_blueprint
-    FileUtils.mkdir_p(basedir)
-    d = basedir + '/' + File.basename(@build_params[:repository_url])
-    get_http_file(@build_params[:repository_url], d)
-  end
-
-  def get_http_file(url, d)
-    require 'open-uri'
-    download = open(url)
-    IO.copy_stream(download, d)
-  end
-
-  def get_blueprint_from_repo
-    log_build_output('Backup last build')
-    backup_lastbuild
-    log_build_output('Cloning Blueprint')
-    clone_repo
-  end
-
-  def build_from_blue_print
-    backup_lastbuild
-    get_blueprint_from_repo
-    log_build_output('Cloned Blueprint')
-    build_container
-  rescue StandardError => e
-    post_failed_build_clean_up
-    log_exception(e)
   end
 
   def post_failed_build_clean_up
@@ -311,16 +200,6 @@ class EngineBuilder < ErrorsApi
     @result_mesg = @result_mesg.to_s + ' Roll Back Complete'
     SystemDebug.debug(SystemDebug.builder,'Roll Back Complete')
     close_all
-  end
-
-  def setup_rebuild
-    log_build_output('Setting up rebuild')
-    FileUtils.mkdir_p(basedir)
-    blueprint = @core_api.load_blueprint(@engine)
-    statefile = basedir + '/blueprint.json'
-    f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0644)
-    f.write(blueprint.to_json)
-    f.close
   end
 
   #app_is_persistent
