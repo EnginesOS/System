@@ -1,4 +1,4 @@
-class DockerEventWatcher  < ErrorsApi
+class DockerEventWatcher < ErrorsApi
   class EventListener
     require 'yajl'
     #require '/opt/engines/lib/ruby/system/deal_with_json.rb'
@@ -17,16 +17,16 @@ class DockerEventWatcher  < ErrorsApi
 
     def trigger(hash)
       mask = EventMask.event_mask(hash)
-      # STDERR.puts('trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask' + @event_mask.to_s)
+       STDERR.puts('trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask' + @event_mask.to_s)
       SystemDebug.debug(SystemDebug.container_events, 'trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask' + @event_mask.to_s)
       return if @event_mask == 0 || mask & @event_mask == 0
       # skip top
       return unless @event_mask & 32768 == 0 # @@container_top == 0 
       hash[:state] = state_from_status(hash[:status])
-      SystemDebug.debug(SystemDebug.container_events,'fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
+      SystemDebug.debug(SystemDebug.container_events, 'fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
       @object.method(@method).call(hash)
     rescue StandardError => e
-      SystemDebug.debug(SystemDebug.container_events,e.to_s + ':' +  e.backtrace.to_s)
+      SystemDebug.debug(SystemDebug.container_events, e.to_s + ':' + e.backtrace.to_s)
       raise e
     end
 
@@ -153,9 +153,6 @@ class DockerEventWatcher  < ErrorsApi
     STDERR.puts('EXCEPTION docker Event Stream post exception due to ' + e.to_s + ' ' + e.class.name)
     # client.finish unless client.nil?
     @system.start_docker_event_listener(@event_listeners)
-    #  ensure
-    #  SystemDebug.debug(SystemDebug.container_events,'CLOSED docker Event Stream @event_listeners ENSURE')
-    # @system.start_docker_event_listener(@event_listeners)
   end
 
   def add_event_listener(listener, event_mask = nil, container_name = nil)
