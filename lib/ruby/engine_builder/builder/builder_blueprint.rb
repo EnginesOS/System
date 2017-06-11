@@ -39,14 +39,14 @@ module BuilderBluePrint
     @blueprint = load_blueprint
     version = 0
     unless @blueprint.key?(:schema)
-      require_relative 'blueprint_readers/0/versioned_blueprint_reader.rb'
+      require '/opt/engines/lib/ruby/engine_builder/blueprint_readers/0/versioned_blueprint_reader.rb'
     else
       #   STDERR.puts('BP Schema :' + @blueprint[:schema].to_s + ':' )
       version =  @blueprint[:schema][:version][:major]
       unless File.exist?('/opt/engines/lib/ruby/engine_builder/blueprint_readers/' + version.to_s + '/versioned_blueprint_reader.rb')
         raise EngineBuilderException.new(error_hash('Failed to create Managed Container invalid blueprint schema'))
       end
-      require_relative 'blueprint_readers/' + version.to_s + '/versioned_blueprint_reader.rb'
+      require '/opt/engines/lib/ruby/engine_builder/blueprint_readers/' + version.to_s + '/versioned_blueprint_reader.rb'
     end
 
     log_build_output('Using Blueprint Schema ' + version.to_s + ' ' + @blueprint[:origin].to_s)
