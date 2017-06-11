@@ -66,25 +66,24 @@ class DockerEventWatcher < ErrorsApi
     # add_event_listener([system, :container_event])
     SystemDebug.debug(SystemDebug.container_events, 'EVENT LISTENER')
   end
-
-  def connection
-    @events_connection ||= Excon.new('unix:///',
-    :socket => '/var/run/docker.sock',
-    :debug_request => true,
-    :debug_response => true,
-    :persistent => true)
-    @events_connection
-  end
-
-  def reopen_connection
-    @events_connection.reset
-    #    STDERR.puts(' REOPEN doker.sock connection ')
-    @events_connection = Excon.new('unix:///',
-    :socket => '/var/run/docker.sock',
-    :debug_request => true,
-    :debug_response => true,
-    :persistent => true)
-  end
+  #  def connection
+  #    @events_connection ||= Excon.new('unix:///',
+  #    :socket => '/var/run/docker.sock',
+  #    :debug_request => true,
+  #    :debug_response => true,
+  #    :persistent => true)
+  #    @events_connection
+  #  end
+  #
+  #  def reopen_connection
+  #    @events_connection.reset
+  #    #    STDERR.puts(' REOPEN doker.sock connection ')
+  #    @events_connection = Excon.new('unix:///',
+  #    :socket => '/var/run/docker.sock',
+  #    :debug_request => true,
+  #    :debug_response => true,
+  #    :persistent => true)
+  #  end
 
   def start
     STDERR.puts(' STARTINF with ' + @event_listeners.to_s)
@@ -115,10 +114,9 @@ class DockerEventWatcher < ErrorsApi
           t[:name] = 'trigger'
         rescue StandardError => e
           log_error_mesg('EXCEPTION Chunk error on docker Event Stream _' + chunk.to_s + '_')
-          log_exception(e,chunk)
+          log_exception(e, chunk)
           json_part = ''
-          next #log_exeception
-          # @system.start_docker_event_listener
+          next
         end
       end
     end
@@ -153,7 +151,7 @@ class DockerEventWatcher < ErrorsApi
 
   private
 
-  def get_client    
+  def get_client
     client = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
     client.continue_timeout = 3000
     client.read_timeout = 3000
