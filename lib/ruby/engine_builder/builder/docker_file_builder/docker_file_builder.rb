@@ -39,15 +39,17 @@ class DockerFileBuilder
     write_environment_variables
     write_stack_env
     write_file_service
-
-    write_run_start
+    
+    set_user('0')
+    write_user_local = true
+    setup_user_local if write_user_local
+       
     write_repos
     write_os_packages
     write_modules
 
-    write_user_local = true
-    setup_user_local if write_user_local
-    set_user('0')
+    
+    # set_user('0')
 
     #write_run_start
     write_app_archives

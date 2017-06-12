@@ -1,5 +1,5 @@
 #!/bin/sh
-cd /home/app
+cd /home/home_dir/.npm
     for mod in $*
      do    
    		sudo su $ContUser sh -c "npm  install -g $mod"
