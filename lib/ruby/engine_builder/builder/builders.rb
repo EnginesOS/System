@@ -51,6 +51,7 @@ module Builders
     backup_lastbuild
     setup_rebuild
     build_container
+    save_build_result
   end
 
   def build_container
@@ -63,10 +64,9 @@ module Builders
     setup_engine_dirs
     create_engine_image
     GC::OOB.run
-    create_engine_container
+    @container = create_engine_container
     @service_builder.release_orphans
     #  wait_for_engine
-    save_build_result
     close_all
     #   SystemStatus.build_complete(@build_params)
     @container
@@ -97,6 +97,7 @@ module Builders
     get_blueprint_from_repo
     log_build_output('Cloned Blueprint')
     build_container
+    save_build_result
   rescue StandardError => e
     post_failed_build_clean_up
     log_exception(e)
