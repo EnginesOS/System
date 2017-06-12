@@ -1,16 +1,15 @@
 module Builders
   require_relative '../service_builder/service_builder.rb'
- 
-  require_relative 'builder_blueprint.rb' 
+
+  require_relative 'builder_blueprint.rb'
   include BuilderBluePrint
-  
+
   require_relative 'engine_scripts_builder.rb'
   include EngineScriptsBuilder
-  
+
   require_relative 'base_image.rb'
-  require_relative 'build_image.rb' 
+  require_relative 'build_image.rb'
   require_relative 'physical_checks.rb'
-  
   def setup_build
     check_build_params(@build_params)
     @build_params[:engine_name].freeze
@@ -43,7 +42,7 @@ module Builders
     log_exception(e)
     raise e
   end
-  
+
   def rebuild_managed_container(engine)
     @engine = engine
     @rebuild = true
@@ -52,6 +51,7 @@ module Builders
     setup_rebuild
     build_container
     save_build_result
+    close_all
   end
 
   def build_container
@@ -67,7 +67,6 @@ module Builders
     @container = create_engine_container
     @service_builder.release_orphans
     #  wait_for_engine
-    close_all
     #   SystemStatus.build_complete(@build_params)
     @container
   rescue StandardError => e
@@ -98,11 +97,11 @@ module Builders
     log_build_output('Cloned Blueprint')
     build_container
     save_build_result
+    close_all
   rescue StandardError => e
     post_failed_build_clean_up
     log_exception(e)
   end
-  
 
   def post_failed_build_clean_up
     SystemStatus.build_failed(@build_params)
@@ -138,5 +137,12 @@ module Builders
     SystemDebug.debug(SystemDebug.builder,'Roll Back Complete')
     close_all
   end
-  
+
+  #app_is_persistent
+  #used by builder public
+  def running_logs()
+    return 'not yet' unless @container.nil?
+    @container.wait_for_startup(25)
+    @container.logs_container
+  end
 end

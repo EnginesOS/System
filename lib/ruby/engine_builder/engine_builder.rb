@@ -125,13 +125,7 @@ class EngineBuilder < ErrorsApi
   end
 
 
-  #app_is_persistent
-  #used by builder public
-  def running_logs()
-    return 'not yet' unless @container.nil?
-    @container.wait_for_startup(25)
-    @container.logs_container
-  end
+
 
   def engine_environment
     @blueprint_reader.environments
