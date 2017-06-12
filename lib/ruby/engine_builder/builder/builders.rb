@@ -141,7 +141,7 @@ module Builders
   #app_is_persistent
   #used by builder public
   def running_logs()
-    return 'not yet' unless @container.nil?
+    return 'not yet' if @container.nil?
     @container.wait_for_startup(25)
     @container.logs_container
   end
