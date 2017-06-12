@@ -68,11 +68,11 @@ class BuilderPublic
     @builder.blueprint
   end
 
-  #  def logs_container
-  #    # FIXME
-  #    # @builder.wait_for_startup(4)
-  #    @builder.running_logs
-  #  end
+    def logs_container
+      # FIXME
+      # @builder.wait_for_startup(4)
+      @builder.running_logs
+    end
 
   def data_gid
     @builder.data_gid
