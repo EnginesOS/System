@@ -19,7 +19,7 @@ module Builders
     @web_port = SystemConfig.default_webport
     @memory = @build_params[:memory]
     @app_is_persistent = false
-    @result_mesg = 'Aborted Due to Errors'
+    @result_mesg = 'Incomplete'
     @first_build = true
     @attached_services = []
     create_templater
