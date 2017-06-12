@@ -128,7 +128,7 @@ class EngineBuilder < ErrorsApi
   #used by builder public
   def running_logs()
     return nil unless @container.nil?
-    @container.wait_for_startup(4)
+    @container.wait_for_startup(25)
     @container.logs_container
   end
 
