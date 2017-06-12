@@ -124,10 +124,7 @@ module BuildDirSetup
     ConfigFileWriter.write_templated_file(@templater, basedir + '/' + filename, content)
   end
 
-  def create_templater
-    builder_public = BuilderPublic.new(self)
-    @templater = Templater.new(@core_api.system_value_access, builder_public)
-  end
+
 
   def read_web_user
     if @blueprint_reader.framework == 'docker'

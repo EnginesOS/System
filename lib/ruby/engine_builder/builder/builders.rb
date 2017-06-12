@@ -1,6 +1,6 @@
 module Builders
   require_relative '../service_builder/service_builder.rb'
-
+  require_relative 'builder_public.rb'
   require_relative 'builder_blueprint.rb'
   include BuilderBluePrint
 
@@ -10,6 +10,7 @@ module Builders
   require_relative 'base_image.rb'
   require_relative 'build_image.rb'
   require_relative 'physical_checks.rb'
+  
   def setup_build
     check_build_params(@build_params)
     @build_params[:engine_name].freeze
@@ -137,6 +138,21 @@ module Builders
     SystemDebug.debug(SystemDebug.builder,'Roll Back Complete')
     close_all
   end
+
+  
+def save_build_result
+  @result_mesg = 'Build Successful'
+  log_build_output('Build Successful')
+  build_report = generate_build_report(@templater, @blueprint)
+  @core_api.save_build_report(@container, build_report)
+  FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.out', ContainerStateFiles.container_state_dir(@container) + '/build.log')
+  FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.err', ContainerStateFiles.container_state_dir(@container) + '/build.err')
+  true
+end
+
+def create_templater
+  @templater = Templater.new(@core_api.system_value_access, BuilderPublic.new(self))
+end
 
   #app_is_persistent
   #used by builder public
