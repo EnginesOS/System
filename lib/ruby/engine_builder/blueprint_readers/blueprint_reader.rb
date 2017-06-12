@@ -222,7 +222,7 @@ class BluePrintReader
     @pecl_modules = []
     @npm_modules = []
     @lua_modules = []
-
+    
     pkg_modules = @blueprint[:software][:modules]
     return true unless pkg_modules.is_a?(Array)  # not an error just nada
     pkg_modules.each do |pkg_module|
