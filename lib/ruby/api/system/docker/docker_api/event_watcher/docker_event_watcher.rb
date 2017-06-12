@@ -92,7 +92,7 @@ class DockerEventWatcher < ErrorsApi
       json_part = nil
       resp.read_body do |chunk|
         begin
-        #  STDERR.putc('.')
+          STDERR.putc('.')
           SystemDebug.debug(SystemDebug.container_events, chunk.to_s )
           next if chunk.nil?
           chunk.gsub!(/\s+$/, '')
