@@ -149,6 +149,14 @@ elif if test -f /etc/nginx
 		nginx &
 	    echo  " $!" >>  $PID_FILE
 	fi
+elif test -f /home/engines/scripts/blocking.sh 
+		then
+		   /home/engines/scripts/blocking.sh  &
+		   echo  " $!" >>  $PID_FILE
+		   
+else
+ echo "Nothing else to run!"
+ exit
 fi
 
 		
