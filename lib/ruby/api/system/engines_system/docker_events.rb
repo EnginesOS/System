@@ -27,7 +27,7 @@ module DockerEvents
           @pipe << 'ok'
           @pipe.close
           # else
-          #   STDERR.puts(' WAIT FOR but waiting on ' + @what.to_s )
+           STDERR.puts(' WAIT FOR but waiting on ' + @what.to_s )
         end
       end
     end
