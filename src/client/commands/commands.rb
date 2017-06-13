@@ -20,6 +20,6 @@ when 'system'
 when 'schedule'
   require_relative 'schedules.rb'
 when 'utility'
-  require_relative 'utility.rb'
+  require_relative 'containers/utility.rb'
 end
 command_usage
