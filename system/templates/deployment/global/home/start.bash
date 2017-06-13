@@ -56,7 +56,7 @@ if ! test -f /engines/var/run/flags/first_run_done
 fi	
 }
 
-function {	
+function restart_required {	
 if test -f /engines/var/run/flags/restart_required 
  then
   if test -f /engines/var/run/flags/started_once
