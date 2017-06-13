@@ -71,6 +71,10 @@ helpers do
     engines_api.loadManagedEngine(engine_name)
   end
 
+  def get_utilty(utilty_name)
+    engines_api.loadManagedUtilty(utilty_name)
+  end
+
   def get_service(service_name)
     engines_api.loadManagedService(service_name)
   end
@@ -111,7 +115,7 @@ helpers do
 
     def is_token_valid?(token, ip = nil)
       #$
-     $engines_api.is_token_valid?(token, ip)
+      $engines_api.is_token_valid?(token, ip)
     end
 
     def authenticate!
