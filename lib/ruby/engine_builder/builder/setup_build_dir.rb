@@ -42,9 +42,7 @@ module BuildDirSetup
     dockerfile_builder = DockerFileBuilder.new(@blueprint_reader, @build_params, @web_port, self)
     dockerfile_builder.write_files_for_docker
     SystemDebug.debug(SystemDebug.builder, 'Docker file  written')
-
     write_env_file
-
     SystemDebug.debug(SystemDebug.builder, 'Eviron file  written')
     setup_framework_logging
     SystemDebug.debug(SystemDebug.builder, 'Logging setup')
@@ -123,8 +121,6 @@ module BuildDirSetup
   def write_software_file(filename, content)
     ConfigFileWriter.write_templated_file(@templater, basedir + '/' + filename, content)
   end
-
-
 
   def read_web_user
     if @blueprint_reader.framework == 'docker'
