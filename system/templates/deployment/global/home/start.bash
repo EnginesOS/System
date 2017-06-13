@@ -8,10 +8,13 @@ function wait_for_debug {
 if ! test -z "$Engines_Debug_Run"
  then
 		echo "Stopped by Sleeping for 500 seconds to allow debuging"
-  	 	sleep 500
+  	 	sleep 500 &
+  	 	echo " $!" >> $PID_FILE
+  	 	wait
   	 fi  	 
  }
-  	 
+  
+function volume_setup {	 
 if test  ! -f /engines/var/run/flags/volume_setup_complete
    then
    echo "Waiting for Volume setup to Complete "
@@ -22,7 +25,8 @@ if test  ! -f /engines/var/run/flags/volume_setup_complete
  	 done
  	 echo "Volume setup to Complete "
 fi
-  
+}
+ function dynamic_persistence {	  
 if test -f "$VOLDIR/.dynamic_persistence"
   then
 	if ! test -f /home/app/.dynamic_persistence_restored
@@ -31,19 +35,10 @@ if test -f "$VOLDIR/.dynamic_persistence"
  		 echo "Dynamic persistence restore Complete "
  	fi
  fi
+}
 
-if test -f /home/_init.sh
- 	then
- 		/home/_init.sh
-fi
 
-#if test -f /engines/var/lang
-#	then
-#		LANG=`head -1 /engines/var/lang`
-#		export LC_ALL=$LANG
-#		export LANG
-#fi
-
+function first_run
 if ! test -f /engines/var/run/flags/first_run_done
  then
 	 touch /engines/var/run/flags/first_run_done
@@ -58,7 +53,10 @@ if ! test -f /engines/var/run/flags/first_run_done
 				touch /engines/var/run/flags/post_install.done
 			  fi
 		fi
-fi		
+fi	
+}
+
+function {
 	
 if test -f /engines/var/run/flags/restart_required 
  then
@@ -69,7 +67,19 @@ if test -f /engines/var/run/flags/restart_required
   	touch  /engines/var/run/flags/started_once
   fi
 fi
- 
+}
+
+volume_setup
+dynamic_persistence
+first_run
+restart_required
+
+
+if test -f /home/_init.sh
+ 	then
+ 		/home/_init.sh
+fi
+
 
 #drop for custom start as if custom start no blocking then it is pre running
 if test -f /home/engines/scripts/pre-running.sh
@@ -121,7 +131,7 @@ if test -f /usr/sbin/apache2ctl
 		  /usr/sbin/apache2ctl -DFOREGROUND &
 	      echo  " $!" >>  $PID_FILE
 	fi
-elif if test -f /etc/nginx
+elif test -f /etc/nginx
  then
 	 if ! test -d /var/log/nginx
 	  then
