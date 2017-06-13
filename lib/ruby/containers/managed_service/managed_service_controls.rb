@@ -35,7 +35,7 @@ module ManagedServiceControls
 
   def recreate
     destroy_container
-    wait_for('destroy')
+    wait_for('destroy', 30)
     create_service
     save_state
   rescue EnginesException =>e
