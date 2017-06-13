@@ -6,7 +6,7 @@ require '/opt/engines/lib/ruby/exceptions/engine_builder_exception.rb'
 
 class EngineBuilder < ErrorsApi
   require '/opt/engines/lib/ruby/api/system/container_state_files.rb'
-  require_relative 'builder_public.rb'
+
 
   require_relative 'builder/setup_build_dir.rb'
   include BuildDirSetup
@@ -45,7 +45,8 @@ class EngineBuilder < ErrorsApi
   :build_params,
   :data_uid,
   :data_gid,
-  :build_error
+  :build_error,
+  :container
 
   attr_accessor :app_is_persistent
 
@@ -98,15 +99,6 @@ class EngineBuilder < ErrorsApi
     SystemUtils.run_system('/opt/engines/system/scripts/system/create_container_dir.sh ' + @build_params[:engine_name])
   end
 
-  def save_build_result
-    @result_mesg = 'Build Successful'
-    log_build_output('Build Successful')
-    build_report = generate_build_report(@templater, @blueprint)
-    @core_api.save_build_report(@container, build_report)
-    FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.out',ContainerStateFiles.container_state_dir(@container) + '/build.log')
-    FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.err',ContainerStateFiles.container_state_dir(@container) + '/build.err')
-    true
-  end
 
   def set_locale
     ## STDERR.puts("LANGUAGE " + @build_params[:lang_code].to_s)
@@ -124,13 +116,7 @@ class EngineBuilder < ErrorsApi
   end
 
 
-  #app_is_persistent
-  #used by builder public
-  def running_logs()
-    return nil unless @container.nil?
-    @container.wait_for_startup(4)
-    @container.logs_container
-  end
+
 
   def engine_environment
     @blueprint_reader.environments

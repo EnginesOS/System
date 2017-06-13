@@ -4,6 +4,7 @@ module ContainerCreation
     @container = create_managed_container
     raise EngineBuilderException.new(error_hash('Failed to create Managed Container')) unless @container.is_a?(ManagedEngine)
     @service_builder.create_non_persistent_services(@blueprint_reader.services)
+    @container
   end
 
   def create_managed_container

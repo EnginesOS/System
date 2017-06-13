@@ -37,12 +37,12 @@ if test -f /home/_init.sh
  		/home/_init.sh
 fi
 
-if test -f /engines/var/lang
-	then
-		LANG=`head -1 /engines/var/lang`
-		export LC_ALL=$LANG
-		export LANG
-fi
+#if test -f /engines/var/lang
+#	then
+#		LANG=`head -1 /engines/var/lang`
+#		export LC_ALL=$LANG
+#		export LANG
+#fi
 
 if ! test -f /engines/var/run/flags/first_run_done
  then
@@ -121,22 +121,26 @@ if test -f /usr/sbin/apache2ctl
 		  /usr/sbin/apache2ctl -DFOREGROUND &
 	      echo  " $!" >>  $PID_FILE
 	fi
-else
+elif if test -f /etc/nginx
+ then
 	 if ! test -d /var/log/nginx
 	  then
 	 	mkdir /var/log/nginx
 	 fi
-  cp /home/ruby_env /home/.env_vars
-   for env_name in `cat /home/app.env `
-  	 do
-   		if ! test -z  "${!env_name}"
-         then
-        	 #val=`echo ${!env_name} | sed "/ /s//\\ /g"`
-  	      	 echo  "passenger_env_var $env_name \"${!env_name}\";"   >> /home/.env_vars
-  	     fi
-  	done
- echo " passenger_env_var RAILS_ENV $RAILS_ENV;" >> /home/.env_vars
- echo " passenger_env_var SECRET_KEY_BASE $SECRET_KEY_BASE;" >> /home/.env_vars
+     if test -f /home/ruby_env 
+      then
+       cp /home/ruby_env /home/.env_vars
+        for env_name in `cat /home/app.env `
+  	     do
+   		   if ! test -z  "${!env_name}"
+            then
+        	  #val=`echo ${!env_name} | sed "/ /s//\\ /g"`
+  	      	  echo  "passenger_env_var $env_name \"${!env_name}\";"   >> /home/.env_vars
+  	       fi
+  	     done
+       echo " passenger_env_var RAILS_ENV $RAILS_ENV;" >> /home/.env_vars
+       echo " passenger_env_var SECRET_KEY_BASE $SECRET_KEY_BASE;" >> /home/.env_vars
+	fi
 	
 	if test -f /home/engines/scripts/blocking.sh 
 	 then
@@ -148,6 +152,14 @@ else
 		nginx &
 	    echo  " $!" >>  $PID_FILE
 	fi
+	
+elif test -f /home/engines/scripts/blocking.sh 
+	 then
+		/home/engines/scripts/blocking.sh  &
+	    echo  " $!" >>  $PID_FILE		   
+else
+ echo "Nothing else to run!"
+ exit
 fi
 
 		

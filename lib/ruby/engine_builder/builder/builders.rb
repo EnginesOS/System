@@ -1,14 +1,14 @@
 module Builders
   require_relative '../service_builder/service_builder.rb'
- 
-  require_relative 'builder_blueprint.rb' 
+  require_relative 'builder_public.rb'
+  require_relative 'builder_blueprint.rb'
   include BuilderBluePrint
-  
+
   require_relative 'engine_scripts_builder.rb'
   include EngineScriptsBuilder
-  
+
   require_relative 'base_image.rb'
-  require_relative 'build_image.rb' 
+  require_relative 'build_image.rb'
   require_relative 'physical_checks.rb'
   
   def setup_build
@@ -19,7 +19,7 @@ module Builders
     @web_port = SystemConfig.default_webport
     @memory = @build_params[:memory]
     @app_is_persistent = false
-    @result_mesg = 'Aborted Due to Errors'
+    @result_mesg = 'Incomplete'
     @first_build = true
     @attached_services = []
     create_templater
@@ -43,7 +43,7 @@ module Builders
     log_exception(e)
     raise e
   end
-  
+
   def rebuild_managed_container(engine)
     @engine = engine
     @rebuild = true
@@ -51,6 +51,8 @@ module Builders
     backup_lastbuild
     setup_rebuild
     build_container
+    save_build_result
+    close_all
   end
 
   def build_container
@@ -63,11 +65,9 @@ module Builders
     setup_engine_dirs
     create_engine_image
     GC::OOB.run
-    create_engine_container
+    @container = create_engine_container
     @service_builder.release_orphans
     #  wait_for_engine
-    save_build_result
-    close_all
     #   SystemStatus.build_complete(@build_params)
     @container
   rescue StandardError => e
@@ -97,11 +97,12 @@ module Builders
     get_blueprint_from_repo
     log_build_output('Cloned Blueprint')
     build_container
+    save_build_result
+    close_all
   rescue StandardError => e
     post_failed_build_clean_up
     log_exception(e)
   end
-  
 
   def post_failed_build_clean_up
     SystemStatus.build_failed(@build_params)
@@ -137,5 +138,27 @@ module Builders
     SystemDebug.debug(SystemDebug.builder,'Roll Back Complete')
     close_all
   end
+
   
+def save_build_result
+  @result_mesg = 'Build Successful'
+  log_build_output('Build Successful')
+  build_report = generate_build_report(@templater, @blueprint)
+  @core_api.save_build_report(@container, build_report)
+  FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.out', ContainerStateFiles.container_state_dir(@container) + '/build.log')
+  FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.err', ContainerStateFiles.container_state_dir(@container) + '/build.err')
+  true
+end
+
+def create_templater
+  @templater = Templater.new(@core_api.system_value_access, BuilderPublic.new(self))
+end
+
+  #app_is_persistent
+  #used by builder public
+  def running_logs()
+    return 'not yet' if @container.nil?
+    @container.wait_for_startup(25)
+    @container.logs_container
+  end
 end
