@@ -115,9 +115,6 @@ class EngineBuilder < ErrorsApi
     @blueprint_reader.environments.push(EnvironmentVariable.new('LC_ALL', lang.to_s + '_' + country.to_s + '.UTF8'))
   end
 
-
-
-
   def engine_environment
     @blueprint_reader.environments
   end
