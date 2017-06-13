@@ -46,6 +46,7 @@ module DockerEvents
     when 'utility'
       mask |= 16384
     end
+    STDERR.puts(' MASK ' + mask.to_s)
     pipe_in, pipe_out = IO.pipe
     Timeout::timeout(timeout) do
       event_listener = WaitForContainerListener.new(what, pipe_out, mask)
