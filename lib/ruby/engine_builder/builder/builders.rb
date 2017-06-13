@@ -79,7 +79,7 @@ module Builders
     raise e
   ensure
     File.delete('/opt/engines/run/system/flags/building_params') if File.exist?('/opt/engines/run/system/flags/building_params')
-    close_all
+  #  close_all
   end
 
   def setup_rebuild

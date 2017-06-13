@@ -8,10 +8,13 @@ function wait_for_debug {
 if ! test -z "$Engines_Debug_Run"
  then
 		echo "Stopped by Sleeping for 500 seconds to allow debuging"
-  	 	sleep 500
+  	 	sleep 500 &
+  	 	echo " $!" >> $PID_FILE
+  	 	wait
   	 fi  	 
  }
-  	 
+  
+function volume_setup {	 
 if test  ! -f /engines/var/run/flags/volume_setup_complete
    then
    echo "Waiting for Volume setup to Complete "
@@ -22,7 +25,8 @@ if test  ! -f /engines/var/run/flags/volume_setup_complete
  	 done
  	 echo "Volume setup to Complete "
 fi
-  
+}
+ function dynamic_persistence {	  
 if test -f "$VOLDIR/.dynamic_persistence"
   then
 	if ! test -f /home/app/.dynamic_persistence_restored
@@ -31,19 +35,10 @@ if test -f "$VOLDIR/.dynamic_persistence"
  		 echo "Dynamic persistence restore Complete "
  	fi
  fi
+}
 
-if test -f /home/_init.sh
- 	then
- 		/home/_init.sh
-fi
 
-#if test -f /engines/var/lang
-#	then
-#		LANG=`head -1 /engines/var/lang`
-#		export LC_ALL=$LANG
-#		export LANG
-#fi
-
+function first_run {
 if ! test -f /engines/var/run/flags/first_run_done
  then
 	 touch /engines/var/run/flags/first_run_done
@@ -58,8 +53,10 @@ if ! test -f /engines/var/run/flags/first_run_done
 				touch /engines/var/run/flags/post_install.done
 			  fi
 		fi
-fi		
-	
+fi	
+}
+
+function restart_required {	
 if test -f /engines/var/run/flags/restart_required 
  then
   if test -f /engines/var/run/flags/started_once
@@ -69,16 +66,9 @@ if test -f /engines/var/run/flags/restart_required
   	touch  /engines/var/run/flags/started_once
   fi
 fi
- 
+}
 
-#drop for custom start as if custom start no blocking then it is pre running
-if test -f /home/engines/scripts/pre-running.sh
- then
-	echo "launch pre running"
-	bash /home/engines/scripts/pre-running.sh
-fi	
-
-
+function custom_start {
 #if not blocking continues
 if test -f /home/engines/scripts/custom_start.sh
  then
@@ -90,6 +80,77 @@ if test -f /home/engines/scripts/custom_start.sh
 			exit
 	  fi
 fi
+}
+
+function pre_running {
+if test -f /home/engines/scripts/pre-running.sh
+ then
+	echo "launch pre running"
+	bash /home/engines/scripts/pre-running.sh
+fi	
+}
+
+function start_apache {
+mkdir -p /var/log/apache2/ >& /dev/null
+	if test -f /home/engines/scripts/blocking.sh 
+		then
+		   /usr/sbin/apache2ctl -DFOREGROUND &
+	       echo  " $!" >>  $PID_FILE
+		   /home/engines/scripts/blocking.sh  &
+		   echo  " $!" >> $PID_FILE
+	else		
+		  /usr/sbin/apache2ctl -DFOREGROUND &
+	      echo  " $!" >>  $PID_FILE
+	fi
+}
+
+function configure_passenger {
+       cp /home/ruby_env /home/.env_vars
+        for env_name in `cat /home/app.env `
+  	     do
+   		   if ! test -z  "${!env_name}"
+            then
+        	  #val=`echo ${!env_name} | sed "/ /s//\\ /g"`
+  	      	  echo  "passenger_env_var $env_name \"${!env_name}\";"   >> /home/.env_vars
+  	       fi
+  	     done
+       echo " passenger_env_var RAILS_ENV $RAILS_ENV;" >> /home/.env_vars
+       echo " passenger_env_var SECRET_KEY_BASE $SECRET_KEY_BASE;" >> /home/.env_vars
+ }
+ 
+function start_nginx {
+
+	 	mkdir /var/log/nginx >& /dev/null
+     if test -f /home/ruby_env 
+      then
+        configure_passenger
+	fi
+	
+	if test -f /home/engines/scripts/blocking.sh 
+	 then
+		nginx &
+	    echo  " $!" >>  $PID_FILE
+		 /home/engines/scripts/blocking.sh  &
+		 echo  " $!" >>  $PID_FILE
+	else		
+		nginx &
+	    echo  " $!" >>  $PID_FILE
+	fi
+}
+
+volume_setup
+dynamic_persistence
+
+if test -f /home/_init.sh
+ 	then
+ 		/home/_init.sh
+fi
+
+first_run
+restart_required
+pre_running
+custom_start
+
 
 #for non apache framework (or use custom start)
 if test -f /home/startwebapp.sh 
@@ -110,48 +171,10 @@ fi
 
 if test -f /usr/sbin/apache2ctl
  then
-	mkdir -p /var/log/apache2/ >/dev/null
-	if test -f /home/engines/scripts/blocking.sh 
-		then
-		   /usr/sbin/apache2ctl -DFOREGROUND &
-	       echo  " $!" >>  $PID_FILE
-		   /home/engines/scripts/blocking.sh  &
-		   echo  " $!" >> $PID_FILE
-	else		
-		  /usr/sbin/apache2ctl -DFOREGROUND &
-	      echo  " $!" >>  $PID_FILE
-	fi
-elif if test -f /etc/nginx
+	start_apache
+elif test -f /etc/nginx
  then
-	 if ! test -d /var/log/nginx
-	  then
-	 	mkdir /var/log/nginx
-	 fi
-     if test -f /home/ruby_env 
-      then
-       cp /home/ruby_env /home/.env_vars
-        for env_name in `cat /home/app.env `
-  	     do
-   		   if ! test -z  "${!env_name}"
-            then
-        	  #val=`echo ${!env_name} | sed "/ /s//\\ /g"`
-  	      	  echo  "passenger_env_var $env_name \"${!env_name}\";"   >> /home/.env_vars
-  	       fi
-  	     done
-       echo " passenger_env_var RAILS_ENV $RAILS_ENV;" >> /home/.env_vars
-       echo " passenger_env_var SECRET_KEY_BASE $SECRET_KEY_BASE;" >> /home/.env_vars
-	fi
-	
-	if test -f /home/engines/scripts/blocking.sh 
-	 then
-		nginx &
-	    echo  " $!" >>  $PID_FILE
-		 /home/engines/scripts/blocking.sh  &
-		 echo  " $!" >>  $PID_FILE
-	else		
-		nginx &
-	    echo  " $!" >>  $PID_FILE
-	fi
+	 start_nginx
 	
 elif test -f /home/engines/scripts/blocking.sh 
 	 then
