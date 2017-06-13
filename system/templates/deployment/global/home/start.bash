@@ -121,7 +121,8 @@ if test -f /usr/sbin/apache2ctl
 		  /usr/sbin/apache2ctl -DFOREGROUND &
 	      echo  " $!" >>  $PID_FILE
 	fi
-else
+elif if test -f /etc/nginx
+ then
 	 if ! test -d /var/log/nginx
 	  then
 	 	mkdir /var/log/nginx
