@@ -38,15 +38,14 @@ class DockerFileBuilder
     @in_run = false
     write_environment_variables
     write_stack_env
-    write_file_service    
+    write_file_service
     set_user('0')
     write_user_local = true
-    setup_user_local if write_user_local       
+    setup_user_local if write_user_local
     write_repos
     write_os_packages
     write_modules
 
-    
     # set_user('0')
 
     #write_run_start
@@ -141,32 +140,35 @@ class DockerFileBuilder
   end
 
   def write_clear_env_variables
-    write_comment('#Clear env')
-    return true if @blueprint_reader.environments.nil?
-    @blueprint_reader.environments.each do |env|
-      write_env(env.name, '.') if env.build_time_only
+    unless @blueprint_reader.environments.nil?
+      write_comment('#Clear env')
+      @blueprint_reader.environments.each do |env|
+        write_env(env.name, '.') if env.build_time_only
+      end
     end
   end
 
   def write_environment_variables
-    return true if @blueprint_reader.environments.nil?
-    write_comment('#Environment Variables')
-    @blueprint_reader.environments.each do |env|   
-      write_env(env.name,env.value.to_s) if env.value.nil? == false && env.value.to_s.length > 0 # env statement must have two arguments
+    unless @blueprint_reader.environments.nil?
+      write_comment('#Environment Variables')
+      @blueprint_reader.environments.each do |env|
+        write_env(env.name,env.value.to_s) if env.value.nil? == false && env.value.to_s.length > 0 # env statement must have two arguments
+      end
+      write_env('WWW_DIR', @blueprint_reader.web_root.to_s) unless @blueprint_reader.web_root.nil?
     end
-    write_env('WWW_DIR', @blueprint_reader.web_root.to_s) unless @blueprint_reader.web_root.nil?
   end
 
   def write_persistent_dirs
-    log_build_output('setup persistent Dirs')
-    return true if @blueprint_reader.persistent_dirs.nil?
-    paths = ''
-    write_comment('#Persistant Dirs')
-    @blueprint_reader.persistent_dirs.each do |path|
-      path.chomp!('/')
-      paths += path + ' ' unless path.nil?
+    unless @blueprint_reader.persistent_dirs.nil?
+      log_build_output('setup persistent Dirs')
+      paths = ''
+      write_comment('#Persistant Dirs')
+      @blueprint_reader.persistent_dirs.each do |path|
+        path.chomp!('/')
+        paths += path + ' ' unless path.nil?
+      end
+      write_build_script('persistent_dirs.sh  ' + paths)
     end
-    write_build_script('persistent_dirs.sh  ' + paths)
   end
 
   def write_data_permissions
@@ -182,33 +184,34 @@ class DockerFileBuilder
   end
 
   def write_database_seed
-    if @blueprint_reader.database_seed.nil? == false && @blueprint_reader.database_seed != ''
+    unless @blueprint_reader.database_seed.nil? == false || @blueprint_reader.database_seed != ''
       ConfigFileWriter.write_templated_file(@builder.templater, @builder.basedir + '/home/database_seed', @blueprint_reader.database_seed)
     end
   end
 
   def write_persistent_files
-    write_comment('#Persistant Files')
-    return true if @blueprint_reader.persistent_files.nil?
-    log_build_output('set setup_env')
-    paths = ''
-    src_paths = @blueprint_reader.persistent_files[:src_paths]
-    return if src_paths.nil?
-    src_paths.each do |path|
-      dir = File.dirname(path)
-      file = File.basename(path)
-      SystemDebug.debug(SystemDebug.builder, :dir, dir)
-      if dir.is_a?(String) == false || dir.length == 0 || dir == '.' || dir == '..'
-        path = 'app/' + file
+    unless @blueprint_reader.persistent_files.nil?
+      write_comment('#Persistant Files')
+      log_build_output('set setup_env')
+      paths = ''
+      src_paths = @blueprint_reader.persistent_files[:src_paths]
+      return if src_paths.nil?
+      src_paths.each do |path|
+        dir = File.dirname(path)
+        file = File.basename(path)
+        SystemDebug.debug(SystemDebug.builder, :dir, dir)
+        if dir.is_a?(String) == false || dir.length == 0 || dir == '.' || dir == '..'
+          path = 'app/' + file
+        end
+        paths += path + ' '
       end
-      paths += path + ' '
+      write_build_script('persistent_files.sh   ' + paths)
     end
-    write_build_script('persistent_files.sh   ' + paths)
   end
 
   def write_file_service
-    write_comment('#File Service')
-    if  @builder.volumes.count >0
+    unless @builder.volumes.empty?
+      write_comment('#File Service')
       @builder.volumes.each_value do |vol|
         dest = File.basename(vol[:remotepath])
         write_comment('#FS Env')
@@ -219,43 +222,44 @@ class DockerFileBuilder
   end
 
   def write_sed_strings
-    n = 0
-    write_comment('#Sed Strings')
-    return true if @blueprint_reader.sed_strings.nil?
-
-    @blueprint_reader.sed_strings[:src_file].each do |src_file|
-      # src_file = @sed_strings[:src_file][n]
-      dest_file = @blueprint_reader.sed_strings[:dest_file][n]
-      sed_str = @blueprint_reader.sed_strings[:sed_str][n]
-      tmp_file = @blueprint_reader.sed_strings[:tmp_file][n]
-      write_run_line('cat ' + src_file + " | sed \"" + sed_str + "\" > " + tmp_file)
-      write_run_line('cp ' + tmp_file + ' ' + dest_file)
-      n += 1
+    unless @blueprint_reader.sed_strings.nil?
+      n = 0
+      write_comment('#Sed Strings')
+      @blueprint_reader.sed_strings[:src_file].each do |src_file|
+        # src_file = @sed_strings[:src_file][n]
+        dest_file = @blueprint_reader.sed_strings[:dest_file][n]
+        sed_str = @blueprint_reader.sed_strings[:sed_str][n]
+        tmp_file = @blueprint_reader.sed_strings[:tmp_file][n]
+        write_run_line('cat ' + src_file + " | sed \"" + sed_str + "\" > " + tmp_file)
+        write_run_line('cp ' + tmp_file + ' ' + dest_file)
+        n += 1
+      end
     end
   end
 
   def write_repos
-    return unless @blueprint_reader.respond_to?(:external_repositories)
-    return if @blueprint_reader.external_repositories.nil? || @blueprint_reader.external_repositories.empty?
-    write_comment('#Repositories')
-    @blueprint_reader.external_repositories.each do |repo|
-      next unless repo.key?(:source)
-      write_run_line('add-apt-repository  -y  ' + repo[:source])
+    unless @blueprint_reader.respond_to?(:external_repositories) || @blueprint_reader.external_repositories.nil? || @blueprint_reader.external_repositories.empty?
+      write_comment('#Repositories')
+      @blueprint_reader.external_repositories.each do |repo|
+        next unless repo.key?(:source)
+        write_run_line('add-apt-repository  -y  ' + repo[:source])
+      end
+      write_run_line('apt-get -y update ')
     end
-    write_run_line('apt-get -y update ')
   end
 
   def write_os_packages
-    packages = ''
-    write_comment('#OS Packages')
-    return true if @blueprint_reader.os_packages.nil?
-    @blueprint_reader.os_packages.each do |package|
-      if package.nil? == false
-        packages = packages + package + ' '
+    unless @blueprint_reader.os_packages.nil?
+      packages = ''
+      write_comment('#OS Packages')
+      @blueprint_reader.os_packages.each do |package|
+        if package.nil? == false
+          packages = packages + package + ' '
+        end
       end
-    end
-    if packages.length > 1
-      write_run_line('apt-get install -y ' + packages)
+      if packages.length > 1
+        write_run_line('apt-get install -y ' + packages)
+      end
     end
   end
 
@@ -274,57 +278,60 @@ class DockerFileBuilder
   end
 
   def write_write_permissions_single
-    write_comment('#Write Permissions Non Recursive')
-    log_build_output('Dockerfile:Write Permissions Non Recursive')
-    return true if @blueprint_reader.single_chmods.nil? == true
-    paths = ''
-    @blueprint_reader.single_chmods.each do |path|
-      paths += path + ' ' unless path.nil?
+    unless @blueprint_reader.single_chmods.nil? == true
+      write_comment('#Write Permissions Non Recursive')
+      log_build_output('Dockerfile:Write Permissions Non Recursive')
+      paths = ''
+      @blueprint_reader.single_chmods.each do |path|
+        paths += path + ' ' unless path.nil?
+      end
+      write_run_line('/build_scripts/write_permissions.sh ' + paths)
     end
-    write_run_line('/build_scripts/write_permissions.sh ' + paths)
   end
 
   def write_write_permissions_recursive
-    write_comment('#Write Permissions  Recursive')
-    log_build_output('Dockerfile:Write Permissions Recursive')
-    return true if @blueprint_reader.recursive_chmods.nil? == true
-    dirs = ''
-    @blueprint_reader.recursive_chmods.each do |directory|
-      dirs += directory + ' ' unless directory.nil?
+    unless @blueprint_reader.recursive_chmods.nil?
+      write_comment('#Write Permissions  Recursive')
+      log_build_output('Dockerfile:Write Permissions Recursive')
+      dirs = ''
+      @blueprint_reader.recursive_chmods.each do |directory|
+        dirs += directory + ' ' unless directory.nil?
+      end
+      write_run_line('/build_scripts/recursive_write_permissions.sh ' + dirs)
     end
-    write_run_line('/build_scripts/recursive_write_permissions.sh ' + dirs)
   end
 
   def write_app_archives
-    return true if @blueprint_reader.archives_details.nil?
-    write_comment('#App Archives')
-    log_build_output('Dockerfile:App Archives')
-    @blueprint_reader.archives_details.each do |archive_details|
-      next if archive_details[:extraction_command] == 'docker'
-      source_url = archive_details[:source_url].to_s
-      package_name = archive_details[:package_name].to_s
-      destination = archive_details[:destination].to_s
-      extraction_command = archive_details[:extraction_command].to_s
-      path_to_extracted = archive_details[:path_to_extracted].to_s
-      if destination == './' || destination == '/'
-        destination = ''
-      elsif destination.end_with?('/')
-        arc_loc = destination.chop # note not String#chop
+    unless @blueprint_reader.archives_details.nil?
+      write_comment('#App Archives')
+      log_build_output('Dockerfile:App Archives')
+      @blueprint_reader.archives_details.each do |archive_details|
+        next if archive_details[:extraction_command] == 'docker'
+        source_url = archive_details[:source_url].to_s
+        package_name = archive_details[:package_name].to_s
+        destination = archive_details[:destination].to_s
+        extraction_command = archive_details[:extraction_command].to_s
+        path_to_extracted = archive_details[:path_to_extracted].to_s
+        if destination == './' || destination == '/'
+          destination = ''
+        elsif destination.end_with?('/')
+          arc_loc = destination.chop # note not String#chop
+        end
+
+        # Destination can be /opt/ /home/app /home/fs/ /home/local/
+        # If none of teh above then it is prefixed with /home/app
+        destination = '/home/app/' + destination.to_s  unless destination.start_with?('/opt') || destination.start_with?('/home/fs') || destination.start_with?('/home/app') || destination.start_with?('/home/local')
+        destination = '/home/app' if destination.to_s == '/home/app/' || destination == '/'  || destination == './'  || destination == ''
+
+        path_to_extracted ='/' if path_to_extracted.nil? || path_to_extracted == ''
+
+        args = ' \'' + source_url + '\' '
+        args += ' \'' + package_name + '\' '
+        args += ' \'' + extraction_command + '\' '
+        args += ' \'' + destination + '\' '
+        args += ' \'' + path_to_extracted + '\' '
+        write_run_line('/build_scripts/package_installer.sh ' + args)
       end
-
-      # Destination can be /opt/ /home/app /home/fs/ /home/local/
-      # If none of teh above then it is prefixed with /home/app
-      destination = '/home/app/' + destination.to_s  unless destination.start_with?('/opt') || destination.start_with?('/home/fs') || destination.start_with?('/home/app') || destination.start_with?('/home/local')
-      destination = '/home/app' if destination.to_s == '/home/app/' || destination == '/'  || destination == './'  || destination == ''
-
-      path_to_extracted ='/' if path_to_extracted.nil? || path_to_extracted == ''
-
-      args = ' \'' + source_url + '\' '
-      args += ' \'' + package_name + '\' '
-      args += ' \'' + extraction_command + '\' '
-      args += ' \'' + destination + '\' '
-      args += ' \'' + path_to_extracted + '\' '
-      write_run_line('/build_scripts/package_installer.sh ' + args)
     end
   end
 
@@ -351,18 +358,19 @@ class DockerFileBuilder
     write_env('PORT', @web_port.to_s)
     wports = ''
     n = 0
-    return false if @blueprint_reader.mapped_ports.nil?
-    @blueprint_reader.mapped_ports.each_value do |port|
-      if n < 0
-        wports += ' '
+    unless @blueprint_reader.mapped_ports.nil?
+      @blueprint_reader.mapped_ports.each_value do |port|
+        if n < 0
+          wports += ' '
+        end
+        write_expose(port[:port].to_s)
+        count_layer
+        wports += port[:port].to_s + ' '
+        n += 1
       end
-      write_expose(port[:port].to_s)
-      count_layer
-      wports += port[:port].to_s + ' '
-      n += 1
-    end
-    if wports.length > 0
-      write_env('WorkerPorts', wports)
+      if wports.length > 0
+        write_env('WorkerPorts', wports)
+      end
     end
   end
 
