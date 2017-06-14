@@ -57,4 +57,7 @@ module ContainerStatus
     true
   end
 
+  def to_s
+    @container_name + ':' + @ctype
+  end
 end
