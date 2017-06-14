@@ -33,15 +33,15 @@ module SmServiceControl
     #  STDERR.puts('delete_service ' + complete_service_query.to_s)
     service_hash = retrieve_engine_service_hash(complete_service_query)
     return service_hash unless service_hash.is_a?(Hash)
-
     if service_hash[:shared] == true
       remove_shared_service_from_engine(service_query)
-      return system_registry_client.remove_from_managed_engine(service_hash)
+      #return system_registry_client.remove_from_managed_engine(service_hash)
+    else
+      service_hash[:remove_all_data] = service_query[:remove_all_data]
+      remove_from_managed_service(service_hash) ## continue if service_query.key?(:force)
+      system_registry_client.remove_from_managed_engine(service_hash)
+      system_registry_client.remove_from_services_registry(service_hash)
     end
-    service_hash[:remove_all_data] = service_query[:remove_all_data]
-    remove_from_managed_service(service_hash) ## continue if service_query.key?(:force)
-    system_registry_client.remove_from_managed_engine(service_hash)
-    system_registry_client.remove_from_services_registry(service_hash)
   end
 
   def update_attached_service(params)
@@ -60,7 +60,7 @@ module SmServiceControl
     extisting_variables = retrieve_engine_service_hash(params)[:variables]
     # STDERR.puts('UPDATing to ' + extisting_variables.to_s)
     # STDERR.puts('UP DATEONG WITH  ' + params.to_s)
-    params[:variables] = extisting_variables.merge!(params[:variables])      
+    params[:variables] = extisting_variables.merge!(params[:variables])
     update_on_managed_service(params)
     # STDERR.puts('UPDAED ' + params.to_s)
     system_registry_client.update_attached_service(params)
