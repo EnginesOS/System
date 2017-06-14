@@ -112,9 +112,9 @@ class DockerEventWatcher < ErrorsApi
           STDERR.puts('DOCKER SENT UNKNOWN ' + hash.to_s) unless hash.is_a?(Hash)
           next unless hash.is_a?(Hash)
           next if hash.key?(:from) && hash[:from].length >= 64
-          # t = Thread.new {trigger(hash)}
-          # t[:name] = 'trigger'
-          trigger(hash)
+           t = Thread.new {trigger(hash)}
+           t[:name] = 'trigger'
+          #trigger(hash)
         rescue StandardError => e
           STDERR.puts('EXCEPTION Chunk error on docker Event Stream _' + chunk.to_s + '_')
           log_error_mesg('EXCEPTION Chunk error on docker Event Stream _' + chunk.to_s + '_')
