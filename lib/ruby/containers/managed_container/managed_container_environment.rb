@@ -8,7 +8,7 @@ module ManagedContainerEnvironment
         SystemDebug.debug(SystemDebug.containers, :update_environment, "Changed")
         raise EnginesException.new(error_hash('Locked variable ', environment.name ))  if environment.immutable == true
         environment.value = value
-        return
+        break
       end
     end
 

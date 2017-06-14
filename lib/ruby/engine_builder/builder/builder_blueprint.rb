@@ -29,7 +29,6 @@ module BuilderBluePrint
 
   def get_blueprint_from_repo
     log_build_output('Backup last build')
-    backup_lastbuild
     log_build_output('Cloning Blueprint')
     clone_repo
   end

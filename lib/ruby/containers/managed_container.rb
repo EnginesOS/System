@@ -65,7 +65,7 @@ class ManagedContainer < Container
   end
 
   def to_s
-    @container_name.to_s + '-set to:' +  @setState + ':' + status.to_s
+    @container_name.to_s + '-set to:' +  @setState + ':' + status.to_s + ':' + @ctype
   end
 
   def status

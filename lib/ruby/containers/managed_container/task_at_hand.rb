@@ -18,9 +18,11 @@ module TaskAtHand
   def in_progress(action)
     curr_state = read_state
     final_state = tasks_final_state(action)
+    SystemDebug.debug(SystemDebug.engine_tasks, :final_state, final_state)
     if final_state == curr_state && action != 'restart'
       @setState = curr_state
       @container_id ==  -1 if curr_state == 'nocontainer'
+      SystemDebug.debug(SystemDebug.engine_tasks, :curr_state, curr_state)
       return save_state
     end
     if @steps_to_go.nil? || @steps_to_go <= 0
@@ -34,67 +36,63 @@ module TaskAtHand
     # FIX ME Finx the source 0 :->:
     curr_state.sub!(/\:->\:/,'')
     @last_task = action
-
+    r = log_error_mesg(@container_name + ' not in matching state want _' + tasks_final_state(action).to_s + '_but in ' + curr_state.class.name + ' ', curr_state )
     case action
     when :create
-      @steps = [:create,:start]
+      @steps = [:create, :start]
       @steps_to_go = 2
-      return desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
+      r = desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
     when :stop
-      return desired_state(step, final_state, curr_state) if curr_state== 'running'
+      r = desired_state(step, final_state, curr_state) if curr_state== 'running'
     when :start
-      return desired_state(step, final_state, curr_state) if curr_state== 'stopped'
+      r = desired_state(step, final_state, curr_state) if curr_state== 'stopped'
     when :pause
-      return desired_state(step, final_state, curr_state) if curr_state== 'running'
+      r = desired_state(step, final_state, curr_state) if curr_state== 'running'
     when :halt
-      return true
+      r = true
     when :restart
       if curr_state == 'running'
         @steps = [:stop,:start]
         @steps_to_go = 2
-        return desired_state(step, final_state, curr_state)
+        r = desired_state(step, final_state, curr_state)
+      else
+        r = desired_state(step, final_state, curr_state)
       end
-      return desired_state(step, final_state, curr_state)
     when :unpause
-      return desired_state(step, final_state, curr_state) if curr_state== 'paused'
+      r = desired_state(step, final_state, curr_state) if curr_state== 'paused'
     when :recreate
       if curr_state== 'stopped'
         @steps = [:destroy,:create]
         @steps_to_go = 2
-        return desired_state(step, final_state, curr_state)
+        r = desired_state(step, final_state, curr_state)
+      else
+        r = desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
       end
-      return desired_state(step, final_state, curr_state) if  curr_state== 'nocontainer'
-
     when :build
       if curr_state == 'noncontainer'
         @steps = [:build]
         @steps_to_go = 1
-        return desired_state(step, final_state, curr_state)
+        r = desired_state(step, final_state, curr_state)
+      else
+        r = desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
       end
-      return desired_state(step, final_state, curr_state) if  curr_state== 'nocontainer'
-
     when :reinstall
       if curr_state == 'stopped'
-        @steps =  [:destroy,:build]
+        @steps = [:destroy, :build]
         @steps_to_go = 2
-        return desired_state(step, final_state, curr_state)
+        r = desired_state(step, final_state, curr_state)
+      else
+        r = desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
       end
-
-      return desired_state(step, final_state, curr_state) if  curr_state== 'nocontainer'
     when :build
-      return desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
+      r = desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
     when :delete
-      return desired_state(step, final_state, curr_state) if curr_state== 'stopped'
+      r = desired_state(step, final_state, curr_state) if curr_state== 'stopped'
       #  desired_state(@steps, 'noimage')
     when :destroy
-      return desired_state(step, final_state, curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
+      r = desired_state(step, final_state, curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
     end
-
-    return log_error_mesg(@container_name + ' not in matching state want _' + tasks_final_state(action).to_s + '_but in ' + curr_state.class.name + ' ',curr_state )
-
-    # Perhaps ?return clear_task_at_hand
-    # rescue StandardError => e
-    #   log_exception(e)
+    r    
   end
 
   def process_container_event(event_hash)
@@ -143,6 +141,7 @@ module TaskAtHand
 
   def task_at_hand
     fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
+    SystemDebug.debug(SystemDebug.containers, :task_at_handfile, + ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
     return nil unless File.exist?(fn)
     thf = File.new(fn, 'r')
     begin
@@ -150,18 +149,22 @@ module TaskAtHand
       @task_at_hand = thf.read
     ensure
       thf.close
+      nil
     end
-
-    if task_has_expired?(@task_at_hand)
-      expire_task_at_hand
-      return nil
+    unless @task_at_hand.nil?
+      SystemDebug.debug(SystemDebug.containers, :task_at_hand_read_as, @task_at_hand)
+      if task_has_expired?(@task_at_hand)
+        expire_task_at_hand
+        SystemDebug.debug(SystemDebug.containers, :task_at_hand_expired)
+      elsif tasks_final_state(@task_at_hand) == read_state(raw = true)
+        clear_task_at_hand
+        SystemDebug.debug(SystemDebug.containers, :task_at_clear)
+      else
+        SystemDebug.debug(SystemDebug.containers, :task_at_is, @task_at_hand)
+        return @task_at_hand
+      end
     end
-    r = read_state(raw = true)
-    if tasks_final_state(@task_at_hand) == r
-      clear_task_at_hand
-      return nil
-    end
-    @task_at_hand
+    nil
   rescue StandardError => e
     return nil unless File.exist?(fn)
     log_exception(e)
@@ -244,7 +247,7 @@ module TaskAtHand
   def task_has_expired?(task)
     fmtime = File.mtime(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
     mtime = fmtime  + task_set_timeout(task)
-    #SystemDebug.debug(SystemDebug.engine_tasks,mtime,fmtime,task,task_set_timeout(task))
+    SystemDebug.debug(SystemDebug.container, mtime, fmtime, task, task_set_timeout(task))
     if mtime < Time.now
       File.delete(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
       SystemDebug.debug(SystemDebug.engine_tasks, :expired_task, task, ' after ', task_set_timeout(task))
