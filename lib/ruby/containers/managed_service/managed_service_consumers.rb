@@ -50,7 +50,6 @@ module ManagedServiceConsumers
     # raise EnginesException.new(error_hash('Cant register consumers as not running ', self.container_name))  if is_running? == false
     registered_hashes = registered_consumers
     if registered_hashes.is_a?(Array)
-      wait_for_startup
       registered_hashes.each do |service_hash|
         add_consumer_to_service(service_hash) if service_hash[:persistent] == false
       end
@@ -64,9 +63,7 @@ module ManagedServiceConsumers
     result = false
     # add/create persistent if fresh == true on not at all or if running create for no persistent
     return true if !is_running? && @soft_service
-
     raise EnginesException.new(error_hash('service not running', @container_name)) unless is_running?
-    wait_for_startup
     unless service_hash[:persistent]
       result = add_consumer_to_service(service_hash)
     else

@@ -16,7 +16,8 @@ module EngineApiDependancies
           raise EnginesException.new(error_hash('Failed to create ', service_name)) unless service.create_service
         end
       end
-      raise EnginesException.new(error_hash('Time out in waiting for Service Dependancy ' + service_name + ' to start ', service_name)) unless wait_for_startup(service, 120)
+      raise EnginesException.new(error_hash('Time out in waiting for Service Dependancy to start' + service_name + ' to start ', service_name)) unless wait_for(service, 'start', 20)
+      raise EnginesException.new(error_hash('Time out in waiting for Service Dependancy Service startup' + service_name + ' to start ', service_name)) unless wait_for_startup(service, 120)
     end
   end
 end

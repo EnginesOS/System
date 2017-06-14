@@ -22,6 +22,7 @@ docker stop registry
 
 docker start registry 
 count=0
+/opt/engines/bin/system_service.rb registry wait_for start 20
 /opt/engines/bin/system_service.rb registry wait_for_startup 120
 #  while ! test -f /opt/engines/run/system_services/registry/run/flags/startup_complete
 #  do 
@@ -38,6 +39,7 @@ count=0
 
 
 docker start system 
+/opt/engines/bin/system_service.rb system wait_for start 20
 /opt/engines/bin/system_service.rb system wait_for_startup 120
 #    while ! test -f /opt/engines/run/system_services/system/run/flags/startup_complete
 #  do 

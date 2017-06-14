@@ -69,6 +69,7 @@ if test `/opt/engines/bin/system_service.rb registry state` = nocontainer
   else
   	/opt/engines/bin/system_service.rb registry start
   fi
+  /opt/engines/bin/system_service.rb registry wait_for start 30
 /opt/engines/bin/system_service.rb registry wait_for_startup 60
 
 if test `/opt/engines/bin/system_service.rb system state` = nocontainer
@@ -80,7 +81,8 @@ if test `/opt/engines/bin/system_service.rb system state` = nocontainer
   then
 	/opt/engines/bin/system_service.rb system start
  fi
-/opt/engines/bin/system_service.rb registry wait_for_startup 60
+  /opt/engines/bin/system_service.rb system wait_for start 30
+/opt/engines/bin/system_service.rb system wait_for_startup 60
 
 
 /opt/engines/bin/engines service dns start 
