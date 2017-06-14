@@ -34,9 +34,14 @@ module EnginesOperations
   def remove_engine_services(params)
     SystemDebug.debug(SystemDebug.containers, :delete_engines, params)
     params[:container_type] = 'container'
+    params[:no_exceptions] = true
     #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
     begin
       service_manager.remove_managed_persistent_services(params)
+      rescue EnginesException => e
+        raise e unless e.is_a_warning?
+    end
+    begin
       service_manager.remove_engine_non_persistent_services(params)
     rescue EnginesException => e
       raise e unless e.is_a_warning?

@@ -123,6 +123,7 @@ module Builders
           @container.delete_image if @container.has_image?
         end
         @service_builder.service_roll_back
+        @build_params[:rollback]
         @core_api.delete_engine_and_services(@build_params)
       rescue
         #dont panic if no container

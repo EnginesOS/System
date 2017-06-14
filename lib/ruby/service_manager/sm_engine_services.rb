@@ -141,9 +141,11 @@ module SmEngineServices
       SystemDebug.debug(SystemDebug.services, :remove_service, service)
       if params[:remove_all_data] == 'all' || service[:shared] #&& ! (service.key?(:shared) && service[:shared])
         service[:remove_all_data] = params[:remove_all_data]
+        service[:force] = true if params.key?(:force)
         begin
           delete_and_remove_service(service)
-        rescue
+        rescue StandardError => e
+          STDERR.puts(' remove_managed_persistent_services ' + e.to_s)
           next
         end
       else

@@ -35,10 +35,13 @@ module SmServiceControl
     raise EnginesException.new(error_hash('Not Matching Service to remove', complete_service_query)) unless service_hash.is_a?(Hash)
     if service_hash[:shared] == true
       remove_shared_service_from_engine(service_query)
-      #return system_registry_client.remove_from_managed_engine(service_hash)
     else
       service_hash[:remove_all_data] = service_query[:remove_all_data]
-      remove_from_managed_service(service_hash) ## continue if service_query.key?(:force)
+      begin
+        remove_from_managed_service(service_hash) ## continue if 
+      rescue StandardError => e
+        raise e unless service_query.key?(:force)
+      end
       system_registry_client.remove_from_managed_engine(service_hash)
       system_registry_client.remove_from_services_registry(service_hash)
     end
