@@ -159,13 +159,13 @@ module ManagedContainerControls
   private
 
   def prep_task(action_sym)
-    unless task_at_hand.nil?
-      SystemDebug.debug(SystemDebug.containers, 'saved task at hand', task_at_hand, 'next', action_sym)
+    tah = task_at_hand
+    unless tah.nil?
+      SystemDebug.debug(SystemDebug.containers, 'saved task at hand', tah, 'next', action_sym)
     end
-    SystemDebug.debug(SystemDebug.containers, :current_tah_prep_task, task_at_hand)    
+    SystemDebug.debug(SystemDebug.containers, :current_tah_prep_task, tah)    
     unless in_progress(action_sym)
       SystemDebug.debug(SystemDebug.containers, :inprogress_run)
-      clear_error
       save_state
     end
   end

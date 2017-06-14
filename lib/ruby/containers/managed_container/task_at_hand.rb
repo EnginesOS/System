@@ -75,7 +75,7 @@ module TaskAtHand
 
     when :reinstall
       if curr_state == 'stopped'
-        @steps =  [:destroy,:build]
+        @steps = [:destroy, :build]
         @steps_to_go = 2
         return desired_state(step, final_state, curr_state)
       end
