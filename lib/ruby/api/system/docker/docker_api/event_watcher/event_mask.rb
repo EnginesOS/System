@@ -37,30 +37,30 @@ class EventMask
         end
       end
 
-      return 0 if event_hash[:status].nil?
-
-      if event_hash[:status].start_with?('exec')
-        mask |= @@container_exec
-      elsif event_hash[:status] == 'delete'
-        mask |= @@container_delete| @@container_action
-      elsif event_hash[:status] == 'destroy'
-        mask |= @@container_delete | @@container_action
-      elsif event_hash[:status] == 'commit'
-        mask |= @@container_commit
-      elsif event_hash[:status] == 'pull'
-        mask |= @@container_pull
-      elsif event_hash[:status] == 'top'
-        mask |= @@container_top
-        #        elsif event_hash['status'] == 'delete'
-        #          mask |= @@container_delete
-      elsif event_hash[:status] == 'die'
-        mask |= @@container_die| @@container_action
-      elsif event_hash[:status] == 'kill'
-        mask |= @@container_kill| @@container_action
-      elsif event_hash[:status] == 'attach'
-        mask |= @@container_attach
-      else
-        mask |= @@container_action
+      unless event_hash[:status].nil?
+        if event_hash[:status].start_with?('exec')
+          mask |= @@container_exec
+        elsif event_hash[:status] == 'delete'
+          mask |= @@container_delete| @@container_action
+        elsif event_hash[:status] == 'destroy'
+          mask |= @@container_delete | @@container_action
+        elsif event_hash[:status] == 'commit'
+          mask |= @@container_commit
+        elsif event_hash[:status] == 'pull'
+          mask |= @@container_pull
+        elsif event_hash[:status] == 'top'
+          mask |= @@container_top
+          #        elsif event_hash['status'] == 'delete'
+          #          mask |= @@container_delete
+        elsif event_hash[:status] == 'die'
+          mask |= @@container_die| @@container_action
+        elsif event_hash[:status] == 'kill'
+          mask |= @@container_kill| @@container_action
+        elsif event_hash[:status] == 'attach'
+          mask |= @@container_attach
+        else
+          mask |= @@container_action
+        end
       end
     elsif event_hash[:Type] = 'image'
       mask |= @@image_event
