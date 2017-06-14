@@ -1,7 +1,7 @@
 module ContainerStatus
   def read_state
     info = docker_info
-    SystemDebug.debug(SystemDebug.containers, :info, info)
+    SystemDebug.debug(SystemDebug.containers, :info)
     return 'nocontainer' unless info.is_a?(Hash)
 
     if info.key?(:State)
