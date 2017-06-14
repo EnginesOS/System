@@ -32,7 +32,7 @@ module SmServiceControl
     complete_service_query = set_top_level_service_params(service_query, service_query[:parent_engine])
     #  STDERR.puts('delete_service ' + complete_service_query.to_s)
     service_hash = retrieve_engine_service_hash(complete_service_query)
-    return service_hash unless service_hash.is_a?(Hash)
+    raise EnginesException.new(error_hash('Not Matching Service to remove', complete_service_query)) unless service_hash.is_a?(Hash)
     if service_hash[:shared] == true
       remove_shared_service_from_engine(service_query)
       #return system_registry_client.remove_from_managed_engine(service_hash)
