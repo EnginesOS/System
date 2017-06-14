@@ -1,8 +1,7 @@
 module EngineScriptsBuilder
-  
+
   require_relative 'configure_services_backup.rb'
   include ConfigureServicesBackup
-  
   def create_scripts
     FileUtils.mkdir_p(basedir + SystemConfig.ScriptsDir)
     create_start_script
@@ -15,36 +14,34 @@ module EngineScriptsBuilder
   end
 
   def create_start_script
-    if @blueprint_reader.custom_start_script
+    unless @blueprint_reader.custom_start_script.nil?
       write_software_script_file(SystemConfig.StartScript, @blueprint_reader.custom_start_script)
     end
   end
 
   def create_stop_script
-    if @blueprint_reader.custom_stop_script
+    unless @blueprint_reader.custom_stop_script.nil?
       write_software_script_file(SystemConfig.StopScript, @blueprint_reader.custom_stop_script)
     end
   end
 
   def create_install_script
-    if @blueprint_reader.custom_install_script
+    unless @blueprint_reader.custom_install_script.nil?
       write_software_script_file(SystemConfig.InstallScript,  @blueprint_reader.custom_install_script)
     end
-
   end
 
   def create_post_install_script
-    if @blueprint_reader.custom_post_install_script
+    unless @blueprint_reader.custom_post_install_script.nil?
       write_software_script_file(SystemConfig.PostInstallScript, @blueprint_reader.custom_post_install_script)
       @has_post_install = true
     end
   end
 
   def create_actionator_scripts
-
+    return true if @blueprint_reader.actionators.nil?
     SystemDebug.debug(SystemDebug.builder| SystemDebug.actions, "creating actionators ", @blueprint_reader.actionators)
     log_build_output('Creating Actionators')
-    return true if @blueprint_reader.actionators.nil?
     destdir = SystemConfig.ActionatorDir
     FileUtils.mkdir_p(basedir + destdir ) unless Dir.exist?(basedir + destdir )
 
@@ -65,6 +62,7 @@ module EngineScriptsBuilder
   end
 
   def write_worker_commands
+    return if @blueprint_reader.worker_commands.nil? 
     log_build_output('Dockerfile:Worker Commands')
     scripts_path =  '/home/engines/scripts/'
     if Dir.exist?(scripts_path) == false

@@ -4,7 +4,7 @@ module Shares
   end
 
   def remove_from_shared_services_registry(shared_service)
-    r = 'shares/del' + address_params(service_hash, [:service_owner, :parent_engine, :service_handle, :publisher_namespace, :type_path])
+    r = 'shares/del' + address_params(shared_service, [:service_owner, :parent_engine, :service_handle, :publisher_namespace, :type_path])
     rest_delete(r)
   end
 
