@@ -18,9 +18,11 @@ module TaskAtHand
   def in_progress(action)
     curr_state = read_state
     final_state = tasks_final_state(action)
+    SystemDebug.debug(SystemDebug.engine_tasks, :final_state, final_state)
     if final_state == curr_state && action != 'restart'
       @setState = curr_state
       @container_id ==  -1 if curr_state == 'nocontainer'
+      SystemDebug.debug(SystemDebug.engine_tasks, :curr_state, curr_state)
       return save_state
     end
     if @steps_to_go.nil? || @steps_to_go <= 0
