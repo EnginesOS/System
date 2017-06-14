@@ -48,7 +48,6 @@ module Builders
     @engine = engine
     @rebuild = true
     log_build_output('Starting Rebuild')
-    backup_lastbuild
     setup_rebuild
     build_container
     save_build_result
@@ -84,7 +83,7 @@ module Builders
 
   def setup_rebuild
     log_build_output('Setting up rebuild')
-    FileUtils.mkdir_p(basedir)
+    create_build_dir
     blueprint = @core_api.load_blueprint(@engine)
     statefile = basedir + '/blueprint.json'
     f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0644)
@@ -93,7 +92,6 @@ module Builders
   end
 
   def build_from_blue_print
-    backup_lastbuild
     get_blueprint_from_repo
     log_build_output('Cloned Blueprint')
     build_container

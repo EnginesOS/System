@@ -54,6 +54,7 @@ module BuildDirSetup
   end
 
   def create_build_dir
+    backup_lastbuild
     FileUtils.mkdir_p(basedir)
   end
 
