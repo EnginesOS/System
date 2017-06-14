@@ -172,7 +172,7 @@ fi
 if test -f /usr/sbin/apache2ctl
  then
 	start_apache
-elif test -f /etc/nginx
+elif test -d /etc/nginx
  then
 	 start_nginx
 	
