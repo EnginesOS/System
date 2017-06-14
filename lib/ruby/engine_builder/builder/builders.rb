@@ -156,6 +156,7 @@ end
   #used by builder public
   def running_logs()
     return 'not yet' if @container.nil?
+    @container.wait_for('start', 25)
     @container.wait_for_startup(25)
     @container.logs_container
   end

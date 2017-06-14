@@ -4,6 +4,7 @@
  /opt/engines/bin/system_service.rb system stop
  /opt/engines/bin/system_service.rb system wait_for stop 30
  /opt/engines/bin/system_service.rb system start
+ /opt/engines/bin/system_service.rb system wait_for_start 25
 res=`/opt/engines/bin/system_service.rb system wait_for_startup 45`
  if test $res = 'false'
   then

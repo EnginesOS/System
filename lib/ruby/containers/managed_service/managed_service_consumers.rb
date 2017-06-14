@@ -14,19 +14,19 @@ module ManagedServiceConsumers
         type_path: @type_path
       }
       alias_services = nil
-        unless @aliases.nil?
-          if @aliases.is_a?(Array)
-            @aliases.each do |type_path|
-              alias_services ||= []
-              params[:type_path] = type_path
-              alias_services  += @container_api.get_registered_consumer(params)
-            end
+      unless @aliases.nil?
+        if @aliases.is_a?(Array)
+          @aliases.each do |type_path|
+            alias_services ||= []
+            params[:type_path] = type_path
+            alias_services  += @container_api.get_registered_consumer(params)
           end
         end
-        unless alias_services.nil?
-          params[:type_path] = @type_path
-          return alias_services + @container_api.registered_with_service(params)
-        end
+      end
+      unless alias_services.nil?
+        params[:type_path] = @type_path
+        return alias_services + @container_api.registered_with_service(params)
+      end
       @container_api.registered_with_service(params)
     else
       registered_consumer(params)
@@ -46,12 +46,13 @@ module ManagedServiceConsumers
 
   def reregister_consumers
     return true if @persistent == true && @soft_service == false
-    return false  unless is_running? == true
-   # raise EnginesException.new(error_hash('Cant register consumers as not running ', self.container_name))  if is_running? == false
+    return false unless is_running? == true
+    # raise EnginesException.new(error_hash('Cant register consumers as not running ', self.container_name))  if is_running? == false
     registered_hashes = registered_consumers
-    return true unless registered_hashes.is_a?(Array)
-    registered_hashes.each do |service_hash|
-      add_consumer_to_service(service_hash) if service_hash[:persistent] == false
+    if registered_hashes.is_a?(Array)
+      registered_hashes.each do |service_hash|
+        add_consumer_to_service(service_hash) if service_hash[:persistent] == false
+      end
     end
     true
   end
@@ -62,9 +63,7 @@ module ManagedServiceConsumers
     result = false
     # add/create persistent if fresh == true on not at all or if running create for no persistent
     return true if !is_running? && @soft_service
-
     raise EnginesException.new(error_hash('service not running', @container_name)) unless is_running?
-    wait_for_startup
     unless service_hash[:persistent]
       result = add_consumer_to_service(service_hash)
     else
@@ -93,12 +92,12 @@ module ManagedServiceConsumers
 
   def add_consumer_to_service(service_hash)
     raise EnginesException.new(error_hash('service missing cont_userid '+ container_name, service_hash)) unless check_cont_uid
-     unless is_startup_complete?
-       STDERR.puts('START UP BOT CPMPLEYE ' )
-       STDERR.puts('soft_service' + @soft_service.to_s)
-       return if @soft_service == true
-    raise EnginesException.new(error_hash('service startup not complete ' + container_name, service_hash))
-     end
+    unless is_startup_complete?
+      STDERR.puts('START UP BOT CPMPLEYE ' )
+      STDERR.puts('soft_service' + @soft_service.to_s)
+      return if @soft_service == true
+      raise EnginesException.new(error_hash('service startup not complete ' + container_name, service_hash))
+    end
     # end
     @container_api.add_consumer_to_service(self, service_hash)
   end

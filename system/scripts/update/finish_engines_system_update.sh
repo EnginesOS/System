@@ -26,6 +26,7 @@ if ! test -d  $system_updates_dir/$update_id
   			docker pull $image
   			rm /opt/engines/run/services/$service/running.yaml*
   		 	/opt/engines/bin/engines service $service recreate  &>>  $system_updates_dir/$update_id/update_log
+  		 	/opt/engines/bin/engines service $service wait_for start 30
 			/opt/engines/bin/engines service $service wait_for_startup 30
   		 done
   fi
@@ -45,6 +46,7 @@ if ! test -d  $system_updates_dir/$update_id
  			/opt/engines/bin/system_service.rb $service create &>> $system_updates_dir/$update_id/update_log
  			/opt/engines/bin/system_service.rb $service wait_for create 20
  			/opt/engines/bin/system_service.rb $service start
+ 			/opt/engines/bin/system_service.rb $service wait_for start 30
  			/opt/engines/bin/system_service.rb $service wait_for_startup 60
   		 done
   fi
