@@ -76,18 +76,20 @@ module ManagedContainerControls
   def unpause_container
     return false unless has_api?
     @container_mutex.synchronize {
-      return false unless (r = prep_task(:unpause))
-      return task_failed('unpause') unless super
-      true
+      unless prep_task(:unpause)
+        return task_failed('unpause') unless super
+        true
+      end
     }
   end
 
   def pause_container
     return false unless has_api?
     @container_mutex.synchronize {
-      return r unless (r = prep_task(:pause))
-      return task_failed('pause') unless super
-      true
+      unless prep_task(:pause)
+        return task_failed('pause') unless super
+        true
+      end
     }
   end
 
@@ -95,26 +97,27 @@ module ManagedContainerControls
     SystemDebug.debug(SystemDebug.containers, :stop_read_sta, read_state)
     return false unless has_api?
     @container_mutex.synchronize {
-      return r unless (r = prep_task(:stop))
-      return task_failed('stop') unless super
-      true
+      unless prep_task(:stop)
+        return task_failed('stop') unless super
+        true
+      end
     }
   end
 
   def halt_container
     @container_mutex.synchronize {
-      return r unless (r = prep_task(:halt))
-      super
+      super unless prep_task(:halt)
     }
   end
 
   def start_container
     return false unless has_api?
     @container_mutex.synchronize {
-      return r unless (r = prep_task(:start))
-      return task_failed('start') unless super
-      @restart_required = false
-      true
+      unless prep_task(:start)
+        return task_failed('start') unless super
+        @restart_required = false
+        true
+      end
     }
   end
 
@@ -128,11 +131,12 @@ module ManagedContainerControls
   def rebuild_container
     return false unless has_api?
     @container_mutex.synchronize {
-      return r unless (r = prep_task(:reinstall))
-      ret_val = @container_api.rebuild_image(self)
-      expire_engine_info
-      return task_failed('rebuild') unless ret_val
-      true
+      unless prep_task(:reinstall)
+        ret_val = @container_api.rebuild_image(self)
+        expire_engine_info
+        return task_failed('rebuild') unless ret_val
+        true
+      end
     }
   end
 
@@ -156,12 +160,13 @@ module ManagedContainerControls
 
   def prep_task(action_sym)
     unless task_at_hand.nil?
-      SystemDebug.debug(SystemDebug.containers,  'saved task at hand', task_at_hand, 'next',action_sym )
+      SystemDebug.debug(SystemDebug.containers, 'saved task at hand', task_at_hand, 'next', action_sym)
     end
-    SystemDebug.debug(SystemDebug.containers,  :current_tah_prep_task, task_at_hand)
-    return r unless (r = in_progress(action_sym))
-    SystemDebug.debug(SystemDebug.containers,  :inprogress_run)
-    clear_error
-    save_state
+    SystemDebug.debug(SystemDebug.containers, :current_tah_prep_task, task_at_hand)
+    unless in_progress(action_sym)
+      SystemDebug.debug(SystemDebug.containers, :inprogress_run)
+      clear_error
+      save_state
+    end
   end
 end
