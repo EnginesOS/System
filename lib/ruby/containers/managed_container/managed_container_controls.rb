@@ -168,5 +168,6 @@ module ManagedContainerControls
       SystemDebug.debug(SystemDebug.containers, :inprogress_run)
       save_state
     end
+    true
   end
 end
