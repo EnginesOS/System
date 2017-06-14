@@ -68,7 +68,7 @@ module ManagedContainerControls
 
   def recreate_container
     return task_failed('destroy/recreate') unless destroy_container
-    wait_for( 'destroy')
+    wait_for('destroy')
     return task_failed('create/recreate') unless create_container
     true
   end
