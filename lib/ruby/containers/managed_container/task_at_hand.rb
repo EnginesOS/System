@@ -36,67 +36,63 @@ module TaskAtHand
     # FIX ME Finx the source 0 :->:
     curr_state.sub!(/\:->\:/,'')
     @last_task = action
-
+    r = log_error_mesg(@container_name + ' not in matching state want _' + tasks_final_state(action).to_s + '_but in ' + curr_state.class.name + ' ', curr_state )
     case action
     when :create
       @steps = [:create, :start]
       @steps_to_go = 2
-      return desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
+      r = desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
     when :stop
-      return desired_state(step, final_state, curr_state) if curr_state== 'running'
+      r = desired_state(step, final_state, curr_state) if curr_state== 'running'
     when :start
-      return desired_state(step, final_state, curr_state) if curr_state== 'stopped'
+      r = desired_state(step, final_state, curr_state) if curr_state== 'stopped'
     when :pause
-      return desired_state(step, final_state, curr_state) if curr_state== 'running'
+      r = desired_state(step, final_state, curr_state) if curr_state== 'running'
     when :halt
-      return true
+      r = true
     when :restart
       if curr_state == 'running'
         @steps = [:stop,:start]
         @steps_to_go = 2
-        return desired_state(step, final_state, curr_state)
+        r = desired_state(step, final_state, curr_state)
+      else
+        r = desired_state(step, final_state, curr_state)
       end
-      return desired_state(step, final_state, curr_state)
     when :unpause
-      return desired_state(step, final_state, curr_state) if curr_state== 'paused'
+      r = desired_state(step, final_state, curr_state) if curr_state== 'paused'
     when :recreate
       if curr_state== 'stopped'
         @steps = [:destroy,:create]
         @steps_to_go = 2
-        return desired_state(step, final_state, curr_state)
+        r = desired_state(step, final_state, curr_state)
+      else
+        r = desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
       end
-      return desired_state(step, final_state, curr_state) if  curr_state== 'nocontainer'
-
     when :build
       if curr_state == 'noncontainer'
         @steps = [:build]
         @steps_to_go = 1
-        return desired_state(step, final_state, curr_state)
+        r = desired_state(step, final_state, curr_state)
+      else
+        r = desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
       end
-      return desired_state(step, final_state, curr_state) if  curr_state== 'nocontainer'
-
     when :reinstall
       if curr_state == 'stopped'
         @steps = [:destroy, :build]
         @steps_to_go = 2
-        return desired_state(step, final_state, curr_state)
+        r = desired_state(step, final_state, curr_state)
+      else
+        r = desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
       end
-
-      return desired_state(step, final_state, curr_state) if  curr_state== 'nocontainer'
     when :build
-      return desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
+      r = desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
     when :delete
-      return desired_state(step, final_state, curr_state) if curr_state== 'stopped'
+      r = desired_state(step, final_state, curr_state) if curr_state== 'stopped'
       #  desired_state(@steps, 'noimage')
     when :destroy
-      return desired_state(step, final_state, curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
+      r = desired_state(step, final_state, curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
     end
-
-    return log_error_mesg(@container_name + ' not in matching state want _' + tasks_final_state(action).to_s + '_but in ' + curr_state.class.name + ' ', curr_state )
-
-    # Perhaps ?return clear_task_at_hand
-    # rescue StandardError => e
-    #   log_exception(e)
+    r    
   end
 
   def process_container_event(event_hash)

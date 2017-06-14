@@ -32,12 +32,12 @@ module ManagedContainerStatus
         @last_error = 'mc got nil from super in read_state'
       end
     end
-    return state if raw == true
-
-    if state != @setState && task_at_hand.nil?
-      @last_error =  ' Warning State Mismatch set to ' + @setState.to_s + ' but in ' + state.to_s + ' state'
-    else
-      @last_error = ''
+    unless raw == true
+      if state != @setState && task_at_hand.nil?
+        @last_error =  ' Warning State Mismatch set to ' + @setState.to_s + ' but in ' + state.to_s + ' state'
+      else
+        @last_error = ''
+      end
     end
     state
   rescue EnginesException =>e

@@ -8,19 +8,19 @@ module ManagedContainerOnAction
       @out_of_memory = false
       if @consumer_less
         @has_run = true
-        return save_state
-      end
-      # MUst register post each start as IP Changes (different post reboot)
-      register_with_dns
-      if  @has_run == false
-        add_nginx_service if @deployment_type == 'web'
-      end
-      @has_run = true
-      save_state
-      begin
-        @container_api.register_non_persistent_services(self)
-      rescue
-        return on_stop(nil) unless is_running?
+      else
+        # MUst register post each start as IP Changes (different post reboot)
+        register_with_dns
+        if  @has_run == false
+          add_nginx_service if @deployment_type == 'web'
+        end
+        @has_run = true
+        save_state
+        begin
+          @container_api.register_non_persistent_services(self)
+        rescue
+          return on_stop(nil) unless is_running?
+        end
       end
       save_state
     }
