@@ -11,7 +11,7 @@ module EngineApiExportImport
     SystemDebug.debug(SystemDebug.export_import, :export_service, cmd)
     begin
       result = {}
-      params = {:container => container, :command_line => [cmd], :log_error => true }
+      params = {container: container, command_line: [cmd], log_error: true }
       params[:stream] =  stream unless stream.nil?
       Timeout.timeout(@@export_timeout) do
         thr = Thread.new { result = @engines_core.exec_in_container(params) }
@@ -28,7 +28,7 @@ module EngineApiExportImport
     end
   end
 
-  def import_service_data(container, service_params, stream=nil)
+  def import_service_data(container, service_params, stream = nil)
     service_hash = service_params[:service_connection]
     SystemDebug.debug(SystemDebug.export_import, :import_service, service_params,service_params[:import_method])
     cmd_dir = SystemConfig.BackupScriptsRoot + '/' + service_hash[:publisher_namespace] + '/' + service_hash[:type_path] + '/' + service_hash[:service_handle] + '/'
@@ -37,13 +37,13 @@ module EngineApiExportImport
     else
       cmd = cmd_dir + '/restore.sh'
     end
-    params = {:container => container, :command_line => [cmd], :log_error => true }
+    params = {container: container, command_line: [cmd], log_error: true }
     unless stream.nil?
-      params[:data_stream] =  stream
+      params[:data_stream] = stream
     else
       params[:data] = Base64.decode64(service_params[:data])
     end
-    SystemDebug.debug(SystemDebug.export_import, :import_service, params,service_params)
+    SystemDebug.debug(SystemDebug.export_import, :import_service, params, service_params)
     begin
       result = {}
       Timeout.timeout(@@export_timeout) do       

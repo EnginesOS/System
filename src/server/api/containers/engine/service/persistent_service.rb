@@ -25,10 +25,11 @@ end
 # @return [true]
 post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/overwrite' do
   begin
-    hash = {}
-    hash[:service_connection] = engine_service_hash_from_params(params)
+    hash = {
+    service_connection: engine_service_hash_from_params(params),
+      datafile: params['file'][:tempfile]      
+    }
     engine = get_engine(params[:engine_name])
-    hash[:datafile] = params['file'][:tempfile]
     return_text(engine.import_service_data(hash, File.new(hash[:datafile].path, 'rb')))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)

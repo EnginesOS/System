@@ -1,6 +1,6 @@
 module ManagedContainerExportImportService
   
-  def import_service_data(service_hash, istream=nil)  
+  def import_service_data(service_hash, istream = nil)  
      @container_api.import_service_data(self, service_hash, istream)
    end
 #   
@@ -8,7 +8,7 @@ module ManagedContainerExportImportService
 #    @container_api.import_replace_service_data(params)
 #  end
   
- def export_service_data(params, ostream=nil)
+ def export_service_data(params, ostream = nil)
    @container_api.export_service_data(self, params, ostream)
  end
 end
