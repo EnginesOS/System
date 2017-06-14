@@ -46,12 +46,14 @@ module ManagedServiceConsumers
 
   def reregister_consumers
     return true if @persistent == true && @soft_service == false
-    return false  unless is_running? == true
+    return false unless is_running? == true
    # raise EnginesException.new(error_hash('Cant register consumers as not running ', self.container_name))  if is_running? == false
     registered_hashes = registered_consumers
-    return true unless registered_hashes.is_a?(Array)
+    if registered_hashes.is_a?(Array)
+      wait_for_startup
     registered_hashes.each do |service_hash|
       add_consumer_to_service(service_hash) if service_hash[:persistent] == false
+    end
     end
     true
   end

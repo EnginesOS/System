@@ -25,9 +25,11 @@ module ManagedServiceOnAction
       end
       save_state
     }
-    wait_for_startup
+   
     service_configurations = @container_api.pending_service_configurations_hashes({service_name: @container_name, publisher_namespace: @publisher_namespace, type_path: @type_path })
-    if service_configurations.is_a?(Array)
+  if service_configurations.is_a?(Array)
+  wait_for_startup
+   
       service_configurations.each do |configuration|
         begin
           @container_api.update_service_configuration(configuration)
@@ -37,6 +39,7 @@ module ManagedServiceOnAction
       end
     end
     created_and_started if @created == true
+    
     reregister_consumers
     SystemDebug.debug(SystemDebug.container_events, :ON_start_complete_MS, event_hash)
   end
