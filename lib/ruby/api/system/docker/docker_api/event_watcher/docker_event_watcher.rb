@@ -17,12 +17,14 @@ class DockerEventWatcher < ErrorsApi
     def trigger(hash)
       mask = EventMask.event_mask(hash)
       SystemDebug.debug(SystemDebug.container_events, 'trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask' + @event_mask.to_s)
-      return if @event_mask == 0 || (@event_mask & mask) == 0
-      # skip top
-      return unless @event_mask & 32768 == 0 # @@container_top == 0
-      hash[:state] = state_from_status(hash[:status])
-      SystemDebug.debug(SystemDebug.container_events, 'fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
-      @object.method(@method).call(hash)
+      unless @event_mask == 0 || (@event_mask & mask) == 0 
+        # skip top
+        unless @event_mask & 32768 == 0 # @@container_top == 0
+          hash[:state] = state_from_status(hash[:status])
+          SystemDebug.debug(SystemDebug.container_events, 'fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
+          @object.method(@method).call(hash)
+        end
+      end
     rescue StandardError => e
       SystemDebug.debug(SystemDebug.container_events, e.to_s + ':' + e.backtrace.to_s)
       raise e
@@ -111,8 +113,8 @@ class DockerEventWatcher < ErrorsApi
           STDERR.puts('DOCKER SENT UNKNOWN ' + hash.to_s) unless hash.is_a?(Hash)
           next unless hash.is_a?(Hash)
           next if hash.key?(:from) && hash[:from].length >= 64
-         # t = Thread.new {trigger(hash)}
-         # t[:name] = 'trigger'
+          # t = Thread.new {trigger(hash)}
+          # t[:name] = 'trigger'
           trigger(hash)
         rescue StandardError => e
           STDERR.puts('EXCEPTION Chunk error on docker Event Stream _' + chunk.to_s + '_')
@@ -120,26 +122,26 @@ class DockerEventWatcher < ErrorsApi
           log_exception(e, chunk)
           json_part = ''
           next
-        end        
-      end      
+        end
+      end
       STDERR.puts('END OF read_body')
     end
     log_error_mesg('Restarting docker Event Stream ')
     STDERR.puts('CLOSED docker Event Stream as close')
     client.finish unless client.nil?
-   # @system.start_docker_event_listener(@event_listeners)
+    # @system.start_docker_event_listener(@event_listeners)
   rescue Net::ReadTimeout
     log_error_mesg('Restarting docker Event Stream Read Timeout as timeout')
     STDERR.puts('TIMEOUT docker Event Stream as close')
-   # @system.start_docker_event_listener(@event_listeners)
-     client.finish unless client.nil?
+    # @system.start_docker_event_listener(@event_listeners)
+    client.finish unless client.nil?
 
   rescue StandardError => e
     log_exception(e)
     log_error_mesg('Restarting docker Event Stream post exception ')
     STDERR.puts('EXCEPTION docker Event Stream post exception due to ' + e.to_s + ' ' + e.class.name)
-     client.finish unless client.nil?
-   # @system.start_docker_event_listener(@event_listeners)
+    client.finish unless client.nil?
+    # @system.start_docker_event_listener(@event_listeners)
   end
 
   def add_event_listener(listener, event_mask = nil, container_name = nil)
