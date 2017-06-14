@@ -8,7 +8,7 @@ module ManagedContainerStatus
     state = super
     if state == 'na'
       expire_engine_info
-      SystemDebug.debug(SystemDebug.containers, container_name, 'in na',  :info, @docker_info_cache)
+      SystemDebug.debug(SystemDebug.containers, container_name, 'in na',  :info)
       return 'nocontainer'
     end
     state

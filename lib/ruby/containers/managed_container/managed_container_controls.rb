@@ -59,9 +59,9 @@ module ManagedContainerControls
       return task_failed('create') unless super
       save_state #save new containerid)
       SystemDebug.debug(SystemDebug.containers,  :create_super_ran)
-      SystemDebug.debug(SystemDebug.containers,@setState, @docker_info_cache.class.name,  @docker_info_cache)
+      SystemDebug.debug(SystemDebug.containers,@setState, @docker_info_cache.class.name)
       expire_engine_info
-      SystemDebug.debug(SystemDebug.containers,@setState, @docker_info_cache.class.name,  @docker_info_cache)
+      SystemDebug.debug(SystemDebug.containers,@setState, @docker_info_cache.class.name)
       true
     }
   end
@@ -162,7 +162,7 @@ module ManagedContainerControls
     unless task_at_hand.nil?
       SystemDebug.debug(SystemDebug.containers, 'saved task at hand', task_at_hand, 'next', action_sym)
     end
-    SystemDebug.debug(SystemDebug.containers, :current_tah_prep_task, task_at_hand)
+    SystemDebug.debug(SystemDebug.containers, :current_tah_prep_task, task_at_hand)    
     unless in_progress(action_sym)
       SystemDebug.debug(SystemDebug.containers, :inprogress_run)
       clear_error
