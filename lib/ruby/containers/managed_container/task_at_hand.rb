@@ -154,14 +154,11 @@ module TaskAtHand
 
     if task_has_expired?(@task_at_hand)
       expire_task_at_hand
-      return nil
-    end
-    r = read_state(raw = true)
-    if tasks_final_state(@task_at_hand) == r
+    elsif tasks_final_state(@task_at_hand) == read_state(raw = true)
       clear_task_at_hand
-      return nil
+    else
+      @task_at_hand
     end
-    @task_at_hand
   rescue StandardError => e
     return nil unless File.exist?(fn)
     log_exception(e)
