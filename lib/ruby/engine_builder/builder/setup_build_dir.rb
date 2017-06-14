@@ -46,11 +46,11 @@ module BuildDirSetup
     SystemDebug.debug(SystemDebug.builder, 'Eviron file  written')
     setup_framework_logging
     SystemDebug.debug(SystemDebug.builder, 'Logging setup')
-  rescue StandardError => e
-    log_build_errors('Engine Build Aborted Due to:' + e.to_s)
-    post_failed_build_clean_up
-    log_exception(e)
-    raise e
+#  rescue StandardError => e
+#    log_build_errors('Engine Build Aborted Due to:' + e.to_s)
+#    post_failed_build_clean_up
+#    log_exception(e)
+#    raise e
   end
 
   def create_build_dir
