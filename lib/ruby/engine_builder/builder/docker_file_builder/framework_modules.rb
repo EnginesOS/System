@@ -62,7 +62,7 @@ module FrameworkModules
   end
 
   def write_lua_modules
-    unless return @blueprint_reader.lua_modules.nil? || @blueprint_reader.lua_modules.empty?
+    unless @blueprint_reader.lua_modules.nil? || @blueprint_reader.lua_modules.empty?
       write_comment('#Lua Modules')
       lua_modules_str = ''
       @blueprint_reader.lua_modules.each do |lua_module|
