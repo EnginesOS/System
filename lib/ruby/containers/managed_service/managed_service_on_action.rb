@@ -27,7 +27,7 @@ module ManagedServiceOnAction
     }
 
     service_configurations = @container_api.pending_service_configurations_hashes({service_name: @container_name, publisher_namespace: @publisher_namespace, type_path: @type_path })
-    if service_configurations.is_a?(Array)
+    if service_configurations.is_a?(Array) && ! service_configurations.empty?
       wait_for_startup
       service_configurations.each do |configuration|
         begin
