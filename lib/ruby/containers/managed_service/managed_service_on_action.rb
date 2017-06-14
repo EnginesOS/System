@@ -36,7 +36,8 @@ module ManagedServiceOnAction
           return on_stop(nil) unless is_running?
         end
       end
-      
+    else
+      STDERR.puts('SERVICE FAILED To STARTUP ') 
     end
     created_and_started if @created == true
     reregister_consumers
