@@ -1,6 +1,6 @@
 module FrameworkModules
   def write_rake_list
-    unless @blueprint_reader.rake_actions.nil? || @blueprint_reader.rake_actionspear_modules
+    unless @blueprint_reader.rake_actions.nil? || @blueprint_reader.rake_actions
       write_comment('#Rake Actions')
       rakes = ''
       @blueprint_reader.rake_actions.each do |rake_action|
