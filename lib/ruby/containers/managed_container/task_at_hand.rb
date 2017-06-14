@@ -143,6 +143,7 @@ module TaskAtHand
 
   def task_at_hand
     fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
+    SystemDebug.debug(SystemDebug.containers, :task_at_handfile, + ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
     return nil unless File.exist?(fn)
     thf = File.new(fn, 'r')
     begin
@@ -151,14 +152,17 @@ module TaskAtHand
     ensure
       thf.close
     end
-
+    SystemDebug.debug(SystemDebug.containers, :task_at_hand_read_as, @task_at_hand)  
     if task_has_expired?(@task_at_hand)
       expire_task_at_hand
+      SystemDebug.debug(SystemDebug.containers, :task_at_hand_expired)
     elsif tasks_final_state(@task_at_hand) == read_state(raw = true)
       clear_task_at_hand
+      SystemDebug.debug(SystemDebug.containers, :task_at_clear)
     else
-      @task_at_hand
+      SystemDebug.debug(SystemDebug.containers, :task_at_is, @task_at_hand) 
     end
+    @task_at_hand
   rescue StandardError => e
     return nil unless File.exist?(fn)
     log_exception(e)
