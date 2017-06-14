@@ -11,8 +11,11 @@ module EnginesOperations
     begin
       engine = loadManagedEngine(params[:engine_name])
       ##### DO NOT MESS with this logi used in roll back and only works if no engine
-      unless engine.is_a?(ManagedEngine)
-        return true if service_manager.remove_engine_from_managed_engine(params)
+      #unless engine.is_a?(ManagedEngine)
+      if params[:rollback] == true
+        STDERR.puts(' Roll back clause ' + params.to_s )
+       # return true if service_manager.remove_engine_from_managed_engine(params)
+        return true if remove_engine_services
         raise EnginesException.new(error_hash('Failed to find Engine', params))
       end
       #####  ^^^^^^^^^^ DO NOT MESS with this logic ^^^^^^^^
@@ -32,7 +35,7 @@ module EnginesOperations
     SystemDebug.debug(SystemDebug.containers, :delete_engines, params)
     params[:container_type] = 'container'
     #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
-    begin    
+    begin
       service_manager.remove_managed_persistent_services(params)
       service_manager.remove_engine_non_persistent_services(params)
     rescue EnginesException => e
@@ -57,7 +60,7 @@ module EnginesOperations
   end
 
   def set_container_runtime_properties(container, params)
-   # STDERR.puts('set_container_runtime_properties ' +  params.to_s)
+    # STDERR.puts('set_container_runtime_properties ' +  params.to_s)
     raise EnginesException.new(error_hash(params[:engine_name],'Container is active')) if container.is_active?
     if params.key?(:environment_variables) && ! params[:environment_variables].nil?
       new_variables = params[:environment_variables]
