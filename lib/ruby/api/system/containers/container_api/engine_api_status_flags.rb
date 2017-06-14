@@ -35,6 +35,7 @@ module EngineApiStatusFlags
             STDERR.puts('Sleep ' + c.container_name)
             sleep 0.25 + s
             s += inc
+            return false unless is_startup_complete?(c)
           end
         end
       rescue Timeout::Error
