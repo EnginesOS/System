@@ -37,7 +37,7 @@ module TaskAtHand
 
     case action
     when :create
-      @steps = [:create,:start]
+      @steps = [:create, :start]
       @steps_to_go = 2
       return desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
     when :stop
@@ -152,17 +152,20 @@ module TaskAtHand
     ensure
       thf.close
     end
-    SystemDebug.debug(SystemDebug.containers, :task_at_hand_read_as, @task_at_hand)  
-    if task_has_expired?(@task_at_hand)
-      expire_task_at_hand
-      SystemDebug.debug(SystemDebug.containers, :task_at_hand_expired)
-    elsif tasks_final_state(@task_at_hand) == read_state(raw = true)
-      clear_task_at_hand
-      SystemDebug.debug(SystemDebug.containers, :task_at_clear)
-    else
-      SystemDebug.debug(SystemDebug.containers, :task_at_is, @task_at_hand) 
+    unless @task_at_hand.nil?
+      SystemDebug.debug(SystemDebug.containers, :task_at_hand_read_as, @task_at_hand)
+      if task_has_expired?(@task_at_hand)
+        expire_task_at_hand
+        SystemDebug.debug(SystemDebug.containers, :task_at_hand_expired)
+      elsif tasks_final_state(@task_at_hand) == read_state(raw = true)
+        clear_task_at_hand
+        SystemDebug.debug(SystemDebug.containers, :task_at_clear)
+      else
+        SystemDebug.debug(SystemDebug.containers, :task_at_is, @task_at_hand)
+        return @task_at_hand
+      end
     end
-    @task_at_hand
+    nil
   rescue StandardError => e
     return nil unless File.exist?(fn)
     log_exception(e)
