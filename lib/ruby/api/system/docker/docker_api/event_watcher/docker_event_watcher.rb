@@ -4,7 +4,7 @@ class DockerEventWatcher < ErrorsApi
     attr_accessor :container_name, :event_mask
 
     def initialize(listener, event_mask, container_name = nil)
-      @object =  listener[0]
+      @object = listener[0]
       @method = listener[1]
       @event_mask = event_mask
       @container_name = container_name
@@ -57,7 +57,6 @@ class DockerEventWatcher < ErrorsApi
 
   require 'net_x/http_unix'
   require 'socket'
-  # require 'json'
   require_relative 'event_mask.rb'
 
   def initialize(system, event_listeners = nil )
