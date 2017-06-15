@@ -60,10 +60,12 @@ begin
     STDERR.puts('Exception failed to open  sql_lite_database: ' + e.to_s)
     false
   end
-
+  begin
   require_relative 'helpers/helpers.rb'
   require_relative 'api/routes.rb'
-
+    rescue StandardError => e
+        STDERR.puts('Sinatra Error ' + e.to_s )
+  end
   def post_params(request)
     r = request.env['rack.input'].read
     return {} if r.nil?

@@ -34,7 +34,7 @@ put '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/
    # return_text(engine.import_service_data(hash, File.new(hash[:datafile].path, 'rb')))
     
     return_text(engine.import_service_data(hash, request.env['rack.input'])) # stream))
-  rescue StandardError => e
+  rescue StandardError => e   
     send_encoded_exception(request: request, exception: e)
   end
 end
