@@ -24,6 +24,7 @@ end
 # @param :data data to import
 # @return [true]
 post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/overwrite' do
+  STDERR.puts('import' + params.to_s)
   begin
     hash = {
     service_connection: engine_service_hash_from_params(params),
@@ -31,8 +32,8 @@ post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace
     }
     engine = get_engine(params[:engine_name])
    # return_text(engine.import_service_data(hash, File.new(hash[:datafile].path, 'rb')))
-
-    return_text(engine.import_service_data(hash, request.body)) # stream))
+    
+    return_text(engine.import_service_data(hash, request.env['rack.input'])) # stream))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
