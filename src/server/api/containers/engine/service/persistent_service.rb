@@ -27,14 +27,14 @@ put '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/
   STDERR.puts('import' + params.to_s)
   begin
     hash = {
-    service_connection: engine_service_hash_from_params(params),
-#      datafile: params['file'][:tempfile]      
+      service_connection: engine_service_hash_from_params(params),
+      #      datafile: params['file'][:tempfile]
     }
     engine = get_engine(params[:engine_name])
-   # return_text(engine.import_service_data(hash, File.new(hash[:datafile].path, 'rb')))
-    
+    # return_text(engine.import_service_data(hash, File.new(hash[:datafile].path, 'rb')))
+
     return_text(engine.import_service_data(hash, request.env['rack.input'])) # stream))
-  rescue StandardError => e   
+  rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
 end
@@ -44,14 +44,17 @@ end
 # import the service data gzip optional after dropping/deleting existing data
 # @param :data data to import
 # @return [true]
-post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/replace' do
+put '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/replace' do
   begin
-    hash = {}
-    hash[:service_connection] = engine_service_hash_from_params(params)
+    hash = { service_connection: engine_service_hash_from_params(params) }
+    #  atafile: params['file'][:tempfile]
+    #  hash = {}
+    #  hash[:service_connection] = engine_service_hash_from_params(params)
     engine = get_engine(params[:engine_name])
-    hash[:import_method] = :replace
-    hash[:datafile] = params['file'][:tempfile]
-    return_text(engine.import_service_data(hash, File.new(hash[:datafile].path, 'rb')))
+    return_text(engine.import_service_data(hash, request.env['rack.input']))
+    #    hash[:import_method] = :replace
+    #    hash[:datafile] = params['file'][:tempfile]
+    #    return_text(engine.import_service_data(hash, File.new(hash[:datafile].path, 'rb')))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
