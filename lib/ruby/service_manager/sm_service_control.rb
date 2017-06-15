@@ -16,7 +16,13 @@ module SmServiceControl
     # add to service and register with service
     if is_service_persistent?(service_hash)
       SystemDebug.debug(SystemDebug.services, :create_and_register_service_persistr, service_hash)
+      begin
       add_to_managed_service(service_hash)
+      rescue StandardError => e
+        STDERR.puts('FAILED TO ADD to Service' + service_hash.to_s)
+        system_registry_client.remove_from_managed_engine(service_hash)
+        raise e
+      end
       system_registry_client.add_to_services_registry(service_hash)
     else
       SystemDebug.debug(SystemDebug.services, :create_and_register_service_nonpersistr, service_hash)
