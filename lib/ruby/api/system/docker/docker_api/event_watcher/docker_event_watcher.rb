@@ -27,7 +27,7 @@ class DockerEventWatcher < ErrorsApi
       end
     rescue StandardError => e
       SystemDebug.debug(SystemDebug.container_events, e.to_s + ':' + e.backtrace.to_s)
-      raise e
+     # raise e
     end
 
     def state_from_status(status)
