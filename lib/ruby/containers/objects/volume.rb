@@ -14,7 +14,7 @@ class Volume < StaticService #Latter will include group and perhaps other attrib
 
   end
 
-  attr_reader :permissions, :name, :remotepath, :localpath, :user, :group, :vol_permissions, :permissions
+  attr_reader :permissions, :name, :remotepath, :localpath, :user, :group, :vol_permissions, :volume_name
 
   def Volume.complete_service_hash(service_hash)
     service_hash[:service_handle] =  service_hash[:service_name] unless service_hash.key?(:service_handle) &&  !service_hash[:service_handle].nil?
