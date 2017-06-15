@@ -87,7 +87,7 @@ module Builders
     @blueprint = @core_api.load_blueprint(@engine)
     statefile = basedir + '/blueprint.json'
     f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0644)
-    f.write(blueprint.to_json)
+    f.write(@blueprint.to_json)
     f.close
   end
 
