@@ -28,7 +28,6 @@ module ManagedServiceOnAction
     if wait_for_startup
       service_configurations = @container_api.pending_service_configurations_hashes({service_name: @container_name, publisher_namespace: @publisher_namespace, type_path: @type_path })
       if service_configurations.is_a?(Array) && ! service_configurations.empty?
-
         service_configurations.each do |configuration|
           begin
             @container_api.update_service_configuration(configuration)
@@ -36,7 +35,6 @@ module ManagedServiceOnAction
             return on_stop(nil) unless is_running?
           end
         end
-
       end
       created_and_started if @created == true
       reregister_consumers
