@@ -70,6 +70,7 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream;charset=asc
         rescue IO::WaitReadable
           out << bytes
           bytes = ''
+          STDERR.puts('B ' + bytes.to_s)
           IO.select([build_log_file])
           retry
         rescue EOFError
