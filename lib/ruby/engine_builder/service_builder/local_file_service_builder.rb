@@ -11,7 +11,7 @@ module LocalFileServiceBuilder
     else
       STDERR.puts('KEY ' + service_hash[:variables][:volume_name].to_s)
       STDERR.puts('FROM ' + service_hash[:variables].to_s)
-      @volumes[service_hash[:variables][:volume_name]] = Volume.volume_hash(service_hash)
+      @volumes[service_hash[:variables][:service_name]] = Volume.volume_hash(service_hash)
     end
     true
   end
