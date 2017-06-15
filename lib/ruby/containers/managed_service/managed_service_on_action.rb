@@ -37,7 +37,7 @@ module ManagedServiceOnAction
         end
       end
     else
-      STDERR.puts('SERVICE FAILED To STARTUP ') 
+      STDERR.puts('SERVICE FAILED To STARTUP ' + @container_name) 
     end
     created_and_started if @created == true
     reregister_consumers
