@@ -87,10 +87,10 @@ module Builders
   def setup_rebuild
     log_build_output('Setting up rebuild')
     create_build_dir
-    @blueprint = @engine.load_blueprint
+    blue_print = @engine.load_blueprint
     statefile = basedir + '/blueprint.json'
     f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0644)
-    f.write(@blueprint.to_json)
+    f.write(blue_print.to_json)
     f.close
   end
 
