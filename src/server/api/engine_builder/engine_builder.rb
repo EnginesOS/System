@@ -77,6 +77,7 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream;charset=asc
             bytes.encode(Encoding::ASCII_8BIT) unless bytes.nil? #UTF_8) unless bytes.nil?
             out  << bytes
             out  << '.'
+            STDERR.puts('B ' + bytes.to_s)
             bytes = ''
             sleep 2
             retry if File.exist?(SystemConfig.BuildRunningParamsFile)
