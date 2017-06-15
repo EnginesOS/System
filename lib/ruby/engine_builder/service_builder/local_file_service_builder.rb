@@ -9,6 +9,8 @@ module LocalFileServiceBuilder
     if service_hash[:share] == true
       @volumes[service_hash[:service_owner] + '_' + service_hash[:variables][:volume_name]] = Volume.volume_hash(service_hash)
     else
+      STDERR.puts('KEY ' + service_hash[:variables][:volume_name].to_s)
+      STDERR.puts('FROM ' + service_hash[:variables].to_s)
       @volumes[service_hash[:variables][:volume_name]] = Volume.volume_hash(service_hash)
     end
     true
