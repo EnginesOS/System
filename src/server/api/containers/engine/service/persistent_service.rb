@@ -23,7 +23,7 @@ end
 # import the service data gzip optional
 # @param :data data to import
 # @return [true]
-post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/overwrite' do
+put '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/overwrite' do
   STDERR.puts('import' + params.to_s)
   begin
     hash = {
