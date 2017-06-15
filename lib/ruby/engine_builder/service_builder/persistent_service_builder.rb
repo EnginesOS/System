@@ -48,8 +48,9 @@ module PersistantServiceBuilder
     environ.concat(SoftwareServiceDefinition.service_environments(service_hash))
     SystemDebug.debug(SystemDebug.builder, :with_env, environ)
     # FIXME: release orphan should happen latter unless use reoprhan on rebuild failure
-    @core_api.create_and_register_service(service_hash)
+  # add to services so roll back removes partially created
     @attached_services.push(service_hash)
+    @core_api.create_and_register_service(service_hash)
   end
 
   def match_service_to_existing(service_hash, use_existing)

@@ -25,9 +25,9 @@ module Builders
     create_templater
     process_supplied_envs(@build_params[:variables])
     @runtime =  ''
-    create_build_dir
+    backup_lastbuild
     setup_log_output
-    @rebuild = false
+    @rebuild = true if @build_params[:reinstall]
     @data_uid = '11111'
     @data_gid = '11111'
     @build_params[:data_uid] =  @data_uid
@@ -52,6 +52,9 @@ module Builders
     build_container
     save_build_result
     close_all
+    rescue StandardError => e
+      post_failed_build_clean_up
+      log_exception(e)
   end
 
   def build_container
@@ -73,7 +76,7 @@ module Builders
     #log_exception(e)
     log_build_errors('Engine Build Aborted Due to:' + e.to_s)
     STDERR.puts(e.backtrace.to_s)
-    post_failed_build_clean_up
+   # post_failed_build_clean_up
     log_exception(e)
     raise e
   ensure
@@ -84,10 +87,10 @@ module Builders
   def setup_rebuild
     log_build_output('Setting up rebuild')
     create_build_dir
-    blueprint = @core_api.load_blueprint(@engine)
+    blue_print = @engine.load_blueprint
     statefile = basedir + '/blueprint.json'
     f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0644)
-    f.write(blueprint.to_json)
+    f.write(blue_print.to_json)
     f.close
   end
 
@@ -104,7 +107,7 @@ module Builders
 
   def post_failed_build_clean_up
     SystemStatus.build_failed(@build_params)
-    return close_all if @rebuild
+    #return close_all if @rebuild
     # remove containers
     # remove persistent services (if created/new)
     # deregister non persistent services (if created)
@@ -115,7 +118,7 @@ module Builders
     SystemDebug.debug(SystemDebug.builder, caller.to_s)
     # FIXME: Stop it if started (ie vol builder failure)
     # FIXME: REmove container if created
-    unless @build_params[:reinstall].is_a?(TrueClass)
+  #  unless @build_params[:reinstall].is_a?(TrueClass)
       begin
         if @container.is_a?(ManagedContainer)
           @container.stop_container if @container.is_running?
@@ -123,11 +126,12 @@ module Builders
           @container.delete_image if @container.has_image?
         end
         @service_builder.service_roll_back
+        @build_params[:rollback]
         @core_api.delete_engine_and_services(@build_params)
       rescue
         #dont panic if no container
       end
-    end
+  #  end
 
     #    params = {}
     #    params[:engine_name] = @build_name
@@ -139,10 +143,15 @@ module Builders
 
   
 def save_build_result
-  @result_mesg = 'Build Successful'
-  log_build_output('Build Successful')
+  log_build_output('Waiting for start')
+  @container.wait_for('start', 25)
+  log_build_output('Waiting for startup completion')
+  @container.wait_for_startup(25)
+  log_build_output('Generating Build Report')
   build_report = generate_build_report(@templater, @blueprint)
   @core_api.save_build_report(@container, build_report)
+  @result_mesg = 'Build Successful'
+  log_build_output('Build Successful')
   FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.out', ContainerStateFiles.container_state_dir(@container) + '/build.log')
   FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.err', ContainerStateFiles.container_state_dir(@container) + '/build.err')
   true

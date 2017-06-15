@@ -83,6 +83,7 @@ class EngineBuilder < ErrorsApi
     @core_api = core_api
     @container = nil
     @build_params = params
+    @blueprint = nil
   end
 
 

@@ -20,14 +20,14 @@ module BuildDirSetup
       read_web_port
     end
     read_web_user
-    @build_params[:mapped_ports] =  @blueprint_reader.mapped_ports
+    @build_params[:mapped_ports] = @blueprint_reader.mapped_ports
     SystemDebug.debug(SystemDebug.builder, :ports, @build_params[:mapped_ports])
     SystemDebug.debug(SystemDebug.builder, :attached_services, @build_params[:attached_services])
     @service_builder.required_services_are_running?
     @service_builder.create_persistent_services(@blueprint_reader.services, @blueprint_reader.environments, @build_params[:attached_services]).is_a?(EnginesError)
-    SystemDebug.debug(SystemDebug.builder, 'Services Attachd')
+    SystemDebug.debug(SystemDebug.builder, 'Services Attached')
     apply_templates_to_environments
-    SystemDebug.debug(SystemDebug.builder, 'Templates Applies')
+    SystemDebug.debug(SystemDebug.builder, 'Templates Applied')
     create_engines_config_files
     SystemDebug.debug(SystemDebug.builder, 'Configs written')
     index = 0
@@ -46,15 +46,14 @@ module BuildDirSetup
     SystemDebug.debug(SystemDebug.builder, 'Eviron file  written')
     setup_framework_logging
     SystemDebug.debug(SystemDebug.builder, 'Logging setup')
-  rescue StandardError => e
-    log_build_errors('Engine Build Aborted Due to:' + e.to_s)
-    post_failed_build_clean_up
-    log_exception(e)
-    raise e
+#  rescue StandardError => e
+#    log_build_errors('Engine Build Aborted Due to:' + e.to_s)
+#    post_failed_build_clean_up
+#    log_exception(e)
+#    raise e
   end
 
   def create_build_dir
-    backup_lastbuild
     FileUtils.mkdir_p(basedir)
   end
 

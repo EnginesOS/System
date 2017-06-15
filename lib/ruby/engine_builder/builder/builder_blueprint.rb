@@ -34,8 +34,8 @@ module BuilderBluePrint
   end
 
   def process_blueprint
-    log_build_output('Reading Blueprint')
-    @blueprint = load_blueprint
+    log_build_output('Reading Blueprint')  
+    @blueprint = load_blueprint if @blueprint.nil?
     version = 0
     unless @blueprint.key?(:schema)
       require '/opt/engines/lib/ruby/engine_builder/blueprint_readers/0/versioned_blueprint_reader.rb'

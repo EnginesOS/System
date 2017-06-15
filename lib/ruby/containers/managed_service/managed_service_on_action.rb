@@ -26,21 +26,21 @@ module ManagedServiceOnAction
       save_state
     }
     if wait_for_startup
-    service_configurations = @container_api.pending_service_configurations_hashes({service_name: @container_name, publisher_namespace: @publisher_namespace, type_path: @type_path })
-    if service_configurations.is_a?(Array) && ! service_configurations.empty?
-     
-      service_configurations.each do |configuration|
-        begin
-          @container_api.update_service_configuration(configuration)
-        rescue
-          return on_stop(nil) unless is_running?
+      service_configurations = @container_api.pending_service_configurations_hashes({service_name: @container_name, publisher_namespace: @publisher_namespace, type_path: @type_path })
+      if service_configurations.is_a?(Array) && ! service_configurations.empty?
+        service_configurations.each do |configuration|
+          begin
+            @container_api.update_service_configuration(configuration)
+          rescue
+            return on_stop(nil) unless is_running?
+          end
         end
       end
-      
+      created_and_started if @created == true
+      reregister_consumers
+    else
+      STDERR.puts('SERVICE FAILED To STARTUP ' + @container_name)
     end
-    created_and_started if @created == true
-    reregister_consumers
-  end
     SystemDebug.debug(SystemDebug.container_events, :ON_start_complete_MS, event_hash)
   end
 

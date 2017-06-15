@@ -53,7 +53,7 @@ class BuildController
       software_environment_variables: engine.environments,
       http_protocol: engine.protocol,
       memory: engine.memory,
-      repository_url: engine.repository,
+      repository_url: engine.container_name,
       variables: engine.environments,
       reinstall: true
     }
@@ -61,7 +61,7 @@ class BuildController
     SystemDebug.debug(SystemDebug.builder, ' Starting resinstall with params ', @build_params)
     @engine_builder = get_engine_builder(@build_params)
     return build_failed(params, 'No Builder') unless @engine_builder.is_a?(EngineBuilder)
-    @engine = @engine_builder.build_from_blue_print
+    @engine = @engine_builder.rebuild_managed_container(engine)
     @build_error = @engine_builder.tail_of_build_error_log
     build_complete(@build_params)
   end
