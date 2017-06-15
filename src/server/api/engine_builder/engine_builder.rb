@@ -66,6 +66,7 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream;charset=asc
           bytes = build_log_file.read_nonblock(1000)
           bytes.encode(Encoding::ASCII_8BIT) unless bytes.nil?
           out << bytes
+          STDERR.puts('B ' + bytes.to_s)
           bytes = ''
         rescue IO::WaitReadable
           out << bytes
