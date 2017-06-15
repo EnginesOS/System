@@ -33,7 +33,6 @@ module ServiceOperations
   #Attach the service defined in service_hash [Hash]
   # @return boolean indicating sucess
   def create_and_register_service(service_hash)   
-    check_new_service_hash(service_hash)    
     SystemDebug.debug(SystemDebug.services, :attach_ing_create_and_egister_service, service_hash)
     create_and_register_managed_service(service_hash)
   end
