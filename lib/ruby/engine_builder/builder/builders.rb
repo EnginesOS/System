@@ -143,10 +143,15 @@ module Builders
 
   
 def save_build_result
-  @result_mesg = 'Build Successful'
-  log_build_output('Build Successful')
+  log_build_output('Waiting for start')
+  @container.wait_for('start', 25)
+  log_build_output('Waiting for startup completion')
+  @container.wait_for_startup(25)
+  log_build_output('Generating Build Report')
   build_report = generate_build_report(@templater, @blueprint)
   @core_api.save_build_report(@container, build_report)
+  @result_mesg = 'Build Successful'
+  log_build_output('Build Successful')
   FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.out', ContainerStateFiles.container_state_dir(@container) + '/build.log')
   FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.err', ContainerStateFiles.container_state_dir(@container) + '/build.err')
   true
