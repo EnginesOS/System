@@ -25,9 +25,9 @@ module Builders
     create_templater
     process_supplied_envs(@build_params[:variables])
     @runtime =  ''
-    create_build_dir
+    backup_lastbuild
     setup_log_output
-    @rebuild = false
+    @rebuild = true if @build_params[:reinstall]
     @data_uid = '11111'
     @data_gid = '11111'
     @build_params[:data_uid] =  @data_uid
@@ -52,6 +52,9 @@ module Builders
     build_container
     save_build_result
     close_all
+    rescue StandardError => e
+      post_failed_build_clean_up
+      log_exception(e)
   end
 
   def build_container
@@ -73,7 +76,7 @@ module Builders
     #log_exception(e)
     log_build_errors('Engine Build Aborted Due to:' + e.to_s)
     STDERR.puts(e.backtrace.to_s)
-    post_failed_build_clean_up
+   # post_failed_build_clean_up
     log_exception(e)
     raise e
   ensure
@@ -104,7 +107,7 @@ module Builders
 
   def post_failed_build_clean_up
     SystemStatus.build_failed(@build_params)
-    return close_all if @rebuild
+    #return close_all if @rebuild
     # remove containers
     # remove persistent services (if created/new)
     # deregister non persistent services (if created)
@@ -115,7 +118,7 @@ module Builders
     SystemDebug.debug(SystemDebug.builder, caller.to_s)
     # FIXME: Stop it if started (ie vol builder failure)
     # FIXME: REmove container if created
-    unless @build_params[:reinstall].is_a?(TrueClass)
+  #  unless @build_params[:reinstall].is_a?(TrueClass)
       begin
         if @container.is_a?(ManagedContainer)
           @container.stop_container if @container.is_running?
@@ -128,7 +131,7 @@ module Builders
       rescue
         #dont panic if no container
       end
-    end
+  #  end
 
     #    params = {}
     #    params[:engine_name] = @build_name
