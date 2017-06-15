@@ -50,6 +50,7 @@ module Builders
     log_build_output('Starting Rebuild')
     setup_rebuild
     build_container
+    wait_for_start_up
     save_build_result
     close_all
     rescue StandardError => e
@@ -98,6 +99,7 @@ module Builders
     get_blueprint_from_repo
     log_build_output('Cloned Blueprint')
     build_container
+    wait_for_start_up
     save_build_result
     close_all
   rescue StandardError => e
@@ -141,12 +143,14 @@ module Builders
     close_all
   end
 
+  def wait_for_start_up
+    log_build_output('Waiting for start')
+     @container.wait_for('start', 25)
+     log_build_output('Waiting for startup completion')
+     @container.wait_for_startup(25) 
+  end
   
 def save_build_result
-  log_build_output('Waiting for start')
-  @container.wait_for('start', 25)
-  log_build_output('Waiting for startup completion')
-  @container.wait_for_startup(25)
   log_build_output('Generating Build Report')
   build_report = generate_build_report(@templater, @blueprint)
   @core_api.save_build_report(@container, build_report)
