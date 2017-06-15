@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PID_FILE=/var/run/engines.pid	
+PID_FILE=/var/run/engines/engines.pid	
 export PID_FILE
 . /home/trap.sh
 
