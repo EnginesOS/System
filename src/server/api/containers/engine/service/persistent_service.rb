@@ -27,10 +27,12 @@ post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace
   begin
     hash = {
     service_connection: engine_service_hash_from_params(params),
-      datafile: params['file'][:tempfile]      
+#      datafile: params['file'][:tempfile]      
     }
     engine = get_engine(params[:engine_name])
-    return_text(engine.import_service_data(hash, File.new(hash[:datafile].path, 'rb')))
+   # return_text(engine.import_service_data(hash, File.new(hash[:datafile].path, 'rb')))
+
+    return_text(engine.import_service_data(hash, request.body)) # stream))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
