@@ -95,7 +95,7 @@ mkdir -p /var/log/apache2/ >& /dev/null
 	else		
 		  /usr/sbin/apache2ctl -DFOREGROUND &
 	fi
-
+sleep 2
 apache_pid=`cat /var/run/apache2/apache2.pid`
 echo -n " $apache_pid" >> $PID_FILE
 }
