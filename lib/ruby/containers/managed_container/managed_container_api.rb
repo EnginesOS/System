@@ -1,6 +1,5 @@
 module ManagedContainerApi
   def save_state()
-    return false unless has_api?
     c = self.dup
     @container_api.save_container(c)
   end
@@ -13,12 +12,10 @@ module ManagedContainerApi
   end
 
   def save_blueprint blueprint
-    return false unless has_api?
     @container_api.save_blueprint(blueprint, self)
   end
 
   def run_cronjob(cronjob)
-    return false unless has_api?
     @container_api.run_cronjob(cronjob, self)
   end
 end

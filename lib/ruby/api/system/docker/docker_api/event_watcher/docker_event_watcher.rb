@@ -16,7 +16,7 @@ class DockerEventWatcher < ErrorsApi
 
     def trigger(hash)
       mask = EventMask.event_mask(hash)
-      SystemDebug.debug(SystemDebug.container_events, 'trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask:' + @event_mask.to_s + ' result ' + (@event_mask & mask).to_s)
+      SystemDebug.debug(SystemDebug.container_events, 'trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask:' + @event_mask.to_s + ' result ' )#+ (@event_mask & mask).to_s)
       unless @event_mask & mask == 0
         # skip top
         if mask & 32768 == 0 # @@container_top == 0
@@ -33,24 +33,16 @@ class DockerEventWatcher < ErrorsApi
 
     def state_from_status(status)
       case status
-      when 'die'
+      when 'die', 'stop', 'exec'
         status = 'stopped'
-      when 'stop'
-        status = 'stopped'
-      when 'run'
-        status = 'running'
-      when 'start'
+      when 'run','start'
         status = 'running'
       when 'pause'
         status = 'paused'
       when 'unpause'
         status = 'running'
-      when 'delete'
+      when 'delete','destroy'
         status = 'nocontainer'
-      when 'destroy'
-        status = 'nocontainer'
-      when 'exec'
-        status = 'running'
       end
       status
     end
@@ -68,24 +60,6 @@ class DockerEventWatcher < ErrorsApi
     # add_event_listener([system, :container_event])
     SystemDebug.debug(SystemDebug.container_events, 'EVENT LISTENER')
   end
-  #  def connection
-  #    @events_connection ||= Excon.new('unix:///',
-  #    :socket => '/var/run/docker.sock',
-  #    :debug_request => true,
-  #    :debug_response => true,
-  #    :persistent => true)
-  #    @events_connection
-  #  end
-  #
-  #  def reopen_connection
-  #    @events_connection.reset
-  #    #    STDERR.puts(' REOPEN doker.sock connection ')
-  #    @events_connection = Excon.new('unix:///',
-  #    :socket => '/var/run/docker.sock',
-  #    :debug_request => true,
-  #    :debug_response => true,
-  #    :persistent => true)
-  #  end
 
   def start
     STDERR.puts(' STARTINF with ' + @event_listeners.to_s)
@@ -94,7 +68,7 @@ class DockerEventWatcher < ErrorsApi
       json_part = nil
       resp.read_body do |chunk|
         begin
-          STDERR.putc('.')
+          STDERR.putc('.' + chunk.to_s)
           SystemDebug.debug(SystemDebug.container_events, chunk.to_s )
           next if chunk.nil?
           chunk.gsub!(/\s+$/, '')
@@ -107,15 +81,13 @@ class DockerEventWatcher < ErrorsApi
             json_part = nil
           end
           parser ||= Yajl::Parser.new({:symbolize_keys => true})
-          hash = parser.parse(chunk)
+          hash = parser.parse(chunk)          
           SystemDebug.debug(SystemDebug.container_events, 'got ' + hash.to_s)
-          STDERR.puts('DOCKER SENT ARRAY') if hash.is_a?(Array) && ! hash.is_a?(Hash)
-          STDERR.puts('DOCKER SENT UNKNOWN ' + hash.to_s) unless hash.is_a?(Hash)
-          next unless hash.is_a?(Hash)
-          next if hash.key?(:from) && hash[:from].length >= 64
+          next unless is_valid_docker_event?(hash)          
           #  t = Thread.new {trigger(hash)}
           # t[:name] = 'trigger'
           #need to order requests if use threads
+          STDERR.puts(hash.to_s)
           trigger(hash)
         rescue StandardError => e
           STDERR.puts('EXCEPTION Chunk error on docker Event Stream _' + chunk.to_s + '_')
@@ -147,19 +119,24 @@ class DockerEventWatcher < ErrorsApi
 
   def add_event_listener(listener, event_mask = nil, container_name = nil)
     event = EventListener.new(listener, event_mask, container_name)
-    STDERR.puts( 'ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
-    SystemDebug.debug(SystemDebug.container_events, 'ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
     @event_listeners[event.hash_name] = event
+    STDERR.puts('ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
+    SystemDebug.debug(SystemDebug.container_events, 'ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')   
   end
 
-  def rm_event_listener(listener)
-    STDERR.puts( 'REMOVED listenter ' + listener.class.name + ':' + listener.object_id.to_s)
+  def rm_event_listener(listener)   
     SystemDebug.debug(SystemDebug.container_events, 'REMOVED listenter ' + listener.class.name + ':' + listener.object_id.to_s)
     @event_listeners.delete(listener.object_id.to_s) if @event_listeners.key?(listener.object_id.to_s)
+    STDERR.puts('REMOVED listenter ' + listener.class.name + ':' + listener.object_id.to_s)
   end
 
   private
 
+  def yparser
+    @parser ||= Yajl::Parser.new({:symbolize_keys => true})
+    @parser
+  end
+  
   def get_client
     client = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
     client.continue_timeout = 3000
@@ -168,13 +145,26 @@ class DockerEventWatcher < ErrorsApi
   end
 
   def match_container(hash, container_name)
-    return false unless hash.key?(:Actor)
-    return false unless hash[:Actor].key?(:Attributes)
-    return false unless hash[:Actor][:Attributes].key?(:container_name)
-    return false unless hash[:Actor][:Attributes][:container_name] == container_name
-    true
+    r = false
+    if hash.key?(:Actor)
+      if hash[:Actor].key?(:Attributes)
+        if hash[:Actor][:Attributes].key?(:container_name)
+          r = true if hash[:Actor][:Attributes][:container_name] == container_name
+        end
+      end
+    end
+    r
   end
 
+   def is_valid_docker_event?(hash)
+     r = false
+     STDERR.puts('DOCKER SENT ARRAY') if hash.is_a?(Array) && ! hash.is_a?(Hash)
+     STDERR.puts('DOCKER SENT UNKNOWN ' + hash.to_s) unless hash.is_a?(Hash)
+     r = true if hash.is_a?(Hash)
+     r = false if hash.key?(:from) && hash[:from].length >= 64
+     r
+   end
+     
   def trigger(hash)
     @event_listeners.values.each do |listener|
       unless listener.container_name.nil?

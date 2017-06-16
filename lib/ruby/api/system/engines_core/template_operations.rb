@@ -1,8 +1,8 @@
 module TemplateOperations
   def system_value_access
-    return @system_value_accessor unless @system_value_accessor.nil?
-    @system_value_accessor = SystemAccess.new(self)
-    @system_value_accessor
+   # return @system_value_accessor unless @system_value_accessor.nil?
+   # @system_value_accessor = SystemAccess.new(self)
+    @system_value_accessor ||= SystemAccess.new(self)
   end
 
   def fillin_template_for_service_def(service_hash)

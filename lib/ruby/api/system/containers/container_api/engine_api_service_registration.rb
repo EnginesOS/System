@@ -30,7 +30,7 @@ module EngineApiServiceRegistration
     if container.conf_register_dns == true
       service_hash = create_zeroconf_service_hash(container)
       begin
-        return engines_core.create_and_register_service(service_hash)
+        engines_core.create_and_register_service(service_hash)
       rescue
       end
     end

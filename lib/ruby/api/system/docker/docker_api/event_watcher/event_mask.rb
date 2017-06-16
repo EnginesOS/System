@@ -23,44 +23,13 @@ class EventMask
     if event_hash[:Type] = 'container'
       mask |= @@container_event
       if event_hash.key?(:from)
-        return mask |= @@build_event if event_hash[:from].nil?
-        return mask |= @@build_event if event_hash[:from].length == 64
-      end
-      if event_hash.key?(:Actor) && event_hash[:Actor].key?(:Attributes)
-        case event_hash[:Actor][:Attributes][:container_type]
-        when 'service'
-          mask |= @@service_target
-        when  'container'
-          mask |= @@engine_target
-        when'utility'
-          mask |= @@utility_target
-        end
+        mask |= @@build_event if event_hash[:from].nil?
+        mask |= @@build_event if event_hash[:from].length == 64
       end
 
-      unless event_hash[:status].nil?
-        if event_hash[:status].start_with?('exec')
-          mask |= @@container_exec
-        elsif event_hash[:status] == 'delete'
-          mask |= @@container_delete| @@container_action
-        elsif event_hash[:status] == 'destroy'
-          mask |= @@container_delete | @@container_action
-        elsif event_hash[:status] == 'commit'
-          mask |= @@container_commit
-        elsif event_hash[:status] == 'pull'
-          mask |= @@container_pull
-        elsif event_hash[:status] == 'top'
-          mask |= @@container_top
-          #        elsif event_hash['status'] == 'delete'
-          #          mask |= @@container_delete
-        elsif event_hash[:status] == 'die'
-          mask |= @@container_die| @@container_action
-        elsif event_hash[:status] == 'kill'
-          mask |= @@container_kill| @@container_action
-        elsif event_hash[:status] == 'attach'
-          mask |= @@container_attach
-        else
-          mask |= @@container_action
-        end
+      if mask & @@build_event == 0
+        mask |= self.get_target_mask(event_hash)
+        mask |= self.get_status_mask(event_hash)
       end
     elsif event_hash[:Type] = 'image'
       mask |= @@image_event
@@ -71,5 +40,51 @@ class EventMask
   rescue StandardError => e
     SystemDebug.debug(SystemDebug.container_events, event_hash.to_s + ':' + e.to_s + ':' +  e.backtrace.to_s)
     e
+  end
+
+  
+  def self.get_status_mask(event_hash)
+    mask = 0
+    unless event_hash[:status].nil?
+      if event_hash[:status].start_with?('exec')
+        mask |= @@container_exec
+      elsif event_hash[:status] == 'delete'
+        mask |= @@container_delete| @@container_action
+      elsif event_hash[:status] == 'destroy'
+        mask |= @@container_delete | @@container_action
+      elsif event_hash[:status] == 'commit'
+        mask |= @@container_commit
+      elsif event_hash[:status] == 'pull'
+        mask |= @@container_pull
+      elsif event_hash[:status] == 'top'
+        mask |= @@container_top
+        #        elsif event_hash['status'] == 'delete'
+        #          mask |= @@container_delete
+      elsif event_hash[:status] == 'die'
+        mask |= @@container_die| @@container_action
+      elsif event_hash[:status] == 'kill'
+        mask |= @@container_kill| @@container_action
+      elsif event_hash[:status] == 'attach'
+        mask |= @@container_attach
+      else
+        mask |= @@container_action
+      end
+    end
+    mask
+  end
+
+  def self.get_target_mask(event_hash)
+    mask = 0
+    if event_hash.key?(:Actor) && event_hash[:Actor].key?(:Attributes)
+      case event_hash[:Actor][:Attributes][:container_type]
+      when 'service'
+        mask |= @@service_target
+      when  'container'
+        mask |= @@engine_target
+      when'utility'
+        mask |= @@utility_target
+      end
+    end
+    mask
   end
 end

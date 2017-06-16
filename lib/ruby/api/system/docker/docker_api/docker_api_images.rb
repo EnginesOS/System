@@ -2,30 +2,38 @@ module DockerApiImages
   def image_exist_by_name?(image_name)
     request = '/images/json?filter=' + image_name
     r =  get_request(request, true)
-    return  false unless r.is_a?(Array)
-    r = r[0]
-    return true if r.is_a?(Hash) && r.key?(:Id)
-    false
+    if r.is_a?(Array)
+      r = r[0]
+      if r.is_a?(Hash) && r.key?(:Id)
+        true
+      else
+        false
+      end
+    else
+      false
+    end
   end
 
   def find_images(search)
     request = '/images/json?filter=' + search
     r =  get_request(request, true)
-    return false unless r.is_a?(Array)
-    r
+    if r.is_a?(Array)
+      r
+    else
+      false
+    end
   end
 
   def pull_image(container)
     unless container.is_a?(String)
       #container.image_repo = 'registry.hub.docker.com' if  container.image_repo.nil?
-      d =  container.image
+      d = container.image
       d = container.image_repo.to_s  + '/' + d unless container.image_repo.nil?
-      request =  '/images/create?fromImage=' + d.to_s
+      request = '/images/create?fromImage=' + d.to_s
     else
-      request =  '/images/create?fromImage=' + container
+      request = '/images/create?fromImage=' + container
       container = nil
     end
-
     headers = { 'X-Registry-Config'  => registry_root_auth, 'Content-Type' =>'plain/text', 'Accept-Encoding' => 'gzip'}
     post_request(request, nil, false, headers, 600)
   rescue
@@ -33,8 +41,11 @@ module DockerApiImages
   end
 
   def image_exist?(container)
-    return image_exist_by_name?(container) if container.is_a?(String)
-    image_exist_by_name?(container.image)
+    if container.is_a?(String)
+      image_exist_by_name?(container)
+    else
+      image_exist_by_name?(container.image)
+    end
   rescue
     false
   end

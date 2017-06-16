@@ -33,29 +33,32 @@ class ManagedService < ManagedContainer
   end
 
   def is_soft_service?
-    return true unless @soft_service.is_a?(FalseClass)
-    false
+    if @soft_service.is_a?(TrueClass)
+      true
+    else
+      false
+    end
   end
 
-#
-#  def initialize(name, memory, hostname, domain_name, image, volumes, web_port, eports, dbs, environments, framework, runtime)
-#    @last_error = 'None'
-#    @container_name = name
-#    @memory = memory
-#    @hostname = hostname
-#    @domain_name = domain_name
-#    @image = image
-#    @mapped_ports = eports
-#    @environments = environments
-#    @volumes = volumes
-#    @web_port = port
-#    @last_result = ''
-#    @setState = 'nocontainer'
-#    # @databases = dbs
-#    @framework = framework
-#    @runtime = runtime
-#    @persistent = false  #Persistant means neither service or engine need to be up/running or even exist for this service to exist
-#  end
+  #
+  #  def initialize(name, memory, hostname, domain_name, image, volumes, web_port, eports, dbs, environments, framework, runtime)
+  #    @last_error = 'None'
+  #    @container_name = name
+  #    @memory = memory
+  #    @hostname = hostname
+  #    @domain_name = domain_name
+  #    @image = image
+  #    @mapped_ports = eports
+  #    @environments = environments
+  #    @volumes = volumes
+  #    @web_port = port
+  #    @last_result = ''
+  #    @setState = 'nocontainer'
+  #    # @databases = dbs
+  #    @framework = framework
+  #    @runtime = runtime
+  #    @persistent = false  #Persistant means neither service or engine need to be up/running or even exist for this service to exist
+  #  end
   attr_reader :persistent, :type_path, :publisher_namespace
 
   def to_service_hash()

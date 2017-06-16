@@ -2,8 +2,11 @@ module ContainerLocking
 
   @@lock_timeout  = 2
   def lock_has_expired(lock_fn)
-    return true if File.mtime(lock_fn) <  Time.now + @@lock_timeout
-    false
+    if File.mtime(lock_fn) <  Time.now + @@lock_timeout
+      true
+    else
+      false
+    end
   rescue StandardError
     true
   end
@@ -16,14 +19,18 @@ module ContainerLocking
 
   def is_container_conf_file_locked?(state_dir)
     lock_fn = state_dir + '/lock'
-    return false unless  File.exists?(lock_fn)
+   if File.exists?(lock_fn)
     loop = 0
-    while  File.exists?(lock_fn)
+    while File.exists?(lock_fn)
       sleep(0.2)
       STDERR.puts('_container_conf_file_locked ')
       loop != 1
-      return true if loop > 5
+      break if loop > 5
     end
+     File.exists?(lock_fn)
+   else
+     false
+   end
   end
 
   def lock_container_conf_file(state_dir)

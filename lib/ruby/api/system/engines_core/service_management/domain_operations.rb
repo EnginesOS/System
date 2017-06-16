@@ -32,7 +32,7 @@ module DomainOperations
   def add_domain(params)
     # STDERR.puts(' ADD DOMAIN VARIABLE ' + params.to_s)
     DNSHosting.add_domain(params)
-    return true unless params[:self_hosted]
+    if params[:self_hosted]
     service_hash = {
       parent_engine: 'system',
       variables: {
@@ -52,6 +52,9 @@ module DomainOperations
     end
     #   STDERR.puts(' ADD DOMAIN VARIABLE ' + service_hash.to_s)
     create_and_register_service(service_hash)
+    else
+      true
+    end
   end
 
   def update_domain(params)
@@ -97,8 +100,8 @@ module DomainOperations
     params = domain_name(domain_name)
     raise EnginesException.new(error_hash('Domain not found' + domain_name)) if params.nil?
     raise EnginesException.new(error_hash('no params')) if params.nil?
-    return r unless ( r = DNSHosting.rm_domain(domain_name) )
-    return true if params[:self_hosted] == false
+    return r unless (r = DNSHosting.rm_domain(domain_name))
+    unless params[:self_hosted] == false
     service_hash = {
       parent_engine: 'system',
       variables:  {
@@ -110,6 +113,7 @@ module DomainOperations
       type_path: 'dns',
     }
     dettach_service(service_hash)
+  end
   end
   private
 

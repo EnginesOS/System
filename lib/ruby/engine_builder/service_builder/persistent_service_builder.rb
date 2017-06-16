@@ -46,27 +46,28 @@ module PersistantServiceBuilder
     constants = SoftwareServiceDefinition.service_constants(service_hash)
     environ.concat(constants)
     environ.concat(SoftwareServiceDefinition.service_environments(service_hash))
+
     SystemDebug.debug(SystemDebug.builder, :with_env, environ)
-    # FIXME: release orphan should happen latter unless use reoprhan on rebuild failure
-  # add to services so roll back removes partially created
+
     @attached_services.push(service_hash)
     @core_api.create_and_register_service(service_hash)
   end
 
   def match_service_to_existing(service_hash, use_existing)
-    return false if use_existing.nil?
-    raise EngineBuilderException.new(error_hash(" Existing Attached services should be an array", use_existing)) unless use_existing.is_a?(Array)
-    use_existing.each do |existing_service|
-      SystemDebug.debug(SystemDebug.builder, :create_type, existing_service)
-      next if existing_service[:create_type] == 'new'
-      next if existing_service[:create_type].nil?
-      SystemDebug.debug(SystemDebug.builder, existing_service[:type_path] + " and " + service_hash[:type_path], existing_service[:publisher_namespace] + " and " + service_hash[:publisher_namespace])
-      if existing_service[:publisher_namespace] == service_hash[:publisher_namespace]\
-      && existing_service[:type_path] == service_hash[:type_path]
-        SystemDebug.debug(SystemDebug.builder, :comparing_services)
-        # FIX ME run a check here on service hash
-        return use_active_service(service_hash, existing_service) if existing_service[:create_type] == 'existing'
-        return use_orphan(existing_service) if existing_service[:create_type] == 'orphan'
+    unless use_existing.nil?
+      raise EngineBuilderException.new(error_hash(" Existing Attached services should be an array", use_existing)) unless use_existing.is_a?(Array)
+      use_existing.each do |existing_service|
+        SystemDebug.debug(SystemDebug.builder, :create_type, existing_service)
+        next if existing_service[:create_type] == 'new'
+        next if existing_service[:create_type].nil?
+        SystemDebug.debug(SystemDebug.builder, existing_service[:type_path] + " and " + service_hash[:type_path], existing_service[:publisher_namespace] + " and " + service_hash[:publisher_namespace])
+        if existing_service[:publisher_namespace] == service_hash[:publisher_namespace]\
+        && existing_service[:type_path] == service_hash[:type_path]
+          SystemDebug.debug(SystemDebug.builder, :comparing_services)
+          # FIX ME run a check here on service hash
+          return use_active_service(service_hash, existing_service) if existing_service[:create_type] == 'existing'
+          return use_orphan(existing_service) if existing_service[:create_type] == 'orphan'
+        end
       end
     end
     false
@@ -83,22 +84,14 @@ module PersistantServiceBuilder
 
   def share_service_to_engine(service_hash, existing)
     SystemDebug.debug(SystemDebug.builder, :share_service_to_engine, service_hash, existing)
-    #    params =  service_hash.dup
-    #    params[ :existing_service] = existing
-    #    trim_to_editable_variables(params)
-    #    if @core_api.share_service_to_engine(params)
-    #      if service_hash[:type_path] == 'filesystem/local/filesystem'
-    #        result = add_file_service(service_hash)
-    #       log_error_mesg('failed to create fs',self) unless result
-    #      end
     service_hash[:owner] = existing[:parent_engine]
     service_hash[:existing_service] = existing
-
-    if  @core_api.connect_share_service(service_hash)
+    if @core_api.connect_share_service(service_hash)
       add_file_service(service_hash)
       @attached_services.push(service_hash)
-      return true
+    else
+      raise EngineBuilderException.new(error_hash('failed to share_service_to_engine(params)', params))
     end
-    raise EngineBuilderException.new(error_hash('failed to share_service_to_engine(params)', params))
+    true
   end
 end

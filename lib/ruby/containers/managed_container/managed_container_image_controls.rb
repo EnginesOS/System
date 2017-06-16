@@ -1,6 +1,5 @@
 module ManagedContainerImageControls
   def delete_image()
-    return false unless has_api?
     ret_val = false
     clear_error
     in_progress(:delete)

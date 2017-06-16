@@ -68,7 +68,6 @@ echo "DNS Started" &>>/tmp/first_start.log
 /opt/engines/bin/engines service syslog create &>> /tmp/first_start.log
 /opt/engines/bin/engines service syslog  wait_for start 20
 /opt/engines/bin/engines service syslog  wait_for_startup 20
-/opt/engines/bin/engines service syslog  wait_for
 echo "Syslog Started" &>>/tmp/first_start.log
 
 /opt/engines/bin/engines service cert_auth stop &>>/tmp/first_start.log
@@ -82,6 +81,7 @@ opt/engines/bin/engines service cert_auth wait_for start 20
 /opt/engines/bin/engines service cert_auth wait_for_startup 20
 echo "Cert Auth Started" &>>/tmp/first_start.log
 
+
 /opt/engines/bin/engines service mysql_server create &>>/tmp/first_start.log
 /opt/engines/bin/engines service mysql_server  wait_for start 20
 /opt/engines/bin/engines service mysql_server wait_for_startup 180
@@ -91,7 +91,7 @@ echo "mysql_server Started" &>>/tmp/first_start.log
 echo "volmanger Started" &>>/tmp/first_start.log
 
 /opt/engines/bin/engines service cron create &>>/tmp/first_start.log
-/opt/engines/bin/engines service cron  wait_for start 20
+/opt/engines/bin/engines service cron wait_for start 20
 /opt/engines/bin/engines service cron wait_for_startup 45
 echo "cron Started" &>>/tmp/first_start.log
 

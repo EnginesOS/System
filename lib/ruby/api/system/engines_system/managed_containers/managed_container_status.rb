@@ -32,7 +32,7 @@ module ManagedContainerStatus
       rescue #skip services down
       end
     end
-    return result
+    result
   end
 
   def get_services_states

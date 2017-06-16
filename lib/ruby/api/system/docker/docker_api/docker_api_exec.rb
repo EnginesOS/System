@@ -36,13 +36,13 @@ module DockerApiExec
     def process_response()
       return_result = @result
       lambda do |chunk , c , t|
-        if  @o_stream.nil?
+        if @o_stream.nil?
           DockerUtils.docker_stream_as_result(chunk, return_result)
           return_result[:raw] = return_result[:raw] + chunk.to_s
         else
           r = DockerUtils.decode_from_docker_chunk(chunk)
           @o_stream.write(r[:stdout]) unless r.nil?
-          return_result[:stderr] =  return_result[:stderr].to_s + r[:stderr].to_s
+          return_result[:stderr] = return_result[:stderr].to_s + r[:stderr].to_s
         end
       end
     end
@@ -71,7 +71,7 @@ module DockerApiExec
     def process_response()
       return_result = @result
       lambda do |chunk , c , t|
-        if  @o_stream.nil?
+        if @o_stream.nil?
           DockerUtils.docker_stream_as_result(chunk, return_result)
           return_result[:raw] = return_result[:raw] + chunk.to_s
         else
@@ -126,8 +126,8 @@ module DockerApiExec
 
   private
 
-  def  get_exec_result(exec_id)
-    r  = get_request('/exec/' + exec_id.to_s + '/json')
+  def get_exec_result(exec_id)
+    r = get_request('/exec/' + exec_id.to_s + '/json')
     r[:ExitCode]
   end
 
@@ -135,10 +135,10 @@ module DockerApiExec
     request_params = {}
     if params.key?(:data) || params.key?(:data_stream)
       request_params['AttachStdin'] = true
-      request_params['Tty'] =  false
+      request_params['Tty'] = false
     else
       request_params['AttachStdin'] = false
-      request_params['Tty'] =  false
+      request_params['Tty'] = false
     end
     request_params['AttachStdout'] = true
     request_params['AttachStderr'] = true

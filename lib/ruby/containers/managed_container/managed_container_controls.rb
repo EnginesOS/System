@@ -1,6 +1,5 @@
 module ManagedContainerControls
   def reinstall_engine(builder)
-    return false unless has_api?
     builder.reinstall_engine(self) if prep_task(:build)
   end
 
@@ -17,7 +16,6 @@ module ManagedContainerControls
   end
 
   def destroy_container(reinstall = false)
-    return false unless has_api?
     if reinstall == true
       return false unless prep_task(:reinstall)
     else
@@ -32,7 +30,6 @@ module ManagedContainerControls
   end
 
   def setup_container
-    return false unless has_api?
     if prep_task(:create)
       ret_val = false
       unless has_container?
@@ -50,7 +47,6 @@ module ManagedContainerControls
   end
 
   def create_container
-    return false unless has_api?
     SystemDebug.debug(SystemDebug.containers, :teask_preping)
     @container_mutex.synchronize {
       @container_api.set_locale_env(self)
@@ -61,10 +57,10 @@ module ManagedContainerControls
         save_state
         return task_failed('create') unless super
         save_state #save new containerid)
-        SystemDebug.debug(SystemDebug.containers,  :create_super_ran)
-        SystemDebug.debug(SystemDebug.containers,@setState, @docker_info_cache.class.name)
+        SystemDebug.debug(SystemDebug.containers, :create_super_ran)
+        SystemDebug.debug(SystemDebug.containers, @setState, @docker_info_cache.class.name)
         expire_engine_info
-        SystemDebug.debug(SystemDebug.containers,@setState, @docker_info_cache.class.name)
+        SystemDebug.debug(SystemDebug.containers, @setState, @docker_info_cache.class.name)
         true
       end
     }
@@ -78,7 +74,6 @@ module ManagedContainerControls
   end
 
   def unpause_container
-    return false unless has_api?
     @container_mutex.synchronize {
       if prep_task(:unpause)
         return task_failed('unpause') unless super
@@ -88,7 +83,6 @@ module ManagedContainerControls
   end
 
   def pause_container
-    return false unless has_api?
     @container_mutex.synchronize {
       if prep_task(:pause)
         return task_failed('pause') unless super
@@ -99,7 +93,6 @@ module ManagedContainerControls
 
   def stop_container
     SystemDebug.debug(SystemDebug.containers, :stop_read_sta, read_state)
-    return false unless has_api?
     @container_mutex.synchronize {
       if prep_task(:stop)
         return task_failed('stop') unless super
@@ -115,7 +108,6 @@ module ManagedContainerControls
   end
 
   def start_container
-    return false unless has_api?
     @container_mutex.synchronize {
       if prep_task(:start)
         return task_failed('start') unless super
@@ -127,13 +119,13 @@ module ManagedContainerControls
 
   def restart_container
     return task_failed('restart/stop') unless stop_container
-    wait_for( 'stop')
+    wait_for('stop')
     task_failed('restart/start') unless start_container
     true
   end
 
   def rebuild_container
-    return false unless has_api?
+ 
     @container_mutex.synchronize {
       if prep_task(:reinstall)
         ret_val = @container_api.rebuild_image(self)

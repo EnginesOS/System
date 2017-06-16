@@ -5,11 +5,11 @@ module ServiceApiReaders
     begin
       Timeout.timeout(@@configurator_timeout) do
         thr = Thread.new { result =  @engines_core.exec_in_container({:container => c, :command_line => [cmd], :log_error => true }) }
-          thr[:name] = 'action reader ' + c.container_name
+        thr[:name] = 'action reader ' + c.container_name
         thr.join
       end
     rescue Timeout::Error
-    thr.kill
+      thr.kill
       raise EnginesException.new(error_hash('Timeout on running reader', cmd))
     end
     raise EnginesException.new(error_hash('Invalid Reader Result', result)) unless result.is_a?(Hash)
@@ -18,11 +18,16 @@ module ServiceApiReaders
   end
 
   def get_readers(container)
+    r = nil
     service_def = SoftwareServiceDefinition.find(container.type_path, container.publisher_namespace )
-    return [] unless service_def.key?(:actionators)
-    return [] unless service_def[:actionators].is_a?(Hash)
-    return [] unless  service_def[:actionators].key?(:readers)
-    service_def[:actionators][:readers]
+    if service_def.key?(:actionators)
+      if service_def[:actionators].is_a?(Hash)
+        if service_def[:actionators].key?(:readers)
+          r = service_def[:actionators][:readers]
+        end
+      end
+    end
+    r
   end
 
 end

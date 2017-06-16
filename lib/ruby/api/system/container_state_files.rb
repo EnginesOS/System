@@ -13,7 +13,7 @@ class ContainerStateFiles
   end
 
   def self.schedules_dir(container)
-    return self.container_state_dir(container) + '/schedules/'
+    self.container_state_dir(container) + '/schedules/'
   end
 
   def self.schedules_file(container)
@@ -38,9 +38,12 @@ class ContainerStateFiles
 
   def self.read_container_id(container)
     cidfile = ContainerStateFiles.container_cid_file(container)
-    return -1 unless  File.exist?(cidfile)
-    r = File.read(cidfile)
-    r.gsub!(/\s+/, '').strip
+    unless File.exist?(cidfile)
+      -1
+    else
+      r = File.read(cidfile)
+      r.gsub(/\s+/, '').strip
+    end
   rescue StandardError => e
     SystemUtils.log_exception(e)
     '-1'
@@ -87,7 +90,7 @@ class ContainerStateFiles
   end
 
   def self.destroy_container(container)
-    return File.delete(ContainerStateFiles.container_cid_file(container)) if File.exist?(ContainerStateFiles.container_cid_file(container))
+    File.delete(ContainerStateFiles.container_cid_file(container)) if File.exist?(ContainerStateFiles.container_cid_file(container))
     true # File may or may not exist
   end
 

@@ -52,14 +52,15 @@ module Containers
   end
 
   def write_actionators(container, actionators)
-    return true if actionators.nil?
-    Dir.mkdir_p(actionator_dir(container)) unless Dir.exist?(actionator_dir(container))
-    serialized_object = YAML.dump(actionators)
+    unless actionators.nil?
+      Dir.mkdir_p(actionator_dir(container)) unless Dir.exist?(actionator_dir(container))
+      serialized_object = YAML.dump(actionators)
 
-    f = File.new(actionator_dir(container) + '/actionators.yaml', File::CREAT | File::TRUNC | File::RDWR, 0644)
-    f.puts(serialized_object)
-    f.flush()
-    f.close
+      f = File.new(actionator_dir(container) + '/actionators.yaml', File::CREAT | File::TRUNC | File::RDWR, 0644)
+      f.puts(serialized_object)
+      f.flush()
+      f.close
+    end
   end
 
   def get_service_actionator(container, action)
@@ -71,11 +72,14 @@ module Containers
 
   def load_service_actionators(container)
     SystemDebug.debug(SystemDebug.actions, container, actionator_dir(container) + '/actionators.yaml')
-    return {} unless File.exist?(actionator_dir(container) + '/actionators.yaml')
-    yaml = File.read(actionator_dir(container) + '/actionators.yaml')
-    actionators = YAML::load(yaml)
-    SystemDebug.debug(SystemDebug.actions, container, actionators)
-    return actionators if actionators.is_a?(Hash)
+    if File.exist?(actionator_dir(container) + '/actionators.yaml')
+      yaml = File.read(actionator_dir(container) + '/actionators.yaml')
+      actionators = YAML::load(yaml)
+      SystemDebug.debug(SystemDebug.actions, container, actionators)
+      actionators if actionators.is_a?(Hash)
+    else
+      {}
+    end
   end
 
   def get_engine_actionator(container, action)
@@ -87,11 +91,14 @@ module Containers
 
   def load_engine_actionators(container)
     SystemDebug.debug(SystemDebug.actions, container, actionator_dir(container) + '/actionators.yaml')
-    return {} unless File.exist?(actionator_dir(container) + '/actionators.yaml')
-    yaml = File.read(actionator_dir(container) + '/actionators.yaml')
-    actionators = YAML::load(yaml)
-    SystemDebug.debug(SystemDebug.actions,container ,actionators)
-    return actionators if actionators.is_a?(Hash)
+    if File.exist?(actionator_dir(container) + '/actionators.yaml')
+      yaml = File.read(actionator_dir(container) + '/actionators.yaml')
+      actionators = YAML::load(yaml)
+      SystemDebug.debug(SystemDebug.actions,container ,actionators)
+      actionators if actionators.is_a?(Hash)
+    else
+      {}
+    end
   end
 
 end

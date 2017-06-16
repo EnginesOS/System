@@ -38,9 +38,12 @@ module ContainerSystemStateFiles
 
   def read_container_id(container)
     cidfile = container_cid_file(container)
-    return -1 unless  File.exist?(cidfile)
-    r = File.read(cidfile)
-    r.gsub!(/\s+/, '').strip
+    if File.exist?(cidfile)
+      r = File.read(cidfile)
+      r.gsub!(/\s+/, '').strip
+    else
+      -1
+    end
   rescue StandardError => e
     SystemUtils.log_exception(e)
     '-1'
@@ -100,7 +103,8 @@ module ContainerSystemStateFiles
   end
 
   def destroy_container(container)
-    return File.delete(container_cid_file(container)) if File.exist?(container_cid_file(container))
+    File.delete(container_cid_file(container)) if File.exist?(container_cid_file(container))
+    
     true # File may or may not exist
   end
 
@@ -109,7 +113,6 @@ module ContainerSystemStateFiles
   end
 
   def container_ssh_keydir(container)
-
     SystemConfig.SSHStore + '/' + container.ctype + 's/' + container.container_name
   end
 

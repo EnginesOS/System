@@ -1,60 +1,70 @@
 module ContainerStatus
   def read_state
+    state = 'nocontainer'
     info = docker_info
     SystemDebug.debug(SystemDebug.containers, :info)
-    return 'nocontainer' unless info.is_a?(Hash)
-
-    if info.key?(:State)
-      if info[:State][:Running]
-        if  info[:State][:Paused]
-          return 'paused'
-        else
-          return 'running'
+    if info.is_a?(Hash)
+      if info.key?(:State)
+        if info[:State][:Running] == true
+          if info[:State][:Paused] == true
+            state = 'paused'
+          else
+            state = 'running'
+          end
+        elsif info[:State][:Running] == false
+          state = 'stopped'
+        elsif info[:State][:Status] == 'exited'
+          state = 'stopped'
         end
-      elsif info[:State][:Running] == false
-        return 'stopped'
-      elsif info[:State][:Status] == 'exited'
-        return 'stopped'
       else
-        SystemDebug.debug(SystemDebug.containers, :info, info)
-        return 'nocontainer'
+        SystemDebug.debug(SystemDebug.containers, :no_matched_info, info)
       end
     end
-    # SystemDebug.debug(SystemDebug.containers,  'no_matching state_info', info.class.name, info)
-    'nocontainer'
+    SystemDebug.debug(SystemDebug.containers, 'in State', state.to_s)
+    state
   end
 
   def is_paused?
-    return true if read_state == 'paused'
-    false
+    if read_state == 'paused'
+      true
+    else
+      false
+    end
   end
 
   def is_active?
     state = read_state
     case state
-    when 'running'
-      return true
-    when 'paused'
-      return true
+    when 'running','paused'
+      true
     else
-      return false
+      false
     end
   end
 
   def is_stopped?
-    return true if read_state == 'stopped'
-    false
+    if read_state == 'stopped'
+      true
+    else
+      false
+    end
   end
 
   def is_running?
-    return true if read_state == 'running'
-    false
+    if read_state == 'running'
+      true
+    else
+      false
+    end
   end
 
   def has_container?
     # return false if has_image? == false NO Cached
-    return false if read_state == 'nocontainer'
-    true
+    if read_state == 'nocontainer'
+      false
+    else
+      true
+    end
   end
 
   def to_s
