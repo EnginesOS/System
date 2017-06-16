@@ -68,24 +68,6 @@ class DockerEventWatcher < ErrorsApi
     # add_event_listener([system, :container_event])
     SystemDebug.debug(SystemDebug.container_events, 'EVENT LISTENER')
   end
-  #  def connection
-  #    @events_connection ||= Excon.new('unix:///',
-  #    :socket => '/var/run/docker.sock',
-  #    :debug_request => true,
-  #    :debug_response => true,
-  #    :persistent => true)
-  #    @events_connection
-  #  end
-  #
-  #  def reopen_connection
-  #    @events_connection.reset
-  #    #    STDERR.puts(' REOPEN doker.sock connection ')
-  #    @events_connection = Excon.new('unix:///',
-  #    :socket => '/var/run/docker.sock',
-  #    :debug_request => true,
-  #    :debug_response => true,
-  #    :persistent => true)
-  #  end
 
   def start
     STDERR.puts(' STARTINF with ' + @event_listeners.to_s)
@@ -168,11 +150,15 @@ class DockerEventWatcher < ErrorsApi
   end
 
   def match_container(hash, container_name)
-    return false unless hash.key?(:Actor)
-    return false unless hash[:Actor].key?(:Attributes)
-    return false unless hash[:Actor][:Attributes].key?(:container_name)
-    return false unless hash[:Actor][:Attributes][:container_name] == container_name
-    true
+    r = false
+    if hash.key?(:Actor)
+      if hash[:Actor].key?(:Attributes)
+        if hash[:Actor][:Attributes].key?(:container_name)
+          r = true if hash[:Actor][:Attributes][:container_name] == container_name
+        end
+      end
+    end
+    r
   end
 
   def trigger(hash)
