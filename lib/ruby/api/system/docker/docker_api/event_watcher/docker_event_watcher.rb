@@ -87,7 +87,7 @@ class DockerEventWatcher < ErrorsApi
           #  t = Thread.new {trigger(hash)}
           # t[:name] = 'trigger'
           #need to order requests if use threads
-          STDERR.puts(hash.to_s)
+         
           trigger(hash)
         rescue StandardError => e
           STDERR.puts('EXCEPTION Chunk error on docker Event Stream _' + chunk.to_s + '_')
