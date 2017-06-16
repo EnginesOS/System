@@ -10,7 +10,7 @@ module TaskAtHand
     @setState = state.to_s
     set_task_at_hand(step)
     save_state
-    SystemDebug.debug(SystemDebug.engine_tasks, 'Task at Hand:' + state.to_s + '  Current set state:' + current_set_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s + ' in ' + curr_state)
+    SystemDebug.debug(SystemDebug.engine_tasks, 'Task at Hand:' + state.to_s + ' Current set state:' + current_set_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s + ' in ' + curr_state)
     # rescue StandardError => e
     #   log_exception(e)
   end
@@ -74,7 +74,7 @@ module TaskAtHand
         @steps_to_go = 1
         r = desired_state(step, final_state, curr_state)
       else
-        r = desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
+        r = desired_state(step, final_state, curr_state) if curr_state == 'nocontainer'
       end
     when :reinstall
       if curr_state == 'stopped'
@@ -107,7 +107,7 @@ module TaskAtHand
       on_start('unpause')
     when 'die'     
       begin
-        STDERR.puts('IT DIED WITH ' + event_hash.to_s)
+        STDERR.puts('IT DIED WITH ' + event_hash[:Actor][:Attributes][:exitCode].to_s)
         ec = event_hash[:Actor][:Attributes][:exitCode]
       rescue
         ec = 0
