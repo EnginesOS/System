@@ -2,7 +2,14 @@
 
 PID_FILE=/var/run/engines/engines.pid	
 export PID_FILE
+
+if test -f 	 /home/engines/functions/trap.sh 
+ then
+ . /home/engines/functions/trap.sh
+ else
 . /home/trap.sh
+fi
+
 . /home/engines/functions/start_functions.sh
 
 volume_setup
