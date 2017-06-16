@@ -106,8 +106,13 @@ module TaskAtHand
     when 'unpause'
       on_start('unpause')
     when 'die'
-       STDERR.puts('IT DIED WITH ' + event_hash[:exitCode].to_s)
-      on_stop('die', event_hash[:exitCode])
+      STDERR.puts('IT DIED WITH ' + event_hash[:exitCode].to_s)
+      begin
+        ec = event_hash[:Actor][:Attributes][:exitCode]
+      rescue
+        ec = 0
+      end
+      on_stop('die', ec)
     when 'kill'
       #  STDERR.puts('IT KILL')
       on_stop('kill')

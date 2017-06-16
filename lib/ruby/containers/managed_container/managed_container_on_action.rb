@@ -2,6 +2,7 @@ module ManagedContainerOnAction
   def on_start(what)
     @container_mutex.synchronize {
       @stop_reason = nil
+      @exit_code = 0
       set_running_user
       # STDERR.puts('ONSTART_CALLED' + container_name.to_s + ';' + what.to_s)
       SystemDebug.debug(SystemDebug.container_events, :ONSTART_CALLED, what)
