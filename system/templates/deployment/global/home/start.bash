@@ -9,7 +9,7 @@ if ! test -z "$Engines_Debug_Run"
  then
 		echo "Stopped by Sleeping for 500 seconds to allow debuging"
   	 	sleep 500 &
-  	 	echo " $!" >> $PID_FILE
+  	 	echo -n " $!" >> $PID_FILE
   	 	wait
   	 fi  	 
  }
@@ -92,15 +92,14 @@ fi
 
 function start_apache {
 mkdir -p /var/log/apache2/ >& /dev/null
+PID_FILE=/var/run/apache2/apache2.pid
 	if test -f /home/engines/scripts/blocking.sh 
 		then
 		   /usr/sbin/apache2ctl -DFOREGROUND &
-	       echo  " $!" >>  $PID_FILE
 		   /home/engines/scripts/blocking.sh  &
-		   echo  " $!" >> $PID_FILE
+		   echo  -n " $!" >> $PID_FILE
 	else		
 		  /usr/sbin/apache2ctl -DFOREGROUND &
-	      echo  " $!" >>  $PID_FILE
 	fi
 }
 
@@ -129,12 +128,12 @@ function start_nginx {
 	if test -f /home/engines/scripts/blocking.sh 
 	 then
 		nginx &
-	    echo  " $!" >>  $PID_FILE
+	    echo -n " $!" >>  $PID_FILE
 		 /home/engines/scripts/blocking.sh  &
-		 echo  " $!" >>  $PID_FILE
+		 echo -n " $!" >>  $PID_FILE
 	else		
 		nginx &
-	    echo  " $!" >>  $PID_FILE
+	    echo -n " $!" >>  $PID_FILE
 	fi
 }
 
@@ -160,7 +159,7 @@ if test -f /home/startwebapp.sh
 		 then
 		 	/home/engines/scripts/blocking.sh &
 			blocking_pid=$!
-		 	echo " $blocking_pid " >>  $PID_FILE
+		 	echo -n " $blocking_pid " >>  $PID_FILE
 	  fi
  wait
  wait_for_debug
@@ -174,12 +173,11 @@ if test -f /usr/sbin/apache2ctl
 	start_apache
 elif test -d /etc/nginx
  then
-	 start_nginx
-	
+	 start_nginx	
 elif test -f /home/engines/scripts/blocking.sh 
 	 then
 		/home/engines/scripts/blocking.sh  &
-	    echo  " $!" >>  $PID_FILE		   
+	    echo -n " $!" >>  $PID_FILE		   
 else
  echo "Nothing else to run!"
  exit
