@@ -66,12 +66,10 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream;charset=asc
           bytes = build_log_file.read_nonblock(1000)
           bytes.encode(Encoding::ASCII_8BIT) unless bytes.nil?
           out << bytes
-          STDERR.puts('B ' + bytes.to_s)
           bytes = ''
         rescue IO::WaitReadable
           out << bytes
           bytes = ''
-          STDERR.puts('B ' + bytes.to_s)
           IO.select([build_log_file])
           retry
         rescue EOFError
@@ -79,7 +77,6 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream;charset=asc
             bytes.encode(Encoding::ASCII_8BIT) unless bytes.nil? #UTF_8) unless bytes.nil?
             out  << bytes
             out  << '.'
-            STDERR.puts('B ' + bytes.to_s)
             bytes = ''
             sleep 2
             retry if File.exist?(SystemConfig.BuildRunningParamsFile)
