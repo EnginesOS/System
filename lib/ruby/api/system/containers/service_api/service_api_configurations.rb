@@ -1,16 +1,17 @@
 module ServiceApiConfigurations
   @@configurator_timeout = 10
   def retrieve_configurator(c, params)
-    cmd =  '/home/configurators/read_' + params[:configurator_name].to_s + '.sh'
+    cmd = '/home/configurators/read_' + params[:configurator_name].to_s + '.sh'
     result =  @engines_core.exec_in_container({:container => c, :command_line => [cmd], :log_error => true, :timeout => @@configurator_timeout})
     if result[:result] == 0
       #variables = SystemUtils.hash_string_to_hash(result[:stdout])
       #FIXMe dont use JSON.pars
       variables_hash = deal_with_json(result[:stdout])
       params[:variables] = symbolize_keys(variables_hash)
-      return params
+      params
+    else
+      raise EnginesException.new(error_hash('Error on retrieving Configuration', result))
     end
-    raise EnginesException.new(error_hash('Error on retrieving Configuration', result))
   end
 
   def run_configurator(c, configurator_params)
@@ -37,8 +38,8 @@ module ServiceApiConfigurations
 
   def service_resource(c, what)
     cmd = '/home/resources/' + what + '.sh'
-   # STDERR.puts('SERVICE RESOURCE' + cmd.to_s)
-  #  STDERR.puts('SERVICE RESOURCE' + c.container_name)
+    # STDERR.puts('SERVICE RESOURCE' + cmd.to_s)
+    #  STDERR.puts('SERVICE RESOURCE' + c.container_name)
     @engines_core.exec_in_container({:container => c, :command_line => cmd, :log_error => true , :timeout => @@configurator_timeout, :data=> nil })[:stdout]
   end
 

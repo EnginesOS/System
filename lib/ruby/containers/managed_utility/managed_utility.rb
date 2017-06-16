@@ -36,8 +36,11 @@ class ManagedUtility< ManagedContainer
 
   def command_details(command_name)
     raise EnginesException.new(error_hash('No Commands', command_name)) unless @commands.is_a?(Hash)
-    return @commands[command_name] if @commands.key?(command_name)
-    raise EnginesException.new(error_hash('Command not found _', command_name.to_s ))
+    if @commands.key?(command_name)
+      @commands[command_name]
+    else
+      raise EnginesException.new(error_hash('Command not found _', command_name.to_s ))
+    end
   end
 
   def execute_command(command_name, command_params)
@@ -76,8 +79,11 @@ class ManagedUtility< ManagedContainer
     wait_for('stopped') unless is_stopped?
     begin
       r = @container_api.logs_container(self, 100) #_as_result
-      return r if r.is_a?(Hash)
-      {stdout: r.to_s, result: 0}
+      if r.is_a?(Hash)
+        r
+      else
+        {stdout: r.to_s, result: 0}
+      end
     rescue StandardError => e
       STDERR.puts(e.to_s  + "\n" + e.backtrace.to_s)
       STDERR.puts('FSCONFIG EXCEPTION' + e.to_s)

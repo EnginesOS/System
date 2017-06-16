@@ -42,14 +42,12 @@ module ManagedContainerWebSites
   # create nginx service_hash for container and register with nginx
   # @return boolean indicating sucess
   def add_nginx_service
-    return false unless has_api?
     @container_api.add_nginx_service(self)
   end
 
   # create nginx service_hash for container deregister with nginx
   # @return boolean indicating sucess
   def remove_nginx_service
-    return false unless has_api?
     @container_api.remove_nginx_service(self)
   end
 end

@@ -1,7 +1,10 @@
 module ManagedContainerStatus
   def is_service?
-    return true if @ctype == 'service'
-    false
+    if @ctype == 'service'
+      true
+    else
+      false
+    end
   end
 
   def read_state
@@ -48,15 +51,17 @@ module ManagedContainerStatus
   end
 
   def is_startup_complete?
-    return false unless has_api?
     @container_api.is_startup_complete?(self)
   end
 
   def is_error?
-    return false unless task_at_hand.nil?
-    return false if in_two_step?
-    return true if @setState != read_state
-    false
+    r = false
+    if task_at_hand.nil?
+      if in_two_step?
+        r = true if @setState == read_state
+      end
+    end
+    r
   end
 
   def clear_error
@@ -67,22 +72,18 @@ module ManagedContainerStatus
   end
 
   def restart_required?
-    return false unless has_api?
     @container_api.restart_required?(self)
   end
 
   def restart_reason
-    return false unless has_api?
     @container_api.restart_reason(self)
   end
 
   def rebuild_required?
-    return false unless has_api?
     @container_api.rebuild_required?(self)
   end
 
   def rebuild_reason
-    return false unless has_api?
     @container_api.rebuild_reason(self)
   end
 

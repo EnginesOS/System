@@ -92,7 +92,7 @@ module TaskAtHand
     when :destroy
       r = desired_state(step, final_state, curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
     end
-    r    
+    r
   end
 
   def process_container_event(event_hash)
@@ -166,8 +166,8 @@ module TaskAtHand
     end
     nil
   rescue StandardError => e
-    return nil unless File.exist?(fn)
-    log_exception(e)
+    log_exception(e) if File.exist?(fn)
+
     nil
     # @task_at_hand
   end
@@ -214,32 +214,18 @@ module TaskAtHand
   private
 
   def tasks_final_state(task)
+    s = ''
     case task
-    when :create
-      return 'running'
+    when :create,:start,:recreate,:unpause,:restart,:rebuild,:build,:reinstall
+      s = 'running'
     when :stop
-      return 'stopped'
-    when :start
-      return 'running'
+      s = 'stopped'
     when :pause
-      return 'paused'
-    when :restart
-      return 'stopped'
-    when :unpause
-      return 'running'
-    when :reinstall
-      return 'running'
-    when :recreate
-      return 'running'
-    when :rebuild
-      return 'running'
-    when :build
-      return 'running'
-    when :delete
-      return 'nocontainer'
-    when :destroy
-      return 'nocontainer'
+      s =  'paused'
+    when :delete,:destroy
+      s = 'nocontainer'
     end
+    s
     # rescue StandardError => e
     #    log_exception(e)
   end
@@ -251,9 +237,10 @@ module TaskAtHand
     if mtime < Time.now
       File.delete(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
       SystemDebug.debug(SystemDebug.engine_tasks, :expired_task, task, ' after ', task_set_timeout(task))
-      return true
+      true
+    else
+      false
     end
-    false
     # no file problem with mtime etc means task has finished in progress and task file has dissapppeared
   rescue StandardError => e
     # SystemDebug.debug(SystemDebug.engine_tasks, e, e.backtrace)
@@ -268,10 +255,11 @@ module TaskAtHand
 
   def set_task_at_hand(state)
     @task_at_hand = state
-    return unless Dir.exist?(ContainerStateFiles.container_state_dir(self)) # happens on reinstall
-    f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand', 'w+')
-    f.write(state)
-    f.close
+    if Dir.exist?(ContainerStateFiles.container_state_dir(self)) # happens on reinstall
+      f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand', 'w+')
+      f.write(state)
+      f.close
+    end
   rescue StandardError => e
     log_exception(e)
   end

@@ -18,8 +18,11 @@ module DockerInfoCollector
   # @return nil if exception
   # @ return false on inspect container error
   def get_ip_str
-    return docker_info[:NetworkSettings][:IPAddress] unless docker_info.is_a?(FalseClass)
-    false
+    if docker_info.is_a?(FalseClass)
+      false
+    else
+     docker_info[:NetworkSettings][:IPAddress]  
+    end
   rescue
     nil
   end
@@ -71,10 +74,15 @@ module DockerInfoCollector
 
   def running_user
     info = docker_info
-    return -1 unless info.is_a?(Hash)
-    return -1 unless info.key?(:Config)
-    return -1 unless info[:Config].key?(:User)
-    info[:Config][:User]
+    r = false
+    if info.is_a?(Hash)
+      if info.key?(:Config)
+        if info[:Config].key?(:User)
+          r = info[:Config][:User]
+        end
+      end
+    end
+    r
   end
   protected
 
@@ -82,7 +90,7 @@ module DockerInfoCollector
     return false unless has_api?
     # SystemDebug.debug(SystemDebug.containers,  :collect_docker_info )
     return false if @docker_info_cache == false && @setState == 'nocontainer'
-    @docker_info_cache =  @container_api.inspect_container(self) if @docker_info_cache.nil?
+    @docker_info_cache = @container_api.inspect_container(self) if @docker_info_cache.nil?
 
     if @docker_info_cache.is_a?(Array)
       @docker_info_cache = @docker_info_cache[0]

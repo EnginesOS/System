@@ -10,7 +10,10 @@ module ManagedServiceContainerInfo
   end
 
   def is_privileged?
-    return true if @privileged == true
-    false
+    if @privileged == true
+      true
+    else
+      false
+    end
   end
 end

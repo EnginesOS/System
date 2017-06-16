@@ -16,7 +16,10 @@ class TaskTimeouts
   }
 
   def self.task_set_timeout(task)
-    return @@default_task_timeout unless @@task_timeouts.key?(task.to_sym)
-    @@task_timeouts[task.to_sym]
+    if @@task_timeouts.key?(task.to_sym)
+      @@task_timeouts[task.to_sym]
+    else
+      @@default_task_timeout
+    end
   end
 end

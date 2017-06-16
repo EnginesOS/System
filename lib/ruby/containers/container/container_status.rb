@@ -1,60 +1,70 @@
 module ContainerStatus
   def read_state
+    state = 'nocontainer'
     info = docker_info
     SystemDebug.debug(SystemDebug.containers, :info)
-    return 'nocontainer' unless info.is_a?(Hash)
-
-    if info.key?(:State)
-      if info[:State][:Running]
-        if  info[:State][:Paused]
-          return 'paused'
+    unless info.is_a?(Hash)
+      if info.key?(:State)
+        if info[:State][:Running]
+          if  info[:State][:Paused]
+            state = 'paused'
+          else
+            state = 'running'
+          end
+        elsif info[:State][:Running] == false
+          state = 'stopped'
+        elsif info[:State][:Status] == 'exited'
+          state = 'stopped'
         else
-          return 'running'
+          SystemDebug.debug(SystemDebug.containers, :info, info)
         end
-      elsif info[:State][:Running] == false
-        return 'stopped'
-      elsif info[:State][:Status] == 'exited'
-        return 'stopped'
-      else
-        SystemDebug.debug(SystemDebug.containers, :info, info)
-        return 'nocontainer'
       end
     end
     # SystemDebug.debug(SystemDebug.containers,  'no_matching state_info', info.class.name, info)
-    'nocontainer'
+    state
   end
 
   def is_paused?
-    return true if read_state == 'paused'
-    false
+    if read_state == 'paused'
+      true
+    else
+      false
+    end
   end
 
   def is_active?
     state = read_state
     case state
-    when 'running'
-      return true
-    when 'paused'
-      return true
+    when 'running','paused'
+      true
     else
-      return false
+      false
     end
   end
 
   def is_stopped?
-    return true if read_state == 'stopped'
-    false
+    if read_state == 'stopped'
+      true
+    else
+      false
+    end
   end
 
   def is_running?
-    return true if read_state == 'running'
-    false
+    if read_state == 'running'
+      true
+    else
+      false
+    end
   end
 
   def has_container?
     # return false if has_image? == false NO Cached
-    return false if read_state == 'nocontainer'
-    true
+    if read_state == 'nocontainer'
+      false
+    else
+      true
+    end
   end
 
   def to_s
