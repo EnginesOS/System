@@ -5,22 +5,24 @@ module ContainerStatus
     SystemDebug.debug(SystemDebug.containers, :info)
     unless info.is_a?(Hash)
       if info.key?(:State)
+        STDERR.puts('has State')
         if info[:State][:Running] == true
           if info[:State][:Paused] == true
             state = 'paused'
           else
             state = 'running'
+            STDERR.puts(' is running')
           end
         elsif info[:State][:Running] == false
           state = 'stopped'
         elsif info[:State][:Status] == 'exited'
           state = 'stopped'
-        else
-          SystemDebug.debug(SystemDebug.containers, :no_matched_info, info)
         end
+      else
+        SystemDebug.debug(SystemDebug.containers, :no_matched_info, info)
       end
     end
-     SystemDebug.debug(SystemDebug.containers,  'in State', state.to_s + ' from: ' + info[:State].to_s)
+    SystemDebug.debug(SystemDebug.containers,  'in State', state.to_s + ' from: ' + info[:State].to_s)
     state
   end
 
