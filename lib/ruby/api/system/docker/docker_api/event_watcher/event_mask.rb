@@ -28,8 +28,8 @@ class EventMask
       end
 
       if mask & @@build_event == 0
-        mask |= get_target_mask(event_hash)
-        mask |= get_status_mask(event_hash)
+        mask |= self.get_target_mask(event_hash)
+        mask |= self.get_status_mask(event_hash)
       end
     elsif event_hash[:Type] = 'image'
       mask |= @@image_event
@@ -42,9 +42,8 @@ class EventMask
     e
   end
 
-  private
-
-  def get_status_mask
+  
+  def self.get_status_mask
     mask = 0
     unless event_hash[:status].nil?
       if event_hash[:status].start_with?('exec')
@@ -74,7 +73,7 @@ class EventMask
     mask
   end
 
-  def get_target_mask(event_hash)
+  def self.get_target_mask(event_hash)
     mask = 0
     if event_hash.key?(:Actor) && event_hash[:Actor].key?(:Attributes)
       case event_hash[:Actor][:Attributes][:container_type]
