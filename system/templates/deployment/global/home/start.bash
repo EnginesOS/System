@@ -92,15 +92,18 @@ fi
 
 function start_apache {
 mkdir -p /var/log/apache2/ >& /dev/null
-PID_FILE=/var/run/apache2/apache2.pid
+
 	if test -f /home/engines/scripts/blocking.sh 
 		then
-		   /usr/sbin/apache2ctl -DFOREGROUND &
+		   /usr/sbin/apache2ctl -DFOREGROUND &		  
 		   /home/engines/scripts/blocking.sh  &
 		   echo  -n " $!" >> $PID_FILE
 	else		
 		  /usr/sbin/apache2ctl -DFOREGROUND &
 	fi
+
+apache_pid=`cat /var/run/apache2/apache2.pid`
+echo -n " $apache_pid" >> $PID_FILE
 }
 
 function configure_passenger {
