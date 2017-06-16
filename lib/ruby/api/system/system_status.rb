@@ -22,8 +22,11 @@ class SystemStatus
   end
 
   def self.engines_system_has_updated?
-    return File.delete(SystemConfig.EnginesSystemUpdatedFlag) if File.exist?(SystemConfig.EnginesSystemUpdatedFlag)
-    false
+    if File.exist?(SystemConfig.EnginesSystemUpdatedFlag)
+      File.delete(SystemConfig.EnginesSystemUpdatedFlag)
+    else
+      false
+    end
   end
 
   def self.is_engines_system_updating?
@@ -31,8 +34,11 @@ class SystemStatus
   end
 
   def self.base_system_has_updated?
-    return File.delete(SystemConfig.SystemUpdatedFlag) if File.exist?(SystemConfig.SystemUpdatedFlag)
-    false
+    if File.exist?(SystemConfig.SystemUpdatedFlag)
+      File.delete(SystemConfig.SystemUpdatedFlag)
+    else
+      false
+    end
   end
 
   def self.is_building?
@@ -81,7 +87,7 @@ class SystemStatus
     release.strip!
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    return 'none'
+    'none'
   end
 
   # called by per session and post update
@@ -105,12 +111,11 @@ class SystemStatus
   end
 
   def self.current_build_params
-    unless File.exist?(SystemConfig.BuildRunningParamsFile)
-      return  # SystemUtils.log_error_mesg("No ", SystemConfig.BuildRunningParamsFile)
+    if File.exist?(SystemConfig.BuildRunningParamsFile)
+      param_file = File.new(SystemConfig.BuildRunningParamsFile, 'r')
+      param_raw = param_file.read
+      YAML.load(param_raw)
     end
-    param_file = File.new(SystemConfig.BuildRunningParamsFile, 'r')
-    param_raw = param_file.read
-    YAML.load(param_raw)
   end
 
   def self.last_build_params

@@ -20,8 +20,11 @@ module SystemApiBackup
       command_line: ['/home/services/backup.sh'],
       log_error: true }
     result = @engines_api.exec_in_container(params)
-    return result if result[:result] !=0
-    true
+    if result[:result] != 0
+      result
+    else
+      true
+    end
   end
 
   def backup_engine_config(engine_name, out)

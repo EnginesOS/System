@@ -36,14 +36,15 @@ module Services
 
   def get_services_by_type(type = 'service')
     services = _list_services(type)
-    return [] unless services.is_a?(Array)
     ret_val = []
-    services.each do |service_name |
-      begin
-        service = loadManagedService(service_name) if type == 'service'
-        service = loadSystemService(service_name) if type == 'system_service'
-        ret_val.push(service) if service.is_a?(ManagedService)
-      rescue # skip bad loads
+    if services.is_a?(Array)
+      services.each do |service_name |
+        begin
+          service = loadManagedService(service_name) if type == 'service'
+          service = loadSystemService(service_name) if type == 'system_service'
+          ret_val.push(service) if service.is_a?(ManagedService)
+        rescue # skip bad loads
+        end
       end
     end
     ret_val

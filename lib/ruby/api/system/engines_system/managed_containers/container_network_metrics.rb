@@ -7,7 +7,7 @@ module ContainerNetworkMetrics
       ret_val = {}
       ret_val[:in] = 'n/a'
       ret_val[:out] = 'n/a'
-      return ret_val
+      ret_val
     end
     cmd = ['netstat','--interfaces', '-e','|','grep', 'bytes', '|','head', '-1', '|', 'awk', '{ print $2 \" \" $6}']
 
