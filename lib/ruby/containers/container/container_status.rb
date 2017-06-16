@@ -52,10 +52,11 @@ module ContainerStatus
 
   def is_running?
     if read_state == 'running'
-      true
+      r = true
     else
-      false
+      r = false
     end
+    r
   end
 
   def has_container?
