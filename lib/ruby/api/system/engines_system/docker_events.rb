@@ -35,34 +35,25 @@ module DockerEvents
 
   def wait_for(container, what, timeout)
     # STDERR.puts(' WAIT FOR ' + what.to_s + ' on ' + container.container_name)
-    return true if is_aready?(what, container.read_state)
-    event_listener = nil
-    mask = 16
-    case container.ctype
-    when 'container'
-      mask |= 2
-    when 'service'
-      mask |= 4
-    when 'utility'
-      mask |= 16384
-    end
-    #   STDERR.puts(' MASK ' + mask.to_s)
-    pipe_in, pipe_out = IO.pipe
-    Timeout::timeout(timeout) do
-      event_listener = WaitForContainerListener.new(what, pipe_out, mask)
-      add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.container_name)
-      unless is_aready?(what, container.read_state)
-        #    STDERR.puts(' Wait on READ ' + container.container_name.to_s + ' for ' + what )
-        begin
-          d = pipe_in.read
-          # STDERR.puts(' READ ' + d.to_s)
-        rescue
+    unless is_aready?(what, container.read_state)
+      mask = container_type_mask(container.ctype)
+      pipe_in, pipe_out = IO.pipe
+      Timeout::timeout(timeout) do
+        event_listener = WaitForContainerListener.new(what, pipe_out, mask)
+        add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.container_name)
+        unless is_aready?(what, container.read_state)
+          #    STDERR.puts(' Wait on READ ' + container.container_name.to_s + ' for ' + what )
+          begin
+            d = pipe_in.read
+            # STDERR.puts(' READ ' + d.to_s)
+          rescue
+          end
         end
+        pipe_in.close unless pipe_in.closed?
+        rm_event_listener(event_listener)
+        break
+        # return true
       end
-      pipe_in.close unless pipe_in.closed?
-      rm_event_listener(event_listener)
-      break
-     # return true
     end
     true
   rescue Timeout::Error
@@ -231,5 +222,18 @@ module DockerEvents
     end
     SystemDebug.debug(SystemDebug.container_events, 'A Non Managed Container EVENT') unless r == true
     r
+  end
+
+  def container_type_mask(ctype)
+    mask = 16
+    case ctype
+    when 'container'
+      mask |= 2
+    when 'service'
+      mask |= 4
+    when 'utility'
+      mask |= 16384
+    end
+    mask
   end
 end
