@@ -3,9 +3,10 @@ module DockerInfoCollector
     if @docker_info_cache.is_a?(FalseClass)
       return collect_docker_info if @setState != 'nocontainer'
       return false
-    end
+    else
     collect_docker_info if @docker_info_cache.nil?
     return false if @docker_info_cache.nil?
+    end
     @docker_info_cache
   end
 
