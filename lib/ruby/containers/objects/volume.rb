@@ -3,15 +3,15 @@ require_relative 'static_service.rb'
 class Volume < StaticService #Latter will include group and perhaps other attributes
   def self.volume_hash(service_hash)
     Volume.complete_service_hash(service_hash)
-    {
+    r = {
       volume_name: service_hash[:variables][:service_name],
       permissions: service_hash[:variables][:permissions],
       #  r[:service_type] = 'fs'
       remotepath: service_hash[:variables][:engine_path],
-      localpath: service_hash[:variables][:volume_src],
-      permissions: 'rw'
+      localpath: service_hash[:variables][:volume_src]
     }
-
+    r[:permissions] = 'rw' if service_hash[:variables][:permissions].nil?
+    r
   end
 
   attr_reader :permissions, :name, :remotepath, :localpath, :user, :group, :vol_permissions, :volume_name
