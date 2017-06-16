@@ -15,11 +15,11 @@ module ContainerOperations
 
   def container_type(container_name)
     if loadManagedEngine(container_name) != false
-      return 'container'
+      'container'
     elsif loadManagedService(container_name) != false
-      return 'service'
+      'service'
     else
-      return 'container' #FIXME poor assumption
+      'container' #FIXME poor assumption
     end
   end
 
@@ -35,20 +35,21 @@ module ContainerOperations
       type_path: 'nginx',
       container_type: container.ctype
     })
-    return urls if sites.is_a?(Array) == false
-    sites.each do |site|
-      SystemDebug.debug(SystemDebug.containers,  site.to_s) unless  site.is_a?(Hash)
-      next unless site.is_a?(Hash) && site[:variables].is_a?(Hash)
-      if site[:variables][:proto] == 'http_https'
-        protocol = 'http'
-      elsif site[:variables][:proto] == 'https_http'
-        protocol = 'https'
-      else
-        protocol = site[:variables][:proto]
-        protocol = 'http' if protocol.nil?
+    if sites.is_a?(Array)
+      sites.each do |site|
+        SystemDebug.debug(SystemDebug.containers,  site.to_s) unless  site.is_a?(Hash)
+        next unless site.is_a?(Hash) && site[:variables].is_a?(Hash)
+        if site[:variables][:proto] == 'http_https'
+          protocol = 'http'
+        elsif site[:variables][:proto] == 'https_http'
+          protocol = 'https'
+        else
+          protocol = site[:variables][:proto]
+          protocol = 'http' if protocol.nil?
+        end
+        url = protocol.to_s + '://' + site[:variables][:fqdn].to_s
+        urls.push(url)
       end
-      url = protocol.to_s + '://' + site[:variables][:fqdn].to_s
-      urls.push(url)
     end
     urls
   end

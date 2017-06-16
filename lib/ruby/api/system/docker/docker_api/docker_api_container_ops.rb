@@ -1,26 +1,28 @@
 module DockerApiContainerOps
   def container_exist?(container)
+
     if container.container_id.to_s == '-1' || container.container_id.to_s == ''
       r = @docker_comms.inspect_container_by_name(container)
-      return true if r.is_a?(Hash)
-      return false
     else
       request = '/containers/' + container.container_id.to_s + '/json'
+      r = get_request(request)
     end
-    r = get_request(request)
-    return true if r.is_a?(Hash)
-    false
+    if r.is_a?(Hash)
+      true
+    else
+      false
+    end
   rescue
     false
   end
 
   def destroy_container(container)
     if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
-      return EnginesDockerApiError.new('Missing Container id', :warning)
+      EnginesDockerApiError.new('Missing Container id', :warning)
     else
       request = '/containers/' + container.container_id.to_s
+      delete_request(request)
     end
-    delete_request(request)
   end
 
   require_relative 'docker_api_create_options.rb'

@@ -32,7 +32,7 @@ module ServiceConfigurations
     if service.is_running?
       ret_val = service.retrieve_configurator(service_param)
       #    STDERR.puts('Retrived retrieve_configuration '+ service_param.to_s + ret_val.class.name + ':' + ret_val.to_s )
-      return retval unless ret_val.is_a?(Hash)
+      # return retval unless ret_val.is_a?(Hash)
     else
       #  STDERR.puts('Retrived retrieve_configuration '+ service_param.to_s + ret_val.class.name + ':' + ret_val.to_s )
       ret_val = retrieve_service_configuration(service_param)
@@ -79,7 +79,7 @@ module ServiceConfigurations
     begin
       service = loadManagedService(service_param[:service_name])
     rescue
-     # STDERR.puts(' loadSystemService ' + service_param.to_s + 'so loading ' + service_param[:service_name].to_s)
+      # STDERR.puts(' loadSystemService ' + service_param.to_s + 'so loading ' + service_param[:service_name].to_s)
       service = loadSystemService(service_param[:service_name])
     end
     service_param[:publisher_namespace] = service.publisher_namespace.to_s  # need as saving in config tree
@@ -88,17 +88,17 @@ module ServiceConfigurations
     unless service.is_running?
       service_param[:pending] = true
       service_manager.update_service_configuration(service_param)
-      return true
-    end
-    if service_param.key?(:pending)
-      service_param.delete(:pending)
-    end
-    # set config on reunning service
-    configurator_result = service.run_configurator(service_param)
+    else
+      if service_param.key?(:pending)
+        service_param.delete(:pending)
+      end
+      # set config on reunning service
+      configurator_result = service.run_configurator(service_param)
 
-    raise EnginesException.new(error_hash('Service configurator erro@core_api.r Got:' + configurator_result.to_s, " For:" +service_param.to_s)) unless configurator_result.is_a?(Hash)
-    service_manager.update_service_configuration(service_param)
-    raise EnginesException.new(error_hash('Service configurator error @core_ap Got:' + configurator_result.to_s, " For:" +service_param.to_s )) unless configurator_result[:result] == 0 || configurator_result[:stderr].start_with?('Warning')
+      raise EnginesException.new(error_hash('Service configurator erro@core_api.r Got:' + configurator_result.to_s, " For:" +service_param.to_s)) unless configurator_result.is_a?(Hash)
+      service_manager.update_service_configuration(service_param)
+      raise EnginesException.new(error_hash('Service configurator error @core_ap Got:' + configurator_result.to_s, " For:" +service_param.to_s )) unless configurator_result[:result] == 0 || configurator_result[:stderr].start_with?('Warning')
+    end
     true
   end
 

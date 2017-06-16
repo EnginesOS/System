@@ -34,7 +34,9 @@ module CoreBuildController
     @build_controller.prepare_engine_build(params)
     @build_thread = Thread.new { @build_controller.build_engine }
     @build_thread[:name]  = 'build engine'
-    return true if @build_thread.alive?
-    raise EnginesException.new(error_hash(params[:engine_name], 'Build Failed to start'))
+    unless @build_thread.alive?
+      raise EnginesException.new(error_hash(params[:engine_name], 'Build Failed to start'))
+    end
+    true
   end
 end

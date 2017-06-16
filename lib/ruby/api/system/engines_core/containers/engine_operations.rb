@@ -14,9 +14,11 @@ module EnginesOperations
       #unless engine.is_a?(ManagedEngine)
       if params[:rollback] == true
         STDERR.puts(' Roll back clause ' + params.to_s )
-       # return true if service_manager.remove_engine_from_managed_engine(params)
-        return true if remove_engine_services
-        raise EnginesException.new(error_hash('Failed to find Engine', params))
+        # return true if service_manager.remove_engine_from_managed_engine(params)
+        unless remove_engine_services
+          raise EnginesException.new(error_hash('Failed to find Engine', params))
+        end
+        true
       end
       #####  ^^^^^^^^^^ DO NOT MESS with this logic ^^^^^^^^
     end
@@ -27,8 +29,7 @@ module EnginesOperations
     remove_engine_services(params) #engine_name, reinstall, params[:remove_all_data])
     engine.delete_image if engine.has_image? == true
     SystemDebug.debug(SystemDebug.containers, :engine_image_deleted, engine)
-    return if params[:reinstall] == true
-    engine.delete_engine
+    engine.delete_engine unless params[:reinstall] == true
   end
 
   def remove_engine_services(params)
@@ -38,8 +39,8 @@ module EnginesOperations
     #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
     begin
       service_manager.remove_managed_persistent_services(params)
-      rescue EnginesException => e
-        raise e unless e.is_a_warning?
+    rescue EnginesException => e
+      raise e unless e.is_a_warning?
     end
     begin
       service_manager.remove_engine_non_persistent_services(params)
@@ -60,8 +61,9 @@ module EnginesOperations
     builder = BuildController.new(self)
     @build_thread = Thread.new { engine.reinstall_engine(builder) }
     @build_thread[:name] = 'reinstall engine'
-    return true if @build_thread.alive?
-    raise EnginesException.new(error_hash(params[:engine_name], 'Build Failed to start'))
+    unless @build_thread.alive?
+      raise EnginesException.new(error_hash(params[:engine_name], 'Build Failed to start'))
+    end
   end
 
   def set_container_runtime_properties(container, params)

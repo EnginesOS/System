@@ -9,11 +9,11 @@ module DockerApiContainerStatus
     # container.set_cont_id if container.container_id.to_s == '-1' || container.container_id.nil?
     if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
       # return inspect_container_by_name(container)
-      return EnginesDockerApiError.new('Missing Container id', :warning)
+      EnginesDockerApiError.new('Missing Container id', :warning)
     else
       request = '/containers/' + container.container_id.to_s + '/json'
+      get_request(request, true)
     end
-    get_request(request, true)
   end
 
   def ps_container(container)
@@ -48,13 +48,14 @@ module DockerApiContainerStatus
     request='/containers/' + container.container_name + '/json'
     containers_info = get_request(request)
     SystemDebug.debug(SystemDebug.containers, 'docker:container_id_from_name  ' ,container.container_name   )
-    return -1 unless containers_info.is_a?(Array)
-    containers_info.each do |info|
-      #  SystemDebug.debug(SystemDebug.containers, 'container_id_from_name  ' ,info['Names'][0]  )
-      if info[:Names][0] == '/' + container.container_name
-        SystemDebug.debug(SystemDebug.containers, 'MATCHED container_id_from_name  ' ,info[:Names][0],info[:Id]    )
-        id = info[:Id]
-        return id
+    if containers_info.is_a?(Array)
+      containers_info.each do |info|
+        #  SystemDebug.debug(SystemDebug.containers, 'container_id_from_name  ' ,info['Names'][0]  )
+        if info[:Names][0] == '/' + container.container_name
+          SystemDebug.debug(SystemDebug.containers, 'MATCHED container_id_from_name  ' ,info[:Names][0],info[:Id]    )
+          id = info[:Id]
+          return id
+        end
       end
     end
     -1
