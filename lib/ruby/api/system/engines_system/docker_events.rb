@@ -38,8 +38,8 @@ module DockerEvents
     unless is_aready?(what, container.read_state)
       mask = container_type_mask(container.ctype)
       pipe_in, pipe_out = IO.pipe
-      Timeout::timeout(timeout) do
-        event_listener = WaitForContainerListener.new(what, pipe_out, mask)
+      event_listener = WaitForContainerListener.new(what, pipe_out, mask)
+      Timeout::timeout(timeout) do        
         add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.container_name)
         unless is_aready?(what, container.read_state)
           #    STDERR.puts(' Wait on READ ' + container.container_name.to_s + ' for ' + what )
