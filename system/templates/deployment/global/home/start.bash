@@ -42,7 +42,6 @@ elif test -f /home/engines/scripts/blocking.sh
 	 echo -n " $!" >>  $PID_FILE		   
 else
  echo "Nothing to run!"
- exit 127
 fi
 		
 touch /engines/var/run/flags/startup_complete
