@@ -5,8 +5,8 @@ module ContainerStatus
     SystemDebug.debug(SystemDebug.containers, :info)
     unless info.is_a?(Hash)
       if info.key?(:State)
-        if info[:State][:Running]
-          if info[:State][:Paused]
+        if info[:State][:Running] == true
+          if info[:State][:Paused] == true
             state = 'paused'
           else
             state = 'running'
