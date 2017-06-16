@@ -83,7 +83,6 @@ class DockerEventWatcher < ErrorsApi
           parser ||= Yajl::Parser.new({:symbolize_keys => true})
           hash = parser.parse(chunk)          
           SystemDebug.debug(SystemDebug.container_events, 'got ' + hash.to_s)
-          STDERR.puts(hash.to_s)
           next unless is_valid_docker_event?(hash)          
           #  t = Thread.new {trigger(hash)}
           # t[:name] = 'trigger'
