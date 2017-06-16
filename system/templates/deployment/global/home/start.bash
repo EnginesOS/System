@@ -164,14 +164,7 @@ if test -f /home/startwebapp.sh
 			blocking_pid=$!
 		 	echo -n " $blocking_pid " >>  $PID_FILE
 	  fi
- wait
- wait_for_debug
- exit
-fi
-
-#Apache of Nginx based 
-
-if test -f /usr/sbin/apache2ctl
+elif test -f /usr/sbin/apache2ctl
  then
 	start_apache
 elif test -d /etc/nginx
