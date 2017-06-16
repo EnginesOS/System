@@ -20,7 +20,7 @@ module ContainerStatus
         end
       end
     end
-     SystemDebug.debug(SystemDebug.containers,  'in State', state.to_s + ' from: ' + info[:State])
+     SystemDebug.debug(SystemDebug.containers,  'in State', state.to_s + ' from: ' + info[:State].to_s)
     state
   end
 
