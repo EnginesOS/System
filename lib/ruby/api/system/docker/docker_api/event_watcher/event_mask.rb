@@ -43,7 +43,7 @@ class EventMask
   end
 
   
-  def self.get_status_mask
+  def self.get_status_mask(event_hash)
     mask = 0
     unless event_hash[:status].nil?
       if event_hash[:status].start_with?('exec')
