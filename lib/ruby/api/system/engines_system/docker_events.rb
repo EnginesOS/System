@@ -121,7 +121,7 @@ module DockerEvents
     unless event_hash.nil? # log_error_mesg('Nil event hash passed to container event','')
       fill_in_event_system_values(event_hash)
       SystemDebug.debug(SystemDebug.container_events,'2 CONTAINER EVENTS' + event_hash.to_s)
-      if is_engines_container?
+      if is_engines_container_event?(event_hash)
         inform_container(event_hash)
         case event_hash[:status]
         when 'start', 'oom', 'stop', 'pause', 'unpause', 'create', 'destroy', 'kill', 'die'
@@ -207,16 +207,14 @@ module DockerEvents
 
   private
 
-  def is_engines_container?
+  def is_engines_container_event?(event_hash)
     r = false
     unless event_hash[:container_type].nil? || event_hash[:container_name].nil?
       if event_hash[:container_type] == 'service' ||  event_hash[:container_type] == 'system_service'||  event_hash[:container_type] == 'utility'
         # Enable Cold load of service from config.yaml
-        #  STDERR.puts( SystemConfig.RunDir + '/' + event_hash[:container_type] + 's/' + event_hash[:container_name] + '/running.yaml')
         r = File.exist?(SystemConfig.RunDir + '/' + event_hash[:container_type] + 's/' + event_hash[:container_name] + '/config.yaml')
       else
-        # engines always have a running.yaml
-        #   STDERR.puts(SystemConfig.RunDir.to_s + '/' + event_hash[:container_type].to_s + 's/' + event_hash[:container_name].to_s + '/running.yaml')
+        # engines always have a running.yaml       
         r = File.exist?(SystemConfig.RunDir + '/' + event_hash[:container_type] + 's/' + event_hash[:container_name] + '/running.yaml')
       end
     end
