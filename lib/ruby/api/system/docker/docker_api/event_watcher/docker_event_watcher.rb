@@ -33,24 +33,16 @@ class DockerEventWatcher < ErrorsApi
 
     def state_from_status(status)
       case status
-      when 'die'
+      when 'die', 'stop', 'exec'
         status = 'stopped'
-      when 'stop'
-        status = 'stopped'
-      when 'run'
-        status = 'running'
-      when 'start'
+      when 'run','start'
         status = 'running'
       when 'pause'
         status = 'paused'
       when 'unpause'
         status = 'running'
-      when 'delete'
+      when 'delete','destroy'
         status = 'nocontainer'
-      when 'destroy'
-        status = 'nocontainer'
-      when 'exec'
-        status = 'running'
       end
       status
     end
@@ -88,13 +80,10 @@ class DockerEventWatcher < ErrorsApi
           else
             json_part = nil
           end
-          parser ||= Yajl::Parser.new({:symbolize_keys => true})
-          hash = parser.parse(chunk)
+          # parser ||= Yajl::Parser.new({:symbolize_keys => true})
+          hash = parser.parse(chunk)          
           SystemDebug.debug(SystemDebug.container_events, 'got ' + hash.to_s)
-          STDERR.puts('DOCKER SENT ARRAY') if hash.is_a?(Array) && ! hash.is_a?(Hash)
-          STDERR.puts('DOCKER SENT UNKNOWN ' + hash.to_s) unless hash.is_a?(Hash)
-          next unless hash.is_a?(Hash)
-          next if hash.key?(:from) && hash[:from].length >= 64
+          next unless is_valid_docker_event?(hash)          
           #  t = Thread.new {trigger(hash)}
           # t[:name] = 'trigger'
           #need to order requests if use threads
@@ -142,6 +131,11 @@ class DockerEventWatcher < ErrorsApi
 
   private
 
+  def parser
+    @parser ||= Yajl::Parser.new({:symbolize_keys => true})
+    @parser
+  end
+  
   def get_client
     client = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
     client.continue_timeout = 3000
@@ -161,6 +155,15 @@ class DockerEventWatcher < ErrorsApi
     r
   end
 
+   def is_valid_docker_event?(hash)
+     r = false
+     STDERR.puts('DOCKER SENT ARRAY') if hash.is_a?(Array) && ! hash.is_a?(Hash)
+     STDERR.puts('DOCKER SENT UNKNOWN ' + hash.to_s) unless hash.is_a?(Hash)
+     r = true if hash.is_a?(Hash)
+     r = false if hash.key?(:from) && hash[:from].length >= 64
+     r
+   end
+     
   def trigger(hash)
     @event_listeners.values.each do |listener|
       unless listener.container_name.nil?
