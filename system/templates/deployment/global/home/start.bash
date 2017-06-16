@@ -3,7 +3,7 @@
 PID_FILE=/var/run/engines/engines.pid	
 export PID_FILE
 
-if test -f 	 /home/engines/functions/trap.sh 
+if test -f /home/engines/functions/trap.sh 
  then
  . /home/engines/functions/trap.sh
  else
