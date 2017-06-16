@@ -17,17 +17,18 @@ class DockerEventWatcher < ErrorsApi
     def trigger(hash)
       mask = EventMask.event_mask(hash)
       SystemDebug.debug(SystemDebug.container_events, 'trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask:' + @event_mask.to_s + ' result ' + (@event_mask & mask).to_s)
-      unless @event_mask & mask == 0 
+      unless @event_mask & mask == 0
         # skip top
-          if mask & 32768 == 0 # @@container_top == 0
+        if mask & 32768 == 0 # @@container_top == 0
           hash[:state] = state_from_status(hash[:status])
           SystemDebug.debug(SystemDebug.container_events, 'fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
           @object.method(@method).call(hash)
         end
       end
     rescue StandardError => e
+      STDERR.puts(e.to_s + ":\n" + e.backtrace.to_s)
       SystemDebug.debug(SystemDebug.container_events, e.to_s + ':' + e.backtrace.to_s)
-      raise e
+      # raise e
     end
 
     def state_from_status(status)
@@ -112,9 +113,9 @@ class DockerEventWatcher < ErrorsApi
           STDERR.puts('DOCKER SENT UNKNOWN ' + hash.to_s) unless hash.is_a?(Hash)
           next unless hash.is_a?(Hash)
           next if hash.key?(:from) && hash[:from].length >= 64
-         #  t = Thread.new {trigger(hash)}
+          #  t = Thread.new {trigger(hash)}
           # t[:name] = 'trigger'
-           #need to order requests if use threads 
+          #need to order requests if use threads
           trigger(hash)
         rescue StandardError => e
           STDERR.puts('EXCEPTION Chunk error on docker Event Stream _' + chunk.to_s + '_')
@@ -146,11 +147,13 @@ class DockerEventWatcher < ErrorsApi
 
   def add_event_listener(listener, event_mask = nil, container_name = nil)
     event = EventListener.new(listener, event_mask, container_name)
+    STDERR.puts( 'ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
     SystemDebug.debug(SystemDebug.container_events, 'ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
     @event_listeners[event.hash_name] = event
   end
 
   def rm_event_listener(listener)
+    STDERR.puts( 'REMOVED listenter ' + listener.class.name + ':' + listener.object_id.to_s)
     SystemDebug.debug(SystemDebug.container_events, 'REMOVED listenter ' + listener.class.name + ':' + listener.object_id.to_s)
     @event_listeners.delete(listener.object_id.to_s) if @event_listeners.key?(listener.object_id.to_s)
   end

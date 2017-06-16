@@ -10,7 +10,6 @@ module Builders
   require_relative 'base_image.rb'
   require_relative 'build_image.rb'
   require_relative 'physical_checks.rb'
-  
   def setup_build
     check_build_params(@build_params)
     @build_params[:engine_name].freeze
@@ -50,11 +49,14 @@ module Builders
     log_build_output('Starting Rebuild')
     setup_rebuild
     build_container
+    wait_for_start_up
     save_build_result
     close_all
-    rescue StandardError => e
-      post_failed_build_clean_up
-      log_exception(e)
+  rescue StandardError => e
+    post_failed_build_clean_up
+    log_exception(e)
+  ensure
+    File.delete('/opt/engines/run/system/flags/building_params') if File.exist?('/opt/engines/run/system/flags/building_params')
   end
 
   def build_container
@@ -76,12 +78,10 @@ module Builders
     #log_exception(e)
     log_build_errors('Engine Build Aborted Due to:' + e.to_s)
     STDERR.puts(e.backtrace.to_s)
-   # post_failed_build_clean_up
+    # post_failed_build_clean_up
     log_exception(e)
     raise e
-  ensure
-    File.delete('/opt/engines/run/system/flags/building_params') if File.exist?('/opt/engines/run/system/flags/building_params')
-  #  close_all
+    #  close_all
   end
 
   def setup_rebuild
@@ -98,11 +98,14 @@ module Builders
     get_blueprint_from_repo
     log_build_output('Cloned Blueprint')
     build_container
+    wait_for_start_up
     save_build_result
     close_all
   rescue StandardError => e
     post_failed_build_clean_up
     log_exception(e)
+  ensure
+    File.delete('/opt/engines/run/system/flags/building_params') if File.exist?('/opt/engines/run/system/flags/building_params')
   end
 
   def post_failed_build_clean_up
@@ -118,20 +121,20 @@ module Builders
     SystemDebug.debug(SystemDebug.builder, caller.to_s)
     # FIXME: Stop it if started (ie vol builder failure)
     # FIXME: REmove container if created
-  #  unless @build_params[:reinstall].is_a?(TrueClass)
-      begin
-        if @container.is_a?(ManagedContainer)
-          @container.stop_container if @container.is_running?
-          @container.destroy_container if @container.has_container?
-          @container.delete_image if @container.has_image?
-        end
-        @service_builder.service_roll_back
-        @build_params[:rollback]
-        @core_api.delete_engine_and_services(@build_params)
-      rescue
-        #dont panic if no container
+    #  unless @build_params[:reinstall].is_a?(TrueClass)
+    begin
+      if @container.is_a?(ManagedContainer)
+        @container.stop_container if @container.is_running?
+        @container.destroy_container if @container.has_container?
+        @container.delete_image if @container.has_image?
       end
-  #  end
+      @service_builder.service_roll_back
+      @build_params[:rollback]
+      @core_api.delete_engine_and_services(@build_params)
+    rescue
+      #dont panic if no container
+    end
+    #  end
 
     #    params = {}
     #    params[:engine_name] = @build_name
@@ -141,25 +144,27 @@ module Builders
     close_all
   end
 
-  
-def save_build_result
-  log_build_output('Waiting for start')
-  @container.wait_for('start', 25)
-  log_build_output('Waiting for startup completion')
-  @container.wait_for_startup(25)
-  log_build_output('Generating Build Report')
-  build_report = generate_build_report(@templater, @blueprint)
-  @core_api.save_build_report(@container, build_report)
-  @result_mesg = 'Build Successful'
-  log_build_output('Build Successful')
-  FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.out', ContainerStateFiles.container_state_dir(@container) + '/build.log')
-  FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.err', ContainerStateFiles.container_state_dir(@container) + '/build.err')
-  true
-end
+  def wait_for_start_up
+    log_build_output('Waiting for start')
+    @container.wait_for('start', 25)
+    log_build_output('Waiting for startup completion')
+    @container.wait_for_startup(25)
+  end
 
-def create_templater
-  @templater = Templater.new(@core_api.system_value_access, BuilderPublic.new(self))
-end
+  def save_build_result
+    log_build_output('Generating Build Report')
+    build_report = generate_build_report(@templater, @blueprint)
+    @core_api.save_build_report(@container, build_report)
+    @result_mesg = 'Build Successful'
+    log_build_output('Build Successful')
+    FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.out', ContainerStateFiles.container_state_dir(@container) + '/build.log')
+    FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.err', ContainerStateFiles.container_state_dir(@container) + '/build.err')
+    true
+  end
+
+  def create_templater
+    @templater = Templater.new(@core_api.system_value_access, BuilderPublic.new(self))
+  end
 
   #app_is_persistent
   #used by builder public

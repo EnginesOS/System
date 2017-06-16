@@ -65,7 +65,7 @@ module DockerEvents
     end
     true
   rescue Timeout::Error
-    STDERR.puts(' Wait for timeout on ' + container.container_name.to_s + ' for ' + what )
+    STDERR.puts(' Wait for timeout on ' + container.container_name.to_s + ' for ' + what)
     rm_event_listener(event_listener) unless event_listener.nil?
     event_listener = nil
     pipe_in.close
@@ -175,7 +175,6 @@ module DockerEvents
   end
 
   def inform_container(event_hash)
-
     SystemDebug.debug(SystemDebug.container_events, 'recevied inform_container', event_hash[:container_name],  event_hash[:status])
     c = get_event_container(event_hash[:container_name], event_hash[:container_type])
     return false unless c.is_a?(ManagedContainer)
@@ -183,7 +182,7 @@ module DockerEvents
     c.process_container_event(event_hash)
     SystemDebug.debug(SystemDebug.container_events, 'informed _container', event_hash[:container_name],  event_hash[:status])
     true
-  rescue StandardError =>e
+  rescue StandardError => e
     log_exception(e)
   end
 
@@ -197,7 +196,7 @@ module DockerEvents
       @docker_event_listener.start
       STDERR.puts( ' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
         rescue StandardError => e
-          STDERR.puts( ' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' + e.to_s)
+          STDERR.puts(' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' + e.to_s)
         end
       end
     end
@@ -208,8 +207,8 @@ module DockerEvents
     log_exception(e)
   end
 
-  def add_event_listener(listener, mask, container_id = nil )
-    @docker_event_listener.add_event_listener(listener, mask, container_id )
+  def add_event_listener(listener, mask, container_id = nil)
+    @docker_event_listener.add_event_listener(listener, mask, container_id)
   end
 
   def rm_event_listener(listener)
