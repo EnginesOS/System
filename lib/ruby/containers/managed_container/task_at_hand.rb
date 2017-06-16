@@ -107,7 +107,7 @@ module TaskAtHand
       on_start('unpause')
     when 'die'     
       begin
-        STDERR.puts('IT DIED WITH ' + event_hash[:Actor][:Attributes][:exitCode].to_s)
+       # STDERR.puts('IT DIED WITH ' + event_hash[:Actor][:Attributes][:exitCode].to_s)
         ec = event_hash[:Actor][:Attributes][:exitCode]
       rescue
         ec = 0

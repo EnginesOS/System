@@ -72,10 +72,11 @@ if test -f /home/engines/scripts/custom_start.sh
  then
    echo "Custom start"	   
    result=`/home/engines/scripts/custom_start.sh`
+   exit_code=$?
 	 if test "$result" = "exit"
 	  then 
 		wait_for_debug
-		exit
+		exit $exit_code
 	  fi
 fi
 }
@@ -101,8 +102,7 @@ fi
 sleep 2
 apache_pid=`cat /var/run/apache2/apache2.pid`
 echo -n " $apache_pid" >> $PID_FILE
-echo PID $apache_pid
-ps -ax
+echo AP PID $apache_pid
 }
 
 function configure_passenger {
