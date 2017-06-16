@@ -80,13 +80,14 @@ class DockerEventWatcher < ErrorsApi
           else
             json_part = nil
           end
-           parser ||= Yajl::Parser.new({:symbolize_keys => true})
+          parser ||= Yajl::Parser.new({:symbolize_keys => true})
           hash = parser.parse(chunk)          
           SystemDebug.debug(SystemDebug.container_events, 'got ' + hash.to_s)
           next unless is_valid_docker_event?(hash)          
           #  t = Thread.new {trigger(hash)}
           # t[:name] = 'trigger'
           #need to order requests if use threads
+          STDERR.puts(hash.to_s)
           trigger(hash)
         rescue StandardError => e
           STDERR.puts('EXCEPTION Chunk error on docker Event Stream _' + chunk.to_s + '_')
@@ -118,15 +119,15 @@ class DockerEventWatcher < ErrorsApi
 
   def add_event_listener(listener, event_mask = nil, container_name = nil)
     event = EventListener.new(listener, event_mask, container_name)
-    STDERR.puts( 'ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
-    SystemDebug.debug(SystemDebug.container_events, 'ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
     @event_listeners[event.hash_name] = event
+    STDERR.puts('ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
+    SystemDebug.debug(SystemDebug.container_events, 'ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')   
   end
 
-  def rm_event_listener(listener)
-    STDERR.puts( 'REMOVED listenter ' + listener.class.name + ':' + listener.object_id.to_s)
+  def rm_event_listener(listener)   
     SystemDebug.debug(SystemDebug.container_events, 'REMOVED listenter ' + listener.class.name + ':' + listener.object_id.to_s)
     @event_listeners.delete(listener.object_id.to_s) if @event_listeners.key?(listener.object_id.to_s)
+    STDERR.puts('REMOVED listenter ' + listener.class.name + ':' + listener.object_id.to_s)
   end
 
   private
