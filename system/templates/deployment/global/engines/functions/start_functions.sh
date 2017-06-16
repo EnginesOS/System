@@ -101,6 +101,8 @@ fi
 sleep 2
 apache_pid=`cat /var/run/apache2/apache2.pid`
 echo -n " $apache_pid" >> $PID_FILE
+echo PID $apache_pid
+ps -ax
 }
 
 function configure_passenger {
