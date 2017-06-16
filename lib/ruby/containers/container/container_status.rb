@@ -6,7 +6,7 @@ module ContainerStatus
     unless info.is_a?(Hash)
       if info.key?(:State)
         if info[:State][:Running]
-          if  info[:State][:Paused]
+          if info[:State][:Paused]
             state = 'paused'
           else
             state = 'running'
@@ -20,7 +20,7 @@ module ContainerStatus
         end
       end
     end
-     SystemDebug.debug(SystemDebug.containers,  'in State', state.to_s)
+     SystemDebug.debug(SystemDebug.containers,  'in State', state.to_s + ' from: ' + info[:State])
     state
   end
 
