@@ -80,7 +80,7 @@ class DockerEventWatcher < ErrorsApi
           else
             json_part = nil
           end
-          # parser ||= Yajl::Parser.new({:symbolize_keys => true})
+           parser ||= Yajl::Parser.new({:symbolize_keys => true})
           hash = parser.parse(chunk)          
           SystemDebug.debug(SystemDebug.container_events, 'got ' + hash.to_s)
           next unless is_valid_docker_event?(hash)          
@@ -131,7 +131,7 @@ class DockerEventWatcher < ErrorsApi
 
   private
 
-  def parser
+  def yparser
     @parser ||= Yajl::Parser.new({:symbolize_keys => true})
     @parser
   end
