@@ -3,7 +3,7 @@ module ContainerStatus
     state = 'nocontainer'
     info = docker_info
     SystemDebug.debug(SystemDebug.containers, :info)
-    unless info.is_a?(Hash)
+    if info.is_a?(Hash)
       if info.key?(:State)
         STDERR.puts('has State')
         if info[:State][:Running] == true
