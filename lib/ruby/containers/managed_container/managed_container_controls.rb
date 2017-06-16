@@ -57,10 +57,10 @@ module ManagedContainerControls
         save_state
         return task_failed('create') unless super
         save_state #save new containerid)
-        SystemDebug.debug(SystemDebug.containers,  :create_super_ran)
-        SystemDebug.debug(SystemDebug.containers,@setState, @docker_info_cache.class.name)
+        SystemDebug.debug(SystemDebug.containers, :create_super_ran)
+        SystemDebug.debug(SystemDebug.containers, @setState, @docker_info_cache.class.name)
         expire_engine_info
-        SystemDebug.debug(SystemDebug.containers,@setState, @docker_info_cache.class.name)
+        SystemDebug.debug(SystemDebug.containers, @setState, @docker_info_cache.class.name)
         true
       end
     }
