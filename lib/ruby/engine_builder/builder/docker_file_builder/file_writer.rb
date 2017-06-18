@@ -10,7 +10,7 @@ def write_run_line(cmd)
   if @first_line == true
     @docker_file.write("\\\n     " + cmd)
   else
-    @docker_file.write(";\\\n     " + cmd)
+    @docker_file.write("&&\\\n     " + cmd)
   end
   @first_line = false
 end
