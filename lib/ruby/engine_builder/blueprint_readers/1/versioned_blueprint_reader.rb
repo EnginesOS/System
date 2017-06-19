@@ -27,11 +27,13 @@ class VersionedBlueprintReader < BluePrintReader
 
   def read_sed_strings
     log_build_output('Read Sed Strings')
-    @sed_strings = {}
-    @sed_strings[:src_file] = []
-    @sed_strings[:dest_file] = []
-    @sed_strings[:sed_str] = []
-    @sed_strings[:tmp_file] = []
+    @sed_strings = {
+      src_file: [],
+      dest_file: [],
+      sed_str: [],
+      tmp_file: []
+    }
+
     log_build_output('set sed strings')
     seds = @blueprint[:software][:replacement_strings]
     return true unless seds.is_a?(Array) # not an error just nada
