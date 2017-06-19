@@ -1,7 +1,7 @@
 FROM  engines/python:_Engines_System(release)
 
 ENV CONTFSVolHome /home/fs/
-ENV ContUser www-data
+ENV ContUser python
 
 ADD build_scripts /build_scripts
 ADD home home
@@ -9,11 +9,11 @@ ADD engines home/engines
 
 
 RUN apt-get update -y &&\
-	chowns=`find /var /usr/share /usr/local /home -user www-data` /home/fs/ &&\
-	/usr/sbin/usermod -u 22671 www-data &&\
+	chowns=`find /var /usr/share /usr/local /home -user $ContUser`  &&\
+	/usr/sbin/usermod -u 22674 $ContUser &&\
 	if test `echo $chowns | sed "/ /s///g" | wc -c` -gt 1 ;\
 	then\
-		chown www-data $chowns;\
+		chown $ContUser $chowns;\
 		fi ;\
-	chown www-data home/fs/ &&\
+	chown $ContUser home/fs/ &&\
 	chown $ContUser /opt	
