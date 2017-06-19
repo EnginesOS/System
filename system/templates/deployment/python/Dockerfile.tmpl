@@ -15,4 +15,5 @@ RUN apt-get update -y &&\
 	then\
 		chown www-data $chowns;\
 		fi ;\
- 	chown $ContUser /opt	
+	chown www-data home/fs/ &&\
+	chown $ContUser /opt	
