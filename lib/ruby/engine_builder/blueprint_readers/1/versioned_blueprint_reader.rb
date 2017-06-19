@@ -7,10 +7,22 @@ class VersionedBlueprintReader < BluePrintReader
   :external_repositories
   def read_scripts
     return unless @blueprint[:software].key?(:scripts)
-    @custom_start_script = @blueprint[:software][:scripts][:start][:content].gsub(/\r/, '') if @blueprint[:software][:scripts].key?(:start) &&  @blueprint[:software][:scripts][:start].key?(:content)
-    @custom_stop_script = @blueprint[:software][:scripts][:shutdown][:content].gsub(/\r/, '') if @blueprint[:software][:scripts].key?(:shutdown) &&  @blueprint[:software][:scripts][:shutdown].key?(:content)
-    @custom_install_script = @blueprint[:software][:scripts][:install][:content].gsub(/\r/, '') if @blueprint[:software][:scripts].key?(:install) &&  @blueprint[:software][:scripts][:install].key?(:content)
-    @custom_post_install_script = @blueprint[:software][:scripts][:post_install][:content].gsub(/\r/, '') if  @blueprint[:software][:scripts].key?(:post_install) &&  @blueprint[:software][:scripts][:post_install].key?(:content)
+    @custom_start_script = @blueprint[:software][:scripts][:start][:content].gsub(/\r/, '') \
+    if @blueprint[:software][:scripts].key?(:start) \
+    && @blueprint[:software][:scripts][:start].key?(:content) \
+    && @blueprint[:software][:scripts][:start][:content].length > 1
+    @custom_stop_script = @blueprint[:software][:scripts][:shutdown][:content].gsub(/\r/, '') \
+    if @blueprint[:software][:scripts].key?(:shutdown) \
+    &&  @blueprint[:software][:scripts][:shutdown].key?(:content) \
+    &&  @blueprint[:software][:scripts][:shutdown][:content].length > 1
+    @custom_install_script = @blueprint[:software][:scripts][:install][:content].gsub(/\r/, '') \
+    if @blueprint[:software][:scripts].key?(:install) \
+    && @blueprint[:software][:scripts][:install].key?(:content)\
+    &&  @blueprint[:software][:scripts][:install][:content].length > 1
+    @custom_post_install_script = @blueprint[:software][:scripts][:post_install][:content].gsub(/\r/, '') \
+    if  @blueprint[:software][:scripts].key?(:post_install) \
+    && @blueprint[:software][:scripts][:post_install].key?(:content) \
+    && @blueprint[:software][:scripts][:post_install][:content].length > 1
   end
 
   def read_sed_strings
