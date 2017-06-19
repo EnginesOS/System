@@ -1,4 +1,5 @@
 USER 0
+
 RUN	chmod -R g+r /home/app;\
  	for dir in  `find /home/app -type d | sed "/ /s/+_+//g"` ;\
 	  do\
@@ -8,4 +9,5 @@ RUN	chmod -R g+r /home/app;\
 		fi;\
 	  done;\
   /build_scripts/configure_apache.sh
+  
 USER $ContUser
