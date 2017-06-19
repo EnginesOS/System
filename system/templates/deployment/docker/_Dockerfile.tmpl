@@ -2,6 +2,8 @@
 ADD build_scripts /build_scripts
 ADD home home
 ADD engines home/engines
+
 ENV CONTFSVolHome /home/fs/
-RUN  apt-get update;\
+
+RUN  apt-get update -y &&\
 	chown $ContUser /opt

@@ -1,15 +1,14 @@
-
 FROM  engines/sinatra:_Engines_System(release)
-ADD build_scripts /build_scripts
-RUN	gem install bundle
+
+ENV CONTFSVolHome /home/fs/
 
 ADD home home
 ADD engines home/engines
-ENV CONTFSVolHome /home/fs/
-  
+ADD build_scripts /build_scripts
 
-RUN  apt-get update;\
-	chown $ContUser /opt;\
-	mkdir /home/home_dir/.bundle/;\
-	chown -R $ContUser /home/home_dir/.bundle/
+RUN  apt-get update -y &&
+	chown $ContUser /opt &&\
+	mkdir /home/home_dir/.bundle/ &&\
+	gem install bundle &&\
+	chown -R $ContUser /home/home_dir/.bundle/ 
      
