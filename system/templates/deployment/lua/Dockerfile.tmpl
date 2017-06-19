@@ -9,6 +9,6 @@ ADD engines home/engines
 
 RUN	apt-get update -y &&\
 	/usr/sbin/usermod -u 22671 www-data &&\
-	usermod -G containers -a www-data  &&
+	usermod -G containers -a www-data  &&\
 	chown $ContUser /opt $HOME
 
