@@ -1,15 +1,17 @@
-
 ENV ContUser www-data
 
- 
 WORKDIR /home/app
+
 VOLUME /var/log/
-RUN ln -s /home/app /var/www;\
-    usermod -G data-user -a www-data;\
-    mkdir -p /home/app/tmp;\
+
+RUN ln -s /home/app /var/www &&\
+    usermod -G data-user -a www-data &&\
+    mkdir -p /home/app/tmp &&\
     chmod u+w /home/app/tmp
-#do this after chmods and chowns
+
 ADD home/start.bash /home/start.bash 
+
 USER $ContUser
+
 CMD ["/home/start.bash"]
 

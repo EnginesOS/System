@@ -1,5 +1,3 @@
-
-
 USER 0
 
 #give give x access to dirs
@@ -13,6 +11,5 @@ RUN	chmod -R g+r /home/app;\
 	done
 	
 RUN /build_scripts/configure_apache.sh
-
 
 USER $ContUser

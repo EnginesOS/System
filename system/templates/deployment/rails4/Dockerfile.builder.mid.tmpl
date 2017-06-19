@@ -1,12 +1,15 @@
 WORKDIR /home/app
 
 USER 0
+
 ENV DATABASE_URL $rails_flavor://$dbuser:$dbpasswd@$dbhost/$dbname
-RUN /build_scripts/configure_nginx.sh;\
+
+RUN /build_scripts/configure_nginx.sh &&\
 	/build_scripts/create_database_yml.sh
 
 USER $ContUser
-RUN bash /home/setup.sh ;\
+
+RUN bash /home/setup.sh &&\
   /build_scripts/run_bundler.sh
 
 
