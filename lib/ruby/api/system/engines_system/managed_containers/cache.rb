@@ -1,6 +1,6 @@
 module Cache
   def engine_from_cache(ident)
-    r =- nil
+    r = nil
     if @engines_conf_cache.key?(ident.to_sym) && @engines_conf_cache[ident.to_sym].is_a?(Hash)
       unless @engines_conf_cache[ident.to_sym][:engine].nil?
         ts = get_engine_ts(@engines_conf_cache[ident.to_sym][:engine])
