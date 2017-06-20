@@ -20,7 +20,7 @@ class SystemDebug
   @@server = 131072
   @@registry = 262144
   @@schedules = 524288
-  @@all_debug_flags = @@execute  |@@engine_tasks |@@first_run |@@docker  |@@containers|@@container_events| @@services | @@orphans |@@environment |@@templater | @@builder |@@system  |@@cache |@@update|@@registry |@@actions
+  @@all_debug_flags = @@execute |@@engine_tasks |@@first_run |@@docker |@@containers|@@container_events| @@services | @@orphans |@@environment |@@templater | @@builder |@@system  |@@cache |@@update|@@registry |@@actions
   #if File.exist?(debug_flag)
   # require(debug_flags)
   #else
@@ -29,7 +29,7 @@ class SystemDebug
     require '/opt/engines/etc/debug/debug_flags.rb'
   else
     @@debug_flags = 0
-   # @@debug_flags = @@builder # @@container_events #  | @@services # @@first_run  |@@builder # @@actions# @@docker# @@builder  | @@docker | @@services | @@registry |@@containers
+    #  @@debug_flags = @@container_events |@@containers #|@@services  |@@builder #| @@container_events #|@@containers |@@engine_tasks # |@@builder |  @@container_events #  |  # @@first_run  |@@builder # @@actions# @@docker# @@builder  | @@docker | @@services | @@registry |@@containers
     #   @@debug_flags =  @@orphans| @@first_run # @@schedules#| @@services | @@registry
     #  @@debug_flags =  @@container_events| @@builder|@@templater| @@services | @@export_import# |@@first_run # @@containers# |@@container_events |@@first_run # @@orphans | @@builder |@@export_import | @@services| @@container_events|  @@server |@@templater| @@services | @@export_import |@@builder|@@execute|@@engine_tasks | @@orphans  |@@containers
   end
@@ -115,10 +115,14 @@ class SystemDebug
   end
 
   def self.debug(*args)
-    return true if @@debug_flags == 0
-    mask = args[0]
-    return self.print_debug(args) unless mask & @@debug_flags == 0
-    true
+    unless @@debug_flags == 0
+      mask = args[0]
+      unless mask & @@debug_flags == 0
+        self.print_debug(args)
+      else
+        true
+      end
+    end
   end
 
   def self.print_debug(args)
@@ -126,8 +130,7 @@ class SystemDebug
     args.each do |arg|
       mesg += arg.to_s + ' '
     end
-    STDERR.puts(mesg )
-    false
+    STDERR.puts(mesg )    
   end
 
 end

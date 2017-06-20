@@ -63,70 +63,72 @@ module DockerUtils
   end
 
   def self.decode_from_docker_chunk(chunk)
-    r = {}
-    r[:stderr] = ''
-    r[:stdout] = ''
+    r = {
+      stderr: '',
+      stdout: ''
+    }
     self.docker_stream_as_result(chunk, r)
     r
   end
 
   def self.docker_stream_as_result(r, h)
     unmatched = false
-    return h if r.nil?
-    h[:stderr] = "" unless h.key?(:stderr)
-    h[:stdout] = "" unless h.key?(:stdout)
-    while r.length >0
-      if r[0].nil?
-        return h if r.length == 1
-        #STDERR.puts('Skipping nil ')
-        r = r[1..-1]
-        next
-      end
-      if r.start_with?("\u0001\u0000\u0000\u0000")
-        dst = :stdout
-        #   STDERR.puts('STDOUT ' + r.to_s)
-        # ls = r[0,7]
-        r = r[8..-1]
-        #STDERR.puts('STDOUT ' + r.to_s)
-      elsif r.start_with?("\u0002\u0000\u0000\u0000")
-        dst = :stderr
-        #  ls = r[0,7]
-        r = r[8..-1]
-        # r.slice!(8,r.length-1)
+    unless h.nil?
+      h[:stderr] = "" unless h.key?(:stderr)
+      h[:stdout] = "" unless h.key?(:stdout)
+      while r.length > 0
+        if r[0].nil?
+          return h if r.length == 1
+          #STDERR.puts('Skipping nil ')
+          r = r[1..-1]
+          next
+        end
+        if r.start_with?("\u0001\u0000\u0000\u0000")
+          dst = :stdout
+          #   STDERR.puts('STDOUT ' + r.to_s)
+          # ls = r[0,7]
+          r = r[8..-1]
+          #STDERR.puts('STDOUT ' + r.to_s)
+        elsif r.start_with?("\u0002\u0000\u0000\u0000")
+          dst = :stderr
+          #  ls = r[0,7]
+          r = r[8..-1]
+          # r.slice!(8,r.length-1)
 
-      elsif r.start_with?("\u0000\u0000\u0000\u0000")
-        dst = :stdout
-        # ls = r[0,7]
-        r = r[8..-1]
-        #STDERR.puts('STDOUT \0\0\0')
-        # r.slice!(8,r.length-1)
-      else
-        # r = r[7..-1]
-        # ls = r[0,7]
-        #STDERR.puts('UNMATCHED')
-        dst = :stdout
-        unmatched = true
-      end
-      return h if r.nil?
-      unless unmatched == true
-        next_chunk = r.index("\u0000\u0000\u0000")
-        unless next_chunk.nil?
-          length =  next_chunk - 1
+        elsif r.start_with?("\u0000\u0000\u0000\u0000")
+          dst = :stdout
+          # ls = r[0,7]
+          r = r[8..-1]
+          #STDERR.puts('STDOUT \0\0\0')
+          # r.slice!(8,r.length-1)
+        else
+          # r = r[7..-1]
+          # ls = r[0,7]
+          #STDERR.puts('UNMATCHED')
+          dst = :stdout
+          unmatched = true
+        end
+        return h if r.nil?
+        unless unmatched == true
+          next_chunk = r.index("\u0000\u0000\u0000")
+          unless next_chunk.nil?
+            length =  next_chunk - 1
+          else
+            length = r.length
+          end
         else
           length = r.length
         end
-      else
-        length = r.length
+        #   STDERR.puts(' problem ' + r.to_s + ' has ' + r.length.to_s + ' bytes and length ' + length.to_s ) if r.length < length
+        h[dst] += r[0..length-1]
+        r = r[length..-1]
       end
-      #   STDERR.puts(' problem ' + r.to_s + ' has ' + r.length.to_s + ' bytes and length ' + length.to_s ) if r.length < length
-      h[dst] += r[0..length-1]
-      r = r[length..-1]
-    end
 
-    # This is actually set elsewhere after exec complete
-    h[:result] = 0
-    h[:stdout].force_encoding(Encoding::UTF_8) unless h[:stdout].nil?
-    h[:stderr].force_encoding(Encoding::UTF_8) unless h[:stderr].nil?
+      # This is actually set elsewhere after exec complete
+      h[:result] = 0
+      h[:stdout].force_encoding(Encoding::UTF_8) unless h[:stdout].nil?
+      h[:stderr].force_encoding(Encoding::UTF_8) unless h[:stderr].nil?
+    end
     h
   end
 end

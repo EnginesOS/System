@@ -6,47 +6,62 @@ class VersionedBlueprintReader < BluePrintReader
   :schedules ,
   :external_repositories
   def read_scripts
-    return unless @blueprint[:software].key?(:scripts)
-    @custom_start_script = @blueprint[:software][:scripts][:start][:content].gsub(/\r/, '') if @blueprint[:software][:scripts].key?(:start) &&  @blueprint[:software][:scripts][:start].key?(:content)
-    @custom_stop_script = @blueprint[:software][:scripts][:shutdown][:content].gsub(/\r/, '') if @blueprint[:software][:scripts].key?(:shutdown) &&  @blueprint[:software][:scripts][:shutdown].key?(:content)
-    @custom_install_script = @blueprint[:software][:scripts][:install][:content].gsub(/\r/, '') if @blueprint[:software][:scripts].key?(:install) &&  @blueprint[:software][:scripts][:install].key?(:content)
-    @custom_post_install_script = @blueprint[:software][:scripts][:post_install][:content].gsub(/\r/, '') if  @blueprint[:software][:scripts].key?(:post_install) &&  @blueprint[:software][:scripts][:post_install].key?(:content)
+    if @blueprint[:software].key?(:scripts)
+      @custom_start_script = @blueprint[:software][:scripts][:start][:content].gsub(/\r/, '') \
+      if @blueprint[:software][:scripts].key?(:start) \
+      && @blueprint[:software][:scripts][:start].key?(:content) \
+      && @blueprint[:software][:scripts][:start][:content].length > 1
+      @custom_stop_script = @blueprint[:software][:scripts][:shutdown][:content].gsub(/\r/, '') \
+      if @blueprint[:software][:scripts].key?(:shutdown) \
+      &&  @blueprint[:software][:scripts][:shutdown].key?(:content) \
+      &&  @blueprint[:software][:scripts][:shutdown][:content].length > 1
+      @custom_install_script = @blueprint[:software][:scripts][:install][:content].gsub(/\r/, '') \
+      if @blueprint[:software][:scripts].key?(:install) \
+      && @blueprint[:software][:scripts][:install].key?(:content)\
+      &&  @blueprint[:software][:scripts][:install][:content].length > 1
+      @custom_post_install_script = @blueprint[:software][:scripts][:post_install][:content].gsub(/\r/, '') \
+      if  @blueprint[:software][:scripts].key?(:post_install) \
+      && @blueprint[:software][:scripts][:post_install].key?(:content) \
+      && @blueprint[:software][:scripts][:post_install][:content].length > 1
+    end
   end
 
   def read_sed_strings
     log_build_output('Read Sed Strings')
-    @sed_strings = {}
-    @sed_strings[:src_file] = []
-    @sed_strings[:dest_file] = []
-    @sed_strings[:sed_str] = []
-    @sed_strings[:tmp_file] = []
+    @sed_strings = {
+      src_file: [],
+      dest_file: [],
+      sed_str: [],
+      tmp_file: []
+    }
+
     log_build_output('set sed strings')
     seds = @blueprint[:software][:replacement_strings]
-    return true unless seds.is_a?(Array) # not an error just nada
-    n = 0
-    seds.each do |sed|
-      file = clean_path(sed[:source_file])
-      dest = clean_path(sed[:destination_file])
-      tmp_file = '/tmp/' + File.basename(file) + '.' + n.to_s
-      if file.match(/^_TEMPLATES.*/).nil? == false
-        template_file = file.gsub(/^_TEMPLATES/, '')
-      else
-        template_file = nil
+    if seds.is_a?(Array) # not an error just nada
+      n = 0
+      seds.each do |sed|
+        file = clean_path(sed[:source_file])
+        dest = clean_path(sed[:destination_file])
+        tmp_file = '/tmp/' + File.basename(file) + '.' + n.to_s
+        if file.match(/^_TEMPLATES.*/).nil? == false
+          template_file = file.gsub(/^_TEMPLATES/, '')
+        else
+          template_file = nil
+        end
+        if template_file.nil? == false
+          src_file = '/home/engines/templates/' + template_file
+        else
+          src_file = '/home/app/' + file
+        end
+        dest_file = '/home/app/' + dest
+        sedstr = sed[:string]
+        @sed_strings[:src_file].push(src_file)
+        @sed_strings[:dest_file].push(dest_file)
+        @sed_strings[:tmp_file].push(tmp_file)
+        @sed_strings[:sed_str].push(sedstr)
+        n += 1
       end
-      if template_file.nil? == false
-        src_file = '/home/engines/templates/' + template_file
-      else
-        src_file = '/home/app/' + file
-      end
-      dest_file = '/home/app/' + dest
-      sedstr = sed[:string]
-      @sed_strings[:src_file].push(src_file)
-      @sed_strings[:dest_file].push(dest_file)
-      @sed_strings[:tmp_file].push(tmp_file)
-      @sed_strings[:sed_str].push(sedstr)
-      n += 1
     end
-
   end
 
   def read_web_port_overide
@@ -93,9 +108,10 @@ class VersionedBlueprintReader < BluePrintReader
   end
 
   def read_sql_seed
-    return true unless @blueprint[:software].key?(:database_seed_file) && @blueprint[:software][:database_seed_file][:content].nil? == false
-    database_seed_file = @blueprint[:software][:database_seed_file][:content]
-    @database_seed = database_seed_file unless database_seed_file.nil?
+    if @blueprint[:software].key?(:database_seed_file) && @blueprint[:software][:database_seed_file][:content].nil? == false
+      database_seed_file = @blueprint[:software][:database_seed_file][:content]
+      @database_seed = database_seed_file unless database_seed_file.nil?
+    end
   end
 
   def read_pkg_modules
@@ -107,37 +123,37 @@ class VersionedBlueprintReader < BluePrintReader
     @lua_modules = []
 
     pkg_modules = @blueprint[:software][:required_modules]
-    return true unless pkg_modules.is_a?(Array)  # not an error just nada
-    pkg_modules.each do |pkg_module|
-      os_package = pkg_module[:os_package]
-      if os_package.nil? == false && os_package != ''
-        @os_packages.push(os_package)
-      end
-      pkg_module_type = pkg_module[:type]
-      if pkg_module_type.nil? == true
-        raise EngineBuilderException.new(error_hash('pkg Module missing type'))
-      end
+    if pkg_modules.is_a?(Array)  # not an error just nada
+      pkg_modules.each do |pkg_module|
+        os_package = pkg_module[:os_package]
+        if os_package.nil? == false && os_package != ''
+          @os_packages.push(os_package)
+        end
+        pkg_module_type = pkg_module[:type]
+        if pkg_module_type.nil? == true
+          raise EngineBuilderException.new(error_hash('pkg Module missing type'))
+        end
 
-      modname = pkg_module[:name]
-      SystemDebug.debug(SystemDebug.builder, ' modules  modname',  modname)
-      pkg_module_type.downcase!
-      if pkg_module_type == 'pear'
-        @pear_modules.push(modname)
-      elsif pkg_module_type == 'pecl'
-        @pecl_modules.push(modname)
-      elsif pkg_module_type == 'php'
-        @php_modules.push(modname)
-      elsif pkg_module_type == 'apache'
-        @apache_modules.push(modname)
-      elsif pkg_module_type == 'npm'
-        @npm_modules.push(modname)
-      elsif pkg_module_type == 'lua'
-        @lua_modules.push(modname)
-      else
-        raise EngineBuilderException.new(error_hash('pkg module_type ' + pkg_module_type + ' Unknown for ' + modname))
+        modname = pkg_module[:name]
+        SystemDebug.debug(SystemDebug.builder, ' modules  modname',  modname)
+        pkg_module_type.downcase!
+        if pkg_module_type == 'pear'
+          @pear_modules.push(modname)
+        elsif pkg_module_type == 'pecl'
+          @pecl_modules.push(modname)
+        elsif pkg_module_type == 'php'
+          @php_modules.push(modname)
+        elsif pkg_module_type == 'apache'
+          @apache_modules.push(modname)
+        elsif pkg_module_type == 'npm'
+          @npm_modules.push(modname)
+        elsif pkg_module_type == 'lua'
+          @lua_modules.push(modname)
+        else
+          raise EngineBuilderException.new(error_hash('pkg module_type ' + pkg_module_type + ' Unknown for ' + modname))
+        end
       end
     end
-    true
   end
 
   def read_actionators
@@ -158,8 +174,8 @@ class VersionedBlueprintReader < BluePrintReader
   end
 
   def read_schedules
-    return true if @blueprint[:software][:schedules].nil?
-    @schedules = @blueprint[:software][:schedules]
+    @schedules = @blueprint[:software][:schedules] unless @blueprint[:software][:schedules].nil?
+
   end
 
   def read_repos

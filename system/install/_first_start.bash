@@ -28,6 +28,7 @@ echo "Registry Destroyed" &>>/tmp/first_start.log
 echo "Registry Created" &>>/tmp/first_start.log
 
 /opt/engines/bin/system_service.rb registry start &>>/tmp/first_start.log
+/opt/engines/bin/system_service.rb registry wait_for start 30
 /opt/engines/bin/system_service.rb registry wait_for_startup 120
 echo "Registry Started">>/tmp/first_start.log
 
@@ -42,6 +43,7 @@ echo "System Destroyed" &>>/tmp/first_start.log
 echo "System Created" &>>/tmp/first_start.log
 
 /opt/engines/bin/system_service.rb system start &>>/tmp/first_start.log
+/opt/engines/bin/system_service.rb system wait_for start 30
 /opt/engines/bin/system_service.rb system wait_for_startup 120
 echo "System Started" &>>/tmp/first_start.log
 sleep 30
@@ -53,6 +55,7 @@ sleep 30
 /opt/engines/bin/engines service dns wait_for destroy 10
 
 /opt/engines/bin/engines service dns create &>> /tmp/first_start.log
+/opt/engines/bin/engines service dns wait_for start 30
 /opt/engines/bin/engines service dns wait_for_startup 30
 echo "DNS Started" &>>/tmp/first_start.log
 
@@ -63,6 +66,7 @@ echo "DNS Started" &>>/tmp/first_start.log
 /opt/engines/bin/engines service syslog wait_for destroy 20
 
 /opt/engines/bin/engines service syslog create &>> /tmp/first_start.log
+/opt/engines/bin/engines service syslog  wait_for start 20
 /opt/engines/bin/engines service syslog  wait_for_startup 20
 echo "Syslog Started" &>>/tmp/first_start.log
 
@@ -73,10 +77,13 @@ echo "Syslog Started" &>>/tmp/first_start.log
 /opt/engines/bin/engines service cert_auth wait_for destroy 20
 
 /opt/engines/bin/engines service cert_auth create &>>/tmp/first_start.log
+opt/engines/bin/engines service cert_auth wait_for start 20
 /opt/engines/bin/engines service cert_auth wait_for_startup 20
 echo "Cert Auth Started" &>>/tmp/first_start.log
 
+
 /opt/engines/bin/engines service mysql_server create &>>/tmp/first_start.log
+/opt/engines/bin/engines service mysql_server  wait_for start 20
 /opt/engines/bin/engines service mysql_server wait_for_startup 180
 echo "mysql_server Started" &>>/tmp/first_start.log
 
@@ -84,20 +91,24 @@ echo "mysql_server Started" &>>/tmp/first_start.log
 echo "volmanger Started" &>>/tmp/first_start.log
 
 /opt/engines/bin/engines service cron create &>>/tmp/first_start.log
+/opt/engines/bin/engines service cron wait_for start 20
 /opt/engines/bin/engines service cron wait_for_startup 45
 echo "cron Started" &>>/tmp/first_start.log
 
 
 /opt/engines/bin/engines service auth create &>>/tmp/first_start.log
+/opt/engines/bin/engines service auth wait_for start 20
 /opt/engines/bin/engines service auth wait_for_startup 45
 echo "auth Started" &>>/tmp/first_start.log
 
 
 /opt/engines/bin/engines service backup create &>>/tmp/first_start.log
+opt/engines/bin/engines service backup wait_for start 20
 /opt/engines/bin/engines service backup wait_for_startup 45
 echo "backup Started" &>>/tmp/first_start.log 
 
 /opt/engines/bin/engines service log_rotate create &>>/tmp/first_start.log
+/opt/engines/bin/engines service backup wait_for start 20
 /opt/engines/bin/engines service backup wait_for_startup 20
 echo "log_rotate Started" &>>/tmp/first_start.log
 
@@ -105,6 +116,7 @@ echo "log_rotate Started" &>>/tmp/first_start.log
 echo "ftpd Started" &>>/tmp/first_start.log
 
 /opt/engines/bin/engines service nginx create &>>/tmp/first_start.log
+/opt/engines/bin/engines service nginx wait_for start 20
 /opt/engines/bin/engines service nginx wait_for_startup 20
 echo "nginx Started" &>>/tmp/first_start.log
 
@@ -112,10 +124,12 @@ echo Restart ftp &>>/tmp/first_start.log
 /opt/engines/bin/engines service ftp restart &>>/tmp/first_start.log
 
 /opt/engines/bin/engines service redis create &>>/tmp/first_start.log
+/opt/engines/bin/engines service redis wait_for start 20
 /opt/engines/bin/engines service redis wait_for_startup 20
 echo "redis Started" &>>/tmp/first_start.log
 
 /opt/engines/bin/engines service smtp create &>>/tmp/first_start.log
+opt/engines/bin/engines service smtp wait_for start 20
 /opt/engines/bin/engines service smtp wait_for_startup 20
 echo "smtp Started" &>>/tmp/first_start.log
 
@@ -123,7 +137,8 @@ echo "smtp Started" &>>/tmp/first_start.log
  
  if test -f /opt/engines/run/system/flags/install_mgmt
   then
-  	/opt/engines/bin/engines service mgmt create &>>/tmp/first_start.log  	
+  	/opt/engines/bin/engines service mgmt create &>>/tmp/first_start.log 
+  	 	/opt/engines/bin/engines service mgmt wait_for start 30
   	/opt/engines/bin/engines service mgmt wait_for_startup 280 
   	echo "mgmt Started" &>>/tmp/first_start.log
   	echo "Management is now at https://$lan_ip:10443/ or https://${ext_ip}:10443/"  &>>/tmp/first_start.log 

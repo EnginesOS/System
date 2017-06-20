@@ -1,23 +1,15 @@
-
-
 WORKDIR /home/app
 
-
-RUN 	groupadd -g $data_gid writegrp;\
-	usermod -G $data_gid www-data;\
-	chown -R  $data_uid.$data_gid  ./;\
+RUN groupadd -g $data_gid writegrp &&\
+	usermod -G $data_gid www-data &&\
+	chown -R  $data_uid.$data_gid  ./ &&\
 \
-	mkdir -p log;\
-	chmod -R g+w  log;\
-		if test -d db;\
+	mkdir -p log &&\
+	chmod -R g+w  log &&\
+		if test -d db &&\
 			then \
-				chmod -R g+w  db;\
+				chmod -R g+w  db &&\
 		fi
-	
-
-
-#after chmod so protected
-#ADD Rack.sh /home/app/
 
 USER www-data
 ##############
@@ -26,6 +18,7 @@ USER www-data
 ADD home/start.bash /home/start.bash
 	
 VOLUME /var/log/
+
 WORKDIR /home/app
 
 CMD ["/home/start.bash"]

@@ -65,7 +65,7 @@ class ManagedContainer < Container
   end
 
   def to_s
-    @container_name.to_s + '-set to:' +  @setState + ':' + status.to_s
+    @container_name.to_s + '-set to:' +  @setState + ':' + status.to_s + ':' + @ctype
   end
 
   def status
@@ -90,9 +90,9 @@ class ManagedContainer < Container
   end
 
   def container_id
-    return @container_id unless @container_id == -1
-    return @container_id if setState == 'noncontainer'
-    @container_id = read_container_id
+    if @container_id == -1
+      @container_id = read_container_id unless setState == 'noncontainer'
+    end
     @container_id
   rescue
     -1

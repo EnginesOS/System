@@ -1,19 +1,22 @@
 class ContainerStateFiles
   def self.build_running_service(service_name, service_type_dir, system_value_access)
     config_template_file_name = service_type_dir + service_name + '/config.yaml'
-    return SystemUtils.log_error_mesg('Running exist', service_name) unless File.exist?(config_template_file_name)
-    config_template = File.read(config_template_file_name)
-    templator = Templater.new(system_value_access, nil)
-    running_config = templator.process_templated_string(config_template)
-    yam1_file_name = service_type_dir + service_name + '/running.yaml'
-    yaml_file = File.new(yam1_file_name, 'w+')
-    yaml_file.write(running_config)
-    yaml_file.close
-    true
+    if File.exist?(config_template_file_name)
+      config_template = File.read(config_template_file_name)
+      templator = Templater.new(system_value_access, nil)
+      running_config = templator.process_templated_string(config_template)
+      yam1_file_name = service_type_dir + service_name + '/running.yaml'
+      yaml_file = File.new(yam1_file_name, 'w+')
+      yaml_file.write(running_config)
+      yaml_file.close
+      true
+    else
+      SystemUtils.log_error_mesg('Running exist', service_name)
+    end
   end
 
   def self.schedules_dir(container)
-    return self.container_state_dir(container) + '/schedules/'
+    self.container_state_dir(container) + '/schedules/'
   end
 
   def self.schedules_file(container)
@@ -38,9 +41,12 @@ class ContainerStateFiles
 
   def self.read_container_id(container)
     cidfile = ContainerStateFiles.container_cid_file(container)
-    return -1 unless  File.exist?(cidfile)
-    r = File.read(cidfile)
-    r.gsub!(/\s+/, '').strip
+    unless File.exist?(cidfile)
+      -1
+    else
+      r = File.read(cidfile)
+      r.gsub(/\s+/, '').strip
+    end
   rescue StandardError => e
     SystemUtils.log_exception(e)
     '-1'
@@ -87,7 +93,7 @@ class ContainerStateFiles
   end
 
   def self.destroy_container(container)
-    return File.delete(ContainerStateFiles.container_cid_file(container)) if File.exist?(ContainerStateFiles.container_cid_file(container))
+    File.delete(ContainerStateFiles.container_cid_file(container)) if File.exist?(ContainerStateFiles.container_cid_file(container))
     true # File may or may not exist
   end
 

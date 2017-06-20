@@ -23,16 +23,24 @@ module CheckBuildParams
     SystemStatus.build_failed(params)
     raise EngineBuilderException.new(error_hash(message, params))
   end
+
   def acceptable_name_chars(str)
-      return false if str.nil?
-      return false unless str.match(/^[a-zA-Z]/)
-      return true if str.match(/^[a-zA-Z0-9]+$/)
+    if str.nil?
+      false
+    elsif str.match(/^[a-zA-Z]/) && str.match(/[a-zA-Z0-9]+$/)
+      true
+    else
       false
     end
+  end
+
   def acceptable_host_chars(str)
-    return false if str.nil?
-    return false unless str.match(/^[a-zA-Z]/)
-    return true if str.match(/^[a-zA-Z0-9-]+$/)
-    false
+    if str.nil?
+      false
+    elsif str.match(/^[a-zA-Z]/) && str.match(/[a-zA-Z0-9-]+$/)
+      true
+    else
+      false
+    end
   end
 end

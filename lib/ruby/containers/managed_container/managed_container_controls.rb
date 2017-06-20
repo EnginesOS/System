@@ -1,11 +1,10 @@
 module ManagedContainerControls
   def reinstall_engine(builder)
-    return false unless has_api?
-    return false unless prep_task(:build)
-    builder.reinstall_engine(self)
+    builder.reinstall_engine(self) if prep_task(:build)
   end
 
   def wait_for_startup(timeout = 60)
+    STDERR.puts( 'Wait for Startup ' + @container_name)
     @container_api.wait_for_startup(self, timeout)
   end
 
@@ -17,7 +16,6 @@ module ManagedContainerControls
   end
 
   def destroy_container(reinstall = false)
-    return false unless has_api?
     if reinstall == true
       return false unless prep_task(:reinstall)
     else
@@ -32,107 +30,112 @@ module ManagedContainerControls
   end
 
   def setup_container
-    return false unless has_api?
-    return false unless prep_task(:create)
-    ret_val = false
-    unless has_container?
-      ret_val = @container_api.setup_container(self)
-      expire_engine_info
+    if prep_task(:create)
+      ret_val = false
+      unless has_container?
+        ret_val = @container_api.setup_container(self)
+        expire_engine_info
+      else
+        task_failed('setup')
+        raise EnginesException.new(warning_hash('Cannot create container as container exists ', state))
+      end
+      retval = task_failed('setup') unless ret_val
     else
-      task_failed('setup')
-      raise EnginesException.new(warning_hash('Cannot create container as container exists ', state))
+      retval = false
     end
-    return true if ret_val
-    task_failed('setup')
+    retval
   end
 
   def create_container
-    return false unless has_api?
     SystemDebug.debug(SystemDebug.containers, :teask_preping)
     @container_mutex.synchronize {
       @container_api.set_locale_env(self)
-      return false unless prep_task(:create)
-      SystemDebug.debug(SystemDebug.containers, :teask_preped)
-      expire_engine_info
-      @container_id = -1
-      save_state
-      return task_failed('create') unless super
-      save_state #save new containerid)
-      SystemDebug.debug(SystemDebug.containers,  :create_super_ran)
-      SystemDebug.debug(SystemDebug.containers,@setState, @docker_info_cache.class.name,  @docker_info_cache)
-      expire_engine_info
-      SystemDebug.debug(SystemDebug.containers,@setState, @docker_info_cache.class.name,  @docker_info_cache)
-      true
+      if prep_task(:create)
+        SystemDebug.debug(SystemDebug.containers, :teask_preped)
+        expire_engine_info
+        @container_id = -1
+        save_state
+        unless super
+          task_failed('create')
+        else
+          save_state #save new containerid)
+          SystemDebug.debug(SystemDebug.containers, :create_super_ran)
+          SystemDebug.debug(SystemDebug.containers, @setState, @docker_info_cache.class.name)
+          expire_engine_info
+          SystemDebug.debug(SystemDebug.containers, @setState, @docker_info_cache.class.name)
+          true
+        end
+      end
     }
   end
 
   def recreate_container
     return task_failed('destroy/recreate') unless destroy_container
-    wait_for( 'destroy')
+    wait_for('destroy')
     return task_failed('create/recreate') unless create_container
     true
   end
 
   def unpause_container
-    return false unless has_api?
     @container_mutex.synchronize {
-      return false unless (r = prep_task(:unpause))
-      return task_failed('unpause') unless super
-      true
+      if prep_task(:unpause)
+        return task_failed('unpause') unless super
+        true
+      end
     }
   end
 
   def pause_container
-    return false unless has_api?
     @container_mutex.synchronize {
-      return r unless (r = prep_task(:pause))
-      return task_failed('pause') unless super
-      true
+      if prep_task(:pause)
+        return task_failed('pause') unless super
+        true
+      end
     }
   end
 
   def stop_container
     SystemDebug.debug(SystemDebug.containers, :stop_read_sta, read_state)
-    return false unless has_api?
     @container_mutex.synchronize {
-      return r unless (r = prep_task(:stop))
-      return task_failed('stop') unless super
-      true
+      if prep_task(:stop)
+        return task_failed('stop') unless super
+        true
+      end
     }
   end
 
   def halt_container
     @container_mutex.synchronize {
-      return r unless (r = prep_task(:halt))
-      super
+      super if prep_task(:halt)
     }
   end
 
   def start_container
-    return false unless has_api?
     @container_mutex.synchronize {
-      return r unless (r = prep_task(:start))
-      return task_failed('start') unless super
-      @restart_required = false
-      true
+      if prep_task(:start)
+        return task_failed('start') unless super
+        @restart_required = false
+        true
+      end
     }
   end
 
   def restart_container
     return task_failed('restart/stop') unless stop_container
-    wait_for( 'stop')
+    wait_for('stop')
     task_failed('restart/start') unless start_container
     true
   end
 
   def rebuild_container
-    return false unless has_api?
+
     @container_mutex.synchronize {
-      return r unless (r = prep_task(:reinstall))
-      ret_val = @container_api.rebuild_image(self)
-      expire_engine_info
-      return task_failed('rebuild') unless ret_val
-      true
+      if prep_task(:reinstall)
+        ret_val = @container_api.rebuild_image(self)
+        expire_engine_info
+        return task_failed('rebuild') unless ret_val
+        true
+      end
     }
   end
 
@@ -155,13 +158,15 @@ module ManagedContainerControls
   private
 
   def prep_task(action_sym)
-    unless task_at_hand.nil?
-      SystemDebug.debug(SystemDebug.containers,  'saved task at hand', task_at_hand, 'next',action_sym )
+    tah = task_at_hand
+    unless tah.nil?
+      SystemDebug.debug(SystemDebug.containers, 'saved task at hand', tah, 'next', action_sym)
     end
-    SystemDebug.debug(SystemDebug.containers,  :current_tah_prep_task, task_at_hand)
-    return r unless (r = in_progress(action_sym))
-    SystemDebug.debug(SystemDebug.containers,  :inprogress_run)
-    clear_error
-    save_state
+    SystemDebug.debug(SystemDebug.containers, :current_tah_prep_task, tah)
+    unless in_progress(action_sym)
+      SystemDebug.debug(SystemDebug.containers, :inprogress_run)
+      save_state
+    end
+    true
   end
 end

@@ -30,7 +30,7 @@ module EngineApiServiceRegistration
     if container.conf_register_dns == true
       service_hash = create_zeroconf_service_hash(container)
       begin
-        return engines_core.create_and_register_service(service_hash)
+        engines_core.create_and_register_service(service_hash)
       rescue
       end
     end
@@ -48,7 +48,7 @@ module EngineApiServiceRegistration
 
   def remove_nginx_service(container)
     service_hash = create_nginx_service_hash(container)
-   # STDERR.puts('remove ' + service_hash.to_s)
+    # STDERR.puts('remove ' + service_hash.to_s)
     engines_core.dettach_service(service_hash)
   end
 
@@ -60,8 +60,11 @@ module EngineApiServiceRegistration
   end
 
   def engine_persistent_services(container)
-    return engines_core.engine_persistent_services(container.container_name) if container.ctype != 'service'
-    engines_core.service_persistent_services(container.container_name)
+    if container.ctype != 'service'
+      engines_core.engine_persistent_services(container.container_name)
+    else
+      engines_core.service_persistent_services(container.container_name)
+    end
   end
 
 end

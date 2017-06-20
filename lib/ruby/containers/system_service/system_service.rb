@@ -60,7 +60,6 @@ class SystemService < ManagedService
 
   def inspect_container
     SystemDebug.debug(SystemDebug.system, :system_service_inspect_container)
-    return false if has_api? == false
     if @docker_info.nil? || @docker_info.is_a?(FalseClass)
       #  @container_api.inspect_container(self)
       @docker_info =  @container_api.inspect_container(self)

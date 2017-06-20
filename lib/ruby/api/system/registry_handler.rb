@@ -26,16 +26,18 @@ class RegistryHandler < ErrorsApi
   end
 
   def registry_root_ip
-    #   STDERR.puts( 'Registry IP ' + @registry_ip.to_s)
-    return @registry_ip unless @registry_ip.is_a?(FalseClass)
-    registry_service = @system_api.loadSystemService('registry') # FIXME: Panic if this fails
-    unless registry_service.is_running?
-      fix_problem(registry_service)
-
+    STDERR.puts( 'Registry IP ' + @registry_ip.to_s)
+    if @registry_ip.is_a?(FalseClass)
+      registry_service = @system_api.loadSystemService('registry') # FIXME: Panic if this fails
+      unless registry_service.is_running?
+        fix_problem(registry_service)
+        @registry_ip = registry_service.get_ip_str
+        STDERR.puts( 'Registry IP ' + @registry_ip.to_s)
+        force_registry_recreate unless registry_service.is_running?
+      end
       @registry_ip = registry_service.get_ip_str
-      force_registry_recreate unless registry_service.is_running?
+      STDERR.puts( 'Registry IP ' + @registry_ip.to_s)
     end
-    @registry_ip = registry_service.get_ip_str
     @registry_ip
   rescue Exception
     @registry_ip = false
@@ -44,6 +46,7 @@ class RegistryHandler < ErrorsApi
   end
 
   def fix_problem(registry_service = nil)
+    STDERR.puts('FIX PROBLEMS ')
     registry_service = @system_api.loadSystemService('registry') if registry_service.nil?
     registry_service.create_container unless registry_service.has_container?
     registry_service.upause_container if registry_service.is_paused?
@@ -73,12 +76,17 @@ class RegistryHandler < ErrorsApi
     log_error_mesg("Forcing registry recreate", nil)
     @registry_ip = false
     registry_service = @system_api.loadSystemService('registry')
-    return log_error_mesg('Fatal Unable to recreate Registry Service: ', registry_service.last_error ) if !registry_service.forced_recreate
-    unless registry_service.wait_for_startup(90)
-      SystemDebug.debug(SystemDebug.registry, :recreate_wait)
-      return log_error_mesg('Failed to complete startup in 90s')
+    if registry_service.forced_recreate
+      registry_service.wait_for('start', 90)
+      unless registry_service.wait_for_startup(30)
+        SystemDebug.debug(SystemDebug.registry, :recreate_wait)
+        log_error_mesg('Failed to complete startup in 90s')
+      else
+        true
+      end
+    else
+      log_error_mesg('Fatal Unable to recreate Registry Service: ', registry_service.last_error )
     end
-    true
   end
 
 end

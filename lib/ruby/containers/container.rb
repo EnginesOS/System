@@ -51,8 +51,11 @@ class Container < ErrorsApi
   end
 
   def on_host_net?
-    return true if @host_network.is_a?(TrueClass)
-    false
+    if @host_network.is_a?(TrueClass)
+      true
+    else
+      false
+    end
   end
 
   def to_h

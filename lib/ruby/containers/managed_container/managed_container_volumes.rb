@@ -7,7 +7,7 @@ module ManagedContainerVolumes
     if service_hash[:shared] == true
       @volumes[service_hash[:service_owner] + '_' + service_hash[:variables][:service_name]] = vol
     else
-      @volumes[service_hash[:variables][:name]] = vol
+      @volumes[service_hash[:variables][:service_name]] = vol
     end
     save_state
   end
@@ -16,7 +16,7 @@ module ManagedContainerVolumes
     if service_hash[:shared] == true
       @volumes.delete(service_hash[:service_container_name] + '_' + service_hash[:variables][:service_name])
     else
-      @volumes.delete(service_hash[:variables][:name])
+      @volumes.delete(service_hash[:variables][:service_name])
       save_state
     end
   end

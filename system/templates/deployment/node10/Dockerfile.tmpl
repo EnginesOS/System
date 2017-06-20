@@ -1,13 +1,15 @@
 FROM  engines/node10:_Engines_System(release)
-ADD build_scripts /build_scripts
-ADD home home
+
 ENV CONTFSVolHome /home/fs/
-ADD engines home/engines
 ENV ContUser node
 
-RUN apt-get update;\
-	chown 22673 `find /var /usr/share /usr/local /home -user node`;\ 
-	 /usr/sbin/usermod -u 22673 node;\
-	 mkdir -p  /home/home_dir/.npm;\
-	  chown $ContUser /opt /home/home_dir/.npm
+ADD build_scripts /build_scripts
+ADD home home
+ADD engines home/engines
+
+RUN apt-get update -y &&\
+	chown 22673 `find /var /usr/share /usr/local /home -user node` &&\ 
+	 /usr/sbin/usermod -u 22673 node &&\
+	 mkdir -p  /home/home_dir/.npm &&\
+	 chown $ContUser /opt /home/home_dir/.npm
 

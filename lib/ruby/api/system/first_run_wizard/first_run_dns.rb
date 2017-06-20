@@ -45,7 +45,7 @@ module FirstRunDNS
       login: params[:dynamic_dns_username],
       password: params[:dynamic_dns_password]
       }
-      })
+    })
     dyndns_service = @api.loadManagedService('dyndns')
     dyndns_service.create_service
     return true if dyndns_service.is_running?
@@ -77,7 +77,10 @@ module FirstRunDNS
   end
 
   def validate_dns_params(params)
-    return log_error_mesg('Can have empty default domain',params) if params[:domain_name].nil?
-    true
+    if params[:domain_name].nil?
+      log_error_mesg('Can have empty default domain',params)
+    else
+      true
+    end
   end
 end

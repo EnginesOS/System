@@ -74,33 +74,36 @@ module SmEngineServices
       container_type: engine.ctype
     })
     SystemDebug.debug(SystemDebug.services,:register_non_persistent, services)
-    return services  unless services.is_a?(Array)
-    services.each do |service_hash|
-      begin
-        register_non_persistent_service(service_hash)
-        SystemDebug.debug(SystemDebug.services,:register_non_persistent,service_hash)
-      rescue
-        next
+    if services.is_a?(Array)
+      services.each do |service_hash|
+        begin
+          register_non_persistent_service(service_hash)
+          SystemDebug.debug(SystemDebug.services,:register_non_persistent,service_hash)
+        rescue
+          next
+        end
       end
+      true
     end
-    true
-  end
 
-  def remove_engine_non_persistent_services(params)
-    #   STDERR.puts('remove_engine_services ' + params.to_s)
-    begin
-      services = get_engine_nonpersistent_services(params) # find_engine_services_hashes(params)
-    rescue
-      return nil
-    end
-    return services unless services.is_a?(Array)
-    #   STDERR.puts('remove_engine_services ' + services.to_s)
-    services.each do |s|
-      #    STDERR.puts('remove_engine_service ' + s.to_s)
+    def remove_engine_non_persistent_services(params)
+      #   STDERR.puts('remove_engine_services ' + params.to_s)
       begin
-        system_registry_client.remove_from_managed_engine(s)
+        services = get_engine_nonpersistent_services(params) # find_engine_services_hashes(params)
       rescue
-        next
+        return nil
+      end
+      #   return services unless services.is_a?(Array)
+      #   STDERR.puts('remove_engine_services ' + services.to_s)
+      if services.is_a?(Array)
+        services.each do |s|
+          #    STDERR.puts('remove_engine_service ' + s.to_s)
+          begin
+            system_registry_client.remove_from_managed_engine(s)
+          rescue
+            next
+          end
+        end
       end
     end
   end
@@ -136,14 +139,16 @@ module SmEngineServices
       #handle_exception(e)
       return true
     end
-    return true unless services.is_a?(Array)
+   if services.is_a?(Array)
     services.each do | service |
       SystemDebug.debug(SystemDebug.services, :remove_service, service)
       if params[:remove_all_data] == 'all' || service[:shared] #&& ! (service.key?(:shared) && service[:shared])
         service[:remove_all_data] = params[:remove_all_data]
+        service[:force] = true if params.key?(:force)
         begin
           delete_and_remove_service(service)
-        rescue
+        rescue StandardError => e
+          STDERR.puts(' remove_managed_persistent_services ' + e.to_s)
           next
         end
       else
@@ -152,5 +157,6 @@ module SmEngineServices
       end
     end
     true
+   end
   end
 end

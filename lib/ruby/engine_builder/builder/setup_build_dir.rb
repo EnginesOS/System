@@ -1,8 +1,7 @@
 module BuildDirSetup
-  
+
   require_relative 'config_file_writer.rb'
   require_relative 'docker_file_builder/docker_file_builder.rb'
-  
   def backup_lastbuild
     dir = basedir
     backup = dir + '.backup'
@@ -20,14 +19,14 @@ module BuildDirSetup
       read_web_port
     end
     read_web_user
-    @build_params[:mapped_ports] =  @blueprint_reader.mapped_ports
+    @build_params[:mapped_ports] = @blueprint_reader.mapped_ports
     SystemDebug.debug(SystemDebug.builder, :ports, @build_params[:mapped_ports])
     SystemDebug.debug(SystemDebug.builder, :attached_services, @build_params[:attached_services])
     @service_builder.required_services_are_running?
     @service_builder.create_persistent_services(@blueprint_reader.services, @blueprint_reader.environments, @build_params[:attached_services]).is_a?(EnginesError)
-    SystemDebug.debug(SystemDebug.builder, 'Services Attachd')
+    SystemDebug.debug(SystemDebug.builder, 'Services Attached')
     apply_templates_to_environments
-    SystemDebug.debug(SystemDebug.builder, 'Templates Applies')
+    SystemDebug.debug(SystemDebug.builder, 'Templates Applied')
     create_engines_config_files
     SystemDebug.debug(SystemDebug.builder, 'Configs written')
     index = 0
@@ -42,17 +41,15 @@ module BuildDirSetup
     dockerfile_builder = DockerFileBuilder.new(@blueprint_reader, @build_params, @web_port, self)
     dockerfile_builder.write_files_for_docker
     SystemDebug.debug(SystemDebug.builder, 'Docker file  written')
-
     write_env_file
-
     SystemDebug.debug(SystemDebug.builder, 'Eviron file  written')
     setup_framework_logging
     SystemDebug.debug(SystemDebug.builder, 'Logging setup')
-  rescue StandardError => e
-    log_build_errors('Engine Build Aborted Due to:' + e.to_s)
-    post_failed_build_clean_up
-    log_exception(e)
-    raise e
+    #  rescue StandardError => e
+    #    log_build_errors('Engine Build Aborted Due to:' + e.to_s)
+    #    post_failed_build_clean_up
+    #    log_exception(e)
+    #    raise e
   end
 
   def create_build_dir
@@ -124,26 +121,22 @@ module BuildDirSetup
     ConfigFileWriter.write_templated_file(@templater, basedir + '/' + filename, content)
   end
 
-  def create_templater
-    builder_public = BuilderPublic.new(self)
-    @templater = Templater.new(@core_api.system_value_access, builder_public)
-  end
-
   def read_web_user
     if @blueprint_reader.framework == 'docker'
       @web_user = @blueprint_reader.cont_user
       #   STDERR.puts("Set web user to:" + @web_user.to_s)
-      return @web_user
-    end
-    log_build_output('Read Web User')
-    stef = File.open(basedir + '/home/stack.env', 'r')
-    while line = stef.gets do
-      if line.include?('USER')
-        i = line.split('=')
-        @web_user = i[1].strip
+    else
+      log_build_output('Read Web User')
+      stef = File.open(basedir + '/home/stack.env', 'r')
+      while line = stef.gets do
+        if line.include?('USER')
+          i = line.split('=')
+          @web_user = i[1].strip
+        end
       end
+      stef.close
     end
-    stef.close
+    @web_user
   end
 
   def apply_templates_to_environments
@@ -188,9 +181,7 @@ module BuildDirSetup
       fw = File.new(basedir  + '/Dockerfile.tmpl', 'w+')
       fw.write(df)
       fw.close
-      return true
     end
-    r
   end
 
   def setup_framework_logging

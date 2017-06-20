@@ -7,7 +7,7 @@ module ApiActionators
     else
       args = params.to_json
     end
-    
+
     #  STDERR.puts('/home/actionators/' + actionator_name + '.sh ' + params.to_json + ' .  ' + data.to_s )
     cmds = ['/home/actionators/' + actionator[:name].to_s + '.sh',args.to_s]
     if data.nil?
@@ -24,22 +24,25 @@ module ApiActionators
     end
     if result[:stdout].start_with?('{') || result[:stdout].start_with?('"{')
       begin
-        return deal_with_json(result[:stdout]) if actionator[:return_type]
+        deal_with_json(result[:stdout]) if actionator[:return_type]
       rescue
-        return result[:stdout]
+        result[:stdout]
       end
+    elsif result[:stdout].start_with?('true') || result[:stdout].start_with?('"true')
+      true
+    else
+      result[:stdout]
     end
-    return true if result[:stdout].start_with?('true') || result[:stdout].start_with?('"true')
-    result[:stdout]
   end
 
   def list_params(params)
-    return if params.nil?
-    r = ' '
-    params.each do |param|
-      r += param.to_s + ' '
+    unless params.nil?
+      r = ' '
+      params.each do |param|
+        r += param.to_s + ' '
+      end
+      r
     end
-    r
   end
 
 end

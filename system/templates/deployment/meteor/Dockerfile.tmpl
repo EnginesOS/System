@@ -1,11 +1,13 @@
 FROM  engines/meteor:_Engines_System(release)
-ADD build_scripts /build_scripts
-ADD home home
+
 ENV CONTFSVolHome /home/fs/
-ADD engines home/engines
 ENV ContUser node
 
-RUN apt-get update;\
+ADD build_scripts /build_scripts
+ADD home home
+ADD engines home/engines
+
+RUN apt-get update -y &&\
 	chown $ContUser /opt
 
 

@@ -1,12 +1,15 @@
 FROM  engines/openjdk9:_Engines_System(release)
-ADD build_scripts /build_scripts
-ADD home home
+
 ENV ContUser www-data
 ENV CONTFSVolHome /home/fs/
+
+ADD build_scripts /build_scripts
+ADD home home
 ADD engines home/engines
-#ADD home/app/webapps/ /usr/share/tomcat7/webapps
-RUN apt-get update;\
-	/usr/sbin/usermod -u 22671 www-data;\
-	usermod -a -G data-user www-data ;\
-	chown $ContUser /opt	
+
+RUN apt-get update -y &&\
+	/usr/sbin/usermod -u 22671 www-data &&\
+	usermod -a -G data-user www-data &&\
+	chown $ContUser /opt
+	
 	

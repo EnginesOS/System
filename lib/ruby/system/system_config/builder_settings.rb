@@ -21,11 +21,10 @@ module BuilderSettings
   @@DefaultCountry = 'US'
   @@StopScript = '/home/engines/scripts/custom_stop.sh'
   @@htaccessSourceDir = '/home/engines/htaccess_files/'
-  
   def SystemConfig.htaccessSourceDir
     @@htaccessSourceDir
   end
-  
+
   def SystemConfig.LanguageFile
     @@LanguageFile
   end
@@ -39,8 +38,11 @@ module BuilderSettings
   end
 
   def SystemConfig.Language
-    return File.read(SystemConfig.LanguageFile).strip if File.exist?(SystemConfig.LanguageFile)
-    SystemConfig.DefaultLanguage
+    if File.exist?(SystemConfig.LanguageFile)
+      File.read(SystemConfig.LanguageFile).strip
+    else
+      SystemConfig.DefaultLanguage
+    end
   rescue
     SystemConfig.DefaultLanguage
   end

@@ -1,19 +1,24 @@
 module Cache
   def engine_from_cache(ident)
-    return nil unless @engines_conf_cache.key?(ident.to_sym)
-    return nil unless @engines_conf_cache[ident.to_sym].is_a?(Hash)
-    return nil if @engines_conf_cache[ident.to_sym][:engine].nil?
-    ts = get_engine_ts(@engines_conf_cache[ident.to_sym][:engine])
-    if ts == -1
-      rm_engine_from_cache(ident)
-      SystemDebug.debug(SystemDebug.cache, :Expire_in_CACHE, ident)
-      return nil
+    r = nil
+    if @engines_conf_cache.key?(ident.to_sym) && @engines_conf_cache[ident.to_sym].is_a?(Hash)
+      unless @engines_conf_cache[ident.to_sym][:engine].nil?
+        ts = get_engine_ts(@engines_conf_cache[ident.to_sym][:engine])
+        if ts == -1
+          rm_engine_from_cache(ident)
+          SystemDebug.debug(SystemDebug.cache, :Expire_in_CACHE, ident)
+        else
+          SystemDebug.debug(SystemDebug.cache, :FROM_CACHE, ident)
+          if @engines_conf_cache[ident.to_sym][:ts] == ts
+           r=  @engines_conf_cache[ident.to_sym][:engine]
+          else
+            SystemDebug.debug(SystemDebug.cache, :Stale_in_Cache )
+            r = @engines_conf_cache[ident.to_sym][:engine] = nil
+          end
+        end
+      end
     end
-    SystemDebug.debug(SystemDebug.cache, :FROM_CACHE, ident)
-    return @engines_conf_cache[ident.to_sym][:engine] if @engines_conf_cache[ident.to_sym][:ts]  == ts
-    SystemDebug.debug(SystemDebug.cache, :Stale_in_Cache )
-    @engines_conf_cache[ident.to_sym][:engine] = nil
-    nil
+    r
   end
 
   def rm_engine_from_cache(engine_name)
@@ -41,29 +46,35 @@ module Cache
 
   def container_name_from_id(id)
     ident = @engines_conf_cache[id]
-    return nil if ident.nil?
-    ident.gsub!(/services\//, '')
+    ident.gsub!(/services\//, '') unless ident.nil?
     ident
   end
 
   def get_engine_ts(engine)
     raise EnginesException.new(error_hash('Get ts passed nil Engine ', engine)) if engine.nil?
     yam_file_name = SystemConfig.RunDir + '/' + engine.ctype + 's/' + engine.engine_name + '/running.yaml'
-    return  File.mtime(yam_file_name) if File.exist?(yam_file_name)
-    -1
+    if File.exist?(yam_file_name)
+      File.mtime(yam_file_name)
+    else
+      -1
+    end
   end
 
   def container_from_cache(container_ident)
-    return nil if container_ident.nil?
-    engine_from_cache(container_ident)
+    unless container_ident.nil?
+      engine_from_cache(container_ident)
+    end
   end
 
   def cache_update_ts(container, ts)
     ident =  get_ident(container)
     name_key = ident.to_sym
-    return false unless  @engines_conf_cache.key?(name_key) && ! @engines_conf_cache[name_key].nil?
-    @engines_conf_cache[name_key][:ts] = ts
-    true
+    if @engines_conf_cache.key?(name_key) && ! @engines_conf_cache[name_key].nil?
+      @engines_conf_cache[name_key][:ts] = ts
+      true
+    else
+      false
+    end
   end
 
 end

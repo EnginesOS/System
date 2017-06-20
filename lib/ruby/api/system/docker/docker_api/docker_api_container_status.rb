@@ -2,18 +2,16 @@ module DockerApiContainerStatus
   def inspect_container_by_name(container)
     # container.set_cont_id if container.container_id.to_s == '-1' || container.container_id.nil?
     request = '/containers/' + container.container_name.to_s + '/json'
-    return get_request(request, true)
+    get_request(request, true)
   end
 
   def inspect_container(container)
-    # container.set_cont_id if container.container_id.to_s == '-1' || container.container_id.nil?
     if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
-      # return inspect_container_by_name(container)
-      return EnginesDockerApiError.new('Missing Container id', :warning)
+      EnginesDockerApiError.new('Missing Container id', :warning)
     else
       request = '/containers/' + container.container_id.to_s + '/json'
+      get_request(request, true)
     end
-    get_request(request, true)
   end
 
   def ps_container(container)
@@ -44,20 +42,22 @@ module DockerApiContainerStatus
   end
 
   def container_id_from_name(container)
+    id = -1
     # request='/containers/json?son?all=false&name=/' + container.container_name
     request='/containers/' + container.container_name + '/json'
     containers_info = get_request(request)
     SystemDebug.debug(SystemDebug.containers, 'docker:container_id_from_name  ' ,container.container_name   )
-    return -1 unless containers_info.is_a?(Array)
-    containers_info.each do |info|
-      #  SystemDebug.debug(SystemDebug.containers, 'container_id_from_name  ' ,info['Names'][0]  )
-      if info[:Names][0] == '/' + container.container_name
-        SystemDebug.debug(SystemDebug.containers, 'MATCHED container_id_from_name  ' ,info[:Names][0],info[:Id]    )
-        id = info[:Id]
-        return id
+    if containers_info.is_a?(Array)
+      containers_info.each do |info|
+        #  SystemDebug.debug(SystemDebug.containers, 'container_id_from_name  ' ,info['Names'][0]  )
+        if info[:Names][0] == '/' + container.container_name
+          SystemDebug.debug(SystemDebug.containers, 'MATCHED container_id_from_name  ' ,info[:Names][0],info[:Id]    )
+          id = info[:Id]
+          break
+        end
       end
     end
-    -1
+    id
   rescue
     -1
   end

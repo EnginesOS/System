@@ -17,10 +17,14 @@ module EnginesCoreErrors
   end
 
   def handle_exception(e)
-    return log_exception(e) unless e.is_a?(RegistryException)
-    STDERR.puts(' Error Level ' + e.level.to_s)
-    return if e.level == :warning  ||  e.level == :error
-    log_exception(e)
+    if e.is_a?(RegistryException)
+      STDERR.puts(' Error Level ' + e.level.to_s)
+      unless e.level == :warning  || e.level == :error
+        log_exception(e)
+      end
+    else
+      log_exception(e)
+    end
   end
 
   def error_hash(mesg, params = nil)

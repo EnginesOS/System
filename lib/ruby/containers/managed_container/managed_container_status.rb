@@ -1,17 +1,21 @@
 module ManagedContainerStatus
   def is_service?
-    return true if @ctype == 'service'
-    false
+    if @ctype == 'service'
+      true
+    else
+      false
+    end
   end
 
   def read_state
     state = super
     if state == 'na'
       expire_engine_info
-      SystemDebug.debug(SystemDebug.containers, container_name, 'in na',  :info, @docker_info_cache)
-      return 'nocontainer'
+      SystemDebug.debug(SystemDebug.containers, container_name, 'in na',  :info)
+      'nocontainer'
+    else
+      state
     end
-    state
   rescue EnginesException =>e
     expire_engine_info
     'nocontainer'
@@ -32,12 +36,12 @@ module ManagedContainerStatus
         @last_error = 'mc got nil from super in read_state'
       end
     end
-    return state if raw == true
-
-    if state != @setState && task_at_hand.nil?
-      @last_error =  ' Warning State Mismatch set to ' + @setState.to_s + ' but in ' + state.to_s + ' state'
-    else
-      @last_error = ''
+    unless raw == true
+      if state != @setState && task_at_hand.nil?
+        @last_error =  ' Warning State Mismatch set to ' + @setState.to_s + ' but in ' + state.to_s + ' state'
+      else
+        @last_error = ''
+      end
     end
     state
   rescue EnginesException =>e
@@ -48,15 +52,17 @@ module ManagedContainerStatus
   end
 
   def is_startup_complete?
-    return false unless has_api?
     @container_api.is_startup_complete?(self)
   end
 
   def is_error?
-    return false unless task_at_hand.nil?
-    return false if in_two_step?
-    return true if @setState != read_state
-    false
+    r = false
+    if task_at_hand.nil?
+      if in_two_step?
+        r = true if @setState == read_state
+      end
+    end
+    r
   end
 
   def clear_error
@@ -67,22 +73,18 @@ module ManagedContainerStatus
   end
 
   def restart_required?
-    return false unless has_api?
     @container_api.restart_required?(self)
   end
 
   def restart_reason
-    return false unless has_api?
     @container_api.restart_reason(self)
   end
 
   def rebuild_required?
-    return false unless has_api?
     @container_api.rebuild_required?(self)
   end
 
   def rebuild_reason
-    return false unless has_api?
     @container_api.rebuild_reason(self)
   end
 

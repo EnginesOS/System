@@ -21,7 +21,7 @@ module Services
 
   def loadManagedService(service_name)
     s = engine_from_cache('services/' + service_name)
-    return s if s.is_a?(ManagedService)
+   unless s.is_a?(ManagedService)
     if service_name == 'system'
       s = loadSystemService(service_name)
     else
@@ -29,6 +29,7 @@ module Services
       ts = File.mtime(SystemConfig.RunDir + '/services/' + service_name + '/running.yaml')
       cache_engine(s, ts)
     end
+   end
     s
   end
 
@@ -36,14 +37,15 @@ module Services
 
   def get_services_by_type(type = 'service')
     services = _list_services(type)
-    return [] unless services.is_a?(Array)
     ret_val = []
-    services.each do |service_name |
-      begin
-        service = loadManagedService(service_name) if type == 'service'
-        service = loadSystemService(service_name) if type == 'system_service'
-        ret_val.push(service) if service.is_a?(ManagedService)
-      rescue # skip bad loads
+    if services.is_a?(Array)
+      services.each do |service_name |
+        begin
+          service = loadManagedService(service_name) if type == 'service'
+          service = loadSystemService(service_name) if type == 'system_service'
+          ret_val.push(service) if service.is_a?(ManagedService)
+        rescue # skip bad loads
+        end
       end
     end
     ret_val

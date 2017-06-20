@@ -40,9 +40,12 @@ module EnginesCorePreferences
     })
     if config_params.is_a?(Hash) == true && config_params.key?(:variables) == true
       vars = config_params[:variables]
-      return vars[:default_site_url] if vars.key?(:default_site_url)
+      if vars.key?(:default_site_url)
+        vars[:default_site_url]
+      end
+    else
+      nil
     end
-    config_params
   end
 
 end

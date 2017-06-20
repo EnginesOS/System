@@ -1,7 +1,6 @@
 module UserAuth
   require "sqlite3"
 
- 
   def user_login(params)
     rows = auth_database.execute( 'select authtoken from systemaccess where username=' + "'" + params[:user_name].to_s +
     "' and password = '" + params[:password].to_s + "';")
@@ -16,8 +15,11 @@ module UserAuth
     else
       rows = auth_database.execute( 'select guid from systemaccess where authtoken=' + "'" + token.to_s + "' and ip_addr ='" + ip.to_s + "';" )
     end
-    return false unless rows.count > 0
-    rows[0]
+    if rows.count > 0
+      rows[0]
+    else
+      false
+    end
   rescue StandardError => e
     STDERR.puts(' toekn verify error  ' + e.to_s)
     STDERR.puts(' toekn verify error exception name  ' + e.class.name)
@@ -37,19 +39,19 @@ module UserAuth
   def init_system_password(password, email, token = nil)
     SystemDebug.debug(SystemDebug.first_run, :applyin, password, email)
     set_system_user_password('admin', password, email, token)
-    SystemDebug.debug(SystemDebug.first_run, :applied, password, email)    
+    SystemDebug.debug(SystemDebug.first_run, :applied, password, email)
   end
 
   def set_system_user_password(user, password, email, token)
     rws = auth_database.execute("Select authtoken from systemaccess where  username = '" + user.to_s + "';")
     authtoken = SecureRandom.hex(64)
-    if rws.nil? || rws.count == 0      
+    if rws.nil? || rws.count == 0
       query = 'INSERT INTO systemaccess (username, password, email, authtoken, uid)
                  VALUES (?, ?, ?, ?, ?)'
-    SystemDebug.debug(SystemDebug.first_run,:applyin,  query, [user, password, email.to_s, authtoken, 0])
+      SystemDebug.debug(SystemDebug.first_run,:applyin,  query, [user, password, email.to_s, authtoken, 0])
       auth_database.execute(query, [user, password, email.to_s, authtoken, 0])
       update_local_token(authtoken) if user == 'admin'
-    else      
+    else
       token = rws[0][0] if token.nil? # FIXMe should be if first run?
       raise EnginesException.new(
       level: :error,
@@ -68,7 +70,7 @@ module UserAuth
     end
 
   rescue StandardError => e
-SystemDebug.debug(SystemDebug.first_run,"Exception ", e)
+    SystemDebug.debug(SystemDebug.first_run,"Exception ", e)
     log_error_mesg(e.to_s)
     auth_database.close
     true
@@ -79,9 +81,9 @@ SystemDebug.debug(SystemDebug.first_run,"Exception ", e)
     toke_file = File.new('/home/engines/.engines_token', 'w+')
     toke_file.puts(token)
     toke_file.close
-    rescue StandardError => e
-  SystemDebug.debug(SystemDebug.first_run,"Exception ", e)
-      log_error_mesg(e.to_s)
+  rescue StandardError => e
+    SystemDebug.debug(SystemDebug.first_run,"Exception ", e)
+    log_error_mesg(e.to_s)
   end
-    
+
 end

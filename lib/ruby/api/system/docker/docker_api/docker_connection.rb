@@ -52,7 +52,7 @@ class DockerConnection < ErrorsApi
     SystemDebug.debug(SystemDebug.docker,'Post OPIOMS ' + params.to_s)
     rheaders = default_headers if rheaders.nil?
     params = params.to_json if rheaders['Content-Type'] == 'application/json' && ! params.nil?
-    return handle_resp(
+    handle_resp(
     connection.request(
     method: :post,
     :path => uri,
@@ -121,7 +121,6 @@ class DockerConnection < ErrorsApi
       body: body
       )
       stream_handler.close
-      return r
     else
       r  = sc.request(
       method: :post,
@@ -131,8 +130,8 @@ class DockerConnection < ErrorsApi
       body: content,
       headers:  rheaders)
       stream_handler.close
-      return r
     end
+    r
   rescue  Excon::Error::Socket
     STDERR.puts(' docker socket stream close ')
     stream_handler.close
@@ -147,7 +146,7 @@ class DockerConnection < ErrorsApi
     STDERR.puts('GET TRUE REQUEST ' + caller[0..5].to_s)  if uri.start_with?('/containers/true/')
     rheaders = default_headers if rheaders.nil?
     r = connection.request(request_params({method: :get, path: uri, read_timeout: timeout, headers: rheaders}))
-    return handle_resp(r, expect_json)
+    handle_resp(r, expect_json)
   rescue  Excon::Error::Socket
     STDERR.puts(' docker socket close ')
     reopen_connection
@@ -171,13 +170,19 @@ class DockerConnection < ErrorsApi
   def handle_resp(resp, expect_json)
     raise DockerException.new({params: @request_param, status: 500}) if resp.nil?
     raise DockerException.new(docker_error_hash(resp, @request_params)) if resp.status >= 400
-    return true if resp.status  == 204 # nodata but all good happens on del
-    log_error_mesg("Un exepect response from docker", resp, resp.body, resp.headers.to_s ) unless resp.status == 200 || resp.status == 201
-    return resp.body unless expect_json == true
-    hash = response_parser.parse(resp.body)
-    #hash = deal_with_json(resp.body)
-    SystemDebug.debug(SystemDebug.docker,' RESPOSE ' + resp.status.to_s + ' : ' + hash.to_s.slice(0..256))
-    hash
+    if resp.status == 204 # nodata but all good happens on del
+      true
+    else
+      log_error_mesg("Un exepect response from docker", resp, resp.body, resp.headers.to_s ) unless resp.status == 200 || resp.status == 201
+      if expect_json == true
+        hash = response_parser.parse(resp.body)
+        #hash = deal_with_json(resp.body)
+        SystemDebug.debug(SystemDebug.docker,' RESPOSE ' + resp.status.to_s + ' : ' + hash.to_s.slice(0..256))
+        hash
+      else
+        resp.body
+      end
+    end
   end
 
 end

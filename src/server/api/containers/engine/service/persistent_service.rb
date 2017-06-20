@@ -19,35 +19,32 @@ get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/
   end
 end
 # @method engine_import_persistent_service
-# @overload post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/:type_path/:service_handle/overwrite'
+# @overload put '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/:type_path/:service_handle/overwrite'
 # import the service data gzip optional
-# @param :data data to import
+# data is streamed as application/octet-stream
 # @return [true]
-post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/overwrite' do
+put '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/overwrite' do
   begin
-    hash = {}
-    hash[:service_connection] = engine_service_hash_from_params(params)
     engine = get_engine(params[:engine_name])
-    hash[:datafile] = params['file'][:tempfile]
-    return_text(engine.import_service_data(hash, File.new(hash[:datafile].path, 'rb')))
+    return_text(engine.import_service_data(
+      {service_connection: engine_service_hash_from_params(params) },
+      request.env['rack.input']))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
 end
 
 # @method engine_replace_persistent_service
-# @overload post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/:type_path/:service_handle/replace'
+# @overload put '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/:type_path/:service_handle/replace'
 # import the service data gzip optional after dropping/deleting existing data
-# @param :data data to import
+# data is streamed as application/octet-stream
 # @return [true]
-post '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/replace' do
+put '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/replace' do
   begin
-    hash = {}
-    hash[:service_connection] = engine_service_hash_from_params(params)
     engine = get_engine(params[:engine_name])
-    hash[:import_method] = :replace
-    hash[:datafile] = params['file'][:tempfile]
-    return_text(engine.import_service_data(hash, File.new(hash[:datafile].path, 'rb')))
+    return_text(engine.import_service_data(
+      {service_connection: engine_service_hash_from_params(params)},
+      request.env['rack.input']))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

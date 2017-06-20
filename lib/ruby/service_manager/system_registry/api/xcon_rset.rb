@@ -87,9 +87,13 @@ rescue StandardError => e
 end
 
 def query_hash(params)
-  return if params.nil?
-  params[:params] if params.key?(:params)
-  params
+  if params.nil?
+    nil
+  elsif params.key?(:params)
+    params[:params]
+  else
+    params
+  end
 end
 
 def rest_delete(path, params = nil, lheaders = nil)
@@ -115,11 +119,13 @@ def parse_xcon_response(resp)
   # STDERR.puts('1 ' + resp.status.to_s + ':' + resp.headers.to_s + " __ " + resp.body.to_s)
   error_result_exception(resp) if resp.status > 399
   r = resp.body
-  return if r.nil?
-  r.strip!
-  return r if resp.headers['Content-Type'] == 'plain/text'
-  r = json_parser.parse(r)
-  r = r[:BooleanResult] if r.is_a?(Hash) && r.key?(:BooleanResult)
+  unless r.nil?
+    r.strip!
+    unless resp.headers['Content-Type'] == 'plain/text'
+      r = json_parser.parse(r)
+      r = r[:BooleanResult] if r.is_a?(Hash) && r.key?(:BooleanResult)
+    end
+  end
   r
 end
 

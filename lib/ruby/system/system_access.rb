@@ -50,8 +50,11 @@ class SystemAccess
 
   def hrs_from_gmt
     m = Time.now.getlocal.gmt_offset
-    return m.to_s if m == 0
-    (m / 3600).to_s
+    if m == 0
+      m.to_s
+    else
+      (m / 3600).to_s
+    end
   end
 
   def default_domain
@@ -68,12 +71,10 @@ class SystemAccess
   end
 
   def pubkey(type)
-    return '' if @engines_api.nil?
     args = type.split('_')
     engine = args[0]
     cmd = args[1]
     cmd.gsub!(/\)/, '')
-
     @engines_api.get_service_pubkey(engine, cmd)
   end
 

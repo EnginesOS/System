@@ -36,14 +36,20 @@ class SystemPreferences
   def set_default_domain(params)
     domain_name = params
     domain_name = params[:default_domain] unless domain_name.is_a?(String)
-    return false if domain_name.to_s == ''
-    @preferences[:default_domain] = domain_name # params[:default_domain]
-    save_preferences
+    unless domain_name.to_s == ''
+      @preferences[:default_domain] = domain_name # params[:default_domain]
+      save_preferences
+    else
+      false
+    end
   end
 
   def get_default_domain
-    return 'unset' unless @preferences.key?(:default_domain)
-    @preferences[:default_domain]
+    if @preferences.key?(:default_domain)
+      @preferences[:default_domain]
+    else
+      'unset'
+    end
   end
 
   def save_preferences

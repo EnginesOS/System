@@ -36,8 +36,11 @@ module DockerApiBuilder
     end
 
     def has_data?
-      return true unless @io_stream.nil?
-      false
+      if @io_stream.nil?
+        false
+      else
+        true
+      end
     end
 
     def process_response()
@@ -46,14 +49,19 @@ module DockerApiBuilder
           hash = @parser.parse(chunk)  #do |hash|
           # hash = deal_with_json(chunk)
           @builder.log_build_output(hash[:stream].force_encoding(Encoding::UTF_8)) if hash.key?(:stream)
-          @builder.log_build_errors(hash[:errorDetail].force_encoding(Encoding::UTF_8)) if hash.key?(:errorDetail)
+          if hash.key?(:errorDetail)
+            @builder.log_build_errors(hash[:errorDetail][:message])
+            if hash[:errorDetail].key?(:error)
+              log_build_errors('Engine Build Aborted Due to:' + hash[:errorDetail][:error].to_s)
+              @builder.post_failed_build_clean_up
+            end
+          end
         rescue StandardError =>e
           STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s)
         end
       end
     rescue StandardError =>e
       STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s)
-      return
     end
 
     def process_request(*args)

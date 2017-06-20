@@ -3,24 +3,33 @@ module EnginesServerHost
   @@server_script_timeout = 15
   def system_image_free_space
     result =   run_server_script('free_docker_lib_space')
-    return -1 if result[:result] != 0
-    result[:stdout].to_i
+    if result[:result] != 0
+      result[:result]
+    else
+      result[:stdout].to_i
+    end
   end
 
   def restart_engines_system_service
     res = Thread.new { run_server_script('restart_system_service') }
     res[:name] = 'restart_system_service'
     # FIXME: check a status flag after sudo side post ssh run ie when we know it's definititly happenging
-    return true if res.status == 'run'
-    false
+    if res.status == 'run'
+      true
+    else
+      false
+    end
   end
 
   def recreate_engines_system_service
     res = Thread.new { run_server_script('recreate_system_service') }
     res[:name] = 'recreate_system_service'
     # FIXME: check a status flag after sudo side post ssh run ie when we know it's definititly happenging
-    return true if res.status == 'run'
-    false
+    if res.status == 'run'
+      true
+    else
+      false
+    end
   end
 
   def halt_base_os(reason)
@@ -37,7 +46,7 @@ module EnginesServerHost
     if mem_stats.key?(:free)  && mem_stats.key?(:file_cache)
       (mem_stats[:free] + mem_stats[:file_cache] + swp ) /1024
     else
-      return -1
+      -1
     end
   end
 
@@ -130,13 +139,14 @@ module EnginesServerHost
     lines.each do |line|
       values = line.split(' ')
       if values.is_a?(Array)
-        r[values[0]] = {}
-        r[values[0]][:type] = values[1]
-        r[values[0]][:blocks] = values[2]
-        r[values[0]][:used] = values[3]
-        r[values[0]][:available] = values[4]
-        r[values[0]][:usage] = values[5]
-        r[values[0]][:mount] = values[6]
+        r[values[0]] = {
+          type: values[1],
+          blocks: values[2],
+          used: values[3],
+          available: values[4],
+          usage: values[5],
+          mount: values[6]
+        }
       end
     end
     r
@@ -154,7 +164,7 @@ module EnginesServerHost
 
     # STDERR.puts('RUN SERVER SCRIPT cmd'  + cmd.to_s)
     Timeout.timeout(script_timeout) do
-      return SystemUtils.execute_command(cmd, false, script_data)
+      SystemUtils.execute_command(cmd, false, script_data)
     end
   rescue Timeout::Error
     STDERR.puts('Timeout on Running Server Script ' + script_name )

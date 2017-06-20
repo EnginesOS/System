@@ -60,6 +60,6 @@ module AvailableServices
 
   def load_software_service(params)
     params[:service_container_name] = get_software_service_container_name(params)
-    loadManagedService(params[:service_container_name] )
+    loadManagedService(params[:service_container_name])
   end
 end

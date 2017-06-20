@@ -55,7 +55,7 @@ end
 # Follow the current build
 # @return  [text/event-stream]
 # test cd  /opt/engines/tests/engines_api/engines ; make build_check
-get '/v0/engine_builder/follow_stream', provides: 'text/event-stream;charset=ascii-8bit'  do
+get '/v0/engine_builder/follow_stream', provides: 'text/event-stream;charset=ascii-8bit' do
   begin
     build_log_file = File.new(SystemConfig.BuildOutputFile, 'r')
     has_data = true
@@ -94,7 +94,7 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream;charset=asc
           build_log_file.close
           out.close unless out.closed?
         rescue StandardError => e
-        out << bytes  unless out.closed?
+          out << bytes unless out.closed?
         end
       end
     end

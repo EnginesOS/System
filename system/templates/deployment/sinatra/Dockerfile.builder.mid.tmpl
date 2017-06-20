@@ -1,4 +1,5 @@
 WORKDIR /home/app
+
 USER 0
 
 RUN	if test -d config ;\
@@ -31,8 +32,8 @@ ENV DATABASE_URL $dbflavor://$dbuser:$dbpasswd@$dbhost/$dbname
 USER $ContUser
 
 RUN  if test -f Gemfile ;\
-	then \
-	 bundle config build.nokogiri --use-system-libraries;\
-	 bundle --standalone install;\
-	 fi  
+	  then \
+	 	bundle config build.nokogiri --use-system-libraries;\
+	 	bundle --standalone install;\
+	  fi  
 

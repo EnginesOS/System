@@ -15,7 +15,7 @@ extraction_command=`echo $extraction_command | sed "/[;&]/s///g"`
 package_name=`echo $package_name | sed "/[.][.]/s///g"` 
 destination=`echo $destination | sed "/[.][.]/s///g"` 
 path_to_extracted=`echo $path_to_extracted | sed "/[.][.][ ]/s///g"` 
-# 
+
  
    
 echo Source URL $source_url 
@@ -25,31 +25,22 @@ echo Install to $destination
 
  if test "$extraction_command" = 'git'
   then
-   echo git clone $source_url --depth 1 "./$path_to_extracted"
   	git clone $source_url --depth 1 "./$path_to_extracted"
-  	elif  test -z "$extraction_command" 
+  elif  test -z "$extraction_command" 
   	 then
   	  wget -O $package_name $source_url
   	  path_to_extracted=$package_name 
   else
-    #echo wget -O $package_name $source_url
 	wget -O $package_name $source_url
-	#echo "$path_to_extracted"
-	if test -z "$path_to_extracted" -o "$path_to_extracted" = './' -o "$path_to_extracted" = '/'
+	  if test -z "$path_to_extracted" -o "$path_to_extracted" = './' -o "$path_to_extracted" = '/'
 		then
-				path_to_extracted=app
-				mkdir /tmp/app
-				#pwd
-				#echo $path_to_extracted
-				cd /tmp/app
-				#pwd
-				#echo "$extraction_command ../$package_name"				
-				$extraction_command ../$package_name
-				cd /tmp
-				#pwd
+			path_to_extracted=app
+			mkdir /tmp/app
+			cd /tmp/app			
+			$extraction_command ../$package_name
+			cd /tmp
 		else
-				#echo "$extraction_command $package_name"
-				$extraction_command $package_name
-	fi	
+			$extraction_command $package_name
+	  fi	
   fi
  

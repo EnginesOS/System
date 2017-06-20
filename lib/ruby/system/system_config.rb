@@ -66,11 +66,11 @@ class SystemConfig
   end
 
   def SystemConfig.internal_domain
-    return @@internal_domain
+    @@internal_domain
   end
 
   def SystemConfig.DBHost
-    return @@DBHost
+    @@DBHost
   end
 
 end

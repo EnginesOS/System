@@ -8,14 +8,17 @@ class ConfigFileWriter
   end
 
   def self.write_templated_file(templater, filename, content)
-    return SystemUtils.log_error('NO Content for ' + filename.to_s) if content.nil?
-    content.gsub!(/\r/, '')
-    dir = File.dirname(filename)
-    FileUtils.mkdir_p(dir) unless Dir.exist?(dir)
-    out_file  = File.open(filename, 'wb', :crlf_newline => false)
-    content = templater.process_templated_string(content)
-    out_file.write(content)
-    out_file.close
+    if content.nil?
+      SystemUtils.log_error('NO Content for ' + filename.to_s)
+    else
+      content.gsub!(/\r/, '')
+      dir = File.dirname(filename)
+      FileUtils.mkdir_p(dir) unless Dir.exist?(dir)
+      out_file  = File.open(filename, 'wb', :crlf_newline => false)
+      content = templater.process_templated_string(content)
+      out_file.write(content)
+      out_file.close
+    end
   end
 
   def self.process_dockerfile_tmpl(templater, filename)

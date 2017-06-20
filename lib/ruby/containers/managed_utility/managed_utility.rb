@@ -36,8 +36,11 @@ class ManagedUtility< ManagedContainer
 
   def command_details(command_name)
     raise EnginesException.new(error_hash('No Commands', command_name)) unless @commands.is_a?(Hash)
-    return @commands[command_name] if @commands.key?(command_name)
-    raise EnginesException.new(error_hash('Command not found _', command_name.to_s ))
+    if @commands.key?(command_name)
+      @commands[command_name]
+    else
+      raise EnginesException.new(error_hash('Command not found _', command_name.to_s ))
+    end
   end
 
   def execute_command(command_name, command_params)
@@ -48,6 +51,7 @@ class ManagedUtility< ManagedContainer
     if is_active?
       expire_engine_info
       raise EnginesException.new(error_hash('Utility ' + container_name + ' in use ', command_name)) if is_active?
+      wait_for('stop')
       destroy_container
     end
     #FIXMe need to check if running
@@ -58,12 +62,13 @@ class ManagedUtility< ManagedContainer
     raise EnginesException.new(error_hash('Missing params in Exe' + command_params.to_s, r)) unless (r = check_params(command, command_params)) == true
     begin
       destroy_container
-      @container_id = -1
+     # @container_id = -1
     rescue
     end
     wait_for('nocontainer') if has_container?
     begin
       @container_api.destroy_container(self) if has_container?
+      wait_for('nocontainer')
     rescue
     end
     raise EnginesException.new(error_hash('cant nocontainer Utility ' + command.to_s, command_params.to_s)) if has_container?
@@ -76,8 +81,11 @@ class ManagedUtility< ManagedContainer
     wait_for('stopped') unless is_stopped?
     begin
       r = @container_api.logs_container(self, 100) #_as_result
-      return r if r.is_a?(Hash)
-      {stdout: r.to_s, result: 0}
+      if r.is_a?(Hash)
+        r
+      else
+        {stdout: r.to_s, result: 0}
+      end
     rescue StandardError => e
       STDERR.puts(e.to_s  + "\n" + e.backtrace.to_s)
       STDERR.puts('FSCONFIG EXCEPTION' + e.to_s)

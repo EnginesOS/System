@@ -4,20 +4,21 @@ module ManagedContainerDns
   # would be better if it check a pre exisiting record will throw error on recreate
   #
   def register_with_dns # MUst register each time as IP Changes
-    return false unless has_api?
     @container_api.register_with_dns(self) if @conf_register_dns == true
     @container_api.register_with_zeroconf(self) unless @conf_zero_conf
   end
 
   def deregister_with_dns# MUst register each time as IP Changes
-    return false unless has_api?
     @container_api.deregister_with_dns(self) if @conf_register_dns == true
     @container_api.deregister_with_zeroconf(self) unless @conf_zero_conf
   end
 
   def fqdn
-    return 'N/A' if @domain_name.nil? == true
-    @hostname.to_s + '.' + @domain_name.to_s
+    if @domain_name.nil?
+      'N/A'
+    else
+      @hostname.to_s + '.' + @domain_name.to_s
+    end
   end
 
   def set_hostname_details(host_name, domain_name)

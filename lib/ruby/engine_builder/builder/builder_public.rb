@@ -30,10 +30,16 @@ class BuilderPublic
   end
 
   def http_protocol
-    return nil unless @builder.build_params.key?(:http_protocol)
-    return nil if @builder.build_params[:http_protocol].nil?
-    @builder.build_params[:http_protocol].gsub!(/_.*/, '') if @builder.build_params[:http_protocol].include?('_')
-    @builder.build_params[:http_protocol]
+    if @builder.build_params.key?(:http_protocol)
+      if @builder.build_params[:http_protocol].nil?
+        nil
+      else
+        @builder.build_params[:http_protocol].gsub!(/_.*/, '') if @builder.build_params[:http_protocol].include?('_')
+        @builder.build_params[:http_protocol]
+      end
+    else
+      nil
+    end
   end
 
   def fqdn
@@ -68,11 +74,9 @@ class BuilderPublic
     @builder.blueprint
   end
 
-  #  def logs_container
-  #    # FIXME
-  #    # @builder.wait_for_startup(4)
-  #    @builder.running_logs
-  #  end
+  def logs_container
+    @builder.running_logs
+  end
 
   def data_gid
     @builder.data_gid
@@ -80,7 +84,6 @@ class BuilderPublic
 
   def group_uid
     @builder.data_gid
-
   end
 
   def data_uid

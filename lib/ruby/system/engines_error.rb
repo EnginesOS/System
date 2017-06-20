@@ -26,7 +26,7 @@ class EnginesError # < FalseClass
   end
 
   def to_json(opt=nil)
-    return self.to_h.to_json(opt)
+    self.to_h.to_json(opt)
   end
 end
 
