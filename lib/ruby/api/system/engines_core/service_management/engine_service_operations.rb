@@ -110,7 +110,7 @@ module EngineServiceOperations
     else
       args = ['/home/get_pubkey.sh', cmd]
       result = exec_in_container({:container => container, :command_line => args, :log_error => true, :timeout =>30 , :data=>''})
-      if result.is_a?(Hash) &&result[:result] == 0
+      if result.is_a?(Hash) && result[:result] == 0
         result[:stdout]
       else
         log_error_mesg('Get pub key failed',result)

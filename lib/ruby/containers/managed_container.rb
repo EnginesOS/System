@@ -90,7 +90,7 @@ class ManagedContainer < Container
   end
 
   def container_id
-    unless @container_id == -1
+    if @container_id == -1
       @container_id = read_container_id unless setState == 'noncontainer'
     end
     @container_id

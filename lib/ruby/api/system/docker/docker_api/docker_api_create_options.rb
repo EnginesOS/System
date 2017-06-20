@@ -82,7 +82,7 @@ module DockerApiCreateOptions
   end
 
   def container_capabilities(container)
-    if container.capabilities.nil?
+   unless container.capabilities.nil?
       add_capabilities(container.capabilities)
     else
       []

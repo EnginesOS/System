@@ -14,7 +14,7 @@ module ManagedContainerDns
   end
 
   def fqdn
-    if @domain_name.nil? == true
+    if @domain_name.nil?
       'N/A'
     else
       @hostname.to_s + '.' + @domain_name.to_s

@@ -76,7 +76,7 @@ module DockerUtils
     unless h.nil?
       h[:stderr] = "" unless h.key?(:stderr)
       h[:stdout] = "" unless h.key?(:stdout)
-      while r.length >0
+      while r.length > 0
         if r[0].nil?
           return h if r.length == 1
           #STDERR.puts('Skipping nil ')

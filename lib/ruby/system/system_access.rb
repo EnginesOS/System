@@ -75,7 +75,6 @@ class SystemAccess
     engine = args[0]
     cmd = args[1]
     cmd.gsub!(/\)/, '')
-
     @engines_api.get_service_pubkey(engine, cmd)
   end
 
