@@ -22,9 +22,13 @@ class Templater
   def resolve_hash_value(match, values_hash)
     name = match.sub!(/_Engines_Template\(/, '')
     name.sub!(/[\)]/, '')
-    return values_hash[name.to_sym] if values_hash.key?(name.to_sym)
-    return values_hash[name.to_s] if values_hash.key?(name.to_s)
-    ''
+    if values_hash.key?(name.to_sym)
+      values_hash[name.to_sym]
+    elsif values_hash.key?(name.to_s)
+      values_hash[name.to_s]
+    else
+      ''
+    end
   end
 
   def resolve_system_variable(match)
@@ -63,7 +67,7 @@ class Templater
     val
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    ''
+   val
   end
 
   def resolve_system_function(match)
@@ -103,15 +107,17 @@ class Templater
   def resolve_engines_variable(match)
     name = match.sub!(/_Engines_Environment\(/, '')
     name.sub!(/[\)]/, '')
+    v = ''
     @builder_public.engine_environment.each do |environment|
       if environment.name == name
-        return environment.value
+        v = environment.value
+        break
       end
     end
-    ''
+    v
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    ''
+    v
   end
 
   def set_system_access(system)
@@ -156,7 +162,7 @@ class Templater
   end
 
   def apply_system_variables(template)
-    return template if template.is_a?(String) == false
+   if template.is_a?(String)
     template.gsub!(/_Engines_System\([(0-9a-z_A-Z,]*\)\)/) { |match|
       #     p :build_function_match
       #     p match
@@ -165,6 +171,7 @@ class Templater
     template.gsub!(/_Engines_System\([(0-9a-z_A-Z]*\)/) { |match|
       resolve_system_variable(match)
     }
+   end
     template
   rescue StandardError => e
     p 'problem with ' + template.to_s
@@ -172,11 +179,11 @@ class Templater
   end
 
   def apply_build_variables(template)
-    unless template.is_a?(String) == false
+    if template.is_a?(String)
       template.gsub!(/_Engines_Builder\([(0-9a-z_A-Z]*\)/) { |match|
         resolve_build_variable(match)
       }
-    end
+    end   
     template
   end
 

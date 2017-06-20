@@ -105,9 +105,9 @@ module TaskAtHand
       on_start('start')
     when 'unpause'
       on_start('unpause')
-    when 'die'     
+    when 'die'
       begin
-       # STDERR.puts('IT DIED WITH ' + event_hash[:Actor][:Attributes][:exitCode].to_s)
+        # STDERR.puts('IT DIED WITH ' + event_hash[:Actor][:Attributes][:exitCode].to_s)
         ec = event_hash[:Actor][:Attributes][:exitCode]
       rescue
         ec = 0
@@ -147,29 +147,33 @@ module TaskAtHand
   def task_at_hand
     fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
     SystemDebug.debug(SystemDebug.containers, :task_at_handfile, + ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
-    return nil unless File.exist?(fn)
-    thf = File.new(fn, 'r')
-    begin
-      @task_at_hand = nil
-      @task_at_hand = thf.read
-    ensure
-      thf.close
+    if File.exist?(fn)
+      thf = File.new(fn, 'r')
+      begin
+        @task_at_hand = nil
+        @task_at_hand = thf.read
+      ensure
+        thf.close
+        nil
+      end
+      unless @task_at_hand.nil?
+        SystemDebug.debug(SystemDebug.containers, :task_at_hand_read_as, @task_at_hand)
+        if task_has_expired?(@task_at_hand)
+          expire_task_at_hand
+          SystemDebug.debug(SystemDebug.containers, :task_at_hand_expired)
+        elsif tasks_final_state(@task_at_hand) == read_state(raw = true)
+          clear_task_at_hand
+          SystemDebug.debug(SystemDebug.containers, :task_at_clear)
+        else
+          SystemDebug.debug(SystemDebug.containers, :task_at_is, @task_at_hand)
+          @task_at_hand
+        end
+      else
+        nil
+      end
+    else
       nil
     end
-    unless @task_at_hand.nil?
-      SystemDebug.debug(SystemDebug.containers, :task_at_hand_read_as, @task_at_hand)
-      if task_has_expired?(@task_at_hand)
-        expire_task_at_hand
-        SystemDebug.debug(SystemDebug.containers, :task_at_hand_expired)
-      elsif tasks_final_state(@task_at_hand) == read_state(raw = true)
-        clear_task_at_hand
-        SystemDebug.debug(SystemDebug.containers, :task_at_clear)
-      else
-        SystemDebug.debug(SystemDebug.containers, :task_at_is, @task_at_hand)
-        return @task_at_hand
-      end
-    end
-    nil
   rescue StandardError => e
     log_exception(e) if File.exist?(fn)
 

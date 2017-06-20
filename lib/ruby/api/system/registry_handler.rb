@@ -80,11 +80,12 @@ class RegistryHandler < ErrorsApi
       registry_service.wait_for('start', 90)
       unless registry_service.wait_for_startup(30)
         SystemDebug.debug(SystemDebug.registry, :recreate_wait)
-        return log_error_mesg('Failed to complete startup in 90s')
+        log_error_mesg('Failed to complete startup in 90s')
+      else
+        true
       end
-      true
     else
-      return log_error_mesg('Fatal Unable to recreate Registry Service: ', registry_service.last_error )
+      log_error_mesg('Fatal Unable to recreate Registry Service: ', registry_service.last_error )
     end
   end
 

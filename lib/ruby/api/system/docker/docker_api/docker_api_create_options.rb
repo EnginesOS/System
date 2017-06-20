@@ -74,8 +74,11 @@ module DockerApiCreateOptions
   end
 
   def container_volumes(container)
-    return container.volumes_from unless container.volumes_from.nil?
-    []
+    unless container.volumes_from.nil?
+      container.volumes_from
+    else
+      []
+    end
   end
 
   def container_capabilities(container)
@@ -132,7 +135,6 @@ module DockerApiCreateOptions
   end
 
   def log_config(container)
-    #return { "Type" => 'json-file', "Config" => {}}
     if container.ctype == 'service'
       { "Type" => 'json-file', "Config" => { "max-size" =>"5m", "max-file" => '10' } }
     elsif container.ctype == 'system_service'
@@ -151,13 +153,14 @@ module DockerApiCreateOptions
 
   def port_bindings(container)
     bindings = {}
-    return bindings if container.mapped_ports.nil?
-    container.mapped_ports.each_value do |port|
-      port = symbolize_keys(port)
-      if port[:port].is_a?(String) && port[:port].include?('-')
-        add_port_range(bindings, port)
-      else
-        add_mapped_port(bindings, port)
+    unless container.mapped_ports.nil?
+      container.mapped_ports.each_value do |port|
+        port = symbolize_keys(port)
+        if port[:port].is_a?(String) && port[:port].include?('-')
+          add_port_range(bindings, port)
+        else
+          add_mapped_port(bindings, port)
+        end
       end
     end
     bindings
@@ -212,9 +215,10 @@ module DockerApiCreateOptions
 
   def set_entry_point(container, top_level)
     command =  container.command
-    return  if container.conf_self_start
-    command = ['/bin/bash' ,'/home/start.bash'] if container.command.nil?
-    top_level['Entrypoint'] = command
+    unless container.conf_self_start
+      command = ['/bin/bash' ,'/home/start.bash'] if container.command.nil?
+      top_level['Entrypoint'] = command
+    end
   end
 
   def get_labels(container)
@@ -225,14 +229,15 @@ module DockerApiCreateOptions
   end
 
   def cert_mounts(container)
-    return  unless container.certificates.is_a?(Array)
-    mounts = []
-    container.certificates.each do |certificate|
-      prefix =  certificate[:container_type] + '_' + certificate[:parent_engine] + '_' + certificate[:variables][:cert_name]
-      mounts.push(SystemConfig.CertificatesDir + prefix + '.crt:' + SystemConfig.CertificatesDestination +  certificate[:variables][:cert_name] + '.crt:ro' )
-      mounts.push(SystemConfig.KeysDir + prefix + '.key:' + SystemConfig.KeysDestination +  certificate[:variables][:cert_name] + '.key:ro' )
+    if container.certificates.is_a?(Array)
+      mounts = []
+      container.certificates.each do |certificate|
+        prefix =  certificate[:container_type] + '_' + certificate[:parent_engine] + '_' + certificate[:variables][:cert_name]
+        mounts.push(SystemConfig.CertificatesDir + prefix + '.crt:' + SystemConfig.CertificatesDestination +  certificate[:variables][:cert_name] + '.crt:ro' )
+        mounts.push(SystemConfig.KeysDir + prefix + '.key:' + SystemConfig.KeysDestination +  certificate[:variables][:cert_name] + '.key:ro' )
+      end
+      mounts
     end
-    mounts
   end
 
   def system_mounts(container)

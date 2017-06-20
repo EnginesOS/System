@@ -55,13 +55,16 @@ module ManagedContainerControls
         expire_engine_info
         @container_id = -1
         save_state
-        return task_failed('create') unless super
-        save_state #save new containerid)
-        SystemDebug.debug(SystemDebug.containers, :create_super_ran)
-        SystemDebug.debug(SystemDebug.containers, @setState, @docker_info_cache.class.name)
-        expire_engine_info
-        SystemDebug.debug(SystemDebug.containers, @setState, @docker_info_cache.class.name)
-        true
+        unless super
+          task_failed('create')
+        else
+          save_state #save new containerid)
+          SystemDebug.debug(SystemDebug.containers, :create_super_ran)
+          SystemDebug.debug(SystemDebug.containers, @setState, @docker_info_cache.class.name)
+          expire_engine_info
+          SystemDebug.debug(SystemDebug.containers, @setState, @docker_info_cache.class.name)
+          true
+        end
       end
     }
   end
@@ -125,7 +128,7 @@ module ManagedContainerControls
   end
 
   def rebuild_container
- 
+
     @container_mutex.synchronize {
       if prep_task(:reinstall)
         ret_val = @container_api.rebuild_image(self)

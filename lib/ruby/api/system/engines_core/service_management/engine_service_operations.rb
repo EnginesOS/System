@@ -52,7 +52,6 @@ module EngineServiceOperations
   def find_engine_services(service_query)
     check_engine_hash(service_query)
     find_engine_services_hashes(service_query)
-    #return sm.find_engine_services(params)
   end
 
   def share_service_to_engine(params)

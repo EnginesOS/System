@@ -74,7 +74,7 @@ module SmEngineServices
       container_type: engine.ctype
     })
     SystemDebug.debug(SystemDebug.services,:register_non_persistent, services)
-    return services  unless services.is_a?(Array)
+   # return services  unless services.is_a?(Array)
     services.each do |service_hash|
       begin
         register_non_persistent_service(service_hash)
@@ -93,7 +93,7 @@ module SmEngineServices
     rescue
       return nil
     end
-    return services unless services.is_a?(Array)
+    #   return services unless services.is_a?(Array)
     #   STDERR.puts('remove_engine_services ' + services.to_s)
     services.each do |s|
       #    STDERR.puts('remove_engine_service ' + s.to_s)
@@ -136,7 +136,7 @@ module SmEngineServices
       #handle_exception(e)
       return true
     end
-    return true unless services.is_a?(Array)
+    #  return true unless services.is_a?(Array)
     services.each do | service |
       SystemDebug.debug(SystemDebug.services, :remove_service, service)
       if params[:remove_all_data] == 'all' || service[:shared] #&& ! (service.key?(:shared) && service[:shared])

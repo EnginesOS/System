@@ -13,26 +13,36 @@ def parse_as_json(res)
 end
 
 def symbolise_json(res)
-  return symbolize_keys(res) if res.is_a?(Hash)
-  return symbolize_keys_array_members(res) if res.is_a?(Array)
-  return symbolize_tree(res) if res.is_a?(Tree::TreeNode)
-  return boolean_if_true_false_str(res) if res.is_a?(String)
+  if res.is_a?(Hash)
+    symbolize_keys(res)
+  elsif res.is_a?(Array)
+    symbolize_keys_array_members(res)
+  elsif res.is_a?(Tree::TreeNode)
+    symbolize_tree(res)
+  elsif res.is_a?(String)
+    boolean_if_true_false_str(res)
+  else
+    res
+  end
   res
 end
 
 def symbolize_keys_array_members(array)
   unless array.count == 0
-    return array unless array[0].is_a?(Hash)
-    retval = []
-    i = 0
-    array.each do |hash|
-      retval[i] = array[i]
-      next if hash.nil?
-      next unless hash.is_a?(Hash)
-      retval[i] = symbolize_keys(hash)
-      i += 1
+    if array[0].is_a?(Hash)
+      retval = []
+      i = 0
+      array.each do |hash|
+        retval[i] = array[i]
+        next if hash.nil?
+        next unless hash.is_a?(Hash)
+        retval[i] = symbolize_keys(hash)
+        i += 1
+      end
+      retval
+    else
+      array
     end
-    retval
   else
     array
   end

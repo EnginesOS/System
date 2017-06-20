@@ -22,8 +22,9 @@ class EnvironmentVariable
   end
 
   def setatrun
-    return @ask_at_build_time
+    @ask_at_build_time
   end
+
   attr_reader :ask_at_build_time,
   :name,
   :build_time_only,
@@ -66,10 +67,14 @@ class EnvironmentVariable
   end
 
   def self.find_env_in(new_env, dest)
+    r = nil
     dest.each do  |env|
       next unless env.is_a?(EnvironmentVariable)
-      return env if env.name == new_env.name
+      if env.name == new_env.name
+        r = env
+        break
+      end
     end
-    nil
+    r
   end
 end

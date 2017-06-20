@@ -4,8 +4,8 @@ module DockerInfoCollector
       return collect_docker_info if @setState != 'nocontainer'
       return false
     else
-    collect_docker_info if @docker_info_cache.nil?
-    return false if @docker_info_cache.nil?
+      collect_docker_info if @docker_info_cache.nil?
+      return false if @docker_info_cache.nil?
     end
     @docker_info_cache
   end
@@ -22,7 +22,7 @@ module DockerInfoCollector
     if docker_info.is_a?(FalseClass)
       false
     else
-     docker_info[:NetworkSettings][:IPAddress]  
+      docker_info[:NetworkSettings][:IPAddress]
     end
   rescue
     nil
@@ -88,16 +88,17 @@ module DockerInfoCollector
   protected
 
   def collect_docker_info
-    return false unless has_api?
     # SystemDebug.debug(SystemDebug.containers,  :collect_docker_info )
-    return false if @docker_info_cache == false && @setState == 'nocontainer'
-    @docker_info_cache = @container_api.inspect_container(self) if @docker_info_cache.nil?
+    if @docker_info_cache == false && @setState == 'nocontainer'
+      false
+    else
+      @docker_info_cache = @container_api.inspect_container(self) if @docker_info_cache.nil?
 
-    if @docker_info_cache.is_a?(Array)
-      @docker_info_cache = @docker_info_cache[0]
+      if @docker_info_cache.is_a?(Array)
+        @docker_info_cache = @docker_info_cache[0]
+      end
+      @docker_info_cache
     end
-    @docker_info_cache
-
   rescue EnginesException
     @docker_info_cache = nil
   end

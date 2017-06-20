@@ -71,7 +71,6 @@ class SystemAccess
   end
 
   def pubkey(type)
-    return '' if @engines_api.nil?
     args = type.split('_')
     engine = args[0]
     cmd = args[1]

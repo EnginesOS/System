@@ -1,8 +1,9 @@
 def write_comment(cmt)
   unless @in_run == true
-    return @docker_file.puts(cmt)
+    @docker_file.puts(cmt)
+  else
+    write_run_line("echo \"" + cmt + "\"")
   end
-  write_run_line("echo \"" + cmt + "\"")
 end
 
 def write_run_line(cmd)

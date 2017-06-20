@@ -31,8 +31,7 @@ module ServiceConfigurations
     service = loadManagedService(service_param[:service_name])
     if service.is_running?
       ret_val = service.retrieve_configurator(service_param)
-      #    STDERR.puts('Retrived retrieve_configuration '+ service_param.to_s + ret_val.class.name + ':' + ret_val.to_s )
-      # return retval unless ret_val.is_a?(Hash)
+      #    STDERR.puts('Retrived retrieve_configuration '+ service_param.to_s + ret_val.class.name + ':' + ret_val.to_s ) 
     else
       #  STDERR.puts('Retrived retrieve_configuration '+ service_param.to_s + ret_val.class.name + ':' + ret_val.to_s )
       ret_val = retrieve_service_configuration(service_param)
