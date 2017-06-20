@@ -9,19 +9,23 @@ module DockerApiCreateOptions
   end
 
   def get_protocol_str(port)
-    return 'tcp' if port[:proto_type].nil?
-    port[:proto_type]
+    if port[:proto_type].nil?
+      'tcp'
+    else
+      port[:proto_type]
+    end
   end
 
   def exposed_ports(container)
-    return {} if container.mapped_ports.nil?
     eports = {}
-    container.mapped_ports.each_value do |port|
-      port = symbolize_keys(port)
-      if port[:port].is_a?(String) && port[:port].include?('-')
-        expose_port_range(eports, port)
-      else
-        add_exposed_port(eports, port)
+    unless container.mapped_ports.nil?
+      container.mapped_ports.each_value do |port|
+        port = symbolize_keys(port)
+        if port[:port].is_a?(String) && port[:port].include?('-')
+          expose_port_range(eports, port)
+        else
+          add_exposed_port(eports, port)
+        end
       end
     end
     eports
@@ -29,13 +33,16 @@ module DockerApiCreateOptions
 
   def volumes_mounts(container)
     mounts = []
-    return system_mounts(container) if container.volumes.nil?
-    container.volumes.each_value do |volume|
-      mounts.push(mount_string(volume))
+    if container.volumes.nil?
+      system_mounts(container)
+    else
+      container.volumes.each_value do |volume|
+        mounts.push(mount_string(volume))
+      end
+      sm = system_mounts(container)
+      mounts.concat(sm) unless sm.nil?
+      mounts
     end
-    sm = system_mounts(container)
-    mounts.concat(sm) unless sm.nil?
-    mounts
   end
 
   def mount_string(volume)
@@ -72,8 +79,11 @@ module DockerApiCreateOptions
   end
 
   def container_capabilities(container)
-    return add_capabilities(container.capabilities) unless container.capabilities.nil?
-    []
+    if container.capabilities.nil?
+      add_capabilities(container.capabilities)
+    else
+      []
+    end
   end
 
   def container_get_dns_servers(container)
@@ -112,16 +122,24 @@ module DockerApiCreateOptions
   end
 
   def restart_policy(container)
-    return {'Name' => 'unless-stopped'} if container.ctype == 'system_service'
-    return {'Name' => 'on-failure', 'MaximumRetryCount' => 2} if container.ctype == 'service'
-    {}
+    if container.ctype == 'system_service'
+      {'Name' => 'unless-stopped'}
+    elsif container.ctype == 'service'
+      {'Name' => 'on-failure', 'MaximumRetryCount' => 2}
+    else
+      {}
+    end
   end
 
   def log_config(container)
     #return { "Type" => 'json-file', "Config" => {}}
-    return { "Type" => 'json-file', "Config" => { "max-size" =>"5m", "max-file" => '10' } } if container.ctype == 'service'
-    return { "Type" => 'json-file', "Config" => { "max-size" =>"5m", "max-file" => '10' } } if container.ctype == 'system_service'
-    { "Type" => 'json-file', "Config" => { "max-size" =>"1m", "max-file" => '5' } }
+    if container.ctype == 'service'
+      { "Type" => 'json-file', "Config" => { "max-size" =>"5m", "max-file" => '10' } }
+    elsif container.ctype == 'system_service'
+      { "Type" => 'json-file', "Config" => { "max-size" =>"5m", "max-file" => '10' } }
+    else
+      { "Type" => 'json-file', "Config" => { "max-size" =>"1m", "max-file" => '5' } }
+    end
   end
 
   def add_capabilities(capabilities)
@@ -147,13 +165,16 @@ module DockerApiCreateOptions
 
   def hostname(container)
     #  return nil if container.on_host_net? == true
-    return container.container_name if container.hostname.nil?
-    container.hostname
+    if container.hostname.nil?
+      container.container_name
+    else
+      container.hostname
+    end
   end
 
   def container_domain_name(container)
-    return SystemConfig.internal_domain# if container.on_host_net? == false
-    nil
+    SystemConfig.internal_domain# if container.on_host_net? == false
+
   end
 
   def build_top_level(container)

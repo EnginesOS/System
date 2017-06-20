@@ -1,7 +1,7 @@
 module ManagedContainerWebSites
   def set_deployment_type(deployment_type)
     @deployment_type = deployment_type
-    return remove_nginx_service if @deployment_type && @deployment_type != 'web'
+    remove_nginx_service if @deployment_type && @deployment_type != 'web'
     add_nginx_service if @deployment_type == 'web'
   end
 
@@ -10,8 +10,11 @@ module ManagedContainerWebSites
   end
 
   def http_protocol
-    return @protocol.gsub(/_.*/,'') if @protocol.include?('_')
-    @protocol.to_s
+    if @protocol.include?('_')
+      @protocol.gsub(/_.*/,'')
+    else
+      @protocol.to_s
+    end
   end
 
   def set_protocol(proto)
