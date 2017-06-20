@@ -13,7 +13,7 @@ module Cache
            r=  @engines_conf_cache[ident.to_sym][:engine]
           else
             SystemDebug.debug(SystemDebug.cache, :Stale_in_Cache )
-            r= @engines_conf_cache[ident.to_sym][:engine] = nil
+            r = @engines_conf_cache[ident.to_sym][:engine] = nil
           end
         end
       end
