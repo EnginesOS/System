@@ -15,12 +15,13 @@ module FrameworkModules
     unless @blueprint_reader.pear_modules.nil?|| @blueprint_reader.pear_modules.empty?
       write_comment('#Pear modules ')
       log_build_output('Dockerfile:Pear modules ')
-      return true  if @blueprint_reader.pear_modules.nil?
-      if @blueprint_reader.pear_modules.count > 0
-        @blueprint_reader.pear_modules.each do |pear_mod|
-          pear_mods += pear_mod + ' ' unless pear_mod.nil
+      unless @blueprint_reader.pear_modules.nil?
+        if @blueprint_reader.pear_modules.count > 0
+          @blueprint_reader.pear_modules.each do |pear_mod|
+            pear_mods += pear_mod + ' ' unless pear_mod.nil
+          end
+          write_build_script('install_pear_mods.sh  ' + pear_mods)
         end
-        write_build_script('install_pear_mods.sh  ' + pear_mods)
       end
     end
   end

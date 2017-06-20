@@ -8,7 +8,7 @@ module PublicApiSystemVersions
   # @return [Integer]
   # returnes the api version number
   def api_version
-    return SystemConfig.api_version
+    SystemConfig.api_version
   end
 
   def version_string

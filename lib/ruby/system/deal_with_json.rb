@@ -1,7 +1,8 @@
 def  deal_with_json(res)
-  return if res.nil?
-  res = parse_as_json(res) unless res.is_a?(Hash)
-  symbolise_json(res)
+  unless res.nil?
+    res = parse_as_json(res) unless res.is_a?(Hash)
+    symbolise_json(res)
+  end
 rescue StandardError => e
   log_error_mesg(' parse problem with ' + res.to_s)
   res
@@ -20,18 +21,21 @@ def symbolise_json(res)
 end
 
 def symbolize_keys_array_members(array)
-  return array if array.count == 0
-  return array unless array[0].is_a?(Hash)
-  retval = []
-  i = 0
-  array.each do |hash|
-    retval[i] = array[i]
-    next if hash.nil?
-    next unless hash.is_a?(Hash)
-    retval[i] = symbolize_keys(hash)
-    i += 1
+  unless array.count == 0
+    return array unless array[0].is_a?(Hash)
+    retval = []
+    i = 0
+    array.each do |hash|
+      retval[i] = array[i]
+      next if hash.nil?
+      next unless hash.is_a?(Hash)
+      retval[i] = symbolize_keys(hash)
+      i += 1
+    end
+    retval
+  else
+    array
   end
-  retval
 end
 
 def symbolize_keys(hash)
@@ -60,11 +64,12 @@ end
 
 def boolean_if_true_false_str(r)
   if  r == 'true'
-    return true
+    true
   elsif r == 'false'
-    return false
+    false
+  else
+    r
   end
-  r
 end
 
 def symbolize_tree(tree)

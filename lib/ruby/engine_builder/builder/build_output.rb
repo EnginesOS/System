@@ -6,40 +6,45 @@ module BuildOutput
   end
 
   def log_build_output(line)
-    return if line.nil?
-    return if @log_file.nil? || @log_file.closed?
-    return unless line.is_a?(String)
-    line.force_encoding(Encoding::UTF_8)
-    @log_file.puts(line)
-    @log_file.flush
+    unless line.nil?
+      unless @log_file.nil? || @log_file.closed?
+        if line.is_a?(String)
+          line.force_encoding(Encoding::UTF_8)
+          @log_file.puts(line)
+          @log_file.flush
+        end
+      end
+    end
   end
 
   def log_build_errors(line)
     line = '' if line.nil?
-      return if @err_file.nil?
-    #    line.force_encoding(Encoding::ANSI) # UTF_8)
-    @err_file.puts(line.to_s) unless @err_file.nil? || @err_file.closed?
-    log_build_output('ERROR:' + line.to_s)
-    @result_mesg = 'Error.' + line.to_s
-    @build_error = @result_mesg
+    unless @err_file.nil?
+      #    line.force_encoding(Encoding::ANSI) # UTF_8)
+      @err_file.puts(line.to_s) unless @err_file.nil? || @err_file.closed?
+      log_build_output('ERROR:' + line.to_s)
+      @result_mesg = 'Error.' + line.to_s
+      @build_error = @result_mesg
+    end
     false
   end
 
   def add_to_build_output(word)
-    return if @log_file.nil?
-    @log_file.write(word)
-    @log_file.flush
+    unless @log_file.nil?
+      @log_file.write(word)
+      @log_file.flush
+    end
   end
 
   def close_all
-    return if @log_file.nil? 
-    unless @log_file.closed?
-      log_build_output('Build Result:' + @result_mesg)
-      log_build_output('Build Finished')
-      @log_file.close
+    unless @log_file.nil?
+      unless @log_file.closed?
+        log_build_output('Build Result:' + @result_mesg)
+        log_build_output('Build Finished')
+        @log_file.close
+      end
+      @err_file.close unless @err_file.nil? || @err_file.closed?
     end
-    return if @err_file.nil? 
-    @err_file.close unless @err_file.closed?
   end
 
   # used to fill in erro mesg with last ten lines

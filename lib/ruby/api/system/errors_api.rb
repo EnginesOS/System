@@ -9,7 +9,7 @@ class ErrorsApi
     @last_error = msg.to_s  # + ':' + objects.to_s.slice(0, 256)
     msg.to_s += caller_locations(1, 3) if @debug
     SystemUtils.log_error_mesg(msg, objects)
-    return EnginesError.new(msg.to_s, :error)
+    EnginesError.new(msg.to_s, :error)
   end
 
   def clear_error
@@ -32,6 +32,6 @@ class ErrorsApi
     STDERR.puts(e.to_s + e.backtrace.to_s)
     STDERR.puts(caller[1].to_s)
     SystemUtils.log_error_mesg('EXCEPTION:', mesg)
-    return EnginesError.new(mesg.to_s, :exception)
+    EnginesError.new(mesg.to_s, :exception)
   end
 end

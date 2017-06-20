@@ -50,8 +50,11 @@ class SystemAccess
 
   def hrs_from_gmt
     m = Time.now.getlocal.gmt_offset
-    return m.to_s if m == 0
-    (m / 3600).to_s
+    if m == 0
+      m.to_s
+    else
+      (m / 3600).to_s
+    end
   end
 
   def default_domain

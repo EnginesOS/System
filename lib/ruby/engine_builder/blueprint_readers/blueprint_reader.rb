@@ -126,9 +126,10 @@ class BluePrintReader
   end
 
   def read_sql_seed
-    return true unless @blueprint[:software].key?(:database_seed_file) # && @blueprint[:software][:database_seed_file][:content].nil? == false
-    database_seed_file = @blueprint[:software][:database_seed_file] #[:content]
-    @database_seed = database_seed_file unless database_seed_file.nil?
+    if @blueprint[:software].key?(:database_seed_file) # && @blueprint[:software][:database_seed_file][:content].nil? == false
+      database_seed_file = @blueprint[:software][:database_seed_file] #[:content]
+      @database_seed = database_seed_file unless database_seed_file.nil?
+    end
   end
 
   def read_web_root
@@ -154,9 +155,10 @@ class BluePrintReader
     log_build_output('Read Persistant Dirs')
     @persistent_dirs = []
     pds = @blueprint[:software][:persistent_directories]
-    return true unless pds.is_a?(Array) # not an error just nada
-    pds.each do |dir|
-      @persistent_dirs.push(dir[:path])
+    if pds.is_a?(Array) # not an error just nada
+      pds.each do |dir|
+        @persistent_dirs.push(dir[:path])
+      end
     end
   end
 
@@ -165,73 +167,78 @@ class BluePrintReader
     @persistent_files = {}
     src_paths = []
     pfs = @blueprint[:software][:persistent_files]
-    return true unless pfs.is_a?(Array) # not an error just nada
-    pfs.each do |file|
-      path = clean_path(file[:path])
-      src_paths.push(path)
+    if pfs.is_a?(Array) # not an error just nada
+      pfs.each do |file|
+        path = clean_path(file[:path])
+        src_paths.push(path)
+      end
+      @persistent_files[:src_paths] = src_paths
     end
-    @persistent_files[:src_paths] = src_paths
   end
 
   def read_rake_list
     @rake_actions = []
     log_build_output('Read Rake List')
     rake_cmds = @blueprint[:software][:rake_tasks]
-    return true unless rake_cmds.is_a?(Array) # not an error just nada
-    rake_cmds.each do |rake_cmd|
-      @rake_actions.push(rake_cmd)
+    if rake_cmds.is_a?(Array) # not an error just nada
+      rake_cmds.each do |rake_cmd|
+        @rake_actions.push(rake_cmd)
+      end
     end
   end
 
   def read_services
     log_build_output('Read Services')
     services = @blueprint[:software][:service_configurations]
-    return true unless services.is_a?(Array) # not an error just nada
-    services.each do |service|
-      service[:publisher_namespace] = 'EnginesSystem' if service.key?(:publisher_namespace) == false || service[:publisher_namespace].nil?
-      add_service(service)
+    if services.is_a?(Array) # not an error just nada
+      services.each do |service|
+        service[:publisher_namespace] = 'EnginesSystem' if service.key?(:publisher_namespace) == false || service[:publisher_namespace].nil?
+        add_service(service)
+      end
     end
   end
+end
 
-  def add_service(service_hash)
-    SystemDebug.debug(SystemDebug.builder, :add_service, service_hash)
-    @builder.templater.fill_in_dynamic_vars(service_hash)
-    @services.push(service_hash)
-  end
+def add_service(service_hash)
+  SystemDebug.debug(SystemDebug.builder, :add_service, service_hash)
+  @builder.templater.fill_in_dynamic_vars(service_hash)
+  @services.push(service_hash)
+end
 
-  def read_os_packages
-    log_build_output('Read OS Packages')
-    ospackages = @blueprint[:software][:system_packages]
-    return true unless ospackages.is_a?(Array) # not an error just nada
+def read_os_packages
+  log_build_output('Read OS Packages')
+  ospackages = @blueprint[:software][:system_packages]
+  if ospackages.is_a?(Array) # not an error just nada
     ospackages.each do |package|
       @os_packages.push(package[:package])
     end
   end
+end
 
-  def read_lang_fw_values
-    log_build_output('Read Framework Settings')
-    @framework = @blueprint[:software][:framework]
-    @runtime = @blueprint[:software][:language]
-    @memory = @blueprint[:software][:required_memory]
-  end
+def read_lang_fw_values
+  log_build_output('Read Framework Settings')
+  @framework = @blueprint[:software][:framework]
+  @runtime = @blueprint[:software][:language]
+  @memory = @blueprint[:software][:required_memory]
+end
 
-  def read_pkg_modules
-    @apache_modules = []
-    @pear_modules = []
-    @php_modules = []
-    @pecl_modules = []
-    @npm_modules = []
-    @lua_modules = []
-    
-    pkg_modules = @blueprint[:software][:modules]
-    return true unless pkg_modules.is_a?(Array)  # not an error just nada
+def read_pkg_modules
+  @apache_modules = []
+  @pear_modules = []
+  @php_modules = []
+  @pecl_modules = []
+  @npm_modules = []
+  @lua_modules = []
+
+  pkg_modules = @blueprint[:software][:modules]
+  if pkg_modules.is_a?(Array)  # not an error just nada
     pkg_modules.each do |pkg_module|
       os_package = pkg_module[:os_package]
       if os_package.nil? == false && os_package != ''
         @os_packages.push(os_package)
       end
       pkg_module_type = pkg_module[:module_type]
-      if pkg_module_type.nil? == true
+      if pkg_module_type.nil?
         raise EngineBuilderException.new(error_hash('pkg Module missing module_type', pkg_module))
       end
       modname = pkg_module[:module_name]
@@ -251,15 +258,15 @@ class BluePrintReader
         raise EngineBuilderException.new(error_hash('pkg module_type ' + pkg_module_type + ' Unknown for ' + modname))
       end
     end
-    true
   end
+end
 
-  def read_app_packages
-    log_build_output('Read App Packages ')
-    @archives_details = []
-    log_build_output('Configuring install Environment')
-    archives = @blueprint[:software][:installed_packages]
-    return true unless archives.is_a?(Array) # not an error just nada
+def read_app_packages
+  log_build_output('Read App Packages ')
+  @archives_details = []
+  log_build_output('Configuring install Environment')
+  archives = @blueprint[:software][:installed_packages]
+  if archives.is_a?(Array) # not an error just nada
     archives.each do |archive|
       archive_details = {}
       arc_src = clean_path(archive[:source_url])
@@ -273,26 +280,21 @@ class BluePrintReader
       archive_details[:destination] = arc_loc
       archive_details[:path_to_extracted] = arc_dir
       @archives_details.push(archive_details)
-#      if archive_details[:extraction_command] == 'docker'
-#        @base_image = archive_details[:source_url]
-#        add_capability(archive_details[:path_to_extracted])
-#          @cont_user = archive_details[:destination]
-#      end
     end
   end
+end
 
-  def add_capability(capability)
-    @capabilities = [] if @capabilities.nil?
-    @capabilities.push(capability)
+def add_capability(capability)
+  @capabilities = [] if @capabilities.nil?
+  @capabilities.push(capability)
+end
 
-  end
-
-  def read_write_permissions_recursive
-    log_build_output('Read Recursive Write Permissions')
-    @recursive_chmods = []
-    log_build_output('set permissions recussive')
-    chmods = @blueprint[:software][:file_write_permissions]
-    return true unless chmods.is_a?(Array) # not an error just nada
+def read_write_permissions_recursive
+  log_build_output('Read Recursive Write Permissions')
+  @recursive_chmods = []
+  log_build_output('set permissions recussive')
+  chmods = @blueprint[:software][:file_write_permissions]
+  if chmods.is_a?(Array) # not an error just nada
     chmods.each do |chmod|
       if chmod[:recursive] == true
         directory = clean_path(chmod[:path])
@@ -300,37 +302,39 @@ class BluePrintReader
       end
       # FIXME: need to strip any ../ and any preceeding ./ in clean_path
     end
-    true
   end
+end
 
-  def read_write_permissions_single
-    log_build_output('Read Non-Recursive Write Permissions')
-    @single_chmods = []
-    log_build_output('set permissions  single')
-    chmods = @blueprint[:software][:file_write_permissions]
-    return true unless chmods.is_a?(Array) # not an error just nada
+def read_write_permissions_single
+  log_build_output('Read Non-Recursive Write Permissions')
+  @single_chmods = []
+  log_build_output('set permissions  single')
+  chmods = @blueprint[:software][:file_write_permissions]
+  if chmods.is_a?(Array) # not an error just nada
     chmods.each do |chmod|
       if !chmod.key(:recursive) || chmod[:recursive] == false
         directory = clean_path(chmod[:path])
         @single_chmods.push(directory)
       end
     end
-    true
   end
+end
 
-  def read_worker_commands
-    log_build_output('Read Workers')
-    @worker_commands = []
-    return true unless @blueprint[:software].key?(:workers)
-    @blocking_worker = @blueprint[:software][:workers][:blocking] if @blueprint[:software][:workers].key?(:blocking)
-    return true unless @blueprint[:software][:workers].key?(:commands) # not an error just nada
-   
-    @blueprint[:software][:workers][:commands].each do |worker|
-#      if worker[:name] = @blueprint[:software][:blocking_worker_name]
-#        @blocking_worker = worker[:command]
-#      else
+def read_worker_commands
+  log_build_output('Read Workers')
+  @worker_commands = []
+  if @blueprint[:software].key?(:workers)
+    if @blueprint[:software][:workers].key?(:blocking)
+      @blocking_worker = @blueprint[:software][:workers][:blocking]
+    elsif @blueprint[:software][:workers].key?(:commands) # not an error just nada
+
+      @blueprint[:software][:workers][:commands].each do |worker|
+        #      if worker[:name] = @blueprint[:software][:blocking_worker_name]
+        #        @blocking_worker = worker[:command]
+        #      else
         @worker_commands.push(worker[:command])
-   #   end
+        #   end
+      end
     end
   end
 
@@ -343,29 +347,30 @@ class BluePrintReader
     @sed_strings[:tmp_file] = []
     log_build_output('set sed strings')
     seds = @blueprint[:software][:replacement_strings]
-    return true unless seds.is_a?(Array) # not an error just nada
-    n = 0
-    seds.each do |sed|
-      file = clean_path(sed[:file])
-      dest = clean_path(sed[:destination])
-      tmp_file = '/tmp/' + File.basename(file) + '.' + n.to_s
-      if file.match(/^_TEMPLATES.*/).nil? == false
-        template_file = file.gsub(/^_TEMPLATES/, '')
-      else
-        template_file = nil
+    if seds.is_a?(Array) # not an error just nada
+      n = 0
+      seds.each do |sed|
+        file = clean_path(sed[:file])
+        dest = clean_path(sed[:destination])
+        tmp_file = '/tmp/' + File.basename(file) + '.' + n.to_s
+        if file.match(/^_TEMPLATES.*/).nil? == false
+          template_file = file.gsub(/^_TEMPLATES/, '')
+        else
+          template_file = nil
+        end
+        if template_file.nil? == false
+          src_file = '/home/engines/templates/' + template_file
+        else
+          src_file = '/home/app/' + file
+        end
+        dest_file = '/home/app/' + dest
+        sedstr = sed[:replacement_string]
+        @sed_strings[:src_file].push(src_file)
+        @sed_strings[:dest_file].push(dest_file)
+        @sed_strings[:tmp_file].push(tmp_file)
+        @sed_strings[:sed_str].push(sedstr)
+        n += 1
       end
-      if template_file.nil? == false
-        src_file = '/home/engines/templates/' + template_file
-      else
-        src_file = '/home/app/' + file
-      end
-      dest_file = '/home/app/' + dest
-      sedstr = sed[:replacement_string]
-      @sed_strings[:src_file].push(src_file)
-      @sed_strings[:dest_file].push(dest_file)
-      @sed_strings[:tmp_file].push(tmp_file)
-      @sed_strings[:sed_str].push(sedstr)
-      n += 1
     end
   end
 
@@ -373,26 +378,26 @@ class BluePrintReader
     @mapped_ports = {}
     log_build_output('Read Work Ports')
     ports = @blueprint[:software][:ports]
-    return true unless ports.is_a?(Array) # not an error just nada
-    ports.each do |port|
-      portnum = port[:port]
-      if port.key?(:name)
-        name = port[:name]
-      else
-        name = port[:port].to_s
-      end
+    if ports.is_a?(Array) # not an error just nada
+      ports.each do |port|
+        portnum = port[:port]
+        if port.key?(:name)
+          name = port[:name]
+        else
+          name = port[:port].to_s
+        end
 
-      external = port[:external]
-      type = port[:protocol]
-      type = 'tcp' if type.is_a?(String) == false || type.size == 0
-      type = 'both' if type == 'TCP and UDP'
-      type.downcase!
-      # FIXME: when public ports supported
-      SystemDebug.debug(SystemDebug.builder, 'Port ' + name + ':' + portnum.to_s + ':' + external.to_s + '/' + type)
-      # @mapped_ports.push(WorkPort.work_port_hash(name, portnum, external, false, type))
-      @mapped_ports[name] = WorkPort.work_port_hash(name, portnum, external, true, type)
+        external = port[:external]
+        type = port[:protocol]
+        type = 'tcp' if type.is_a?(String) == false || type.size == 0
+        type = 'both' if type == 'TCP and UDP'
+        type.downcase!
+        # FIXME: when public ports supported
+        SystemDebug.debug(SystemDebug.builder, 'Port ' + name + ':' + portnum.to_s + ':' + external.to_s + '/' + type)
+        # @mapped_ports.push(WorkPort.work_port_hash(name, portnum, external, false, type))
+        @mapped_ports[name] = WorkPort.work_port_hash(name, portnum, external, true, type)
+      end
     end
-    true
   end
 
   def blueprint_env_varaibles
@@ -403,37 +408,38 @@ class BluePrintReader
     log_build_output('Read Environment Variables')
     @environments = []
     envs = blueprint_env_varaibles
-    return true unless envs.is_a?(Array) # not an error just nada
-    envs.each do |env|
-      name = env[:name]
-      log_build_output('Process Env Variable ' + name )
-      value = env[:value]
-      ask = env[:ask_at_build_time]
-      mandatory = env[:mandatory]
-      build_time_only = env[:build_time_only]
-      label = env[:label]
-      immutable = env[:immutable]
-      # lookup_system_values = env[:lookup_system_values]
+    if envs.is_a?(Array) # not an error just nada
+      envs.each do |env|
+        name = env[:name]
+        log_build_output('Process Env Variable ' + name )
+        value = env[:value]
+        ask = env[:ask_at_build_time]
+        mandatory = env[:mandatory]
+        build_time_only = env[:build_time_only]
+        label = env[:label]
+        immutable = env[:immutable]
+        # lookup_system_values = env[:lookup_system_values]
 
-      unless @builder.set_environments.nil?
-        log_build_output('Merging supplied Environment Variable:' + name.to_s)
-        SystemDebug.debug(SystemDebug.builder, :looking_for_, name)
-        SystemDebug.debug(SystemDebug.builder, 'from ' ,@builder.set_environments)
-        if ask && @builder.set_environments.key?(name.to_sym)
-          entered_value = @builder.set_environments[name.to_sym]
-          if entered_value.nil? == false && entered_value.length != 0 # FIXME: needs to be removed
-            value = entered_value
-            SystemDebug.debug(SystemDebug.builder, :value_set, value)
+        unless @builder.set_environments.nil?
+          log_build_output('Merging supplied Environment Variable:' + name.to_s)
+          SystemDebug.debug(SystemDebug.builder, :looking_for_, name)
+          SystemDebug.debug(SystemDebug.builder, 'from ' ,@builder.set_environments)
+          if ask && @builder.set_environments.key?(name.to_sym)
+            entered_value = @builder.set_environments[name.to_sym]
+            if entered_value.nil? == false && entered_value.length != 0 # FIXME: needs to be removed
+              value = entered_value
+              SystemDebug.debug(SystemDebug.builder, :value_set, value)
+            end
+            log_build_output('Merged supplied Environment Variable:' + name.to_s)
+          else
+            log_build_output('No supplied Environment Variables')
           end
-          log_build_output('Merged supplied Environment Variable:' + name.to_s)
-        else
-          log_build_output('No supplied Environment Variables')
-        end
 
+        end
+        name.sub!(/ /, '_')
+        ev = EnvironmentVariable.new(name, value, ask, mandatory, build_time_only, label, immutable)
+        @environments.push(ev)
       end
-      name.sub!(/ /, '_')
-      ev = EnvironmentVariable.new(name, value, ask, mandatory, build_time_only, label, immutable)
-      @environments.push(ev)
     end
   end
 

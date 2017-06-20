@@ -26,9 +26,12 @@ module DockerContainerActions
 
   def destroy_container(container)
     @docker_comms.destroy_container(container)
-    return false if @docker_comms.container_exist?(container)
-    clean_up_dangling_images
-    true
+    unless @docker_comms.container_exist?(container)
+      clean_up_dangling_images
+      true
+    else
+      false
+    end
   end
 
 end

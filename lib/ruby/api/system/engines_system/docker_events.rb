@@ -39,7 +39,7 @@ module DockerEvents
       mask = container_type_mask(container.ctype)
       pipe_in, pipe_out = IO.pipe
       event_listener = WaitForContainerListener.new(what, pipe_out, mask)
-      Timeout::timeout(timeout) do        
+      Timeout::timeout(timeout) do
         add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.container_name)
         unless is_aready?(what, container.read_state)
           #    STDERR.puts(' Wait on READ ' + container.container_name.to_s + ' for ' + what )
@@ -62,8 +62,7 @@ module DockerEvents
     event_listener = nil
     pipe_in.close
     pipe_out.close
-    return true if is_aready?(what, container.read_state) #check for last sec call
-    false
+    is_aready?(what, container.read_state) #check for last sec call
   rescue StandardError => e
     rm_event_listener(event_listener)
     STDERR.puts(e.to_s)
@@ -167,11 +166,14 @@ module DockerEvents
   def inform_container(event_hash)
     SystemDebug.debug(SystemDebug.container_events, 'recevied inform_container', event_hash[:container_name],  event_hash[:status])
     c = get_event_container(event_hash[:container_name], event_hash[:container_type])
-    return false unless c.is_a?(ManagedContainer)
-    SystemDebug.debug(SystemDebug.container_events, 'informing _container', event_hash[:container_name],  event_hash[:status])
-    c.process_container_event(event_hash)
-    SystemDebug.debug(SystemDebug.container_events, 'informed _container', event_hash[:container_name],  event_hash[:status])
-    true
+    if c.is_a?(ManagedContainer)
+      SystemDebug.debug(SystemDebug.container_events, 'informing _container', event_hash[:container_name],  event_hash[:status])
+      c.process_container_event(event_hash)
+      SystemDebug.debug(SystemDebug.container_events, 'informed _container', event_hash[:container_name],  event_hash[:status])
+      true
+    else
+      false
+    end
   rescue StandardError => e
     log_exception(e)
   end
@@ -214,7 +216,7 @@ module DockerEvents
         # Enable Cold load of service from config.yaml
         r = File.exist?(SystemConfig.RunDir + '/' + event_hash[:container_type] + 's/' + event_hash[:container_name] + '/config.yaml')
       else
-        # engines always have a running.yaml       
+        # engines always have a running.yaml
         r = File.exist?(SystemConfig.RunDir + '/' + event_hash[:container_type] + 's/' + event_hash[:container_name] + '/running.yaml')
       end
     end

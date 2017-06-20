@@ -10,9 +10,9 @@ module SmServiceConfigurations
     raise EnginesException.new(error_hash('Missing Configurator ', config_hash[:configurator_name])) unless configurators.key?(config_hash[:configurator_name].to_sym)
     configurator_definition = configurators[config_hash[:configurator_name].to_sym]
     unless configurator_definition.key?(:no_save) && configurator_definition[:no_save]
-      return system_registry_client.update_service_configuration(config_hash)
+      system_registry_client.update_service_configuration(config_hash)
     else
-      return true
+      true
     end
   rescue StandardError => e
     log_exception(e)
@@ -20,7 +20,7 @@ module SmServiceConfigurations
   end
 
   # @Returns an Array of Configuration hashes resgistered against the service [String] service_name
-  
+
   def retrieve_service_configurations_hashes(service_name)
     system_registry_client.retrieve_service_configurations_hashes(service_name)
   end
@@ -31,11 +31,12 @@ module SmServiceConfigurations
 
   def pending_service_configurations_hashes(service_name)
     hashes = system_registry_client.retrieve_service_configurations_hashes(service_name)
-    return unless hashes.is_a?(Array)
-    retval = []
-    hashes.each do |config|
-      retval.push(config) if config.key?(:pending)
+    if hashes.is_a?(Array)
+      retval = []
+      hashes.each do |config|
+        retval.push(config) if config.key?(:pending)
+      end
+      retval
     end
-    retval
   end
 end

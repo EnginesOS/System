@@ -2,7 +2,7 @@ module DockerApiContainerStatus
   def inspect_container_by_name(container)
     # container.set_cont_id if container.container_id.to_s == '-1' || container.container_id.nil?
     request = '/containers/' + container.container_name.to_s + '/json'
-    return get_request(request, true)
+    get_request(request, true)
   end
 
   def inspect_container(container)

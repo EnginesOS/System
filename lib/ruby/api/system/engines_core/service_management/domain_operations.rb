@@ -100,7 +100,7 @@ module DomainOperations
     params = domain_name(domain_name)
     raise EnginesException.new(error_hash('Domain not found' + domain_name)) if params.nil?
     raise EnginesException.new(error_hash('no params')) if params.nil?
-    return r unless (r = DNSHosting.rm_domain(domain_name))
+    DNSHosting.rm_domain(domain_name)
     unless params[:self_hosted] == false
     service_hash = {
       parent_engine: 'system',
