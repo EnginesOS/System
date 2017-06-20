@@ -336,127 +336,128 @@ class BluePrintReader
         end
       end
     end
+  end
 
-    def read_sed_strings
-      log_build_output('Read Sed Strings')
-      @sed_strings = {}
-      @sed_strings[:src_file] = []
-      @sed_strings[:dest_file] = []
-      @sed_strings[:sed_str] = []
-      @sed_strings[:tmp_file] = []
-      log_build_output('set sed strings')
-      seds = @blueprint[:software][:replacement_strings]
-      if seds.is_a?(Array) # not an error just nada
-        n = 0
-        seds.each do |sed|
-          file = clean_path(sed[:file])
-          dest = clean_path(sed[:destination])
-          tmp_file = '/tmp/' + File.basename(file) + '.' + n.to_s
-          if file.match(/^_TEMPLATES.*/).nil? == false
-            template_file = file.gsub(/^_TEMPLATES/, '')
-          else
-            template_file = nil
-          end
-          if template_file.nil? == false
-            src_file = '/home/engines/templates/' + template_file
-          else
-            src_file = '/home/app/' + file
-          end
-          dest_file = '/home/app/' + dest
-          sedstr = sed[:replacement_string]
-          @sed_strings[:src_file].push(src_file)
-          @sed_strings[:dest_file].push(dest_file)
-          @sed_strings[:tmp_file].push(tmp_file)
-          @sed_strings[:sed_str].push(sedstr)
-          n += 1
+  def read_sed_strings
+    log_build_output('Read Sed Strings')
+    @sed_strings = {}
+    @sed_strings[:src_file] = []
+    @sed_strings[:dest_file] = []
+    @sed_strings[:sed_str] = []
+    @sed_strings[:tmp_file] = []
+    log_build_output('set sed strings')
+    seds = @blueprint[:software][:replacement_strings]
+    if seds.is_a?(Array) # not an error just nada
+      n = 0
+      seds.each do |sed|
+        file = clean_path(sed[:file])
+        dest = clean_path(sed[:destination])
+        tmp_file = '/tmp/' + File.basename(file) + '.' + n.to_s
+        if file.match(/^_TEMPLATES.*/).nil? == false
+          template_file = file.gsub(/^_TEMPLATES/, '')
+        else
+          template_file = nil
         end
-      end
-    end
-
-    def read_mapped_ports
-      @mapped_ports = {}
-      log_build_output('Read Work Ports')
-      ports = @blueprint[:software][:ports]
-      if ports.is_a?(Array) # not an error just nada
-        ports.each do |port|
-          portnum = port[:port]
-          if port.key?(:name)
-            name = port[:name]
-          else
-            name = port[:port].to_s
-          end
-
-          external = port[:external]
-          type = port[:protocol]
-          type = 'tcp' if type.is_a?(String) == false || type.size == 0
-          type = 'both' if type == 'TCP and UDP'
-          type.downcase!
-          # FIXME: when public ports supported
-          SystemDebug.debug(SystemDebug.builder, 'Port ' + name + ':' + portnum.to_s + ':' + external.to_s + '/' + type)
-          # @mapped_ports.push(WorkPort.work_port_hash(name, portnum, external, false, type))
-          @mapped_ports[name] = WorkPort.work_port_hash(name, portnum, external, true, type)
+        if template_file.nil? == false
+          src_file = '/home/engines/templates/' + template_file
+        else
+          src_file = '/home/app/' + file
         end
-      end
-    end
-
-    def blueprint_env_varaibles
-      @blueprint[:software][:variables]
-    end
-
-    def read_environment_variables
-      log_build_output('Read Environment Variables')
-      @environments = []
-      envs = blueprint_env_varaibles
-      if envs.is_a?(Array) # not an error just nada
-        envs.each do |env|
-          name = env[:name]
-          log_build_output('Process Env Variable ' + name )
-          value = env[:value]
-          ask = env[:ask_at_build_time]
-          mandatory = env[:mandatory]
-          build_time_only = env[:build_time_only]
-          label = env[:label]
-          immutable = env[:immutable]
-          # lookup_system_values = env[:lookup_system_values]
-
-          unless @builder.set_environments.nil?
-            log_build_output('Merging supplied Environment Variable:' + name.to_s)
-            SystemDebug.debug(SystemDebug.builder, :looking_for_, name)
-            SystemDebug.debug(SystemDebug.builder, 'from ' ,@builder.set_environments)
-            if ask && @builder.set_environments.key?(name.to_sym)
-              entered_value = @builder.set_environments[name.to_sym]
-              if entered_value.nil? == false && entered_value.length != 0 # FIXME: needs to be removed
-                value = entered_value
-                SystemDebug.debug(SystemDebug.builder, :value_set, value)
-              end
-              log_build_output('Merged supplied Environment Variable:' + name.to_s)
-            else
-              log_build_output('No supplied Environment Variables')
-            end
-
-          end
-          name.sub!(/ /, '_')
-          ev = EnvironmentVariable.new(name, value, ask, mandatory, build_time_only, label, immutable)
-          @environments.push(ev)
-        end
-      end
-    end
-
-    def read_actionators
-      log_build_output('Read Actionators')
-      SystemDebug.debug(SystemDebug.builder, ' readin in actionators', @blueprint[:software][:actionators])
-      #  STDERR.puts(' readin in actionators', @blueprint[:software][:actionators].to_s)
-      if @blueprint[:software].key?(:actionators)
-        @actionators = {}
-        @blueprint[:software][:actionators].each do |actionator |
-          @actionators[actionator[:name]] = actionator
-        end
-        #     STDERR.puts('Red actionators', @blueprint[:software][:actionators].to_s)
-        SystemDebug.debug(SystemDebug.builder, @actionators)
-      else
-        SystemDebug.debug(SystemDebug.builder, 'No actionators')
-        @actionators = nil
+        dest_file = '/home/app/' + dest
+        sedstr = sed[:replacement_string]
+        @sed_strings[:src_file].push(src_file)
+        @sed_strings[:dest_file].push(dest_file)
+        @sed_strings[:tmp_file].push(tmp_file)
+        @sed_strings[:sed_str].push(sedstr)
+        n += 1
       end
     end
   end
+
+  def read_mapped_ports
+    @mapped_ports = {}
+    log_build_output('Read Work Ports')
+    ports = @blueprint[:software][:ports]
+    if ports.is_a?(Array) # not an error just nada
+      ports.each do |port|
+        portnum = port[:port]
+        if port.key?(:name)
+          name = port[:name]
+        else
+          name = port[:port].to_s
+        end
+
+        external = port[:external]
+        type = port[:protocol]
+        type = 'tcp' if type.is_a?(String) == false || type.size == 0
+        type = 'both' if type == 'TCP and UDP'
+        type.downcase!
+        # FIXME: when public ports supported
+        SystemDebug.debug(SystemDebug.builder, 'Port ' + name + ':' + portnum.to_s + ':' + external.to_s + '/' + type)
+        # @mapped_ports.push(WorkPort.work_port_hash(name, portnum, external, false, type))
+        @mapped_ports[name] = WorkPort.work_port_hash(name, portnum, external, true, type)
+      end
+    end
+  end
+
+  def blueprint_env_varaibles
+    @blueprint[:software][:variables]
+  end
+
+  def read_environment_variables
+    log_build_output('Read Environment Variables')
+    @environments = []
+    envs = blueprint_env_varaibles
+    if envs.is_a?(Array) # not an error just nada
+      envs.each do |env|
+        name = env[:name]
+        log_build_output('Process Env Variable ' + name )
+        value = env[:value]
+        ask = env[:ask_at_build_time]
+        mandatory = env[:mandatory]
+        build_time_only = env[:build_time_only]
+        label = env[:label]
+        immutable = env[:immutable]
+        # lookup_system_values = env[:lookup_system_values]
+
+        unless @builder.set_environments.nil?
+          log_build_output('Merging supplied Environment Variable:' + name.to_s)
+          SystemDebug.debug(SystemDebug.builder, :looking_for_, name)
+          SystemDebug.debug(SystemDebug.builder, 'from ' ,@builder.set_environments)
+          if ask && @builder.set_environments.key?(name.to_sym)
+            entered_value = @builder.set_environments[name.to_sym]
+            if entered_value.nil? == false && entered_value.length != 0 # FIXME: needs to be removed
+              value = entered_value
+              SystemDebug.debug(SystemDebug.builder, :value_set, value)
+            end
+            log_build_output('Merged supplied Environment Variable:' + name.to_s)
+          else
+            log_build_output('No supplied Environment Variables')
+          end
+
+        end
+        name.sub!(/ /, '_')
+        ev = EnvironmentVariable.new(name, value, ask, mandatory, build_time_only, label, immutable)
+        @environments.push(ev)
+      end
+    end
+  end
+
+  def read_actionators
+    log_build_output('Read Actionators')
+    SystemDebug.debug(SystemDebug.builder, ' readin in actionators', @blueprint[:software][:actionators])
+    #  STDERR.puts(' readin in actionators', @blueprint[:software][:actionators].to_s)
+    if @blueprint[:software].key?(:actionators)
+      @actionators = {}
+      @blueprint[:software][:actionators].each do |actionator |
+        @actionators[actionator[:name]] = actionator
+      end
+      #     STDERR.puts('Red actionators', @blueprint[:software][:actionators].to_s)
+      SystemDebug.debug(SystemDebug.builder, @actionators)
+    else
+      SystemDebug.debug(SystemDebug.builder, 'No actionators')
+      @actionators = nil
+    end
+  end
+
 end
