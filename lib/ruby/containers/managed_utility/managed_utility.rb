@@ -51,6 +51,7 @@ class ManagedUtility< ManagedContainer
     if is_active?
       expire_engine_info
       raise EnginesException.new(error_hash('Utility ' + container_name + ' in use ', command_name)) if is_active?
+      wait_for('stop')
       destroy_container
     end
     #FIXMe need to check if running
@@ -61,12 +62,13 @@ class ManagedUtility< ManagedContainer
     raise EnginesException.new(error_hash('Missing params in Exe' + command_params.to_s, r)) unless (r = check_params(command, command_params)) == true
     begin
       destroy_container
-      @container_id = -1
+     # @container_id = -1
     rescue
     end
     wait_for('nocontainer') if has_container?
     begin
       @container_api.destroy_container(self) if has_container?
+      wait_for('nocontainer')
     rescue
     end
     raise EnginesException.new(error_hash('cant nocontainer Utility ' + command.to_s, command_params.to_s)) if has_container?
