@@ -35,8 +35,9 @@ module SmEngineServices
         container_type: engine.ctype
       })
     rescue StandardError => e
-      STDERR.puts('NO services ' +  engine.container_name.to_s + ';' + e.to_s)
-      false # No services
+     # STDERR.puts('NO services ' +  engine.container_name.to_s + ';' + e.to_s)
+    # return false # No services
+      services = nil
     end
     if services.is_a?(Array)
       services.each do |service_hash|
@@ -93,7 +94,7 @@ module SmEngineServices
     begin
       services = get_engine_nonpersistent_services(params) # find_engine_services_hashes(params)
     rescue
-      return nil
+      return 
     end
     #   return services unless services.is_a?(Array)
     #   STDERR.puts('remove_engine_services ' + services.to_s)
@@ -138,7 +139,8 @@ module SmEngineServices
       services = get_engine_persistent_services(params)  #system_registry_client.
     rescue # StandardError => e
       #handle_exception(e)
-      return true
+      #return true
+      services = nil
     end
     if services.is_a?(Array)
       services.each do | service |
