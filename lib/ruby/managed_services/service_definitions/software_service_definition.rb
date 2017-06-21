@@ -14,6 +14,7 @@ class SoftwareServiceDefinition
   end
 
   def self.software_service_definition(params)
+    raise EnginesException.new(self.error_hash('Nil params')) if params.nil?
     raise EnginesException.new(self.error_hash('Missing params', params)) if params[:publisher_namespace].nil?
     raise EnginesException.new(self.error_hash('Missing params', params)) if params[:type_path].nil?
     SoftwareServiceDefinition.find(params[:type_path], params[:publisher_namespace])
