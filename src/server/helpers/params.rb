@@ -10,7 +10,7 @@ def error_hash(mesg, *params)
   }
 end
 
-def assemble_params(ps, address_params, required_params = nil, accept_params = nil )
+def assemble_params(ps, address_params, required_params = nil, accept_params = nil)
   raise EnginesException.new(error_hash('No params Supplied')) if ps.nil?
   ps = deal_with_json(ps) # actually just symbolize
   a_params = match_address_params(ps, address_params)
