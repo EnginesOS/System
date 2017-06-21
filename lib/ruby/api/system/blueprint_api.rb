@@ -11,7 +11,6 @@ class BlueprintApi < ErrorsApi
     f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0644)
     f.write(blueprint.to_json)
     f.close
-    true
   end
 
   def self.load_blueprint_file(blueprint_file_name)
