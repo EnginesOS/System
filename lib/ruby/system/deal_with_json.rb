@@ -1,4 +1,4 @@
-def  deal_with_json(res)
+def deal_with_json(res)
   unless res.nil?
     res = parse_as_json(res) unless res.is_a?(Hash)
     symbolise_json(res)
@@ -24,7 +24,6 @@ def symbolise_json(res)
   else
     res
   end
-  res
 end
 
 def symbolize_keys_array_members(array)
