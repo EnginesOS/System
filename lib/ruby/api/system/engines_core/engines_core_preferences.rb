@@ -13,7 +13,7 @@ module EnginesCorePreferences
 
   def set_hostname(hostname)
     update_service_configuration( {
-      service_name: 'mgmt',
+      service_name: 'system',
       configurator_name: 'hostname',
       variables: {
       hostname: hostname,
