@@ -85,24 +85,24 @@ module SmEngineServices
       end
       true
     end
+  end
 
-    def remove_engine_non_persistent_services(params)
-      #   STDERR.puts('remove_engine_services ' + params.to_s)
-      begin
-        services = get_engine_nonpersistent_services(params) # find_engine_services_hashes(params)
-      rescue
-        return nil
-      end
-      #   return services unless services.is_a?(Array)
-      #   STDERR.puts('remove_engine_services ' + services.to_s)
-      if services.is_a?(Array)
-        services.each do |s|
-          #    STDERR.puts('remove_engine_service ' + s.to_s)
-          begin
-            system_registry_client.remove_from_managed_engine(s)
-          rescue
-            next
-          end
+  def remove_engine_non_persistent_services(params)
+    #   STDERR.puts('remove_engine_services ' + params.to_s)
+    begin
+      services = get_engine_nonpersistent_services(params) # find_engine_services_hashes(params)
+    rescue
+      return nil
+    end
+    #   return services unless services.is_a?(Array)
+    #   STDERR.puts('remove_engine_services ' + services.to_s)
+    if services.is_a?(Array)
+      services.each do |s|
+        #    STDERR.puts('remove_engine_service ' + s.to_s)
+        begin
+          system_registry_client.remove_from_managed_engine(s)
+        rescue
+          next
         end
       end
     end
@@ -139,24 +139,24 @@ module SmEngineServices
       #handle_exception(e)
       return true
     end
-   if services.is_a?(Array)
-    services.each do | service |
-      SystemDebug.debug(SystemDebug.services, :remove_service, service)
-      if params[:remove_all_data] == 'all' || service[:shared] #&& ! (service.key?(:shared) && service[:shared])
-        service[:remove_all_data] = params[:remove_all_data]
-        service[:force] = true if params.key?(:force)
-        begin
-          delete_and_remove_service(service)
-        rescue StandardError => e
-          STDERR.puts(' remove_managed_persistent_services ' + e.to_s)
-          next
+    if services.is_a?(Array)
+      services.each do | service |
+        SystemDebug.debug(SystemDebug.services, :remove_service, service)
+        if params[:remove_all_data] == 'all' || service[:shared] #&& ! (service.key?(:shared) && service[:shared])
+          service[:remove_all_data] = params[:remove_all_data]
+          service[:force] = true if params.key?(:force)
+          begin
+            delete_and_remove_service(service)
+          rescue StandardError => e
+            STDERR.puts(' remove_managed_persistent_services ' + e.to_s)
+            next
+          end
+        else
+          orphanate_service(service)
+          system_registry_client.remove_from_managed_engine(service)
         end
-      else
-        orphanate_service(service)
-        system_registry_client.remove_from_managed_engine(service)
       end
+      true
     end
-    true
-   end
   end
 end
