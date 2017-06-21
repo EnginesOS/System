@@ -47,5 +47,4 @@ module EnginesCorePreferences
       nil
     end
   end
-
 end
