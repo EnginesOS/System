@@ -11,10 +11,18 @@ module ApiActionators
     #  STDERR.puts('/home/actionators/' + actionator_name + '.sh ' + params.to_json + ' .  ' + data.to_s )
     cmds = ['/home/actionators/' + actionator[:name].to_s + '.sh',args.to_s]
     if data.nil?
-      result = engines_core.exec_in_container({:container => c, :command_line => cmds, :log_error => true, :data=>nil })
+      result = engines_core.exec_in_container(
+      {container: c,
+        command_line: cmds,
+        log_error:  true,
+        data: nil })
       #      result = SystemUtils.execute_command(cmd)
     else
-      result = engines_core.exec_in_container({:container => c, :command_line => cmds, :log_error => true , :data => data})
+      result = engines_core.exec_in_container(
+      {container: c,
+        command_line: cmds,
+        log_error: true ,
+        data: data})
       #  STDERR.puts('/home/actionators/' + actionator_name + '.sh' + data.to_s)
       # result = SystemUtils.execute_command(cmd, false, data)
     end
