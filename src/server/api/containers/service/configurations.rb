@@ -31,6 +31,7 @@ post '/v0/containers/service/:service_name/configuration/:configurator_name' do
   begin
     p_params = post_params(request)
     p_params.merge!(params)
+    STDERR.puts(' params ' + params.to_s + "\n combined " + p_params.to_s)
     cparams = assemble_params(p_params, [:service_name, :configurator_name], [:variables])
     service = get_service(params[:service_name])
     cparams[:type_path] = service.type_path
