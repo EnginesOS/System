@@ -141,7 +141,7 @@ class SoftwareServiceDefinition
       yaml = File.read(filename)
       return SoftwareServiceDefinition.from_yaml(yaml)
     end
-    raise EnginesException.new(self.error_hash('No Such Definitions File!', dir.to_s + '/' + service_type.to_s + ' ' + filename.to_s))
+    raise EnginesException.new(self.error_hash('No Such Definitions File!' + dir.to_s + '/' + service_type.to_s + ' ' + filename.to_s))
   end
 
   def search_dir(dir,service_type)
