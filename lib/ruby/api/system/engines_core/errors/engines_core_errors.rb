@@ -19,7 +19,7 @@ module EnginesCoreErrors
   def handle_exception(e)
     if e.is_a?(RegistryException)
       STDERR.puts(' Error Level ' + e.level.to_s)
-      unless e.level == :warning  || e.level == :error
+      unless e.level == :warning
         log_exception(e)
       end
     else

@@ -38,17 +38,18 @@ module SmEngineServices
       STDERR.puts('NO services ' +  engine.container_name.to_s + ';' + e.to_s)
       false # No services
     end
-
-    services.each do |service_hash|
-      begin
-        system_registry_client.remove_from_services_registry(service_hash)
-        remove_from_managed_service(service_hash)
-      rescue StandardError => e
-        STDERR.puts('removing_services excepti' + service_hash.to_s + ':' + e.to_s)
-        next
+    if services.is_a?(Array)
+      services.each do |service_hash|
+        begin
+          system_registry_client.remove_from_services_registry(service_hash)
+          remove_from_managed_service(service_hash)
+        rescue StandardError => e
+          STDERR.puts('removing_services exception' + service_hash.to_s + ':' + e.to_s)
+          next
+        end
       end
+      true
     end
-    true
   end
 
   def list_persistent_services(engine)
