@@ -47,8 +47,11 @@ begin
 
   def source_is_service?(request, service_name)
     service = get_service(service_name)
-    return true if request.ip.to_s == service.get_ip_str
-    false
+    if request.ip.to_s == service.get_ip_str
+      true
+    else
+      false
+    end
   rescue
     false
   end

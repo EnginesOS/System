@@ -8,8 +8,11 @@ get '/v0/containers/engine/:engine_name/services/persistent/' do
     engine = get_engine(params[:engine_name])
     return_json_array(engines_api.list_persistent_services(engine))
   rescue StandardError => e
-    return return_json_array(nil) if e.is_a?(EnginesException) && e.level == :warning
-    send_encoded_exception(request: request, exception: e)
+    unless e.is_a?(EnginesException) && e.level == :warning
+      send_encoded_exception(request: request, exception: e)
+    else
+      return_json_array(nil)
+    end
   end
 end
 
