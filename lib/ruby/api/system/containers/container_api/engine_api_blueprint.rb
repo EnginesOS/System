@@ -1,7 +1,11 @@
 module EngineApiBlueprint
   def save_blueprint(blueprint, container)
-    blueprint_r = BlueprintApi.new
-    raise EnginesException.new(error_hash('failed to save blueprint', blueprint_r.last_error)) unless blueprint_r.save_blueprint(blueprint, container)
+    blueprint_r = BlueprintApi.new    
+    begin
+      blueprint_r.save_blueprint(blueprint, container)
+    rescue
+    raise EnginesException.new(error_hash('failed to save blueprint', blueprint_r.last_error))
+    end 
   end
 
   def load_blueprint(container)
