@@ -1,25 +1,41 @@
 def return_json(r, s = 202)
-  return return_error(r) if r.is_a?(EnginesError)
-  content_type 'application/json'
-  status(s)
-  return empty_json if r.nil?
-  r.to_json
+  if r.is_a?(EnginesError)
+    return_error(r)
+  else
+    content_type 'application/json'
+    status(s)
+    if r.nil?
+      empty_json
+    else
+      r.to_json
+    end
+  end
 end
 
 def return_json_array(r, s = 202)
-  return return_error_array(r) if r.is_a?(EnginesError)
-  content_type 'application/json'
-  status(s)
-  return empty_array if r.nil? || r == ''
-  return empty_array if r.is_a?(FalseClass)
-  r.to_json
+  if r.is_a?(EnginesError)
+    return_error_array(r)
+  else
+    content_type 'application/json'
+    status(s)
+    if r.nil? || r == '' || r.is_a?(FalseClass)
+      empty_array
+    else
+      r.to_json
+    end
+  end
 end
 
 def return_text(r, s = 202)
-  return return_error(r) if r.is_a?(EnginesError)
-  content_type 'text/plain'
-  status(s)
-  r.to_s
+  if r.is_a?(TrueClass) ||r.is_a?(FalseClass)
+    return_boolean(r, s)
+  elsif r.is_a?(EnginesError)
+    return_error(r)
+  else
+    content_type 'text/plain'
+    status(s)
+    r.to_s
+  end
 end
 
 def return_true(s = 200)
@@ -35,8 +51,11 @@ def return_error(error, nil_result = nil)
   content_type 'application/json'
   # FIXME: take this from the error if avail
   status(404)
-  return nil_result if error.nil?
-  error.to_json
+  if error.nil?
+    nil_result
+  else
+    error.to_json
+  end
 end
 
 def return_error_array(error)
