@@ -93,14 +93,7 @@ module DockerEvents
       r = true if statein == 'nocontainer'
     end
     r
-    #    return true if what == statein
-    #    return true if what == 'stop' && statein == 'stopped'
-    #    return true if what == 'start' && statein == 'running'
-    #    return true if what == 'unpause' && statein == 'running'
-    #    return true if what == 'pause' && statein == 'paused'
-    #    return true if what == 'create' && statein != 'nocontainer'
-    #    return true if what == 'destroy' && statein == 'nocontainer'
-    #    false
+
   end
 
   def fill_in_event_system_values(event_hash)
@@ -157,8 +150,11 @@ module DockerEvents
         log_error_mesg('Failed to find ' + container_name.to_s +  ctype.to_s)
       end
     end
-    c = false if c.nil?
-    c
+    if c.nil?
+      false
+    else
+      c
+    end
   rescue StandardError =>e
     log_exception(e)
   end
