@@ -10,9 +10,12 @@ get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/
     content_type 'application/octet-stream'
     hash = engine_service_hash_from_params(params)
     engine = get_engine(params[:engine_name])
-    return send_encoded_exception(request, engine, params) if engine.nil?
-    stream do |out|
-      engine.export_service_data(hash, out)
+    unless engine.nil?
+      stream do |out|
+        engine.export_service_data(hash, out)
+      end
+    else
+      send_encoded_exception(request, engine, params)
     end
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
@@ -27,8 +30,8 @@ put '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/
   begin
     engine = get_engine(params[:engine_name])
     return_text(engine.import_service_data(
-      {service_connection: engine_service_hash_from_params(params) },
-      request.env['rack.input']))
+    {service_connection: engine_service_hash_from_params(params) },
+    request.env['rack.input']))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -43,8 +46,8 @@ put '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/
   begin
     engine = get_engine(params[:engine_name])
     return_text(engine.import_service_data(
-      {service_connection: engine_service_hash_from_params(params)},
-      request.env['rack.input']))
+    {service_connection: engine_service_hash_from_params(params)},
+    request.env['rack.input']))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

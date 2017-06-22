@@ -43,6 +43,7 @@ def return_true(s = 200)
 end
 
 def return_boolean(v, s = 200)
+  v = true if v.nil? # meths return nil when error is exception  
   return_text(v.to_s, s)
 end
 

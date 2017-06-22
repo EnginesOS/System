@@ -28,14 +28,15 @@ module DNSHosting
     if File.exist?(SystemConfig.DomainsFile) == false
       domains_file = File.open(SystemConfig.DomainsFile, 'w')
       domains_file.close
-      return {}
+      {}
     else
       domains_file = File.open(SystemConfig.DomainsFile, 'r')
+
+      domains = YAML::load(domains_file)
+      domains_file.close
+      SystemDebug.debug(SystemDebug.system,:loading_domain_list, domains.to_s)
+      domains
     end
-    domains = YAML::load(domains_file)
-    domains_file.close
-    SystemDebug.debug(SystemDebug.system,:loading_domain_list, domains.to_s)
-    domains
   end
 
   def self.list_domains
@@ -56,7 +57,7 @@ module DNSHosting
     domains = load_domains
     if domains.key?(domain)
       domains.delete(domain)
-      return save_domains(domains)
+      save_domains(domains)
     else
       raise EnginesException.new(error_hash('failed_to_find_domain' + domain + 'in ', domains.to_s))
     end

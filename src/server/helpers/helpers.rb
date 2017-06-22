@@ -81,7 +81,7 @@ helpers do
 
   def downcase_keys(hash)
     return hash unless hash.is_a? Hash
-    hash.map{|k, v| [k.downcase, downcase_keys(v)] }.to_h
+    hash.map{|k, v| [k.downcase, downcase_keys(v)]}.to_h
   end
 
   def managed_containers_to_json(containers)
@@ -91,9 +91,10 @@ helpers do
       containers.each do |c|
         res.push(c.to_h)
       end
-      return return_json_array(res)
+      return_json_array(res)
+    else
+      return_json(c.to_h)
     end
-    return_json(c.to_h)
   end
 
   def managed_container_as_json(c)
