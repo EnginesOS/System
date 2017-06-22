@@ -8,11 +8,12 @@ class Templater
   end
 
   def apply_hash_variables(text, values_hash)
-    return text unless text.is_a?(String)
-    text.gsub!(/_Engines_Template\([(0-9a-z_A-Z]*\)/) { |match|
-      t =  resolve_hash_value(match, values_hash)
-      t
-    }
+    if text.is_a?(String)
+      text.gsub!(/_Engines_Template\([(0-9a-z_A-Z]*\)/) { |match|
+        t =  resolve_hash_value(match, values_hash)
+        t
+      }
+    end
     text
   rescue StandardError => e
     SystemUtils.log_exception(e)
@@ -21,9 +22,13 @@ class Templater
   def resolve_hash_value(match, values_hash)
     name = match.sub!(/_Engines_Template\(/, '')
     name.sub!(/[\)]/, '')
-    return values_hash[name.to_sym] if values_hash.key?(name.to_sym)
-    return values_hash[name.to_s] if values_hash.key?(name.to_s)
-    ''
+    if values_hash.key?(name.to_sym)
+      values_hash[name.to_sym]
+    elsif values_hash.key?(name.to_s)
+      values_hash[name.to_s]
+    else
+      ''
+    end
   end
 
   def resolve_system_variable(match)
@@ -38,10 +43,11 @@ class Templater
   end
 
   def apply_blueprint_variables(template)
-    return nil if template.nil?
-    template.gsub!(/_Engines_Blueprint\([a-z,].*\)/) { |match|
-      resolve_blueprint_variable(match)
-    }
+    unless template.nil?
+      template.gsub!(/_Engines_Blueprint\([a-z,].*\)/) { |match|
+        resolve_blueprint_variable(match)
+      }
+    end
     template
   end
 
@@ -61,7 +67,7 @@ class Templater
     val
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    ''
+   val
   end
 
   def resolve_system_function(match)
@@ -78,7 +84,7 @@ class Templater
     end
     var_method = @system_access.method(name.to_sym)
     if args.is_a?(Array)
-      return var_method.call(args[0], args[1])
+      var_method.call(args[0], args[1])
     else
       var_method.call(args)
     end
@@ -101,15 +107,17 @@ class Templater
   def resolve_engines_variable(match)
     name = match.sub!(/_Engines_Environment\(/, '')
     name.sub!(/[\)]/, '')
+    v = ''
     @builder_public.engine_environment.each do |environment|
       if environment.name == name
-        return environment.value
+        v = environment.value
+        break
       end
     end
-    ''
+    v
   rescue StandardError => e
     SystemUtils.log_exception(e)
-    ''
+    v
   end
 
   def set_system_access(system)
@@ -142,18 +150,19 @@ class Templater
   end
 
   def apply_engines_variables(template)
-    return template if template.is_a?(String) == false
-    template.gsub!(/_Engines_Environment\([(0-9a-z_A-Z]*\)/) { |match|
-      resolve_engines_variable(match)
-    }
-    return template
+    unless template.is_a?(String) == false
+      template.gsub!(/_Engines_Environment\([(0-9a-z_A-Z]*\)/) { |match|
+        resolve_engines_variable(match)
+      }
+    end
+    template
   rescue StandardError => e
     p 'problem with ' + template.to_s
     SystemUtils.log_exception(e)
   end
 
   def apply_system_variables(template)
-    return template if template.is_a?(String) == false
+   if template.is_a?(String)
     template.gsub!(/_Engines_System\([(0-9a-z_A-Z,]*\)\)/) { |match|
       #     p :build_function_match
       #     p match
@@ -162,18 +171,20 @@ class Templater
     template.gsub!(/_Engines_System\([(0-9a-z_A-Z]*\)/) { |match|
       resolve_system_variable(match)
     }
-    return template
+   end
+    template
   rescue StandardError => e
     p 'problem with ' + template.to_s
     SystemUtils.log_exception(e)
   end
 
   def apply_build_variables(template)
-    return template if template.is_a?(String) == false
-    template.gsub!(/_Engines_Builder\([(0-9a-z_A-Z]*\)/) { |match|
-      resolve_build_variable(match)
-    }
-    return template
+    if template.is_a?(String)
+      template.gsub!(/_Engines_Builder\([(0-9a-z_A-Z]*\)/) { |match|
+        resolve_build_variable(match)
+      }
+    end   
+    template
   end
 
   def fill_in_dynamic_vars(service_hash)
@@ -187,7 +198,7 @@ class Templater
         service_hash[:variables][variable[0]] = result
       end
     end
-    return true
+    true
   end
 
   def fill_in_service_def_values(service_def)
@@ -202,7 +213,7 @@ class Templater
         end
       end
     end
-    return service_def
+    service_def
   end
 
   def proccess_templated_service_hash(service_hash)

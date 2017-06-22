@@ -87,20 +87,21 @@ module Engines
   def loadManagedEngine(engine_name)
     raise EnginesException.new(error_hash('No Engine name', engine_name)) if engine_name.nil? || engine_name.length == 0
     engine = engine_from_cache(engine_name)
-    return engine if engine.is_a?(ManagedEngine)
+   unless engine.is_a?(ManagedEngine)
     yaml_file_name = SystemConfig.RunDir + '/containers/' + engine_name + '/running.yaml'
     raise EnginesException.new(error_hash('No Engine file', engine_name)) unless File.exist?(yaml_file_name)
     raise EnginesException.new(error_hash('Engine File Locked', yaml_file_name)) if is_container_conf_file_locked?(SystemConfig.RunDir + '/containers/' + engine_name)
     yaml_file = File.new(yaml_file_name, 'r')
     begin
       ts = File.mtime(yaml_file_name)
-      managed_engine = ManagedEngine.from_yaml(yaml_file.read, @engines_api.container_api)
+      engine = ManagedEngine.from_yaml(yaml_file.read, @engines_api.container_api)
       yaml_file.close
-      cache_engine(managed_engine, ts)
-      managed_engine
+      cache_engine(engine, ts)
     ensure
       yaml_file.close unless yaml_file.nil?
     end
+   end
+    engine
   end
 
 end

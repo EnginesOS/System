@@ -33,9 +33,14 @@ module SmOrphanServices
     res =  retrieve_orphan(service_hash)
     # STDERR.puts(" MATCHED  " + res.to_s)
     if res.is_a?(Hash)
-      return true if res[:publisher_namespace] == service_hash[:publisher_namespace]
+      if res[:publisher_namespace] == service_hash[:publisher_namespace]
+        true
+      else
+        false
+      end
+    else
+      false
     end
-    false
   end
 
   def retrieve_orphan(params)
@@ -53,7 +58,7 @@ module SmOrphanServices
       service_hash[:remove_all_data] = 'all'
     end
     remove_from_managed_service(service_hash)
-    return system_registry_client.release_orphan(service_hash)
+    system_registry_client.release_orphan(service_hash)
   end
 
   # @return an [Array] of service_hashs of Orphaned persistent services matching @params [Hash]

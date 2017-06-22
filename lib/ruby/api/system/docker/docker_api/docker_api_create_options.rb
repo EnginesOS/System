@@ -9,19 +9,23 @@ module DockerApiCreateOptions
   end
 
   def get_protocol_str(port)
-    return 'tcp' if port[:proto_type].nil?
-    port[:proto_type]
+    if port[:proto_type].nil?
+      'tcp'
+    else
+      port[:proto_type]
+    end
   end
 
   def exposed_ports(container)
-    return {} if container.mapped_ports.nil?
     eports = {}
-    container.mapped_ports.each_value do |port|
-      port = symbolize_keys(port)
-      if port[:port].is_a?(String) && port[:port].include?('-')
-        expose_port_range(eports, port)
-      else
-        add_exposed_port(eports, port)
+    unless container.mapped_ports.nil?
+      container.mapped_ports.each_value do |port|
+        port = symbolize_keys(port)
+        if port[:port].is_a?(String) && port[:port].include?('-')
+          expose_port_range(eports, port)
+        else
+          add_exposed_port(eports, port)
+        end
       end
     end
     eports
@@ -29,13 +33,16 @@ module DockerApiCreateOptions
 
   def volumes_mounts(container)
     mounts = []
-    return system_mounts(container) if container.volumes.nil?
-    container.volumes.each_value do |volume|
-      mounts.push(mount_string(volume))
+    if container.volumes.nil?
+      system_mounts(container)
+    else
+      container.volumes.each_value do |volume|
+        mounts.push(mount_string(volume))
+      end
+      sm = system_mounts(container)
+      mounts.concat(sm) unless sm.nil?
+      mounts
     end
-    sm = system_mounts(container)
-    mounts.concat(sm) unless sm.nil?
-    mounts
   end
 
   def mount_string(volume)
@@ -67,13 +74,19 @@ module DockerApiCreateOptions
   end
 
   def container_volumes(container)
-    return container.volumes_from unless container.volumes_from.nil?
-    []
+    unless container.volumes_from.nil?
+      container.volumes_from
+    else
+      []
+    end
   end
 
   def container_capabilities(container)
-    return add_capabilities(container.capabilities) unless container.capabilities.nil?
-    []
+    unless container.capabilities.nil?
+      add_capabilities(container.capabilities)
+    else
+      []
+    end
   end
 
   def container_get_dns_servers(container)
@@ -112,16 +125,23 @@ module DockerApiCreateOptions
   end
 
   def restart_policy(container)
-    return {'Name' => 'unless-stopped'} if container.ctype == 'system_service'
-    return {'Name' => 'on-failure', 'MaximumRetryCount' => 2} if container.ctype == 'service'
-    {}
+    if container.ctype == 'system_service'
+      {'Name' => 'unless-stopped'}
+    elsif container.ctype == 'service'
+      {'Name' => 'on-failure', 'MaximumRetryCount' => 2}
+    else
+      {}
+    end
   end
 
   def log_config(container)
-    #return { "Type" => 'json-file', "Config" => {}}
-    return { "Type" => 'json-file', "Config" => { "max-size" =>"5m", "max-file" => '10' } } if container.ctype == 'service'
-    return { "Type" => 'json-file', "Config" => { "max-size" =>"5m", "max-file" => '10' } } if container.ctype == 'system_service'
-    { "Type" => 'json-file', "Config" => { "max-size" =>"1m", "max-file" => '5' } }
+    if container.ctype == 'service'
+      { "Type" => 'json-file', "Config" => { "max-size" =>"5m", "max-file" => '10' } }
+    elsif container.ctype == 'system_service'
+      { "Type" => 'json-file', "Config" => { "max-size" =>"5m", "max-file" => '10' } }
+    else
+      { "Type" => 'json-file', "Config" => { "max-size" =>"1m", "max-file" => '5' } }
+    end
   end
 
   def add_capabilities(capabilities)
@@ -133,13 +153,14 @@ module DockerApiCreateOptions
 
   def port_bindings(container)
     bindings = {}
-    return bindings if container.mapped_ports.nil?
-    container.mapped_ports.each_value do |port|
-      port = symbolize_keys(port)
-      if port[:port].is_a?(String) && port[:port].include?('-')
-        add_port_range(bindings, port)
-      else
-        add_mapped_port(bindings, port)
+    unless container.mapped_ports.nil?
+      container.mapped_ports.each_value do |port|
+        port = symbolize_keys(port)
+        if port[:port].is_a?(String) && port[:port].include?('-')
+          add_port_range(bindings, port)
+        else
+          add_mapped_port(bindings, port)
+        end
       end
     end
     bindings
@@ -147,13 +168,16 @@ module DockerApiCreateOptions
 
   def hostname(container)
     #  return nil if container.on_host_net? == true
-    return container.container_name if container.hostname.nil?
-    container.hostname
+    if container.hostname.nil?
+      container.container_name
+    else
+      container.hostname
+    end
   end
 
   def container_domain_name(container)
-    return SystemConfig.internal_domain# if container.on_host_net? == false
-    nil
+    SystemConfig.internal_domain# if container.on_host_net? == false
+
   end
 
   def build_top_level(container)
@@ -191,9 +215,10 @@ module DockerApiCreateOptions
 
   def set_entry_point(container, top_level)
     command =  container.command
-    return  if container.conf_self_start
-    command = ['/bin/bash' ,'/home/start.bash'] if container.command.nil?
-    top_level['Entrypoint'] = command
+    unless container.conf_self_start
+      command = ['/bin/bash' ,'/home/start.bash'] if container.command.nil?
+      top_level['Entrypoint'] = command
+    end
   end
 
   def get_labels(container)
@@ -204,14 +229,15 @@ module DockerApiCreateOptions
   end
 
   def cert_mounts(container)
-    return  unless container.certificates.is_a?(Array)
-    mounts = []
-    container.certificates.each do |certificate|
-      prefix =  certificate[:container_type] + '_' + certificate[:parent_engine] + '_' + certificate[:variables][:cert_name]
-      mounts.push(SystemConfig.CertificatesDir + prefix + '.crt:' + SystemConfig.CertificatesDestination +  certificate[:variables][:cert_name] + '.crt:ro' )
-      mounts.push(SystemConfig.KeysDir + prefix + '.key:' + SystemConfig.KeysDestination +  certificate[:variables][:cert_name] + '.key:ro' )
+    if container.certificates.is_a?(Array)
+      mounts = []
+      container.certificates.each do |certificate|
+        prefix =  certificate[:container_type] + '_' + certificate[:parent_engine] + '_' + certificate[:variables][:cert_name]
+        mounts.push(SystemConfig.CertificatesDir + prefix + '.crt:' + SystemConfig.CertificatesDestination +  certificate[:variables][:cert_name] + '.crt:ro' )
+        mounts.push(SystemConfig.KeysDir + prefix + '.key:' + SystemConfig.KeysDestination +  certificate[:variables][:cert_name] + '.key:ro' )
+      end
+      mounts
     end
-    mounts
   end
 
   def system_mounts(container)
@@ -267,22 +293,25 @@ module DockerApiCreateOptions
   end
 
   def in_container_log_dir(container)
-    return '/var/log' if container.framework.nil? || container.framework.length == 0
-    container_logdetails_file_name = false
-    framework_logdetails_file_name = SystemConfig.DeploymentTemplates + '/' + container.framework + '/home/LOG_DIR'
-    SystemDebug.debug(SystemDebug.docker, 'Frame logs details', framework_logdetails_file_name)
-    if File.exist?(framework_logdetails_file_name)
-      container_logdetails_file_name = framework_logdetails_file_name
+    if container.framework.nil? || container.framework.length == 0
+      '/var/log'
     else
-      container_logdetails_file_name = SystemConfig.DeploymentTemplates + '/global/home/LOG_DIR'
+      container_logdetails_file_name = false
+      framework_logdetails_file_name = SystemConfig.DeploymentTemplates + '/' + container.framework + '/home/LOG_DIR'
+      SystemDebug.debug(SystemDebug.docker, 'Frame logs details', framework_logdetails_file_name)
+      if File.exist?(framework_logdetails_file_name)
+        container_logdetails_file_name = framework_logdetails_file_name
+      else
+        container_logdetails_file_name = SystemConfig.DeploymentTemplates + '/global/home/LOG_DIR'
+      end
+      SystemDebug.debug(SystemDebug.docker,'Container log details', container_logdetails_file_name)
+      begin
+        container_logdetails = File.read(container_logdetails_file_name)
+      rescue
+        container_logdetails = '/var/log'
+      end
+      container_logdetails
     end
-    SystemDebug.debug(SystemDebug.docker,'Container log details', container_logdetails_file_name)
-    begin
-      container_logdetails = File.read(container_logdetails_file_name)
-    rescue
-      container_logdetails = '/var/log'
-    end
-    container_logdetails
   end
 
   def envs(container)

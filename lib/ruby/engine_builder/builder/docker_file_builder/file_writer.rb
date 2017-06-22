@@ -1,8 +1,9 @@
 def write_comment(cmt)
   unless @in_run == true
-    return @docker_file.puts(cmt)
+    @docker_file.puts(cmt)
+  else
+    write_run_line("echo \"" + cmt + "\"")
   end
-  write_run_line("echo \"" + cmt + "\"")
 end
 
 def write_run_line(cmd)
@@ -16,12 +17,13 @@ def write_run_line(cmd)
 end
 
 def write_run_start(comment = '')
-  return if @in_run == true
-  @in_run = true
-  @first_line = true
-  write_line("\n#Start of Run:" + comment.to_s)
-  @docker_file.write('RUN ')
-  count_layer
+  unless @in_run == true
+    @in_run = true
+    @first_line = true
+    write_line("\n#Start of Run:" + comment.to_s)
+    @docker_file.write('RUN ')
+    count_layer
+  end
 end
 
 def write_run_end

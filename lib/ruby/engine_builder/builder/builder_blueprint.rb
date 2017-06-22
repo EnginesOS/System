@@ -1,6 +1,6 @@
 require 'git'
-module BuilderBluePrint
 
+module BuilderBluePrint
   def load_blueprint
     log_build_output('Reading Blueprint')
     json_hash = BlueprintApi.load_blueprint_file(basedir + '/blueprint.json')
@@ -8,11 +8,14 @@ module BuilderBluePrint
   end
 
   def clone_repo
-    return download_blueprint if @build_params[:repository_url].end_with?('.json')
-    log_build_output('Clone Blueprint Repository ' + @build_params[:repository_url])
-    SystemDebug.debug(SystemDebug.builder, "get_blueprint_from_repo",@build_params[:repository_url], @build_name, SystemConfig.DeploymentDir)
-    g = Git.clone(@build_params[:repository_url], @build_name, :path => SystemConfig.DeploymentDir)
-    SystemDebug.debug(SystemDebug.builder, 'GIT GOT ' + g.to_s)
+    if @build_params[:repository_url].end_with?('.json')
+      download_blueprint
+    else
+      log_build_output('Clone Blueprint Repository ' + @build_params[:repository_url])
+      SystemDebug.debug(SystemDebug.builder, "get_blueprint_from_repo",@build_params[:repository_url], @build_name, SystemConfig.DeploymentDir)
+      g = Git.clone(@build_params[:repository_url], @build_name, :path => SystemConfig.DeploymentDir)
+      SystemDebug.debug(SystemDebug.builder, 'GIT GOT ' + g.to_s)
+    end
   end
 
   def download_blueprint
@@ -34,7 +37,7 @@ module BuilderBluePrint
   end
 
   def process_blueprint
-    log_build_output('Reading Blueprint')  
+    log_build_output('Reading Blueprint')
     @blueprint = load_blueprint if @blueprint.nil?
     version = 0
     unless @blueprint.key?(:schema)

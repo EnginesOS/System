@@ -195,17 +195,18 @@ class DockerFileBuilder
       log_build_output('set setup_env')
       paths = ''
       src_paths = @blueprint_reader.persistent_files[:src_paths]
-      return if src_paths.nil?
-      src_paths.each do |path|
-        dir = File.dirname(path)
-        file = File.basename(path)
-        SystemDebug.debug(SystemDebug.builder, :dir, dir)
-        if dir.is_a?(String) == false || dir.length == 0 || dir == '.' || dir == '..'
-          path = 'app/' + file
+      unless src_paths.nil?
+        src_paths.each do |path|
+          dir = File.dirname(path)
+          file = File.basename(path)
+          SystemDebug.debug(SystemDebug.builder, :dir, dir)
+          if dir.is_a?(String) == false || dir.length == 0 || dir == '.' || dir == '..'
+            path = 'app/' + file
+          end
+          paths += path + ' '
         end
-        paths += path + ' '
+        write_build_script('persistent_files.sh   ' + paths)
       end
-      write_build_script('persistent_files.sh   ' + paths)
     end
   end
 

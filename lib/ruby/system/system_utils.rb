@@ -2,15 +2,15 @@ class SystemUtils
 
   @@level=0
   def SystemUtils.last_error
-    return @@last_error
+    @@last_error
   end
 
   def SystemUtils.log_level
-    return @@level
+    @@level
   end
 
   def SystemUtils.level
-    return @@level
+    @@level
   end
   require_relative 'system_debug.rb'
 
@@ -20,8 +20,11 @@ class SystemUtils
   include SystemExceptions
 
   def SystemUtils.system_release
-    return 'current' unless File.exists?(SystemConfig.ReleaseFile)
-    File.read(SystemConfig.ReleaseFile).strip!
+    if File.exists?(SystemConfig.ReleaseFile)
+      File.read(SystemConfig.ReleaseFile).strip!
+    else
+      'current'
+    end
   end
 
   def SystemUtils.version
@@ -62,13 +65,16 @@ class SystemUtils
       cmd = cmd + ' 2>&1'
       res= %x<#{cmd}>
       SystemDebug.debug(SystemDebug.execute,'Run ' + cmd + ' ResultCode:' + $?.to_s + ' Output:', res)
-      return true if $?.to_i == 0
-      SystemUtils.log_error_mesg('Error Code:' + $?.to_s + ' in run ' + cmd + ' Output:', res)
-      res
+      if $?.to_i == 0
+        true
+      else
+        SystemUtils.log_error_mesg('Error Code:' + $?.to_s + ' in run ' + cmd + ' Output:', res)
+        res
+      end
     rescue Exception=>e
       SystemUtils.log_exception(e)
       SystemUtils.log_error_mesg('Exception Error in SystemUtils.run_system(cmd): ',cmd)
-      return 'Exception Error in SystemUtils.run_system(cmd): ' +e.to_s
+      'Exception Error in SystemUtils.run_system(cmd): ' +e.to_s
     end
   end
 
@@ -151,12 +157,13 @@ class SystemUtils
         #        elsif stderr.closed? == false
         retval[:stderr] += stderr.read_nonblock(1000)
         retval[:result] = th.value.exitstatus
-        return retval
+        break
+        #return retval
         #  end
       end
       # File.delete('/tmp/import') if File.exist?('/tmp/import')
 
-      return retval
+      #return retval
     end
     # File.delete('/tmp/import') if File.exist?('/tmp/import')
 
@@ -167,7 +174,7 @@ class SystemUtils
     SystemUtils.log_error_mesg('Exception Error in SystemUtils.execute_command(+ ' + cmd +'): ', retval)
     retval[:stderr] += 'Exception Error in SystemUtils.run_system(' + cmd + '): ' + e.to_s
     retval[:result] = -99
-    return retval
+    retval
   end
 
   #Execute @param cmd [String]
@@ -179,11 +186,11 @@ class SystemUtils
       cmd = cmd + ' 2>&1'
       res= %x<#{cmd}>
       SystemDebug.debug(SystemDebug.execute,'Run ' + cmd + ' ResultCode:' + $?.to_s + ' Output:', res)
-      return res
+      res
     rescue Exception=>e
       SystemUtils.log_exception(e)
       SystemUtils.log_error_mesg('Exception Error in SystemUtils.run_system(cmd): ', cmd)
-      return 'Exception Error in SystemUtils.run_system(cmd): ' +e.to_s
+      'Exception Error in SystemUtils.run_system(cmd): ' +e.to_s
     end
   end
 
@@ -208,9 +215,13 @@ class SystemUtils
   end
 
   def SystemUtils.cgroup_mem_dir(container_id_str)
-    return '/sys/fs/cgroup/memory/docker/' + container_id_str + '/' if SystemUtils.get_os_release_data['Major Version'] == '14'
-    return '/sys/fs/cgroup/memory/docker/' + container_id_str + '/' if Dir.exist?('/sys/fs/cgroup/memory/docker/' + container_id_str + '/')
-    return '/sys/fs/cgroup/memory/system.slice/docker-' + container_id_str + '.scope'
+    if SystemUtils.get_os_release_data['Major Version'] == '14'
+      '/sys/fs/cgroup/memory/docker/' + container_id_str + '/'
+    elsif Dir.exist?('/sys/fs/cgroup/memory/docker/' + container_id_str + '/')
+      '/sys/fs/cgroup/memory/docker/' + container_id_str + '/'
+    else
+      '/sys/fs/cgroup/memory/system.slice/docker-' + container_id_str + '.scope'
+    end
     # old pre docker 1.9. return '/sys/fs/cgroup/memory/system.slice/docker-' + container_id_str + '.scope'
   end
 

@@ -14,8 +14,11 @@ module ManagedContainerDns
   end
 
   def fqdn
-    return 'N/A' if @domain_name.nil? == true
-    @hostname.to_s + '.' + @domain_name.to_s
+    if @domain_name.nil?
+      'N/A'
+    else
+      @hostname.to_s + '.' + @domain_name.to_s
+    end
   end
 
   def set_hostname_details(host_name, domain_name)

@@ -28,10 +28,11 @@ module SystemSystemOnAction
     @exit_code = exit_code
     SystemDebug.debug(SystemDebug.container_events, :ONStop_CALLED, what)
     @stop_reason = what if @stop_reason.nil?
-    return unless what == 'die'
-    @had_out_memory = @out_of_memory
-    @out_of_memory = false
-    save_state
+    if what == 'die'
+      @had_out_memory = @out_of_memory
+      @out_of_memory = false
+      save_state
+    end
     #return true if @consumer_less
     # deregister_with_dns # Really its in the following nowMUst register each time as IP Changes
   end

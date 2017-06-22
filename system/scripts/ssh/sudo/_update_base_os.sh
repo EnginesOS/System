@@ -1,7 +1,8 @@
 #!/bin/bash
 
 apt-get -y update
-env DEBIAN_FRONTEND=noninteractive   apt-get -q -y -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" upgrade
+env DEBIAN_FRONTEND=noninteractive apt-get -q -y -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" upgrade
+sudo apt-get -y autoremove
 #DEBIAN_PRIORITY=cri
 #tical
 #Always do this ???

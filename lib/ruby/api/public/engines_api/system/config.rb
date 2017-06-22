@@ -42,9 +42,10 @@ module PublicApiConfig
     })
     if config_params.is_a?(Hash) == true && config_params.key?(:variables) == true
       vars = config_params[:variables]
-      return vars[:default_site_url] if vars.key?(:default_site_url)
+      vars[:default_site_url] if vars.key?(:default_site_url)
+    else
+      ''
     end
-    ''
   end
 
   def system_hostname
@@ -54,15 +55,10 @@ module PublicApiConfig
   # FIXME should use System
   def enable_remote_exception_logging
     @core_api.enable_remote_exception_logging
-#    f = SystemConfig.NoRemoteExceptionLoggingFlagFile
-#    return File.delete(f) if File.exists?(f)
-#    true
   end
 
   # FIXME should use System
   def disable_remote_exception_logging
-#    FileUtils.touch(SystemConfig.NoRemoteExceptionLoggingFlagFile)
-#    true
     @core_api.disable_remote_exception_logging
   end
 

@@ -7,23 +7,22 @@ class SoftwareServiceDefinition
       # p yaml.path
       serviceDefinition = symbolize_keys(YAML::load(yaml))
       serviceDefinition[:persistent] = serviceDefinition[:persistent] unless serviceDefinition.key?(:persistent)
-      return serviceDefinition
+      serviceDefinition
     rescue Exception=>e
       raise EnginesException.new(self.error_hash('Problem loading Yaml', yaml))
     end
   end
 
   def self.software_service_definition(params)
-    SystemUtils.log_error_mesg('Missing params', params.to_s) if params[:publisher_namespace].nil?
-    SystemUtils.log_error_mesg('Missing params', params.to_s) if params[:type_path].nil?
-    SoftwareServiceDefinition.find(params[:type_path], params[:publisher_namespace] )
-  rescue Exception=>e
-    raise EnginesException.new(self.error_hash('Problem Service defl', params))
+    raise EnginesException.new(self.error_hash('Nil params')) if params.nil?
+    raise EnginesException.new(self.error_hash('Missing params', params)) if params[:publisher_namespace].nil?
+    raise EnginesException.new(self.error_hash('Missing params', params)) if params[:type_path].nil?
+    SoftwareServiceDefinition.find(params[:type_path], params[:publisher_namespace])
   end
 
   # Find the assigned service container_name from teh service definition file
   def SoftwareServiceDefinition.get_software_service_container_name(params)
-    server_service =  self.software_service_definition(params)
+    server_service = self.software_service_definition(params)
     raise EnginesException.new(self.error_hash('Failed to load service definitions', params)) if server_service.nil? || server_service == false
     server_service[:service_container]
   end
@@ -109,39 +108,34 @@ class SoftwareServiceDefinition
       raise EnginesException.new(self.error_hash('Failed to load service definition', service_hash))
     end
     SystemDebug.debug(SystemDebug.builder, :COMPLETE_SERVICE_ENVS, retval)
-    return retval
+    retval
 
   end
 
   def SoftwareServiceDefinition.find(service_type, provider)
-    if service_type == nil || provider == nil
-      return SystemUtils.log_error_mesg('missing params:' +  provider.to_s  + '/' + service_type.to_s + ' ' + caller.to_s )
-    end
+    raise EnginesException.new(self.error_hash('Missing params', service_type, provider))  if service_type == nil || provider == nil
+
     dir = SystemConfig.ServiceTemplateDir + '/' + provider
     if Dir.exist?(dir)
       service_def = SoftwareServiceDefinition.load_service_def(dir, service_type)
       if service_def == nil
-        raise EnginesException.new(self.error_hash('Nil Service type', provider.to_s + '/' + service_type.to_s ))
+        raise EnginesException.new(self.error_hash('No matching Service', provider.to_s + '/' + service_type.to_s ))
       end
-      return service_def #.to_h
+      service_def #.to_h
+    else
+      raise EnginesException.new(self.error_hash('No Dir', dir.to_s + ':'  + service_type.to_s + ':'+ provider.to_s ))
     end
-
-    raise EnginesException.new(self.error_hash('No Dir', dir.to_s + ':'  + service_type.to_s + ':'+ provider.to_s ))
-    #  rescue Exception=>e
-    #    SystemDebug.debug(SystemDebug.services,:SERVICE_EXCEPT,:loaded,service_hash[:type_path],service_hash[:publisher_namespace])
-    #    SystemUtils.log_error_mesg('Error ' ,provider.to_s + '/' + service_type.to_s )
-    #    SystemUtils.log_exception(e)
-
   end
 
   def SoftwareServiceDefinition.load_service_def(dir, service_type)
     service_name = File.basename(service_type)
-    filename=dir + '/' + service_type + '/' + service_name + '.yaml'
+    filename = dir + '/' + service_type + '/' + service_name + '.yaml'
     if File.exist?(filename)
       yaml = File.read(filename)
-      return SoftwareServiceDefinition.from_yaml(yaml)
+      SoftwareServiceDefinition.from_yaml(yaml)
+    else
+      raise EnginesException.new(self.error_hash('No Such Definitions File!' + dir.to_s + '/' + service_type.to_s + ' ' + filename.to_s))
     end
-    raise EnginesException.new(self.error_hash('No Such Definitions File!', dir.to_s + '/' + service_type.to_s + ' ' + filename.to_s))
   end
 
   def search_dir(dir,service_type)
@@ -157,7 +151,8 @@ class SoftwareServiceDefinition
         else
           service_name = File.basename(service_type)
           if File.exist?(root + '/' + service_dir_entry + '/' + service_type + '/' + service_name  + '.yaml'   )
-            return load(dir,service_type)
+            load(dir, service_type)
+            break
           end
         end
       end
@@ -167,17 +162,22 @@ class SoftwareServiceDefinition
   def SoftwareServiceDefinition.is_persistent?(params)
     service = SoftwareServiceDefinition.find(params[:type_path], params[:publisher_namespace])
     if service == nil
-      return nil
+      nil
+    elsif service.key?(:persistent)
+      service[:persistent]
+    else
+      false
     end
-    return false unless service.key?(:persistent)
-    return service[:persistent]
   end
 
   def SoftwareServiceDefinition.is_soft_service?(service_hash)
     service = SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:publisher_namespace])
-    return false unless service.key?(:soft_service)
-    service_hash[:soft_service] = service[:soft_service]
-    service[:soft_service]
+    if service.key?(:soft_service)
+      service_hash[:soft_service] = service[:soft_service]
+      service[:soft_service]
+    else
+      false
+    end
   end
 
   def SoftwareServiceDefinition.service_handle_field(params)

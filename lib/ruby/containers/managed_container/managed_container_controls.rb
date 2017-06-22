@@ -17,12 +17,20 @@ module ManagedContainerControls
 
   def destroy_container(reinstall = false)
     if reinstall == true
-      return false unless prep_task(:reinstall)
+      task = prep_task(:reinstall)
     else
-      return false unless prep_task(:destroy)
+      task = prep_task(:destroy)
     end
-    return task_failed('destroy') unless super() # need () to avoid passing as super(reinstall)
-    clear_cid
+    if task
+      if super()  # need () to avoid passing as super(reinstall)
+        clear_cid
+        true
+      else
+        task_failed('destroy') # need () to avoid passing as super(reinstall)
+      end
+    else
+      false
+    end
   end
 
   def delete_engine
@@ -55,29 +63,41 @@ module ManagedContainerControls
         expire_engine_info
         @container_id = -1
         save_state
-        return task_failed('create') unless super
-        save_state #save new containerid)
-        SystemDebug.debug(SystemDebug.containers, :create_super_ran)
-        SystemDebug.debug(SystemDebug.containers, @setState, @docker_info_cache.class.name)
-        expire_engine_info
-        SystemDebug.debug(SystemDebug.containers, @setState, @docker_info_cache.class.name)
-        true
+        unless super
+          task_failed('create')
+        else
+          save_state #save new containerid)
+          SystemDebug.debug(SystemDebug.containers, :create_super_ran)
+          SystemDebug.debug(SystemDebug.containers, @setState, @docker_info_cache.class.name)
+          expire_engine_info
+          SystemDebug.debug(SystemDebug.containers, @setState, @docker_info_cache.class.name)
+          true
+        end
       end
     }
   end
 
   def recreate_container
-    return task_failed('destroy/recreate') unless destroy_container
-    wait_for('destroy')
-    return task_failed('create/recreate') unless create_container
-    true
+    if destroy_container
+      wait_for('destroy', 30)
+      if create_container
+        true
+      else
+        task_failed('create/recreate')
+      end
+    else
+      task_failed('destroy/recreate')
+    end
   end
 
   def unpause_container
     @container_mutex.synchronize {
       if prep_task(:unpause)
-        return task_failed('unpause') unless super
-        true
+        if super
+          true
+        else
+          task_failed('unpause')
+        end
       end
     }
   end
@@ -85,8 +105,11 @@ module ManagedContainerControls
   def pause_container
     @container_mutex.synchronize {
       if prep_task(:pause)
-        return task_failed('pause') unless super
-        true
+        if super
+          true
+        else
+          task_failed('pause')
+        end
       end
     }
   end
@@ -95,8 +118,11 @@ module ManagedContainerControls
     SystemDebug.debug(SystemDebug.containers, :stop_read_sta, read_state)
     @container_mutex.synchronize {
       if prep_task(:stop)
-        return task_failed('stop') unless super
-        true
+        if super
+          true
+        else
+          task_failed('stop')
+        end
       end
     }
   end
@@ -110,28 +136,40 @@ module ManagedContainerControls
   def start_container
     @container_mutex.synchronize {
       if prep_task(:start)
-        return task_failed('start') unless super
-        @restart_required = false
-        true
+        if super
+          @restart_required = false
+          true
+        else
+          task_failed('start')
+        end
       end
     }
   end
 
   def restart_container
-    return task_failed('restart/stop') unless stop_container
-    wait_for('stop')
-    task_failed('restart/start') unless start_container
-    true
+    if stop_container
+      wait_for('stop')
+      if start_container
+        true
+      else
+        task_failed('restart/start')
+      end
+    else
+      task_failed('restart/stop')
+    end
   end
 
   def rebuild_container
- 
+
     @container_mutex.synchronize {
       if prep_task(:reinstall)
         ret_val = @container_api.rebuild_image(self)
         expire_engine_info
-        return task_failed('rebuild') unless ret_val
-        true
+        if ret_val
+          true
+        else
+          task_failed('rebuild')
+        end
       end
     }
   end
@@ -148,7 +186,7 @@ module ManagedContainerControls
     when 'paused'
       pause_container unless is_active?
     else
-      return 'fail'
+      'fail'
     end
   end
 

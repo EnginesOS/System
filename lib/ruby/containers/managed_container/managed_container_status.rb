@@ -12,9 +12,10 @@ module ManagedContainerStatus
     if state == 'na'
       expire_engine_info
       SystemDebug.debug(SystemDebug.containers, container_name, 'in na',  :info)
-      return 'nocontainer'
+      'nocontainer'
+    else
+      state
     end
-    state
   rescue EnginesException =>e
     expire_engine_info
     'nocontainer'

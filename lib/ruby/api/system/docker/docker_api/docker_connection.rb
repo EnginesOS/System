@@ -47,12 +47,12 @@ class DockerConnection < ErrorsApi
     @default_headers ||= {'Content-Type' =>'application/json', 'Accept' => '*/*'}
   end
 
-  def post_request(uri,  params = nil, expect_json = true , rheaders = nil, time_out = 60)
+  def post_request(uri, params = nil, expect_json = true , rheaders = nil, time_out = 60)
     SystemDebug.debug(SystemDebug.docker,' Post ' + uri.to_s)
     SystemDebug.debug(SystemDebug.docker,'Post OPIOMS ' + params.to_s)
     rheaders = default_headers if rheaders.nil?
     params = params.to_json if rheaders['Content-Type'] == 'application/json' && ! params.nil?
-    return handle_resp(
+    handle_resp(
     connection.request(
     method: :post,
     :path => uri,
@@ -112,7 +112,7 @@ class DockerConnection < ErrorsApi
       else
         body = content
       end
-      r  = sc.request(
+      r = sc.request(
       method: :post,
       read_timeout: 3600,
       query: options,
@@ -122,17 +122,17 @@ class DockerConnection < ErrorsApi
       )
       stream_handler.close
     else
-      r  = sc.request(
+      r = sc.request(
       method: :post,
       read_timeout: 3600,
       query: options,
       path: uri,
       body: content,
-      headers:  rheaders)
+      headers: rheaders)
       stream_handler.close
     end
     r
-  rescue  Excon::Error::Socket
+  rescue Excon::Error::Socket
     STDERR.puts(' docker socket stream close ')
     stream_handler.close
   end

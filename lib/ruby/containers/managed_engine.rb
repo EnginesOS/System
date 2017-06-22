@@ -68,7 +68,6 @@ class ManagedEngine < ManagedContainer
   end
 
   def load_blueprint
-    return false unless has_api?
     @container_api.load_blueprint(self)
   end
 

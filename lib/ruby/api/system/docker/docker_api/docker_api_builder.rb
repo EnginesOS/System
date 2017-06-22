@@ -36,8 +36,11 @@ module DockerApiBuilder
     end
 
     def has_data?
-      return true unless @io_stream.nil?
-      false
+      if @io_stream.nil?
+        false
+      else
+        true
+      end
     end
 
     def process_response()

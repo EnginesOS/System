@@ -47,11 +47,13 @@ begin
 
   def source_is_service?(request, service_name)
     service = get_service(service_name)
-    return true if request.ip.to_s == service.get_ip_str
-    false
+    if request.ip.to_s == service.get_ip_str
+      true
+    else
+      false
+    end
   rescue
     false
-
   end
 
   def sql_lite_database
@@ -61,15 +63,19 @@ begin
     false
   end
   begin
-  require_relative 'helpers/helpers.rb'
-  require_relative 'api/routes.rb'
-    rescue StandardError => e
-        STDERR.puts('Sinatra Error ' + e.to_s )
+    require_relative 'helpers/helpers.rb'
+    require_relative 'api/routes.rb'
+  rescue StandardError => e
+    STDERR.puts('Sinatra Error ' + e.to_s )
   end
+
   def post_params(request)
     r = request.env['rack.input'].read
-    return {} if r.nil?
-    json_parser.parse(r)
+    unless r.nil?
+      json_parser.parse(r)
+    else
+      {}
+    end
   rescue StandardError => e
     STDERR.puts(' POST Parse Error ' + e.to_s + ' on ' + r.to_s)
     {}

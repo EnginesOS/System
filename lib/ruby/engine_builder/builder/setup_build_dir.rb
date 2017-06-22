@@ -1,8 +1,7 @@
 module BuildDirSetup
-  
+
   require_relative 'config_file_writer.rb'
   require_relative 'docker_file_builder/docker_file_builder.rb'
-  
   def backup_lastbuild
     dir = basedir
     backup = dir + '.backup'
@@ -46,11 +45,11 @@ module BuildDirSetup
     SystemDebug.debug(SystemDebug.builder, 'Eviron file  written')
     setup_framework_logging
     SystemDebug.debug(SystemDebug.builder, 'Logging setup')
-#  rescue StandardError => e
-#    log_build_errors('Engine Build Aborted Due to:' + e.to_s)
-#    post_failed_build_clean_up
-#    log_exception(e)
-#    raise e
+    #  rescue StandardError => e
+    #    log_build_errors('Engine Build Aborted Due to:' + e.to_s)
+    #    post_failed_build_clean_up
+    #    log_exception(e)
+    #    raise e
   end
 
   def create_build_dir
@@ -126,17 +125,18 @@ module BuildDirSetup
     if @blueprint_reader.framework == 'docker'
       @web_user = @blueprint_reader.cont_user
       #   STDERR.puts("Set web user to:" + @web_user.to_s)
-      return @web_user
-    end
-    log_build_output('Read Web User')
-    stef = File.open(basedir + '/home/stack.env', 'r')
-    while line = stef.gets do
-      if line.include?('USER')
-        i = line.split('=')
-        @web_user = i[1].strip
+    else
+      log_build_output('Read Web User')
+      stef = File.open(basedir + '/home/stack.env', 'r')
+      while line = stef.gets do
+        if line.include?('USER')
+          i = line.split('=')
+          @web_user = i[1].strip
+        end
       end
+      stef.close
     end
-    stef.close
+    @web_user
   end
 
   def apply_templates_to_environments
@@ -181,9 +181,7 @@ module BuildDirSetup
       fw = File.new(basedir  + '/Dockerfile.tmpl', 'w+')
       fw.write(df)
       fw.close
-      return true
     end
-    r
   end
 
   def setup_framework_logging

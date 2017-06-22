@@ -1,27 +1,24 @@
 module Cache
   def engine_from_cache(ident)
+    r = nil
     if @engines_conf_cache.key?(ident.to_sym) && @engines_conf_cache[ident.to_sym].is_a?(Hash)
       unless @engines_conf_cache[ident.to_sym][:engine].nil?
         ts = get_engine_ts(@engines_conf_cache[ident.to_sym][:engine])
         if ts == -1
           rm_engine_from_cache(ident)
           SystemDebug.debug(SystemDebug.cache, :Expire_in_CACHE, ident)
-          nil
         else
           SystemDebug.debug(SystemDebug.cache, :FROM_CACHE, ident)
           if @engines_conf_cache[ident.to_sym][:ts] == ts
-            @engines_conf_cache[ident.to_sym][:engine]
+           r=  @engines_conf_cache[ident.to_sym][:engine]
           else
             SystemDebug.debug(SystemDebug.cache, :Stale_in_Cache )
-            @engines_conf_cache[ident.to_sym][:engine] = nil
+            r = @engines_conf_cache[ident.to_sym][:engine] = nil
           end
         end
-      else
-        nil
       end
-    else
-      nil
     end
+    r
   end
 
   def rm_engine_from_cache(engine_name)
@@ -66,15 +63,13 @@ module Cache
   def container_from_cache(container_ident)
     unless container_ident.nil?
       engine_from_cache(container_ident)
-    else
-      nil
     end
   end
 
   def cache_update_ts(container, ts)
     ident =  get_ident(container)
     name_key = ident.to_sym
-    if@engines_conf_cache.key?(name_key) && ! @engines_conf_cache[name_key].nil?
+    if @engines_conf_cache.key?(name_key) && ! @engines_conf_cache[name_key].nil?
       @engines_conf_cache[name_key][:ts] = ts
       true
     else

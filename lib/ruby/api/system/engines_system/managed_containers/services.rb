@@ -21,7 +21,7 @@ module Services
 
   def loadManagedService(service_name)
     s = engine_from_cache('services/' + service_name)
-    return s if s.is_a?(ManagedService)
+   unless s.is_a?(ManagedService)
     if service_name == 'system'
       s = loadSystemService(service_name)
     else
@@ -29,6 +29,7 @@ module Services
       ts = File.mtime(SystemConfig.RunDir + '/services/' + service_name + '/running.yaml')
       cache_engine(s, ts)
     end
+   end
     s
   end
 

@@ -1,23 +1,16 @@
 module FirstRunComplete
   def first_run_complete(install_mgmt = true)
-    return true if File.exist?(SystemConfig.FirstRunRan) == true
-    first_run = @engines_api.loadManagedService('firstrun')
-    Thread.start do
-      begin
-        first_run.stop_container
-        first_run.destroy_container
-        FileUtils.touch('/opt/engines/run/system/flags/install_mgmt') if install_mgmt == true
-        run_server_script('first_start')
-
-        #        unless install_mgmt == true
-        #          mark_complete
-        #        else
-        #          mgmt = @engines_api.loadManagedService('mgmt')
-        #          mgmt.create_container
-        #
-        #        end
-      rescue StandardError => e
-        STDERR.puts('FIRST RUN Thread Exception' + e.to_s + ':' + e.backtrace.to_s)
+    unless File.exist?(SystemConfig.FirstRunRan) == true
+      first_run = @engines_api.loadManagedService('firstrun')
+      Thread.start do
+        begin
+          first_run.stop_container
+          first_run.destroy_container
+          FileUtils.touch('/opt/engines/run/system/flags/install_mgmt') if install_mgmt == true
+          run_server_script('first_start')
+        rescue StandardError => e
+          STDERR.puts('FIRST RUN Thread Exception' + e.to_s + ':' + e.backtrace.to_s)
+        end
       end
     end
     true

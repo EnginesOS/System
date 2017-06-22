@@ -40,9 +40,11 @@ post '/v0/containers/service/:service_name/action/:action_name' do
     cparams = assemble_params(p_params, [:service_name], :all)
     action = services_api.get_service_actionator(service, params[:action_name])
     r = services_api.perform_service_action(service, params[:action_name], cparams)
-   return return_json(r) if action[:return_type] == 'json'
-    # STDERR.puts('action ret ' + r.to_s )
-    return_text(r)  
+    if action[:return_type] == 'json'
+      return_json(r)
+    else
+      return_text(r)
+    end
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

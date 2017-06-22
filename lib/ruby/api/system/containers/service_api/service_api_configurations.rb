@@ -2,7 +2,11 @@ module ServiceApiConfigurations
   @@configurator_timeout = 10
   def retrieve_configurator(c, params)
     cmd = '/home/configurators/read_' + params[:configurator_name].to_s + '.sh'
-    result =  @engines_core.exec_in_container({:container => c, :command_line => [cmd], :log_error => true, :timeout => @@configurator_timeout})
+    result =  @engines_core.exec_in_container(
+    {container: c,
+      command_line: [cmd],
+      log_error: true,
+      timeout: @@configurator_timeout})
     if result[:result] == 0
       #variables = SystemUtils.hash_string_to_hash(result[:stdout])
       #FIXMe dont use JSON.pars
@@ -15,12 +19,20 @@ module ServiceApiConfigurations
   end
 
   def run_configurator(c, configurator_params)
-    return {stderr: 'Not Running', result: -1} unless c.is_running?
-    #  STDERR.puts( "CONFIGURAT[:variables].to_json " + configurator_params[:variables].to_json.to_s)
-    cmd = ['/home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh']
-    #  STDERR.puts( 'CONFIGURAT cmd /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh')
-    #cmd = 'docker_exec -u ' + container.cont_userid.to_s + ' ' +  container.container_name.to_s + ' /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh \'' + SystemUtils.hash_variables_as_json_str(configurator_params).to_s + '\''
-    @engines_core.exec_in_container({:container => c, :command_line => cmd, :log_error => true , :timeout => @@configurator_timeout, :data=> configurator_params[:variables].to_json })
+    if c.is_running?
+      #  STDERR.puts( "CONFIGURAT[:variables].to_json " + configurator_params[:variables].to_json.to_s)
+      cmd = ['/home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh']
+      #  STDERR.puts( 'CONFIGURAT cmd /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh')
+      #cmd = 'docker_exec -u ' + container.cont_userid.to_s + ' ' +  container.container_name.to_s + ' /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh \'' + SystemUtils.hash_variables_as_json_str(configurator_params).to_s + '\''
+      @engines_core.exec_in_container(
+      {container: c,
+        command_line: cmd,
+        log_error: true,
+        timeout: @@configurator_timeout,
+        data: configurator_params[:variables].to_json })
+    else
+      {stderr: 'Not Running', result: -1}
+    end
   end
 
   def update_service_configuration(configuration)
@@ -40,7 +52,12 @@ module ServiceApiConfigurations
     cmd = '/home/resources/' + what + '.sh'
     # STDERR.puts('SERVICE RESOURCE' + cmd.to_s)
     #  STDERR.puts('SERVICE RESOURCE' + c.container_name)
-    @engines_core.exec_in_container({:container => c, :command_line => cmd, :log_error => true , :timeout => @@configurator_timeout, :data=> nil })[:stdout]
+    @engines_core.exec_in_container(
+    {container: c,
+      command_line: cmd,
+      log_error: true,
+      timeout: @@configurator_timeout,
+      data: nil})[:stdout]
   end
 
 end 

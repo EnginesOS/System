@@ -75,7 +75,7 @@ module ContainerControls
     expire_engine_info
     unless has_container?
       @container_id = '-1'
-      true
+      r = true
     else
       raise EnginesException.new(warning_hash('Cannot Destroy ' +  container_name + ' as is not stopped Please stop first', container_name)) if is_active?
       r = container_api.destroy_container(self)

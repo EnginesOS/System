@@ -76,7 +76,7 @@ module DockerUtils
     unless h.nil?
       h[:stderr] = "" unless h.key?(:stderr)
       h[:stdout] = "" unless h.key?(:stdout)
-      while r.length >0
+      while r.length > 0
         if r[0].nil?
           return h if r.length == 1
           #STDERR.puts('Skipping nil ')
@@ -124,7 +124,7 @@ module DockerUtils
         r = r[length..-1]
       end
 
-      # This is actually set elsewhere after exec complete
+      # result actually set elsewhere after exec complete
       h[:result] = 0
       h[:stdout].force_encoding(Encoding::UTF_8) unless h[:stdout].nil?
       h[:stderr].force_encoding(Encoding::UTF_8) unless h[:stderr].nil?

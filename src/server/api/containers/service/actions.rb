@@ -35,18 +35,21 @@ end
 post '/v0/containers/service/:service_name/action/:action_name' do
   begin
     p_params = post_params(request)
-    p_params[:service_name] = params[:service_name]  
-    p_params[:action_name] = params[:action_name]  
+    p_params[:service_name] = params[:service_name]
+    p_params[:action_name] = params[:action_name]
     cparams = assemble_params(p_params, [:service_name], :all)
-  service = get_service(cparams[:service_name])
-    action = engines_api.get_service_actionator(service, params[:action_name])   
+    service = get_service(cparams[:service_name])
+    action = engines_api.get_service_actionator(service, params[:action_name])
     r  = engines_api.perform_service_action( params[:service_name]  , p_params[:action_name], cparams)
-   # STDERR.puts('action ret type '+ action[:return_type])
-   # STDERR.puts('action ret ' + r.to_s )
-   # STDERR.puts('action ret ' + r.to_json )
-    return return_json(r) if action[:return_type] == 'json'
-   #    STDERR.puts('action ret ' + r.to_s )
-      return_text(r)  
+    # STDERR.puts('action ret type '+ action[:return_type])
+    # STDERR.puts('action ret ' + r.to_s )
+    # STDERR.puts('action ret ' + r.to_json )
+    if action[:return_type] == 'json'
+      return_json(r)
+    else
+      #    STDERR.puts('action ret ' + r.to_s )
+      return_text(r)
+    end
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

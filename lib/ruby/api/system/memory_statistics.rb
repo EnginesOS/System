@@ -48,22 +48,25 @@ module MemoryStatistics
   end
 
   def self.container_memory_stats(container)
-    return self.empty_container_result(container) unless container.is_active?
-    if container && container.container_id.nil? == false && container.container_id != '-1'
-      path = SystemUtils.cgroup_mem_dir(container.container_id.to_s)
-      if Dir.exist?(path)
-        ret_val = {
-          maximum: File.read(path + '/memory.max_usage_in_bytes').to_i,
-          current: File.read(path + '/memory.usage_in_bytes').to_i,
-          limit: File.read(path + '/memory.limit_in_bytes').to_i
-        }
-      else
-        STDERR.puts('no_cgroup_file for ' + container.container_name + ':' + path.to_s, path)
-        SystemUtils.log_error_mesg('no_cgroup_file for ' + container.container_name + ':' + path.to_s, path)
-        ret_val = self.empty_container_result(container)
+    unless container.is_active?
+      self.empty_container_result(container)
+    else
+      if container && container.container_id.nil? == false && container.container_id != '-1'
+        path = SystemUtils.cgroup_mem_dir(container.container_id.to_s)
+        if Dir.exist?(path)
+          ret_val = {
+            maximum: File.read(path + '/memory.max_usage_in_bytes').to_i,
+            current: File.read(path + '/memory.usage_in_bytes').to_i,
+            limit: File.read(path + '/memory.limit_in_bytes').to_i
+          }
+        else
+          STDERR.puts('no_cgroup_file for ' + container.container_name + ':' + path.to_s, path)
+          SystemUtils.log_error_mesg('no_cgroup_file for ' + container.container_name + ':' + path.to_s, path)
+          ret_val = self.empty_container_result(container)
+        end
       end
+      ret_val
     end
-    ret_val
   rescue StandardError => e
     SystemUtils.log_exception(e)
     {

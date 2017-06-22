@@ -4,9 +4,12 @@ module PublicApiBuilder
   end
 
   def last_build_log
-    return "none" unless File.exists?(SystemConfig.BuildOutputFile)
+    if File.exists?(SystemConfig.BuildOutputFile)
     File.read(SystemConfig.BuildOutputFile)
+  else
+    'none'
   end
+end
 
   def build_status
     SystemStatus.build_status
@@ -27,12 +30,12 @@ module PublicApiBuilder
         retry
       rescue EOFError
         out.write(bytes.force_encoding(Encoding::UTF_8))
-        return 'OK'
+       'OK'
         build_log_file.close
       rescue => e
         out.write(bytes)
         build_log_file.close
-        return 'Maybe ' + e.to_s
+        'Maybe ' + e.to_s
       end
       out.write(bytes.force_encoding(Encoding::UTF_8))
     end
