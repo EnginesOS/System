@@ -28,9 +28,9 @@ def assemble_params(ps, address_params, required_params = nil, accept_params = n
     unless accept_params.nil? || accept_params.empty?
       o_params = optional_params(ps, accept_params)
       a_params.merge!(o_params) unless o_params.nil?
-    end
-    a_params
+    end   
   end
+  a_params
 end
 
 def required_params(params, keys)
