@@ -42,8 +42,13 @@ module UserAuth
     SystemDebug.debug(SystemDebug.first_run, :applied, password, email)
   end
 
-  def set_system_user_password(user, password, email, token)
-    rws = auth_database.execute("Select authtoken from systemaccess where  username = '" + user.to_s + "';")
+  def set_system_user_password(user, password, email, token, current_password = nil)
+    if current_password.nil?
+      rws = auth_database.execute("Select authtoken from systemaccess where  username = '" + user.to_s + "';")
+    else
+      rws = auth_database.execute("Select authtoken from systemaccess where  username = '" + user.to_s\
+      + "' and password = '" + current_password.to_s + "';")
+    end
     authtoken = SecureRandom.hex(64)
     if rws.nil? || rws.count == 0
       query = 'INSERT INTO systemaccess (username, password, email, authtoken, uid)
@@ -68,7 +73,7 @@ module UserAuth
       auth_database.execute(query)
       update_local_token(authtoken) if user == 'admin'
     end
-
+    authtoken
   rescue StandardError => e
     SystemDebug.debug(SystemDebug.first_run,"Exception ", e)
     log_error_mesg(e.to_s)
