@@ -4,7 +4,7 @@ TESTS=prepare\
 	clean_up
 
 tests:
-	echo \033[0;31m Engines Persistent Services tests \033[0;30m
+	echo -n "\033[0;31m Engines Persistent Services tests \033[0;30m"
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 
 persistent_services:

@@ -1,7 +1,7 @@
 TESTS=actions action action_perform 
 
 tests:
-	echo \033[0;31m Service Action tests \033[0;30m
+	echo -n "\033[0;31m Service Action tests \033[0;30m"
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 	
 

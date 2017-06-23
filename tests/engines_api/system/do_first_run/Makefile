@@ -1,7 +1,7 @@
 TESTS=hosted_dns selfhosted_dns dyndns zeroconf external
 
 tests:
-	echo \033[0;31m First Run tests \033[0;30m
+	echo -n "\033[0;31m First Run tests \033[0;30m"
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 	
 hosted_dns:

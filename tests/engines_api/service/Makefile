@@ -7,7 +7,7 @@ TESTS=state stop start pause unpause  template mem_stat net_stat\
 	 actions destroy
 
 tests:
-	echo \033[0;31m Service tests \033[0;30m
+	echo -n "\033[0;31m Service tests \033[0;30m"
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 
 actions:

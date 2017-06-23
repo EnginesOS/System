@@ -1,7 +1,7 @@
 TESTS=engines state container_name  builder
 
 tests:
-	echo \033[0;31m Engines tests \033[0;30m
+	echo -n "\033[0;31m Engines tests \033[0;30m"
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 	
 engines:

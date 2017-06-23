@@ -1,7 +1,7 @@
 TESTS=prepare actions action action_perform clean_up
 
 tests:
-	echo \033[0;31m Engine Action tests \033[0;30m
+	echo -n "\033[0;31m Engine Action tests \033[0;30m"
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 	
 prepare:
