@@ -1,4 +1,4 @@
-@route += '/'
+@route += ''
 p = {api_vars: {user_name: ARGV[2],
   password: ARGV[3]
   }}
