@@ -57,7 +57,7 @@ def perform_del(time_out = 35)
   exit
 end
 
-def perform_post(params, content_type='application/json_parser')
+def perform_post(params, content_type='application/json')
   post_params = {}
   post_params[:api_vars] = params
   rest_post(@route,post_params, content_type)
