@@ -1,7 +1,7 @@
 TESTS=list view set_default default add remove  system_ca generate 
 
 tests:
-	echo -n "\033[0;31m Certificate tests \033[0;30m"
+	echo -n "\033[0;31m Certificate tests \033[0;30m\n"
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 	
 list:

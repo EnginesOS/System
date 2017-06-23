@@ -1,7 +1,7 @@
 TESTS= heap_dump dump_threads
 #update restart recreate
 tests:
-	echo -n "\033[0;31m Engines system tests \033[0;30m"
+	echo -n "\033[0;31m Engines system tests \033[0;30m\n"
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 	
 update:

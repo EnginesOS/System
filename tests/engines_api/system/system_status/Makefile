@@ -1,7 +1,7 @@
 TESTS=status first_run_required system_update_status
 
 tests:
-	echo -n "\033[0;31m System Status tests \033[0;30m"
+	echo -n "\033[0;31m System Status tests \033[0;30m\n"
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 	
 status:

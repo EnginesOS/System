@@ -1,7 +1,7 @@
 TESTS=list set view
 
 tests:
-	echo -n "\033[0;31m Service Configurations tests \033[0;30m"
+	echo -n "\033[0;31m Service Configurations tests \033[0;30m\n"
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 	
 
