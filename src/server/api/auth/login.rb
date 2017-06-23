@@ -22,7 +22,7 @@ post '/v0/system/login' do
   begin
     content_type 'text/plain'
     post_s = post_params(request)
-    cparams = assemble_params(post_s, [], [:user_name, :password])
+    cparams = assemble_params(post_s, nil, [:user_name, :password])
     engines_api.user_login(cparams)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
