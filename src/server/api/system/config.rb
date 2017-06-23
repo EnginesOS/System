@@ -58,7 +58,7 @@ post '/v0/system/config/default_site' do
     post_s = post_params(request)
     cparams = assemble_params(post_s, [], [:default_site])
     default_site = cparams[:default_site]
-    return_text(engines_api.set_default_site(default_site))
+    return_boolean(engines_api.set_default_site(default_site))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
