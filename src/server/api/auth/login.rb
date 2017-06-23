@@ -36,7 +36,7 @@ end
 # @params :user_name, :new_password, :email, :token, :current_password
 # all params are required
 # new auth token returned
-post '/v0/system/users/'
+post '/v0/system/users/' do
 begin
   content_type 'text/plain'
   post_s = post_params(request)
@@ -45,14 +45,14 @@ begin
 rescue StandardError => e
   send_encoded_exception(request: request, exception: e)
 end
-
+end
 # get Users details
 # @method set_user
 # @overload post '/v0/system/users/'
 # @params :user_name
 # all params are required
 # user params returned
-get '/v0/system/users/'
+get '/v0/system/users/' do
 begin
   content_type 'text/plain'
   post_s = post_params(request)
@@ -60,6 +60,7 @@ begin
   engines_api.get_system_user_info(cparams)
 rescue StandardError => e
   send_encoded_exception(request: request, exception: e)
+end
 end
 
 # @clears Authentication token
