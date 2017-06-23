@@ -25,9 +25,11 @@ def assemble_params(ps, address_params, required_params = nil, accept_params = n
       a_params.merge!(ps[:api_vars]) if ps.key?(:api_vars)
       a_params
     else
+      STDERR.puts(' Aparams ' + ps.to_s + ' required_params params ' + required_params.to_s)
       r_params = required_params(ps, required_params)
+      STDERR.puts(' Rparams ' + r_params.to_s)
       raise EnginesException.new(error_hash('Missing Parameters ' + required_params.to_s + ' but only have:' + ps.to_s)) if r_params == false
-        STDERR.puts(' Aparams ' + a_params.to_s + ' Ret params ' + r_params.to_s)
+      
       a_params.merge!(r_params) unless r_params.nil?
     end
     unless accept_params.nil? || accept_params.empty?
