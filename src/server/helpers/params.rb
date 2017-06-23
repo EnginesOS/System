@@ -27,6 +27,7 @@ def assemble_params(ps, address_params, required_params = nil, accept_params = n
     else
       r_params = required_params(ps, required_params)
       raise EnginesException.new(error_hash('Missing Parameters ' + required_params.to_s + ' but only have:' + ps.to_s)) if r_params == false
+        STDERR.puts(' Aparams ' + a_params.to_s + ' Ret params ' + r_params.to_s)
       a_params.merge!(r_params) unless r_params.nil?
     end
     unless accept_params.nil? || accept_params.empty?
