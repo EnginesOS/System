@@ -30,6 +30,22 @@ post '/v0/system/login' do
   end
 end
 
+# Set Users details
+# @method set_user
+# @overload post '/v0/system/users/'
+# @params :user_name, :new_password, :email, :token, :current_password
+# all params are required
+# new auth token returned
+post '/v0/system/users/'
+begin
+  content_type 'text/plain'
+  post_s = post_params(request)
+  cparams = assemble_params(post_s, nil, [:user_name, :new_password, :email, :token, :current_password])
+  set_system_user_password(cparams)
+rescue StandardError => e
+  send_encoded_exception(request: request, exception: e)
+end
+
 # @clears Authentication token
 # FIXMe this is a no-op
 get '/v0/system/logout' do

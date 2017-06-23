@@ -1,6 +1,6 @@
 TESTS=prepare state stop start pause unpause engine status blueprint websites logs ps template mem_stat net_stat\
 	blueprint build_report properties_net properties_run\
-	actions services \
+	actions cron services \
 	halt start restart create recreate destroy reinstall delete 
  
 	

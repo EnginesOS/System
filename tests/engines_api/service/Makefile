@@ -1,7 +1,7 @@
 #note the order of the tests is important create before dependancies
 	
 TESTS=state stop start pause unpause  template mem_stat net_stat\
-	  create dependacies properties_net properties_run\
+	 create dependacies properties_net properties_run\
 	 services consumers configurations\
 	 destroy create  recreate \
 	 actions destroy
@@ -19,10 +19,10 @@ consumers:
 	cd consumers ; make -s tests ; cd ..
 
 state:
-	engines service dns state 	|engines_test_expects text is running
+	engines service dns state |engines_test_expects text is running
 	
 stop:
-	engines service dns stop  |engines_test_expects bool true
+	engines service dns stop |engines_test_expects bool true
 	engines service dns wait_for stop 25 | engines_test_expects bool true
 	echo -n " Checking:"
 	engines service dns state | engines_test_expects text is stopped
