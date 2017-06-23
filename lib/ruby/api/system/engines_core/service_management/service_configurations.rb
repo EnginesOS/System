@@ -22,8 +22,8 @@ module ServiceConfigurations
 
   def update_service_configuration(service_param)
     # configurator = ConfigurationsApi.new(self)
-    update_configuration_on_service(service_param)
-    service_manager.update_service_configuration(service_param)
+      update_configuration_on_service(service_param)
+    #This is down above    service_manager.update_service_configuration(service_param)
   end
 
   def retrieve_configuration(service_param)
@@ -86,16 +86,15 @@ module ServiceConfigurations
     # setting stopped contianer is ok as call can know the state, used to boot strap a config
     unless service.is_running?
       service_param[:pending] = true
-      service_manager.update_service_configuration(service_param)
+          service_manager.update_service_configuration(service_param)
     else
       if service_param.key?(:pending)
         service_param.delete(:pending)
       end
       # set config on reunning service
       configurator_result = service.run_configurator(service_param)
-
       raise EnginesException.new(error_hash('Service configurator erro@core_api.r Got:' + configurator_result.to_s, " For:" +service_param.to_s)) unless configurator_result.is_a?(Hash)
-      service_manager.update_service_configuration(service_param)
+        service_manager.update_service_configuration(service_param)
       raise EnginesException.new(error_hash('Service configurator error @core_ap Got:' + configurator_result.to_s, " For:" +service_param.to_s )) unless configurator_result[:result] == 0 || configurator_result[:stderr].start_with?('Warning')
     end
     true

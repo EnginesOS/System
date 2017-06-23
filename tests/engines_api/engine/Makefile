@@ -5,6 +5,7 @@ TESTS=prepare state stop start pause unpause engine status blueprint websites lo
  
 	
 tests:
+	echo -n "\033[0;31m Engine tests \033[0;30m\n"
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 
 actions:

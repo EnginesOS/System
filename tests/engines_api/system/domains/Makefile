@@ -1,6 +1,7 @@
 TESTS=add list view update remove 
 
 tests:
+	echo -n "\033[0;31m Domain name tests \033[0;30m\n"
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 		
 	

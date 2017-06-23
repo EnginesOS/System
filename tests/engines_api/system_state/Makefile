@@ -2,6 +2,7 @@ TESTS=running
 SERVICES=dns nginx cron cert_auth auth mysql_server
 
 tests:
+	echo -n "\033[0;31m System State tests \033[0;30m\n"
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 		
 	

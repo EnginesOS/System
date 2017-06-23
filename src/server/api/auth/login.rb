@@ -48,15 +48,13 @@ end
 end
 # get Users details
 # @method set_user
-# @overload post '/v0/system/users/'
+# @overload get '/v0/system/users/'
 # @params :user_name
-# all params are required
-# user params returned
+# user params["user_name, :token, :email, :uid] returned
 get '/v0/system/users/' do
 begin
   content_type 'text/plain'
-  post_s = post_params(request)
-  cparams = assemble_params(post_s, nil, [:user_name])
+  cparams = assemble_params(params, nil, [:user_name])
   engines_api.get_system_user_info(cparams)
 rescue StandardError => e
   send_encoded_exception(request: request, exception: e)

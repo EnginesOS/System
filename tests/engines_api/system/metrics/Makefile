@@ -1,6 +1,7 @@
 TESTS=memory load mem_stats disk
 
-tests:	
+tests:
+	echo -n "\033[0;31m Metrics tests \033[0;30m\n"
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 	
 memory:
