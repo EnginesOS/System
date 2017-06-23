@@ -41,12 +41,17 @@ module UserAuth
     set_system_user_password('admin', password, email, token)
     SystemDebug.debug(SystemDebug.first_run, :applied, password, email)
   end
+  
+  def get_system_user_info(user_name)
+    rws = auth_database.execute("Select username, email, authtoken, uid from systemaccess where username = '" + user.to_s+ "';")
+    rws[0]
+  end
 
   def set_system_user_password(user, password, email, token, current_password = nil)
     if current_password.nil?
-      rws = auth_database.execute("Select authtoken from systemaccess where  username = '" + user.to_s + "';")
+      rws = auth_database.execute("Select authtoken from systemaccess where username = '" + user.to_s + "';")
     else
-      rws = auth_database.execute("Select authtoken from systemaccess where  username = '" + user.to_s\
+      rws = auth_database.execute("Select authtoken from systemaccess where username = '" + user.to_s\
       + "' and password = '" + current_password.to_s + "';")
     end
     authtoken = SecureRandom.hex(64)
