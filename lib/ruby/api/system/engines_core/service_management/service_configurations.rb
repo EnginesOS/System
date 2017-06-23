@@ -93,7 +93,6 @@ module ServiceConfigurations
       end
       # set config on reunning service
       configurator_result = service.run_configurator(service_param)
-STDERR.puts( " COFNGITO RES " + configurator_result.to_s )
       raise EnginesException.new(error_hash('Service configurator erro@core_api.r Got:' + configurator_result.to_s, " For:" +service_param.to_s)) unless configurator_result.is_a?(Hash)
         service_manager.update_service_configuration(service_param)
       raise EnginesException.new(error_hash('Service configurator error @core_ap Got:' + configurator_result.to_s, " For:" +service_param.to_s )) unless configurator_result[:result] == 0 || configurator_result[:stderr].start_with?('Warning')
