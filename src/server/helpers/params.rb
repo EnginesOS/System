@@ -66,7 +66,7 @@ def match_params(params, keys, is_required = false)
     cparams = {}
     if keys.is_a?(Array)
       for key in keys
-        STDERR.puts(' KEY ' + key.to_s)
+     #   STDERR.puts(' KEY ' + key.to_s + ' Params ' + params.to_s)
         return false unless check_required(params, key, is_required)
         cparams[key.to_sym] = params[key] unless params[key].nil?
       end
@@ -82,6 +82,7 @@ rescue StandardError => e
 end
 
 def check_required(params, key, is_required)
+  STDERR.puts(' KEY ' + key.to_s + ' Params ' + params.to_s)
   if !is_required
     true
   elsif params.key?(key)
