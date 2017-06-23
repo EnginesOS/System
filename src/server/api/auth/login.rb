@@ -13,6 +13,22 @@ get '/v0/system/login/:user_name/:password' do
   end
 end
 
+# Login with :user_name and :password
+# @method login
+# @overload  post '/v0/system/login/'
+# @params :user_name, :password
+# @return [String] Authentication token
+post '/v0/system/login' do
+  begin
+    content_type 'text/plain'
+    post_s = post_params(request)
+    cparams = assemble_params(post_s, [], [:user_name, :password])
+    engines_api.user_login(cparams)
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+end
+
 # @clears Authentication token
 # FIXMe this is a no-op
 get '/v0/system/logout' do
