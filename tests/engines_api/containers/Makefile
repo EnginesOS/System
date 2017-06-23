@@ -1,6 +1,7 @@
 TESTS=check_and_act
 
 tests:
+	echo \033[0;31m Container tests \033[0;30m
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 
 
