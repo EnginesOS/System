@@ -79,10 +79,11 @@ def match_params(params, keys, is_required = false)
 rescue StandardError => e
   p e
   p e.backtrace
+  false
 end
 
 def check_required(params, key, is_required)
-  STDERR.puts(' KEY ' + key.to_s + ' Params ' + params.to_s)
+  STDERR.puts(' KEY ' + key.to_s + ' Params ' + params.to_s + ' Whihs is a  '+  params.class.name)
   if !is_required
     true
   elsif params.key?(key)
@@ -92,6 +93,10 @@ def check_required(params, key, is_required)
     p key
     false
   end
+  rescue StandardError => e
+    STDERR.puts(e.to_s)
+    STDERR.puts(e.backtrace.to_s)
+    false
 end
 
 def service_hash_from_params(params, search)
