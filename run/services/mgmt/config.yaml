@@ -60,6 +60,20 @@ environments:
  value: true
  has_changed: true 
  build_time_only: false
+- !ruby/object:EnvironmentVariable
+ name: FQDN_PORT
+ value: mgmt._Engines_System(default_domain):10443
+ has_changed: true 
+ build_time_only: false
+ immutable: false
+ label: "FQDN_PORT"
+- !ruby/object:EnvironmentVariable
+ name: DOMAIN
+ value: _Engines_System(default_domain)
+ has_changed: true 
+ build_time_only: false
+ immutable: false
+ label: "DOMAIN"
 image: engines/mgmt:_Engines_System(release)
 repo: na
 last_result: 
