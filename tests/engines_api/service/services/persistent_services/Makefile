@@ -2,6 +2,7 @@ TESTS=persistent_services persistent_services_type persistent_service\
 	 service_persistent_import service_persistent_replace service_persistent_export
 	 
 tests:
+	echo \033[0;31m Service Persistent Services tests \033[0;30m
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 
 persistent_services:

@@ -1,6 +1,7 @@
 TESTS=prepare cron_job cron_jobs schedules run_cron_job schedule clean_up
 
 tests:
+	echo \033[0;31m Engine Cron tests \033[0;30m
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 	
 prepare:

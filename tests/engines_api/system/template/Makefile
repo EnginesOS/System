@@ -2,6 +2,7 @@ TESTS= default_domain docker_ip hrs_from_gmt mgmt_host mongo_host mysql_host pgs
 
 
 tests:
+	echo \033[0;31m Template tests \033[0;30m
 	@$(foreach test,$(TESTS),  echo -n $(test):; make -s $(test);)
 	
 publickey:

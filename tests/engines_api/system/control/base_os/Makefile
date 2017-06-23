@@ -2,6 +2,7 @@ TESTS=update locale timezone
 #restart shutdown
 
 tests:
+	echo \033[0;31m Base OS tests \033[0;30m
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 		
 update:

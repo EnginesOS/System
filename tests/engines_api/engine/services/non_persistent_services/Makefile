@@ -2,6 +2,7 @@ TESTS=non_persistent_services non_persistent_services_type service_non_persisten
 	service_non_persistent_deregister service_non_persistent_register service_non_persistent_reregister
 
 tests:
+	echo \033[0;31m Engines Non Persistent Services tests \033[0;30m
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 	
 	

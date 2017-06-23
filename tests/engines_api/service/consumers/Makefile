@@ -1,6 +1,7 @@
 TESTS=list remove view add 
 
 tests:
+	echo \033[0;31m Sercice Consumers tests \033[0;30m
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 	
 

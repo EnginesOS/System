@@ -1,6 +1,7 @@
 SUBDIRS=system engines engine containers services service engine_builder registry service_manager
 ENGINES=plainguitest testengine
 tests:
+	echo \033[0;31m System State tests \033[0;30m
 	@$(foreach dir,$(SUBDIRS), cd $(dir);echo  $(dir):; make -s tests; cd ..;)
 	
 clear_last:
