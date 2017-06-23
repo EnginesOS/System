@@ -1,4 +1,6 @@
+@route += ''
+p =  {user_name: ARGV[2],
+  password: ARGV[3]
+  }
 
-@route += '/'+ ARGV[2] + '/' + ARGV[3]
-
-perform_get()
+perform_post(p)
