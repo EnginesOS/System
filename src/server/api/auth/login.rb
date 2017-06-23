@@ -1,12 +1,13 @@
 # @!group /system/login
 
 # Login with :user_name and :password
-# @method login
+# @method login_deprecated
 # @overload get '/v0/system/login/:user_name/:password'
 # @return [String] Authentication token
 get '/v0/system/login/:user_name/:password' do
   begin
     content_type 'text/plain'
+    STDERR.puts('USING INSECURE DEPRECATED METHOD')
     engines_api.user_login(params)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)

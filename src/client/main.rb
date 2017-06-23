@@ -132,6 +132,7 @@ else
   @host = cmdline_options[:host] if cmdline_options.key?(:host)
   @port = cmdline_options[:port] if cmdline_options.key?(:port)
   @route = cmdline_options[:prefix] if cmdline_options.key?(:prefix)
+  @use_https = cmdline_options[:use_https] if cmdline_options.key?(:use_https)
 end
 
 require_relative 'default_connection_settings.rb'
