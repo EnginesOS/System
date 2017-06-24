@@ -5,7 +5,7 @@ def error_hash(mesg, *params)
     error_type: :error,
     params: params,
     source: caller[1..4],
-    system:  'api',
+    system: 'api',
     error_mesg: mesg
   }
 end
@@ -13,7 +13,11 @@ end
 def assemble_params(ps, address_params, required_params = nil, accept_params = nil)
   raise EnginesException.new(error_hash('No params Supplied')) if ps.nil?
   ps = deal_with_json(ps) # actually just symbolize
-  a_params = match_address_params(ps, address_params)
+  if address_params.nil?
+    a_params = {}
+  else
+    a_params = match_address_params(ps, address_params)
+  end
   raise EnginesException.new(error_hash('Missing Address Parameters ' + address_params.to_s + ' but only have:' + ps.to_s)) if a_params == false
 
   unless required_params.nil? || required_params.empty?
@@ -22,13 +26,13 @@ def assemble_params(ps, address_params, required_params = nil, accept_params = n
       a_params
     else
       r_params = required_params(ps, required_params)
-      raise EnginesException.new(error_hash('Missing Parameters ' + required_params.to_s + ' but only have:' + ps.to_s)) if r_params == false
+      raise EnginesException.new(error_hash('Missing Parameters ' + required_params.to_s + ' but only have:' + ps.to_s)) if r_params == false      
       a_params.merge!(r_params) unless r_params.nil?
     end
     unless accept_params.nil? || accept_params.empty?
       o_params = optional_params(ps, accept_params)
       a_params.merge!(o_params) unless o_params.nil?
-    end   
+    end
   end
   a_params
 end
@@ -37,7 +41,7 @@ def required_params(params, keys)
   mparams = params[:api_vars]
   if mparams.nil?
     false
-  else
+  else   
     match_params(mparams, keys, true)
   end
 end
@@ -71,9 +75,10 @@ def match_params(params, keys, is_required = false)
 rescue StandardError => e
   p e
   p e.backtrace
+  false
 end
 
-def check_required(params, key, is_required)
+def check_required(params, key, is_required) 
   if !is_required
     true
   elsif params.key?(key)
@@ -83,6 +88,10 @@ def check_required(params, key, is_required)
     p key
     false
   end
+  rescue StandardError => e
+    STDERR.puts(e.to_s)
+    STDERR.puts(e.backtrace.to_s)
+    false
 end
 
 def service_hash_from_params(params, search)

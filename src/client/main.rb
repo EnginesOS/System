@@ -57,7 +57,7 @@ def perform_del(time_out = 35)
   exit
 end
 
-def perform_post(params, content_type='application/json_parser')
+def perform_post(params, content_type='application/json')
   post_params = {}
   post_params[:api_vars] = params
   rest_post(@route,post_params, content_type)
@@ -132,6 +132,7 @@ else
   @host = cmdline_options[:host] if cmdline_options.key?(:host)
   @port = cmdline_options[:port] if cmdline_options.key?(:port)
   @route = cmdline_options[:prefix] if cmdline_options.key?(:prefix)
+  @use_https = cmdline_options[:use_https] if cmdline_options.key?(:use_https)
 end
 
 require_relative 'default_connection_settings.rb'

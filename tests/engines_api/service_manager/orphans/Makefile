@@ -2,6 +2,7 @@ TESTS=delete_engine_and_orphanate delete_orphan use_orphan
 #use_orphan pickup_orphan
 
 tests:
+	echo -n "\033[0;31m Orphans tests \033[0;30m\n"
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 	
 clear_testengine:

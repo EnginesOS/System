@@ -1,6 +1,7 @@
 TESTS=hostnames ports engine_names hostnames
 
 tests:
+	echo -n "\033[0;31m Reserved tests \033[0;30m\n"
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 	
 hostnames:

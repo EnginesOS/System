@@ -1,6 +1,7 @@
 TESTS=services state  system container_name
 
 tests:
+	echo -n "\033[0;31m Services tests \033[0;30m\n"
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 	
 services:

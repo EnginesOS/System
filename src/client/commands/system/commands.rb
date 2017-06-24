@@ -1,10 +1,11 @@
 @route += '/' + ARGV[0] + '/' + ARGV[1]
 case ARGV[1]
 when 'login'
-require_relative 'login.rb'
+  require_relative 'login.rb'
 when 'control'
   require_relative 'control/commands.rb'
-
+when 'users'
+  require_relative 'users.rb'
 when 'keys'
   require_relative 'keys/commands.rb'
 

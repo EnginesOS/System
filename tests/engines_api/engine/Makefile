@@ -1,10 +1,11 @@
 TESTS=prepare state stop start pause unpause engine status blueprint websites logs ps template mem_stat net_stat\
 	blueprint build_report properties_net properties_run\
-	actions services \
+	actions cron services \
 	halt start restart create recreate destroy reinstall delete 
  
 	
 tests:
+	echo -n "\033[0;31m Engine tests \033[0;30m\n"
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 
 actions:

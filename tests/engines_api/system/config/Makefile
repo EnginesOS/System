@@ -2,6 +2,7 @@ TESTS=set_default_domain default_domain set_hostname hostname set_default_site d
 
 tests:
 	#host=`hostname`
+	echo -n "\033[0;31m Config tests \033[0;30m\n"
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 	
 	
