@@ -78,7 +78,7 @@ class DockerEventWatcher < ErrorsApi
           else
             json_part = nil
           end
-          chunk.gsub!(/}[ \n]$/, '}')
+          chunk.sub!(/}[ \n]$/, '}')
           STDERR.puts(' Chunk |' + chunk.to_s + '|')
           parser ||= Yajl::Parser.new({:symbolize_keys => true})
           hash = parser.parse(chunk)                 
