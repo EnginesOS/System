@@ -19,8 +19,7 @@ options = { :use_ssl => true, uri.scheme => 'https', :verify_mode => OpenSSL::SS
       resp.read_body do |chunk|
         begin
           next if chunk == "\0" || chunk == "\n"
-          chunk.sub!(/}[ \n]$/, '}')
-          STDERR.puts('Chunk |' + chunk.to_s + '|') 
+          chunk.sub!(/}[ \n]$/, '}')         
           hash = parser.parse(chunk)  #do |hash|
             p hash.to_json
             #  end
