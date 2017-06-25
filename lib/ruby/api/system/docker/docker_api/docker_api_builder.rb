@@ -59,11 +59,11 @@ module DockerApiBuilder
             end
           end
         rescue StandardError =>e
-          STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s)
+          STDERR.puts( ' parse build res EOROROROROR |' + chunk.to_s + '| ' +  e.to_s)
         end
       end
     rescue StandardError =>e
-      STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s)
+      STDERR.puts( ' parse build res EOROROROROR ||' + chunk.to_s + '|| ' +  e.to_s)
     end
 
     def process_request(*args)
