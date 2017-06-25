@@ -48,6 +48,7 @@ module DockerApiBuilder
       lambda do |chunk , c , t|
         begin
           chunk.sub!(/}[ \n]$/,'}')
+          chunk.sub!(/^[ \n]{/,'{')
           hash = @parser.parse(chunk)  #do |hash|
           # hash = deal_with_json(chunk)
           @builder.log_build_output(hash[:stream].force_encoding(Encoding::UTF_8)) if hash.key?(:stream)
