@@ -6,7 +6,7 @@ tests:
 	
 prepare:
 	cat prosody_build_params.json | engines engines build
-	engines engine_builder follow >/dev/null
+	engines engine_builder follow_stream >/dev/null
 	
 actions:
 	engines engine prosody actions | engines_test_expects json list_users

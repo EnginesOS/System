@@ -62,25 +62,26 @@ class DockerEventWatcher < ErrorsApi
   end
 
   def start
-    STDERR.puts(' STARTINF with ' + @event_listeners.to_s)
+    SystemDebug.debug(SystemDebug.container_events, 'EVENT LISTENER ' + @event_listeners.to_s)
     client = get_client
     client.request(Net::HTTP::Get.new('/events')) do |resp|
       json_part = nil
       resp.read_body do |chunk|
         begin
           SystemDebug.debug(SystemDebug.container_events, chunk.to_s )
-          next if chunk.nil?
-          chunk.gsub!(/\s+$/, '')
+          next if chunk.nil?                 
           chunk = json_part.to_s + chunk unless json_part.nil?
-          unless chunk.end_with?('}')
+          if chunk.match(/.*}[ \n]/).nil?
             SystemDebug.debug(SystemDebug.container_events, 'DOCKER SENT INCOMPLETE json ' + chunk.to_s )
             json_part = chunk
             next
           else
             json_part = nil
           end
+          chunk.sub!(/}[ \n]$/, '}')
+          STDERR.puts(' Chunk |' + chunk.to_s + '|')
           parser ||= Yajl::Parser.new({:symbolize_keys => true})
-          hash = parser.parse(chunk)          
+          hash = parser.parse(chunk)                 
           SystemDebug.debug(SystemDebug.container_events, 'got ' + hash.to_s)
           next unless is_valid_docker_event?(hash)          
           #  t = Thread.new {trigger(hash)}

@@ -2,7 +2,8 @@ class DockerConnection < ErrorsApi
 
   require 'net_x/http_unix'
   require 'socket'
-  require 'ffi_yajl'
+ # require 'ffi_yajl'
+  require 'yajl'
   require 'rubygems'
   require 'excon'
 
