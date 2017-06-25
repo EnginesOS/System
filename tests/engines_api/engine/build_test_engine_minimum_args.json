@@ -1,6 +1,6 @@
 {
-	"engine_name": "test",
-	"host_name": "enginetest",
+	"engine_name": "enginetest",
+	"host_name": "test",
 	"domain_name": "current.engines.org",
 	"http_protocol": "https",
 	"memory": 164,
