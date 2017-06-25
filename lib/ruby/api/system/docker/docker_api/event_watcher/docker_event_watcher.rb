@@ -69,9 +69,7 @@ class DockerEventWatcher < ErrorsApi
       resp.read_body do |chunk|
         begin
           SystemDebug.debug(SystemDebug.container_events, chunk.to_s )
-          next if chunk.nil?
-          STDERR.puts(' Chunk |' + chunk.to_s + '|')
-          
+          next if chunk.nil?                 
           chunk = json_part.to_s + chunk unless json_part.nil?
           if chunk.match(/.*}[ \n]/).nil?
             SystemDebug.debug(SystemDebug.container_events, 'DOCKER SENT INCOMPLETE json ' + chunk.to_s )
@@ -81,6 +79,7 @@ class DockerEventWatcher < ErrorsApi
             json_part = nil
           end
           chunk.gsub!(/}[ \n]$/, '}')
+          STDERR.puts(' Chunk |' + chunk.to_s + '|')
           parser ||= Yajl::Parser.new({:symbolize_keys => true})
           hash = parser.parse(chunk)                 
           SystemDebug.debug(SystemDebug.container_events, 'got ' + hash.to_s)
