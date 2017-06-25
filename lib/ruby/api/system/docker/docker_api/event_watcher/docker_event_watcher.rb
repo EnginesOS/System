@@ -73,7 +73,7 @@ class DockerEventWatcher < ErrorsApi
           STDERR.puts(' Chunk ' + chunk.to_s)
         #  chunk.gsub!(/\s+$/, '')
           chunk = json_part.to_s + chunk unless json_part.nil?
-          unless chunk.end_with?('}')
+          unless chunk.match?(/*.}[ \n]./)
             SystemDebug.debug(SystemDebug.container_events, 'DOCKER SENT INCOMPLETE json ' + chunk.to_s )
             json_part = chunk
             next
