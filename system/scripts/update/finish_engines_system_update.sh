@@ -20,7 +20,7 @@ if ! test -d  $system_updates_dir/$update_id
   then
   	services=`cat  $system_updates_dir/$update_id/services`
   		for service in $services
-  		 do
+  		 do  		 
   		 	/opt/engines/bin/engines service $service stop &>> $system_updates_dir/$update_id/update_log 		 	 
   		 	image=`grep image /opt/engines/run/services/$service/running.yaml | cut -f2 -d" "`
   			docker pull $image
@@ -40,12 +40,15 @@ if ! test -d  $system_updates_dir/$update_id
   		    echo "Recreate Service $service" &>> $system_updates_dir/$update_id/update_log
   		    
   		  	docker pull engines/$service:` cat /opt/engines/release`  &>> $system_updates_dir/$update_id/update_log
- 			rm /opt/engines/run/system_services/$service/running.yaml*
+ 			
  			#sleep 30
  			/opt/engines/bin/system_service.rb $service stop &>> $system_updates_dir/$update_id/update_log
+ 			/opt/engines/bin/system_service.rb $service wait_for stop 60
  			/opt/engines/bin/system_service.rb $service destroy &>> $system_updates_dir/$update_id/update_log
+ 			/opt/engines/bin/system_service.rb $service wait_for destroy 20
+ 			rm /opt/engines/run/system_services/$service/running.yaml*
  			/opt/engines/bin/system_service.rb $service create &>> $system_updates_dir/$update_id/update_log
- 			/opt/engines/bin/system_service.rb $service wait_for create 20
+ 			/opt/engines/bin/system_service.rb $service wait_for create 30
  			/opt/engines/bin/system_service.rb $service start
  			/opt/engines/bin/system_service.rb $service wait_for start 30
  			/opt/engines/bin/system_service.rb $service wait_for_startup 60
