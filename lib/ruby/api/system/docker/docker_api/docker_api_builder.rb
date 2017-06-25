@@ -47,8 +47,9 @@ module DockerApiBuilder
     def process_response()
       lambda do |chunk , c , t|
         begin
-          chunk.sub!(/}[ \n]*$/,'}')
-          chunk.sub!(/^[ \n]*{/,'{')
+          chunk.sub!(/}[ \n\r]*$/,'}')
+          chunk.sub!(/^[ \n\r]*{/,'{')
+   
           hash = @parser.parse(chunk)  #do |hash|
           # hash = deal_with_json(chunk)
           @builder.log_build_output(hash[:stream].force_encoding(Encoding::UTF_8)) if hash.key?(:stream)
