@@ -23,7 +23,6 @@ module DockerApiBuilder
       @builder = builder
       @stream = nil
       @parser = FFI_Yajl::Parser.new({:symbolize_keys => true})
-     #  @parser = Yajl::Parser.new({:symbolize_keys => true})
     end
     attr_accessor :stream
 
@@ -49,9 +48,7 @@ module DockerApiBuilder
         begin
           chunk.sub!(/}[ \n\r]*$/,'}')
           chunk.sub!(/^[ \n\r]*{/,'{')
-          STDERR.puts(' Chunk |' + chunk.to_s + '|')
           hash = @parser.parse(chunk)  #do |hash|
-          # hash = deal_with_json(chunk)
           @builder.log_build_output(hash[:stream].force_encoding(Encoding::UTF_8)) if hash.key?(:stream)
           if hash.key?(:errorDetail)
             @builder.log_build_errors(hash[:errorDetail][:message])
