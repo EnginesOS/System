@@ -9,7 +9,7 @@ def get_json_stream(path)
 
   uri = URI(@base_url + path)
   options = nil
-options = {use_ssl => uri.scheme == 'https', :verify_mode => OpenSSL::SSL::VERIFY_NONE} if @use_https == true
+options = {use_https => uri.scheme == 'https', :verify_mode => OpenSSL::SSL::VERIFY_NONE} if @use_https == true
   Net::HTTP.start(uri.host, uri.port, options)  do |http|
     req = Net::HTTP::Get.new(uri)
     req['access_token'] = ENV['access_token']
