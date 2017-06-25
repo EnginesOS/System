@@ -15,7 +15,7 @@ get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/
         engine.export_service_data(hash, out)
       end
     else
-      send_encoded_exception(request, engine, params)
+      send_encoded_exception(request: request, engine: engine, params: params, exception: nil)
     end
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)

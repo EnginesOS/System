@@ -32,6 +32,7 @@ post '/v0/containers/engine/:engine_name/properties/runtime' do
     p_params[:engine_name] = params[:engine_name]
     cparams = assemble_params(p_params, [:engine_name], [], [:memory, :environment_variables])
     engine = get_engine(cparams[:engine_name])
+      STDERR.puts(' POST /properties/runtime ' + params.to_s)
     return_text(engines_api.set_container_runtime_properties(engine, cparams))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)

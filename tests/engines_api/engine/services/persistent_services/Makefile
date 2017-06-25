@@ -38,7 +38,7 @@ service_persistent_replace:
 
 prepare:
 	cat ../../actions/prosody_build_params.json | engines engines build
-	engines engine_builder follow >/dev/null
+	engines engine_builder follow_stream >/dev/null
 	echo '{"username":"test1","password":"pass"}' | engines engine prosody action perform add_user 
 
 
@@ -50,16 +50,16 @@ clean_up:
 	
 	
 service_persistent_add:
-	cat add_persistent_service.json | engines engine testengine services persistent add EnginesSystem database/sql/mysql |engines_test_expects bool true
+	cat add_persistent_service.json | engines engine enginetest services persistent add EnginesSystem database/sql/mysql |engines_test_expects bool true
 	echo -n " Checking:"
-	engines service database/sql/mysql consumer testengine  testdatabase |engines_test_expects  json type_path database/sql/mysql
+	engines service database/sql/mysql consumer enginetest  testdatabase |engines_test_expects  json type_path database/sql/mysql
 	
 service_persistent_edit:
-	cat edit_persistent_service.json |engines engine testengine service persistent modify EnginesSystem database/sql/mysql testdatabase|engines_test_expects bool true
+	cat edit_persistent_service.json |engines engine enginetest service persistent modify EnginesSystem database/sql/mysql testdatabase|engines_test_expects bool true
 	echo -n " Checking:"
-	engines service database/sql/mysql consumer testengine  testservice 
+	engines service database/sql/mysql consumer enginetest  testservice 
 	
 service_persistent_del:
-	engines engine testengine services persistent del EnginesSystem database/sql/mysql testdatabase|engines_test_expects bool true
+	engines engine enginetest services persistent del EnginesSystem database/sql/mysql testdatabase|engines_test_expects bool true
 	echo -n " Checking:"
-	engines service database/sql/mysql consumer testengine  testservice |engines_test_expects bool false
+	engines service database/sql/mysql consumer enginetest  testservice |engines_test_expects bool false
