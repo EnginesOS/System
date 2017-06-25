@@ -10,19 +10,5 @@
 		"mandatory": "mandatory_value",
 		"buildtime_only": "buildtime_only_value"
 	},
-	"attached_services": [
-	{
-				"type_path": "database/sql/mysql",
-				"publisher_namespace": "EnginesSystem",
-				"create_type": "new",
-				"parent_engine": "",
-				"service_handle": ""
-			}, {
-				"type_path": "filesystem/local/filesystem",
-				"publisher_namespace": "EnginesSystem",
-				"create_type": "new",
-				"parent_engine":"",
-				"service_handle":""
-				}
-				]		
+	
 			 }
