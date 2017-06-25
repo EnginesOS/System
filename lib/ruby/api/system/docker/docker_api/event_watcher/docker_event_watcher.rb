@@ -62,7 +62,7 @@ class DockerEventWatcher < ErrorsApi
   end
 
   def start
-    STDERR.puts(' STARTINF with ' + @event_listeners.to_s)
+    SystemDebug.debug(SystemDebug.container_events, 'EVENT LISTENER ' + @event_listeners.to_s)
     client = get_client
     client.request(Net::HTTP::Get.new('/events')) do |resp|
       json_part = nil
