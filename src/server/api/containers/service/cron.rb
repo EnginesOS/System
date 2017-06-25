@@ -33,7 +33,7 @@ get '/v0/schedule/service/:service_name/:cron_job' do
     when 'create'
       r = service.create_container
     else
-      send_encoded_exception(request, params[:cron_job], params[:service_name])
+      send_encoded_exception(request: request, cron_job: params[:cron_job], params: params[:service_name])
     end
     return_text(r)
   rescue StandardError => e

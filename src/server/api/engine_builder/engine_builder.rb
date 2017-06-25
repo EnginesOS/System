@@ -75,8 +75,8 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream;charset=asc
         rescue EOFError
           unless out.closed?
             bytes.encode(Encoding::ASCII_8BIT) unless bytes.nil? #UTF_8) unless bytes.nil?
-            out  << bytes
-            out  << '.'
+            out << bytes
+            out << '.'
             bytes = ''
             sleep 2
             retry if File.exist?(SystemConfig.BuildRunningParamsFile)
