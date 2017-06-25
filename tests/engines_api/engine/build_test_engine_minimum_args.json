@@ -1,1 +1,28 @@
-{"repository_url":"https://github.com/EnginesBlueprints/phpmyadmin.git","http_protocol": "https","engine_name":"testengine","host_name":"testengine","memory":"128","domain_name":"test.com"}
+{
+	"engine_name": "test",
+	"host_name": "enginetest",
+	"domain_name": "current.engines.org",
+	"http_protocol": "https",
+	"memory": 164,
+	"repository_url":"https://github.com/EnginesBlueprints/test_engine",	
+	"variables": {
+		test_envvar": "test_value",
+		"mandatory": "mandatory_value",
+		"buildtime_only": "buildtime_only_value"
+	},
+	"attached_services": [
+	{
+				"type_path": "database/sql/mysql",
+				"publisher_namespace": "EnginesSystem",
+				"create_type": "new",
+				"parent_engine": "",
+				"service_handle": ""
+			}, {
+				"type_path": "filesystem/local/filesystem",
+				"publisher_namespace": "EnginesSystem",
+				"create_type": "new",
+				"parent_engine":"",
+				"service_handle":""
+				}
+				]		
+			 }
