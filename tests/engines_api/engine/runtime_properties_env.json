@@ -1,1 +1,1 @@
-{"environment_variables": {"test":"value","test2":"valuewer32342342"} }
+{"environment_variables": {"test_envvar":"value","mandatory":"valuewer32342342"} }

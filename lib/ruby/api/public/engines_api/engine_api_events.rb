@@ -8,7 +8,7 @@ module EngineApiEvents
 
     def write_event(hash)
       @wr.write(hash.to_json)
-      @wr.write("\n\n")
+      @wr.write("\n")
       @wr.flush
     rescue StandardError => e
       p e.to_s

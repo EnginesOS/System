@@ -22,7 +22,8 @@ module DockerApiBuilder
       @io_stream = stream
       @builder = builder
       @stream = nil
-      @parser = FFI_Yajl::Parser.new({:symbolize_keys => true})
+     # @parser = FFI_Yajl::Parser.new({:symbolize_keys => true})
+       @parser = Yajl::Parser.new({:symbolize_keys => true})
     end
     attr_accessor :stream
 
@@ -46,6 +47,7 @@ module DockerApiBuilder
     def process_response()
       lambda do |chunk , c , t|
         begin
+          chunk.sub!(/}[ \n]$/,'}')
           hash = @parser.parse(chunk)  #do |hash|
           # hash = deal_with_json(chunk)
           @builder.log_build_output(hash[:stream].force_encoding(Encoding::UTF_8)) if hash.key?(:stream)
@@ -57,11 +59,11 @@ module DockerApiBuilder
             end
           end
         rescue StandardError =>e
-          STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s)
+          STDERR.puts( ' parse build res EOROROROROR |' + chunk.to_s + '| ' +  e.to_s)
         end
       end
     rescue StandardError =>e
-      STDERR.puts( ' parse build res EOROROROROR ' + chunk.to_s + ' : ' +  e.to_s)
+      STDERR.puts( ' parse build res EOROROROROR ||' + chunk.to_s + '|| ' +  e.to_s)
     end
 
     def process_request(*args)
