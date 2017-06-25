@@ -38,7 +38,7 @@ service_persistent_replace:
 
 prepare:
 	cat ../../actions/prosody_build_params.json | engines engines build
-	engines engine_builder follow >/dev/null
+	engines engine_builder follow_stream >/dev/null
 	echo '{"username":"test1","password":"pass"}' | engines engine prosody action perform add_user 
 
 
