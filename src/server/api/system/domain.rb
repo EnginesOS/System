@@ -21,7 +21,7 @@ end
 # @param :internal_only optional
 # @return  [true]
 #test cd /opt/engines/tests/engines_api/system/domains ; make update
-post '/v0/system/domains/:domain_name' do
+post '/v0/system/domain/:domain_name' do
   begin
     post_s = post_params(request)
     post_s[:domain_name] = params['domain_name']

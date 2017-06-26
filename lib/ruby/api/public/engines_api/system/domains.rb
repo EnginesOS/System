@@ -17,7 +17,7 @@ module PublicApiSystemDomains
   end
 
   def update_domain(params)
-   r =  @core_api.update_domain(params)
+   r = @core_api.update_domain(params)
    STDERR.puts('UPDATE DOMAN' + r.to_s)    
    r
   end
