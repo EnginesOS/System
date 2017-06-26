@@ -93,7 +93,10 @@ module DomainOperations
         create_and_register_service(service_hash)
       end
     else
-      true
+      begin
+        dettach_service(service_hash)
+      rescue
+      end
     end
   end
 
