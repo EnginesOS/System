@@ -11,7 +11,7 @@ post '/v0/system/domains/' do
   begin
     p_params = post_params(request)
     cparams = assemble_params(p_params, [], :all)
-    return_text(engines_api.add_domain(cparams))
+    return_boolean(engines_api.add_domain(cparams))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
