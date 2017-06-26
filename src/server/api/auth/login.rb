@@ -51,10 +51,10 @@ end
 # @overload get '/v0/system/users/'
 # @params :user_name
 # user params["user_name, :token, :email, :uid] returned
-get '/v0/system/users/' do
+get '/v0/system/user/:user_name' do
 begin
   content_type 'text/plain'
-  cparams = assemble_params(params, nil, [:user_name])
+  cparams = assemble_params(params, [:user_name])
   engines_api.get_system_user_info(cparams)
 rescue StandardError => e
   send_encoded_exception(request: request, exception: e)
