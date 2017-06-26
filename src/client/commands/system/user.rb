@@ -8,7 +8,7 @@ if ARGV[2] == 'change'
   when 'password'
     pargs = { user_name: ARGV[4], current_password: ARGV[5], new_password: ARGV[6]}
   end
-perform_post(pargs)
+  perform_post(pargs)
 else
   @route += '/' + ARGV[2]
 end
