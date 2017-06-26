@@ -63,8 +63,7 @@ rescue StandardError => e
   STDERR.puts e.backtrace.to_s
 end
 
-def rest_post(uri, params, content_type,time_out = 44 )
-  
+def rest_post(uri, params, content_type,time_out = 44 )  
   begin
     unless params.nil?
       r = connection(content_type).request(:read_timeout => time_out,:method => :post,:path => uri, :body => params.to_json) #,:body => params.to_json)
