@@ -67,9 +67,9 @@ end
 end
 
 # get Users details
-# @method set_user
-# @overload get '/v0/system/users/'
-# @params :user_name
+# @method get_user
+# @overload get '/v0/system/user/:user_name'
+#
 # @return user params["user_name, :token, :email, :uid] 
 get '/v0/system/user/:user_name' do
 begin
