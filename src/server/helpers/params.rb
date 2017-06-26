@@ -50,7 +50,6 @@ end
 def optional_params(params, keys)
   mparams = params[:api_vars]
   mparams = params if mparams.nil?
-  STDERR.puts(' Match Optional', keys.to_s)
   match_params(mparams, keys)
 end
 
@@ -66,8 +65,7 @@ def match_params(params, keys, is_required = false)
     if keys.is_a?(Array)
       for key in keys
         return false unless check_required(params, key, is_required)
-        cparams[key.to_sym] = params[key] unless params[key].nil?
-        STDERR.puts(' Match key:' + key.to_s + ' Val:' + cparams[key.to_sym].to_s )
+        cparams[key.to_sym] = params[key] unless params[key].nil?       
       end
     else
       return false unless check_required(params, keys, is_required)
