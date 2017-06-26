@@ -56,7 +56,7 @@ end
 post '/v0/system/user/:user_name' do
 begin
   content_type 'text/plain'
-  post_s = post_params(request).merge!(params)
+  post_s = post_params(request).merge(params)
   cparams = assemble_params(post_s, [:user_name], nil, [:new_password, :email, :current_password])
   return_json(engines_api.set_system_user_details(cparams))
 rescue StandardError => e
