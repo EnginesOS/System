@@ -34,7 +34,7 @@ begin
   @@last_error = ''
 
   before do
-    pass if request.path.start_with?('/v0/system/login/')
+    pass if request.path.start_with?('/v0/system/login')
     pass if request.path.start_with?('/v0/unauthenticated')
     pass if request.path.start_with?('/v0/cron/engine/') && source_is_service?(request, 'cron')
     pass if request.path.start_with?('/v0/cron/service/') && source_is_service?(request, 'cron')
