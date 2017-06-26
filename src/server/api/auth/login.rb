@@ -46,6 +46,24 @@ rescue StandardError => e
   send_encoded_exception(request: request, exception: e)
 end
 end
+
+# Set Users details
+# @method set_user
+# @overload post '/v0/system/users/'
+# @params :user_name, :new_password, :email, :token, :current_password
+# all params are required
+# new auth token returned
+post '/v0/system/user/:user_name' do
+begin
+  content_type 'text/plain'
+  post_s = post_params(request)
+  cparams = assemble_params(post_s, [:user_name], nil, [:new_password, :email, :current_password])
+  return_json(engines_api.set_system_user_details(cparams))
+rescue StandardError => e
+  send_encoded_exception(request: request, exception: e)
+end
+end
+
 # get Users details
 # @method set_user
 # @overload get '/v0/system/users/'
@@ -55,11 +73,12 @@ get '/v0/system/user/:user_name' do
 begin
   content_type 'text/plain'
   cparams = assemble_params(params, [:user_name])
-  return_json(engines_api.get_system_user_info(cparams[:user_name]))
+  return_json(engines_api.get_system_user_info(cparams))
 rescue StandardError => e
   send_encoded_exception(request: request, exception: e)
 end
 end
+
 
 # @clears Authentication token
 # FIXMe this is a no-op
