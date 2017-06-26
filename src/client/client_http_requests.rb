@@ -64,6 +64,7 @@ rescue StandardError => e
 end
 
 def rest_post(uri, params, content_type,time_out = 44 )
+  
   begin
     unless params.nil?
       r = connection(content_type).request(:read_timeout => time_out,:method => :post,:path => uri, :body => params.to_json) #,:body => params.to_json)
@@ -73,12 +74,12 @@ def rest_post(uri, params, content_type,time_out = 44 )
     write_response(r)
     exit
   rescue Excon::Error::Socket
-    if retries < 10
-      retries +=1
-      sleep 1
-      retry
-    end
-    STDERR.puts('Failed to url ' + uri.to_s + ' after ' + retries.to_s = ' attempts')
+#    if retries < 10
+#      retries +=1
+#      sleep 1
+#      retry
+#    end
+    STDERR.puts('Failed to url ' + uri.to_s )
   rescue StandardError => e
     STDERR.puts e.to_s + ' with path:' + uri + "\n" + 'params:' + params.to_s
     STDERR.puts e.backtrace.to_s
