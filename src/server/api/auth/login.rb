@@ -50,8 +50,8 @@ end
 # Set Users details
 # @method mod_system_user
 # @overload post 'v0/system/user/:user_name'
-# @params :user_name, :new_password, :email, , :current_password
-#  :user_name :user_name and params are required
+# @params  :new_password, :email, , :current_password
+# :user_name and params are required
 # password is changed if new_password present
 # email is changed if email is present
 
