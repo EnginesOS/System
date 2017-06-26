@@ -51,13 +51,18 @@ module SmOrphanServices
   # @returns boolean indicating success
   def remove_orphaned_service(service_query_hash)
     SystemDebug.debug(SystemDebug.orphans, :remove_orphaned_service, service_query_hash)
+    begin
     service_hash = retrieve_orphan(service_query_hash)
     if service_query_hash[:remove_all_data] == 'none'
       service_hash[:remove_all_data] = 'none'
     else
       service_hash[:remove_all_data] = 'all'
-    end
-    remove_from_managed_service(service_hash)
+    end    
+      rescue
+      service_hash = nil
+      end
+    remove_from_managed_service(service_hash) unless service_hash.nil?
+    service_hash = service_query_hash if service_hash.nil?
     system_registry_client.release_orphan(service_hash)
   end
 
