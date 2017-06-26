@@ -24,7 +24,7 @@ post '/v0/system/login' do
     content_type 'text/plain'
     post_s = post_params(request)
     cparams = assemble_params(post_s, nil, [:user_name, :password])
-    engines_api.user_login(cparams)
+    return_text(engines_api.user_login(cparams))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -41,7 +41,7 @@ begin
   content_type 'text/plain'
   post_s = post_params(request)
   cparams = assemble_params(post_s, nil, [:user_name, :new_password, :email, :token, :current_password])
-  engines_api.set_system_user_password(cparams)
+  return_json(engines_api.set_system_user_password(cparams))
 rescue StandardError => e
   send_encoded_exception(request: request, exception: e)
 end
@@ -55,7 +55,7 @@ get '/v0/system/user/:user_name' do
 begin
   content_type 'text/plain'
   cparams = assemble_params(params, [:user_name])
-  engines_api.get_system_user_info(cparams)
+  return_json(engines_api.get_system_user_info(cparams))
 rescue StandardError => e
   send_encoded_exception(request: request, exception: e)
 end
