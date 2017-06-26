@@ -30,7 +30,6 @@ options = { :use_ssl => true, uri.scheme => 'https', :verify_mode => OpenSSL::SS
           next
         end
       end
-
     }
     exit
   end
@@ -41,7 +40,7 @@ rescue StandardError => e
 end
 
 ## Used By builder command
-def get_stream(path, ostream=STDOUT)
+def get_stream(path, ostream = STDOUT)
   #require 'yajl'
   chunk = ''
 
@@ -53,9 +52,7 @@ def get_stream(path, ostream=STDOUT)
     http.read_timeout = 600
     http.request(req) { |resp|
       resp.read_body do |chunk|
-        #hash = parser.parse(chunk) do |hash|
         ostream.write(chunk)
-        #end
       end
     }
     exit
