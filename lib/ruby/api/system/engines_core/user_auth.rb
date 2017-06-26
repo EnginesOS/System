@@ -43,6 +43,7 @@ module UserAuth
 
   def get_system_user_info(user_name)
     rws = auth_database.execute("Select username, email, authtoken, uid from systemaccess where username = '" + user_name.to_s + "';")
+    STDERR.puts(' USER ' + rws[0].class.name + ':' + rws[0].to_s)
     rws[0]
   end
 
