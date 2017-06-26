@@ -10,4 +10,9 @@ module UserAuth
   def get_system_user_info(cparams)
     @core_api.get_system_user_info(cparams[:user_name])
   end
+  
+  def set_system_user_details(cparams)
+    @core_api.set_system_user_details(cparams)
+  end
+  
 end

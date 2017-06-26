@@ -26,14 +26,15 @@ def assemble_params(ps, address_params, required_params = nil, accept_params = n
       a_params
     else
       r_params = required_params(ps, required_params)
-      raise EnginesException.new(error_hash('Missing Parameters ' + required_params.to_s + ' but only have:' + ps.to_s)) if r_params == false      
+      raise EnginesException.new(error_hash('Missing Parameters ' + required_params.to_s + ' but only have:' + ps.to_s)) if r_params == false
       a_params.merge!(r_params) unless r_params.nil?
     end
-    unless accept_params.nil? || accept_params.empty?
-      o_params = optional_params(ps, accept_params)
-      a_params.merge!(o_params) unless o_params.nil?
-    end
   end
+  unless accept_params.nil? || accept_params.empty?
+    o_params = optional_params(ps, accept_params)
+    a_params.merge!(o_params) unless o_params.nil?
+  end
+
   a_params
 end
 
@@ -41,7 +42,7 @@ def required_params(params, keys)
   mparams = params[:api_vars]
   if mparams.nil?
     false
-  else   
+  else
     match_params(mparams, keys, true)
   end
 end
@@ -64,7 +65,7 @@ def match_params(params, keys, is_required = false)
     if keys.is_a?(Array)
       for key in keys
         return false unless check_required(params, key, is_required)
-        cparams[key.to_sym] = params[key] unless params[key].nil?
+        cparams[key.to_sym] = params[key] unless params[key].nil?       
       end
     else
       return false unless check_required(params, keys, is_required)
@@ -78,7 +79,7 @@ rescue StandardError => e
   false
 end
 
-def check_required(params, key, is_required) 
+def check_required(params, key, is_required)
   if !is_required
     true
   elsif params.key?(key)
@@ -88,10 +89,10 @@ def check_required(params, key, is_required)
     p key
     false
   end
-  rescue StandardError => e
-    STDERR.puts(e.to_s)
-    STDERR.puts(e.backtrace.to_s)
-    false
+rescue StandardError => e
+  STDERR.puts(e.to_s)
+  STDERR.puts(e.backtrace.to_s)
+  false
 end
 
 def service_hash_from_params(params, search)
