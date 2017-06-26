@@ -48,7 +48,7 @@ class EventMask
   
   def self.get_status_mask(event_hash)
     mask = 0
-    STDERR.puts(' EVENT HAH ' + event_hash.to_s)
+   # STDERR.puts(' EVENT HAH ' + event_hash.to_s)
     unless event_hash[:status].nil?
       if event_hash[:status].start_with?('exec')
         mask |= @@container_exec
