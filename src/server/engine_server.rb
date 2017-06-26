@@ -29,12 +29,12 @@ begin
   core_api = EnginesCore.new
   @events_stream = nil
   $engines_api = PublicApi.new(core_api)
-  STDERR.puts('CREATED ENGINES API +++++++++++++++++++++++++++++++++++++++++++')
+  #STDERR.puts('CREATED ENGINES API +++++++++++++++++++++++++++++++++++++++++++')
   File.open('/engines/var/run/flags/startup_complete', 'w') {}
   @@last_error = ''
 
   before do
-    pass if request.path.start_with?('/v0/system/login/')
+    pass if request.path.start_with?('/v0/system/login')
     pass if request.path.start_with?('/v0/unauthenticated')
     pass if request.path.start_with?('/v0/cron/engine/') && source_is_service?(request, 'cron')
     pass if request.path.start_with?('/v0/cron/service/') && source_is_service?(request, 'cron')

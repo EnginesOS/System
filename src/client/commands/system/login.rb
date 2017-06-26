@@ -1,6 +1,6 @@
 @route += ''
-p =  {user_name: ARGV[2],
+ps =  {user_name: ARGV[2],
   password: ARGV[3]
   }
 
-perform_post(p)
+perform_post(ps)
