@@ -3,8 +3,8 @@ module UserAuth
 
   def user_login(params)
     rows = auth_database.execute( 'select authtoken from systemaccess where username=' + "'" + params[:user_name].to_s +
-    "' and password = '" + params[:password].to_s + "';")   
-    raise EnginesException.new(error_hash("failed to select", params)) unless rows.count > 0     
+    "' and password = '" + params[:password].to_s + "';")
+    raise EnginesException.new(error_hash("failed to select", params)) unless rows.count > 0
     rows[0]
   end
 
@@ -40,10 +40,51 @@ module UserAuth
     set_system_user_password('admin', password, email, token)
     SystemDebug.debug(SystemDebug.first_run, :applied, password, email)
   end
-  
+
   def get_system_user_info(user_name)
-    rws = auth_database.execute("Select username, email, authtoken, uid from systemaccess where username = '" + user.to_s+ "';")
+    rws = auth_database.execute("Select username, email, authtoken, uid from systemaccess where username = '" + user_name.to_s + "';")
+    STDERR.puts(' USER ' + rws[0].class.name + ':' + rws[0].to_s)
     rws[0]
+  end
+
+  #[:user_name, email  | :new_password  & :current_password])
+  def set_system_user_details(params)
+    unless params[:current_password].nil?
+      rws = auth_database.execute("Select authtoken from systemaccess where username = '" + params[:user_name]\
+      + "' and password = '" + params[:current_password] + "';")
+      unless rws.nil? || rws.count == 0
+        unless params[:email].nil?
+          query = "UPDATE systemaccess SET email = '"\
+                         +  params[:email] + \
+                         + "' where username = '" + params[:user_name] + "' and password = '" + params[:current_password] + "';"
+          auth_database.execute(query)
+        end
+        unless params[:new_password].nil?
+          authtoken = SecureRandom.hex(64)
+          query = "UPDATE systemaccess SET password = '"\
+               +  params[:new_password] + "' authtoken ='" + authtoken.to_s \
+               + "' where username = '" + params[:user_name] + "' and password = '" + params[:current_password] + "';"
+                 
+          auth_database.execute(query)
+          update_local_token(authtoken) if params[:user_name] == 'admin'       
+        end
+      else
+        raise EnginesException.new(
+        level: :error,
+        params: nil,
+        status: nil,
+        system: 'user auth',
+        error_mesg: 'Username  Password Missmatch')
+      end
+    else
+      raise EnginesException.new(
+      level: :error,
+      params: nil,
+      status: nil,
+      system: 'user auth',
+      error_mesg: 'Missing Password')
+    end
+
   end
 
   def set_system_user_password(user, password, email, token, current_password = nil)

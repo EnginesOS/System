@@ -6,6 +6,8 @@ when 'control'
   require_relative 'control/commands.rb'
 when 'users'
   require_relative 'users.rb'
+when 'user'
+  require_relative 'user.rb'
 when 'keys'
   require_relative 'keys/commands.rb'
 
@@ -43,4 +45,4 @@ when 'version'
   require_relative 'version.rb'
 end
 
-perform_get()
+perform_get

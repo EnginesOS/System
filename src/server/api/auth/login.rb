@@ -24,7 +24,7 @@ post '/v0/system/login' do
     content_type 'text/plain'
     post_s = post_params(request)
     cparams = assemble_params(post_s, nil, [:user_name, :password])
-    engines_api.user_login(cparams)
+    return_text(engines_api.user_login(cparams))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -41,25 +41,44 @@ begin
   content_type 'text/plain'
   post_s = post_params(request)
   cparams = assemble_params(post_s, nil, [:user_name, :new_password, :email, :token, :current_password])
-  engines_api.set_system_user_password(cparams)
+  return_json(engines_api.set_system_user_password(cparams))
 rescue StandardError => e
   send_encoded_exception(request: request, exception: e)
 end
 end
+
+# Set Users details
+# @method set_user
+# @overload post '/v0/system/users/'
+# @params :user_name, :new_password, :email, :token, :current_password
+# all params are required
+# new auth token returned
+post '/v0/system/user/:user_name' do
+begin
+  content_type 'text/plain'
+  post_s = post_params(request)
+  cparams = assemble_params(post_s, [:user_name], nil, [:new_password, :email, :current_password])
+  return_json(engines_api.set_system_user_details(cparams))
+rescue StandardError => e
+  send_encoded_exception(request: request, exception: e)
+end
+end
+
 # get Users details
 # @method set_user
 # @overload get '/v0/system/users/'
 # @params :user_name
 # user params["user_name, :token, :email, :uid] returned
-get '/v0/system/users/' do
+get '/v0/system/user/:user_name' do
 begin
   content_type 'text/plain'
-  cparams = assemble_params(params, nil, [:user_name])
-  engines_api.get_system_user_info(cparams)
+  cparams = assemble_params(params, [:user_name])
+  return_json(engines_api.get_system_user_info(cparams[:user_name]))
 rescue StandardError => e
   send_encoded_exception(request: request, exception: e)
 end
 end
+
 
 # @clears Authentication token
 # FIXMe this is a no-op
