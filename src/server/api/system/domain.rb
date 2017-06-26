@@ -14,7 +14,7 @@ get '/v0/system/domains/:domain_name' do
 end
 
 # @method update_domain_name
-# @overload post '/v0/system/domains/:domain_name'
+# @overload post '/v0/system/domain/:domain_name'
 # update the domain :domain_name
 # @param :domain_name
 # @param :self_hosted
