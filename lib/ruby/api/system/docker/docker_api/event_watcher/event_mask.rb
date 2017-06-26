@@ -16,6 +16,9 @@ class EventMask
   @@container_attach = 8192
   @@utility_target = 16384
   @@container_top = 32768
+  @@container_start = 65536
+  @@container_pause = 131072
+  @@container_unpause = 262144
   @@service_action = @@container_action | @@service_target
   @@engine_action = @@container_action | @@engine_target
   def self.event_mask(event_hash)
@@ -53,6 +56,12 @@ class EventMask
         mask |= @@container_delete| @@container_action
       elsif event_hash[:status] == 'destroy'
         mask |= @@container_delete | @@container_action
+        elsif event_hash[:status] == 'start'
+          mask |= @@container_start | @@container_action
+        elsif event_hash[:status] == 'pause'
+          mask |= @@container_pause | @@container_action
+        elsif event_hash[:status] == 'unpause'
+          mask |= @@container_unpause | @@container_action          
       elsif event_hash[:status] == 'commit'
         mask |= @@container_commit
       elsif event_hash[:status] == 'pull'
