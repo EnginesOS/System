@@ -49,40 +49,42 @@ module UserAuth
 
   #[:user_name, email  | :new_password  & :current_password])
   def set_system_user_details(params)
-    unless params[:current_password].nil?
+    STDERR.puts(' USER Details ' + params.to_s)
+    if params[:current_password].nil?
+      raise EnginesException.new(
+      level: :error,
+      params: params,
+      status: nil,
+      system: 'user auth',
+      error_mesg: 'Missing Password')
+    else
       rws = auth_database.execute("Select authtoken from systemaccess where username = '" + params[:user_name]\
       + "' and password = '" + params[:current_password] + "';")
-      unless rws.nil? || rws.count == 0
+      if rws.nil? || rws.count == 0
+        raise EnginesException.new(
+        level: :error,
+        params: params,
+        status: nil,
+        system: 'user auth',
+        error_mesg: 'Username  Password Missmatch')
+      else
         unless params[:email].nil?
           query = "UPDATE systemaccess SET email = '"\
-                         +  params[:email] + \
-                         + "' where username = '" + params[:user_name] + "' and password = '" + params[:current_password] + "';"
+          +  params[:email] + \
+          + "' where username = '" + params[:user_name] + "' and password = '" + params[:current_password] + "';"
           auth_database.execute(query)
         end
         unless params[:new_password].nil?
           authtoken = SecureRandom.hex(64)
           query = "UPDATE systemaccess SET password = '"\
-               +  params[:new_password] + "' authtoken ='" + authtoken.to_s \
-               + "' where username = '" + params[:user_name] + "' and password = '" + params[:current_password] + "';"
-                 
+          +  params[:new_password] + "' authtoken ='" + authtoken.to_s \
+          + "' where username = '" + params[:user_name] + "' and password = '" + params[:current_password] + "';"
+
           auth_database.execute(query)
-          update_local_token(authtoken) if params[:user_name] == 'admin'       
+          update_local_token(authtoken) if params[:user_name] == 'admin'
         end
-      else
-        raise EnginesException.new(
-        level: :error,
-        params: nil,
-        status: nil,
-        system: 'user auth',
-        error_mesg: 'Username  Password Missmatch')
       end
-    else
-      raise EnginesException.new(
-      level: :error,
-      params: nil,
-      status: nil,
-      system: 'user auth',
-      error_mesg: 'Missing Password')
+
     end
 
   end
