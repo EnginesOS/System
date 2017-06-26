@@ -10,9 +10,10 @@ module UserAuth
 
   def is_token_valid?(token, ip = nil)
     if ip == nil
-      rows = auth_database.execute( 'select guid from systemaccess where authtoken=' + "'" + token.to_s + "';" )
+      rows = auth_database.execute(\
+        'select guid from systemaccess where authtoken=' + "'" + token.to_s + "';" )
     else
-      rows = auth_database.execute( 'select guid from systemaccess where authtoken=' + "'" + token.to_s + "' and ip_addr ='" + ip.to_s + "';" )
+      rows = auth_database.execute('select guid from systemaccess where authtoken=' + "'" + token.to_s + "' and ip_addr ='" + ip.to_s + "';" )
     end
     if rows.count > 0
       rows[0]
@@ -20,18 +21,18 @@ module UserAuth
       false
     end
   rescue StandardError => e
-    STDERR.puts(' toekn verify error  ' + e.to_s)
-    STDERR.puts(' toekn verify error exception name  ' + e.class.name)
+    STDERR.puts('token verify error  ' + e.to_s)
+    STDERR.puts('token verify error exception name  ' + e.class.name)
     false
   end
 
-  def  auth_database
+  def auth_database
     $auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if $auth_db.nil?
     $auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if $auth_db.is_a?(FalseClass)
     $auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if $auth_db.closed?
     $auth_db
   rescue StandardError => e
-    STDERR.puts('Exception failed to open  sql_lite_database: ' + e.to_s)
+    STDERR.puts('Exception failed to open sql_lite_database: ' + e.to_s)
     false
   end
 
@@ -43,13 +44,11 @@ module UserAuth
 
   def get_system_user_info(user_name)
     rws = auth_database.execute("Select username, email, authtoken, uid from systemaccess where username = '" + user_name.to_s + "';")
-    STDERR.puts(' USER ' + rws[0].class.name + ':' + rws[0].to_s)
     rws[0]
   end
 
   #[:user_name, email  | :new_password  & :current_password])
   def set_system_user_details(params)
-    STDERR.puts(' USER Details ' + params.to_s)
     if params[:current_password].nil?
       raise EnginesException.new(
       level: :error,
@@ -66,7 +65,7 @@ module UserAuth
         params: params,
         status: nil,
         system: 'user auth',
-        error_mesg: 'Username  Password Missmatch')
+        error_mesg: 'Username Password Missmatch')
       else
         unless params[:email].nil?
           query = "UPDATE systemaccess SET email = '"\
@@ -109,7 +108,6 @@ module UserAuth
       status: nil,
       system: 'user auth',
       error_mesg: 'token missmatch') if token != rws[0][0]
-
       query = "UPDATE systemaccess SET password = '"\
       + password.to_s + "',email='" + email.to_s \
       + "', authtoken ='" + authtoken.to_s \
