@@ -14,31 +14,34 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
       timer.cancel unless timer.nil?
       false
     end
+
+    def no_op_timer(out)
+      no_op = {no_op: true}.to_json
+      EventMachine::PeriodicTimer.new(25) do
+        if out.closed?
+          STDERR.puts('NOOP found OUT IS CLOSED: ' + timer.to_s)
+          timer = nil
+          next
+        else
+          out << no_op # unless lock_timer == true
+          out << "\n"
+        end
+      end
+    end
     begin
       stream :keep_open do | out |
         begin
           has_data = true
-
-          timer = EventMachine::PeriodicTimer.new(25) do
-            if out.closed?
-              STDERR.puts('NOOP found OUT IS CLOSED: ' + timer.to_s)
-              timer = nil
-              next
-            else
-              out << {no_op: true}.to_json # unless lock_timer == true
-              out << "\n"
-            end
-          end if timer.nil?
+          timer = no_op_timer(out)
           events_stream = engines_api.container_events_stream
           out.callback{ finialise_events_stream(events_stream, timer) }
           while has_data == true
             begin
               bytes = events_stream.rd.read_nonblock(2048)
               next if bytes.nil?
-              #bytes.strip!
               if out.closed?
                 has_data = finialise_events_stream(events_stream, timer)
-                STDERR.puts('OUT IS CLOSED but have ' + jason_event.to_s)
+                # STDERR.puts('OUT IS CLOSED but have ' + jason_event.to_s)
                 next
               else
                 out << bytes unless bytes.nil?
