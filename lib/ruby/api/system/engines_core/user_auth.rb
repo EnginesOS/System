@@ -77,16 +77,14 @@ module UserAuth
         unless params[:new_password].nil?
           authtoken = SecureRandom.hex(64)
           query = "UPDATE systemaccess SET password = '"\
-          +  params[:new_password] + "' authtoken ='" + authtoken.to_s \
+          +  params[:new_password] + "', authtoken ='" + authtoken.to_s \
           + "' where username = '" + params[:user_name] + "' and password = '" + params[:current_password] + "';"
 
           auth_database.execute(query)
           update_local_token(authtoken) if params[:user_name] == 'admin'
         end
       end
-
     end
-
   end
 
   def set_system_user_password(user, password, email, token, current_password = nil)
