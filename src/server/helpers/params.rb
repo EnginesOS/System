@@ -49,6 +49,7 @@ end
 def optional_params(params, keys)
   mparams = params[:api_vars]
   mparams = params if mparams.nil?
+  STDERR.puts(' Match Optional', keys.to_s)
   match_params(mparams, keys)
 end
 
