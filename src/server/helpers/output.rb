@@ -43,12 +43,12 @@ def return_true(s = 200)
 end
 
 def return_boolean(v, s = 200)
-  v = true if v.nil? # meths return nil when error is exception  
+  v = true if v.nil? # meths return nil and when error they raise an exception  
   return_text(v.to_s, s)
 end
 
 def return_error(error, nil_result = nil)
-  STDERR.puts(' RETURN ERROR!!!!!!!!' )
+  # STDERR.puts(' RETURN ERROR!!!!!!!!' )
   content_type 'application/json'
   # FIXME: take this from the error if avail
   status(404)
