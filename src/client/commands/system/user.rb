@@ -8,6 +8,7 @@ if ARGV[2] == 'change'
     pargs = { current_password: ARGV[5], new_password: ARGV[6]}
   end
 @route += '/' + ARGV[4]
+STDERR.puts(' ' + @route.to_s + ':' + pargs.to_s)
   perform_post(pargs)
 else
   @route += '/' + ARGV[2]
