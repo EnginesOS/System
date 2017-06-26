@@ -24,7 +24,7 @@ post '/v0/system/login' do
     content_type 'text/plain'
     post_s = post_params(request)
     cparams = assemble_params(post_s, nil, [:user_name, :password])
-    return_text(engines_api.user_login(cparams))
+    engines_api.user_login(cparams)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -56,7 +56,7 @@ end
 post '/v0/system/user/:user_name' do
 begin
   content_type 'text/plain'
-  post_s = post_params(request)
+  post_s = post_params(request).merge(params)
   cparams = assemble_params(post_s, [:user_name], nil, [:new_password, :email, :current_password])
   return_json(engines_api.set_system_user_details(cparams))
 rescue StandardError => e
