@@ -26,6 +26,7 @@ post '/v0/system/domain/:domain_name' do
     post_s = post_params(request)
     post_s[:domain_name] = params['domain_name']
     cparams = assemble_params(post_s, [:domain_name], :all)
+      STDERR.puts('DNS PARA ' + cparams.to_s)
     return_boolean(engines_api.update_domain(cparams))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
