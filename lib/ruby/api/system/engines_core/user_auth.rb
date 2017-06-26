@@ -4,8 +4,8 @@ module UserAuth
   def user_login(params)
     rows = auth_database.execute( 'select authtoken from systemaccess where username=' + "'" + params[:user_name].to_s +
     "' and password = '" + params[:password].to_s + "';")
-
     raise EnginesException.new(error_hash("failed to select", params)) unless rows.count > 0
+      p 'TOKEN ' + rows[0].to_s
     rows[0]
   end
 
