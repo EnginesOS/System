@@ -24,7 +24,7 @@ end
 # test cd /opt/engines/tests/engines_api/system/domains ; make remove 
 delete '/v0/system/domains/:domain_name' do
   begin
-    return_text(engines_api.remove_domain(params[:domain_name]))
+    return_boolean(engines_api.remove_domain(params[:domain_name]))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
