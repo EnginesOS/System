@@ -119,7 +119,7 @@ helpers do
       $engines_api.is_token_valid?(token, ip)
     end
     def failed
-      status(401)
+    #  status(401)
       #   send_encoded_exception(request: request, exception: 'unauthorised', params: params)
       #   STDERR.puts('FAILED ')
      # status (401)
