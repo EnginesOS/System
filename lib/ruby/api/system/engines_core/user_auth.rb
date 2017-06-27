@@ -82,7 +82,6 @@ module UserAuth
           query = "UPDATE systemaccess SET password = '"\
           +  params[:new_password] + "', authtoken ='" + authtoken.to_s \
           + "' where username = '" + params[:user_name] + "' and password = '" + params[:current_password] + "';"
-
           auth_database.execute(query)
           update_local_token(authtoken) if params[:user_name] == 'admin'
         end
