@@ -1,11 +1,11 @@
-# @!group /system/domains/
+# @!group /system/domain/
 
 # @method get_domain_name
-# @overload get '/v0/system/domains/:domain_name'
+# @overload get '/v0/system/domain/:domain_name'
 # get the details for :domain_name
 # @return  [Hash] :domain_name :self_hosted :internal_only
 # test cd /opt/engines/tests/engines_api/system/domains ; make view
-get '/v0/system/domains/:domain_name' do
+get '/v0/system/domain/:domain_name' do
   begin
     return_json(engines_api.domain_name(params[:domain_name]))
   rescue StandardError => e
