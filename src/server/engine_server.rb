@@ -44,6 +44,7 @@ begin
     pass if request.path.start_with?('/v0/system/do_first_run') && FirstRunWizard.required?
     begin
     env['warden'].authenticate!(:access_token)
+      STDERR.puts(request.path.to_s)
     rescue StandardError => e
       STDERR.puts(e.class.name.to_s + ':' + e.to_s + "\n" + e.backtrace.to_s )
       status(401)
