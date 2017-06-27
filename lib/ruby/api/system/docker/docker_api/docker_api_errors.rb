@@ -28,7 +28,11 @@ module EnginesDockerApiErrors
     elsif  res.nil?
       e =  ''
     else
-      e = res.body
+      begin
+        e = res.body
+      rescue
+        e = e.to_s
+      end
     end
     r = error_type_hash(e, params)
     r[:status] = res.status unless res.nil?
