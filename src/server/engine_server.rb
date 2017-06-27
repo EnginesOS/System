@@ -43,6 +43,7 @@ begin
     pass if request.path.start_with?('/v0/backup/') && source_is_service?(request, 'backup')
     pass if request.path.start_with?('/v0/system/do_first_run') && FirstRunWizard.required?
     begin
+      STDERR.puts(request.path.to_s)
     env['warden'].authenticate!(:access_token)
       STDERR.puts(request.path.to_s)
     rescue StandardError => e
