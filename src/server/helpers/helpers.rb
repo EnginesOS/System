@@ -118,11 +118,19 @@ helpers do
       #$
       $engines_api.is_token_valid?(token, ip)
     end
-
+    def failed
+    #  status(401)
+      #   send_encoded_exception(request: request, exception: 'unauthorised', params: params)
+      #   STDERR.puts('FAILED ')
+     # status (401)
+      redirect! '/v0/unauthenticated'
+      #throw(:warden, action: '/v0/unauthenticated')
+    end
     def authenticate!
       STDERR.puts('NO HTTP_ACCESS_TOKEN in header ') if request.env['HTTP_ACCESS_TOKEN'].nil?
       access_granted = is_token_valid?(request.env['HTTP_ACCESS_TOKEN'])
-      !access_granted ? fail!('Could not log in') : success!(access_granted)
+   #   !access_granted ? fail!('Could not log in') : success!(access_granted)
+      !access_granted ? failed : success!(access_granted)
     end
   end
 
