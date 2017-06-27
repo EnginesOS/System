@@ -42,7 +42,12 @@ begin
     pass if request.path.start_with?('/v0/schedule/service/') && source_is_service?(request, 'cron')
     pass if request.path.start_with?('/v0/backup/') && source_is_service?(request, 'backup')
     pass if request.path.start_with?('/v0/system/do_first_run') && FirstRunWizard.required?
+    begin
     env['warden'].authenticate!(:access_token)
+    rescue StandardError => e
+      STDERR.puts(e.class.name.to_s + ':' + e.to_s + "\n" + e.backtrace.to_s )
+      status(401)
+    end
   end
 
   def source_is_service?(request, service_name)
