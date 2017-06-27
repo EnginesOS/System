@@ -43,8 +43,12 @@ module UserAuth
   end
 
   def get_system_user_info(user_name)
-    rws = auth_database.execute("Select username, email, authtoken, uid from systemaccess where username = '" + user_name.to_s + "';")
-    rws[0]
+    rws = auth_database.execute("Select username, email, authtoken, uid from systemaccess where username = '" + user_name.to_s + "';") 
+    { user_name: rws[0][0],
+      email: rws[0][1],
+      auth_token: rws[0][2],
+      uid: rws[0][3],
+}if rws[0].is_a?(Array)
   end
 
   #[:user_name, email  | :new_password  & :current_password])
