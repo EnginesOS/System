@@ -18,10 +18,11 @@ use Warden::Manager do |config|
    def failed
    #  status(401)
      #   send_encoded_exception(request: request, exception: 'unauthorised', params: params)
-     #   STDERR.puts('FAILED ')
-     status 401
+        STDERR.puts('FAILED ')
+     fail!(action: '/v0/unauthenticated', message: 'Could not log in')
+     STDERR.puts('FAILED ')
     # send_encoded_exception(request: request, exception: 'unauthorised', params: params)
-   #  redirect! '/v0/unauthenticated'
+    # redirect! '/v0/unauthenticated'
      #throw(:warden, action: '/v0/unauthenticated')
    end
    
@@ -29,7 +30,7 @@ use Warden::Manager do |config|
    def authenticate!
      STDERR.puts('NO HTTP_ACCESS_TOKEN in header ') if request.env['HTTP_ACCESS_TOKEN'].nil?
      access_granted = is_token_valid?(request.env['HTTP_ACCESS_TOKEN'])
-   #  !access_granted ? fail!(action: '/v0/unauthenticated', mesg: 'Could not log in') : success!(access_granted)
+   #  !access_granted ? fail!(action: '/v0/unauthenticated', message: 'Could not log in') : success!(access_granted)
      !access_granted ? failed : success!(access_granted)
    end
  end
