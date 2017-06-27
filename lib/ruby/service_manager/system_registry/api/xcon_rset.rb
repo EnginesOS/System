@@ -50,7 +50,7 @@ rescue EOFError
 STDERR.puts(e.class.name + 'EOFError with path:')
 rescue Excon::Error::Socket => e
 STDERR.puts(e.class.name + 'Excon::Error::Socket error:' + e.socket_error.to_s)
-unless e.socket_error == EOFError
+unless e.socket_error.to_s == 'end of file reached'
   reopen_connection
   STDERR.puts(e.class.name + 'Excon::Error::Socket with path:' + path.to_s + "\n" + 'params:' + q.to_s + ':::' + req.to_s  + ':' + e.to_s)
   cnt+=1
