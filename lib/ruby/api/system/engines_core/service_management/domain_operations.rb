@@ -87,6 +87,7 @@ module DomainOperations
         service_hash[:variables][:ip_type] = 'gw'
         service_hash[:variables][:ip] =  get_ext_ip_for_hosted_dns()
       end
+      STDERR.puts(' COMPLETEd DNS HASH ' + service_hash.to_s )
       begin
         dettach_service(service_hash)
       ensure
