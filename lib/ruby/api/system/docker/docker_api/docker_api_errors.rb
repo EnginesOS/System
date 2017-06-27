@@ -23,8 +23,13 @@ module EnginesDockerApiErrors
   end
 
   def docker_error_hash(res, params = nil)
-    e = res.body unless res.nil?
-    e ||=  ''
+    if res.is_a?(String)
+      e = res
+    elsif  res.nil?
+      e =  ''
+    else
+      e = res.body
+    end
     r = error_type_hash(e, params)
     r[:status] = res.status unless res.nil?
     r[:error_type] = :error
