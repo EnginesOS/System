@@ -80,6 +80,7 @@ def create_nginx_service_hash(engine)
     parent_engine: engine.container_name,
     internal_dir: '/',
     engine_count: 1,
+    public: 1,
     name: engine.container_name,
     fqdn: engine.fqdn,
     port: engine.web_port.to_s,
