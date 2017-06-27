@@ -55,7 +55,7 @@ def return_error(error, nil_result = nil)
   content_type 'application/json'
   headers['Access-Control-Allow-Origin'] ='*'
   # FIXME: take this from the error if avail
-  status(404)
+  status(403)
   if error.nil?
     nil_result
   else

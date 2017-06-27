@@ -27,7 +27,7 @@ rescue StandardError => e
 end
 
 def reopen_connection
-  # STDERR.puts('re open connec' )
+  # STDERR.puts('re open connec')
   @connection.reset
   @connection = nil
   @connection = connection
@@ -46,12 +46,15 @@ def rest_get(path,params = nil, time_out = 120, _headers = nil)
   req[:query] = q unless q.nil?
   r = connection.request(req)
   parse_xcon_response(r)
-rescue EOFError
+
 rescue Excon::Error::Socket => e
+STDERR.puts(e.class.name + 'Excon::Error::Socket error:' + e.socket_error.instance_methods.to_s)
+unless e.socket_error.to_s == 'end of file reached'
   reopen_connection
-  STDERR.puts(e.class.name + ' with path:' + path.to_s + "\n" + 'params:' + q.to_s + ':::' + req.to_s  + ':' + e.to_s)
+  STDERR.puts(e.class.name + 'Excon::Error::Socket with path:' + path.to_s + "\n" + 'params:' + q.to_s + ':::' + req.to_s  + ':' + e.to_s)
   cnt+=1
-  retry if cnt< 5
+  retry if cnt < 5
+end
 rescue StandardError => e
   raise EnginesException.new(error_hash('reg exception ' + e.to_s, @base_url.to_s))
 end
@@ -152,9 +155,9 @@ def error_result_exception(resp)
   # STDERR.puts('Registry Exception from json result ' + r.to_s )
 
   raise RegistryException.new(
-  {status: 404,
+  {status: 403,
     error_type: :warning,
-    error_mesg: 'Route Not Found',
+    error_mesg: 'RegistryException',
     params: 'nil'
   }) if resp.nil?
   # STDERR.puts('Registry Exception from R ' )
