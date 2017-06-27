@@ -98,9 +98,7 @@ module DomainOperations
         dettach_service(service_hash)
       rescue
       end
-    end
-    STDERR.puts(' UPDATE DOMAIN ' + true.to_s)
-    true
+    end   
   end
 
   def remove_domain(params)

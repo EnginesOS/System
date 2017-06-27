@@ -9,7 +9,9 @@ module PublicApiSystemDomains
   end
 
   def remove_domain(params)
-    @core_api.remove_domain(params)    
+    @core_api.remove_domain(params)   
+    STDERR.puts('UPDATE DOMAN' + r.to_s)    
+    r 
   end
 
   def domain_name(params)
@@ -17,9 +19,7 @@ module PublicApiSystemDomains
   end
 
   def update_domain(params)
-   r = @core_api.update_domain(params)
-   STDERR.puts('UPDATE DOMAN' + r.to_s)    
-   r
+   @core_api.update_domain(params)
   end
 
 end
