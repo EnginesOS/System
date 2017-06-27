@@ -47,11 +47,12 @@ def rest_get(path,params = nil, time_out = 120, _headers = nil)
   r = connection.request(req)
   parse_xcon_response(r)
 rescue EOFError
+  next
 rescue Excon::Error::Socket => e
   reopen_connection
   STDERR.puts(e.class.name + ' with path:' + path.to_s + "\n" + 'params:' + q.to_s + ':::' + req.to_s  + ':' + e.to_s)
   cnt+=1
-  retry if cnt< 5
+  retry if cnt < 5
 rescue StandardError => e
   raise EnginesException.new(error_hash('reg exception ' + e.to_s, @base_url.to_s))
 end
