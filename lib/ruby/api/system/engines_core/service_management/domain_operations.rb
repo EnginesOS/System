@@ -99,6 +99,7 @@ module DomainOperations
       rescue
       end
     end
+    STDERR.puts(' UPDATE DOMAIN ' + true.to_s)
     true
   end
 
