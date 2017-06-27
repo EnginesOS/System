@@ -48,7 +48,7 @@ def rest_get(path,params = nil, time_out = 120, _headers = nil)
   parse_xcon_response(r)
 
 rescue Excon::Error::Socket => e
-STDERR.puts(e.class.name + 'Excon::Error::Socket error:' + e.socket_error.instance_methods.to_s)
+STDERR.puts(e.class.name + 'Excon::Error::Socket error:' + e.socket_error.to_s)
 unless e.socket_error.to_s == 'end of file reached'
   reopen_connection
   STDERR.puts(e.class.name + 'Excon::Error::Socket with path:' + path.to_s + "\n" + 'params:' + q.to_s + ':::' + req.to_s  + ':' + e.to_s)
