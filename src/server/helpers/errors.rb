@@ -1,3 +1,14 @@
+
+def error_hash(mesg, *params)
+  {
+    error_type: :error,
+    params: params,
+    source: caller[1..4],
+    system: 'api',
+    error_mesg: mesg
+  }
+end
+
 def send_encoded_exception(api_exception)#request, error_object, *args)
   api_exception[:exception] = fake_exception(api_exception) unless api_exception[:exception].is_a?(Exception)
   status_code = 404

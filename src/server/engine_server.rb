@@ -43,7 +43,6 @@ begin
     pass if request.path.start_with?('/v0/backup/') && source_is_service?(request, 'backup')
     pass if request.path.start_with?('/v0/system/do_first_run') && FirstRunWizard.required?
     begin
-      STDERR.puts(request.path.to_s)
     env['warden'].authenticate!(:access_token)
       STDERR.puts(request.path.to_s)
     rescue StandardError => e
@@ -69,6 +68,8 @@ begin
     STDERR.puts('Exception failed to open  sql_lite_database: ' + e.to_s)
     false
   end
+  
+  
   begin
     require_relative 'helpers/helpers.rb'
     require_relative 'api/routes.rb'
@@ -76,17 +77,8 @@ begin
     STDERR.puts('Sinatra Error ' + e.to_s )
   end
 
-  def post_params(request)
-    r = request.env['rack.input'].read
-    unless r.nil?
-      json_parser.parse(r)
-    else
-      {}
-    end
-  rescue StandardError => e
-    STDERR.puts(' POST Parse Error ' + e.to_s + ' on ' + r.to_s)
-    {}
-  end
+
+
 
 rescue StandardError => e
   p e
