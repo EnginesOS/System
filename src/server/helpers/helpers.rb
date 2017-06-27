@@ -121,7 +121,7 @@ helpers do
     def failed
       STDERR.puts('FAILED ')
      # status (401)
-      redirect '/v0/unauthenticated'
+      redirect! '/v0/unauthenticated'
       #throw(:warden, action: '/v0/unauthenticated')
     end
     def authenticate!
