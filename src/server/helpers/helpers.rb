@@ -120,7 +120,9 @@ helpers do
     end
     def failed
       STDERR.puts('FAILED ')
-      throw(:warden, action: '/v0/unauthenticated')
+      status (401)
+      redirect '/v0/unauthenticated'
+      #throw(:warden, action: '/v0/unauthenticated')
     end
     def authenticate!
       STDERR.puts('NO HTTP_ACCESS_TOKEN in header ') if request.env['HTTP_ACCESS_TOKEN'].nil?
