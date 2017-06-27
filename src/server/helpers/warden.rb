@@ -19,8 +19,8 @@ use Warden::Manager do |config|
    #  status(401)
      #   send_encoded_exception(request: request, exception: 'unauthorised', params: params)
      #   STDERR.puts('FAILED ')
-    # status (401)
-     send_encoded_exception(request: request, exception: 'unauthorised', params: params)
+     status 401
+    # send_encoded_exception(request: request, exception: 'unauthorised', params: params)
    #  redirect! '/v0/unauthenticated'
      #throw(:warden, action: '/v0/unauthenticated')
    end
