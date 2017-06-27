@@ -48,13 +48,13 @@ def rest_get(path,params = nil, time_out = 120, _headers = nil)
   parse_xcon_response(r)
 
 rescue Excon::Error::Socket => e
-STDERR.puts(e.class.name + 'Excon::Error::Socket error:' + e.socket_error.to_s)
-unless e.socket_error == EOFError #'end of file reached'
+#STDERR.puts(e.class.name + 'Excon::Error::Socket error:' + e.socket_error.to_s)
+#unless e.socket_error == EOFError #'end of file reached'
   reopen_connection
-  STDERR.puts(e.class.name + 'Excon::Error::Socket with path:' + path.to_s + "\n" + 'params:' + q.to_s + ':::' + req.to_s  + ':' + e.to_s)
-  cnt+=1
+  #STDERR.puts(e.class.name + 'Excon::Error::Socket with path:' + path.to_s + "\n" + 'params:' + q.to_s + ':::' + req.to_s  + ':' + e.to_s)
+  cnt += 1
   retry if cnt < 5
-end
+#end
 rescue StandardError => e
   raise EnginesException.new(error_hash('reg exception ' + e.to_s, @base_url.to_s))
 end
@@ -64,15 +64,17 @@ def time_out
 end
 
 def rest_post(path, params = nil, lheaders = nil)
+  cnt = 0
   begin
     SystemDebug.debug(SystemDebug.registry,'POST  ', path.to_s + '?' + params.to_s)
     lheaders = headers if lheaders.nil?
     parse_xcon_response(connection.request({read_timeout: time_out, headers: lheaders, method: :post, path: @route_prefix + path.to_s, body: query_hash(params).to_json }))
   rescue Excon::Error::Socket => e
   unless e.socket_error == EOFError
-    STDERR.puts e.class.name
+  #  STDERR.puts e.class.name
     reopen_connection
-    retry
+    cnt += 1
+     retry if cnt < 5
   end
   rescue StandardError => e
     raise EnginesException.new(error_hash('reg exception ' + path.to_s + "\n" + e.to_s, @base_url.to_s))
@@ -80,17 +82,19 @@ def rest_post(path, params = nil, lheaders = nil)
 end
 
 def rest_put(path, params = nil, lheaders = nil)
+  cnt = 0
   SystemDebug.debug(SystemDebug.registry,'Delete ', path.to_s + '?' + params.to_s)
   lheaders = headers if lheaders.nil?
   r = parse_xcon_response( connection.request(read_timeout: time_out, headers: lheaders, method: :put, path: @route_prefix + path.to_s, query: query_hash(params).to_json ))
   r
   
 rescue Excon::Error::Socket => e
-  unless e.socket_error == EOFError
-  STDERR.puts e.class.name
+ # unless e.socket_error == EOFError
+#  STDERR.puts e.class.name
   reopen_connection
-  retry
-  end
+  cnt += 1
+   retry if cnt < 5
+ # end
 rescue StandardError => e
   raise EnginesException.new(error_hash('reg exception ' + e.to_s, @base_url.to_s))
 end
@@ -106,6 +110,7 @@ def query_hash(params)
 end
 
 def rest_delete(path, params = nil, lheaders = nil)
+  cnt = 0
   q = query_hash(params)
   SystemDebug.debug(SystemDebug.registry, 'DEL ', path.to_s + '?' + q.to_s)
   lheaders = headers if lheaders.nil?
@@ -113,11 +118,12 @@ def rest_delete(path, params = nil, lheaders = nil)
   r
  
 rescue Excon::Error::Socket => e
-  unless e.socket_error == EOFError
-  STDERR.puts e.class.name
+#  unless e.socket_error == EOFError
+ # STDERR.puts e.class.name
   reopen_connection
-  retry
-  end
+  cnt += 1
+   retry if cnt < 5
+#  end
 rescue StandardError => e
   raise EnginesException.new(error_hash('reg exception ' + e.to_s, @base_url.to_s))
   #end
