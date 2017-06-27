@@ -67,6 +67,7 @@ module ServiceOperations
   def update_attached_service(service_hash)
     check_engine_service_hash(service_hash)
     ahash = retrieve_engine_service_hash(service_hash)
+    raise EnginesException.new(error_hash("No such service", service_hash)) unless ahash.is_a?(Hash)
     raise EnginesException.new(error_hash("Cannot update a shared service", service_hash)) if ahash[:shared] == true
     service_manager.update_attached_service(service_hash)
   end
