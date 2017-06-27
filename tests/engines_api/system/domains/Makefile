@@ -17,12 +17,12 @@ view:
 update:
 	cat update_domain.json | engines system domain update testdomain.com | engines_test_expects bool true
 	echo -n " Verify update:"
-	engines system domains view testdomain.com | engines_test_expects json self_hosted true
+	engines system domain view testdomain.com | engines_test_expects json self_hosted true
 
 remove:
 	engines system domains remove testdomain.com | engines_test_expects bool true
 	echo -n " Verify remove:"
-	engines system domains view testdomain.com | engines_test_expects text '{}'
+	engines system domain view testdomain.com | engines_test_expects text '{}'
 
 	
 	
