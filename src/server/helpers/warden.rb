@@ -23,7 +23,7 @@ use Warden::Manager do |config|
      STDERR.puts('FAILED ')
     # send_encoded_exception(request: request, exception: 'unauthorised', params: params)
     # redirect! '/v0/unauthenticated'
-     throw(:warden, action: '/v0/unauthenticated')
+     throw(:warden)
    end
    
    
