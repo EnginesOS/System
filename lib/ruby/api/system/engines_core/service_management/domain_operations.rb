@@ -61,7 +61,6 @@ module DomainOperations
     #   STDERR.puts(' UPDATE DOMAIN VARIABLES ' + params.to_s)
     old_domain_name = params[:original_domain_name]
     DNSHosting.update_domain(old_domain_name, params)
-    if params[:self_hosted]
       service_hash = {
         parent_engine: 'system',
         container_type: 'system',
@@ -72,6 +71,7 @@ module DomainOperations
         domain_name: params[:domain_name]
         }
       }
+    if params[:self_hosted]
       if params.key?(:original_domain_name)
         service_hash[:variables][:domain_name] = old_domain_name
         service_hash[:service_handle] = old_domain_name + '_dns'
@@ -99,6 +99,7 @@ module DomainOperations
       rescue
       end
     end
+    true
   end
 
   def remove_domain(params)
