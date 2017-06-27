@@ -22,7 +22,8 @@ use Warden::Manager do |config|
      fail!(action: '/v0/unauthenticated', message: 'Could not log in')
      STDERR.puts('FAILED ')
     # send_encoded_exception(request: request, exception: 'unauthorised', params: params)
-     redirect! '/v0/unauthenticated'
+    # redirect! '/v0/unauthenticated'
+     ret_unauthen
      #throw(:warden)
    end
    

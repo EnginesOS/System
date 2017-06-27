@@ -50,7 +50,10 @@ begin
       status(401)
     end
   end
-
+  def ret_unauthen
+    status(401)
+    send_encoded_exception(request: request, exception: 'unauthorised', params: params)
+  end
   def source_is_service?(request, service_name)
     service = get_service(service_name)
     if request.ip.to_s == service.get_ip_str
