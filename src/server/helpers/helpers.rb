@@ -129,7 +129,7 @@ helpers do
     def authenticate!
       STDERR.puts('NO HTTP_ACCESS_TOKEN in header ') if request.env['HTTP_ACCESS_TOKEN'].nil?
       access_granted = is_token_valid?(request.env['HTTP_ACCESS_TOKEN'])
-      !access_granted ? fail!(mesg: 'Could not log in') : success!(access_granted)
+      !access_granted ? fail!(action: '/v0/unauthenticated', mesg: 'Could not log in') : success!(access_granted)
     #  !access_granted ? failed : success!(access_granted)
     end
   end
