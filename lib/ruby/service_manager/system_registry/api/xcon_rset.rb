@@ -47,7 +47,7 @@ def rest_get(path,params = nil, time_out = 120, _headers = nil)
   r = connection.request(req)
   parse_xcon_response(r)
 rescue EOFError
-  next
+STDERR.puts(e.class.name + ' with path:')
 rescue Excon::Error::Socket => e
   reopen_connection
   STDERR.puts(e.class.name + ' with path:' + path.to_s + "\n" + 'params:' + q.to_s + ':::' + req.to_s  + ':' + e.to_s)
