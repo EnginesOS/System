@@ -47,7 +47,7 @@ begin
     def call(env)
       STDERR.puts 'failure: ' + env['REQUEST_METHOD'] + ' ' + env['REQUEST_URI']
     #  self.status = 403
-      STDERR.puts 'failure: '
+      STDERR.puts 'failure: '  + @parent.to_s
       STDERR.puts(@parent.methods.to_s)
     #  self.headers['Error-Message'] = 'invalid token'
      # self.content_type = request.format.to_s
