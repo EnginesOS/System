@@ -98,7 +98,7 @@ end
 post '/v0/unauthenticated' do
   begin
     STDERR.puts('post UNAUTH ROTE')
- #   status(401)
+    status(401)
     send_encoded_exception(request: request, exception: 'unauthorised', params: params)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
@@ -111,7 +111,7 @@ get '/v0/unauthenticated' do
   begin
     STDERR.puts('get UNAUTH ROTE')
     # send_encoded_exception(request: nil, exception: 'unauthorised', params: params)
-  #  status(401)
+    status(401)
     ''
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
