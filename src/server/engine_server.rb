@@ -5,27 +5,25 @@ begin
 
   require 'sinatra'
   require 'sinatra/streaming'
-  #  require 'json'
   require 'yajl'
   require 'ffi_yajl'
   require '/opt/engines/lib/ruby/system/system_debug.rb'
-  require '/opt/engines/lib/ruby/system/deal_with_json.rb'
+ # require '/opt/engines/lib/ruby/system/deal_with_json.rb'
   require '/opt/engines/lib/ruby/api/public/engines_api/engines_api.rb'
 
+  require '/opt/engines/lib/ruby/api/system/first_run_wizard/first_run_wizard.rb'
 
- require '/opt/engines/lib/ruby/api/system/first_run_wizard/first_run_wizard.rb'
+  require 'objspace'
+  require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
+  ObjectSpace.trace_object_allocations_start
+  @events_stream = nil
+  $engines_api = PublicApi.new(EnginesCore.new)
+  STDERR.puts('++++')
+  FileUtils.touch('/engines/var/run/flags/startup_complete')
+  @@last_error = ''
 
-    require 'objspace'
-      require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
-      ObjectSpace.trace_object_allocations_start
-      @events_stream = nil
-      $engines_api = PublicApi.new(EnginesCore.new)
-      STDERR.puts('++++')
-      FileUtils.touch('/engines/var/run/flags/startup_complete')
-      @@last_error = ''
-  
-  require_relative 'warden/warden_strategies.rb'  
- 
+  require_relative 'warden/warden_strategies.rb'
+
   before do
     pass if request.path.start_with?('/v0/system/login')
     pass if request.path.start_with?('/v0/unauthenticated')
@@ -35,28 +33,17 @@ begin
     pass if request.path.start_with?('/v0/schedule/service/') && source_is_service?(request, 'cron')
     pass if request.path.start_with?('/v0/backup/') && source_is_service?(request, 'backup')
     pass if request.path.start_with?('/v0/system/do_first_run') && FirstRunWizard.required?
-    begin
-      env['warden'].authenticate!(:access_token)
-    rescue StandardError => e
-      STDERR.puts(e.class.name.to_s + ':' + e.to_s + "\n" + e.backtrace.to_s )
-    end
+    env['warden'].authenticate!(:access_token)
   end
-  
+
   class Application < Sinatra::Base
     @events_s = nil
     set :sessions, true
     set :logging, true
     set :run, true
-
     require_relative 'warden/warden_config.rb'
-    
-    begin
-      require_relative 'helpers/helpers.rb'
-      require_relative 'api/routes.rb'
-    rescue StandardError => e
-      STDERR.puts('Sinatra Error ' + e.to_s )
-    end
-
+    require_relative 'helpers/helpers.rb'
+    require_relative 'api/routes.rb'
   rescue StandardError => e
     p e
     r = EnginesError.new('Unhandled Exception' + e.to_s + '\n' + e.backtrace.to_s, :error, 'api')
@@ -74,9 +61,5 @@ begin
   rescue
     false
   end
-  
 
-
-    
- 
 end
