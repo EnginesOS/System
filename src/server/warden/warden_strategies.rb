@@ -1,12 +1,12 @@
 require 'warden'
 
-#Warden::Manager.before_failure do |env,opts|
-#   # Sinatra is very sensitive to the request method
-#   # since authentication could fail on any type of method, we need
-#   # to set it for the failure app so it is routed to the correct block
-#   puts "============== #{opts.inspect}"
-#   env['REQUEST_METHOD'] = "POST"
-#end
+Warden::Manager.before_failure do |env,opts|
+   # Sinatra is very sensitive to the request method
+   # since authentication could fail on any type of method, we need
+   # to set it for the failure app so it is routed to the correct block
+   puts "============== #{opts.inspect}"
+   env['REQUEST_METHOD'] = "POST"
+end
 
 # Implement Warden stratagey to validate and authorize the access_token.
 Warden::Strategies.add(:access_token) do
