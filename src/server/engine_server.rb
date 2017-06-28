@@ -23,7 +23,7 @@ begin
   @@last_error = ''
   
   require 'warden'
-  require_relative 'warden/warden_config.rb'
+  #require_relative 'warden/warden_config.rb'
   require_relative 'warden/warden_strategies.rb'
 
   before do
