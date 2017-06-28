@@ -59,7 +59,7 @@ rescue Excon::Error::Socket => e
 #    sleep 1
 #    retry
 #  end
-  STDERR.puts('Failed to url ' + uri.to_s + ' after ' + @retries.to_s = ' attempts')
+  STDERR.puts('Failed to url ' + uri.to_s + ' after ' + @retries.to_s + ' attempts')
 rescue StandardError => e
   STDERR.puts e.to_s + ' with path:' + uri + "\n" + 'params:' + params.to_s
   STDERR.puts e.class.name
