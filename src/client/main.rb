@@ -46,6 +46,7 @@ def read_stdin_json
 end
 
 def perform_get(time_out = 34)
+  STDERR.puts('GET ' + @route.to_s)
   r = rest_get(@route, time_out)
   write_response(r)
   exit
@@ -58,8 +59,7 @@ def perform_del(time_out = 35)
 end
 
 def perform_post(params, content_type='application/json')
-  post_params = {}
-  post_params[:api_vars] = params
+  post_params = {api_vars: params}
   rest_post(@route,post_params, content_type)
   exit
 end
