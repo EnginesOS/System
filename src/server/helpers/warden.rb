@@ -2,7 +2,10 @@ use Warden::Manager do |config|
    config.scope_defaults :default,
    strategies: [:access_token], # Set your authorization strategy
    action: :unauthenticated # Route to redirect to when warden.authenticate! returns a false answer.
-    config.failure_app = self.class
+    config.failure_app = lambda { |env| 
+  failure_action = env["warden.options"][:action].to_sym
+ SessionsController.action(failure_action).call(env) 
+} #self.class
  end
 
  # Implement your Warden stratagey to validate and authorize the access_token.
