@@ -2,7 +2,7 @@ use Warden::Manager do |config|
    config.scope_defaults :default,
    strategies: [:access_token], # Set your authorization strategy
    action: :unauthenticated # Route to redirect to when warden.authenticate! returns a false answer.
-  #  config.failure_app = self.class
+    config.failure_app = self.class
  end
 
  # Implement your Warden stratagey to validate and authorize the access_token.
@@ -27,10 +27,12 @@ use Warden::Manager do |config|
      # warden.custom_failure!
       # render :json => {:success => false, :errors => ["Login Failed"]}
      #   end
-    # throw(:warden)
+     throw(:warden, :action => :unauthenticated)
    end
    
-   
+   def unauthenticated(*args)
+      STDERR.puts('Un authed Helper' + arg.to_s)
+    end
    def authenticate!
      STDERR.puts('NO HTTP_ACCESS_TOKEN in header ') if request.env['HTTP_ACCESS_TOKEN'].nil?
      access_granted = is_token_valid?(request.env['HTTP_ACCESS_TOKEN'])
