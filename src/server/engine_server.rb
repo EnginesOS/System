@@ -32,34 +32,9 @@ begin
   FileUtils.touch('/engines/var/run/flags/startup_complete')
   @@last_error = ''
 
-  before do
-    pass if request.path.start_with?('/v0/system/login')
-    pass if request.path.start_with?('/v0/unauthenticated')
-    pass if request.path.start_with?('/v0/cron/engine/') && source_is_service?(request, 'cron')
-    pass if request.path.start_with?('/v0/cron/service/') && source_is_service?(request, 'cron')
-    pass if request.path.start_with?('/v0/schedule/engine/') && source_is_service?(request, 'cron')
-    pass if request.path.start_with?('/v0/schedule/service/') && source_is_service?(request, 'cron')
-    pass if request.path.start_with?('/v0/backup/') && source_is_service?(request, 'backup')
-    pass if request.path.start_with?('/v0/system/do_first_run') && FirstRunWizard.required?
-    begin
-    env['warden'].authenticate!(:access_token)
-     
-    rescue StandardError => e
-      STDERR.puts(e.class.name.to_s + ':' + e.to_s + "\n" + e.backtrace.to_s )
-    end
-  end
   
   
-  def source_is_service?(request, service_name)
-    service = get_service(service_name)
-    if request.ip.to_s == service.get_ip_str
-      true
-    else
-      false
-    end
-  rescue
-    false
-  end
+
   
   
   begin
@@ -76,4 +51,31 @@ rescue StandardError => e
   STDERR.puts('Unhandled Exception' + e.to_s + '\n' + e.backtrace.to_s )
   r.to_json
     end
+    
+  def source_is_service?(request, service_name)
+    service = get_service(service_name)
+    if request.ip.to_s == service.get_ip_str
+      true
+    else
+      false
+    end
+  rescue
+    false
+  end
+  before do
+    pass if request.path.start_with?('/v0/system/login')
+    pass if request.path.start_with?('/v0/unauthenticated')
+    pass if request.path.start_with?('/v0/cron/engine/') && source_is_service?(request, 'cron')
+    pass if request.path.start_with?('/v0/cron/service/') && source_is_service?(request, 'cron')
+    pass if request.path.start_with?('/v0/schedule/engine/') && source_is_service?(request, 'cron')
+    pass if request.path.start_with?('/v0/schedule/service/') && source_is_service?(request, 'cron')
+    pass if request.path.start_with?('/v0/backup/') && source_is_service?(request, 'backup')
+    pass if request.path.start_with?('/v0/system/do_first_run') && FirstRunWizard.required?
+    begin
+    env['warden'].authenticate!(:access_token)
+     
+    rescue StandardError => e
+      STDERR.puts(e.class.name.to_s + ':' + e.to_s + "\n" + e.backtrace.to_s )
+    end
+  end
 end
