@@ -37,7 +37,7 @@ use Warden::Manager do |config|
      # warden.custom_failure!
       # render :json => {:success => false, :errors => ["Login Failed"]}
      #   end
-     throw(:warden, :action => :unauthenticated)
+     #throw(:warden, :action => :unauthenticated)
    end
    
    def unauthenticated(*args)
