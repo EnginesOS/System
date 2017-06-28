@@ -38,7 +38,7 @@ def send_encoded_exception(api_exception)#request, error_object, *args)
     #  error_mesg[:error_mesg] = api_exception[:exception].to_s
     status_code = 500
   elsif api_exception[:exception].to_s == 'unauthorised'
-    status_code = 404
+    status_code = 403
   end
   STDERR.puts error_mesg.to_s
   return_json(error_mesg, status_code)
