@@ -26,9 +26,8 @@ begin
   end
 
   ObjectSpace.trace_object_allocations_start
-  core_api = EnginesCore.new
   @events_stream = nil
-  $engines_api = PublicApi.new(core_api)
+  $engines_api = PublicApi.new(EnginesCore.new)
   #STDERR.puts('CREATED ENGINES API +++++++++++++++++++++++++++++++++++++++++++')
   FileUtils.touch('/engines/var/run/flags/startup_complete')
   @@last_error = ''
