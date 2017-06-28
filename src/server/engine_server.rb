@@ -23,7 +23,7 @@ begin
     set :sessions, true
     set :logging, true
     set :run, true
-  end
+ 
 
   ObjectSpace.trace_object_allocations_start
   @events_stream = nil
@@ -49,9 +49,6 @@ begin
     end
   end
   
-  def unauthenticated(*args)
-    STDERR.puts('Un authed ' + arg.to_s)
-  end
   
   def source_is_service?(request, service_name)
     service = get_service(service_name)
@@ -61,13 +58,6 @@ begin
       false
     end
   rescue
-    false
-  end
-
-  def sql_lite_database
-    engines_api.auth_database
-  rescue StandardError => e
-    STDERR.puts('Exception failed to open  sql_lite_database: ' + e.to_s)
     false
   end
   
@@ -80,11 +70,10 @@ begin
   end
 
 
-
-
 rescue StandardError => e
   p e
   r = EnginesError.new('Unhandled Exception' + e.to_s + '\n' + e.backtrace.to_s, :error, 'api')
   STDERR.puts('Unhandled Exception' + e.to_s + '\n' + e.backtrace.to_s )
   r.to_json
+    end
 end
