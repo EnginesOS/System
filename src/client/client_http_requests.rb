@@ -17,7 +17,7 @@ def connection(content_type = 'application/json_parser')
   :headers => headers) if @connection.nil?
   @connection
 rescue Excon::Error::Socket => e
-  if @retries < 2
+  if @retries < 5
     @retries += 1
     sleep 1
     retry
