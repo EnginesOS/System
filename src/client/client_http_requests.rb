@@ -51,7 +51,7 @@ def rest_get(uri, time_out = 35, params = nil)
     connection.request({:read_timeout => time_out, :method => :get, :path => uri, :body => params.to_json})
   end
 rescue Excon::Error::Socket
-  if retries < 10
+  if retries < 2
     retries +=1
     sleep 1
     retry
