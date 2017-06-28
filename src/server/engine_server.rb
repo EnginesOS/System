@@ -14,11 +14,17 @@ begin
 
 
  require '/opt/engines/lib/ruby/api/system/first_run_wizard/first_run_wizard.rb'
- 
-  init_api
+
+    require 'objspace'
+      require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
+      ObjectSpace.trace_object_allocations_start
+      @events_stream = nil
+      $engines_api = PublicApi.new(EnginesCore.new)
+      STDERR.puts('++++')
+      FileUtils.touch('/engines/var/run/flags/startup_complete')
+      @@last_error = ''
   
-  require_relative 'warden/warden_strategies.rb'
-  
+  require_relative 'warden/warden_strategies.rb'  
  
   before do
     pass if request.path.start_with?('/v0/system/login')
@@ -69,17 +75,8 @@ begin
     false
   end
   
-  private 
-  def init_api
-    require 'objspace'
-      require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
-      ObjectSpace.trace_object_allocations_start
-      @events_stream = nil
-      $engines_api = PublicApi.new(EnginesCore.new)
-      STDERR.puts('++++')
-      FileUtils.touch('/engines/var/run/flags/startup_complete')
-      @@last_error = ''
-  end
+
+
     
  
 end
