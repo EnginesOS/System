@@ -1,3 +1,5 @@
+require 'warden'
+
 use Warden::Manager do |config|
   config.default_scope :default
   config.scope_defaults :default,
