@@ -34,6 +34,7 @@ begin
     pass if request.path.start_with?('/v0/backup/') && source_is_service?(request, 'backup')
     pass if request.path.start_with?('/v0/system/do_first_run') && FirstRunWizard.required?
     env['warden'].authenticate!(:access_token)
+    
   end
 
   class Application < Sinatra::Base

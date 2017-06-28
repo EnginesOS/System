@@ -12,8 +12,6 @@ helpers do
     @json_parser ||= FFI_Yajl::Parser.new(symbolize_keys: true)
   end
 
- 
-
   def get_engine(engine_name)
     engines_api.loadManagedEngine(engine_name)
   end
@@ -27,8 +25,11 @@ helpers do
   end
 
   def downcase_keys(hash)
-    return hash unless hash.is_a? Hash
-    hash.map{|k, v| [k.downcase, downcase_keys(v)]}.to_h
+    unless hash.is_a?(Hash)
+      hash
+    else
+      hash.map{|k, v| [k.downcase, downcase_keys(v)]}.to_h
+    end
   end
 
   def managed_containers_to_json(containers)
@@ -48,5 +49,4 @@ helpers do
     return_json(c.to_h)
   end
 
- 
 end
