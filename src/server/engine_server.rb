@@ -41,7 +41,7 @@ begin
   class FailureApp
     def call(env)
       STDERR.puts 'failure: ' + env['REQUEST_METHOD'] + ' ' + env['REQUEST_URI']
-      [401, {}, '']
+      [401, {'WWW-Authenticate' => %(Basic realm="#{realm}")}, '']
   end
 end
   class Application < Sinatra::Base
