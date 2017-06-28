@@ -33,7 +33,7 @@ Warden::Strategies.add(:access_token) do
     # warden.custom_failure!
     # render :json => {:success => false, :errors => ["Login Failed"]}
     #   end
-    env['warden'].custom!( [403, {'Error-Message' => 'invalid token'}, 'err'])
+   # env['warden'].custom!( [403, {'Error-Message' => 'invalid token'}, 'err'])
       throw(:warden)
   end
 
