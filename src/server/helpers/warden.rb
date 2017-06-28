@@ -7,7 +7,8 @@ use Warden::Manager do |config|
      failure_action = env["warden.options"][:action].to_sym
      STDERR.puts('Its a :AMBDA action ' + failure_action.to_s)
      STDERR.puts('Its a :AMBDA env' + env.to_s)
-      redirect! '/v0/unauthenticated'
+      env['warden'].custom_failure!
+      #  redirect! '/v0/unauthenticated'
      #  STDERR.puts('_______' + caller.to_s)
     # redirect! '/v0/unauthenticated'
       STDERR.puts('_______')
