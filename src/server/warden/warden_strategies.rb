@@ -37,7 +37,7 @@ Warden::Strategies.add(:access_token) do
     # warden.custom_failure!
     # render :json => {:success => false, :errors => ["Login Failed"]}
     #   end
-    #   throw(:warden)
+       throw(:warden)
   end
 
   def authenticate!
