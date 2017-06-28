@@ -28,7 +28,7 @@ begin
   ObjectSpace.trace_object_allocations_start
   @events_stream = nil
   $engines_api = PublicApi.new(EnginesCore.new)
-  #STDERR.puts('CREATED ENGINES API +++++++++++++++++++++++++++++++++++++++++++')
+  STDERR.puts('++++')
   FileUtils.touch('/engines/var/run/flags/startup_complete')
   @@last_error = ''
 
@@ -43,7 +43,7 @@ begin
     pass if request.path.start_with?('/v0/system/do_first_run') && FirstRunWizard.required?
     begin
     env['warden'].authenticate!(:access_token)
-      STDERR.puts(request.path.to_s)
+     
     rescue StandardError => e
       STDERR.puts(e.class.name.to_s + ':' + e.to_s + "\n" + e.backtrace.to_s )
     end
