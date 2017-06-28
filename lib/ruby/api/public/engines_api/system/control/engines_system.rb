@@ -16,7 +16,7 @@ module PublicApiSystemControlEnginesSystem
   end
 
   def is_token_valid?(token, ip =nil)
-    @core_api.is_token_valid?(token, ip =nil)
+    @core_api.is_token_valid?(token, ip = nil)
   end
   def dump_threads
     r = ''

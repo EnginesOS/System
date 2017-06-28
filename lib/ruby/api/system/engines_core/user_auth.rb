@@ -22,7 +22,8 @@ module UserAuth
       end
     end
     if rows.count > 0
-      rows[0]
+     # rows[0]
+      true
     else
       false
     end

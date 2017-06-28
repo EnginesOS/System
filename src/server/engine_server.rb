@@ -21,7 +21,7 @@ begin
   STDERR.puts('++++')
   FileUtils.touch('/engines/var/run/flags/startup_complete')
   @@last_error = ''
-
+  require 'warden'
   require_relative 'warden/warden_strategies.rb'
 
   before do

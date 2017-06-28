@@ -86,7 +86,7 @@ end
 # FIXMe this is a no-op
 get '/v0/system/logout' do
   begin
-    status(403)
+    status(401)
     ''
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
@@ -98,7 +98,7 @@ end
 post '/v0/unauthenticated' do
   begin
     STDERR.puts('UNAUTH ROTE')
-    status(403)
+    status(401)
     send_encoded_exception(request: request, exception: 'unauthorised', params: params)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
@@ -110,7 +110,7 @@ end
 get '/v0/unauthenticated' do
   begin
     # send_encoded_exception(request: nil, exception: 'unauthorised', params: params)
-    status(403)
+    status(401)
     ''
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)

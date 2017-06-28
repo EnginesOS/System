@@ -1,4 +1,4 @@
-require 'warden'
+#require 'warden'
 
 Warden::Manager.before_failure do |env,opts|
    # Sinatra is very sensitive to the request method
@@ -36,10 +36,6 @@ Warden::Strategies.add(:access_token) do
     # render :json => {:success => false, :errors => ["Login Failed"]}
     #   end
     #  throw(:warden)
-  end
-
-  def unauthenticated
-    STDERR.puts('Un authed Helper' )
   end
 
   def authenticate!
