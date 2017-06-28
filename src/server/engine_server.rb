@@ -22,7 +22,7 @@ begin
   FileUtils.touch('/engines/var/run/flags/startup_complete')
   @@last_error = ''
 
-  require_relative 'warden/warden_strategies.rb'
+  
 
   before do
     pass if request.path.start_with?('/v0/system/login')
@@ -42,6 +42,7 @@ begin
     set :sessions, true
     set :logging, true
     set :run, true
+    require_relative 'warden/warden_strategies.rb'
     require_relative 'warden/warden_config.rb'
     require_relative 'helpers/helpers.rb'
     require_relative 'api/routes.rb'
