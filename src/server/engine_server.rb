@@ -42,9 +42,10 @@ begin
     def call(env)
       STDERR.puts 'failure: ' + env['REQUEST_METHOD'] + ' ' + env['REQUEST_URI']
       self.status = 403
-      self.headers['Error-Message'] = 'invalid token'
-      self.content_type = request.format.to_s
-      self.response_body= {'Error-Message' => 'invalid token'}.to_json
+      STDERR.puts 'failure: '   
+    #  self.headers['Error-Message'] = 'invalid token'
+     # self.content_type = request.format.to_s
+     # self.response_body= {'Error-Message' => 'invalid token'}.to_json
      # [403, {'Error-Message' => 'invalid token'}] #'{"Error-Message" => "invalid token"}']
   end
 end
