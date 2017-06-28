@@ -41,7 +41,8 @@ begin
   class FailureApp
     def call(env)
       STDERR.puts 'failure: ' + env['REQUEST_METHOD'] + ' ' + env['REQUEST_URI']
-      [401, {'Error-Message' => 'invalid token'}, 'invalid token']
+      env['warden']..custom_failure!
+      [403, {'Error-Message' => 'invalid token'}, 'invalid token']
   end
 end
   class Application < Sinatra::Base
