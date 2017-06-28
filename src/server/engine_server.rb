@@ -16,7 +16,7 @@ begin
   require '/opt/engines/lib/ruby/api/system/first_run_wizard/first_run_wizard.rb'
 
   require 'objspace'
-  require 'warden'
+
 
   ObjectSpace.trace_object_allocations_start
   @events_stream = nil
@@ -24,6 +24,8 @@ begin
   STDERR.puts('++++')
   FileUtils.touch('/engines/var/run/flags/startup_complete')
   @@last_error = ''
+  require_relative 'warden_strageties.rb'
+  
   
   class Application < Sinatra::Base
     @events_s = nil
@@ -31,6 +33,8 @@ begin
     set :logging, true
     set :run, true
 
+    require_relative 'warden_config.rb'
+    
     begin
       require_relative 'helpers/helpers.rb'
       require_relative 'api/routes.rb'

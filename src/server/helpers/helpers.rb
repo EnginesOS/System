@@ -1,7 +1,6 @@
 helpers do
   require_relative 'params.rb'
   require_relative 'output.rb'
-  require_relative 'warden.rb'
   require_relative 'errors.rb'
   def engines_api
     #$engines_api
