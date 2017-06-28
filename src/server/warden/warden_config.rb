@@ -20,6 +20,9 @@ use Warden::Manager do |config|
 #        STDERR.puts('_______' + e.to_s)
 #      end
 #   } 
-    config.failure_app = self.unauthenticated(env)
+    config.failure_app = self.class.call(unauthenticated)
+  #    rescue StandardError => e
+  #        STDERR.puts('_______' + e.to_s)
+  #      end
 end
 
