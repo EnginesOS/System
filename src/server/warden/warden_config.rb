@@ -4,7 +4,7 @@ use Warden::Manager do |config|
   # config.default_scope :default
   config.scope_defaults :default,
   strategies: [:access_token], # Set your authorization strategy
-  action: '/v0/unauthenticated' # Route to redirect to when warden.authenticate! returns a false answer.
+  action: 'unauthenticated' # Route to redirect to when warden.authenticate! returns a false answer.
 #    config.failure_app = lambda { |env|
 #      begin
 #      STDERR.puts('Its a :AMBDA')
@@ -24,6 +24,7 @@ use Warden::Manager do |config|
 #        STDERR.puts('_______' + e.to_s)
 #      end
 #   } 
-   config.failure_app = FailureApp.new #self
+  # config.failure_app = FailureApp.new 
+  config.failure_app = self
 end
 

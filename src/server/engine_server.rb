@@ -37,7 +37,9 @@ begin
     pass if request.path.start_with?('/v0/system/do_first_run') && FirstRunWizard.required?
     env['warden'].authenticate!(:access_token)
   end
-  
+  def unauthenticated
+     STDERR.puts('Server Strat unauth')
+   end
   class FailureApp
     def call(env)
       STDERR.puts 'failure: ' + env['REQUEST_METHOD'] + ' ' + env['REQUEST_URI']
@@ -48,7 +50,7 @@ begin
      # self.response_body= {'Error-Message' => 'invalid token'}.to_json
     #  [302, {'Location' => '/v0/unauthenticated'},'']
       #[403,{"Error-Message" => "invalid token"} ,{"Error-Message" => "invalid token"}.to_json ] #'{"Error-Message" => "invalid token"}']
-      [403,{}]
+      [403,{"Error-Message" => "invalid token"}]
   end
 end
   class Application < Sinatra::Base
@@ -65,7 +67,9 @@ end
     STDERR.puts('Unhandled Exception' + e.to_s + '\n' + e.backtrace.to_s )
     r.to_json
   end
-
+def unauthenticated
+   STDERR.puts('Sinatra Strat unauth')
+ end
   def source_is_service?(request, service_name)
     service = get_service(service_name)
     if request.ip.to_s == service.get_ip_str

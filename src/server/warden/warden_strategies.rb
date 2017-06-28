@@ -19,6 +19,10 @@ Warden::Strategies.add(:access_token) do
   #  STDERR.puts('token ' + token.to_s)
       $engines_api.is_token_valid?(token, ip)
   end
+  
+  def unauthenticated
+    STDERR.puts('Warden Strat unauth')
+  end
 
   def failed
     #  status(401)
