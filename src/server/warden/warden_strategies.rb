@@ -11,7 +11,7 @@ require 'warden'
 # Implement Warden stratagey to validate and authorize the access_token.
 Warden::Strategies.add(:access_token) do
   def valid?
-    STDERR.puts('Valid ' + token.to_s)
+    STDERR.puts('Valid ' + request.env['HTTP_ACCESS_TOKEN'].to_s)
     request.env['HTTP_ACCESS_TOKEN'].is_a?(String)
   end
 
