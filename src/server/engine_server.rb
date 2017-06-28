@@ -49,7 +49,11 @@ begin
       STDERR.puts(e.class.name.to_s + ':' + e.to_s + "\n" + e.backtrace.to_s )
     end
   end
-
+  
+  def unauthenticated(*args)
+    STDERR.puts('Un authed ' + arg.to_s)
+  end
+  
   def source_is_service?(request, service_name)
     service = get_service(service_name)
     if request.ip.to_s == service.get_ip_str

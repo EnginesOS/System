@@ -19,13 +19,13 @@ use Warden::Manager do |config|
    #  status(401)
      #   send_encoded_exception(request: request, exception: 'unauthorised', params: params)
     #    STDERR.puts('FAILED ')
-     fail!(action: '/v0/unauthenticated', message: 'Could not log in')
+     fail!(action: 'unauthenticated', message: 'Could not log in')
      STDERR.puts('FAILED ')
     # send_encoded_exception(request: request, exception: 'unauthorised', params: params)
     redirect! '/v0/unauthenticated'
     #  def failure        
      # warden.custom_failure!
-       render :json => {:success => false, :errors => ["Login Failed"]}
+      # render :json => {:success => false, :errors => ["Login Failed"]}
      #   end
      #throw(:warden)
    end
