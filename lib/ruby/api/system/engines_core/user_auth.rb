@@ -9,6 +9,8 @@ module UserAuth
   end
 
   def is_token_valid?(token, ip = nil)
+    STDERR.puts('ip is ' + ip.to_s)
+    ip = nil
     if ip == nil
       rows = auth_database.execute(\
         'select guid from systemaccess where authtoken=' + "'" + token.to_s + "';" )
