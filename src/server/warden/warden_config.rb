@@ -1,7 +1,7 @@
 
 
 use Warden::Manager do |config|
-  config.default_scope :default
+  # config.default_scope :default
   config.scope_defaults :default,
   strategies: [:access_token], # Set your authorization strategy
   action: '/v0/unauthenticated' # Route to redirect to when warden.authenticate! returns a false answer.
