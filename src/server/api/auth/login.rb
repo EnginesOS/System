@@ -111,7 +111,7 @@ get '/v0/unauthenticated' do
   begin
     STDERR.puts('get UNAUTH ROTE')
     # send_encoded_exception(request: nil, exception: 'unauthorised', params: params)
-    status(401)
+    status(403)
     ''
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
