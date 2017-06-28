@@ -97,6 +97,7 @@ end
 # returns error hash
 post '/v0/unauthenticated' do
   begin
+    STDERR.puts('UNAUTH ROTE')
     status(401)
     send_encoded_exception(request: request, exception: 'unauthorised', params: params)
   rescue StandardError => e
