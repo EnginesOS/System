@@ -13,7 +13,7 @@ Warden::Strategies.add(:access_token) do
     #  status(401)
     #   send_encoded_exception(request: request, exception: 'unauthorised', params: params)
     #    STDERR.puts('FAILED ')
-    fail!(action: :unauthenticated, message: 'Could not log in')
+    fail!(action: '/v0/unauthenticated', message: 'Could not log in')
     STDERR.puts('FAILED ')
     # warden.custom_failure! 
     # send_encoded_exception(request: request, exception: 'unauthorised', params: params)
@@ -22,7 +22,7 @@ Warden::Strategies.add(:access_token) do
     # warden.custom_failure!
     # render :json => {:success => false, :errors => ["Login Failed"]}
     #   end
-    throw(:warden, :action => :unauthenticated)
+    throw(:warden)
   end
 
   def unauthenticated(*args)
