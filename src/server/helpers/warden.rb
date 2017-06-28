@@ -5,7 +5,7 @@ use Warden::Manager do |config|
     config.failure_app = lambda { |env| 
       STDERR.puts('Its a :AMBDA')
   failure_action = env["warden.options"][:action].to_sym
-      STDERR.puts('Its a :AMBDA ' + failure_action.to_s)
+      STDERR.puts('Its a :AMBDA ' + failure_action.to_s + env.to_s)
  SessionsController.action(failure_action).call(env) 
       STDERR.puts('It was a :AMBDA ' + SessionsController.to_s)
 } #self.class
