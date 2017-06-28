@@ -21,7 +21,7 @@ begin
   STDERR.puts('++++')
   FileUtils.touch('/engines/var/run/flags/startup_complete')
   @@last_error = ''
-  class Application < Sinatra::Base
+  
   require 'warden'
   require_relative 'warden/warden_config.rb'
   require_relative 'warden/warden_strategies.rb'
@@ -38,7 +38,7 @@ begin
     env['warden'].authenticate!(:access_token)
   end
 
- 
+  class Application < Sinatra::Base
     @events_s = nil
     set :sessions, true
     set :logging, true
