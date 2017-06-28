@@ -1,7 +1,7 @@
 use Warden::Manager do |config|
   config.scope_defaults :default,
   strategies: [:access_token], # Set your authorization strategy
-  action: :unauthenticated # Route to redirect to when warden.authenticate! returns a false answer.
+  action: 'session/unauthenticated' # Route to redirect to when warden.authenticate! returns a false answer.
   #  config.failure_app = lambda { |env|
   #    STDERR.puts('Its a :AMBDA')
   #   failure_action = env["warden.options"][:action].to_sym
