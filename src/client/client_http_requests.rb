@@ -18,7 +18,7 @@ def connection(content_type = 'application/json_parser')
   @connection
 rescue Excon::Error::Socket => e
   if @retries < 2
-    @retries +=1
+    @retries += 1
     sleep 1
     retry
   end
@@ -26,6 +26,7 @@ rescue Excon::Error::Socket => e
 end
 
 def rest_del(uri, params=nil, time_out=23)
+  @retries = 0
   if params.nil?
     connection.request(:read_timeout => time_out,:method => :delete,:path => uri)
   else
@@ -65,6 +66,7 @@ rescue StandardError => e
 end
 
 def rest_post(uri, params, content_type,time_out = 44 )  
+  @retries = 0
   begin
     unless params.nil?
       r = connection(content_type).request(:read_timeout => time_out,:method => :post,:path => uri, :body => params.to_json) #,:body => params.to_json)
@@ -90,6 +92,7 @@ def rest_post(uri, params, content_type,time_out = 44 )
 end
 
 def rest_delete(uri, params=nil, time_out = 20)
+  @retries = 0
   # params = add_access(params)
   begin
     if params.nil?
