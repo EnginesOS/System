@@ -1,7 +1,7 @@
 use Warden::Manager do |config|
    config.scope_defaults :default,
    strategies: [:access_token], # Set your authorization strategy
-   action: 'unauthenticated' # Route to redirect to when warden.authenticate! returns a false answer.
+   action: :unauthenticated # Route to redirect to when warden.authenticate! returns a false answer.
   #  config.failure_app = self.class
  end
 
@@ -19,7 +19,7 @@ use Warden::Manager do |config|
    #  status(401)
      #   send_encoded_exception(request: request, exception: 'unauthorised', params: params)
     #    STDERR.puts('FAILED ')
-     fail!(action: 'unauthenticated', message: 'Could not log in')
+     fail!(action: :unauthenticated, message: 'Could not log in')
      STDERR.puts('FAILED ')
     # send_encoded_exception(request: request, exception: 'unauthorised', params: params)
      # redirect! '/v0/unauthenticated'
@@ -27,7 +27,7 @@ use Warden::Manager do |config|
      # warden.custom_failure!
       # render :json => {:success => false, :errors => ["Login Failed"]}
      #   end
-     throw(:warden)
+    # throw(:warden)
    end
    
    
