@@ -56,7 +56,7 @@ Warden::Strategies.add(:access_token) do
   def authenticate!
     STDERR.puts('NO HTTP_ACCESS_TOKEN in header ') if request.env['HTTP_ACCESS_TOKEN'].nil?
     access_granted = is_token_valid?(request.env['HTTP_ACCESS_TOKEN'])
-     !access_granted ? fail!('Could not log in') : success!(access_granted)
-   # !access_granted ? failed : success!(access_granted)
+  #   !access_granted ? fail!('Could not log in') : success!(access_granted)
+    !access_granted ? failed : success!(access_granted)
   end
 end

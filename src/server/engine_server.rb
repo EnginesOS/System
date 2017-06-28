@@ -18,40 +18,33 @@ begin
   require 'objspace'
   require 'warden'
 
-  class Application < Sinatra::Base
-    @events_s = nil
-    set :sessions, true
-    set :logging, true
-    set :run, true
- 
-
   ObjectSpace.trace_object_allocations_start
   @events_stream = nil
   $engines_api = PublicApi.new(EnginesCore.new)
   STDERR.puts('++++')
   FileUtils.touch('/engines/var/run/flags/startup_complete')
   @@last_error = ''
+  
+  class Application < Sinatra::Base
+    @events_s = nil
+    set :sessions, true
+    set :logging, true
+    set :run, true
 
-  
-  
+    begin
+      require_relative 'helpers/helpers.rb'
+      require_relative 'api/routes.rb'
+    rescue StandardError => e
+      STDERR.puts('Sinatra Error ' + e.to_s )
+    end
 
-  
-  
-  begin
-    require_relative 'helpers/helpers.rb'
-    require_relative 'api/routes.rb'
   rescue StandardError => e
-    STDERR.puts('Sinatra Error ' + e.to_s )
+    p e
+    r = EnginesError.new('Unhandled Exception' + e.to_s + '\n' + e.backtrace.to_s, :error, 'api')
+    STDERR.puts('Unhandled Exception' + e.to_s + '\n' + e.backtrace.to_s )
+    r.to_json
   end
 
-
-rescue StandardError => e
-  p e
-  r = EnginesError.new('Unhandled Exception' + e.to_s + '\n' + e.backtrace.to_s, :error, 'api')
-  STDERR.puts('Unhandled Exception' + e.to_s + '\n' + e.backtrace.to_s )
-  r.to_json
-    end
-    
   def source_is_service?(request, service_name)
     service = get_service(service_name)
     if request.ip.to_s == service.get_ip_str
@@ -62,6 +55,7 @@ rescue StandardError => e
   rescue
     false
   end
+  
   before do
     pass if request.path.start_with?('/v0/system/login')
     pass if request.path.start_with?('/v0/unauthenticated')
@@ -72,8 +66,8 @@ rescue StandardError => e
     pass if request.path.start_with?('/v0/backup/') && source_is_service?(request, 'backup')
     pass if request.path.start_with?('/v0/system/do_first_run') && FirstRunWizard.required?
     begin
-    env['warden'].authenticate!(:access_token)
-     
+      env['warden'].authenticate!(:access_token)
+
     rescue StandardError => e
       STDERR.puts(e.class.name.to_s + ':' + e.to_s + "\n" + e.backtrace.to_s )
     end
