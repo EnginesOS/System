@@ -2,18 +2,19 @@ use Warden::Manager do |config|
   config.scope_defaults :default,
   strategies: [:access_token], # Set your authorization strategy
   action: :unauthenticated # Route to redirect to when warden.authenticate! returns a false answer.
-  config.failure_app = lambda { |env|
-    STDERR.puts('Its a :AMBDA')
-    failure_action = env["warden.options"][:action].to_sym
-    STDERR.puts('Its a :AMBDA action ' + failure_action.to_s)
-    STDERR.puts('Its a :AMBDA env' + env.to_s)
+  #  config.failure_app = lambda { |env|
+  #    STDERR.puts('Its a :AMBDA')
+  #   failure_action = env["warden.options"][:action].to_sym
+  #   STDERR.puts('Its a :AMBDA action ' + failure_action.to_s)
+  #   STDERR.puts('Its a :AMBDA env' + env.to_s)
     #  redirect! '/v0/unauthenticated'
     # #  STDERR.puts('_______' + caller.to_s)
     # redirect! '/v0/unauthenticated'
     #  STDERR.puts('_______')
     #  unauthenticated(env)
 
-  } #self.class
+  # } #
+  config.failure_app = self
 end
 
 # Implement your Warden stratagey to validate and authorize the access_token.
@@ -32,7 +33,7 @@ Warden::Strategies.add(:access_token) do
     #    STDERR.puts('FAILED ')
     fail!(action: :unauthenticated, message: 'Could not log in')
     STDERR.puts('FAILED ')
-    warden.custom_failure! 
+    # warden.custom_failure! 
     # send_encoded_exception(request: request, exception: 'unauthorised', params: params)
     redirect! '/v0/unauthenticated'
     #  def failure
@@ -49,7 +50,7 @@ Warden::Strategies.add(:access_token) do
   def authenticate!
     STDERR.puts('NO HTTP_ACCESS_TOKEN in header ') if request.env['HTTP_ACCESS_TOKEN'].nil?
     access_granted = is_token_valid?(request.env['HTTP_ACCESS_TOKEN'])
-    # !access_granted ? fail!(action: 'unauthenticated', message: 'Could not log in') : success!(access_granted)
-    !access_granted ? failed : success!(access_granted)
+     !access_granted ? fail!('Could not log in') : success!(access_granted)
+   # !access_granted ? failed : success!(access_granted)
   end
 end
