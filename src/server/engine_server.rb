@@ -40,9 +40,8 @@ begin
   
   class FailureApp
     def call(env)
-        uri = env['REQUEST_URI']
-      puts 'failure: ' + env['REQUEST_METHOD'] + ' ' + uri
-      [401, {'Location' => '/error?uri=' + CGI::escape(uri)}, '']
+      STDERR.puts 'failure: ' + env['REQUEST_METHOD'] + ' ' + env['REQUEST_URI']
+      [401, {}, '']
   end
 end
   class Application < Sinatra::Base
