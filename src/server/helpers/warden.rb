@@ -32,7 +32,7 @@ Warden::Strategies.add(:access_token) do
     #    STDERR.puts('FAILED ')
     fail!(action: :unauthenticated, message: 'Could not log in')
     STDERR.puts('FAILED ')
-    custom_failure! 
+    warden.custom_failure! 
     # send_encoded_exception(request: request, exception: 'unauthorised', params: params)
     redirect! '/v0/unauthenticated'
     #  def failure
