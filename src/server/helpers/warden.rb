@@ -9,9 +9,9 @@ use Warden::Manager do |config|
      STDERR.puts('Its a :AMBDA action ' + failure_action.to_s)
      STDERR.puts('Its a :AMBDA env' + env.to_s)
       env['warden'].custom_failure!
-        env['rack.errors'].write('Auth failed')
+      env['rack.errors'].write('Auth failed')
         
-      #  redirect! '/v0/unauthenticated'
+        redirect! '/v0/unauthenticated'
      #  STDERR.puts('_______' + caller.to_s)
     # redirect! '/v0/unauthenticated'
       STDERR.puts('_______')
