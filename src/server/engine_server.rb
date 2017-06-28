@@ -24,7 +24,7 @@ begin
   STDERR.puts('++++')
   FileUtils.touch('/engines/var/run/flags/startup_complete')
   @@last_error = ''
-  require_relative 'warden_strageties.rb'
+  require_relative 'warden_strategies.rb'
   
   
   class Application < Sinatra::Base
