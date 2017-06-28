@@ -37,7 +37,14 @@ begin
     pass if request.path.start_with?('/v0/system/do_first_run') && FirstRunWizard.required?
     env['warden'].authenticate!(:access_token)
   end
-
+  
+  class FailureApp
+    def call(env)
+        uri = env['REQUEST_URI']
+      puts 'failure: ' + env['REQUEST_METHOD'] + ' ' + uri
+      [302, {'Location' => '/error?uri=' + CGI::escape(uri)}, '']
+  end
+end
   class Application < Sinatra::Base
     @events_s = nil
     set :sessions, true

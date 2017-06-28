@@ -24,6 +24,6 @@ use Warden::Manager do |config|
 #        STDERR.puts('_______' + e.to_s)
 #      end
 #   } 
-   config.failure_app = self
+   config.failure_app = FailureApp.new #self
 end
 
