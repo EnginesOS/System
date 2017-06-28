@@ -48,7 +48,7 @@ begin
       STDERR.puts 'failure: ' + env['REQUEST_METHOD'] + ' ' + env['REQUEST_URI']
     #  self.status = 403
       STDERR.puts 'failure: '
-      @parent.unauthenticated   
+      STDERR.puts(@parent.methods.to_s)
     #  self.headers['Error-Message'] = 'invalid token'
      # self.content_type = request.format.to_s
      # self.response_body= {'Error-Message' => 'invalid token'}.to_json
