@@ -8,8 +8,8 @@ use Warden::Manager do |config|
       STDERR.puts('Its a :AMBDA action ' + failure_action.to_s)
       STDERR.puts('Its a :AMBDA env' + env.to_s)
       STDERR.puts('_______')
-      redirect! '/v0/unauthenticated'
-      STDERR.puts('_______')
+     # redirect! '/v0/unauthenticated'
+    #  STDERR.puts('_______')
     #  unauthenticated(env)
       
 } #self.class
