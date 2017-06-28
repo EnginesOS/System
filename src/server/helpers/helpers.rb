@@ -2,7 +2,7 @@ helpers do
   require_relative 'params.rb'
   require_relative 'output.rb'
   require_relative 'errors.rb'
-  require_relative 'warden/warden_config.rb'
+  require_relative '../warden/warden_config.rb'
   def engines_api
     #$engines_api
     $engines_api ||= PublicApi.new(core_api)
