@@ -7,6 +7,7 @@ use Warden::Manager do |config|
   failure_action = env["warden.options"][:action].to_sym
       STDERR.puts('Its a :AMBDA action ' + failure_action.to_s)
       STDERR.puts('Its a :AMBDA env' + env.to_s)
+      STDERR.puts('Its a :AMBDA SessionsController' + SessionsController.to_s)
       STDERR.puts('Its a :AMBDA action' + SessionsController.action(failure_action).to_s)
  SessionsController.action(failure_action).call(env) 
       STDERR.puts('It was a :AMBDA ' + SessionsController.to_s)
