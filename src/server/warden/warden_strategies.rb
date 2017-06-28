@@ -1,5 +1,5 @@
 #require 'warden'
-require 'warden'
+
 Warden::Manager.before_failure do |env,opts|
    # Sinatra is very sensitive to the request method
    # since authentication could fail on any type of method, we need

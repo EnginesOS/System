@@ -42,6 +42,7 @@ begin
     set :sessions, true
     set :logging, true
     set :run, true
+    require 'warden'
     require_relative 'warden/warden_config.rb'
     require_relative 'warden/warden_strategies.rb'
 
