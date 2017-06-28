@@ -11,12 +11,13 @@ require 'warden'
 # Implement Warden stratagey to validate and authorize the access_token.
 Warden::Strategies.add(:access_token) do
   def valid?
+    STDERR.puts('Valid ' + token.to_s)
     request.env['HTTP_ACCESS_TOKEN'].is_a?(String)
   end
 
   def is_token_valid?(token, ip = nil)
-    unless token.nil?
-      STDERR.puts('token ' + token.to_s)
+    STDERR.puts('token ' + token.to_s)
+    unless token.nil?      
       $engines_api.is_token_valid?(token, ip)
     else
       false
