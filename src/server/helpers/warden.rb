@@ -11,7 +11,7 @@ use Warden::Manager do |config|
       env['warden'].custom_failure!
       env['rack.errors'].write('Auth failed')
         
-        redirect! '/v0/unauthenticated'
+      #  redirect! '/v0/unauthenticated'
      #  STDERR.puts('_______' + caller.to_s)
     # redirect! '/v0/unauthenticated'
       STDERR.puts('_______')
