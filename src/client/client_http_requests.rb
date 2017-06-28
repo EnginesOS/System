@@ -50,7 +50,8 @@ def rest_get(uri, time_out = 35, params = nil)
   else
     connection.request({:read_timeout => time_out, :method => :get, :path => uri, :body => params.to_json})
   end
-rescue Excon::Error::Socket
+rescue Excon::Error::Socket => e
+  STDERR.puts e.to_s + ' with path:' + uri + "\n" + 'params:' + params.to_s
   if retries < 2
     retries +=1
     sleep 1
