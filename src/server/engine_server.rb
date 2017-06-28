@@ -48,7 +48,7 @@ begin
      # self.response_body= {'Error-Message' => 'invalid token'}.to_json
     #  [302, {'Location' => '/v0/unauthenticated'},'']
       #[403,{"Error-Message" => "invalid token"} ,{"Error-Message" => "invalid token"}.to_json ] #'{"Error-Message" => "invalid token"}']
-        [403]
+      [403,{}]
   end
 end
   class Application < Sinatra::Base
