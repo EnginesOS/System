@@ -12,6 +12,7 @@
 Warden::Strategies.add(:access_token) do
   def valid?
    # STDERR.puts('Valid ' + request.env['HTTP_ACCESS_TOKEN'].to_s)
+    STDERR.puts('NO HTTP_ACCESS_TOKEN in header ') if request.env['HTTP_ACCESS_TOKEN'].nil?
     request.env['HTTP_ACCESS_TOKEN'].is_a?(String)
   end
 
@@ -42,7 +43,6 @@ Warden::Strategies.add(:access_token) do
   end
 
   def authenticate!
-    STDERR.puts('NO HTTP_ACCESS_TOKEN in header ') if request.env['HTTP_ACCESS_TOKEN'].nil?
     access_granted = is_token_valid?(request.env['HTTP_ACCESS_TOKEN'], request.env['REMOTE_ADDR'])
      !access_granted ? fail!('Could not log in') : success!(access_granted)
     #     !access_granted ? failed : success!(access_granted)

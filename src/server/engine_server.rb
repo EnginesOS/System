@@ -44,11 +44,7 @@ begin
    
     def call(env)
       STDERR.puts 'failure: ' + env['REQUEST_METHOD'] + ' ' + env['REQUEST_URI']
-    #  self.status = 403
-      halt 403, "Go Away!"
-    #  self.headers['Error-Message'] = 'invalid token'
-     # self.content_type = request.format.to_s
-     # self.response_body= {'Error-Message' => 'invalid token'}.to_json
+      env['warden'].custom_failure!
     #  [302, {'Location' => '/v0/unauthenticated'},'']
       #[403,{"Error-Message" => "invalid token"} ,{"Error-Message" => "invalid token"}.to_json ] #'{"Error-Message" => "invalid token"}']
       [403,{"Content-Type"=>"text/plain", "Connection"=>"keep-alive", "Content-Length"=>"14", "Server"=>"thin","Error-Message" => "invalid token"},'Invalid Token']
