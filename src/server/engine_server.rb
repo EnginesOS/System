@@ -49,7 +49,7 @@ begin
     #  env['warden'].custom
     #  [302, {'Location' => '/v0/unauthenticated'},'']
       #[403,{"Error-Message" => "invalid token"} ,{"Error-Message" => "invalid token"}.to_json ] #'{"Error-Message" => "invalid token"}']
-      [403,{"Content-Type"=>"text/plain", "Connection"=>"keep-alive", "Content-Length"=>"13", "Server"=>"thin","Error-Message" => "invalid token"},'Invalid Token']
+     # [403,{"Content-Type"=>"text/plain", "Connection"=>"keep-alive", "Content-Length"=>"13", "Server"=>"thin","Error-Message" => "invalid token"},'Invalid Token']
   end
 end
   class Application < Sinatra::Base
