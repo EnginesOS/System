@@ -95,7 +95,7 @@ module EnginesOperations
   def clear_lost_engines
     r = []
     engines_tree = service_manager.managed_engines_registry
-    STDERR.puts('Engine Tree' + engines_tree.print_tree)
+    STDERR.puts('Engine Tree' + engines_tree.to_s)
     engines_tree['Application'].children.each do |engine_node|
       STDERR.puts('Engine Node' + engine_node.name)
       begin
