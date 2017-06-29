@@ -56,9 +56,9 @@ end
 delete '/v0/service_manager/orphan_service/:publisher_namespace/*' do
   begin
     params[:type_path] = File.dirname(params['splat'][0])
-    params[:service_handle] = File.basename(params[:type_path])
+    params[:parent_engine] = File.basename(params[:type_path])
     params[:type_path] = File.dirname(params[:type_path])
-    params[:parent_engine] = File.basename(params['splat'][0])
+    params[:service_handle] = File.basename(params['splat'][0])
     cparams = assemble_params(params, [:publisher_namespace, :type_path, :service_handle, :parent_engine], [])
       begin
         service_hash = engines_api.retrieve_orphan(cparams)    
