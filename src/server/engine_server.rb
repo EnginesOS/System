@@ -8,7 +8,7 @@ begin
   require 'yajl'
   require 'ffi_yajl'
   require '/opt/engines/lib/ruby/system/system_debug.rb'
- # require '/opt/engines/lib/ruby/system/deal_with_json.rb'
+  # require '/opt/engines/lib/ruby/system/deal_with_json.rb'
   require '/opt/engines/lib/ruby/api/public/engines_api/engines_api.rb'
 
   require '/opt/engines/lib/ruby/api/system/first_run_wizard/first_run_wizard.rb'
@@ -22,6 +22,8 @@ begin
   FileUtils.touch('/engines/var/run/flags/startup_complete')
   @@last_error = ''
 
+  require 'warden'
+  require_relative 'warden/warden_config.rb'
   require_relative 'warden/warden_strategies.rb'
 
   before do
@@ -34,7 +36,13 @@ begin
     pass if request.path.start_with?('/v0/backup/') && source_is_service?(request, 'backup')
     pass if request.path.start_with?('/v0/system/do_first_run') && FirstRunWizard.required?
     env['warden'].authenticate!(:access_token)
-    
+  end
+
+  class FailureApp
+    def call(env)
+      env['warden'].custom_failure!
+      [403,{"Content-Type"=>"text/plain",  "Content-Length"=>"13", "Server"=>"thin","Error-Message" => "Invalid Token"},['Invalid Token']]
+    end
   end
 
   class Application < Sinatra::Base
@@ -42,7 +50,6 @@ begin
     set :sessions, true
     set :logging, true
     set :run, true
-    require_relative 'warden/warden_config.rb'
     require_relative 'helpers/helpers.rb'
     require_relative 'api/routes.rb'
   rescue StandardError => e

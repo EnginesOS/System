@@ -2,13 +2,12 @@ helpers do
   require_relative 'params.rb'
   require_relative 'output.rb'
   require_relative 'errors.rb'
+
   def engines_api
-    #$engines_api
-    $engines_api ||= PublicApi.new(core_api)
+    $engines_api ||= PublicApi.new(EnginesCore.new)
   end
 
   def json_parser
-    # @json_parser = Yajl::Parser.new(:symbolize_keys => true) if @json_parser.nil?
     @json_parser ||= FFI_Yajl::Parser.new(symbolize_keys: true)
   end
 
