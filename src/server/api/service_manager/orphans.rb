@@ -1,5 +1,17 @@
 # @!group /service_manager/orphan_services/
 
+orphan_lost_services
+# @method orphan_lost_services
+# @overload get '/v0/service_manager/orphan_lost_services'
+# @return [Array] orphan_lost_services
+get '/v0/service_manager/orphan_lost_services' do
+  begin
+    return_json(engines_api.orphan_lost_services)
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+end
+
 # @method get_all_orphan_services
 # @overload get '/v0/service_manager/orphan_services/'
 # @return [Array] Orphan Service Hashes

@@ -73,16 +73,16 @@ def json_parser
 end
 
 def handle_resp(resp, expect_json = true)
-  if resp.status  >= 400
+  if resp.status >= 400
     log_error("Error " + resp.status.to_s)
     if resp.body.nil?
       'fail'
     else
       resp.body
     end
-  elsif resp.status  == 204   # nodata but all good happens on del
+  elsif resp.status == 204   # nodata but all good happens on del
     'OK'
-  elsif resp.status  >= 200 && resp.status < 300
+  elsif resp.status >= 200 && resp.status < 300
     resp.body
   else
     log_error("Un exepect response from system" + resp.status.to_s + ' ' + resp.body.to_s + ' ' + resp.headers.to_s)

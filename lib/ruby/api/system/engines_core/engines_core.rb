@@ -107,7 +107,7 @@ class EnginesCore < ErrorsApi
     @container_api = ContainerApi.new(@docker_api, @system_api, self)
     @service_api = ServiceApi.new(@docker_api, @system_api, self)
     @service_manager = ServiceManager.new(self) # create_service_manager
-    @service_manager.orphan_lost_services
+    
   end
 
   attr_reader :system_api, :container_api, :service_api

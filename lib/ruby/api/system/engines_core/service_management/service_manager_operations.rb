@@ -9,6 +9,10 @@ module ServiceManagerOperations
     service_manager.deregister_non_persistent_services(engine)
   end
 
+  def orphan_lost_services
+    service_manager.orphan_lost_services
+  end
+
   def retrieve_engine_service_hash(params)
     params[:container_type] = 'container' unless params.key?(:container_type)
     service_manager.retrieve_engine_service_hash(params)
