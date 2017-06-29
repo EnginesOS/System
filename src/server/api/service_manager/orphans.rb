@@ -1,6 +1,5 @@
 # @!group /service_manager/orphan_services/
 
-
 # @method orphan_lost_services
 # @overload get '/v0/service_manager/orphan_lost_services'
 # @return [Array] orphan_lost_services
@@ -39,10 +38,11 @@ end
 # @return [Hash] Orphan Service Hash
 get '/v0/service_manager/orphan_service/:publisher_namespace/*' do
   begin
-    params[:type_path] = File.dirname(params['splat'][0])
-    params[:service_handle] = File.basename(params[:type_path])
-    params[:type_path] = File.dirname(params[:type_path])
-    params[:parent_engine] = File.basename(params['splat'][0])
+    tp_plus = File.dirname(params['splat'][0])
+    params[:service_handle] = File.basename(tp_plus)
+    tp_plus = File.dirname(tp_plus)
+    params[:parent_engine] = File.basename(tp_plus)
+    params[:type_path] = File.dirname(tp_plus)
     cparams = assemble_params(params, [:publisher_namespace, :type_path, :service_handle, :parent_engine], [])
     return_json(engines_api.retrieve_orphan(cparams))
   rescue StandardError => e
@@ -55,19 +55,14 @@ end
 # @return [true]
 delete '/v0/service_manager/orphan_service/:publisher_namespace/*' do
   begin
-    params[:type_path] = File.dirname(params['splat'][0])
-    params[:parent_engine] = File.basename(params[:type_path])
-    params[:type_path] = File.dirname(params[:type_path])
-    params[:service_handle] = File.basename(params['splat'][0])
-    cparams = assemble_params(params, [:publisher_namespace, :type_path, :service_handle, :parent_engine], [])
-      begin
-        service_hash = engines_api.retrieve_orphan(cparams)    
-        return_text(engines_api.remove_orphaned_service(service_hash))
-      rescue        
-      STDERR.puts('No matshing service' + cparams.to_s)
-        return_text(engines_api.remove_orphaned_service(cparams))
-      end
-   
+    tp_plus = File.dirname(params['splat'][0])
+    params[:service_handle] = File.basename(tp_plus)
+    tp_plus = File.dirname(tp_plus)
+    params[:parent_engine] = File.basename(tp_plus)
+    params[:type_path] = File.dirname(tp_plus)
+    cparams = assemble_params(params, [:publisher_namespace, :type_path, :parent_engine, :service_handle], [])
+    service_hash = engines_api.retrieve_orphan(cparams)
+    return_text(engines_api.remove_orphaned_service(service_hash))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
