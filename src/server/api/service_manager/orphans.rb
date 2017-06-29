@@ -60,6 +60,7 @@ delete '/v0/service_manager/orphan_service/:publisher_namespace/*' do
     tp_plus = File.dirname(tp_plus)
     params[:parent_engine] = File.basename(tp_plus)
     params[:type_path] = File.dirname(tp_plus)
+      STDERR.puts('PARA ' + params.to_s )
     cparams = assemble_params(params, [:publisher_namespace, :type_path, :parent_engine, :service_handle], [])
     service_hash = engines_api.retrieve_orphan(cparams)
     return_text(engines_api.remove_orphaned_service(service_hash))
