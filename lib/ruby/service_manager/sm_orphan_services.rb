@@ -16,7 +16,7 @@ module SmOrphanServices
   def orphan_lost_services
     system_registry_client.orphan_lost_services
   end
-  
+
   def rollback_orphaned_service(service_hash)
     SystemDebug.debug(SystemDebug.orphans, :rollback_orphaned_service, service_hash)
     system_registry_client.rollback_orphaned_service(service_hash)
@@ -56,17 +56,16 @@ module SmOrphanServices
   def remove_orphaned_service(service_query_hash)
     SystemDebug.debug(SystemDebug.orphans, :remove_orphaned_service, service_query_hash)
     begin
-    service_hash = retrieve_orphan(service_query_hash)
-    if service_query_hash[:remove_all_data] == 'none'
-      service_hash[:remove_all_data] = 'none'
-    else
-      service_hash[:remove_all_data] = 'all'
-    end    
-      rescue
-      service_hash = nil
+      service_hash = retrieve_orphan(service_query_hash)
+      if service_query_hash[:remove_all_data] == 'none'
+        service_hash[:remove_all_data] = 'none'
+      else
+        service_hash[:remove_all_data] = 'all'
       end
-    remove_from_managed_service(service_hash) unless service_hash.nil?
-    service_hash = service_query_hash if service_hash.nil?
+      remove_from_managed_service(service_hash)
+    rescue
+      service_hash = service_query_hash
+    end
     system_registry_client.release_orphan(service_hash)
   end
 
