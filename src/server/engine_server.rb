@@ -45,7 +45,7 @@ begin
     def call(env)
       STDERR.puts 'failure: ' + env['REQUEST_METHOD'] + ' ' + env['REQUEST_URI']
       env['warden'].custom_failure!
-      STDERR.puts('env[‘PATH_INFO’] ' + env[‘PATH_INFO’].to_s)
+      STDERR.puts('env[‘PATH_INFO’] ' + env['PATH_INFO'].to_s)
     #  env['warden'].custom
     #  [302, {'Location' => '/v0/unauthenticated'},'']
       #[403,{"Error-Message" => "invalid token"} ,{"Error-Message" => "invalid token"}.to_json ] #'{"Error-Message" => "invalid token"}']
