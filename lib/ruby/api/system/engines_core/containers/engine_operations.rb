@@ -92,4 +92,20 @@ module EnginesOperations
     @docker_api.build_engine(engine_name, build_archive_filename, builder)
   end
 
+  def clear_lost_engines
+    r = []
+    engines_tree = service_manager.managed_engines_registry
+    engines_tree['Application'].children.each do |engine_node|
+      STDERR.puts('Engine Node' + engine_node.name)
+      begin
+        t = loadManagedEngine(engine_node.name)
+      rescue
+        r.push(engine_node.name)
+        remove_engine_services(
+        {container_type: 'container', remove_all_data: 'none', parent_engine: engine_node.name})
+        next
+      end
+    end
+    r
+  end
 end
