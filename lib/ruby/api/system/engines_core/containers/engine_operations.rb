@@ -94,20 +94,31 @@ module EnginesOperations
 
   def clear_lost_engines
     r = []
-    engines_tree = service_manager.managed_engines_registry
-    STDERR.puts('Engine TreeIS A' + engines_tree.class.name)
-    STDERR.puts('Engine Tree' + engines_tree.to_s)
-    engines_tree['Application'].children.each do |engine_node|
-      STDERR.puts('Engine Node' + engine_node.name)
+    engines_tree = service_manager.managed_engines_registry[:children]
+    engines = nil
+    engines_tree.each do |node|
+      if node[:name] == 'Application'
+        engines = node
+        break
+      end
+    end
+    unless engines.nil?
+    STDERR.puts('Engine Tree' + engines.to_s)
+    if engines[:children].is_a?(Array)
+    engines[:children].each do |engine_node|
+      STDERR.puts('Engine Node' + engine_node[:name])
+        name = engine_node[:name]
       begin
-        t = loadManagedEngine(engine_node.name)
+        t = loadManagedEngine(name)
       rescue
-        r.push(engine_node.name)
+        r.push(name)
         remove_engine_services(
-        {container_type: 'container', remove_all_data: 'none', parent_engine: engine_node.name})
+        {container_type: 'container', remove_all_data: 'none', parent_engine: name})
         next
       end
     end
+    end
+  end
     r
   end
 end
