@@ -103,22 +103,20 @@ module EnginesOperations
       end
     end
     unless engines.nil?
-    STDERR.puts('Engine Tree' + engines.to_s)
-    if engines[:children].is_a?(Array)
-    engines[:children].each do |engine_node|
-      STDERR.puts('Engine Node' + engine_node[:name])
-        name = engine_node[:name]
-      begin
-        t = loadManagedEngine(name)
-      rescue
-        r.push(name)
-        remove_engine_services(
-        {container_type: 'container', remove_all_data: 'none', parent_engine: name})
-        next
+      if engines[:children].is_a?(Array)
+        engines[:children].each do |engine_node|
+          name = engine_node[:name]
+          begin
+            t = loadManagedEngine(name)
+          rescue
+            r.push(name)
+            remove_engine_services(
+            {container_type: 'container', remove_all_data: 'none', parent_engine: name})
+            next
+          end
+        end
       end
     end
-    end
-  end
     r
   end
 end
