@@ -41,14 +41,11 @@ begin
      STDERR.puts('Server Strat unauth')
    end
   class FailureApp
-    def initialize(parent)
-      @parent = parent
-    end
+   
     def call(env)
       STDERR.puts 'failure: ' + env['REQUEST_METHOD'] + ' ' + env['REQUEST_URI']
     #  self.status = 403
-      STDERR.puts 'failure: '  + @parent.to_s
-      STDERR.puts(@parent.methods.to_s)
+      halt 403, "Go Away!"
     #  self.headers['Error-Message'] = 'invalid token'
      # self.content_type = request.format.to_s
      # self.response_body= {'Error-Message' => 'invalid token'}.to_json
