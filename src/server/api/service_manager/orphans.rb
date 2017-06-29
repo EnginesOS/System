@@ -1,6 +1,6 @@
 # @!group /service_manager/orphan_services/
 
-orphan_lost_services
+
 # @method orphan_lost_services
 # @overload get '/v0/service_manager/orphan_lost_services'
 # @return [Array] orphan_lost_services
