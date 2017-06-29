@@ -33,6 +33,10 @@ module Orphans
     rest_get('services/orphans/tree', nil)
   end
 
+  def orphan_lost_services
+    rest_get('services/orphan_lost', nil)
+  end
+
   def full_path
     @fp ||= [:parent_engine, :service_handle, :publisher_namespace, :type_path]
   end

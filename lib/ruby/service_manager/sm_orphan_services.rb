@@ -13,6 +13,10 @@ module SmOrphanServices
     system_registry_client.release_orphan(params)
   end
 
+  def orphan_lost_services
+    system_registry_client.orphan_lost_services
+  end
+  
   def rollback_orphaned_service(service_hash)
     SystemDebug.debug(SystemDebug.orphans, :rollback_orphaned_service, service_hash)
     system_registry_client.rollback_orphaned_service(service_hash)
