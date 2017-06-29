@@ -60,10 +60,14 @@ delete '/v0/service_manager/orphan_service/:publisher_namespace/*' do
     params[:type_path] = File.dirname(params[:type_path])
     params[:parent_engine] = File.basename(params['splat'][0])
     cparams = assemble_params(params, [:publisher_namespace, :type_path, :service_handle, :parent_engine], [])
-      STDERR.puts('To retrive ' + cparams.to_s)
-    service_hash = engines_api.retrieve_orphan(cparams)
-STDERR.puts('Retrieved ' + service_hash.to_s)
-    return_text(engines_api.remove_orphaned_service(service_hash))
+      begin
+        service_hash = engines_api.retrieve_orphan(cparams)    
+        return_text(engines_api.remove_orphaned_service(service_hash))
+      rescue        
+      STDERR.puts('No matshing service' + cparams.to_s)
+        return_text(engines_api.remove_orphaned_service(cparams))
+      end
+   
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
