@@ -45,7 +45,7 @@ rescue StandardError => e
 end
 
 def rest_get(uri, time_out = 35, params = nil)
-  STDERR.puts('GET ' + uri.to_s)
+
   @retries = 0
   if params.nil?
     connection.request({:read_timeout => time_out, :method => :get, :path => uri})

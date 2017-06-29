@@ -73,7 +73,6 @@ def json_parser
 end
 
 def handle_resp(resp, expect_json = true)
-  STDERR.puts('RES' + resp.status)
   if resp.status  >= 400
     log_error("Error " + resp.status.to_s)
     if resp.body.nil?
@@ -100,8 +99,6 @@ def write_response(r)
   elsif r.headers['Content-Type'] == 'application/octet-stream'
     STDOUT.write(r.body.b)
   else
-    STDERR.puts 'got'  + r.headers.to_s
-    STDERR.puts 'got'  + r.body
     expect_json = false
     expect_json = true if r.headers['Content-Type'] == 'application/json_parser' || r.body.start_with?('{')
     puts handle_resp(r, expect_json)     
