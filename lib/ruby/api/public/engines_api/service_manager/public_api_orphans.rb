@@ -9,6 +9,7 @@ module PublicApiOrphans
 
   def remove_orphaned_service(service_hash)
     @core_api.remove_orphaned_service(service_hash)
+    true
   end
   
   def orphan_lost_services
