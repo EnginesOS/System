@@ -20,8 +20,8 @@ clear_engines:
 clear_services:
 	echo -n "\033[0;31m Clean services test \033[0;30m\n"
 	engines service email stop &>/dev/null
-	engines engine email wait_for stop 45
+	engines service email wait_for stop 45
 	engines service email destroy &>/dev/null
 	engines service imap stop &>/dev/null
-	engines engine email wait_for stop 45
+	engines service email wait_for stop 45
 	engines service imap destroy &>/dev/null
