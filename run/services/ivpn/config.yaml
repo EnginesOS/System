@@ -16,7 +16,7 @@ volumes:
  ssl_certs: 
   name: ssl_certs
   remotepath: "/etc/ssl/"
-  localpath: "/opt/engines/etc/ivpn/ssl/"
+  localpath: "/var/lib/engines/cert_auth/services/ivpn"
   permissions: "ro"
 port: 
 mapped_ports:

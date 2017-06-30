@@ -1,6 +1,6 @@
 module FirstRunCerts
   def create_ca(ca_params)
-    return true if @api.update_service_configuration({
+    true if @api.update_service_configuration({
       service_name: 'cert_auth',
       configurator_name: 'system_ca',
       variables: {
@@ -35,7 +35,7 @@ module FirstRunCerts
       service_handle: 'default_ssl_cert'
       },
     }
-    return true if @api.create_and_register_service(service_param)
+    @api.create_and_register_service(service_param)
   end
 
   def setup_certs
