@@ -25,13 +25,14 @@ module FirstRunCerts
       service_handle: 'default_ssl_cert',
       variables: {
       wild: 'yes',
+      install_target: default,
       cert_name: 'engines',
       country: params[:ssl_country],
       state: params[:ssl_state],
       city: params[:ssl_city],
       organisation: params[:ssl_organisation_name],
       person: params[:ssl_person_name],
-      domainname:  params[:domain_name], #params[:default_domain]
+      domainname: params[:domain_name], #params[:default_domain]
       service_handle: 'default_ssl_cert'
       },
     }
@@ -42,7 +43,7 @@ module FirstRunCerts
     create_ca(@first_run_params)
     create_default_cert(@first_run_params)
     return log_error_mesg('create_default_cert ','/opt/engines/bin/install_ca.sh') unless SystemUtils.execute_command('/opt/engines/system/scripts/ssh/install_ca.sh')
-    return log_error_mesg('create_default_cert ','/opt/engines/bin/install_cert.sh engines') unless SystemUtils.execute_command('/opt/engines/system/scripts/ssh/install_cert.sh engines')
+    #return log_error_mesg('create_default_cert ','/opt/engines/bin/install_cert.sh engines') unless SystemUtils.execute_command('/opt/engines/system/scripts/ssh/install_cert.sh engines')
     true
   end
 
