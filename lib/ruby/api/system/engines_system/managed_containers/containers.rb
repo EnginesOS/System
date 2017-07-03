@@ -66,7 +66,8 @@ module Containers
   def get_service_actionator(container, action)
     actionators = load_service_actionators(container)
     # STDERR.puts(' ACITONATORS ' + actionators.to_s)
-    # STDERR.puts('LOOKING 4 ' +action.to_s)
+     STDERR.puts('LOOKING 4 ' + action.to_s)
+    STDERR.puts('is it ' + actionators[action.to_sym].to_s)
     actionators[action]
   end
 
