@@ -118,8 +118,10 @@ end
 # @overload post '/v0/system/certs/default/:target/:store/:cert_name'
 # set default cert for :target service or for all if target = default
 # test 
-post '/v0/system/certs/default/:target/:store/:cert_name' do
+post '/v0/system/certs/default/:target/*' do
   begin
+    params[:store] = File.dirname(params[:splats][0])
+    params[:cert_name] = File.basena,me(params[:splats][0])
     cparams = assemble_params(params, [:target, :store, :cert_name], nil)   
     return_text(engines_api.set_default_cert(cparams))
   rescue StandardError => e
