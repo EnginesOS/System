@@ -41,14 +41,14 @@ class SoftwareServiceDefinition
   def SoftwareServiceDefinition.configurators(service_hash)
     service_def = SoftwareServiceDefinition.find(service_hash[:type_path] ,service_hash[:publisher_namespace])
     return service_def if service_def.nil?
-    service_def[:configurators]    
+    service_def[:configurators]
   end
-  
+
   def SoftwareServiceDefinition.actionators(service_hash)
-      service_def = SoftwareServiceDefinition.find(service_hash[:type_path] ,service_hash[:publisher_namespace])
-      return service_def if service_def.nil?
-      service_def[:actionators]    
-    end
+    service_def = SoftwareServiceDefinition.find(service_hash[:type_path] ,service_hash[:publisher_namespace])
+    service_def = service_def[:service_actionators] unless service_def.nil?
+    [] if service_def.nil?
+  end
 
   def self.summary(definition)
     {
