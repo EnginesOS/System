@@ -66,7 +66,7 @@ rescue StandardError => e
   STDERR.puts e.backtrace.to_s
 end
 
-def rest_post(uri, params, content_type,time_out = 44 )  
+def rest_post(uri, params, content_type, time_out = 44 )  
   @retries = 0
   begin
     unless params.nil?
