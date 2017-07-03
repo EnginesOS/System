@@ -11,6 +11,12 @@ module Certificates
     certs_service.perform_action(actionator, {cert_name: cert_name})
   end
 
+def set_default_cert(params)
+  certs_service = loadManagedService('cert_auth')
+  actionator = get_service_actionator(certs_service, 'set_default')
+  certs_service.perform_action(actionator, params)
+end
+  
   def list_certs
     certs_service = loadManagedService('cert_auth')
     actionator = get_service_actionator(certs_service, 'list_certs')
