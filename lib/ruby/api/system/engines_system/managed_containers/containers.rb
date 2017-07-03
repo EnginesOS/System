@@ -71,15 +71,17 @@ module Containers
   end
 
   def load_service_actionators(container)
-    SystemDebug.debug(SystemDebug.actions, container, actionator_dir(container) + '/actionators.yaml')
-    if File.exist?(actionator_dir(container) + '/actionators.yaml')
-      yaml = File.read(actionator_dir(container) + '/actionators.yaml')
-      actionators = YAML::load(yaml)
-      SystemDebug.debug(SystemDebug.actions, container, actionators)
-      actionators if actionators.is_a?(Hash)
-    else
-      {}
-    end
+#    SystemDebug.debug(SystemDebug.actions, container, actionator_dir(container) + '/actionators.yaml')
+#    if File.exist?(actionator_dir(container) + '/actionators.yaml')
+#      yaml = File.read(actionator_dir(container) + '/actionators.yaml')
+#      actionators = YAML::load(yaml)
+#      SystemDebug.debug(SystemDebug.actions, container, actionators)
+#      actionators if actionators.is_a?(Hash)
+#    else
+#      {}
+#    end
+  SoftwareServiceDefinition.actionators({
+    type_path: container.type_path, publisher_namespace: container. publisher_namespace })
   end
 
   def get_engine_actionator(container, action)
