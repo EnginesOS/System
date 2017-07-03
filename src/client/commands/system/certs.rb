@@ -6,8 +6,8 @@ end
 case ARGV[2]
 when 'default'
 
-@route += '/' + ARGV[3] + '/' + ARGV[4]
-@route +=  '/' + ARGV[5] if ARGV.count == 6
+@route += '/' + ARGV[2] + '/' + ARGV[3]
+@route +=  '/' + ARGV[4] if ARGV.count == 6
 perform_post(nil)
 when 'system_ca'
 perform_get
