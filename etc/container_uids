@@ -33,6 +33,7 @@ logview logview 22027 _logview
 logrotate logrotate 22028	_logrotate
 redis redis 22029	_redis
 openldap openldap 22030	_ldap
+ivpn ivpn 22031 _ivpn
 #Frameworks
 www-data	 www-data	22671
 ruby	 ruby			22672

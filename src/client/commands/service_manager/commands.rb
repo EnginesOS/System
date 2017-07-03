@@ -14,4 +14,7 @@ when 'persistent_services'
   require_relative 'persistent_services.rb'
 when 'persistent_service'
   require_relative 'persistent_service.rb'
+else
+@route += '/' + ARGV[1]
+perform_get
 end

@@ -10,15 +10,10 @@ type_path: mgmt
 port: 10443
 domain_name: _Engines_System(default_domain)
 volumes: 
- cert_key: 
-  volume_name: cert_key
-  remotepath: "/opt/engines/etc/ssl/keys/engines.key"
-  localpath: "/var/lib/engines/cert_auth/public/keys/system_system_engines.key"
-  permissions: "ro"
- cert: 
-  volume_name: cert
-  remotepath: "/opt/engines/etc/ssl/certs/engines.crt"
-  localpath: "/var/lib/engines/cert_auth/public/certs/system_system_engines.crt"
+ certs: 
+  volume_name: certs
+  remotepath: "/opt/engines/etc/ssl/"
+  localpath: "/var/lib/engines/cert_auth/services/mgmt/"
   permissions: "ro"  
  public_dir: 
   volume_name: public_dir

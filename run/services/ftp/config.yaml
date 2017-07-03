@@ -14,7 +14,7 @@ volumes:
  ssl_certs: 
   name: ssl_certs
   remotepath: "/etc/ssl/"
-  localpath: "/opt/engines/etc/ftp/ssl/"
+  localpath: "/var/lib/engines/cert_auth/services/ftp"
   permissions: "ro"
  fs_rw: 
   name: fs_rw

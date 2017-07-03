@@ -45,4 +45,19 @@ get '/v0/containers/engines/state' do
     send_encoded_exception(request: request, exception: e)
   end
 end
+
+# @method clear_lost_engines
+# @overload get '/v0/containers/engines/clear_lost'
+# removes an engine entry without a matching system config dir
+# orphans persistent services
+# returns a [] of the engines_names removed from the registry
+# @return []
+get '/v0/containers/engines/clear_lost' do
+  begin
+    return_json(engines_api.clear_lost_engines)
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+
+end
 # @!endgroup

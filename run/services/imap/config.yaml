@@ -29,7 +29,7 @@ volumes:
  ssl_dir: 
   name: ssl_dir
   remotepath: "/etc/ssl"
-  localpath: "/opt/engines/etc/imap/ssl"
+  localpath: "/var/lib/engines/cert_auth/services/imap"
   permissions: "ro"
 mapped_ports:
  imap: 

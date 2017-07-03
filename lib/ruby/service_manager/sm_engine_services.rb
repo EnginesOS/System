@@ -142,6 +142,7 @@ module SmEngineServices
       #return true
       services = nil
     end
+    STDERR.puts('RM SERV ' + params.to_s)
     if services.is_a?(Array)
       services.each do | service |
         SystemDebug.debug(SystemDebug.services, :remove_service, service)

@@ -87,6 +87,7 @@ end
 # @param :certificate
 # @param :key
 # @param :password - optional
+# @param :install_target  service_name or default for all or not set 
 # @return [true]
 # test /opt/engines/tests/engines_api/system/cert ; make add
 post '/v0/system/certs/' do
@@ -108,6 +109,19 @@ post '/v0/system/certs/generate' do
     p_params = post_params(request)
     cparams = assemble_params(p_params, [], :all)   
     return_text(engines_api.generate_cert(cparams))
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+end
+
+# @method set_service_default_certificate
+# @overload post '/v0/system/certs/default/:target/:store/:cert_name'
+# set default cert for :target service or for all if target = default
+# test 
+post '/v0/system/certs/default/:target/:store/:cert_name' do
+  begin
+    cparams = assemble_params(params, [:target, :store, :cert_name], nil)   
+    return_text(engines_api.set_default_cert(cparams))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

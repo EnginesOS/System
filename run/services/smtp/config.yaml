@@ -14,7 +14,7 @@ volumes:
  ssl_dir: 
   name: ssl_dir
   remotepath: "/etc/ssl"
-  localpath: "/opt/engines/etc/smtp/ssl"
+  localpath: "/var/lib/engines/cert_auth/services/smtp"
   permissions: "ro"
  spool:
   name: spool
