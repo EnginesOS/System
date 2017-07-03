@@ -23,6 +23,9 @@ rescue Excon::Error::Socket => e
     retry
   end
   STDERR.puts('Failed to open base url ' + @base_url.to_s + ' after ' + @retries.to_s = ' attempts')
+  rescue StandardError =>e
+    STDERR.puts('Uncatch E ' + e.class.name + ' ' + e.to_s)
+  
 end
 
 def rest_del(uri, params=nil, time_out=23)
@@ -66,7 +69,7 @@ rescue StandardError => e
   STDERR.puts e.backtrace.to_s
 end
 
-def rest_post(uri, params, content_type,time_out = 44 )  
+def rest_post(uri, params, content_type, time_out = 44 )  
   @retries = 0
   begin
     unless params.nil?

@@ -4,6 +4,11 @@ if ARGV.count == 2
 end
 
 case ARGV[2]
+when 'default'
+
+@route += '/' + ARGV[2] + '/' + ARGV[3]
+@route +=  '/' + ARGV[4] if ARGV.count == 5
+perform_post(nil)
 when 'system_ca'
 perform_get
 when 'view'
