@@ -1,13 +1,13 @@
-require '/opt/engines/lib/ruby/exceptions/engines_exception.rb'
-
-def error_hash(mesg, *params)
-  {
-    error_type: :error,
-    params: params,
-    source: caller[1..4],
-    system: 'api',
-    error_mesg: mesg
-  }
+def post_params(request)
+  r = request.env['rack.input'].read
+  unless r.nil?
+    json_parser.parse(r)
+  else
+    {}
+  end
+rescue StandardError => e
+  STDERR.puts(' POST Parse Error ' + e.to_s + ' on ' + r.to_s)
+  {}
 end
 
 def assemble_params(ps, address_params, required_params = nil, accept_params = nil)
@@ -65,7 +65,7 @@ def match_params(params, keys, is_required = false)
     if keys.is_a?(Array)
       for key in keys
         return false unless check_required(params, key, is_required)
-        cparams[key.to_sym] = params[key] unless params[key].nil?       
+        cparams[key.to_sym] = params[key] unless params[key].nil?
       end
     else
       return false unless check_required(params, keys, is_required)

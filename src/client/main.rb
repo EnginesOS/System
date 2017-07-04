@@ -58,8 +58,7 @@ def perform_del(time_out = 35)
 end
 
 def perform_post(params, content_type='application/json')
-  post_params = {}
-  post_params[:api_vars] = params
+  post_params = {api_vars: params}
   rest_post(@route,post_params, content_type)
   exit
 end
@@ -70,30 +69,25 @@ def perform_delete(params=nil)
 end
 
 def json_parser
-   @json_parser ||= FFI_Yajl::Parser.new(symbolize_keys: true)
- end
+  @json_parser ||= FFI_Yajl::Parser.new(symbolize_keys: true)
+end
 
 def handle_resp(resp, expect_json = true)
-
-  if resp.status  >= 400
+  if resp.status >= 400
     log_error("Error " + resp.status.to_s)
-    return 'fail' if resp.body.nil?
-  end
-
-  return 'OK' if resp.status  == 204   # nodata but all good happens on del
-
-  unless resp.status  >= 200
+    if resp.body.nil?
+      'fail'
+    else
+      resp.body
+    end
+  elsif resp.status == 204   # nodata but all good happens on del
+    'OK'
+  elsif resp.status >= 200 && resp.status < 300
+    resp.body
+  else
     log_error("Un exepect response from system" + resp.status.to_s + ' ' + resp.body.to_s + ' ' + resp.headers.to_s)
   end
-  resp.body
- # return resp.body.to_s unless expect_json == true
-#  hashes = []
-  #  hash =   json_parser_parser.parse(resp.body) # do |hash |
-  #   hashes.push(hash)
-  #   end
-  #  json_parser = hash.to_json
-  #  return 'Error ' + resp.body.to_s if json_parser.nil?
- # return json_parser
+
 rescue StandardError => e
   log_error(e.to_s + ' with :' + resp.to_s)
   log_error(e.backtrace.to_s)
@@ -102,29 +96,22 @@ end
 def write_response(r)
   if r.nil?
     log_error('nil response')
-   
-    return
-  end
-  if r.headers['Content-Type'] == 'application/octet-stream'
-    STDOUT.write( r.body.b)
+  elsif r.headers['Content-Type'] == 'application/octet-stream'
+    STDOUT.write(r.body.b)
   else
     expect_json = false
     expect_json = true if r.headers['Content-Type'] == 'application/json_parser' || r.body.start_with?('{')
-    puts handle_resp(r, expect_json)
-  #  puts 'got'  + r.headers.to_s
-  #  puts 'got'  + r.body
+    puts handle_resp(r, expect_json)     
   end
-  rescue StandardError => e
-    log_error(e.to_s + ' with :' + resp.to_s)
-    log_error(e.backtrace.to_s)
+rescue StandardError => e
+  log_error(e.to_s + ' with :' + resp.to_s)
+  log_error(e.backtrace.to_s)
 end
 
 require_relative 'cmdline_args.rb'
 
 cmdline_options = process_args
 command_usage(cmdline_options) if cmdline_options.is_a?(String)
-
-
 
 if cmdline_options.key?(:base_url)
   @base_url= cmdline_options[:base_url]

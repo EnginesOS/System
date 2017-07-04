@@ -41,34 +41,36 @@ begin
   content_type 'text/plain'
   post_s = post_params(request)
   cparams = assemble_params(post_s, nil, [:user_name, :new_password, :email, :token, :current_password])
-  return_json(engines_api.set_system_user_password(cparams))
+  return_boolean(engines_api.set_system_user_password(cparams))
 rescue StandardError => e
   send_encoded_exception(request: request, exception: e)
 end
 end
 
 # Set Users details
-# @method set_user
-# @overload post '/v0/system/users/'
-# @params :user_name, :new_password, :email, :token, :current_password
-# all params are required
-# new auth token returned
+# @method mod_system_user
+# @overload post 'v0/system/user/:user_name'
+# @params  :new_password, :email, , :current_password
+# :user_name and params are required
+# password is changed if new_password present
+# email is changed if email is present
+
 post '/v0/system/user/:user_name' do
 begin
   content_type 'text/plain'
   post_s = post_params(request).merge(params)
   cparams = assemble_params(post_s, [:user_name], nil, [:new_password, :email, :current_password])
-  return_json(engines_api.set_system_user_details(cparams))
+  return_boolean(engines_api.set_system_user_details(cparams))
 rescue StandardError => e
   send_encoded_exception(request: request, exception: e)
 end
 end
 
 # get Users details
-# @method set_user
-# @overload get '/v0/system/users/'
-# @params :user_name
-# user params["user_name, :token, :email, :uid] returned
+# @method get_user
+# @overload get '/v0/system/user/:user_name'
+#
+# @return user params["user_name, :token, :email, :uid] 
 get '/v0/system/user/:user_name' do
 begin
   content_type 'text/plain'
@@ -95,6 +97,8 @@ end
 # returns error hash
 post '/v0/unauthenticated' do
   begin
+    STDERR.puts('post UNAUTH ROTE')
+    status(403)
     send_encoded_exception(request: request, exception: 'unauthorised', params: params)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
@@ -105,6 +109,7 @@ end
 # returns error hash
 get '/v0/unauthenticated' do
   begin
+    STDERR.puts('get UNAUTH ROTE')
     # send_encoded_exception(request: nil, exception: 'unauthorised', params: params)
     status(403)
     ''

@@ -19,7 +19,8 @@ module ManagedServiceConsumers
           @aliases.each do |type_path|
             alias_services ||= []
             params[:type_path] = type_path
-            alias_services  += @container_api.get_registered_consumer(params)
+            reg = @container_api.get_registered_consumer(params)
+            alias_services += reg if reg.is_a?(Array)
           end
         end
       end

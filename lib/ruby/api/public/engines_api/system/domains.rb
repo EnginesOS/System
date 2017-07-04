@@ -10,7 +10,7 @@ module PublicApiSystemDomains
 
   def remove_domain(params)
     @core_api.remove_domain(params)    
-    true
+    true  
   end
 
   def domain_name(params)
@@ -18,7 +18,7 @@ module PublicApiSystemDomains
   end
 
   def update_domain(params)
-    @core_api.update_domain(params)
+   @core_api.update_domain(params)
     true
   end
 

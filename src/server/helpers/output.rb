@@ -3,6 +3,7 @@ def return_json(r, s = 202)
     return_error(r)
   else
     content_type 'application/json'
+    headers['Access-Control-Allow-Origin'] ='*'
     status(s)
     if r.nil?
       empty_json
@@ -17,6 +18,7 @@ def return_json_array(r, s = 202)
     return_error_array(r)
   else
     content_type 'application/json'
+    headers['Access-Control-Allow-Origin'] ='*'
     status(s)
     if r.nil? || r == '' || r.is_a?(FalseClass)
       empty_array
@@ -33,6 +35,7 @@ def return_text(r, s = 202)
     return_error(r)
   else
     content_type 'text/plain'
+    headers['Access-Control-Allow-Origin'] ='*'
     status(s)
     r.to_s
   end
@@ -43,15 +46,16 @@ def return_true(s = 200)
 end
 
 def return_boolean(v, s = 200)
-  v = true if v.nil? # meths return nil when error is exception  
+  v = true if v.nil? # meths return nil and when error they raise an exception  
   return_text(v.to_s, s)
 end
 
 def return_error(error, nil_result = nil)
-  STDERR.puts(' RETURN ERROR!!!!!!!!' )
+  # STDERR.puts(' RETURN ERROR!!!!!!!!' )
   content_type 'application/json'
+  headers['Access-Control-Allow-Origin'] ='*'
   # FIXME: take this from the error if avail
-  status(404)
+  status(403)
   if error.nil?
     nil_result
   else

@@ -14,13 +14,15 @@ if ! test -d  $system_updates_dir/$update_id
  then
    exit
   fi
- Applying update $update_id &>> $system_updates_dir/$update_id/update_log 		 
+echo Applying update $update_id &>> $system_updates_dir/$update_id/update_log 		 
  
  if test -f  $system_updates_dir/$update_id/services
   then
   	services=`cat  $system_updates_dir/$update_id/services`
   		for service in $services
   		 do  		 
+  		 if test -f /opt/engines/run/services/$service/running.yaml
+  		  then
   		 	/opt/engines/bin/engines service $service stop &>> $system_updates_dir/$update_id/update_log 		 	 
   		 	image=`grep image /opt/engines/run/services/$service/running.yaml | cut -f2 -d" "`
   			docker pull $image
@@ -28,7 +30,8 @@ if ! test -d  $system_updates_dir/$update_id
   			rm /opt/engines/run/services/$service/running.yaml*
   		 	/opt/engines/bin/engines service $service recreate &>>  $system_updates_dir/$update_id/update_log
   		 	/opt/engines/bin/engines service $service wait_for start 30
-			/opt/engines/bin/engines service $service wait_for_startup 60
+			/opt/engines/bin/engines service $service wait_for_startup 60			
+		  fi
   		 done
   fi
   

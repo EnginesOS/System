@@ -2,25 +2,31 @@ module Certificates
   def upload_ssl_certificate(params)
     certs_service = loadManagedService('cert_auth')
     actionator = get_service_actionator(certs_service, 'import_cert')
-    certs_service.perform_action(actionator ,params[:domain_name], params[:certificate] + params[:key])
+    certs_service.perform_action(actionator, params) #[:domain_name], params[:certificate] + params[:key])
   end
 
-  def remove_cert(domain_name)
+  def remove_cert(cert_name)
     certs_service = loadManagedService('cert_auth')
     actionator = get_service_actionator(certs_service, 'remove_cert')
-    certs_service.perform_action(actionator, domain_name)
+    certs_service.perform_action(actionator, {cert_name: cert_name})
   end
 
+def set_default_cert(params)
+  certs_service = loadManagedService('cert_auth')
+  actionator = get_service_actionator(certs_service, 'set_default')
+  certs_service.perform_action(actionator, params)
+end
+  
   def list_certs
     certs_service = loadManagedService('cert_auth')
     actionator = get_service_actionator(certs_service, 'list_certs')
-    certs_service.perform_action(actionator, nil)
+    certs_service.perform_action(actionator)
   end
 
   def get_system_ca
     certs_service = loadManagedService('cert_auth')
     actionator = get_service_actionator(certs_service, 'system_ca')
-    certs_service.perform_action(actionator, nil)
+    certs_service.perform_action(actionator)
   end
 
   def generate_cert(params)
@@ -34,7 +40,7 @@ module Certificates
 
     begin
       actionator = get_service_actionator(certs_service, 'fetch_cert')
-      c = certs_service.perform_action(actionator, params[:container_type] +'_' + params[:parent_engine]  + '_' + params[:domain_name])
+    c = certs_service.perform_action(actionator, {cert_name: params[:container_type] +'_' + params[:parent_engine]  + '_' + params[:domain_name]})
 
       #  STDERR.puts('GTO c ' + c.to_s)
       if c.include?('BEGIN CERTIFICATE')
@@ -69,11 +75,11 @@ module Certificates
     } )
   end
 
-  def get_cert(domain_name)
+  def get_cert(cert_name)
     certs_service = loadManagedService('cert_auth')
-    domain_name = 'engines' if domain_name == 'default'
+    cert_name = 'engines' if cert_name == 'default'
     actionator = get_service_actionator(certs_service, 'fetch_cert')
-    certs_service.perform_action(actionator, domain_name)
+    certs_service.perform_action(actionator, {cert_name: cert_name})
   end
 
 end

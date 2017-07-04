@@ -12,11 +12,11 @@ volumes:
  ssl_dir: 
   name: ssl_dir
   remotepath: "/etc/ssl"
-  localpath: "/opt/engines/etc/email/ssl"
+  localpath: "/var/lib/engines/cert_auth/services/email/"
   permissions: "ro"
  spool:
   name: spool
-  remotepath: "/var/aspool/postfix/"
+  remotepath: "/var/spool/postfix/"
   localpath: "/var/lib/fs/services/postfix"
   permissions: "rw"
 environments:

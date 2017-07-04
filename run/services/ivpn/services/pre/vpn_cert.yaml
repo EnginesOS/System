@@ -10,7 +10,7 @@ variables:
  organisation: engines
  city: sydney
  person: james
- cert_name: ipvpn
+ cert_name: ipvpn._Engines_System(default_domain)
  domainname: _Engines_System(default_domain)
  hostname: ivpn._Engines_System(default_domain)
  wild: no

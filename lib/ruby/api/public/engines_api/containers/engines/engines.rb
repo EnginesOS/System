@@ -7,6 +7,10 @@ module PublicApiEngines
     @system_api.getManagedEngines
   end
 
+  def clear_lost_engines
+    @core_api.clear_lost_engines
+  end
+
   def get_engines_states
     @system_api.get_engines_states
   end
