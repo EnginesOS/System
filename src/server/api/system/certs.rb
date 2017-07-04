@@ -13,10 +13,10 @@ get '/v0/system/certs/system_ca' do
 end
 
 # @method get certificate
-# @overload get '/v0/system/certs/:cert_name'
+# @overload get '/v0/system/certs/:store/:cert_name'
 # @return [String] PEM encoded Public certificate
 # test /opt/engines/tests/engines_api/system/cert ; make view
-get '/v0/system/certs/:cert_name' do
+get '/v0/system/certs/:store/:cert_name' do
   begin
     return_text(engines_api.get_cert(params[:cert_name]))
   rescue StandardError => e
@@ -49,11 +49,11 @@ get '/v0/system/certs/' do
   end
 end
 # @method delete_certificate
-# @overload delete '/v0/system/certs/:cert_name'
-# delete certificate :cert_name
+# @overload delete '/v0/system/certs/:store/:cert_name'
+# delete certificate :cert_name in :store
 # @return [true]
 # test /opt/engines/tests/engines_api/system/cert ; make remove 
-delete '/v0/system/certs/:cert_name' do |cert_name|
+delete '/v0/system/certs/:store/:cert_name' do |cert_name|
   begin
     return_text(engines_api.remove_cert(cert_name))
   rescue StandardError => e
