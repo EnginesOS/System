@@ -11,15 +11,21 @@ module Certificates
     certs_service.perform_action(actionator, {cert_name: cert_name})
   end
 
-def set_default_cert(params)
-  certs_service = loadManagedService('cert_auth')
-  actionator = get_service_actionator(certs_service, 'set_default')
-  certs_service.perform_action(actionator, params)
-end
-  
+  def set_default_cert(params)
+    certs_service = loadManagedService('cert_auth')
+    actionator = get_service_actionator(certs_service, 'set_default')
+    certs_service.perform_action(actionator, params)
+  end
+
   def list_certs
     certs_service = loadManagedService('cert_auth')
     actionator = get_service_actionator(certs_service, 'list_certs')
+    certs_service.perform_action(actionator)
+  end
+
+  def services_default_certs
+    certs_service = loadManagedService('cert_auth')
+    actionator = get_service_actionator(certs_service, 'list_services_defaults')
     certs_service.perform_action(actionator)
   end
 
@@ -40,7 +46,7 @@ end
 
     begin
       actionator = get_service_actionator(certs_service, 'fetch_cert')
-    c = certs_service.perform_action(actionator, {cert_name: params[:container_type] +'_' + params[:parent_engine]  + '_' + params[:domain_name]})
+      c = certs_service.perform_action(actionator, {cert_name: params[:container_type] +'_' + params[:parent_engine]  + '_' + params[:domain_name]})
 
       #  STDERR.puts('GTO c ' + c.to_s)
       if c.include?('BEGIN CERTIFICATE')
