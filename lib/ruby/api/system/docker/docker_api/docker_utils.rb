@@ -71,7 +71,7 @@ module DockerUtils
     r
   end
 
-  def self.docker_stream_as_result(r, h, binary)
+  def self.docker_stream_as_result(r, h, binary = false)
     unmatched = false
     unless h.nil?
       h[:stderr] = "" unless h.key?(:stderr)
