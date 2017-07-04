@@ -53,7 +53,7 @@ module DockerUtils
 
       write_thread.join
       read_thread.join
-      @stream_reader.o_stream.close unless @stream_reader.o_stream.nil?
+     # @stream_reader.o_stream.close unless @stream_reader.o_stream.nil?
       @stream_reader.i_stream.close unless @stream_reader.i_stream.nil?
     end
   rescue StandardError => e
