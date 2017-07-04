@@ -130,9 +130,10 @@ post '/v0/system/certs/default/:target/*' do
   end
 end
 
-get '/v0/system/certs/service_certs'do
+get '/v0/system/certs/service_certs' do
   begin
     return_json(engines_api.services_default_certs)
+  rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
 end
