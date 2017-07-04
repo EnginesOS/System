@@ -15,7 +15,7 @@ module DockerApiExec
     end
 
     def close
-      @o_stream.close unless @o_stream.nil?
+    #  @o_stream.close unless @o_stream.nil?
       @i_stream.close unless @i_stream.nil?
       @stream.reset unless @stream.nil?
     end
@@ -65,7 +65,7 @@ module DockerApiExec
     end
 
     def close
-      @o_stream.close unless @o_stream.nil?
+    #  @o_stream.close unless @o_stream.nil?
       @stream.reset unless @stream.nil?
     end
 
