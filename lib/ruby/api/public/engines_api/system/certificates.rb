@@ -36,4 +36,7 @@ module PublicApiSystemCertificates
     @system_api.list_certs()
   end
 
+  def services_default_certs
+    @system_api.services_default_certs()
+  end
 end
