@@ -122,7 +122,7 @@ post '/v0/system/certs/default/:target/*' do
   begin
     params[:store] = File.dirname(params[:splat][0])
     params[:cert_name] = File.basename(params[:splat][0])
-    params[:store] =='/' if params[:store] == params[:cert_name] || params[:store].nil?
+    params[:store] = '/' if params[:store]  == '.' || params[:store].nil?
     cparams = assemble_params(params, [:target, :store, :cert_name], nil)   
     return_text(engines_api.set_default_cert(cparams))
   rescue StandardError => e
