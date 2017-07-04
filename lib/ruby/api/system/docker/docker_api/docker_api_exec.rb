@@ -39,9 +39,9 @@ module DockerApiExec
       lambda do |chunk , c , t|
         if @o_stream.nil?
           DockerUtils.docker_stream_as_result(chunk, return_result)
-          return_result[:raw] = return_result[:raw] + chunk.to_s
+         # return_result[:raw] = return_result[:raw] + chunk.to_s
         else
-          r = DockerUtils.decode_from_docker_chunk(chunk)
+          r = DockerUtils.decode_from_docker_chunk(chunk, true)
           @o_stream.write(r[:stdout]) unless r.nil?
           return_result[:stderr] = return_result[:stderr].to_s + r[:stderr].to_s
         end
@@ -74,9 +74,9 @@ module DockerApiExec
       lambda do |chunk , c , t|
         if @o_stream.nil?
           DockerUtils.docker_stream_as_result(chunk, return_result)
-          return_result[:raw] = return_result[:raw] + chunk.to_s
+         # return_result[:raw] = return_result[:raw] + chunk.to_s
         else
-          r = DockerUtils.decode_from_docker_chunk(chunk)
+          r = DockerUtils.decode_from_docker_chunk(chunk, true)
           @o_stream.write(r[:stdout]) unless r.nil?
           return_result[:stderr] = return_result[:stderr].to_s + r[:stderr].to_s
         end
@@ -109,7 +109,7 @@ module DockerApiExec
       unless params.key?(:data) || params.key?(:data_stream)
         stream_reader = DockerStreamReader.new(params[:stream])
         result = {}
-        r =  post_stream_request(request, nil, stream_reader, headers, request_params.to_json)
+        r = post_stream_request(request, nil, stream_reader, headers, request_params.to_json)
         stream_reader.result[:result] = get_exec_result(exec_id)
         return stream_reader.result # DockerUtils.docker_stream_as_result(r, result)
       end
@@ -136,7 +136,12 @@ module DockerApiExec
   end
 
   def create_docker_exec(params) #container, commands, have_data)
-    request_params = {}
+    request_params = {
+      'AttachStdout' => true,
+      'AttachStderr' => true,
+      'DetachKeys' => 'ctrl-p,ctrl-q',
+      'Cmd' => format_commands(params[:command_line])
+    }
     if params.key?(:data) || params.key?(:data_stream)
       request_params['AttachStdin'] = true
       request_params['Tty'] = false
@@ -144,11 +149,6 @@ module DockerApiExec
       request_params['AttachStdin'] = false
       request_params['Tty'] = false
     end
-    request_params['AttachStdout'] = true
-    request_params['AttachStderr'] = true
-    request_params['DetachKeys'] = 'ctrl-p,ctrl-q'
-    request_params['Cmd'] = format_commands(params[:command_line])
-
     request = '/containers/' + params[:container].container_id.to_s + '/exec'
     # STDERR.puts('create_docker_exec ' + request_params.to_s + ' request  ' + request.to_s )
     post_request(request, request_params)

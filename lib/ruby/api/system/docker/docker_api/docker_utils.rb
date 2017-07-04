@@ -62,16 +62,16 @@ module DockerUtils
     STDERR.puts('PROCESS Execp' + e.to_s + ' ' + e.backtrace.to_s )
   end
 
-  def self.decode_from_docker_chunk(chunk)
+  def self.decode_from_docker_chunk(chunk, binary = false)
     r = {
       stderr: '',
       stdout: ''
     }
-    self.docker_stream_as_result(chunk, r)
+    self.docker_stream_as_result(chunk, r, binary)
     r
   end
 
-  def self.docker_stream_as_result(r, h)
+  def self.docker_stream_as_result(r, h, binary = false)
     unmatched = false
     unless h.nil?
       h[:stderr] = "" unless h.key?(:stderr)
@@ -126,8 +126,10 @@ module DockerUtils
 
       # result actually set elsewhere after exec complete
       h[:result] = 0
-      h[:stdout].force_encoding(Encoding::UTF_8) unless h[:stdout].nil?
-      h[:stderr].force_encoding(Encoding::UTF_8) unless h[:stderr].nil?
+      unless binary
+        h[:stdout].force_encoding(Encoding::UTF_8) unless h[:stdout].nil?
+        h[:stderr].force_encoding(Encoding::UTF_8) unless h[:stderr].nil?
+      end
     end
     h
   end
