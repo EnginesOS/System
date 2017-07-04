@@ -26,7 +26,7 @@ module DockerUtils
               end
             end
           end
-          socket.close_write
+         # socket.close_write
         rescue StandardError => e
           STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
         end
@@ -53,7 +53,7 @@ module DockerUtils
 
       write_thread.join
       read_thread.join
-     # @stream_reader.o_stream.close unless @stream_reader.o_stream.nil?
+      @stream_reader.o_stream.close unless @stream_reader.o_stream.nil?
       @stream_reader.i_stream.close unless @stream_reader.i_stream.nil?
     end
   rescue StandardError => e
