@@ -35,7 +35,7 @@ module DockerUtils
         read_thread[:name] = 'docker_stream_reader'
         begin
           while chunk = socket.readpartial(16384)
-            if  @stream_reader.o_stream.nil?
+            if @stream_reader.o_stream.nil?
               DockerUtils.docker_stream_as_result(chunk, return_result)
             else
               r = DockerUtils.decode_from_docker_chunk(chunk)
@@ -62,7 +62,7 @@ module DockerUtils
     STDERR.puts('PROCESS Execp' + e.to_s + ' ' + e.backtrace.to_s )
   end
 
-  def self.decode_from_docker_chunk(chunk, binary = false)
+  def self.decode_from_docker_chunk(chunk, binary = true)
     r = {
       stderr: '',
       stdout: ''
@@ -71,7 +71,7 @@ module DockerUtils
     r
   end
 
-  def self.docker_stream_as_result(r, h, binary = false)
+  def self.docker_stream_as_result(r, h, binary = true)
     unmatched = false
     unless h.nil?
       h[:stderr] = "" unless h.key?(:stderr)
@@ -126,6 +126,7 @@ module DockerUtils
 
       # result actually set elsewhere after exec complete
       h[:result] = 0
+        
       unless binary
         h[:stdout].force_encoding(Encoding::UTF_8) unless h[:stdout].nil?
         h[:stderr].force_encoding(Encoding::UTF_8) unless h[:stderr].nil?
