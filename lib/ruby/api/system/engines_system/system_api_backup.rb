@@ -16,10 +16,11 @@ module SystemApiBackup
     service = loadManagedService(service_name)
     params = {
       container: service,
-      stream => out,
+      stream: out,
       command_line: ['/home/services/backup.sh'],
       log_error: true }
     result = @engines_api.exec_in_container(params)
+    STDERR.puts(' BACKUP SERVICE ' + result.to_s)
     if result[:result] != 0
       result
     else
