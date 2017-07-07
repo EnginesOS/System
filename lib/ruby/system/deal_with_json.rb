@@ -1,5 +1,4 @@
 def deal_with_json(res)
-  STDERR.puts("DEAL WITH " + res.class.name + ':' + res.to_s)
   unless res.nil?
     res = parse_as_json(res) unless res.is_a?(Hash)
     symbolise_json(res)
