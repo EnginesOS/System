@@ -132,7 +132,7 @@ end
 
 get '/v0/system/certs/service_certs' do
   begin
-    return_json(engines_api.services_default_certs)
+    return_json_array(engines_api.services_default_certs)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

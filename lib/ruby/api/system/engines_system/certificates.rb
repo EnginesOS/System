@@ -26,7 +26,7 @@ module Certificates
   def services_default_certs
     certs_service = loadManagedService('cert_auth')
     actionator = get_service_actionator(certs_service, 'list_services_defaults')
-    certs_service.perform_action(actionator)
+    certs_service.perform_action(actionator)[:certs]
   end
 
   def get_system_ca
