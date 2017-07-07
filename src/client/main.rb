@@ -91,7 +91,9 @@ def handle_resp(resp, expect_json = true)
   STDERR.puts('GOT body ' + resp.body + "\nas JSON:" +  expect_json.to_s) 
   if expect_json == true && r.nil?
     STDERR.puts('GOT JSON' + resp.body)
-    json_parser.parse(resp.body).to_s
+    o = json_parser.parse(resp.body)
+    STDERR.puts('O IS' + o.class.name)
+    o.to_s
   else
     if r.nil?
       resp.body
@@ -111,8 +113,7 @@ def write_response(r)
     STDOUT.write(r.body.b)
   else
     expect_json = false
-    expect_json = true if r.headers['Content-Type'] == 'application/json' || r.body.start_with?('{')
-      STDERR.puts('HEADers ' + r.headers.to_s)
+    expect_json = true if r.headers['Content-Type'] == 'application/json' || r.body.start_with?('{')    
     puts handle_resp(r, expect_json)
   end
 rescue StandardError => e
