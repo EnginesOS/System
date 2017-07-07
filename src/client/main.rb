@@ -87,6 +87,8 @@ def handle_resp(resp, expect_json = true)
   else
     log_error("Un exepect response from system" + resp.status.to_s + ' ' + resp.body.to_s + ' ' + resp.headers.to_s)
   end
+
+  STDERR.puts('GOT JSON' + resp.body) 
   if expect_json == true && r.nil?
     STDERR.puts('GOT JSON' + resp.body)
     json_parser.parse(resp.body).to_s
