@@ -5,10 +5,10 @@ module Certificates
     certs_service.perform_action(actionator, params) #[:domain_name], params[:certificate] + params[:key])
   end
 
-  def remove_cert(cert_name)
+  def remove_cert(params)
     certs_service = loadManagedService('cert_auth')
     actionator = get_service_actionator(certs_service, 'remove_cert')
-    certs_service.perform_action(actionator, {cert_name: cert_name})
+    certs_service.perform_action(actionator, params)
   end
 
   def set_default_cert(params)
@@ -81,11 +81,11 @@ module Certificates
     } )
   end
 
-  def get_cert(cert_name)
+  def get_cert(params)
     certs_service = loadManagedService('cert_auth')
     cert_name = 'engines' if cert_name == 'default'
     actionator = get_service_actionator(certs_service, 'fetch_cert')
-    certs_service.perform_action(actionator, {cert_name: cert_name})
+    certs_service.perform_action(actionator, params)
   end
 
 end
