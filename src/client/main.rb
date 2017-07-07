@@ -111,7 +111,7 @@ def write_response(r)
     STDOUT.write(r.body.b)
   else
     expect_json = false
-    expect_json = true if r.headers['Content-Type'] == 'application/json_parser' || r.body.start_with?('{')
+    expect_json = true if r.headers['Content-Type'] == 'application/json' || r.body.start_with?('{')
       STDERR.puts('HEADers ' + r.headers.to_s)
     puts handle_resp(r, expect_json)
   end
