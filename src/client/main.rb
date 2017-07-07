@@ -74,7 +74,7 @@ end
 
 def handle_resp(resp, expect_json = true)
   r = nil
-  STDERR.puts('GOT JSON' + resp.body)
+#  STDERR.puts('GOT JSON' + resp.body)
   if resp.status >= 400
     log_error("Error " + resp.status.to_s)
     if resp.body.nil?
@@ -88,7 +88,7 @@ def handle_resp(resp, expect_json = true)
     log_error("Un exepect response from system" + resp.status.to_s + ' ' + resp.body.to_s + ' ' + resp.headers.to_s)
   end
 
-  STDERR.puts('GOT JSON' + resp.body) 
+  STDERR.puts('GOT body ' + resp.body + "\nas JSON:" +  expect_json.to_s) 
   if expect_json == true && r.nil?
     STDERR.puts('GOT JSON' + resp.body)
     json_parser.parse(resp.body).to_s
