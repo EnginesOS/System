@@ -25,10 +25,13 @@ module PublicApiSystemCertificates
   end
 
   def get_cert(params)
+    STDERR.puts('GET ' + params.to_s)
     @system_api.get_cert(params)
   end
 
   def remove_cert(params)
+    
+    STDERR.puts('REMOV ' + params.to_s)
     @system_api.remove_cert(params)
   end
 
