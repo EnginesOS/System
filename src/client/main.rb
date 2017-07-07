@@ -73,21 +73,35 @@ def json_parser
 end
 
 def handle_resp(resp, expect_json = true)
+  r = nil
+#  STDERR.puts('GOT JSON' + resp.body)
   if resp.status >= 400
     log_error("Error " + resp.status.to_s)
     if resp.body.nil?
-      'fail'
-    else
-      resp.body
+      r = 'fail'
     end
   elsif resp.status == 204   # nodata but all good happens on del
-    'OK'
+    r = 'OK'
   elsif resp.status >= 200 && resp.status < 300
     resp.body
   else
     log_error("Un exepect response from system" + resp.status.to_s + ' ' + resp.body.to_s + ' ' + resp.headers.to_s)
   end
 
+ # STDERR.puts('GOT body ' + resp.body + "\nas JSON:" +  expect_json.to_s) 
+  if expect_json == true && r.nil?
+  #  STDERR.puts('GOT JSON' + resp.body)
+    o = json_parser.parse(resp.body)
+    #o = JSON.parse(resp.body)
+   # STDERR.puts('O IS' + o.class.name)
+    o.to_s
+  else
+    if r.nil?
+      resp.body
+    else
+      r
+    end
+  end
 rescue StandardError => e
   log_error(e.to_s + ' with :' + resp.to_s)
   log_error(e.backtrace.to_s)
@@ -100,8 +114,8 @@ def write_response(r)
     STDOUT.write(r.body.b)
   else
     expect_json = false
-    expect_json = true if r.headers['Content-Type'] == 'application/json_parser' || r.body.start_with?('{')
-    puts handle_resp(r, expect_json)     
+    expect_json = true if r.headers['Content-Type'] == 'application/json' || r.body.start_with?('{')    
+    puts handle_resp(r, expect_json)
   end
 rescue StandardError => e
   log_error(e.to_s + ' with :' + resp.to_s)

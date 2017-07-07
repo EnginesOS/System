@@ -24,12 +24,12 @@ module PublicApiSystemCertificates
     @system_api.generate_cert(params)
   end
 
-  def get_cert(domain)
-    @system_api.get_cert(domain)
+  def get_cert(params)
+    @system_api.get_cert(params)
   end
 
-  def remove_cert(domain)
-    @system_api.remove_cert(domain)
+  def remove_cert(params)
+    @system_api.remove_cert(params)
   end
 
   def list_certs
@@ -37,6 +37,8 @@ module PublicApiSystemCertificates
   end
 
   def services_default_certs
-    @system_api.services_default_certs
+    r = @system_api.services_default_certs
+    STDERR.puts(' SERVICE DEFAULT CERTS ' + r.class.name + ':' + r.to_s)
+      r
   end
 end
