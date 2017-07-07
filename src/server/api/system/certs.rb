@@ -18,6 +18,7 @@ end
 # test /opt/engines/tests/engines_api/system/cert ; make view
 get '/v0/system/certs/:store/:cert_name' do
   begin
+    STDERR.puts('FETCH PARAMS' + params.to_s)
     return_text(engines_api.get_cert(params))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
