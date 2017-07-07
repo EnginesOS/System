@@ -12,14 +12,31 @@ get '/v0/system/certs/system_ca' do
   end
 end
 
+# @method list_certificate
+# @overload get '/v0/system/certs/'
+# @return [Array] of certificate names
+# certificate name is the domain name / hostname the cert was created/uploaded against
+# test /opt/engines/tests/engines_api/system/cert ; make list
+get '/v0/system/certs/' do
+  begin
+    return_json_array(engines_api.list_certs)
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+end
+
 # @method get certificate
 # @overload get '/v0/system/certs/:store/:cert_name'
 # @return [String] PEM encoded Public certificate
 # test /opt/engines/tests/engines_api/system/cert ; make view
-get '/v0/system/certs/:store/:cert_name' do
+get '/v0/system/certs/*' do
   begin
-    STDERR.puts('FETCH PARAMS' + params.to_s)
-    return_text(engines_api.get_cert(params))
+    p = {
+      cert_name: File.basename(params[:splat][0]),
+      store: File.dirname(params[:splat][0])
+    }
+    STDERR.puts('FETCH PARAMS' + p.to_s)
+    return_text(engines_api.get_cert(p))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -37,27 +54,20 @@ get '/v0/system/certs/default' do
   end
 end
 
-# @method list_certificate
-# @overload get '/v0/system/certs/'
-# @return [Array] of certificate names
-# certificate name is the domain name / hostname the cert was created/uploaded against
-# test /opt/engines/tests/engines_api/system/cert ; make list
-get '/v0/system/certs/' do
-  begin
-    return_json_array(engines_api.list_certs)
-  rescue StandardError => e
-    send_encoded_exception(request: request, exception: e)
-  end
-end
+
 
 # @method delete_certificate
 # @overload delete '/v0/system/certs/:store/:cert_name'
 # delete certificate :cert_name in :store
 # @return [true]
 # test /opt/engines/tests/engines_api/system/cert ; make remove
-delete '/v0/system/certs/:store/:cert_name' do 
+delete '/v0/system/certs/*' do
   begin
-    return_boolean(engines_api.remove_cert(params))
+    p = {
+         cert_name: File.basename(params[:splat][0]),
+         store: File.dirname(params[:splat][0])
+       }
+    return_boolean(engines_api.remove_cert(p))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
