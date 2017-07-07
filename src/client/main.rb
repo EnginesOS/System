@@ -92,6 +92,7 @@ def handle_resp(resp, expect_json = true)
   if expect_json == true && r.nil?
     STDERR.puts('GOT JSON' + resp.body)
     o = json_parser.parse(resp.body)
+    o = JSON.parse(resp.body)
     STDERR.puts('O IS' + o.class.name)
     o.to_s
   else
