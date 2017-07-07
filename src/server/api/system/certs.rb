@@ -48,6 +48,7 @@ get '/v0/system/certs/' do
     send_encoded_exception(request: request, exception: e)
   end
 end
+
 # @method delete_certificate
 # @overload delete '/v0/system/certs/:store/:cert_name'
 # delete certificate :cert_name in :store
@@ -80,10 +81,11 @@ post '/v0/system/certs/default' do
     send_encoded_exception(request: request, exception: e)
   end
 end
+
 # @method upload_certificate
 # @overload post '/v0/system/certs/'
 # import certificate and key in PEM for domain_name
-# @param  :domain_name
+# @param :domain_name
 # @param :certificate
 # @param :key
 # @param :password - optional
