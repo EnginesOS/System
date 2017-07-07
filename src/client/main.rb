@@ -74,6 +74,7 @@ end
 
 def handle_resp(resp, expect_json = true)
   r = nil
+  STDERR.puts('GOT JSON' + resp.body)
   if resp.status >= 400
     log_error("Error " + resp.status.to_s)
     if resp.body.nil?
