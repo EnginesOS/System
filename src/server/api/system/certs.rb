@@ -25,22 +25,7 @@ get '/v0/system/certs/' do
   end
 end
 
-# @method get certificate
-# @overload get '/v0/system/certs/:store/:cert_name'
-# @return [String] PEM encoded Public certificate
-# test /opt/engines/tests/engines_api/system/cert ; make view
-get '/v0/system/certs/*' do
-  begin
-    p = {
-      cert_name: File.basename(params[:splat][0]),
-      store: File.dirname(params[:splat][0])
-    }
-    STDERR.puts('FETCH PARAMS' + p.to_s)
-    return_text(engines_api.get_cert(p))
-  rescue StandardError => e
-    send_encoded_exception(request: request, exception: e)
-  end
-end
+
 
 # @method default_certificate
 # @overload get '/v0/system/certs/default'
@@ -146,6 +131,23 @@ end
 get '/v0/system/certs/service_certs' do
   begin
     return_json_array(engines_api.services_default_certs)
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+end
+
+# @method get certificate
+# @overload get '/v0/system/certs/:store/:cert_name'
+# @return [String] PEM encoded Public certificate
+# test /opt/engines/tests/engines_api/system/cert ; make view
+get '/v0/system/certs/*' do
+  begin
+    p = {
+      cert_name: File.basename(params[:splat][0]),
+      store: File.dirname(params[:splat][0])
+    }
+    STDERR.puts('FETCH PARAMS' + p.to_s)
+    return_text(engines_api.get_cert(p))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
