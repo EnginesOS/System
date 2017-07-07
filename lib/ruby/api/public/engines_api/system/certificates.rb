@@ -37,6 +37,8 @@ module PublicApiSystemCertificates
   end
 
   def services_default_certs
-    @system_api.services_default_certs
+    r = @system_api.services_default_certs
+    STDERR.puts(' SERVICE DEFAULT CERTS ' + r.class.name + ':' + r.to_s)
+      r
   end
 end
