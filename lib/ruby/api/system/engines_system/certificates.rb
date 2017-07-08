@@ -29,7 +29,7 @@ module Certificates
   end
   
   def engine_name(store)
-    File.basename(params[:store]).gsub(/\//,'')
+    File.basename(store).gsub(/\//, '')
   end
   
   def container_type(store)
