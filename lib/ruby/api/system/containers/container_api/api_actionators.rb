@@ -5,7 +5,7 @@ module ApiActionators
     if params.nil? || params.is_a?(String)
       data = params
     else
-      data = params#.to_json
+      data = params.to_json
     end
 
     #  STDERR.puts('/home/actionators/' + actionator_name + '.sh ' + params.to_json + ' .  ' + data.to_s )

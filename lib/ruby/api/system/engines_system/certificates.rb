@@ -2,7 +2,7 @@ module Certificates
   def upload_ssl_certificate(params)
     certs_service = loadManagedService('cert_auth')
     STDERR.puts(' Cert  ' +  params[:certificate] )
-    STDERR.puts(' Cert  ' +  params[:private_key] )
+    STDERR.puts(' KEY  ' +  params[:private_key] )
     actionator = get_service_actionator(certs_service, 'import_cert')
     certs_service.perform_action(actionator, params) #[:domain_name], params[:certificate] + params[:private_key])
   end
