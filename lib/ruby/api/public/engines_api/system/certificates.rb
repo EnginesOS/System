@@ -25,12 +25,10 @@ module PublicApiSystemCertificates
   end
 
   def get_cert(params)
-    STDERR.puts('GET ' + params.to_s)
     @system_api.get_cert(params)
   end
 
-  def remove_cert(params)    
-    STDERR.puts('REMOV ' + params.to_s)
+  def remove_cert(params)
     @system_api.remove_cert(params)
   end
 
@@ -39,8 +37,6 @@ module PublicApiSystemCertificates
   end
 
   def services_default_certs
-    r = @system_api.services_default_certs
-    STDERR.puts(' SERVICE DEFAULT CERTS ' + r.class.name + ':' + r.to_s)
-      r
+    @system_api.services_default_certs
   end
 end
