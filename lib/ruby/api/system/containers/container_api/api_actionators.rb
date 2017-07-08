@@ -20,8 +20,9 @@ module ApiActionators
         
       #      result = SystemUtils.execute_command(cmd)
     else
-      if data.is_a(Hash)
-        STDERR.puts('CERT + ' + data[:certificate])if data.key?(:certificate)
+      if params.is_a?(Hash)
+        STDERR.puts('CERT + ' + params[:certificate])if params.key?(:certificate)
+        STDERR.puts('CERT + ' + data)
       end
     STDERR.puts('/home/actionators/' +  actionator[:name].to_s + '.sh') #) + data.to_s)
       result = engines_core.exec_in_container(
