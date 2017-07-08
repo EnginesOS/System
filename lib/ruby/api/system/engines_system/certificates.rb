@@ -2,7 +2,7 @@ module Certificates
   def upload_ssl_certificate(params)
     certs_service = loadManagedService('cert_auth')
     actionator = get_service_actionator(certs_service, 'import_cert')
-    certs_service.perform_action(actionator, params) #[:domain_name], params[:certificate] + params[:key])
+    certs_service.perform_action(actionator, params) #[:domain_name], params[:certificate] + params[:private_key])
   end
 
   def remove_cert(params)
@@ -85,7 +85,6 @@ module Certificates
     certs_service = loadManagedService('cert_auth')
     cert_name = 'engines' if cert_name == 'default'
     actionator = get_service_actionator(certs_service, 'fetch_cert')
-    STDERR.puts('PARA<S are ' + params.to_s) 
     certs_service.perform_action(actionator, params)
   end
 
