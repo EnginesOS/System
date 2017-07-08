@@ -16,10 +16,12 @@ module Certificates
         type_path: 'cert_auth',
         service_handle: params[:cert_name]
       }
-      STDERR.puts('CERT SERVICe IS ' + service.to_s)
+      STDERR.puts('CERT SERVICe IS:' + service.to_s)
       begin
         s = retrieve_engine_service_hash(service)
-      rescue
+        STDERR.puts('CERT SERVICe R:' + s.to_s)
+      rescue StandardError => e
+        STDERR.puts('CERT SERVICE E is:' + e.to_s)
         s = nil
       end
       clear_service_from_registry(service) unless s.nil?
