@@ -91,7 +91,7 @@ end
 post '/v0/system/certs/' do
   begin
     post_s = post_params(request)
-    STDERR.puts(' CERT ' + post_s)
+    STDERR.puts(' CERT ' + post_s.to_s)
     cparams = assemble_params(post_s, [], :all)
     return_boolean(engines_api.upload_ssl_certificate(cparams))
   rescue StandardError => e
