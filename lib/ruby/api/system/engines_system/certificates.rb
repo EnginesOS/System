@@ -18,20 +18,20 @@ module Certificates
       }
       STDERR.puts('CERT SERVICe IS:' + service.to_s)
       begin
-        s = retrieve_engine_service_hash(service)
+        s = @engines_api.retrieve_engine_service_hash(service)
         STDERR.puts('CERT SERVICe R:' + s.to_s)
       rescue StandardError => e
         STDERR.puts('CERT SERVICE E is:' + e.to_s + "\n" + e.backtrace.to_s)
         s = nil
       end
-      clear_service_from_registry(service) unless s.nil?
+      @engines_api.clear_service_from_registry(service) unless s.nil?
     end
   end
-  
+
   def engine_name(store)
     File.basename(store).gsub(/\//, '')
   end
-  
+
   def container_type(store)
     File.dirname(store).gsub(/\//, '').gsub(/s$/, '')
   rescue
