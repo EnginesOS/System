@@ -23,7 +23,7 @@ module ApiActionators
         command_line: cmds,
         log_error: true ,
         data: data})
-      #  STDERR.puts('/home/actionators/' + actionator_name + '.sh' + data.to_s)
+        STDERR.puts('/home/actionators/' + actionator_name + '.sh' + data.to_s)
       # result = SystemUtils.execute_command(cmd, false, data)
     end
 
