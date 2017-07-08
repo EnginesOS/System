@@ -8,7 +8,7 @@ module Certificates
   def remove_cert(params)
     certs_service = loadManagedService('cert_auth')
     actionator = get_service_actionator(certs_service, 'remove_cert')
-    certs_service.perform_action(actionator, params)
+   
     unless params[:store].nil? || params[:store] == '/'  || params[:store] == '.'  || params[:store] == 'uploaded'
       service = { container_type: container_type(params[:store]),
         parent_engine: engine_name(params[:store]),
@@ -17,14 +17,20 @@ module Certificates
         service_handle: params[:cert_name]
       }
       STDERR.puts('CERT SERVICe IS:' + service.to_s)
-      begin
-        s = @engines_api.retrieve_engine_service_hash(service)
-        STDERR.puts('CERT SERVICe R:' + s.to_s)
-      rescue StandardError => e
-        STDERR.puts('CERT SERVICE E is:' + e.to_s + "\n" + e.backtrace.to_s)
-        s = nil
+    # begin
+       s = @engines_api.retrieve_engine_service_hash(service)
+     #   STDERR.puts('CERT SERVICe R:' + s.to_s)
+     # rescue StandardError => e
+      #  STDERR.puts('CERT SERVICE E is:' + e.to_s + "\n" + e.backtrace.to_s)
+     #   s = nil
+     # end
+      unless s.nil?
+      @engines_api.dettach_service(service) 
+      else
+        raise EnginesException.new(error_hash('Cert service entry  not found' + service.to_s))
       end
-      @engines_api.clear_service_from_registry(service) unless s.nil?
+    else #imported action
+      certs_service.perform_action(actionator, params)
     end
   end
 
