@@ -1,8 +1,8 @@
 module Certificates
   def upload_ssl_certificate(params)
     certs_service = loadManagedService('cert_auth')
-    STDERR.puts(' Cert  ' +  params[:certificate] )
-    STDERR.puts(' KEY  ' +  params[:private_key] )
+  #  STDERR.puts(' Cert  ' +  params[:certificate] )
+  #  STDERR.puts(' KEY  ' +  params[:private_key] )
     actionator = get_service_actionator(certs_service, 'import_cert')
     certs_service.perform_action(actionator, params) #[:domain_name], params[:certificate] + params[:private_key])
   end
@@ -34,6 +34,7 @@ module Certificates
     else #imported action
       certs_service.perform_action(actionator, params)
     end
+    true
   end
 
   def engine_name(store)
@@ -50,6 +51,7 @@ module Certificates
     certs_service = loadManagedService('cert_auth')
     actionator = get_service_actionator(certs_service, 'set_default')
     certs_service.perform_action(actionator, params)
+    true
   end
 
   def list_certs

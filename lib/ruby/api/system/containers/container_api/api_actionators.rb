@@ -11,7 +11,7 @@ module ApiActionators
     #  STDERR.puts('/home/actionators/' + actionator_name + '.sh ' + params.to_json + ' .  ' + data.to_s )
     cmds = ['/home/actionators/' + actionator[:name].to_s + '.sh'] #, args.to_s]
     if data.nil?
-      STDERR.puts('/home/actionators/' +  actionator[:name].to_s + '.sh' + ' NIL DATA')
+    #  STDERR.puts('/home/actionators/' +  actionator[:name].to_s + '.sh' + ' NIL DATA')
       result = engines_core.exec_in_container(
       {container: c,
         command_line: cmds,
@@ -20,11 +20,11 @@ module ApiActionators
         
       #      result = SystemUtils.execute_command(cmd)
     else
-      if params.is_a?(Hash)
-        STDERR.puts('CERT + ' + params[:certificate])if params.key?(:certificate)
-        STDERR.puts('CERT + ' + data)
-      end
-    STDERR.puts('/home/actionators/' +  actionator[:name].to_s + '.sh') #) + data.to_s)
+    #  if params.is_a?(Hash)
+    #    STDERR.puts('CERT + ' + params[:certificate])if params.key?(:certificate)
+    #    STDERR.puts('CERT + ' + data)
+   #   end
+    #STDERR.puts('/home/actionators/' +  actionator[:name].to_s + '.sh') #) + data.to_s)
       result = engines_core.exec_in_container(
       {container: c,
         command_line: cmds,
