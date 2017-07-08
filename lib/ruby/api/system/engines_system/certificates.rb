@@ -11,7 +11,7 @@ module Certificates
     certs_service = loadManagedService('cert_auth')
     actionator = get_service_actionator(certs_service, 'remove_cert')
    
-    unless params[:store].nil? || params[:store].start_with? == 'imported'
+    unless params[:store].nil? || params[:store].start_with?('imported')
       service = { container_type: container_type(params[:store]),
         parent_engine: engine_name(params[:store]),
         publisher_namespace: 'EnginesSystem',
