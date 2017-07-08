@@ -1,7 +1,7 @@
 parent_engine: ivpn
 publisher_namespace: EnginesSystem
 type_path: cert_auth
-service_handle: ipsec_cert
+service_handle: ipvpn._Engines_System(default_domain)
 container_type: service
 persistent: true
 variables:

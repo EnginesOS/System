@@ -1,4 +1,4 @@
-module EnginesRegistryUtils
+#module EnginesRegistryUtils
   def address_params(hash, param_symbols)
     r = ''
     param_symbols.each do | sym |
@@ -8,4 +8,4 @@ module EnginesRegistryUtils
     SystemDebug.debug(SystemDebug.services, r.to_s)
     r
   end
-end
+#end

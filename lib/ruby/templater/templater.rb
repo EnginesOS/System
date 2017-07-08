@@ -67,7 +67,7 @@ class Templater
     val
   rescue StandardError => e
     SystemUtils.log_exception(e)
-   val
+    val
   end
 
   def resolve_system_function(match)
@@ -162,16 +162,16 @@ class Templater
   end
 
   def apply_system_variables(template)
-   if template.is_a?(String)
-    template.gsub!(/_Engines_System\([(0-9a-z_A-Z,]*\)\)/) { |match|
-      #     p :build_function_match
-      #     p match
-      resolve_system_function(match)
-    }
-    template.gsub!(/_Engines_System\([(0-9a-z_A-Z]*\)/) { |match|
-      resolve_system_variable(match)
-    }
-   end
+    if template.is_a?(String)
+      template.gsub!(/_Engines_System\([(0-9a-z_A-Z,]*\)\)/) { |match|
+        #     p :build_function_match
+        #     p match
+        resolve_system_function(match)
+      }
+      template.gsub!(/_Engines_System\([(0-9a-z_A-Z]*\)/) { |match|
+        resolve_system_variable(match)
+      }
+    end
     template
   rescue StandardError => e
     p 'problem with ' + template.to_s
@@ -183,7 +183,7 @@ class Templater
       template.gsub!(/_Engines_Builder\([(0-9a-z_A-Z]*\)/) { |match|
         resolve_build_variable(match)
       }
-    end   
+    end
     template
   end
 
@@ -198,6 +198,7 @@ class Templater
         service_hash[:variables][variable[0]] = result
       end
     end
+    service_hash[:service_handle] = process_templated_string(service_hash[:service_handle])
     true
   end
 

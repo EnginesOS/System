@@ -3,7 +3,10 @@ module Engines
   def retrieve_engine_service_hash(params)
     SystemDebug.debug(SystemDebug.services, 'sm retrieve_engine_service_hash  ', params)
     r = 'engine/service'
+    STDERR.puts('PARAMs' + params.to_s)
     r += address_params(params, [:container_type, :parent_engine, :service_handle, :type_path])
+      STDERR.puts('R is ' + r.to_s )
+    
     rest_get(r)
   end
 
