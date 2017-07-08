@@ -9,13 +9,14 @@ module Certificates
     certs_service = loadManagedService('cert_auth')
     actionator = get_service_actionator(certs_service, 'remove_cert')
     certs_service.perform_action(actionator, params)
-    unless params[:store].nil? || params[:store] == '/'  || params[:store] == '.'   || params[:store] == 'uploaded'
+    unless params[:store].nil? || params[:store] == '/'  || params[:store] == '.'  || params[:store] == 'uploaded'
       service = { container_type: File.dirname(params[:store]).gsub(/\//,''),
         parent_engine: File.basename(params[:store]).gsub(/\//,''),
         publisher_namespace: 'EnginesSystem',
         type_path: 'cert_auth',
         service_handle: params[:cert_name]
       }
+      STDERR.puts('CERT SERVICe IS ' + service.to_s)
       begin
         s = retrieve_engine_service_hash(service)
       rescue
