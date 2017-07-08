@@ -1,6 +1,7 @@
 def post_params(request)
   r = request.env['rack.input'].read
   unless r.nil?
+    STDERR.puts(' CERT ' + r.to_s)
     json_parser.parse(r)
   else
     {}
