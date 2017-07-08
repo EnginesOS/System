@@ -7,7 +7,7 @@ module Certificates
 
   def remove_cert(params)
     certs_service = loadManagedService('cert_auth')
-    actionator = get_service_actionator(certs_service, 'remove_cert')
+    actionator = get_service_actionator(certs_service, 'remove_cert')    
     certs_service.perform_action(actionator, params)
   end
 
@@ -85,6 +85,7 @@ module Certificates
     certs_service = loadManagedService('cert_auth')
     cert_name = 'engines' if cert_name == 'default'
     actionator = get_service_actionator(certs_service, 'fetch_cert')
+    STDERR.puts('PARA<S are ' + params.to_s) 
     certs_service.perform_action(actionator, params)
   end
 
