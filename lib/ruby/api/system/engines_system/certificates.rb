@@ -10,8 +10,8 @@ module Certificates
     actionator = get_service_actionator(certs_service, 'remove_cert')
     certs_service.perform_action(actionator, params)
     unless params[:store].nil? || params[:store] == '/'  || params[:store] == '.'  || params[:store] == 'uploaded'
-      service = { container_type: File.dirname(params[:store]).gsub(/\//,''),
-        parent_engine: File.basename(params[:store]).gsub(/\//,''),
+      service = { container_type: container_type(params[:store]),
+        parent_engine: engine_name(params[:store]),
         publisher_namespace: 'EnginesSystem',
         type_path: 'cert_auth',
         service_handle: params[:cert_name]
@@ -26,6 +26,16 @@ module Certificates
       end
       clear_service_from_registry(service) unless s.nil?
     end
+  end
+  
+  def engine_name(store)
+    File.basename(params[:store]).gsub(/\//,'')
+  end
+  
+  def container_type(store)
+    File.dirname(store).gsub(/\//, '').gsub(/s$/, '')
+  rescue
+    nil
   end
 
   def set_default_cert(params)
