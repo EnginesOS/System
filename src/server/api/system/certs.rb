@@ -6,31 +6,7 @@
 # test /opt/engines/tests/engines_api/system/cert ; make system_ca
 get '/v0/system/certs/system_ca' do
   begin
-    return_text( engines_api.get_system_ca)
-  rescue StandardError => e
-    send_encoded_exception(request: request, exception: e)
-  end
-end
-
-# @method get certificate
-# @overload get '/v0/system/certs/:store/:cert_name'
-# @return [String] PEM encoded Public certificate
-# test /opt/engines/tests/engines_api/system/cert ; make view
-get '/v0/system/certs/:store/:cert_name' do
-  begin
-    return_text(engines_api.get_cert(params[:cert_name]))
-  rescue StandardError => e
-    send_encoded_exception(request: request, exception: e)
-  end
-end
-
-# @method default_certificate
-# @overload get '/v0/system/certs/default'
-# @return [String] PEM encoded Public certificate
-# test /opt/engines/tests/engines_api/system/cert ; make default
-get '/v0/system/certs/default' do
-  begin
-    return_json(engines_api.get_cert('engines'))
+    return_text(engines_api.get_system_ca)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -48,14 +24,35 @@ get '/v0/system/certs/' do
     send_encoded_exception(request: request, exception: e)
   end
 end
+
+
+
+# @method default_certificate
+# @overload get '/v0/system/certs/default'
+# @return [String] PEM encoded Public certificate
+# test /opt/engines/tests/engines_api/system/cert ; make default
+get '/v0/system/certs/default' do
+  begin
+    return_json(engines_api.get_cert('engines'))
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+end
+
+
+
 # @method delete_certificate
 # @overload delete '/v0/system/certs/:store/:cert_name'
 # delete certificate :cert_name in :store
 # @return [true]
-# test /opt/engines/tests/engines_api/system/cert ; make remove 
-delete '/v0/system/certs/:store/:cert_name' do |cert_name|
+# test /opt/engines/tests/engines_api/system/cert ; make remove
+delete '/v0/system/certs/*' do
   begin
-    return_text(engines_api.remove_cert(cert_name))
+    p = {
+         cert_name: File.basename(params[:splat][0]),
+         store: File.dirname(params[:splat][0])
+       }
+    return_boolean(engines_api.remove_cert(p))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -75,26 +72,27 @@ post '/v0/system/certs/default' do
     post_s = post_params(request)
     cparams = assemble_params(post_s, [], :all)
     cparams[:set_as_default] = true
-    return_text(engines_api.upload_ssl_certificate(cparams))
+    return_boolean(engines_api.upload_ssl_certificate(cparams))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
 end
+
 # @method upload_certificate
 # @overload post '/v0/system/certs/'
 # import certificate and key in PEM for domain_name
-# @param  :domain_name
+# @param :domain_name
 # @param :certificate
 # @param :key
 # @param :password - optional
-# @param :install_target  service_name or default for all or not set 
+# @param :install_target  service_name or default for all or not set
 # @return [true]
 # test /opt/engines/tests/engines_api/system/cert ; make add
 post '/v0/system/certs/' do
   begin
     post_s = post_params(request)
     cparams = assemble_params(post_s, [], :all)
-    return_text(engines_api.upload_ssl_certificate(cparams))
+    return_boolean(engines_api.upload_ssl_certificate(cparams))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -107,8 +105,8 @@ end
 post '/v0/system/certs/generate' do
   begin
     p_params = post_params(request)
-    cparams = assemble_params(p_params, [], :all)   
-    return_text(engines_api.generate_cert(cparams))
+    cparams = assemble_params(p_params, [], :all)
+    return_boolean(engines_api.generate_cert(cparams))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -117,14 +115,38 @@ end
 # @method set_service_default_certificate
 # @overload post '/v0/system/certs/default/:target/:store/:cert_name'
 # set default cert for :target service or for all if target = default
-# test 
+# test
 post '/v0/system/certs/default/:target/*' do
   begin
     params[:store] = File.dirname(params[:splat][0])
     params[:cert_name] = File.basename(params[:splat][0])
     params[:store] = '/' if params[:store]  == '.' || params[:store].nil?
-    cparams = assemble_params(params, [:target, :store, :cert_name], nil)   
-    return_text(engines_api.set_default_cert(cparams))
+    cparams = assemble_params(params, [:target, :store, :cert_name], nil)
+    return_boolean(engines_api.set_default_cert(cparams))
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+end
+
+get '/v0/system/certs/service_certs' do
+  begin
+    return_json_array(engines_api.services_default_certs)
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+end
+
+# @method get certificate
+# @overload get '/v0/system/certs/:store/:cert_name'
+# @return [String] PEM encoded Public certificate
+# test /opt/engines/tests/engines_api/system/cert ; make view
+get '/v0/system/certs/*' do
+  begin
+    p = {
+      cert_name: File.basename(params[:splat][0]),
+      store: File.dirname(params[:splat][0])
+    }
+    return_text(engines_api.get_cert(p))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

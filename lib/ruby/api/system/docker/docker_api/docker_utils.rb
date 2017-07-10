@@ -26,7 +26,7 @@ module DockerUtils
               end
             end
           end
-         # socket.close_write
+          socket.close_write
         rescue StandardError => e
           STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
         end

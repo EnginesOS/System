@@ -79,7 +79,7 @@ echo "Syslog Started" &>>/tmp/first_start.log
 /opt/engines/bin/engines service cert_auth wait_for destroy 20
 
 /opt/engines/bin/engines service cert_auth create &>>/tmp/first_start.log
-opt/engines/bin/engines service cert_auth wait_for start 20
+/opt/engines/bin/engines service cert_auth wait_for start 20
 /opt/engines/bin/engines service cert_auth wait_for_startup 20
 echo "Cert Auth Started" &>>/tmp/first_start.log
 
@@ -105,7 +105,7 @@ echo "auth Started" &>>/tmp/first_start.log
 
 
 /opt/engines/bin/engines service backup create &>>/tmp/first_start.log
-opt/engines/bin/engines service backup wait_for start 20
+/opt/engines/bin/engines service backup wait_for start 20
 /opt/engines/bin/engines service backup wait_for_startup 45
 echo "backup Started" &>>/tmp/first_start.log 
 
@@ -131,7 +131,7 @@ echo Restart ftp &>>/tmp/first_start.log
 echo "redis Started" &>>/tmp/first_start.log
 
 /opt/engines/bin/engines service smtp create &>>/tmp/first_start.log
-opt/engines/bin/engines service smtp wait_for start 20
+/opt/engines/bin/engines service smtp wait_for start 20
 /opt/engines/bin/engines service smtp wait_for_startup 20
 echo "smtp Started" &>>/tmp/first_start.log
 
@@ -140,7 +140,7 @@ echo "smtp Started" &>>/tmp/first_start.log
  if test -f /opt/engines/run/system/flags/install_mgmt
   then
   	/opt/engines/bin/engines service mgmt create &>>/tmp/first_start.log 
-  	 	/opt/engines/bin/engines service mgmt wait_for start 30
+  	/opt/engines/bin/engines service mgmt wait_for start 30
   	/opt/engines/bin/engines service mgmt wait_for_startup 280 
   	echo "mgmt Started" &>>/tmp/first_start.log
   	echo "Management is now at https://$lan_ip:10443/ or https://${ext_ip}:10443/"  &>>/tmp/first_start.log 
@@ -149,4 +149,4 @@ echo "smtp Started" &>>/tmp/first_start.log
  echo sudo su -l engines  &>>/tmp/first_start.log
  echo to use the engines management tool on the commandline &>>/tmp/first_start.log 
  touch /opt/engines/bin/engines/run/system/flags/first_start_complete
- echo Installation complete Ctl-c to exit &>>/tmp/first_start.log
+ echo Installation complete Ctl-c to exit & >> /tmp/first_start.log

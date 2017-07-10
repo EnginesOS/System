@@ -20,7 +20,7 @@ class SystemRegistryClient < ErrorsApi
   require_relative 'engines_registry_utils.rb'
   require '/opt/engines/lib/ruby/exceptions/registry_exception.rb'
 
-  include EnginesRegistryUtils
+#  include EnginesRegistryUtils
   include EnginesRegistryClientErrors
   include Configurations
   include Services
