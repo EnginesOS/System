@@ -7,8 +7,8 @@ if  test -f public/certs/system_system_engines.crt
 then
  mkdir -p public/keys/systems/system
  mkdir -p public/certs/systems/system
- mv public/certs/system_system_engines.crt  public/certs/systems/system
- mv public/keys/system_system_engines.key public/keys/systems/system
+ mv public/certs/system_system_engines.crt  public/certs/systems/system/engines.crt 
+ mv public/keys/system_system_engines.key public/keys/systems/system/engines.key
  
  fi
  
