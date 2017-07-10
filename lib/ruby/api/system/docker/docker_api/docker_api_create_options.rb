@@ -229,15 +229,19 @@ module DockerApiCreateOptions
   end
 
   def cert_mounts(container)
-    if container.certificates.is_a?(Array)
-      mounts = []
-      container.certificates.each do |certificate|
-        prefix =  certificate[:container_type] + 's/' + certificate[:parent_engine] + '/' + certificate[:variables][:cert_name]
-        mounts.push(SystemConfig.CertificatesDir + prefix + '.crt:' + SystemConfig.CertificatesDestination +  certificate[:variables][:cert_name] + '.crt:ro' )
-        mounts.push(SystemConfig.KeysDir + prefix + '.key:' + SystemConfig.KeysDestination +  certificate[:variables][:cert_name] + '.key:ro' )
-      end
-      mounts
-    end
+
+    store = container.ctype + 's/' + container.container_name + '/'
+    [SystemConfig.CertificatesDir + store + ':' + SystemConfig.CertificatesDestination + ':ro',
+      SystemConfig.KeysDir + store + ':' + SystemConfig.KeysDestination + ':ro']
+    #    if container.certificates.is_a?(Array)
+    #      mounts = []
+    #      container.certificates.each do |certificate|
+    #        prefix =  certificate[:container_type] + 's/' + certificate[:parent_engine] + '/' + certificate[:variables][:cert_name]
+    #        mounts.push(SystemConfig.CertificatesDir + prefix + '.crt:' + SystemConfig.CertificatesDestination +  certificate[:variables][:cert_name] + '.crt:ro' )
+    #        mounts.push(SystemConfig.KeysDir + prefix + '.key:' + SystemConfig.KeysDestination +  certificate[:variables][:cert_name] + '.key:ro' )
+    #      end
+    #      mounts
+    #    end
   end
 
   def system_mounts(container)

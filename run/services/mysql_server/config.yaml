@@ -17,6 +17,11 @@ volumes:
   remotepath: "/var/lib/mysql"
   localpath: "/var/lib/engines/mysql"
   permissions: "rw"
+ sslcerts: 
+  name: sslcerts
+  remotepath: "/etc/ssl/"
+  localpath: "/var/lib/engines/cert_auth/services/mysql/"
+  permissions: "ro"  
  mysql_run: 
   name: mysql_run
   remotepath: "/var/run/mysqld/"

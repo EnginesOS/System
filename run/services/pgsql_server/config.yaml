@@ -20,7 +20,7 @@ volumes:
  sslcerts: 
   name: sslcerts
   remotepath: "/etc/ssl/"
-  localpath: "/opt/engines/etc/pgsql/ssl/"
+  localpath: "/var/lib/engines/cert_auth/services/pqsql/"
   permissions: "ro"
 port: 
 mapped_ports:
