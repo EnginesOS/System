@@ -230,7 +230,7 @@ module DockerApiCreateOptions
 
   def cert_mounts(container)
 
-    store = certificate[:container_type] + 's/' + certificate[:parent_engine] + '/'
+    store = container.ctype + 's/' + container.container_name + '/'
     [SystemConfig.CertificatesDir + store + ':' + SystemConfig.CertificatesDestination + ':ro',
       SystemConfig.KeysDir + store + ':' + SystemConfig.KeysDestination + ':ro']
     #    if container.certificates.is_a?(Array)
