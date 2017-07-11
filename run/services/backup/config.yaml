@@ -21,7 +21,7 @@ volumes:
   name: ApplicationVolumes
   remotepath: "/backup_src/volumes/fs"
   localpath: "/var/lib/engines/fs"
-  permissions: "ro"
+  permissions: "rw"
  ServiceVolumes: 
   name: ServiceVolumes
   remotepath: "/backup_src/volumes/services"
@@ -46,7 +46,7 @@ volumes:
   name: SystemLogs
   remotepath: "/backup_src/logs"
   localpath: "/var/log/engines/"
-  permissions: "ro"
+  permissions: "rw"
  BackupKeys: 
   name: BackupKeys
   remotepath: "/home/backup/.gnupg"
