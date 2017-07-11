@@ -22,7 +22,7 @@ module ManagedServiceControls
       if@environments.is_a?(Array)
         @environments =  EnvironmentVariable.merge_envs(envs, @environments)
         # @environments = envs ??
-        @environments = EnvironmentVariable.merge_envs( @environments, iso_envs)
+        @environments = EnvironmentVariable.merge_envs(@environments, iso_envs)
       end
     end
 
@@ -53,6 +53,10 @@ module ManagedServiceControls
       EnvironmentVariable.new('LANG', lang + '_' + country + '.UTF8' ),
       EnvironmentVariable.new('LC_ALL', lang + '_' + country + '.UTF8' )
     ]
+  end
+
+  def service_restore(stream, params)
+    @container_api.service_restore(self, stream, params)
   end
 
   private
