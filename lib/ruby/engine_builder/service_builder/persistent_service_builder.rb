@@ -90,7 +90,7 @@ module PersistantServiceBuilder
     constants = SoftwareServiceDefinition.service_constants(service_hash)
     environ.concat(constants)
     service_environment = SoftwareServiceDefinition.service_environments(service_hash)
-    add_service_env_to_env
+    add_service_env_to_env(environ, service_environment)
     environ.concat(SoftwareServiceDefinition.service_environments(service_hash))
 
     SystemDebug.debug(SystemDebug.builder, :with_env, environ)
