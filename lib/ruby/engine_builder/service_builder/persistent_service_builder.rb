@@ -101,7 +101,7 @@ module PersistantServiceBuilder
 
   def add_service_env_to_env(environ, service_env)
     STDERR.puts('ENVIRON:' + environ.to_s)
-    STDERR.puts('SERVICE ENV:' + service_env,to_s)
+    STDERR.puts('SERVICE ENV:' + service_env.to_s)
     environ.concat(service_env)
   end
 
