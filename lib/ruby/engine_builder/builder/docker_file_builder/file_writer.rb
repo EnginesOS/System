@@ -52,3 +52,9 @@ def insert_framework_frag_in_dockerfile(frag_name)
   frame_build_docker_frag.close
 end
 
+def count_layer
+   @layer_count += 1
+   if @layer_count > @max_layers
+     raise EngineBuilderException.new(error_hash("More than 75 layers!"))
+   end
+ end
