@@ -15,7 +15,9 @@ class DockerFileBuilder
     @max_layers = 75
   end
 
-
+  def log_build_output(mesg)
+    @builder.log_build_output(mesg)
+  end
 
   def write_files_for_docker
     @in_run = false
