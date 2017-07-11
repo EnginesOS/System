@@ -7,7 +7,7 @@ module ManagedServiceControls
     #SystemUtils.run_command('/opt/engines/system/scripts/system/setup_service_dir.sh ' + container_name)
     setup_service_keys if @system_keys.is_a?(Array)
     @container_api.setup_service_dirs(self)
-    SystemDebug.debug(SystemDebug.containers, :keys_set,  @system_keys )
+    SystemDebug.debug(SystemDebug.containers, :keys_set, @system_keys )
     envs = @container_api.load_and_attach_pre_services(self)
     shared_envs = @container_api.load_and_attach_shared_services(self)
     if shared_envs.is_a?(Array)
@@ -66,7 +66,7 @@ module ManagedServiceControls
     @system_keys.each do |key|
       keys += ' ' + key.to_s
     end
-    SystemDebug.debug(SystemDebug.containers, :keys, keys )
+    SystemDebug.debug(SystemDebug.containers, :keys, keys)
     SystemUtils.run_command('/opt/engines/system/scripts/system/setup_service_keys.sh ' + container_name  + keys)
   end
 
