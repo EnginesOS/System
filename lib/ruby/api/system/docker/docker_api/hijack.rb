@@ -43,6 +43,7 @@ module Excon
             socket.local_address
           })
         end
+        STDERR.puts('BUl ersponse ' )
         response
       end
 
@@ -61,6 +62,7 @@ module Excon
           datum[:response] = build_response(status, socket)
 
           Excon::Response.parse_headers(socket, datum)
+        STDERR.puts('Call ersponse ' )
           datum[:hijack_block].call socket.instance_variable_get(:@socket)
         end
         r =  @stack.response_call(datum)
