@@ -113,10 +113,7 @@ module DockerApiExec
         stream_reader.result[:result] = get_exec_result(exec_id)
         return stream_reader.result # DockerUtils.docker_stream_as_result(r, result)
       end
-
       request_params['AttachStdin'] = true
-        STDERR.puts('Attached STDIN ' + params.to_s)
-        
       stream_handler = DockerHijackStreamHandler.new(params[:data], params[:data_stream], params[:ostream])
 
       headers['Connection'] = 'Upgrade'

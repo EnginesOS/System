@@ -3,13 +3,14 @@ module DockerUtils
     @stream_reader = stream_reader
     return_result = @stream_reader.result
     lambda do |socket|
-
       write_thread = Thread.start do
         write_thread[:name] = 'docker_stream_writer'
         begin
           unless @stream_reader.i_stream.nil?
-            IO.copy_stream(@stream_reader.i_stream,socket) unless @stream_reader.i_stream.eof?
+            STDERR.puts('COPY STREAMS ')
+            IO.copy_stream(@stream_reader.i_stream, socket) unless @stream_reader.i_stream.eof?
           else
+            STDERR.puts('send data as chunks ')
             unless stream_reader.data.nil? ||  stream_reader.data.length == 0
               if stream_reader.data.length < Excon.defaults[:chunk_size]
                 socket.send(stream_reader.data, 0)
