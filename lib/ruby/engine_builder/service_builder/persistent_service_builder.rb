@@ -100,8 +100,6 @@ module PersistantServiceBuilder
   end
 
   def add_service_env_to_env(environ, service_env)
-    STDERR.puts('ENVIRON:' + environ.to_s)
-    STDERR.puts('SERVICE ENV:' + service_env.to_s)
     service_env.each do |new_env|
       inc = 1
       environ.each do |env|
