@@ -34,8 +34,8 @@ put '/v0/restore/service/:service_name/*' do
   begin
     
     service = get_service(params[:service_name])
-    unless params[:splat][0].nil?
-      p = {section: params[:splat][0][:section]}
+    unless params['splat'].nil?
+      p = {section: params['splat'][0]}
     else
       p = {section: nil}
     end
