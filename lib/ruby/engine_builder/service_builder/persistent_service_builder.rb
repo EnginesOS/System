@@ -91,7 +91,7 @@ module PersistantServiceBuilder
     environ.concat(constants)
     service_environment = SoftwareServiceDefinition.service_environments(service_hash)
     add_service_env_to_env(environ, service_environment)
-    environ.concat(SoftwareServiceDefinition.service_environments(service_hash))
+    #environ.concat(SoftwareServiceDefinition.service_environments(service_hash))
 
     SystemDebug.debug(SystemDebug.builder, :with_env, environ)
 
@@ -102,6 +102,16 @@ module PersistantServiceBuilder
   def add_service_env_to_env(environ, service_env)
     STDERR.puts('ENVIRON:' + environ.to_s)
     STDERR.puts('SERVICE ENV:' + service_env.to_s)
+    service_env.each do |new_env|
+      inc = 1
+      environ.each do |env|
+        if env.name == new_env.name
+          oldname = new_env.name
+          new_env.name = oldname + inc.to_s
+          inc += 1
+        end
+      end
+    end
     environ.concat(service_env)
   end
 
