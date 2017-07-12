@@ -17,7 +17,7 @@ module ServiceApiRestore
         if result[:result] == 0
           true
         else
-          raise EnginesException.new(error_hash("failed to import " + params.to_s, result))
+          raise EnginesException.new(error_hash("failed to import " + service.container_name.to_s, result))
         end
       end
     rescue Timeout::Error
