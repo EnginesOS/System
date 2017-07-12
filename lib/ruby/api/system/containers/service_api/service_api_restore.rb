@@ -4,7 +4,7 @@ module ServiceApiRestore
 
     cmd = ['/home/services/restore.sh', params[:section].to_s]
     
-    params = {container: service, command_line: cmd, log_error: true, stream: stream}
+    params = {container: service, command_line: cmd, log_error: true, data_stream: stream}
 
     SystemDebug.debug(SystemDebug.export_import, :import_service, params)
     begin
