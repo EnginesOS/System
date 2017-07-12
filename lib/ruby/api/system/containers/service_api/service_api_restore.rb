@@ -12,7 +12,7 @@ module ServiceApiRestore
       Timeout.timeout(@@import_timeout) do
         thr = Thread.new { result = @engines_core.exec_in_container(params) }
         thr.join
-        thr[:name] = 'import:' + params.to_s
+        thr[:name] = 'restore:' + service.container_name.to_s
         SystemDebug.debug(SystemDebug.export_import, :import_service,'result ', result.to_s)
         if result[:result] == 0
           true

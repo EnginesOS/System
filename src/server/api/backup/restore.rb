@@ -30,7 +30,7 @@ end
 #
 #
 # @return [true]
-post '/v0/restore/service/:service_name/*' do
+put '/v0/restore/service/:service_name/*' do
   begin
     
     service = get_service(params[:service_name])
