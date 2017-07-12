@@ -38,7 +38,7 @@ put '/v0/restore/service/:service_name/:section' do
     else
       p = {section: nil}
     end
-    service.restore_service(request.env['rack.input'], p)
+    service.service_restore(request.env['rack.input'], p)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
