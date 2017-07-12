@@ -26,6 +26,7 @@ end
     while
       begin
         bytes = build_log_file.read_nonblock(100)
+        bytes.gsub!(/[\x80-\xFF]/n,'')            
       rescue IO::WaitReadable
         retry
       rescue EOFError
