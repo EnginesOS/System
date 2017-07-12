@@ -68,8 +68,8 @@ module DockerApiContainerStatus
     request = '/containers/' + container.container_id .to_s + '/logs?stderr=1&stdout=1&timestamps=1&follow=0&tail=' + count.to_s
     r = get_request(request, false)
     r = DockerUtils.docker_stream_as_result(r, {})
-      r[:stdout].gsub!(/[\x0080-\x00FF]/,'')
-      r[:stderr].gsub!(/[\x0080-\x00FF]/,'') 
+      r[:stdout].gsub!(/[\x80-\xFF]n/,'')
+      r[:stderr].gsub!(/[\x80-\xFF]n/,'') 
         r
   end
 
