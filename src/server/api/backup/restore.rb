@@ -30,11 +30,12 @@ end
 #
 #
 # @return [true]
-put '/v0/restore/service/:service_name/:section' do
+put '/v0/restore/service/:service_name/*' do
   begin
+    
     service = get_service(params[:service_name])
-    if params.key?(:section) 
-      p = {section: params[:section]}
+    unless params[:splat][0].nil?
+      p = {section: params[:splat][0][:section]}
     else
       p = {section: nil}
     end
