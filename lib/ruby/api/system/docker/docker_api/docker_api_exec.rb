@@ -115,6 +115,8 @@ module DockerApiExec
       end
 
       request_params['AttachStdin'] = true
+        STDERR.puts('Attached STDIN ' + params.to_s)
+        
       stream_handler = DockerHijackStreamHandler.new(params[:data], params[:data_stream], params[:ostream])
 
       headers['Connection'] = 'Upgrade'
@@ -139,15 +141,14 @@ module DockerApiExec
     request_params = {
       'AttachStdout' => true,
       'AttachStderr' => true,
+      'Tty' => false,
       'DetachKeys' => 'ctrl-p,ctrl-q',
       'Cmd' => format_commands(params[:command_line])
     }
     if params.key?(:data) || params.key?(:data_stream)
       request_params['AttachStdin'] = true
-      request_params['Tty'] = false
     else
       request_params['AttachStdin'] = false
-      request_params['Tty'] = false
     end
     request = '/containers/' + params[:container].container_id.to_s + '/exec'
     # STDERR.puts('create_docker_exec ' + request_params.to_s + ' request  ' + request.to_s )
