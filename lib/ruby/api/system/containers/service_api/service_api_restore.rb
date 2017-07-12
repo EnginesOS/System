@@ -6,18 +6,18 @@ module ServiceApiRestore
     
     params = {container: service, command_line: cmd, log_error: true, data_stream: stream}
 
-    SystemDebug.debug(SystemDebug.export_import, :import_service, params, service_params)
+    SystemDebug.debug(SystemDebug.export_import, :import_service, params)
     begin
       result = {}
       Timeout.timeout(@@import_timeout) do
         thr = Thread.new { result = @engines_core.exec_in_container(params) }
         thr.join
         thr[:name] = 'import:' + params.to_s
-        SystemDebug.debug(SystemDebug.export_import, :import_service,'result ' ,result.to_s)
+        SystemDebug.debug(SystemDebug.export_import, :import_service,'result ', result.to_s)
         if result[:result] == 0
           true
         else
-          raise EnginesException.new(error_hash("failed to import ",service_params,params, result))
+          raise EnginesException.new(error_hash("failed to import ", params, result))
         end
       end
     rescue Timeout::Error
