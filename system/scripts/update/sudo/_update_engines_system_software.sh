@@ -5,11 +5,24 @@ echo "Updating files"
 
 echo "update service defs"
 cd /opt/engines/etc/services
+
 git pull >/dev/null
+r=$?
+if test $r -ne 0
+ then
+  echo "Failed to update service defs"
+  exit $r
+fi 
 
 echo "update System"
 cd /opt/engines
 git pull
+r=$?
+if test $r -ne 0
+ then
+  echo "Failed to update system"
+  exit $r
+fi 
 
 cp -rp /opt/engines/system/updates/src/* /
 
