@@ -33,6 +33,7 @@ module PublicApiBackup
   end
 
   def restore_system_files(path, out)
+    STDERR.puts('RESTORE SYSTEM_' + out.class.name)
     @system_api.restore_system_files(path, out)
   end
 end

@@ -4,6 +4,13 @@
 #
 #
 # @return [true]
+put '/v0/restore/system' do
+  begin
+    return_text(engines_api.restore_system_files(nil, request.env['rack.input']))
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+end
 put '/v0/restore/system/*' do
   begin
    path = params['splat'][0]
@@ -12,7 +19,6 @@ put '/v0/restore/system/*' do
     send_encoded_exception(request: request, exception: e)
   end
 end
-
 # @method restore_registry
 # @overload put 'v0/restore/registry'
 #
