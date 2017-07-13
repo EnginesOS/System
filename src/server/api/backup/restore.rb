@@ -6,7 +6,7 @@
 # @return [true]
 put '/v0/restore/system/:section' do
   begin
-    return_text(engines_api.restore_system(params[:section], request.env['rack.input']))
+    return_text(engines_api.restore_system_files(params[:section], request.env['rack.input']))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
