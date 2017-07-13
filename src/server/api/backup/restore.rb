@@ -25,6 +25,25 @@ put '/v0/restore/registry' do
   end
 end
 
+# @method restore_system_files
+# @overload put '/v0/restore/system/files/:path'
+#
+#
+# @return [true]
+put '/v0/restore/system/files/*' do
+  begin
+    
+    unless params['splat'].nil?
+      p = {section: params['splat'][0]}
+    else
+      p = {section: nil}
+    end
+    engines_api.restore_system_files(request.env['rack.input'], p)
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+end
+
 # @method restore_service
 # @overload put '/v0/restore/service/:service_name/:section'
 #

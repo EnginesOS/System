@@ -26,6 +26,22 @@ module SystemApiBackup
           true
         end
   end
+  
+  def restore_system_files(out)
+    SystemUtils.execute_command('/opt/engines/system/scripts/restore/system_files.sh', true, false, out)
+#    reg = loadSystemService('system')
+#    params = {
+#          container: reg,
+#          data_stream: out,
+#          command_line: ['/home/services/restore.sh'],
+#          log_error: true }
+#    result = @engines_api.exec_in_container(params)
+#    if result[:result] != 0
+#          result
+#        else
+#          true
+#        end
+  end
 
   def backup_service_data(service_name, out)
     service = loadManagedService(service_name)
