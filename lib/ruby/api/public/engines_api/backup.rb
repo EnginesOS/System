@@ -28,8 +28,8 @@ module PublicApiBackup
     @system_api.engines_services_to_backup(engine_name)
   end
 
-  def restore_registry
-    @system_api.restore_registry
+  def restore_registry(out)
+    @system_api.restore_registry(out)
   end
 
 end
