@@ -20,7 +20,7 @@ get '/v0/backup/system_db' do
   end
 end
 
-get '/v0/backup/registry' do
+get '/v0/backup/service/registry' do
   begin
     content_type 'application/octet-stream'
     stream do |out|
