@@ -11,6 +11,21 @@ module SystemApiBackup
     tree =  @engines_api.registry_root
     out << tree.to_yaml
   end
+  
+  def restore_registry(out)
+    reg = LoadSystemService('registry')
+    params = {
+          container: reg,
+          stream: out,
+          command_line: ['/home/services/restore.sh'],
+          log_error: true }
+    result = @engines_api.exec_in_container(params)
+    if result[:result] != 0
+          result
+        else
+          true
+        end
+  end
 
   def backup_service_data(service_name, out)
     service = loadManagedService(service_name)
