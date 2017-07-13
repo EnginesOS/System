@@ -32,7 +32,7 @@ module PublicApiBackup
     @system_api.restore_registry(out)
   end
 
-  def restore_system_files(out)
-    @system_api.restore_system_files(out)
+  def restore_system_files(path, out)
+    @system_api.restore_system_files(path, out)
   end
 end
