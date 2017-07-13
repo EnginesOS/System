@@ -100,7 +100,7 @@ class SystemUtils
   #:result_code = command exit/result code
   #:stdout = what was written to standard out
   #:stderr = what was written to standard err
-  def SystemUtils.execute_command(cmd, binary=false, data = false, out=nil)
+  def SystemUtils.execute_command(cmd, binary=false, data = false, out = nil)
     @@last_error = ''
     require 'open3'
     SystemDebug.debug(SystemDebug.execute,'exec command ', cmd)
@@ -117,6 +117,7 @@ class SystemUtils
         if data.is_a?(IO) || data.is_a?(StringIO)
           STDERR.puts('IO DATA SRC')
           IO.copy_stream(data, _stdin)
+          STDERR.puts('IO DATA COPIED')
         elsif data.is_a?(String)
           STDERR.puts('String DATA SRC')
           _stdin.write(data)
