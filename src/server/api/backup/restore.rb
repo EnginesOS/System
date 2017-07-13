@@ -39,13 +39,13 @@ end
 # @return [true]
 put '/v0/restore/system/files/*' do
   begin
-
-    unless params['splat'].nil?
+    STDERR.puts('RESTORE SYSTEM_' )
+    if params['splat'].is_a?(Array)
       path = params['splat'][0]
     else
       path = nil
     end  
-    STDERR.puts('RESTORE SYSTEM_' + request.env['rack.input'].class.name)
+    
     
     engines_api.restore_system_files(request.env['rack.input'], path)
   rescue StandardError => e
