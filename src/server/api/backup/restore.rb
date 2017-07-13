@@ -6,7 +6,7 @@
 # @return [true]
 #put '/v0/restore/system' do
 #  begin
-#    return_text(engines_api.restore_system_files(nil, request.env['rack.input']))
+#    return_text(engines_api.restore_system_files(request.env['rack.input'], path))
 #  rescue StandardError => e
 #    send_encoded_exception(request: request, exception: e)
 #  end
@@ -14,7 +14,7 @@
 #put '/v0/restore/system/*' do
 #  begin
 #   path = params['splat'][0]
-#    return_text(engines_api.restore_system_files(path, request.env['rack.input']))
+#    return_text(engines_api.restore_system_files( request.env['rack.input'], path))
 #  rescue StandardError => e
 #    send_encoded_exception(request: request, exception: e)
 #  end
@@ -39,13 +39,15 @@ end
 # @return [true]
 put '/v0/restore/system/files/*' do
   begin
-    
+
     unless params['splat'].nil?
-      p = {section: params['splat'][0]}
+      path = params['splat'][0]
     else
-      p = {section: nil}
-    end
-    engines_api.restore_system_files(request.env['rack.input'], p)
+      path = nil
+    end  
+    STDERR.puts('RESTORE SYSTEM_' + request.env['rack.input'].class.name)
+    
+    engines_api.restore_system_files(request.env['rack.input'], path)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -58,7 +60,7 @@ end
 # @return [true]
 put '/v0/restore/service/:service_name/*' do
   begin
-    
+
     service = get_service(params[:service_name])
     unless params['splat'].nil?
       p = {section: params['splat'][0]}
