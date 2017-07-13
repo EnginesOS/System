@@ -4,9 +4,10 @@
 #
 #
 # @return [true]
-put '/v0/restore/system/:section' do
+put '/v0/restore/system/*' do
   begin
-    return_text(engines_api.restore_system_files(params[:section], request.env['rack.input']))
+   path = params['splat'][0]
+    return_text(engines_api.restore_system_files(path, request.env['rack.input']))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
