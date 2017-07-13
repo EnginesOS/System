@@ -8,8 +8,8 @@ module SystemApiBackup
   end
 
   def backup_system_registry(out)
-    tree =  @engines_api.registry_root
-    out << tree.to_yaml
+    tree = @engines_api.registry_root
+    out << YAML::dump(tree)
   end
   
   def restore_registry(out)
