@@ -114,7 +114,7 @@ class SystemUtils
 
     Open3.popen3(cmd)  do |_stdin, stdout, stderr, th|
       unless data.is_a?(FalseClass)
-        if data.is_a?(IO)
+        if data.is_a?(IO) || data.is_a?(StringIO)
           STDERR.puts('IO DATA SRC')
           IO.copy_stream(data, _stdin)
         elsif data.is_a?(String)
