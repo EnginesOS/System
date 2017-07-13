@@ -13,7 +13,7 @@ module SystemApiBackup
   end
   
   def restore_registry(out)
-    reg = LoadSystemService('registry')
+    reg = loadSystemService('registry')
     params = {
           container: reg,
           stream: out,
