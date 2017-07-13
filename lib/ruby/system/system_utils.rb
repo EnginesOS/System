@@ -123,6 +123,8 @@ class SystemUtils
         else
           STDERR.puts('UNKOWN DATA SRC')
         end
+      else
+        STDERR.puts('NO DATA SRC')
       end
       _stdin.close
 

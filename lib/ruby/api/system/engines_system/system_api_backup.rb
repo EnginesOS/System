@@ -28,7 +28,7 @@ module SystemApiBackup
   end
   
   def restore_system_files(path, out)
-    SystemUtils.execute_command('/opt/engines/system/scripts/restore/system_files.sh', true, out)
+    SystemUtils.execute_command('/opt/engines/system/scripts/restore/system_files.sh', true, out, nil)
 #    reg = loadSystemService('system')
 #    params = {
 #          container: reg,
