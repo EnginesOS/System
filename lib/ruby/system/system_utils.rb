@@ -113,9 +113,17 @@ class SystemUtils
     retval[:command] = cmd
 
     Open3.popen3(cmd)  do |_stdin, stdout, stderr, th|
-
-      _stdin.write(data) unless data.is_a?(FalseClass)
+      unless data.is_a?(FalseClass)
+        if data.is_a?(String)
+      _stdin.write(data)
+          elsif data.is_a?(IO)
+          IO.copy_stream(data, _stdin)
+        else
+          STDERR.puts('UNKOWN DATA SRC')
+        end
+      end
       _stdin.close
+      
       oline = ''
       stderr_is_open = true
       begin
