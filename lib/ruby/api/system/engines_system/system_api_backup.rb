@@ -16,7 +16,7 @@ module SystemApiBackup
     reg = loadSystemService('registry')
     params = {
           container: reg,
-          stream: out,
+          data_stream: out,
           command_line: ['/home/services/restore.sh'],
           log_error: true }
     result = @engines_api.exec_in_container(params)
