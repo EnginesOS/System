@@ -114,7 +114,7 @@ class SystemUtils
 
     Open3.popen3(cmd)  do |_stdin, stdout, stderr, th|
       unless data.is_a?(FalseClass)
-        if data.kind_of?(IO) || data.is_a?(StringIO)
+        if data.kind_of?(IO) || data.is_a?(StringIO) || data.is_a?(File)
           IO.copy_stream(data, _stdin)
         elsif data.is_a?(String)
           _stdin.write(data)
