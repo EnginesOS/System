@@ -115,17 +115,12 @@ class SystemUtils
     Open3.popen3(cmd)  do |_stdin, stdout, stderr, th|
       unless data.is_a?(FalseClass)
         if data.is_a?(IO) || data.is_a?(StringIO)
-          STDERR.puts('IO DATA SRC')
           IO.copy_stream(data, _stdin)
-          STDERR.puts('IO DATA COPIED')
         elsif data.is_a?(String)
-          STDERR.puts('String DATA SRC')
           _stdin.write(data)
         else
           STDERR.puts('UNKOWN DATA SRC')
         end
-      else
-        STDERR.puts('NO DATA SRC')
       end
       _stdin.close
 

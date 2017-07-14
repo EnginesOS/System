@@ -51,10 +51,10 @@ module SystemApiBackup
       stream: out,
       command_line: ['/home/services/backup.sh'],
       log_error: true }
-    result = @engines_api.exec_in_container(params)
-    STDERR.puts(' BACKUP SERVICE ' + result.to_s)
+    result = @engines_api.exec_in_container(params)   
     if result[:result] != 0
       result
+      STDERR.puts(' BACKUP SERVICE ' + result.to_s)
     else
       true
     end

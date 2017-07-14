@@ -62,10 +62,10 @@ module Excon
           datum[:response] = build_response(status, socket)
 
           Excon::Response.parse_headers(socket, datum)
-        STDERR.puts('Call ersponse ' )
+          STDERR.puts('Call response ' )
           datum[:hijack_block].call socket.instance_variable_get(:@socket)
         end
-        r =  @stack.response_call(datum)
+        r = @stack.response_call(datum)
         #    rescue   dotn catch excepions here as is break excon
       end
     end
