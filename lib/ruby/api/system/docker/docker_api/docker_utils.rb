@@ -10,7 +10,7 @@ module DockerUtils
             STDERR.puts('COPY STREAMS ')
             IO.copy_stream(@stream_reader.i_stream, socket) unless @stream_reader.i_stream.eof?
           else
-            STDERR.puts('send data:' + data.class.name)
+            STDERR.puts('send data:' + stream_reader.data.class.name)
             unless stream_reader.data.nil? ||  stream_reader.data.length == 0
               if stream_reader.data.length < Excon.defaults[:chunk_size]
                 STDERR.puts('send data as one chunk ')
