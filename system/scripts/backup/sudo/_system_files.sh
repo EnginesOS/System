@@ -1,3 +1,3 @@
 #!/bin/sh
-cd /
-tar -xzpf -
+
+tar -czpf - /opt/engines/etc /opt/engines/run

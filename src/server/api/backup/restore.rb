@@ -39,7 +39,6 @@ end
 # @return [true]
 put '/v0/restore/system/files/*' do
   begin
-    STDERR.puts('RESTORE SYSTEM_' )
     if params['splat'].is_a?(Array)
       path = params['splat'][0]
     else
