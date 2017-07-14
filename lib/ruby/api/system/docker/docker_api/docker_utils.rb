@@ -13,7 +13,7 @@ module DockerUtils
             STDERR.puts('send data:' + stream_reader.data.class.name)
             unless stream_reader.data.nil? ||  stream_reader.data.length == 0
               if stream_reader.data.length < Excon.defaults[:chunk_size]
-                STDERR.puts('send data as one chunk ')
+                STDERR.puts('send data as one chunk ' + stream_reader.data.to_s)
                 socket.send(stream_reader.data, 0)
                 stream_reader.data = ''
               else
@@ -29,7 +29,9 @@ module DockerUtils
               end
             end
           end
+          STDERR.puts('CLSING')
           socket.close_write
+          STDERR.puts('CLSINGED')
         rescue StandardError => e
           STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
         end
@@ -53,7 +55,7 @@ module DockerUtils
         end
         write_thread.kill
       end
-
+      STDERR.puts('JOINS')
       write_thread.join
       read_thread.join
       @stream_reader.o_stream.close unless @stream_reader.o_stream.nil?
