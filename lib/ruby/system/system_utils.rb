@@ -119,7 +119,7 @@ class SystemUtils
         elsif data.is_a?(String)
           _stdin.write(data)
         else
-          STDERR.puts('UNKOWN DATA SRC')
+          STDERR.puts('UNKOWN DATA SRC' + data.class.name + "\n" + data.to_s)
         end
       end
       _stdin.close
