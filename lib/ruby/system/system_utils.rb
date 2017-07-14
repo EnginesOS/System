@@ -113,11 +113,15 @@ class SystemUtils
     retval[:command] = cmd
 
     Open3.popen3(cmd)  do |_stdin, stdout, stderr, th|
-      unless data.is_a?(FalseClass)
+      unless data.is_a?(FalseClass) || data.nil?
         if data.kind_of?(String)
           _stdin.write(data)
         else
-          IO.copy_stream(data, _stdin)       
+         begin
+          IO.copy_stream(data, _stdin)
+         rescue
+           STDERR.puts('ERROR SENDING ' + data.class.name + "\n" + data.to_s)           
+         end       
         end
       end
       _stdin.close
