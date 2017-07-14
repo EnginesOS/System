@@ -117,11 +117,11 @@ class SystemUtils
         if data.kind_of?(String)
           _stdin.write(data)
         else
-         begin
-          IO.copy_stream(data, _stdin)
-         rescue
-           STDERR.puts('ERROR SENDING ' + data.class.name + "\n" + data.to_s)           
-         end       
+          begin
+            IO.copy_stream(data, _stdin)
+          rescue
+            STDERR.puts('ERROR SENDING ' + data.class.name + "\n" + data.to_s)
+          end
         end
       end
       _stdin.close
