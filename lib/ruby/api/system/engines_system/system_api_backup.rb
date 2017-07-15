@@ -8,8 +8,18 @@ module SystemApiBackup
   end
 
   def backup_system_registry(out)
-    tree = @engines_api.registry_root
-    out << YAML::dump(tree)
+    reg = loadSystemService('registry')
+        params = {
+              container: reg,
+              stream: out,
+              command_line: ['/home/services/backup.sh'],
+              log_error: true }
+        result = @engines_api.exec_in_container(params)
+        if result[:result] != 0
+              result
+            else
+              true
+            end
   end
   
   def restore_registry(out)
@@ -46,6 +56,7 @@ module SystemApiBackup
 
   def backup_service_data(service_name, out)
     service = loadManagedService(service_name)
+    
     params = {
       container: service,
       stream: out,
