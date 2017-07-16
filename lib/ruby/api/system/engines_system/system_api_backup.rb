@@ -56,7 +56,7 @@ module SystemApiBackup
 
   def backup_service_data(service_name, out)
     service = loadManagedService(service_name)
-    
+  if service.is_running?  
     params = {
       container: service,
       stream: out,
@@ -69,6 +69,7 @@ module SystemApiBackup
     else
       true
     end
+  end
   end
 
   def backup_engine_config(engine_name, out)

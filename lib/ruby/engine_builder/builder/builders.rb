@@ -44,6 +44,23 @@ module Builders
     raise e
   end
 
+  def restore_managed_container(engine)
+    @engine = engine
+    @rebuild = true
+    @build_params[:attached_services] = true
+    log_build_output('Starting Restore')
+    setup_rebuild
+    build_container
+    wait_for_start_up
+    save_build_result
+    close_all
+  rescue StandardError => e
+    post_failed_build_clean_up
+    log_exception(e)
+  ensure
+    File.delete('/opt/engines/run/system/flags/building_params') if File.exist?('/opt/engines/run/system/flags/building_params')
+  end
+  
   def rebuild_managed_container(engine)
     @engine = engine
     @rebuild = true

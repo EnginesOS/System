@@ -66,6 +66,8 @@ module PersistantServiceBuilder
       SystemDebug.debug(SystemDebug.builder, :existing_service, service_hash)
       return share_service_to_engine(service_hash, existing) if existing[:shared] == true
       service_hash = existing #Orphan case
+    elsif use_existing.is_a?(TrueClass)
+      return @core_api.get_service_entry(service_hash)
     elsif @core_api.match_orphan_service(service_hash) == true #auto orphan pick up
       SystemDebug.debug(SystemDebug.builder, :orphan_service, service_hash)
       service_hash = use_orphan(service_hash)
