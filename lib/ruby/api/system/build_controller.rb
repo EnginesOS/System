@@ -69,7 +69,7 @@ class BuildController
     end
   end
   
-  def reinstall_engine(engine)
+  def restore_engine(engine)
       @build_params = {
         engine_name: engine.container_name,
         domain_name: engine.domain_name,

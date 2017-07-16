@@ -159,7 +159,7 @@ module ManagedContainerControls
     end
   end
   
-  def restore_container    
+  def restore_container(builder)
       builder.restore_engine(self)    
   end
 
