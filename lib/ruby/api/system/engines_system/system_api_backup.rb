@@ -40,6 +40,12 @@ module SystemApiBackup
   def restore_system_files(out, path)
     STDERR.puts('RESTORE SYSTEM_' + out.class.name)
     SystemUtils.execute_command('/opt/engines/system/scripts/restore/system_files.sh', true, out, nil)
+    engines = getManagedEngines
+    engines.each do |engine |
+      if engine.read_state == 'nocontainer'
+        engine.restore_container
+      end
+    end
 #    reg = loadSystemService('system')
 #    params = {
 #          container: reg,
