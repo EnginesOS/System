@@ -143,6 +143,13 @@ echo "smtp Started" &>>/tmp/first_start.log
   	/opt/engines/bin/engines service mgmt wait_for start 30
   	/opt/engines/bin/engines service mgmt wait_for_startup 280 
   	echo "mgmt Started" &>>/tmp/first_start.log
+  	gw_ifac=`netstat -nr |grep ^0.0.0.0 | awk '{print $8}' | head -1`
+  	lan_ip=`/sbin/ifconfig $gw_ifac |grep "inet addr"  |  cut -f 2 -d: |cut -f 1 -d" "`
+    ext_ip=`curl -s http://ipecho.net/ |grep "Your IP is" | sed "/^.* is /s///" | sed "/<.*$/s///"`
+      if ! test -n $ext_ip
+       then
+        ext_ip=`curl -s http://ipecho.net/ |grep "Your IP is" | sed "/^.* is /s///" | sed "/<.*$/s///"`
+      fi
   	echo "Management is now at https://$lan_ip:10443/ or https://${ext_ip}:10443/"  &>>/tmp/first_start.log 
   fi
  crontab  /opt/engines/system/updates/src/etc/crontab  &>>/tmp/first_start.log 

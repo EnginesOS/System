@@ -34,7 +34,7 @@ class EnvironmentVariable
   :owner_path,
   :immutable,
   :has_changed
-  attr_accessor :value
+  attr_accessor :value, :name
 
   def attributes
     {

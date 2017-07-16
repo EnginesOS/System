@@ -5,7 +5,10 @@ echo Starting Engines
 
 if test -f /opt/engines/run/system/flags/run_post_system_update
  then 
-  sudo /opt/engines/system/scripts/ssh/sudo/post_system_update_boot.sh
+  if test -f /opt/engines/system/scripts/ssh/sudo/post_system_update_boot.sh
+   then
+  	sudo /opt/engines/system/scripts/ssh/sudo/post_system_update_boot.sh
+   fi
  fi
 
 rm `find /opt/engines/run -name lock` 

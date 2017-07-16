@@ -113,7 +113,6 @@ module DockerApiExec
         stream_reader.result[:result] = get_exec_result(exec_id)
         return stream_reader.result # DockerUtils.docker_stream_as_result(r, result)
       end
-
       request_params['AttachStdin'] = true
       stream_handler = DockerHijackStreamHandler.new(params[:data], params[:data_stream], params[:ostream])
 
@@ -126,6 +125,7 @@ module DockerApiExec
     else
       r
     end
+  
   end
 
   private
@@ -139,18 +139,17 @@ module DockerApiExec
     request_params = {
       'AttachStdout' => true,
       'AttachStderr' => true,
+      'Tty' => false,
       'DetachKeys' => 'ctrl-p,ctrl-q',
       'Cmd' => format_commands(params[:command_line])
     }
     if params.key?(:data) || params.key?(:data_stream)
       request_params['AttachStdin'] = true
-      request_params['Tty'] = false
     else
       request_params['AttachStdin'] = false
-      request_params['Tty'] = false
     end
     request = '/containers/' + params[:container].container_id.to_s + '/exec'
-    # STDERR.puts('create_docker_exec ' + request_params.to_s + ' request  ' + request.to_s )
+     STDERR.puts('create_docker_exec ' + request_params.to_s + ' request  ' + request.to_s )
     post_request(request, request_params)
   end
 

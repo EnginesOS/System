@@ -8,24 +8,74 @@ module SystemApiBackup
   end
 
   def backup_system_registry(out)
-    tree =  @engines_api.registry_root
-    out << tree.to_yaml
+    reg = loadSystemService('registry')
+        params = {
+              container: reg,
+              stream: out,
+              command_line: ['/home/services/backup.sh'],
+              log_error: true }
+        result = @engines_api.exec_in_container(params)
+        if result[:result] != 0
+              result
+            else
+              true
+            end
+  end
+  
+  def restore_registry(out)
+    reg = loadSystemService('registry')
+    params = {
+          container: reg,
+          data_stream: out,
+          command_line: ['/home/services/restore.sh'],
+          log_error: true }
+    result = @engines_api.exec_in_container(params)
+    if result[:result] != 0
+          result
+        else
+          true
+        end
+  end
+  
+  def restore_system_files(out, path)
+    STDERR.puts('RESTORE SYSTEM_' + out.class.name)
+    SystemUtils.execute_command('/opt/engines/system/scripts/restore/system_files.sh', true, out, nil)    
+    
+    getManagedEngines.each do |engine |
+      if engine.read_state == 'nocontainer'
+        @engines_api.restore_engine(engine)
+      end
+    end
+#    reg = loadSystemService('system')
+#    params = {
+#          container: reg,
+#          data_stream: out,
+#          command_line: ['/home/services/restore.sh'],
+#          log_error: true }
+#    result = @engines_api.exec_in_container(params)
+#    if result[:result] != 0
+#          result
+#        else
+#          true
+#        end
   end
 
   def backup_service_data(service_name, out)
     service = loadManagedService(service_name)
+  if service.is_running?  
     params = {
       container: service,
       stream: out,
       command_line: ['/home/services/backup.sh'],
       log_error: true }
-    result = @engines_api.exec_in_container(params)
-    STDERR.puts(' BACKUP SERVICE ' + result.to_s)
+    result = @engines_api.exec_in_container(params)   
     if result[:result] != 0
       result
+      STDERR.puts(' BACKUP SERVICE ' + result.to_s)
     else
       true
     end
+  end
   end
 
   def backup_engine_config(engine_name, out)

@@ -66,6 +66,24 @@ module EnginesOperations
     end
   end
 
+  #install from fresh copy of blueprint in repository
+  def restore_engine(engine)
+    engine.destroy_container(true) if engine.has_container?
+    params = {
+      engine_name: engine.container_name,
+      reinstall: true,
+      restore: true
+    }
+   # engine.wait_for('destroy', 10)
+    delete_engine_and_services(params)
+    builder = BuildController.new(self)
+    @build_thread = Thread.new { engine.restore_engine(builder) }
+    @build_thread[:name] = 'restore engine'
+    unless @build_thread.alive?
+      raise EnginesException.new(error_hash(params[:engine_name], 'Build Failed to start'))
+    end
+  end
+
   def set_container_runtime_properties(container, params)
     # STDERR.puts('set_container_runtime_properties ' +  params.to_s)
     raise EnginesException.new(error_hash(params[:engine_name],'Container is active')) if container.is_active?
