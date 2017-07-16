@@ -1,10 +1,6 @@
 class DockerFileBuilder
 
-  require_relative 'framework_modules.rb'
-  include FrameworkModules
 
-  require_relative 'docker_commands.rb'
-  require_relative 'file_writer.rb'
   def initialize(reader, build_params, webport, builder)
     @build_params = build_params
     @hostname = @build_params[:host_name]
@@ -19,19 +15,8 @@ class DockerFileBuilder
     @max_layers = 75
   end
 
-  def log_build_output(line)
-    @builder.log_build_output(line)
-  end
-
-  def log_build_errors(line)
-    @builder.log_build_errors(line)
-  end
-
-  def count_layer
-    @layer_count += 1
-    if @layer_count > @max_layers
-      raise EngineBuilderException.new(error_hash("More than 75 layers!"))
-    end
+  def log_build_output(mesg)
+    @builder.log_build_output(mesg)
   end
 
   def write_files_for_docker
@@ -80,6 +65,13 @@ class DockerFileBuilder
     write_data_permissions
     finalise_files
   end
+  
+  private
+  require_relative 'framework_modules.rb'
+  include FrameworkModules
+
+  require_relative 'docker_commands.rb'
+  require_relative 'file_writer.rb'
 
   def write_app_templates
     write_build_script('install_templates.sh ')

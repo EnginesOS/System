@@ -10,6 +10,7 @@ module Builders
   require_relative 'base_image.rb'
   require_relative 'build_image.rb'
   require_relative 'physical_checks.rb'
+  
   def setup_build
     check_build_params(@build_params)
     @build_params[:engine_name].freeze
@@ -43,6 +44,23 @@ module Builders
     raise e
   end
 
+  def restore_managed_container(engine)
+    @engine = engine
+    @rebuild = true
+    @build_params[:attached_services] = true
+    log_build_output('Starting Restore')
+    setup_rebuild
+    build_container
+    wait_for_start_up
+    save_build_result
+    close_all
+  rescue StandardError => e
+    post_failed_build_clean_up
+    log_exception(e)
+  ensure
+    File.delete('/opt/engines/run/system/flags/building_params') if File.exist?('/opt/engines/run/system/flags/building_params')
+  end
+  
   def rebuild_managed_container(engine)
     @engine = engine
     @rebuild = true
@@ -59,41 +77,6 @@ module Builders
     File.delete('/opt/engines/run/system/flags/building_params') if File.exist?('/opt/engines/run/system/flags/building_params')
   end
 
-  def build_container
-    SystemDebug.debug(SystemDebug.builder, 'Starting build with params ', @build_params)
-    meets_physical_requirements
-    process_blueprint
-    set_locale
-    setup_build_dir
-    get_base_image
-    setup_engine_dirs
-    create_engine_image
-    GC::OOB.run
-    @container = create_engine_container
-    @service_builder.release_orphans
-    #  wait_for_engine
-    #   SystemStatus.build_complete(@build_params)
-    @container
-  rescue StandardError => e
-    #log_exception(e)
-    log_build_errors('Engine Build Aborted Due to:' + e.to_s)
-    STDERR.puts(e.backtrace.to_s)
-    # post_failed_build_clean_up
-    log_exception(e)
-    raise e
-    #  close_all
-  end
-
-  def setup_rebuild
-    log_build_output('Setting up rebuild')
-    create_build_dir
-    blue_print = @engine.load_blueprint
-    statefile = basedir + '/blueprint.json'
-    f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0644)
-    f.write(blue_print.to_json)
-    f.close
-  end
-
   def build_from_blue_print
     get_blueprint_from_repo
     log_build_output('Cloned Blueprint')
@@ -106,6 +89,27 @@ module Builders
     log_exception(e)
   ensure
     File.delete('/opt/engines/run/system/flags/building_params') if File.exist?('/opt/engines/run/system/flags/building_params')
+  end
+
+  #app_is_persistent
+  #used by builder public
+  def running_logs()
+    if @container.nil?
+      'not yet'
+    else
+      @container.wait_for('start', 25)
+      @container.wait_for_startup(25)
+      @container.logs_container
+    end
+  end
+
+  private
+
+  def wait_for_start_up
+    log_build_output('Waiting for start')
+    @container.wait_for('start', 25)
+    log_build_output('Waiting for startup completion')
+    @container.wait_for_startup(25)
   end
 
   def post_failed_build_clean_up
@@ -144,11 +148,29 @@ module Builders
     close_all
   end
 
-  def wait_for_start_up
-    log_build_output('Waiting for start')
-    @container.wait_for('start', 25)
-    log_build_output('Waiting for startup completion')
-    @container.wait_for_startup(25)
+  def build_container
+    SystemDebug.debug(SystemDebug.builder, 'Starting build with params ', @build_params)
+    meets_physical_requirements
+    process_blueprint
+    set_locale
+    setup_build_dir
+    get_base_image
+    setup_engine_dirs
+    create_engine_image
+    GC::OOB.run
+    @container = create_engine_container
+    @service_builder.release_orphans
+    #  wait_for_engine
+    #   SystemStatus.build_complete(@build_params)
+    @container
+  rescue StandardError => e
+    #log_exception(e)
+    log_build_errors('Engine Build Aborted Due to:' + e.to_s)
+    STDERR.puts(e.backtrace.to_s)
+    # post_failed_build_clean_up
+    log_exception(e)
+    raise e
+    #  close_all
   end
 
   def save_build_result
@@ -166,15 +188,14 @@ module Builders
     @templater = Templater.new(@core_api.system_value_access, BuilderPublic.new(self))
   end
 
-  #app_is_persistent
-  #used by builder public
-  def running_logs()
-    if @container.nil?
-      'not yet'
-    else
-      @container.wait_for('start', 25)
-      @container.wait_for_startup(25)
-      @container.logs_container
-    end
+  def setup_rebuild
+    log_build_output('Setting up rebuild')
+    create_build_dir
+    blue_print = @engine.load_blueprint
+    statefile = basedir + '/blueprint.json'
+    f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0644)
+    f.write(blue_print.to_json)
+    f.close
   end
+
 end

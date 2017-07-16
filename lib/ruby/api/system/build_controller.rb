@@ -68,6 +68,31 @@ class BuildController
       build_failed(params, 'No Builder')
     end
   end
+  
+  def restore_engine(engine)
+      @build_params = {
+        engine_name: engine.container_name,
+        domain_name: engine.domain_name,
+        host_name: engine.hostname,
+        software_environment_variables: engine.environments,
+        http_protocol: engine.protocol,
+        memory: engine.memory,
+        repository_url: engine.container_name,
+        variables: engine.environments,
+        reinstall: true,
+        attached_services: true
+      }
+      SystemStatus.build_starting(@build_params)
+      SystemDebug.debug(SystemDebug.builder, ' Starting resinstall with params ', @build_params)
+      @engine_builder = get_engine_builder(@build_params)
+      if @engine_builder.is_a?(EngineBuilder)
+        @engine = @engine_builder.restore_managed_container(engine)
+        @build_error = @engine_builder.tail_of_build_error_log
+        build_complete(@build_params)
+      else
+        build_failed(params, 'No Builder')
+      end
+    end
 
   private
 

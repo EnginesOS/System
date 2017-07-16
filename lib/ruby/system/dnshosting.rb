@@ -8,13 +8,13 @@ require 'open-uri'
 module DNSHosting
   def self.get_local_ip
     if File.exist?('/opt/engines/etc/net/ip')
-      return File.read('/opt/engines/etc/net/ip')
-    end
+       File.read('/opt/engines/etc/net/ip').strip
+    else
     # devel/lachlan case
     Socket.ip_address_list.each do |addr|
       return addr.ip_address if addr.ipv4? && addr.ipv4_loopback? == false
     end
-
+    end
   end
 
   def self.save_domains(domains)
@@ -31,7 +31,6 @@ module DNSHosting
       {}
     else
       domains_file = File.open(SystemConfig.DomainsFile, 'r')
-
       domains = YAML::load(domains_file)
       domains_file.close
       SystemDebug.debug(SystemDebug.system,:loading_domain_list, domains.to_s)
@@ -51,9 +50,6 @@ module DNSHosting
   end
 
   def self.rm_domain(domain)
-    r = ''
-    #  domain = params
-    #  domain = params[:domain_name] unless domain.is_a?(String)
     domains = load_domains
     if domains.key?(domain)
       domains.delete(domain)

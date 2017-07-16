@@ -100,7 +100,7 @@ class SystemUtils
   #:result_code = command exit/result code
   #:stdout = what was written to standard out
   #:stderr = what was written to standard err
-  def SystemUtils.execute_command(cmd, binary=false, data = false, out=nil)
+  def SystemUtils.execute_command(cmd, binary=false, data = false, out = nil)
     @@last_error = ''
     require 'open3'
     SystemDebug.debug(SystemDebug.execute,'exec command ', cmd)
@@ -113,9 +113,19 @@ class SystemUtils
     retval[:command] = cmd
 
     Open3.popen3(cmd)  do |_stdin, stdout, stderr, th|
-
-      _stdin.write(data) unless data.is_a?(FalseClass)
+      unless data.is_a?(FalseClass) || data.nil?
+        if data.kind_of?(String)
+          _stdin.write(data)
+        else
+          begin
+            IO.copy_stream(data, _stdin)
+          rescue
+            STDERR.puts('ERROR SENDING ' + data.class.name + "\n" + data.to_s)
+          end
+        end
+      end
       _stdin.close
+
       oline = ''
       stderr_is_open = true
       begin

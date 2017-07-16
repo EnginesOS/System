@@ -158,6 +158,10 @@ module ManagedContainerControls
       task_failed('restart/stop')
     end
   end
+  
+  def restore_container(builder)
+      builder.restore_engine(self)    
+  end
 
   def rebuild_container
 
