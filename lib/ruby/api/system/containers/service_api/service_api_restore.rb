@@ -1,7 +1,7 @@
 module ServiceApiRestore
   @@import_timeout = 300
   def service_restore(service, stream, params)
-
+   return unless service.is_running?
     cmd = ['/home/services/restore.sh'] #, params[:section].to_s]
     
     params = {container: service, command_line: cmd, log_error: true, data_stream: stream}
