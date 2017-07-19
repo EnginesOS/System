@@ -30,7 +30,7 @@ mapped_ports:
 environments:
 - !ruby/object:EnvironmentVariable
  name: SYSTEM_API_URL
- value: https://_Engines_System(docker_ip):2380/
+ value: https://_Engines_System(docker_ip):2380
  has_changed: true 
  build_time_only: false
  immutable: false
