@@ -81,6 +81,7 @@ module DockerUtils
     unless h.nil?
       h[:stderr] = "" unless h.key?(:stderr)
       h[:stdout] = "" unless h.key?(:stdout)
+      cl = 0
       while r.length > 0
         if r[0].nil?
           return h if r.length == 1
@@ -112,7 +113,7 @@ module DockerUtils
         else
           length = r.length
         end
-        #   STDERR.puts(' problem ' + r.to_s + ' has ' + r.length.to_s + ' bytes and length ' + length.to_s ) if r.length < length
+           STDERR.puts('len ' + length.to_s + ' bytes length .  actual ' + r.length) 
         h[dst] += r[0..length-1]
         r = r[length..-1]
       end
