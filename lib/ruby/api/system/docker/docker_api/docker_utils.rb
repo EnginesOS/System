@@ -111,13 +111,14 @@ module DockerUtils
         else
           # r = r[7..-1]
           # ls = r[0,7]
-          STDERR.puts('UNMATCHED' + r.length.to_s)
+          STDERR.puts('UNMATCHED ' + r.length.to_s)
           dst = :stdout
           unmatched = true
         end
         return h if r.nil?
-        unless unmatched == true
-          next_chunk = r.index("\u0000\u0000\u0000")
+        unless unmatched == true          
+         # next_chunk = r.index("\u0000\u0000\u0000")
+          next_chunk = cl
           unless next_chunk.nil?
             length =  next_chunk - 1
           else
