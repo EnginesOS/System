@@ -113,7 +113,7 @@ module DockerUtils
         else
           length = r.length
         end
-           STDERR.puts('len ' + length.to_s + ' bytes length .  actual ' + r.length) 
+           STDERR.puts('len ' + length.to_s + ' bytes length .  actual ' + r.lengt.to_sh) 
         h[dst] += r[0..length-1]
         r = r[length..-1]
       end
