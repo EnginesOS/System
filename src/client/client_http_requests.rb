@@ -16,7 +16,8 @@ def connection(content_type = 'application/json_parser')
   :persistent => true,
   :headers => headers) if @connection.nil?
   @connection
-rescue Excon::Error::Socket => e
+rescue Excon::Error => e
+  STDERR.puts('Failed to open base url ' + @base_url.to_s + ' ' + e.to_s + ' ' + e.class.name)
   if @retries < 5
     @retries += 1
     sleep 1
