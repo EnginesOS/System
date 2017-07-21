@@ -93,7 +93,7 @@ module DockerUtils
           #   STDERR.puts('STDOUT ' + r.to_s)
           # ls = r[0,7]
           r = r[8..-1]
-          #STDERR.puts('STDOUT ' + r.to_s)
+          STDERR.puts('STDOUTn 0001 ' )
         elsif r.start_with?("\u0002\u0000\u0000\u0000")
           dst = :stderr
           #  ls = r[0,7]
@@ -104,12 +104,12 @@ module DockerUtils
           dst = :stdout
           # ls = r[0,7]
           r = r[8..-1]
-          #STDERR.puts('STDOUT \0\0\0')
+          STDERR.puts('STDOUT \0\0\0')
           # r.slice!(8,r.length-1)
         else
           # r = r[7..-1]
           # ls = r[0,7]
-          #STDERR.puts('UNMATCHED')
+          STDERR.puts('UNMATCHED')
           dst = :stdout
           unmatched = true
         end
@@ -131,7 +131,7 @@ module DockerUtils
 
       # result actually set elsewhere after exec complete
       h[:result] = 0
-        
+STDERR.puts(' binary ' +binary.to_s )
       unless binary
         h[:stdout].force_encoding(Encoding::UTF_8) unless h[:stdout].nil?
         h[:stderr].force_encoding(Encoding::UTF_8) unless h[:stderr].nil?
