@@ -90,40 +90,25 @@ module DockerUtils
         end
         if r.start_with?("\u0001\u0000\u0000\u0000")
           dst = :stdout
-          #   STDERR.puts('STDOUT ' + r.to_s)
-          # ls = r[0,7]
           l = r [0..7].unpack('C*')
           cl = l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
           r = r[8..-1]
-          STDERR.puts('STDOUTn 0001 header ' +  l.to_s + ' realen ' + r.length.to_s + ' chunck len ' + cl.to_s)
+          #STDERR.puts('STDOUTn 0001 header ' +  l.to_s + ' realen ' + r.length.to_s + ' chunck len ' + cl.to_s)
         elsif r.start_with?("\u0002\u0000\u0000\u0000")
           dst = :stderr
-          #  ls = r[0,7]
           r = r[8..-1]
-          # r.slice!(8,r.length-1)
-
         elsif r.start_with?("\u0000\u0000\u0000\u0000")
           dst = :stdout
-          # ls = r[0,7]
           r = r[8..-1]
           STDERR.puts('STDOUT \0\0\0')
-          # r.slice!(8,r.length-1)
         else
-          # r = r[7..-1]
-          # ls = r[0,7]
           STDERR.puts('UNMATCHED ' + r.length.to_s)
           dst = :stdout
           unmatched = true
         end
         return h if r.nil?
         unless unmatched == true          
-         # next_chunk = r.index("\u0000\u0000\u0000")
           length = cl
-#          unless next_chunk.nil?
-#            length =  next_chunk - 1
-#          else
-#            length = r.length
-#          end
         else
           length = r.length
         end
@@ -134,7 +119,6 @@ module DockerUtils
 
       # result actually set elsewhere after exec complete
       h[:result] = 0
-STDERR.puts(' binary ' +binary.to_s )
       unless binary
         h[:stdout].force_encoding(Encoding::UTF_8) unless h[:stdout].nil?
         h[:stderr].force_encoding(Encoding::UTF_8) unless h[:stderr].nil?
