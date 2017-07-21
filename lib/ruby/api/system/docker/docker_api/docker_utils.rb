@@ -92,7 +92,7 @@ module DockerUtils
           dst = :stdout
           #   STDERR.puts('STDOUT ' + r.to_s)
           # ls = r[0,7]
-          l = r [0,7]
+          l = r [0..7]
           r = r[8..-1]
           STDERR.puts('STDOUTn 0001 header ' +  l.to_s + ' realen ' + r.length.to_s)
         elsif r.start_with?("\u0002\u0000\u0000\u0000")
