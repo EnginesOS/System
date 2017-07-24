@@ -9,8 +9,6 @@ when 'deregister'
  cmd = ARGV[4]
 when 'reregister'
  cmd = ARGV[4]
-when 'action'
-require_relative 'action.rb'
 when 'export'
  cmd = ARGV[4]
 when 'import'
