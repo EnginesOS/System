@@ -82,42 +82,43 @@ module DockerUtils
       h[:stderr] = "" unless h.key?(:stderr)
       h[:stdout] = "" unless h.key?(:stdout)
       cl = 0
-      while r.length > 0
-        if r[0].nil?
-          return h if r.length == 1
-          #STDERR.puts('Skipping nil ')
-          r = r[1..-1]
-          next
+      unless r.nil?
+        while r.length > 0
+          if r[0].nil?
+            return h if r.length == 1
+            #STDERR.puts('Skipping nil ')
+            r = r[1..-1]
+            next
+          end
+          if r.start_with?("\u0001\u0000\u0000\u0000")
+            dst = :stdout
+            l = r [0..7].unpack('C*')
+            cl = l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
+            r = r[8..-1]
+            #STDERR.puts('STDOUTn 0001 header ' +  l.to_s + ' realen ' + r.length.to_s + ' chunck len ' + cl.to_s)
+          elsif r.start_with?("\u0002\u0000\u0000\u0000")
+            dst = :stderr
+            r = r[8..-1]
+          elsif r.start_with?("\u0000\u0000\u0000\u0000")
+            dst = :stdout
+            r = r[8..-1]
+            STDERR.puts('STDOUT \0\0\0')
+          else
+            STDERR.puts('UNMATCHED ' + r.length.to_s)
+            dst = :stdout
+            unmatched = true
+          end
+          return h if r.nil?
+          unless unmatched == true
+            length = cl
+          else
+            length = r.length
+          end
+          STDERR.puts('len ' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
+          h[dst] += r[0..length-1]
+          r = r[length..-1]
         end
-        if r.start_with?("\u0001\u0000\u0000\u0000")
-          dst = :stdout
-          l = r [0..7].unpack('C*')
-          cl = l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
-          r = r[8..-1]
-          #STDERR.puts('STDOUTn 0001 header ' +  l.to_s + ' realen ' + r.length.to_s + ' chunck len ' + cl.to_s)
-        elsif r.start_with?("\u0002\u0000\u0000\u0000")
-          dst = :stderr
-          r = r[8..-1]
-        elsif r.start_with?("\u0000\u0000\u0000\u0000")
-          dst = :stdout
-          r = r[8..-1]
-          STDERR.puts('STDOUT \0\0\0')
-        else
-          STDERR.puts('UNMATCHED ' + r.length.to_s)
-          dst = :stdout
-          unmatched = true
-        end
-        return h if r.nil?
-        unless unmatched == true          
-          length = cl
-        else
-          length = r.length
-        end
-           STDERR.puts('len ' + length.to_s + ' bytes length .  actual ' + r.length.to_s) 
-        h[dst] += r[0..length-1]
-        r = r[length..-1]
       end
-
       # result actually set elsewhere after exec complete
       h[:result] = 0
       unless binary
