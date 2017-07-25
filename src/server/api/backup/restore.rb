@@ -24,47 +24,64 @@
 #
 #
 # @return [true]
-put '/v0/restore/registry' do
-  begin
-    return_text(engines_api.restore_registry(request.env['rack.input']))
+put '/v0/restore/registry:replace/*' do
+  begin  
+    unless params['splat'].nil?
+    p = {
+      replace: params[:replace],
+      section: params['splat'][0]}
+  else
+    p = {
+      replace: params[:replace],
+      section: nil}
+  end
+    return_text(engines_api.restore_registry(request.env['rack.input'], p))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
 end
 
 # @method restore_system_files
-# @overload put '/v0/restore/system/files/:path'
+# @overload put '/v0/restore/system/files/:replace/:path'
 #
 #
 # @return [true]
-put '/v0/restore/system/files/*' do
-  begin
-    if params['splat'].is_a?(Array)
-      path = params['splat'][0]
-    else
-      path = nil
-    end  
+put '/v0/restore/system/files/:replace/*' do
+  begin    
+    unless params['splat'].nil?
+    p = {
+      replace: params[:replace],
+      path: params['splat'][0]}
+  else
+    p = {
+      replace: params[:replace],
+      path: nil}
+  end
+  
     
-    
-    engines_api.restore_system_files(request.env['rack.input'], path)
+    engines_api.restore_system_files(request.env['rack.input'], p)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
 end
 
 # @method restore_service
-# @overload put '/v0/restore/service/:service_name/:section'
+# @overload put '/v0/restore/service/:service_name/:replace/:section'
 #
 #
 # @return [true]
-put '/v0/restore/service/:service_name/*' do
+put '/v0/restore/service/:service_name/:replace/*' do
   begin
 
     service = get_service(params[:service_name])
     unless params['splat'].nil?
-      p = {section: params['splat'][0]}
+      p = {
+        replace: params[:replace],
+        section: params['splat'][0]}
     else
-      p = {section: nil}
+      p = {
+        replace: params[:replace],
+        section: nil}
     end
     service.service_restore(request.env['rack.input'], p)
   rescue StandardError => e

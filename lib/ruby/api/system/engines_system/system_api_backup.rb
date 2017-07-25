@@ -22,7 +22,7 @@ module SystemApiBackup
             end
   end
   
-  def restore_registry(out)
+  def restore_registry(out, p)
     reg = loadSystemService('registry')
     params = {
           container: reg,
@@ -37,8 +37,9 @@ module SystemApiBackup
         end
   end
   
-  def restore_system_files(out, path)
+  def restore_system_files(out, p)
     STDERR.puts('RESTORE SYSTEM_' + out.class.name)
+    #FixMe need to support path and $replace
     SystemUtils.execute_command('/opt/engines/system/scripts/restore/system_files.sh', true, out, nil)    
     
     getManagedEngines.each do |engine |
