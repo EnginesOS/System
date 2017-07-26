@@ -24,7 +24,7 @@
 #
 #
 # @return [true]
-put '/v0/restore/registry:replace/*' do
+put '/v0/restore/registry/:replace/*' do
   begin  
     unless params['splat'].nil?
     p = {
