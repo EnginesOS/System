@@ -10,11 +10,11 @@ def connection(content_type = 'application/json_parser')
   }
   headers.delete['ACCESS_TOKEN'] if headers['ACCESS_TOKEN'].nil?
   @connection = Excon.new(@base_url,
-  :debug_request => true,
-  :debug_response => true,
-  :ssl_verify_peer => false,
-  :persistent => true,
-  :headers => headers) if @connection.nil?
+  debug_request: true,
+  debug_response: true,
+  ssl_verify_peer: false,
+  persistent: true,
+  headers: headers) if @connection.nil?
   @connection
 rescue Excon::Error => e
   STDERR.puts('Failed to open base url ' + @base_url.to_s + ' ' + e.to_s + ' ' + e.class.name)
@@ -32,9 +32,9 @@ end
 def rest_del(uri, params=nil, time_out=23)
   @retries = 0
   if params.nil?
-    connection.request(:read_timeout => time_out,:method => :delete,:path => uri)
+    connection.request(read_timeout: time_out, method: :delete, path: uri)
   else
-    connection.request(:read_timeout => time_out,:method => :delete,:path => uri, :body => params.to_json)
+    connection.request(read_timeout: time_out, method: :delete, path: uri, body: params.to_json)
   end
 rescue Excon::Error::Socket
   if @retries < 2
@@ -52,9 +52,9 @@ def rest_get(uri, time_out = 35, params = nil)
 
   @retries = 0
   if params.nil?
-    connection.request({:read_timeout => time_out, :method => :get, :path => uri})
+    connection.request({read_timeout: time_out, method: :get, path: uri})
   else
-    connection.request({:read_timeout => time_out, :method => :get, :path => uri, :body => params.to_json})
+    connection.request({read_timeout: time_out, method: :get, path: uri, body: params.to_json})
   end
 rescue Excon::Error::Socket => e
   STDERR.puts e.to_s + ' with path:' + uri + "\n" + 'params:' + params.to_s + ' R ' + @retries.to_s
@@ -74,9 +74,14 @@ def rest_post(uri, params, content_type, time_out = 44 )
   @retries = 0
   begin
     unless params.nil?
-      r = connection(content_type).request(:read_timeout => time_out,:method => :post,:path => uri, :body => params.to_json) #,:body => params.to_json)
+      r = connection(content_type).request(read_timeout: time_out, 
+                                           method: :post, 
+                                           path: uri, 
+                                           body: params.to_json) #,:body => params.to_json)
     else
-      r = connection(content_type).request(:read_timeout => time_out,:method => :post,:path => uri)
+      r = connection(content_type).request(read_timeout: time_out, 
+                                           method: :post, 
+                                           path: uri)
     end
     write_response(r)
     exit
@@ -101,9 +106,9 @@ def rest_delete(uri, params=nil, time_out = 20)
   # params = add_access(params)
   begin
     if params.nil?
-      r = connection.request(:read_timeout => time_out,:method => :delete,:path => uri) #,:body => params.to_json)
+      r = connection.request(read_timeout: time_out, method: :delete, path: uri) #,:body => params.to_json)
     else
-      r = connection.request(:read_timeout => time_out,:method => :delete,:path => uri,:body => params.to_json)
+      r = connection.request(read_timeout: time_out, method: :delete, path: uri, body: params.to_json)
     end
     write_response(r)
     exit
