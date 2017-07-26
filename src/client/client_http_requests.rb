@@ -58,11 +58,11 @@ def rest_get(uri, time_out = 35, params = nil)
   end
 rescue Excon::Error::Socket => e
   STDERR.puts e.to_s + ' with path:' + uri + "\n" + 'params:' + params.to_s + ' R ' + @retries.to_s
-#  if @retries < 2
-#    @retries +=1
-#    sleep 1
-#    retry
-#  end
+  if @retries < 5
+    @retries +=1
+    sleep 1
+    retry
+  end
   STDERR.puts('Failed to url ' + uri.to_s + ' after ' + @retries.to_s + ' attempts')
 rescue StandardError => e
   STDERR.puts e.to_s + ' with path:' + uri + "\n" + 'params:' + params.to_s
