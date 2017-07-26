@@ -6,7 +6,7 @@
 # @return [String]
 get '/v0/unauthenticated/bootstrap/mgmt/url' do
   begin
-    'https://' + engines_api.system_hostname.to_s + '.' + engines_api.get_default_domain.to_s + ':10443'
+    'https://' + engines_api.system_hostname.to_s + '.' + engines_api.get_default_domain.to_s + ':8484'
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
