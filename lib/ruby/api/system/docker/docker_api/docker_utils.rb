@@ -39,7 +39,7 @@ module DockerUtils
       read_thread = Thread.start do
         read_thread[:name] = 'docker_stream_reader'
         begin
-          while chunk = socket.readpartial(16384)
+          while chunk = socket.readpartial(32768)
             if @stream_reader.o_stream.nil?
               DockerUtils.docker_stream_as_result(chunk, return_result)
             else
@@ -104,7 +104,7 @@ module DockerUtils
             r = r[8..-1]
             STDERR.puts('STDOUT \0\0\0')
           else
-            STDERR.puts('UNMATCHED ' + r.length.to_s)
+            STDERR.puts('UNMATCHED ' + r.length.to_s + ':' + r.to_s)
             dst = :stdout
             unmatched = true
           end
