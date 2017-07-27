@@ -52,6 +52,10 @@ volumes:
   remotepath: "/home/backup/.gnupg"
   localpath: "/opt/engines/etc/backup/keys/"
   permissions: "rw"
+ Engines: 
+  remotepath: "/opt/engines/"
+  localpath: "/backup_src/engines/"
+  permissions: "ro"
 port: 
 mapped_ports: 
 last_result:
