@@ -25,16 +25,16 @@
 #
 # @return [true]
 put '/v0/restore/registry/:replace/*' do
-  begin  
+  begin
     unless params['splat'].nil?
-    p = {
-      replace: params[:replace],
-      section: params['splat'][0]}
-  else
-    p = {
-      replace: params[:replace],
-      section: nil}
-  end
+      p = {
+        replace: params[:replace],
+        section: params['splat'][0]}
+    else
+      p = {
+        replace: params[:replace],
+        section: nil}
+    end
     return_text(engines_api.restore_registry(request.env['rack.input'], p))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
@@ -47,18 +47,17 @@ end
 #
 # @return [true]
 put '/v0/restore/system/files/:replace/*' do
-  begin    
+  begin
     unless params['splat'].nil?
-    p = {
-      replace: params[:replace],
-      path: params['splat'][0]}
-  else
-    p = {
-      replace: params[:replace],
-      path: nil}
-  end
-  
-    
+      p = {
+        replace: params[:replace],
+        path: params['splat'][0]}
+    else
+      p = {
+        replace: params[:replace],
+        path: nil}
+    end
+
     engines_api.restore_system_files(request.env['rack.input'], p)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
@@ -88,4 +87,50 @@ put '/v0/restore/service/:service_name/:replace/*' do
     send_encoded_exception(request: request, exception: e)
   end
 end
+# @method restore_engine
+# @overload put '/v0/restore/engine/:engine_name/:replace/:section'
+#
+#
+# @return [true]
+put '/v0/restore/engine/:engine_name/:replace/*' do
+  begin
+    unless params['splat'].nil?
+      p = {
+        replace: params[:replace],
+        section: params['splat'][0]}
+    else
+      p = {
+        replace: params[:replace],
+        section: nil}
+    end
 
+    engines_api.restore_engine(request.env['rack.input'], p)
+
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+end
+
+# @method restore_engine
+# @overload put '/v0/restore/engine_bundle/:engine_name'
+#
+#
+# @return [true]
+put '/v0/restore/bundle_engine/:engine_name' do
+  begin
+    unless params['splat'].nil?
+      p = {
+        replace: params[:replace],
+        section: params['splat'][0]}
+    else
+      p = {
+        replace: params[:replace],
+        section: nil}
+    end
+
+    engines_api.restore_engine_bundle(request.env['rack.input'], p)
+
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+end

@@ -13,7 +13,7 @@ get '/v0/backup/system_db' do
   begin
     content_type 'application/octet-stream'
     stream do |out|
-     engines_api.backup_system_db(out)
+      engines_api.backup_system_db(out)
     end
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
@@ -73,3 +73,19 @@ get '/v0/backup/engine/:engine_name/service/:publisher_namespace/*' do
     send_encoded_exception(request: request, exception: e)
   end
 end
+
+# @method backup_engine_bundle
+# @overload put '/v0/backup/bundle_engine/:engine_name'
+#
+#
+# @return [true]
+get '/v0/backup/bundle_engine/:engine_name' do
+  begin
+    stream do |out|
+      engines_api.engine_bundle(params[:engine_name], out)
+    end
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+end
+
