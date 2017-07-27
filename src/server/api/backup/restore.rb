@@ -111,6 +111,15 @@ put '/v0/restore/engine/:engine_name/:replace/*' do
   end
 end
 
+put '/v0/restore/engines' do
+  begin
+    engines_api.restore_engines()
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+end
+
+
 # @method restore_engine
 # @overload put '/v0/restore/engine_bundle/:engine_name'
 #

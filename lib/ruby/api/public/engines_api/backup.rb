@@ -35,4 +35,8 @@ module PublicApiBackup
   def restore_system_files(out, p)
     @system_api.restore_system_files(out, p)
   end
+
+  def restore_engines(out, p)
+    @system_api.restore_engines(out, p)
+  end
 end
