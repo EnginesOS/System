@@ -159,7 +159,7 @@ module ManagedContainerControls
     end
   end
   
-  def restore_container(builder)
+  def restore_engine(builder)
       builder.restore_engine(self) if prep_task(:build)
   end
 
