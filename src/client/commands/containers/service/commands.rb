@@ -21,7 +21,7 @@ require_relative 'services.rb'
 
 when 'actions'
 @route += '/'
-when 'action'
+when 'action','stream_action'
   require_relative 'action.rb'  
 
 when 'consumers'
