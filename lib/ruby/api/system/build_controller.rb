@@ -83,7 +83,7 @@ class BuildController
         attached_services: true
       }
       SystemStatus.build_starting(@build_params)
-      SystemDebug.debug(SystemDebug.builder, ' Starting resinstall with params ', @build_params)
+      SystemDebug.debug(SystemDebug.builder, ' Starting restore with params ', @build_params)
       @engine_builder = get_engine_builder(@build_params)
       if @engine_builder.is_a?(EngineBuilder)
         @engine = @engine_builder.restore_managed_container(engine)
