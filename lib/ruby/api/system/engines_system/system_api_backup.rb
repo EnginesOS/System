@@ -50,7 +50,8 @@ module SystemApiBackup
       STDERR.puts('engine' + engine.container_name.to_s)
       if engine.read_state == 'nocontainer'
         STDERR.puts('RESTORE engine' + engine.container_name.to_s)
-        @engines_api.restore_engine(engine)
+       build_thr = @engines_api.restore_engine(engine)
+       build_thr.join
       end
     end
     #    reg = loadSystemService('system')
