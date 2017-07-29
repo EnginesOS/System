@@ -19,6 +19,11 @@ volumes:
   remotepath: "/home/net/"
   localpath: "/opt/engines/etc/net/"
   permissions: "ro"
+ ldap_db: 
+  name: ldap_db
+  remotepath: "/var/lib/ldap/"
+  localpath: "/var/lib/engines/ldap/"
+  permissions: "rw"
 mapped_ports:
 repo: na
 last_result: 
