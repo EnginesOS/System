@@ -26,8 +26,8 @@ volumes:
   permissions: "rw"
  ldap_etc: 
   name: ldap_key
-  remotepath: "/etc/krb5kdc/ldap_key/"
-  localpath: "/var/lib/engines/auth/etc/ldap_key/"
+  remotepath: "/etc/krb5kdc/keys/"
+  localpath: "/var/lib/engines/auth/etc/krb5kdc/ldap/"
   permissions: "rw"
 mapped_ports:
 repo: na
