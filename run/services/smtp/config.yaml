@@ -21,6 +21,11 @@ volumes:
   remotepath: "/var/aspool/postfix/"
   localpath: "/var/lib/fs/services/postfix"
   permissions: "rw"
+ kdc: 
+  name: kdc
+  remotepath: "/etc/krb5kdc/keys/"
+  localpath: "/var/lib/engines/auth/etc/krb5kdc/smtp/"
+  permissions: "rw"
 port: 
 mapped_ports: 
  smtp: 
