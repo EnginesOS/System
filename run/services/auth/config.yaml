@@ -16,10 +16,15 @@ volumes:
   remotepath: "/home/auth/static/"
   localpath: "/opt/engines/etc/auth/"
   permissions: "rw"
- krdb: 
-  name: krdb
+ krbkdc_etc: 
+  name: krbkdc_etc
   remotepath: "/etc/krb5kdc"
-  localpath: "/var/lib/engines/auth/"
+  localpath: "/var/lib/engines/auth/etc/krb5kdc/"
+  permissions: "rw"
+ krbkdc_lib: 
+  name: krbkdc_lib
+  remotepath: "/var/lib/krb5kdc/"
+  localpath: "/var/lib/engines/auth/lib/krb5kdc/"
   permissions: "rw"
 image: engines/auth:_Engines_System(release)
 port: 

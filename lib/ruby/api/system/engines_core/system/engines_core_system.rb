@@ -31,7 +31,7 @@ module EnginesCoreSystem
   def reserved_ports
     ports = []
     ports.push(443)
-    ports.push(10443)
+    ports.push(8484)
     ports.push(80)
     ports.push(22)
     ports.push(808)

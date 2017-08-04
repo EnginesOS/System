@@ -46,8 +46,7 @@ module Builders
 
   def restore_managed_container(engine)
     @engine = engine
-    @rebuild = true
-    @build_params[:attached_services] = true
+    @rebuild = true   
     log_build_output('Starting Restore')
     setup_rebuild
     build_container

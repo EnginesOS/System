@@ -6,7 +6,7 @@ ctype: service
 persistent: true
 conf_self_start: true
 last_error: 
-memory: '64'
+memory: '128'
 hostname: ldap
 domain_name: engines.local
 host_network: false
@@ -19,6 +19,21 @@ volumes:
   remotepath: "/home/net/"
   localpath: "/opt/engines/etc/net/"
   permissions: "ro"
+ ldap_db: 
+  name: ldap_db
+  remotepath: "/var/lib/ldap/"
+  localpath: "/var/lib/engines/ldap/lib"
+  permissions: "rw"
+ ldap_etc: 
+  name: ldap_key
+  remotepath: "/etc/krb5kdc/keys/"
+  localpath: "/var/lib/engines/auth/etc/krb5kdc/ldap/"
+  permissions: "rw"
+ ldap_conf: 
+  name: slapd_conf
+  remotepath: "/etc/ldap/slapd.d"
+  localpath: "/var/lib/engines/ldap/slapd.d"
+  permissions: "rw"
 mapped_ports:
 repo: na
 last_result: 

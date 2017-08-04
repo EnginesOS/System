@@ -127,7 +127,7 @@ module SmEngineServices
       type_path: 'cron',
       container_type: container.ctype,
       container_name: container.container_name,
-      service_handle:  cronjob})[:variables][:cron_job]
+      service_handle: cronjob})[:variables][:cron_job]
   end
 
   # @ remove an engine matching :engine_name from the service registry, all non persistent serices are removed
