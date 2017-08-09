@@ -177,7 +177,6 @@ module DockerApiCreateOptions
 
   def container_domain_name(container)
     SystemConfig.internal_domain# if container.on_host_net? == false
-
   end
 
   def build_top_level(container)
@@ -200,7 +199,7 @@ module DockerApiCreateOptions
       'StopSignal' => 'SIGTERM',
       #       "StopTimeout": 10,
       'Hostname' => hostname(container),
-      'Domainame' => container_domain_name(container),
+      'Domainname' => container_domain_name(container),
       'HostConfig' => host_config_options(container)
     }
     top_level['ExposedPorts'] = exposed_ports(container) unless container.on_host_net?
