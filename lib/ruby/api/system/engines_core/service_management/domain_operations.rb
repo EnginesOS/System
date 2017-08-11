@@ -102,11 +102,14 @@ module DomainOperations
   end
 
   def remove_domain(params)
+  
     domain_name = params
     domain_name = params[:domain_name] unless params.is_a?(String)
     params = domain_name(domain_name)
+    
     raise EnginesException.new(error_hash('Domain not found' + domain_name)) if params.nil?
     raise EnginesException.new(error_hash('no params')) if params.nil?
+    raise EnginesException.new(error_hash('Cannot delete Default ' + domain_name)) if domain_name == get_default_domain
     DNSHosting.rm_domain(domain_name)
     unless params[:self_hosted] == false
       service_hash = {
