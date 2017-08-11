@@ -102,11 +102,14 @@ module DomainOperations
   end
 
   def remove_domain(params)
+  
     domain_name = params
     domain_name = params[:domain_name] unless params.is_a?(String)
     params = domain_name(domain_name)
+    
     raise EnginesException.new(error_hash('Domain not found' + domain_name)) if params.nil?
     raise EnginesException.new(error_hash('no params')) if params.nil?
+    raise EnginesException.new(error_hash('Cannot delete default domain!')) if domain_name == get_default_domain
     DNSHosting.rm_domain(domain_name)
     unless params[:self_hosted] == false
       service_hash = {
@@ -129,7 +132,9 @@ module DomainOperations
   end
 
   def get_ext_ip_for_hosted_dns
-    open('https://jsonip.com/') { |s| JSON::parse(s.string,:symbolize_keys => true)[:ip] }
+   e_ip = open('https://jsonip.com/') { |s| JSON::parse(s.string)['ip'] }
+    STDERR.puts('EX ERR = ' + e_ip.to_s)
+    e_ip    
   end
 
 end

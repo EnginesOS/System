@@ -138,7 +138,7 @@ module DockerApiCreateOptions
     if container.ctype == 'service'
       { "Type" => 'json-file', "Config" => { "max-size" =>"5m", "max-file" => '10' } }
     elsif container.ctype == 'system_service'
-      { "Type" => 'json-file', "Config" => { "max-size" =>"5m", "max-file" => '10' } }
+      { "Type" => 'json-file', "Config" => { "max-size" =>"1m", "max-file" => '20' } }
     else
       { "Type" => 'json-file', "Config" => { "max-size" =>"1m", "max-file" => '5' } }
     end
@@ -177,7 +177,6 @@ module DockerApiCreateOptions
 
   def container_domain_name(container)
     SystemConfig.internal_domain# if container.on_host_net? == false
-
   end
 
   def build_top_level(container)
@@ -200,7 +199,7 @@ module DockerApiCreateOptions
       'StopSignal' => 'SIGTERM',
       #       "StopTimeout": 10,
       'Hostname' => hostname(container),
-      'Domainame' => container_domain_name(container),
+      'Domainname' => container_domain_name(container),
       'HostConfig' => host_config_options(container)
     }
     top_level['ExposedPorts'] = exposed_ports(container) unless container.on_host_net?
