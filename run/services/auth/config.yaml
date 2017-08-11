@@ -8,7 +8,7 @@ type_path: auth
 last_error: 
 memory: '96'
 hostname: auth
-domain_name: 
+domain_name: engines.internal
 environments: []
 volumes:
  auth_scripts: 

@@ -8,7 +8,7 @@ conf_self_start: true
 last_error: 
 memory: '128'
 hostname: ldap
-domain_name: engines.local
+domain_name: engines.internal
 host_network: false
 soft_service: false
 environments: []
