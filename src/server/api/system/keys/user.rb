@@ -26,8 +26,7 @@ post '/v0/system/keys/user/:user_name' do
   begin
     params.merge!(post_params(request))
     cparams = assemble_params(params, [:user_name], :public_key)
-    update_key = cparams[:public_key]
-    return_text(engines_api.update_public_key(update_key))
+    return_text(engines_api.update_public_key(cparams[:public_key]))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
