@@ -2,7 +2,6 @@ module ApiActionators
   #   @@action_timeout = 20
   def perform_action(c, actionator, params, data = nil)
     SystemDebug.debug(SystemDebug.actions, actionator, params)
-    
 
     if params.nil? || params.is_a?(String)
       data = params
@@ -15,33 +14,14 @@ module ApiActionators
       end
       data = params.to_json
     end
-
-    #  STDERR.puts('/home/actionators/' + actionator_name + '.sh ' + params.to_json + ' .  ' + data.to_s )
-    cmds = ['/home/actionators/' + actionator[:name].to_s + '.sh'] #, args.to_s]
-    #    if data.nil?
-    #  STDERR.puts('/home/actionators/' +  actionator[:name].to_s + '.sh' + ' NIL DATA')
+    
+    cmds = ['/home/actionators/' + actionator[:name].to_s + '.sh'] 
     result = engines_core.exec_in_container(
     {container: c,
       command_line: cmds,
       log_error:  true,
       data: data,
       data_stream: stream})
-
-    #      result = SystemUtils.execute_command(cmd)
-    #    else
-    #    #  if params.is_a?(Hash)
-    #    #    STDERR.puts('CERT + ' + params[:certificate])if params.key?(:certificate)
-    #    #    STDERR.puts('CERT + ' + data)
-    #   #   end
-    #    #STDERR.puts('/home/actionators/' +  actionator[:name].to_s + '.sh') #) + data.to_s)
-    #      result = engines_core.exec_in_container(
-    #      {container: c,
-    #        command_line: cmds,
-    #        log_error: true ,
-    #        data: data})
-    #
-    #      # result = SystemUtils.execute_command(cmd, false, data)
-    #    end
 
     if result[:result] != 0
       raise EnginesException.new(error_hash('Error on performing action ' + c.container_name.to_s + ':' + actionator[:name].to_s , result))
