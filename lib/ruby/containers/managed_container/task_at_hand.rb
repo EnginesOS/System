@@ -27,8 +27,8 @@ module TaskAtHand
     end
     if @steps_to_go.nil? || @steps_to_go <= 0
       @steps_to_go = 1
-      @steps = [action]
-     # @steps[0] = action
+      @steps = []
+      @steps[0] = action
     end
     step = @steps[0]
 
