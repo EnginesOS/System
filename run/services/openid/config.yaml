@@ -1,0 +1,33 @@
+--- !ruby/object:ManagedService
+container_name: openid
+ctype: service
+persistent: true
+last_error: 
+memory: '90'
+hostname: openid
+publisher_namespace: EnginesSystem
+type_path: openid
+port: 8000
+volumes:
+ kdc: 
+  name: kdc
+  remotepath: "/etc/krb5kdc/keys/"
+  localpath: "/var/lib/engines/auth/etc/krb5kdc/openid/"
+  permissions: "rw"
+environments:
+- !ruby/object:EnvironmentVariable
+ name: DEFAULT_DOMAIN
+ value: _Engines_System(default_domain)
+ has_changed: true
+ build_time_only: true
+image: engines/openid:_Engines_System(release)
+repo: na
+last_result: 
+setState: running
+nginxored: false
+conf_register_site: true
+conf_register_dns: true
+conf_self_start: true
+dependant_on:
+- "ldap"
+- "nginx"

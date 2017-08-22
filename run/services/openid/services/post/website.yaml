@@ -1,0 +1,12 @@
+parent_engine: email
+publisher_namespace: EnginesSystem
+type_path: nginx
+service_handle: openid_web
+service_container_name: nginx
+container_type: service
+persistent: false
+variables:
+ proto: https
+ port: 8000
+ fqdn: id._Engines_System(default_domain)
+ internal_dir: /
