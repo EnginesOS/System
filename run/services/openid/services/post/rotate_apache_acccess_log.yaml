@@ -1,11 +1,11 @@
-parent_engine: email
+parent_engine: openid
 publisher_namespace: EnginesSystem
 type_path: log_rotate
-service_handle: rotate_admin_access_logs
+service_handle: rotate_openid_access_logs
 service_container_name: log_rotate
 container_type: service
 persistent: true
 variables:
- log_file_path: /services/email/apache2/access.log
+ log_file_path: /services/openid/apache2/access.log
  cycle: weekly
  rotate: 52
