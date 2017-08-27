@@ -1,0 +1,11 @@
+parent_engine: openid
+publisher_namespace: EnginesSystem
+type_path: log_rotate
+service_handle: rotate_openid_error_logs
+service_container_name: log_rotate
+container_type: service
+persistent: true
+variables:
+ log_file_path: /services/openid/apache2/error.log
+ cycle: weekly
+ rotate: 52
