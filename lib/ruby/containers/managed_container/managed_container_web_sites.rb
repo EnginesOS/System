@@ -18,18 +18,25 @@ module ManagedContainerWebSites
   end
 
   def set_protocol(proto)
-    case proto
-    when 'HTTP and HTTPS'
+
+    case proto.downcase
+    when 'http and https'
       enable_http_and_https
-    when 'HTTP only'
+    when 'http only'
       enable_http_only
-    when 'HTTPS only'
+    when 'https only'
       enable_https_only
+     when 'https and http'
+      enable_https_and_http
     else
-      @protocol = proto.to_sym
+      @protocol = proto.downcase.to_sym
     end
   end
 
+  def enable_https_and_http
+    @protocol = :https_and_http
+  end
+  
   def enable_http_and_https
     @protocol = :http_and_https
   end
