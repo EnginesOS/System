@@ -97,4 +97,13 @@ class BuilderPublic
   #  def md5_sum(password)
   #    HMAC::MD5.new(password).digest
   #  end
+  
+  def service_account(suffix=nil)
+      
+    end
+    
+    def service_password(cnt=8)
+      
+    end
+
 end

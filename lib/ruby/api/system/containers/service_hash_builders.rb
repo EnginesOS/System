@@ -56,7 +56,11 @@ end
 #@param engine [ManagedContainer]
 
 def create_nginx_service_hash(engine)
-  proto =  'http_https'
+  protocol = engine.protocol.to_s
+  STDERR.puts('PTORORO ' + engine.protocol.to_s)
+  protocol.downcase
+  protocol.gsub!(/ /,"_")
+  proto = ''
   case engine.protocol.to_s
   when 'https_only'
     proto = 'https'
@@ -66,6 +70,8 @@ def create_nginx_service_hash(engine)
     proto = 'https_http'
   when 'http_only'
     proto = 'http'
+  else
+    proto =  'http_https'
   end
 
   service_hash = {
