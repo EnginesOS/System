@@ -34,7 +34,7 @@ class BuilderPublic
       if @builder.build_params[:http_protocol].nil?
         nil
       else
-        @builder.build_params[:http_protocol].gsub!(/_.*/, '') if @builder.build_params[:http_protocol].include?('_')
+        #@builder.build_params[:http_protocol].gsub!(/_.*/, '') if @builder.build_params[:http_protocol].include?('_')
         @builder.build_params[:http_protocol]
       end
     else
