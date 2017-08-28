@@ -71,7 +71,7 @@ def create_nginx_service_hash(engine)
   when 'http_only'
     proto = 'http'
   else
-    proto =  'http_https'
+    proto = 'http_https'
   end
 
   service_hash = {
@@ -105,10 +105,10 @@ def create_nginx_service_hash(engine)
 end
 
 def web_path(engine)
-  unless  engine.ctype == 'service'
-    r = engine.web_root.to_s unless engine.web_root.to_s == ''
+  unless engine.ctype == 'service'
+   engine.web_root.to_s 
   else
-    r = '' #service_hash[:variables][:www_path] = ''
+    ''
   end
-   r
+ 
 end
