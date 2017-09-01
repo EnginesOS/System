@@ -11,7 +11,7 @@ hostname: certs
 no_ca_map: true
 domain_name: 
 environments: []
-image: engines/certs:_Engines_System(release)
+image: _Engines_System(flavor)certs:_Engines_System(release)
 volumes: 
   certs_store: 
    name: certs_store

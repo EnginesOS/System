@@ -33,7 +33,7 @@ environments:
  value: _Engines_System(release)
  has_changed: true 
  build_time_only: false
-image: engines/firstrun:_Engines_System(release)
+image: _Engines_System(flavor)firstrun:_Engines_System(release)
 repo: na
 last_result: 
 setState: nocontainer

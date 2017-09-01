@@ -10,7 +10,7 @@ memory: '32'
 hostname: volmanager
 domain_name: 
 environments: []
-image: engines/fs:_Engines_System(release)
+image: _Engines_System(flavor)fs:_Engines_System(release)
 volumes: 
  fs_rw: 
   name: fs_rw

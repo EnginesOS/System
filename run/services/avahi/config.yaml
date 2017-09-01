@@ -12,7 +12,7 @@ domain_name: local
 host_network: true
 soft_service: true
 environments: []
-image: engines/avahi:_Engines_System(release)
+image: _Engines_System(flavor)avahi:_Engines_System(release)
 volumes: 
  configuration: 
   name: ip_file

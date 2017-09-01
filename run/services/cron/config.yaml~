@@ -10,7 +10,7 @@ memory: '24'
 hostname: cron
 domain_name: 
 environments: []
-image: engines/cron:_Engines_System(release)
+image: _Engines_System(flavor)cron:_Engines_System(release)
 volumes:
  socket: 
   name: socket
