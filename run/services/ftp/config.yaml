@@ -9,7 +9,7 @@ memory: '56'
 hostname: ftp
 domain_name: 
 environments: []
-image: engines/ftp:_Engines_System(release)
+image: _Engines_System(flavor)ftp:_Engines_System(release)
 volumes:
  ssl_certs: 
   name: ssl_certs

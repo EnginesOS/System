@@ -9,7 +9,7 @@ memory: '268'
 hostname: wwwstats
 domain_name: 
 environments: []
-image: engines/sumologic-wwwstats:_Engines_System(release)
+image: _Engines_System(flavor)sumologic-wwwstats:_Engines_System(release)
 volumes:
  config: 
   name: weblogs

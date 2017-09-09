@@ -9,7 +9,7 @@ memory: '64'
 hostname: smtp
 domain_name: 
 environments: []
-image: engines/smtp:_Engines_System(release)
+image: _Engines_System(flavor)smtp:_Engines_System(release)
 volumes: 
  ssl_dir: 
   name: ssl_dir

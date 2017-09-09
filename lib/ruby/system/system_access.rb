@@ -9,6 +9,10 @@ class SystemAccess
     SystemUtils.system_release
   end
 
+  def flavor
+     SystemUtils.system_flavor
+   end
+  
   def pgsql_host
     'pgsql.engines.internal'
   end

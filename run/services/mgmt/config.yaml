@@ -69,7 +69,7 @@ environments:
  build_time_only: false
  immutable: false
  label: "DOMAIN"
-image: engines/mgmt:_Engines_System(release)
+image: _Engines_System(flavor)mgmt:_Engines_System(release)
 repo: na
 last_result: 
 setState: nocontainer

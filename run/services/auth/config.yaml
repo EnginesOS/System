@@ -26,7 +26,7 @@ volumes:
   remotepath: "/var/lib/krb5kdc/"
   localpath: "/var/lib/engines/auth/lib/krb5kdc/"
   permissions: "rw"
-image: engines/auth:_Engines_System(release)
+image: _Engines_System(flavor)/auth:_Engines_System(release)
 port: 
 mapped_ports:
 repo: na
@@ -37,5 +37,4 @@ conf_register_site: false
 conf_register_dns: true
 dependant_on:
 - "dns"
-- "mysql_server"
 - "syslog"
