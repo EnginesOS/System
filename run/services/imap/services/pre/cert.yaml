@@ -1,0 +1,17 @@
+parent_engine: ivpn
+publisher_namespace: EnginesSystem
+type_path: cert_auth
+service_handle: imap._Engines_System(default_domain)
+container_type: service
+persistent: true
+variables:
+ country: AU
+ state: NSW
+ organisation: engines
+ city: sydney
+ person: james
+ cert_name: imap._Engines_System(default_domain)
+ domainname: _Engines_System(default_domain)
+ hostname: imap._Engines_System(default_domain)
+ altName: imap.engines.internal
+ wild: no
