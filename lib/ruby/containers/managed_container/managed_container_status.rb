@@ -7,6 +7,11 @@ module ManagedContainerStatus
     end
   end
 
+  def save_state
+    status
+    super
+  end
+  
   def read_state
     state = super
     if state == 'na'
