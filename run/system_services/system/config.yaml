@@ -25,7 +25,7 @@ environments:
  name: DOCKER_IP
  value: _Engines_System(docker_ip)
  setatrun: false   
-image: _Engines_System(flavor)system:_Engines_System(release)
+image: _Engines_System(flavor)/system:_Engines_System(release)
 volumes:
  icons_dir: 
   name: icons_dir

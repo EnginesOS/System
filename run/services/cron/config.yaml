@@ -13,7 +13,7 @@ domain_name:
 aliases: 
  - schedule
 environments: []
-image: _Engines_System(flavor)cron:_Engines_System(release)
+image: _Engines_System(flavor)/cron:_Engines_System(release)
 volumes:
  socket: 
   name: socket

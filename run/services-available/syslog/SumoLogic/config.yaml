@@ -9,7 +9,7 @@ memory: '164'
 hostname: syslog
 domain_name: 
 environments: []
-image: _Engines_System(flavor)sumologic-syslog:_Engines_System(release)
+image: _Engines_System(flavor)/sumologic-syslog:_Engines_System(release)
 port: 
 mapped_ports:
 - 

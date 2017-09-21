@@ -9,7 +9,7 @@ memory: '199'
 hostname: dockerstats
 domain_name: 
 environments: []
-image: _Engines_System(flavor)sumologic-dockerstats:_Engines_System(release)
+image: _Engines_System(flavor)/sumologic-dockerstats:_Engines_System(release)
 arguments:
 port: 
 volumes:
