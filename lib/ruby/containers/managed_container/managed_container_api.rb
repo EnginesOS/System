@@ -1,6 +1,6 @@
 module ManagedContainerApi
   def save_state()
-    status
+    
     c = self.dup
     @container_api.save_container(c)
   end
