@@ -1,4 +1,4 @@
-parent_engine: ivpn
+parent_engine: imap
 publisher_namespace: EnginesSystem
 type_path: cert_auth
 service_handle: imap._Engines_System(default_domain)
