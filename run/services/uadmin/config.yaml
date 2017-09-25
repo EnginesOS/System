@@ -12,6 +12,11 @@ domain_name:
 environments: []
 image: _Engines_System(flavor)/uadmin:_Engines_System(release)
 volumes: 
+ kdc: 
+  name: kdc
+  remotepath: "/etc/krb5kdc/keys/"
+  localpath: "/var/lib/engines/auth/etc/krb5kdc/uadmin/"
+  permissions: "rw"
 mapped_ports: 
 repo: na
 last_result:
