@@ -12,7 +12,7 @@ domain_name: engines.internal
 host_network: false
 soft_service: false
 environments: []
-image: _Engines_System(flavor)ldap:_Engines_System(release)
+image: _Engines_System(flavor)/ldap:_Engines_System(release)
 volumes: 
  configuration: 
   name: ip_file

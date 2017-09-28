@@ -25,7 +25,7 @@ environments:
  value: _Engines_System(default_domain)
  has_changed: true
  build_time_only: true
-image: _Engines_System(flavor)openid:_Engines_System(release)
+image: _Engines_System(flavor)/openid:_Engines_System(release)
 repo: na
 last_result: 
 setState: running

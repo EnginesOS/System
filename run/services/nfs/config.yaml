@@ -9,7 +9,7 @@ memory: '36'
 hostname: nfs
 domain_name: 
 environments: []
-image: _Engines_System(flavor)nfs:_Engines_System(release)
+image: _Engines_System(flavor)/nfs:_Engines_System(release)
 volumes:
  ssl_certs: 
  fs_rw: 

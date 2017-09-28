@@ -35,6 +35,7 @@ redis redis 22029	_redis
 openldap openldap 22030	_ldap
 ivpn ivpn 22031 _ivpn
 openid	openid	22032	_openid
+uadmin	uadmin	22033	_uadmin
 #Frameworks
 www-data	 www-data	22671
 ruby	 ruby			22672

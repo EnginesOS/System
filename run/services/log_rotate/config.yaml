@@ -11,7 +11,7 @@ memory: '32'
 hostname: logrotate
 domain_name: 
 environments: []
-image: _Engines_System(flavor)logrotate:_Engines_System(release)
+image: _Engines_System(flavor)/logrotate:_Engines_System(release)
 volumes:
  syslog: 
   name: syslog

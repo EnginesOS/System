@@ -105,7 +105,7 @@ module DockerUtils
             STDERR.puts('STDOUT \0\0\0')
           else
             STDERR.puts('UNMATCHED ' + r.length.to_s + ':' + r.to_s)
-            dst = :stdout
+            dst = :stderr
             unmatched = true
           end
           return h if r.nil?

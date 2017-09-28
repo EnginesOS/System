@@ -10,7 +10,7 @@ stop_timeout: 500
 hostname: pgsql
 domain_name: 
 environments: []
-image: _Engines_System(flavor)pgsql:_Engines_System(release)
+image: _Engines_System(flavor)/pgsql:_Engines_System(release)
 volumes:
  pg_database: 
   name: pg_database
