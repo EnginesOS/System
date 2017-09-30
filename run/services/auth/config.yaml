@@ -23,8 +23,8 @@ volumes:
   permissions: "rw"
  krbkdc_lib: 
   name: krbkdc_lib
-  remotepath: "/var/lib/krb5kdc/"
-  localpath: "/var/lib/engines/auth/lib/krb5kdc/"
+  remotepath: "/var/lib/krb5/"
+  localpath: "/var/lib/engines/auth/lib/krb5/"
   permissions: "rw"
 image: _Engines_System(flavor)/auth:_Engines_System(release)
 port: 
