@@ -1,0 +1,27 @@
+--- !ruby/object:ManagedService
+publisher_namespace: EnginesSystem
+type_path: uadmin
+container_name: uadmin
+ctype: service
+persistent: true
+conf_self_start: true
+last_error: 
+memory: '32'
+hostname: uadmin
+domain_name: 
+environments: []
+image: _Engines_System(flavor)/uadmin:_Engines_System(release)
+volumes: 
+ kdc: 
+  name: kdc
+  remotepath: "/etc/krb5kdc/keys/"
+  localpath: "/var/lib/engines/auth/etc/krb5kdc/uadmin/"
+  permissions: "rw"
+mapped_ports: 
+repo: na
+last_result:
+setState: stopped
+nginxored: false
+conf_register_site: false
+conf_register_dns: true
+conf_self_start: true

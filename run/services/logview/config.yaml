@@ -14,7 +14,7 @@ schedules:
   time_spec: "*/60 * * * *"
   action: start
   environments: []
-image: engines/logview:_Engines_System(release)
+image: _Engines_System(flavor)/logview:_Engines_System(release)
 volumes:
  syslog: 
   name: syslog

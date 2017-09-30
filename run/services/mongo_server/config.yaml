@@ -10,7 +10,7 @@ stop_timeout: 600
 hostname: mongo
 domain_name: 
 environments: []
-image: engines/mongo:_Engines_System(release)
+image: _Engines_System(flavor)/mongo:_Engines_System(release)
 volumes:
  mg_database: 
   name: mg_database

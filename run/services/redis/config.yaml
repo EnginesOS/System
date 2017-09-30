@@ -10,7 +10,7 @@ memory: '64'
 hostname: redis
 domain_name: 
 environments: []
-image: engines/redis:_Engines_System(release)
+image: _Engines_System(flavor)/redis:_Engines_System(release)
 volumes:
  store: 
   name: store

@@ -13,13 +13,18 @@ environments:
  name: ContUser
  value: root
  setatrun: false
-image: engines/imap:_Engines_System(release)
+image: _Engines_System(flavor)/imap:_Engines_System(release)
 port: 
 volumes:
  imap_data: 
   name: imap_data
   remotepath: "/var/lib/dovecot"
   localpath: "/var/lib/engines/imap/lib"
+  permissions: "rw"
+ kdc: 
+  name: kdc
+  remotepath: "/etc/krb5kdc/keys/"
+  localpath: "/var/lib/engines/auth/etc/krb5kdc/imap/"
   permissions: "rw"
  mail_dir: 
   name: mail_dir

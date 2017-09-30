@@ -9,7 +9,7 @@ memory: '56'
 hostname: ftp
 domain_name: 
 environments: []
-image: engines/ftp:_Engines_System(release)
+image: _Engines_System(flavor)/ftp:_Engines_System(release)
 volumes:
  ssl_certs: 
   name: ssl_certs
@@ -20,6 +20,11 @@ volumes:
   name: fs_rw
   remotepath: "/ftp/rw/"
   localpath: "/var/lib/engines/fs/"
+  permissions: "rw"
+ kdc: 
+  name: kdc
+  remotepath: "/etc/krb5kdc/keys/"
+  localpath: "/var/lib/engines/auth/etc/krb5kdc/ftp/"
   permissions: "rw"
  fs_ro: 
   name: fs_ro

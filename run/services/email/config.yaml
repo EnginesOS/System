@@ -14,6 +14,11 @@ volumes:
   remotepath: "/etc/ssl"
   localpath: "/var/lib/engines/cert_auth/services/email/"
   permissions: "ro"
+ kdc: 
+  name: kdc
+  remotepath: "/etc/krb5kdc/keys/"
+  localpath: "/var/lib/engines/auth/etc/krb5kdc/email/"
+  permissions: "rw"
  spool:
   name: spool
   remotepath: "/var/spool/postfix/"
@@ -25,7 +30,7 @@ environments:
  value: _Engines_System(default_domain)
  has_changed: true
  build_time_only: true
-image: engines/email:_Engines_System(release)
+image: _Engines_System(flavor)/email:_Engines_System(release)
 mapped_ports:
  smtp:
   name: smtp

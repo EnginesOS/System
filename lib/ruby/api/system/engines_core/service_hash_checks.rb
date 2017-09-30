@@ -5,7 +5,10 @@ module ServiceHashChecks
     check_hash(service_hash)
     # FIXME: Kludge
     # Klugde to avoid gui bugss
-    service_hash[:container_type] = "container" unless service_hash.key?(:container_type)
+    unless service_hash.key?(:container_type)
+     service_hash[:container_type] = "container"        
+       STDERR.puts('APPLIED KLUDGE no 1')
+    end
     # End of Kludge
     raise EnginesException.new({error_mesg: 'No parent engine',  error_type: :error , params: service_hash}) unless service_hash.key?(:parent_engine)
     raise EnginesException.new({error_mesg: 'nil parent_engine',  error_type: :error , params: service_hash}) if service_hash[:parent_engine].nil? || service_hash[:parent_engine].nil?

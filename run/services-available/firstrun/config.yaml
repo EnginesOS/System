@@ -7,7 +7,7 @@ memory: '190'
 hostname: firstrun
 publisher_namespace: EnginesSystem
 type_path: firstrun
-port: 10443
+port: 8484
 environments: []
 volumes: 
 mapped_ports:
@@ -15,7 +15,7 @@ mapped_ports:
   name: web
   port: 3000
   publicFacing: true
-  external: 10443
+  external: 8484
   proto_type: tcp
 environments:
 - !ruby/object:EnvironmentVariable
@@ -33,7 +33,7 @@ environments:
  value: _Engines_System(release)
  has_changed: true 
  build_time_only: false
-image: engines/firstrun:_Engines_System(release)
+image: _Engines_System(flavor)/firstrun:_Engines_System(release)
 repo: na
 last_result: 
 setState: nocontainer

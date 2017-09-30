@@ -39,7 +39,7 @@ module DockerUtils
       read_thread = Thread.start do
         read_thread[:name] = 'docker_stream_reader'
         begin
-          while chunk = socket.readpartial(16384)
+          while chunk = socket.readpartial(32768)
             if @stream_reader.o_stream.nil?
               DockerUtils.docker_stream_as_result(chunk, return_result)
             else
@@ -81,57 +81,50 @@ module DockerUtils
     unless h.nil?
       h[:stderr] = "" unless h.key?(:stderr)
       h[:stdout] = "" unless h.key?(:stdout)
-      while r.length > 0
-        if r[0].nil?
-          return h if r.length == 1
-          #STDERR.puts('Skipping nil ')
-          r = r[1..-1]
-          next
-        end
-        if r.start_with?("\u0001\u0000\u0000\u0000")
-          dst = :stdout
-          #   STDERR.puts('STDOUT ' + r.to_s)
-          # ls = r[0,7]
-          r = r[8..-1]
-          #STDERR.puts('STDOUT ' + r.to_s)
-        elsif r.start_with?("\u0002\u0000\u0000\u0000")
-          dst = :stderr
-          #  ls = r[0,7]
-          r = r[8..-1]
-          # r.slice!(8,r.length-1)
-
-        elsif r.start_with?("\u0000\u0000\u0000\u0000")
-          dst = :stdout
-          # ls = r[0,7]
-          r = r[8..-1]
-          #STDERR.puts('STDOUT \0\0\0')
-          # r.slice!(8,r.length-1)
-        else
-          # r = r[7..-1]
-          # ls = r[0,7]
-          #STDERR.puts('UNMATCHED')
-          dst = :stdout
-          unmatched = true
-        end
-        return h if r.nil?
-        unless unmatched == true
-          next_chunk = r.index("\u0000\u0000\u0000")
-          unless next_chunk.nil?
-            length =  next_chunk - 1
+      cl = 0
+      unless r.nil?
+        while r.length > 0
+          if r[0].nil?
+            return h if r.length == 1
+            #STDERR.puts('Skipping nil ')
+            r = r[1..-1]
+            next
+          end
+          if r.start_with?("\u0001\u0000\u0000\u0000")
+            dst = :stdout
+            l = r [0..7].unpack('C*')
+            cl = l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
+            r = r[8..-1]
+            #STDERR.puts('STDOUTn 0001 header ' +  l.to_s + ' realen ' + r.length.to_s + ' chunck len ' + cl.to_s)
+          elsif r.start_with?("\u0002\u0000\u0000\u0000")
+            dst = :stderr
+            r = r[8..-1]
+          elsif r.start_with?("\u0000\u0000\u0000\u0000")
+            dst = :stdout
+            r = r[8..-1]
+            STDERR.puts('STDOUT \0\0\0')
+          else
+            STDERR.puts('UNMATCHED ' + r.length.to_s + ':' + r.to_s)
+            dst = :stderr
+            unmatched = true
+          end
+          return h if r.nil?
+          unless unmatched == true
+            length = cl
           else
             length = r.length
           end
-        else
-          length = r.length
+          if length > r.length
+            STDERR.puts('length > actual' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
+            length = r.length
+          end
+          STDERR.puts('len ' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
+          h[dst] += r[0..length-1]
+          r = r[length..-1]
         end
-        #   STDERR.puts(' problem ' + r.to_s + ' has ' + r.length.to_s + ' bytes and length ' + length.to_s ) if r.length < length
-        h[dst] += r[0..length-1]
-        r = r[length..-1]
       end
-
       # result actually set elsewhere after exec complete
       h[:result] = 0
-        
       unless binary
         h[:stdout].force_encoding(Encoding::UTF_8) unless h[:stdout].nil?
         h[:stderr].force_encoding(Encoding::UTF_8) unless h[:stderr].nil?

@@ -159,8 +159,8 @@ module ManagedContainerControls
     end
   end
   
-  def restore_container(builder)
-      builder.restore_engine(self)    
+  def restore_engine(builder)
+      builder.restore_engine(self) if prep_task(:build)
   end
 
   def rebuild_container

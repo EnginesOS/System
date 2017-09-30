@@ -11,7 +11,7 @@ memory: '200'
 hostname: registry
 domain_name: 
 environments: []
-image: engines/registry:_Engines_System(release)
+image: _Engines_System(flavor)/registry:_Engines_System(release)
 volumes:
  docker_bin: 
   name: registry_dir

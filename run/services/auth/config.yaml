@@ -8,7 +8,7 @@ type_path: auth
 last_error: 
 memory: '96'
 hostname: auth
-domain_name: 
+domain_name: engines.internal
 environments: []
 volumes:
  auth_scripts: 
@@ -16,12 +16,17 @@ volumes:
   remotepath: "/home/auth/static/"
   localpath: "/opt/engines/etc/auth/"
   permissions: "rw"
- krdb: 
-  name: krdb
+ krbkdc_etc: 
+  name: krbkdc_etc
   remotepath: "/etc/krb5kdc"
-  localpath: "/var/lib/engines/auth/"
+  localpath: "/var/lib/engines/auth/etc/krb5kdc/"
   permissions: "rw"
-image: engines/auth:_Engines_System(release)
+ krbkdc_lib: 
+  name: krbkdc_lib
+  remotepath: "/var/lib/krb5/"
+  localpath: "/var/lib/engines/auth/lib/krb5/"
+  permissions: "rw"
+image: _Engines_System(flavor)/auth:_Engines_System(release)
 port: 
 mapped_ports:
 repo: na
@@ -32,5 +37,4 @@ conf_register_site: false
 conf_register_dns: true
 dependant_on:
 - "dns"
-- "mysql_server"
 - "syslog"

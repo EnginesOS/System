@@ -10,7 +10,7 @@ memory: '96'
 hostname: dns
 domain_name: 
 environments: []
-image: engines/dns:_Engines_System(release)
+image: _Engines_System(flavor)/dns:_Engines_System(release)
 volumes: 
  ip_details: 
   name: ip_details

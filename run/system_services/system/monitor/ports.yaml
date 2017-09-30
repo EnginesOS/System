@@ -2,7 +2,7 @@ monitor_ports:
    mgmt:
     name: "Management Interface"
     type: tcp
-    port: 10443
+    port: 8484
     timeout: 60
     first_action: :recreate
     final_action: :recreate

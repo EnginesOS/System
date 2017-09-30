@@ -24,7 +24,7 @@ module EnginesDockerApiErrors
 
   def docker_error_hash(res, params = nil)
     status = nil
-    STDERR.puts('DOCKER EXEC HASH' + res.to_s + ':' + params.to_s)
+ #   STDERR.puts('DOCKER error HASH' + res.to_s + ':' + params.to_s)
     if res.is_a?(String)
       e = res
     elsif  res.nil?

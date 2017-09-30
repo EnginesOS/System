@@ -1,7 +1,7 @@
 #!/bin/sh
 
 cd /
-tar -xzpf - opt/engines
+tar -xpf - opt/engines
 
 for config in `find /opt/engines/ -name running.yaml`
  do

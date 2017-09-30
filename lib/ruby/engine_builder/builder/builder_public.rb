@@ -34,7 +34,7 @@ class BuilderPublic
       if @builder.build_params[:http_protocol].nil?
         nil
       else
-        @builder.build_params[:http_protocol].gsub!(/_.*/, '') if @builder.build_params[:http_protocol].include?('_')
+        #@builder.build_params[:http_protocol].gsub!(/_.*/, '') if @builder.build_params[:http_protocol].include?('_')
         @builder.build_params[:http_protocol]
       end
     else
@@ -97,4 +97,13 @@ class BuilderPublic
   #  def md5_sum(password)
   #    HMAC::MD5.new(password).digest
   #  end
+  
+  def service_account(suffix=nil)
+      
+    end
+    
+    def service_password(cnt=8)
+      
+    end
+
 end

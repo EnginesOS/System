@@ -1,5 +1,6 @@
 module EnginesSystemFiles
   @@ReleaseFile = '/opt/engines/release'
+  @@FlavorFile = '/opt/engines/flavor'
   @@DomainsFile = '/opt/engines/etc/domains/domains'
   @@timeZone_fileMapping = ' -v /etc/localtime:/etc/localtime:ro '
   @@NoRemoteExceptionLoggingFlagFile = '/opt/engines/run/system/flags/no_remote_exception_log'
@@ -17,6 +18,10 @@ module EnginesSystemFiles
 
   def SystemConfig.ReleaseFile
     @@ReleaseFile
+  end
+
+  def SystemConfig.FlavorFile
+    @@FlavorFile
   end
 
   def SystemConfig.EnginesInternalCA

@@ -9,7 +9,7 @@ memory: '48'
 hostname: wwwstats
 domain_name: 
 environments: []
-image: engines/wwwstats:_Engines_System(release)
+image: _Engines_System(flavor)/wwwstats:_Engines_System(release)
 volumes:
  config: 
   name: weblogs

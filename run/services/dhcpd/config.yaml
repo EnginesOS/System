@@ -10,7 +10,7 @@ memory: '16'
 hostname: dhcpd
 domain_name: 
 environments: []
-image: engines/dhcpd:_Engines_System(release)
+image: _Engines_System(flavor)/dhcpd:_Engines_System(release)
 volumes: {}
 mapped_ports:
  dhcpd:

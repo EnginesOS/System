@@ -58,7 +58,7 @@ class BuildController
       reinstall: true
     }
     SystemStatus.build_starting(@build_params)
-    SystemDebug.debug(SystemDebug.builder, ' Starting resinstall with params ', @build_params)
+    SystemDebug.debug(SystemDebug.builder, 'Starting resinstall with params ', @build_params)
     @engine_builder = get_engine_builder(@build_params)
     if @engine_builder.is_a?(EngineBuilder)
       @engine = @engine_builder.rebuild_managed_container(engine)
@@ -80,10 +80,11 @@ class BuildController
         repository_url: engine.container_name,
         variables: engine.environments,
         reinstall: true,
-        attached_services: true
+        restore: true#,
+        #attached_services: engine.engine_persistent_services
       }
       SystemStatus.build_starting(@build_params)
-      SystemDebug.debug(SystemDebug.builder, ' Starting resinstall with params ', @build_params)
+      SystemDebug.debug(SystemDebug.builder, 'Starting restore with params ', @build_params)
       @engine_builder = get_engine_builder(@build_params)
       if @engine_builder.is_a?(EngineBuilder)
         @engine = @engine_builder.restore_managed_container(engine)
@@ -118,7 +119,7 @@ class BuildController
     @core_api.build_stopped()
     SystemUtils.log_error_mesg(err.to_s, params)
     SystemStatus.build_failed(params)
-    raise EngnesException.new(error_hash(params[:engine_name] +  err.to_s + params.to_s, :build_error))
+    raise EngnesException.new(error_hash(params[:engine_name] + err.to_s + params.to_s, :build_error))
   end
 
   def build_complete(build_params)

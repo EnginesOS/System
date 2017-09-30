@@ -10,5 +10,8 @@ module PublicApiServiceActionators
   def perform_service_action(service_name, actionator, params)
     @core_api.perform_service_action(service_name, actionator, params)
   end
-
+  def perform_service_stream_action(service_name, actionator, params, out)
+    params[:stream] = out
+    @core_api.perform_service_action(service_name, actionator, params, out)
+  end
 end 

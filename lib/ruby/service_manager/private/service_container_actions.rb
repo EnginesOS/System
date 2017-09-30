@@ -8,7 +8,7 @@ def add_to_managed_service(service_hash)
   if service.is_soft_service? && !service.is_running?
     true
   else
-    raise EnginesException.new(error_hash('Cant add to service if service is stopped: ' + service.container_name.to_s, params)) unless service.is_running?
+    raise EnginesException.new(error_hash('Cant add to service if service is stopped: ' + service.container_name.to_s, service_hash)) unless service.is_running?
     service.add_consumer(service_hash)
   end
 end
@@ -20,7 +20,7 @@ def update_on_managed_service(service_hash)
   if service.is_soft_service? && !service.is_running?
     true
   else
-    raise EnginesException.new(error_hash('Cant update service if service is stopped: ' + service.container_name.to_s, params)) unless service.is_running?
+    raise EnginesException.new(error_hash('Cant update service if service is stopped: ' + service.container_name.to_s, service_hash)) unless service.is_running?
     service.update_consumer(service_hash)
   end
 end

@@ -28,11 +28,15 @@ module PublicApiBackup
     @system_api.engines_services_to_backup(engine_name)
   end
 
-  def restore_registry(out)
-    @system_api.restore_registry(out)
+  def restore_registry(out, p)
+    @system_api.restore_registry(out, p)
   end
 
-  def restore_system_files(out, path)
-    @system_api.restore_system_files(out, path)
+  def restore_system_files(out, p)
+    @system_api.restore_system_files(out, p)
+  end
+
+  def restore_engines()
+    @system_api.restore_engines()
   end
 end

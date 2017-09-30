@@ -10,7 +10,7 @@ stop_timeout: 500
 hostname: mysql
 domain_name: 
 environments: []
-image: engines/mysql:_Engines_System(release)
+image: _Engines_System(flavor)/mysql:_Engines_System(release)
 volumes:
  my_database: 
   name: my_database

@@ -6,3 +6,5 @@ if ARGV.count == 5
 end
   
 @route += '/' + ARGV[3]
+perform_get
+

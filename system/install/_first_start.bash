@@ -150,7 +150,7 @@ echo "smtp Started" &>>/tmp/first_start.log
        then
         ext_ip=`curl -s http://ipecho.net/ |grep "Your IP is" | sed "/^.* is /s///" | sed "/<.*$/s///"`
       fi
-  	echo "Management is now at https://$lan_ip:10443/ or https://${ext_ip}:10443/"  &>>/tmp/first_start.log 
+  	echo "Management is now at https://$lan_ip:8484/ or https://${ext_ip}:8484/"  &>>/tmp/first_start.log 
   fi
  crontab  /opt/engines/system/updates/src/etc/crontab  &>>/tmp/first_start.log 
  echo sudo su -l engines  &>>/tmp/first_start.log

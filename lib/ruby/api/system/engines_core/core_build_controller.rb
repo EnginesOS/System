@@ -11,6 +11,7 @@ module CoreBuildController
     @build_thread = nil
     @current_builder = nil
     STDERR.puts('BUIL STOPPED')
+  rescue
   end
 
   def abort_build()
@@ -18,6 +19,7 @@ module CoreBuildController
     @build_controller.abort_build() unless @build_controller.nil?
     @build_thread.terminate unless @build_thread.nil?
     build_stopped()
+    rescue
   end
 
   def get_build_report(engine_name)

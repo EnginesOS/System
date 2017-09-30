@@ -15,7 +15,7 @@ module EnginesOperations
       if params[:rollback] == true
         STDERR.puts(' Roll back clause ' + params.to_s )
         # return true if service_manager.remove_engine_from_managed_engine(params)
-        unless remove_engine_services
+        unless remove_engine_services(params)
           raise EnginesException.new(error_hash('Failed to find Engine', params))
         end
         true
@@ -38,6 +38,7 @@ module EnginesOperations
     params[:no_exceptions] = true
     #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
     begin
+      STDERR.puts('RE ENINGE SERVICES  ' + params.to_s)
       service_manager.remove_managed_persistent_services(params)
     rescue EnginesException => e
       raise e unless e.is_a_warning?
@@ -77,11 +78,14 @@ module EnginesOperations
    # engine.wait_for('destroy', 10)
     delete_engine_and_services(params)
     builder = BuildController.new(self)
-    @build_thread = Thread.new { engine.restore_engine(builder) }
-    @build_thread[:name] = 'restore engine'
-    unless @build_thread.alive?
-      raise EnginesException.new(error_hash(params[:engine_name], 'Build Failed to start'))
-    end
+    engine.restore_engine(builder)
+     @build_thread = Thread.new { engine.restore_engine(builder) }
+     STDERR.puts('Restore started on '  + engine.container_name.to_s)
+     @build_thread[:name] = 'restore engine'
+     unless @build_thread.alive?
+       raise EnginesException.new(error_hash(params[:engine_name], 'Build Failed to start'))
+      end
+    @build_thread 
   end
 
   def set_container_runtime_properties(container, params)

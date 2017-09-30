@@ -63,7 +63,7 @@ environments:
  name: data_gid
  value: _Engines_Template(data_gid)
  setatrun: false 
-image: engines/fsconfigurator:_Engines_System(release)
+image: _Engines_System(flavor)/fsconfigurator:_Engines_System(release)
 volumes: 
  state_dir: 
   name: state_dir

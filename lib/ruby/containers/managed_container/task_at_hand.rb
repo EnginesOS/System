@@ -43,16 +43,19 @@ module TaskAtHand
       @steps_to_go = 2
       r = desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
     when :stop
+      STDERR.puts(' stop  steps' + @steps.to_s + ' count ' + @steps_to_go.to_s)
       r = desired_state(step, final_state, curr_state) if curr_state== 'running'
     when :start
+      STDERR.puts(' start  steps' + @steps.to_s + ' count ' + @steps_to_go.to_s)
       r = desired_state(step, final_state, curr_state) if curr_state== 'stopped'
     when :pause
+      STDERR.puts(' pause  steps' + @steps.to_s + ' count ' + @steps_to_go.to_s)
       r = desired_state(step, final_state, curr_state) if curr_state== 'running'
     when :halt
       r = true
     when :restart
       if curr_state == 'running'
-        @steps = [:stop,:start]
+        @steps = [:stop, :start]
         @steps_to_go = 2
         r = desired_state(step, final_state, curr_state)
       else
@@ -62,7 +65,7 @@ module TaskAtHand
       r = desired_state(step, final_state, curr_state) if curr_state== 'paused'
     when :recreate
       if curr_state== 'stopped'
-        @steps = [:destroy,:create]
+        @steps = [:destroy, :create]
         @steps_to_go = 2
         r = desired_state(step, final_state, curr_state)
       else
@@ -138,6 +141,7 @@ module TaskAtHand
     SystemDebug.debug(SystemDebug.builder, :last_task,  @last_task, :steps_to, @steps_to_go)
     return save_state unless @last_task == :delete_image && @steps_to_go <= 0
     # FixMe Kludge unless docker event listener
+    SystemDebug.debug(SystemDebug.builder, :delete_engine,  @last_task, :steps_to, @steps_to_go)
     delete_engine
     true
     # rescue StandardError => e
@@ -222,8 +226,7 @@ module TaskAtHand
 
   private
 
-  def tasks_final_state(task)
-    s = ''
+  def tasks_final_state(task)    
     case task
     when :create,:start,:recreate,:unpause,:restart,:rebuild,:build,:reinstall
       s = 'running'
@@ -233,10 +236,11 @@ module TaskAtHand
       s =  'paused'
     when :delete,:destroy
       s = 'nocontainer'
+    else
+      STDERR.puts('UNKNOWN TASK ' + task.to_s)
+      s = ''
     end
     s
-    # rescue StandardError => e
-    #    log_exception(e)
   end
 
   def task_has_expired?(task)

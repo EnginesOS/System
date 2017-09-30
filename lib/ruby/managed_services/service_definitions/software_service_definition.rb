@@ -48,7 +48,6 @@ class SoftwareServiceDefinition
       service_def = SoftwareServiceDefinition.find(service_hash[:type_path] ,service_hash[:publisher_namespace])
     service_def = service_def[:service_actionators] unless service_def.nil?
       [] if service_def.nil?
-        STDERR.puts 'SERVICE CTION  ' + service_def.to_s
     service_def 
     end
 

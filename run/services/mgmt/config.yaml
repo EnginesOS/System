@@ -7,7 +7,7 @@ memory: '512'
 hostname: mgmt
 publisher_namespace: EnginesSystem
 type_path: mgmt
-port: 10443
+port: 8484
 domain_name: _Engines_System(default_domain)
 volumes: 
  certs: 
@@ -25,12 +25,12 @@ mapped_ports:
   name: web
   port: 8001
   publicFacing: true
-  external: 10443
+  external: 8484
   proto_type: tcp
 environments:
 - !ruby/object:EnvironmentVariable
  name: SYSTEM_API_URL
- value: https://_Engines_System(docker_ip):2380/
+ value: https://_Engines_System(docker_ip):2380
  has_changed: true 
  build_time_only: false
  immutable: false
@@ -42,12 +42,12 @@ environments:
  build_time_only: false
 - !ruby/object:EnvironmentVariable 
  name: ACTION_CABLE_ALLOWED_REQUEST_ORIGINS
- value: https://mgmt._Engines_System(default_domain):10443
+ value: https://mgmt._Engines_System(default_domain):8484
  has_changed: true 
  build_time_only: false
 - !ruby/object:EnvironmentVariable 
  name: ACTION_CABLE_URL
- value: wss://mgmt._Engines_System(default_domain):10443/
+ value: wss://mgmt._Engines_System(default_domain):8484/
  has_changed: true 
  build_time_only: false
 - !ruby/object:EnvironmentVariable 
@@ -57,7 +57,7 @@ environments:
  build_time_only: false
 - !ruby/object:EnvironmentVariable
  name: FQDN_PORT
- value: mgmt._Engines_System(default_domain):10443
+ value: mgmt._Engines_System(default_domain):8484
  has_changed: true 
  build_time_only: false
  immutable: false
@@ -69,7 +69,7 @@ environments:
  build_time_only: false
  immutable: false
  label: "DOMAIN"
-image: engines/mgmt:_Engines_System(release)
+image: _Engines_System(flavor)/mgmt:_Engines_System(release)
 repo: na
 last_result: 
 setState: nocontainer

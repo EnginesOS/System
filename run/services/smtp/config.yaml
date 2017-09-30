@@ -9,7 +9,7 @@ memory: '64'
 hostname: smtp
 domain_name: 
 environments: []
-image: engines/smtp:_Engines_System(release)
+image: _Engines_System(flavor)/smtp:_Engines_System(release)
 volumes: 
  ssl_dir: 
   name: ssl_dir
@@ -20,6 +20,11 @@ volumes:
   name: spool
   remotepath: "/var/aspool/postfix/"
   localpath: "/var/lib/fs/services/postfix"
+  permissions: "rw"
+ kdc: 
+  name: kdc
+  remotepath: "/etc/krb5kdc/keys/"
+  localpath: "/var/lib/engines/auth/etc/krb5kdc/smtp/"
   permissions: "rw"
 port: 
 mapped_ports: 
