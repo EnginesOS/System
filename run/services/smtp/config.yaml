@@ -18,8 +18,8 @@ volumes:
   permissions: "ro"
  spool:
   name: spool
-  remotepath: "/var/aspool/postfix/"
-  localpath: "/var/lib/fs/services/postfix"
+  remotepath: "/var/spool/postfix/"
+  localpath: "/var/lib/engines/email"
   permissions: "rw"
  kdc: 
   name: kdc
