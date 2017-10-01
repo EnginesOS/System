@@ -22,7 +22,7 @@ volumes:
  spool:
   name: spool
   remotepath: "/var/spool/postfix/"
-  localpath: "/var/lib/fs/services/postfix"
+  localpath: "/var/lib/engines/email"
   permissions: "rw"
 environments:
 - !ruby/object:EnvironmentVariable
