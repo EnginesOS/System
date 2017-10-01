@@ -26,7 +26,9 @@ module ManagedServiceConsumers
       end
       unless alias_services.nil?
         params[:type_path] = @type_path
-        return alias_services + @container_api.registered_with_service(params)
+          reg_services =   @container_api.registered_with_service(params)
+        alias_services += reg_services if reg_services.is_a?(Array)
+        return alias_services 
       end
       @container_api.registered_with_service(params)
     else
