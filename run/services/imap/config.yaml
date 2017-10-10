@@ -1,4 +1,4 @@
-exit--- !ruby/object:ManagedService
+--- !ruby/object:ManagedService
 container_name: imap
 publisher_namespace: EnginesSystem
 type_path: imap
