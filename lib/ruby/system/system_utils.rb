@@ -29,7 +29,7 @@ class SystemUtils
   
   def SystemUtils.system_flavor
     if File.exists?(SystemConfig.FlavorFile)
-      File.read(SystemConfig.FlavorFile).strip!
+      File.read(SystemConfig.FlavorFile).strip
     else
       'engines'
     end
