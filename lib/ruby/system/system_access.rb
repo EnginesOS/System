@@ -10,9 +10,9 @@ class SystemAccess
   end
 
   def flavor
-     SystemUtils.system_flavor
-   end
-  
+    SystemUtils.system_flavor
+  end
+
   def pgsql_host
     'pgsql.engines.internal'
   end
@@ -117,6 +117,5 @@ class SystemAccess
   def system_hostname
     @engines_api.system_hostname
   end
-  
 
 end
