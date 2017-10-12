@@ -12,7 +12,7 @@ domain_name:
 schedules:
 - title: "Rotate Logs"
   time_spec: "*/60 * * * *"
-  action: start
+  action: "start"
   environments: []
 image: _Engines_System(flavor)/logview:_Engines_System(release)
 volumes:

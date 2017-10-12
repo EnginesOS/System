@@ -1,12 +1,10 @@
 require 'rubygems'
 require 'fileutils'
-
 require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 require '/opt/engines/lib/ruby/exceptions/engine_builder_exception.rb'
 
 class EngineBuilder < ErrorsApi
   require '/opt/engines/lib/ruby/api/system/container_state_files.rb'
-
 
   require_relative 'builder/setup_build_dir.rb'
   include BuildDirSetup
@@ -86,8 +84,6 @@ class EngineBuilder < ErrorsApi
     @blueprint = nil
   end
 
-
-
   def service_resource(service_name, what)
     @service_builder.service_resource(service_name, what)
   end
@@ -99,7 +95,6 @@ class EngineBuilder < ErrorsApi
   def setup_engine_dirs
     SystemUtils.run_system('/opt/engines/system/scripts/system/create_container_dir.sh ' + @build_params[:engine_name])
   end
-
 
   def set_locale
     ## STDERR.puts("LANGUAGE " + @build_params[:lang_code].to_s)
