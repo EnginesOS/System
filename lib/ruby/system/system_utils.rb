@@ -26,7 +26,7 @@ class SystemUtils
       'current'
     end
   end
-  
+
   def SystemUtils.system_flavor
     if File.exists?(SystemConfig.FlavorFile)
       File.read(SystemConfig.FlavorFile).strip
@@ -34,7 +34,7 @@ class SystemUtils
       'engines'
     end
   end
-  
+
   def SystemUtils.version
     SystemUtils.system_release + '-' + SystemConfig.api_version.to_s + '-' + SystemConfig.engines_system_version.to_s
   end
