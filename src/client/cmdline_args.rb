@@ -11,8 +11,12 @@ rescue StandardError => e
   return('Error:Problem with arg ' + ARGV[0].to_s)
 end
 
-def process_flag(flag,params)
+def process_flag(flag, params)
   case flag
+  when '--http'
+    params[:use_https] = false
+    when '--https'
+      params[:use_https] = true
   when '-v'
     params[:verbose] = true
   when '-p'
