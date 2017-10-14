@@ -4,6 +4,50 @@ if test -f /opt/engines/bin/engines/run/system/flags/first_start_complete
   echo 'First Start already ran'
   exit 127
  fi
+ 
+ 
+function create_service {
+/opt/engines/bin/engines service $service create &>>/tmp/first_start.log
+/opt/engines/bin/engines service $service wait_for start 20
+/opt/$service/bin/engines service $service wait_for_startup 20
+echo "$service Started" &>>/tmp/first_start.log
+}
+
+function destroy_service {
+/opt/engines/bin/engines service $service stop &>>/tmp/first_start.log
+/opt/engines/bin/engines service $service wait_for stop 45
+/opt/engines/bin/engines service $service destroy &>>/tmp/first_start.log
+/opt/$service/bin/engines service $service wait_for destroy 20
+echo "$service destroyed " &>>/tmp/first_start.log
+}
+
+function recreate_service {
+	destroy_service
+	create_service
+}
+
+function destroy_system_service {
+ /opt/engines/bin/system_service.rb $service stop  >/tmp/first_start.log
+ /opt/engines/bin/system_service.rb $service wait_for stop 20
+ /opt/engines/bin/system_service.rb $service destroy  >/tmp/first_start.log
+ /opt/engines/bin/system_service.rb $service wait_for destroy 20
+echo "$service Stopped" &>>/tmp/first_start.log
+}
+
+function create_system_service {
+ /opt/engines/bin/system_service.rb $service create  >/tmp/first_start.log
+ /opt/engines/bin/system_service.rb $service wait_for create 20
+ /opt/engines/bin/system_service.rb $service start  >/tmp/first_start.log
+ /opt/engines/bin/system_service.rb $service wait_for start 30
+ /opt/engines/bin/system_service.rb $service wait_for_startup 120
+echo "$service Stopped" &>>/tmp/first_start.log
+}
+
+function recreate_system_service {
+destroy_system_service
+create_system_service
+}
+
 
 unset CONTROL_HTTP
 
@@ -12,130 +56,28 @@ export DOCKER_IP
 
 /opt/engines/system/scripts/system/clear_service_dir.sh firstrun &>>/tmp/first_start.log
 
-/opt/engines/bin/system_service.rb system stop  >/tmp/first_start.log
-/opt/engines/bin/system_service.rb system wait_for stop 20
-echo "System Stopped" &>>/tmp/first_start.log
-
-/opt/engines/bin/system_service.rb registry stop &>>/tmp/first_start.log
-/opt/engines/bin/system_service.rb registry wait_for stop 20
-echo "Registry Stopped" &>>/tmp/first_start.log
+service=system
+destroy_system_service
 
 
-/opt/engines/bin/system_service.rb registry destroy &>>/tmp/first_start.log
-/opt/engines/bin/system_service.rb registry wait_for destroy 10
-echo "Registry Destroyed" &>>/tmp/first_start.log
+service=registry
+recreate_system_service
 
-/opt/engines/bin/system_service.rb registry create &>>/tmp/first_start.log
-/opt/engines/bin/system_service.rb registry wait_for create 20
-echo "Registry Created" &>>/tmp/first_start.log
+service=system
+create_system_service
 
-/opt/engines/bin/system_service.rb registry start &>>/tmp/first_start.log
-/opt/engines/bin/system_service.rb registry wait_for start 30
-/opt/engines/bin/system_service.rb registry wait_for_startup 120
-echo "Registry Started">>/tmp/first_start.log
-
-/opt/engines/bin/system_service.rb system stop &>>/tmp/first_start.log
-/opt/engines/bin/system_service.rb system wait_for stop 30
-/opt/engines/bin/system_service.rb system destroy &>>/tmp/first_start.log
-/opt/engines/bin/system_service.rb system wait_for destroy 30
-echo "System Destroyed" &>>/tmp/first_start.log
-
-/opt/engines/bin/system_service.rb system create &>>/tmp/first_start.log
-/opt/engines/bin/system_service.rb system wait_for create 60
-echo "System Created" &>>/tmp/first_start.log
-
-/opt/engines/bin/system_service.rb system start &>>/tmp/first_start.log
-/opt/engines/bin/system_service.rb system wait_for start 30
-/opt/engines/bin/system_service.rb system wait_for_startup 120
-echo "System Started" &>>/tmp/first_start.log
 sleep 30
 
-/opt/engines/bin/engines service dns stop &>> /tmp/first_start.log
-/opt/engines/bin/engines service dns wait_for stop 20
-
-/opt/engines/bin/engines service dns destroy  &>>/tmp/first_start.log
-/opt/engines/bin/engines service dns wait_for destroy 10
-
-/opt/engines/bin/engines service dns create &>> /tmp/first_start.log
-/opt/engines/bin/engines service dns wait_for start 30
-/opt/engines/bin/engines service dns wait_for_startup 30
-echo "DNS Started" &>>/tmp/first_start.log
-
-/opt/engines/bin/engines service syslog stop &>>/tmp/first_start.log
-/opt/engines/bin/engines service syslog wait_for stop 20
-
-/opt/engines/bin/engines service syslog destroy &>> /tmp/first_start.log
-/opt/engines/bin/engines service syslog wait_for destroy 20
-
-/opt/engines/bin/engines service syslog create &>> /tmp/first_start.log
-/opt/engines/bin/engines service syslog  wait_for start 20
-/opt/engines/bin/engines service syslog  wait_for_startup 20
-echo "Syslog Started" &>>/tmp/first_start.log
-
-/opt/engines/bin/engines service cert_auth stop &>>/tmp/first_start.log
-/opt/engines/bin/engines service cert_auth wait_for stop 20
-
-/opt/engines/bin/engines service cert_auth destroy& >>/tmp/first_start.log
-/opt/engines/bin/engines service cert_auth wait_for destroy 20
-
-/opt/engines/bin/engines service cert_auth create &>>/tmp/first_start.log
-/opt/engines/bin/engines service cert_auth wait_for start 20
-/opt/engines/bin/engines service cert_auth wait_for_startup 20
-echo "Cert Auth Started" &>>/tmp/first_start.log
+ for service in dns syslog cert_auth
+  do
+   recreate_service
+ done
 
 
-/opt/engines/bin/engines service mysql_server create &>>/tmp/first_start.log
-/opt/engines/bin/engines service mysql_server  wait_for start 20
-/opt/engines/bin/engines service mysql_server wait_for_startup 180
-echo "mysql_server Started" &>>/tmp/first_start.log
-
-/opt/engines/bin/engines service volmanager create &>>/tmp/first_start.log
-echo "volmanger Started" &>>/tmp/first_start.log
-
-/opt/engines/bin/engines service cron create &>>/tmp/first_start.log
-/opt/engines/bin/engines service cron wait_for start 20
-/opt/engines/bin/engines service cron wait_for_startup 45
-echo "cron Started" &>>/tmp/first_start.log
-
-
-/opt/engines/bin/engines service auth create &>>/tmp/first_start.log
-/opt/engines/bin/engines service auth wait_for start 20
-/opt/engines/bin/engines service auth wait_for_startup 45
-echo "auth Started" &>>/tmp/first_start.log
-
-
-/opt/engines/bin/engines service backup create &>>/tmp/first_start.log
-/opt/engines/bin/engines service backup wait_for start 20
-/opt/engines/bin/engines service backup wait_for_startup 45
-echo "backup Started" &>>/tmp/first_start.log 
-
-/opt/engines/bin/engines service log_rotate create &>>/tmp/first_start.log
-/opt/engines/bin/engines service backup wait_for start 20
-/opt/engines/bin/engines service backup wait_for_startup 20
-echo "log_rotate Started" &>>/tmp/first_start.log
-
-/opt/engines/bin/engines service ftp create &>>/tmp/first_start.log
-echo "ftpd Started" &>>/tmp/first_start.log
-
-/opt/engines/bin/engines service nginx create &>>/tmp/first_start.log
-/opt/engines/bin/engines service nginx wait_for start 20
-/opt/engines/bin/engines service nginx wait_for_startup 20
-echo "nginx Started" &>>/tmp/first_start.log
-
-echo Restart ftp &>>/tmp/first_start.log
-/opt/engines/bin/engines service ftp restart &>>/tmp/first_start.log
-
-/opt/engines/bin/engines service redis create &>>/tmp/first_start.log
-/opt/engines/bin/engines service redis wait_for start 20
-/opt/engines/bin/engines service redis wait_for_startup 20
-echo "redis Started" &>>/tmp/first_start.log
-
-/opt/engines/bin/engines service smtp create &>>/tmp/first_start.log
-/opt/engines/bin/engines service smtp wait_for start 20
-/opt/engines/bin/engines service smtp wait_for_startup 20
-echo "smtp Started" &>>/tmp/first_start.log
-
-#/opt/engines/system/scripts/update/run_update_engines_system_software.sh &>>/tmp/first_start.log
+for services in auth mysql_server cron volmanager backup ftp nginx redis smtp ldap uadmin
+ do
+   create_service
+ done
  
  if test -f /opt/engines/run/system/flags/install_mgmt
   then
@@ -143,6 +85,7 @@ echo "smtp Started" &>>/tmp/first_start.log
   	/opt/engines/bin/engines service mgmt wait_for start 30
   	/opt/engines/bin/engines service mgmt wait_for_startup 280 
   	echo "mgmt Started" &>>/tmp/first_start.log
+  	
   	gw_ifac=`netstat -nr |grep ^0.0.0.0 | awk '{print $8}' | head -1`
   	lan_ip=`/sbin/ifconfig $gw_ifac |grep "inet addr"  |  cut -f 2 -d: |cut -f 1 -d" "`
     ext_ip=`curl -s http://ipecho.net/ |grep "Your IP is" | sed "/^.* is /s///" | sed "/<.*$/s///"`
