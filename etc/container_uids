@@ -11,7 +11,7 @@ pmgr		pmgr		22004
 nginx		nginx		22005 _nginx
 mysql		mysql		22006 _mysql_server
 volmgr		volmgr		22007	_volmanager
-mongo		mongo		22008 _mongo
+mongo		mongo		22008 _mongo_server
 bind		bind		22009 _dns
 proftpd		proftpd	22010 _ftp
 courier  courier			22011 
