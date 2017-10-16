@@ -35,13 +35,11 @@ function recreate_service {
 function destroy_system_service {
 echo "Destroy $service" &>>/tmp/first_start.log
  /opt/engines/bin/system_service.rb $service stop  &>>/tmp/first_start.log
- #/opt/engines/bin/system_service.rb $service wait_for stop 60
- sleep 20
+ /opt/engines/bin/system_service.rb $service wait_for stop 60
  echo -n "Service $service is " 
  /opt/engines/bin/system_service.rb $service state
  /opt/engines/bin/system_service.rb $service destroy  &>>/tmp/first_start.log
- sleep 20
- #/opt/engines/bin/system_service.rb $service wait_for destroy 60
+ /opt/engines/bin/system_service.rb $service wait_for destroy 60
  echo -n "Service $service is " 
  /opt/engines/bin/system_service.rb $service state
 echo "$service destroyed" &>>/tmp/first_start.log
@@ -50,11 +48,10 @@ echo "$service destroyed" &>>/tmp/first_start.log
 function create_system_service {
 echo "Create $service" &>>/tmp/first_start.log
  /opt/engines/bin/system_service.rb $service create  &>>/tmp/first_start.log
- #/opt/engines/bin/system_service.rb $service wait_for create 60
+ /opt/engines/bin/system_service.rb $service wait_for create 60
  /opt/engines/bin/system_service.rb $service start  &>>/tmp/first_start.log
- #/opt/engines/bin/system_service.rb $service wait_for start 120
- #/opt/engines/bin/system_service.rb $service wait_for_startup 120
- sleep 30
+ /opt/engines/bin/system_service.rb $service wait_for start 120
+ /opt/engines/bin/system_service.rb $service wait_for_startup 120
 echo "$service created" &>>/tmp/first_start.log
 }
 
