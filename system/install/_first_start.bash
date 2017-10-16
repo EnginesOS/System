@@ -7,6 +7,7 @@ if test -f /opt/engines/bin/engines/run/system/flags/first_start_complete
  
  
 function create_service {
+echo "Create $service" &>>/tmp/first_start.log
 /opt/engines/bin/engines service $service create &>>/tmp/first_start.log
 /opt/engines/bin/engines service $service wait_for start 45
 /opt/engines/bin/engines service $service wait_for_startup 120
@@ -14,6 +15,7 @@ echo "$service started" &>>/tmp/first_start.log
 }
 
 function destroy_service {
+echo "Destroy $service" &>>/tmp/first_start.log
 /opt/engines/bin/engines service $service stop &>>/tmp/first_start.log
 /opt/engines/bin/engines service $service wait_for stop 120
  echo -n Service $service is 
@@ -31,6 +33,7 @@ function recreate_service {
 }
 
 function destroy_system_service {
+echo "Destroy $service" &>>/tmp/first_start.log
  /opt/engines/bin/system_service.rb $service stop  &>>/tmp/first_start.log
  /opt/engines/bin/system_service.rb $service wait_for stop 60
  echo -n Service $service is 
@@ -43,6 +46,7 @@ echo "$service destroyed" &>>/tmp/first_start.log
 }
 
 function create_system_service {
+echo "Create $service" &>>/tmp/first_start.log
  /opt/engines/bin/system_service.rb $service create  &>>/tmp/first_start.log
  /opt/engines/bin/system_service.rb $service wait_for create 60
  /opt/engines/bin/system_service.rb $service start  &>>/tmp/first_start.log
