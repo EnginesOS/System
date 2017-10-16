@@ -11,11 +11,6 @@ domain_name:
 environments: []
 image: _Engines_System(flavor)/smtp:_Engines_System(release)
 volumes: 
- ssl_dir: 
-  name: ssl_dir
-  remotepath: "/etc/ssl"
-  localpath: "/var/lib/engines/services/cert_auth/services/smtp"
-  permissions: "ro"
  spool:
   name: spool
   remotepath: "/var/spool/postfix/"

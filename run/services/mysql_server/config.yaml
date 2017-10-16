@@ -15,7 +15,7 @@ volumes:
  my_database: 
   name: my_database
   remotepath: "/var/lib/mysql"
-  localpath: "/var/lib/engines/services/mysql"
+  localpath: "/var/lib/engines/services/mysql_server"
   permissions: "rw"
 port: 
 mapped_ports:

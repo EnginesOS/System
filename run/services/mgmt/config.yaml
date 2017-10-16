@@ -10,11 +10,6 @@ type_path: mgmt
 port: 8484
 domain_name: _Engines_System(default_domain)
 volumes: 
- certs: 
-  volume_name: certs
-  remotepath: "/opt/engines/etc/ssl/"
-  localpath: "/var/lib/engines/services/cert_auth/services/mgmt/"
-  permissions: "ro"  
  public_dir: 
   volume_name: public_dir
   remotepath: "/home/fs/persistent"
