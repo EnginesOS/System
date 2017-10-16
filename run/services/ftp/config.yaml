@@ -17,11 +17,6 @@ volumes:
   remotepath: "/ftp/rw/"
   localpath: "/var/lib/engines/fs/"
   permissions: "rw"
- kdc: 
-  name: kdc
-  remotepath: "/etc/krb5kdc/keys/"
-  localpath: "/var/lib/engines/services/auth/etc/krb5kdc/ftp/"
-  permissions: "rw"
  fs_ro: 
   name: fs_ro
   remotepath: "/ftp/ro/"

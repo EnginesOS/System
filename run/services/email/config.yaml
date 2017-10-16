@@ -10,11 +10,6 @@ type_path: email
 port: 8000
 kerberos: true
 volumes:
- kdc: 
-  name: kdc
-  remotepath: "/etc/krb5kdc/keys/"
-  localpath: "/var/lib/engines/services/auth/etc/krb5kdc/email/"
-  permissions: "rw"
  spool:
   name: spool
   remotepath: "/var/spool/postfix/"
