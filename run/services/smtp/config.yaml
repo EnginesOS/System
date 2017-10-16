@@ -10,6 +10,7 @@ hostname: smtp
 domain_name: 
 environments: []
 image: _Engines_System(flavor)/smtp:_Engines_System(release)
+kerberos: true
 volumes: 
  spool:
   name: spool

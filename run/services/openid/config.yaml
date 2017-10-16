@@ -8,6 +8,7 @@ hostname: openid
 publisher_namespace: EnginesSystem
 type_path: openid
 port: 8000
+kerberos: true
 volumes:
  kdc: 
   name: kdc

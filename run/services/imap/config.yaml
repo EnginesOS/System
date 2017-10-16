@@ -8,6 +8,7 @@ last_error:
 memory: '192'
 hostname: imap
 domain_name: 
+kerberos: true
 environments:
 - !ruby/object:EnvironmentVariable
  name: ContUser

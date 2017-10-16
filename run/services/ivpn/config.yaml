@@ -11,6 +11,7 @@ memory: '96'
 hostname: ivpn
 domain_name: 
 environments: []
+kerberos: true
 image: _Engines_System(flavor)/ivpn:_Engines_System(release)
 volumes: []
 port: 

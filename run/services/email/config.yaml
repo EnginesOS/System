@@ -8,6 +8,7 @@ hostname: email
 publisher_namespace: EnginesSystem
 type_path: email
 port: 8000
+kerberos: true
 volumes:
  kdc: 
   name: kdc

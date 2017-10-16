@@ -9,6 +9,7 @@ memory: '56'
 hostname: ftp
 domain_name: 
 environments: []
+kerberos: true
 image: _Engines_System(flavor)/ftp:_Engines_System(release)
 volumes:
  fs_rw: 

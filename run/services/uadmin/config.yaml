@@ -10,6 +10,7 @@ memory: '32'
 hostname: uadmin
 domain_name: 
 environments: []
+kerberos: true
 image: _Engines_System(flavor)/uadmin:_Engines_System(release)
 volumes: 
  kdc: 
