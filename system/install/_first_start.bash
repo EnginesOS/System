@@ -18,11 +18,11 @@ function destroy_service {
 echo "Destroy $service" &>>/tmp/first_start.log
 /opt/engines/bin/engines service $service stop &>>/tmp/first_start.log
 /opt/engines/bin/engines service $service wait_for stop 120
- echo -n Service $service is 
+ echo -n "Service $service is " 
 /opt/engines/bin/engines service $service state
 /opt/engines/bin/engines service $service destroy &>>/tmp/first_start.log
 /opt/engines/bin/engines service $service wait_for destroy 60
- echo -n Service $service is 
+ echo -n "Service $service is " 
 /opt/engines/bin/engines service $service state
 echo "$service destroyed " &>>/tmp/first_start.log
 }
@@ -37,12 +37,12 @@ echo "Destroy $service" &>>/tmp/first_start.log
  /opt/engines/bin/system_service.rb $service stop  &>>/tmp/first_start.log
  #/opt/engines/bin/system_service.rb $service wait_for stop 60
  sleep 20
- echo -n Service $service is 
+ echo -n "Service $service is " 
  /opt/engines/bin/system_service.rb $service state
  /opt/engines/bin/system_service.rb $service destroy  &>>/tmp/first_start.log
  sleep 20
  #/opt/engines/bin/system_service.rb $service wait_for destroy 60
- echo -n Service $service is 
+ echo -n "Service $service is " 
  /opt/engines/bin/system_service.rb $service state
 echo "$service destroyed" &>>/tmp/first_start.log
 }
@@ -92,7 +92,7 @@ docker start system
  done
 
 
-for services in auth mysql_server cron volmanager backup ftp nginx redis smtp ldap uadmin
+for service in auth mysql_server cron volmanager backup ftp nginx redis smtp ldap uadmin
  do
    create_service
  done
