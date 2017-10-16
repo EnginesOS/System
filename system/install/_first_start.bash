@@ -9,7 +9,7 @@ if test -f /opt/engines/bin/engines/run/system/flags/first_start_complete
 function create_service {
 /opt/engines/bin/engines service $service create &>>/tmp/first_start.log
 /opt/engines/bin/engines service $service wait_for start 20
-/opt/$service/bin/engines service $service wait_for_startup 20
+/opt/engines/bin/engines service $service wait_for_startup 20
 echo "$service Started" &>>/tmp/first_start.log
 }
 
@@ -17,7 +17,7 @@ function destroy_service {
 /opt/engines/bin/engines service $service stop &>>/tmp/first_start.log
 /opt/engines/bin/engines service $service wait_for stop 45
 /opt/engines/bin/engines service $service destroy &>>/tmp/first_start.log
-/opt/$service/bin/engines service $service wait_for destroy 20
+/opt/engines/bin/engines service $service wait_for destroy 20
 echo "$service destroyed " &>>/tmp/first_start.log
 }
 
