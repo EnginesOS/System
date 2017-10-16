@@ -19,11 +19,11 @@ echo "Destroy $service" &>>/tmp/first_start.log
 /opt/engines/bin/engines service $service stop &>>/tmp/first_start.log
 /opt/engines/bin/engines service $service wait_for stop 120
  echo -n Service $service is 
- /opt/engines/bin/system_service.rb $service state
+/opt/engines/bin/engines service $service state
 /opt/engines/bin/engines service $service destroy &>>/tmp/first_start.log
 /opt/engines/bin/engines service $service wait_for destroy 60
  echo -n Service $service is 
- /opt/engines/bin/system_service.rb $service state
+/opt/engines/bin/engines service $service state
 echo "$service destroyed " &>>/tmp/first_start.log
 }
 
@@ -52,7 +52,7 @@ echo "Create $service" &>>/tmp/first_start.log
  /opt/engines/bin/system_service.rb $service start  &>>/tmp/first_start.log
  /opt/engines/bin/system_service.rb $service wait_for start 120
  /opt/engines/bin/system_service.rb $service wait_for_startup 120
-echo "$service recreated" &>>/tmp/first_start.log
+echo "$service created" &>>/tmp/first_start.log
 }
 
 function recreate_system_service {
