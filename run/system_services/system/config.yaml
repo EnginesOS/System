@@ -80,7 +80,7 @@ volumes:
  engines_ca: 
   name: engines_ca
   remotepath: "/opt/engines/etc/ssl/"
-  localpath: "/var/lib/engines/cert_auth/services/system/"
+  localpath: "/var/lib/engines/services/cert_auth/services/system/"
   permissions: rw
 port: 
 mapped_ports:
