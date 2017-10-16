@@ -13,12 +13,12 @@ volumes:
  certs: 
   volume_name: certs
   remotepath: "/opt/engines/etc/ssl/"
-  localpath: "/var/lib/engines/cert_auth/services/mgmt/"
+  localpath: "/var/lib/engines/services/cert_auth/services/mgmt/"
   permissions: "ro"  
  public_dir: 
   volume_name: public_dir
   remotepath: "/home/fs/persistent"
-  localpath: "/var/lib/engines/mgmt/public"
+  localpath: "/var/lib/engines/services/mgmt/public"
   permissions: "rw"  
 mapped_ports:
  web:

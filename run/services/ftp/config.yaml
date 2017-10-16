@@ -14,7 +14,7 @@ volumes:
  ssl_certs: 
   name: ssl_certs
   remotepath: "/etc/ssl/"
-  localpath: "/var/lib/engines/cert_auth/services/ftp"
+  localpath: "/var/lib/engines/services/cert_auth/services/ftp"
   permissions: "ro"
  fs_rw: 
   name: fs_rw
@@ -24,7 +24,7 @@ volumes:
  kdc: 
   name: kdc
   remotepath: "/etc/krb5kdc/keys/"
-  localpath: "/var/lib/engines/auth/etc/krb5kdc/ftp/"
+  localpath: "/var/lib/engines/services/auth/etc/krb5kdc/ftp/"
   permissions: "rw"
  fs_ro: 
   name: fs_ro

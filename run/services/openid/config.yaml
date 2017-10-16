@@ -12,12 +12,12 @@ volumes:
  kdc: 
   name: kdc
   remotepath: "/etc/krb5kdc/keys/"
-  localpath: "/var/lib/engines/auth/etc/krb5kdc/openid/"
+  localpath: "/var/lib/engines/services/auth/etc/krb5kdc/openid/"
   permissions: "rw"
  kdc: 
   name: kdc
   remotepath: "/var/lib/openid/"
-  localpath: "/var/lib/engines/openid/"
+  localpath: "/var/lib/engines/services/openid/"
   permissions: "rw"
 environments:
 - !ruby/object:EnvironmentVariable

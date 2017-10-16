@@ -1,7 +1,7 @@
  cacerts: 
   name: cacerts
   remotepath: /usr/local/share/ca-certificates/engines_internal_ca.crt
-  localpath: /var/lib/engines/cert_auth/public/ca/certs/system_CA.pem
+  localpath: /var/lib/engines/services/cert_auth/public/ca/certs/system_CA.pem
   permissions: "ro"
  tz_map: 
   name: tz_map

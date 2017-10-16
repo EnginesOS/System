@@ -20,8 +20,8 @@ name=$1
 	key_file=/home/app/tmp/$name.key
 	cert_file=/home/app/tmp/$name.cert
   else 
-	key_file=/var/lib/engines/cert_auth/public/keys/$name.key
-	cert_file=/var/lib/engines/cert_auth/public/certs/$name.crt
+	key_file=/var/lib/engines/services/cert_auth/public/keys/$name.key
+	cert_file=/var/lib/engines/services/cert_auth/public/certs/$name.crt
  fi
 	
 	

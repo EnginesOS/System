@@ -15,12 +15,12 @@ volumes:
  my_database: 
   name: my_database
   remotepath: "/var/lib/mysql"
-  localpath: "/var/lib/engines/mysql"
+  localpath: "/var/lib/engines/services/mysql"
   permissions: "rw"
  sslcerts: 
   name: sslcerts
   remotepath: "/etc/ssl/"
-  localpath: "/var/lib/engines/cert_auth/services/mysql/"
+  localpath: "/var/lib/engines/services/cert_auth/services/mysql/"
   permissions: "ro"  
  mysql_run: 
   name: mysql_run

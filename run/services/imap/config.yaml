@@ -19,22 +19,22 @@ volumes:
  imap_data: 
   name: imap_data
   remotepath: "/var/lib/dovecot"
-  localpath: "/var/lib/engines/imap/lib"
+  localpath: "/var/lib/engines/services/imap/lib"
   permissions: "rw"
  kdc: 
   name: kdc
   remotepath: "/etc/krb5kdc/keys/"
-  localpath: "/var/lib/engines/auth/etc/krb5kdc/imap/"
+  localpath: "/var/lib/engines/services/auth/etc/krb5kdc/imap/"
   permissions: "rw"
  mail_dir: 
   name: mail_dir
   remotepath: "/var/mail"
-  localpath: "/var/lib/engines/imap/mail"
+  localpath: "/var/lib/engines/services/imap/mail"
   permissions: "rw"
  ssl_dir: 
   name: ssl_dir
   remotepath: "/etc/ssl"
-  localpath: "/var/lib/engines/cert_auth/services/imap"
+  localpath: "/var/lib/engines/services/cert_auth/services/imap"
   permissions: "ro"
 mapped_ports:
  imap: 

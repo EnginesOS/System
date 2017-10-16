@@ -16,7 +16,7 @@ volumes:
  sslcerts: 
   name: sslcerts
   remotepath: "/etc/nginx/ssl/"
-  localpath: "/var/lib/engines/cert_auth/services/nginx/"
+  localpath: "/var/lib/engines/services/cert_auth/services/nginx/"
   permissions: "ro"
 port: 
 mapped_ports:

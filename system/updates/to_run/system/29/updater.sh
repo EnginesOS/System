@@ -8,12 +8,14 @@ if ! test -d services
   chown engines.containers services
 fi
 
+rmdir services/syslog/rmt
+rmdir services/
 
-
-for service in auth email imap mgmt redis syslog ldap
+for service in auth cert_auth email imap mgmt redis syslog ldap
+ do
  mv $service services
-fi
+done
  
 mv mongo services/mongo_server
-mv pqsql services/pgsql_server
+mv pgsql services/pgsql_server
 mv mysql services/mysql_server

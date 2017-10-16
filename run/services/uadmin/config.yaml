@@ -15,7 +15,7 @@ volumes:
  kdc: 
   name: kdc
   remotepath: "/etc/krb5kdc/keys/"
-  localpath: "/var/lib/engines/auth/etc/krb5kdc/uadmin/"
+  localpath: "/var/lib/engines/services/auth/etc/krb5kdc/uadmin/"
   permissions: "rw"
 mapped_ports: 
 repo: na

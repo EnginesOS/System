@@ -14,17 +14,17 @@ volumes:
  ssl_dir: 
   name: ssl_dir
   remotepath: "/etc/ssl"
-  localpath: "/var/lib/engines/cert_auth/services/smtp"
+  localpath: "/var/lib/engines/services/cert_auth/services/smtp"
   permissions: "ro"
  spool:
   name: spool
   remotepath: "/var/spool/postfix/"
-  localpath: "/var/lib/engines/email"
+  localpath: "/var/lib/engines/services/email"
   permissions: "rw"
  kdc: 
   name: kdc
   remotepath: "/etc/krb5kdc/keys/"
-  localpath: "/var/lib/engines/auth/etc/krb5kdc/smtp/"
+  localpath: "/var/lib/engines/services/auth/etc/krb5kdc/smtp/"
   permissions: "rw"
 port: 
 mapped_ports: 

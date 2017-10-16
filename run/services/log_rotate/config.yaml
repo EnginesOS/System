@@ -16,7 +16,7 @@ volumes:
  syslog: 
   name: syslog
   remotepath: "/var/log/syslog/"
-  localpath: "/var/lib/engines/syslog/rmt/"
+  localpath: "/var/lib/engines/services/syslog/rmt/"
   permissions: rw
  engines: 
   name: engines
