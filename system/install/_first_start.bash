@@ -16,8 +16,12 @@ echo "$service started" &>>/tmp/first_start.log
 function destroy_service {
 /opt/engines/bin/engines service $service stop &>>/tmp/first_start.log
 /opt/engines/bin/engines service $service wait_for stop 120
+ echo -n Service $service is 
+ /opt/engines/bin/system_service.rb $service state
 /opt/engines/bin/engines service $service destroy &>>/tmp/first_start.log
 /opt/engines/bin/engines service $service wait_for destroy 60
+ echo -n Service $service is 
+ /opt/engines/bin/system_service.rb $service state
 echo "$service destroyed " &>>/tmp/first_start.log
 }
 
@@ -29,8 +33,12 @@ function recreate_service {
 function destroy_system_service {
  /opt/engines/bin/system_service.rb $service stop  &>>/tmp/first_start.log
  /opt/engines/bin/system_service.rb $service wait_for stop 60
+ echo -n Service $service is 
+ /opt/engines/bin/system_service.rb $service state
  /opt/engines/bin/system_service.rb $service destroy  &>>/tmp/first_start.log
  /opt/engines/bin/system_service.rb $service wait_for destroy 60
+ echo -n Service $service is 
+ /opt/engines/bin/system_service.rb $service state
 echo "$service destroyed" &>>/tmp/first_start.log
 }
 
@@ -66,11 +74,10 @@ recreate_system_service
 service=system
 create_system_service
 
-#Force pick of of cert
+#Force pick up of cert
 docker stop system
 docker start system
- 
-
+/opt/engines/bin/system_service.rb system wait_for_startup 120
 
  for service in dns syslog cert_auth
   do
