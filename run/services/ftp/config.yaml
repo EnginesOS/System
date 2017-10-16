@@ -11,11 +11,6 @@ domain_name:
 environments: []
 image: _Engines_System(flavor)/ftp:_Engines_System(release)
 volumes:
- ssl_certs: 
-  name: ssl_certs
-  remotepath: "/etc/ssl/"
-  localpath: "/var/lib/engines/services/cert_auth/services/ftp"
-  permissions: "ro"
  fs_rw: 
   name: fs_rw
   remotepath: "/ftp/rw/"

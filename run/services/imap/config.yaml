@@ -31,11 +31,6 @@ volumes:
   remotepath: "/var/mail"
   localpath: "/var/lib/engines/services/imap/mail"
   permissions: "rw"
- ssl_dir: 
-  name: ssl_dir
-  remotepath: "/etc/ssl"
-  localpath: "/var/lib/engines/services/cert_auth/services/imap"
-  permissions: "ro"
 mapped_ports:
  imap: 
   name: imap

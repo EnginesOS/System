@@ -12,12 +12,7 @@ hostname: ivpn
 domain_name: 
 environments: []
 image: _Engines_System(flavor)/ivpn:_Engines_System(release)
-volumes:
- ssl_certs: 
-  name: ssl_certs
-  remotepath: "/etc/ssl/"
-  localpath: "/var/lib/engines/services/cert_auth/services/ivpn"
-  permissions: "ro"
+volumes: []
 port: 
 mapped_ports:
  nat-t:

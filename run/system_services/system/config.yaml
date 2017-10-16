@@ -49,8 +49,8 @@ volumes:
   permissions: rw
  ssh_key_dir: 
   name: ssh_key_dir
-  remotepath: "/home/engines/.ssh/mgmt/"
-  localpath: "/home/engines/.ssh/mgmt/"
+  remotepath: "/home/engines/.ssh/system/"
+  localpath: "/home/engines/.ssh/system/"
   permissions: rw 
  sqlite: 
   name: sqlite

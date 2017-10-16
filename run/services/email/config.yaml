@@ -9,11 +9,6 @@ publisher_namespace: EnginesSystem
 type_path: email
 port: 8000
 volumes:
- ssl_dir: 
-  name: ssl_dir
-  remotepath: "/etc/ssl"
-  localpath: "/var/lib/engines/services/cert_auth/services/email/"
-  permissions: "ro"
  kdc: 
   name: kdc
   remotepath: "/etc/krb5kdc/keys/"
