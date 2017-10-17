@@ -10,10 +10,10 @@ last_error:
 memory: '96'
 hostname: ivpn
 domain_name: 
-environments: []
+environments: 
 kerberos: true
 image: _Engines_System(flavor)/ivpn:_Engines_System(release)
-volumes: []
+volumes: 
 port: 
 mapped_ports:
  nat-t:
