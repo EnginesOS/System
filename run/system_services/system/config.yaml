@@ -31,7 +31,7 @@ volumes:
  icons_dir: 
   name: icons_dir
   remotepath: "/home/app/public/system/"
-  localpath: "/var/lib/engines/mgmt/public/system/"
+  localpath: "/var/lib/engines/services/mgmt/public/system/"
   permissions: rw
  socket: 
   name: socket
