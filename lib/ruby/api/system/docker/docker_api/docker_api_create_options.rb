@@ -234,17 +234,8 @@ module DockerApiCreateOptions
       prefix='services'
     end
     store = prefix + '/' + container.container_name + '/'
-    [SystemConfig.CertificatesDir + store + ':' + SystemConfig.CertificatesDestination + ':ro',
-      SystemConfig.KeysDir + store + ':' + SystemConfig.KeysDestination + ':ro']
-    #    if container.certificates.is_a?(Array)
-    #      mounts = []
-    #      container.certificates.each do |certificate|
-    #        prefix =  certificate[:container_type] + 's/' + certificate[:parent_engine] + '/' + certificate[:variables][:cert_name]
-    #        mounts.push(SystemConfig.CertificatesDir + prefix + '.crt:' + SystemConfig.CertificatesDestination +  certificate[:variables][:cert_name] + '.crt:ro' )
-    #        mounts.push(SystemConfig.KeysDir + prefix + '.key:' + SystemConfig.KeysDestination +  certificate[:variables][:cert_name] + '.key:ro' )
-    #      end
-    #      mounts
-    #    end
+    [SystemConfig.CertAuthTop + store + 'certs:' + SystemConfig.CertificatesDestination + ':ro',
+      SystemConfig.CertAuthTop + store + 'keys:' + SystemConfig.KeysDestination + ':ro']   
   end
 
   def system_mounts(container)

@@ -20,6 +20,11 @@ module EnginesSystemDirs
   @@timeZone_fileMapping = ' -v /etc/localtime:/etc/localtime:ro '
   @@NoRemoteExceptionLoggingFlagFile = '/opt/engines/run/system/flags/no_remote_exception_log'
   @@SSHStore = '/opt/engines/etc/ssh/keys'
+  @@CertAuthTop = '/var/lib/engines/services/cert_auth/'
+  
+  def SystemConfig.CertAuthTop
+    @@CertAuthTop
+  end
   
   def SystemConfig.SSHStore
     @@SSHStore
