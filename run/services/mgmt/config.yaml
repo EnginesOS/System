@@ -14,7 +14,7 @@ volumes:
  public_dir: 
   volume_name: public_dir
   remotepath: "/home/fs/persistent"
-  localpath: "/var/lib/engines/services/mgmt/public"
+  localpath: "/var/lib/engines/services/mgmt"
   permissions: "rw"  
 mapped_ports:
  web:
