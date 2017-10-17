@@ -14,7 +14,7 @@ schedules:
 - title: "Rotate Logs"
   time_spec: "*/60 * * * *"
   action: "start"
-  environments: []
+environments: 
 image: _Engines_System(flavor)/logview:_Engines_System(release)
 volumes:
  syslog: 
