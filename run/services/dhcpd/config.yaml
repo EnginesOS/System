@@ -9,6 +9,7 @@ last_error:
 memory: '16'
 hostname: dhcpd
 domain_name: 
+kerberos: false
 environments: []
 image: _Engines_System(flavor)/dhcpd:_Engines_System(release)
 volumes: {}

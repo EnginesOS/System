@@ -10,6 +10,7 @@ last_error:
 memory: '96'
 hostname: cron
 domain_name: 
+kerberos: false
 aliases: 
  - schedule
 environments: []

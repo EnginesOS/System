@@ -8,6 +8,7 @@ last_error:
 memory: '199'
 hostname: dockerstats
 domain_name: 
+kerberos: false
 environments: []
 image: _Engines_System(flavor)/sumologic-dockerstats:_Engines_System(release)
 arguments:

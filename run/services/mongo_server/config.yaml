@@ -9,6 +9,7 @@ memory: '168'
 stop_timeout: 600
 hostname: mongo
 domain_name: 
+kerberos: false
 environments: []
 image: _Engines_System(flavor)/mongo:_Engines_System(release)
 volumes:

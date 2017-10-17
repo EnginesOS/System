@@ -9,6 +9,7 @@ memory: '48'
 hostname: logview
 soft_service: true
 domain_name: 
+kerberos: false
 schedules:
 - title: "Rotate Logs"
   time_spec: "*/60 * * * *"

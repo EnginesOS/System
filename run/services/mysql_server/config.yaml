@@ -9,6 +9,7 @@ memory: '456'
 stop_timeout: 500
 hostname: mysql
 domain_name: 
+kerberos: false
 environments: []
 image: _Engines_System(flavor)/mysql:_Engines_System(release)
 volumes:

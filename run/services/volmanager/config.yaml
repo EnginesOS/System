@@ -9,6 +9,7 @@ last_error:
 memory: '32'
 hostname: volmanager
 domain_name: 
+kerberos: false
 environments: []
 image: _Engines_System(flavor)/fs:_Engines_System(release)
 volumes: 

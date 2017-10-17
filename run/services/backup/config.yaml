@@ -9,6 +9,7 @@ last_error:
 memory: '256'
 hostname: backup
 domain_name: 
+kerberos: false
 environments: []
 image: _Engines_System(flavor)/backup:_Engines_System(release)
 system_keys:

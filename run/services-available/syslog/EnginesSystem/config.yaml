@@ -8,6 +8,7 @@ last_error:
 memory: '128'
 hostname: syslog
 domain_name: 
+kerberos: false
 environments: []
 image: _Engines_System(flavor)/syslog:_Engines_System(release)
 volumes:

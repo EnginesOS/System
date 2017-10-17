@@ -9,6 +9,7 @@ last_error:
 memory: '96'
 hostname: auth
 domain_name: engines.internal
+kerberos: false
 environments: []
 volumes:
  auth_scripts: 

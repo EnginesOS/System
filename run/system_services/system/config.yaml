@@ -8,6 +8,7 @@ memory: '385'
 hostname: 'system'
 no_ca_map: true
 domain_name: 
+kerberos: true
 environments:
 - !ruby/object:EnvironmentVariable
  name: BUG_REPORTS_SERVER
