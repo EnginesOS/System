@@ -13,7 +13,7 @@ domain_name:
 kerberos: false
 aliases: 
  - schedule
-environments: []
+environments:
 image: _Engines_System(flavor)/cron:_Engines_System(release)
 volumes: []
 port: 
