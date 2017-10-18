@@ -13,7 +13,7 @@ module BuilderSettings
   @@CustomPHPiniFile = '/home/engines/configs/php/01-custom.ini'
   @@CustomApacheConfFile = '/home/engines/configs/apache2/extra.conf'
   @@SetupParamsScript = '/bin/bash /home/setup_params.sh'
-  @@ActionatorDir = '/home/actionators/'
+  @@ActionatorDir = '/home/engines/scripts/actionators/'
   @@BackupScriptsRoot = '/home/services/'
   @@BackupScriptsSrcRoot = '/opt/engines/system/templates/services/backup/'
   @@LanguageFile = '/opt/engines/etc/locale'

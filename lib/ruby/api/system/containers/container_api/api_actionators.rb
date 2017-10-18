@@ -15,7 +15,7 @@ module ApiActionators
       data = params.to_json
     end
     
-    cmds = ['/home/actionators/' + actionator[:name].to_s + '.sh'] 
+    cmds = ['/home/engines/scripts/actionators/' + actionator[:name].to_s + '.sh'] 
     result = engines_core.exec_in_container(
     {container: c,
       command_line: cmds,
