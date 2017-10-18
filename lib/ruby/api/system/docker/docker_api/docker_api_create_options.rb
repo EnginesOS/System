@@ -327,7 +327,7 @@ module DockerApiCreateOptions
   end
   
   def system_envs(container)
-    envs = ['CONTAINER-NAME=' + container.container_name]
+    envs = ['CONTAINER_NAME=' + container.container_name]
       envs
   end   
     
