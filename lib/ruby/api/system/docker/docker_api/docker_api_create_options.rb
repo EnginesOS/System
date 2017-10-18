@@ -318,13 +318,19 @@ module DockerApiCreateOptions
   end
 
   def envs(container)
-    envs = []
+    envs = system_envs(container)
     container.environments.each do |env|
       next if env.build_time_only
       envs.push(env.name.to_s + '=' + env.value.to_s)
     end
     envs
   end
+  
+  def system_envs(container)
+    envs = ['CONTAINER-NAME=' + container.container_name]
+      envs
+  end   
+    
 
   def add_port_range(bindings, port)
     internal = port[:port].split('-')
