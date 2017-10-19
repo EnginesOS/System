@@ -68,10 +68,10 @@ fi
 
 function custom_start {
 #if not blocking continues
-if test -f /home/engines/scripts/custom_start.sh
+if test -f /home/engines/scripts/engine/custom_start.sh
  then
    echo "Custom start"	   
-   result=`/home/engines/scripts/custom_start.sh`
+   result=`/home/engines/scripts/engine/custom_start.sh`
    exit_code=$?
 	 if test "$result" = "exit"
 	  then 

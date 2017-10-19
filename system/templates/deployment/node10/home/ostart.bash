@@ -34,9 +34,9 @@ if test -f /home/engines/scripts/pre-running.sh
 		bash	/home/engines/scripts/pre-running.sh
 fi	
 
-if test -f /home/engines/scripts/custom_start.sh
+if test -f /home/engines/scripts/engine/custom_start.sh
 	then
-		/home/engines/scripts/custom_start.sh
+		/home/engines/scripts/engine/custom_start.sh
 	fi
 
 if test -n "$CRONJOBS"

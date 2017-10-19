@@ -46,9 +46,9 @@ then
 	service cron start
 fi
 
-if test -f /home/engines/scripts/custom_start.sh
+if test -f /home/engines/scripts/engine/custom_start.sh
 	then
-		bash	/home/engines/scripts/custom_start.sh
+		bash	/home/engines/scripts/engine/custom_start.sh
 	fi
 
 touch /var/run/startup_complete 	
