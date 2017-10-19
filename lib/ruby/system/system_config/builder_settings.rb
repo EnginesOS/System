@@ -8,7 +8,7 @@ module BuilderSettings
   @@PreStartScript = '/home/engines/scripts/engine/pre-runnning.sh'
   @@InstallScript = '/home/engines/scripts/engine/custom_install.sh'
   @@StartScript = '/home/engines/scripts/engine/custom_start.sh'
-  @@PostInstallScript = '/home/engines/engine/scripts/post_install.sh'
+  @@PostInstallScript = '/home/engines/scripts/engine/post_install.sh'
   @@ScriptsDir = '/home/engines/scripts/engine/'
   @@CustomPHPiniFile = '/home/engines/configs/php/01-custom.ini'
   @@CustomApacheConfFile = '/home/engines/configs/apache2/extra.conf'
