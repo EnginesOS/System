@@ -1,4 +1,4 @@
-parent_engine: mysql_server
+parent_engine: mysqld
 publisher_namespace: EnginesSystem
 type_path: logview
 service_handle: mysql_error_logview

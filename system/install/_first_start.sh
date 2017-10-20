@@ -83,13 +83,13 @@ docker stop system
 docker start system
 /opt/engines/bin/system_service.rb system wait_for_startup 120
 
- for service in dns syslog cert_auth
+ for service in dns syslog certs
   do
    recreate_service
  done
 
 
-for service in auth mysql_server cron volmanager backup ftp nginx redis smtp ldap uadmin
+for service in auth mysqld cron volmanager backup ftp wap redis smtp ldap uadmin
  do
    create_service
  done

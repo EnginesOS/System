@@ -1,6 +1,6 @@
 module Certificates
   def upload_ssl_certificate(params)
-    certs_service = loadManagedService('cert_auth')
+    certs_service = loadManagedService('certs')
   #  STDERR.puts(' Cert  ' +  params[:certificate] )
   #  STDERR.puts(' KEY  ' +  params[:private_key] )
     actionator = get_service_actionator(certs_service, 'import_cert')
@@ -8,14 +8,14 @@ module Certificates
   end
 
   def remove_cert(params)
-    certs_service = loadManagedService('cert_auth')
+    certs_service = loadManagedService('certs')
     actionator = get_service_actionator(certs_service, 'remove_cert')
    
     unless params[:store].nil? || params[:store].start_with?('imported')
       service = { container_type: container_type(params[:store]),
         parent_engine: engine_name(params[:store]),
         publisher_namespace: 'EnginesSystem',
-        type_path: 'cert_auth',
+        type_path: 'certs',
         service_handle: params[:cert_name]
       }
       STDERR.puts('CERT SERVICe IS:' + service.to_s)
@@ -48,35 +48,35 @@ module Certificates
   end
 
   def set_default_cert(params)
-    certs_service = loadManagedService('cert_auth')
+    certs_service = loadManagedService('certs')
     actionator = get_service_actionator(certs_service, 'set_default')
     certs_service.perform_action(actionator, params)
     true
   end
 
   def list_certs
-    certs_service = loadManagedService('cert_auth')
+    certs_service = loadManagedService('certs')
     actionator = get_service_actionator(certs_service, 'list_certs')
     certs_service.perform_action(actionator)[:certs]
   end
 
   def services_default_certs
-    certs_service = loadManagedService('cert_auth')
+    certs_service = loadManagedService('certs')
     actionator = get_service_actionator(certs_service, 'list_services_defaults')
     certs_service.perform_action(actionator)[:certs]
   end
 
   def get_system_ca
-    certs_service = loadManagedService('cert_auth')
+    certs_service = loadManagedService('certs')
     actionator = get_service_actionator(certs_service, 'system_ca')
     certs_service.perform_action(actionator)
   end
 
   def generate_cert(params)
-    certs_service = loadManagedService('cert_auth')
+    certs_service = loadManagedService('certs')
 
-    params[:type_path] = 'cert_auth'
-    params[:service_container_name] = 'cert_auth'
+    params[:type_path] = 'certs'
+    params[:service_container_name] = 'certs'
     params[:persistent] = true
     params[:publisher_namespace] = 'EnginesSystem'
     params[:service_handle] = params[:domain_name]
@@ -98,8 +98,8 @@ module Certificates
 
     @engines_api.create_and_register_service({
       parent_engine: params[:parent_engine],
-      type_path: 'cert_auth',
-      service_container_name: 'cert_auth',
+      type_path: 'certs',
+      service_container_name: 'certs',
       container_type: params[:container_type],
       persistent: true,
       publisher_namespace: 'EnginesSystem',
@@ -119,7 +119,7 @@ module Certificates
   end
 
   def get_cert(params)
-    certs_service = loadManagedService('cert_auth')
+    certs_service = loadManagedService('certs')
     cert_name = 'engines' if cert_name == 'default'
     actionator = get_service_actionator(certs_service, 'fetch_cert')
     certs_service.perform_action(actionator, params)

@@ -1,11 +1,11 @@
-parent_engine: nginx
+parent_engine: wap
 publisher_namespace: EnginesSystem
-type_path: log_rotate
+type_path: logrotate
 service_handle: rotate_error_logs
-service_container_name: log_rotate
+service_container_name: logrotate
 container_type: service
 persistent: true
 variables:
- log_file_path: /services/nginx/nginx/error.log
+ log_file_path: /services/wap/nginx/error.log
  cycle: weekly
  rotate: 52

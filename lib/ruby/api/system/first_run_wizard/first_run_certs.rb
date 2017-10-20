@@ -1,7 +1,7 @@
 module FirstRunCerts
   def create_ca(ca_params)
     true if @api.update_service_configuration({
-      service_name: 'cert_auth',
+      service_name: 'certs',
       configurator_name: 'system_ca',
       variables: {
       country: ca_params[:ssl_country],
@@ -17,8 +17,8 @@ module FirstRunCerts
   def create_default_cert(params)
     service_param = {
       parent_engine: 'system',
-      type_path: 'cert_auth',
-      service_container_name: 'cert_auth',
+      type_path: 'certs',
+      service_container_name: 'certs',
       container_type: 'system',
       persistent: true,
       publisher_namespace: 'EnginesSystem',

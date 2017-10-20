@@ -1,33 +1,33 @@
 --- !ruby/object:ManagedService
-container_name: pgsql_server
+container_name: mysqld
 publisher_namespace: EnginesSystem
-type_path: database/sql/pgsql
+type_path: database/sql/mysql
 ctype: service
 persistent: true
 last_error: 
-memory: '256'
+memory: '456'
 stop_timeout: 500
-hostname: pgsql
+hostname: mysql
 domain_name: 
 kerberos: false
 environments: []
-image: _Engines_System(flavor)/pgsql:_Engines_System(release)
+image: _Engines_System(flavor)/mysql:_Engines_System(release)
 volumes:
- pg_database: 
-  name: pg_database
-  remotepath: "/var/lib/postgresql/"
-  localpath: "/var/lib/engines/services/pgsql_server"
+ my_database: 
+  name: my_database
+  remotepath: "/var/lib/mysql"
+  localpath: "/var/lib/engines/services/mysqld"
   permissions: "rw"
 port: 
 mapped_ports:
- pgsql: 
-  name: pgsql
+ mysql: 
+  name: mysql
   port: 3306
   publicFacing: false
   external: 0
 repo: na
 last_result: 
-setState: nocontainer
+setState: running
 nginxored: false
 conf_register_site: false
 conf_register_dns: true

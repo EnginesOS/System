@@ -1,4 +1,4 @@
-parent_engine: nginx
+parent_engine: wap
 publisher_namespace: EnginesSystem
 type_path: logview
 service_handle: nginx_error_logview
@@ -6,7 +6,7 @@ service_container_name: logview
 container_type: service
 persistent: false
 variables:
- log_file_path: /nginx/access.log
+ log_file_path: /wap/access.log
  log_type: nginx_error_log
  log_name: 'nginx Error Log'
  ctype: service

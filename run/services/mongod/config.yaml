@@ -1,8 +1,8 @@
 --- !ruby/object:ManagedService
-container_name: mongo_server
+container_name: mongod
 ctype: service
 publisher_namespace: EnginesSystem
-type_path: database/nosql/mongo
+type_path: database/nosql/mongod
 persistent: true
 last_error: 
 memory: '168'
@@ -16,7 +16,7 @@ volumes:
  mg_database: 
   name: mg_database
   remotepath: "/data/db/"
-  localpath: "/var/lib/engines/services/mongo_server"
+  localpath: "/var/lib/engines/services/mongod"
   permissions: "rw"
 port: 
 mapped_ports:

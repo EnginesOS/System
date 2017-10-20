@@ -53,6 +53,6 @@ conf_zero_conf: true
 conf_self_start: true
 dependant_on:
 - "dns"
-- "mysql_server"
+- "ldap"
 - "syslog"
 - "email"

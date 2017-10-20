@@ -1,10 +1,10 @@
 --- !ruby/object:ManagedService
-container_name: cert_auth
+container_name: certs
 ctype: service
 conf_self_start: true
 persistent: false
 publisher_namespace: EnginesSystem
-type_path: cert_auth
+type_path: certs
 last_error: 
 memory: '16'
 hostname: certs
@@ -17,7 +17,7 @@ volumes:
   certs_store: 
    name: certs_store
    remotepath: "/home/certs/store"
-   localpath: "/var/lib/engines/services/cert_auth"
+   localpath: "/var/lib/engines/services/certs"
    permissions: rw
 port: 
 mapped_ports:

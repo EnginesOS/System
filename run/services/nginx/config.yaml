@@ -1,14 +1,14 @@
 --- !ruby/object:ManagedService
-container_name: nginx
+container_name: wap
 publisher_namespace: EnginesSystem
-type_path: nginx
+type_path: wap
 ctype: service
 persistent: false
 publisher_namespace: EnginesSystem
-type_path: nginx
+type_path: wap
 last_error: 
 memory: '80'
-hostname: nginx
+hostname: wap
 domain_name: 
 kerberos: false
 environments: []
@@ -18,7 +18,7 @@ volumes:
  sslcerts: 
   name: sslcerts
   remotepath: "/etc/nginx/ssl/"
-  localpath: "/var/lib/engines/services/cert_auth/services/nginx/"
+  localpath: "/var/lib/engines/services/certs/services/wap/"
   permissions: "ro"
 port: 
 mapped_ports:

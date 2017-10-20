@@ -32,7 +32,7 @@ module ContainerOperations
     sites = find_engine_services({
       parent_engine: container.container_name,
       publisher_namespace: 'EnginesSystem',
-      type_path: 'nginx',
+      type_path: 'wap',
       container_type: container.ctype
     })
     STDERR.puts('SITES:' + sites.to_s)

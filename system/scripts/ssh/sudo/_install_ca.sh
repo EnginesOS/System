@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #FIXME check arugments and verifice .crt is a pem
-ca_cert_file=/var/lib/engines/services/cert_auth/public/ca/certs/system_CA.pem 
+ca_cert_file=/var/lib/engines/services/certs/public/ca/certs/system_CA.pem 
 #/opt/engines/etc/ssl/ca/certs/system_CA.pem 
 
 file $ca_cert_file | grep PEM

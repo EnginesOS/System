@@ -1,7 +1,7 @@
---- !ruby/object:ManagedService
-container_name: log_rotate
+--- !ruby/logrotate
+container_name: logrotate
 publisher_namespace: EnginesSystem
-type_path: log_rotate
+type_path: logrotate
 ctype: service
 service_type: transient
 soft_service: true

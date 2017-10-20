@@ -4,14 +4,14 @@ www-data		www-data	22050 _mgmt
 www-data		www-data	22050 _firstrun
 #services
 rma			rma			22001 
-postgres	postgres	22002 pq_sql _pgsql_server
+postgres	postgres	22002 pq_sql _pgsqld
 postfix		postfix		22003 _smtp
 email		email	22003 _email
 pmgr		pmgr		22004  
-nginx		nginx		22005 _nginx
-mysql		mysql		22006 _mysql_server
+wap		wap		22005 _wap
+mysql		mysql		22006 _mysqld
 volmgr		volmgr		22007	_volmanager
-mongo		mongo		22008 _mongo_server
+mongo		mongo		22008 _mongod
 bind		bind		22009 _dns
 proftpd		proftpd	22010 _ftp
 courier  courier			22011 
@@ -24,7 +24,7 @@ auth	 auth		22017	_auth
 nfs		 nfs		22018		_nfs
 samba	 samba	22019	_samba
 dyndns	 dyndns	22021	_dyndns
-cert_auth 	  cert_auth    22022	_cert_auth
+certs 	  certs    22022	_certs
 registry  registry	22023 _registry
 wwwstats	wwwstats	22024 _wwwstats
 dhcpd	 dhcpd	22025	_dhcpd

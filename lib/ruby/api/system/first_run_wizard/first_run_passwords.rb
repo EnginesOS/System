@@ -1,7 +1,7 @@
 module FirstRunPasswords
   def mysql_password_configurator(password)
     service_param = {}
-    service_param[:service_name] = 'mysql_server'
+    service_param[:service_name] = 'mysqld'
     service_param[:configurator_name] = 'db_master_pass'
     service_param[:variables] = {}
     service_param[:variables][:db_master_pass] = password

@@ -24,7 +24,7 @@ module CertificateActions
       container_type:  container.ctype, 
       parent_engine: container.container_name,
       publisher_namespace: 'EnginesSytem',
-      type_path: 'cert_auth' })
+      type_path: 'certs' })
   end
 
 end
