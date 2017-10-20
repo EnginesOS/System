@@ -2,7 +2,7 @@
 container_name: mongod
 ctype: service
 publisher_namespace: EnginesSystem
-type_path: database/nosql/mongod
+type_path: database/nosql/mongo
 persistent: true
 last_error: 
 memory: '168'
