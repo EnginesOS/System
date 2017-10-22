@@ -89,7 +89,7 @@ docker start system
  done
 
 
-for service in auth mysqld cron volmanager backup ftp wap redis smtp ldap uadmin
+for service in auth mysqld cron volmanager backup ldap ftp wap redis smtp uadmin
  do
    create_service
  done
