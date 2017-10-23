@@ -1,13 +1,13 @@
 --- !ruby/object:ManagedService
 publisher_namespace: EnginesSystem
 type_path: filesystem/local/filesystem
-container_name: volmanager
+container_name: volmgr
 ctype: service
 persistent: true
 conf_self_start: true
 last_error: 
 memory: '32'
-hostname: volmanager
+hostname: volmgr
 domain_name: 
 kerberos: false
 environments: []

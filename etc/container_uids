@@ -10,7 +10,7 @@ email		email	22003 _email
 pmgr		pmgr		22004  
 wap		wap		22005 _wap
 mysql		mysql		22006 _mysqld
-volmgr		volmgr		22007	_volmanager
+volmgr		volmgr		22007	_volmgr
 mongo		mongo		22008 _mongod
 bind		bind		22009 _dns
 proftpd		proftpd	22010 _ftp
