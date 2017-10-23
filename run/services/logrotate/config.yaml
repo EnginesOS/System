@@ -1,4 +1,4 @@
---- !ruby/logrotate
+--- !ruby/object:ManagedService
 container_name: logrotate
 publisher_namespace: EnginesSystem
 type_path: logrotate
