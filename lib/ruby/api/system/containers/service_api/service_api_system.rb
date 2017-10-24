@@ -1,6 +1,6 @@
 module ServiceApiSystem
   def create_container(container)
-    #setup_service_dirs
+    setup_service_dirs(container)
     super(container)
   end
 

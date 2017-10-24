@@ -26,7 +26,7 @@ module PublicApiConfig
     default_site_url = params
     default_site_url =  params[:default_site_url] unless  params.is_a?(String)
     @core_api.update_service_configuration({
-      service_name: 'nginx',
+      service_name: 'wap',
       configurator_name: 'default_site',
       variables: {
       default_site_url: default_site_url
@@ -37,7 +37,7 @@ module PublicApiConfig
   def get_default_site()
     config_params = @core_api.retrieve_service_configuration(
     {
-      service_name:  'nginx',
+      service_name:  'wap',
       configurator_name: 'default_site'
     })
     if config_params.is_a?(Hash) == true && config_params.key?(:variables) == true

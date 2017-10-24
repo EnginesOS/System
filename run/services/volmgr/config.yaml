@@ -1,0 +1,28 @@
+--- !ruby/object:ManagedService
+publisher_namespace: EnginesSystem
+type_path: filesystem/local/filesystem
+container_name: volmgr
+ctype: service
+persistent: true
+conf_self_start: true
+last_error: 
+memory: '32'
+hostname: volmgr
+domain_name: 
+kerberos: false
+environments: []
+image: _Engines_System(flavor)/fs:_Engines_System(release)
+volumes: 
+ fs_rw: 
+  name: fs_rw
+  remotepath: "/var/fs/local/"
+  localpath: "/var/lib/engines/fs/"
+  permissions: "rw"
+mapped_ports: 
+repo: na
+last_result:
+setState: running
+nginxored: false
+conf_register_site: false
+conf_register_dns: true
+conf_self_start: true

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-docker exec dns /home/actionators/refresh_hosted_domains.sh lan $1
+docker exec dns /home/engines/scripts/actionators/refresh_hosted_domains.sh lan $1
  
 
 if test `id -u` -eq 21000

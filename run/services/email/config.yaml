@@ -8,21 +8,12 @@ hostname: email
 publisher_namespace: EnginesSystem
 type_path: email
 port: 8000
+kerberos: true
 volumes:
- ssl_dir: 
-  name: ssl_dir
-  remotepath: "/etc/ssl"
-  localpath: "/var/lib/engines/cert_auth/services/email/"
-  permissions: "ro"
- kdc: 
-  name: kdc
-  remotepath: "/etc/krb5kdc/keys/"
-  localpath: "/var/lib/engines/auth/etc/krb5kdc/email/"
-  permissions: "rw"
  spool:
   name: spool
   remotepath: "/var/spool/postfix/"
-  localpath: "/var/lib/engines/email"
+  localpath: "/var/lib/engines/services/email"
   permissions: "rw"
 environments:
 - !ruby/object:EnvironmentVariable
@@ -46,5 +37,5 @@ conf_register_dns: true
 conf_self_start: true
 dependant_on:
 - "dns"
-- "nginx"
+- "ldap"
 - "syslog"

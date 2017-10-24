@@ -9,6 +9,7 @@ last_error:
 memory: '96'
 hostname: auth
 domain_name: engines.internal
+kerberos: false
 environments: []
 volumes:
  auth_scripts: 
@@ -19,12 +20,12 @@ volumes:
  krbkdc_etc: 
   name: krbkdc_etc
   remotepath: "/etc/krb5kdc"
-  localpath: "/var/lib/engines/auth/etc/krb5kdc/"
+  localpath: "/var/lib/engines/services/auth/etc/krb5kdc/"
   permissions: "rw"
  krbkdc_lib: 
   name: krbkdc_lib
   remotepath: "/var/lib/krb5/"
-  localpath: "/var/lib/engines/auth/lib/krb5/"
+  localpath: "/var/lib/engines/services/auth/lib/krb5/"
   permissions: "rw"
 image: _Engines_System(flavor)/auth:_Engines_System(release)
 port: 

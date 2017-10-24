@@ -1,0 +1,12 @@
+parent_engine: wap
+publisher_namespace: EnginesSystem
+type_path: logview
+service_handle: nginx_access_logview
+service_container_name: logview
+container_type: service
+persistent: false
+variables:
+ log_file_path: /wap/access.log
+ log_type: apache
+ log_name: 'nginx Access Log'
+ ctype: service

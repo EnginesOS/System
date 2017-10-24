@@ -10,6 +10,7 @@ last_error:
 memory: '200'
 hostname: registry
 domain_name: 
+kerberos: false
 environments: []
 image: _Engines_System(flavor)/registry:_Engines_System(release)
 volumes:

@@ -1,8 +1,8 @@
 parent_engine: mgmt
 publisher_namespace: EnginesSystem
-type_path: log_rotate
+type_path: logrotate
 service_handle: rotate_admin_error_logs
-service_container_name: log_rotate
+service_container_name: logrotate
 container_type: service
 persistent: true
 variables:

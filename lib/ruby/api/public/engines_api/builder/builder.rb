@@ -5,11 +5,11 @@ module PublicApiBuilder
 
   def last_build_log
     if File.exists?(SystemConfig.BuildOutputFile)
-    File.read(SystemConfig.BuildOutputFile)
-  else
-    'none'
+      File.read(SystemConfig.BuildOutputFile)
+    else
+      'none'
+    end
   end
-end
 
   def build_status
     SystemStatus.build_status
@@ -26,12 +26,12 @@ end
     while
       begin
         bytes = build_log_file.read_nonblock(100)
-        bytes.gsub!(/[\x80-\xFF]/n,'')            
+        bytes.gsub!(/[\x80-\xFF]/n,'')
       rescue IO::WaitReadable
         retry
       rescue EOFError
         out.write(bytes.force_encoding(Encoding::UTF_8))
-       'OK'
+        'OK'
         build_log_file.close
       rescue => e
         out.write(bytes)

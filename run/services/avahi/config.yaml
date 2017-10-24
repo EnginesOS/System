@@ -11,6 +11,7 @@ hostname: avahi
 domain_name: local
 host_network: true
 soft_service: true
+kerberos: false
 environments: []
 image: _Engines_System(flavor)/avahi:_Engines_System(release)
 volumes: 

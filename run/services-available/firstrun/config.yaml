@@ -8,6 +8,7 @@ hostname: firstrun
 publisher_namespace: EnginesSystem
 type_path: firstrun
 port: 8484
+kerberos: false
 environments: []
 volumes: 
 mapped_ports:

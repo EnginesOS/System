@@ -10,13 +10,9 @@ memory: '32'
 hostname: uadmin
 domain_name: 
 environments: []
+kerberos: true
 image: _Engines_System(flavor)/uadmin:_Engines_System(release)
-volumes: 
- kdc: 
-  name: kdc
-  remotepath: "/etc/krb5kdc/keys/"
-  localpath: "/var/lib/engines/auth/etc/krb5kdc/uadmin/"
-  permissions: "rw"
+volumes:
 mapped_ports: 
 repo: na
 last_result:

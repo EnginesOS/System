@@ -28,7 +28,7 @@ class FirstRunWizard <ErrorsApi
       prefs.set_langauge_code(@first_run_params[:lang_code]) if @first_run_params.key?(:lang_code)
       @api.set_timezone(@first_run_params[:timezone]) if @first_run_params.key?(:timezone)
       return false unless setup_dns
-      # certs = @api.loadManagedService('cert_auth')
+      # certs = @api.loadManagedService('certs')
       # certs.create_service
 
       setup_certs

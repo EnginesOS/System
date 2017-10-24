@@ -9,6 +9,7 @@ last_error:
 memory: '20'
 hostname: dyndns
 domain_name: 
+kerberos: false
 environments: []
 image: _Engines_System(flavor)/dyndns:_Engines_System(release)
 volumes:

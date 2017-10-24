@@ -9,17 +9,18 @@ memory: '48'
 hostname: logview
 soft_service: true
 domain_name: 
+kerberos: false
 schedules:
 - title: "Rotate Logs"
   time_spec: "*/60 * * * *"
   action: "start"
-  environments: []
+environments: 
 image: _Engines_System(flavor)/logview:_Engines_System(release)
 volumes:
  syslog: 
   name: syslog
   remotepath: "/var/log/engines/syslog/"
-  localpath: "/var/lib/engines/syslog/rmt/"
+  localpath: "/var/lib/engines/services/syslog/rmt/"
   permissions: ro
  engines: 
   name: engines
@@ -47,4 +48,4 @@ conf_register_dns: true
 conf_self_start: true
 dependant_on:
 - "dns"
-- "nginx"
+- "wap"

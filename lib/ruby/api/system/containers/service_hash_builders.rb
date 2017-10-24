@@ -76,8 +76,8 @@ def create_nginx_service_hash(engine)
 
   service_hash = {
     persistent: false,
-    service_container_name: 'nginx',
-    type_path: 'nginx',
+    service_container_name: 'wap',
+    type_path: 'wap',
     publisher_namespace: 'EnginesSystem',
     service_handle:  engine.fqdn,
     parent_engine: engine.container_name,
