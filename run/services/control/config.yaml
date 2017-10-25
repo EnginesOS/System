@@ -4,9 +4,9 @@ ctype: service
 persistent: true
 last_error: 
 memory: '512'
-hostname: mgmt
+hostname: control
 publisher_namespace: EnginesSystem
-type_path: mgmt
+type_path: control
 port: 8484
 domain_name: _Engines_System(default_domain)
 kerberos: false

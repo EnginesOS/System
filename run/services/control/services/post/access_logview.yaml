@@ -1,4 +1,4 @@
-parent_engine: mgmt
+parent_engine: control
 publisher_namespace: EnginesSystem
 type_path: logview
 service_handle: admin_access_logview
@@ -8,5 +8,5 @@ persistent: false
 variables:
  log_file_path: /apache2/access.log
  log_type: apache
- log_name: 'Mgmt Access Log'
+ log_name: 'Control Access Log'
  ctype: service
