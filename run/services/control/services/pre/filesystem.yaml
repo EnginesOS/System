@@ -1,0 +1,12 @@
+publisher_namespace: "EnginesSystem"
+type_path: "filesystem/local/filesystem"
+variables:
+ user: "_Engines_Builder(data_uid)" 
+ group: "_Engines_Builder(data_gid)" 
+ service_name: "mgmt"
+ parent_engine: "mgmt"
+ volume_src: "" 
+ engine_path: "persistent"
+ permissions: "rw"
+ user: 11111
+ group: 11111
