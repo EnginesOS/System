@@ -1,0 +1,12 @@
+parent_engine: mgmt
+publisher_namespace: EnginesSystem
+type_path: logview
+service_handle: admin_access_logview
+service_container_name: logview
+container_type: service
+persistent: false
+variables:
+ log_file_path: /apache2/access.log
+ log_type: apache
+ log_name: 'Mgmt Access Log'
+ ctype: service
