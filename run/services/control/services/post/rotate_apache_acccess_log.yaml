@@ -1,4 +1,4 @@
-parent_engine: mgmt
+parent_engine: control
 publisher_namespace: EnginesSystem
 type_path: logrotate
 service_handle: rotate_admin_access_logs
