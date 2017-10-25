@@ -1,0 +1,70 @@
+--- !ruby/object:ManagedService
+container_name: control
+ctype: service
+persistent: true
+last_error: 
+memory: '512'
+hostname: control
+publisher_namespace: EnginesSystem
+type_path: control
+port: 8484
+domain_name: _Engines_System(default_domain)
+kerberos: false
+volumes: 
+ public_dir: 
+  volume_name: public_dir
+  remotepath: "/home/fs/persistent"
+  localpath: "/var/lib/engines/services/control"
+  permissions: "rw"  
+mapped_ports:
+ web:
+  name: web
+  port: 8001
+  publicFacing: true
+  external: 8484
+  proto_type: tcp
+environments:
+- !ruby/object:EnvironmentVariable
+ name: ENGINES_ADMIN_GUI_SYSTEM_API_URL
+ value: https://_Engines_System(docker_ip):2380
+ has_changed: true 
+ build_time_only: false
+ immutable: false
+ label: "Local System"
+- !ruby/object:EnvironmentVariable 
+ name: SYSTEM_RELEASE
+ value: _Engines_System(release)
+ has_changed: true 
+ build_time_only: false
+- !ruby/object:EnvironmentVariable
+ name: FQDN_PORT
+ value: mgmt._Engines_System(default_domain):8484
+ has_changed: true 
+ build_time_only: false
+ immutable: false
+ label: "FQDN_PORT"
+- !ruby/object:EnvironmentVariable
+ name: DOMAIN
+ value: _Engines_System(default_domain)
+ has_changed: true 
+ build_time_only: false
+ immutable: false
+ label: "DOMAIN"
+- !ruby/object:EnvironmentVariable
+ name: ENGINES_ADMIN_GUI_SESSION_SECRET
+ value: _Engines_System(random(64))
+ has_changed: true 
+ build_time_only: false
+ immutable: true
+ label: "ENGINES_ADMIN_GUI_SESSION_SECRET"
+image: _Engines_System(flavor)/control:_Engines_System(release)
+repo: na
+last_result: 
+setState: nocontainer
+nginxored: false
+conf_register_site: true
+conf_register_dns: true
+conf_self_start: true
+dependant_on:
+- 'dns'
+- 'syslog'

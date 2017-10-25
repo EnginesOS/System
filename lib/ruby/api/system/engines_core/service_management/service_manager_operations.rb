@@ -70,7 +70,7 @@ module ServiceManagerOperations
   end
 
   def taken_hostnames
-    hashes = service_manager.all_engines_registered_to('nginx')
+    hashes = service_manager.all_engines_registered_to('wap')
     sites = []
     if hashes.is_a?(Array)
       hashes.each do |service_hash|

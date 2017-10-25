@@ -10,21 +10,12 @@ last_error:
 memory: '96'
 hostname: cron
 domain_name: 
+kerberos: false
 aliases: 
  - schedule
-environments: []
+environments:
 image: _Engines_System(flavor)/cron:_Engines_System(release)
-volumes:
- socket: 
-  name: socket
-  remotepath: "/var/run/docker.sock"
-  localpath: "/var/run/docker.sock"
-  permissions: rw
- docker_bin: 
-  name: docker_bin
-  remotepath: "/usr/bin/docker"
-  localpath: "/usr/bin/docker"
-  permissions: ro
+volumes: 
 port: 
 mapped_ports:
 repo: na

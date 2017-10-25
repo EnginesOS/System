@@ -1,7 +1,7 @@
 module ServiceApiConfigurations
   @@configurator_timeout = 10
   def retrieve_configurator(c, params)
-    cmd = '/home/configurators/read_' + params[:configurator_name].to_s + '.sh'
+    cmd = '/home/engines/scripts/configurators/read_' + params[:configurator_name].to_s + '.sh'
     result =  @engines_core.exec_in_container(
     {container: c,
       command_line: [cmd],
@@ -21,9 +21,9 @@ module ServiceApiConfigurations
   def run_configurator(c, configurator_params)
     if c.is_running?
       #  STDERR.puts( "CONFIGURAT[:variables].to_json " + configurator_params[:variables].to_json.to_s)
-      cmd = ['/home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh']
-      #  STDERR.puts( 'CONFIGURAT cmd /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh')
-      #cmd = 'docker_exec -u ' + container.cont_userid.to_s + ' ' +  container.container_name.to_s + ' /home/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh \'' + SystemUtils.hash_variables_as_json_str(configurator_params).to_s + '\''
+      cmd = ['/home/engines/scripts/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh']
+      #  STDERR.puts( 'CONFIGURAT cmd /home/engines/scripts/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh')
+      #cmd = 'docker_exec -u ' + container.cont_userid.to_s + ' ' +  container.container_name.to_s + ' /home/engines/scripts/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh \'' + SystemUtils.hash_variables_as_json_str(configurator_params).to_s + '\''
       @engines_core.exec_in_container(
       {container: c,
         command_line: cmd,

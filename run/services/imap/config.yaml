@@ -8,6 +8,7 @@ last_error:
 memory: '192'
 hostname: imap
 domain_name: 
+kerberos: true
 environments:
 - !ruby/object:EnvironmentVariable
  name: ContUser
@@ -19,23 +20,13 @@ volumes:
  imap_data: 
   name: imap_data
   remotepath: "/var/lib/dovecot"
-  localpath: "/var/lib/engines/imap/lib"
-  permissions: "rw"
- kdc: 
-  name: kdc
-  remotepath: "/etc/krb5kdc/keys/"
-  localpath: "/var/lib/engines/auth/etc/krb5kdc/imap/"
+  localpath: "/var/lib/engines/services/imap/lib"
   permissions: "rw"
  mail_dir: 
   name: mail_dir
   remotepath: "/var/mail"
-  localpath: "/var/lib/engines/imap/mail"
+  localpath: "/var/lib/engines/services/imap/mail"
   permissions: "rw"
- ssl_dir: 
-  name: ssl_dir
-  remotepath: "/etc/ssl"
-  localpath: "/var/lib/engines/cert_auth/services/imap"
-  permissions: "ro"
 mapped_ports:
  imap: 
   name: imap
@@ -62,6 +53,6 @@ conf_zero_conf: true
 conf_self_start: true
 dependant_on:
 - "dns"
-- "mysql_server"
+- "ldap"
 - "syslog"
 - "email"

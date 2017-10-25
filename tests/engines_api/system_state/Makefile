@@ -1,5 +1,5 @@
 TESTS=running
-SERVICES=dns nginx cron cert_auth auth mysql_server
+SERVICES=dns nginx cron certs auth mysqld
 
 tests:
 	echo -n "\033[0;31m System State tests \033[0;30m\n"

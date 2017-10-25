@@ -7,7 +7,8 @@ module FirstRunComplete
           first_run.stop_container
           first_run.destroy_container
           FileUtils.touch('/opt/engines/run/system/flags/install_mgmt') if install_mgmt == true
-          run_server_script('first_start')
+          FileUtils.touch('/opt/engines/run/system/flags/first_run_ready')
+        #  run_server_script('first_start')
         rescue StandardError => e
           STDERR.puts('FIRST RUN Thread Exception' + e.to_s + ':' + e.backtrace.to_s)
         end

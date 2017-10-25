@@ -9,22 +9,13 @@ memory: '56'
 hostname: ftp
 domain_name: 
 environments: []
+kerberos: true
 image: _Engines_System(flavor)/ftp:_Engines_System(release)
 volumes:
- ssl_certs: 
-  name: ssl_certs
-  remotepath: "/etc/ssl/"
-  localpath: "/var/lib/engines/cert_auth/services/ftp"
-  permissions: "ro"
  fs_rw: 
   name: fs_rw
   remotepath: "/ftp/rw/"
   localpath: "/var/lib/engines/fs/"
-  permissions: "rw"
- kdc: 
-  name: kdc
-  remotepath: "/etc/krb5kdc/keys/"
-  localpath: "/var/lib/engines/auth/etc/krb5kdc/ftp/"
   permissions: "rw"
  fs_ro: 
   name: fs_ro
@@ -73,5 +64,5 @@ conf_zero_conf: true
 conf_self_start: true
 dependant_on:
 - "dns"
-- "auth"
+- "ldap"
 - "syslog"

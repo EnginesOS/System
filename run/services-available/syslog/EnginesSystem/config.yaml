@@ -8,18 +8,14 @@ last_error:
 memory: '128'
 hostname: syslog
 domain_name: 
+kerberos: false
 environments: []
 image: _Engines_System(flavor)/syslog:_Engines_System(release)
 volumes:
- config: 
-  name: config
-  remotepath: "/etc/syslog-ng/conf.d/"
-  localpath: "/opt/engines/etc/syslog/conf/"
-  permissions: rw
  logs: 
   name: logdir
   remotepath: "/var/log/rmt/"
-  localpath: "/var/lib/engines/syslog/rmt/"
+  localpath: "/var/lib/engines/services/syslog/rmt/"
   permissions: rw
 port: 
 mapped_ports:

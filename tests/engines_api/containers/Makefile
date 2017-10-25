@@ -6,4 +6,4 @@ tests:
 
 
 check_and_act:
-	engines containers check_and_act | engines_test_expects json mysql_server
+	engines containers check_and_act | engines_test_expects json mysqld

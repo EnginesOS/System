@@ -41,13 +41,13 @@ if ! test -f /engines/var/run/flags/first_run_done
  then
    touch /engines/var/run/flags/first_run_done
  else		
-	if test -f /home/engines/scripts/post_install.sh
+	if test -f /home/engines/scripts/engine/post_install.sh
 	 then 				
 	   echo "Has Post install"
 		 if ! test -f /engines/var/run/flags/post_install.done
 		  then
 			echo "Running Post Install"
-			/bin/bash /home/engines/scripts/post_install.sh 							
+			/bin/bash /home/engines/scripts/engine/post_install.sh 							
 			touch /engines/var/run/flags/post_install.done
 		 fi
 	fi
@@ -68,10 +68,10 @@ fi
 
 function custom_start {
 #if not blocking continues
-if test -f /home/engines/scripts/custom_start.sh
+if test -f /home/engines/scripts/engine/custom_start.sh
  then
    echo "Custom start"	   
-   result=`/home/engines/scripts/custom_start.sh`
+   result=`/home/engines/scripts/engine/custom_start.sh`
    exit_code=$?
 	 if test "$result" = "exit"
 	  then 
@@ -82,19 +82,19 @@ fi
 }
 
 function pre_running {
-if test -f /home/engines/scripts/pre-running.sh
+if test -f /home/engines/scripts/engine/pre-running.sh
  then
 	echo "launch pre running"
-	bash /home/engines/scripts/pre-running.sh
+	bash /home/engines/scripts/engine/pre-running.sh
 fi	
 }
 
 function start_apache {
 mkdir -p /var/log/apache2/ >& /dev/null
-if test -f /home/engines/scripts/blocking.sh 
+if test -f /home/engines/scripts/engine/blocking.sh 
  then
    /usr/sbin/apache2ctl -DFOREGROUND &		  
-   /home/engines/scripts/blocking.sh  &
+   /home/engines/scripts/engine/blocking.sh  &
    echo  -n " $!" >> $PID_FILE
  else		
    /usr/sbin/apache2ctl -DFOREGROUND &
@@ -124,7 +124,7 @@ mkdir /var/log/nginx >& /dev/null
    then
      configure_passenger
   fi	
-  if test -f /home/engines/scripts/blocking.sh 
+  if test -f /home/engines/scripts/engine/blocking.sh 
 	then
 	  nginx &
 	  echo -n " $!" >>  $PID_FILE
@@ -138,9 +138,9 @@ mkdir /var/log/nginx >& /dev/null
 
 function launch_app {
 /home/startwebapp.sh 
- if test -f /home/engines/scripts/blocking.sh
+ if test -f /home/engines/scripts/engine/blocking.sh
    then
-	/home/engines/scripts/blocking.sh &
+	/home/engines/scripts//engine/blocking.sh &
 	blocking_pid=$!
 	echo -n " $blocking_pid " >>  $PID_FILE
  fi

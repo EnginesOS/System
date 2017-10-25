@@ -228,19 +228,14 @@ module DockerApiCreateOptions
   end
 
   def cert_mounts(container)
-
-    store = container.ctype + 's/' + container.container_name + '/'
-    [SystemConfig.CertificatesDir + store + ':' + SystemConfig.CertificatesDestination + ':ro',
-      SystemConfig.KeysDir + store + ':' + SystemConfig.KeysDestination + ':ro']
-    #    if container.certificates.is_a?(Array)
-    #      mounts = []
-    #      container.certificates.each do |certificate|
-    #        prefix =  certificate[:container_type] + 's/' + certificate[:parent_engine] + '/' + certificate[:variables][:cert_name]
-    #        mounts.push(SystemConfig.CertificatesDir + prefix + '.crt:' + SystemConfig.CertificatesDestination +  certificate[:variables][:cert_name] + '.crt:ro' )
-    #        mounts.push(SystemConfig.KeysDir + prefix + '.key:' + SystemConfig.KeysDestination +  certificate[:variables][:cert_name] + '.key:ro' )
-    #      end
-    #      mounts
-    #    end
+    unless container.ctype == 'system_service'
+      prefix =  container.ctype + 's'
+    else
+      prefix='services'
+    end
+    store = prefix + '/' + container.container_name + '/'
+    [SystemConfig.CertAuthTop + store + 'certs:' + SystemConfig.CertificatesDestination + ':ro',
+      SystemConfig.CertAuthTop + store + 'keys:' + SystemConfig.KeysDestination + ':ro']   
   end
 
   def system_mounts(container)
@@ -263,12 +258,17 @@ module DockerApiCreateOptions
     mounts.push(vlogdir_mount(container)) unless in_container_log_dir(container) == '/var/log' || in_container_log_dir(container) == '/var/log/'
     mounts.push(ssh_keydir_mount(container))
     cm = cert_mounts(container)
+    mounts.push(kerberos_mount(container)) if container.kerberos == true
     mounts.concat(cm) unless cm.nil?
     mounts
   end
 
   def ssh_keydir_mount(container)
     ContainerStateFiles.container_ssh_keydir(container) + ':/home/home_dir/.ssh:rw'
+  end
+
+  def kerberos_mount(container)
+    ContainerStateFiles.kerberos_dir(container) + ':/etc/krb5kdc/keys/:ro'
   end
 
   def vlogdir_mount(container)
@@ -318,13 +318,19 @@ module DockerApiCreateOptions
   end
 
   def envs(container)
-    envs = []
+    envs = system_envs(container)
     container.environments.each do |env|
       next if env.build_time_only
       envs.push(env.name.to_s + '=' + env.value.to_s)
     end
     envs
   end
+  
+  def system_envs(container)
+    envs = ['CONTAINER_NAME=' + container.container_name]
+      envs
+  end   
+    
 
   def add_port_range(bindings, port)
     internal = port[:port].split('-')

@@ -8,6 +8,7 @@ last_error:
 memory: '164'
 hostname: syslog
 domain_name: 
+kerberos: false
 environments: []
 image: _Engines_System(flavor)/sumologic-syslog:_Engines_System(release)
 port: 

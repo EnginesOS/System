@@ -9,13 +9,14 @@ last_error:
 memory: '64'
 hostname: redis
 domain_name: 
+kerberos: false
 environments: []
 image: _Engines_System(flavor)/redis:_Engines_System(release)
 volumes:
  store: 
   name: store
   remotepath: "/var/lib/redis"
-  localpath: "/var/lib/engines/redis"
+  localpath: "/var/lib/engines/services/redis"
   permissions: rw
 port: 
 mapped_ports:

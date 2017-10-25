@@ -12,6 +12,7 @@ domain_name: engines.internal
 host_network: false
 soft_service: false
 environments: []
+kerberos: true
 image: _Engines_System(flavor)/ldap:_Engines_System(release)
 volumes: 
  configuration: 
@@ -22,17 +23,12 @@ volumes:
  ldap_db: 
   name: ldap_db
   remotepath: "/var/lib/ldap/"
-  localpath: "/var/lib/engines/ldap/lib"
-  permissions: "rw"
- kr5_key: 
-  name: kr5_key
-  remotepath: "/etc/krb5kdc/keys/"
-  localpath: "/var/lib/engines/auth/etc/krb5kdc/ldap/"
+  localpath: "/var/lib/engines/services/ldap/lib"
   permissions: "rw"
  ldap_conf: 
   name: slapd_conf
   remotepath: "/etc/ldap/slapd.d"
-  localpath: "/var/lib/engines/ldap/slapd.d"
+  localpath: "/var/lib/engines/services/ldap/slapd.d"
   permissions: "rw"
 mapped_ports:
 repo: na
@@ -41,4 +37,6 @@ setState: running
 nginxored: false
 conf_register_site: false
 conf_register_dns: true
+dependant_on:
+- "auth"
 

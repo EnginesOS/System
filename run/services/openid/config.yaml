@@ -8,16 +8,12 @@ hostname: openid
 publisher_namespace: EnginesSystem
 type_path: openid
 port: 8000
+kerberos: true
 volumes:
- kdc: 
-  name: kdc
-  remotepath: "/etc/krb5kdc/keys/"
-  localpath: "/var/lib/engines/auth/etc/krb5kdc/openid/"
-  permissions: "rw"
- kdc: 
-  name: kdc
+ openid:
+  name: openid
   remotepath: "/var/lib/openid/"
-  localpath: "/var/lib/engines/openid/"
+  localpath: "/var/lib/engines/services/openid/"
   permissions: "rw"
 environments:
 - !ruby/object:EnvironmentVariable
@@ -35,4 +31,4 @@ conf_register_dns: true
 conf_self_start: true
 dependant_on:
 - "ldap"
-- "nginx"
+- "wap"

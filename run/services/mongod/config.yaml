@@ -1,0 +1,41 @@
+--- !ruby/object:ManagedService
+container_name: mongod
+ctype: service
+publisher_namespace: EnginesSystem
+type_path: database/nosql/mongo
+persistent: true
+last_error: 
+memory: '168'
+stop_timeout: 600
+hostname: mongo
+domain_name: 
+kerberos: false
+environments: []
+image: _Engines_System(flavor)/mongo:_Engines_System(release)
+volumes:
+ mg_database: 
+  name: mg_database
+  remotepath: "/data/db/"
+  localpath: "/var/lib/engines/services/mongod"
+  permissions: "rw"
+port: 
+mapped_ports:
+ mongo: 
+  name: mongo
+  port: 27017
+  publicFacing: false
+  external: 0
+ mongoweb: 
+  name: mongoweb
+  port: 28017
+  publicFacing: false
+  external: 0
+repo: na
+last_result: 
+setState: nocontainer
+nginxored: false
+conf_register_site: false
+conf_register_dns: true
+conf_self_start: true
+dependant_on:
+- "dns"

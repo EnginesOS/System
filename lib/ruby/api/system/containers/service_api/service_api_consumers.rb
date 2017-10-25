@@ -9,7 +9,7 @@ module ServiceApiConsumers
   end
 
   def add_consumer_to_service(c, service_hash)
-    cmd = ['/home/add_service.sh']
+    cmd = ['/home/engines/scripts/services/add_service.sh']
     SystemDebug.debug(SystemDebug.services, :add_consumer_to_service, cmd.to_s)
     result = engines_core.exec_in_container(
     {:container => c,
@@ -27,7 +27,7 @@ module ServiceApiConsumers
       rm_consumer_from_service(c, service_hash)
       add_consumer_to_service(c, service_hash)
     else
-      cmd = ['/home/update_service.sh']
+      cmd = ['/home/engines/scripts/services/update_service.sh']
       SystemDebug.debug(SystemDebug.services, :update_consumer_on_service, cmd.to_s)
       result = engines_core.exec_in_container(
       {container: c,
@@ -41,7 +41,7 @@ module ServiceApiConsumers
   end
 
   def rm_consumer_from_service(c, service_hash)
-    cmd = ['/home/rm_service.sh']
+    cmd = ['/home/engines/scripts/services/rm_service.sh']
     result = engines_core.exec_in_container(
     {container: c,
       command_line: cmd,

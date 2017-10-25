@@ -157,7 +157,7 @@ module EnginesServerHost
     # FIxME
     # use SystemStatus.get_base_host_ip for IP
     unless File.exist?('/var/lib/engines/local_host')
-      cmd = 'ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/' + script_name + ' engines@' + ENV['CONTROL_IP'] + '  /opt/engines/system/scripts/ssh/' + script_name + '.sh'
+      cmd = 'ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/system/' + script_name + ' engines@' + ENV['CONTROL_IP'] + '  /opt/engines/system/scripts/ssh/' + script_name + '.sh'
     else
       cmd = '/opt/engines/system/scripts/ssh/' + script_name + '.sh'
     end
@@ -169,6 +169,6 @@ module EnginesServerHost
   rescue Timeout::Error
     STDERR.puts('Timeout on Running Server Script ' + script_name )
     raise EnginesException.new(error_hash('Timeout on Running Server Script ' + script_name , script_name))
-    #system('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/mgmt/restart_mgmt engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/restart_mgmt.sh')
+    #system('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/system/restart_mgmt engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/restart_mgmt.sh')
   end
 end

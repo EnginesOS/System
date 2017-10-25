@@ -45,8 +45,8 @@ class ManagedContainer < Container
   @restart_required = false
   @rebuild_required = false
   @large_temp = false
-
-  attr_accessor :volumes_from, :command, :restart_required, :rebuild_required, :environments, :volumes, :image_repo, :capabilities, :conf_register_dns
+   
+  attr_accessor :kerberos, :volumes_from, :command, :restart_required, :rebuild_required, :environments, :volumes, :image_repo, :capabilities, :conf_register_dns
   def initialize
     super
     @container_mutex = Mutex.new

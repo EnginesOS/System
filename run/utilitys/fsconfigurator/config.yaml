@@ -4,6 +4,7 @@ publisher_namespace: EnginesSystem
 type_path: fsconfigurator
 ctype: utility
 persistent: false
+kerberos: false
 conf_self_start: false
 timeout: 15
 commands:

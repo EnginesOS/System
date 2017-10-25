@@ -1,0 +1,32 @@
+--- !ruby/object:ManagedService
+container_name: certs
+ctype: service
+conf_self_start: true
+persistent: false
+publisher_namespace: EnginesSystem
+type_path: certs
+last_error: 
+memory: '16'
+hostname: certs
+no_ca_map: true
+domain_name: 
+kerberos: false
+environments: []
+image: _Engines_System(flavor)/certs:_Engines_System(release)
+volumes: 
+  certs_store: 
+   name: certs_store
+   remotepath: "/home/certs/store"
+   localpath: "/var/lib/engines/services/certs"
+   permissions: rw
+port: 
+mapped_ports:
+repo: na
+last_result: 
+setState: running
+nginxored: false
+conf_register_site: false
+conf_register_dns: true
+dependant_on:
+- "dns"
+- "syslog"

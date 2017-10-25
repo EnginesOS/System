@@ -9,16 +9,12 @@ publisher_namespace: EnginesSystem
 type_path: mgmt
 port: 8484
 domain_name: _Engines_System(default_domain)
+kerberos: false
 volumes: 
- certs: 
-  volume_name: certs
-  remotepath: "/opt/engines/etc/ssl/"
-  localpath: "/var/lib/engines/cert_auth/services/mgmt/"
-  permissions: "ro"  
  public_dir: 
   volume_name: public_dir
   remotepath: "/home/fs/persistent"
-  localpath: "/var/lib/engines/mgmt/public"
+  localpath: "/var/lib/engines/services/mgmt"
   permissions: "rw"  
 mapped_ports:
  web:

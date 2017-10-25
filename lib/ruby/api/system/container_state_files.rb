@@ -31,6 +31,10 @@ class ContainerStateFiles
     self.container_state_dir(container) + '/run/flags/'
   end
 
+  def self.kerberos_dir(container)
+    '/var/lib/engines/services/auth/etc/krb5kdc/' + container.ctype + 's/' + container.container_name
+  end
+  
   def self.restart_flag_file(container)
     self.container_flag_dir(container) + 'restart_required'
   end
