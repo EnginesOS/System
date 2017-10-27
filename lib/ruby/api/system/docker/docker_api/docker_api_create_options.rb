@@ -280,7 +280,7 @@ module DockerApiCreateOptions
   end
 
   def state_mount(container)
-    container_state_dir(container) + '/run:/engines/var/run:rw'
+    container_state_dir(container) + '/run:/home/engines/run:rw'
   end
 
   def container_state_dir(container)

@@ -1,31 +1,31 @@
 #!/bin/sh
 
-if test -f  /engines/var/run/flags/sig_term
+if test -f  /home/engines/run/flags/sig_term
 then
-	rm -f /engines/var/run/flags/sig_term
+	rm -f /home/engines/run/flags/sig_term
 fi 
 
-if test -f  /engines/var/run/flags/termed
+if test -f  /home/engines/run/flags/termed
 then
-	rm -f /engines/var/run/flags/termed
+	rm -f /home/engines/run/flags/termed
 fi 
-if test -f  /engines/var/run/flags/sig_hup
+if test -f  /home/engines/run/flags/sig_hup
 then
-	rm -f /engines/var/run/flags/sig_hup
-fi 
-
-if test -f  /engines/var/run/flags/huped
-then
-	rm -f /engines/var/run/flags/huped
-fi 
-if test -f  /engines/var/run/flags/sig_quit
-then
-	rm -f /engines/var/run/flags/sig_quit
+	rm -f /home/engines/run/flags/sig_hup
 fi 
 
-if test -f  /engines/var/run/flags/quited
+if test -f  /home/engines/run/flags/huped
 then
-	rm -f /engines/var/run/flags/quited
+	rm -f /home/engines/run/flags/huped
+fi 
+if test -f  /home/engines/run/flags/sig_quit
+then
+	rm -f /home/engines/run/flags/sig_quit
+fi 
+
+if test -f  /home/engines/run/flags/quited
+then
+	rm -f /home/engines/run/flags/quited
 fi 
 
 custom_stop()
@@ -40,7 +40,7 @@ trap_term()
 	{
 	SIGNAL=15
 	export SIGNAL
-	touch /engines/var/run/flags/sig_term
+	touch /home/engines/run/flags/sig_term
 	custom_stop
 	if test -f $PID_FILE  #if exists 
 		then
@@ -60,7 +60,7 @@ trap_term()
                 		wait $pid   >& /dev/null
 				fi			
 		fi
-	  touch /engines/var/run/flags/termed	 			
+	  touch /home/engines/run/flags/termed	 			
 	fi
 
 	}
@@ -68,7 +68,7 @@ trap_hup()
 	{
 	SIGNAL=1
 	export SIGNAL
-	touch /engines/var/run/flags/sig_hup
+	touch /home/engines/run/flags/sig_hup
 	
 		if test -f $PID_FILE
 			then
@@ -78,7 +78,7 @@ trap_hup()
 					else
 						kill -$SIGNAL `cat  $PID_FILE  `	
 				fi
-			 touch /engines/var/run/flags/huped			
+			 touch /home/engines/run/flags/huped			
 		fi
 		
 	}
@@ -87,7 +87,7 @@ trap_quit()
 	{
 	SIGNAL=15
 	export SIGNAL
-	touch /engines/var/run/flags/sig_quit
+	touch /home/engines/run/flags/sig_quit
 	custom_stop
 		if test -f $PID_FILE
 			then
@@ -107,7 +107,7 @@ trap_quit()
                 					wait $pid   
 							fi
 				fi				
-			 touch /engines/var/run/flags/quited
+			 touch /home/engines/run/flags/quited
 		fi
 	
 	}

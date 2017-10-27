@@ -6,7 +6,7 @@ module EnginesCoreSystem
 
   def dump_heap_stats
     ObjectSpace.garbage_collect
-    file = File.open("/engines/var/run/heap.dump", 'w')
+    file = File.open("/home/engines/run/heap.dump", 'w')
     ObjectSpace.dump_all(output: file)
     file.close
     true
