@@ -22,7 +22,7 @@ def assemble_params(ps, address_params, required_params = nil, accept_params = n
 
   unless required_params.nil? || required_params.empty?
     if required_params == :all
-      a_params.merge!(ps[:api_vars]) if ps.key?(:api_vars)
+      a_params.merge!(ps[:api_vars]) if ps.key?(:api_vars) && ps[:api_vars].is_a?(Hash)
       a_params
     else
       r_params = required_params(ps, required_params)
