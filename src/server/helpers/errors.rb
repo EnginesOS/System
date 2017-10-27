@@ -10,8 +10,8 @@ end
 
 def send_encoded_exception(api_exception)#request, error_object, *args)
   api_exception[:exception] = fake_exception(api_exception) unless api_exception[:exception].is_a?(Exception)
-  if e.is_a?(EnginesException)
-    if e.level == :warning
+  if api_exception[:exception].is_a?(EnginesException)
+    if api_exception[:exception].level == :warning
       status_code = 405
     else
       status_code = 406
