@@ -19,7 +19,7 @@ begin
   @events_stream = nil
   $engines_api = PublicApi.new(EnginesCore.new)
   STDERR.puts('++++')
-  FileUtils.touch('/engines/var/run/flags/startup_complete')
+  FileUtils.touch('/home/engines/run/flags/startup_complete')
   @@last_error = ''
 
   require 'warden'
