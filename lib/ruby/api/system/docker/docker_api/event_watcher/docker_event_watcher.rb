@@ -170,10 +170,7 @@ class DockerEventWatcher < ErrorsApi
    end
      
   def trigger(hash)
-     t = @event_listeners.sort_by { |k, v| v[:priority] }
-    STDERR.puts('sort_by { |k, v| v[:priority] } ' + t.class.name)
 
-      
  #   @event_listeners.values.each do |listener_hash|
     l = @event_listeners.sort_by { |k, v| v[:priority] }
       l.each do |m|
@@ -182,6 +179,7 @@ class DockerEventWatcher < ErrorsApi
         next unless match_container(hash, listener.container_name)
       end
       listener.trigger(hash)
+      STDERR.puts('Trigger ' + hash.to_s)
     end
   rescue StandardError => e
     SystemDebug.debug(SystemDebug.container_events, hash.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)
