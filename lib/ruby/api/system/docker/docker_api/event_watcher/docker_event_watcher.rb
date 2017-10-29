@@ -124,8 +124,8 @@ class DockerEventWatcher < ErrorsApi
   { listener: event_listener , 
     priority: event_listener.priority}
   
-    STDERR.puts('ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.to_s + ' Listeners ')
-    SystemDebug.debug(SystemDebug.container_events, 'ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.to_s + ' Listeners ')   
+    STDERR.puts('ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
+    SystemDebug.debug(SystemDebug.container_events, 'ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')   
   end
 
   def rm_event_listener(listener)   
@@ -179,7 +179,7 @@ class DockerEventWatcher < ErrorsApi
         next unless match_container(hash, listener.container_name)
       end
       listener.trigger(hash)
-      STDERR.puts('Trigger ' + hash.to_s)
+      STDERR.puts('Trigger ' + hash.to_s + ' for prior ' + listener.priority.to_s)
     end
   rescue StandardError => e
     SystemDebug.debug(SystemDebug.container_events, hash.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)
