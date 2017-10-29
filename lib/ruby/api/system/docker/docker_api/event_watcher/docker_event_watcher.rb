@@ -170,6 +170,7 @@ class DockerEventWatcher < ErrorsApi
    end
      
   def trigger(hash)
+    STDERR.puts('sort_by { |k, v| v[:priority] } ' + @event_listeners.sort_by { |k, v| v[:priority] }.to_s)
     @event_listeners.values.each do |listener_hash|
       listener = listener_hash[:listener]
       unless listener.container_name.nil?
