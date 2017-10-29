@@ -170,7 +170,7 @@ class DockerEventWatcher < ErrorsApi
    end
      
   def trigger(hash)
-    @event_listeners.sort_by { |k, v| v[:priority] }.each do |listener_hash|
+    @event_listeners.values.each do |listener_hash|
       listener = listener_hash[:listener]
       unless listener.container_name.nil?
         next unless match_container(hash, listener.container_name)
