@@ -195,8 +195,8 @@ module DockerEvents
     log_exception(e)
   end
 
-  def add_event_listener(listener, mask, container_id = nil)
-    @docker_event_listener.add_event_listener(listener, mask, container_id)
+  def add_event_listener(listener, mask, container_id = nil, priority = 200)
+    @docker_event_listener.add_event_listener(listener, mask, container_id, priority)
   end
 
   def rm_event_listener(listener)
