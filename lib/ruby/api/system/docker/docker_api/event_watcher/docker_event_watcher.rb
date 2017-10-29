@@ -125,7 +125,7 @@ class DockerEventWatcher < ErrorsApi
     priority: event_listener.priority}
    @event_listeners = @event_listeners.sort_by { |k, v| v[:priority] }
     STDERR.puts('ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.to_s + ' Listeners ')
-    SystemDebug.debug(SystemDebug.container_events, 'ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')   
+    SystemDebug.debug(SystemDebug.container_events, 'ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.to_s + ' Listeners ')   
   end
 
   def rm_event_listener(listener)   
