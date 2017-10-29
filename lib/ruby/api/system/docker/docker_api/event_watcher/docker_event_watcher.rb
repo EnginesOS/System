@@ -123,7 +123,7 @@ class DockerEventWatcher < ErrorsApi
   @event_listeners[event_listener.hash_name] = 
   { listener: event_listener , 
     priority: event_listener.priority}
-   @event_listeners = @event_listeners.sort_by { |k, v| v[:priority] }
+  
     STDERR.puts('ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.to_s + ' Listeners ')
     SystemDebug.debug(SystemDebug.container_events, 'ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.to_s + ' Listeners ')   
   end
@@ -170,7 +170,7 @@ class DockerEventWatcher < ErrorsApi
    end
      
   def trigger(hash)
-    @event_listeners.values.each do |listener_hash|
+    @event_listeners.sort_by { |k, v| v[:priority] }.each do |listener_hash|
       listener = listener_hash[:listener]
       unless listener.container_name.nil?
         next unless match_container(hash, listener.container_name)
