@@ -1,17 +1,18 @@
 class DockerEventWatcher < ErrorsApi
   class EventListener
     require 'yajl'
-    attr_accessor :container_name, :event_mask
+    attr_accessor :container_name, :event_mask, :priority
 
-    def initialize(listener, event_mask, container_name = nil)
+    def initialize(listener, event_mask, container_name = nil, priority = 200)
       @object = listener[0]
       @method = listener[1]
       @event_mask = event_mask
       @container_name = container_name
+      @priority = priority
     end
 
     def hash_name
-      @object.object_id.to_s
+     @object.object_id.to_s
     end
 
     def trigger(hash)
@@ -117,9 +118,12 @@ class DockerEventWatcher < ErrorsApi
     # @system.start_docker_event_listener(@event_listeners)
   end
 
-  def add_event_listener(listener, event_mask = nil, container_name = nil)
-    event = EventListener.new(listener, event_mask, container_name)
-    @event_listeners[event.hash_name] = event
+  def add_event_listener(listener, event_mask = nil, container_name = nil, priority=200)
+    event_listener = EventListener.new(listener, event_mask, container_name, priority)
+  @event_listeners[event_listener.hash_name] = 
+  { listener: event_listener , 
+    priority: event_listener.priority}
+  
     STDERR.puts('ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
     SystemDebug.debug(SystemDebug.container_events, 'ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')   
   end
@@ -166,11 +170,16 @@ class DockerEventWatcher < ErrorsApi
    end
      
   def trigger(hash)
-    @event_listeners.values.each do |listener|
+
+ #   @event_listeners.values.each do |listener_hash|
+    l = @event_listeners.sort_by { |k, v| v[:priority] }
+      l.each do |m|
+      listener = m[1][:listener]
       unless listener.container_name.nil?
         next unless match_container(hash, listener.container_name)
       end
       listener.trigger(hash)
+      STDERR.puts('Trigger ' + hash.to_s + ' for prior ' + listener.priority.to_s)
     end
   rescue StandardError => e
     SystemDebug.debug(SystemDebug.container_events, hash.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)
