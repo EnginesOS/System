@@ -48,7 +48,7 @@ def symbolize_keys_array_members(array)
 end
 
 def symbolize_keys(hash)
-   return hash unless hash.is_?(Hash)
+   return hash unless hash.is_a?(Hash)
   hash.inject({}){|result, (key, value)|
     new_key = case key
     when String then key.to_sym
