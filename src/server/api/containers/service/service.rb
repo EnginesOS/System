@@ -20,6 +20,7 @@ end
 get '/v0/containers/service/:service_name/status' do
   begin
     service = get_service(params[:service_name])
+     STDERR.puts('Status' + service.status.to_s )
     return_json(service.status)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
