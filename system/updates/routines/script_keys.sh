@@ -12,8 +12,11 @@ function create_mgmt_script_key {
 
 
 function regenerate_keys {
-for script_name in `cat /opt/engines/etc/ssh/key_names`
-	
+if test -z $key_names 
+ then 
+  key_names=`cat /opt/engines/etc/ssh/key_names`
+fi
+for script_name in $key_names 	
 do			
 		if test -f ~/.ssh/system/${script_name}
 			  then

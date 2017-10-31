@@ -31,7 +31,7 @@ cp -rp /opt/engines/system/updates/src/* /
 
 
 
-#FIX ME and use a list for freash keys only
+#FIX ME and use a list for fresh keys only
 . /opt/engines/system/updates/routines/script_keys.sh
 #refresh_mgmt_keys
 
@@ -47,6 +47,5 @@ if ! test -z "$engines_updates"
 	done
  fi
  su -l engines /opt/engines/system/scripts/update/finish_engines_system_update.sh
-
 
 exit 0
