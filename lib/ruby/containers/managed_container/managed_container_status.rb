@@ -6,11 +6,11 @@ module ManagedContainerStatus
       false
     end
   end
-
-  def save_state
-    status
-    super
-  end
+#
+#  def save_state
+#    status
+#    super
+#  end
   
   def read_state
     state = super
