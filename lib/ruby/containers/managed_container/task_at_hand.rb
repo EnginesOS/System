@@ -103,12 +103,16 @@ module TaskAtHand
     SystemDebug.debug(SystemDebug.container_events, :PROCESS_CONTAINER_vents, @container_name,  event_hash)
     case event_hash[:status]
     when 'create'
+      status
       on_create(event_hash)
     when 'start'
+      status
       on_start('start')
     when 'unpause'
+      status
       on_start('unpause')
     when 'die'
+      status
       begin
         # STDERR.puts('IT DIED WITH ' + event_hash[:Actor][:Attributes][:exitCode].to_s)
         ec = event_hash[:Actor][:Attributes][:exitCode]
@@ -117,14 +121,18 @@ module TaskAtHand
       end
       on_stop('die', ec)
     when 'kill'
+      status
       #  STDERR.puts('IT KILL')
       on_stop('kill')
     when 'stop'
+      status
       on_stop('stop')
       #  STDERR.puts('IT STOP')
     when 'pause'
+      status
       on_stop('pause')
     when 'oom'
+      status
       out_of_mem('oom')
     end
     true
