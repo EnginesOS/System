@@ -71,7 +71,7 @@ class ManagedContainer < Container
   def status
     @status = {} if @status.nil?
     @status[:state] = read_state
-      STDERR.puts(' STATE GOT ' + @status[:state].to_s)
+      STDERR.puts(' STATE GOT ' + container_name.to_s + ':' + @status[:state].to_s)
     @status[:set_state] = @setState
     @status[:progress_to] = task_at_hand
     @status[:error] = false
