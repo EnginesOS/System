@@ -6,7 +6,7 @@ module ManagedContainerStatus
       false
     end
   end
-
+#
   def save_state
     status
     super
