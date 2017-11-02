@@ -49,7 +49,7 @@ module ServiceApiConfigurations
   end
 
   def service_resource(c, what)
-    cmd = '/home/engines/services/resources/' + what + '.sh'
+    cmd = '/home/engines/scripts/services/resources/' + what + '.sh'
     # STDERR.puts('SERVICE RESOURCE' + cmd.to_s)
     #  STDERR.puts('SERVICE RESOURCE' + c.container_name)
     @engines_core.exec_in_container(
