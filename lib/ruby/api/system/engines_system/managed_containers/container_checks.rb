@@ -9,6 +9,10 @@ module ContainerChecks
   protected
 
   def check_and_act(containers_status, ctype)
+
+    raise EnginesExceptoin.new(warning_hash('System Starting up')) if SystemConfig.is_system_starting?
+    raise EnginesExceptoin.new(warning_hash('System Shuting Down')) if SystemConfig.is_system_stopping?
+
     result = {}
     containers_status.keys.each do |container_name|
       if containers_status[container_name][:error] == true

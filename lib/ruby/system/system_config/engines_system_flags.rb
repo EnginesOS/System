@@ -10,11 +10,16 @@ module EnginesSystemFlags
   @@FirstRunRan = '/opt/engines/run/system/flags/first_ran'
   @@EngineSystemIsStartingFile =  '/opt/engines/run/system/flags/system_starting'
   @@EngineSystemIsStartedFile =  '/opt/engines/run/system/flags/system_started'
+  @@EngineSystemIsStoppingFile =  '/opt/engines/run/system/flags/system_shutdown'
   
+  def SystemConfig.is_system_stopping?
+    File.exists?(@@EngineSystemIsStoppingFile)
+  end
+
   def SystemConfig.is_system_starting?
     File.exists?(@@EngineSystemIsStartingFile)
   end
-  
+
   def SystemConfig.SystemRebootingFlag
     @@SystemRebootingFlag
   end
