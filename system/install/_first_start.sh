@@ -88,8 +88,9 @@ docker start system
    recreate_service
  done
 
+# Wap left to last after mgmt
 
-for service in auth mysqld cron volmgr backup ldap ftp wap redis smtp uadmin logrotate
+for service in auth mysqld cron volmgr backup ldap ftp redis smtp uadmin logrotate control
  do
    create_service
  done
@@ -110,6 +111,11 @@ for service in auth mysqld cron volmgr backup ldap ftp wap redis smtp uadmin log
       fi
   	echo "Management is now at https://$lan_ip:8484/ or https://${ext_ip}:8484/"  
   fi
+  
+#Start Wap last, as when port 80 open is means system and mgmt is up
+service=wap
+create_service
+  
  crontab  /opt/engines/system/updates/src/etc/crontab  
  echo sudo su -l engines  
  echo to use the engines management tool on the commandline 
