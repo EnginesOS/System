@@ -112,7 +112,7 @@ for service in auth mysqld cron volmgr backup ldap ftp redis smtp uadmin logrota
   	echo "Management is now at https://$lan_ip:8484/ or https://${ext_ip}:8484/"  
   fi
   
-#Start Wap last, as when port 80 open is means system and mgmt is up
+#Start Wap last, as when port 80 is open it means system and mgmt is up
 service=wap
 create_service
   
