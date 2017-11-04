@@ -1,8 +1,8 @@
 #!/bin/sh
 
 touch /opt/engines/run/system/flags/engines_rebooting
-
-if ! test -f /etc/engines_reboot_disabled
+touch /opt/engines/run/system/flags/engines_rebooted
+if ! test -f /opt/engines/etc/engines_reboot_disabled
  then
 	nohup sudo -n /opt/engines/system/scripts/ssh/sudo/_restart_base_os.sh & 
 	echo restarting
