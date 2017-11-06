@@ -1,0 +1,9 @@
+parent_engine: imap
+publisher_namespace: EnginesSystem
+type_path: auth
+service_handle: imap_kerb
+container_type: service
+persistent: true
+variables:
+ parent_engine: imap
+ container_type: service

@@ -15,11 +15,6 @@ environments: []
 kerberos: true
 image: _Engines_System(flavor)/ldap:_Engines_System(release)
 volumes: 
- configuration: 
-  name: ip_file
-  remotepath: "/home/net/"
-  localpath: "/opt/engines/etc/net/"
-  permissions: "ro"
  ldap_db: 
   name: ldap_db
   remotepath: "/var/lib/ldap/"

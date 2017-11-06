@@ -1,0 +1,11 @@
+parent_engine: control
+publisher_namespace: EnginesSystem
+type_path: certs
+service_handle: control._Engines_System(default_domain)
+container_type: service
+persistent: true
+variables:
+ cert_name: control._Engines_System(default_domain)
+ domainname: _Engines_System(default_domain)
+ hostname: control._Engines_System(default_domain)
+ wild: no

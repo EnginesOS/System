@@ -7,7 +7,7 @@ memory: '512'
 hostname: control
 publisher_namespace: EnginesSystem
 type_path: control
-port: 8484
+port: 10443
 domain_name: _Engines_System(default_domain)
 kerberos: false
 volumes: 
@@ -21,7 +21,7 @@ mapped_ports:
   name: web
   port: 8001
   publicFacing: true
-  external: 8484
+  external: 10443
   proto_type: tcp
 environments:
 - !ruby/object:EnvironmentVariable
@@ -60,7 +60,7 @@ environments:
 image: _Engines_System(flavor)/control:_Engines_System(release)
 repo: na
 last_result: 
-setState: nocontainer
+setState: running
 nginxored: false
 conf_register_site: true
 conf_register_dns: true

@@ -5,12 +5,8 @@ service_handle: ipvpn._Engines_System(default_domain)
 container_type: service
 persistent: true
 variables:
- country: AU
- state: NSW
- organisation: engines
- city: sydney
- person: james
  cert_name: ipvpn._Engines_System(default_domain)
  domainname: _Engines_System(default_domain)
  hostname: ivpn._Engines_System(default_domain)
  wild: no
+ target: ivpn
