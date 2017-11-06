@@ -8,4 +8,8 @@
   remotepath: /etc/localtime
   localpath: /etc/localtime
   permissions: "ro"  
- 
+ system: 
+  name: system
+  remotepath: /home/engines/system
+  localpath: /opt/engines/etc/exported
+  permissions: "ro" 

@@ -7,8 +7,8 @@ require 'open-uri'
 
 module DNSHosting
   def self.get_local_ip
-    if File.exist?('/opt/engines/etc/net/ip')
-       File.read('/opt/engines/etc/net/ip').strip
+    if File.exist?('/opt/engines/etc/exported/net/exported/ip')
+       File.read('/opt/engines/etc/exported/net/exported/ip').strip
     else
     # devel/lachlan case
     Socket.ip_address_list.each do |addr|

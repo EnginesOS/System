@@ -17,8 +17,8 @@ image: _Engines_System(flavor)/ldap:_Engines_System(release)
 volumes: 
  configuration: 
   name: ip_file
-  remotepath: "/home/net/"
-  localpath: "/opt/engines/etc/net/"
+  remotepath: "/home/exported/net/"
+  localpath: "/opt/engines/etc/exported/net/"
   permissions: "ro"
  ldap_db: 
   name: ldap_db
