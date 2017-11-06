@@ -1,5 +1,7 @@
 #User		Group		UID	#keyname (used to pick up uid from contianername) must be _containername
 #mmg apps
+system  system	21000 _system
+www-data	www-data	22050	_control
 www-data		www-data	22050 _mgmt
 www-data		www-data	22050 _firstrun
 #services
@@ -36,7 +38,6 @@ openldap openldap 22030	_ldap
 ivpn ivpn 22031 _ivpn
 openid	openid	22032	_openid
 uadmin	uadmin	22033	_uadmin
-control	control	22050	_control
 #Frameworks
 www-data	 www-data	22671
 ruby	 ruby			22672
