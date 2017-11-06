@@ -179,7 +179,7 @@ class DockerEventWatcher < ErrorsApi
         next unless match_container(hash, listener.container_name)
       end
       listener.trigger(hash)
-      STDERR.puts('Trigger ' + hash.to_s + ' for prior ' + listener.priority.to_s)
+      STDERR.puts('Triggered ' + hash.to_s + ' for prior ' + listener.priority.to_s)
     end
   rescue StandardError => e
     SystemDebug.debug(SystemDebug.container_events, hash.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)
