@@ -15,11 +15,6 @@ kerberos: false
 environments: []
 image: _Engines_System(flavor)/avahi:_Engines_System(release)
 volumes: 
- configuration: 
-  name: ip_file
-  remotepath: "/home/net/"
-  localpath: "/opt/engines/etc/exported/net/"
-  permissions: "ro"
 mapped_ports:
  mdns:
   name: mdns
