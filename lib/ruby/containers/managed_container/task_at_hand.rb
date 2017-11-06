@@ -134,6 +134,8 @@ module TaskAtHand
     when 'oom'
       status
       out_of_mem('oom')
+    when 'destroy'
+      status  
     end
     true
   rescue StandardError => e
