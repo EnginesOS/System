@@ -10,3 +10,5 @@ variables:
  hostname: imap._Engines_System(default_domain)
  altName: imap.engines.internal
  wild: no
+ container_type: service
+ parent_engine: imap
