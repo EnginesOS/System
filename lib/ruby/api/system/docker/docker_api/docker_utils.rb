@@ -95,7 +95,7 @@ module DockerUtils
             l = r [0..7].unpack('C*')
             cl = l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
             r = r[8..-1]
-            #STDERR.puts('STDOUTn 0001 header ' +  l.to_s + ' realen ' + r.length.to_s + ' chunck len ' + cl.to_s)
+            STDERR.puts('STDERR ' + r.length.to_s + ':' + r.to_s)
           elsif r.start_with?("\u0002\u0000\u0000\u0000")
             dst = :stderr
             r = r[8..-1]
@@ -115,10 +115,10 @@ module DockerUtils
             length = r.length
           end
           if length > r.length
-            STDERR.puts('length > actual' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
+          #  STDERR.puts('length > actual' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
             length = r.length
           end
-          STDERR.puts('len ' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
+       #   STDERR.puts('len ' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
           h[dst] += r[0..length-1]
           r = r[length..-1]
         end
