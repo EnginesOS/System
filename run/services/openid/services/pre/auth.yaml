@@ -1,0 +1,9 @@
+parent_engine: openid
+publisher_namespace: EnginesSystem
+type_path: auth
+service_handle: openid_kerb
+container_type: service
+persistent: true
+variables:
+ parent_engine: openid
+ container_type: service

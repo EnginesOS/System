@@ -1,0 +1,12 @@
+parent_engine: ivpn
+publisher_namespace: EnginesSystem
+type_path: certs
+service_handle: ipvpn._Engines_System(default_domain)
+container_type: service
+persistent: true
+variables:
+ cert_name: ipvpn._Engines_System(default_domain)
+ domainname: _Engines_System(default_domain)
+ hostname: ivpn._Engines_System(default_domain)
+ wild: no
+ target: ivpn

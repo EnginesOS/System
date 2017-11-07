@@ -1,0 +1,10 @@
+parent_engine: ivpn
+publisher_namespace: EnginesSystem
+type_path: ldap
+service_handle: usersgroup
+container_type: service
+persistent: true
+variables:
+ type: group
+ parent_engine: ivpn
+ cn: ivpn_users
