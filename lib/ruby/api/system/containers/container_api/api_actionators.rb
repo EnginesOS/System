@@ -14,8 +14,8 @@ module ApiActionators
       end
       data = params.to_json
     end
-    
-    cmds = ['/home/engines/scripts/actionators/' + actionator[:name].to_s + '.sh'] 
+
+    cmds = ['/home/engines/scripts/actionators/' + actionator[:name].to_s + '.sh']
     result = engines_core.exec_in_container(
     {container: c,
       command_line: cmds,
@@ -23,19 +23,25 @@ module ApiActionators
       data: data,
       data_stream: stream})
 
-    if result[:result] != 0
-      raise EnginesException.new(error_hash('Error on performing action ' + c.container_name.to_s + ':' + actionator[:name].to_s , result))
-    end
-    if result[:stdout].start_with?('{') || result[:stdout].start_with?('"{')
-      begin
-        deal_with_json(result[:stdout]) if actionator[:return_type]
-      rescue
+    if result[:result] == 0
+      if result[:stdout].start_with?('{') || result[:stdout].start_with?('"{')
+        begin
+          deal_with_json(result[:stdout]) if actionator[:return_type]
+        rescue
+          result[:stdout]
+        end
+      elsif result[:stdout].start_with?('true') || result[:stdout].start_with?('"true')
+        true
+      else
         result[:stdout]
       end
-    elsif result[:stdout].start_with?('true') || result[:stdout].start_with?('"true')
-      true
+    elsif result[:result] == 126
+      raise EnginesException.new( {error_mesg: 'Script missing',
+        system: :container_api,
+        params: result,
+        status: 405 })
     else
-      result[:stdout]
+      raise EnginesException.new(error_hash('Error on performing action ' + c.container_name.to_s + ':' + actionator[:name].to_s , result))
     end
   end
 

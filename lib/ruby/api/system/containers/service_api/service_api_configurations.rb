@@ -14,7 +14,7 @@ module ServiceApiConfigurations
       params[:variables] = symbolize_keys(variables_hash)
       params
     elsif result[:result] == 126
-      raise EnginesException.new( {error_mesg: mesg,
+      raise EnginesException.new( {error_mesg: 'Script missing',
       system: :container_api,
       params: result,
       status: 405 })
@@ -35,6 +35,7 @@ module ServiceApiConfigurations
         log_error: true,
         timeout: @@configurator_timeout,
         data: configurator_params[:variables].to_json })
+          
     else
       {stderr: 'Not Running', result: -1}
     end
