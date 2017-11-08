@@ -18,7 +18,7 @@ def send_encoded_exception(api_exception)#request, error_object, *args)
       status_code = 405
     else
       status_code = 406
-    end
+    end    
    end 
   end
   status_code = api_exception[:status] if api_exception.key?(:status)

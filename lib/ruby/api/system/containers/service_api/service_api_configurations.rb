@@ -13,6 +13,11 @@ module ServiceApiConfigurations
       variables_hash = deal_with_json(result[:stdout])
       params[:variables] = symbolize_keys(variables_hash)
       params
+    elsif result[:result] == 126
+      raise EnginesException.new( {error_mesg: mesg,
+      system: :container_api,
+      params: result,
+      status: 405 })
     else
       raise EnginesException.new(error_hash('Error on retrieving Configuration', result))
     end
