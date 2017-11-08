@@ -8,16 +8,14 @@ module ServiceApiConfigurations
       log_error: true,
       timeout: @@configurator_timeout})
     if result[:result] == 0
-      #variables = SystemUtils.hash_string_to_hash(result[:stdout])
-      #FIXMe dont use JSON.pars
       variables_hash = deal_with_json(result[:stdout])
       params[:variables] = symbolize_keys(variables_hash)
       params
     elsif result[:result] == 126
       raise EnginesException.new( {error_mesg: 'Script missing',
-      system: :container_api,
-      params: result,
-      status: 405 })
+        system: :container_api,
+        params: result,
+        status: 405 })
     else
       raise EnginesException.new(error_hash('Error on retrieving Configuration', result))
     end
@@ -35,7 +33,6 @@ module ServiceApiConfigurations
         log_error: true,
         timeout: @@configurator_timeout,
         data: configurator_params[:variables].to_json })
-          
     else
       {stderr: 'Not Running', result: -1}
     end
