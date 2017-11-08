@@ -35,11 +35,6 @@ module ApiActionators
       else
         result[:stdout]
       end
-    elsif result[:result] == 126
-      raise EnginesException.new( {error_mesg: 'Script missing',
-        system: :container_api,
-        params: result,
-        status: 405 })
     else
       raise EnginesException.new(error_hash('Error on performing action ' + c.container_name.to_s + ':' + actionator[:name].to_s , result))
     end
