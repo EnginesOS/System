@@ -33,7 +33,7 @@ module ServiceHashChecks
 
   def check_hash(service_hash)
     raise EnginesException.new({error_mesg: 'Nil service Hash',error_type: :error , params: service_hash}) if service_hash.nil?
-    raise EnginesException.new({error_mesg: 'Not a Service Hash as not a hash',error_type: :error , params: service_hash})  unless service_hash.is_a?(Hash)
+    raise EnginesException.new({error_mesg: 'Not a Service Hash is not a hash but a ' + service_hash.class.name, error_type: :error , params: service_hash})  unless service_hash.is_a?(Hash)
   end
 
   def check_service_hash(service_hash)
