@@ -6,7 +6,7 @@ module ServiceHashChecks
     # FIXME: Kludge
     # Klugde to avoid gui bugss
     unless service_hash.key?(:container_type)
-     service_hash[:container_type] = "container"        
+     service_hash[:container_type] = "app"        
        STDERR.puts('APPLIED KLUDGE no 1')
     end
     # End of Kludge
