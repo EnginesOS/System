@@ -193,7 +193,7 @@ module BuildDirSetup
     else
       rmt_log_dir = '/var/log'
     end
-    local_log_dir = SystemConfig.SystemLogRoot + '/containers/' + @build_params[:engine_name]
+    local_log_dir = SystemConfig.SystemLogRoot + '/apps/' + @build_params[:engine_name]
     Dir.mkdir(local_log_dir) unless Dir.exist?(local_log_dir)
     rmt_log_dir_varfile.close
     ' -v ' + local_log_dir + ':' + rmt_log_dir + ':rw '
