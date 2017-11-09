@@ -15,11 +15,11 @@ module ContainerOperations
 
   def container_type(container_name)
     if loadManagedEngine(container_name) != false
-      'container'
+      'app'
     elsif loadManagedService(container_name) != false
       'service'
     else
-      'container' #FIXME poor assumption
+      'app' #FIXME poor assumption
     end
   end
 

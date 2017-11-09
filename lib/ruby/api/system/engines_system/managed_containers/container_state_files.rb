@@ -58,7 +58,7 @@ module ContainerSystemStateFiles
       Dir.mkdir(state_dir)
       Dir.mkdir(state_dir + '/run') unless Dir.exist?(state_dir + '/run')
       Dir.mkdir(state_dir + '/run/flags') unless Dir.exist?(state_dir + '/run/flags')
-      FileUtils.chown_R(nil, 'containers', state_dir + '/run')
+      FileUtils.chown_R(nil, 'apps', state_dir + '/run')
       FileUtils.chmod_R('u+r', state_dir + '/run')
       FileUtils.chmod_R('g+w', state_dir + '/run')
     end
@@ -72,7 +72,7 @@ module ContainerSystemStateFiles
     key_dir =  key_dir(container)
     unless Dir.exist?(key_dir)
       Dir.mkdir(key_dir)  unless File.directory?(key_dir)
-      FileUtils.chown(nil, 'containers', key_dir)
+      FileUtils.chown(nil, 'apps', key_dir)
       FileUtils.chmod('g+w', key_dir)
     end
     #  STDERR.puts(' key dir 1 ' + key_dir.to_s)

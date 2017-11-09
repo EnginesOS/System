@@ -10,7 +10,7 @@ module SMAttachedServices
     when 'ManagedEngine'
       # FIXME: get from Object
       params[:parent_engine] = identifier
-      params[:container_type] = 'container'
+      params[:container_type] = 'app'
       SystemDebug.debug(SystemDebug.services, :get_engine_service_hashes, 'ManagedEngine')
       #      hashes = system_registry_client.find_engine_services_hashes(params)
       #      SystemUtils.debug_output('hashes',hashes)

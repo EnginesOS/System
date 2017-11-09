@@ -74,7 +74,7 @@ volumes:
  log_dir:
   name: log_dir
   remotepath: "/client/log/"
-  localpath: /var/log/engines/containers/_Engines_Template(target)
+  localpath: /var/log/engines/apps/_Engines_Template(target)
   permissions: "rw"
  persistence:
   name: persistence

@@ -40,7 +40,7 @@ module EnginesApiSystem
     @system_api.clear_cid_file(container)
     @system_api.clear_container_var_run(container)
     start_dependancies(container) if container.dependant_on.is_a?(Hash)
-    container.pull_image if container.ctype != 'container'
+    container.pull_image if container.ctype != 'app'
     @docker_api.create_container(container)
   end
 

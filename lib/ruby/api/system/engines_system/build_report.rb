@@ -1,7 +1,7 @@
 module BuildReport
   class FakeContainer
     attr_reader :container_name, :ctype
-    def initialize(name, type = 'container')
+    def initialize(name, type = 'app')
       @container_name = name
       @ctype = type
     end

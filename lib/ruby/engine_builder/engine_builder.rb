@@ -124,7 +124,7 @@ class EngineBuilder < ErrorsApi
     f.puts(restart_reason)
     f.close
     File.chmod(0660, restart_flag_file)
-    FileUtils.chown(nil, 'containers', restart_flag_file)
+    FileUtils.chown(nil, 'apps', restart_flag_file)
   end
 
   #      throw BuildStandardError.new(e,'setting web port')

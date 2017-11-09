@@ -44,7 +44,7 @@ module ContainerSchedules
   end
 
   def container_ctype(ctype)
-    ctype = 'engine' if ctype == 'container'
+    ctype = 'engine' if ctype == 'app'
     ctype
   end
 

@@ -22,7 +22,7 @@ volumes:
  engines: 
   name: engines
   remotepath: "/var/log/engines/engines/"
-  localpath: "/var/log/engines/containers/"
+  localpath: "/var/log/engines/apps/"
   permissions: rw
  services: 
   name: services

@@ -14,12 +14,12 @@ module ServiceManagerOperations
   end
 
   def retrieve_engine_service_hash(params)
-    params[:container_type] = 'container' unless params.key?(:container_type)
+    params[:container_type] = 'app' unless params.key?(:container_type)
     service_manager.retrieve_engine_service_hash(params)
   end
 
   def find_engine_services_hashes(hash)
-    hash[:container_type] = 'container' unless hash.key?(:container_type)
+    hash[:container_type] = 'app' unless hash.key?(:container_type)
     service_manager.find_engine_services_hashes(hash)
   end
 

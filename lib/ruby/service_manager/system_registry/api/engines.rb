@@ -42,7 +42,7 @@ module Engines
   end
 
   def remove_from_managed_engine(params)
-    params[:container_type] = 'container' unless params.key?(:container_type)
+    params[:container_type] = 'app' unless params.key?(:container_type)
 
     r = 'engine/services/del'
     r += address_params(params, [:container_type, :parent_engine, :service_handle, :publisher_namespace, :type_path])
