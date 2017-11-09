@@ -2,7 +2,7 @@ module EnginesSystemDirs
 
   @@RunDir = '/opt/engines/run/'
   @@CidDir = '/opt/engines/run/cid/'
-  @@ContainersDir = '/opt/engines/run/containers/'
+  @@ContainersDir = '/opt/engines/run/apps/'
   @@DeploymentDir = '/home/engines/deployment/deployed'
   @@DeploymentTemplates = '/opt/engines/system/templates/deployment'
   @@CONTFSVolHome = '/home/app/fs'
