@@ -13,8 +13,8 @@ require '/opt/engines/lib/ruby/api/system/system_preferences.rb'
 
 class EnginesCore < ErrorsApi
 
-    require_relative 'errors/engines_core_errors.rb'
-    include EnginesCoreErrors
+  require_relative 'errors/engines_core_errors.rb'
+  include EnginesCoreErrors
 
   require_relative '../configurations_api.rb'
   require_relative '../blueprint_api.rb'
