@@ -87,7 +87,7 @@ module EnginesOperations
       end
     @build_thread 
   end
-
+  warning_hash
   def set_container_runtime_properties(container, params)
     # STDERR.puts('set_container_runtime_properties ' +  params.to_s)
     raise EnginesException.new(warning_hash(params[:engine_name],'Container is active')) if container.is_active?
