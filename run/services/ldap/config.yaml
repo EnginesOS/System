@@ -5,6 +5,7 @@ type_path: ldap
 ctype: service
 persistent: true
 conf_self_start: true
+shareable: false
 last_error: 
 memory: '128'
 hostname: ldap
