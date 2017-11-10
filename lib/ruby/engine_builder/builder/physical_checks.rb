@@ -19,11 +19,13 @@ def check_avail_memory
 end
 
 def check_avail_ports
-  @mapped_ports.each_value do | mp |
-  next if mp[:publicFacing] == true
-    c = @core_api.is_port_available?(mp[:external])
-  raise EngineBuilderException.new(warning_hash('Port Clash with ' + c + ' port:' + mp[:external].to_s)) unless c.is_a?(TrueClass)
-  end  
+  unless @blueprint_reader.mapped_ports.nil?
+    @blueprint_reader.mapped_ports.each_value do | mp |
+      next if mp[:publicFacing] == true
+      c = @core_api.is_port_available?(mp[:external])
+      raise EngineBuilderException.new(warning_hash('Port Clash with ' + c + ' port:' + mp[:external].to_s)) unless c.is_a?(TrueClass)
+    end
+  end
 end
 
 def meets_physical_requirements
