@@ -39,7 +39,7 @@ module EnginesApiSystem
       mapped_ports.values.each do |mp|
         if mp[:publicFacing] == true
           unless (pa = @engines_core.is_port_available?(mp[:external])).is_a?(TrueClass)
-            r = 'Port clash with ' + pa
+            r = 'Port clash with ' + pa + ' over Port ' + mp[:external].to_s
             break
           end
         end

@@ -41,6 +41,7 @@ module EnginesCoreSystem
             next unless c.is_active?
             next unless c.mapped_ports.is_a?(Hash)
             c.mapped_ports.each_value do | p|
+              STDERR.puts('Registered:' + p.to_s + ' to ' + c.container_name)
               @registered_ports[c.container_name] = p
             end            
           end
