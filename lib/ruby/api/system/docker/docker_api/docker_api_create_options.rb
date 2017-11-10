@@ -240,7 +240,7 @@ module DockerApiCreateOptions
 
   def system_mounts(container)
     mounts = []
-    if container.ctype == 'container'
+    if container.ctype == 'app'
       mounts_file_name = SystemConfig.ManagedEngineMountsFile
     else
       mounts_file_name = SystemConfig.ManagedServiceMountsFile

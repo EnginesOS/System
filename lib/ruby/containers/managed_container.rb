@@ -80,6 +80,7 @@ class ManagedContainer < Container
     @status[:had_oom] = @had_out_memory
     @status[:restart_required] = restart_required?
     @status[:error] = true if @status[:state] != @status[:set_state] && @status[:progress_to].nil?
+    @status[:error] = false if @status[:state] == 'stopped' && is_stopped_ok?
     @status
   end
 
@@ -104,6 +105,10 @@ class ManagedContainer < Container
     @repository
   end
 
+  def is_stopped_ok?
+    @stopped_ok |= false
+  end
+  
   attr_reader :framework,\
   :runtime,\
   :repository,\

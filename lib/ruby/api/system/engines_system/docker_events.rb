@@ -140,7 +140,7 @@ module DockerEvents
     c = container_from_cache(container_name)
     if c.nil?
       case ctype
-      when 'container'
+      when 'app'
         c = loadManagedEngine(container_name)
       when 'service'
         c = loadManagedService(container_name)
@@ -223,7 +223,7 @@ module DockerEvents
   def container_type_mask(ctype)
     mask = 16
     case ctype
-    when 'container'
+    when 'app'
       mask |= 2
     when 'service'
       mask |= 4

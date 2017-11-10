@@ -22,6 +22,54 @@ module EnginesApiSystem
     @system_api.save_container(container)
   end
 
+  def  pre_start_checks(container)
+    r=true
+    unless have_enough_ram?(container)
+      r = 'Free memory' + free_ram.to_s + ' Required:' + ram_needed.to_s + "\n"
+    end
+    if (c = port_clash?(container.mapped_ports))
+      r = c
+    end
+    r
+  end
+
+  def port_clash?(mapped_ports)
+    r = false
+    unless mapped_ports.nil?
+      mapped_ports.values.each do |mp|
+        if mp[:publicFacing] == true
+          unless (pa = @engines_core.is_port_available?(mp[:external])).is_a?(TrueClass)
+            r = 'Port clash with ' + pa + ' over Port ' + mp[:external].to_s
+            break
+          end
+        end
+      end
+    end
+    r
+  end
+
+  def register_ports(container_name, mapped_ports)
+    unless mapped_ports.nil?
+    mapped_ports.values.each do |mp|
+      if mp[:publicFacing] == true
+        port = mp[:port]
+        @engines_core.register_port(container_name, port)
+      end
+    end
+    end
+  end
+
+  def deregister_ports(container_name, mapped_ports)
+    unless mapped_ports.nil?
+    mapped_ports.values.each do |mp|
+      if mp[:publicFacing] = true
+        port = mp[:port]
+        @engines_core.deregister_port(container_name, port)
+      end
+    end
+    end
+  end
+
   def have_enough_ram?(container)
     free_ram = @system_api.available_ram
     ram_needed = SystemConfig.MinimumFreeRam.to_i + container.memory.to_i * 0.7
@@ -35,12 +83,12 @@ module EnginesApiSystem
 
   def create_container(container)
     clear_error
-    raise EnginesException.new(error_hash('Failed To create container exists by the same name', container)) if container.ctype != 'system_service' && container.has_container?
+    raise EnginesException.new(warning_hash('Failed To create container exists by the same name', container)) if container.ctype != 'system_service' && container.has_container?
     raise EnginesException.new(error_hash('Failed to create state files', self)) unless @system_api.create_container_dirs(container)
     @system_api.clear_cid_file(container)
     @system_api.clear_container_var_run(container)
     start_dependancies(container) if container.dependant_on.is_a?(Hash)
-    container.pull_image if container.ctype != 'container'
+    container.pull_image if container.ctype != 'app'
     @docker_api.create_container(container)
   end
 

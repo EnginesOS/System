@@ -108,7 +108,7 @@ end
 def engine_service_hash_from_params(params, search = false)
   hash = service_hash_from_params(params, search)
   hash[:parent_engine] = params['engine_name']
-  hash[:container_type] = 'container'
+  hash[:container_type] = 'app'
   hash
 end
 

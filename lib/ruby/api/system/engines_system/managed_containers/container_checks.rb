@@ -3,7 +3,7 @@ module ContainerChecks
     services_status = get_services_status
     results = check_and_act(services_status, 'service')
     engines_status = get_engines_status
-    results.merge!(check_and_act(engines_status, 'container'))
+    results.merge!(check_and_act(engines_status, 'app'))
     results
   end
   protected
@@ -28,7 +28,7 @@ module ContainerChecks
   end
 
   def act_on(container_name, ctype)
-    if ctype == 'container'
+    if ctype == 'app'
       container = loadManagedEngine(container_name)
     elsif ctype == 'service'
       container = loadManagedService(container_name)

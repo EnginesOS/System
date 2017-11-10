@@ -8,8 +8,6 @@ module ServiceApiConfigurations
       log_error: true,
       timeout: @@configurator_timeout})
     if result[:result] == 0
-      #variables = SystemUtils.hash_string_to_hash(result[:stdout])
-      #FIXMe dont use JSON.pars
       variables_hash = deal_with_json(result[:stdout])
       params[:variables] = symbolize_keys(variables_hash)
       params

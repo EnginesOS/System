@@ -87,6 +87,6 @@ Security is not merely achieved by containerisation, containers run as non privi
 <p>
 
 <strong>Blueprints </strong>
-Applications are defined in blueprints (in JSON) which are created in the Engines Blueprint Design Studio. The blueprints can be hosted locally on the installation or published in a public/private git repository and listed in open/private galleries.
+Applications are defined in blueprints (in JSON) which are created in the Engines Developer Studio. The blueprints can be hosted locally on the installation or published in a public/private git repository and listed in open/private galleries.
 Blueprints define every thing needed to install, configure and secure an application. The blueprinting process is a codification of the installation steps outlined in a software packages installation guide.
 <p>

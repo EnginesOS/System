@@ -6,6 +6,5 @@ if test $# -eq 1
   if test -d /opt/engines/run/services/$1
    then
 	rm -r /opt/engines/run/services/$1 &> /tmp/clear_csd
-	#chown engines.containers /opt/engines/run/services/$1
   fi
 fi 

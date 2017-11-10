@@ -69,12 +69,12 @@ volumes:
  state_dir: 
   name: state_dir
   remotepath: "/client/state/"
-  localpath: /opt/engines/run/containers/_Engines_Template(target)/run/
+  localpath: /opt/engines/run/apps/_Engines_Template(target)/run/
   permissions: "rw"
  log_dir:
   name: log_dir
   remotepath: "/client/log/"
-  localpath: /var/log/engines/containers/_Engines_Template(target)
+  localpath: /var/log/engines/apps/_Engines_Template(target)
   permissions: "rw"
  persistence:
   name: persistence

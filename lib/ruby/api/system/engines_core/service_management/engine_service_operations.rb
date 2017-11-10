@@ -4,7 +4,7 @@ module EngineServiceOperations
     params = {
       parent_engine:  container_name,
       persistent:  true,
-      container_type: 'container'
+      container_type: 'app'
     }
     SystemDebug.debug(SystemDebug.services, :engine_persistent_services, params)
     service_manager.get_engine_persistent_services(params)
@@ -35,7 +35,7 @@ module EngineServiceOperations
   def engine_attached_services(container_name)
     find_engine_services_hashes({
       parent_engine: container_name,
-      container_type: 'container'
+      container_type: 'app'
     })
   end
 

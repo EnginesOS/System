@@ -20,7 +20,7 @@ module ContainerChangeMonitor
     if @change_register == nil
       @change_register = {
         'service' => {},
-        'container' => {}
+        'app' => {}
       }
     end
     @change_register

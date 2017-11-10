@@ -1,8 +1,5 @@
 module ContainerOperations
-  #  def has_container_started?(container_name)
-  #    completed_flag_file = SystemConfig.RunDir + '/containers/' + container_name + '/run/flags/startup_complete'
-  #    File.exist?(completed_flag_file)
-  #  end
+
   def init_engine_dirs(engine_name)
     @system_api.init_engine_dirs(engine_name)
   end
@@ -15,11 +12,11 @@ module ContainerOperations
 
   def container_type(container_name)
     if loadManagedEngine(container_name) != false
-      'container'
+      'app'
     elsif loadManagedService(container_name) != false
       'service'
     else
-      'container' #FIXME poor assumption
+      'app' #FIXME poor assumption
     end
   end
 
