@@ -22,6 +22,49 @@ module EnginesApiSystem
     @system_api.save_container(container)
   end
 
+  def  pre_start_checks(container)
+    r=true
+    unless have_enough_ram?(container)
+      r = 'Free memory' + free_ram.to_s + ' Required:' + ram_needed.to_s + "\n"
+    end
+    if (c = port_clash?(container))
+      r = c
+    end
+    r
+  end
+
+  def port_clash?(container, mapped_ports)
+    mapped_ports.values.each do |mp|
+      if mp[:publicFacing] = true
+        if port == mp[:port]
+          r = 'Clash'
+          break
+        end
+      end
+      @engines_core.register_port(container_name, port)
+    end
+    r = @engines_core.is_port_available?(port)
+
+  end
+
+  def register_ports(container_name, mapped_ports)
+    mapped_ports.values.each do |mp|
+      if mp[:publicFacing] = true
+        port = mp[:port]
+        @engines_core.register_port(container_name, port)
+      end
+    end
+  end
+
+  def deregister_ports(container_name, mapped_ports)
+    mapped_ports.values.each do |mp|
+      if mp[:publicFacing] = true
+        port = mp[:port]
+        @engines_core.deregister_port(container_name, port)
+      end
+    end
+  end
+
   def have_enough_ram?(container)
     free_ram = @system_api.available_ram
     ram_needed = SystemConfig.MinimumFreeRam.to_i + container.memory.to_i * 0.7

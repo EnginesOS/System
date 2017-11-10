@@ -29,13 +29,25 @@ module EnginesCoreSystem
   end
 
   def reserved_ports
-    ports = []
-    ports.push(443)
-    ports.push(8484)
-    ports.push(80)
-    ports.push(22)
-    ports.push(808)
-    ports
+    @reserved_ports |= [443, 8484, 80, 22, 808]
+    @reserved_ports
+  end
+
+  def registered_ports
+    @registered_ports |= {}
+  end
+
+  def is_port_available?(port)
+
+     true
+  end
+
+  def register_port(container_name, port)
+    @registered_ports[container_name] = port
+  end
+
+  def deregister_port(container_name, port)
+    @registered_ports.delete(container_name)
   end
 
   def get_disk_statistics
