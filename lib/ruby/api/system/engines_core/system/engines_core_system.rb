@@ -37,10 +37,10 @@ module EnginesCoreSystem
     unless @registered_ports.is_a?(Hash)
       @registered_ports = {}
         containers = getManagedEngines.concat(getManagedServices).concat(getSystemServices)
-          containers.each do |c|
+          containers.each do | c |
             next unless c.is_active?
             next unless c.mapped_ports.is_a?(Hash)
-            c.mapped_ports.each_value do | p|
+            c.mapped_ports.each_value do |  p|
               STDERR.puts('Registered:' + p.to_s + ' to ' + c.container_name)
               @registered_ports[c.container_name] = p
             end            
@@ -51,6 +51,7 @@ module EnginesCoreSystem
 
   def is_port_available?(port)
     registered_ports.each_pair do | c , p|
+      STDERR.puts('Check ' + port.to_s + ' with ' + p.to_s)
      return c if p == port
   end
      true
