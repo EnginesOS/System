@@ -62,6 +62,7 @@ module EnginesCoreSystem
   end
 
   def deregister_port(container_name, port)
+    STDERR.puts('de reg port ' + container_name.to_s + ':' + port.to_s)
     registered_ports.delete(container_name)
   end
 
