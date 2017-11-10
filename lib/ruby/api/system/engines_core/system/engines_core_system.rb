@@ -41,7 +41,9 @@ module EnginesCoreSystem
   end
 
   def is_port_available?(port)
-
+    @registered_ports.each_pair do | c , p|
+     return c if p = port
+  end
      true
   end
 
