@@ -3,7 +3,7 @@ container_name: logrotate
 publisher_namespace: EnginesSystem
 type_path: logrotate
 ctype: service
-service_type: transient
+stopped_ok: true
 soft_service: true
 persistent: false
 last_error: 
