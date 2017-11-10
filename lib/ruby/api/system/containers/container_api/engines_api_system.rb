@@ -34,34 +34,40 @@ module EnginesApiSystem
   end
 
   def port_clash?(mapped_ports)
-    mapped_ports.values.each do |mp|
-      if mp[:publicFacing] = true
-        if port == mp[:port]
-          r = 'Clash'
-          break
+    r=false
+    unless mapped_ports.nil?
+      mapped_ports.values.each do |mp|
+        if mp[:publicFacing] = true
+          if port == mp[:port]
+            r = 'Clash'
+            break
+          end
         end
+        r = @engines_core.is_port_available?(port)
       end
-      @engines_core.register_port(container_name, port)
     end
-    r = @engines_core.is_port_available?(port)
-
+    r
   end
 
   def register_ports(container_name, mapped_ports)
+    unless mapped_ports.nil?
     mapped_ports.values.each do |mp|
       if mp[:publicFacing] = true
         port = mp[:port]
         @engines_core.register_port(container_name, port)
       end
     end
+    end
   end
 
   def deregister_ports(container_name, mapped_ports)
+    unless mapped_ports.nil?
     mapped_ports.values.each do |mp|
       if mp[:publicFacing] = true
         port = mp[:port]
         @engines_core.deregister_port(container_name, port)
       end
+    end
     end
   end
 
