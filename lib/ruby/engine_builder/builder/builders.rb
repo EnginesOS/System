@@ -149,8 +149,8 @@ module Builders
 
   def build_container
     SystemDebug.debug(SystemDebug.builder, 'Starting build with params ', @build_params)
-    meets_physical_requirements
     process_blueprint
+    meets_physical_requirements
     set_locale
     setup_build_dir
     get_base_image

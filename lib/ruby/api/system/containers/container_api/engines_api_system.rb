@@ -37,7 +37,7 @@ module EnginesApiSystem
     r = false
     unless mapped_ports.nil?
       mapped_ports.values.each do |mp|
-        if mp[:publicFacing] = true
+        if mp[:publicFacing] == true
           unless (pa = @engines_core.is_port_available?(mp[:external])).is_a?(TrueClass)
             r = 'Port clash with ' + pa
             break
@@ -51,7 +51,7 @@ module EnginesApiSystem
   def register_ports(container_name, mapped_ports)
     unless mapped_ports.nil?
     mapped_ports.values.each do |mp|
-      if mp[:publicFacing] = true
+      if mp[:publicFacing] == true
         port = mp[:port]
         @engines_core.register_port(container_name, port)
       end
