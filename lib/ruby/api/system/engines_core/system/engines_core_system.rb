@@ -41,18 +41,18 @@ module EnginesCoreSystem
   end
 
   def is_port_available?(port)
-    @registered_ports.each_pair do | c , p|
+    registered_ports.each_pair do | c , p|
      return c if p = port
   end
      true
   end
 
   def register_port(container_name, port)
-    @registered_ports[container_name] = port
+    registered_ports[container_name] = port
   end
 
   def deregister_port(container_name, port)
-    @registered_ports.delete(container_name)
+    registered_ports.delete(container_name)
   end
 
   def get_disk_statistics
