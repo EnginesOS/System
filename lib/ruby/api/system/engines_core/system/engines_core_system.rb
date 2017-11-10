@@ -34,7 +34,10 @@ module EnginesCoreSystem
   end
 
   def registered_ports
-    @registered_ports |= {}
+    unless @registered_ports.is_a?(Hash)
+      @registered_ports = {}
+    end
+    @registered_ports
   end
 
   def is_port_available?(port)

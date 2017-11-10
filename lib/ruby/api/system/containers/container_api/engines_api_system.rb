@@ -34,16 +34,15 @@ module EnginesApiSystem
   end
 
   def port_clash?(mapped_ports)
-    r=false
+    r = false
     unless mapped_ports.nil?
       mapped_ports.values.each do |mp|
         if mp[:publicFacing] = true
-          if port == mp[:port]
-            r = 'Clash'
+          unless (pa = @engines_core.is_port_available?(port)).is_a?(TrueClass)
+            r = 'Port clash with ' + pa
             break
           end
         end
-        r = @engines_core.is_port_available?(port)
       end
     end
     r
