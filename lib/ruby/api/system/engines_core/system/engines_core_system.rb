@@ -38,7 +38,7 @@ module EnginesCoreSystem
       @registered_ports = {}
         containers = getManagedEngines.concat(getManagedServices).concat(getSystemServices)
           containers.each do |c|
-            continue unless c.mapped_ports.is_a?(Hash)
+            next unless c.mapped_ports.is_a?(Hash)
             c.mapped_ports.each_value do | p|
               @registered_ports[c.container_name] = p
             end            
