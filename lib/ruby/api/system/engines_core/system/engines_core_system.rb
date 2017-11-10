@@ -52,7 +52,7 @@ module EnginesCoreSystem
   def is_port_available?(port)
     registered_ports.each_pair do | c , p|
       STDERR.puts('Check ' + port.to_s + ' with ' + p.to_s)
-     return c if p == port
+     return c if p[:external] == port
   end
      true
   end
