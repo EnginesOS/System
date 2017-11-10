@@ -42,7 +42,7 @@ module EnginesCoreSystem
             next unless c.mapped_ports.is_a?(Hash)
             c.mapped_ports.each_value do |  p|
               STDERR.puts('Registered:' + p.to_s + ' to ' + c.container_name)
-              @registered_ports[c.container_name] = p
+              @registered_ports[c.container_name] = p[:external] 
             end            
           end
     end
@@ -53,7 +53,7 @@ module EnginesCoreSystem
     registered_ports.each_pair do | c , p|
       next if p.nil?
       STDERR.puts('Check ' + port.to_s + ' with ' + p.to_s)
-     return c if p[:external] == port
+     return c if p == port
   end
      true
   end
