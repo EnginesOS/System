@@ -27,13 +27,13 @@ module EnginesApiSystem
     unless have_enough_ram?(container)
       r = 'Free memory' + free_ram.to_s + ' Required:' + ram_needed.to_s + "\n"
     end
-    if (c = port_clash?(container))
+    if (c = port_clash?(container.mapped_ports))
       r = c
     end
     r
   end
 
-  def port_clash?(container, mapped_ports)
+  def port_clash?(mapped_ports)
     mapped_ports.values.each do |mp|
       if mp[:publicFacing] = true
         if port == mp[:port]
