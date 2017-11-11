@@ -72,6 +72,8 @@ module ServiceManagerOperations
   def taken_hostnames
     hashes = service_manager.all_engines_registered_to('wap')
     sites = []
+      
+    STDERR.puts(' All Wap ' + hashes.to_s)
     if hashes.is_a?(Array)
       hashes.each do |service_hash|
         SystemDebug.debug(SystemDebug.services, 'service_hash is a' + service_hash.class.name)
