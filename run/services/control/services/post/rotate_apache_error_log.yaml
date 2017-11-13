@@ -6,6 +6,6 @@ service_container_name: logrotate
 container_type: service
 persistent: true
 variables:
- log_file_path: /services/mgmt/apache2/error.log
+ log_file_path: /services/control/apache2/error.log
  cycle: daily
  rotate: 52

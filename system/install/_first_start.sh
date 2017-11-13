@@ -97,10 +97,10 @@ for service in auth mysqld cron volmgr backup ldap ftp redis smtp uadmin logrota
  
  if test -f /opt/engines/run/system/flags/install_mgmt
   then
-  	/opt/engines/bin/engines service mgmt create 
-  	/opt/engines/bin/engines service mgmt wait_for start 30
-  	/opt/engines/bin/engines service mgmt wait_for_startup 280 
-  	echo "mgmt Started" 
+  	/opt/engines/bin/engines service control create 
+  	/opt/engines/bin/engines service control wait_for start 30
+  	/opt/engines/bin/engines service control wait_for_startup 280 
+  	echo "control Started" 
   	
   	gw_ifac=`netstat -nr |grep ^0.0.0.0 | awk '{print $8}' | head -1`
   	lan_ip=`/sbin/ifconfig $gw_ifac |grep "inet addr"  |  cut -f 2 -d: |cut -f 1 -d" "`
