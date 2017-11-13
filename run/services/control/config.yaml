@@ -21,7 +21,7 @@ mapped_ports:
   name: web
   port: 8001
   publicFacing: true
-  external: 10443
+  external: 8484
   proto_type: tcp
 environments:
 - !ruby/object:EnvironmentVariable
@@ -38,7 +38,7 @@ environments:
  build_time_only: false
 - !ruby/object:EnvironmentVariable
  name: FQDN_PORT
- value: mgmt._Engines_System(default_domain):8484
+ value: control._Engines_System(default_domain):8484
  has_changed: true 
  build_time_only: false
  immutable: false
