@@ -7,11 +7,11 @@ www_dir=''
   fi
   
 
-#rm /etc/apache2/sites-enabled/000-default.conf 
-#cat /home/engines/templates/000-default.conf | while read LINE
-#do
-# eval echo $LINE >> /etc/apache2/sites-enabled/000-default.conf 
-#done
+rm /etc/apache2/sites-enabled/000-default.conf 
+cat /home/engines/setup/000-default.conf | while read LINE
+do
+ eval echo \"$LINE\" >> /etc/apache2/sites-enabled/000-default.conf 
+done
 
 
 echo  ServerName $fqdn > /tmp/apache2.conf
