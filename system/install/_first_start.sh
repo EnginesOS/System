@@ -81,8 +81,13 @@ create_system_service
 #Force pick up of cert
 docker stop system
 docker start system
-/opt/engines/bin/system_service.rb system wait_for_startup 120
+#while ! test -f /opt/engines/run/system_services/system/run/flags/startup_complete
+#do
 
+#done
+
+/opt/engines/bin/system_service.rb system wait_for_startup 120
+ sleep 25
  for service in dns syslog certs
   do
    recreate_service
