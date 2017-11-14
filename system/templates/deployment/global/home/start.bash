@@ -44,9 +44,8 @@ else
  echo "Nothing to run!"
 fi
 		
-touch /home/engines/run/flags/startup_complete
+startup_complete
 wait 
 exit_code=$?
-wait_for_debug
-rm /home/engines/run/flags/startup_complete
+shutdown_complete
 exit $exit_code
