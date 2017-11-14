@@ -6,14 +6,12 @@ www_dir=''
 	www_dir=$WWW_DIR
   fi
   
-#cat /etc/apache2/sites-enabled/000-default.conf  | sed "s/WWW_DIR/$www_dir/" > /tmp/.000-default.conf
-#cat  /tmp/.000-default.conf  | sed "s/^#SERVER_NAME/ ServerName $fqdn/" > /tmp/.000-default.conf-2
-#cp /tmp/.000-default.conf-2 /etc/apache2/sites-enabled/000-default.conf 
+APACHE_LOG_DIR=/var/log/apache2
 
 rm /etc/apache2/sites-enabled/000-default.conf 
-cat /home/engines/templates/000-default.conf | while read LINE
+cat /home/engines/setup/000-default.conf | while read LINE
 do
- eval echo $LINE >> /etc/apache2/sites-enabled/000-default.conf 
+ eval echo \"$LINE\" >> /etc/apache2/sites-enabled/000-default.conf 
 done
 
 
