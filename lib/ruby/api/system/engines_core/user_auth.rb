@@ -43,22 +43,21 @@ module UserAuth
     false
   end
 
-  def init_system_password(password, email, token = nil)
-    SystemDebug.debug(SystemDebug.first_run, :applyin, password, email)
-    set_system_user_password('admin', password, email, token)
-    SystemDebug.debug(SystemDebug.first_run, :applied, password, email)
+  def init_system_password(password,  token = nil)
+    SystemDebug.debug(SystemDebug.first_run, :applyin, password)
+    set_system_user_password('admin', password,  token)
+    SystemDebug.debug(SystemDebug.first_run, :applied, password)
   end
 
   def get_system_user_info(user_name)
-    rws = auth_database.execute("Select username, email, authtoken, uid from systemaccess where username = '" + user_name.to_s + "';")
+    rws = auth_database.execute("Select username,  authtoken, uid from systemaccess where username = '" + user_name.to_s + "';")
     { user_name: rws[0][0],
-      email: rws[0][1],
-      auth_token: rws[0][2],
-      uid: rws[0][3],
+      auth_token: rws[0][1],
+      uid: rws[0][2],
     }if rws[0].is_a?(Array)
   end
 
-  #[:user_name, email  | :new_password  & :current_password])
+  #[:user_name,   | :new_password  & :current_password])
   def set_system_user_details(params)
     if params[:current_password].nil?
       raise EnginesException.new(
@@ -77,13 +76,7 @@ module UserAuth
         status: nil,
         system: 'user auth',
         error_mesg: 'Username Password Missmatch')
-      else
-        unless params[:email].nil?
-          query = "UPDATE systemaccess SET email = '"\
-          +  params[:email] + \
-          + "' where username = '" + params[:user_name] + "' and password = '" + params[:current_password] + "';"
-          auth_database.execute(query)
-        end
+      else      
         unless params[:new_password].nil?
           authtoken = SecureRandom.hex(64)
           query = "UPDATE systemaccess SET password = '"\
@@ -96,7 +89,7 @@ module UserAuth
     end
   end
 
-  def set_system_user_password(user, password, email, token, current_password = nil)
+  def set_system_user_password(user, password, token, current_password = nil)
     if current_password.nil?
       rws = auth_database.execute("Select authtoken from systemaccess where username = '" + user.to_s + "';")
     else
@@ -105,10 +98,10 @@ module UserAuth
     end
     authtoken = SecureRandom.hex(64)
     if rws.nil? || rws.count == 0
-      query = 'INSERT INTO systemaccess (username, password, email, authtoken, uid)
+      query = 'INSERT INTO systemaccess (username, password,  authtoken, uid)
                  VALUES (?, ?, ?, ?, ?)'
-      SystemDebug.debug(SystemDebug.first_run,:applyin,  query, [user, password, email.to_s, authtoken, 0])
-      auth_database.execute(query, [user, password, email.to_s, authtoken, 0])
+      SystemDebug.debug(SystemDebug.first_run,:applyin,  query, [user, password, authtoken, 0])
+      auth_database.execute(query, [user, password, authtoken, 0])
       update_local_token(authtoken) if user == 'admin'
     else
       token = rws[0][0] if token.nil? # FIXMe should be if first run?
@@ -119,7 +112,7 @@ module UserAuth
       system: 'user auth',
       error_mesg: 'token missmatch') if token != rws[0][0]
       query = "UPDATE systemaccess SET password = '"\
-      + password.to_s + "',email='" + email.to_s \
+      + password.to_s  \
       + "', authtoken ='" + authtoken.to_s \
       + "' where username = '" + user + "' and authtoken = '" + token.to_s + "';"
       SystemDebug.debug(SystemDebug.first_run,:applyin, query)

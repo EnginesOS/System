@@ -13,7 +13,7 @@ module EnginesOperations
       ##### DO NOT MESS with this logi used in roll back and only works if no engine
       #unless engine.is_a?(ManagedEngine)
       if params[:rollback] == true
-        STDERR.puts(' Roll back clause ' + params.to_s )
+        STDERR.puts(' Roll back called' + params.to_s )
         # return true if service_manager.remove_engine_from_managed_engine(params)
         unless remove_engine_services(params)
           raise EnginesException.new(error_hash('Failed to find Engine', params))
