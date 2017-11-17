@@ -81,25 +81,31 @@ create_system_service
 #Force pick up of cert
 docker stop system
 docker start system
-/opt/engines/bin/system_service.rb system wait_for_startup 120
+#while ! test -f /opt/engines/run/system_services/system/run/flags/startup_complete
+#do
 
+#done
+
+/opt/engines/bin/system_service.rb system wait_for_startup 120
+ sleep 25
  for service in dns syslog certs
   do
    recreate_service
  done
 
+# Wap left to last after mgmt
 
-for service in auth mysqld cron volmgr backup ldap ftp wap redis smtp uadmin
+for service in auth mysqld cron volmgr backup ldap ftp redis smtp uadmin logrotate control
  do
    create_service
  done
  
  if test -f /opt/engines/run/system/flags/install_mgmt
   then
-  	/opt/engines/bin/engines service mgmt create 
-  	/opt/engines/bin/engines service mgmt wait_for start 30
-  	/opt/engines/bin/engines service mgmt wait_for_startup 280 
-  	echo "mgmt Started" 
+  	/opt/engines/bin/engines service control create 
+  	/opt/engines/bin/engines service control wait_for start 30
+  	/opt/engines/bin/engines service control wait_for_startup 280 
+  	echo "control Started" 
   	
   	gw_ifac=`netstat -nr |grep ^0.0.0.0 | awk '{print $8}' | head -1`
   	lan_ip=`/sbin/ifconfig $gw_ifac |grep "inet addr"  |  cut -f 2 -d: |cut -f 1 -d" "`
@@ -110,6 +116,11 @@ for service in auth mysqld cron volmgr backup ldap ftp wap redis smtp uadmin
       fi
   	echo "Management is now at https://$lan_ip:8484/ or https://${ext_ip}:8484/"  
   fi
+  
+#Start Wap last, as when port 80 is open it means system and mgmt is up
+service=wap
+create_service
+  
  crontab  /opt/engines/system/updates/src/etc/crontab  
  echo sudo su -l engines  
  echo to use the engines management tool on the commandline 

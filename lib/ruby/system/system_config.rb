@@ -17,17 +17,6 @@ class SystemConfig
   @@RegistryPort = 21027
   @@default_webport = 8000
 
-  #  @@RunDir = '/opt/engines/run/'
-  #  @@CidDir = '/opt/engines/run/cid/'
-  #  @@ContainersDir = '/opt/engines/run/containers/'
-  #  @@DeploymentDir = '/home/engines/deployment/deployed'
-  #  @@DeploymentTemplates = '/opt/engines/system/templates/deployment'
-  #  @@CONTFSVolHome = '/home/app/fs'
-  #  @@LocalFSVolHome = '/var/lib/engines/fs'
-  #  @@galleriesDir = '/opt/engines/etc/galleries'
-  #  @@SystemLogRoot = '/var/log/engines/'
-  #  @@ServiceMapTemplateDir = '/opt/engines/etc/services/mapping/'
-  #  @@ServiceTemplateDir = '/opt/engines/etc/services/providers/'
 
   @@SMTPHost = 'smtp.engines.internal'
   @@DBHost = 'mysql.engines.internal'

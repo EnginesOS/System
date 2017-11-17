@@ -13,11 +13,6 @@ kerberos: false
 environments: []
 image: _Engines_System(flavor)/dns:_Engines_System(release)
 volumes: 
- ip_details: 
-  name: ip_details
-  remotepath: "/opt/engines/etc/net/"
-  localpath: "/opt/engines/etc/net/"
-  permissions: "ro"
 mapped_ports:
  dns:
   name: dns

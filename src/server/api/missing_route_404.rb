@@ -3,14 +3,14 @@ get '/v0/*' do
   STDERR.puts request.fullpath.to_s
   STDERR.puts 'params'
   STDERR.puts params
-  status(400)
+  status(404)
 end
 put '/v0/*' do
   STDERR.puts :No_Such_put
   STDERR.puts request.fullpath.to_s
   STDERR.puts 'params'
   STDERR.puts params
-  status(400)
+  status(404)
 end
 
 post '/v0/*' do
@@ -18,5 +18,5 @@ post '/v0/*' do
   STDERR.puts request.fullpath.to_s
   STDERR.puts 'params'
   STDERR.puts params
-  status(400)
+  status(404)
 end

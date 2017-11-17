@@ -11,8 +11,8 @@ echo $sshd_pid > /tmp/running_apps.pid
 
 
 
- touch /engines/var/run/flags/startup_complete
+ startup_complete
  wait $sshd_pid
- rm /engines/var/run/flags/startup_complete
+ shutdown_complete
 	
 

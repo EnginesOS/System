@@ -5,7 +5,7 @@ module DockerEvents
   def create_event_listener
     @event_listener_lock = true
     @docker_event_listener = start_docker_event_listener
-    @docker_event_listener.add_event_listener([self, 'container_event'.to_sym], 16) unless $PROGRAM_NAME.end_with?('system_service.rb')
+    @docker_event_listener.add_event_listener([self, 'container_event'.to_sym], 16, nil, 0) unless $PROGRAM_NAME.end_with?('system_service.rb')
   end
 
   class WaitForContainerListener
@@ -40,7 +40,7 @@ module DockerEvents
       pipe_in, pipe_out = IO.pipe
       event_listener = WaitForContainerListener.new(what, pipe_out, mask)
       Timeout::timeout(timeout) do
-        add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.container_name)
+        add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.container_name, 100)
         unless is_aready?(what, container.read_state)
           #    STDERR.puts(' Wait on READ ' + container.container_name.to_s + ' for ' + what )
           begin
@@ -140,7 +140,7 @@ module DockerEvents
     c = container_from_cache(container_name)
     if c.nil?
       case ctype
-      when 'container'
+      when 'app'
         c = loadManagedEngine(container_name)
       when 'service'
         c = loadManagedService(container_name)
@@ -195,8 +195,8 @@ module DockerEvents
     log_exception(e)
   end
 
-  def add_event_listener(listener, mask, container_id = nil)
-    @docker_event_listener.add_event_listener(listener, mask, container_id)
+  def add_event_listener(listener, mask, container_id = nil, priority = 200)
+    @docker_event_listener.add_event_listener(listener, mask, container_id, priority)
   end
 
   def rm_event_listener(listener)
@@ -223,7 +223,7 @@ module DockerEvents
   def container_type_mask(ctype)
     mask = 16
     case ctype
-    when 'container'
+    when 'app'
       mask |= 2
     when 'service'
       mask |= 4

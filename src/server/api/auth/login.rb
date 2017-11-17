@@ -26,7 +26,7 @@ post '/v0/system/login' do
     cparams = assemble_params(post_s, nil, [:user_name, :password])
     engines_api.user_login(cparams)
   rescue StandardError => e
-    send_encoded_exception(request: request, exception: e)
+    send_encoded_exception(status: 401, request: request, exception: e)
   end
 end
 

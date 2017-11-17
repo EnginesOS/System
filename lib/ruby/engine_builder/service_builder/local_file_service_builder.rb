@@ -16,20 +16,5 @@ module LocalFileServiceBuilder
     true
   end
 
-#  protected
-#
-#  def get_volbuild_volmaps(container)
-#    state_dir = SystemConfig.RunDir + '/containers/' + container.container_name + '/run/'
-#    log_dir = SystemConfig.SystemLogRoot + '/containers/' + container.container_name
-#    volume_option = ' -v ' + state_dir + ':/client/state:rw '
-#    volume_option += ' -v ' + log_dir + ':/client/log:rw '
-#    unless container.volumes.nil?
-#      container.volumes.each_value do |vol|
-#        SystemDebug.debug(SystemDebug.services,'build vol maps ' +  vol[:volume_name].to_s , vol)
-#        volume_option += ' -v ' + vol[:localpath].to_s + ':/dest/fs/' + vol[:volume_name] + ':rw'
-#      end
-#    end
-#    volume_option += ' --volumes-from ' + container.container_name
-#    volume_option
-#  end
+
 end

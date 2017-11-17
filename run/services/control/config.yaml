@@ -7,7 +7,7 @@ memory: '512'
 hostname: control
 publisher_namespace: EnginesSystem
 type_path: control
-port: 8484
+port: 10443
 domain_name: _Engines_System(default_domain)
 kerberos: false
 volumes: 
@@ -38,7 +38,7 @@ environments:
  build_time_only: false
 - !ruby/object:EnvironmentVariable
  name: FQDN_PORT
- value: mgmt._Engines_System(default_domain):8484
+ value: control._Engines_System(default_domain):8484
  has_changed: true 
  build_time_only: false
  immutable: false
@@ -60,7 +60,7 @@ environments:
 image: _Engines_System(flavor)/control:_Engines_System(release)
 repo: na
 last_result: 
-setState: nocontainer
+setState: running
 nginxored: false
 conf_register_site: true
 conf_register_dns: true

@@ -28,7 +28,7 @@ class ManagedEngine < ManagedContainer
     @last_result = ''
     @container_api = core_api
     @setState = 'running'
-    @ctype = 'container'
+    @ctype = 'app'
     @conf_self_start = true
     @capabilities = runtime_params.capabilities
     @volume_service_builder = build_params[:service_builder]
@@ -39,7 +39,7 @@ class ManagedEngine < ManagedContainer
   attr_reader :plugins_path, :extract_plugins, :web_root
 
   def lock_values
-    @ctype = 'container' if @ctype.nil?
+    @ctype = 'app' if @ctype.nil?
     @ctype.freeze
     super
   end

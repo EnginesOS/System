@@ -1,4 +1,3 @@
-
 def error_hash(mesg, *params)
   {
     error_type: :error,
@@ -9,11 +8,27 @@ def error_hash(mesg, *params)
   }
 end
 
+def warning_hash(mesg, params = nil)
+  r = error_hash(mesg, params)
+  r [:error_type] = :warning
+  r
+end
+
 def send_encoded_exception(api_exception)#request, error_object, *args)
   api_exception[:exception] = fake_exception(api_exception) unless api_exception[:exception].is_a?(Exception)
-  status_code = 404
+  if api_exception[:exception].is_a?(EnginesException)
+    unless  api_exception[:exception].status.nil?
+      status_code = api_exception[:exception].status
+    else
+      if api_exception[:exception].level == :warning
+        status_code = 405
+      else
+        status_code = 406
+      end
+    end
+  end
   status_code = api_exception[:status] if api_exception.key?(:status)
-
+  status_code = 500 if status_code.nil?
   if request.is_a?(String)
     error_mesg = {
       route: request,

@@ -9,9 +9,9 @@ engine=`echo $backup_path | cut -f 1 -d:`
 path=`echo $backup_path | cut -f 2 -d:`
 if test $path = 'system'
  then
-     if test -d /opt/engines/run/containers/$engine
+     if test -d /opt/engines/run/apps/$engine
       then
-    	tar -cpf - /opt/engines/run/containers/$engine | gzip -c 2> /tmp/back_up.errs
+    	tar -cpf - /opt/engines/run/apps/$engine | gzip -c 2> /tmp/back_up.errs
       else
       	echo "No such Engine" >&2
       fi 

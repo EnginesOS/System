@@ -8,8 +8,6 @@ module ServiceApiConfigurations
       log_error: true,
       timeout: @@configurator_timeout})
     if result[:result] == 0
-      #variables = SystemUtils.hash_string_to_hash(result[:stdout])
-      #FIXMe dont use JSON.pars
       variables_hash = deal_with_json(result[:stdout])
       params[:variables] = symbolize_keys(variables_hash)
       params
@@ -49,7 +47,7 @@ module ServiceApiConfigurations
   end
 
   def service_resource(c, what)
-    cmd = '/home/resources/' + what + '.sh'
+    cmd = '/home/engines/scripts/services/resources/' + what + '.sh'
     # STDERR.puts('SERVICE RESOURCE' + cmd.to_s)
     #  STDERR.puts('SERVICE RESOURCE' + c.container_name)
     @engines_core.exec_in_container(

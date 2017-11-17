@@ -26,6 +26,7 @@ module ManagedServiceOnAction
         end
       end
       save_state
+      @container_api.register_ports(@container_name, @mapped_ports) if @mapped_ports.is_a?(Hash)
     }
     service_configurations = @container_api.pending_service_configurations_hashes({service_name: @container_name, publisher_namespace: @publisher_namespace, type_path: @type_path })
     if service_configurations.is_a?(Array) || registered_consumers.is_a?(Array)
@@ -88,6 +89,7 @@ module ManagedServiceOnAction
       #return true if @consumer_less
       # deregister_with_dns # Really its in the following nowMUst register each time as IP Changes
       @container_api.deregister_non_persistent_services(self)
+      @container_api.deregister_ports(@container_name, @mapped_ports) if @mapped_ports.is_a?(Hash)
     end
   end
 

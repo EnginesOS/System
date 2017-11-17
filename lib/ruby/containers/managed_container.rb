@@ -71,6 +71,7 @@ class ManagedContainer < Container
   def status
     @status = {} if @status.nil?
     @status[:state] = read_state
+      STDERR.puts(' STATE GOT ' + container_name.to_s + ':' + @status[:state].to_s)
     @status[:set_state] = @setState
     @status[:progress_to] = task_at_hand
     @status[:error] = false
@@ -79,6 +80,7 @@ class ManagedContainer < Container
     @status[:had_oom] = @had_out_memory
     @status[:restart_required] = restart_required?
     @status[:error] = true if @status[:state] != @status[:set_state] && @status[:progress_to].nil?
+    @status[:error] = false if @status[:state] == 'stopped' && is_stopped_ok?
     @status
   end
 
@@ -86,6 +88,7 @@ class ManagedContainer < Container
     @container_mutex = Mutex.new
     i = @container_id
     super
+    status
     save_state if @container_id != -1 && @container_id != i
   end
 
@@ -102,6 +105,10 @@ class ManagedContainer < Container
     @repository
   end
 
+  def is_stopped_ok?
+    @stopped_ok |= false
+  end
+  
   attr_reader :framework,\
   :runtime,\
   :repository,\

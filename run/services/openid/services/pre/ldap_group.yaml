@@ -1,0 +1,10 @@
+parent_engine: openid
+publisher_namespace: EnginesSystem
+type_path: ldap
+service_handle: usersgroup
+container_type: service
+persistent: true
+variables:
+ type: group
+ parent_engine: openid
+ cn: openid_users

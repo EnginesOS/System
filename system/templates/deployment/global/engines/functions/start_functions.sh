@@ -12,10 +12,10 @@ fi
  }
   
 function volume_setup {	 
-if test  ! -f /engines/var/run/flags/volume_setup_complete
+if test  ! -f /home/engines/run/flags/volume_setup_complete
  then
    echo "Waiting for Volume setup to Complete"
- 	while test ! -f /engines/var/run/flags/volume_setup_complete
+ 	while test ! -f /home/engines/run/flags/volume_setup_complete
  	  do
  	  echo  "."
  		sleep 4
@@ -37,31 +37,31 @@ if test -f "$VOLDIR/.dynamic_persistence"
 
 
 function first_run {
-if ! test -f /engines/var/run/flags/first_run_done
+if ! test -f /home/engines/run/flags/first_run_done
  then
-   touch /engines/var/run/flags/first_run_done
+   touch /home/engines/run/flags/first_run_done
  else		
 	if test -f /home/engines/scripts/engine/post_install.sh
 	 then 				
 	   echo "Has Post install"
-		 if ! test -f /engines/var/run/flags/post_install.done
+		 if ! test -f /home/engines/run/flags/post_install.done
 		  then
 			echo "Running Post Install"
 			/bin/bash /home/engines/scripts/engine/post_install.sh 							
-			touch /engines/var/run/flags/post_install.done
+			touch /home/engines/run/flags/post_install.done
 		 fi
 	fi
 fi	
 }
 
 function restart_required {	
-if test -f /engines/var/run/flags/restart_required 
+if test -f /home/engines/run/flags/restart_required 
  then
-  if test -f /engines/var/run/flags/started_once
+  if test -f /home/engines/run/flags/started_once
    then
-  	rm -rf /engines/var/run/flags/restart_required
+  	rm -rf /home/engines/run/flags/restart_required
   else
-    touch  /engines/var/run/flags/started_once
+    touch  /home/engines/run/flags/started_once
   fi
 fi
 }

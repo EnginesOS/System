@@ -6,7 +6,7 @@ module EnginesOperations
   # They are removed from the tree if delete is sucessful
   def delete_engine_and_services(params)
     SystemDebug.debug(SystemDebug.containers, :delete_engines, params)
-    params[:container_type] = 'container' # Force This
+    params[:container_type] = 'app' # Force This
     params[:parent_engine] = params[:engine_name]
     begin
       engine = loadManagedEngine(params[:engine_name])
@@ -34,7 +34,7 @@ module EnginesOperations
 
   def remove_engine_services(params)
     SystemDebug.debug(SystemDebug.containers, :delete_engines, params)
-    params[:container_type] = 'container'
+    params[:container_type] = 'app'
     params[:no_exceptions] = true
     #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
     begin
@@ -87,10 +87,10 @@ module EnginesOperations
       end
     @build_thread 
   end
-
+ 
   def set_container_runtime_properties(container, params)
     # STDERR.puts('set_container_runtime_properties ' +  params.to_s)
-    raise EnginesException.new(error_hash(params[:engine_name],'Container is active')) if container.is_active?
+    raise EnginesException.new(warning_hash(params[:engine_name],'Container is active')) if container.is_active?
     if params.key?(:environment_variables) && ! params[:environment_variables].nil?
       new_variables = params[:environment_variables]
       new_variables.each_pair do |new_env_name, new_env_value|
@@ -133,7 +133,7 @@ module EnginesOperations
           rescue
             r.push(name)
             remove_engine_services(
-            {container_type: 'container', remove_all_data: 'none', parent_engine: name})
+            {container_type: 'app', remove_all_data: 'none', parent_engine: name})
             next
           end
         end

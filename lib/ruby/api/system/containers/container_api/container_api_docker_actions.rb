@@ -37,7 +37,7 @@ module ContainerApiDockerActions
   def stop_container(container)
     clear_error
     @docker_api.stop_container(container)
-    rotate_log(container)
+    #rotate_log(container)
     true
   end
 
@@ -56,8 +56,8 @@ module ContainerApiDockerActions
 
   def start_container(container)
     clear_error
-    enough_ram = have_enough_ram?(container)
-    raise EnginesException.new(error_hash("Insuficient free memory to start", container.to_s)) unless enough_ram
+    passed_checks = pre_start_checks(container)
+    raise EnginesException.new(warning_hash('Failed pre start checks:' + passed_checks.to_s , container.container_name)) unless passed_checks.is_a?(TrueClass)
     start_dependancies(container) if container.dependant_on.is_a?(Array)
     @docker_api.start_container(container)
   end

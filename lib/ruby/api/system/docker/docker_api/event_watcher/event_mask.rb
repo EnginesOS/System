@@ -89,7 +89,7 @@ class EventMask
       case event_hash[:Actor][:Attributes][:container_type]
       when 'service'
         mask |= @@service_target
-      when  'container'
+      when  'app'
         mask |= @@engine_target
       when'utility'
         mask |= @@utility_target
