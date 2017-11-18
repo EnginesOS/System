@@ -10,7 +10,7 @@ module UserAuth
   end
   
   def record_login(params)
-    STDERR.puts(time_out().now.to_s + ':' + params[:user_name] + ':' + params[:src_ip] )
+    STDERR.puts(Time.now.to_s + ':' + params[:user_name] + ':' + params[:src_ip] )
   end
 
   def is_token_valid?(token, ip = nil)
