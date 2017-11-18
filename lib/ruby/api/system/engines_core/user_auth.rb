@@ -5,11 +5,11 @@ module UserAuth
     rows = auth_database.execute( 'select authtoken from systemaccess where username=' + "'" + params[:user_name].to_s +
     "' and password = '" + params[:password].to_s + "';")
     raise EnginesException.new(error_hash("failed to select", params)) unless rows.count > 0
-    record_login(parms)
+    record_login(params)
     rows[0]
   end
   
-  def record_login(parms)
+  def record_login(params)
     STDERR.puts(time_out().now.to_s + ':' + params[:user_name] + ':' + params[:src_ip] )
   end
 
