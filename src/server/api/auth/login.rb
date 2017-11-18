@@ -4,15 +4,15 @@
 # @method login_deprecated
 # @overload get '/v0/system/login/:user_name/:password'
 # @return [String] Authentication token
-get '/v0/system/login/:user_name/:password' do
-  begin
-    content_type 'text/plain'
-    STDERR.puts('USING INSECURE DEPRECATED METHOD')
-    engines_api.user_login(params)
-  rescue StandardError => e
-    send_encoded_exception(request: request, exception: e)
-  end
-end
+#get '/v0/system/login/:user_name/:password' do
+#  begin
+#    content_type 'text/plain'
+#    STDERR.puts('USING INSECURE DEPRECATED METHOD')
+#    engines_api.user_login(params)
+#  rescue StandardError => e
+#    send_encoded_exception(request: request, exception: e)
+#  end
+#end
 
 # Login with :user_name and :password
 # @method login
@@ -24,6 +24,7 @@ post '/v0/system/login' do
     content_type 'text/plain'
     post_s = post_params(request)
     cparams = assemble_params(post_s, nil, [:user_name, :password])
+    cparams[:src_ip] = request.env['REMOTE_ADDR']
     engines_api.user_login(cparams)
   rescue StandardError => e
     send_encoded_exception(status: 401, request: request, exception: e)
