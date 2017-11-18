@@ -2,7 +2,8 @@
 
 # @method system_ca
 # @overload get '/v0/system/certs/system_ca'
-# @return [String] PEM encoded Public certificate
+# Returns PEM encoded Public certificate
+# @return [String] 
 get '/v0/system/certs/system_ca' do
   begin
     return_text(engines_api.get_system_ca)
@@ -14,7 +15,8 @@ end
 # @method list_certificate
 # @overload get '/v0/system/certs/'
 # certificate name is the domain name / hostname the cert was created/uploaded against
-# @return [Array] of certificate names
+# returns array of certificate names
+# @return [Array] 
 get '/v0/system/certs/' do
   begin
     return_json_array(engines_api.list_certs)
@@ -27,7 +29,8 @@ end
 
 # @method default_certificate
 # @overload get '/v0/system/certs/default'
-# @return [String] PEM encoded Public certificate
+ # returns PEM encoded Public certificate
+# @return [String] 
 get '/v0/system/certs/default' do
   begin
     return_json(engines_api.get_cert('engines'))
@@ -122,6 +125,10 @@ post '/v0/system/certs/default/:target/*' do
   end
 end
 
+# @method services_default_certs
+# @overload get '/v0/system/certs/service_certs'
+# returns json arrays of services defautl certs
+# @return [Array] 
 get '/v0/system/certs/service_certs' do
   begin
     return_json_array(engines_api.services_default_certs)
@@ -131,8 +138,9 @@ get '/v0/system/certs/service_certs' do
 end
 
 # @method get certificate
-# @overload get '/v0/system/certs/:store/:cert_name'
-# @return [String] PEM encoded Public certificate
+# @overload get '/v0/system/certs/store/cert_name'
+# returns PEM encoded Public certificate
+# @return [String] 
 get '/v0/system/certs/*' do
   begin
     p = {
