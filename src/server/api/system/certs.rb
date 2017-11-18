@@ -3,7 +3,6 @@
 # @method system_ca
 # @overload get '/v0/system/certs/system_ca'
 # @return [String] PEM encoded Public certificate
-# test /opt/engines/tests/engines_api/system/cert ; make system_ca
 get '/v0/system/certs/system_ca' do
   begin
     return_text(engines_api.get_system_ca)
@@ -14,9 +13,8 @@ end
 
 # @method list_certificate
 # @overload get '/v0/system/certs/'
-# @return [Array] of certificate names
 # certificate name is the domain name / hostname the cert was created/uploaded against
-# test /opt/engines/tests/engines_api/system/cert ; make list
+# @return [Array] of certificate names
 get '/v0/system/certs/' do
   begin
     return_json_array(engines_api.list_certs)
@@ -30,7 +28,6 @@ end
 # @method default_certificate
 # @overload get '/v0/system/certs/default'
 # @return [String] PEM encoded Public certificate
-# test /opt/engines/tests/engines_api/system/cert ; make default
 get '/v0/system/certs/default' do
   begin
     return_json(engines_api.get_cert('engines'))
@@ -45,7 +42,6 @@ end
 # @overload delete '/v0/system/certs/:store/:cert_name'
 # delete certificate :cert_name in :store
 # @return [true]
-# test /opt/engines/tests/engines_api/system/cert ; make remove
 delete '/v0/system/certs/*' do
   begin
     p = {
@@ -66,7 +62,6 @@ end
 # @param :key
 # @param :password - optional
 # @return [true]
-# test /opt/engines/tests/engines_api/system/cert ; make set_default
 post '/v0/system/certs/default' do
   begin
     post_s = post_params(request)
@@ -87,7 +82,6 @@ end
 # @param :password - optional
 # @param :install_target  service_name or default for all or not set
 # @return [true]
-# test /opt/engines/tests/engines_api/system/cert ; make add
 post '/v0/system/certs/' do
   begin
     post_s = post_params(request)
@@ -100,8 +94,8 @@ end
 
 # @method generate_certificate
 # @overload post '/v0/system/certs/generate'
-# generTE certificate and key in PEM for domain_name
-# test /opt/engines/tests/engines_api/system/cert ; make generate
+# generate certificate and key in PEM for domain_name
+# @return [true]
 post '/v0/system/certs/generate' do
   begin
     p_params = post_params(request)
@@ -115,7 +109,7 @@ end
 # @method set_service_default_certificate
 # @overload post '/v0/system/certs/default/:target/:store/:cert_name'
 # set default cert for :target service or for all if target = default
-# test
+# @return [true]
 post '/v0/system/certs/default/:target/*' do
   begin
     params[:store] = File.dirname(params[:splat][0])
@@ -139,7 +133,6 @@ end
 # @method get certificate
 # @overload get '/v0/system/certs/:store/:cert_name'
 # @return [String] PEM encoded Public certificate
-# test /opt/engines/tests/engines_api/system/cert ; make view
 get '/v0/system/certs/*' do
   begin
     p = {
