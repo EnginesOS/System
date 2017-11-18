@@ -71,7 +71,7 @@ module UserAuth
       + "' and password = '" + params[:current_password] + "';")
       if rws.nil? || rws.count == 0
         raise EnginesException.new(
-        level: :error,
+        level: :warning,
         params: params,
         status: nil,
         system: 'user auth',
