@@ -29,7 +29,7 @@ end
 
 # @method default_certificate
 # @overload get '/v0/system/certs/default'
- # returns PEM encoded Public certificate
+# returns PEM encoded Public certificate
 # @return [String] 
 get '/v0/system/certs/default' do
   begin
@@ -137,8 +137,8 @@ get '/v0/system/certs/service_certs' do
   end
 end
 
-# @method get certificate
-# @overload get '/v0/system/certs/store/cert_name'
+# @method get_certificate
+# @overload get '/v0/system/certs/:store/:cert_name'
 # returns PEM encoded Public certificate
 # @return [String] 
 get '/v0/system/certs/*' do
