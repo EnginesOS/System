@@ -7,7 +7,7 @@ memory: '512'
 hostname: control
 publisher_namespace: EnginesSystem
 type_path: control
-port: 10443
+port: 8484
 domain_name: _Engines_System(default_domain)
 kerberos: false
 volumes: 
