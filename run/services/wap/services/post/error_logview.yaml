@@ -6,7 +6,7 @@ service_container_name: logview
 container_type: service
 persistent: false
 variables:
- log_file_path: /wap/access.log
+ log_file_path: access.log
  log_type: nginx_error_log
  log_name: 'nginx Error Log'
  ctype: service
