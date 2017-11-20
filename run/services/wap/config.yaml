@@ -14,12 +14,7 @@ kerberos: false
 environments: []
 image: _Engines_System(flavor)/nginx:_Engines_System(release)
 kerberos: true
-volumes:
- sslcerts: 
-  name: sslcerts
-  remotepath: "/etc/nginx/ssl/"
-  localpath: "/var/lib/engines/services/certs/services/wap/"
-  permissions: "ro"
+volumes: 
 port: 
 mapped_ports:
  https:
