@@ -6,7 +6,7 @@ service_container_name: logview
 container_type: service
 persistent: false
 variables:
- log_file_path: mysql/error.log
+ log_file_path: error.log
  log_type: raw
  log_name: 'Mysql Error log'
  ctype: service
