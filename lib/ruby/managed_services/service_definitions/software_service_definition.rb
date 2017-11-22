@@ -99,7 +99,7 @@ class SoftwareServiceDefinition
       SystemDebug.debug(SystemDebug.services,:SERVICE_ENVIRONMENT_VARIABLES, service_environment_variables)
      unless service_environment_variables.nil?
         service_environment_variables.values.each do |env_variable_pair|
-          env_name = env_variable_pair[:environment_name]
+          env_name = env_variable_pair[:environment_variable_name]
           value_name = env_variable_pair[:variable_name]
             if env_name.nil?
               env_name = value_name
