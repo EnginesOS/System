@@ -89,6 +89,7 @@ module DockerApiBuilder
     r
   rescue StandardError => e
     stream_handler.close unless stream_handler.nil?
+    STDERR.puts('Build exception ' + e.to_s )
     raise e
   end
 
