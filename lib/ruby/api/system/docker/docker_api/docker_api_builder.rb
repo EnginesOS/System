@@ -83,14 +83,14 @@ module DockerApiBuilder
       'Accept' => '*/*',
       'Content-Length' => File.size(build_archive_filename).to_s
     }
-    STDERR('Buld ' + options.to_s)
+  
     stream_handler = DockerStreamHandler.new(nil, builder) #File.new(build_archive_filename,'r'))
     r =  post_stream_request('/build' , options, stream_handler, header, File.read(build_archive_filename) )
     stream_handler.close
     r
   rescue StandardError => e
     stream_handler.close unless stream_handler.nil?
-    STDERR.puts('Build exception ' + e.to_s )
+
     raise e
   end
 
