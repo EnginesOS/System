@@ -107,7 +107,7 @@ module PersistantServiceBuilder
       environ.each do |env|
         if env.name == new_env.name
           oldname = new_env.name
-          new_env.name = oldname + inc.to_s
+          new_env.name = oldname.to_s + inc.to_s
           inc += 1
         end
       end

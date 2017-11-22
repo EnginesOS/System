@@ -3,7 +3,7 @@
 echo "Updating files"
 
 
-echo "update service defs"
+echo "Update service defs"
 cd /opt/engines/etc/services/providers
  for dir in `ls`
  do
@@ -12,11 +12,10 @@ git pull >/dev/null
 r=$?
 if test $r -ne 0
  then
-  echo "Failed to update service defs"
-  exit $r
+  echo "Failed to update service defs NS $dir" 
 fi 
+ done
  
-done
 echo "update System"
 cd /opt/engines
 git pull

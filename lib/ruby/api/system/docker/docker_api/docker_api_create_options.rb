@@ -321,6 +321,8 @@ module DockerApiCreateOptions
     envs = system_envs(container)
     container.environments.each do |env|
       next if env.build_time_only
+      env.value ='NULL!' if env.value.nil?
+        env.name = 'NULL' if env.name.nil?
       envs.push(env.name.to_s + '=' + env.value.to_s)
     end
     envs
