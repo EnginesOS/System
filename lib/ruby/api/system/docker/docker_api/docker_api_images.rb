@@ -28,7 +28,8 @@ module DockerApiImages
     unless container.is_a?(String)
       #container.image_repo = 'registry.hub.docker.com' if  container.image_repo.nil?
       d = container.image
-      d = container.image_repo.to_s  + '/' + d unless container.image_repo.nil?
+      container.image_repo = 'registry.hub.docker.com' if container.image_repo.nil?
+      d = container.image_repo.to_s  + '/' + d 
       request = '/images/create?fromImage=' + d.to_s
     else
       request = '/images/create?fromImage=' + container
