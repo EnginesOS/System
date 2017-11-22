@@ -49,6 +49,7 @@ class DockerConnection < ErrorsApi
   end
 
   def post_request(uri, params = nil, expect_json = true , rheaders = nil, time_out = 60)
+    STDERR.puts('Post ' + uri.to_s)
     SystemDebug.debug(SystemDebug.docker,' Post ' + uri.to_s)
     SystemDebug.debug(SystemDebug.docker,'Post OPIOMS ' + params.to_s)
     rheaders = default_headers if rheaders.nil?
@@ -145,6 +146,7 @@ class DockerConnection < ErrorsApi
 
   def get_request(uri,  expect_json = true, rheaders = nil, timeout = 60)
     SystemDebug.debug(SystemDebug.docker,' Get ' + uri.to_s)
+    STDERR.puts('Get ' + uri.to_s)
     STDERR.puts('GET TRUE REQUEST ' + caller[0..5].to_s)  if uri.start_with?('/containers/true/')
     rheaders = default_headers if rheaders.nil?
     r = connection.request(request_params({method: :get, path: uri, read_timeout: timeout, headers: rheaders}))
@@ -156,6 +158,7 @@ class DockerConnection < ErrorsApi
   end
 
   def delete_request(uri)
+    STDERR.puts('Delete ' + uri.to_s)
     SystemDebug.debug(SystemDebug.docker,' Delete ' + uri.to_s)
     handle_resp(connection.request(request_params({method: :delete,
       path: uri})),
