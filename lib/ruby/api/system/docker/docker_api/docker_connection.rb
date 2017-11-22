@@ -171,7 +171,11 @@ class DockerConnection < ErrorsApi
   def handle_resp(resp, expect_json)
     raise DockerException.new({params: @request_param, status: 500}) if resp.nil?
 SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE CODE' + resp.status.to_s )
-STDERR.puts(SystemDebug.docker, 'Docker RESPOSE CODE' + resp.status.to_s )
+ if resp.status > 399
+    STDERR.puts(SystemDebug.docker, 'Docker RESPOSE CODE' + resp.status.to_s )
+   STDERR.puts(SystemDebug.docker, 'Docker RESPOSE Body' + resp.body.to_s )
+   STDERR.puts(SystemDebug.docker, 'Docker RESPOSE' + resp.to_s )
+ end   
     raise DockerException.new(docker_error_hash(resp, @request_params)) if resp.status >= 400
     if resp.status == 204 # nodata but all good happens on del
       true
