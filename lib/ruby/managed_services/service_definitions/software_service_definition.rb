@@ -97,7 +97,7 @@ class SoftwareServiceDefinition
       service_environment_variables = service_def[:target_environment_variables]
       service_variables = service_def[:consumer_params]
       SystemDebug.debug(SystemDebug.services,:SERVICE_ENVIRONMENT_VARIABLES, service_environment_variables)
-      if service_environment_variables != nil
+     unless service_environment_variables.nil?
         service_environment_variables.values.each do |env_variable_pair|
           env_name = env_variable_pair[:environment_name]
           value_name = env_variable_pair[:variable_name]
