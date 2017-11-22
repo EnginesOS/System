@@ -101,6 +101,10 @@ class SoftwareServiceDefinition
         service_environment_variables.values.each do |env_variable_pair|
           env_name = env_variable_pair[:environment_name]
           value_name = env_variable_pair[:variable_name]
+            if env_name.nil?
+              env_name = value_name
+              STDERR.puts('Set env name to val name !')
+            end
           value = service_hash[:variables][value_name.to_sym]
           owner[1] = path + value_name
           immutable = service_variables[value_name.to_sym][:immutable]
