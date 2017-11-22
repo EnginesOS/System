@@ -81,8 +81,7 @@ class EngineBuilder < ErrorsApi
     @core_api = core_api
     @container = nil
     @build_params = params
-    @blueprint = nil
-    STDERR.puts('Build Params')
+    @blueprint = nil   
   end
 
   def service_resource(service_name, what)
