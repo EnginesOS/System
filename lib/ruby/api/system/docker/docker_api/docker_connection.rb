@@ -99,8 +99,9 @@ class DockerConnection < ErrorsApi
     Excon.new('unix:///', excon_params)
   end
 
-  def post_stream_request(uri,options, stream_handler, rheaders = nil, content = nil)
+  def post_stream_request(uri, options, stream_handler, rheaders = nil, content = nil)
     rheaders = default_headers if rheaders.nil?
+    STDERR.puts('post stream ' + uri.to_s + '?' + options.to_s + ' Headeded by:' + rheaders.to_s)
     content = '' if content.nil?
     sc = stream_connection(stream_handler)
     stream_handler.stream = sc
