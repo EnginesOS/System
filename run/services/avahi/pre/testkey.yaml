@@ -1,0 +1,8 @@
+publisher_namespace: "EnginesSystem"
+type_path: "auth"
+variables:
+ kerberos: avahi
+ owner: root
+
+
+

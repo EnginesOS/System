@@ -1,6 +1,7 @@
 #User		Group		UID	#keyname (used to pick up uid from contianername) must be _containername
 #mmg apps
 system  system	21000 _system
+root	root	0	_root
 www-data	www-data	22050	_control
 www-data		www-data	22050 _mgmt
 www-data		www-data	22050 _firstrun
