@@ -198,7 +198,7 @@ def SoftwareServiceDefinition.is_consumer_exportable?(params)
   elsif service.key?(:consumer_exportable)
     service[:consumer_exportable]
   else
-    # default is sharable
+    # default is consumer_exportable
     true
   end
 end
