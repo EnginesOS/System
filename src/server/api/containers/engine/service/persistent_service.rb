@@ -9,7 +9,7 @@ get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/
   begin
     hash = engine_service_hash_from_params(params)
     unless SoftwareServiceDefinition.is_consumer_exportable?(hash)
-     raise EnginesException.new(warning_hash("Cannot export as single service", service_hash))
+     raise EnginesException.new(warning_hash("Cannot export as single service", hash))
     end 
     content_type 'application/octet-stream'   
     engine = get_engine(params[:engine_name])
@@ -33,7 +33,7 @@ put '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/
   begin
     hash = engine_service_hash_from_params(params)
     unless SoftwareServiceDefinition.is_consumer_exportable?(hash)
-       raise EnginesException.new(warning_hash("Cannot import as single service", service_hash))
+       raise EnginesException.new(warning_hash("Cannot import as single service", hash))
       end 
     engine = get_engine(params[:engine_name])
     return_text(engine.import_service_data(
@@ -53,7 +53,7 @@ put '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/
   begin
     hash = engine_service_hash_from_params(params)
     unless SoftwareServiceDefinition.is_consumer_exportable?(hash)
-       raise EnginesException.new(warning_hash("Cannot import as single service", service_hash))
+       raise EnginesException.new(warning_hash("Cannot import as single service", hash))
       end 
     engine = get_engine(params[:engine_name])
     return_text(engine.import_service_data(
