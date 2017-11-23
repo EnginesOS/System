@@ -46,7 +46,7 @@ class ManagedContainer < Container
   @rebuild_required = false
   @large_temp = false
    
-  attr_accessor :kerberos, :volumes_from, :command, :restart_required, :rebuild_required, :environments, :volumes, :image_repo, :capabilities, :conf_register_dns
+  attr_accessor  :volumes_from, :command, :restart_required, :rebuild_required, :environments, :volumes, :image_repo, :capabilities, :conf_register_dns
   def initialize
     super
     @container_mutex = Mutex.new
@@ -60,6 +60,11 @@ class ManagedContainer < Container
   #    super
   #  end
 
+  def kerberos
+    @kerberos = true if @kerberos.nil?
+    @kerberos
+  end    
+  
   def set_state
     @setState
   end
