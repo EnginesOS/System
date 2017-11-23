@@ -4,10 +4,10 @@ module EngineApiExportImport
   @@export_timeout = 220
 
   def export_service_data(container, service_hash, stream = nil)
-    unless SoftwareServiceDefinition.is_consumer_exportable?(service_hash)
-      stream.close unless stream.nil?
-      raise EnginesException.new(warning_hash("Cannot export as single service", service_hash))
-    end 
+#    unless SoftwareServiceDefinition.is_consumer_exportable?(service_hash)
+#      stream.close unless stream.nil?
+#      raise EnginesException.new(warning_hash("Cannot export as single service", service_hash))
+#    end 
    
     SystemDebug.debug(SystemDebug.export_import, :export_service, service_hash)
     cmd_dir = SystemConfig.BackupScriptsRoot + '/' + service_hash[:publisher_namespace] + '/' + service_hash[:type_path] + '/' + service_hash[:service_handle] + '/'
