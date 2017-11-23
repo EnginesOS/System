@@ -181,6 +181,7 @@ class SoftwareServiceDefinition
   end
 
   def SoftwareServiceDefinition.is_sharable?(params)
+    STDERR.puts(' Check sharable on ' + params.to_s)
     service = SoftwareServiceDefinition.find(params[:type_path], params[:publisher_namespace])
     if service == nil
       nil
