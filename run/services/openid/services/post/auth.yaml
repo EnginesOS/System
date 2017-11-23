@@ -5,7 +5,5 @@ service_handle: openid_key
 container_type: service
 persistent: true
 variables:
- parent_engine: openid
- container_type: service
  kerberos: openid
  owner: root
