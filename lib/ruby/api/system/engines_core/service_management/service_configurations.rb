@@ -76,7 +76,7 @@ module ServiceConfigurations
           type_path: service_hash[:type_path],
           publisher_namespace: service_hash[:publisher_namespace],
           configurator_name: definition[:name],
-          variables: varaibles,
+          variables: variables,
           no_save: definition[:no_save]
         }
       end
