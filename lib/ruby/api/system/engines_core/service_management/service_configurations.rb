@@ -61,10 +61,16 @@ module ServiceConfigurations
 
   def service_defs_to_configurations(defs, service_hash)
     avail = {}
-    varaibles = nil
+    
     defs.each_value do |definition|
+      if definition[:params].nil?
+            variables = nil
+            STDERR.puts('nil vars for ' + definition.to_s + "\n\n" + service_hash.to_s)
+          else
+            variables = definition_params_to_variables(definition[:params].keys) 
+          end
       definition_key = definition[:name].to_sym
-        varaibles = definition_params_to_variables(definition[:params].keys) unless definition[:params].nil?
+      
       avail[definition_key] = {
         service_name: service_hash[:service_name],
         type_path: service_hash[:type_path],
