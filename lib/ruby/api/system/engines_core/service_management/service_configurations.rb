@@ -22,7 +22,7 @@ module ServiceConfigurations
 
   def update_service_configuration(service_param)
     # configurator = ConfigurationsApi.new(self)
-      update_configuration_on_service(service_param)
+    update_configuration_on_service(service_param)
     #This is down above    service_manager.update_service_configuration(service_param)
   end
 
@@ -32,7 +32,7 @@ module ServiceConfigurations
     if service.is_running?
       STDERR.puts('Service is running retrieve config direct')
       ret_val = service.retrieve_configurator(service_param)
-      #    STDERR.puts('Retrived retrieve_configuration '+ service_param.to_s + ret_val.class.name + ':' + ret_val.to_s ) 
+      #    STDERR.puts('Retrived retrieve_configuration '+ service_param.to_s + ret_val.class.name + ':' + ret_val.to_s )
     else
       STDERR.puts('Service is no running retreive config from registry')
       #  STDERR.puts('Retrived retrieve_configuration '+ service_param.to_s + ret_val.class.name + ':' + ret_val.to_s )
@@ -61,24 +61,25 @@ module ServiceConfigurations
 
   def service_defs_to_configurations(defs, service_hash)
     avail = {}
-    
-    defs.each_value do |definition|
-      if definition[:params].nil?
-            variables = nil
-            STDERR.puts('nil vars for ' + definition.to_s + "\n\n" + service_hash.to_s)
-          else
-            variables = definition_params_to_variables(definition[:params].keys) 
-          end
-      definition_key = definition[:name].to_sym
-      
-      avail[definition_key] = {
-        service_name: service_hash[:service_name],
-        type_path: service_hash[:type_path],
-        publisher_namespace: service_hash[:publisher_namespace],
-        configurator_name: definition[:name],
-        variables: varaibles,
-        no_save: definition[:no_save]
-      }
+    unless defs.nil?
+      defs.each_value do |definition|
+        if definition[:params].nil?
+          variables = nil
+          STDERR.puts('nil vars for ' + definition.to_s + "\n\n" + service_hash.to_s)
+        else
+          variables = definition_params_to_variables(definition[:params].keys)
+        end
+        definition_key = definition[:name].to_sym
+
+        avail[definition_key] = {
+          service_name: service_hash[:service_name],
+          type_path: service_hash[:type_path],
+          publisher_namespace: service_hash[:publisher_namespace],
+          configurator_name: definition[:name],
+          variables: varaibles,
+          no_save: definition[:no_save]
+        }
+      end
     end
     avail
   end
@@ -96,7 +97,7 @@ module ServiceConfigurations
     # setting stopped contianer is ok as call can know the state, used to boot strap a config
     unless service.is_running?
       service_param[:pending] = true
-          service_manager.update_service_configuration(service_param)
+      service_manager.update_service_configuration(service_param)
     else
       if service_param.key?(:pending)
         service_param.delete(:pending)
@@ -104,7 +105,7 @@ module ServiceConfigurations
       # set config on reunning service
       configurator_result = service.run_configurator(service_param)
       raise EnginesException.new(error_hash('Service configurator erro@core_api.r Got:' + configurator_result.to_s, " For:" +service_param.to_s)) unless configurator_result.is_a?(Hash)
-        service_manager.update_service_configuration(service_param)
+      service_manager.update_service_configuration(service_param)
       raise EnginesException.new(error_hash('Service configurator error @core_ap Got:' + configurator_result.to_s, " For:" +service_param.to_s )) unless configurator_result[:result] == 0 || configurator_result[:stderr].start_with?('Warning')
     end
     true
