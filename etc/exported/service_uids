@@ -1,6 +1,7 @@
 #User		Group		UID	#keyname (used to pick up uid from contianername) must be _containername
 #mmg apps
 system  system	21000 _system
+root	root	0	_root
 www-data	www-data	22050	_control
 www-data		www-data	22050 _mgmt
 www-data		www-data	22050 _firstrun
@@ -38,13 +39,3 @@ openldap openldap 22030	_ldap
 ivpn ivpn 22031 _ivpn
 openid	openid	22032	_openid
 uadmin	uadmin	22033	_uadmin
-#Frameworks
-www-data	 www-data	22671
-ruby	 ruby			22672
-node	 node			22673
-python	 python			22674
-rstudio  rstudio			22675
-#23000 -> applications assigned by volume manager
-lua  lua			22676
-containers	N/A			22020
-apps 	N/A			22020

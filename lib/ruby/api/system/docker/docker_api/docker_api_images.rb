@@ -33,7 +33,7 @@ module DockerApiImages
       request = '/images/create?fromImage=' + d.to_s
     else
       
-      request = '/images/create?fromImage=registry.hub.docker.com/' + container
+      request = '/images/create?fromImage=' + container
       container = nil
     end
     headers = { 'X-Registry-Config'  => registry_root_auth, 'Content-Type' =>'plain/text', 'Accept-Encoding' => 'gzip'}
