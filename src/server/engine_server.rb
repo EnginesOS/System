@@ -3,7 +3,7 @@ require '/opt/engines/lib/ruby/system/engines_error.rb'
 
 begin
 
-  require 'sinatra'
+  require 'sinatra/base'
   require 'sinatra/streaming'
   require 'yajl'
   require 'ffi_yajl'
@@ -39,14 +39,14 @@ begin
     env['warden'].authenticate!(:access_token)
   end
 
-  class FailureApp
+  class AuthFailureApp
     def call(env)
       env['warden'].custom_failure!
       [403,{"Content-Type"=>"text/plain",  "Content-Length"=>"13", "Server"=>"thin","Error-Message" => "Invalid Token"},['Invalid Token']]
     end
   end
 
-  class Application < Sinatra::Base
+  class EnginesServer < Sinatra::Base
     @events_s = nil
     set :sessions, true
     set :logging, true
