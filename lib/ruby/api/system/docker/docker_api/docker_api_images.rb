@@ -25,14 +25,19 @@ module DockerApiImages
   end
 
   def pull_image(container)
-    unless container.is_a?(String)
+    unless container.is_a?(String) # non app
       #container.image_repo = 'registry.hub.docker.com' if  container.image_repo.nil?
-      d = container.image
+      #d = container.image
+      tag= ''
+      cd = container.image.split(':')
+      d = cd[0]
+      tag = cd[1] if cd.length > 1
+      
       container.image_repo = 'registry.hub.docker.com' if container.image_repo.nil?
       d = container.image_repo.to_s  + '/' + d 
       request = '/images/create?fromImage=' + d.to_s
-    else
-      
+      request = request + '&tag=' + tag.to_s unless tag.nil?
+    else # app      
       request = '/images/create?fromImage=' + container
       container = nil
     end
