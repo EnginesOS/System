@@ -3,7 +3,7 @@ require '/opt/engines/lib/ruby/system/engines_error.rb'
 
 begin
 
-  require 'sinatra/base'
+  require 'sinatra'
   require 'sinatra/streaming'
   require 'yajl'
   require 'ffi_yajl'
