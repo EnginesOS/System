@@ -46,7 +46,7 @@ begin
     end
   end
 
-  class EnginesServer < Sinatra::Base
+  class Application < Sinatra::Base
     @events_s = nil
     set :sessions, true
     set :logging, true
