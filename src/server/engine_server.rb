@@ -51,7 +51,7 @@ FileUtils.touch('/home/engines/run/flags/startup_complete')
  sf.puts('/home/engines/run/flags/state')
  sf.close
  
-  class EnginesServer < Sinatra::Base
+  class Application < Sinatra::Base
     @events_s = nil
     set :sessions, true
     set :logging, true
