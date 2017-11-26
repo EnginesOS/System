@@ -49,20 +49,27 @@ begin
   class EnginesServer < Sinatra::Base
     @events_s = nil
   
-    def self.run!
-          rack_handler_config = {}
-      if File.exist?('/home/engines/etc/ssl//keys/system.key')
-          ssl_options = {
-            :private_key_file => '/home/engines/etc/ssl//keys/system.key',
-            :cert_chain_file => '/home/engines/etc/ssl/certs/system.crt',
-            :verify_peer => false,
-          }
-      end
-          Rack::Handler::Thin.run(self, rack_handler_config) do |server|
-            server.ssl = true
-            server.ssl_options = ssl_options
-          end
-        end
+#    def self.run!
+#          rack_handler_config = {}
+#      if File.exist?('/home/engines/etc/ssl//keys/system.key')
+#          ssl_options = {
+#            :private_key_file => '/home/engines/etc/ssl//keys/system.key',
+#            :cert_chain_file => '/home/engines/etc/ssl/certs/system.crt',
+#            :verify_peer => false,
+#          }
+#      end
+#          Rack::Handler::Thin.run(self, rack_handler_config) do |server|
+#            server.ssl = true
+#            server.ssl_options = ssl_options
+#          end
+#        end
+    if File.exist?('/home/engines/etc/ssl//keys/system.key')
+    set :ssl_options,  {
+      :private_key_file => '/home/engines/etc/ssl//keys/system.key',
+      :cert_chain_file => '/home/engines/etc/ssl/certs/system.crt',
+      :verify_peer => false,
+    }
+    end
     set :sessions, true
     set :logging, true
     set :run, true
@@ -70,7 +77,7 @@ begin
     require_relative 'api/routes.rb'
     
 
-    EnginesServer.run!
+    #  EnginesServer.run!
  
   #        
   rescue StandardError => e
