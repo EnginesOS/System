@@ -19,7 +19,7 @@ begin
   @events_stream = nil
   $engines_api = PublicApi.new(EnginesCore.new)
   STDERR.puts('++++')
-  FileUtils.touch('/home/engines/run/flags/startup_complete')
+
   @@last_error = ''
 
   require 'warden'
@@ -46,11 +46,19 @@ begin
     end
   end
 
-  class Application < Sinatra::Base
+FileUtils.touch('/home/engines/run/flags/startup_complete')
+ sf = File.new('/home/engines/run/flags/state','w')
+ sf.puts('/home/engines/run/flags/state')
+ fs.close
+ 
+  class EnginesServer < Sinatra::Base
     @events_s = nil
     set :sessions, true
     set :logging, true
     set :run, true
+    
+ 
+    
     require_relative 'helpers/helpers.rb'
     require_relative 'api/routes.rb'
   rescue StandardError => e
@@ -58,6 +66,7 @@ begin
     r = EnginesError.new('Unhandled Exception' + e.to_s + '\n' + e.backtrace.to_s, :error, 'api')
     STDERR.puts('Unhandled Exception' + e.to_s + '\n' + e.backtrace.to_s )
     r.to_json
+    
   end
 
   def source_is_service?(request, service_name)
