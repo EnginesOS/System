@@ -49,7 +49,7 @@ begin
 FileUtils.touch('/home/engines/run/flags/startup_complete')
  sf = File.new('/home/engines/run/flags/state','w')
  sf.puts('/home/engines/run/flags/state')
- fs.close
+ sf.close
  
   class EnginesServer < Sinatra::Base
     @events_s = nil
