@@ -179,12 +179,14 @@ class BluePrintReader
   def read_rake_list
     @rake_actions = []
     log_build_output('Read Rake List')
-    rake_cmds = @blueprint[:software][:rake_tasks]
+   if @blueprint[:software].key?(:framework_specific)
+    rake_cmds = @blueprint[:software][:framework_specific][:rake_tasks]
     if rake_cmds.is_a?(Array) # not an error just nada
       rake_cmds.each do |rake_cmd|
         @rake_actions.push(rake_cmd)
       end
     end
+   end
   end
 
   def read_services
