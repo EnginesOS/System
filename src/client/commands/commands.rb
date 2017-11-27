@@ -23,5 +23,7 @@ when 'utility'
   require_relative 'containers/utility.rb'
 when 'backup'
  require_relative 'backup/backup.rb'
+when 'restore'
+ require_relative 'backup/backup.rb'
 end
 command_usage
