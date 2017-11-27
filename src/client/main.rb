@@ -65,6 +65,7 @@ end
 
 def perform_put(params, content_type='application/json')
   post_params = {api_vars: params}
+  STDERR.puts('Posting ' + post_params.to_s)
   rest_put(@route,post_params, content_type)
   exit
 end

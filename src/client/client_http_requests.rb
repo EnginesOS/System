@@ -118,13 +118,13 @@ def rest_put(uri, params, content_type, time_out = 44 )
     end
     write_response(r)
     exit
-  rescue Excon::Error::Socket
+  rescue Excon::Error::Socket => e
 #    if @retries < 10
 #      @retries +=1
 #      sleep 1
 #      retry
 #    end
-    STDERR.puts('Failed to url ' + uri.to_s )
+    STDERR.puts('Failed to puy url ' + uri.to_s + e.to_s)
   rescue StandardError => e
     STDERR.puts e.to_s + ' with path:' + uri + "\n" + 'params:' + params.to_s
     STDERR.puts e.backtrace.to_s
