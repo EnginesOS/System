@@ -63,6 +63,11 @@ def perform_post(params, content_type='application/json')
   exit
 end
 
+def perform_put(params, content_type='application/json')
+  post_params = {api_vars: params}
+  rest_put(@route,post_params, content_type)
+  exit
+end
 def perform_delete(params=nil)
   rest_delete(@route,params)
   exit

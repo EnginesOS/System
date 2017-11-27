@@ -6,4 +6,4 @@ STDERR.puts  @route
 params = {data: read_stdin_data}
 
 
-perform_post(params, content_type)
+perform_put(params, content_type)

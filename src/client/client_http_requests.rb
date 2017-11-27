@@ -101,6 +101,42 @@ def rest_post(uri, params, content_type, time_out = 44 )
   end
 end
 
+
+def rest_put(uri, params, content_type, time_out = 44 )  
+  @retries = 0
+  begin
+    unless params.nil?
+      params = params.to_json if content_type == 'application/json_parser'
+      r = connection(content_type).request(read_timeout: time_out, 
+                                           method: :put, 
+                                           path: uri, 
+                                           body: params)
+    else
+      r = connection(content_type).request(read_timeout: time_out, 
+                                           method: :put, 
+                                           path: uri)
+    end
+    write_response(r)
+    exit
+  rescue Excon::Error::Socket
+#    if @retries < 10
+#      @retries +=1
+#      sleep 1
+#      retry
+#    end
+    STDERR.puts('Failed to url ' + uri.to_s )
+  rescue StandardError => e
+    STDERR.puts e.to_s + ' with path:' + uri + "\n" + 'params:' + params.to_s
+    STDERR.puts e.backtrace.to_s
+    params[:api_vars][:data] = nil
+    STDERR.puts e.to_s + ' with path:' + uri + "\n" + 'params:' + params.to_s
+    STDERR.puts r.to_s
+  end
+end
+
+
+
+
 def rest_delete(uri, params=nil, time_out = 20)
   @retries = 0
   # params = add_access(params)
