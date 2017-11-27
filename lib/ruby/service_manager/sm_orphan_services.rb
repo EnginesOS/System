@@ -35,7 +35,7 @@ module SmOrphanServices
 
   def match_orphan_service(service_hash)
     res = retrieve_orphan(service_hash)
-    # STDERR.puts(" MATCHED  " + res.to_s)
+     STDERR.puts(" MATCHED  rphan" + res.to_s)
     if res.is_a?(Hash)
       if res[:publisher_namespace] == service_hash[:publisher_namespace]
         true

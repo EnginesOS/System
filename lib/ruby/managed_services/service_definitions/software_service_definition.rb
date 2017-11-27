@@ -95,6 +95,7 @@ class SoftwareServiceDefinition
       path = service_hash[:publisher_namespace] + '/' + service_hash[:type_path] + ':'
 
       service_environment_variables = service_def[:target_environment_variables]
+        STDERR.puts( 'service_variables' + service_environment_variables.to_s )
       service_variables = service_def[:consumer_params]
       SystemDebug.debug(SystemDebug.services,:SERVICE_ENVIRONMENT_VARIABLES, service_environment_variables)
       unless service_environment_variables.nil?
