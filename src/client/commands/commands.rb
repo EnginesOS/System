@@ -24,6 +24,6 @@ when 'utility'
 when 'backup'
  require_relative 'backup/backup.rb'
 when 'restore'
- require_relative 'backup/backup.rb'
+ require_relative 'restore/restore.rb'
 end
 command_usage
