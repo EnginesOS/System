@@ -32,14 +32,15 @@ module DockerApiImages
       cd = container.image.split(':')
       d = cd[0]
       tag = cd[1] if cd.length > 1
-      
-     # container.image_repo = 'registry.hub.docker.com' if container.image_repo.nil?
 
       d = container.image_repo.to_s  + '/' + d unless container.image_repo.nil?
       request = '/images/create?fromImage=' + d.to_s
       request = request + '&tag=' + tag.to_s unless tag.nil?
     else # app      
-      request = '/images/create?fromImage=' + container
+      cd = container.split(':')
+      d = cd[0]
+      tag = cd[1] if cd.length > 1
+      request = '/images/create?fromImage=' + d + '&tag=' + tag.to_s unless tag.nil?
       container = nil
     end
     headers = { 'X-Registry-Config'  => registry_root_auth, 'Content-Type' =>'plain/text', 'Accept-Encoding' => 'gzip'}
