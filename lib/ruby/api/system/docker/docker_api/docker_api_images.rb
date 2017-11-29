@@ -39,8 +39,12 @@ module DockerApiImages
     else # app      
       cd = container.split(':')
       request = '/images/create?fromImage=' + cd[0]
+unless tag.nil?
       tag = cd[1] if cd.length > 1
-      request = request + '&tag=' + tag.to_s unless tag.nil?
+      tag.gsub!(/ /,'')
+      tag.strip!
+      request = request + '&tag=' + tag.to_s
+end 
     end
     headers = { 'X-Registry-Config'  => registry_root_auth, 'Content-Type' =>'plain/text', 'Accept-Encoding' => 'gzip'}
     post_request(request, nil, false, headers, 600)
