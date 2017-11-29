@@ -19,7 +19,7 @@ begin
   @events_stream = nil
   $engines_api = PublicApi.new(EnginesCore.new)
   STDERR.puts('++++')
-  FileUtils.touch('/home/engines/run/flags/startup_complete')
+
   @@last_error = ''
 
   require 'warden'
@@ -39,18 +39,26 @@ begin
     env['warden'].authenticate!(:access_token)
   end
 
-  class FailureApp
+  class AuthFailureApp
     def call(env)
       env['warden'].custom_failure!
       [403,{"Content-Type"=>"text/plain",  "Content-Length"=>"13", "Server"=>"thin","Error-Message" => "Invalid Token"},['Invalid Token']]
     end
   end
 
+FileUtils.touch('/home/engines/run/flags/startup_complete')
+ sf = File.new('/home/engines/run/flags/state','w')
+ sf.puts('/home/engines/run/flags/state')
+ sf.close
+ 
   class Application < Sinatra::Base
     @events_s = nil
     set :sessions, true
     set :logging, true
     set :run, true
+    
+ 
+    
     require_relative 'helpers/helpers.rb'
     require_relative 'api/routes.rb'
   rescue StandardError => e
@@ -58,6 +66,7 @@ begin
     r = EnginesError.new('Unhandled Exception' + e.to_s + '\n' + e.backtrace.to_s, :error, 'api')
     STDERR.puts('Unhandled Exception' + e.to_s + '\n' + e.backtrace.to_s )
     r.to_json
+    
   end
 
   def source_is_service?(request, service_name)

@@ -8,22 +8,22 @@ if test -f /opt/engines/bin/engines/run/system/flags/first_start_complete
  
 function create_service {
 echo "Create $service" 
-/opt/engines/bin/engines service $service create 
-/opt/engines/bin/engines service $service wait_for start 45
-/opt/engines/bin/engines service $service wait_for_startup 120
+/opt/engines/bin/engines service $service create  > /dev/null
+/opt/engines/bin/engines service $service wait_for start 45 > /dev/null
+/opt/engines/bin/engines service $service wait_for_startup 120 > /dev/null
 echo "$service started" 
 }
 
 function destroy_service {
 echo "Destroy $service" 
-/opt/engines/bin/engines service $service stop 
-/opt/engines/bin/engines service $service wait_for stop 120
- echo -n "Service $service is " 
-/opt/engines/bin/engines service $service state
-/opt/engines/bin/engines service $service destroy 
-/opt/engines/bin/engines service $service wait_for destroy 60
- echo -n "Service $service is " 
-/opt/engines/bin/engines service $service state
+/opt/engines/bin/engines service $service stop  > /dev/null
+/opt/engines/bin/engines service $service wait_for stop 120 > /dev/null
+# echo -n "Service $service is " 
+#/opt/engines/bin/engines service $service state
+/opt/engines/bin/engines service $service destroy  > /dev/null
+/opt/engines/bin/engines service $service wait_for destroy 60 > /dev/null
+ #echo -n "Service $service is " 
+#/opt/engines/bin/engines service $service state
 echo "$service destroyed " 
 }
 
@@ -34,24 +34,24 @@ function recreate_service {
 
 function destroy_system_service {
 echo "Destroy $service" 
- /opt/engines/bin/system_service.rb $service stop  
- /opt/engines/bin/system_service.rb $service wait_for stop 60
- echo -n "Service $service is " 
- /opt/engines/bin/system_service.rb $service state
- /opt/engines/bin/system_service.rb $service destroy  
- /opt/engines/bin/system_service.rb $service wait_for destroy 60
- echo -n "Service $service is " 
- /opt/engines/bin/system_service.rb $service state
+ /opt/engines/bin/system_service.rb $service stop   > /dev/null
+ /opt/engines/bin/system_service.rb $service wait_for stop 60 > /dev/null
+# echo -n "Service $service is " 
+# /opt/engines/bin/system_service.rb $service state
+ /opt/engines/bin/system_service.rb $service destroy   > /dev/null
+ /opt/engines/bin/system_service.rb $service wait_for destroy 60 > /dev/null
+# echo -n "Service $service is " 
+# /opt/engines/bin/system_service.rb $service state
 echo "$service destroyed" 
 }
 
 function create_system_service {
 echo "Create $service" 
- /opt/engines/bin/system_service.rb $service create  
- /opt/engines/bin/system_service.rb $service wait_for create 60
- /opt/engines/bin/system_service.rb $service start  
- /opt/engines/bin/system_service.rb $service wait_for start 120
- /opt/engines/bin/system_service.rb $service wait_for_startup 120
+ /opt/engines/bin/system_service.rb $service create  > /dev/null
+ /opt/engines/bin/system_service.rb $service wait_for create 60 > /dev/null
+ /opt/engines/bin/system_service.rb $service start  > /dev/null
+ /opt/engines/bin/system_service.rb $service wait_for start 120 > /dev/null
+ /opt/engines/bin/system_service.rb $service wait_for_startup 120 > /dev/null
 echo "$service created" 
 }
 
@@ -81,13 +81,10 @@ create_system_service
 #Force pick up of cert
 docker stop system
 docker start system
-#while ! test -f /opt/engines/run/system_services/system/run/flags/startup_complete
-#do
 
-#done
 
-/opt/engines/bin/system_service.rb system wait_for_startup 120
- sleep 25
+/opt/engines/bin/system_service.rb system wait_for_startup 120 > /dev/null
+ sleep 45
  for service in dns syslog certs
   do
    recreate_service
@@ -102,9 +99,9 @@ for service in auth mysqld cron volmgr backup ldap ftp redis smtp uadmin logrota
  
  if test -f /opt/engines/run/system/flags/install_mgmt
   then
-  	/opt/engines/bin/engines service control create 
-  	/opt/engines/bin/engines service control wait_for start 30
-  	/opt/engines/bin/engines service control wait_for_startup 280 
+  	/opt/engines/bin/engines service control create  > /dev/null
+  	/opt/engines/bin/engines service control wait_for start 30 > /dev/null
+  	/opt/engines/bin/engines service control wait_for_startup 280  > /dev/null
   	echo "control Started" 
   	
   	gw_ifac=`netstat -nr |grep ^0.0.0.0 | awk '{print $8}' | head -1`
@@ -125,4 +122,4 @@ create_service
  echo sudo su -l engines  
  echo to use the engines management tool on the commandline 
  touch /opt/engines//run/system/flags/first_start_complete
- echo Installation complete Ctl-c to exit 
+ echo Installation complete  
