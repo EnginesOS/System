@@ -44,6 +44,7 @@ unless tag.nil?
       tag.gsub!(/ /,'')
       tag.strip!
       request = request + '&tag=' + tag.to_s
+      STDERR.puts('IMAGE REQUEST [' + request.to_s + ']')
 end 
     end
     headers = { 'X-Registry-Config'  => registry_root_auth, 'Content-Type' =>'plain/text', 'Accept-Encoding' => 'gzip'}
