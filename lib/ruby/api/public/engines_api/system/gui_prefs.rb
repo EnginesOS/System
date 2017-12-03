@@ -10,7 +10,6 @@ module GuiPrefs
     url_f = File.new(ContainerStateFiles.container_state_dir(container) + '/icon.url', 'r')
       url = url_f.gets(url)
       url_f.close
-      url.strip!    
-    end
-    
+      url.strip
+    end   
 end
