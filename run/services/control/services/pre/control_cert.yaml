@@ -6,6 +6,6 @@ container_type: service
 persistent: true
 variables:
  cert_name: control._Engines_System(default_domain)
- domainname: _Engines_System(default_domain)
+ domain_name: _Engines_System(default_domain)
  hostname: control._Engines_System(default_domain)
  wild: no

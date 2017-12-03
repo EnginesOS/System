@@ -1,12 +1,12 @@
-parent_engine: ivpn
+parent_engine: openid
 publisher_namespace: EnginesSystem
 type_path: certs
-service_handle: ipvpn._Engines_System(default_domain)
+service_handle: openid._Engines_System(default_domain)
 container_type: service
 persistent: true
 variables:
- cert_name: ipvpn._Engines_System(default_domain)
- domainname: _Engines_System(default_domain)
- hostname: ivpn._Engines_System(default_domain)
+ cert_name: openid._Engines_System(default_domain)
+ domain_name: _Engines_System(default_domain)
+ hostname: openid._Engines_System(default_domain)
  wild: no
- target: ivpn
+ target: openid
