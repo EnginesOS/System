@@ -149,7 +149,7 @@ get '/v0/containers/engine/:engine_name/wait_for/:what/:delay' do
 end
 
 # @method clear_engine_error
-# @overload get '/v0/containers/engine/:engine_name/clear
+# @overload get '/v0/containers/engine/:engine_name/clear'
 #
 # @return true|false
 
@@ -161,4 +161,38 @@ get '/v0/containers/engine/:engine_name/clear_error' do
     send_encoded_exception(request: request, exception: e)
   end
 end
+
+# @method get_icon_url
+# @overload get '/v0/containers/engine/:engine_name/icon_url'
+#
+# @return true|false
+
+get '/v0/containers/engine/:engine_name/icon_url' do
+  begin
+    engine = get_engine(params[:engine_name])
+    return_text(engines_api.container_icon_url(engine))
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+end
+
+# @method set_engine_icon_url
+# @overload post '/v0/containers/engine/:engine_name/icon_url'
+# Set the icon_url for :engine_name
+# @param :icon_url
+# @return [true]
+
+post '/v0/containers/engine/:engine_name/icon_url' do
+  begin
+    p_params = post_params(request)
+    p_params[:engine_name] = params[:engine_name]
+    engine = get_engine(p_params[:engine_name])
+    cparams = assemble_params(p_params, [:engine_name], :icon_url) 
+    return_text(engines_api.set_container_icon_url(engine, cparams[:icon_url]))
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+end
+
+
 # @!endgroup

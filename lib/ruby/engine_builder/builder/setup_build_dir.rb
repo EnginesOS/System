@@ -185,7 +185,7 @@ module BuildDirSetup
   end
 
   def setup_framework_logging
-    log_build_output('Seting up logging')
+    log_build_output('Setting up logging')
     rmt_log_dir_var_fname = basedir + '/home/LOG_DIR'
     if File.exist?(rmt_log_dir_var_fname)
       rmt_log_dir_varfile = File.open(rmt_log_dir_var_fname)

@@ -13,6 +13,14 @@ end
 @route += '/' + ARGV[2]
 
 case ARGV[2]
+when 'icon_url'
+  if ARGV.count == 4
+    params = {}
+    params[:icon_url] = ARGV[3]
+    perform_post(params)
+  else
+    perform_get
+  end
 when 'service'
   require_relative 'service.rb'
 when 'services'
