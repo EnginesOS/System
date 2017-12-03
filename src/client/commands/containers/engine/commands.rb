@@ -13,6 +13,10 @@ end
 @route += '/' + ARGV[2]
 
 case ARGV[2]
+when 'icon_url'
+  params = {}
+  params[:icon_url] = ARGV[3]
+  perform_post(params)
 when 'service'
   require_relative 'service.rb'
 when 'services'
