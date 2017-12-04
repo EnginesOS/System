@@ -172,7 +172,7 @@ module BuildDirSetup
   end
 
   def setup_framework_defaults
-    log_build_output('Copy in default templates for Framework ' + @blueprint_reader.frameworl.to_s + ' basedir ' + basedir.to_s)
+    log_build_output('Copy in default templates for Framework ' + @blueprint_reader.framework.to_s + ' basedir ' + basedir.to_s)
     cmd = 'cp -r ' + SystemConfig.DeploymentTemplates + '/' + @blueprint_reader.framework + '/* ' + basedir
     r = system(cmd)
     if @blueprint_reader.framework == 'docker'
