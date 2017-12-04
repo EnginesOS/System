@@ -9,10 +9,14 @@ module GuiPrefs
   end
 
   def container_icon_url(container)
+   if File.exists?(ContainerStateFiles.container_state_dir(container) + '/icon.url')
     url_f = File.new(ContainerStateFiles.container_state_dir(container) + '/icon.url', 'r')
     url = url_f.gets(url)
     url_f.close
     url.strip
+   else
+     nil
+   end
   rescue StandardError => e
     url_f.close unless url_f.nil?
     raise e
