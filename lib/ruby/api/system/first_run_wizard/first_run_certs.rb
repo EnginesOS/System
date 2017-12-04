@@ -9,7 +9,7 @@ module FirstRunCerts
       city: ca_params[:ssl_city],
       organisation: ca_params[:ssl_organisation_name],
       person: ca_params[:ssl_person_name],
-      domainname: ca_params[:domain_name]
+      domain_name: ca_params[:domain_name]
       },
     })
   end
@@ -32,7 +32,7 @@ module FirstRunCerts
       city: params[:ssl_city],
       organisation: params[:ssl_organisation_name],
       person: params[:ssl_person_name],
-      domainname: params[:domain_name], #params[:default_domain]
+      domain_name: params[:domain_name], #params[:default_domain]
       service_handle: 'default_ssl_cert'
       },
     }

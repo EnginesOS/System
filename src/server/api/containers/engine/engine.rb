@@ -165,7 +165,7 @@ end
 # @method get_icon_url
 # @overload get '/v0/containers/engine/:engine_name/icon_url'
 #
-# @return true|false
+# @return String 
 
 get '/v0/containers/engine/:engine_name/icon_url' do
   begin
@@ -180,7 +180,7 @@ end
 # @overload post '/v0/containers/engine/:engine_name/icon_url'
 # Set the icon_url for :engine_name
 # @param :icon_url
-# @return [true]
+
 
 post '/v0/containers/engine/:engine_name/icon_url' do
   begin

@@ -112,7 +112,7 @@ module Certificates
       city: params[:city],
       organisation: params[:organisation],
       person: params[:person],
-      domainname:  params[:domain_name], #params[:default_domain]
+      domain_name:  params[:domain_name], #params[:default_domain]
       service_handle: params[:domain_name]
       }
     } )
