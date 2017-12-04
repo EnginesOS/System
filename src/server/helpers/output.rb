@@ -29,15 +29,19 @@ def return_json_array(r, s = 202)
 end
 
 def return_text(r, s = 202)
-  if r.is_a?(TrueClass) ||r.is_a?(FalseClass)
-    return_boolean(r, s)
-  elsif r.is_a?(EnginesError)
-    return_error(r)
+  if r.nil?
+    status(204)
   else
-    content_type 'text/plain'
-    headers['Access-Control-Allow-Origin'] ='*'
-    status(s)
-    r.to_s
+    if r.is_a?(TrueClass) || r.is_a?(FalseClass)
+      return_boolean(r, s)
+    elsif r.is_a?(EnginesError)
+      return_error(r)
+    else
+      content_type 'text/plain'
+      headers['Access-Control-Allow-Origin'] ='*'
+      status(s)
+      r.to_s
+    end
   end
 end
 
@@ -46,7 +50,7 @@ def return_true(s = 200)
 end
 
 def return_boolean(v, s = 200)
-  v = true if v.nil? # meths return nil and when error they raise an exception  
+  v = true if v.nil? # meths return nil and when error they raise an exception
   return_text(v.to_s, s)
 end
 
