@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'excon'
 require 'yajl'
-
+require_relative 'streamer.rb'
 def connection(content_type = 'application/json_parser')
   @retries = 0
   headers = {
@@ -27,6 +27,41 @@ rescue Excon::Error => e
   rescue StandardError =>e
     STDERR.puts('Uncatch E ' + e.class.name + ' ' + e.to_s)
   
+end
+
+
+
+def stream_connection(stream_reader)
+    excon_params = {
+      debug_request: true,
+      debug_response: true,
+      persistent: false,
+      hijack_block: stream_reader.process_request(stream_reader),
+    #  response_block: stream_reader.process_response,
+      ssl_verify_peer: false,
+      headers: { 'Content-Type' => 'application/tar',
+        'ACCESS_TOKEN' => load_token
+      }
+    }
+    Excon.new(@base_url, excon_params)
+  end
+  
+def rest_stream_put(uri, data_io)
+  stream_handler = Streamer.new(data_io)
+  sc = stream_connection(stream_handler)
+    stream_handler.stream = sc
+  r = sc.request(
+  method: :put,
+  read_timeout: 3600,
+  path: uri,
+  body: nil
+  )
+  stream_handler.close
+  write_response(r)
+
+rescue Excon::Error::Socket
+STDERR.puts('socket stream closed')
+stream_handler.close
 end
 
 def rest_del(uri, params=nil, time_out=23)
