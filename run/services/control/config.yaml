@@ -9,7 +9,7 @@ publisher_namespace: EnginesSystem
 type_path: control
 port: 8484
 domain_name: _Engines_System(default_domain)
-kerberos: false
+kerberos: true
 volumes: 
  public_dir: 
   volume_name: public_dir
