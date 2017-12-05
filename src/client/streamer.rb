@@ -11,7 +11,7 @@ class Streamer
     end
 
     def is_hijack?
-      false
+      true
     end
 
     def has_data?
