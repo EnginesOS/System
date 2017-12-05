@@ -97,8 +97,7 @@ class Streamer
         @stream_reader.i_stream.close unless @stream_reader.i_stream.nil?
       end
     rescue StandardError => e
-      write_thread.kill
-      read_thread.kill
+
       STDERR.puts('PROCESS Execp' + e.to_s + ' ' + e.backtrace.to_s )
     end
     
