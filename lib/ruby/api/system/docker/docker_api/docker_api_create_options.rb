@@ -125,7 +125,9 @@ module DockerApiCreateOptions
   end
 
   def restart_policy(container)
-    if container.ctype == 'system_service'
+    if container.restart_policy
+      container.restart_policy
+    elsif container.ctype == 'system_service'
       {'Name' => 'unless-stopped'}
     elsif container.ctype == 'service'
       {'Name' => 'on-failure', 'MaximumRetryCount' => 2}
