@@ -2,6 +2,8 @@
 module ClientHTTPStream
   require 'net/http'
 
+  
+  
 #used by events
 def get_json_stream(path)
   require 'yajl'
