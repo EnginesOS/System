@@ -12,7 +12,6 @@ domain_name: _Engines_System(default_domain)
 kerberos: true
 restart_policy:
  Name: 'unless-stopped'
- MaximumRetryCount: 2
 volumes: 
  public_dir: 
   volume_name: public_dir
