@@ -33,6 +33,7 @@ class Streamer
     end
 
     def process_request(*args)
+      STDERR.puts('readin ')
       @io_stream.read(Excon.defaults[:chunk_size]).to_s
     rescue StandardError
       STDERR.puts('PROCESS REQUEST got nilling')
