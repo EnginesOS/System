@@ -36,7 +36,7 @@ def stream_connection(stream_reader)
       debug_request: true,
       debug_response: true,
       persistent: false,
-      hijack_block: stream_reader.process_request,
+      hijack_block: stream_reader.process_request(stream_reader),
       response_block: stream_reader.process_response,
       ssl_verify_peer: false,
       headers: { 'Content-Type' => 'application/tar',
