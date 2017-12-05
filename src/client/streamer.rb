@@ -42,7 +42,6 @@ class Streamer
     
   def process_request(stream_reader) #data , result, ostream=nil, istream=nil)
       @stream_reader = stream_reader
-      return_result = @stream_reader.result
       lambda do |socket|
         write_thread = Thread.start do
           write_thread[:name] = 'docker_stream_writer'
