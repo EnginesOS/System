@@ -36,6 +36,13 @@ end
 
 
 def stream_connection(stream_reader)
+  headers = {
+     'content_type' => content_type,
+     'ACCESS_TOKEN' => load_token,   
+     'Connection' => 'Upgrade',
+     'Upgrade' => 'tcp'
+  }
+
     excon_params = {
       debug_request: true,
       debug_response: true,
@@ -43,9 +50,7 @@ def stream_connection(stream_reader)
       hijack_block: stream_reader.process_request(stream_reader),
     #  response_block: stream_reader.process_response,
       ssl_verify_peer: false,
-      headers: { 'Content-Type' => 'application/tar',
-        'ACCESS_TOKEN' => load_token
-      }
+      headers: headers
     }
     Excon.new(@base_url, excon_params)
   end
