@@ -56,7 +56,7 @@ def rest_stream_put(uri, data_io)
   body: nil
   )
   stream_handler.close
-
+  write_response(r)
 
 rescue Excon::Error::Socket
 STDERR.puts('socket stream closed')
