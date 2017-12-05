@@ -164,8 +164,6 @@ class Templater
   def apply_system_variables(template)
     if template.is_a?(String)
       template.gsub!(/_Engines_System\([(0-9a-z_A-Z,]*\)\)/) { |match|
-        #     p :build_function_match
-        #     p match
         resolve_system_function(match)
       }
       template.gsub!(/_Engines_System\([(0-9a-z_A-Z]*\)/) { |match|
