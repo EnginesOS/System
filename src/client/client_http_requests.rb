@@ -51,8 +51,8 @@ def rest_stream_put(uri, data_io)
   method: :put,
   read_timeout: 3600,
   path: uri,
-  body: nil,
-  headers: rheaders)
+  body: nil
+  )
   stream_handler.close
 
 
