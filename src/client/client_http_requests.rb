@@ -38,7 +38,9 @@ def stream_connection(stream_reader)
       persistent: false,
       response_block: stream_reader.process_response,
       ssl_verify_peer: false,
-      headers: { 'Content-Type' => 'application/tar'}
+      headers: { 'Content-Type' => 'application/tar',
+        'ACCESS_TOKEN' => load_token
+      }
     }
     Excon.new(@base_url, excon_params)
   end
