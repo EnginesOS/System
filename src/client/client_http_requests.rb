@@ -1,6 +1,10 @@
 require 'rubygems'
 require 'excon'
 require 'yajl'
+
+require_relative 'hijack.rb'
+Excon.defaults[:middlewares].unshift Excon::Middleware::Hijack
+
 require_relative 'streamer.rb'
 def connection(content_type = 'application/json_parser')
   @retries = 0
