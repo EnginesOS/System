@@ -65,6 +65,7 @@ end
 
 def stream_put(data_io)
   rest_stream_put(@route, data_io)
+  exit
 end
 
 def perform_put(params, content_type = 'application/json')
