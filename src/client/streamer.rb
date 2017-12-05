@@ -1,6 +1,7 @@
 class Streamer
-  attr_accessor  :i_stream
+  attr_accessor  :i_stream, :stream
   def initialize(istream)
+    @stream = nil
     @i_stream = istream
   end
 
