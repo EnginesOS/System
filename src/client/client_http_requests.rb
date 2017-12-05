@@ -48,11 +48,10 @@ def rest_stream_put(uri, data_io)
   sc = stream_connection(stream_handler)
     stream_handler.stream = sc
   r = sc.request(
-  method: :post,
+  method: :put,
   read_timeout: 3600,
-  query: options,
   path: uri,
-  body: content,
+  body: nil,
   headers: rheaders)
   stream_handler.close
 
