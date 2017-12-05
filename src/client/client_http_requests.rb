@@ -37,7 +37,7 @@ end
 
 def stream_connection(stream_reader)
   headers = {
-     'content_type' => content_type,
+     'content_type' => 'application/octet-stream',
      'ACCESS_TOKEN' => load_token,   
      'Connection' => 'Upgrade',
      'Upgrade' => 'tcp'
