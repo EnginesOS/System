@@ -42,7 +42,7 @@ def stream_connection(uri_s, stream_reader)
      'Connection' => 'Upgrade',
      'Upgrade' => 'tcp'
   }
-  uri = URI(uri)
+  uri = URI(@base_url + uri_s)
   conn = Net::HTTP.new(uri_s.host, uri.port)
   request = Net::HTTP::Put.new uri.request_uri, {'Transfer-Encoding' => 'chunked', 'content-type' => 'application/octet-stream'}
   request.body_stream = stream_reader
