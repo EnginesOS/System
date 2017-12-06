@@ -29,7 +29,6 @@ class Streamer
 
   def  process_request(stream_reader)
     @stream_reader = stream_reader
-    return_result = @stream_reader.result
     write_thread = nil
     read_thread = nil
     lambda do |socket|
