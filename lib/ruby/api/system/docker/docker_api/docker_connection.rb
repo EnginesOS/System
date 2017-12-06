@@ -49,7 +49,6 @@ class DockerConnection < ErrorsApi
   end
 
   def post_request(uri, params = nil, expect_json = true , rheaders = nil, time_out = 60)
-    STDERR.puts('Post ' + uri.to_s)
     SystemDebug.debug(SystemDebug.docker,' Post ' + uri.to_s)
     SystemDebug.debug(SystemDebug.docker,'Post OPIOMS ' + params.to_s)
     rheaders = default_headers if rheaders.nil?
@@ -102,7 +101,7 @@ class DockerConnection < ErrorsApi
 
   def post_stream_request(uri, options, stream_handler, rheaders = nil, content = nil)
     rheaders = default_headers if rheaders.nil?
-    STDERR.puts('post stream ' + uri.to_s + '?' + options.to_s + ' Headeded by:' + rheaders.to_s)
+    SystemDebug.debug(SystemDebug.docker,'post stream ' + uri.to_s + '?' + options.to_s + ' Headeded by:' + rheaders.to_s)
     content = '' if content.nil?
     sc = stream_connection(stream_handler)
     stream_handler.stream = sc
@@ -146,8 +145,8 @@ class DockerConnection < ErrorsApi
 
   def get_request(uri,  expect_json = true, rheaders = nil, timeout = 60)
     SystemDebug.debug(SystemDebug.docker,' Get ' + uri.to_s)
-    STDERR.puts('Get ' + uri.to_s)
-    STDERR.puts('GET TRUE REQUEST ' + caller[0..5].to_s)  if uri.start_with?('/containers/true/')
+    SystemDebug.debug(SystemDebug.docker,'Get ' + uri.to_s)
+    SystemDebug.debug(SystemDebug.docker,'GET TRUE REQUEST ' + caller[0..5].to_s)  if uri.start_with?('/containers/true/')
     rheaders = default_headers if rheaders.nil?
     r = connection.request(request_params({method: :get, path: uri, read_timeout: timeout, headers: rheaders}))
     handle_resp(r, expect_json)
@@ -158,7 +157,7 @@ class DockerConnection < ErrorsApi
   end
 
   def delete_request(uri)
-    STDERR.puts('Delete ' + uri.to_s)
+   
     SystemDebug.debug(SystemDebug.docker,' Delete ' + uri.to_s)
     handle_resp(connection.request(request_params({method: :delete,
       path: uri})),
@@ -176,9 +175,9 @@ class DockerConnection < ErrorsApi
     raise DockerException.new({params: @request_param, status: 500}) if resp.nil?
 SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE CODE' + resp.status.to_s )
  if resp.status > 399
-    STDERR.puts(SystemDebug.docker, 'Docker RESPOSE CODE' + resp.status.to_s )
-   STDERR.puts(SystemDebug.docker, 'Docker RESPOSE Body' + resp.body.to_s )
-   STDERR.puts(SystemDebug.docker, 'Docker RESPOSE' + resp.to_s )
+   SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE CODE' + resp.status.to_s )
+   SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE Body' + resp.body.to_s )
+   SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE' + resp.to_s )
  end   
     raise DockerException.new(docker_error_hash(resp, @request_params)) if resp.status >= 400
     if resp.status == 204 # nodata but all good happens on del
