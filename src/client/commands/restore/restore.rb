@@ -3,7 +3,7 @@
 content_type='application/octet-stream'
 STDERR.puts  @route
 if ARGV.length == 5
-  f = FILE.new(ARGV[4],'r')
+  f = File.new(ARGV[4],'r')
   stream_put(f)
 else
   stream_put(STDIN)
