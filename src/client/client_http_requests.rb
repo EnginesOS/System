@@ -73,7 +73,7 @@ def rest_stream_put(uri, data_io)
   write_response(r)
 
 rescue StandardError => e
-STDERR.puts('socket stream closed')
+STDERR.puts('socket stream closed ' + e.to_s + e.backtrace.to_s)
 #stream_handler.close
 end
 
