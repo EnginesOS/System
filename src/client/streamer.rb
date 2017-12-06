@@ -89,14 +89,14 @@ class Streamer
     STDERR.puts('PROCESS Execp' + e.to_s + ' ' + e.backtrace.to_s )
   end
 
-  def process_request(*args)
-    STDERR.puts('readin ' + @i_stream.to_s)
-    @i_stream.read(Excon.defaults[:chunk_size]).to_s
-  rescue StandardError
-    STDERR.puts('readin ' + @i_stream.inspect)
-    STDERR.puts('PROCESS REQUEST got nilling')
-    nil
-  end
+#  def process_request(*args)
+#    STDERR.puts('readin ' + @i_stream.to_s)
+#    @i_stream.read(Excon.defaults[:chunk_size]).to_s
+#  rescue StandardError
+#    STDERR.puts('readin ' + @i_stream.inspect)
+#    STDERR.puts('PROCESS REQUEST got nilling')
+#    nil
+#  end
 end
 
 #    def initialize(stream)
