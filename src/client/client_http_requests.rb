@@ -44,7 +44,7 @@ def stream_connection(uri_s, stream_reader)
   }
   uri = URI(@base_url + uri_s)
   conn = Net::HTTP.new(uri.host, uri.port)
-  request = Net::HTTP::Put.new uri.request_uri, {'Transfer-Encoding' => 'chunked', 'content-type' => 'application/octet-stream'}
+  request = Net::HTTP::Put.new uri.request_uri, { 'content-type' => 'application/octet-stream'}
   request.body_stream = stream_reader
   conn.request(request)
 #    excon_params = {
