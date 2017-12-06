@@ -35,15 +35,15 @@ end
 
 
 
-def stream_connection(stream_reader)
+def stream_connection(uri_s, stream_reader)
   headers = {
      'content_type' => 'application/octet-stream',
      'ACCESS_TOKEN' => load_token,
      'Connection' => 'Upgrade',
      'Upgrade' => 'tcp'
   }
-  uri = URI("yourpostaddresshere")
-  conn = Net::HTTP.new(uri.host, uri.port)
+  uri = URI(uri)
+  conn = Net::HTTP.new(uri_s.host, uri.port)
   request = Net::HTTP::Put.new uri.request_uri, {'Transfer-Encoding' => 'chunked', 'content-type' => 'application/octet-stream'}
   request.body_stream = stream_reader
 #    excon_params = {
@@ -60,7 +60,7 @@ def stream_connection(stream_reader)
   
 def rest_stream_put(uri, data_io)
 #  stream_handler = Streamer.new(data_io)
- r = stream_connection(data_io)
+ r = stream_connection(uri, data_io)
 #    stream_handler.stream = sc
 #  r = sc.request(
 #  method: :put,
