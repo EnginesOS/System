@@ -71,7 +71,8 @@ class Streamer
         begin
           STDERR.puts('Socket ' + socket.inspect)       
           while chunk = socket.readpartial(32768)
-            puts chunk.to_s
+            #puts chunk.to_s
+            puts(' got a chunk')
           end
         rescue EOFError
           write_thread.kill
