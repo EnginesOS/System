@@ -44,7 +44,7 @@ def stream_connection(uri_s, stream_reader)
   }
   uri = URI(@base_url + uri_s)
   conn = Net::HTTP.new(uri.host, uri.port)
-  request = Net::HTTP::Put.new uri.request_uri, { 'content-type' => 'application/octet-stream'}
+  request = Net::HTTP::Put.new uri.request_uri, {'Transfer-Encoding' => 'chunked', 'content-type' => 'application/octet-stream'}
   request.body_stream = stream_reader
   conn.request(request)
 #    excon_params = {
@@ -60,8 +60,8 @@ def stream_connection(uri_s, stream_reader)
   end
   
 def rest_stream_put(uri, data_io)
-#  stream_handler = Streamer.new(data_io)
- r = stream_connection(uri, data_io)
+ stream_handler = Streamer.new(data_io)
+ r = stream_connection(uri, stream_handler)
 #    stream_handler.stream = sc
 #  r = sc.request(
 #  method: :put,
@@ -70,7 +70,7 @@ def rest_stream_put(uri, data_io)
  # body: nil
 #  )
 #  stream_handler.close
-  data_io.close
+  stream_handler.close
   write_response(r)
 
 rescue StandardError => e
