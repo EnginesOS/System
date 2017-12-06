@@ -38,8 +38,7 @@ end
 def stream_connection(uri_s, stream_reader)
   headers = {
      'content_type' => 'application/octet-stream',
-     'ACCESS_TOKEN' => load_token,
-     'Transfer-Encoding' => 'chunked'
+     'ACCESS_TOKEN' => load_token
   }
   uri = URI(@base_url + uri_s)
   STDERR.puts('uri ' + uri.to_s)
