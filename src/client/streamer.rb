@@ -60,8 +60,7 @@ class Streamer
             end
           end
           STDERR.puts('CLSING')
-          socket.close
-         # socket.close_write
+          socket.close.close_write
           STDERR.puts('CLSINGED')
         rescue StandardError => e
           STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
@@ -70,12 +69,9 @@ class Streamer
       read_thread = Thread.start do
         read_thread[:name] = 'docker_stream_reader'
         begin
-          STDERR.puts('Socket ' + socket.inspect)
-          if socket.open?
-          
+          STDERR.puts('Socket ' + socket.inspect)       
           while chunk = socket.readpartial(32768)
             puts chunk.to_s
-          end
           end
         rescue EOFError
           write_thread.kill
