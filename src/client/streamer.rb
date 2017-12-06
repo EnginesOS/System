@@ -60,7 +60,7 @@ class Streamer
             end
           end
           STDERR.puts('CLSING')
-          socket.close.close_write
+          socket.close_write
           STDERR.puts('CLSINGED')
         rescue StandardError => e
           STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
