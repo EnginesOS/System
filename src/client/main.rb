@@ -120,17 +120,18 @@ rescue StandardError => e
 end
 
 def write_response(r)
+  STDERR.puts('Response Class for name ' + r.class.name)
   if r.nil?
     log_error('nil response')
   elsif r.headers['Content-Type'] == 'application/octet-stream'
-    STDOUT.write(r.body.b)
+    STDOUT.write(r.body.b) unless r.body.nil?
   else
     expect_json = false
     expect_json = true if r.headers['Content-Type'] == 'application/json' || r.body.start_with?('{')    
     puts handle_resp(r, expect_json)
   end
 rescue StandardError => e
-  log_error(e.to_s + ' with :' + resp.to_s)
+  log_error(e.to_s + ' with :' + r.to_s)
   log_error(e.backtrace.to_s)
 end
 
