@@ -71,6 +71,7 @@ end
 # @return [true]
 put '/v0/restore/service/:service_name/:replace/*' do
   begin
+    STDERR.puts('nat 1')
 
     service = get_service(params[:service_name])
     unless params['splat'].nil?
@@ -82,6 +83,7 @@ put '/v0/restore/service/:service_name/:replace/*' do
         replace: params[:replace],
         section: nil}
     end
+    STDERR.puts('nat 2')
     service.service_restore(request.env['rack.input'], p)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
