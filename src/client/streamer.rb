@@ -69,8 +69,11 @@ class Streamer
       read_thread = Thread.start do
         read_thread[:name] = 'docker_stream_reader'
         begin
+          if socket.open?
+          
           while chunk = socket.readpartial(32768)
             puts chunk.to_s
+          end
           end
         rescue EOFError
           write_thread.kill
