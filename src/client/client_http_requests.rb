@@ -43,10 +43,9 @@ def stream_connection(uri_s, stream_reader)
   }
   uri = URI(@base_url + uri_s)
   STDERR.puts('uri ' + uri.to_s)
-  conn = Net::HTTP.new(uri.host, uri.port, use_ssl: true)
-  
-  http.use_ssl = true
-  http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+  conn = Net::HTTP.new(uri.host, uri.port, use_ssl: true)  
+  conn.use_ssl = true
+  conn.verify_mode = OpenSSL::SSL::VERIFY_NONE
   request = Net::HTTP::Put.new(uri.request_uri, headers)
   request.body_stream = stream_reader
   conn.request(request)
