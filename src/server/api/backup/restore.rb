@@ -69,6 +69,7 @@ end
 #
 #
 # @return [true]
+
 put '/v0/restore/service/:service_name/:replace/*' do
   begin
     STDERR.puts('nat 1')
