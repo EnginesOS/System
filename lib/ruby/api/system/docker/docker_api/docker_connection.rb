@@ -124,12 +124,12 @@ class DockerConnection < ErrorsApi
       )
       stream_handler.close
     else
+      STDERR.puts(' stream ')
       r = sc.request(
       method: :post,
       read_timeout: 3600,
       query: options,
       path: uri,
-      body: content,
       headers: rheaders)
       stream_handler.close
     end

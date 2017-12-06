@@ -7,6 +7,7 @@ class Streamer
   def read(size, out=nil)
     out << @i_stream.read(size).to_s if out
   end
+  
   def close
     @i_stream.close unless @i_stream.nil?
   end
