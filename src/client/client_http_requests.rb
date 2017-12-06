@@ -38,11 +38,10 @@ end
 def stream_connection(stream_reader)
   headers = {
      'content_type' => 'application/octet-stream',
-     'ACCESS_TOKEN' => load_token
-  } 
-#     'Connection' => 'Upgrade',
-#     'Upgrade' => 'tcp'
-#  }
+     'ACCESS_TOKEN' => load_token,
+     'Connection' => 'Upgrade',
+     'Upgrade' => 'tcp'
+  }
 
     excon_params = {
       debug_request: true,
