@@ -26,10 +26,12 @@ class Streamer
       puts(chunk.to_s)
     end
   end
-  
-  def  process_request(stream_reader) 
+
+  def  process_request(stream_reader)
     @stream_reader = stream_reader
     return_result = @stream_reader.result
+    write_thread = nil
+    read_thread = nil
     lambda do |socket|
       write_thread = Thread.start do
         write_thread[:name] = 'docker_stream_writer'
@@ -78,25 +80,25 @@ class Streamer
         write_thread.kill
       end
       STDERR.puts('JOINS')
-      write_thread.join
-      read_thread.join
+      write_thread.join unless write_thread.nil?
+      read_thread.join unless read_thread.nil?
       @stream_reader.o_stream.close unless @stream_reader.o_stream.nil?
       @stream_reader.i_stream.close unless @stream_reader.i_stream.nil?
     end
   rescue StandardError => e
-    write_thread.kill
-    read_thread.kill
     STDERR.puts('PROCESS Execp' + e.to_s + ' ' + e.backtrace.to_s )
+    write_thread.kill unless write_thread.nil?
+    read_thread.kill unless read_thread.nil?
   end
 
-#  def process_request(*args)
-#    STDERR.puts('readin ' + @i_stream.to_s)
-#    @i_stream.read(Excon.defaults[:chunk_size]).to_s
-#  rescue StandardError
-#    STDERR.puts('readin ' + @i_stream.inspect)
-#    STDERR.puts('PROCESS REQUEST got nilling')
-#    nil
-#  end
+  #  def process_request(*args)
+  #    STDERR.puts('readin ' + @i_stream.to_s)
+  #    @i_stream.read(Excon.defaults[:chunk_size]).to_s
+  #  rescue StandardError
+  #    STDERR.puts('readin ' + @i_stream.inspect)
+  #    STDERR.puts('PROCESS REQUEST got nilling')
+  #    nil
+  #  end
 end
 
 #    def initialize(stream)
