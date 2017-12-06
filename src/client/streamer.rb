@@ -31,7 +31,8 @@ class Streamer
     @stream_reader = stream_reader
     write_thread = nil
     read_thread = nil
-    lambda do |socket.io |
+    lambda do |ssl_socket |
+      socket = ssl_socket.io
       write_thread = Thread.start do
         write_thread[:name] = 'docker_stream_writer'
         begin
