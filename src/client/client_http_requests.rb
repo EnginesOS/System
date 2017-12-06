@@ -46,6 +46,7 @@ def stream_connection(uri_s, stream_reader)
   conn = Net::HTTP.new(uri.host, uri.port)
   request = Net::HTTP::Put.new uri.request_uri, {'Transfer-Encoding' => 'chunked', 'content-type' => 'application/octet-stream'}
   request.body_stream = stream_reader
+  request.start
 #    excon_params = {
 #      debug_request: true,
 #      debug_response: true,
