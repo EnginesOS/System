@@ -69,6 +69,7 @@ class Streamer
       read_thread = Thread.start do
         read_thread[:name] = 'docker_stream_reader'
         begin
+          STDERR.puts('Socker state ' + socket.state)
           if socket.open?
           
           while chunk = socket.readpartial(32768)
