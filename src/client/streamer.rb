@@ -31,7 +31,7 @@ class Streamer
     @stream_reader = stream_reader
     write_thread = nil
     read_thread = nil
-    lambda do |socket|
+    lambda do |socket.io |
       write_thread = Thread.start do
         write_thread[:name] = 'docker_stream_writer'
         begin
@@ -69,7 +69,7 @@ class Streamer
       read_thread = Thread.start do
         read_thread[:name] = 'docker_stream_reader'
         begin
-          STDERR.puts('Socker state ' + socket.state)
+          STDERR.puts('Socket ' + socket.inspect)
           if socket.open?
           
           while chunk = socket.readpartial(32768)
