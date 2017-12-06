@@ -14,7 +14,7 @@ class Streamer
   end
 
   def has_data?
-    if @i_stream.nil? || @i_stream.closed? || @data.nil?
+    if @i_stream.nil? || @i_stream.closed? 
       false
     else
       true
