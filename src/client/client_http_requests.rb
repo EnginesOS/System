@@ -59,6 +59,8 @@ def stream_connection(uri_s, stream_reader)
 #      headers: headers
 #    }
 #    Excon.new(@base_url, excon_params)
+  rescue StandardError => e
+  STDERR.puts('socket stream closed ' + e.to_s + e.backtrace.to_s)
   end
   
 def rest_stream_put(uri, data_io)
