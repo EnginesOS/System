@@ -5,6 +5,9 @@ class Streamer
     @i_stream = istream
   end
 
+  def read(size, out=nil)
+    out << @i_stream.read(size) if out
+  end
   def close
     @i_stream.close unless @i_stream.nil?
   end

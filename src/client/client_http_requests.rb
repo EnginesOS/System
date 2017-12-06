@@ -2,8 +2,8 @@ require 'rubygems'
 require 'excon'
 require 'yajl'
 
-require_relative 'hijack.rb'
-Excon.defaults[:middlewares].unshift Excon::Middleware::Hijack
+#require_relative 'hijack.rb'
+#Excon.defaults[:middlewares].unshift Excon::Middleware::Hijack
 
 require_relative 'streamer.rb'
 def connection(content_type = 'application/json_parser')
@@ -42,35 +42,39 @@ def stream_connection(stream_reader)
      'Connection' => 'Upgrade',
      'Upgrade' => 'tcp'
   }
-
-    excon_params = {
-      debug_request: true,
-      debug_response: true,
-      persistent: false,
-      hijack_block: stream_reader.process_request(stream_reader),
-      response_block: stream_reader.process_response,
-      ssl_verify_peer: false,
-      headers: headers
-    }
-    Excon.new(@base_url, excon_params)
+  uri = URI("yourpostaddresshere")
+  conn = Net::HTTP.new(uri.host, uri.port)
+  request = Net::HTTP::Put.new uri.request_uri, {'Transfer-Encoding' => 'chunked', 'content-type' => 'application/octet-stream'}
+  request.body_stream = stream_reader
+#    excon_params = {
+#      debug_request: true,
+#      debug_response: true,
+#      persistent: false,
+#      hijack_block: stream_reader.process_request(stream_reader),
+#      response_block: stream_reader.process_response,
+#      ssl_verify_peer: false,
+#      headers: headers
+#    }
+#    Excon.new(@base_url, excon_params)
   end
   
 def rest_stream_put(uri, data_io)
-  stream_handler = Streamer.new(data_io)
-  sc = stream_connection(stream_handler)
-    stream_handler.stream = sc
-  r = sc.request(
-  method: :put,
-  read_timeout: 3600,
-  path: uri,
-  body: nil
-  )
-  stream_handler.close
+#  stream_handler = Streamer.new(data_io)
+ r = stream_connection(data_io)
+#    stream_handler.stream = sc
+#  r = sc.request(
+#  method: :put,
+ # read_timeout: 3600,
+ # path: uri,
+ # body: nil
+#  )
+#  stream_handler.close
+  data_io.close
   write_response(r)
 
-rescue Excon::Error::Socket
+rescue StandardError => e
 STDERR.puts('socket stream closed')
-stream_handler.close
+#stream_handler.close
 end
 
 def rest_del(uri, params=nil, time_out=23)
