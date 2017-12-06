@@ -37,7 +37,7 @@ class Streamer
         write_thread[:name] = 'docker_stream_writer'
         begin
           unless @stream_reader.i_stream.nil?
-            STDERR.puts('COPY STREAMS ')
+            STDERR.puts('COPY STREAMS ' +  @stream_reader.i_stream.eof?.to_s)
             IO.copy_stream(@stream_reader.i_stream, socket) unless @stream_reader.i_stream.eof?
           else
             STDERR.puts('send data:' + stream_reader.data.class.name)
