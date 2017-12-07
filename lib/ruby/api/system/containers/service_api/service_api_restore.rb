@@ -1,11 +1,12 @@
 module ServiceApiRestore
   @@import_timeout = 300
   def service_restore(service, stream, params)
+    STDERR.puts(' stram ' + stream.inspect)
    return unless service.is_running?
     cmd = ['/home/engines/scripts/backup/restore.sh',params[:replace].to_s, params[:section].to_s] #, params[:section].to_s]
     
     params = {container: service, command_line: cmd, log_error: true, data_stream: stream}
-
+    STDERR.puts(' stram ' + stream.inspect)
     SystemDebug.debug(SystemDebug.export_import, :import_service, params)
     begin
       result = {}

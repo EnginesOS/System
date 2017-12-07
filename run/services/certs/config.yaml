@@ -17,8 +17,13 @@ volumes:
   certs_store: 
    name: certs_store
    remotepath: "/home/certs/store"
-   localpath: "/var/lib/engines/services/certs"
+   localpath: "/var/lib/engines/services/certs/store"
    permissions: rw
+  CA_store: 
+   name: CA_store
+   remotepath: "/home/certs/CA"
+   localpath: "/var/lib/engines/services/certs/CA"
+   permissions: ro
 port: 
 mapped_ports:
 repo: na

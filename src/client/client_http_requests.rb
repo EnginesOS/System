@@ -1,6 +1,10 @@
 require 'rubygems'
 require 'excon'
 require 'yajl'
+
+#require_relative 'hijack.rb'
+#Excon.defaults[:middlewares].unshift Excon::Middleware::Hijack
+
 require_relative 'streamer.rb'
 def connection(content_type = 'application/json_parser')
   @retries = 0
@@ -31,37 +35,50 @@ end
 
 
 
-def stream_connection(stream_reader)
-    excon_params = {
-      debug_request: true,
-      debug_response: true,
-      persistent: false,
-      hijack_block: stream_reader.process_request(stream_reader),
-    #  response_block: stream_reader.process_response,
-      ssl_verify_peer: false,
-      headers: { 'Content-Type' => 'application/tar',
-        'ACCESS_TOKEN' => load_token
-      }
-    }
-    Excon.new(@base_url, excon_params)
+def stream_connection(uri_s, stream_reader)
+  headers = {
+     'content_type' => 'application/octet-stream',
+     'ACCESS_TOKEN' => load_token
+  }
+  uri = URI(@base_url + uri_s)
+  STDERR.puts('uri ' + uri.to_s)
+  conn = Net::HTTP.new(uri.host, uri.port)  
+  conn.use_ssl = true
+  conn.verify_mode = OpenSSL::SSL::VERIFY_NONE
+  request = Net::HTTP::Put.new(uri.request_uri, headers)
+  request.body_stream = stream_reader
+  conn.request(request)
+#    excon_params = {
+#      debug_request: true,
+#      debug_response: true,
+#      persistent: false,
+#      hijack_block: stream_reader.process_request(stream_reader),
+#      response_block: stream_reader.process_response,
+#      ssl_verify_peer: false,
+#      headers: headers
+#    }
+#    Excon.new(@base_url, excon_params)
+  rescue StandardError => e
+  STDERR.puts('socket stream closed ' + e.to_s + e.backtrace.to_s)
   end
   
 def rest_stream_put(uri, data_io)
-  stream_handler = Streamer.new(data_io)
-  sc = stream_connection(stream_handler)
-    stream_handler.stream = sc
-  r = sc.request(
-  method: :put,
-  read_timeout: 3600,
-  path: uri,
-  body: nil
-  )
+ stream_handler = Streamer.new(data_io)
+ r = stream_connection(uri, stream_handler)
+#    stream_handler.stream = sc
+#  r = sc.request(
+#  method: :put,
+ # read_timeout: 3600,
+ # path: uri,
+ # body: nil
+#  )
+#  stream_handler.close
   stream_handler.close
   write_response(r)
 
-rescue Excon::Error::Socket
-STDERR.puts('socket stream closed')
-stream_handler.close
+rescue StandardError => e
+STDERR.puts('socket stream closed ' + e.to_s + e.backtrace.to_s)
+#stream_handler.close
 end
 
 def rest_del(uri, params=nil, time_out=23)
