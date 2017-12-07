@@ -1,9 +1,0 @@
-parent_engine: control
-publisher_namespace: EnginesSystem
-type_path: auth
-service_handle: control_kerb
-container_type: service
-persistent: true
-variables:
- parent_engine: control
- container_type: service

@@ -35,7 +35,7 @@ environments:
  label: "kdc server"
 - !ruby/object:EnvironmentVariable
  name: ENGINES_ADMIN_GUI_KERBEROS_KEYTAB_PATH
- value: /etc/krb5kdc/keys/control.keytab
+ value: /etc/krb5kdc/keys/kdc.keytab
  has_changed: true 
  build_time_only: false
  immutable: false
