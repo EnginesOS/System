@@ -79,7 +79,7 @@ class VersionedBlueprintReader < BluePrintReader
       @base_image = @blueprint[:software][:base][:parent_image]
       @cont_user = @blueprint[:software][:base][:run_as_user]
     end
-    log_build_output('Read Framework Settings ' + @framework.to_s + ' with ' +  @memory + 'MB' )
+    log_build_output('Read Framework Settings ' + @framework.to_s + ' with ' +  @memory.to_s + 'MB' )
   end
 
   def read_install_report_template
