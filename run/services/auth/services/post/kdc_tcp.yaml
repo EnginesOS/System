@@ -1,0 +1,12 @@
+parent_engine: auth
+publisher_namespace: EnginesSystem
+type_path: dns
+service_handle: kdc_tcp
+container_type: service
+variables:
+ engine: auth
+ hostname: _kerberos._tcp
+ domain_name: engines.internal
+ service: dns
+ record_type: custom
+ record: IN  SRV  10  0   88 kdc
