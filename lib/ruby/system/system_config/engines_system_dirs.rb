@@ -21,7 +21,7 @@ module EnginesSystemDirs
   @@SSHStore = '/opt/engines/etc/ssh/keys'
   
   @@KeysDestination = '/home/engines/etc/ssl/keys/' 
-  @@CertAuthTop = '/var/lib/engines/services/certs/'
+  @@CertAuthTop = '/var/lib/engines/services/certs/store/'
  # @@KeysDir ='/var/lib/engines/services/certs/public/keys/'
   @@CertificatesDestination = '/home/engines/etc/ssl/certs/'
   
