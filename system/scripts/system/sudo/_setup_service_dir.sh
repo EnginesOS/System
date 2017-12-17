@@ -11,12 +11,7 @@ chgrp containers -R /opt/engines/run/services/$1/run
 
 chmod g+w -R  /opt/engines/run/services/$1/run
 
-#if ! test -d /var/lib/engines/services/certs/services/$1
- #then
-  # mkdir -p  /var/lib/engines/services/certs/services/$1   
-#fi
 
-#chown  $cert_uid /var/lib/engines/services/certs/services/$1
 
 mkdir -p /var/log/engines/services/$1
 chown -R $uid /var/log/engines/services/$1

@@ -12,15 +12,18 @@ module EnginesSystemDirs
   @@ServiceMapTemplateDir = '/opt/engines/etc/services/mapping/'
   @@ServiceTemplateDir = '/opt/engines/etc/services/providers/'
   @@EnginesTemp = '/opt/engines/tmp'
-  @@CertificatesDir = '/var/lib/engines/services/certs/public/certs/'
-  @@KeysDir ='/var/lib/engines/services/certs/public/keys/'
-  @@CertificatesDestination = '/home/engines/etc/ssl/certs/'
-  @@KeysDestination = '/home/engines/etc/ssl/keys/'
+ # @@CertificatesDir = '/var/lib/engines/services/certs/public/certs/'
+ 
+
   @@DomainsFile = '/opt/engines/etc/domains/domains'
   @@timeZone_fileMapping = ' -v /etc/localtime:/etc/localtime:ro '
   @@NoRemoteExceptionLoggingFlagFile = '/opt/engines/run/system/flags/no_remote_exception_log'
   @@SSHStore = '/opt/engines/etc/ssh/keys'
-  @@CertAuthTop = '/var/lib/engines/services/certs/'
+  
+  @@KeysDestination = '/home/engines/etc/ssl/keys/' 
+  @@CertAuthTop = '/var/lib/engines/services/certs/store/'
+ # @@KeysDir ='/var/lib/engines/services/certs/public/keys/'
+  @@CertificatesDestination = '/home/engines/etc/ssl/certs/'
   
   def SystemConfig.CertAuthTop
     @@CertAuthTop
@@ -34,17 +37,17 @@ module EnginesSystemDirs
     @@CertificatesDestination
   end
 
-  def SystemConfig.KeysDir
-    @@KeysDir
-  end
+#  def SystemConfig.KeysDir
+  #  @@KeysDir
+ # end
 
   def SystemConfig.KeysDestination
     @@KeysDestination
   end
 
-  def SystemConfig.CertificatesDir
-    @@CertificatesDir
-  end
+ # def SystemConfig.CertificatesDir
+ #   @@CertificatesDir
+ # end
 
   def SystemConfig.ServiceMapTemplateDir
     @@ServiceMapTemplateDir

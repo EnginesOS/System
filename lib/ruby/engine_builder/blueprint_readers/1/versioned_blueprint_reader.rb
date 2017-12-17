@@ -72,7 +72,6 @@ class VersionedBlueprintReader < BluePrintReader
   end
 
   def read_lang_fw_values
-    log_build_output('Read Framework Settings')
     @framework = @blueprint[:software][:base][:framework]
     @runtime = @blueprint[:software][:base][:framework] # Fix me load langauge from framwork file [:language]
     @memory = @blueprint[:software][:base][:required_memory]
@@ -80,6 +79,7 @@ class VersionedBlueprintReader < BluePrintReader
       @base_image = @blueprint[:software][:base][:parent_image]
       @cont_user = @blueprint[:software][:base][:run_as_user]
     end
+    log_build_output('Read Framework Settings ' + @framework.to_s + ' with ' +  @memory.to_s + 'MB' )
   end
 
   def read_install_report_template
