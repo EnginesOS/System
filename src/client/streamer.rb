@@ -40,8 +40,11 @@ class Streamer
         write_thread[:name] = 'docker_stream_writer'
         begin
           unless @stream_reader.i_stream.nil?
+            
+            chunk = @stream_reader.i_stream.readpartial(2048)
+            socket.write(chunk)
             STDERR.puts('COPY STREAMS ' +  @stream_reader.i_stream.eof?.to_s)
-            IO.copy_stream(@stream_reader.i_stream, socket) unless @stream_reader.i_stream.eof?
+            #IO.copy_stream(@stream_reader.i_stream, socket) unless @stream_reader.i_stream.eof?
           end
           STDERR.puts('CLSING')
           socket.close_write
