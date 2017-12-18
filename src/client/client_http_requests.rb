@@ -84,7 +84,7 @@ def rest_stream_put(uri, data_io)
  # body: nil
 #  )
 #  stream_handler.close
-  stream_handler.close
+#  stream_handler.close
   write_response(r)
 
 rescue StandardError => e
