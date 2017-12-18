@@ -47,6 +47,7 @@ def stream_connection(uri_s, stream_reader)
   conn.use_ssl = true
   conn.verify_mode = OpenSSL::SSL::VERIFY_NONE
   request = Net::HTTP::Put.new(uri.request_uri, headers)
+  STDERR.puts request.inspect
   request.body_stream = stream_reader
   conn.request(request)
 #    excon_params = {
