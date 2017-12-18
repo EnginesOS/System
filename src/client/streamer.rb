@@ -46,9 +46,9 @@ class Streamer
             STDERR.puts('COPY STREAMS ' +  @stream_reader.i_stream.eof?.to_s)
             #IO.copy_stream(@stream_reader.i_stream, socket) unless @stream_reader.i_stream.eof?
           end
-          STDERR.puts('CLSING')
-          socket.close_write
-          STDERR.puts('CLSINGED')
+        #   STDERR.puts('CLSING')
+         #  socket.close_write
+        #   STDERR.puts('CLSINGED')
         rescue StandardError => e
           STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
         end
