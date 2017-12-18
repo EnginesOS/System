@@ -75,7 +75,7 @@ def stream_connection(uri_s, stream_reader)
 def rest_stream_put(uri, data_io)
  #stream_handler = Streamer.new(data_io)
  #r = stream_connection(uri, stream_handler)
-  stream_file(uri, data_io)
+  r =  stream_file(uri, data_io)
 #    stream_handler.stream = sc
 #  r = sc.request(
 #  method: :put,
