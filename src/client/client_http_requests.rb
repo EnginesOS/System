@@ -38,7 +38,7 @@ def stream_file(uri_s, src_f)
   headers = {
      'content_type' => 'application/octet-stream',
      'ACCESS_TOKEN' => load_token,
-     'Content-Length' => src_f.size
+     'Content-Length' => src_f.size.to_s
   }
   uri = URI(@base_url + uri_s)
   STDERR.puts('uri ' + uri.to_s)
@@ -47,7 +47,7 @@ def stream_file(uri_s, src_f)
   conn.verify_mode = OpenSSL::SSL::VERIFY_NONE
   request = Net::HTTP::Put.new(uri.request_uri, headers)
   STDERR.puts request.inspect
-  request.body_stream = stream_reader
+  request.body_stream = src_f
   conn.request(request)
   rescue StandardError => e
   STDERR.puts('socket stream closed ' + e.to_s + e.backtrace.to_s)
