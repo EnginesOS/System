@@ -65,6 +65,11 @@ class ManagedContainer < Container
     @kerberos
   end    
   
+  def no_cert_map
+    false unless @no_cert_map == true
+    true if @no_cert_map == true      
+  end
+  
   def set_state
     @setState
   end
@@ -124,7 +129,6 @@ class ManagedContainer < Container
   :preffered_protocol,\
   :deployment_type,\
   :dependant_on,\
-  :no_ca_map,\
   :hostname,\
   :domain_name,\
   :ctype,

@@ -6,7 +6,7 @@ type_path: system
 last_error: 
 memory: '385'
 hostname: 'system'
-no_ca_map: true
+no_cert_map: false
 domain_name: 
 kerberos: true
 environments:
