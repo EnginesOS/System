@@ -251,7 +251,7 @@ module DockerApiCreateOptions
     vols = container.attached_services(
     {type_path: 'filesystem/local/filesystem'
     })
-    unless vols.nil
+    unless vols.nil?
       vols.each do | vol |
         STDERR.puts( ' VOL ' + vol.to_s)
       end
