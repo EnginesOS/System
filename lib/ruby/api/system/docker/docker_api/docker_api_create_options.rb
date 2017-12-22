@@ -33,18 +33,16 @@ module DockerApiCreateOptions
 
   def volumes_mounts(container)
     mounts = []
-    if container.volumes.nil?
-      system_mounts(container)
-    else
+    unless container.volumes.nil?
       container.volumes.each_value do |volume|
         mounts.push(mount_string(volume))
       end
-      sm = system_mounts(container)
-      mounts.concat(sm) unless sm.nil?
-      rm = registry_mounts(container)
-      mounts.concat(rm) unless rm.nil?
-      mounts
     end
+    sm = system_mounts(container)
+    mounts.concat(sm) unless sm.nil?
+    rm = registry_mounts(container)
+    mounts.concat(rm) unless rm.nil?
+    mounts
   end
 
   def mount_string(volume)
@@ -247,18 +245,18 @@ module DockerApiCreateOptions
   end
 
   def  mount_string_from_hash(vol)
-   unless vol[:permissions].nil? || vol[:volume_src].nil?  ||vol[:engine_path].nil?
-    perms = 'ro'
-    if vol[:permissions] == 'rw'
-      perms = 'rw'
-    else
+    unless vol[:permissions].nil? || vol[:volume_src].nil?  ||vol[:engine_path].nil?
       perms = 'ro'
+      if vol[:permissions] == 'rw'
+        perms = 'rw'
+      else
+        perms = 'ro'
+      end
+      vol[:volume_src] + ':' + vol[:engine_path] + ':' + perms
+    else
+      STDERR.puts('missing keys in vol ' + vol.to_s )
+      ''
     end
-    vol[:volume_src] + ':' + vol[:engine_path] + ':' + perms
-   else
-     STDERR.puts('missing keys in vol ' + vol.to_s )
-     ''
-   end
   end
 
   def registry_mounts(container)
@@ -270,6 +268,7 @@ module DockerApiCreateOptions
       vols.each do | vol |
         v_str = mount_string_from_hash(vol[:variables])
         STDERR.puts( ' VOL ' + v_str.to_s)
+        mounts.push(v_str)
       end
     end
     mounts
