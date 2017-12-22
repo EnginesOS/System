@@ -1,5 +1,5 @@
 module ManagedContainerServices
   def services 
-   @container_api.engine_services(self, match)
+   @container_api.container_services(self, match)
   end
 end
