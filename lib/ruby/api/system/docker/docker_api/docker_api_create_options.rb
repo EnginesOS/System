@@ -246,7 +246,7 @@ module DockerApiCreateOptions
     end
   end
 
-  def registry_mounts
+  def registry_mounts(container)
     mounts = []
     vols = container.attached_services(
     {type_path: 'filesystem/local/filesystem'
