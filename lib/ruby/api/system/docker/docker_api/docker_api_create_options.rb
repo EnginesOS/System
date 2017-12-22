@@ -246,6 +246,21 @@ module DockerApiCreateOptions
     end
   end
 
+  def  mount_string_from_hash(vol)
+   unless vol[:permissions].nil? || vol[:volume_src].nil?  ||vol[:engine_path].nil?
+    perms = 'ro'
+    if volume[:permissions] == 'rw'
+      perms = 'rw'
+    else
+      perms = 'ro'
+    end
+    vol[:volume_src] + ':' + vol[:engine_path] + ':' + perms
+   else
+     STDERR.puts('missing keys in vol ' + vol.to_s )
+     ''
+   end
+  end
+
   def registry_mounts(container)
     mounts = []
     vols = container.attached_services(
@@ -253,7 +268,8 @@ module DockerApiCreateOptions
     })
     unless vols.nil?
       vols.each do | vol |
-        STDERR.puts( ' VOL ' + vol.to_s)
+        v_str = mount_string_from_hash(vol[:variables])
+        STDERR.puts( ' VOL ' + v_str.to_s)
       end
     end
     mounts
