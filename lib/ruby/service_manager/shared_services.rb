@@ -29,7 +29,7 @@ module SharedServices
     SystemDebug.debug(SystemDebug.services, 'sm regsitring ', shared_service)
     if shared_service[:type_path] == 'filesystem/local/filesystem'
       shared_service[:variables][:volume_src] = existing_service[:variables][:volume_src] + '/' +  shared_service[:variables][:volume_src]
-      attach_shared_volume(shared_service)
+     # attach_shared_volume(shared_service)
     end
     shared_service.delete(:existing)
     system_registry_client.add_share_to_managed_engines_registry(shared_service)

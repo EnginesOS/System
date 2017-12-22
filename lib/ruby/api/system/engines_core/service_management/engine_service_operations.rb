@@ -74,9 +74,9 @@ module EngineServiceOperations
       params[:variables][k] = params[:existing_service][:variables][k]
     end
     r = share_service_to_engine(params)
-    if service_hash[:type_path] == 'filesystem/local/filesystem'
-      add_file_share(params)
-    end
+#    if service_hash[:type_path] == 'filesystem/local/filesystem'
+#      add_file_share(params)
+#    end
     r
   end
 
