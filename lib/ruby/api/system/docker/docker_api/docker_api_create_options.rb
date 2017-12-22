@@ -42,7 +42,7 @@ module DockerApiCreateOptions
       sm = system_mounts(container)
       mounts.concat(sm) unless sm.nil?
       rm = registry_mounts(container)
-      mounts.concat(sm) unless sm.nil?
+      mounts.concat(rm) unless rm.nil?
       mounts
     end
   end
