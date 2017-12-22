@@ -249,7 +249,7 @@ module DockerApiCreateOptions
   def  mount_string_from_hash(vol)
    unless vol[:permissions].nil? || vol[:volume_src].nil?  ||vol[:engine_path].nil?
     perms = 'ro'
-    if volume[:permissions] == 'rw'
+    if vol[:permissions] == 'rw'
       perms = 'rw'
     else
       perms = 'ro'
