@@ -39,7 +39,10 @@ class ManagedContainer < Container
 
   require_relative 'managed_container/managed_container_schedules.rb'
   include ManagedContainerSchedules
-
+  
+  require_relative 'managed_container/managed_container_services.rb'
+  include ManagedContainerServices
+  
   @conf_self_start = false
   @conf_zero_conf=false
   @restart_required = false
@@ -64,6 +67,11 @@ class ManagedContainer < Container
     @kerberos = true if @kerberos.nil?
     @kerberos
   end    
+  
+  def no_cert_map
+    false unless @no_cert_map == true
+    true if @no_cert_map == true      
+  end
   
   def set_state
     @setState
@@ -124,7 +132,6 @@ class ManagedContainer < Container
   :preffered_protocol,\
   :deployment_type,\
   :dependant_on,\
-  :no_ca_map,\
   :hostname,\
   :domain_name,\
   :ctype,

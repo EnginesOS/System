@@ -87,6 +87,7 @@ put '/v0/restore/service/:service_name/:replace/*' do
     STDERR.puts('nat 2')
     service.service_restore(request.env['rack.input'], p)
   rescue StandardError => e
+  
     STDERR.puts('restore error ' + request.to_s )
     send_encoded_exception(request: request, exception: e)
   end

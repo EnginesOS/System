@@ -45,6 +45,8 @@ module SmOrphanServices
     else
       false
     end
+  rescue StandardError
+    false
   end
 
   def retrieve_orphan(params)

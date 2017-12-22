@@ -6,9 +6,9 @@ persistent: false
 publisher_namespace: EnginesSystem
 type_path: certs
 last_error: 
-memory: '16'
+memory: '32'
 hostname: certs
-no_ca_map: true
+no_cert_map: true
 domain_name: 
 kerberos: false
 environments: []

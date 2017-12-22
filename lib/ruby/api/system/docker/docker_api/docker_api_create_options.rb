@@ -41,6 +41,8 @@ module DockerApiCreateOptions
       end
       sm = system_mounts(container)
       mounts.concat(sm) unless sm.nil?
+      rm = registry_mounts(container)
+      mounts.concat(rm) unless rm.nil?
       mounts
     end
   end
@@ -230,14 +232,31 @@ module DockerApiCreateOptions
   end
 
   def cert_mounts(container)
-    unless container.ctype == 'system_service'
-      prefix =  container.ctype + 's'
+    unless container.no_cert_map == true
+      unless container.ctype == 'system_service'
+        prefix =  container.ctype + 's'
+      else
+        prefix='services'
+      end
+      store = prefix + '/' + container.container_name + '/'
+      [SystemConfig.CertAuthTop + store + 'certs:' + SystemConfig.CertificatesDestination + ':ro',
+        SystemConfig.CertAuthTop + store + 'keys:' + SystemConfig.KeysDestination + ':ro']
     else
-      prefix='services'
+      nil
     end
-    store = prefix + '/' + container.container_name + '/'
-    [SystemConfig.CertAuthTop + store + 'certs:' + SystemConfig.CertificatesDestination + ':ro',
-      SystemConfig.CertAuthTop + store + 'keys:' + SystemConfig.KeysDestination + ':ro']   
+  end
+
+  def registry_mounts(container)
+    mounts = []
+    vols = container.attached_services(
+    {type_path: 'filesystem/local/filesystem'
+    })
+    unless vols.nil?
+      vols.each do | vol |
+        STDERR.puts( ' VOL ' + vol.to_s)
+      end
+    end
+    mounts
   end
 
   def system_mounts(container)
@@ -324,17 +343,16 @@ module DockerApiCreateOptions
     container.environments.each do |env|
       next if env.build_time_only
       env.value ='NULL!' if env.value.nil?
-        env.name = 'NULL' if env.name.nil?
+      env.name = 'NULL' if env.name.nil?
       envs.push(env.name.to_s + '=' + env.value.to_s)
     end
     envs
   end
-  
+
   def system_envs(container)
     envs = ['CONTAINER_NAME=' + container.container_name]
-      envs
-  end   
-    
+    envs
+  end
 
   def add_port_range(bindings, port)
     internal = port[:port].split('-')
