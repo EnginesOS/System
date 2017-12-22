@@ -41,6 +41,8 @@ module DockerApiCreateOptions
       end
       sm = system_mounts(container)
       mounts.concat(sm) unless sm.nil?
+      rm = registry_mounts(container)
+      mounts.concat(sm) unless sm.nil?
       mounts
     end
   end
@@ -242,6 +244,19 @@ module DockerApiCreateOptions
     else
       nil
     end
+  end
+
+  def registry_mounts
+    mounts = []
+    vols = container.attached_services(
+    {type_path: 'filesystem/local/filesystem'
+    })
+    unless vols.nil
+      vols.each do | vol |
+        STDERR.puts( ' VOL ' + vol.to_s)
+      end
+    end
+    mounts
   end
 
   def system_mounts(container)
