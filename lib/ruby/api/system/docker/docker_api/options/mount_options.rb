@@ -58,10 +58,14 @@ def get_remote_prefix(vol)
   unless vol[:variables][:engine_path].start_with?('/home/app/') || vol[:variables][:engine_path].start_with?('/home/fs/')
     '/home/fs/' 
   else
-    ''
+   ''
   end
   else
-    ''
+     unless vol[:variables][:engine_path].start_with?('/')
+       '/'
+     else
+       ''
+     end     
   end
 end
 def  mount_string_from_hash(vol)
