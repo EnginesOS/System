@@ -16,7 +16,7 @@ volumes:
  fs_rw: 
   name: fs_rw
   remotepath: "/var/fs/local/"
-  localpath: "/var/lib/engines/fs/"
+  localpath: "/var/lib/engines/apps/"
   permissions: "rw"
 mapped_ports: 
 repo: na
