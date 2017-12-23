@@ -46,23 +46,33 @@ def cert_mounts(container)
   end
 end
 
-def get_prefix(vol)
+def get_local_prefix(vol)
   unless vol[:shared] == true
     '/var/lib/engines/' + vol[:container_type] + 's/' + vol[:parent_engine] + '/' +  vol[:service_handle] + '/'
   else
     '/var/lib/engines/' + vol[:container_type] + 's/' + vol[:service_owner] + '/' +  vol[:service_name] + '/'
   end
 end
-
+def get_remote_prefix(vol)
+  if  vol[:container_type]  == app
+  unless vol[:variables][:engine_path].start_with?('/home/app/') || vol[:variables][:engine_path].start_with?('/home/fs/')
+    '/home/fs/' 
+  else
+    ''
+  end
+  else
+    ''
+  end
+end
 def  mount_string_from_hash(vol)
   unless vol[:variables][:permissions].nil? || vol[:variables][:volume_src].nil?  ||vol[:variables][:engine_path].nil?
     perms = 'ro'
-    if vol[:permissions] == 'rw'
+    if vol[:variables][:permissions] == 'rw'
       perms = 'rw'
     else
       perms = 'ro'
     end    
-    get_prefix(vol) + vol[:variables][:volume_src] + ':' + vol[:variables][:engine_path] + ':' + perms
+    get_local_prefix(vol) + vol[:variables][:volume_src] + ':' + get_remote_prefix(vol) + vol[:variables][:engine_path] + ':' + perms
   else
     STDERR.puts('missing keys in vol ' + vol.to_s )
     ''
