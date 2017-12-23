@@ -54,7 +54,7 @@ def get_local_prefix(vol)
   end
 end
 def get_remote_prefix(vol)
-  if  vol[:container_type]  == app
+  if  vol[:container_type] == 'app'
   unless vol[:variables][:engine_path].start_with?('/home/app/') || vol[:variables][:engine_path].start_with?('/home/fs/')
     '/home/fs/' 
   else
