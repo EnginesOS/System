@@ -6,5 +6,7 @@ module ContainerApiServices
     match[:parent_engine] = container.container_name 
     match[:container_type] = container.ctype
     engines_core.find_engine_services(match)
+  rescue EnginesException => e
+    {}
   end
 end
