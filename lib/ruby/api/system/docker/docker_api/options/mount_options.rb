@@ -46,15 +46,23 @@ def cert_mounts(container)
   end
 end
 
+def get_prefix(vol)
+  unless vol[:shared] == true
+    '/var/lib/engines/' + vol[:container_type] + 's/' + vol[:parent_engine] + '/' +  vol[:service_handle] + '/'
+  else
+    '/var/lib/engines/' + vol[:container_type] + 's/' + vol[:service_owner] + '/' +  vol[:service_name] + '/'
+  end
+end
+
 def  mount_string_from_hash(vol)
-  unless vol[:permissions].nil? || vol[:volume_src].nil?  ||vol[:engine_path].nil?
+  unless vol[:variables][:permissions].nil? || vol[:variables][:volume_src].nil?  ||vol[:variables][:engine_path].nil?
     perms = 'ro'
     if vol[:permissions] == 'rw'
       perms = 'rw'
     else
       perms = 'ro'
-    end
-    vol[:volume_src] + ':' + vol[:engine_path] + ':' + perms
+    end    
+    get_prefix(vol) + vol[:variables][:volume_src] + ':' + vol[:variables][:engine_path] + ':' + perms
   else
     STDERR.puts('missing keys in vol ' + vol.to_s )
     ''
@@ -68,7 +76,7 @@ def registry_mounts(container)
   })
   unless vols.nil?
     vols.each do | vol |
-      v_str = mount_string_from_hash(vol[:variables])
+      v_str = mount_string_from_hash(vol)
       STDERR.puts( ' VOL ' + v_str.to_s)
       mounts.push(v_str)
     end
