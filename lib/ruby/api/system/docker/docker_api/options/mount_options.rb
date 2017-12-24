@@ -69,7 +69,7 @@ def get_remote_prefix(vol)
   end
 end
 def  mount_string_from_hash(vol)
-  unless vol[:variables][:permissions].nil? || vol[:variables][:volume_src].nil?  ||vol[:variables][:engine_path].nil?
+  unless vol[:variables][:permissions].nil? || vol[:variables][:volume_src].nil?  || vol[:variables][:engine_path].nil?
     perms = 'ro'
     if vol[:variables][:permissions] == 'rw'
       perms = 'rw'
