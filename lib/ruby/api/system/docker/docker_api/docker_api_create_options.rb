@@ -88,17 +88,30 @@ module DockerApiCreateOptions
     end
   end
 
+  def io_attachments(top, container)
+
+    unless container.accepts_stream?
+      top['AttachStdin'] = false
+    else
+      top['AttachStdin'] = true
+    end
+    unless container.provides_stream?
+      top['AttachStdout'] = false
+      top['AttachStderr'] = false
+    else
+      top['AttachStdout'] = true
+      top['AttachStderr'] = true
+    end
+
+    top['OpenStdin'] = false
+    top['StdinOnce'] = false
+  end
+
   def build_top_level(container)
     top_level = {
       'User' => '',
-      'AttachStdin' => false,
-      'AttachStdout' => false,
-      'AttachStderr' => false,
       'Tty' => false,
-      'OpenStdin' => false,
-      'StdinOnce' => false,
       'Env' => envs(container),
-      #  'Entrypoint' => entry_point(container),
       'Image' => container.image,
       'Labels' => get_labels(container),
       'Volumes' => {},
@@ -111,13 +124,10 @@ module DockerApiCreateOptions
       'Domainname' => container_domain_name(container),
       'HostConfig' => host_config_options(container)
     }
+    io_attachments(top_level)
     top_level['ExposedPorts'] = exposed_ports(container) unless container.on_host_net?
     top_level['HostConfig']['PortBindings'] = port_bindings(container) unless container.on_host_net?
-    #  top_level['Hostname'] = hostname(container) #unless hostname(container).nil?
-    # top_level['Domainame'] = container_domain_name(container)# unless container_domain_name(container).nil?
-
     set_entry_point(container, top_level)
-    # STDERR.puts(' CREATE ' + top_level.to_json)
     top_level
   end
 
