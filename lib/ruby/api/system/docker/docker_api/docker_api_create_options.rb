@@ -88,7 +88,7 @@ module DockerApiCreateOptions
     end
   end
 
-  def io_attachments(top, container)
+  def io_attachments(container, top)
 
     unless container.accepts_stream?
       top['AttachStdin'] = false
@@ -124,7 +124,7 @@ module DockerApiCreateOptions
       'Domainname' => container_domain_name(container),
       'HostConfig' => host_config_options(container)
     }
-    io_attachments(top_level)
+    io_attachments(container, top_level)
     top_level['ExposedPorts'] = exposed_ports(container) unless container.on_host_net?
     top_level['HostConfig']['PortBindings'] = port_bindings(container) unless container.on_host_net?
     set_entry_point(container, top_level)
