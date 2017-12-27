@@ -76,9 +76,11 @@ def  mount_string_from_hash(vol)
     else
       perms = 'ro'
     end    
+    vol[:variables][:volume_src].strip!
+    vol[:variables][:volume_src].gsub!(/[ \t]*$/,'')
     STDERR.puts('_' + vol[:variables][:volume_src].to_s + '_')
     STDERR.puts('_' + get_local_prefix(vol).to_s + '_')
-    vol[:variables][:volume_src].strip!
+   
     get_local_prefix(vol) + vol[:variables][:volume_src] + ':' + get_remote_prefix(vol) + vol[:variables][:engine_path] + ':' + perms
   else
     STDERR.puts('missing keys in vol ' + vol.to_s )
