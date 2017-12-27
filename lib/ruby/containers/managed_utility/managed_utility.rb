@@ -44,10 +44,6 @@ class ManagedUtility< ManagedContainer
   end
 
   def execute_command(command_name, command_params)
-    #    begin #FIXME needs to complete if from another install
-    #      stop_container
-    #    rescue
-    #    end
     if is_active?
       expire_engine_info
       raise EnginesException.new(error_hash('Utility ' + container_name + ' in use ', command_name)) if is_active?
@@ -80,7 +76,8 @@ class ManagedUtility< ManagedContainer
     #   STDERR.puts('Created FSCONFIG')
     wait_for('stopped') unless is_stopped?
     begin
-      r = @container_api.logs_container(self, 100) #_as_result
+      r = @container_api.logs_container(self, 512) #_as_result
+      STDERR.puts('UIL RESULT:' + r.to_s)
       if r.is_a?(Hash)
         r
       else
