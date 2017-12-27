@@ -73,6 +73,10 @@ class ManagedUtility< ManagedContainer
     save_state
     #   STDERR.puts('Create FSCONFIG')
     create_container()
+    r = @container_api.logs_container(self, 512) #_as_result
+    STDERR.puts('UIL RESULT:' + r.to_s)
+    r = @container_api.logs_container(self, 512) #_as_result
+      STDERR.puts('UIL RESULT:' + r.to_s)
     #   STDERR.puts('Created FSCONFIG')
     wait_for('stopped') unless is_stopped?
     begin
@@ -160,4 +164,12 @@ class ManagedUtility< ManagedContainer
       system: :managed_utility,
       params: params }
   end
+  
+def accepts_stream?
+   @accepts_stream|=false
+ end
+
+ def provides_stream?
+   @provides_stream|=false
+ end
 end
