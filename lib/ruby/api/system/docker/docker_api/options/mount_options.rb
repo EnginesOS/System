@@ -77,6 +77,7 @@ def  mount_string_from_hash(vol)
       perms = 'ro'
     end    
     STDERR.puts('_' + vol[:variables][:volume_src].to_s + '_')
+    STDERR.puts('_' + get_local_prefix(vol).to_s + '_')
     vol[:variables][:volume_src].strip!
     get_local_prefix(vol) + vol[:variables][:volume_src] + ':' + get_remote_prefix(vol) + vol[:variables][:engine_path] + ':' + perms
   else
