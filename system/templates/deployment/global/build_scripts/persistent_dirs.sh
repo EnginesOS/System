@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set
 for path in $*
   do
    echo $path |grep ^/usr/local/ >/dev/null

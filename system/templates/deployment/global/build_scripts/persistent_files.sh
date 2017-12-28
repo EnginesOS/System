@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set
 for path in $*
  do
    path=`echo $path | sed "/[.][.]/s///g"` 
