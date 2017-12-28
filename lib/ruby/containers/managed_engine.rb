@@ -54,7 +54,14 @@ class ManagedEngine < ManagedContainer
     #    STDERR.puts('ONS TART @service_builder.run_volume_builder  is a' +  @volume_service_builder.to_s )
     if @volume_service_builder == true
       #  STDERR.puts('Running @service_builder.run_volume_builder ' )
-      @container_api.run_volume_builder(self, @cont_userid)
+      vols = attached_services(
+      {type_path: 'filesystem/local/filesystem'
+      })
+      if vols.is_a?(Array)
+        vols.each do | vol |
+          @container_api.run_volume_builder(self, @cont_userid, vol[:variables][:volume_name])
+        end
+      end
       @volume_service_builder = false
       @save_container = false
     end
