@@ -59,6 +59,8 @@ class ManagedEngine < ManagedContainer
       })
       if vols.is_a?(Array)
         vols.each do | vol |
+          
+          STDERR.puts('prepate vVOL ' + vol.to_s)
           @container_api.run_volume_builder(self, @cont_userid, vol[:variables][:volume_name])
         end
       end
