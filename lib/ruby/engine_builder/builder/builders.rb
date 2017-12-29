@@ -15,7 +15,8 @@ module Builders
     check_build_params(@build_params)
     @build_params[:engine_name].freeze
     @build_params[:image] = @build_params[:engine_name] #.gsub(/[-_]/, '')
-    @build_name = File.basename(@build_params[:repository_url]).sub(/\.git$/, '')
+    #@build_name = File.basename(@build_params[:repository_url]).sub(/\.git$/, '')
+    @build_name =  @build_params[:engine_name]
     @web_port = SystemConfig.default_webport
     @memory = @build_params[:memory]
     @app_is_persistent = false
