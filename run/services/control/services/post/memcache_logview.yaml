@@ -1,12 +1,12 @@
 parent_engine: control
 publisher_namespace: EnginesSystem
 type_path: logview
-service_handle: control_panel_logview
+service_handle: control_memcache_logview
 service_container_name: logview
 container_type: service
 persistent: false
 variables:
- log_file_path: control_panel.log
+ log_file_path: memcache.log
  log_type: raw
- log_name: 'Control log'
+ log_name: 'memcache log'
  ctype: service
