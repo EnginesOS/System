@@ -75,7 +75,7 @@ module EnginesApiSystem
   end
 
   def have_enough_ram?(container)
-    if @system_api.available_ram(container) > memory_required
+    if @system_api.available_ram > memory_required(container)
       true
     else
       false
