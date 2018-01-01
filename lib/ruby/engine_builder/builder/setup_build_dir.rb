@@ -69,7 +69,7 @@ module BuildDirSetup
     unless persistent_files.nil?
       content = ''
       persistent_files.each do |persistent|
-        content += persistent[:path] + ' ' + persistent[:volume_name] +"\n"
+        content += persistent[:path] + ' ' + persistent[:volume_name] + "\n"
       end
       write_software_file('/home/fs/vol_file_maps', content)
     end
