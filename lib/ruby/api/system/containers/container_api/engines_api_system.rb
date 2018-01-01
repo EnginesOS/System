@@ -25,7 +25,7 @@ module EnginesApiSystem
   def  pre_start_checks(container)
     r=true
     unless have_enough_ram?(container)
-      r = 'Free memory' + @core_api.available_ram.to_s + ' Required:' + ram_needed.to_s + "\n"
+      r = 'Free memory' + @system_api.available_ram.to_s + ' Required:' + ram_needed.to_s + "\n"
     end
     if (c = port_clash?(container.mapped_ports))
       r = c
