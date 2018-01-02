@@ -56,7 +56,7 @@ module BuildDirSetup
 
   def write_persistent_vol_maps
 
-    persistent_dirs = @blueprint_reader[:software][:persistent_directories]
+    persistent_dirs =  @blueprint_reader.persistent_directories
     unless persistent_dirs.nil?
       content = ''
       persistent_dirs.each do |persistent|
@@ -65,7 +65,7 @@ module BuildDirSetup
       write_software_file('/home/fs/vol_dir_maps', content)
     end
 
-    persistent_files = @blueprint_reader[:software][:persistent_files]
+    persistent_files = @blueprint_reader.persistent_files
     unless persistent_files.nil?
       content = ''
       persistent_files.each do |persistent|

@@ -54,6 +54,7 @@ class BluePrintReader
   :install_report_template,
   :schema
 
+  
   def log_build_output(line)
     @builder.log_build_output(line)
   end
@@ -157,7 +158,8 @@ class BluePrintReader
     pds = @blueprint[:software][:persistent_directories]
     if pds.is_a?(Array) # not an error just nada
       pds.each do |dir|
-        @persistent_dirs.push(dir[:path])
+        dir[:path] = clean_path(dir[:path])
+        @persistent_dirs.push(dir)
       end
     end
   end
@@ -169,8 +171,8 @@ class BluePrintReader
     pfs = @blueprint[:software][:persistent_files]
     if pfs.is_a?(Array) # not an error just nada
       pfs.each do |file|
-        path = clean_path(file[:path])
-        src_paths.push(path)
+        file[:path] = clean_path(file[:path])
+        src_paths.push(file)
       end
       @persistent_files[:src_paths] = src_paths
     end

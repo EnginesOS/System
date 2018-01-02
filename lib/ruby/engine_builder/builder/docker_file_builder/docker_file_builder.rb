@@ -155,7 +155,8 @@ class DockerFileBuilder
       log_build_output('setup persistent Dirs')
       paths = ''
       write_comment('#Persistant Dirs')
-      @blueprint_reader.persistent_dirs.each do |path|
+      @blueprint_reader.persistent_dirs.each do |p_dir|
+        path = p_dir[:paths]
         path.chomp!('/')
         paths += path + ' ' unless path.nil?
       end
@@ -188,7 +189,8 @@ class DockerFileBuilder
       paths = ''
       src_paths = @blueprint_reader.persistent_files[:src_paths]
       unless src_paths.nil?
-        src_paths.each do |path|
+        src_paths.each do |p_file|
+          path = p_file[:path]
           dir = File.dirname(path)
           file = File.basename(path)
           SystemDebug.debug(SystemDebug.builder, :dir, dir)
