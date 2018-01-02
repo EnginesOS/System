@@ -120,7 +120,7 @@ rescue StandardError => e
 end
 
 def write_response(r)
-  STDERR.puts('Response Class for name ' + r.class.name)
+ # STDERR.puts('Response Class for name ' + r.class.name)
   if r.nil?
     log_error('nil response')
   elsif r.headers['Content-Type'] == 'application/octet-stream'
