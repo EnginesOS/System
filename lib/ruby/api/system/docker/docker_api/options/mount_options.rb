@@ -15,8 +15,10 @@ def volumes_mounts(container)
   end
   sm = system_mounts(container)
   mounts.concat(sm) unless sm.nil?
-  rm = registry_mounts(container)
-  mounts.concat(rm) unless rm.nil?
+  unless container.ctype == 'system_service'
+    rm = registry_mounts(container)
+    mounts.concat(rm) unless rm.nil?
+  end
   mounts
 end
 
