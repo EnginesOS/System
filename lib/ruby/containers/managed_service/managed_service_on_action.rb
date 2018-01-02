@@ -34,6 +34,7 @@ module ManagedServiceOnAction
         if service_configurations.is_a?(Array) && ! service_configurations.empty?
           service_configurations.each do |configuration|
             begin
+              STDERR.puts('SERVICE CONFIGURATION' + configuration.to_s)
               @container_api.update_service_configuration(configuration)
             rescue
               return on_stop(nil) unless is_running?
