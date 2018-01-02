@@ -156,7 +156,7 @@ class DockerFileBuilder
       paths = ''
       write_comment('#Persistant Dirs')
       @blueprint_reader.persistent_dirs.each do |p_dir|
-        path = p_dir[:paths]
+        path = p_dir[:path]
         path.chomp!('/')
         paths += path + ' ' unless path.nil?
       end
