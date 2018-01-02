@@ -166,16 +166,15 @@ class BluePrintReader
 
   def read_persistent_files
     log_build_output('Read Persistant Files')
-    @persistent_files = {}
-    src_paths = []
+    @persistent_files = []
     pfs = @blueprint[:software][:persistent_files]
     if pfs.is_a?(Array) # not an error just nada
       pfs.each do |file|
         file[:path] = clean_path(file[:path])
-        src_paths.push(file)
-      end
-      @persistent_files[:src_paths] = src_paths
+        @persistent_files.push(file)
+      end      
     end
+      @persistent_files
   end
 
   def read_rake_list

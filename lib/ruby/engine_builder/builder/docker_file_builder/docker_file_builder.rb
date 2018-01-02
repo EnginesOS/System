@@ -187,7 +187,7 @@ class DockerFileBuilder
       write_comment('#Persistant Files')
       log_build_output('set setup_env')
       paths = ''
-      src_paths = @blueprint_reader.persistent_files[:src_paths]
+      src_paths = @blueprint_reader.persistent_files
       unless src_paths.nil?
         src_paths.each do |p_file|
           path = p_file[:path]
