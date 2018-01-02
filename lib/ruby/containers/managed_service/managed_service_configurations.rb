@@ -16,7 +16,9 @@ module ManagedServiceConfigurations
     r
     else
       raise EnginesException.new(error_hash('service missing cont_userid ', configurator_params)) if check_cont_uid == false
-      @container_api.retrieve_configurator(self, configurator_params)
+     r = @container_api.retrieve_configurator(self, configurator_params)
+      STDERR.puts(' recevie ARGS ' + r.to_s)
+          r
     end
   end
 
