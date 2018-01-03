@@ -13,7 +13,7 @@ def write_persistent_files
          if dir.is_a?(String) == false || dir.length == 0 || dir == '.' || dir == '..'
            path = 'app/' + file
          end
-         paths +=  p_dir[:volume_name].to_s + ':' + path + ' '
+         paths +=  p_file[:volume_name].to_s + ':' + path + ' '
        end
        write_build_script('persistent_files.sh   ' + paths)
      end
