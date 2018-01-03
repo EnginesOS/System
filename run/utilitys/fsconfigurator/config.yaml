@@ -79,7 +79,7 @@ volumes:
  persistence:
   name: persistence
   remotepath: "/dest/fs/"
-  localpath: /var/lib/engines/apps/_Engines_Template(target)/_Engines_Template(volume)
+  localpath: /var/lib/engines/apps/_Engines_Template(target)/
   permissions: rw
 volumes_from:
 - "_Engines_Template(target_container)"
