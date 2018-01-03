@@ -3,7 +3,7 @@ set
 for path in $*
  do
  VOLDIR=`echo $path |cut -f1 -d:`
- path`echo $path |cut -f2 -d:`
+ path=`echo $path |cut -f2 -d:`
    path=`echo $path | sed "/[.][.]/s///g"` 
    echo $path
    path=`echo $path | sed "/\/$/s///"`
