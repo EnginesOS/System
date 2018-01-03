@@ -48,7 +48,7 @@ module PersistantServiceBuilder
     service_hash[:owner] = existing[:parent_engine]
     service_hash[:existing_service] = existing
     if @core_api.connect_share_service(service_hash)
-     # add_file_service(service_hash)
+      add_file_service(service_hash)
       @attached_services.push(service_hash)
     else
       raise EngineBuilderException.new(error_hash('failed to share_service_to_engine(params)', params))
@@ -83,7 +83,7 @@ module PersistantServiceBuilder
 
     # if service_hash[:type_path] == 'filesystem/local/filesystem'
     #   SystemDebug.debug(SystemDebug.builder, :local_file_service, service_hash)
-     # result = add_file_service(service_hash)
+    result = add_file_service(service_hash)
     #  raise EngineBuilderException.new(error_hash('failed to create fs', self)) unless result
     # end
     SystemDebug.debug(SystemDebug.builder, :builder_attach_service, service_hash)
