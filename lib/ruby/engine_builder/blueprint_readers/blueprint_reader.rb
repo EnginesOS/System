@@ -158,7 +158,7 @@ class BluePrintReader
     pds = @blueprint[:software][:persistent_directories]
     if pds.is_a?(Array) # not an error just nada
       pds.each do |dir|
-        dir[:volume_name] = templater.process_templated_string(dir[:volume_name])
+        dir[:volume_name] = @builder.templater.process_templated_string(dir[:volume_name])
         dir[:path] = clean_path(dir[:path])
         @persistent_dirs.push(dir)
       end
@@ -171,7 +171,7 @@ class BluePrintReader
     pfs = @blueprint[:software][:persistent_files]
     if pfs.is_a?(Array) # not an error just nada
       pfs.each do |file|
-        file[:volume_name] = templater.process_templated_string(file[:volume_name])
+        file[:volume_name] = @builder.templater.process_templated_string(file[:volume_name])
         file[:path] = clean_path(file[:path])
         @persistent_files.push(file)
       end      
