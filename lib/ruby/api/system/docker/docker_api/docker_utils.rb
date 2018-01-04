@@ -2,6 +2,8 @@ module DockerUtils
   def self.process_request(stream_reader) #data , result, ostream=nil, istream=nil)
     @stream_reader = stream_reader
     return_result = @stream_reader.result
+    write_thread = nil
+    read_thread = nil
     lambda do |socket|
       write_thread = Thread.start do
         write_thread[:name] = 'docker_stream_writer'
@@ -56,15 +58,15 @@ module DockerUtils
         write_thread.kill
       end
       STDERR.puts('JOINS')
-      write_thread.join
-      read_thread.join
+      write_thread.join unless write_thread.nil?
+      read_thread.join unless read_thread.nil?
       @stream_reader.o_stream.close unless @stream_reader.o_stream.nil?
       @stream_reader.i_stream.close unless @stream_reader.i_stream.nil?
     end
   rescue StandardError => e
-    write_thread.kill
-    read_thread.kill
     STDERR.puts('PROCESS Execp' + e.to_s + ' ' + e.backtrace.to_s )
+    write_thread.kill unless write_thread.nil?
+    read_thread.kill unless read_thread.nil?   
   end
 
   def self.decode_from_docker_chunk(chunk, binary = true)

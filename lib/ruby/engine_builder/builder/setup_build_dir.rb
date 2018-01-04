@@ -45,11 +45,34 @@ module BuildDirSetup
     SystemDebug.debug(SystemDebug.builder, 'Eviron file  written')
     setup_framework_logging
     SystemDebug.debug(SystemDebug.builder, 'Logging setup')
+    write_persistent_vol_maps
+
     #  rescue StandardError => e
     #    log_build_errors('Engine Build Aborted Due to:' + e.to_s)
     #    post_failed_build_clean_up
     #    log_exception(e)
     #    raise e
+  end
+
+  def write_persistent_vol_maps
+
+    persistent_dirs =  @blueprint_reader.persistent_dirs
+    unless persistent_dirs.nil?
+      content = ''
+      persistent_dirs.each do |persistent|
+        content += persistent[:path] + ' ' + persistent[:volume_name] +"\n"
+      end
+      write_software_file('/home/fs/vol_dir_maps', content)
+    end
+
+    persistent_files = @blueprint_reader.persistent_files
+    unless persistent_files.nil?
+      content = ''
+      persistent_files.each do |persistent|
+        content += persistent[:path] + ' ' + persistent[:volume_name] + "\n"
+      end
+      write_software_file('/home/fs/vol_file_maps', content)
+    end
   end
 
   def create_build_dir
@@ -172,7 +195,7 @@ module BuildDirSetup
   end
 
   def setup_framework_defaults
-    log_build_output('Copy in default templates')
+    log_build_output('Copy in default templates for Framework ' + @blueprint_reader.framework.to_s + ' basedir ' + basedir.to_s)
     cmd = 'cp -r ' + SystemConfig.DeploymentTemplates + '/' + @blueprint_reader.framework + '/* ' + basedir
     r = system(cmd)
     if @blueprint_reader.framework == 'docker'
@@ -185,7 +208,7 @@ module BuildDirSetup
   end
 
   def setup_framework_logging
-    log_build_output('Seting up logging')
+    log_build_output('Setting up logging')
     rmt_log_dir_var_fname = basedir + '/home/LOG_DIR'
     if File.exist?(rmt_log_dir_var_fname)
       rmt_log_dir_varfile = File.open(rmt_log_dir_var_fname)

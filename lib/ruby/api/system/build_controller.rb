@@ -23,6 +23,7 @@ class BuildController
     @build_params = params
     SystemStatus.build_starting(@build_params)
     @engine_builder = get_engine_builder(@build_params)
+    
   end
 
   def build_engine()

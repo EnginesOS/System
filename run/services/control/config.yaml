@@ -9,7 +9,9 @@ publisher_namespace: EnginesSystem
 type_path: control
 port: 8484
 domain_name: _Engines_System(default_domain)
-kerberos: false
+kerberos: true
+restart_policy:
+ Name: 'unless-stopped'
 volumes: 
  public_dir: 
   volume_name: public_dir
@@ -24,6 +26,20 @@ mapped_ports:
   external: 8484
   proto_type: tcp
 environments:
+- !ruby/object:EnvironmentVariable
+ name: ENGINES_ADMIN_GUI_KERBEROS_SERVER
+ value: kdc@ENGINES.INTERNAL
+ has_changed: true 
+ build_time_only: false
+ immutable: false
+ label: "kdc server"
+- !ruby/object:EnvironmentVariable
+ name: ENGINES_ADMIN_GUI_KERBEROS_KEYTAB_PATH
+ value: /etc/krb5kdc/keys/kdc.keytab
+ has_changed: true 
+ build_time_only: false
+ immutable: false
+ label: "tab file"
 - !ruby/object:EnvironmentVariable
  name: ENGINES_ADMIN_GUI_SYSTEM_API_URL
  value: https://_Engines_System(docker_ip):2380

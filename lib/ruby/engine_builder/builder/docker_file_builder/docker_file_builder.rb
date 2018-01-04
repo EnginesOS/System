@@ -1,5 +1,6 @@
 class DockerFileBuilder
 
+  require_relative 'persistence.rb'
 
   def initialize(reader, build_params, webport, builder)
     @build_params = build_params
@@ -108,6 +109,7 @@ class DockerFileBuilder
   end
 
   def prepare_persitant_source
+    write_run_line('mv /home/volumes /home/fs')
     write_run_line('mv /home/fs /home/fs_src')
     write_volume('/home/fs_src/')
   end
@@ -150,18 +152,6 @@ class DockerFileBuilder
     end
   end
 
-  def write_persistent_dirs
-    unless @blueprint_reader.persistent_dirs.nil?
-      log_build_output('setup persistent Dirs')
-      paths = ''
-      write_comment('#Persistant Dirs')
-      @blueprint_reader.persistent_dirs.each do |path|
-        path.chomp!('/')
-        paths += path + ' ' unless path.nil?
-      end
-      write_build_script('persistent_dirs.sh  ' + paths)
-    end
-  end
 
   def write_data_permissions
     write_comment('#Data Permissions')
@@ -178,27 +168,6 @@ class DockerFileBuilder
   def write_database_seed
     unless @blueprint_reader.database_seed.nil? == false || @blueprint_reader.database_seed != ''
       ConfigFileWriter.write_templated_file(@builder.templater, @builder.basedir + '/home/database_seed', @blueprint_reader.database_seed)
-    end
-  end
-
-  def write_persistent_files
-    unless @blueprint_reader.persistent_files.nil?
-      write_comment('#Persistant Files')
-      log_build_output('set setup_env')
-      paths = ''
-      src_paths = @blueprint_reader.persistent_files[:src_paths]
-      unless src_paths.nil?
-        src_paths.each do |path|
-          dir = File.dirname(path)
-          file = File.basename(path)
-          SystemDebug.debug(SystemDebug.builder, :dir, dir)
-          if dir.is_a?(String) == false || dir.length == 0 || dir == '.' || dir == '..'
-            path = 'app/' + file
-          end
-          paths += path + ' '
-        end
-        write_build_script('persistent_files.sh   ' + paths)
-      end
     end
   end
 

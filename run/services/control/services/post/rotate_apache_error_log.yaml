@@ -1,11 +1,11 @@
 parent_engine: control
 publisher_namespace: EnginesSystem
 type_path: logrotate
-service_handle: rotate_admin_error_logs
+service_handle: rotate_memcache_logs
 service_container_name: logrotate
 container_type: service
 persistent: true
 variables:
- log_file_path: /services/control/apache2/error.log
+ log_file_path: /services/control/memcache.log
  cycle: daily
- rotate: 52
+ rotate: 7

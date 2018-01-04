@@ -6,7 +6,7 @@ service_container_name: logview
 container_type: service
 persistent: false
 variables:
- log_file_path: /apache2/access.log
- log_type: apache
+ log_file_path: control.log
+ log_type: raw
  log_name: 'Control Access Log'
  ctype: service

@@ -7,8 +7,11 @@ require 'base64'
 # @return [Binary]
 get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/export' do
   begin
-    content_type 'application/octet-stream'
     hash = engine_service_hash_from_params(params)
+    unless SoftwareServiceDefinition.is_consumer_exportable?(hash)
+     raise EnginesException.new(warning_hash("Cannot export as single service", hash))
+    end 
+    content_type 'application/octet-stream'   
     engine = get_engine(params[:engine_name])
     unless engine.nil?
       stream do |out|
@@ -28,6 +31,10 @@ end
 # @return [true]
 put '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/overwrite' do
   begin
+    hash = engine_service_hash_from_params(params)
+    unless SoftwareServiceDefinition.is_consumer_exportable?(hash)
+       raise EnginesException.new(warning_hash("Cannot import as single service", hash))
+      end 
     engine = get_engine(params[:engine_name])
     return_text(engine.import_service_data(
     {service_connection: engine_service_hash_from_params(params) },
@@ -44,6 +51,10 @@ end
 # @return [true]
 put '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/replace' do
   begin
+    hash = engine_service_hash_from_params(params)
+    unless SoftwareServiceDefinition.is_consumer_exportable?(hash)
+       raise EnginesException.new(warning_hash("Cannot import as single service", hash))
+      end 
     engine = get_engine(params[:engine_name])
     return_text(engine.import_service_data(
     {service_connection: engine_service_hash_from_params(params)},

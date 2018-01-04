@@ -239,5 +239,8 @@ class PublicApi < ErrorsApi
   include  PublicApiBackup
   require_relative 'system/user_auth.rb'
   include UserAuth
+  
+  require_relative 'system/gui_prefs.rb'
+  include GuiPrefs
 
 end

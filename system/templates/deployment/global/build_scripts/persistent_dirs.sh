@@ -1,7 +1,15 @@
 #!/bin/bash
-
+set
 for path in $*
   do
+ Volume=`echo $path |cut -f1 -d:`
+ VOLDIR=`cat /home/fs/volumes/$Volume`
+ echo $VOLDIR |grep /home/fs/ >/dev/null
+ if test $? -ne 0
+  then
+  VOLDIR=/home/fs/$VOLDIR
+ fi
+ path=`echo $path |cut -f2 -d:`
    echo $path |grep ^/usr/local/ >/dev/null
     if test $? -eq 0
      then

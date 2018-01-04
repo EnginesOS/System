@@ -21,5 +21,9 @@ when 'schedule'
   require_relative 'schedules.rb'
 when 'utility'
   require_relative 'containers/utility.rb'
+when 'backup'
+ require_relative 'backup/backup.rb'
+when 'restore'
+ require_relative 'restore/restore.rb'
 end
 command_usage

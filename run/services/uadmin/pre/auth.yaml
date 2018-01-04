@@ -1,0 +1,9 @@
+parent_engine: uadmin
+publisher_namespace: EnginesSystem
+type_path: auth
+service_handle: uadmin_kerb
+container_type: service
+persistent: true
+variables:
+ parent_engine: uadmin
+ container_type: service

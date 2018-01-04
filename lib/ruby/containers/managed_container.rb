@@ -39,14 +39,17 @@ class ManagedContainer < Container
 
   require_relative 'managed_container/managed_container_schedules.rb'
   include ManagedContainerSchedules
-
+  
+  require_relative 'managed_container/managed_container_services.rb'
+  include ManagedContainerServices
+  
   @conf_self_start = false
   @conf_zero_conf=false
   @restart_required = false
   @rebuild_required = false
   @large_temp = false
    
-  attr_accessor :kerberos, :volumes_from, :command, :restart_required, :rebuild_required, :environments, :volumes, :image_repo, :capabilities, :conf_register_dns
+  attr_accessor  :restart_policy, :volumes_from, :command, :restart_required, :rebuild_required, :environments, :volumes, :image_repo, :capabilities, :conf_register_dns
   def initialize
     super
     @container_mutex = Mutex.new
@@ -60,6 +63,16 @@ class ManagedContainer < Container
   #    super
   #  end
 
+  def kerberos
+    @kerberos = true if @kerberos.nil?
+    @kerberos
+  end    
+  
+  def no_cert_map
+    false unless @no_cert_map == true
+    true if @no_cert_map == true      
+  end
+  
   def set_state
     @setState
   end
@@ -71,7 +84,7 @@ class ManagedContainer < Container
   def status
     @status = {} if @status.nil?
     @status[:state] = read_state
-      STDERR.puts(' STATE GOT ' + container_name.to_s + ':' + @status[:state].to_s)
+     # STDERR.puts(' STATE GOT ' + container_name.to_s + ':' + @status[:state].to_s)
     @status[:set_state] = @setState
     @status[:progress_to] = task_at_hand
     @status[:error] = false
@@ -119,7 +132,6 @@ class ManagedContainer < Container
   :preffered_protocol,\
   :deployment_type,\
   :dependant_on,\
-  :no_ca_map,\
   :hostname,\
   :domain_name,\
   :ctype,

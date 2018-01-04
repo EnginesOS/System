@@ -12,7 +12,7 @@ module SystemApiBackup
     params = {
       container: reg,
       stream: out,
-      command_line: ['/home/services/backup.sh'],
+      command_line: ['/home/engines/scripts/backup/backup.sh'],
       log_error: true }
     result = @engines_api.exec_in_container(params)
     if result[:result] != 0
@@ -27,7 +27,7 @@ module SystemApiBackup
     params = {
       container: reg,
       data_stream: out,
-      command_line: ['/home/services/restore.sh'],
+      command_line: ['/home/engines/scripts/backup/restore.sh'],
       log_error: true }
     result = @engines_api.exec_in_container(params)
     if result[:result] != 0
@@ -74,7 +74,7 @@ module SystemApiBackup
       params = {
         container: service,
         stream: out,
-        command_line: ['/home/services/backup.sh'],
+        command_line: ['/home/engines/scripts/backup/backup.sh'],
         log_error: true }
       result = @engines_api.exec_in_container(params)
       if result[:result] != 0

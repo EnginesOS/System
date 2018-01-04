@@ -1,7 +1,16 @@
 #!/bin/bash
-
+set
 for path in $*
  do
+Volume=`echo $path |cut -f1 -d:`
+ VOLDIR=`cat /home/fs/volumes/$Volume`
+echo $Volume to $VOLDIR
+ echo $VOLDIR |grep /home/fs/ >/dev/null
+ if test $? -ne 0
+  then
+  VOLDIR=/home/fs/$VOLDIR
+ fi
+ path=`echo $path |cut -f2 -d:`
    path=`echo $path | sed "/[.][.]/s///g"` 
    echo $path
    path=`echo $path | sed "/\/$/s///"`

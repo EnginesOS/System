@@ -1,6 +1,6 @@
 # Configurations methods
 module Configurations
-  def retrieve_service_configurations_hashes(config_hash)
+  def retrieve_service_configurations(config_hash)
     r = 'service/configurations'
     r += address_params(config_hash, [:service_name])
     rest_get(r)

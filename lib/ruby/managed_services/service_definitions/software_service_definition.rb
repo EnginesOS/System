@@ -41,15 +41,15 @@ class SoftwareServiceDefinition
   def SoftwareServiceDefinition.configurators(service_hash)
     service_def = SoftwareServiceDefinition.find(service_hash[:type_path] ,service_hash[:publisher_namespace])
     return service_def if service_def.nil?
-    service_def[:configurators]    
+    service_def[:configurators]
   end
-  
+
   def SoftwareServiceDefinition.actionators(service_hash)
-      service_def = SoftwareServiceDefinition.find(service_hash[:type_path] ,service_hash[:publisher_namespace])
+    service_def = SoftwareServiceDefinition.find(service_hash[:type_path] ,service_hash[:publisher_namespace])
     service_def = service_def[:service_actionators] unless service_def.nil?
-      [] if service_def.nil?
-    service_def 
-    end
+    [] if service_def.nil?
+    service_def
+  end
 
   def self.summary(definition)
     {
@@ -95,12 +95,17 @@ class SoftwareServiceDefinition
       path = service_hash[:publisher_namespace] + '/' + service_hash[:type_path] + ':'
 
       service_environment_variables = service_def[:target_environment_variables]
+        STDERR.puts( 'service_variables' + service_environment_variables.to_s )
       service_variables = service_def[:consumer_params]
       SystemDebug.debug(SystemDebug.services,:SERVICE_ENVIRONMENT_VARIABLES, service_environment_variables)
-      if service_environment_variables != nil
+      unless service_environment_variables.nil?
         service_environment_variables.values.each do |env_variable_pair|
-          env_name = env_variable_pair[:environment_name]
+          env_name = env_variable_pair[:environment_variable_name]
           value_name = env_variable_pair[:variable_name]
+          if env_name.nil?
+            env_name = value_name
+            STDERR.puts('Set env name to val name !')
+          end
           value = service_hash[:variables][value_name.to_sym]
           owner[1] = path + value_name
           immutable = service_variables[value_name.to_sym][:immutable]
@@ -176,6 +181,29 @@ class SoftwareServiceDefinition
     end
   end
 
+  def SoftwareServiceDefinition.is_sharable?(params)
+    STDERR.puts(' Check sharable on ' + params.to_s)
+    service = SoftwareServiceDefinition.find(params[:type_path], params[:publisher_namespace])
+    if service == nil
+      nil
+    elsif service.key?(:shareable)
+      service[:shareable]
+    else
+      # default is sharable
+      true
+    end
+  end
+def SoftwareServiceDefinition.is_consumer_exportable?(params)
+  service = SoftwareServiceDefinition.find(params[:type_path], params[:publisher_namespace])
+  if service == nil
+    nil
+  elsif service.key?(:consumer_exportable)
+    service[:consumer_exportable]
+  else
+    # default is consumer_exportable
+    true
+  end
+end
   def SoftwareServiceDefinition.is_soft_service?(service_hash)
     service = SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:publisher_namespace])
     if service.key?(:soft_service)

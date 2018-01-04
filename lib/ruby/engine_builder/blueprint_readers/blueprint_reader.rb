@@ -54,6 +54,7 @@ class BluePrintReader
   :install_report_template,
   :schema
 
+  
   def log_build_output(line)
     @builder.log_build_output(line)
   end
@@ -157,32 +158,36 @@ class BluePrintReader
     pds = @blueprint[:software][:persistent_directories]
     if pds.is_a?(Array) # not an error just nada
       pds.each do |dir|
-        @persistent_dirs.push(dir[:path])
+        dir[:volume_name] = @builder.templater.process_templated_string(dir[:volume_name])
+        dir[:path] = clean_path(dir[:path])
+        @persistent_dirs.push(dir)
       end
     end
   end
 
   def read_persistent_files
     log_build_output('Read Persistant Files')
-    @persistent_files = {}
-    src_paths = []
+    @persistent_files = []
     pfs = @blueprint[:software][:persistent_files]
     if pfs.is_a?(Array) # not an error just nada
       pfs.each do |file|
-        path = clean_path(file[:path])
-        src_paths.push(path)
-      end
-      @persistent_files[:src_paths] = src_paths
+        file[:volume_name] = @builder.templater.process_templated_string(file[:volume_name])
+        file[:path] = clean_path(file[:path])
+        @persistent_files.push(file)
+      end      
     end
+      @persistent_files
   end
 
   def read_rake_list
     @rake_actions = []
     log_build_output('Read Rake List')
-    rake_cmds = @blueprint[:software][:rake_tasks]
-    if rake_cmds.is_a?(Array) # not an error just nada
-      rake_cmds.each do |rake_cmd|
-        @rake_actions.push(rake_cmd)
+    if @blueprint[:software].key?(:framework_specific)
+      rake_cmds = @blueprint[:software][:framework_specific][:rake_tasks]
+      if rake_cmds.is_a?(Array) # not an error just nada
+        rake_cmds.each do |rake_cmd|
+          @rake_actions.push(rake_cmd)
+        end
       end
     end
   end

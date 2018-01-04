@@ -32,7 +32,7 @@ module ServiceOperations
 
   #Attach the service defined in service_hash [Hash]
   # @return boolean indicating sucess
-  def create_and_register_service(service_hash)   
+  def create_and_register_service(service_hash)
     SystemDebug.debug(SystemDebug.services, :attach_ing_create_and_egister_service, service_hash)
     create_and_register_managed_service(service_hash)
   end
@@ -40,7 +40,11 @@ module ServiceOperations
   def dettach_service(service_hash)
     check_service_hash(service_hash)
     SystemDebug.debug(SystemDebug.services, :dettach_service, service_hash)
-    service_manager.delete_and_remove_service(service_hash)
+    if service_hash[:shared] == true
+      service_manager.remove_shared_service_from_engine(service_hash)
+    else
+      service_manager.delete_and_remove_service(service_hash)
+    end
   end
 
   # @ returns  complete service hash matching PNS,SP,PE,SH
@@ -96,14 +100,14 @@ module ServiceOperations
     service_hash[:variables][:parent_engine] = service_hash[:parent_engine] unless service_hash[:variables].has_key?(:parent_engine)
     set_top_level_service_params(service_hash, service_hash[:parent_engine])
     check_engine_service_hash(service_hash)
-    if service_hash[:type_path] == 'filesystem/local/filesystem'
-      begin
-        engine = loadManagedEngine(service_hash[:parent_engine])
-        engine.add_volume(service_hash) if engine.is_a?(ManagedEngine)
-      rescue
-        #will fail on build
-      end
-    end
+#    if service_hash[:type_path] == 'filesystem/local/filesystem'
+#      begin
+#        engine = loadManagedEngine(service_hash[:parent_engine])
+#        engine.add_volume(service_hash) if engine.is_a?(ManagedEngine)
+#      rescue
+#        #will fail on build
+#      end
+#    end
     SystemDebug.debug(SystemDebug.services,"calling service ", service_hash)
     service_manager.create_and_register_service(service_hash)
   end
