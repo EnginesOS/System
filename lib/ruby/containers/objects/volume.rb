@@ -47,6 +47,10 @@ class Volume < StaticService #Latter will include group and perhaps other attrib
     end
     SystemDebug.debug(SystemDebug.builder, :Complete_Volume_service_hash, service_hash)
     service_hash
+  rescue Exception => e
+      STDERR.puts('Problem with ' +service_hash.to_s)
+      raise e
+    
   end
 
   def self.default_volume_name(service_hash)
