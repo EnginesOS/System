@@ -3,7 +3,8 @@ set
 for path in $*
  do
 Volume=`echo $path |cut -f1 -d:`
- VOLDIR=`cat /home/fs_src/volumes/$Volume`
+ VOLDIR=`cat /home/fs/volumes/$Volume`
+echo $Volume to $VOLDIR
  echo $VOLDIR |grep /home/fs/ >/dev/null
  if test $? -ne 0
   then
