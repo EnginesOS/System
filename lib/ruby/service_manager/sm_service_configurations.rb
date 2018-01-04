@@ -21,8 +21,8 @@ module SmServiceConfigurations
 
   # @Returns an Array of Configuration hashes resgistered against the service [String] service_name
 
-  def retrieve_service_configurations_hashes(service_name)
-    system_registry_client.retrieve_service_configurations_hashes(service_name)
+  def retrieve_service_configurations(service_name)
+    system_registry_client.retrieve_service_configurations(service_name)
   end
 
   def retrieve_service_configuration(service_name)
@@ -30,7 +30,7 @@ module SmServiceConfigurations
   end
 
   def pending_service_configurations_hashes(service_name)
-    hashes = system_registry_client.retrieve_service_configurations_hashes(service_name)
+    hashes = system_registry_client.retrieve_service_configurations(service_name)
     if hashes.is_a?(Array)
       retval = []
       hashes.each do |config|

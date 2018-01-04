@@ -34,6 +34,7 @@ module ManagedServiceOnAction
         if service_configurations.is_a?(Array) && ! service_configurations.empty?
           service_configurations.each do |configuration|
             begin
+              STDERR.puts('SERVICE CONFIGURATION' + configuration.to_s)
               @container_api.update_service_configuration(configuration)
             rescue
               return on_stop(nil) unless is_running?
@@ -51,7 +52,7 @@ module ManagedServiceOnAction
 
   def created_and_started
     @container_api.load_and_attach_post_services(self)
-    service_configurations = @container_api.retrieve_service_configurations_hashes({service_name: @container_name, publisher_namespace: @publisher_namespace, type_path: @type_path})
+    service_configurations = @container_api.retrieve_service_configurations({service_name: @container_name, publisher_namespace: @publisher_namespace, type_path: @type_path})
     if service_configurations.is_a?(Array)
       service_configurations.each do |configuration|
         next if configuration[:no_save] == true

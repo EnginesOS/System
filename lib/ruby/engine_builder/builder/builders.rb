@@ -15,7 +15,8 @@ module Builders
     check_build_params(@build_params)
     @build_params[:engine_name].freeze
     @build_params[:image] = @build_params[:engine_name] #.gsub(/[-_]/, '')
-    @build_name = File.basename(@build_params[:repository_url]).sub(/\.git$/, '')
+    #@build_name = File.basename(@build_params[:repository_url]).sub(/\.git$/, '')
+    @build_name =  @build_params[:engine_name]
     @web_port = SystemConfig.default_webport
     @memory = @build_params[:memory]
     @app_is_persistent = false
@@ -33,7 +34,7 @@ module Builders
     @build_params[:data_uid] =  @data_uid
     @build_params[:data_gid] = @data_gid
     SystemDebug.debug(SystemDebug.builder, :builder_init, @build_params)
-    @service_builder = ServiceBuilder.new(@core_api, @templater, @build_params[:engine_name], @attached_services)
+    @service_builder = ServiceBuilder.new(@core_api, @templater, @build_params[:engine_name], @attached_services, basedir)
     SystemDebug.debug(SystemDebug.builder, :builder_init__service_builder, @build_params)
     self
   rescue StandardError => e
@@ -137,11 +138,7 @@ module Builders
     rescue
       #dont panic if no container
     end
-    #  end
-
-    #    params = {}
-    #    params[:engine_name] = @build_name
-    #    @core_api.delete_engine(params) # remove engine if created, removes from manged_engines tree (main reason to call)
+    
     @result_mesg = @result_mesg.to_s + ' Roll Back Complete'
     SystemDebug.debug(SystemDebug.builder,'Roll Back Complete')
     close_all

@@ -16,12 +16,12 @@ volumes:
  fs_rw: 
   name: fs_rw
   remotepath: "/nfs/rw/"
-  localpath: "/var/lib/engines/fs/"
+  localpath: "/var/lib/engines/apps/"
   permissions: "rw"
  fs_ro: 
   name: fs_ro
   remotepath: "/nfs/ro/"
-  localpath: "/var/lib/engines/fs/"
+  localpath: "/var/lib/engines/apps/"
   permissions: "rw"
  cgroup: 
   name: cgroup

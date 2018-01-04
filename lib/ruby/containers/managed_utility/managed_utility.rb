@@ -44,17 +44,13 @@ class ManagedUtility< ManagedContainer
   end
 
   def execute_command(command_name, command_params)
-    #    begin #FIXME needs to complete if from another install
-    #      stop_container
-    #    rescue
-    #    end
     if is_active?
-      expire_engine_info
+      expire_engine_info     
+      wait_for('stop', 60)
       raise EnginesException.new(error_hash('Utility ' + container_name + ' in use ', command_name)) if is_active?
-      wait_for('stop')
       destroy_container
     end
-    #FIXMe need to check if running
+
     r =  ''
     #  command_name = command_name.to_sym unless @commands.key?(command_name)
     raise EnginesException.new(error_hash('No such command: ' + command_name.to_s,  command_params)) unless @commands.key?(command_name)
@@ -62,7 +58,6 @@ class ManagedUtility< ManagedContainer
     raise EnginesException.new(error_hash('Missing params in Exe' + command_params.to_s, r)) unless (r = check_params(command, command_params)) == true
     begin
       destroy_container
-     # @container_id = -1
     rescue
     end
     wait_for('nocontainer') if has_container?
@@ -77,10 +72,23 @@ class ManagedUtility< ManagedContainer
     save_state
     #   STDERR.puts('Create FSCONFIG')
     create_container()
+#    sleep(1)
+#    r = @container_api.logs_container(self, 512) #_as_result
+#       STDERR.puts('UIL RESULT:' + r.to_s)
+#    r = @container_api.logs_container(self, 512) #_as_result
+#    STDERR.puts('UIL RESULT:' + r.to_s)
+#    sleep(1)
+#    r = @container_api.logs_container(self, 512) #_as_result
+#      STDERR.puts('UIL RESULT:' + r.to_s)
+#      sleep(5)
+    #    r = @container_api.logs_container(self, 512) #_as_result
+    #         STDERR.puts('UIL RESULT:' + r.to_s)
+          
     #   STDERR.puts('Created FSCONFIG')
     wait_for('stopped') unless is_stopped?
     begin
-      r = @container_api.logs_container(self, 100) #_as_result
+      r = @container_api.logs_container(self, 512) #_as_result
+      STDERR.puts('UIL RESULT:' + r.to_s)
       if r.is_a?(Hash)
         r
       else
@@ -91,7 +99,6 @@ class ManagedUtility< ManagedContainer
       STDERR.puts('FSCONFIG EXCEPTION' + e.to_s)
       {stderr: 'Failed', result: -1}
     end
-
   end
 
   def construct_cmdline(command, command_params, templater)
@@ -130,7 +137,7 @@ class ManagedUtility< ManagedContainer
 
   def apply_env_templates(command_params, templater)
     environments.each do |env|
-      env.value = templater.apply_hash_variables(env. value, command_params)
+      env.value = templater.apply_hash_variables(env.value, command_params)
     end
   end
 
@@ -149,9 +156,9 @@ class ManagedUtility< ManagedContainer
     r
   end
 
-  def container_logs_as_result
-
-  end
+#  def container_logs_as_result
+#
+#  end
 
   def clear_configs
     FileUtils.rm(ContainerStateFiles.container_state_dir(self) + '/running.yaml') if File.exist?(ContainerStateFiles.container_state_dir(self) + '/running.yaml')
@@ -163,4 +170,12 @@ class ManagedUtility< ManagedContainer
       system: :managed_utility,
       params: params }
   end
+  
+def accepts_stream?
+   @accepts_stream |= false
+ end
+
+ def provides_stream?
+   @provides_stream |= false
+ end
 end

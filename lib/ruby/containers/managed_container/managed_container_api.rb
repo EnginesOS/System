@@ -14,6 +14,14 @@ module ManagedContainerApi
     @container_api.save_blueprint(blueprint, self)
   end
 
+  def accepts_stream?
+    false
+  end
+
+  def provides_stream?
+    false
+  end
+
   def run_cronjob(cronjob)
     @container_api.run_cronjob(cronjob, self)
   end

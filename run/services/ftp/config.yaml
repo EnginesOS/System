@@ -15,12 +15,12 @@ volumes:
  fs_rw: 
   name: fs_rw
   remotepath: "/ftp/rw/"
-  localpath: "/var/lib/engines/fs/"
+  localpath: "/var/lib/engines/apps/"
   permissions: "rw"
  fs_ro: 
   name: fs_ro
   remotepath: "/ftp/ro/"
-  localpath: "/var/lib/engines/fs/"
+  localpath: "/var/lib/engines/apps/"
   permissions: "rw"
 port: 
 mapped_ports:

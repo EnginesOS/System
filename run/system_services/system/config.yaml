@@ -65,8 +65,8 @@ volumes:
   permissions: rw
  engines_fs: 
   name: engines_fs
-  remotepath: "/var/lib/engines/fs"
-  localpath: "/var/lib/engines/fs"
+  remotepath: "/var/lib/engines/apps"
+  localpath: "/var/lib/engines/apps"
   permissions: rw
  engines_logs: 
   name: engineslogs

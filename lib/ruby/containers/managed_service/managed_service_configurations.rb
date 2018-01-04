@@ -10,13 +10,29 @@ module ManagedServiceConfigurations
 
   def retrieve_configurator(configurator_params)
     configurator_params[:service_name] = @container_name
-    raise EnginesException.new(warning_hash('service not running ', configurator_params)) if is_running? == false
-    raise EnginesException.new(error_hash('service missing cont_userid ', configurator_params)) if check_cont_uid == false
-    @container_api.retrieve_configurator(self, configurator_params)
+    if  is_running? == false
+    r = retrieve_service_configuration(configurator_params)
+    STDERR.puts(' recevie ARGS ' + r.to_s)
+    r
+    else
+      raise EnginesException.new(error_hash('service missing cont_userid ', configurator_params)) if check_cont_uid == false
+     r = @container_api.retrieve_configurator(self, configurator_params)
+      STDERR.puts(' recevie ARGS ' + r.to_s)
+          r
+    end
+  end
+
+  def retrieve_service_configuration(configurator_params)
+    @container_api.retrieve_service_configuration(
+    {service_name: @container_name,
+      type_path: @type_path,
+      publisher_namespace: @publisher_namespace,
+      configurator_name: configurator_params[:configurator_name]
+    })
   end
 
   def retrieve_service_configurations
-    @container_api.retrieve_service_configurations_hashes(
+    @container_api.retrieve_service_configurations(
     {service_name: @container_name,
       type_path: @type_path,
       publisher_namespace: @publisher_namespace })

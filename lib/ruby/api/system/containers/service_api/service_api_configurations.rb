@@ -38,12 +38,19 @@ module ServiceApiConfigurations
   end
 
   def pending_service_configurations_hashes(service_hash)
-    @engines_core.pending_service_configurations_hashes(service_hash)
+    ph = @engines_core.pending_service_configurations_hashes(service_hash)
+    STDERR.puts(' pENDINED SERVICSE ' + ph.to_s)
+    ph
   end
 
   #({service_name: @container_name})
-  def retrieve_service_configurations_hashes(service_hash)
-    @engines_core.retrieve_service_configurations_hashes(service_hash)
+  def retrieve_service_configurations(configurator_params)
+    @engines_core.retrieve_service_configurations(configurator_params)
+  end
+
+  #({service_name: @container_name})
+  def retrieve_service_configuration(configurator_params)
+    @engines_core.retrieve_service_configuration(configurator_params)
   end
 
   def service_resource(c, what)

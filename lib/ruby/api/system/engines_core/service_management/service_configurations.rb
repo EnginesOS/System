@@ -4,10 +4,10 @@ module ServiceConfigurations
     retrieve_configuration(config)
   end
 
-  def retrieve_service_configurations_hashes(service_hash)
+  def retrieve_service_configurations(service_hash)
     defs = SoftwareServiceDefinition.configurators(service_hash)
     avail = service_defs_to_configurations(defs, service_hash)
-    configured = service_manager.retrieve_service_configurations_hashes(service_hash)
+    configured = service_manager.retrieve_service_configurations(service_hash)
     if configured.is_a?(Array)
       configured.each do | configuration |
         avail[ configuration[:configurator_name].to_sym ] = configuration

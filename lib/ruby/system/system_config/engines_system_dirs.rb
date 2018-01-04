@@ -6,7 +6,7 @@ module EnginesSystemDirs
   @@DeploymentDir = '/home/engines/deployment/deployed'
   @@DeploymentTemplates = '/opt/engines/system/templates/deployment'
   @@CONTFSVolHome = '/home/app/fs'
-  @@LocalFSVolHome = '/var/lib/engines/fs'
+  @@LocalFSVolHome = '/var/lib/engines/apps'
   @@galleriesDir = '/opt/engines/etc/galleries'
   @@SystemLogRoot = '/var/log/engines/'
   @@ServiceMapTemplateDir = '/opt/engines/etc/services/mapping/'

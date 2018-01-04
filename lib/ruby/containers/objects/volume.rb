@@ -26,7 +26,7 @@ class Volume < StaticService #Latter will include group and perhaps other attrib
       service_hash[:variables][:engine_path] = '/home/fs/' + service_hash[:variables][:engine_path] unless service_hash[:variables][:engine_path].start_with?('/home/fs/') ||service_hash[:variables][:engine_path].start_with?('/home/app')
     end
 
-    service_hash[:variables][:service_name] = service_hash[:variables][:engine_path].gsub(/\//,'_')
+   # service_hash[:variables][:service_name] = service_hash[:variables][:engine_path].gsub(/\//,'_')
 
     unless service_hash[:variables].key?(:volume_src)
       service_hash[:variables][:volume_src] = self.default_volume_name(service_hash)
@@ -47,6 +47,10 @@ class Volume < StaticService #Latter will include group and perhaps other attrib
     end
     SystemDebug.debug(SystemDebug.builder, :Complete_Volume_service_hash, service_hash)
     service_hash
+  rescue Exception => e
+      STDERR.puts('Problem with ' +service_hash.to_s)
+      raise e
+    
   end
 
   def self.default_volume_name(service_hash)
