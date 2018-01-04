@@ -17,7 +17,7 @@ module LocalFileServiceBuilder
   end
 
   def write_vol_map(service_hash)
-   f = File.new( basedir + '/home/' + service_hash[:variables][:volume_name], 'w')
+   f = File.new( @basedir + '/home/' + service_hash[:variables][:volume_name], 'w')
    f.write(service_hash[:variables][:volume_name])  
    f.close   
   end

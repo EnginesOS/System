@@ -18,8 +18,9 @@ class ServiceBuilder < ErrorsApi
   include NonPersistantServiceBuilder
   require_relative 'service_builder_errors.rb'
   include ServiceBuilderErrors
-  def initialize(core_api, templater, engine_name, attached_services)
+  def initialize(core_api, templater, engine_name, attached_services, basedir)
     @engine_name = engine_name
+    @basedir = basedir
     @core_api = core_api
     @templater = templater
     @attached_services =  attached_services

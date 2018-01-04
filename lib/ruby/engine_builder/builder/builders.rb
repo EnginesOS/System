@@ -34,7 +34,7 @@ module Builders
     @build_params[:data_uid] =  @data_uid
     @build_params[:data_gid] = @data_gid
     SystemDebug.debug(SystemDebug.builder, :builder_init, @build_params)
-    @service_builder = ServiceBuilder.new(@core_api, @templater, @build_params[:engine_name], @attached_services)
+    @service_builder = ServiceBuilder.new(@core_api, @templater, @build_params[:engine_name], @attached_services, basedir)
     SystemDebug.debug(SystemDebug.builder, :builder_init__service_builder, @build_params)
     self
   rescue StandardError => e
