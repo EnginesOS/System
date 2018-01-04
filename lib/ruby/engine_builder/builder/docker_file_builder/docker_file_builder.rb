@@ -109,6 +109,7 @@ class DockerFileBuilder
   end
 
   def prepare_persitant_source
+    write_run_line('mv /home/volumes /home/fs')
     write_run_line('mv /home/fs /home/fs_src')
     write_volume('/home/fs_src/')
   end
