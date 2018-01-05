@@ -95,13 +95,16 @@ def registry_mounts(container)
   vols = container.attached_services(
   {type_path: 'filesystem/local/filesystem'
   })
-  unless vols.nil?
+  if vols.is_a?(Array)
     vols.each do | vol |
       v_str = mount_string_from_hash(vol)
       STDERR.puts( ' VOL ' + v_str.to_s)
       mounts.push(v_str)
     end
+  else
+    STDERR.puts('Registry mounts was' + vols.to_s)
   end
+  
   mounts
 end
 
