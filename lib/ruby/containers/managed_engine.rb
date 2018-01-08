@@ -52,6 +52,7 @@ class ManagedEngine < ManagedContainer
     set_running_user
     #  STDERR.puts('ONSTART_CALLED' + container_name.to_s + ';' + event_hash.to_s)
     #    STDERR.puts('ONS TART @service_builder.run_volume_builder  is a' +  @volume_service_builder.to_s )
+    register_with_dns
     if @volume_service_builder == true
       #  STDERR.puts('Running @service_builder.run_volume_builder ' )
       vols = attached_services(
