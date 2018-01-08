@@ -51,7 +51,7 @@ class ManagedEngine < ManagedContainer
   def on_start(event_hash)
     set_running_user
     #  STDERR.puts('ONSTART_CALLED' + container_name.to_s + ';' + event_hash.to_s)
-    #    STDERR.puts('ONS TART @service_builder.run_volume_builder  is a' +  @volume_service_builder.to_s )
+        STDERR.puts('ONS ME TART @service_builder.run_volume_builder  is a' +  @volume_service_builder.to_s )
     register_with_dns
     if @volume_service_builder == true
       #  STDERR.puts('Running @service_builder.run_volume_builder ' )
@@ -59,8 +59,7 @@ class ManagedEngine < ManagedContainer
       {type_path: 'filesystem/local/filesystem'
       })
       if vols.is_a?(Array)
-        vols.each do | vol |
-          
+        vols.each do | vol |          
           STDERR.puts('prepate vVOL ' + vol.to_s)
           @container_api.run_volume_builder(self, @cont_userid, vol[:variables][:volume_name])
         end
