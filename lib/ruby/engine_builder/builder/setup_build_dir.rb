@@ -70,6 +70,7 @@ module BuildDirSetup
       content = ''
       persistent_files.each do |persistent|
         persistent[:volume_name] = @default_vol if persistent[:volume_name].nil?
+          STDERR.puts('persistent[:path]:' +  persistent[:path].to_s + ' persistent[:volume_name]:' + persistent[:volume_name].to_s  + "\n")
         content += persistent[:path] + ' ' + persistent[:volume_name] + "\n"
       end
       write_software_file('/home/fs/vol_file_maps', content)
