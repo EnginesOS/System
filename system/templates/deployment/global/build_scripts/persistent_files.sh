@@ -11,8 +11,8 @@ for file  in `cat /home/fs/vol_file_maps | awk '{ print $1}'`
     	mkdir -p $destination
     fi
  	cp -np /home/$file $destination 
- 	rm /home/$file 
- 	ln -s $dest_path/$file $dest_path/$file 
+ 	rm
+ 	ln -s $dest_path/$file /home/$file 
  done
  
 #set

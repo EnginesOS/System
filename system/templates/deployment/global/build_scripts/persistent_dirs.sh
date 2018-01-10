@@ -1,17 +1,17 @@
 #!/bin/bash
 
-for file  in `cat /home/fs/vol_file_maps | awk '{ print $1}'`
+for dir  in `cat /home/fs/vol_file_maps | awk '{ print $1}'`
  do 
-   volume=`grep "$file " /home/fs/vol_file_maps| awk '{print $2}'`	
+   volume=`grep "$dir " /home/fs/vol_file_maps| awk '{print $2}'`	
    dest_path=`cat /home/fs/volumes/$volume`
-   destination=$dest_path/$file 
+   destination=$dest_path/$dir 
    if ! test -d `dirname $destination`
     then
     	mkdir -p $destination
     fi
- 	cp -np /home/$file $destination 
- 	rm /home/$file 
- 	ln -s $dest_path/$file $dest_path/$file 
+ 	cp -rnp /home/$file $destination 
+ 	rm -r /home/$dir 
+ 	ln -s $dest_path/$dir /home/$dir
  done
 #set
 #
