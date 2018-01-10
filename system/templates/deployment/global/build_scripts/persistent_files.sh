@@ -6,17 +6,21 @@ echo ls home
 ls -l /home
 
 
-for file  in `cat /home/fs/vol_file_maps | awk '{ print $1}'`
+for file  in `cat /home/vol_file_maps | awk '{ print $1}'`
  do 
-   volume=`grep "$file " /home/fs/vol_file_maps| awk '{print $2}'`	
-   dest_path=`cat /home/fs/volumes/$volume`
+   volume=`grep "$file " /home/vol_file_maps| awk '{print $2}'`	
+   dest_path=`cat /home/volumes/$volume`
    destination=$dest_path/$file 
+   echo $volume maps to $dest_path, for persistent file $file
    if ! test -d `dirname $destination`
     then
+    echo "mkdir -p $destination"
     	mkdir -p $destination
     fi
+    echo cp -np /home/$file $destination 
  	cp -np /home/$file $destination 
- 	rm
+ 	rm /home/$file
+ 	echo "ln -s $dest_path/$file /home/$file"
  	ln -s $dest_path/$file /home/$file 
  done
  

@@ -10,12 +10,17 @@ for dir  in `cat /home/vol_dir_maps | awk '{ print $1}'`
    volume=`grep "$dir " /home/vol_dir_maps| awk '{print $2}'`	
    dest_path=`cat /home/volumes/$volume`
    destination=$dest_path/$dir 
+   echo $volume maps to $dest_path, for persistent dir $dir
+    
    if ! test -d `dirname $destination`
     then
+    	echo "mkdir -p $destination"
     	mkdir -p $destination
     fi
+    echo "cp -rnp /home/$file $destination "
  	cp -rnp /home/$file $destination 
  	rm -r /home/$dir 
+ 	echo "ln -s $dest_path/$dir /home/$dir"
  	ln -s $dest_path/$dir /home/$dir
  done
 #set
