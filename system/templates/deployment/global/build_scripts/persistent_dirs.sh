@@ -2,6 +2,8 @@
 cat /home/fs/vol_dir_maps
 echo ls -l fs
 ls -l /home/fs
+echo ls -l fs_src
+ls -l /home/fs_src
 echo ls home
 ls -l /home
 

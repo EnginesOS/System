@@ -4,6 +4,8 @@ echo ls -l fs
 ls -l /home/fs
 echo ls home
 ls -l /home
+echo ls -l fs_src
+ls -l /home/fs_src
 
 
 for file  in `cat /home/fs/vol_file_maps | awk '{ print $1}'`
