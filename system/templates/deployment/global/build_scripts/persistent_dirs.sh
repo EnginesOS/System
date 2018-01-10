@@ -21,6 +21,10 @@ for dir  in `cat /home/fs/vol_dir_maps | awk '{ print $1}'`
     	echo "mkdir -p $destination"
     	mkdir -p `dirname $destination`
     fi
+    if ! test -d /home/$dir
+     then
+      mkdir -p /home/$dir
+    fi
     echo "cp -rnp /home/$file $destination "
  	cp -rnp /home/$file $destination 
  	rm -r /home/$dir 

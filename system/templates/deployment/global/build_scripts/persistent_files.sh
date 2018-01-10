@@ -20,6 +20,10 @@ for file  in `cat /home/fs/vol_file_maps | awk '{ print $1}'`
     echo "mkdir -p $destination"
     	mkdir -p `dirname $destination`
     fi
+    if ! test -f /home/$file
+     then
+      touch /home/$file
+    fi
     echo cp -np /home/$file $destination 
  	cp -np /home/$file $destination 
  	rm /home/$file
