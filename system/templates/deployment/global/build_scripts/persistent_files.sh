@@ -13,7 +13,7 @@ for file  in `cat /home/fs/vol_file_maps | awk '{ print $1}'`
    volume=`grep "$file " /home/fs/vol_file_maps| awk '{print $2}'`	
    dest_path=`cat /home/volumes/$volume`
    ln_destination=$dest_path/$file
-    destination=/home/fs_src/$file
+    destination=/home/fs/$file
    echo $volume maps to $dest_path, for persistent file $file
    if ! test -d `dirname $destination`
     then

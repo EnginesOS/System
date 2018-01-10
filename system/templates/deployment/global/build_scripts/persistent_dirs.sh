@@ -12,7 +12,7 @@ for dir  in `cat /home/fs/vol_dir_maps | awk '{ print $1}'`
    volume=`grep "$dir " /home/fs/vol_dir_maps| awk '{print $2}'`	
    dest_path=`cat /home/volumes/$volume`
    ln_destination=$dest_path/$dir 
-    destination=/home/fs_src/$dir
+    destination=/home/fs/$dir
     
    echo $volume maps to $dest_path, for persistent dir $dir
     
