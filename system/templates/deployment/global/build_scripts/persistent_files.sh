@@ -1,14 +1,14 @@
 #!/bin/bash
-cat /home/vol_file_maps
+cat /home/fs/vol_file_maps
 echo ls -l fs
 ls -l /home/fs
 echo ls home
 ls -l /home
 
 
-for file  in `cat /home/vol_file_maps | awk '{ print $1}'`
+for file  in `cat /home/fs/vol_file_maps | awk '{ print $1}'`
  do 
-   volume=`grep "$file " /home/vol_file_maps| awk '{print $2}'`	
+   volume=`grep "$file " /home/fs/vol_file_maps| awk '{print $2}'`	
    dest_path=`cat /home/volumes/$volume`
    destination=$dest_path/$file 
    echo $volume maps to $dest_path, for persistent file $file
