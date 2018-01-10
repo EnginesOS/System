@@ -1,5 +1,7 @@
 #!/bin/bash
-
+cat /home/fs/vol_file_maps
+ls /home/fs
+ls /home
 for dir  in `cat /home/fs/vol_file_maps | awk '{ print $1}'`
  do 
    volume=`grep "$dir " /home/fs/vol_file_maps| awk '{print $2}'`	
