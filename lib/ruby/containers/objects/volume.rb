@@ -54,7 +54,7 @@ class Volume < StaticService #Latter will include group and perhaps other attrib
   end
 
   def self.default_volume_name(service_hash)
-    SystemConfig.LocalFSVolHome + '/' + service_hash[:parent_engine].to_s  + '/' + service_hash[:variables][:service_name].to_s
+    service_hash[:variables][:service_name].to_s
   end
 
 end

@@ -35,7 +35,7 @@ class VolumeService < ManagedService
     #    retval =  SystemUtils.run_system(cmd)
     #    cmd = 'docker_rm volbuilder'
     #    retval =  SystemUtils.run_system(cmd)
-    FileUtils.rm_rf( service_hash[:variables][:volume_src] ) #SystemConfig.LocalFSVolHome() + '/' + service_hash[:parent_engine] +  '/' + service_hash[:service_handle]) if retval
+    FileUtils.rm_rf( SystemConfig.LocalFSVolHome + '/' + service_hash[:parent_engine] +  '/' + service_hash[:service_handle] + service_hash[:variables][:volume_src] ) #SystemConfig.LocalFSVolHome() + '/' + service_hash[:parent_engine] +  '/' + service_hash[:service_handle]) if retval
   rescue  Exception=>e
     raise EnginesException.new(error_hash('Failed to Delete FS:' + service_hash.to_s, service_hash))
   end
