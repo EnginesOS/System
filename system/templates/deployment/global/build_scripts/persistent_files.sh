@@ -12,18 +12,19 @@ for file  in `cat /home/fs/vol_file_maps | awk '{ print $1}'`
  do 
    volume=`grep "$file " /home/fs/vol_file_maps| awk '{print $2}'`	
    dest_path=`cat /home/volumes/$volume`
-   destination=$dest_path/$file 
+   ln_destination=$dest_path/$file
+    destination=/home/fs_src/$file
    echo $volume maps to $dest_path, for persistent file $file
    if ! test -d `dirname $destination`
     then
     echo "mkdir -p $destination"
-    	mkdir -p $destination
+    	mkdir -p `dirname $destination`
     fi
     echo cp -np /home/$file $destination 
  	cp -np /home/$file $destination 
  	rm /home/$file
- 	echo "ln -s $dest_path/$file /home/$file"
- 	ln -s $dest_path/$file /home/$file 
+ 	echo "ln -s $ln_destination /home/$file"
+ 	ln -s $ln_destination /home/$file 
  done
  
 #set
