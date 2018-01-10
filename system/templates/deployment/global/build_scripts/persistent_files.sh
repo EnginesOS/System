@@ -1,4 +1,9 @@
 #!/bin/bash
+cat /home/vol_file_maps
+echo ls -l fs
+ls -l /home/fs
+echo ls home
+ls -l /home
 
 
 for file  in `cat /home/fs/vol_file_maps | awk '{ print $1}'`
