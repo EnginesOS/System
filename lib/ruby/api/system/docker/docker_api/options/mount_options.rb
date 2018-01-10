@@ -49,12 +49,12 @@ def cert_mounts(container)
 end
 
 def get_local_prefix(vol)
-  unless vol[:variables][:volume_src].start_with?('/var/lib/engines/apps/') || vol[:variables][:volume_src].start_with?('/var/lib/engines/services/') ||
-  unless vol[:shared] == true
-  '/var/lib/engines/' + vol[:container_type] + 's/' + vol[:parent_engine] + '/' +  vol[:service_handle] + '/'
-  else
-  '/var/lib/engines/' + vol[:container_type] + 's/' + vol[:service_owner] + '/' +  vol[:service_name] + '/'
-  end
+  unless vol[:variables][:volume_src].start_with?('/var/lib/engines/apps/') == true  || vol[:variables][:volume_src].start_with?('/var/lib/engines/services/') == true
+    unless vol[:shared] == true
+      '/var/lib/engines/' + vol[:container_type] + 's/' + vol[:parent_engine] + '/' +  vol[:service_handle] + '/'
+    else
+      '/var/lib/engines/' + vol[:container_type] + 's/' + vol[:service_owner] + '/' +  vol[:service_name] + '/'
+    end
   else
     ''
   end
