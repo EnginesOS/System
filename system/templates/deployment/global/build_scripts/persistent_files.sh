@@ -1,12 +1,12 @@
 #!/bin/bash
-cat /home/fs/vol_file_maps
-echo ls -l fs
-ls -l /home/fs
-echo ls home
-ls -l /home
-echo ls -l fs_src
-ls -l /home/fs_src
-
+#cat /home/fs/vol_file_maps
+#echo ls -l fs
+#ls -l /home/fs
+#echo ls home
+#ls -l /home
+#echo ls -l fs_src
+#ls -l /home/fs_src
+#
 
 for file  in `cat /home/fs/vol_file_maps | awk '{ print $1}'`
  do 
@@ -27,7 +27,7 @@ for file  in `cat /home/fs/vol_file_maps | awk '{ print $1}'`
        echo $file | grep ^/home/home_dir/
         if ! test $? -eq 0
      	 then 
-    	   echo $file | grep ^/home/local/ 
+    	   echo $file | grep ^/usr/local/ 
     	     if ! test $? -eq 0
      	      then
      	        file_abs_path=/home/$file

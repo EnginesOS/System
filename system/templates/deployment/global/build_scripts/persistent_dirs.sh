@@ -30,7 +30,7 @@ for dir  in `cat /home/fs/vol_dir_maps | awk '{ print $1}'`
        echo $dir | grep ^/home/home_dir/
         if ! test $? -eq 0
      	 then 
-    	   echo $dir | grep ^/home/local/ 
+    	   echo $dir | grep ^/usr/local/ 
     	     if ! test $? -eq 0
      	      then
      	        dir_abs_path=/home/$dir
