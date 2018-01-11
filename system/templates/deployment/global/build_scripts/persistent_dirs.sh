@@ -1,16 +1,17 @@
 #!/bin/bash
-cat /home/fs/vol_dir_maps
-echo ls -l fs
-ls -l /home/fs
-echo ls -l fs_src
-ls -l /home/fs_src
-echo ls home
-ls -l /home
+#cat /home/fs/vol_dir_maps
+#echo ls -l fs
+#ls -l /home/fs
+#echo ls -l fs_src
+#ls -l /home/fs_src
+#echo ls home
+#ls -l /home
 
 for dir  in `cat /home/fs/vol_dir_maps | awk '{ print $1}'`
  do 
    volume=`grep "$dir " /home/fs/vol_dir_maps| awk '{print $2}'`	
    dest_path=`cat /home/volumes/$volume`
+   echo Dest Path $dest_path
    ln_destination=$dest_path/$dir 
    destination=/home/fs/$dir
     

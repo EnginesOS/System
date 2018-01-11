@@ -12,6 +12,7 @@ for file  in `cat /home/fs/vol_file_maps | awk '{ print $1}'`
  do 
    volume=`grep "$file " /home/fs/vol_file_maps| awk '{print $2}'`	
    dest_path=`cat /home/volumes/$volume`
+   echo Dest Path $dest_path
    ln_destination=$dest_path/$file
     destination=/home/fs/$file
    echo $volume maps to $dest_path, for persistent file $file
