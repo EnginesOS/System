@@ -58,6 +58,9 @@ def get_local_prefix(vol)
   else
     ''
   end
+rescue Exception => e
+  STDERR.puts('EXCEPTION:'+ e.to_s + ' With ' + vol.to_s)
+  raise e
 end
 
 def get_remote_prefix(vol)
@@ -74,6 +77,9 @@ def get_remote_prefix(vol)
       ''
     end
   end
+  rescue Exception => e
+    STDERR.puts('EXCEPTION:'+ e.to_s + ' With ' + vol.to_s)
+  raise e
 end
 
 def  mount_string_from_hash(vol)
