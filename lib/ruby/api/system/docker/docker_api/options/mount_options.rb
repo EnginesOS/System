@@ -53,7 +53,7 @@ def get_local_prefix(vol)
     unless vol[:shared] == true
       '/var/lib/engines/' + vol[:container_type] + 's/' + vol[:parent_engine] + '/' +  vol[:service_handle] + '/'
     else
-      '/var/lib/engines/' + vol[:container_type] + 's/' + vol[:service_owner] + '/' +  vol[:service_name] + '/'
+      '/var/lib/engines/' + vol[:container_type] + 's/' + vol[:service_owner] + '/' +  vol[:service_owner_handle] + '/'
     end
   else
     ''
