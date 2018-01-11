@@ -12,7 +12,7 @@ for dir  in `cat /home/fs/vol_dir_maps | awk '{ print $1}'`
    volume=`grep "$dir " /home/fs/vol_dir_maps| awk '{print $2}'`	
    dest_path=`cat /home/volumes/$volume`
    ln_destination=$dest_path/$dir 
-    destination=/home/fs/$dir
+   destination=/home/fs/$dir
     
    echo $volume maps to $dest_path, for persistent dir $dir
     
@@ -21,15 +21,33 @@ for dir  in `cat /home/fs/vol_dir_maps | awk '{ print $1}'`
     	echo "mkdir -p $destination"
     	mkdir -p `dirname $destination`
     fi
-    if ! test -d /home/$dir
-     then
-      mkdir -p /home/$dir
+    
+    dir_abs_path=$dir
+    
+    echo $dir | grep ^/home/app/
+     if ! test $? -eq 0
+      then      
+       echo $dir | grep ^/home/home_dir/
+        if ! test $? -eq 0
+     	 then 
+    	   echo $dir | grep ^/home/local/ 
+    	     if ! test $? -eq 0
+     	      then
+     	        dir_abs_path=/home/$dir
+     	     fi 
+     	fi      
     fi
-    echo "cp -rnp /home/$file $destination "
- 	cp -rnp /home/$file $destination 
- 	rm -r /home/$dir 
- 	echo "ln -s $ln_destination /home/$dir"
- 	ln -s $destination /home/$dir
+    
+    
+    if ! test -d $dir_abs_path
+     then
+      mkdir -p $dir_abs_path
+    fi
+    echo "cp -rnp $dir_abs_path $destination "
+ 	cp -rnp $dir_abs_path  $destination 
+ 	rm -r $dir_abs_path
+ 	echo "ln -s $ln_destination $dir_abs_path"
+ 	ln -s $destination $dir_abs_path
  done
 #set
 #

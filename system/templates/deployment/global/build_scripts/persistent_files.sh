@@ -20,15 +20,30 @@ for file  in `cat /home/fs/vol_file_maps | awk '{ print $1}'`
     echo "mkdir -p $destination"
     	mkdir -p `dirname $destination`
     fi
-    if ! test -f /home/$file
-     then
-      touch /home/$file
+     file_abs_path=$file
+     echo $file | grep ^/home/app/
+     if ! test $? -eq 0
+      then      
+       echo $file | grep ^/home/home_dir/
+        if ! test $? -eq 0
+     	 then 
+    	   echo $file | grep ^/home/local/ 
+    	     if ! test $? -eq 0
+     	      then
+     	        file_abs_path=/home/$file
+     	     fi 
+     	fi      
     fi
-    echo cp -np /home/$file $destination 
- 	cp -np /home/$file $destination 
- 	rm /home/$file
- 	echo "ln -s $ln_destination /home/$file"
- 	ln -s $ln_destination /home/$file 
+    
+    if ! test -f $file_abs_path
+     then
+      touch $file_abs_path
+    fi
+    echo cp -np $file_abs_path $destination 
+ 	cp -np $file_abs_path $destination 
+ 	rm $file_abs_path
+ 	echo "ln -s $ln_destination $file_abs_path"
+ 	ln -s $ln_destination $file_abs_path
  done
  
 #set
