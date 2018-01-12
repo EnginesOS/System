@@ -67,6 +67,7 @@ module UserAuth
     if params[:current_password].nil?
       raise EnginesException.new(
       level: :warning,
+      error_type: :warning,
       params: params,
       status: nil,
       system: 'user auth',
@@ -113,6 +114,7 @@ module UserAuth
       token = rws[0][0] if token.nil? # FIXMe should be if first run?
       raise EnginesException.new(
       level: :warning,
+error_type: :warning,
       params: nil,
       status: nil,
       system: 'user auth',
