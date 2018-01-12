@@ -2,7 +2,7 @@
 
 class ServiceBuilder < ErrorsApi
 
-  attr_reader :volumes, :app_is_persistent, :attached_services
+  attr_reader :volumes, :app_is_persistent, :attached_services, :default_vol
 
   require_relative 'orphan_service_builder.rb'
   include OrphansServiceBuilder

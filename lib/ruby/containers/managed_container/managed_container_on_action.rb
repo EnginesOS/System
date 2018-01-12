@@ -4,14 +4,14 @@ module ManagedContainerOnAction
       @stop_reason = nil
       @exit_code = 0
       set_running_user
-      # STDERR.puts('ONSTART_CALLED' + container_name.to_s + ';' + what.to_s)
+       STDERR.puts('ONSTART_CALLED' + container_name.to_s + ';' + what.to_s)
       SystemDebug.debug(SystemDebug.container_events, :ONSTART_CALLED, what)
       @out_of_memory = false
+      register_with_dns
       if @consumer_less
         @has_run = true
       else
         # MUst register post each start as IP Changes (different post reboot)
-        register_with_dns
         if  @has_run == false
           add_nginx_service if @deployment_type == 'web'
         end

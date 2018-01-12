@@ -17,7 +17,7 @@ module EnginesServerHost
     if res.status == 'run'
       true
     else
-      false
+      raise EnginesException.new(error_hash('Failed recreate_engines_system_service ', res))
     end
   end
 
@@ -28,7 +28,7 @@ module EnginesServerHost
     if res.status == 'run'
       true
     else
-      false
+      raise EnginesException.new(error_hash('Failed recreate_engines_system_service ', res))
     end
   end
 
@@ -165,7 +165,7 @@ module EnginesServerHost
     # STDERR.puts('RUN SERVER SCRIPT cmd'  + cmd.to_s)
     Timeout.timeout(script_timeout) do
      r = SystemUtils.execute_command(cmd, false, script_data)
-     STDERR.puts(' Script Script ' + r.to_s)
+     STDERR.puts(' Server Script ' + r.to_s)
      r
     end
   rescue Timeout::Error

@@ -6,6 +6,8 @@ module LocalFileServiceBuilder
     SystemDebug.debug(SystemDebug.builder,:complete_VOLUME_service_hash, service_hash)
     service_hash = Volume.complete_service_hash(service_hash)
     SystemDebug.debug(SystemDebug.builder,:completed_VOLUME_service_hash, service_hash)
+    @default_vol = service_hash[:variables][:service_name] if @default_vol.nil?
+    STDERR.puts('default_vol:' + @default_vol .to_s)
     write_vol_map(service_hash)
     #    if service_hash[:share] == true
     #      @volumes[service_hash[:service_owner] + '_' + service_hash[:variables][:volume_name]] = Volume.volume_hash(service_hash)

@@ -24,7 +24,7 @@ module SmOrphanServices
 
   # @returns [Hash] suitable for use  to attach as a service
 
-  def reparent_orphan(service_hash,engine_name)
+  def reparent_orphan(service_hash, engine_name)
     service_hash[:old_parent] =  service_hash[:parent_engine]
     service_hash[:parent_engine] = engine_name
     service_hash[:fresh] = false
@@ -82,10 +82,12 @@ module SmOrphanServices
 
   def connect_orphan_service(service_hash)
     orphan_search = service_hash.dup
+    pe = orphan_search[:parent_engine]
     orphan_search[:parent_engine] = orphan_search[:owner]
     orphan = retrieve_orphan(orphan_search)
-    merge_variables(service_hash,orphan)
-    service_hash = reparent_orphan(service_hash, service_hash[:parent_engine])
+    merge_variables(service_hash, orphan)
+    orphan_search[:parent_engine] = orphan_search[:owner]
+    service_hash = reparent_orphan(service_hash, pe)
     create_and_register_service(service_hash)
     release_orphan(orphan)
   end
