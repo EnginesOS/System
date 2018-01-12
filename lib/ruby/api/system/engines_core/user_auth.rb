@@ -66,7 +66,7 @@ module UserAuth
   def set_system_user_details(params)
     if params[:current_password].nil?
       raise EnginesException.new(
-      level: :error,
+      level: :warning,
       params: params,
       status: nil,
       system: 'user auth',
@@ -111,7 +111,7 @@ module UserAuth
     else
       token = rws[0][0] if token.nil? # FIXMe should be if first run?
       raise EnginesException.new(
-      level: :error,
+      level: :warning,
       params: nil,
       status: nil,
       system: 'user auth',
