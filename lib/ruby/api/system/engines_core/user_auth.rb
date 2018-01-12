@@ -77,7 +77,7 @@ module UserAuth
       if rws.nil? || rws.count == 0
         raise EnginesException.new(
         level: :warning,
-        error_type: warning,
+        error_type: :warning,
         params: params,
         status: nil,
         system: 'user auth',
