@@ -60,7 +60,7 @@ post '/v0/system/user/:user_name' do
 begin
   content_type 'text/plain'
   post_s = post_params(request).merge(params)
-  cparams = assemble_params(post_s, [:user_name], nil, [:new_password, :current_password])
+  cparams = assemble_params(post_s, [:user_name], [:new_password, :current_password], nil)
   return_boolean(engines_api.set_system_user_details(cparams))
 rescue StandardError => e
   send_encoded_exception(request: request, exception: e)
