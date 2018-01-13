@@ -145,18 +145,21 @@ module SmEngineServices
     STDERR.puts('RM SERV ' + params.to_s)
     if services.is_a?(Array)
       services.each do | service |
-        SystemDebug.debug(SystemDebug.services, :remove_service, service)
+        SystemDebug.debug(SystemDebug.services, :remove_service)
         if params[:remove_all_data] == 'all' || service[:shared] #&& ! (service.key?(:shared) && service[:shared])
           service[:remove_all_data] = params[:remove_all_data]
           service[:force] = true if params.key?(:force)
           begin
             delete_and_remove_service(service)
+            STDERR.puts('RM SERV data' + params.to_s)
+            SystemDebug.debug(SystemDebug.services, :remove_service)
           rescue StandardError => e
             STDERR.puts(' remove_managed_persistent_services ' + e.to_s)
             next
           end
         else
           orphanate_service(service)
+          STDERR.puts('ORPH SERV data' + params.to_s)
           system_registry_client.remove_from_managed_engine(service)
         end
       end
