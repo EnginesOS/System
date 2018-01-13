@@ -42,20 +42,26 @@ module SmServiceControl
     raise EnginesException.new(error_hash('Not Matching Service to remove', complete_service_query)) unless service_hash.is_a?(Hash)
     if service_hash[:shared] == true
       remove_shared_service_from_engine(service_query)
-    else
-      if service_hash[:remove_all_data] == 'all'
-        begin
-          remove_from_managed_service(service_hash) ## continue if
-        rescue StandardError => e
-          raise e unless service_query.key?(:force)
-        end
-        system_registry_client.remove_from_managed_engine(service_hash)
-        system_registry_client.remove_from_services_registry(service_hash)
-      else
-        orphanate_service(service_hash)
-        STDERR.puts('ORPH SERV data' + service_hash.to_s)
+    elsif service_hash[:remove_all_data] == 'all'
+      begin
+        remove_from_managed_service(service_hash) ## continue if
+      rescue StandardError => e
+        raise e unless service_query.key?(:force)
       end
-
+      begin
+        system_registry_client.remove_from_managed_engine(service_hash)
+        remove_from_managed_service(service_hash) ## continue if
+      rescue StandardError => e
+        raise e unless service_query.key?(:force)
+      end
+      begin
+        system_registry_client.remove_from_services_registry(service_hash)
+      rescue StandardError => e
+        raise e unless service_query.key?(:force)
+      end
+    else
+      orphanate_service(service_hash)
+      STDERR.puts('ORPH SERV data' + service_hash.to_s)
     end
   end
 
