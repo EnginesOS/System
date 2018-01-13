@@ -43,23 +43,19 @@ module SmServiceControl
     if service_hash[:shared] == true
       remove_shared_service_from_engine(service_query)
     else
-      service_hash[:remove_all_data] = service_query[:remove_all_data]
-      
-         if params[:remove_all_data] == 'all'
-           begin 
-         remove_from_managed_service(service_hash) ## continue if
-             rescue StandardError => e
-                     raise e unless service_query.key?(:force)
-                   end
-                   system_registry_client.remove_from_managed_engine(service_hash)
-                   system_registry_client.remove_from_services_registry(service_hash) 
-         else
-           orphanate_service(service)
-           STDERR.puts('ORPH SERV data' + params.to_s)
-           
+      if service_hash[:remove_all_data] == 'all'
+        begin
+          remove_from_managed_service(service_hash) ## continue if
+        rescue StandardError => e
+          raise e unless service_query.key?(:force)
         end
-       
-      
+        system_registry_client.remove_from_managed_engine(service_hash)
+        system_registry_client.remove_from_services_registry(service_hash)
+      else
+        orphanate_service(service_hash)
+        STDERR.puts('ORPH SERV data' + params.to_s)
+      end
+
     end
   end
 
