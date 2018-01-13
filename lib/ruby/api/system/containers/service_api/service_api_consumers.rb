@@ -23,7 +23,7 @@ module ServiceApiConsumers
 
   def update_consumer_on_service(c, service_hash)
     #  raise EnginesException.new(error_hash('cannot not update consumer on non persistent service ' + service_hash.to_s, result)) unless @persistent == true
-    unless c.persistent == true && c.soft_service != true
+    unless c.persistent == true && c.is_soft_service? != true
       rm_consumer_from_service(c, service_hash)
       add_consumer_to_service(c, service_hash)
     else
