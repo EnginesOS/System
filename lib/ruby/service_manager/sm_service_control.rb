@@ -53,7 +53,7 @@ module SmServiceControl
         system_registry_client.remove_from_services_registry(service_hash)
       else
         orphanate_service(service_hash)
-        STDERR.puts('ORPH SERV data' + params.to_s)
+        STDERR.puts('ORPH SERV data' + service_hash.to_s)
       end
 
     end
