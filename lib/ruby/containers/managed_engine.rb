@@ -58,7 +58,7 @@ class ManagedEngine < ManagedContainer
       {type_path: 'filesystem/local/filesystem'
       })
     if vols.is_a?(Array) && vols.length > 0 
-           @container_api.run_volume_builder(self, @cont_userid, vol[:variables][:volume_name])
+           @container_api.run_volume_builder(self, @cont_userid, 'all')
       end
       @volume_service_builder = false
       @save_container = false
