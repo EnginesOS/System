@@ -138,18 +138,22 @@ module ContainerSystemStateFiles
   end
 
   def save_container_log(container, options = {} )
-    unless options[:over_write] == true
-      log_name = Time.now.strftime('%Y-%m-%d_%H-%M-%S') + '.log'
-    else
-      log_name = 'last.log'
+    if container.has_container?
+      unless options[:over_write] == true
+        log_name = Time.now.strftime('%Y-%m-%d_%H-%M-%S') + '.log'
+      else
+        log_name = 'last.log'
+      end
+      log_file = File.new(container_log_dir(container) + '/' + log_name, 'w+')
+      unless  options.key?(:max_length)
+        options[:max_length] = 4096
+      end
+      log_file.write(
+        #DockerUtils.docker_stream_as_result(
+        container.logs_container(options[:max_length])
+        #, {}).to_yaml
+        )
+      log_file.close
     end
-    log_file = File.new(container_log_dir(container) + '/' + log_name, 'w+')
-    unless  options.key?(:max_length)
-      options[:max_length] = 4096
-    end
-    log_file.write(
-      DockerUtils.docker_stream_as_result(
-       container.logs_container(options[:max_length]), {}).to_yaml)
-    log_file.close
   end
 end
