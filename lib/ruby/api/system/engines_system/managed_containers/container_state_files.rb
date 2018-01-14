@@ -136,8 +136,8 @@ module ContainerSystemStateFiles
   def container_state_dir(container)
     SystemConfig.RunDir + '/' + container.ctype + 's/' + container.container_name
   end
-  
-def save_container_log(container, options = {} )
+
+  def save_container_log(container, options = {} )
     unless options[:over_write] == true
       log_name = Time.now.strftime('%Y-%m-%d_%H-%M-%S') + '.log'
     else
@@ -147,9 +147,9 @@ def save_container_log(container, options = {} )
     unless  options.key?(:max_length)
       options[:max_length] = 4096
     end
-  log_file.write(
-       DockerUtils.docker_stream_as_result(
-         container.logs_container(options[:max_length]), {}).to_yaml)
+    log_file.write(
+      DockerUtils.docker_stream_as_result(
+       container.logs_container(options[:max_length]), {}).to_yaml)
     log_file.close
   end
 end
