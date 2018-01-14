@@ -9,7 +9,7 @@ module ContainerApiVolumeBuilder
       data_gid: container.data_gid.to_s
     })
     volbuilder.wait_for('stop', 90)
-    STDERR.puts('Stopped ' + volbuilder.container_name + ' is in ' + volbuilder.state)
+    STDERR.puts('Stopped ' + volbuilder.container_name + ' is in ' + volbuilder.status)
     volbuilder.destroy_container
     raise EngineBuilderException.new(error_hash('volbuild problem ' + result.to_s, result)) unless result[:result] == 0
   end
