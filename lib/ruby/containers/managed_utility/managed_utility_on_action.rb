@@ -7,6 +7,7 @@ module ManagedUtilityOnAction
       @had_out_memory = false
       save_state
     }
+    STDERR.puts('START ' + @container_name.to_s)
     start_container
   end
 
