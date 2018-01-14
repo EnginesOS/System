@@ -8,8 +8,9 @@ module ContainerApiVolumeBuilder
       target_container: container.container_name,
       data_gid: container.data_gid.to_s
     })
-    #FIXME lower delay
-    volbuilder.wait_for('destroy', 308)
+    volbuilder.wait_for('stop', 90)
+    STDERR.puts('Stopped ' + volbuilder.container_name + ' is in ' + volbuilder.state)
+    volbuilder.destroy_container
     raise EngineBuilderException.new(error_hash('volbuild problem ' + result.to_s, result)) unless result[:result] == 0
   end
 end
