@@ -1,5 +1,6 @@
 module ManagedContainerOnAction
   def on_start(what)
+    
     @container_mutex.synchronize {
       @stop_reason = nil
       @exit_code = 0
