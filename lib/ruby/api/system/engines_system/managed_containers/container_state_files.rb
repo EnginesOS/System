@@ -147,7 +147,9 @@ def save_container_log(container, options = {} )
     unless  options.key?(:max_length)
       options[:max_length] = 4096
     end
-    log_file.write(container.logs_container(options[:max_length]))
+  log_file.write(
+       DockerUtils.docker_stream_as_result(
+         container.logs_container(options[:max_length]), {}).to_yaml)
     log_file.close
   end
 end
