@@ -58,11 +58,8 @@ class ManagedEngine < ManagedContainer
       vols = attached_services(
       {type_path: 'filesystem/local/filesystem'
       })
-      if vols.is_a?(Array)
-        vols.each do | vol |          
-          STDERR.puts('prepate vVOL ' + vol.to_s)
-          @container_api.run_volume_builder(self, @cont_userid, vol[:variables][:volume_name])
-        end
+      if vols.is_a?(Array) && vols.length > 0 
+        @container_api.run_volume_builder(self, @cont_userid, vol[:variables][:volume_name])
       end
       @volume_service_builder = false
       @save_container = false
