@@ -16,6 +16,7 @@ module ManagedUtilityOnAction
     @had_out_memory = @out_of_memory
     @out_of_memory = false
     @container_api.save_container_log(self, {max_size: 2048, over_write: true})
+  ensure
     save_state
     destroy_container
   end
