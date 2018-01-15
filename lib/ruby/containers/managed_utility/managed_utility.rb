@@ -66,23 +66,23 @@ class ManagedUtility< ManagedContainer
     clear_configs
     apply_templates(command, command_params)
     save_state
-    #   STDERR.puts('Create FSCONFIG')
+       STDERR.puts('Create FSCONFIG')
     create_container()
-    wait_for('start')
-    wait_for('stopped') unless is_stopped?
-    begin
-      r = @container_api.logs_container(self, 512) #_as_result
-      STDERR.puts('UIL RESULT:' + r.to_s)
-      if r.is_a?(Hash)
-        r
-      else
-        {stdout: r.to_s, result: 0}
-      end
-    rescue StandardError => e
-      STDERR.puts(e.to_s  + "\n" + e.backtrace.to_s)
-      STDERR.puts('FSCONFIG EXCEPTION' + e.to_s)
-      {stderr: 'Failed', result: -1}
-    end
+   
+#    wait_for('stopped',120) unless is_stopped?
+#    begin
+#      r = @container_api.logs_container(self, 512) #_as_result
+#      STDERR.puts('UIL RESULT:' + r.to_s)
+#      if r.is_a?(Hash)
+#        r
+#      else
+#        {stdout: r.to_s, result: 0}
+#      end
+#    rescue StandardError => e
+#      STDERR.puts(e.to_s  + "\n" + e.backtrace.to_s)
+#      STDERR.puts('FSCONFIG EXCEPTION' + e.to_s)
+#      {stderr: 'Failed', result: -1}
+#    end
   end
 
   def construct_cmdline(command, command_params, templater)
