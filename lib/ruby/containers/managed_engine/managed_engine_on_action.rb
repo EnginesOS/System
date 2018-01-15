@@ -1,7 +1,7 @@
 module ManagedEngineOnAction
   def on_start(event_hash)
     set_running_user
-    register_with_dns
+   # register_with_dns
     #  STDERR.puts('ONSTART_CALLED' + container_name.to_s + ';' + event_hash.to_s)
         STDERR.puts('ONS ME TART @service_builder.run_volume_builder  is a' +  @volume_service_builder.to_s )    
     if @volume_service_builder == true
@@ -16,8 +16,7 @@ module ManagedEngineOnAction
       @volume_service_builder = false
       @save_container = false
     end
-    STDERR.puts('VOLBUILER R')
-   
+    STDERR.puts('VOLBUILER R')   
     super
   end
 end
