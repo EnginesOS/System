@@ -30,10 +30,6 @@ class ManagedUtility< ManagedContainer
     volumes.delete(:state_dir)
   end
 
-  def on_start(event_hash)
-    #    STDERR.puts('MANAGE UTIL on event')
-  end
-
   def command_details(command_name)
     raise EnginesException.new(error_hash('No Commands', command_name)) unless @commands.is_a?(Hash)
     if @commands.key?(command_name)
