@@ -1,7 +1,9 @@
 class ManagedEngine < ManagedContainer
   require '/opt/engines/lib/ruby/containers/managed_container.rb'
   @conf_register_dns = true
-
+  require_relative 'managed_engine/managed_engines_on_action.rb'
+  include ManagedEngineOnAction
+  
   def initialize(build_params, runtime_params, core_api)
     @container_mutex = Mutex.new
     @memory = build_params[:memory]
@@ -48,27 +50,7 @@ class ManagedEngine < ManagedContainer
     restart_required?
   end
 
-  def on_start(event_hash)
-    set_running_user
-    register_with_dns
-    #  STDERR.puts('ONSTART_CALLED' + container_name.to_s + ';' + event_hash.to_s)
-        STDERR.puts('ONS ME TART @service_builder.run_volume_builder  is a' +  @volume_service_builder.to_s )    
-    if @volume_service_builder == true
-      #  STDERR.puts('Running @service_builder.run_volume_builder ' )
-      vols = attached_services(
-      {type_path: 'filesystem/local/filesystem'
-      })
-    if vols.is_a?(Array) && vols.length > 0 
-      STDERR.puts('RuN VOLBUILER')
-           @container_api.run_volume_builder(self, @cont_userid, 'all')
-      end
-      @volume_service_builder = false
-      @save_container = false
-    end
-    STDERR.puts('VOLBUILER R')
-   
-    super
-  end
+
 
   def volume_service_builder=(is_built)
     #raise EnginesException,ew('Error alread run', :error) unless @volume_service_builder.nil?
