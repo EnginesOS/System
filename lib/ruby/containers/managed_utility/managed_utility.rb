@@ -68,6 +68,7 @@ class ManagedUtility< ManagedContainer
     save_state
     #   STDERR.puts('Create FSCONFIG')
     create_container()
+    wait_for('start')
     wait_for('stopped') unless is_stopped?
     begin
       r = @container_api.logs_container(self, 512) #_as_result
