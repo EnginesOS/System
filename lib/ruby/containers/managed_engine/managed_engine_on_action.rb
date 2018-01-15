@@ -1,4 +1,4 @@
-module ManagedEnginesOnAction
+module ManagedEngineOnAction
   def on_start(event_hash)
     set_running_user
     register_with_dns
