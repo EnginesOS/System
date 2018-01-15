@@ -9,10 +9,11 @@ module ManagedContainerOnAction
       SystemDebug.debug(SystemDebug.container_events, :ONSTART_CALLED, what)
       # MUst register post each start as IP Changes (different post reboot)
       register_with_dns
-      if @consumer_less
+      if @consumer_less == true
         @has_run = true
       else       
         if @has_run == false
+          STDERR.puts('FRST TIN')
           add_nginx_service if @deployment_type == 'web'
         end
         @has_run = true
