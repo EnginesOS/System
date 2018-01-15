@@ -16,6 +16,6 @@ module ContainerApiVolumeBuilder
 #    volbuilder.wait_for('stop', 90)
 #    STDERR.puts('Stopped ' + volbuilder.container_name + ' is in ' + volbuilder.status.to_s)
 #    volbuilder.destroy_container
-    raise EngineBuilderException.new(error_hash('volbuild problem ' + result.to_s, result)) unless result[:result] == 0
+   # raise EngineBuilderException.new(error_hash('volbuild problem ' + result.to_s, result)) unless result[:result] == 0
   end
 end
