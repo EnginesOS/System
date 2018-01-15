@@ -1,7 +1,7 @@
 class ManagedEngine < ManagedContainer
   require '/opt/engines/lib/ruby/containers/managed_container.rb'
   @conf_register_dns = true
-  require_relative 'managed_engine/managed_engines_on_action.rb'
+  require_relative 'managed_engine/managed_engine_on_action.rb'
   include ManagedEngineOnAction
   
   def initialize(build_params, runtime_params, core_api)
