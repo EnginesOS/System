@@ -4,7 +4,7 @@ module SharedServices
    set_top_level_service_params(shared_service_params, shared_service_params[:parent_engine])
     raise EnginesException.new(warning_hash("Cannot share non sharable service", shared_service_params[:existing_service])) unless SoftwareServiceDefinition.is_sharable?(shared_service_params[:existing_service])
     raise EnginesException.new(error_hash('Cannot shared non persistent service', existing_service)) unless existing_service[:persistent] == true
-    #    STDERR.puts( 'share_service_to_engine ' + shared_service_params.to_s)
+    # STDERR.puts( 'share_service_to_engine ' + shared_service_params.to_s)
     existing_service = shared_service_params[:existing_service]
     shared_service = shared_service_params.dup
     shared_service.delete(:existing_service)
