@@ -79,18 +79,7 @@ module ServiceOperations
   def clear_service_from_registry(service, persistence=:non_persistent)
     service_manager.clear_service_from_registry({:parent_engine => service.container_name, :container_type => 'service', :persistence => persistence})
   end
-  #
-  #  def force_register_non_persistent_service(service_hash)
-  #    service_manager.force_register_non_persistent_service(service_hash)
-  #  end
-  #
-  #  def force_reregister_non_persistent_service(service_hash)
-  #    service_manager.force_reregister_non_persistent_service(service_hash)
-  #  end
-  #
-  #  def force_deregister_non_persistent_service(service_hash)
-  #    service_manager.force_deregister_non_persistent_service(service_hash)
-  #  end
+
 
   protected
 
@@ -100,14 +89,6 @@ module ServiceOperations
     service_hash[:variables][:parent_engine] = service_hash[:parent_engine] unless service_hash[:variables].has_key?(:parent_engine)
     set_top_level_service_params(service_hash, service_hash[:parent_engine])
     check_engine_service_hash(service_hash)
-#    if service_hash[:type_path] == 'filesystem/local/filesystem'
-#      begin
-#        engine = loadManagedEngine(service_hash[:parent_engine])
-#        engine.add_volume(service_hash) if engine.is_a?(ManagedEngine)
-#      rescue
-#        #will fail on build
-#      end
-#    end
     SystemDebug.debug(SystemDebug.services,"calling service ", service_hash)
     service_manager.create_and_register_service(service_hash)
   end

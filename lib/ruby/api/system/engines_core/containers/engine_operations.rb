@@ -13,7 +13,7 @@ module EnginesOperations
       if params[:rollback] == true
         STDERR.puts(' Roll back called' + params.to_s )       
         unless remove_engine_services(params)
-          raise EnginesException.new(error_hash('Failed to find Engine', params))
+          raise EnginesException.new(error_hash('Failed to remove engine services', params))
         end
         true
       end
