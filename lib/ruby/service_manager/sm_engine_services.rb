@@ -137,34 +137,14 @@ module SmEngineServices
   def remove_managed_persistent_services(params)
     begin
       services = get_engine_persistent_services(params)  #system_registry_client.
-    rescue # StandardError => e
-      #handle_exception(e)
-      #return true
+    rescue 
       services = nil
     end
     STDERR.puts('RM SERV ' + params.to_s)
     if services.is_a?(Array)
       services.each do | service |
-#        SystemDebug.debug(SystemDebug.services, :remove_service)
-#        if params[:remove_all_data] == 'all' || service[:shared] #&& ! (service.key?(:shared) && service[:shared])
-#          service[:remove_all_data] = params[:remove_all_data]
-#          service[:force] = true if params.key?(:force)
-#          begin
-#            delete_and_remove_service(service)
-#            STDERR.puts('RM SERV data' + params.to_s)
-#            SystemDebug.debug(SystemDebug.services, :remove_service)
-#          rescue StandardError => e
-#            STDERR.puts(' remove_managed_persistent_services ' + e.to_s)
-#            next
-#          end
-#        else
-#          orphanate_service(service)
-#          STDERR.puts('ORPH SERV data' + params.to_s)          
-#        end
         delete_and_remove_service(service)
       end
-#      true
-      
     end
   end
 end
