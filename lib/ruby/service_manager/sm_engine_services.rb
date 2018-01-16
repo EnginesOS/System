@@ -143,6 +143,7 @@ module SmEngineServices
     STDERR.puts('RM SERVICES: ' + params.to_s  + ' Services' + services.to_s)
     if services.is_a?(Array)
       services.each do | service |
+        service[:remove_all_data] = params[:remove_all_data] if params.keys?(:remove_all_data)
         delete_and_remove_service(service)
       end
     end
