@@ -140,7 +140,7 @@ module SmEngineServices
     rescue 
       services = nil
     end
-    STDERR.puts('RM SERV ' + params.to_s)
+    STDERR.puts('RM SERVICES: ' + params.to_s  + ' Services' + services.to_s)
     if services.is_a?(Array)
       services.each do | service |
         delete_and_remove_service(service)
