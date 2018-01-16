@@ -38,7 +38,7 @@ module ServiceOperations
   end
 
   def dettach_service(service_hash)
-    service_manager.delete_and_remove_service(service)
+    service_manager.delete_and_remove_service(service_hash)
 #    check_service_hash(service_hash)
 #    SystemDebug.debug(SystemDebug.services, :dettach_service, service_hash)
 #    if service_hash[:shared] == true
