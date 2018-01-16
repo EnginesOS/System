@@ -5,6 +5,7 @@ module SmServiceControl
   # @ return true if successful or false if failed
   # no_engien used by  service builder it ignore no engine error
   def create_and_register_service(service_hash) # , no_engine = false)
+    set_top_level_service_params(service_hash, service_hash[:parent_engine])
     SystemDebug.debug(SystemDebug.services, :sm_create_and_register_service, service_hash)
     #register with Engine
     unless service_hash[:soft_service] == true && ! is_service_persistent?(service_hash)
@@ -77,6 +78,7 @@ module SmServiceControl
   end
 
   def update_persistent_service(params)
+    set_top_level_service_params(params, params[:parent_engine])
     # FIXME: check if variables are editable
     extisting_variables = retrieve_engine_service_hash(params)[:variables]
     # STDERR.puts('UPDATing to ' + extisting_variables.to_s)
@@ -87,7 +89,8 @@ module SmServiceControl
     system_registry_client.update_attached_service(params)
   end
 
-  def clear_service_from_registry(service)
+  def clear_service_from_registry(service)    
+    set_top_level_service_params(service, service[:parent_engine])
     system_registry_client.clear_service_from_registry(service)
   rescue EnginesException => e
     raise e unless e.level == :warning

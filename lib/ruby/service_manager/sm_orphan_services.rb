@@ -2,6 +2,7 @@ require_relative 'private/service_container_actions.rb'
 
 module SmOrphanServices
   def orphanate_service(params)
+    set_top_level_service_params(params, params[:parent_engine])
     SystemDebug.debug(SystemDebug.orphans, :Orphanate, params)
     params[:fresh] = false
     system_registry_client.orphanate_service(params)

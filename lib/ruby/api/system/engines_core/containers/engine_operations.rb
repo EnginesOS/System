@@ -130,7 +130,7 @@ module EnginesOperations
           rescue
             r.push(name)
             remove_engine_services(
-            {container_type: 'app', remove_all_data: 'none',engine_name: name, parent_engine: name})
+            {container_type: 'app', remove_all_data: 'none', parent_engine: name})
             next
           end
         end
