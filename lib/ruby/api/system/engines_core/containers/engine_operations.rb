@@ -38,6 +38,7 @@ module EnginesOperations
       service_manager.remove_managed_persistent_services(params)
     rescue EnginesException => e
       raise e unless e.is_a_warning?
+      STERR.puts('WarnINGES  ' + e.to_s)
     end
     begin
       service_manager.remove_engine_non_persistent_services(params)
@@ -129,7 +130,7 @@ module EnginesOperations
           rescue
             r.push(name)
             remove_engine_services(
-            {container_type: 'app', remove_all_data: 'none', parent_engine: name})
+            {container_type: 'app', remove_all_data: 'none',engine_name: name, parent_engine: name})
             next
           end
         end
