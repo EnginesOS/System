@@ -2,18 +2,17 @@ module SharedServices
   require_relative 'private/shared_volumes.rb'
   def share_service_to_engine(shared_service_params)
    set_top_level_service_params(shared_service_params, shared_service_params[:parent_engine])
-    raise EnginesException.new(warning_hash("Cannot share non sharable service", shared_service_params[:existing_service])) unless SoftwareServiceDefinition.is_sharable?(shared_service_params[:existing_service])     
+    raise EnginesException.new(warning_hash("Cannot share non sharable service", shared_service_params[:existing_service])) unless SoftwareServiceDefinition.is_sharable?(shared_service_params[:existing_service])
+    raise EnginesException.new(error_hash('Cannot shared non persistent service', existing_service)) unless existing_service[:persistent] == true
     #    STDERR.puts( 'share_service_to_engine ' + shared_service_params.to_s)
     existing_service = shared_service_params[:existing_service]
     shared_service = shared_service_params.dup
     shared_service.delete(:existing_service)
     shared_service[:service_owner] = existing_service[:parent_engine]
-    # FIXME: should raise error if not persistent
-    shared_service[:persistent] = existing_service[:persistent]
+    shared_service[:persistent] = existing_service[:persistent]   
     shared_service[:service_owner_handle] = existing_service[:service_handle]
     SystemDebug.debug(SystemDebug.services, 'sm using existing service', shared_service_params ,existing_service, shared_service)
     service_query = shared_service.dup
-
     service_query[:service_handle] = existing_service[:service_handle]
     service_query[:parent_engine] = existing_service[:parent_engine]
 
