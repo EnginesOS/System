@@ -44,7 +44,7 @@ class ServiceManager  < ErrorsApi
 
   require '/opt/engines/lib/ruby/exceptions/registry_exception.rb'
   require '/opt/engines/lib/ruby/managed_services/service_definitions/service_top_level.rb'
-  require_relative 'private/service_container_actions.rb'
+  require_relative 'managed_services/private/service_container_actions.rb'
   private
   require_relative 'system_registry/system_registry_client.rb'
 
