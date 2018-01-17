@@ -1,4 +1,4 @@
-require_relative 'managed_services/private/service_container_actions.rb'
+require_relative 'private/service_container_actions.rb'
 module SharedServices
 
   def share_service_to_engine(shared_service_params)
