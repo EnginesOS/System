@@ -1,4 +1,4 @@
-require_relative 'private/service_container_actions.rb'
+
 
 module SmOrphanServices
   def orphanate_service(params)

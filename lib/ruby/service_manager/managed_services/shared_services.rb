@@ -1,5 +1,5 @@
 module SharedServices
-  require_relative 'private/shared_volumes.rb'
+
   def share_service_to_engine(shared_service_params)
    set_top_level_service_params(shared_service_params, shared_service_params[:parent_engine])
     raise EnginesException.new(warning_hash("Cannot share non sharable service", shared_service_params[:existing_service])) unless SoftwareServiceDefinition.is_sharable?(shared_service_params[:existing_service])
@@ -28,8 +28,7 @@ module SharedServices
 
     SystemDebug.debug(SystemDebug.services, 'sm regsitring ', shared_service)
     if shared_service[:type_path] == 'filesystem/local/filesystem'
-      shared_service[:variables][:volume_src] = existing_service[:variables][:volume_src] + '/' +  shared_service[:variables][:volume_src]
-     # attach_shared_volume(shared_service)
+      shared_service[:variables][:volume_src] = existing_service[:variables][:volume_src] + '/' +  shared_service[:variables][:volume_src]   
     end
     shared_service.delete(:existing)
     system_registry_client.add_share_to_managed_engines_registry(shared_service)
