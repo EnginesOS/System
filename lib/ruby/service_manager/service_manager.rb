@@ -22,7 +22,7 @@ class ServiceManager  < ErrorsApi
   require_relative 'errors/engines_service_manager_errors.rb'
   require_relative 'managed_services/sm_engine_cron_service.rb'
   
-  require_relative 'managed_services/list_services.rb'
+  require_relative 'managed_services/sm_list_services.rb'
   #  require_relative 'sm_public_key_access.rb'
   def initialize(core_api)
     @core_api = core_api
@@ -41,10 +41,10 @@ class ServiceManager  < ErrorsApi
   include SmServiceConfigurations
   include SharedServices
   include SmEngineCronService
-
+  include SMListServices
   require '/opt/engines/lib/ruby/exceptions/registry_exception.rb'
   require '/opt/engines/lib/ruby/managed_services/service_definitions/service_top_level.rb'
-  require_relative 'managed_services/private/service_container_actions.rb'
+  
   private
   require_relative 'system_registry/system_registry_client.rb'
 

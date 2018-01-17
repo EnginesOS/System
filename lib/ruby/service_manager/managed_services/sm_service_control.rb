@@ -1,3 +1,4 @@
+require_relative 'managed_services/private/service_container_actions.rb'
 module SmServiceControl
   # @ Attach service called by builder and create service
   #if persisttant it is added to the Service Registry Tree

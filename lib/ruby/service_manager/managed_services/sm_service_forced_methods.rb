@@ -1,3 +1,4 @@
+require_relative 'managed_services/private/service_container_actions.rb'
 module SmServiceForcedMethods
 
   def register_non_persistent_service(service_hash)
