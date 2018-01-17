@@ -1,10 +1,17 @@
-require_relative 'private/service_container_actions.rb'
+
 
 module SmOrphanServices
   def orphanate_service(params)
+    STDERR.puts('ORPHAN:' + params.to_s)
+    set_top_level_service_params(params, params[:parent_engine])
+      STDERR.puts('ORPHAN:' + params.to_s)
     SystemDebug.debug(SystemDebug.orphans, :Orphanate, params)
     params[:fresh] = false
     system_registry_client.orphanate_service(params)
+    begin
+      system_registry_client.remove_from_managed_engine(params)
+    rescue StandardError => e
+    end
   end
 
   ## ????
@@ -35,7 +42,7 @@ module SmOrphanServices
 
   def match_orphan_service(service_hash)
     res = retrieve_orphan(service_hash)
-     STDERR.puts(" MATCHED  rphan" + res.to_s)
+    STDERR.puts(" MATCHED  rphan" + res.to_s)
     if res.is_a?(Hash)
       if res[:publisher_namespace] == service_hash[:publisher_namespace]
         true

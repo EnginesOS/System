@@ -1,5 +1,5 @@
 module SmEngineServices
-  require_relative 'private/service_container_actions.rb'
+  
   #def find_engine_services(params)
   #  system_registry_client.find_engine_services(params)
   #end
@@ -53,19 +53,7 @@ module SmEngineServices
     end
   end
 
-  def list_persistent_services(engine)
-    get_engine_persistent_services({
-      parent_engine: engine.container_name,
-      container_type: engine.ctype
-    })
-  end
-
-  def list_non_persistent_services(engine)
-    get_engine_nonpersistent_services({
-      parent_engine: engine.container_name,
-      container_type: engine.ctype
-    })
-  end
+ 
 
   #service manager get non persistent services for engine_name
   #for each servie_hash load_service_container and add hash
@@ -110,25 +98,6 @@ module SmEngineServices
     end
   end
 
-  def retrieve_cron_jobs(container)
-    retrieve_engine_service_hashes({
-      parent_engine: container.container_name,
-      publisher_namespace: 'EnginesSystem',
-      type_path: 'cron',
-      container_type: container.ctype,
-      container_name: container.container_name
-    })
-  end
-
-  def retrieve_cron_entry(cronjob, container)
-    retrieve_engine_service_hash({
-      parent_engine: container.container_name,
-      publisher_namespace: 'EnginesSystem',
-      type_path: 'cron',
-      container_type: container.ctype,
-      container_name: container.container_name,
-      service_handle: cronjob})[:variables][:cron_job]
-  end
 
   # @ remove an engine matching :engine_name from the service registry, all non persistent serices are removed
   # @ if :remove_all_data is true all data is deleted and all persistent services removed
@@ -137,30 +106,16 @@ module SmEngineServices
   def remove_managed_persistent_services(params)
     begin
       services = get_engine_persistent_services(params)  #system_registry_client.
-    rescue # StandardError => e
-      #handle_exception(e)
-      #return true
+    rescue 
       services = nil
     end
-    STDERR.puts('RM SERV ' + params.to_s)
+    STDERR.puts('RM SERVICES: ' + params.to_s  + ' Services' + services.to_s)
     if services.is_a?(Array)
       services.each do | service |
-        SystemDebug.debug(SystemDebug.services, :remove_service, service)
-        if params[:remove_all_data] == 'all' || service[:shared] #&& ! (service.key?(:shared) && service[:shared])
-          service[:remove_all_data] = params[:remove_all_data]
-          service[:force] = true if params.key?(:force)
-          begin
-            delete_and_remove_service(service)
-          rescue StandardError => e
-            STDERR.puts(' remove_managed_persistent_services ' + e.to_s)
-            next
-          end
-        else
-          orphanate_service(service)
-          system_registry_client.remove_from_managed_engine(service)
-        end
+        STDERR.puts('RM SERVICE: ' + service.to_s)
+        service[:remove_all_data] = params[:remove_all_data] if params.key?(:remove_all_data)
+        delete_and_remove_service(service)
       end
-      true
     end
   end
 end
