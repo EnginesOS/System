@@ -124,7 +124,7 @@ class SoftwareServiceDefinition
   end
 
   def SoftwareServiceDefinition.find(service_type, provider)
-    raise EnginesException.new(self.error_hash('Missing params', service_type, provider))  if service_type == nil || provider == nil
+    raise EnginesException.new(self.error_hash('Missing params :provider or :service_type', provider.to_s + ':' + service_type.to_s))  if service_type == nil || provider == nil
 
     dir = SystemConfig.ServiceTemplateDir + '/' + provider
     if Dir.exist?(dir)
