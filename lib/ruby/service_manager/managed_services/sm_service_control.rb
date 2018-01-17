@@ -91,8 +91,6 @@ module SmServiceControl
   end
 
   def clear_service_from_registry(service) 
-    STDERR.puts('CLEAR SERVICE FROM REG' + service.to_s)   
-    set_top_level_service_params(service, service[:parent_engine])
     system_registry_client.clear_service_from_registry(service)
   rescue EnginesException => e
     raise e unless e.level == :warning
