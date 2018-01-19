@@ -15,7 +15,7 @@ volumes:
  spool:
   name: spool
   remotepath: "/var/spool/postfix/"
-  localpath: "/var/lib/engines/services/email"
+  localpath: "/var/lib/engines/services/smtp"
   permissions: "rw"
 port: 
 mapped_ports: 
