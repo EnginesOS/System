@@ -49,27 +49,39 @@ def cert_mounts(container)
 end
 
 def get_local_prefix(vol)
-  unless vol[:shared] == true
-    '/var/lib/engines/' + vol[:container_type] + 's/' + vol[:parent_engine] + '/' +  vol[:service_handle] + '/'
+  unless vol[:variables][:volume_src].start_with?('/var/lib/engines/apps/') == true  || vol[:variables][:volume_src].start_with?('/var/lib/engines/services/') == true
+    unless vol[:shared] == true
+      '/var/lib/engines/' + vol[:container_type] + 's/' + vol[:parent_engine] + '/' +  vol[:service_handle] + '/'
+    else
+      '/var/lib/engines/' + vol[:container_type] + 's/' + vol[:service_owner] + '/' +  vol[:service_owner_handle] + '/'
+    end
   else
-    '/var/lib/engines/' + vol[:container_type] + 's/' + vol[:service_owner] + '/' +  vol[:service_name] + '/'
+    ''
   end
+rescue Exception => e
+  STDERR.puts('EXCEPTION:'+ e.to_s + ' With ' + vol.to_s)
+  raise e
 end
+
 def get_remote_prefix(vol)
   if  vol[:container_type] == 'app'
-  unless vol[:variables][:engine_path].start_with?('/home/app/') || vol[:variables][:engine_path].start_with?('/home/fs/')
-    '/home/fs/' 
+    unless vol[:variables][:engine_path].start_with?('/home/app/') || vol[:variables][:engine_path].start_with?('/home/fs/')
+      '/home/fs/'
+    else
+      ''
+    end
   else
-   ''
+    unless vol[:variables][:engine_path].start_with?('/')
+      '/'
+    else
+      ''
+    end
   end
-  else
-     unless vol[:variables][:engine_path].start_with?('/')
-       '/'
-     else
-       ''
-     end     
-  end
+  rescue Exception => e
+    STDERR.puts('EXCEPTION:'+ e.to_s + ' With ' + vol.to_s)
+  raise e
 end
+
 def  mount_string_from_hash(vol)
   unless vol[:variables][:permissions].nil? || vol[:variables][:volume_src].nil?  || vol[:variables][:engine_path].nil?
     perms = 'ro'
@@ -77,12 +89,12 @@ def  mount_string_from_hash(vol)
       perms = 'rw'
     else
       perms = 'ro'
-    end    
+    end
     vol[:variables][:volume_src].strip!
     vol[:variables][:volume_src].gsub!(/[ \t]*$/,'')
     STDERR.puts('_' + vol[:variables][:volume_src].to_s + '_')
     STDERR.puts('_' + get_local_prefix(vol).to_s + '_')
-   
+
     get_local_prefix(vol) + vol[:variables][:volume_src] + ':' + get_remote_prefix(vol) + vol[:variables][:engine_path] + ':' + perms
   else
     STDERR.puts('missing keys in vol ' + vol.to_s )
@@ -104,7 +116,7 @@ def registry_mounts(container)
   else
     STDERR.puts('Registry mounts was' + vols.to_s)
   end
-  
+
   mounts
 end
 

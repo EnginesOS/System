@@ -9,11 +9,11 @@ module ManagedServiceOnAction
       #STDERR.puts('ONSTART_CALLED' + container_name.to_s + ';' + event_hash.to_s)
       SystemDebug.debug(SystemDebug.container_events, :ONSTART_CALLED, event_hash)
       @out_of_memory = false
+      # MUst register post each start as IP Changes (different post reboot)
+      register_with_dns
       if @consumer_less
         @has_run = true
       else
-        # MUst register post each start as IP Changes (different post reboot)
-        register_with_dns
         if  @has_run == false
           add_nginx_service if @deployment_type == 'web'
         end

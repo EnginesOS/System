@@ -1,18 +1,19 @@
 module ManagedContainerOnAction
   def on_start(what)
+    
     @container_mutex.synchronize {
       @stop_reason = nil
       @exit_code = 0
       set_running_user
        STDERR.puts('ONSTART_CALLED' + container_name.to_s + ';' + what.to_s)
       SystemDebug.debug(SystemDebug.container_events, :ONSTART_CALLED, what)
-      @out_of_memory = false
+      # MUst register post each start as IP Changes (different post reboot)
       register_with_dns
-      if @consumer_less
+      if @consumer_less == true
         @has_run = true
-      else
-        # MUst register post each start as IP Changes (different post reboot)
-        if  @has_run == false
+      else       
+        if @has_run == false
+          STDERR.puts('FRST TIN')
           add_nginx_service if @deployment_type == 'web'
         end
         @has_run = true

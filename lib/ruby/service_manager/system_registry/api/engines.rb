@@ -5,8 +5,7 @@ module Engines
     r = 'engine/service'
     STDERR.puts('retrieve_engine_service_hash PARAMs' + params.to_s)
     r += address_params(params, [:container_type, :parent_engine, :service_handle, :type_path])
-      STDERR.puts('R is ' + r.to_s )
-    
+#      STDERR.puts('R is ' + r.to_s )    
     rest_get(r)
   end
 
@@ -43,7 +42,6 @@ module Engines
 
   def remove_from_managed_engine(params)
     params[:container_type] = 'app' unless params.key?(:container_type)
-
     r = 'engine/services/del'
     r += address_params(params, [:container_type, :parent_engine, :service_handle, :publisher_namespace, :type_path])
     #     STDERR.puts('PARAMAS FOR DELEparams' + r.to_s)

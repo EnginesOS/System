@@ -22,7 +22,11 @@ module EnginesApiSystem
     @system_api.save_container(container)
   end
 
-  def  pre_start_checks(container)
+  def save_container_log(container, options)
+    @system_api.save_container_log(container, options)
+  end
+
+  def pre_start_checks(container)
     r = true
     unless have_enough_ram?(container)
       r = 'Free memory' + @system_api.available_ram.to_s + ' Required:' + memory_required(container).to_s + "\n"

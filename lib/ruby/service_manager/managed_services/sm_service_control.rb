@@ -1,3 +1,4 @@
+require_relative 'private/service_container_actions.rb'
 module SmServiceControl
   # @ Attach service called by builder and create service
   #if persisttant it is added to the Service Registry Tree
@@ -5,6 +6,7 @@ module SmServiceControl
   # @ return true if successful or false if failed
   # no_engien used by  service builder it ignore no engine error
   def create_and_register_service(service_hash) # , no_engine = false)
+    set_top_level_service_params(service_hash, service_hash[:parent_engine])
     SystemDebug.debug(SystemDebug.services, :sm_create_and_register_service, service_hash)
     #register with Engine
     unless service_hash[:soft_service] == true && ! is_service_persistent?(service_hash)
@@ -37,20 +39,31 @@ module SmServiceControl
   # @return false
   def delete_and_remove_service(service_query)
     complete_service_query = set_top_level_service_params(service_query, service_query[:parent_engine])
-    #  STDERR.puts('delete_service ' + complete_service_query.to_s)
-    service_hash = retrieve_engine_service_hash(complete_service_query)
+      STDERR.puts('delete_service QUERRY ' + service_query.to_s)
+      service_hash = retrieve_engine_service_hash(complete_service_query)
     raise EnginesException.new(error_hash('Not Matching Service to remove', complete_service_query)) unless service_hash.is_a?(Hash)
     if service_hash[:shared] == true
       remove_shared_service_from_engine(service_query)
-    else
-      service_hash[:remove_all_data] = service_query[:remove_all_data]
+    elsif service_query[:remove_all_data] == 'all'
       begin
         remove_from_managed_service(service_hash) ## continue if
       rescue StandardError => e
         raise e unless service_query.key?(:force)
       end
-      system_registry_client.remove_from_managed_engine(service_hash)
-      system_registry_client.remove_from_services_registry(service_hash)
+      begin
+        system_registry_client.remove_from_managed_engine(service_hash)
+        remove_from_managed_service(service_hash) ## continue if
+      rescue StandardError => e
+        raise e unless service_query.key?(:force)
+      end
+      begin
+        system_registry_client.remove_from_services_registry(service_hash)
+      rescue StandardError => e
+        raise e unless service_query.key?(:force)
+      end
+    else
+      orphanate_service(service_hash)
+      STDERR.puts('ORPH SERV data' + service_hash.to_s)
     end
   end
 
@@ -66,6 +79,7 @@ module SmServiceControl
   end
 
   def update_persistent_service(params)
+    set_top_level_service_params(params, params[:parent_engine])
     # FIXME: check if variables are editable
     extisting_variables = retrieve_engine_service_hash(params)[:variables]
     # STDERR.puts('UPDATing to ' + extisting_variables.to_s)
@@ -76,7 +90,7 @@ module SmServiceControl
     system_registry_client.update_attached_service(params)
   end
 
-  def clear_service_from_registry(service)
+  def clear_service_from_registry(service) 
     system_registry_client.clear_service_from_registry(service)
   rescue EnginesException => e
     raise e unless e.level == :warning

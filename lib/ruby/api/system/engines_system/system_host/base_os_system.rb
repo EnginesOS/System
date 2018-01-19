@@ -6,7 +6,7 @@ module BaseOsSystem
     if res.status == 'run'
       true
     else
-      false
+      raise EnginesException.new(error_hash('Failed to update os ', res))
     end
   end
 

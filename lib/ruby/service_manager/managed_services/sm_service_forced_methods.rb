@@ -1,5 +1,6 @@
+require_relative 'private/service_container_actions.rb'
 module SmServiceForcedMethods
-  require_relative 'private/service_container_actions.rb'
+
   def register_non_persistent_service(service_hash)
     service_hash = set_top_level_service_params(service_hash, service_hash[:parent_engine])
     add_to_managed_service(service_hash)

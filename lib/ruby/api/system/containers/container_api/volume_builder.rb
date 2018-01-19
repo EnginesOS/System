@@ -7,8 +7,6 @@ module ContainerApiVolumeBuilder
       target: container.container_name,
       target_container: container.container_name,
       data_gid: container.data_gid.to_s
-    })
-    volbuilder.wait_for('destroy', 128)
-    raise EngineBuilderException.new(error_hash('volbuild problem ' + result.to_s, result)) unless result[:result] == 0
+    }) 
   end
 end

@@ -66,7 +66,8 @@ module UserAuth
   def set_system_user_details(params)
     if params[:current_password].nil?
       raise EnginesException.new(
-      level: :error,
+      level: :warning,
+      error_type: :warning,
       params: params,
       status: nil,
       system: 'user auth',
@@ -77,10 +78,11 @@ module UserAuth
       if rws.nil? || rws.count == 0
         raise EnginesException.new(
         level: :warning,
+        error_type: :warning,
         params: params,
         status: nil,
         system: 'user auth',
-        error_mesg: 'Username Password Missmatch')
+        error_mesg: 'Username password missmatch')
       else      
         unless params[:new_password].nil?
           authtoken = SecureRandom.hex(64)
@@ -111,7 +113,8 @@ module UserAuth
     else
       token = rws[0][0] if token.nil? # FIXMe should be if first run?
       raise EnginesException.new(
-      level: :error,
+      level: :warning,
+error_type: :warning,
       params: nil,
       status: nil,
       system: 'user auth',
