@@ -38,7 +38,7 @@ def cert_mounts(container)
       prefix =  container.ctype + 's'
     store = prefix + '/' + container.container_name + '/'
     [SystemConfig.CertAuthTop + store + 'certs:' + SystemConfig.CertificatesDestination + ':ro',
-      SystemConfig.CertAuthTop + store + 'keys:' + SystemConfig.KeysDestination + ':ro']
+    SystemConfig.CertAuthTop + store + 'keys:' + SystemConfig.KeysDestination + ':ro']
   else
     nil
   end
@@ -88,9 +88,6 @@ def  mount_string_from_hash(vol)
     end
     vol[:variables][:volume_src].strip!
     vol[:variables][:volume_src].gsub!(/[ \t]*$/,'')
-    STDERR.puts('_' + vol[:variables][:volume_src].to_s + '_')
-    STDERR.puts('_' + get_local_prefix(vol).to_s + '_')
-
     get_local_prefix(vol) + vol[:variables][:volume_src] + ':' + get_remote_prefix(vol) + vol[:variables][:engine_path] + ':' + perms
   else
     STDERR.puts('missing keys in vol ' + vol.to_s )
@@ -106,7 +103,6 @@ def registry_mounts(container)
   if vols.is_a?(Array)
     vols.each do | vol |
       v_str = mount_string_from_hash(vol)
-      STDERR.puts( ' VOL ' + v_str.to_s)
       mounts.push(v_str)
     end
   else
