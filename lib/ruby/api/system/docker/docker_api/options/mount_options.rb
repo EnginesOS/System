@@ -35,11 +35,7 @@ end
 
 def cert_mounts(container)
   unless container.no_cert_map == true
-    unless container.ctype == 'system_service'
       prefix =  container.ctype + 's'
-    else
-      prefix='services'
-    end
     store = prefix + '/' + container.container_name + '/'
     [SystemConfig.CertAuthTop + store + 'certs:' + SystemConfig.CertificatesDestination + ':ro',
       SystemConfig.CertAuthTop + store + 'keys:' + SystemConfig.KeysDestination + ':ro']
