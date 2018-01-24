@@ -9,4 +9,4 @@ variables:
  domain_name: _Engines_System(default_domain)
  hostname: ivpn._Engines_System(default_domain)
  wild: no
- target: ivpn
+ install_target: default
