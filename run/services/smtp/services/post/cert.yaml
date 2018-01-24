@@ -1,0 +1,15 @@
+parent_engine: smtp
+publisher_namespace: EnginesSystem
+type_path: certs
+service_handle: smtp._Engines_System(default_domain)
+container_type: service
+persistent: true
+variables:
+ cert_name: smtp._Engines_System(default_domain)
+ domain_name: _Engines_System(default_domain)
+ hostname: smtp._Engines_System(default_domain)
+ altName: smtp.engines.internal
+ wild: no
+ container_type: service
+ parent_engine: smtp
+ install_target: default
