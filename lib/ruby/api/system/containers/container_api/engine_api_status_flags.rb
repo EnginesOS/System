@@ -39,6 +39,8 @@ module EngineApiStatusFlags
           Timeout::timeout(timeout) do
             sfn = @system_api.container_state_dir(c) + '/run/flags/startup_complete'
             s = 0
+            begin         
+           STDERR.puts('Select ' + c.container_name)
             state_file = File.new(@system_api.container_state_dir(c) + '/run/flags/state','r')
             f = state_file.read()
             while ! File.exist?(sfn)            
@@ -49,6 +51,9 @@ module EngineApiStatusFlags
              # s += inc
               return false unless c.is_running?
             end
+          rescue Exception => e
+            STDERR.puts('Select for wait for startup complete raise Exception ' + e.to_s)
+          end
             r = true
           end
         rescue Timeout::Error
