@@ -45,7 +45,7 @@ module EngineApiStatusFlags
             f = state_file.read()
             while ! File.exist?(sfn)            
               STDERR.puts('Select ' + c.container_name)
-              IO.select([build_log_file])
+              IO.select([state_file])
               STDERR.puts('Selected' + c.container_name)
              # sleep 0.25 + s
              # s += inc
