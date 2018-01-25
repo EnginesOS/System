@@ -42,7 +42,7 @@ def rest_get(path, params = nil, time_out = 120, _headers = nil)
   lheaders = headers
   lheaders.merge(_headers) unless _headers == nil
   lheaders.delete('Content-Type' ) if q.nil?
-  req = {time_out: time_out, method: :get, path: @route_prefix + path.to_s, headers: lheaders }
+  req = {time_out: time_out, method: :get, path: @route_prefix.to_s + path.to_s, headers: lheaders }
   req[:query] = q unless q.nil?
   r = connection.request(req)
   parse_xcon_response(r)
@@ -68,7 +68,7 @@ def rest_post(path, params = nil, lheaders = nil)
   begin
     SystemDebug.debug(SystemDebug.registry,'POST  ', path.to_s + '?' + params.to_s)
     lheaders = headers if lheaders.nil?
-    parse_xcon_response(connection.request({read_timeout: time_out, headers: lheaders, method: :post, path: @route_prefix + path.to_s, body: query_hash(params).to_json }))
+    parse_xcon_response(connection.request({read_timeout: time_out, headers: lheaders, method: :post, path: @route_prefix.to_s + path.to_s, body: query_hash(params).to_json }))
   rescue Excon::Error::Socket => e
   unless e.socket_error == EOFError
   #  STDERR.puts e.class.name
