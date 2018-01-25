@@ -40,9 +40,13 @@ module EngineApiStatusFlags
             sfn = @system_api.container_state_dir(c) + '/run/flags/startup_complete'
             s = 0
             while ! File.exist?(sfn)
-              STDERR.puts('Sleep ' + c.container_name)
-              sleep 0.25 + s
-              s += inc
+              state_file = File.new(@system_api.container_state_dir(c) + '/run/flags/state','r')
+              f = state_file.read()
+              STDERR.puts('Select ' + c.container_name)
+              IO.select([build_log_file])
+              STDERR.puts('Selected' + c.container_name)
+             # sleep 0.25 + s
+             # s += inc
               return false unless c.is_running?
             end
             r = true
