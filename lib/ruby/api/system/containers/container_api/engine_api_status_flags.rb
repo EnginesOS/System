@@ -39,9 +39,9 @@ module EngineApiStatusFlags
           Timeout::timeout(timeout) do
             sfn = @system_api.container_state_dir(c) + '/run/flags/startup_complete'
             s = 0
-            while ! File.exist?(sfn)
-              state_file = File.new(@system_api.container_state_dir(c) + '/run/flags/state','r')
-              f = state_file.read()
+            state_file = File.new(@system_api.container_state_dir(c) + '/run/flags/state','r')
+            f = state_file.read()
+            while ! File.exist?(sfn)            
               STDERR.puts('Select ' + c.container_name)
               IO.select([build_log_file])
               STDERR.puts('Selected' + c.container_name)
