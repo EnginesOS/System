@@ -39,7 +39,7 @@ module EngineApiStatusFlags
           Timeout::timeout(timeout) do
             sfn = @system_api.container_state_dir(c) + '/run/flags/startup_complete'
             s = 0
-            
+            state_file_name =  @system_api.container_state_dir(c) +'/run/flags/state'
             begin
               require 'rb-inotify'
               notifier = INotify::Notifier.new             
@@ -47,7 +47,7 @@ module EngineApiStatusFlags
 
             while ! File.exist?(sfn)            
               STDERR.puts('Select ' + c.container_name)           
-            notifier.watch(sfn, :create) {  next } 
+            notifier.watch(state_file_name, :modify) {  next } 
               STDERR.puts('Setup' + c.container_name) 
               notifier.process
               STDERR.puts('Selected' + c.container_name)
