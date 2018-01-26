@@ -19,7 +19,7 @@ module FirstRunCerts
       parent_engine: 'system',
       type_path: 'certs',
       service_container_name: 'certs',
-      container_type: 'system',
+      container_type: 'system_service',
       persistent: true,
       publisher_namespace: 'EnginesSystem',
       service_handle: 'default_ssl_cert',

@@ -14,6 +14,12 @@ host_network: false
 soft_service: false
 environments: []
 kerberos: true
+mapped_ports:
+ ldap:
+  name: ldap
+  port: 389
+  publicFacing: false
+  external: 389
 image: _Engines_System(flavor)/ldap:_Engines_System(release)
 volumes: 
  ldap_db: 

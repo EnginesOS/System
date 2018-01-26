@@ -33,17 +33,21 @@ module EngineApiStatusFlags
     if c.is_running?
       if is_startup_complete?(c)
         r = true
-      else
-        inc = 1/(timeout * 4)
+      else      
         begin
           Timeout::timeout(timeout) do
             sfn = @system_api.container_state_dir(c) + '/run/flags/startup_complete'
-            s = 0
-            while ! File.exist?(sfn)
-              STDERR.puts('Sleep ' + c.container_name)
-              sleep 0.25 + s
-              s += inc
-              return false unless c.is_running?
+            state_file_name = @system_api.container_state_dir(c) +'/run/flags/state'
+            begin
+              require 'rb-inotify'
+              notifier = INotify::Notifier.new
+              while ! File.exist?(sfn)
+                notifier.watch(state_file_name, :modify) {  next }
+                notifier.process
+                return false unless c.is_running?
+              end
+            rescue Exception => e
+              STDERR.puts('Select for wait for startup complete raise Exception ' + e.to_s)
             end
             r = true
           end

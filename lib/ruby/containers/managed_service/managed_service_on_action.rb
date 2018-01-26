@@ -56,7 +56,7 @@ module ManagedServiceOnAction
     if service_configurations.is_a?(Array)
       service_configurations.each do |configuration|
         next if configuration[:no_save] == true
-        run_configurator(configuration)
+        run_configurator(configuration) unless configuration[:variables].nil?
       end
     end
     SystemDebug.debug(SystemDebug.container_events, :ON_StartCreate_MS_compl)
