@@ -1,6 +1,6 @@
 module PublicApiSystemFirstRun
   def set_first_run_parameters(params_from_wizard)
-    require '/opt/engines/lib/ruby/api/system/first_run_wizard/first_run_wizard.rb'
+    require '/opt/engines/lib/ruby/first_run_wizard/first_run_wizard.rb'
     params = params_from_wizard.dup
     SystemDebug.debug(SystemDebug.first_run, params)
     first_run = FirstRunWizard.new(params)

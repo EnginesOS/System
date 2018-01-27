@@ -72,7 +72,7 @@ module EnginesCoreSystem
   end
 
   def first_run_required?
-    require_relative '../first_run_wizard/first_run_wizard.rb'
+    require '/opt/engines/lib/ruby/first_run_wizard/first_run_wizard.rb'
     FirstRunWizard.required?
   end
 
