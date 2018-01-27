@@ -9,8 +9,8 @@ module ServiceApiRestore
     params = {container: service, command_line: cmd, log_error: true, data_stream: stream}
     STDERR.puts(' stram ' + stream.inspect)
     SystemDebug.debug(SystemDebug.export_import, :import_service, params)
+    result = {}
     begin
-      result = {}
       Timeout.timeout(@@import_timeout) do
         thr = Thread.new { result = @engines_core.exec_in_container(params) }
         thr.join
