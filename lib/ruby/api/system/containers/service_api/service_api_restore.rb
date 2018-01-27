@@ -1,5 +1,6 @@
 module ServiceApiRestore
   @@import_timeout = 300
+  @@export_timeout = 300
   def service_restore(service, stream, params)
     STDERR.puts(' stram ' + stream.inspect)
    return unless service.is_running?
