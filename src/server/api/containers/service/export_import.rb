@@ -27,7 +27,7 @@ put '/v0/containers/service/:service_name/import' do
   begin
     service = get_service(params[:service_name])
   
-        return_text(service.import_data(request.env['rack.input']))
+        return_json(service.import_data(request.env['rack.input']))
    
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
