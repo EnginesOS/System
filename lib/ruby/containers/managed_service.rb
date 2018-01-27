@@ -20,6 +20,9 @@ class ManagedService < ManagedContainer
   include ManagedServiceImageControls
   require_relative 'managed_service/managed_service_on_action.rb'
   include ManagedServiceOnAction
+  require_relative 'managed_service/managed_service_import_export.rb'
+  include ManagedServiceImportExport
+  
   @ctype='service'
   @soft_service = false
   def lock_values

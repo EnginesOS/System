@@ -24,6 +24,11 @@ module EnginesSystemDirs
   @@CertAuthTop = '/var/lib/engines/services/certs/store/live/'
  # @@KeysDir ='/var/lib/engines/services/certs/public/keys/'
   @@CertificatesDestination = '/home/engines/etc/ssl/certs/'
+  @@ServiceBackupScriptsRoot = '/home/engines/scripts/backup/'
+  
+  def SystemConfig.ServiceBackupScriptsRoot
+    @@ServiceBackupScriptsRoot
+  end
   
   def SystemConfig.CertAuthTop
     @@CertAuthTop

@@ -48,7 +48,9 @@ def stream_file(uri_s, src_f)
   request = Net::HTTP::Put.new(uri.request_uri, headers)
   STDERR.puts request.inspect
   request.body_stream = src_f
-  conn.request(request)
+ r = conn.request(request)
+  write_response(r)
+    exit
   rescue StandardError => e
   STDERR.puts('socket stream closed ' + e.to_s + e.backtrace.to_s)
   end
