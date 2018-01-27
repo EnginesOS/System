@@ -4,7 +4,7 @@ module ServiceApiRestore
   def service_restore(service, stream, params)
     STDERR.puts(' stram ' + stream.inspect)
    return unless service.is_running?
-    cmd = [SystemConfig.BackupScriptsRoot + '/restore.sh',params[:replace].to_s, params[:section].to_s] #, params[:section].to_s]
+    cmd = [SystemConfig.ServiceBackupScriptsRoot + '/restore.sh',params[:replace].to_s, params[:section].to_s] #, params[:section].to_s]
     
     params = {container: service, command_line: cmd, log_error: true, data_stream: stream}
     STDERR.puts(' stram ' + stream.inspect)
@@ -37,7 +37,7 @@ module ServiceApiRestore
   #    end 
      
       SystemDebug.debug(SystemDebug.export_import, :export_service, container.container_name)
-      cmd_dir = SystemConfig.BackupScriptsRoot + '/' 
+      cmd_dir = SystemConfig.ServiceBackupScriptsRoot + '/' 
   
       cmd = cmd_dir + '/backup.sh'
       SystemDebug.debug(SystemDebug.export_import, :export_service, cmd)
