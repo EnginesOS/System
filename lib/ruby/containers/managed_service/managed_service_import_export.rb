@@ -3,7 +3,7 @@ module ManagedServiceImportExport
     @container_api.service_restore(self, ins, {})
   end
   
-  def export_data    
+  def export_data(out)   
     @container_api.export_data(self, out)
   end
 end
