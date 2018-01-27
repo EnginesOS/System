@@ -35,7 +35,7 @@ module ServiceApiRestore
   #      raise EnginesException.new(warning_hash("Cannot export as single service", service_hash))
   #    end 
      
-      SystemDebug.debug(SystemDebug.export_import, :export_service, service_hash)
+      SystemDebug.debug(SystemDebug.export_import, :export_service, container.container_name)
       cmd_dir = SystemConfig.BackupScriptsRoot + '/' 
   
       cmd = cmd_dir + '/backup.sh'
@@ -49,11 +49,11 @@ module ServiceApiRestore
           #SystemUtils.execute_command(cmd, true) }
           thr[:name] = 'export:' + params.to_s
           thr.join
-          SystemDebug.debug(SystemDebug.export_import, :export_service,service_hash,'result code =' ,result[:result],params)
+          SystemDebug.debug(SystemDebug.export_import, :export_service, container.container_name, 'result code =', result[:result], params)
           if result[:result] == 0
             result[:stdout]
           else
-            raise EnginesException.new(error_hash("failed to export " + result.to_s ,service_hash))
+            raise EnginesException.new(error_hash("failed to export " + result.to_s , container.container_name))
           end
         end
       rescue Timeout::Error
