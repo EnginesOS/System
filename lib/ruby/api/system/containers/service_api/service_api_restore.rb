@@ -2,12 +2,10 @@ module ServiceApiRestore
   @@import_timeout = 300
   @@export_timeout = 300
   def service_restore(service, stream, params)
-    STDERR.puts(' stram ' + stream.inspect)
-   return unless service.is_running?
-    cmd = [SystemConfig.ServiceBackupScriptsRoot + '/restore.sh',params[:replace].to_s, params[:section].to_s] #, params[:section].to_s]
-    
+
+   raise EnginesException.new(error_hash("failed to import service not running " + service.container_name.to_s)) unless service.is_running?
+    cmd = [SystemConfig.ServiceBackupScriptsRoot + '/restore.sh',params[:replace].to_s, params[:section].to_s] #, params[:section].to_s]    
     params = {container: service, command_line: cmd, log_error: true, data_stream: stream}
-    STDERR.puts(' stram ' + stream.inspect)
     SystemDebug.debug(SystemDebug.export_import, :import_service, params)
     result = {}
     begin
@@ -38,7 +36,7 @@ module ServiceApiRestore
      
       SystemDebug.debug(SystemDebug.export_import, :export_service, container.container_name)
       cmd_dir = SystemConfig.ServiceBackupScriptsRoot + '/' 
-  
+   raise EnginesException.new(error_hash("failed to export service not running " + container.container_name.to_s)) unless container.is_running?
       cmd = cmd_dir + '/backup.sh'
       SystemDebug.debug(SystemDebug.export_import, :export_service, cmd)
       begin
