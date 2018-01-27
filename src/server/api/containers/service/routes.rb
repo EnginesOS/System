@@ -12,4 +12,5 @@ require_relative 'service/routes.rb'
 require_relative 'sub_services/routes.rb'
 require_relative 'service_consumer.rb'
 require_relative 'service_consumers.rb'
+require_relative 'export_import.rb'
 # @!endgroup
