@@ -4,7 +4,7 @@ perform_get if ARGV.count == 2
 case ARGV[2]
 when 'import'
 @route += '/import'
-content_type='application/octet-stream'
+STDERR.puts('IMPRTED')
 file = File.new(ARGV[3])
 stream_file(@route, file)
 when 'mem_stat'
