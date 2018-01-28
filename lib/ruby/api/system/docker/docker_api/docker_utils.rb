@@ -9,7 +9,7 @@ module DockerUtils
         write_thread[:name] = 'docker_stream_writer'
         begin
           unless @stream_reader.i_stream.nil?
-            unless @stream_reader.is_a?(StringIO)
+            unless @stream_reader.i_stream.is_a?(StringIO)
             STDERR.puts('COPY STREAMS ')
             IO.copy_stream(@stream_reader.i_stream, socket) unless @stream_reader.i_stream.eof?
             else
