@@ -9,8 +9,14 @@ module DockerUtils
         write_thread[:name] = 'docker_stream_writer'
         begin
           unless @stream_reader.i_stream.nil?
+            unless @stream_reader.is_a?(StringIO)
             STDERR.puts('COPY STREAMS ')
             IO.copy_stream(@stream_reader.i_stream, socket) unless @stream_reader.i_stream.eof?
+            else
+              STDERR.puts('String IO')
+              data = @stream_reader.read
+              socket.send(data, 0)
+            end  
           else
             STDERR.puts('send data:' + stream_reader.data.class.name)
             unless stream_reader.data.nil? ||  stream_reader.data.length == 0
