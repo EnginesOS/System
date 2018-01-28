@@ -6,7 +6,7 @@ module ServiceApiRestore
    raise EnginesException.new(error_hash("failed to import service not running " + service.container_name.to_s)) unless service.is_running?
     cmd = [SystemConfig.ServiceBackupScriptsRoot + '/restore.sh',params[:replace].to_s, params[:section].to_s] #, params[:section].to_s]    
     params = {container: service, command_line: cmd, log_error: true, data_stream: stream}
-    SystemDebug.debug(SystemDebug.export_import, :import_service, params)
+    SystemDebug.debug(SystemDebug.export_import, :import_service)
     result = {}
     begin
       Timeout.timeout(@@import_timeout) do
@@ -48,7 +48,7 @@ module ServiceApiRestore
           #SystemUtils.execute_command(cmd, true) }
           thr[:name] = 'export:' + params.to_s
           thr.join
-          SystemDebug.debug(SystemDebug.export_import, :export_service, container.container_name, 'result code =', result[:result], params)
+          SystemDebug.debug(SystemDebug.export_import, :export_service, container.container_name, 'result code =', result[:result])
           if result[:result] == 0
             result[:stdout]
           else
@@ -57,7 +57,7 @@ module ServiceApiRestore
         end
       rescue Timeout::Error
         thr.kill
-        raise EnginesException.new(error_hash('Export Timeout on Running Action ', params.to_s,cmd))
+        raise EnginesException.new(error_hash('Export Timeout on Running Action ', cmd))
       end
     end
 end
