@@ -14,7 +14,7 @@ module DockerUtils
             IO.copy_stream(@stream_reader.i_stream, socket) unless @stream_reader.i_stream.eof?
             else
               STDERR.puts('String IO')
-              data = @stream_reader.read
+              data = @stream_reader.i_stream.read
               socket.send(data, 0)
             end  
           else
