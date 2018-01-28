@@ -49,6 +49,7 @@ def stream_file(uri_s, src_f)
   STDERR.puts request.inspect
   request.body_stream = src_f
  r = conn.request(request)
+ STDERR.puts('STREAM RESULT ' + r.inspect)
   write_response(r)
     exit
   rescue StandardError => e
