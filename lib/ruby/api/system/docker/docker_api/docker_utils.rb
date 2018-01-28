@@ -19,13 +19,13 @@ module DockerUtils
                 begin
                   data = nil
                   data = @stream_reader.i_stream.read_nonblock(Excon.defaults[:chunk_size])
-                  socket.send(data, 0)
+                  socket.send(data, 0) unless data.nil?
                 rescue EOFError
                   eof = true
-                  socket.send(data, 0)
+                  socket.send(data, 0) unless data.nil?
                   next
                 rescue IO::WaitReadable
-                  socket.send(data, 0)
+                  socket.send(data, 0) unless data.nil?
                   IO.select([@stream_reader.i_stream])
                   retry
                 end                
