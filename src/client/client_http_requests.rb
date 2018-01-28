@@ -47,7 +47,6 @@ def stream_file(uri_s, src_f)
   conn.use_ssl = true
   conn.verify_mode = OpenSSL::SSL::VERIFY_NONE
   request = Net::HTTP::Put.new(uri.request_uri, headers)
-  STDERR.puts request.inspect
   request.body_stream = src_f
  #r = conn.request(request)
   conn.start do |http| 
