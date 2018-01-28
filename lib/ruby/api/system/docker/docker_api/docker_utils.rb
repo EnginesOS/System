@@ -17,12 +17,17 @@ module DockerUtils
               eof = false
               while eof == false
                 begin
-                  data = @stream_reader.i_stream.readpartial(Excon.defaults[:chunk_size])
+                  data = @stream_reader.i_stream.read_nonblock(Excon.defaults[:chunk_size])
+                  socket.send(data, 0)
                 rescue EOFError
                   eof = true
+                  socket.send(data, 0)
                   next
-                end
-                socket.send(data, 0)
+                rescue IO::WaitReadable
+                  socket.send(data, 0)
+                  IO.select([@stream_reader.i_stream])
+                  retry
+                end                
               end
             end
           else
