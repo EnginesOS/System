@@ -17,6 +17,7 @@ module DockerUtils
               eof = false
               while eof == false
                 begin
+                  data = nil
                   data = @stream_reader.i_stream.read_nonblock(Excon.defaults[:chunk_size])
                   socket.send(data, 0)
                 rescue EOFError
