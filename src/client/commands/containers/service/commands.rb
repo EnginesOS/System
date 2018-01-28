@@ -4,7 +4,11 @@ perform_get if ARGV.count == 2
 case ARGV[2]
 when 'import'
   @route += '/import'
+if ARGV.count == 4
   file = File.new(ARGV[3])
+else
+  file = stdin 
+end  
   stream_file(@route, file)
 when 'mem_stat'
   @route += '/metrics/memory'

@@ -38,8 +38,8 @@ def stream_file(uri_s, src_f)
   headers = {
      'content_type' => 'application/octet-stream',
      'ACCESS_TOKEN' => load_token,
-    #'Transfer-Encoding' => 'chunked'
-     'Content-Length' => src_f.size.to_s
+    'Transfer-Encoding' => 'chunked'
+    # 'Content-Length' => src_f.size.to_s
   }
   uri = URI(@base_url + uri_s)
   STDERR.puts('uri ' + uri.to_s)
