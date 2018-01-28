@@ -38,7 +38,7 @@ def stream_file(uri_s, src_f)
   headers = {
      'content_type' => 'application/octet-stream',
      'ACCESS_TOKEN' => load_token,
-    'Transfer-Encoding' => 'chunked'
+   # 'Transfer-Encoding' => 'chunked'
     # 'Content-Length' => src_f.size.to_s
   }
   uri = URI(@base_url + uri_s)
@@ -48,11 +48,11 @@ def stream_file(uri_s, src_f)
   conn.verify_mode = OpenSSL::SSL::VERIFY_NONE
   request = Net::HTTP::Put.new(uri.request_uri, headers)
   request.body_stream = src_f
- #r = conn.request(request)
-  conn.start do |http| 
-  r = http.request(request)
+ r = conn.request(request)
+#  conn.start do |http| 
+ # r = http.request(request)
  STDERR.puts('STREAM RESULT ' + r.inspect)
-  end
+#  end
   #write_response(r)
     exit
   rescue StandardError => e
