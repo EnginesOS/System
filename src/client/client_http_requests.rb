@@ -65,7 +65,7 @@ def stream_file(uri_s, src_f, headers = nil)
  r = conn.request(request)
 #   conn.start do |http| 
  #  r = http.request(request)
- STDERR.puts('STREAM RESULT ' + r.inspect)
+ STDERR.puts('STREAM RESULT ' + r.inspect + ':' + r.body.to_s)
 #   end
 write_response(r)
     exit
