@@ -33,17 +33,17 @@ rescue Excon::Error => e
   
 end
 
-def stream_io(uri_s, io_h, post = false)
+def stream_io(uri_s, io_h)
   headers = {
      'content_type' => 'application/octet-stream',
      'ACCESS_TOKEN' => load_token,
     'Transfer-Encoding' => 'chunked'
    #  'Content-Length' => src_f.size.to_s
   } 
-  stream_file(uri_s, io_h, headers, post)
+  stream_file(uri_s, io_h, headers)
 end
 
-def stream_file(uri_s, src_f, headers = nil,  post = false)
+def stream_file(uri_s, src_f, headers = nil)
   headers = {
      'content_type' => 'application/octet-stream',
      'ACCESS_TOKEN' => load_token,
@@ -56,11 +56,11 @@ def stream_file(uri_s, src_f, headers = nil,  post = false)
   conn = Net::HTTP.new(uri.host, uri.port)  
   conn.use_ssl = true
   conn.verify_mode = OpenSSL::SSL::VERIFY_NONE
-  if  post == true
-  request = Net::HTTP::Post.new(uri.request_uri, headers)
-  else
+ # if  post == true
+#  request = Net::HTTP::Post.new(uri.request_uri, headers)
+#  else
     request = Net::HTTP::Put.new(uri.request_uri, headers)
-  end
+#  end
   request.body_stream = src_f
  r = conn.request(request)
 #  conn.start do |http| 
