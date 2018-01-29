@@ -16,6 +16,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
     end
 
     def no_op_timer(out)
+      require 'eventmachine'
       no_op = {no_op: true}.to_json
       EventMachine::PeriodicTimer.new(25) do
         if out.closed?
