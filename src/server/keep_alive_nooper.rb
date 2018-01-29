@@ -4,6 +4,7 @@ class KeepAliveNooper
     super()
     @no_op = {no_op: true}.to_json
     @timers = Timers::Group.new
+    @run = true
 end
 def run(out)
   Thread.new do
@@ -13,13 +14,17 @@ def run(out)
 end
 
 def cancel
-  @timer.cancel            
+  #@timer.cancel
+  @run = false            
 end
 
 def run_timer(out)  
-  send(out)
- @timer = @timers.every(25) { send(out) }      
-  loop { timers.wait }        
+  while @run == true
+    send(out)
+    sleep 25    
+  end
+# @timer = @timers.every(25) { send(out) }      
+#  loop { timers.wait }        
 end
   
 def send(out)
