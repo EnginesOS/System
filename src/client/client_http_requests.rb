@@ -40,7 +40,7 @@ def stream_io(uri_s, io_h)
     'Transfer-Encoding' => 'chunked'
    #  'Content-Length' => src_f.size.to_s
   } 
-  stream_file(uri_s, src_f)
+  stream_file(uri_s, io_h)
 end
 
 def stream_file(uri_s, src_f, headers = nil)
