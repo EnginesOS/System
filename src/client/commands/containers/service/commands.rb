@@ -6,10 +6,11 @@ when 'import'
   @route += '/import'
 if ARGV.count == 4
   file = File.new(ARGV[3])
+stream_file(@route, file)
 else
-  file = stdin 
+  stream_io(@route, STDIN)
 end  
-  stream_file(@route, file)
+  
 when 'mem_stat'
   @route += '/metrics/memory'
   perform_get
