@@ -60,7 +60,7 @@ if post == true
   STDERR.puts  'Posting'  + @route
   perform_post(params, content_type)
 elsif post == :file
-  io_f = File.new(file, 'r')
+  io_f = File.open(file, 'r')
   stream_file(@route , io_f)
 elsif post == :stream
   stream_io(@route , STDIN)

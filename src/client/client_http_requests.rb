@@ -62,12 +62,12 @@ def stream_file(uri_s, src_f, headers = nil)
     request = Net::HTTP::Put.new(uri.request_uri, headers)
 #  end
   request.body_stream = src_f
-# r = conn.request(request)
-  conn.start do |http| 
-  r = http.request(request)
+ r = conn.request(request)
+#   conn.start do |http| 
+ #  r = http.request(request)
  STDERR.puts('STREAM RESULT ' + r.inspect)
-  end
-  #write_response(r)
+#   end
+write_response(r)
     exit
   rescue StandardError => e
   STDERR.puts('socket stream closed ' + e.to_s + e.backtrace.to_s)
