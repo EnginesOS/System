@@ -63,7 +63,7 @@ elsif post == :file
   io_f = File.new(file, 'r')
   stream_file(@route , io_f, nil, true)
 elsif post == :stream
-  stream_io(@route , STDIN, nil, true)
+  stream_io(@route , STDIN, true)
 elsif del == true
   then
   perform_del
