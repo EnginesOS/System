@@ -19,6 +19,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
       require '/opt/engines/src/server/keep_alive_nooper.rb'
       timer = KeepAliveNooper.new
       timer.run(out)
+      timer
 #      
 #      require 'timers'
 #      no_op = {no_op: true}.to_json

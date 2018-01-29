@@ -31,8 +31,11 @@ def send(out)
   if out.closed?
     cancel
   else  
+    begin
     out << @no_op
     out << "\n"
+    rescue
+      cancel
   end  
 end
 
