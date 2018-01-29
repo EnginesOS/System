@@ -16,8 +16,12 @@ def cancel
   @timers.cancel            
 end
 
-def run_timer(out)
+def run_timer(out)  
+  out << @no_op
+  out << "\n"
   send(out)
+  out << @no_op
+  out << "\n"
   @timers.every(25) { send(out) }      
   loop { timers.wait }        
 end
