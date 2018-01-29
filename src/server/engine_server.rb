@@ -15,11 +15,13 @@ begin
 
   require 'objspace'
   require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
+
+  
   ObjectSpace.trace_object_allocations_start
   @events_stream = nil
   $engines_api = PublicApi.new(EnginesCore.new)
   STDERR.puts('++++')
-
+  @timers = Timers::Group.new
   @@last_error = ''
 
   require 'warden'

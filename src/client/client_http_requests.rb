@@ -33,14 +33,24 @@ rescue Excon::Error => e
   
 end
 
-
-def stream_file(uri_s, src_f)
+def stream_io(uri_s, io_h)
   headers = {
      'content_type' => 'application/octet-stream',
      'ACCESS_TOKEN' => load_token,
     'Transfer-Encoding' => 'chunked'
-    # 'Content-Length' => src_f.size.to_s
-  }
+   #  'Content-Length' => src_f.size.to_s
+  } 
+  stream_file(uri_s, src_f)
+end
+
+def stream_file(uri_s, src_f, headers = nil)
+  headers = {
+     'content_type' => 'application/octet-stream',
+     'ACCESS_TOKEN' => load_token,
+   # 'Transfer-Encoding' => 'chunked'
+     'Content-Length' => src_f.size.to_s
+  } if headers.nil?
+  
   uri = URI(@base_url + uri_s)
   STDERR.puts('uri ' + uri.to_s)
   conn = Net::HTTP.new(uri.host, uri.port)  

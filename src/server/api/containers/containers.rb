@@ -16,12 +16,13 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
     end
 
     def no_op_timer(out)
-      require 'eventmachine'
+      require 'timers'
       no_op = {no_op: true}.to_json
-      EventMachine::PeriodicTimer.new(25) do
+      #EventMachine::PeriodicTimer.new(25) do
+   
+       @timers.after(25) do
         if out.closed?
-          STDERR.puts('NOOP found OUT IS CLOSED: ' + timer.to_s)
-          timer = nil
+          STDERR.puts('NOOP found OUT IS CLOSED: ' )          
           next
         else
           out << no_op # unless lock_timer == true
