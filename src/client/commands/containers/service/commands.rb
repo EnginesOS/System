@@ -4,9 +4,10 @@ perform_get if ARGV.count == 2
 case ARGV[2]
 when 'import'
   @route += '/import'
+  SDTERR.puts('ARGV CONT ' + ARGV.count.to_s + ' Being ' + ARGV.to_s)
 if ARGV.count == 4
   file = File.new(ARGV[3])
-stream_file(@route, file)
+  stream_file(@route, file)
 else
   stream_io(@route, STDIN)
 end  
