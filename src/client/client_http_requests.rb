@@ -50,7 +50,7 @@ def stream_file(uri_s, src_f, headers = nil)
    # 'Transfer-Encoding' => 'chunked'
      'Content-Length' => src_f.size.to_s
   } if headers.nil?
-  
+  STDERR.puts('stream header ' + headers.to_s)
   uri = URI(@base_url + uri_s)
   STDERR.puts('uri ' + uri.to_s)
   conn = Net::HTTP.new(uri.host, uri.port)  
