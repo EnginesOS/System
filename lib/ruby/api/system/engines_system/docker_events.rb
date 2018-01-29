@@ -93,7 +93,6 @@ module DockerEvents
       r = true if statein == 'nocontainer'
     end
     r
-
   end
 
   def fill_in_event_system_values(event_hash)
@@ -123,6 +122,7 @@ module DockerEvents
         end
       end
     end
+    true
   rescue StandardError => e
     log_exception(e, event_hash)
   end

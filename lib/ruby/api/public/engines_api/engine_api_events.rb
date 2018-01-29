@@ -12,9 +12,11 @@ module EngineApiEvents
         @wr.write("\n")
         @wr.flush
       end
+      true
     rescue StandardError => e
       p e.to_s
       p e.backtrace.to_s
+      false
     end
 
     def start
