@@ -15,7 +15,9 @@ def cancel
 end
 def run_timer(out)
   no_op = {no_op: true}.to_json
-     
+  out << no_op
+  out << "\n"
+  STDERR.puts('NOOP ')
         @timers.every(25) do
          if out.closed?
            STDERR.puts('NOOP found OUT IS CLOSED: ' )      
