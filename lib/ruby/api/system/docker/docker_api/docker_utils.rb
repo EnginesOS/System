@@ -9,8 +9,28 @@ module DockerUtils
         write_thread[:name] = 'docker_stream_writer'
         begin
           unless @stream_reader.i_stream.nil?
-            STDERR.puts('COPY STREAMS ')
-            IO.copy_stream(@stream_reader.i_stream, socket) unless @stream_reader.i_stream.eof?
+            unless @stream_reader.i_stream.is_a?(StringIO)
+              STDERR.puts('COPY STREAMS ')
+              IO.copy_stream(@stream_reader.i_stream, socket) unless @stream_reader.i_stream.eof?
+            else
+              STDERR.puts('String IO')
+              eof = false
+              while eof == false
+                begin
+                  data = nil
+                  data = @stream_reader.i_stream.read_nonblock(Excon.defaults[:chunk_size])
+                  socket.send(data, 0) unless data.nil?
+                rescue EOFError
+                  eof = true
+                  socket.send(data, 0) unless data.nil?
+                  next
+                rescue IO::WaitReadable
+                  socket.send(data, 0) unless data.nil?
+                  IO.select([@stream_reader.i_stream])
+                  retry
+                end                
+              end
+            end
           else
             STDERR.puts('send data:' + stream_reader.data.class.name)
             unless stream_reader.data.nil? ||  stream_reader.data.length == 0
@@ -66,7 +86,7 @@ module DockerUtils
   rescue StandardError => e
     STDERR.puts('PROCESS Execp' + e.to_s + ' ' + e.backtrace.to_s )
     write_thread.kill unless write_thread.nil?
-    read_thread.kill unless read_thread.nil?   
+    read_thread.kill unless read_thread.nil?
   end
 
   def self.decode_from_docker_chunk(chunk, binary = true)
@@ -117,10 +137,10 @@ module DockerUtils
             length = r.length
           end
           if length > r.length
-          #  STDERR.puts('length > actual' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
+            #  STDERR.puts('length > actual' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
             length = r.length
           end
-       #   STDERR.puts('len ' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
+          #   STDERR.puts('len ' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
           h[dst] += r[0..length-1]
           r = r[length..-1]
         end

@@ -5,6 +5,7 @@ cmd = nil
 post = false
 del = false
 content_type='application/octet-stream'
+n = 5
 case ARGV[4]
 when 'register'
   cmd = ARGV[4]
@@ -13,43 +14,39 @@ when 'deregister'
 when 'reregister'
   cmd = ARGV[4]
 when 'export'
-  cmd = ARGV[4]  
+  cmd = ARGV[4]
 when 'import'
-  cmd = ARGV[4]
-  post = true
+  cmd ='overwrite'
+  post = :stream
   STDERR.puts  @route
-  params[:data] = read_stdin_data
+
 when 'import_file'
-  cmd = ARGV[4]
-  post = true
-  params[:data] =  'file'
+  cmd = 'overwrite'
+  post = :file
+  file =  ARGV[5]
+  n = 6
 when 'replace_file'
-  cmd = ARGV[4]
-  post = true
-  params[:data] =  'file'
+  cmd = 'replace'
+  post = :file
+  file =  ARGV[5]
+  n = 6
 
 when 'replace'
   cmd = ARGV[4]
-  post = true
+  post = :stream
   STDERR.puts  @route
-  params[:data] = read_stdin_data
+
 
 when 'update'
   cmd = ARGV[4]
-cmd = nil
-post = true
-content_type='application/json_parser'
-STDERR.puts  @route
-params = read_stdin_json
-n = 5
-
+  cmd = nil
+  post = true
+  content_type='application/json_parser'
+  STDERR.puts  @route
+  params = read_stdin_json
 end
 
-if cmd.nil? && n != 5
-  n = 4
-else
-  n = 5
-end
+n = 4 if cmd.nil?
 
 len = ARGV.count
 while n < len
@@ -62,7 +59,13 @@ end
 if post == true
   STDERR.puts  'Posting'  + @route
   perform_post(params, content_type)
+elsif post == :file
+  io_f = File.new(file, 'r')
+  stream_file(@route , io_f)
+elsif post == :stream
+  stream_io(@route , STDIN)
 elsif del == true
+  then
   perform_del
 else
   perform_get
