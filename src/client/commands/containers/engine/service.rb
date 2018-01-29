@@ -65,10 +65,10 @@ if post == true
   STDERR.puts  'Posting'  + @route
   perform_post(params, content_type)
 elsif post == :file
-  io_f = File.new(STDIN, 'r')
-  stream_file(@route , io_f)
+  io_f = File.new(file, 'r')
+  stream_file(@route , io_f, true)
 elsif post == :stream
-  stream_io(@route , STDIN)
+  stream_io(@route , STDIN, true)
 elsif del == true
   then
   perform_del
