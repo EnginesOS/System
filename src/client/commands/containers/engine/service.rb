@@ -16,12 +16,12 @@ when 'reregister'
 when 'export'
   cmd = ARGV[4]
 when 'import'
-  cmd = ARGV[4]
+  cmd ='overwrite'
   post = :stream
   STDERR.puts  @route
 
 when 'import_file'
-  cmd = 'import'
+  cmd = 'overwrite'
   post = :file
   file =  ARGV[5]
   n = 6
