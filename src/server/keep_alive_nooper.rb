@@ -36,6 +36,7 @@ def send(out)
     out << "\n"
     rescue
       cancel
+    end
   end  
 end
 
