@@ -19,7 +19,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
       require 'timers'
       no_op = {no_op: true}.to_json
       #EventMachine::PeriodicTimer.new(25) do
-   
+    @timers ||= Timers::Group.new
        @timers.after(25) do
         if out.closed?
           STDERR.puts('NOOP found OUT IS CLOSED: ' )          
