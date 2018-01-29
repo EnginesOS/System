@@ -2,6 +2,7 @@ class KeepAliveNooper
   require 'timers'
   def initialize
     super()
+    @no_op |= {no_op: true}.to_json
     @timers = Timers::Group.new
 end
 def run(out)
@@ -10,25 +11,24 @@ def run(out)
   end
   
 end
+
 def cancel
   @timers.cancel            
 end
+
 def run_timer(out)
-  no_op = {no_op: true}.to_json
-  out << no_op
-  out << "\n"
-  STDERR.puts('NOOP ')
-        @timers.every(25) do
-         if out.closed?
-           STDERR.puts('NOOP found OUT IS CLOSED: ' )      
-           @timers.cancel                         
-         else
-           out << no_op # unless lock_timer == true
-           STDERR.puts('NOOP ')
-           out << "\n"
-         end
-        end 
+  send(out)
+  @timers.every(25) { send(out) }      
   loop { timers.wait }        
 end
   
+def send(out)
+  if out.closed?
+    cancel
+  else  
+    out << @no_op
+    out << "\n"
+  end  
+end
+
 end
