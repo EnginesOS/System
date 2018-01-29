@@ -2,7 +2,7 @@ class KeepAliveNooper
   require 'timers'
   def initialize
     super()
-    @no_op |= {no_op: true}.to_json
+    @no_op = {no_op: true}.to_json
     @timers = Timers::Group.new
 end
 def run(out)
