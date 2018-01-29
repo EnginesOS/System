@@ -5,6 +5,7 @@ cmd = nil
 post = false
 del = false
 content_type='application/octet-stream'
+n = 5
 case ARGV[4]
 when 'register'
   cmd = ARGV[4]
@@ -34,7 +35,7 @@ when 'replace'
   cmd = ARGV[4]
   post = :stream
   STDERR.puts  @route
-  params[:data] = read_stdin_data
+
 
 when 'update'
   cmd = ARGV[4]
@@ -43,15 +44,9 @@ when 'update'
   content_type='application/json_parser'
   STDERR.puts  @route
   params = read_stdin_json
-  n = 5
-
 end
 
-if cmd.nil? && n < 5
-  n = 4
-else
-  n = 5
-end
+n = 4 if cmd.nil?
 
 len = ARGV.count
 while n < len
