@@ -27,6 +27,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
           next
         else
           out << no_op # unless lock_timer == true
+          STDERR.puts('NOOP ')
           out << "\n"
         end
       end
