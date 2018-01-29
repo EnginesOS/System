@@ -45,7 +45,7 @@ end
 
 def stream_file(uri_s, src_f, headers = nil)
   headers = {
-     'content_type' => 'application/octet-stream',
+     'Content_Type' => 'application/octet-stream',
      'ACCESS_TOKEN' => load_token,
    # 'Transfer-Encoding' => 'chunked'
      'Content-Length' => src_f.size.to_s
@@ -60,6 +60,7 @@ def stream_file(uri_s, src_f, headers = nil)
 #  request = Net::HTTP::Post.new(uri.request_uri, headers)
 #  else
     request = Net::HTTP::Put.new(uri.request_uri, headers)
+  STDERR.puts('request ' + request.to_s)
 #  end
   request.body_stream = src_f
  r = conn.request(request)
