@@ -23,6 +23,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
        @timers.after(25) do
         if out.closed?
           STDERR.puts('NOOP found OUT IS CLOSED: ' )          
+          timer = nil
           next
         else
           out << no_op # unless lock_timer == true

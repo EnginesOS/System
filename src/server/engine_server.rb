@@ -21,6 +21,7 @@ begin
   @events_stream = nil
   $engines_api = PublicApi.new(EnginesCore.new)
   STDERR.puts('++++')
+  require 'timers'
   @timers = Timers::Group.new
   @@last_error = ''
 
