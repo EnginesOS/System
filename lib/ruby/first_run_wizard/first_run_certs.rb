@@ -24,7 +24,7 @@ module FirstRunCerts
       publisher_namespace: 'EnginesSystem',
       service_handle: 'default_ssl_cert',
       variables: {
-      wild: 'yes',
+      wild: 'true',
       install_target: 'default',
       cert_name: 'engines',
       country: params[:ssl_country],
