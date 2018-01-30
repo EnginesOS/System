@@ -30,14 +30,17 @@ module EngineApiStatusFlags
 
   def wait_for_startup(c, timeout = 5)
     r = false
+    state_file_name = @system_api.container_state_dir(c) +'/run/flags/state'
+      if ! File.exist?(state_file_name)
+        FileUtils.touch(state_file_name)
+      end
     if c.is_running?
       if is_startup_complete?(c)
         r = true
       else      
         begin
           Timeout::timeout(timeout) do
-            sfn = @system_api.container_state_dir(c) + '/run/flags/startup_complete'
-            state_file_name = @system_api.container_state_dir(c) +'/run/flags/state'
+            sfn = @system_api.container_state_dir(c) + '/run/flags/startup_complete'                      
             begin
               require 'rb-inotify'
               notifier = INotify::Notifier.new

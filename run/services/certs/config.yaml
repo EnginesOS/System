@@ -2,7 +2,7 @@
 container_name: certs
 ctype: service
 conf_self_start: true
-persistent: false
+persistent: true
 publisher_namespace: EnginesSystem
 type_path: certs
 last_error: 

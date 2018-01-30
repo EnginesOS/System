@@ -1,10 +1,12 @@
 #!/bin/bash
+
+ mkdir -p /tmp/big/
 Archive=/tmp/big/archive
 cd /home/fs
 dirname=`basename $VOLDIR `
+
 cp -rp $VOLDIR /tmp/big/$dirname.bak
- rm -r $VOLDIR/*
- mkdir -p /tmp/big/
+rm -r $VOLDIR/*
 if test -f  /tmp/extract.err
  then
 rm /tmp/extract.err
@@ -16,11 +18,11 @@ type=`file -i $Archive |grep application/gzip`
 if test $? -eq 0
  then
 echo Gzip
- cat  $Archive  | gzip -d  | tar -xpf  -  2>/tmp/extract.err
+
 
 echo xxx
 echo "cat $Archive | gzip -d | tar -xpf  -"
-
+ cat  $Archive  | gzip -d  | tar -xpf  -  2>/tmp/extract.err
 else
 cat $Archive | tar -xpf  - 2>/tmp/extract.err
 
