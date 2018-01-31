@@ -27,7 +27,7 @@ volumes:
    permissions: ro   
   container_public: 
    name: container_public
-   remotepath: "/home/engines/etc/services/"
+   remotepath: "/home/engines/sys/"
    localpath: "/opt/engines/run/public/services"
    permissions: ro   
 port: 
