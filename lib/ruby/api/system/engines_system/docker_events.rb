@@ -20,7 +20,7 @@ module DockerEvents
     end
 
     def read_event(event_hash)
-      unless @pipe.closed?
+      unless @pipe.closed? || @pipe.nil?
         #     STDERR.puts(' WAIT FOR GOT ' + event_hash.to_s )
         if event_hash[:status] == @what
           #    STDERR.puts('writing OK')
@@ -29,6 +29,8 @@ module DockerEvents
           # else
           #     STDERR.puts(' WAIT FOR but waiting on ' + @what.to_s )
         end
+      else
+        raise DockerException.new({level: 'error', error_mesg: 'pipe closed'} )
       end
     end
   end
@@ -50,6 +52,7 @@ module DockerEvents
           end
         end
         pipe_in.close unless pipe_in.closed?
+        pipe_out.close unless pipe_out.closed?
         rm_event_listener(event_listener)
         break
         # return true
