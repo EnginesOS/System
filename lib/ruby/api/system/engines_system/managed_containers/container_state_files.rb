@@ -82,7 +82,7 @@ module ContainerSystemStateFiles
   def container_info_tree_dir(c)
     SystemConfig.InfoTreeDir  + '/' + c.ctype + 's/' + c.container_name
   end
-  
+
   def key_dir(c)
     SystemConfig.SSHStore + '/' + c.ctype + 's/' + c.container_name
   end
@@ -105,6 +105,7 @@ module ContainerSystemStateFiles
       FileUtils.rm_rf(container_state_dir(c))
     rescue
     end
+    remove_info_tree(c)
     SystemUtils.run_system('/opt/engines/system/scripts/system/clear_container_dir.sh ' + c.container_name)
     true
   end
@@ -153,10 +154,10 @@ module ContainerSystemStateFiles
         options[:max_length] = 4096
       end
       log_file.write(
-        #DockerUtils.docker_stream_as_result(
-        c.logs_container(options[:max_length])
-        #, {}).to_yaml
-        )
+      #DockerUtils.docker_stream_as_result(
+      c.logs_container(options[:max_length])
+      #, {}).to_yaml
+      )
       log_file.close
     end
   end
