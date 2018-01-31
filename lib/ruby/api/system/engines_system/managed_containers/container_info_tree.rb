@@ -22,14 +22,18 @@ module ContainerInfoTree
       @ctype  = p[:ctype]   
     end
     end
-  def init_container_info_dir(params)
-    c = FakeContainer.new(params)
-    write_info_tree(c, params[:keys])
-  #  SystemConfig.InfoTreeDir  + '/' + c.ctype + 's/' + c.container_name
-#  {ctype: 'app',
-#         name: @build_params[:engine_name],
-#         keys: keys
-#       }
+    
+  def init_container_info_dir(p)
+    if params.is_a?(Hash)    
+      c = FakeContainer.new(params)
+      keys = p[:keys]
+    else
+      c = p
+    keys = {uid: c.cont_user_id} 
+    end
+    
+    write_info_tree(c, keys)
+
 end
        
 end

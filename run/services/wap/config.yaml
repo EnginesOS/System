@@ -1,4 +1,5 @@
 --- !ruby/object:ManagedService
+cont_user_id: 22005
 container_name: wap
 publisher_namespace: EnginesSystem
 type_path: wap

@@ -42,7 +42,7 @@ module ManagedContainerOnAction
       save_state
       SystemDebug.debug(SystemDebug.container_events, :ON_Create_Finised, event_hash)
     }
-    @container_api.write_info_tree(self)
+    @container_api.init_container_info_dir(self)
     start_container
   end
 

@@ -1,4 +1,5 @@
 --- !ruby/object:ManagedService
+cont_user_id: 22022
 container_name: certs
 ctype: service
 conf_self_start: true
@@ -23,7 +24,12 @@ volumes:
    name: CA_store
    remotepath: "/home/certs/CA"
    localpath: "/var/lib/engines/services/certs/CA"
-   permissions: ro
+   permissions: ro   
+  container_public: 
+   name: container_public
+   remotepath: "/home/engines/etc/services/"
+   localpath: "/opt/engines/run/public/services"
+   permissions: ro   
 port: 
 mapped_ports:
 repo: na

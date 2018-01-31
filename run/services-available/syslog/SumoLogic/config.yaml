@@ -1,4 +1,5 @@
 --- !ruby/object:ManagedService
+cont_user_id: 22012
 container_name: syslog
 publisher_namespace: SumoLogic
 type_path: syslog

@@ -1,4 +1,5 @@
 --- !ruby/object:ManagedService
+cont_user_id: 22032
 container_name: openid
 ctype: service
 persistent: true
