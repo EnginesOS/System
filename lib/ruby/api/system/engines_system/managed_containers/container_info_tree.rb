@@ -24,8 +24,8 @@ module ContainerInfoTree
     end
     
   def init_container_info_dir(p)
-    if params.is_a?(Hash)    
-      c = FakeContainer.new(params)
+    if p.is_a?(Hash)    
+      c = FakeContainer.new(p)
       keys = p[:keys]
     else
       c = p
