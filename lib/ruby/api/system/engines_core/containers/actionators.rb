@@ -13,7 +13,7 @@ module Actionators
 
   def perform_engine_action(engine, actionator_name, params)
     SystemDebug.debug(SystemDebug.actions, engine, actionator_name, params)
-    actionator = get_engine_actionator(engine, actionator_name)
+    actionator = get_engine_actionator(engine, actionator_name)    
     if engine.is_running?
       engine.perform_action(actionator, params)
     else

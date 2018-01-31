@@ -40,8 +40,7 @@ module FirstRunCerts
   end
 
   def set_wap_cert(def_domain)
-    certs = @api.loadManagedService('certs')
-    certs.perform_action('set_default', {
+    @api.perform_service_action('certs', 'set_default', {
     install_target: 'services/wap',
      cert_name: 'system_services/system/' + def_domain,
      cert_type: 'generated' 
