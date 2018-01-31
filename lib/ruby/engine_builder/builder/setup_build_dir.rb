@@ -238,6 +238,7 @@ module BuildDirSetup
     @core_api.init_container_info_dir(
     {ctype: 'app',
       name: @build_params[:engine_name],
+      frame_work: @blueprint_reader.framework,
       keys: keys
     })
   end
