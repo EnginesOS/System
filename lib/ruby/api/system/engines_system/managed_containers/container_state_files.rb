@@ -15,32 +15,32 @@ module ContainerSystemStateFiles
     end
   end
 
-  def schedules_dir(container)
-    container_state_dir(container) + '/schedules/'
+  def schedules_dir(c)
+    container_state_dir(c) + '/schedules/'
   end
 
-  def schedules_file(container)
-    schedules_dir(container) + '/schedules.yaml'
+  def schedules_file(c)
+    schedules_dir(c) + '/schedules.yaml'
   end
 
-  def actionator_dir(container)
-    container_state_dir(container) + '/actionators/'
+  def actionator_dir(c)
+    container_state_dir(c) + '/actionators/'
   end
 
-  def container_flag_dir(container)
-    container_state_dir(container) + '/run/flags/'
+  def container_flag_dir(c)
+    container_state_dir(c) + '/run/flags/'
   end
 
-  def restart_flag_file(container)
-    container_flag_dir(container) + 'restart_required'
+  def restart_flag_file(c)
+    container_flag_dir(c) + 'restart_required'
   end
 
-  def rebuild_flag_file(container)
-    container_flag_dir(container) + 'rebuild_required'
+  def rebuild_flag_file(c)
+    container_flag_dir(c) + 'rebuild_required'
   end
 
-  def read_container_id(container)
-    cidfile = container_cid_file(container)
+  def read_container_id(c)
+    cidfile = container_cid_file(c)
     if File.exist?(cidfile)
       r = File.read(cidfile)
       r.gsub!(/\s+/, '').strip
@@ -52,8 +52,8 @@ module ContainerSystemStateFiles
     '-1'
   end
 
-  def create_container_dirs(container)
-    state_dir = container_state_dir(container)
+  def create_container_dirs(c)
+    state_dir = container_state_dir(c)
     unless File.directory?(state_dir)
       Dir.mkdir(state_dir)
       Dir.mkdir(state_dir + '/run') unless Dir.exist?(state_dir + '/run')
@@ -62,14 +62,14 @@ module ContainerSystemStateFiles
       FileUtils.chmod_R('u+r', state_dir + '/run')
       FileUtils.chmod_R('g+w', state_dir + '/run')
     end
-    log_dir = container_log_dir(container)
+    log_dir = container_log_dir(c)
     Dir.mkdir(log_dir) unless File.directory?(log_dir)
-    if container.is_service?
+    if c.is_service?
       Dir.mkdir(state_dir + '/configurations/') unless File.directory?(state_dir + '/configurations')
       Dir.mkdir(state_dir + '/configurations/default') unless File.directory?(state_dir + '/configurations/default')
     end
 
-    key_dir =  key_dir(container)
+    key_dir =  key_dir(c)
     unless Dir.exist?(key_dir)
       Dir.mkdir(key_dir)  unless File.directory?(key_dir)
       FileUtils.chown(nil, 'containers', key_dir)
@@ -79,48 +79,51 @@ module ContainerSystemStateFiles
     true
   end
 
-  def key_dir(container)
-    SystemConfig.SSHStore + '/' + container.ctype + 's/' + container.container_name
+  def container_info_tree_dir(c)
+    SystemConfig.InfoTreeDir + + '/' + c.ctype + 's/' + c.container_name
+  end
+  def key_dir(c)
+    SystemConfig.SSHStore + '/' + c.ctype + 's/' + c.container_name
   end
 
-  def clear_container_var_run(container)
-    File.unlink(container_state_dir(container) + '/startup_complete') if File.exist?(container_state_dir(container) + '/startup_complete')
+  def clear_container_var_run(c)
+    File.unlink(container_state_dir(c) + '/startup_complete') if File.exist?(container_state_dir(c) + '/startup_complete')
     true
   end
 
-  def container_cid_file(container)
-    SystemConfig.CidDir + '/' + container.container_name + '.cid'
+  def container_cid_file(c)
+    SystemConfig.CidDir + '/' + c.container_name + '.cid'
   end
 
-  def delete_container_configs(volbuilder, container)
-    cidfile = SystemConfig.CidDir + '/' + container.container_name + '.cid'
+  def delete_container_configs(volbuilder, c)
+    cidfile = SystemConfig.CidDir + '/' + c.container_name + '.cid'
     File.delete(cidfile) if File.exist?(cidfile)
-    result = volbuilder.execute_command(:remove, {target: container.container_name})
+    result = volbuilder.execute_command(:remove, {target: c.container_name})
     #volbuilder.wait_for('destroy', 30)
     begin
-      FileUtils.rm_rf(container_state_dir(container))
+      FileUtils.rm_rf(container_state_dir(c))
     rescue
     end
-    SystemUtils.run_system('/opt/engines/system/scripts/system/clear_container_dir.sh ' + container.container_name)
+    SystemUtils.run_system('/opt/engines/system/scripts/system/clear_container_dir.sh ' + c.container_name)
     true
   end
 
-  def destroy_container(container)
-    File.delete(container_cid_file(container)) if File.exist?(container_cid_file(container))
+  def destroy_container(c)
+    File.delete(container_cid_file(c)) if File.exist?(container_cid_file(c))
 
     true # File may or may not exist
   end
 
-  def container_log_dir(container)
-    SystemConfig.SystemLogRoot + '/' + container.ctype + 's/' + container.container_name
+  def container_log_dir(c)
+    SystemConfig.SystemLogRoot + '/' + c.ctype + 's/' + c.container_name
   end
 
-  def container_ssh_keydir(container)
-    SystemConfig.SSHStore + '/' + container.ctype + 's/' + container.container_name
+  def container_ssh_keydir(c)
+    SystemConfig.SSHStore + '/' + c.ctype + 's/' + c.container_name
   end
 
-  def clear_cid_file(container)
-    cidfile = container_cid_file(container)
+  def clear_cid_file(c)
+    cidfile = container_cid_file(c)
     File.delete(cidfile) if File.exist?(cidfile)
     true
   end
@@ -133,24 +136,24 @@ module ContainerSystemStateFiles
     SystemConfig.RunDir + '/services-disabled/' + service_name
   end
 
-  def container_state_dir(container)
-    SystemConfig.RunDir + '/' + container.ctype + 's/' + container.container_name
+  def container_state_dir(c)
+    SystemConfig.RunDir + '/' + c.ctype + 's/' + c.container_name
   end
 
-  def save_container_log(container, options = {} )
-    if container.has_container?
+  def save_container_log(c, options = {} )
+    if c.has_container?
       unless options[:over_write] == true
         log_name = Time.now.strftime('%Y-%m-%d_%H-%M-%S') + '.log'
       else
         log_name = 'last.log'
       end
-      log_file = File.new(container_log_dir(container) + '/' + log_name, 'w+')
+      log_file = File.new(container_log_dir(c) + '/' + log_name, 'w+')
       unless  options.key?(:max_length)
         options[:max_length] = 4096
       end
       log_file.write(
         #DockerUtils.docker_stream_as_result(
-        container.logs_container(options[:max_length])
+        c.logs_container(options[:max_length])
         #, {}).to_yaml
         )
       log_file.close

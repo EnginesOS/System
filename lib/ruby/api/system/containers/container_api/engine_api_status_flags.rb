@@ -64,4 +64,8 @@ module EngineApiStatusFlags
     end
     r
   end
+
+  def write_info_tree(c)
+    @system_api.write_info_tree(c)
+  end
 end
