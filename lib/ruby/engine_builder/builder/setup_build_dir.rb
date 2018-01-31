@@ -227,7 +227,8 @@ module BuildDirSetup
 
   def init_container_info_dir
     if @blueprint_reader.framework == 'docker'
-      keys = {
+      keys = { 
+        frame_work: @blueprint_reader.framework,
         uid: @blueprint_reader.cont_user
       }
     else
@@ -238,7 +239,6 @@ module BuildDirSetup
     @core_api.init_container_info_dir(
     {ctype: 'app',
       name: @build_params[:engine_name],
-      frame_work: @blueprint_reader.framework,
       keys: keys
     })
   end
