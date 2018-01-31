@@ -4,7 +4,7 @@ module ManagedServiceConfigurations
     raise EnginesException.new({error_mesg: 'No service variables', error_type: :error , params: configurator_params}) unless configurator_params.key?(:variables)
     raise EnginesException.new({error_mesg: 'service variables not a hash', error_type: :error , params: configurator_params}) unless configurator_params[:variables].is_a?(Hash)
     raise EnginesException.new(warning_hash('service not running ', configurator_params)) unless is_running?
-    raise EnginesException.new(error_hash('service missing cont_userid ', configurator_params)) if check_cont_uid == false
+    raise EnginesException.new(error_hash('service missing cont_user_id ', configurator_params)) if check_cont_uid == false
     @container_api.run_configurator(self, configurator_params)
   end
 
@@ -15,7 +15,7 @@ module ManagedServiceConfigurations
     STDERR.puts(' recevie ARGS ' + r.to_s)
     r
     else
-      raise EnginesException.new(error_hash('service missing cont_userid ', configurator_params)) if check_cont_uid == false
+      raise EnginesException.new(error_hash('service missing cont_user_id ', configurator_params)) if check_cont_uid == false
      r = @container_api.retrieve_configurator(self, configurator_params)
       STDERR.puts(' recevie ARGS ' + r.to_s)
           r
