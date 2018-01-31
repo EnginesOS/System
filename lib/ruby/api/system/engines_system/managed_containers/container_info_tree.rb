@@ -4,7 +4,7 @@ module ContainerInfoTree
       FileUtils.mkdir_p(container_info_tree_dir(c))
     end        
     keys.each do |k, v|
-      kf = File.new(container_info_tree_dir(c) + '/' + k.to_s)
+      kf = File.new(container_info_tree_dir(c) + '/' + k.to_s,'w')
       kf.write(v.to_s)
       kf.close
      end
