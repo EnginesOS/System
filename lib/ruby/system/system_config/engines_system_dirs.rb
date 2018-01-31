@@ -12,7 +12,7 @@ module EnginesSystemDirs
   @@ServiceMapTemplateDir = '/opt/engines/etc/services/mapping/'
   @@ServiceTemplateDir = '/opt/engines/etc/services/providers/'
   @@EnginesTemp = '/opt/engines/tmp'
-  @@InfoTreeDir = '/opt/engines/exported/containers/'
+  @@InfoTreeDir = '/opt/engines/etc/exported/containers/'
   # @@CertificatesDir = '/var/lib/engines/services/certs/public/certs/'
 
   @@DomainsFile = '/opt/engines/etc/domains/domains'

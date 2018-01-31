@@ -80,8 +80,9 @@ module ContainerSystemStateFiles
   end
 
   def container_info_tree_dir(c)
-    SystemConfig.InfoTreeDir + + '/' + c.ctype + 's/' + c.container_name
+    SystemConfig.InfoTreeDir  + '/' + c.ctype + 's/' + c.container_name
   end
+  
   def key_dir(c)
     SystemConfig.SSHStore + '/' + c.ctype + 's/' + c.container_name
   end
