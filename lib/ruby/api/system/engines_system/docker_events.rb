@@ -183,13 +183,15 @@ module DockerEvents
     @event_listener_thread.exit unless @event_listener_thread.nil?
     @event_listener_thread = Thread.new do
       while 1 != 0
-        begin
+        begin       
           @docker_event_listener.start
           STDERR.puts( ' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+          @docker_event_listener.restart
         rescue StandardError => e
           STDERR.puts(' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' + e.to_s)
-        end
-      end
+          @docker_event_listener.restart          
+      end          
+       end
     end
     @event_listener_thread[:name] = 'docker_event_listener'
     @docker_event_listener

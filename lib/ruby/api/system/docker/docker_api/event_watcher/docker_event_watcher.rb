@@ -64,7 +64,9 @@ class DockerEventWatcher < ErrorsApi
     # add_event_listener([system, :container_event])
     SystemDebug.debug(SystemDebug.container_events, 'EVENT LISTENER')
   end
-
+  def restart
+    start
+  end  
   def start
     SystemDebug.debug(SystemDebug.container_events, 'EVENT LISTENER ' + @event_listeners.to_s)
     client = get_client
