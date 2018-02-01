@@ -61,7 +61,7 @@ module BuildDirSetup
     unless persistent_dirs.nil?
       content = ''
       persistent_dirs.each do |persistent|
-        content += persistent[:path] + ' ' + persistent[:volume_name] +"\n"
+        content += persistent[:path].to_s + ' ' + persistent[:volume_name].to_s + "\n"
       end
       write_software_file('/home/fs/vol_dir_maps', content)
     end
@@ -227,7 +227,7 @@ module BuildDirSetup
 
   def init_container_info_dir
     if @blueprint_reader.framework == 'docker'
-      keys = { 
+      keys = {
         frame_work: @blueprint_reader.framework,
         uid: @blueprint_reader.cont_user
       }
