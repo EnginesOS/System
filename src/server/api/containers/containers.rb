@@ -13,6 +13,7 @@ STDERR.puts(' CGET EVE')
     def finialise_events_stream(events_stream, timer)
       events_stream.stop unless events_stream.nil?
       timer.cancel unless timer.nil?
+      STDERR.puts('Finalised Event')
       false
     end
 

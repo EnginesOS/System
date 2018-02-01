@@ -26,6 +26,7 @@ module EngineApiEvents
       @system_api.rm_event_listener(self)
       @wr.close #  if @wr.is_open?
       @rd.close #if @rd.is_open?
+      STDERR.puts('STOP EVENT STREAM')
     rescue StandardError => e
       p e.to_s
       p e.backtrace.to_s
