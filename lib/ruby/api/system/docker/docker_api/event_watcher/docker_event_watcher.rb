@@ -1,4 +1,5 @@
 class DockerEventWatcher < ErrorsApi
+  attr_accessor :event_listeners
   class EventListener
     require 'yajl'
     attr_accessor :container_name, :event_mask, :priority
