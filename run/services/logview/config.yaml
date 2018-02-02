@@ -20,7 +20,7 @@ image: _Engines_System(flavor)/logview:_Engines_System(release)
 volumes:
  syslog: 
   name: syslog
-  remotepath: "/var/log/engines/syslog/"
+  remotepath: "/var/log/engines/services/syslog/"
   localpath: "/var/lib/engines/services/syslog/rmt/"
   permissions: ro
  engines: 
