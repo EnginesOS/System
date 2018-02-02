@@ -33,7 +33,14 @@ volumes:
   remotepath: "/etc/ldap/slapd.d"
   localpath: "/var/lib/engines/services/ldap/slapd.d"
   permissions: "rw"
-mapped_ports:
+environments:
+- !ruby/object:EnvironmentVariable
+ name: KRB5_KTNAME
+ value: /etc/krb5kdc/keys/ldap.keytab
+ has_changed: true 
+ build_time_only: false
+ immutable: false
+ label: "keytab"
 repo: na
 last_result: 
 setState: running
