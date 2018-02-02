@@ -1,0 +1,12 @@
+parent_engine: ldap
+publisher_namespace: EnginesSystem
+type_path: logview
+service_handle: view_sasl_logs
+service_container_name: logview
+container_type: service
+persistent: true
+variables:
+ log_file_path: sasl.log
+ log_type: raw
+ log_name: 'SASL Log'
+ ctype: service
