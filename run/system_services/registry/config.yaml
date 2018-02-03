@@ -1,4 +1,5 @@
 --- !ruby/object:SystemService
+cont_user_id: 22023
 container_name: registry
 ctype: system_service
 consumer_less: true

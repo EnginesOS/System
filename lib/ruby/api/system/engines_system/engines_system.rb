@@ -59,7 +59,11 @@ class SystemApi < ErrorsApi
 
   require_relative 'managed_containers/managed_utilities.rb'
   include ManagedUtilities
-
+  
+  
+  require_relative 'managed_containers/container_info_tree.rb'
+  include ContainerInfoTree
+    
   require_relative 'build_report.rb'
   include BuildReport
 

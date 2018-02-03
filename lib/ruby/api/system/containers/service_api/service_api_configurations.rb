@@ -21,7 +21,7 @@ module ServiceApiConfigurations
       #  STDERR.puts( "CONFIGURAT[:variables].to_json " + configurator_params[:variables].to_json.to_s)
       cmd = ['/home/engines/scripts/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh']
       #  STDERR.puts( 'CONFIGURAT cmd /home/engines/scripts/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh')
-      #cmd = 'docker_exec -u ' + container.cont_userid.to_s + ' ' +  container.container_name.to_s + ' /home/engines/scripts/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh \'' + SystemUtils.hash_variables_as_json_str(configurator_params).to_s + '\''
+      #cmd = 'docker_exec -u ' + container.cont_user_id.to_s + ' ' +  container.container_name.to_s + ' /home/engines/scripts/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh \'' + SystemUtils.hash_variables_as_json_str(configurator_params).to_s + '\''
       @engines_core.exec_in_container(
       {container: c,
         command_line: cmd,

@@ -18,7 +18,9 @@ module BuildDirSetup
     else
       read_web_port
     end
-    read_web_user
+    read_framework_user
+    init_container_info_dir
+
     @build_params[:mapped_ports] = @blueprint_reader.mapped_ports
     SystemDebug.debug(SystemDebug.builder, :ports, @build_params[:mapped_ports])
     SystemDebug.debug(SystemDebug.builder, :attached_services, @build_params[:attached_services])
@@ -55,12 +57,11 @@ module BuildDirSetup
   end
 
   def write_persistent_vol_maps
-
     persistent_dirs =  @blueprint_reader.persistent_dirs
     unless persistent_dirs.nil?
       content = ''
       persistent_dirs.each do |persistent|
-        content += persistent[:path] + ' ' + persistent[:volume_name] +"\n"
+        content += persistent[:path].to_s + ' ' + persistent[:volume_name].to_s + "\n"
       end
       write_software_file('/home/fs/vol_dir_maps', content)
     end
@@ -70,7 +71,7 @@ module BuildDirSetup
       content = ''
       persistent_files.each do |persistent|
         persistent[:volume_name] = @service_builder.default_vol if persistent[:volume_name].nil?
-          STDERR.puts('persistent[:path]:' +  persistent[:path].to_s + ' persistent[:volume_name]:' + persistent[:volume_name].to_s  + "\n")
+        STDERR.puts('persistent[:path]:' +  persistent[:path].to_s + ' persistent[:volume_name]:' + persistent[:volume_name].to_s  + "\n")
         content += persistent[:path] + ' ' + persistent[:volume_name] + "\n"
       end
       write_software_file('/home/fs/vol_file_maps', content)
@@ -146,7 +147,7 @@ module BuildDirSetup
     ConfigFileWriter.write_templated_file(@templater, basedir + '/' + filename, content)
   end
 
-  def read_web_user
+  def read_framework_user
     if @blueprint_reader.framework == 'docker'
       @web_user = @blueprint_reader.cont_user
       #   STDERR.puts("Set web user to:" + @web_user.to_s)
@@ -222,5 +223,23 @@ module BuildDirSetup
     Dir.mkdir(local_log_dir) unless Dir.exist?(local_log_dir)
     rmt_log_dir_varfile.close
     ' -v ' + local_log_dir + ':' + rmt_log_dir + ':rw '
+  end
+
+  def init_container_info_dir
+    if @blueprint_reader.framework == 'docker'
+      keys = {
+        frame_work: @blueprint_reader.framework,
+        uid: @blueprint_reader.cont_user
+      }
+    else
+      keys = {
+        frame_work: @blueprint_reader.framework
+      }
+    end
+    @core_api.init_container_info_dir(
+    {ctype: 'app',
+      name: @build_params[:engine_name],
+      keys: keys
+    })
   end
 end

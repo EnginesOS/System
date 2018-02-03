@@ -1,4 +1,5 @@
 --- !ruby/object:ManagedService
+cont_user_id: 22003
 container_name: email
 ctype: service
 persistent: true

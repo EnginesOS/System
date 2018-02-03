@@ -48,7 +48,7 @@ for dir  in `cat /home/fs/vol_dir_maps | awk '{ print $1}'`
  	cp -rnp $dir_abs_path  $destination 
  	rm -r $dir_abs_path
  	echo "ln -s $ln_destination $dir_abs_path"
- 	ln -s $destination $dir_abs_path
+ 	ln -s $ln_destination $dir_abs_path
  done
 #set
 #

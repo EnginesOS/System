@@ -35,10 +35,14 @@ module ManagedContainerOnAction
       @container_id = event_hash[:id]
       clear_error
       @has_run = false
+      @out_of_memory = false
+      @had_out_memory = false
       @container_api.apply_schedules(self)
+      @created = true
       save_state
       SystemDebug.debug(SystemDebug.container_events, :ON_Create_Finised, event_hash)
     }
+    @container_api.init_container_info_dir(self)
     start_container
   end
 

@@ -3,7 +3,7 @@ module ManagedServiceConsumers
     raise EnginesException.new(error_hash('Invalid service hash ', service_hash)) unless service_hash.is_a?(Hash)
     return true if !is_running? && @soft_service
     raise EnginesException.new(error_hash('Cannot remove consumer if Service is not running ', service_hash)) unless is_running?
-    raise EnginesException.new(error_hash('service missing cont_userid ', service_hash)) if check_cont_uid == false
+    raise EnginesException.new(error_hash('service missing cont_user_id ', service_hash)) if check_cont_uid == false
     rm_consumer_from_service(service_hash)
   end
 
@@ -91,7 +91,7 @@ module ManagedServiceConsumers
   end
 
   def update_consumer(service_hash)
-    raise EnginesException.new(error_hash('service missing cont_userid '+ container_name, service_hash)) unless check_cont_uid
+    raise EnginesException.new(error_hash('service missing cont_user_id '+ container_name, service_hash)) unless check_cont_uid
     raise EnginesException.new(error_hash('service startup not complete ' + container_name, service_hash)) unless is_startup_complete?
     @container_api.update_consumer_on_service(self, service_hash)
   end
@@ -99,7 +99,7 @@ module ManagedServiceConsumers
   private
 
   def add_consumer_to_service(service_hash)
-    raise EnginesException.new(error_hash('service missing cont_userid '+ container_name, service_hash)) unless check_cont_uid
+    raise EnginesException.new(error_hash('service missing cont_user_id '+ container_name, service_hash)) unless check_cont_uid
     unless is_startup_complete?
       STDERR.puts('START UP BOT CPMPLEYE ' )
       STDERR.puts('soft_service' + @soft_service.to_s)

@@ -39,9 +39,18 @@ module FirstRunCerts
     @api.create_and_register_service(service_param)
   end
 
+  def set_wap_cert(def_domain)
+    @api.perform_service_action('certs', 'set_default', {
+    install_target: 'services/wap',
+     cert_name: 'system_services/system/' + def_domain,
+     cert_type: 'generated' 
+  })
+   
+  end
   def setup_certs
     create_ca(@first_run_params)
     create_default_cert(@first_run_params)
+    set_wap_cert(@first_run_params[:domain_name])
     return log_error_mesg('create_default_cert ','/opt/engines/bin/install_ca.sh') unless SystemUtils.execute_command('/opt/engines/system/scripts/ssh/install_ca.sh')
     #return log_error_mesg('create_default_cert ','/opt/engines/bin/install_cert.sh engines') unless SystemUtils.execute_command('/opt/engines/system/scripts/ssh/install_cert.sh engines')
     true

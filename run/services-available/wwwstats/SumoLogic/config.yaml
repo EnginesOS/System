@@ -1,4 +1,5 @@
 --- !ruby/object:ManagedService
+cont_user_id: 22012
 container_name: wwwstats
 publisher_namespace: SumoLogic
 type_path: wwwstats
