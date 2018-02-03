@@ -51,7 +51,8 @@ module EngineApiStatusFlags
               require 'rb-inotify'
               notifier = INotify::Notifier.new
               while ! File.exist?(sfn)
-                notifier.watch(state_file_name, :modify) {  next }
+                STDERR.puts('wait_for_startup FILE EXISTS ? ' + File.exist?(state_file_name).to_s)
+                notifier.watch(state_file_name, :modify) { next }
                 notifier.process
                 return false unless c.is_running?
               end
