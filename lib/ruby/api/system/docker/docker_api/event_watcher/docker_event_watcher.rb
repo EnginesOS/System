@@ -146,8 +146,8 @@ class DockerEventWatcher < ErrorsApi
 
   def get_client
     client = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
-    client.continue_timeout = 3000
-    client.read_timeout = 3000
+    client.continue_timeout = 300
+    client.read_timeout = 300
     client
   end
 
