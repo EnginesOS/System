@@ -150,6 +150,7 @@ module BuildDirSetup
   def read_framework_user
     if @blueprint_reader.framework == 'docker'
       @web_user = @blueprint_reader.cont_user
+      @cont_user_id =  @blueprint_reader.cont_user #fix me and add id
       #   STDERR.puts("Set web user to:" + @web_user.to_s)
     else
       log_build_output('Read Web User')
@@ -158,6 +159,9 @@ module BuildDirSetup
         if line.include?('USER')
           i = line.split('=')
           @web_user = i[1].strip
+        elsif line.include?('UID=')
+          i = line.split('=')
+          @cont_user_id = i[1].strip
         end
       end
       stef.close
@@ -226,20 +230,13 @@ module BuildDirSetup
   end
 
   def init_container_info_dir
-    if @blueprint_reader.framework == 'docker'
-      keys = {
-        frame_work: @blueprint_reader.framework,
-        uid: @blueprint_reader.cont_user
-      }
-    else
-      keys = {
-        frame_work: @blueprint_reader.framework
-      }
-    end
     @core_api.init_container_info_dir(
     {ctype: 'app',
       name: @build_params[:engine_name],
-      keys: keys
+      keys: {
+      uid: @cont_user_id,
+      frame_work: @blueprint_reader.framework
+      }
     })
   end
 end

@@ -29,6 +29,11 @@ volumes:
   remotepath: "/var/krb5/"
   localpath: "/var/lib/engines/services/auth/lib/krb5/"
   permissions: "rw"
+ container_public: 
+  name: container_public
+  remotepath: "/home/engines/system/containers"
+  localpath: "/opt/engines/run/public/services"
+  permissions: ro   
 image: _Engines_System(flavor)/auth:_Engines_System(release)
 port: 
 mapped_ports:

@@ -5,6 +5,10 @@ class BuilderPublic
     @builder = builder
   end
 
+  def cont_user_id
+    @cont_user_id
+  end
+
   def engine_name
     @builder.build_params[:engine_name]
   end
