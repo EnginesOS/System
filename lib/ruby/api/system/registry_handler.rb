@@ -21,7 +21,6 @@ class RegistryHandler < ErrorsApi
     registry_service.wait_for('stop', 20)
     registry_service.start_container
     force_registry_recreate unless registry_service.wait_for_startup('start', 30)
-
     SystemDebug.debug(SystemDebug.registry, :restarted_registry)
     true
   end
