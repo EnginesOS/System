@@ -21,13 +21,9 @@ module DockerEvents
 
     def read_event(event_hash)
       unless @pipe.closed? || @pipe.nil?
-        #     STDERR.puts(' WAIT FOR GOT ' + event_hash.to_s )
         if event_hash[:status] == @what
-          #    STDERR.puts('writing OK')
           @pipe << 'ok'
           @pipe.close
-          # else
-          #     STDERR.puts(' WAIT FOR but waiting on ' + @what.to_s )
         end
       else
         raise DockerException.new({level: 'error', error_mesg: 'pipe closed'} )
@@ -36,7 +32,6 @@ module DockerEvents
   end
 
   def wait_for(container, what, timeout)
-    # STDERR.puts(' WAIT FOR ' + what.to_s + ' on ' + container.container_name)
     unless is_aready?(what, container.read_state)
       mask = container_type_mask(container.ctype)
       pipe_in, pipe_out = IO.pipe
@@ -44,10 +39,8 @@ module DockerEvents
       Timeout::timeout(timeout) do
         add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.container_name, 100)
         unless is_aready?(what, container.read_state)
-          #    STDERR.puts(' Wait on READ ' + container.container_name.to_s + ' for ' + what )
           begin
             d = pipe_in.read
-            # STDERR.puts(' READ ' + d.to_s)
           rescue
           end
         end
@@ -67,7 +60,7 @@ module DockerEvents
     pipe_out.close
     is_aready?(what, container.read_state) #check for last sec call
   rescue StandardError => e
-    rm_event_listener(event_listener)
+    rm_event_listener(event_listener) unless event_listener.nil?
     STDERR.puts(e.to_s)
     STDERR.puts(e.backtrace.to_s)
     pipe_in.close
@@ -190,8 +183,8 @@ module DockerEvents
         end 
         rescue StandardError => e
           STDERR.puts(' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' + e.to_s)         
-          start_docker_event_listener(@docker_event_listener)
-          join                      
+          start_docker_event_listener(@docker_event_listener)   
+        STDERR.puts(' EVENT Listener started again ')                  
        end
     end
     @event_listener_thread[:name] = 'docker_event_listener'

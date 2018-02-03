@@ -129,15 +129,12 @@ class DockerEventWatcher < ErrorsApi
     @event_listeners[event_listener.hash_name] =
     { listener: event_listener ,
       priority: event_listener.priority}
-
-    STDERR.puts('ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
     SystemDebug.debug(SystemDebug.container_events, 'ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
   end
 
   def rm_event_listener(listener)
     SystemDebug.debug(SystemDebug.container_events, 'REMOVED listenter ' + listener.class.name + ':' + listener.object_id.to_s)
     @event_listeners.delete(listener.object_id.to_s) if @event_listeners.key?(listener.object_id.to_s)
-    STDERR.puts('REMOVED listenter ' + listener.class.name + ':' + listener.object_id.to_s)
   end
 
   private
@@ -176,8 +173,6 @@ class DockerEventWatcher < ErrorsApi
   end
 
   def trigger(hash)
-
-    #   @event_listeners.values.each do |listener_hash|
     l = @event_listeners.sort_by { |k, v| v[:priority] }
     l.each do |m|
       listener = m[1][:listener]
@@ -185,13 +180,11 @@ class DockerEventWatcher < ErrorsApi
         next unless match_container(hash, listener.container_name)
       end
       begin
-        #rm_event_listener(listener) if listener.trigger(hash) == false
         listener.trigger(hash)
       rescue StandardError => e
         SystemDebug.debug(SystemDebug.container_events, hash.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)
         rm_event_listener(listener)
       end
-      # STDERR.puts('Triggered ' + hash.to_s + ' for prior ' + listener.priority.to_s)
     end
   rescue StandardError => e
     SystemDebug.debug(SystemDebug.container_events, hash.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)
