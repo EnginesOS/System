@@ -8,12 +8,10 @@
 #  Do not use the "from" key
 # test FixME there is none
 get '/v0/containers/events/stream', provides: 'text/event-stream' do
-STDERR.puts(' CGET EVE')
   begin
     def finialise_events_stream(events_stream, timer)
       events_stream.stop unless events_stream.nil?
       timer.cancel unless timer.nil?
-      STDERR.puts('Finalised Event')
       false
     end
 
@@ -42,8 +40,7 @@ STDERR.puts(' CGET EVE')
     end
     begin
       stream :keep_open do | out |
-        begin
-          STDERR.puts('Stream' )        
+        begin     
           has_data = true
           timer = no_op_timer(out)
           events_stream = engines_api.container_events_stream
