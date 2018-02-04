@@ -33,10 +33,12 @@ module EngineApiStatusFlags
     fd = @system_api.container_state_dir(c) +'/run/flags'
     state_file_name = fd + '/state'
     if ! File.exist?(fd)
+      STDERR.puts('wait_for_startup making' + fd)
       FileUtils.mkdir_p(fd)
       STDERR.puts('wait_for_startup made ' + fd)
     end
     if ! File.exist?(state_file_name)
+      STDERR.puts('wait_for_startup touching ' + state_file_name)
       FileUtils.touch(state_file_name)
       STDERR.puts('wait_for_startup touched ' + state_file_name)
     end

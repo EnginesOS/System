@@ -4,7 +4,7 @@ module ManagedContainerControls
   end
 
   def wait_for_startup(timeout = 60)
-    STDERR.puts( 'Wait for Startup ' + @container_name)
+    STDERR.puts( 'MC Wait for Startup ' + @container_name)
     @container_api.wait_for_startup(self, timeout)
   end
 
