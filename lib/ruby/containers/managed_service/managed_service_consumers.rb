@@ -26,9 +26,9 @@ module ManagedServiceConsumers
       end
       unless alias_services.nil?
         params[:type_path] = @type_path
-          reg_services =   @container_api.registered_with_service(params)
+        reg_services =   @container_api.registered_with_service(params)
         alias_services += reg_services if reg_services.is_a?(Array)
-        return alias_services 
+        return alias_services
       end
       @container_api.registered_with_service(params)
     else
@@ -56,7 +56,11 @@ module ManagedServiceConsumers
         registered_hashes = registered_consumers
         if registered_hashes.is_a?(Array)
           registered_hashes.each do |service_hash|
-            add_consumer_to_service(service_hash) if service_hash[:persistent] == false
+            begin
+              add_consumer_to_service(service_hash) if service_hash[:persistent] == false
+            rescue StandardError => e
+              STDERR.puts('add consumer error:' + e.to_s)
+            end
           end
         end
       else
