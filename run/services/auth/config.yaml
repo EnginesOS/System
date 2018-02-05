@@ -37,6 +37,11 @@ volumes:
 image: _Engines_System(flavor)/auth:_Engines_System(release)
 port: 
 mapped_ports:
+ ldap:
+  name: kauth
+  port: 88
+  publicFacing: false
+  external: 88
 repo: na
 last_result: 
 setState: running
