@@ -7,10 +7,11 @@ class KeepAliveNooper
     @run = true
 end
 def run(out)
-  Thread.new do
+  
+  timer_thread = Thread.new do
     run_timer(out)
   end
-  
+  timer_thread[:name] = 'noop looper'  
 end
 
 def cancel
