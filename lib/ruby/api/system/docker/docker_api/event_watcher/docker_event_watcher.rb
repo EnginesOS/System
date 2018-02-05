@@ -63,11 +63,14 @@ class DockerEventWatcher < ErrorsApi
     event_listeners = {} if event_listeners.nil?
     @event_listeners = event_listeners
     # add_event_listener([system, :container_event])
+    @events_mutex =  Mutex.new
     SystemDebug.debug(SystemDebug.container_events, 'EVENT LISTENER')
   end
+
   def restart
     start
-  end  
+  end
+
   def start
     SystemDebug.debug(SystemDebug.container_events, 'EVENT LISTENER ' + @event_listeners.to_s)
     client = get_client
@@ -95,8 +98,7 @@ class DockerEventWatcher < ErrorsApi
           #  t = Thread.new {trigger(hash)}
           # t[:name] = 'trigger'
           #need to order requests if use threads
-
-          trigger(hash)
+          @events_mutex.synchronize { trigger(hash) }
         rescue StandardError => e
           STDERR.puts('EXCEPTION Chunk error on docker Event Stream _' + chunk.to_s + '_')
           log_error_mesg('EXCEPTION Chunk error on docker Event Stream _' + chunk.to_s + '_')
@@ -109,35 +111,36 @@ class DockerEventWatcher < ErrorsApi
     end
     log_error_mesg('Restarting docker Event Stream ')
     STDERR.puts('CLOSED docker Event Stream as close')
-    client.finish unless client.nil?
+    client.finish if client.started?
     # @system.start_docker_event_listener(@event_listeners)
   rescue Net::ReadTimeout
     log_error_mesg('Restarting docker Event Stream Read Timeout as timeout')
     STDERR.puts('TIMEOUT docker Event Stream as close')
     # @system.start_docker_event_listener(@event_listeners)
-    client.finish unless client.nil?
+    client.finish if client.started?
   rescue StandardError => e
     log_exception(e)
     log_error_mesg('Restarting docker Event Stream post exception ')
     STDERR.puts('EXCEPTION docker Event Stream post exception due to ' + e.to_s + ' ' + e.class.name)
-    client.finish unless client.nil?
+    client.finish if client.started?
     # @system.start_docker_event_listener(@event_listeners)
   end
 
   def add_event_listener(listener, event_mask = nil, container_name = nil, priority=200)
     event_listener = EventListener.new(listener, event_mask, container_name, priority)
-    @event_listeners[event_listener.hash_name] =
-    { listener: event_listener ,
-      priority: event_listener.priority}
-
-    STDERR.puts('ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
+    @events_mutex.synchronize {
+      @event_listeners[event_listener.hash_name] =
+      { listener: event_listener ,
+        priority: event_listener.priority}
+    }
     SystemDebug.debug(SystemDebug.container_events, 'ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
   end
 
   def rm_event_listener(listener)
     SystemDebug.debug(SystemDebug.container_events, 'REMOVED listenter ' + listener.class.name + ':' + listener.object_id.to_s)
-    @event_listeners.delete(listener.object_id.to_s) if @event_listeners.key?(listener.object_id.to_s)
-    STDERR.puts('REMOVED listenter ' + listener.class.name + ':' + listener.object_id.to_s)
+    @events_mutex.synchronize {
+      @event_listeners.delete(listener.object_id.to_s) if @event_listeners.key?(listener.object_id.to_s)
+    }
   end
 
   private
@@ -149,8 +152,8 @@ class DockerEventWatcher < ErrorsApi
 
   def get_client
     client = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
-    client.continue_timeout = 3000
-    client.read_timeout = 3000
+    client.continue_timeout = 300
+    client.read_timeout = 300
     client
   end
 
@@ -176,8 +179,6 @@ class DockerEventWatcher < ErrorsApi
   end
 
   def trigger(hash)
-
-    #   @event_listeners.values.each do |listener_hash|
     l = @event_listeners.sort_by { |k, v| v[:priority] }
     l.each do |m|
       listener = m[1][:listener]
@@ -185,13 +186,11 @@ class DockerEventWatcher < ErrorsApi
         next unless match_container(hash, listener.container_name)
       end
       begin
-        #rm_event_listener(listener) if listener.trigger(hash) == false
         listener.trigger(hash)
       rescue StandardError => e
         SystemDebug.debug(SystemDebug.container_events, hash.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)
         rm_event_listener(listener)
       end
-      # STDERR.puts('Triggered ' + hash.to_s + ' for prior ' + listener.priority.to_s)
     end
   rescue StandardError => e
     SystemDebug.debug(SystemDebug.container_events, hash.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)

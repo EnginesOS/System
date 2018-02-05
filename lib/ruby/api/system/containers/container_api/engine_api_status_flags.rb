@@ -30,12 +30,17 @@ module EngineApiStatusFlags
 
   def wait_for_startup(c, timeout = 5)
     r = false
-    state_file_name = @system_api.container_state_dir(c) +'/run/flags/state'
-    if ! File.exist?(@system_api.container_state_dir(c) +'/run/flags')
-      FileUtils.mkdir_p(@system_api.container_state_dir(c) +'/run/flags')
+    fd = @system_api.container_state_dir(c) +'/run/flags'
+    state_file_name = fd + '/state'
+    if ! File.exist?(fd)
+      STDERR.puts('wait_for_startup making' + fd)
+      FileUtils.mkdir_p(fd)
+      STDERR.puts('wait_for_startup made ' + fd)
     end
     if ! File.exist?(state_file_name)
+      STDERR.puts('wait_for_startup touching ' + state_file_name)
       FileUtils.touch(state_file_name)
+      STDERR.puts('wait_for_startup touched ' + state_file_name)
     end
     if c.is_running?
       if is_startup_complete?(c)
@@ -43,12 +48,13 @@ module EngineApiStatusFlags
       else
         begin
           Timeout::timeout(timeout) do
-            sfn = @system_api.container_state_dir(c) + '/run/flags/startup_complete'
+            sfn = fd + '/startup_complete'
             begin
               require 'rb-inotify'
               notifier = INotify::Notifier.new
               while ! File.exist?(sfn)
-                notifier.watch(state_file_name, :modify) {  next }
+                STDERR.puts('wait_for_startup FILE EXISTS ? ' + File.exist?(state_file_name).to_s)
+                notifier.watch(state_file_name, :modify) { next }
                 notifier.process
                 return false unless c.is_running?
               end
