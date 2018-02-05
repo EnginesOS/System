@@ -6,16 +6,17 @@ class KeepAliveNooper
     @timers = Timers::Group.new
     @run = true
 end
-def run(out)
-  Thread.new do
+def run(out)  
+  @timer_thread = Thread.new do
     run_timer(out)
   end
-  
+  @timer_thread[:name] = 'noop looper'  
 end
 
 def cancel
   #@timer.cancel
-  @run = false            
+  @run = false  
+  @timer_thread.exit unless @timer_thread.nil?     
 end
 
 def run_timer(out)  
