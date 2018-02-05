@@ -16,7 +16,7 @@ end
 def cancel
   #@timer.cancel
   @run = false  
-  @timer_thread.stop unless @timer_thread.nil?     
+  @timer_thread.exit unless @timer_thread.nil?     
 end
 
 def run_timer(out)  
