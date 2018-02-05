@@ -35,11 +35,15 @@ module EngineApiStatusFlags
     if ! File.exist?(fd)
       STDERR.puts('wait_for_startup making' + fd)
       FileUtils.mkdir_p(fd)
+      FileUtils.chown(nil, 'containers', fd)
+      FileUtils.chmod(0773, fd)
       STDERR.puts('wait_for_startup made ' + fd)
     end
     if ! File.exist?(state_file_name)
       STDERR.puts('wait_for_startup touching ' + state_file_name)
       FileUtils.touch(state_file_name)
+      FileUtils.chown(nil, 'containers', state_file_name)
+      FileUtils.chmod(0552, state_file_name)
       STDERR.puts('wait_for_startup touched ' + state_file_name)
     end
     if c.is_running?
