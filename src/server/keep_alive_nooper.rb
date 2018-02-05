@@ -10,7 +10,7 @@ def run(out)
   @timer_thread = Thread.new do
     run_timer(out)
   end
-  timer_thread[:name] = 'noop looper'  
+  @timer_thread[:name] = 'noop looper'  
 end
 
 def cancel
