@@ -10,10 +10,10 @@ module DockerUtils
         begin
           unless @stream_reader.i_stream.nil?
             unless @stream_reader.i_stream.is_a?(StringIO)
-              STDERR.puts('COPY STREAMS ')
+           #   STDERR.puts('COPY STREAMS ')
               IO.copy_stream(@stream_reader.i_stream, socket) unless @stream_reader.i_stream.eof?
             else
-              STDERR.puts('String IO')
+            #  STDERR.puts('String IO')
               eof = false
               while eof == false
                 begin
@@ -32,14 +32,14 @@ module DockerUtils
               end
             end
           else
-            STDERR.puts('send data:' + stream_reader.data.class.name)
+          #  STDERR.puts('send data:' + stream_reader.data.class.name)
             unless stream_reader.data.nil? ||  stream_reader.data.length == 0
               if stream_reader.data.length < Excon.defaults[:chunk_size]
-                STDERR.puts('send data as one chunk ' + stream_reader.data.to_s)
+            #    STDERR.puts('send data as one chunk ' + stream_reader.data.to_s)
                 socket.send(stream_reader.data, 0)
                 stream_reader.data = ''
               else
-                STDERR.puts('send data as chunks ')
+            #    STDERR.puts('send data as chunks ')
                 while stream_reader.data.length != 0
                   if stream_reader.data.length < Excon.defaults[:chunk_size]
                     socket.send(stream_reader.data.slice!(0, Excon.defaults[:chunk_size]), 0)
@@ -50,10 +50,8 @@ module DockerUtils
                 end
               end
             end
-          end
-          STDERR.puts('CLSING')
+          end     
           socket.close_write
-          STDERR.puts('CLSINGED')
         rescue StandardError => e
           STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
         end
@@ -77,7 +75,6 @@ module DockerUtils
         end
         write_thread.kill
       end
-      STDERR.puts('JOINS')
       write_thread.join unless write_thread.nil?
       read_thread.join unless read_thread.nil?
       @stream_reader.o_stream.close unless @stream_reader.o_stream.nil?
@@ -117,16 +114,16 @@ module DockerUtils
             l = r [0..7].unpack('C*')
             cl = l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
             r = r[8..-1]
-            STDERR.puts('STDERR ' + r.length.to_s + ':' + r.to_s)
+          #  STDERR.puts('STDERR ' + r.length.to_s + ':' + r.to_s)
           elsif r.start_with?("\u0002\u0000\u0000\u0000")
             dst = :stderr
             r = r[8..-1]
           elsif r.start_with?("\u0000\u0000\u0000\u0000")
             dst = :stdout
             r = r[8..-1]
-            STDERR.puts('STDOUT \0\0\0')
+      #      STDERR.puts('STDOUT \0\0\0')
           else
-            STDERR.puts('UNMATCHED ' + r.length.to_s + ':' + r.to_s)
+       #     STDERR.puts('UNMATCHED ' + r.length.to_s + ':' + r.to_s)
             dst = :stderr
             unmatched = true
           end
