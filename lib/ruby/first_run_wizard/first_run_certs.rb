@@ -42,7 +42,8 @@ module FirstRunCerts
     @api.perform_service_action('certs', 'set_default', {
     install_target: 'services/wap',
      cert_name: 'system_services/system/' + def_domain,
-     cert_type: 'generated' 
+     cert_type: 'generated' ,
+     common_name: def_domain
   })
    
   end
