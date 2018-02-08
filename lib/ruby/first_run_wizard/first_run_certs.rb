@@ -25,7 +25,7 @@ module FirstRunCerts
       service_handle: 'default_ssl_cert',
       variables: {
       wild: 'true',
-      install_target: 'wap',
+      install_target: 'default',
       country: params[:ssl_country],
       state: params[:ssl_state],
       city: params[:ssl_city],
