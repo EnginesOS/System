@@ -1,7 +1,7 @@
 WORKDIR /home/app
 
-RUN groupadd -g $data_gid writegrp &&\
-	usermod -G $data_gid www-data &&\
+
+RUN usermod -G $data_gid www-data &&\
 	chown -R  $data_uid.$data_gid  ./ &&\
 \
 	mkdir -p log &&\
