@@ -25,14 +25,13 @@ module FirstRunCerts
       service_handle: 'default_ssl_cert',
       variables: {
       wild: 'true',
-      install_target: 'default',
-      cert_name: 'engines',
+      install_target: 'wap',
       country: params[:ssl_country],
       state: params[:ssl_state],
       city: params[:ssl_city],
       organisation: params[:ssl_organisation_name],
       person: params[:ssl_person_name],
-      domain_name: params[:domain_name], #params[:default_domain]
+      common_name: params[:domain_name], #params[:default_domain]
       service_handle: 'default_ssl_cert'
       },
     }
