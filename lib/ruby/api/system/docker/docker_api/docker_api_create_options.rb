@@ -157,9 +157,9 @@ module DockerApiCreateOptions
     envs
   end
 
-  def system_envs(container)
+  def system_envs(container)       
     envs = ['CONTAINER_NAME=' + container.container_name]
-    envs
+    envs[1] = 'KRB5_KTNAME=/etc/krb5kdc/keys/' + container.container_name + '.keytab' if container.kerberos == true
   end
 
 end
