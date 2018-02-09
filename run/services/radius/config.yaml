@@ -18,9 +18,9 @@ kerberos: true
 mapped_ports:
  radius:
   name: radius
-  port: radius
+  port: 1812
   publicFacing: false
-  external: 389
+  external: 1812
 image: _Engines_System(flavor)/radius:_Engines_System(release)
 volumes: 
 environments: 
