@@ -2,7 +2,7 @@ class DockerConnection < ErrorsApi
 
   require 'net_x/http_unix'
   require 'socket'
- # require 'ffi_yajl'
+  # require 'ffi_yajl'
   require 'yajl'
   require 'rubygems'
   require 'excon'
@@ -35,7 +35,7 @@ class DockerConnection < ErrorsApi
 
   def initialize
     @connection = nil
-    @docker_api_mtuex = Mutex.new
+    @docker_api_mutex = Mutex.new
   end
 
   require "base64"
@@ -55,15 +55,15 @@ class DockerConnection < ErrorsApi
     rheaders = default_headers if rheaders.nil?
     params = params.to_json if rheaders['Content-Type'] == 'application/json' && ! params.nil?
 
-    @docker_api_mtuex.synchronize {
-    handle_resp(
-    connection.request(
-    method: :post,
-    path: uri,
-    read_timeout: time_out,
-    headers: rheaders,
-    body: params),
-    expect_json)}
+    @docker_api_mutex.synchronize {
+      handle_resp(
+      connection.request(
+      method: :post,
+      path: uri,
+      read_timeout: time_out,
+      headers: rheaders,
+      body: params),
+      expect_json)}
   end
 
   def connection
@@ -151,10 +151,19 @@ class DockerConnection < ErrorsApi
     SystemDebug.debug(SystemDebug.docker,'Get ' + uri.to_s)
     SystemDebug.debug(SystemDebug.docker,'GET TRUE REQUEST ' + caller[0..5].to_s)  if uri.start_with?('/containers/true/')
     rheaders = default_headers if rheaders.nil?
-    @docker_api_mtuex.synchronize {
-    r = connection.request(request_params({method: :get, path: uri, read_timeout: timeout, headers: rheaders}))
-  }
-    handle_resp(r, expect_json)
+    @docker_api_mutex.synchronize {
+      handle_resp(
+      connection.request(
+      request_params(
+      {
+        method: :get,
+        path: uri,
+        read_timeout: timeout,
+        headers: rheaders
+      }
+      )
+      ), expect_json)
+    }
   rescue  Excon::Error::Socket
     STDERR.puts(' docker socket close ')
     reopen_connection
@@ -162,13 +171,13 @@ class DockerConnection < ErrorsApi
   end
 
   def delete_request(uri)
-   
+
     SystemDebug.debug(SystemDebug.docker,' Delete ' + uri.to_s)
-    @docker_api_mtuex.synchronize {
-    handle_resp(connection.request(request_params({method: :delete,
-      path: uri})),
-    false
-  ) }
+    @docker_api_mutex.synchronize {
+      handle_resp(connection.request(request_params({method: :delete,
+        path: uri})),
+      false
+      ) }
   rescue  Excon::Error::Socket
     STDERR.puts('docker socket close ')
     reopen_connection
@@ -179,12 +188,12 @@ class DockerConnection < ErrorsApi
 
   def handle_resp(resp, expect_json)
     raise DockerException.new({params: @request_param, status: 500}) if resp.nil?
-SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE CODE' + resp.status.to_s )
- if resp.status > 399
-   SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE CODE' + resp.status.to_s )
-   SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE Body' + resp.body.to_s )
-   SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE' + resp.to_s )
- end   
+    SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE CODE' + resp.status.to_s )
+    if resp.status > 399
+      SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE CODE' + resp.status.to_s )
+      SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE Body' + resp.body.to_s )
+      SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE' + resp.to_s )
+    end
     raise DockerException.new(docker_error_hash(resp, @request_params)) if resp.status >= 400
     if resp.status == 204 # nodata but all good happens on del
       true
