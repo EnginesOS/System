@@ -35,7 +35,7 @@ class DockerConnection < ErrorsApi
 
   def initialize
     @connection = nil
-   # @docker_api_mutex = Mutex.new
+    @docker_api_mutex = Mutex.new
   end
 
   require "base64"
