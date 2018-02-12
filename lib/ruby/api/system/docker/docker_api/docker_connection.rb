@@ -35,6 +35,7 @@ class DockerConnection < ErrorsApi
 
   def initialize
     @connection = nil
+    @docker_api_mtuex = Mutex.new
   end
 
   require "base64"
@@ -53,6 +54,8 @@ class DockerConnection < ErrorsApi
     SystemDebug.debug(SystemDebug.docker,'Post OPIOMS ' + params.to_s)
     rheaders = default_headers if rheaders.nil?
     params = params.to_json if rheaders['Content-Type'] == 'application/json' && ! params.nil?
+
+    @docker_api_mtuex.synchronize {
     handle_resp(
     connection.request(
     method: :post,
@@ -60,7 +63,7 @@ class DockerConnection < ErrorsApi
     read_timeout: time_out,
     headers: rheaders,
     body: params),
-    expect_json)
+    expect_json)}
   end
 
   def connection
@@ -148,7 +151,9 @@ class DockerConnection < ErrorsApi
     SystemDebug.debug(SystemDebug.docker,'Get ' + uri.to_s)
     SystemDebug.debug(SystemDebug.docker,'GET TRUE REQUEST ' + caller[0..5].to_s)  if uri.start_with?('/containers/true/')
     rheaders = default_headers if rheaders.nil?
+    @docker_api_mtuex.synchronize {
     r = connection.request(request_params({method: :get, path: uri, read_timeout: timeout, headers: rheaders}))
+  }
     handle_resp(r, expect_json)
   rescue  Excon::Error::Socket
     STDERR.puts(' docker socket close ')
@@ -159,10 +164,11 @@ class DockerConnection < ErrorsApi
   def delete_request(uri)
    
     SystemDebug.debug(SystemDebug.docker,' Delete ' + uri.to_s)
+    @docker_api_mtuex.synchronize {
     handle_resp(connection.request(request_params({method: :delete,
       path: uri})),
     false
-    )
+  ) }
   rescue  Excon::Error::Socket
     STDERR.puts('docker socket close ')
     reopen_connection
