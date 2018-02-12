@@ -18,9 +18,16 @@ kerberos: true
 mapped_ports:
  radius:
   name: radius
+  proto_type: udp
   port: 1812
   publicFacing: false
   external: 1812
+ radacct:
+  name: radacct
+  proto_type: udp
+  port: 1813
+  publicFacing: false
+  external: 1813
 image: _Engines_System(flavor)/radius:_Engines_System(release)
 volumes: 
 environments: 
