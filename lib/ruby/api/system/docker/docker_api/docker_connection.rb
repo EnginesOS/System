@@ -140,10 +140,12 @@ class DockerConnection < ErrorsApi
       headers: rheaders)
       stream_handler.close
     end
+      sc.reset unless sc.nil?
     r
   rescue Excon::Error::Socket
     STDERR.puts(' docker socket stream close ')
     stream_handler.close
+    sc.reset unless sc.nil?
   end
 
   def request_params(params)
