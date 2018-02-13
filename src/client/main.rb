@@ -14,9 +14,16 @@ require_relative 'client_http_stream.rb'
 include ClientHTTPStream
 
 @silent = true
-
+@verbose = false
 def log_error(*args)
-  STDERR.puts(args.to_s) unless @silent == true
+  unless @silent == true
+     
+  if @verbose == true
+    STDERR.puts(args.to_s)
+  else
+    STDERR.puts(args.to_s[0..64])
+  end
+end
 end
 
 def command_usage(mesg=nil)
@@ -132,30 +139,31 @@ def write_response(r)
   end
 rescue StandardError => e
   log_error(e.to_s + ' with :' + r.to_s)
-  log_error(e.backtrace.to_s)
+  log_error(e.backtrace.to_s) if @verbose == true
 end
 
 require_relative 'cmdline_args.rb'
 
-cmdline_options = process_args
-command_usage(cmdline_options) if cmdline_options.is_a?(String)
+@options = process_args
+command_usage(@options) unless @options.is_a?(Hash)
 
-if cmdline_options.key?(:base_url)
-  @base_url= cmdline_options[:base_url]
+if @options.key?(:base_url)
+  @base_url= @options[:base_url]
 else
-  @host = cmdline_options[:host] if cmdline_options.key?(:host)
-  @port = cmdline_options[:port] if cmdline_options.key?(:port)
-  @route = cmdline_options[:prefix] if cmdline_options.key?(:prefix)
-  @use_https = cmdline_options[:use_https] if cmdline_options.key?(:use_https)
+  @host = @options[:host] if @options.key?(:host)
+  @port = @options[:port] if @options.key?(:port)
+  @route = @options[:prefix] if @options.key?(:prefix)
+  @use_https = @options[:use_https] if @options.key?(:use_https)
 end
 
 require_relative 'default_connection_settings.rb'
 
-@silent = false if cmdline_options.key?(:verbose)
+@silent = @options[:silent]
+@verbose = @options[:verbose]
 
-ENV['access_token'] = cmdline_options[:access_token] if cmdline_options.key?(:access_token)
+ENV['access_token'] = @options[:access_token] if @options.key?(:access_token)
 load_token if ENV['access_token'].nil?
-#login if ENV['access_token'].nil?
+
 
 require_relative 'commands/commands.rb'
 

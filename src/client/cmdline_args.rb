@@ -22,6 +22,9 @@ def process_flag(flag, params)
   when '-p'
     params[:password] = ARGV[1]
     ARGV.delete_at(0)
+  when '-s'
+    params[:verbose] = false
+    params[:silent] = true 
   when '-u'
     params[:username] = ARGV[1]
     ARGV.delete_at(0)
