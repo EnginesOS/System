@@ -69,6 +69,7 @@ module ContainerStatus
 
   def uptime
     info = docker_info
+    STDERR.puts( ' Docker info is a ' + info.class.name)
     if info.is_a?(FalseClass) ||info.nil? || info['StartedAt'].nil?
       0
     else
