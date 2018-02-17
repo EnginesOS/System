@@ -72,13 +72,13 @@ module ContainerStatus
     STDERR.puts( ' Docker info is a ' + info.class.name)
     STDERR.puts( ' Docker info is ' + info.to_s)
     
-    if info.is_a?(FalseClass) ||info.nil? || info[:StartedAt].nil?
+    if info.is_a?(FalseClass) ||info.nil? || info[:State][:StartedAt].nil?
       0
     else
       begin
         STDERR.puts( ' Now ' + DateTime.now.to_i.to_s)
-        STDERR.puts( ' Data parse ' + DateTime.parse(info[:StartedAt]).to_s)
-     DateTime.now.to_i - DateTime.parse(info['StartedAt']).to_i
+        STDERR.puts( ' Data parse ' + DateTime.parse(info[:State][:StartedAt]).to_s)
+     DateTime.now.to_i - DateTime.parse(info[:State][:StartedAt]).to_i
       rescue StandardError => e
         STDERR.puts( ' ex ' + e.to_s)
         0  
