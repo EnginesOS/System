@@ -6,5 +6,5 @@ module PublicApiContainersProperties
   def set_container_runtime_properties(container, params)
     @core_api.set_container_runtime_properties(container, params)
   end
-
+  
 end

@@ -39,6 +39,20 @@ get '/v0/containers/service/:service_name/state' do
   end
 end
 
+# @method get_service_uptime
+# @overload get '/v0/containers/service/:service_name/uptime'
+# get service uptime
+# @return [Hash]
+# test cd /opt/engines/tests/engines_api/service ; make engine
+get '/v0/containers/service/:service_name/uptime' do
+  begin
+    service = get_service(params[:service_name])
+    { 'uptime' => service.uptime }
+  rescue StandardError => e
+     send_encoded_exception(request: request, exception: e)
+  end
+end
+
 # @method get_service_websites
 # @overload   get '/v0/containers/service/:service_name/websites'
 # get service websites

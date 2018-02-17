@@ -67,6 +67,19 @@ module ContainerStatus
     end
   end
 
+  def uptime
+    info = docker_info
+    unless info.nil? || info['StartedAt'].nil?
+      begin
+     DateTime.now.to_i - DateTime.parse(info['StartedAt']).to_i
+      rescue
+        0        
+     end
+    else
+      0
+    end
+  end
+  
   def to_s
     @container_name + ':' + @ctype
   end
