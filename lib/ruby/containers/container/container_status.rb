@@ -69,7 +69,9 @@ module ContainerStatus
 
   def uptime
     info = docker_info
-    unless info.is_a?(FalseClass) ||info.nil? || info['StartedAt'].nil?
+    if info.is_a?(FalseClass) ||info.nil? || info['StartedAt'].nil?
+      0
+    else
       begin
         STDERR.puts( ' Now ' + DateTime.now.to_i.to_s)
         STDERR.puts( ' Data parse ' + DateTime.parse(info['StartedAt']).to_s)
@@ -77,9 +79,7 @@ module ContainerStatus
       rescue StandardError => e
         STDERR.puts( ' ex ' + e.to_s)
         0  
-     end
-    else
-      0
+     end        
     end
   end
   
