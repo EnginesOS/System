@@ -4,7 +4,8 @@ VOLUME /var/log/
 
 
 RUN  mkdir -p  /var/www/ ;\
-	 ln -s /home/app /var/www/html/
+	 ln -s /home/app /var/www/html ;\
+	 ls -la  /var/www/
 
 
 ADD home/start.bash /home/start.bash
