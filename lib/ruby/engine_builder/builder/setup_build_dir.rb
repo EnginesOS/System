@@ -144,6 +144,7 @@ module BuildDirSetup
   end
 
   def write_software_file(filename, content)
+    log_build_output('creating template:' + filename.to_s)
     ConfigFileWriter.write_templated_file(@templater, basedir + '/' + filename, content)
   end
 

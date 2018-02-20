@@ -13,7 +13,6 @@ class ConfigFileWriter
     else
       content.gsub!(/\r/, '')
       dir = File.dirname(filename)
-      log_build_output('Creating template:' + filename.to_s)
       FileUtils.mkdir_p(dir) unless Dir.exist?(dir)
       out_file  = File.open(filename, 'wb', :crlf_newline => false)
       content = templater.process_templated_string(content)
