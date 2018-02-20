@@ -15,6 +15,7 @@ templates=`find /home/engines/templates/ -type f |grep -v keep_me`
          then
            dest_file=`ls -l $dest_file |cut -f2 -d">"`
         fi
+     echo Install template $dest_file
      cp $file $dest_file
    done
 fi

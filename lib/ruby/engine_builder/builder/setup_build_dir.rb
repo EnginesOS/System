@@ -93,11 +93,11 @@ module BuildDirSetup
   def create_template_files
     if @blueprint_reader.template_files
       @blueprint_reader.template_files.each do |template_hash|
-       # template_hash[:path].sub!(/^\/home/,'')
-        unless template_hash[:path].start_with?('/home') || template_hash[:path].start_with?('/usr/local') 
-          template_hash[:path] = '/home/' + template_hash[:path]
-        end
-        log_build_output('creating template:' + template_hash[:path].to_s)
+        template_hash[:path].sub!(/^\/home/,'')
+       # unless template_hash[:path].start_with?('/home') || template_hash[:path].start_with?('/usr/local') 
+        #  template_hash[:path] = '/home/' + template_hash[:path]
+        #end
+        log_build_output('creating app template file:' + template_hash[:path].to_s)
         write_software_file('/home/engines/templates/' + template_hash[:path], template_hash[:content])
       end
     end
@@ -148,7 +148,6 @@ module BuildDirSetup
   end
 
   def write_software_file(filename, content)
-    log_build_output('creating template:' + filename.to_s)
     ConfigFileWriter.write_templated_file(@templater, basedir + '/' + filename, content)
   end
 
