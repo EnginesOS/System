@@ -20,14 +20,13 @@ if test -d /home/volumes/
      
     if ! test -d `dirname $destination`
      then
-     	echo "mkdir -p $destination"
+     	echo "creating Destination $destination"
      	mkdir -p `dirname $destination`
      fi
-     
-     
-     
+               
      dir_abs_path=$dir
      
+     echo "Resolve path $dir "
      echo $dir | grep ^/home/app/
       if test $? -ne 0
        then      
@@ -41,10 +40,14 @@ if test -d /home/volumes/
       	     fi 
       	fi      	      
      fi          
+     echo "Resolved path $dir_abs_path"
+     
      if ! test -d $dir_abs_path
       then
+       echo "Creating Resolved path $dir_abs_path"
        mkdir -p $dir_abs_path
      fi
+     
      echo "cp -rnp $dir_abs_path $destination "
   	cp -rnp $dir_abs_path  $destination 
   	rm -r $dir_abs_path
