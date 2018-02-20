@@ -94,6 +94,7 @@ module BuildDirSetup
     if @blueprint_reader.template_files
       @blueprint_reader.template_files.each do |template_hash|
         template_hash[:path].sub!(/^\/home/,'')
+        log_build_output('creating template:' + template_hash[:path].to_s)
         write_software_file('/home/engines/templates/' + template_hash[:path], template_hash[:content])
       end
     end
