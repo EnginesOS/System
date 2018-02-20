@@ -24,20 +24,22 @@ if test -d /home/volumes/
      	mkdir -p `dirname $destination`
      fi
      
+     
+     
      dir_abs_path=$dir
      
      echo $dir | grep ^/home/app/
-      if ! test $? -eq 0
+      if test $? -ne 0
        then      
         echo $dir | grep ^/home/home_dir/
-         if ! test $? -eq 0
+         if test $? -ne 0
       	 then 
      	   echo $dir | grep ^/usr/local/ 
-     	     if ! test $? -eq 0
+     	     if test $? -ne 0
       	      then
       	        dir_abs_path=/home/$dir
       	     fi 
-      	fi      
+      	fi      	      
      fi          
      if ! test -d $dir_abs_path
       then
