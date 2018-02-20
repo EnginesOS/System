@@ -94,7 +94,7 @@ module BuildDirSetup
     if @blueprint_reader.template_files
       @blueprint_reader.template_files.each do |template_hash|
        # template_hash[:path].sub!(/^\/home/,'')
-        unless template_hash[:path].start_wih?('/home') || template_hash[:path].start_wih?('/usr/local') 
+        unless template_hash[:path].start_with?('/home') || template_hash[:path].start_with?('/usr/local') 
           template_hash[:path] = '/home/' + template_hash[:path]
         end
         log_build_output('creating template:' + template_hash[:path].to_s)
