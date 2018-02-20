@@ -27,13 +27,13 @@ if test -d /home/volumes/
      dir_abs_path=$dir
      
      echo "Resolve path $dir "
-     echo $dir | grep ^/home/app/
+     echo $dir/ | grep -e '^/home/app/'
       if test $? -ne 0
        then      
-        echo $dir | grep ^/home/home_dir/
+        echo $dir/ | grep ^/home/home_dir/
          if test $? -ne 0
       	 then 
-     	   echo $dir | grep ^/usr/local/ 
+     	   echo $dir/ | grep ^/usr/local/ 
      	     if test $? -ne 0
       	      then
       	        dir_abs_path=/home/$dir
