@@ -38,9 +38,7 @@ if test -f "$VOLDIR/.dynamic_persistence"
 
 function first_run {
 if ! test -f /home/engines/run/flags/first_run_done
- then
-   touch /home/engines/run/flags/first_run_done
- else		
+ then  
 	if test -f /home/engines/scripts/engine/post_install.sh
 	 then 				
 	   echo "Has Post install"
@@ -49,6 +47,7 @@ if ! test -f /home/engines/run/flags/first_run_done
 			echo "Running Post Install"
 			/bin/bash /home/engines/scripts/engine/post_install.sh 							
 			touch /home/engines/run/flags/post_install.done
+			 touch /home/engines/run/flags/first_run_done		
 		 fi
 	fi
 fi	

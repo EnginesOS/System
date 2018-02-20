@@ -26,13 +26,12 @@ module FirstRunCerts
       variables: {
       wild: 'true',
       install_target: 'default',
-      cert_name: 'engines',
       country: params[:ssl_country],
       state: params[:ssl_state],
       city: params[:ssl_city],
       organisation: params[:ssl_organisation_name],
       person: params[:ssl_person_name],
-      domain_name: params[:domain_name], #params[:default_domain]
+      common_name: params[:domain_name], #params[:default_domain]
       service_handle: 'default_ssl_cert'
       },
     }
@@ -41,9 +40,10 @@ module FirstRunCerts
 
   def set_wap_cert(def_domain)
     @api.perform_service_action('certs', 'set_default', {
-    install_target: 'services/wap',
-     cert_name: 'system_services/system/' + def_domain,
-     cert_type: 'generated' 
+    install_target: 'all',
+     cert_src: 'system_services/system/',
+     cert_type: 'generated',
+     common_name: def_domain
   })
    
   end

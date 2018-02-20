@@ -9,6 +9,7 @@ get '/v0/containers/service/:service_name/export' do
 #    unless SoftwareServiceDefinition.is_consumer_exportable?(hash)
 #         raise EnginesException.new(warning_hash("Cannot export as single service", hash))
 #        end 
+    raise EnginesException.new(warning_hash('Service not running')) unless service.is_running?
     content_type 'application/octet-stream'  
     stream do |out|
            service.export_data(out)

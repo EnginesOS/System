@@ -33,7 +33,10 @@ class EnginesException < StandardError
   end
 
   def is_a_warning?
-    return false unless @level == :warning
-    true
+    unless @level == :warning
+      false
+    else
+      true
+    end
   end
 end
