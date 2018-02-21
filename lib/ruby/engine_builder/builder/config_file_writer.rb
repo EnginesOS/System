@@ -24,7 +24,7 @@ class ConfigFileWriter
   def self.process_dockerfile_tmpl(templater, filename)
     template = File.read(filename)
     template = templater.process_templated_string(template)
-    output_filename = filename.sub(/.tmpl/, '')
+    output_filename = filename.sub(/.tmpl/, '')    
     out_file = File.new(output_filename, 'wb', :crlf_newline => false)
     out_file.write(template)
     out_file.close
