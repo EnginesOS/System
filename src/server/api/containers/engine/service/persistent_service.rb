@@ -31,7 +31,7 @@ end
 # @return [true]
 put '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/overwrite' do
   begin
-    STDERR.puts('SADFSADA engine_import_persistent_service')
+    STDERR.puts('SADFSADA engine_import_persistent_service, ' + request.to_s)
     hash = engine_service_hash_from_params(params)
     unless SoftwareServiceDefinition.is_consumer_exportable?(hash)
        raise EnginesException.new(warning_hash("Cannot import as single service", hash))
@@ -52,6 +52,7 @@ end
 # @return [true]
 put '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/replace' do
   begin
+    STDERR.puts('SADFSADA engine_import_persistent_service, ' + request.to_s)
     hash = engine_service_hash_from_params(params)
     unless SoftwareServiceDefinition.is_consumer_exportable?(hash)     
        send_encoded_exception(request: request, 
