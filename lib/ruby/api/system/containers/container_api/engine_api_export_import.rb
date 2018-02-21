@@ -66,7 +66,10 @@ module EngineApiExportImport
         if result[:result] == 0
           true
         else
-          raise EnginesException.new(error_hash("failed to import ",service_params,params, result))
+          raise EnginesException.new(error_hash("failed to import ",
+          {service_params: service_params,
+          params: params, 
+          result: result}))
         end
       end
     rescue Timeout::Error
