@@ -10,15 +10,16 @@ module DockerUtils
         begin
           unless @stream_reader.i_stream.nil?
             unless @stream_reader.i_stream.is_a?(StringIO)
-           #   STDERR.puts('COPY STREAMS ')
+              STDERR.puts('COPY STREAMS ')
               IO.copy_stream(@stream_reader.i_stream, socket) unless @stream_reader.i_stream.eof?
             else
-            #  STDERR.puts('String IO')
+              STDERR.puts('String IO')
               eof = false
               while eof == false
                 begin
                   data = nil
                   data = @stream_reader.i_stream.read_nonblock(Excon.defaults[:chunk_size])
+                  STDERR.puts('String IO bytes' + data.length.to_s)
                   socket.send(data, 0) unless data.nil?
                 rescue EOFError
                   eof = true
