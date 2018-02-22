@@ -158,7 +158,7 @@ module BuildDirSetup
       #   STDERR.puts("Set web user to:" + @web_user.to_s)
     else
       log_build_output('Read Web User')
-      stef = File.open(basedir + '/home/stack.env', 'r')
+      stef = File.open(basedir + '/home/engines/etc/stack.env', 'r')
       while line = stef.gets do
         if line.include?('USER')
           i = line.split('=')
@@ -181,7 +181,7 @@ module BuildDirSetup
 
   def read_web_port
     log_build_output('Setting Web port')
-    stef = File.open(basedir + '/home/stack.env', 'r')
+    stef = File.open(basedir + '/home/engines/etc/stack.env', 'r')
     while line = stef.gets do
       if line.include?('PORT')
         i = line.split('=')
@@ -220,7 +220,7 @@ module BuildDirSetup
 
   def setup_framework_logging
     log_build_output('Setting up logging')
-    rmt_log_dir_var_fname = basedir + '/home/LOG_DIR'
+    rmt_log_dir_var_fname = basedir + '/home/engines/etc/LOG_DIR'
     if File.exist?(rmt_log_dir_var_fname)
       rmt_log_dir_varfile = File.open(rmt_log_dir_var_fname)
       rmt_log_dir = rmt_log_dir_varfile.read
