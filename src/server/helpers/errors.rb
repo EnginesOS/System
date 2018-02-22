@@ -59,7 +59,7 @@ def send_encoded_exception(api_exception)#request, error_object, *args)
   return_json(error_mesg, status_code)
 rescue Exception => e
   STDERR.puts e.to_s + '  ' + e.backtrace.to_s
-status_code = 505
+status_code = 500
   #  send_encoded_exception(request: 'send_encoded_exception', exception: e, status: 500)
 end
 
