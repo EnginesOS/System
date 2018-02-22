@@ -52,7 +52,7 @@ def stream_file(uri_s, src_f, headers = nil)
    # 'Transfer-Encoding' => 'chunked'
      'Content-Length' => src_f.size.to_s
   } if headers.nil?
-  STDERR.puts('stream header ' + headers.to_s)
+  # STDERR.puts('stream header ' + headers.to_s)
   uri = URI(@base_url + uri_s)
   STDERR.puts('uri ' + uri.to_s)
   conn = Net::HTTP.new(uri.host, uri.port)  
@@ -62,13 +62,13 @@ def stream_file(uri_s, src_f, headers = nil)
 #  request = Net::HTTP::Post.new(uri.request_uri, headers)
 #  else
     request = Net::HTTP::Put.new(uri.request_uri, headers)
-  STDERR.puts('request ' + request.to_s)
+ # STDERR.puts('request ' + request.to_s)
 #  end
   request.body_stream = src_f
  r = conn.request(request)
 #   conn.start do |http| 
  #  r = http.request(request)
- STDERR.puts('STREAM RESULT ' + r.inspect + ':' + r.body.to_s)
+ #STDERR.puts('STREAM RESULT ' + r.inspect + ':' + r.body.to_s)
 #   end
 write_response(r)
     exit
@@ -134,7 +134,7 @@ rescue StandardError => e
   STDERR.puts e.backtrace.to_s
 end
 
-def rest_get(uri, time_out = 35, params = nil)
+def rest_get(uri, time_out = 135, params = nil)
 
   @retries = 0
   if params.nil?
