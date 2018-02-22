@@ -36,6 +36,7 @@ end
 def stream_io(uri_s, io_h)
   headers = {
      'content_type' => 'application/octet-stream',
+     'Accept-Encoding' => 'gzip',
      'ACCESS_TOKEN' => load_token,
     'Transfer-Encoding' => 'chunked'
    #  'Content-Length' => src_f.size.to_s
@@ -46,6 +47,7 @@ end
 def stream_file(uri_s, src_f, headers = nil)
   headers = {
      'Content_Type' => 'application/octet-stream',
+    'Accept-Encoding' => 'gzip',
      'ACCESS_TOKEN' => load_token,
    # 'Transfer-Encoding' => 'chunked'
      'Content-Length' => src_f.size.to_s
