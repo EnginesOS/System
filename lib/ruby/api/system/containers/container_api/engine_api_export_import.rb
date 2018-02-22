@@ -23,7 +23,7 @@ module EngineApiExportImport
         #SystemUtils.execute_command(cmd, true) }
         thr[:name] = 'export:' + params.to_s
         thr.join
-        SystemDebug.debug(SystemDebug.export_import, :export_service,service_hash,'result code =' ,result[:result],params)
+        SystemDebug.debug(SystemDebug.export_import, :export_service, service_hash,'result code =' ,result[:result])
         if result[:result] == 0
           result[:stdout]
         else
@@ -32,7 +32,7 @@ module EngineApiExportImport
       end
     rescue Timeout::Error
       thr.kill
-      raise EnginesException.new(error_hash('Export Timeout on Running Action ', params.to_s,cmd))
+      raise EnginesException.new(error_hash('Export Timeout on Running Action ', service_hash))
     end
   end
 
@@ -55,7 +55,7 @@ module EngineApiExportImport
     else
       params[:data] = Base64.decode64(service_params[:data])
     end
-    SystemDebug.debug(SystemDebug.export_import, :import_service, params, service_params)
+    SystemDebug.debug(SystemDebug.export_import, :import_service,  service_params)
     begin
       result = {}
       Timeout.timeout(@@export_timeout) do
@@ -68,7 +68,6 @@ module EngineApiExportImport
         else
           raise EnginesException.new(error_hash("failed to import ",
           {service_params: service_params,
-          params: params, 
           result: result}))
         end
       end
