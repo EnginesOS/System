@@ -48,11 +48,11 @@ module EngineApiStatusFlags
                 else
                   notifier.watch(sfd, :modify) { next }
                 end
-                notifier.process                
-              end              
+                notifier.process
+              end
             rescue Exception => e
               STDERR.puts('Select for wait for startup complete raise Exception ' + e.to_s)
-              STDERR.puts('Backtrace ' + e.backtrace.to_s)              
+              STDERR.puts('Backtrace ' + e.backtrace.to_s)
             end
             r = c.is_running?
           end
