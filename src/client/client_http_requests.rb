@@ -138,7 +138,7 @@ def rest_get(uri, time_out = 135, params = nil)
 
   time_out = @wait_for unless @wait_for.nil?
   @retries = 0
-  STDERR.puts('Waiting for ' + timeout.to_s)
+  STDERR.puts('Waiting for ' + time_out.to_s)
   if params.nil?
     connection.request({read_timeout: time_out, method: :get, path: uri})
   else
