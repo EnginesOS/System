@@ -38,7 +38,7 @@ module EngineApiStatusFlags
       else
         begin
           Timeout::timeout(timeout) do
-            sfn = fd + '/startup_complete'
+            sfn = sfd + '/startup_complete'
             begin
               require 'rb-inotify'
               notifier = INotify::Notifier.new
