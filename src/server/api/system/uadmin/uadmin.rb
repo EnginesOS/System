@@ -25,7 +25,7 @@ post '/v0/system/uadmin/*' do
   end
 end
 
-del '/v0/system/uadmin/*' do
+delete '/v0/system/uadmin/*' do
   begin
     require_relative 'uadmin_verbs.rb'
     uadmin_response(uadmin_del(params[:splat][0]))
