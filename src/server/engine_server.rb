@@ -59,7 +59,7 @@ FileUtils.touch('/home/engines/run/flags/startup_complete')
     set :sessions, true
     set :logging, true
     set :run, true
-    set :timeout => 260
+    set :timeout, 260
     
  
     
