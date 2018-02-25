@@ -30,38 +30,31 @@ module EngineApiStatusFlags
 
   def wait_for_startup(c, timeout = 5)
     r = false
-    fd = @system_api.container_state_dir(c) +'/run/flags'
-    state_file_name = fd + '/state'
-    if ! File.exist?(fd)
-      FileUtils.mkdir_p(fd)
-      FileUtils.chown(nil, 'containers', fd)
-      FileUtils.chmod(0773, fd)
-    end
-    if ! File.exist?(state_file_name)
-      FileUtils.touch(state_file_name)
-      FileUtils.chown(nil, 'containers', state_file_name)
-      FileUtils.chmod(0552, state_file_name)
-    end
+    sfd = @system_api.container_state_dir(c) +'/run/flags'
+    state_file_name = sfd + '/state'
     if c.is_running?
       if is_startup_complete?(c)
         r = true
       else
         begin
           Timeout::timeout(timeout) do
-            sfn = fd + '/startup_complete'
+            sfn = sfd + '/startup_complete'
             begin
               require 'rb-inotify'
               notifier = INotify::Notifier.new
               while ! File.exist?(sfn)
-                notifier.watch(state_file_name, :modify) { next }
+                if  File.exist?(state_file_name)
+                  notifier.watch(state_file_name, :modify) { next }
+                else
+                  notifier.watch(sfd, :modify) { next }
+                end
                 notifier.process
-                return false unless c.is_running?
               end
             rescue Exception => e
               STDERR.puts('Select for wait for startup complete raise Exception ' + e.to_s)
               STDERR.puts('Backtrace ' + e.backtrace.to_s)
             end
-            r = true
+            r = c.is_running?
           end
         rescue Timeout::Error
           r = false

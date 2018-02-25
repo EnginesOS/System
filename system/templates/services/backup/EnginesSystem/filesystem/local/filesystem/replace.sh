@@ -20,7 +20,7 @@ if test $? -eq 0
 echo Gzip
 
 
-echo xxx
+
 echo "cat $Archive | gzip -d | tar -xpf  -"
  cat  $Archive  | gzip -d  | tar -xpf  -  2>/tmp/extract.err
 else

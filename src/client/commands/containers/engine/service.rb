@@ -14,30 +14,36 @@ when 'deregister'
 when 'reregister'
   cmd = ARGV[4]
 when 'export'
+@wait_for=5000
   cmd = ARGV[4]
 when 'import'
+@wait_for=5000
   cmd ='overwrite'
   post = :stream
   STDERR.puts  @route
 
 when 'import_file'
+  @wait_for=5000
   cmd = 'overwrite'
   post = :file
   file =  ARGV[5]
   n = 6
 when 'replace_file'
+@wait_for=5000
   cmd = 'replace'
   post = :file
   file =  ARGV[5]
   n = 6
 
 when 'replace'
+@wait_for=5000
   cmd = ARGV[4]
   post = :stream
   STDERR.puts  @route
 
 
 when 'update'
+@wait_for=5000
   cmd = ARGV[4]
   cmd = nil
   post = true

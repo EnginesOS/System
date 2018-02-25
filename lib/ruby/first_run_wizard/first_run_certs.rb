@@ -24,7 +24,7 @@ module FirstRunCerts
       publisher_namespace: 'EnginesSystem',
       service_handle: 'default_ssl_cert',
       variables: {
-      wild: 'true',
+      wild: true,
       install_target: 'default',
       country: params[:ssl_country],
       state: params[:ssl_state],
@@ -40,19 +40,18 @@ module FirstRunCerts
 
   def set_wap_cert(def_domain)
     @api.perform_service_action('certs', 'set_default', {
-    install_target: 'all',
-     cert_src: 'system_services/system/',
-     cert_type: 'generated',
-     common_name: def_domain
-  })
-   
+      install_target: 'all',
+      cert_src: 'system_services/system/',
+      cert_type: 'generated',
+      common_name: def_domain
+    })
   end
+
   def setup_certs
     create_ca(@first_run_params)
     create_default_cert(@first_run_params)
     set_wap_cert(@first_run_params[:domain_name])
-    return log_error_mesg('create_default_cert ','/opt/engines/bin/install_ca.sh') unless SystemUtils.execute_command('/opt/engines/system/scripts/ssh/install_ca.sh')
-    #return log_error_mesg('create_default_cert ','/opt/engines/bin/install_cert.sh engines') unless SystemUtils.execute_command('/opt/engines/system/scripts/ssh/install_cert.sh engines')
+    return log_error_mesg('create_default_cert ','/opt/engines/bin/install_ca.sh') unless SystemUtils.execute_command('/opt/engines/system/scripts/ssh/install_ca.sh')  
     true
   end
 

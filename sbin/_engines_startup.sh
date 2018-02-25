@@ -7,7 +7,7 @@ if test -f /opt/engines/run/system/flags/run_post_system_update
  then 
   if test -f /opt/engines/system/scripts/ssh/sudo/post_system_update_boot.sh
    then
-  	sudo /opt/engines/system/scripts/ssh/sudo/post_system_update_boot.sh
+  	sudo -n /opt/engines/system/scripts/ssh/sudo/post_system_update_boot.sh
    fi
  fi
 
