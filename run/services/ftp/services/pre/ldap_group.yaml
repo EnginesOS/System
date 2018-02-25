@@ -1,0 +1,10 @@
+parent_engine: ftp
+publisher_namespace: EnginesSystem
+type_path: ldap
+service_handle: ftpgroup
+container_type: service
+persistent: true
+variables:
+ type: group
+ parent_engine: ftp
+ cn: ftp users
