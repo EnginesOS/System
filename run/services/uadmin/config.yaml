@@ -7,7 +7,7 @@ ctype: service
 persistent: true
 conf_self_start: true
 last_error: 
-memory: '132'
+memory: '232'
 hostname: uadmin
 domain_name: 
 environments: []
