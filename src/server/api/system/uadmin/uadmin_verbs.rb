@@ -19,7 +19,7 @@ rescue StandardError =>e
 end
 
 def handle_exeception(e)
-  if e.is_a?(SocketError)
+  if e.is_a?(Excon::Error::Socket)
     status(405)
     'Failed to open base url ' +  'http://uadmin:8000' + ' after ' + @retries.to_s = ' attempts'
   else
@@ -89,12 +89,16 @@ end
 
 def uadmin_response(r)
   unless r.nil?
-    STDERR.puts('Response got ' + r.to_s + ' headers ' + r.headers.to_s )
-    content_type r.headers['Content-Type']
-    status(r.status)
-    STDERR.puts('Got Status ' + r.status.to_s)
-    STDERR.puts('Got Content ' + r.body.to_s)
-    r.body
+    if r.is_a?(String)
+      r
+    else
+      STDERR.puts('Response got ' + r.to_s + ' headers ' + r.headers.to_s )
+      content_type r.headers['Content-Type']
+      status(r.status)
+      STDERR.puts('Got Status ' + r.status.to_s)
+      STDERR.puts('Got Content ' + r.body.to_s)
+      r.body
+    end
   end
 end
 
