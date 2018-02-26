@@ -21,10 +21,18 @@ end
 def handle_exeception(e)
   if e.is_a?(Excon::Error::Socket)
     status(405)
-    'Failed to open base url ' +  'http://uadmin:8000' 
+    {
+      error_obect: {
+         error_mesg: 'Failed to open base url http://uadmin:8000'
+      } 
+       }    
   else
     status(405)
-    'E is a ' + e.class.name
+    {
+    error_obect: {
+            error_mesg: e.class.name
+      } 
+       }    
   end
 end
 
@@ -89,8 +97,8 @@ end
 
 def uadmin_response(r)
   unless r.nil?
-    if r.is_a?(String)
-      r
+    unless r.is_a?(Excon::Response)  
+      r.to_json
     else
       STDERR.puts('Response got ' + r.to_s + ' headers ' + r.headers.to_s )
       content_type r.headers['Content-Type']
