@@ -13,6 +13,7 @@ end
 put '/v0/system/uadmin/*' do
   begin
     require_relative 'uadmin_verbs.rb'
+    STDERR.puts(params.to_s)
     uadmin_response(uadmin_put(params[:splat][0], request.env['rack.input']))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
