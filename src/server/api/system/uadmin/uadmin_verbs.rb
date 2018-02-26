@@ -33,7 +33,7 @@ end
 def uadmin_get(splat, params)
   c = uconnection
   c.request({method: :get,
-  query: params, 
+  query: clean_params(params), 
              path: build_uri(splat)})
 ensure
   c.reset unless c.nil?
@@ -42,7 +42,7 @@ end
 def uadmin_put(splat, body, params)
   c = uconnection
   c.request({method: :get,
-  query: params, 
+  query: clean_params(params), 
     path: build_uri(splat),
     body: body})
 ensure
@@ -52,7 +52,7 @@ end
 def uadmin_post(splat, body, params)
   c = uconnection
   c.request({method: :get,
-  query: params, 
+  query:   params, 
     path: build_uri(splat),
     body: body})
 ensure
@@ -62,8 +62,8 @@ end
 def uadmin_del(splat, params)
   c = uconnection
   c.request({method: :delete,
-  query: params, 
-      path: build_uri(splat)})
+  query: clean_params(params), 
+  path: build_uri(splat)})
 ensure
   c.reset unless c.nil?
 end
@@ -78,3 +78,9 @@ def uadmin_response(r)
   r.body
 end
 
+def clean_params(params) 
+   params.delete(splat)
+   params.delete(captures)
+   params
+
+end
