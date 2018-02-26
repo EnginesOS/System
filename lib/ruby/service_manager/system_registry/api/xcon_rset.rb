@@ -9,7 +9,7 @@ def headers (content_type = nil)
   @headers = {'content_type' => 'application/json','ACCESS_TOKEN' => 'atest_randy', 'Accept' => '*/*'} if @headers.nil?
   @headers['content_type'] = content_type unless content_type.nil?
   @headers
-end
+  end
 
 def connection(content_type = nil)
   # STDERR.puts('open connec' )
@@ -18,7 +18,7 @@ def connection(content_type = nil)
   debug_response: true,
   ssl_verify_peer: false,
   persistent: true,
-  headers: headers)
+  headers: headers(content_type) )
 rescue Errno::EHOSTUNREACH
   @core_api.fix_registry_problem
   retry
