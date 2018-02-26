@@ -4,7 +4,7 @@ get '/v0/system/uadmin/*' do
     require_relative 'uadmin_verbs.rb'
     STDERR.puts(' Getting')
     STDERR.puts('I got ' + params.to_s) 
-    uadmin_response(uadmin_get(params[:splat][0]), {:api_vars, params[:api_vars]})
+    uadmin_response(uadmin_get(params[:splat][0]), {api_vars: params[:api_vars]})
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
