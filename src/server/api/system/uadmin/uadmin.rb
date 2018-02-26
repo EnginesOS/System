@@ -3,7 +3,7 @@ get '/v0/system/uadmin/*' do
     STDERR.puts(' Get')
     require_relative 'uadmin_verbs.rb'
     STDERR.puts(' Getting')
-    STDERR.puts('I got ' + params.to_s)
+    STDERR.puts('I got ' + params.to_s) 
     uadmin_response(uadmin_get(params[:splat][0]))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
