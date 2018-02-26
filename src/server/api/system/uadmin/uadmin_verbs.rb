@@ -98,7 +98,7 @@ end
 def uadmin_response(r)
   unless r.nil?
     unless r.is_a?(Excon::Response)  
-      r
+      r.to_json
     else
       STDERR.puts('Response got ' + r.to_s + ' headers ' + r.headers.to_s )
       content_type r.headers['Content-Type']
