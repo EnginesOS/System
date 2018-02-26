@@ -21,7 +21,9 @@ end
 def handle_exeception(e)
   if e.is_a?(Excon::Error::Socket)
     status(405)
-    'Failed to open base url ' +  'http://uadmin:8000' 
+    error_mesg = {
+         mesg: 'Failed to open base url http://uadmin:8000' 
+       }    
   else
     status(405)
     'E is a ' + e.class.name
