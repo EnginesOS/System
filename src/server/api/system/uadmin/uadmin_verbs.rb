@@ -22,6 +22,9 @@ def handle_exeception(e)
   if e.is_a?(SocketError)
     status(405)
     'Failed to open base url ' +  'http://uadmin:8000' + ' after ' + @retries.to_s = ' attempts'
+  else
+    status(405)
+    'E is a ' + e.class.name
   end
 end
 
