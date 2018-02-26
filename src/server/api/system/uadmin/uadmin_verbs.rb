@@ -26,6 +26,7 @@ def build_uri(splat)
       uri = uri + c.to_s
     end
   end
+  STDERR.puts('Built ' + uri.to_s)
   uri
 end
 
@@ -62,6 +63,7 @@ ensure
 end
 
 def uadmin_response(r)
+  STDERR.puts('Response got ' + r.to_s)
   content_type r.headers['Content-Type']
   status(r.status)
   r.body
