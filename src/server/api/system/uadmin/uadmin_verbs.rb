@@ -1,4 +1,4 @@
-def connection
+def uconnection
   Excon.new( 'http://uadmin:8000',
   debug_request: true,
   debug_response: true,
@@ -30,14 +30,14 @@ def build_uri(splat)
 end
 
 def uadmin_get(splat)
-  c = connection
+  c = uconnection
   c.request({method: :get, path: build_uri(splat)})
 ensure
   c.reset unless c.nil?
 end
 
 def uadmin_put(splat, body)
-  c = connection
+  c = uconnection
   c.request({method: :get,
     path: build_uri(splat),
     body: body})
@@ -46,7 +46,7 @@ ensure
 end
 
 def uadmin_post(splat, body)
-  c = connection
+  c = uconnection
   c.request({method: :get,
     path: build_uri(splat),
     body: body})
@@ -55,7 +55,7 @@ ensure
 end
 
 def uadmin_del
-  c = connection
+  c = uconnection
   c.request({method: :delete, path: build_uri(splat)})
 ensure
   c.reset unless c.nil?
