@@ -30,34 +30,40 @@ def build_uri(splat)
   uri
 end
 
-def uadmin_get(splat)
+def uadmin_get(splat, params)
   c = uconnection
-  c.request({method: :get, path: build_uri(splat)})
+  c.request({method: :get,
+             params: params, 
+             path: build_uri(splat)})
 ensure
   c.reset unless c.nil?
 end
 
-def uadmin_put(splat, body)
+def uadmin_put(splat, body, params)
   c = uconnection
   c.request({method: :get,
+  params: params, 
     path: build_uri(splat),
     body: body})
 ensure
   c.reset unless c.nil?
 end
 
-def uadmin_post(splat, body)
+def uadmin_post(splat, body, params)
   c = uconnection
   c.request({method: :get,
+    params: params, 
     path: build_uri(splat),
     body: body})
 ensure
   c.reset unless c.nil?
 end
 
-def uadmin_del
+def uadmin_del(splat, params)
   c = uconnection
-  c.request({method: :delete, path: build_uri(splat)})
+  c.request({method: :delete,
+      params: params, 
+      path: build_uri(splat)})
 ensure
   c.reset unless c.nil?
 end
