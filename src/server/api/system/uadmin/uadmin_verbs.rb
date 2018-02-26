@@ -85,12 +85,14 @@ ensure
 end
 
 def uadmin_response(r)
-  STDERR.puts('Response got ' + r.to_s + ' headers ' + r.headers.to_s )
-  content_type r.headers['Content-Type']
-  status(r.status)
-  STDERR.puts('Got Status ' + r.status.to_s)
-  STDERR.puts('Got Content ' + r.body.to_s)
-  r.body
+  unless r.nil?
+    STDERR.puts('Response got ' + r.to_s + ' headers ' + r.headers.to_s )
+    content_type r.headers['Content-Type']
+    status(r.status)
+    STDERR.puts('Got Status ' + r.status.to_s)
+    STDERR.puts('Got Content ' + r.body.to_s)
+    r.body
+  end
 end
 
 def clean_params(params)
