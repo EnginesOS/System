@@ -79,8 +79,8 @@ def uadmin_response(r)
 end
 
 def clean_params(params) 
-   params.delete(splat)
-   params.delete(captures)
+   params.delete('splat')
+   params.delete('captures')
    params
 
 end
