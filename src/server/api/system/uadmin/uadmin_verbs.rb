@@ -13,7 +13,6 @@ rescue Excon::Error => e
     retry
   end
   status(405)
-  'Failed to open base url ' +  'http://uadmin:8000' + ' after ' + @retries.to_s = ' attempts'
 rescue StandardError =>e
   STDERR.puts('Uncatch E ' + e.class.name + ' ' + e.to_s)
 end
@@ -22,17 +21,17 @@ def handle_exeception(e)
   if e.is_a?(Excon::Error::Socket)
     status(405)
     {
-      error_obect: {
-         error_mesg: 'Failed to open base url http://uadmin:8000'
-      } 
-       }    
+      error_object: {
+      error_mesg: 'Failed to open base url http://uadmin:8000'
+      }
+    }
   else
     status(405)
     {
-    error_obect: {
-            error_mesg: e.class.name
-      } 
-       }    
+      error_object: {
+      error_mesg: e.class.name
+      }
+    }
   end
 end
 
@@ -97,7 +96,7 @@ end
 
 def uadmin_response(r)
   unless r.nil?
-    unless r.is_a?(Excon::Response)  
+    unless r.is_a?(Excon::Response)
       r.to_json
     else
       STDERR.puts('Response got ' + r.to_s + ' headers ' + r.headers.to_s )
