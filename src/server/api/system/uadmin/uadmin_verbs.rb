@@ -67,6 +67,7 @@ def uadmin_response(r)
   content_type r.headers['Content-Type']
     
   status(r.status)
+  STDERR.puts('Got Status ' + r.status.to_s)
   STDERR.puts('Got Content ' + r.body.to_s)
   r.body
 end
