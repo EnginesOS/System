@@ -9,4 +9,4 @@ variables:
  parent_engine: ftp
  ldap_password: _Engines_System(random(8))
  cn: access
- access_dn: cn=_Engines_Builder(engine_name),ou=hosts,ou=Engines,dc=engines,dc=internal 
+ access_dn: cn=_Engines_Builder(engine_name),ou=_Engines_Builder(ctype),ou=hosts,ou=Engines,dc=engines,dc=internal 
