@@ -6,7 +6,6 @@ container_type: service
 persistent: true
 variables:
  type: access
- parent_engine: ftp
  ldap_password: _Engines_System(random(8))
  cn: access
  access_dn: cn=_Engines_Builder(engine_name),ou=hosts,ou=Engines,dc=engines,dc=internal 

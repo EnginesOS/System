@@ -6,5 +6,4 @@ container_type: service
 persistent: true
 variables:
  type: group
- parent_engine: ftp
  cn: "ftp users"
