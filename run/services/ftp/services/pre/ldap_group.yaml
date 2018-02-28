@@ -7,4 +7,4 @@ persistent: true
 variables:
  type: group
  parent_engine: ftp
- cn: ftp users
+ cn: "ftp users"
