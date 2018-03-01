@@ -98,7 +98,9 @@ module SmServiceControl
   end
   
   def resolve_field_template(service_hash)
+    
     def resolve_field_val(fld_name)
+      STDERR.puts('RESOLVE ' + fld_name.to_s)
       val=''
       unless fld_name.nil?
         fld_name = fld_name.to_sym
