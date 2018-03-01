@@ -111,8 +111,9 @@ module SmServiceControl
     val
     end
     service_hash[:variables].each_pair do | k, v|
-      template.gsub!(/_Engines_Fields\([0-9a-z_A-Z]\)/) { |match|
-        resolve_field_val(match)
+      next if v.nil?
+      v.gsub!(/_Engines_Fields\([0-9a-z_A-Z]\)/) { |match|
+        service_hash[:variables][k] = resolve_field_val(match)
            }
     end
   
