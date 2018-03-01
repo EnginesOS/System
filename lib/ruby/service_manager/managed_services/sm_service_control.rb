@@ -104,22 +104,24 @@ module SmServiceControl
     STDERR.puts('RESOLVING ' + new_vars.to_s)
 
     service_hash[:variables].keys.each do | k|
-      v = new_vars[k]
+      @v = new_vars[k]
       STDERR.puts('TEMPLATEING Valu ' +  v.to_s)
       next if v.nil?
-      v.gsub!(/_Engines_Fields\([0-9a-z_A-Z]*\)/) { |match|
+      @v.gsub!(/_Engines_Fields\([0-9a-z_A-Z]*\)/) { |match|
         resolve_field_val(match, new_vars)
       }
       STDERR.puts('TEMPLATEd Valu ' +  v.to_s)
-      new_vars[k] = v
+      new_vars[k] = @v
     end
     service_hash[:variables] = new_vars
   end
 
   def resolve_field_val(fld_name, new_vars)
+    begin
+    STDERR.puts('RESOLVE FLD ' + fld_name.to_s)
     fld = fld_name.sub(/_Engines_Fields\(/, '')
     fld.sub!(/[\)]/, '')
-    STDERR.puts('RESOLVE FLD ' + fld.to_s + ' = ' + new_vars[fld].to_s)
+    STDERR.puts('RESOLVED FLD ' + fld.to_s + ' = ' + new_vars[fld].to_s)
     val=''
     unless fld.nil?
       fld_name = fld.to_sym
@@ -128,5 +130,9 @@ module SmServiceControl
       end
     end
     val
+rescue Exception =>e
+  STDERR.puts(' Excetin ' +e.to_t)
+STDERR.puts(e.backtrace.to_s)
+end
   end
 end
