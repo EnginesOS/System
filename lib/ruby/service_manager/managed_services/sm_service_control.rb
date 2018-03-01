@@ -116,7 +116,7 @@ module SmServiceControl
       next if v.nil?
       v.gsub!(/_Engines_Fields\([0-9a-z_A-Z]*\)/) { |match|
         STDERR.puts('MATCH ' + match.to_s)
-        service_hash[:variables][k] = resolve_field_val(match, service_hash)
+        resolve_field_val(match, service_hash)
            }
     end
   
