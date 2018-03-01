@@ -103,6 +103,8 @@ module SmServiceControl
       
     STDERR.puts('RESOLVING ' + new_vars.to_s)
     def resolve_field_val(fld_name, new_vars)
+      name = match.sub!(/_Engines_Fields\(/, '')
+         name.sub!(/[\)]/, '')
       STDERR.puts('RESOLVE FLD ' + fld_name.to_s + ' = ' + new_vars[fld_name].to_s)
       val=''
       unless fld_name.nil?
