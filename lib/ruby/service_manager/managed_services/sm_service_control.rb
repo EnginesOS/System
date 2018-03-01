@@ -113,7 +113,7 @@ module SmServiceControl
       STDERR.puts('TEMPLATEd Valu ' + v.to_s)
       new_vars[k] = v
     end
-   # service_hash[:variables] = new_vars
+    service_hash[:variables] = new_vars
   end
 
   def resolve_field_val(fld_name, new_vars)
@@ -124,7 +124,7 @@ module SmServiceControl
     STDERR.puts('RESOLVED FLD ' + fld.to_s + ' = ' + new_vars[fld].to_s)
     val=''
     unless fld.nil?
-      fld_name = fld.to_sym
+      fld = fld.to_sym
       if new_vars.key?(fld)
         val = new_vars[fld]
       end
