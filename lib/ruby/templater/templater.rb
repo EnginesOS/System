@@ -10,8 +10,7 @@ class Templater
   def apply_hash_variables(text, values_hash)
     if text.is_a?(String)
       text.gsub!(/_Engines_Template\([(0-9a-z_A-Z]*\)/) { |match|
-        t =  resolve_hash_value(match, values_hash)
-        t
+        resolve_hash_value(match, values_hash)
       }
     end
     text
