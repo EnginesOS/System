@@ -117,14 +117,14 @@ module SmServiceControl
   end
 
   def resolve_field_val(fld_name, new_vars)
-    fld_name.sub!(/_Engines_Fields\(/, '')
-    fld_name.sub!(/[\)]/, '')
-    STDERR.puts('RESOLVE FLD ' + fld_name.to_s + ' = ' + new_vars[fld_name].to_s)
+    fld = fld_name.sub(/_Engines_Fields\(/, '')
+    fld.sub!(/[\)]/, '')
+    STDERR.puts('RESOLVE FLD ' + fld.to_s + ' = ' + new_vars[fld].to_s)
     val=''
-    unless fld_name.nil?
-      fld_name = fld_name.to_sym
-      if new_vars.key?(fld_name)
-        val = new_vars[fld_name]
+    unless fld.nil?
+      fld_name = fld.to_sym
+      if new_vars.key?(fld)
+        val = new_vars[fld]
       end
     end
     val
