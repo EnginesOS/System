@@ -99,28 +99,31 @@ module SmServiceControl
   end
 
   def resolve_field_template(service_hash)
-    STDERR.puts('RESOLVING ' + service_hash.to_s)
-    def resolve_field_val(fld_name, service_hash)
+    new_vars = service_hash[:variables].dup
+      
+    STDERR.puts('RESOLVING ' + new_vars.to_s)
+    def resolve_field_val(fld_name, new_vars)
       STDERR.puts('RESOLVE FLD ' + fld_name.to_s)
       val=''
       unless fld_name.nil?
         fld_name = fld_name.to_sym
-        if service_hash[:variables].key?(fld_name)
-          val = service_hash[:variables][fld_name]
+        if new_vars.key?(fld_name)
+          val = new_vars[fld_name]
         end
       end
       val
     end
-    new_v = service_hash[:variables].dup
+ 
     service_hash[:variables].keys.each do | k|
-      v = new_v[k]
+      v = new_vars[k]
       STDERR.puts('TEMPLATEING Valu ' +  v.to_s)
       next if v.nil?
       v.gsub!(/_Engines_Fields\([0-9a-z_A-Z]*\)/) { |match|
-        resolve_field_val(match, service_hash)
+        resolve_field_val(match, new_vars)
       }
+     new_vars[k] = v
     end
-    service_hash[:variables] = new_v
+    service_hash[:variables] = new_vars
   end
 
 end
