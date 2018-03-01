@@ -20,23 +20,6 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
       timer = KeepAliveNooper.new
       timer.run(out)
       timer
-#      
-#      require 'timers'
-#      no_op = {no_op: true}.to_json
-#      #EventMachine::PeriodicTimer.new(25) do
-#      # @timers  ||= Timers::Group.new
-#    @timers = Timers::Group.new
-#       @timers.after(25) do
-#        if out.closed?
-#          STDERR.puts('NOOP found OUT IS CLOSED: ' )          
-#          timer = nil
-#          next
-#        else
-#          out << no_op # unless lock_timer == true
-#          STDERR.puts('NOOP ')
-#          out << "\n"
-#        end
-#       end 
     end
     begin
       stream :keep_open do | out |
