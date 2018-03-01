@@ -108,12 +108,17 @@ module SmServiceControl
       STDERR.puts('TEMPLATEING Valu ' + v.to_s)
       next if v.nil?
       v.gsub!(/_Engines_Fields\([0-9a-z_A-Z]*\)/) { |match|
+        begin
         resolve_field_val(match, new_vars)
+          rescue Exception =>e
+            STDERR.puts(' Excetin ' +e.to_t)
+          STDERR.puts(e.backtrace.to_s)
+        end
       }
       STDERR.puts('TEMPLATEd Valu ' + v.to_s)
-      #new_vars[k] = v
+      new_vars[k] = v
     end
-   # service_hash[:variables] = new_vars
+    service_hash[:variables] = new_vars
   end
 
   def resolve_field_val(fld_name, new_vars)
