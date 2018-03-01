@@ -16,21 +16,31 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
     end
 
     def no_op_timer(out)
-      no_op = {no_op: true}.to_json
-      EventMachine::PeriodicTimer.new(25) do
-        if out.closed?
-          STDERR.puts('NOOP found OUT IS CLOSED: ' + timer.to_s)
-          timer = nil
-          next
-        else
-          out << no_op # unless lock_timer == true
-          out << "\n"
-        end
-      end
+      require '/opt/engines/src/server/keep_alive_nooper.rb'
+      timer = KeepAliveNooper.new
+      timer.run(out)
+      timer
+#      
+#      require 'timers'
+#      no_op = {no_op: true}.to_json
+#      #EventMachine::PeriodicTimer.new(25) do
+#      # @timers  ||= Timers::Group.new
+#    @timers = Timers::Group.new
+#       @timers.after(25) do
+#        if out.closed?
+#          STDERR.puts('NOOP found OUT IS CLOSED: ' )          
+#          timer = nil
+#          next
+#        else
+#          out << no_op # unless lock_timer == true
+#          STDERR.puts('NOOP ')
+#          out << "\n"
+#        end
+#       end 
     end
     begin
       stream :keep_open do | out |
-        begin
+        begin     
           has_data = true
           timer = no_op_timer(out)
           events_stream = engines_api.container_events_stream
@@ -87,5 +97,6 @@ get '/v0/containers/check_and_act' do
     send_encoded_exception(request: request, exception: e)
   end
 end
+
 
 # @!endgroup

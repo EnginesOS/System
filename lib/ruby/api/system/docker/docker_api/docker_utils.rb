@@ -9,17 +9,38 @@ module DockerUtils
         write_thread[:name] = 'docker_stream_writer'
         begin
           unless @stream_reader.i_stream.nil?
-            STDERR.puts('COPY STREAMS ')
-            IO.copy_stream(@stream_reader.i_stream, socket) unless @stream_reader.i_stream.eof?
+            unless @stream_reader.i_stream.is_a?(StringIO)
+              STDERR.puts('COPY STREAMS ')
+              IO.copy_stream(@stream_reader.i_stream, socket) unless @stream_reader.i_stream.eof?
+            else
+              STDERR.puts('String IO')
+              eof = false
+              while eof == false
+                begin
+                  data = nil
+                  data = @stream_reader.i_stream.read_nonblock(Excon.defaults[:chunk_size])
+                  STDERR.puts('String IO bytes' + data.length.to_s)
+                  socket.send(data, 0) unless data.nil?
+                rescue EOFError
+                  eof = true
+                  socket.send(data, 0) unless data.nil?
+                  next
+                rescue IO::WaitReadable
+                  socket.send(data, 0) unless data.nil?
+                  IO.select([@stream_reader.i_stream])
+                  retry
+                end                
+              end
+            end
           else
-            STDERR.puts('send data:' + stream_reader.data.class.name)
+          #  STDERR.puts('send data:' + stream_reader.data.class.name)
             unless stream_reader.data.nil? ||  stream_reader.data.length == 0
               if stream_reader.data.length < Excon.defaults[:chunk_size]
-                STDERR.puts('send data as one chunk ' + stream_reader.data.to_s)
+            #    STDERR.puts('send data as one chunk ' + stream_reader.data.to_s)
                 socket.send(stream_reader.data, 0)
                 stream_reader.data = ''
               else
-                STDERR.puts('send data as chunks ')
+            #    STDERR.puts('send data as chunks ')
                 while stream_reader.data.length != 0
                   if stream_reader.data.length < Excon.defaults[:chunk_size]
                     socket.send(stream_reader.data.slice!(0, Excon.defaults[:chunk_size]), 0)
@@ -30,10 +51,8 @@ module DockerUtils
                 end
               end
             end
-          end
-          STDERR.puts('CLSING')
+          end     
           socket.close_write
-          STDERR.puts('CLSINGED')
         rescue StandardError => e
           STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
         end
@@ -57,7 +76,6 @@ module DockerUtils
         end
         write_thread.kill
       end
-      STDERR.puts('JOINS')
       write_thread.join unless write_thread.nil?
       read_thread.join unless read_thread.nil?
       @stream_reader.o_stream.close unless @stream_reader.o_stream.nil?
@@ -66,7 +84,7 @@ module DockerUtils
   rescue StandardError => e
     STDERR.puts('PROCESS Execp' + e.to_s + ' ' + e.backtrace.to_s )
     write_thread.kill unless write_thread.nil?
-    read_thread.kill unless read_thread.nil?   
+    read_thread.kill unless read_thread.nil?
   end
 
   def self.decode_from_docker_chunk(chunk, binary = true)
@@ -97,16 +115,16 @@ module DockerUtils
             l = r [0..7].unpack('C*')
             cl = l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
             r = r[8..-1]
-            STDERR.puts('STDERR ' + r.length.to_s + ':' + r.to_s)
+          #  STDERR.puts('STDERR ' + r.length.to_s + ':' + r.to_s)
           elsif r.start_with?("\u0002\u0000\u0000\u0000")
             dst = :stderr
             r = r[8..-1]
           elsif r.start_with?("\u0000\u0000\u0000\u0000")
             dst = :stdout
             r = r[8..-1]
-            STDERR.puts('STDOUT \0\0\0')
+      #      STDERR.puts('STDOUT \0\0\0')
           else
-            STDERR.puts('UNMATCHED ' + r.length.to_s + ':' + r.to_s)
+       #     STDERR.puts('UNMATCHED ' + r.length.to_s + ':' + r.to_s)
             dst = :stderr
             unmatched = true
           end
@@ -117,10 +135,10 @@ module DockerUtils
             length = r.length
           end
           if length > r.length
-          #  STDERR.puts('length > actual' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
+            #  STDERR.puts('length > actual' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
             length = r.length
           end
-       #   STDERR.puts('len ' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
+          #   STDERR.puts('len ' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
           h[dst] += r[0..length-1]
           r = r[length..-1]
         end

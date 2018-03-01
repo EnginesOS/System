@@ -1,4 +1,5 @@
 class DockerEventWatcher < ErrorsApi
+  attr_accessor :event_listeners
   class EventListener
     require 'yajl'
     attr_accessor :container_name, :event_mask, :priority
@@ -12,10 +13,11 @@ class DockerEventWatcher < ErrorsApi
     end
 
     def hash_name
-     @object.object_id.to_s
+      @object.object_id.to_s
     end
 
     def trigger(hash)
+      r = true
       mask = EventMask.event_mask(hash)
       SystemDebug.debug(SystemDebug.container_events, 'trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask:' + @event_mask.to_s + ' result ' )#+ (@event_mask & mask).to_s)
       unless @event_mask & mask == 0
@@ -23,13 +25,15 @@ class DockerEventWatcher < ErrorsApi
         if mask & 32768 == 0 # @@container_top == 0
           hash[:state] = state_from_status(hash[:status])
           SystemDebug.debug(SystemDebug.container_events, 'fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
-          @object.method(@method).call(hash)
+          r = @object.method(@method).call(hash)
         end
       end
+      r
     rescue StandardError => e
       STDERR.puts(e.to_s + ":\n" + e.backtrace.to_s)
       SystemDebug.debug(SystemDebug.container_events, e.to_s + ':' + e.backtrace.to_s)
       # raise e
+      false
     end
 
     def state_from_status(status)
@@ -59,7 +63,12 @@ class DockerEventWatcher < ErrorsApi
     event_listeners = {} if event_listeners.nil?
     @event_listeners = event_listeners
     # add_event_listener([system, :container_event])
+    @events_mutex =  Mutex.new
     SystemDebug.debug(SystemDebug.container_events, 'EVENT LISTENER')
+  end
+
+  def restart
+    start
   end
 
   def start
@@ -70,7 +79,7 @@ class DockerEventWatcher < ErrorsApi
       resp.read_body do |chunk|
         begin
           SystemDebug.debug(SystemDebug.container_events, chunk.to_s )
-          next if chunk.nil?                 
+          next if chunk.nil?
           chunk = json_part.to_s + chunk unless json_part.nil?
           if chunk.match(/.*}[ \n\r]*$/).nil?
             SystemDebug.debug(SystemDebug.container_events, 'DOCKER SENT INCOMPLETE json ' + chunk.to_s )
@@ -83,14 +92,13 @@ class DockerEventWatcher < ErrorsApi
           chunk.sub!(/^[ \n\r]*{/,'{')
           #STDERR.puts(' Chunk |' + chunk.to_s + '|')
           parser ||= Yajl::Parser.new({:symbolize_keys => true})
-          hash = parser.parse(chunk)                 
+          hash = parser.parse(chunk)
           SystemDebug.debug(SystemDebug.container_events, 'got ' + hash.to_s)
-          next unless is_valid_docker_event?(hash)          
+          next unless is_valid_docker_event?(hash)
           #  t = Thread.new {trigger(hash)}
           # t[:name] = 'trigger'
           #need to order requests if use threads
-         
-          trigger(hash)
+          @events_mutex.synchronize { trigger(hash) }
         rescue StandardError => e
           STDERR.puts('EXCEPTION Chunk error on docker Event Stream _' + chunk.to_s + '_')
           log_error_mesg('EXCEPTION Chunk error on docker Event Stream _' + chunk.to_s + '_')
@@ -103,35 +111,36 @@ class DockerEventWatcher < ErrorsApi
     end
     log_error_mesg('Restarting docker Event Stream ')
     STDERR.puts('CLOSED docker Event Stream as close')
-    client.finish unless client.nil?
+    client.finish if client.started?
     # @system.start_docker_event_listener(@event_listeners)
   rescue Net::ReadTimeout
     log_error_mesg('Restarting docker Event Stream Read Timeout as timeout')
     STDERR.puts('TIMEOUT docker Event Stream as close')
     # @system.start_docker_event_listener(@event_listeners)
-    client.finish unless client.nil?
+    client.finish if client.started?
   rescue StandardError => e
     log_exception(e)
     log_error_mesg('Restarting docker Event Stream post exception ')
     STDERR.puts('EXCEPTION docker Event Stream post exception due to ' + e.to_s + ' ' + e.class.name)
-    client.finish unless client.nil?
+    client.finish if client.started?
     # @system.start_docker_event_listener(@event_listeners)
   end
 
   def add_event_listener(listener, event_mask = nil, container_name = nil, priority=200)
     event_listener = EventListener.new(listener, event_mask, container_name, priority)
-  @event_listeners[event_listener.hash_name] = 
-  { listener: event_listener , 
-    priority: event_listener.priority}
-  
-    STDERR.puts('ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
-    SystemDebug.debug(SystemDebug.container_events, 'ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')   
+    @events_mutex.synchronize {
+      @event_listeners[event_listener.hash_name] =
+      { listener: event_listener ,
+        priority: event_listener.priority}
+    }
+    SystemDebug.debug(SystemDebug.container_events, 'ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
   end
 
-  def rm_event_listener(listener)   
+  def rm_event_listener(listener)
     SystemDebug.debug(SystemDebug.container_events, 'REMOVED listenter ' + listener.class.name + ':' + listener.object_id.to_s)
-    @event_listeners.delete(listener.object_id.to_s) if @event_listeners.key?(listener.object_id.to_s)
-    STDERR.puts('REMOVED listenter ' + listener.class.name + ':' + listener.object_id.to_s)
+    @events_mutex.synchronize {
+      @event_listeners.delete(listener.object_id.to_s) if @event_listeners.key?(listener.object_id.to_s)
+    }
   end
 
   private
@@ -140,11 +149,11 @@ class DockerEventWatcher < ErrorsApi
     @parser ||= Yajl::Parser.new({:symbolize_keys => true})
     @parser
   end
-  
+
   def get_client
     client = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
-    client.continue_timeout = 3000
-    client.read_timeout = 3000
+    client.continue_timeout = 300
+    client.read_timeout = 300
     client
   end
 
@@ -160,26 +169,28 @@ class DockerEventWatcher < ErrorsApi
     r
   end
 
-   def is_valid_docker_event?(hash)
-     r = false
-     STDERR.puts('DOCKER SENT ARRAY') if hash.is_a?(Array) && ! hash.is_a?(Hash)
-     STDERR.puts('DOCKER SENT UNKNOWN ' + hash.to_s) unless hash.is_a?(Hash)
-     r = true if hash.is_a?(Hash)
-     r = false if hash.key?(:from) && hash[:from].length >= 64
-     r
-   end
-     
-  def trigger(hash)
+  def is_valid_docker_event?(hash)
+    r = false
+    STDERR.puts('DOCKER SENT ARRAY') if hash.is_a?(Array) && ! hash.is_a?(Hash)
+    STDERR.puts('DOCKER SENT UNKNOWN ' + hash.to_s) unless hash.is_a?(Hash)
+    r = true if hash.is_a?(Hash)
+    r = false if hash.key?(:from) && hash[:from].length >= 64
+    r
+  end
 
- #   @event_listeners.values.each do |listener_hash|
+  def trigger(hash)
     l = @event_listeners.sort_by { |k, v| v[:priority] }
-      l.each do |m|
+    l.each do |m|
       listener = m[1][:listener]
       unless listener.container_name.nil?
         next unless match_container(hash, listener.container_name)
       end
-      listener.trigger(hash)
-    # STDERR.puts('Triggered ' + hash.to_s + ' for prior ' + listener.priority.to_s)
+      begin
+        listener.trigger(hash)
+      rescue StandardError => e
+        SystemDebug.debug(SystemDebug.container_events, hash.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)
+        rm_event_listener(listener)
+      end
     end
   rescue StandardError => e
     SystemDebug.debug(SystemDebug.container_events, hash.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)

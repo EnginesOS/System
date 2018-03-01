@@ -9,3 +9,4 @@ variables:
  domain_name: _Engines_System(default_domain)
  hostname: control._Engines_System(default_domain)
  wild: no
+ install_target: default

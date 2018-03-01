@@ -9,7 +9,7 @@ def headers (content_type = nil)
   @headers = {'content_type' => 'application/json','ACCESS_TOKEN' => 'atest_randy', 'Accept' => '*/*'} if @headers.nil?
   @headers['content_type'] = content_type unless content_type.nil?
   @headers
-end
+  end
 
 def connection(content_type = nil)
   # STDERR.puts('open connec' )
@@ -18,7 +18,7 @@ def connection(content_type = nil)
   debug_response: true,
   ssl_verify_peer: false,
   persistent: true,
-  headers: headers)
+  headers: headers(content_type) )
 rescue Errno::EHOSTUNREACH
   @core_api.fix_registry_problem
   retry
@@ -42,7 +42,7 @@ def rest_get(path, params = nil, time_out = 120, _headers = nil)
   lheaders = headers
   lheaders.merge(_headers) unless _headers == nil
   lheaders.delete('Content-Type' ) if q.nil?
-  req = {time_out: time_out, method: :get, path: @route_prefix + path.to_s, headers: lheaders }
+  req = {time_out: time_out, method: :get, path: @route_prefix.to_s + path.to_s, headers: lheaders }
   req[:query] = q unless q.nil?
   r = connection.request(req)
   parse_xcon_response(r)
@@ -68,7 +68,7 @@ def rest_post(path, params = nil, lheaders = nil)
   begin
     SystemDebug.debug(SystemDebug.registry,'POST  ', path.to_s + '?' + params.to_s)
     lheaders = headers if lheaders.nil?
-    parse_xcon_response(connection.request({read_timeout: time_out, headers: lheaders, method: :post, path: @route_prefix + path.to_s, body: query_hash(params).to_json }))
+    parse_xcon_response(connection.request({read_timeout: time_out, headers: lheaders, method: :post, path: @route_prefix.to_s + path.to_s, body: query_hash(params).to_json }))
   rescue Excon::Error::Socket => e
   unless e.socket_error == EOFError
   #  STDERR.puts e.class.name

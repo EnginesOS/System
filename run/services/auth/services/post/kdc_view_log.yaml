@@ -1,0 +1,12 @@
+parent_engine: auth
+publisher_namespace: EnginesSystem
+type_path: logview
+service_handle: view_kdc_logs
+service_container_name: logview
+container_type: service
+persistent: true
+variables:
+ log_file_path: kdc.log
+ log_type: raw
+ log_name: 'Kdc Log'
+ ctype: service

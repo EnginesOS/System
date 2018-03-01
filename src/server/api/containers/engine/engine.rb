@@ -44,6 +44,20 @@ get '/v0/containers/engine/:engine_name/state' do
   end
 end
 
+# @method get_engine_uptime
+# @overload get '/v0/containers/engine/:engine_name/uptime'
+# get engine uptime
+# @return [Hash]
+# test cd /opt/engines/tests/engines_api/engine ; make engine
+get '/v0/containers/engine/:engine_name/uptime' do
+  begin
+    engine = get_engine(params[:engine_name])
+    { 'uptime' => engine.uptime }
+  rescue StandardError => e
+     send_encoded_exception(request: request, exception: e)
+  end
+end
+
 # @method get_engine_blueprint
 # @overload  get '/v0/containers/engine/:engine_name/blueprint'
 # get engine blueprint

@@ -38,9 +38,7 @@ if test -f "$VOLDIR/.dynamic_persistence"
 
 function first_run {
 if ! test -f /home/engines/run/flags/first_run_done
- then
-   touch /home/engines/run/flags/first_run_done
- else		
+ then  
 	if test -f /home/engines/scripts/engine/post_install.sh
 	 then 				
 	   echo "Has Post install"
@@ -49,6 +47,7 @@ if ! test -f /home/engines/run/flags/first_run_done
 			echo "Running Post Install"
 			/bin/bash /home/engines/scripts/engine/post_install.sh 							
 			touch /home/engines/run/flags/post_install.done
+			 touch /home/engines/run/flags/first_run_done		
 		 fi
 	fi
 fi	
@@ -92,17 +91,17 @@ fi
 function start_apache {
 mkdir -p /var/log/apache2/ >& /dev/null
 if test -f /home/engines/scripts/engine/blocking.sh 
- then
+ then   
    /usr/sbin/apache2ctl -DFOREGROUND &		  
    /home/engines/scripts/engine/blocking.sh  &
-   echo  -n " $!" >> $PID_FILE
- else		
+   echo  -n " $!" >> /home/engines/run/blocking.pid
+    else		
    /usr/sbin/apache2ctl -DFOREGROUND &
 fi
-sleep 2
-apache_pid=`cat /var/run/apache2/apache2.pid`
-echo -n " $apache_pid" >> $PID_FILE
-echo AP PID $apache_pid
+#sleep 2
+#apache_pid=`cat /var/run/apache2/apache2.pid`
+#echo -n " $apache_pid" >> $PID_FILE
+#echo AP PID $apache_pid
 }
 
 function configure_passenger {
@@ -137,10 +136,12 @@ mkdir /var/log/nginx >& /dev/null
 }
 
 function launch_app {
-/home/startwebapp.sh 
+
+/home/engines/scripts/start/startwebapp.sh 
+echo $! > $PID_FILE
  if test -f /home/engines/scripts/engine/blocking.sh
    then
-	/home/engines/scripts//engine/blocking.sh &
+	/home/engines/scripts/engine/blocking.sh &
 	blocking_pid=$!
 	echo -n " $blocking_pid " >>  $PID_FILE
  fi

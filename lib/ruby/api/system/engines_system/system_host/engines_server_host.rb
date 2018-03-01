@@ -35,7 +35,8 @@ module EnginesServerHost
   def halt_base_os(reason)
     log_error_mesg("Shutdown Due to:" + reason.to_s)
     File.delete(SystemConfig.BuildRunningParamsFile) if File.exist?(SystemConfig.BuildRunningParamsFile)
-    Thread.new { run_server_script('power_off_base_os') }
+   pthre = Thread.new { run_server_script('power_off_base_os') }
+    pthre[:name] = 'power_off_base_os thread'
   end
 
   def available_ram

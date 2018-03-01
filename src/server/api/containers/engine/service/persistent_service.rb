@@ -52,13 +52,15 @@ end
 put '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/replace' do
   begin
     hash = engine_service_hash_from_params(params)
-    unless SoftwareServiceDefinition.is_consumer_exportable?(hash)
-       raise EnginesException.new(warning_hash("Cannot import as single service", hash))
-      end 
+    unless SoftwareServiceDefinition.is_consumer_exportable?(hash)     
+       send_encoded_exception(request: request, 
+         exception: EnginesException.new(warning_hash("Cannot import as single service", hash)))
+    else 
     engine = get_engine(params[:engine_name])
     return_text(engine.import_service_data(
     {service_connection: engine_service_hash_from_params(params)},
     request.env['rack.input']))
+  end
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

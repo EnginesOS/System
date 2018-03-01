@@ -21,7 +21,8 @@ module BuilderSettings
   @@DefaultCountry = 'US'
   @@StopScript = '/home/engines/scripts/engine/custom_stop.sh'
   @@htaccessSourceDir = '/home/engines/htaccess_files/'
-  
+
+
   def SystemConfig.htaccessSourceDir
     @@htaccessSourceDir
   end

@@ -1,11 +1,17 @@
-#User		Group		UID	
-#Frameworks
-www-data	 www-data	22671
-ruby	 ruby			22672
-node	 node			22673
-python	 python			22674
-rstudio  rstudio		22675
+#Framework 		#User 			#UID	
+apache_php		www-data		22671
+base_c			www-data		22671
+tomcat			www-data		22671
+node 			node			22673
+ruby	 		ruby			22672
+rails4			ruby			22672
+rails5			ruby			22672
+sinatra			www-data		22671
+node	 		node			22673
+python	 		python			22674
+rstudio  		rstudio			22675
+x11				xuser			22672
+lua		  		lua				22676
+containers		N/A				22020
+apps 			N/A				22020
 #23000 -> applications assigned by volume manager
-lua  lua			22676
-containers	N/A			22020
-apps 	N/A			22020

@@ -18,7 +18,9 @@ module BuildDirSetup
     else
       read_web_port
     end
-    read_web_user
+    read_framework_user
+    init_container_info_dir
+
     @build_params[:mapped_ports] = @blueprint_reader.mapped_ports
     SystemDebug.debug(SystemDebug.builder, :ports, @build_params[:mapped_ports])
     SystemDebug.debug(SystemDebug.builder, :attached_services, @build_params[:attached_services])
@@ -55,12 +57,11 @@ module BuildDirSetup
   end
 
   def write_persistent_vol_maps
-
     persistent_dirs =  @blueprint_reader.persistent_dirs
     unless persistent_dirs.nil?
       content = ''
       persistent_dirs.each do |persistent|
-        content += persistent[:path] + ' ' + persistent[:volume_name] +"\n"
+        content += persistent[:path].to_s + ' ' + persistent[:volume_name].to_s + "\n"
       end
       write_software_file('/home/fs/vol_dir_maps', content)
     end
@@ -70,7 +71,7 @@ module BuildDirSetup
       content = ''
       persistent_files.each do |persistent|
         persistent[:volume_name] = @service_builder.default_vol if persistent[:volume_name].nil?
-          STDERR.puts('persistent[:path]:' +  persistent[:path].to_s + ' persistent[:volume_name]:' + persistent[:volume_name].to_s  + "\n")
+        STDERR.puts('persistent[:path]:' +  persistent[:path].to_s + ' persistent[:volume_name]:' + persistent[:volume_name].to_s  + "\n")
         content += persistent[:path] + ' ' + persistent[:volume_name] + "\n"
       end
       write_software_file('/home/fs/vol_file_maps', content)
@@ -93,6 +94,10 @@ module BuildDirSetup
     if @blueprint_reader.template_files
       @blueprint_reader.template_files.each do |template_hash|
         template_hash[:path].sub!(/^\/home/,'')
+       # unless template_hash[:path].start_with?('/home') || template_hash[:path].start_with?('/usr/local') 
+        #  template_hash[:path] = '/home/' + template_hash[:path]
+        #end
+        log_build_output('creating app template file:' + template_hash[:path].to_s)
         write_software_file('/home/engines/templates/' + template_hash[:path], template_hash[:content])
       end
     end
@@ -146,17 +151,21 @@ module BuildDirSetup
     ConfigFileWriter.write_templated_file(@templater, basedir + '/' + filename, content)
   end
 
-  def read_web_user
+  def read_framework_user
     if @blueprint_reader.framework == 'docker'
       @web_user = @blueprint_reader.cont_user
+      @cont_user_id =  @blueprint_reader.cont_user #fix me and add id
       #   STDERR.puts("Set web user to:" + @web_user.to_s)
     else
       log_build_output('Read Web User')
-      stef = File.open(basedir + '/home/stack.env', 'r')
+      stef = File.open(basedir + '/home/engines/etc/stack.env', 'r')
       while line = stef.gets do
         if line.include?('USER')
           i = line.split('=')
           @web_user = i[1].strip
+        elsif line.include?('UID=')
+          i = line.split('=')
+          @cont_user_id = i[1].strip
         end
       end
       stef.close
@@ -172,7 +181,7 @@ module BuildDirSetup
 
   def read_web_port
     log_build_output('Setting Web port')
-    stef = File.open(basedir + '/home/stack.env', 'r')
+    stef = File.open(basedir + '/home/engines/etc/stack.env', 'r')
     while line = stef.gets do
       if line.include?('PORT')
         i = line.split('=')
@@ -211,7 +220,7 @@ module BuildDirSetup
 
   def setup_framework_logging
     log_build_output('Setting up logging')
-    rmt_log_dir_var_fname = basedir + '/home/LOG_DIR'
+    rmt_log_dir_var_fname = basedir + '/home/engines/etc/LOG_DIR'
     if File.exist?(rmt_log_dir_var_fname)
       rmt_log_dir_varfile = File.open(rmt_log_dir_var_fname)
       rmt_log_dir = rmt_log_dir_varfile.read
@@ -222,5 +231,16 @@ module BuildDirSetup
     Dir.mkdir(local_log_dir) unless Dir.exist?(local_log_dir)
     rmt_log_dir_varfile.close
     ' -v ' + local_log_dir + ':' + rmt_log_dir + ':rw '
+  end
+
+  def init_container_info_dir
+    @core_api.init_container_info_dir(
+    {ctype: 'app',
+      name: @build_params[:engine_name],
+      keys: {
+      uid: @cont_user_id,
+      frame_work: @blueprint_reader.framework
+      }
+    })
   end
 end

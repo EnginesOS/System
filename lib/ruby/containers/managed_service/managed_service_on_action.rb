@@ -56,28 +56,28 @@ module ManagedServiceOnAction
     if service_configurations.is_a?(Array)
       service_configurations.each do |configuration|
         next if configuration[:no_save] == true
-        run_configurator(configuration)
+        run_configurator(configuration) unless configuration[:variables].nil?
       end
     end
     SystemDebug.debug(SystemDebug.container_events, :ON_StartCreate_MS_compl)
     @created = false
   end
 
-  def on_create(event_hash)
-    SystemDebug.debug(SystemDebug.container_events, :ON_Create_MS,event_hash)
-    @container_mutex.synchronize {
-      SystemDebug.debug(SystemDebug.container_events, :ON_Create_CALLED,event_hash)
-      @container_id = event_hash[:id]
-      @out_of_memory = false
-      @had_out_memory = false
-      @has_run = false
-      @container_api.apply_schedules(self)
-      @created = true
-      save_state
-      SystemDebug.debug(SystemDebug.container_events, :ON_Create_Finised, event_hash)
-    }
-    start_container
-  end
+#  def on_create(event_hash)
+#    SystemDebug.debug(SystemDebug.container_events, :ON_Create_MS,event_hash)
+#    @container_mutex.synchronize {
+#      SystemDebug.debug(SystemDebug.container_events, :ON_Create_CALLED,event_hash)
+#      @container_id = event_hash[:id]
+#      @out_of_memory = false
+#      @had_out_memory = false
+#      @has_run = false
+#      @container_api.apply_schedules(self)
+#      @created = true
+#      save_state
+#      SystemDebug.debug(SystemDebug.container_events, :ON_Create_Finised, event_hash)
+#    }
+#    start_container
+#  end
 
   def on_stop(what, exit_code = 0)
     @exit_code = exit_code

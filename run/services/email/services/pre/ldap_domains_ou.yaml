@@ -1,0 +1,10 @@
+parent_engine: email
+publisher_namespace: EnginesSystem
+type_path: ldap
+service_handle: domains
+container_type: service
+persistent: true
+variables:
+ type: ou
+ parent_engine: email
+ cn: domain

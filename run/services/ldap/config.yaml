@@ -1,4 +1,5 @@
 --- !ruby/object:ManagedService
+cont_user_id: 22030
 container_name: ldap
 publisher_namespace: EnginesSystem
 type_path: ldap
@@ -14,6 +15,12 @@ host_network: false
 soft_service: false
 environments: []
 kerberos: true
+mapped_ports:
+ ldap:
+  name: ldap
+  port: 389
+  publicFacing: false
+  external: 389
 image: _Engines_System(flavor)/ldap:_Engines_System(release)
 volumes: 
  ldap_db: 
@@ -26,7 +33,7 @@ volumes:
   remotepath: "/etc/ldap/slapd.d"
   localpath: "/var/lib/engines/services/ldap/slapd.d"
   permissions: "rw"
-mapped_ports:
+environments: []
 repo: na
 last_result: 
 setState: running
@@ -35,4 +42,5 @@ conf_register_site: false
 conf_register_dns: true
 dependant_on:
 - "auth"
+
 

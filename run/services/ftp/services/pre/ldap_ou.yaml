@@ -1,0 +1,9 @@
+parent_engine: ftp
+publisher_namespace: EnginesSystem
+type_path: ldap
+service_handle: ftpou
+container_type: service
+persistent: true
+variables:
+ type: ou
+ cn: ftp users

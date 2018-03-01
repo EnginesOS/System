@@ -12,23 +12,31 @@ module EnginesSystemDirs
   @@ServiceMapTemplateDir = '/opt/engines/etc/services/mapping/'
   @@ServiceTemplateDir = '/opt/engines/etc/services/providers/'
   @@EnginesTemp = '/opt/engines/tmp'
- # @@CertificatesDir = '/var/lib/engines/services/certs/public/certs/'
- 
+  @@InfoTreeDir = '/opt/engines/run/public/services'
+  # @@CertificatesDir = '/var/lib/engines/services/certs/public/certs/'
 
   @@DomainsFile = '/opt/engines/etc/domains/domains'
   @@timeZone_fileMapping = ' -v /etc/localtime:/etc/localtime:ro '
   @@NoRemoteExceptionLoggingFlagFile = '/opt/engines/run/system/flags/no_remote_exception_log'
   @@SSHStore = '/opt/engines/etc/ssh/keys'
-  
-  @@KeysDestination = '/home/engines/etc/ssl/keys/' 
-  @@CertAuthTop = '/var/lib/engines/services/certs/store/'
- # @@KeysDir ='/var/lib/engines/services/certs/public/keys/'
+
+  @@KeysDestination = '/home/engines/etc/ssl/keys/'
+  @@CertAuthTop = '/var/lib/engines/services/certs/store/live/'
+  # @@KeysDir ='/var/lib/engines/services/certs/public/keys/'
   @@CertificatesDestination = '/home/engines/etc/ssl/certs/'
-  
+  @@ServiceBackupScriptsRoot = '/home/engines/scripts/backup/'
+  def SystemConfig.ServiceBackupScriptsRoot
+    @@ServiceBackupScriptsRoot
+  end
+
+  def SystemConfig.InfoTreeDir
+    @@InfoTreeDir
+  end
+
   def SystemConfig.CertAuthTop
     @@CertAuthTop
   end
-  
+
   def SystemConfig.SSHStore
     @@SSHStore
   end
@@ -37,17 +45,17 @@ module EnginesSystemDirs
     @@CertificatesDestination
   end
 
-#  def SystemConfig.KeysDir
+  #  def SystemConfig.KeysDir
   #  @@KeysDir
- # end
+  # end
 
   def SystemConfig.KeysDestination
     @@KeysDestination
   end
 
- # def SystemConfig.CertificatesDir
- #   @@CertificatesDir
- # end
+  # def SystemConfig.CertificatesDir
+  #   @@CertificatesDir
+  # end
 
   def SystemConfig.ServiceMapTemplateDir
     @@ServiceMapTemplateDir

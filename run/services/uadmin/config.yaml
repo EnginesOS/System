@@ -1,4 +1,5 @@
 --- !ruby/object:ManagedService
+cont_user_id: 22033
 publisher_namespace: EnginesSystem
 type_path: uadmin
 container_name: uadmin
@@ -6,7 +7,7 @@ ctype: service
 persistent: true
 conf_self_start: true
 last_error: 
-memory: '32'
+memory: '232'
 hostname: uadmin
 domain_name: 
 environments: []

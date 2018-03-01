@@ -127,7 +127,7 @@ class ManagedContainer < Container
   :repository,\
   :data_uid,\
   :data_gid,\
-  :cont_userid,\
+  :cont_user_id,\
   :protocol,\
   :preffered_protocol,\
   :deployment_type,\

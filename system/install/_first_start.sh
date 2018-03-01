@@ -11,6 +11,7 @@ echo "Create $service"
 /opt/engines/bin/engines service $service create  > /dev/null
 /opt/engines/bin/engines service $service wait_for start 45 > /dev/null
 /opt/engines/bin/engines service $service wait_for_startup 120 > /dev/null
+/opt/engines/bin/engines service $service wait_for_startup 120 > /dev/null
 echo "$service started" 
 }
 
@@ -18,8 +19,7 @@ function destroy_service {
 echo "Destroy $service" 
 /opt/engines/bin/engines service $service stop  > /dev/null
 /opt/engines/bin/engines service $service wait_for stop 120 > /dev/null
-# echo -n "Service $service is " 
-#/opt/engines/bin/engines service $service state
+
 /opt/engines/bin/engines service $service destroy  > /dev/null
 /opt/engines/bin/engines service $service wait_for destroy 60 > /dev/null
  #echo -n "Service $service is " 

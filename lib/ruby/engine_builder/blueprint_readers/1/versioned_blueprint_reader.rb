@@ -91,7 +91,7 @@ class VersionedBlueprintReader < BluePrintReader
   end
 
   def continuous_deployment
-    @continuous_deployment = @blueprint[:software][:base][:continuous_deployment]
+    @continuous_deployment = true if @blueprint[:software][:base][:continuous_deployment] == 'true'
   end
 
   def first_run_url

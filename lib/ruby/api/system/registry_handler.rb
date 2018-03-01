@@ -18,9 +18,9 @@ class RegistryHandler < ErrorsApi
     raise EnginesException.new("PANIC cannot load resgitry service definition", registry_service) unless registry_service.is_a?(SystemService)
     #      restart_thread = Thread.new {
     registry_service.stop_container
+    registry_service.wait_for('stop', 20)
     registry_service.start_container
     force_registry_recreate unless registry_service.wait_for_startup('start', 30)
-
     SystemDebug.debug(SystemDebug.registry, :restarted_registry)
     true
   end

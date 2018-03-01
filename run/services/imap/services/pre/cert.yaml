@@ -12,3 +12,4 @@ variables:
  wild: no
  container_type: service
  parent_engine: imap
+ install_target: default

@@ -11,15 +11,18 @@ begin
   # require '/opt/engines/lib/ruby/system/deal_with_json.rb'
   require '/opt/engines/lib/ruby/api/public/engines_api/engines_api.rb'
 
-  require '/opt/engines/lib/ruby/api/system/first_run_wizard/first_run_wizard.rb'
+  require '/opt/engines/lib/ruby/first_run_wizard/first_run_wizard.rb'
 
   require 'objspace'
   require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
+
+  
   ObjectSpace.trace_object_allocations_start
   @events_stream = nil
   $engines_api = PublicApi.new(EnginesCore.new)
   STDERR.puts('++++')
-
+  require 'timers'
+  @timers = Timers::Group.new
   @@last_error = ''
 
   require 'warden'
@@ -56,6 +59,7 @@ FileUtils.touch('/home/engines/run/flags/startup_complete')
     set :sessions, true
     set :logging, true
     set :run, true
+    set :timeout, 260
     
  
     

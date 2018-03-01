@@ -1,4 +1,5 @@
 --- !ruby/object:ManagedService
+cont_user_id: 22026
 container_name: avahi
 publisher_namespace: EnginesSystem
 type_path: avahi

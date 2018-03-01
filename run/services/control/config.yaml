@@ -1,4 +1,5 @@
 --- !ruby/object:ManagedService
+cont_user_id: 22050
 container_name: control
 ctype: service
 persistent: true

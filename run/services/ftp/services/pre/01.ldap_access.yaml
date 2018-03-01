@@ -1,0 +1,11 @@
+parent_engine: ftp
+publisher_namespace: EnginesSystem
+type_path: ldap
+service_handle: ldapaccess
+container_type: service
+persistent: true
+variables:
+ type: access
+ ldap_password: _Engines_System(random(8))
+ cn: access
+ access_dn: cn=_Engines_Builder(engine_name),ou=hosts,ou=Engines,dc=engines,dc=internal 
