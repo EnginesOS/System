@@ -114,7 +114,8 @@ module SmServiceControl
       v = service_hash[:variables][k]
         STDERR.puts('TEMPLATEING Valu ' +  v.to_s)
       next if v.nil?
-      v.gsub!(/_Engines_Fields\([0-9a-z_A-Z]\)/) { |match|
+      v.gsub!(/_Engines_Fields\([0-9a-z_A-Z]*\)/) { |match|
+        STDERR.puts('MATCH ' + match.to_s)
         service_hash[:variables][k] = resolve_field_val(match)
            }
     end
