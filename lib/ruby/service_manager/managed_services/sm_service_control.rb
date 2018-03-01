@@ -110,7 +110,7 @@ module SmServiceControl
     end
     val
     end
-    service_hash[:variables].keys do | k|
+    service_hash[:variables].keys.each do | k|
       v = service_hash[:variables][k]
         STDERR.puts('TEMPLATEING Valu ' +  v.to_s)
       next if v.nil?
