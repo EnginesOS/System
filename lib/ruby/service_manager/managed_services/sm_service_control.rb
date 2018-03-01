@@ -8,6 +8,7 @@ module SmServiceControl
   def create_and_register_service(service_hash) # , no_engine = false)
     set_top_level_service_params(service_hash, service_hash[:parent_engine])
     SystemDebug.debug(SystemDebug.services, :sm_create_and_register_service, service_hash)
+    resolve_field_template(service_hash)
     #register with Engine
     unless service_hash[:soft_service] == true && ! is_service_persistent?(service_hash)
       system_registry_client.add_to_managed_engines_registry(service_hash)
@@ -89,10 +90,30 @@ module SmServiceControl
     # STDERR.puts('UPDAED ' + params.to_s)
     system_registry_client.update_attached_service(params)
   end
-
+ 
   def clear_service_from_registry(service) 
     system_registry_client.clear_service_from_registry(service)
   rescue EnginesException => e
     raise e unless e.level == :warning
   end
+  
+  def resolve_field_template(service_hash)
+    def resolve_field_val(fld_name)
+      val=''
+      unless fld_name.nil?
+        fld_name = fld_name.to_sym
+        if service_hash[:variables].key?(fld_name)
+          val = service_hash[:variables][fld_name]
+      end
+    end
+    val
+    end
+    service_hash[:variables].each_pair do | k, v|
+      template.gsub!(/_Engines_Fields\([0-9a-z_A-Z]\)/) { |match|
+        resolve_field_val(match)
+           }
+    end
+  
+  end
+
 end
