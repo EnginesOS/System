@@ -106,6 +106,7 @@ module SmServiceControl
     service_hash[:variables].keys.each do | k|
       STDERR.puts('TEMPLATEING Valu ' +  service_vars[k].to_s)
       next if service_vars[k].nil?
+      next if service_vars[k].frozen?
       service_vars[k].gsub!(/_Engines_Fields\([0-9a-z_A-Z]*\)/) { |match|
         resolve_field_val(match, service_vars)
       }
