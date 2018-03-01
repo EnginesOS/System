@@ -126,11 +126,12 @@ module SmServiceControl
     STDERR.puts('RESOLVE FLD ' + fld_name.to_s)
     fld = fld_name.sub(/_Engines_Fields\(/, '')
     fld.sub!(/[\)]/, '')
-    STDERR.puts('RESOLVED FLD ' + fld.to_s + ' = ' + new_vars[fld].to_s)
+  
     val=''
     unless fld.nil?
       fld = fld.to_sym
       if new_vars.key?(fld)
+        STDERR.puts('RESOLVED FLD ' + fld.to_s + ' = ' + new_vars[fld].to_s)
         val = new_vars[fld]
       end
     end
