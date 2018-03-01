@@ -9,7 +9,6 @@ module SmServiceControl
   def create_and_register_service(service_hash) # , no_engine = false)
     set_top_level_service_params(service_hash, service_hash[:parent_engine])
     SystemDebug.debug(SystemDebug.services, :sm_create_and_register_service, service_hash)
-    resolve_field_template(service_hash)
     #register with Engine
     unless service_hash[:soft_service] == true && ! is_service_persistent?(service_hash)
       system_registry_client.add_to_managed_engines_registry(service_hash)
@@ -19,6 +18,7 @@ module SmServiceControl
     unless service_hash.key?(:shared) && service_hash[:shared] == true
       # add to service and register with service
       if is_service_persistent?(service_hash)
+        resolve_field_template(service_hash)
         SystemDebug.debug(SystemDebug.services, :create_and_register_service_persistr, service_hash)
         begin
           add_to_managed_service(service_hash)
