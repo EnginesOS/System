@@ -99,29 +99,26 @@ module SmServiceControl
   end
 
   def resolve_field_template(service_hash)
-    new_vars = service_hash[:variables].dup
+    service_vars = service_hash[:variables]
 
-    STDERR.puts('RESOLVING ' + new_vars.to_s)
+    STDERR.puts('RESOLVING ' + service_vars.to_s)
 
     service_hash[:variables].keys.each do | k|
-      v = new_vars[k]
-      STDERR.puts('TEMPLATEING Valu ' + v.to_s)
-      next if v.nil?
-      v.gsub!(/_Engines_Fields\([0-9a-z_A-Z]*\)/) { |match|
+      STDERR.puts('TEMPLATEING Valu ' +  service_vars[k].to_s)
+      next if service_vars[k].nil?
+      service_vars[k].gsub!(/_Engines_Fields\([0-9a-z_A-Z]*\)/) { |match|
         begin
-        resolve_field_val(match, new_vars)
+        resolve_field_val(match, service_vars)
           rescue Exception =>e
             STDERR.puts(' Excetin ' +e.to_t)
           STDERR.puts(e.backtrace.to_s)
         end
       }
-      STDERR.puts('TEMPLATEd Valu ' + v.to_s)
-      new_vars[k] = v
+      STDERR.puts('TEMPLATEd Valu ' + service_vars[k].to_s)    
     end
-    service_hash[:variables] = new_vars
   end
 
-  def resolve_field_val(fld_name, new_vars)
+  def resolve_field_val(fld_name, service_vars)
     begin
     STDERR.puts('RESOLVE FLD ' + fld_name.to_s)
     fld = fld_name.sub(/_Engines_Fields\(/, '')
@@ -130,9 +127,9 @@ module SmServiceControl
     val=''
     unless fld.nil?
       fld = fld.to_sym
-      if new_vars.key?(fld)
-        STDERR.puts('RESOLVED FLD ' + fld.to_s + ' = ' + new_vars[fld].to_s)
-        val = new_vars[fld]
+      if service_vars.key?(fld)
+        STDERR.puts('RESOLVED FLD ' + fld.to_s + ' = ' + service_vars[fld].to_s)
+        val = service_vars[fld]
       end
     end
     val
