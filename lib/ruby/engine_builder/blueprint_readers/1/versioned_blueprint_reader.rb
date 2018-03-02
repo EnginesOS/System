@@ -65,7 +65,7 @@ class VersionedBlueprintReader < BluePrintReader
   end
 
   def read_web_port_overide
-    if @blueprint[:software][:base].key?(:framework_port_overide)
+    if @blueprint[:software][:base].key?(:framework_port_override)
       @web_port = @blueprint[:software][:base][:framework_port_override]
       @web_port = nil if @web_port == 0
     end
