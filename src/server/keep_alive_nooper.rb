@@ -5,8 +5,10 @@ class KeepAliveNooper
     @no_op = {no_op: true}.to_json
     @timers = Timers::Group.new
     @run = true
+    @cr = "\n"
+    STDERR.puts('INIT timer')
 end
-def run(out)  
+def run(out)
   @timer_thread = Thread.new do
     run_timer(out)
   end
@@ -34,7 +36,7 @@ def send(out)
   else  
     begin
     out << @no_op
-    out << "\n"
+    out << @cr
     rescue
       cancel
     end
