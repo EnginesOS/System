@@ -1,0 +1,14 @@
+
+RUN touch /home/app/npm-debug.log &&|
+	chown node /home/app/npm-debug.log
+
+ADD home/start.bash /home/start.bash
+
+USER node
+
+WORKDIR /home/app
+
+	 
+
+
+
