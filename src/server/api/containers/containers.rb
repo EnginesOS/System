@@ -21,7 +21,11 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
       timer.run(out)
       timer
     end
+    
+    timer = nil
+    
     begin
+    
       stream :keep_open do | out |
         begin     
           has_data = true
@@ -48,13 +52,16 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
               next
             end
           end
+        finialise_events_stream(events_stream, timer)
         rescue StandardError => e
           STDERR.puts('EVENTS Exception' + e.to_s + ':' + e.class.name + e.backtrace.to_s)
           finialise_events_stream(events_stream, timer)
         end
       end
+    timer.cancel unless timer.nil? 
     rescue StandardError => e
       STDERR.puts('Stream EVENTS Exception' + e.to_s + e.backtrace.to_s)
+    timer.cancel unless timer.nil?
     end
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
