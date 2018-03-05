@@ -17,7 +17,7 @@ module ConfigureServicesBackup
         SystemDebug.debug(SystemDebug.builder,script_src_file,destdir )
         next unless File.file?(script_src_dir + '/' + script_src_file)
         script_src = File.read(script_src_dir + '/' + script_src_file)
-        templ = Template.new(nil, nil)
+        templ = Templater.new(nil, nil)
         script_src = templ.apply_hash_variables(script_src, service)
         templ = nil
         write_software_script_file(destdir + script_src_file, script_src)
