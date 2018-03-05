@@ -14,8 +14,8 @@ for directory in $*
        dest=`ls -la /home/app/$directory |cut -f2 -d'>'`
        echo " chmod -R gu+rw $dest ;chgrp $data_gid -R $dest"
        ls -la $dest
-      # chmod -R gu+rw $dest
-      # chgrp $data_gid -R $dest
+      #chmod -R gu+rw $dest
+      #chgrp $data_gid -R $dest
     elif [ ! -d /home/app/$directory ] 
       then 
         echo " mkdir  -p /home/app/$directory "
