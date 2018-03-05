@@ -14,8 +14,9 @@ for directory in $*
        dest=`ls -la /home/app/$directory |cut -f2 -d'>'`
        echo "Soft link  chmod -R gu+rw $dest ;chgrp $data_gid -R $dest"
        ls -la $dest
-      #chmod -R gu+rw $dest
-      #chgrp $data_gid -R $dest
+       ls -la /home/app/$directory 
+      #no chmod -R gu+rw $dest
+      #no chgrp $data_gid -R $dest
     elif [ ! -d /home/app/$directory ] 
       then 
         echo "Create Dir  -p /home/app/$directory "
