@@ -6,11 +6,12 @@ class KeepAliveNooper
     @timers = Timers::Group.new
     @run = true
     @cr = "\n"
-    STDERR.puts('INIT timer')
+   
 end
 def run(out)
   @timer_thread = Thread.new do
     run_timer(out)
+    STDERR.puts('NEW NOOPALOOPER Thread')
   end
   @timer_thread[:name] = 'noop looper'  
 end
@@ -24,7 +25,8 @@ end
 def run_timer(out)  
   while @run == true
     send(out)
-    sleep 25    
+    sleep 25   
+    STDERR.puts('SLEEP 25 ')
   end
 # @timer = @timers.every(25) { send(out) }      
 #  loop { timers.wait }        
