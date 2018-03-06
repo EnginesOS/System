@@ -31,16 +31,18 @@ for directory in $*
         chmod -R gu+rw /home/app/$directory  
     fi   
   dirs=`find /home/app/$directory -type d -print0`
-  echo set dir perms
-    if ! test -z "$dirs" 
-      then
-        find /home/app/$directory -type d -print0 | xargs -0 chmod 775
-    fi        
+ 
   files=`find /home/app/$directory -type f -print0`
   echo set file perms
     if ! test -z "$files" 
       then
-        find /home/app/$directory -type f -print0 | xargs -0 chmod 664
+       # find /home/app/$directory -type f -print0 | xargs -0 chmod 664
+       chmod 664 -R /home/app/$directory
     fi
        
+        echo set dir perms
+    if ! test -z "$dirs" 
+      then
+        find /home/app/$directory -type d -print0 | xargs -0 chmod 775
+    fi        
 done
