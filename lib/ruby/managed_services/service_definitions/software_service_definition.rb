@@ -109,6 +109,7 @@ class SoftwareServiceDefinition
           next unless service_hash[:variables].key?(value_name.to_sym)
           value = service_hash[:variables][value_name.to_sym]
           owner[1] = path + value_name
+          next unless service_variables.key?(value_name.to_sym)
           immutable = service_variables[value_name.to_sym][:immutable]
           build_time_only = service_variables[value_name.to_sym][:build_time_only]
           setatrun = service_variables[value_name.to_sym][:ask_at_build_time]
