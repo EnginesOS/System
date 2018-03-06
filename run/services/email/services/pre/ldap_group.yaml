@@ -1,10 +1,9 @@
 parent_engine: email
 publisher_namespace: EnginesSystem
 type_path: ldap
-service_handle: domains
+service_handle: emailgroup
 container_type: service
 persistent: true
 variables:
- type: ou
- parent_engine: email
- cn: domains
+ type: group
+ cn: "email users"
