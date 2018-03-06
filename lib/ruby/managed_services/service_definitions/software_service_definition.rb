@@ -106,6 +106,7 @@ class SoftwareServiceDefinition
             env_name = value_name
             STDERR.puts('Set env name to val name !')
           end
+          next unless service_hash[:variables].key?(value_name.to_sym)
           value = service_hash[:variables][value_name.to_sym]
           owner[1] = path + value_name
           immutable = service_variables[value_name.to_sym][:immutable]
