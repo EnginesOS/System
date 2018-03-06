@@ -1,7 +1,7 @@
 parent_engine: ivpn
 publisher_namespace: EnginesSystem
 type_path: ldap
-service_handle: ldapaccess
+service_handle: access
 container_type: service
 persistent: true
 variables:
