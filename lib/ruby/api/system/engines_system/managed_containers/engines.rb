@@ -50,9 +50,11 @@ module Engines
   end
 
   def set_engine_hostname_details(container, params)
-    #    p :set_engine_network_properties
-    #    p container.container_name
-    #    p params
+        p :set_engine_network_properties
+        p container.container_name
+        p params
+    #FIXME change port
+    #FIXME change proto    
     #FIXME [:hostname]  silly host_name from gui drop it
     if params.key?(:host_name)
       hostname = params[:host_name]

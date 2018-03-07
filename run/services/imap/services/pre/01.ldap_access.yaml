@@ -1,4 +1,4 @@
-parent_engine: ftp
+parent_engine: imap
 publisher_namespace: EnginesSystem
 type_path: ldap_access
 service_handle: ldapaccess
@@ -7,5 +7,5 @@ persistent: true
 variables:
  type: access
  ldap_password: _Engines_System(random(8))
- cn: ftp
- access_dn: uid=ftp,ou=hosts,ou=Engines,dc=engines,dc=internal 
+ cn: imap
+ access_dn: uid=imap,ou=hosts,ou=Engines,dc=engines,dc=internal 

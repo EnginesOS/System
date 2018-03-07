@@ -14,7 +14,7 @@ module BuilderSettings
   @@CustomApacheConfFile = '/home/engines/configs/apache2/extra.conf'
 #  @@SetupParamsScript = '/bin/bash /home/setup_params.sh'
   @@ActionatorDir = '/home/engines/scripts/actionators/'
-  @@BackupScriptsRoot = '/home/services/'
+  @@BackupScriptsRoot = '/home/engines/services/'
   @@BackupScriptsSrcRoot = '/opt/engines/system/templates/services/backup/'
   @@LanguageFile = '/opt/engines/etc/locale'
   @@DefaultLanguage = 'en'

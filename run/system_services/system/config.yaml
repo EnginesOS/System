@@ -14,10 +14,6 @@ environments:
 - !ruby/object:EnvironmentVariable
  name: BUG_REPORTS_SERVER
  value: http://buglog.prod.engines.org
- setatrun: false
-- !ruby/object:EnvironmentVariable
- name: ContUser
- value: engines
  setatrun: false 
 - !ruby/object:EnvironmentVariable
  name: CONTROL_IP
