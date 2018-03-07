@@ -38,6 +38,7 @@ module SmAttachStaticServices
       if service_hash.is_a?(Hash)
         SystemDebug.debug(SystemDebug.services, :post_entry_service_hash, service_hash)
         new_envs = SoftwareServiceDefinition.service_environments(service_hash)
+        STDERR.puts('NEW ENVS ' + new_envs.to_s +  ' from ' + service_hash.to_s)
         EnvironmentVariable.merge_envs(new_envs, container.environments) unless new_envs.nil?
       end
 

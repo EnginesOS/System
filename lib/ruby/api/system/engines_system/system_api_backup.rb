@@ -54,18 +54,6 @@ module SystemApiBackup
        build_thr.join
       end
     end
-    #    reg = loadSystemService('system')
-    #    params = {
-    #          container: reg,
-    #          data_stream: out,
-    #          command_line: ['/home/services/restore.sh'],
-    #          log_error: true }
-    #    result = @engines_api.exec_in_container(params)
-    #    if result[:result] != 0
-    #          result
-    #        else
-    #          true
-    #        end
   end
 
   def backup_service_data(service_name, out)
