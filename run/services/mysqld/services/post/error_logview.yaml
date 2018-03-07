@@ -1,4 +1,4 @@
-parent_engine: ftp
+parent_engine: mysqld
 publisher_namespace: EnginesSystem
 type_path: logview
 service_handle: ftp_ldap_logview
@@ -6,7 +6,7 @@ service_container_name: logview
 container_type: service
 persistent: false
 variables:
- log_file_path: proftpd/ldap.log
+ log_file_path: error.log
  log_type: raw
- log_name: 'Auth log'
+ log_name: 'Mysqld log'
  ctype: service
