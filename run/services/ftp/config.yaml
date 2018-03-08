@@ -23,6 +23,11 @@ volumes:
   remotepath: "/ftp/ro/"
   localpath: "/var/lib/engines/apps/"
   permissions: "rw"
+ homes: 
+  name: homes
+  remotepath: "/home/users/"
+  localpath: "/var/lib/engines/home/"
+  permissions: "rw" 
 port: 
 mapped_ports:
  ftp:
