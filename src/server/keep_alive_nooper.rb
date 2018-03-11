@@ -8,13 +8,13 @@ class KeepAliveNooper
     @cr = "\n"
    
 end
-#def run(out)
+def run(out)
 #  @timer_thread = Thread.new do
-#    run_timer(out)
+    run_timer(out)
 #    STDERR.puts('NEW NOOPALOOPER Thread')
 #  end
 #  @timer_thread[:name] = 'noop looper'  
-#end
+end
 
 def cancel
   @timer.cancel
