@@ -29,7 +29,7 @@ def run_timer(out)
 #    STDERR.puts('SLEEP 25 ')
 #  end
  @timer = @timers.every(25) { send(out) }      
-  loop { timers.wait }        
+  loop { @timers.wait }        
 end
   
 def send(out)
