@@ -9,27 +9,27 @@ class KeepAliveNooper
    
 end
 def run(out)
-  @timer_thread = Thread.new do
+#  @timer_thread = Thread.new do
     run_timer(out)
-    STDERR.puts('NEW NOOPALOOPER Thread')
-  end
-  @timer_thread[:name] = 'noop looper'  
+#    STDERR.puts('NEW NOOPALOOPER Thread')
+#  end
+#  @timer_thread[:name] = 'noop looper'  
 end
 
 def cancel
-  #@timer.cancel
+  @timer.cancel
   @run = false  
-  @timer_thread.exit unless @timer_thread.nil?     
+  #@timer_thread.exit unless @timer_thread.nil?     
 end
 
 def run_timer(out)  
-  while @run == true
-    send(out)
-    sleep 25   
-    STDERR.puts('SLEEP 25 ')
-  end
-# @timer = @timers.every(25) { send(out) }      
-#  loop { timers.wait }        
+#  while @run == true
+#    send(out)
+#    sleep 25   
+#    STDERR.puts('SLEEP 25 ')
+#  end
+ @timer = @timers.every(25) { send(out) }      
+  loop { @timers.wait }        
 end
   
 def send(out)

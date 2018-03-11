@@ -108,7 +108,7 @@ module EngineServiceOperations
     unless container.is_running?
       service_manager.load_service_pubkey(container, cmd)
     else
-      args = ['/home/get_pubkey.sh', cmd]
+      args = ['/home/engines/scripts/system/get_pubkey.sh', cmd]
       result = exec_in_container({:container => container, :command_line => args, :log_error => true, :timeout =>30 , :data=>''})
       if result.is_a?(Hash) && result[:result] == 0
         result[:stdout]
