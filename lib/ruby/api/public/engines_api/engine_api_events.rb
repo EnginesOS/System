@@ -8,6 +8,7 @@ module EngineApiEvents
 
     def write_event(hash)
       unless hash.nil?
+        STDERR.puts('event ' + hash.to_s)
         @wr.write(hash.to_json)
         @wr.write("\n")
         @wr.flush
