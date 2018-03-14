@@ -36,7 +36,8 @@ module DomainOperations
       service_hash = {
         parent_engine: 'system',
         variables: {
-        domain_name: params[:domain_name]
+        domain_name: params[:domain_name],
+        type: 'domain'
         },
         service_handle: params[:domain_name] + '_dns',
         container_type: 'system',
@@ -44,10 +45,10 @@ module DomainOperations
         type_path: 'domains'
       }
       if params[:internal_only]
-        service_hash[:variables][:ip_type] = 'lan'
+        service_hash[:variables][:wan_or_lan] = 'lan'
         service_hash[:variables][:ip] =  get_lan_ip_for_hosted_dns()
       else
-        service_hash[:variables][:ip_type] = 'wan'
+        service_hash[:variables][:wan_or_lan] = 'wan'
         service_hash[:variables][:ip] =  get_ext_ip_for_hosted_dns()
       end
       #   STDERR.puts(' ADD DOMAIN VARIABLE ' + service_hash.to_s)
@@ -68,7 +69,8 @@ module DomainOperations
         type_path: 'domains',
         service_handle: params[:domain_name] + '_dns',
         variables: {
-        domain_name: params[:domain_name]
+        domain_name: params[:domain_name],
+        type: 'domain' 
         }
       }
     if params[:self_hosted]
@@ -80,11 +82,11 @@ module DomainOperations
         service_hash[:service_handle] = params[:domain_name] + '_dns'
       end
 
-      if params[:internal_only]
-        service_hash[:variables][:ip_type] = 'lan'
+      if params[:internal_only]        
+        service_hash[:variables][:wan_or_lan] = 'lan'
         service_hash[:variables][:ip] = get_lan_ip_for_hosted_dns()
       else
-        service_hash[:variables][:ip_type] = 'wan'
+        service_hash[:variables][:wan_or_lan] = 'wan'
         service_hash[:variables][:ip] = get_ext_ip_for_hosted_dns()
       end
       STDERR.puts(' COMPLETEd DNS HASH ' + service_hash.to_s )
