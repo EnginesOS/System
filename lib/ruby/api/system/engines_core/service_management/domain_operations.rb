@@ -30,7 +30,7 @@ module DomainOperations
   end
 
   def add_domain(params)
-    # STDERR.puts(' ADD DOMAIN VARIABLE ' + params.to_s)
+     STDERR.puts(' ADD DOMAIN VARIABLE ' + params.to_s)
     DNSHosting.add_domain(params)
     if params[:self_hosted]
       service_hash = {
@@ -51,7 +51,7 @@ module DomainOperations
         service_hash[:variables][:wan_or_lan] = 'wan'
         service_hash[:variables][:ip] =  get_ext_ip_for_hosted_dns()
       end
-      #   STDERR.puts(' ADD DOMAIN VARIABLE ' + service_hash.to_s)
+         STDERR.puts(' ADD DOMAIN VARIABLES' + service_hash.to_s)
       create_and_register_service(service_hash)
     else
       true
