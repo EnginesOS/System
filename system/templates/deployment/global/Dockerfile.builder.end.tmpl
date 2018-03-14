@@ -10,7 +10,7 @@ VOLUME /var/log/
 
 ADD home/start.bash /home/start.bash
 
-RUN /home/post_build_clean.sh 
+RUN /home/engines/scripts/build/post_build_clean.sh
 	
 
 USER $ContUser
