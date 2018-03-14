@@ -41,13 +41,13 @@ module DomainOperations
         service_handle: params[:domain_name] + '_dns',
         container_type: 'system',
         publisher_namespace: 'EnginesSystem',
-        type_path: 'dns'
+        type_path: 'domains'
       }
       if params[:internal_only]
         service_hash[:variables][:ip_type] = 'lan'
         service_hash[:variables][:ip] =  get_lan_ip_for_hosted_dns()
       else
-        service_hash[:variables][:ip_type] = 'gw'
+        service_hash[:variables][:ip_type] = 'wan'
         service_hash[:variables][:ip] =  get_ext_ip_for_hosted_dns()
       end
       #   STDERR.puts(' ADD DOMAIN VARIABLE ' + service_hash.to_s)
@@ -65,7 +65,7 @@ module DomainOperations
         parent_engine: 'system',
         container_type: 'system',
         publisher_namespace: 'EnginesSystem',
-        type_path: 'dns',
+        type_path: 'domains',
         service_handle: params[:domain_name] + '_dns',
         variables: {
         domain_name: params[:domain_name]
@@ -84,7 +84,7 @@ module DomainOperations
         service_hash[:variables][:ip_type] = 'lan'
         service_hash[:variables][:ip] = get_lan_ip_for_hosted_dns()
       else
-        service_hash[:variables][:ip_type] = 'gw'
+        service_hash[:variables][:ip_type] = 'wan'
         service_hash[:variables][:ip] = get_ext_ip_for_hosted_dns()
       end
       STDERR.puts(' COMPLETEd DNS HASH ' + service_hash.to_s )
@@ -120,7 +120,7 @@ module DomainOperations
         service_handle: domain_name + '_dns',
         container_type: 'system',
         publisher_namespace: 'EnginesSystem',
-        type_path: 'dns',
+        type_path: 'domains',
       }
       dettach_service(service_hash)
     end
