@@ -39,5 +39,5 @@ conf_zero_conf: false
 conf_self_start: true
 dependant_on:
 - "dns"
-- "auth"
 - "syslog"
+- "radius"
