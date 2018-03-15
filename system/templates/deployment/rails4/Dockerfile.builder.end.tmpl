@@ -7,11 +7,11 @@ VOLUME /var/log/
 RUN ln -s /home/app /var/www
 
 #do this after chmods and chowns
-ADD home/start.bash /home/start.bash
+ADD home/start.sh /home/engines/scripts/startup/start.sh
 
 USER $ContUser
 
-CMD ["/home/start.bash"]
+CMD ["/home/engines/scripts/startup/start.sh"]
 
 
 

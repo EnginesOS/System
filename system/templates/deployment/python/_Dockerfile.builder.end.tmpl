@@ -1,10 +1,10 @@
 RUN ln -s /home/app /var/www
 
-ADD home/start.bash /home/start.bash	
+ADD home/start.sh /home/engines/scripts/startup/start.sh
 
 USER www-data
 
 WORKDIR /home/app
 
-CMD ["/home/start.bash"]
+CMD ["/home/engines/scripts/startup/start.sh"]
 	 

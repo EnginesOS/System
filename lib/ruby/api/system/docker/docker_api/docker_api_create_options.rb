@@ -134,7 +134,7 @@ module DockerApiCreateOptions
   def set_entry_point(container, top_level)
     command =  container.command
     unless container.conf_self_start
-      command = ['/bin/bash' ,'/home/start.bash'] if container.command.nil?
+      command = ['/bin/bash' ,'/home/engines/scripts/startup/start.sh'] if container.command.nil?
       top_level['Entrypoint'] = command
     end
   end

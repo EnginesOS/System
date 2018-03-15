@@ -15,12 +15,12 @@ USER www-data
 ##############
 ### Must disable ruby login
 ###
-ADD home/start.bash /home/start.bash
+ADD home/start.sh /home/engines/scripts/startup/start.sh
 	
 VOLUME /var/log/
 
 WORKDIR /home/app
 
-CMD ["/home/start.bash"]
+CMD ["/home/engines/scripts/startup/start.sh"]
 
 
