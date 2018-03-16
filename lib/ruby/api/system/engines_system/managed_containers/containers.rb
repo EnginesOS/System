@@ -37,7 +37,7 @@ module Containers
     end
     unlock_container_conf_file(state_dir)
     cache_engine(container, ts) unless cache_update_ts(container, ts)
-    STDERR.puts('saved ' + container.container_name + ':' )
+    STDERR.puts('saved ' + container.container_name + ':' + caller[1].to_s + ':' + caller[2].to_s)
     true
   rescue StandardError => e
     unlock_container_conf_file(state_dir) if File.exist?(state_dir)
