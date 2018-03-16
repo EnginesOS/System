@@ -14,7 +14,11 @@ class ContainerStateFiles
       SystemUtils.log_error_mesg('Running exist', service_name)
     end
   end
-
+ 
+  def self.container_secretsdir(container)
+    '/var/lib/engines/secrets/' + container.ctype + '/' + container.container_name
+  end
+  
   def self.schedules_dir(container)
     self.container_state_dir(container) + '/schedules/'
   end

@@ -1,6 +1,6 @@
 module SystemVersion
   @@api_version = '0.3'
-  @@engines_system_version = '0.4'
+  @@engines_system_version = '0.5'
   def SystemConfig.api_version
     @@api_version
   end

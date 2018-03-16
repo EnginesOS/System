@@ -3,10 +3,10 @@ VOLUME /var/log/
 RUN  mkdir -p  /var/www/ ;\
 	 ln -s /home/app /var/www/html/
 
-ADD home/start.bash /home/start.bash
+ADD home/start.sh /home/engines/scripts/startup/start.sh
 
 USER $ContUser
 
-CMD ["/home/start.bash"]
+CMD ["/home/engines/scripts/startup/start.sh"]
 
 
