@@ -118,7 +118,7 @@ def registry_mounts(container)
 end
 def  mount_string_for_secret(secret)
   '/var/lib/engines/secrets/' + secret[:container_type] + 's/' +  secret[:parent_engine] + '/' + secret[:service_handle] +\
-    '/home/.secrets/'  + secret[:service_handle] + ':ro'
+    ':/home/.secrets/'  + secret[:service_handle] + ':ro'
 end
 def secrets_mounts(container)
   mounts = []
