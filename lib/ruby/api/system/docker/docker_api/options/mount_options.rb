@@ -13,8 +13,13 @@ def volumes_mounts(container)
       mounts.push(mount_string(volume))
     end
   end
+  
   sm = system_mounts(container)
   mounts.concat(sm) unless sm.nil?
+  
+  secrets = secrets_mounts(container)
+  mounts.concat(secrets) unless secrets.nil?
+  
   unless container.ctype == 'system_service'
     rm = registry_mounts(container)
     mounts.concat(rm) unless rm.nil?
@@ -107,6 +112,27 @@ def registry_mounts(container)
     end
   else
     STDERR.puts('Registry mounts was' + vols.to_s)
+  end
+
+  mounts
+end
+def  mount_string_for_secret(container, secret)
+  '/var/lib/engines/secrets/' + container.ctype + 's/' +  container.container_name + '/' + secret[:service_handle] +\
+    '/home/.secrets/'  + secret[:service_handle] + ':ro'
+end
+def secrets_mounts_mounts(container)
+  mounts = []
+  vols = container.attached_services(
+  {type_path: 'secrets'
+  })
+  if vols.is_a?(Array)
+    vols.each do | vol |
+      
+      v_str = mount_string_from_hash(vol)
+      mounts.push(v_str)
+    end
+  else
+    STDERR.puts('Secrets mounts was' + vols.to_s)
   end
 
   mounts
