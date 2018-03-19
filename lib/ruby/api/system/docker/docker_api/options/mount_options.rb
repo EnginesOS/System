@@ -120,19 +120,18 @@ def  mount_string_for_secret(container, secret)
   '/var/lib/engines/secrets/' + container.ctype + 's/' +  container.container_name + '/' + secret[:service_handle] +\
     '/home/.secrets/'  + secret[:service_handle] + ':ro'
 end
-def secrets_mounts_mounts(container)
+def secrets_mounts(container)
   mounts = []
-  vols = container.attached_services(
+  secrets = container.attached_services(
   {type_path: 'secrets'
   })
-  if vols.is_a?(Array)
-    vols.each do | vol |
-      
-      v_str = mount_string_from_hash(vol)
-      mounts.push(v_str)
+  if secrets.is_a?(Array)
+    secrets.each do | secret |  
+      m_str = mount_string_for_secret(secret)
+      mounts.push(m_str)
     end
   else
-    STDERR.puts('Secrets mounts was' + vols.to_s)
+    STDERR.puts('Secrets mounts was' + secrets.to_s)
   end
 
   mounts
