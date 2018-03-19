@@ -123,7 +123,6 @@ def  mount_string_for_secret(secret)
     src_cname =  secret[:service_owner]
     src_ctype =  secret[:container_type]
     sh = secret[:service_owner_handle]
-      
   else
     src_cname =  secret[:parent_engine]
     src_ctype =  secret[:container_type]
