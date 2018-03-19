@@ -107,7 +107,7 @@ def registry_mounts(container)
   })
   if vols.is_a?(Array)
     vols.each do | vol |
-      v_str = mount_string_from_hash(secret)
+      v_str = mount_string_from_hash(vol)
       mounts.push(v_str)
     end
   else
