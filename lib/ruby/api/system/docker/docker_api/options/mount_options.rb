@@ -107,7 +107,7 @@ def registry_mounts(container)
   })
   if vols.is_a?(Array)
     vols.each do | vol |
-      v_str = mount_string_from_hash(vol)
+      v_str = mount_string_from_hash(secret)
       mounts.push(v_str)
     end
   else
@@ -116,8 +116,8 @@ def registry_mounts(container)
 
   mounts
 end
-def  mount_string_for_secret(container, secret)
-  '/var/lib/engines/secrets/' + container.ctype + 's/' +  container.container_name + '/' + secret[:service_handle] +\
+def  mount_string_for_secret(secret)
+  '/var/lib/engines/secrets/' + secret[:container_type] + 's/' +  secret[:parent_engine] + '/' + secret[:service_handle] +\
     '/home/.secrets/'  + secret[:service_handle] + ':ro'
 end
 def secrets_mounts(container)
