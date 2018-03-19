@@ -139,18 +139,19 @@ end
 
 def secrets_mounts(container)
   mounts = []
-  secrets = container.attached_services(
-  {type_path: 'secrets'
-  })
-  if secrets.is_a?(Array)
-    secrets.each do | secret |
-      m_str = mount_string_for_secret(secret)
-      mounts.push(m_str)
+  unless container.ctype == 'system_service'
+    secrets = container.attached_services(
+    {type_path: 'secrets'
+    })
+    if secrets.is_a?(Array)
+      secrets.each do | secret |
+        m_str = mount_string_for_secret(secret)
+        mounts.push(m_str)
+      end
+    else
+      STDERR.puts('Secrets mounts was' + secrets.to_s)
     end
-  else
-    STDERR.puts('Secrets mounts was' + secrets.to_s)
   end
-
   mounts
 end
 
