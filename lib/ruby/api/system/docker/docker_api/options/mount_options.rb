@@ -123,13 +123,14 @@ def  mount_string_for_secret(secret)
     src_cname =  secret[:service_owner]
     src_ctype =  secret[:container_type]
     sh = secret[:service_owner_handle]
+      
   else
     src_cname =  secret[:parent_engine]
     src_ctype =  secret[:container_type]
     sh = secret[:service_handle]
   end
 
-  s = '/var/lib/engines/secrets/' + src_ctype + 's/' +  src_cname + '/' + secret[:service_handle] +\
+  s = '/var/lib/engines/secrets/' + src_ctype + 's/' +  src_cname + '/' + sh +\
   ':/home/.secrets/'  + sh + ':ro'
   STDERR.puts('Secrets mount' + s.to_s)
   s
