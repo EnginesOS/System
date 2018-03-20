@@ -13,13 +13,13 @@ def volumes_mounts(container)
       mounts.push(mount_string(volume))
     end
   end
-  
+
   sm = system_mounts(container)
   mounts.concat(sm) unless sm.nil?
-  
+
   secrets = secrets_mounts(container)
   mounts.concat(secrets) unless secrets.nil?
-  
+
   unless container.ctype == 'system_service'
     rm = registry_mounts(container)
     mounts.concat(rm) unless rm.nil?
@@ -40,10 +40,10 @@ end
 
 def cert_mounts(container)
   unless container.no_cert_map == true
-      prefix =  container.ctype + 's'
+    prefix =  container.ctype + 's'
     store = prefix + '/' + container.container_name + '/'
     [SystemConfig.CertAuthTop + store + 'certs:' + SystemConfig.CertificatesDestination + ':ro',
-    SystemConfig.CertAuthTop + store + 'keys:' + SystemConfig.KeysDestination + ':ro']
+      SystemConfig.CertAuthTop + store + 'keys:' + SystemConfig.KeysDestination + ':ro']
   else
     nil
   end
@@ -78,8 +78,8 @@ def get_remote_prefix(vol)
       ''
     end
   end
-  rescue Exception => e
-    STDERR.puts('EXCEPTION:'+ e.to_s + ' With ' + vol.to_s)
+rescue Exception => e
+  STDERR.puts('EXCEPTION:'+ e.to_s + ' With ' + vol.to_s)
   raise e
 end
 
@@ -116,25 +116,42 @@ def registry_mounts(container)
 
   mounts
 end
-def  mount_string_for_secret(container, secret)
-  '/var/lib/engines/secrets/' + container.ctype + 's/' +  container.container_name + '/' + secret[:service_handle] +\
-    '/home/.secrets/'  + secret[:service_handle] + ':ro'
-end
-def secrets_mounts_mounts(container)
-  mounts = []
-  vols = container.attached_services(
-  {type_path: 'secrets'
-  })
-  if vols.is_a?(Array)
-    vols.each do | vol |
-      
-      v_str = mount_string_from_hash(vol)
-      mounts.push(v_str)
-    end
-  else
-    STDERR.puts('Secrets mounts was' + vols.to_s)
-  end
 
+def  mount_string_for_secret(secret)
+
+  if secret[:shared] == true
+    src_cname =  secret[:service_owner]
+    src_ctype =  secret[:container_type]
+    sh = secret[:service_owner_handle]
+    STDERR.puts('Secrets mount Shared')
+  else
+    STDERR.puts('Secrets mount Owner')
+    src_cname =  secret[:parent_engine]
+    src_ctype =  secret[:container_type]
+    sh = secret[:service_handle]
+  end
+  STDERR.puts('Secrets mount' +  '/var/lib/engines/secrets/' + src_ctype.to_s + 's/' +  src_cname.to_s + '/' + sh.to_s + ':/home/.secrets/'  + sh.to_s + ':ro')
+  s = '/var/lib/engines/secrets/' + src_ctype + 's/' +  src_cname + '/' + sh +\
+  ':/home/.secrets/'  + sh + ':ro'
+  STDERR.puts('Secrets mount' + s.to_s)
+  s
+end
+
+def secrets_mounts(container)
+  mounts = []
+  unless container.ctype == 'system_service'
+    secrets = container.attached_services(
+    {type_path: 'secrets'
+    })
+    if secrets.is_a?(Array)
+      secrets.each do | secret |
+        m_str = mount_string_for_secret(secret)
+        mounts.push(m_str)
+      end
+    else
+      STDERR.puts('Secrets mounts was' + secrets.to_s)
+    end
+  end
   mounts
 end
 
@@ -167,10 +184,9 @@ def ssh_keydir_mount(container)
   ContainerStateFiles.container_ssh_keydir(container) + ':/home/home_dir/.ssh:rw'
 end
 
-def secrets_mount(container) 
+def secrets_mount(container)
   ContainerStateFiles.container_secretsdir(container) + ':/home/.secrets:ro'
 end
-
 
 def kerberos_mount(container)
   ContainerStateFiles.kerberos_dir(container) + ':/etc/krb5kdc/keys/:ro'
