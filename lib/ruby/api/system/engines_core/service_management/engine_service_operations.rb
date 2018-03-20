@@ -61,6 +61,7 @@ module EngineServiceOperations
   end
 
   def connect_share_service(service_hash)
+    STDERR.puts('SHARE '  + service_hash.to_s)
     params =  service_hash.dup
     unless service_hash.key?(:existing_service)
       existing = service_hash
