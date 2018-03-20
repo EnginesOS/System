@@ -7,6 +7,6 @@ persistent: true
 variables:
  cert_name: ipvpn._Engines_System(default_domain)
  domain_name: _Engines_System(default_domain)
- hostname: ivpn._Engines_System(default_domain)
+ common_name: ivpn._Engines_System(default_domain)
  wild: no
  install_target: default
