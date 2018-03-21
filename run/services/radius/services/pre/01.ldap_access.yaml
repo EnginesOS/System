@@ -1,0 +1,11 @@
+parent_engine: radius
+publisher_namespace: EnginesSystem
+type_path: ldap_access
+service_handle: ldapaccess
+container_type: service
+persistent: true
+variables:
+ type: access
+ ldap_password: _Engines_System(random(8))
+ cn: radius
+ access_dn: uid=radius,ou=hosts,ou=Engines,dc=engines,dc=internal 
