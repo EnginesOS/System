@@ -6,4 +6,4 @@ container_type: service
 persistent: true
 variables:
  type: ou
- cn: radius
+ cn: defaults
