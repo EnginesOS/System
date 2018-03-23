@@ -21,7 +21,6 @@ module ManagedContainerOnAction
           STDERR.puts('HAS TUN TIME')
         end
         @has_run = true
-        save_state
         begin
           @container_api.register_non_persistent_services(self)
         rescue
