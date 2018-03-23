@@ -2,9 +2,7 @@ RUN ln -s /home/app /var/www
 
 ADD home/start.sh /home/engines/scripts/startup/start.sh
 
-USER www-data
 
 WORKDIR /home/app
 
-CMD ["/home/engines/scripts/startup/start.sh"]
 	 
