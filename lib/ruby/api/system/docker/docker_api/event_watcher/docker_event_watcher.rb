@@ -25,7 +25,12 @@ class DockerEventWatcher < ErrorsApi
         if mask & 32768 == 0 # @@container_top == 0
           hash[:state] = state_from_status(hash[:status])
           SystemDebug.debug(SystemDebug.container_events, 'fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
+          begin
           r = @object.method(@method).call(hash)
+          rescue EnginesException => e
+            SystemDebug.debug(SystemDebug.container_events, e.to_s + ':' + e.backtrace.to_s)
+            false
+          end
         end
       end
       r
