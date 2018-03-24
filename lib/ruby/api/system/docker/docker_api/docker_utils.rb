@@ -20,12 +20,15 @@ module DockerUtils
                   data = nil
                   data = @stream_reader.i_stream.read_nonblock(Excon.defaults[:chunk_size])
                   STDERR.puts('String IO bytes' + data.length.to_s)
+                  break if socket.closed
                   socket.send(data, 0) unless data.nil?
                 rescue EOFError
                   eof = true
+                  break if socket.closed
                   socket.send(data, 0) unless data.nil?
                   next
                 rescue IO::WaitReadable
+                  break if socket.closed
                   socket.send(data, 0) unless data.nil?
                   IO.select([@stream_reader.i_stream])
                   retry
@@ -66,7 +69,7 @@ module DockerUtils
             else
               r = DockerUtils.decode_from_docker_chunk(chunk)
               @stream_reader.o_stream.write(r[:stdout]) unless r.nil?
-              return_result[:stderr] =  return_result[:stderr].to_s + r[:stderr].to_s
+              return_result[:stderr] = return_result[:stderr].to_s + r[:stderr].to_s
             end
           end
         rescue EOFError
