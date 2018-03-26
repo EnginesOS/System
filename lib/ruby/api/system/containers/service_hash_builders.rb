@@ -91,7 +91,8 @@ def create_nginx_service_hash(engine)
     fqdn: engine.fqdn,
     port: engine.web_port.to_s,
     proto: proto,
-    www_path: web_path(engine)
+    www_path: web_path(engine),
+    system_auth: false
     }
   }
   unless  engine.ctype == 'service'
@@ -99,9 +100,10 @@ def create_nginx_service_hash(engine)
   else
     service_hash[:variables][:www_path] = ''
   end
-
-  SystemDebug.debug(SystemDebug.services,'create nginx Hash',service_hash)
+  STDERR.puts('SERVICE HASH for WAP ' + service_hash.to_s)
+  SystemDebug.debug(SystemDebug.services,'create nginx Hash', service_hash)
   service_hash
+  
 end
 
 def web_path(engine)

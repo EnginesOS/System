@@ -2,7 +2,7 @@ module ManagedContainerWebSites
   def set_deployment_type(deployment_type)
     @deployment_type = deployment_type
     remove_nginx_service if @deployment_type && @deployment_type != 'web'
-    add_nginx_service if @deployment_type == 'web'
+    add_wap_service if @deployment_type == 'web'
   end
 
   def web_sites
@@ -51,8 +51,8 @@ module ManagedContainerWebSites
 
   # create nginx service_hash for container and register with nginx
   # @return boolean indicating sucess
-  def add_nginx_service
-    @container_api.add_nginx_service(self)
+  def add_wap_service
+    @container_api.add_wap_service(self)
   end
 
   # create nginx service_hash for container deregister with nginx

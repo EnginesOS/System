@@ -16,7 +16,7 @@ module ManagedContainerOnAction
       else       
         if @has_run == false
           STDERR.puts('FIRST TIME')
-          add_nginx_service if @deployment_type == 'web'
+          add_wap_service if @deployment_type == 'web'
         else
           STDERR.puts('HAS TUN TIME')
         end

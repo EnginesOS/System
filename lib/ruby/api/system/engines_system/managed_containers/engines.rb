@@ -69,7 +69,7 @@ module Engines
     container.set_hostname_details(hostname, domain_name)
     container.save_state
     # save_container(container)
-    container.add_nginx_service
+    container.add_wap_service
     true
   end
 
