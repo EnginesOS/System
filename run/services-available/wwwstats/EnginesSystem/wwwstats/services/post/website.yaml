@@ -1,8 +1,8 @@
 parent_engine: wwwstats
 publisher_namespace: EnginesSystem
-type_path: nginx
+type_path: wap
 service_handle: email_admin
-service_container_name: nginx
+service_container_name: wap
 container_type: service
 persistent: false
 variables:
