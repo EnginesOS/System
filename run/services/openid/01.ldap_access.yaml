@@ -7,5 +7,5 @@ persistent: true
 variables:
  type: access
  ldap_password: _Engines_System(random(8))
- cn: imap
+ cn: openid
  access_dn: uid=openid,ou=hosts,ou=Engines,dc=engines,dc=internal 
