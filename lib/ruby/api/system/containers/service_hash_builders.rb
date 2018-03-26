@@ -55,7 +55,7 @@ end
 #@return [Hash] completed nginx service_hash for engine on for the default website configured for
 #@param engine [ManagedContainer]
 
-def create_nginx_service_hash(engine)
+def create_wap_service_hash(engine)
   protocol = engine.protocol.to_s
   STDERR.puts('PTORORO ' + engine.protocol.to_s)
   protocol.downcase

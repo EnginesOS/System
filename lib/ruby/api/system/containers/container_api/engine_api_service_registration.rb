@@ -46,7 +46,7 @@ module EngineApiServiceRegistration
     engines_core.deregister_non_persistent_services(engine)
   end
 
-  def remove_nginx_service(container)
+  def remove_wap_service(container)
     service_hash = create_wap_service_hash(container)
     # STDERR.puts('remove ' + service_hash.to_s)
     engines_core.dettach_service(service_hash)
