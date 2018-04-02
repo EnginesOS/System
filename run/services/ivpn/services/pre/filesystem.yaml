@@ -1,0 +1,12 @@
+publisher_namespace: "EnginesSystem"
+type_path: "filesystem/local/filesystem"
+variables:
+ user: "22031" 
+ group: "22031" 
+ service_name: "ivpn"
+ parent_engine: "ivpn"
+ volume_src: "" 
+ engine_path: "/home/ivpn/entries"
+ permissions: "rw"
+ user: 22031
+ group: 22031
