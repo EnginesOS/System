@@ -77,6 +77,10 @@ def rest_post(path, params = nil, lheaders = nil)
      retry if cnt < 5
   end
   rescue StandardError => e
+    STDERR.puts('BASE ur ' + @base_url.to_s)
+    STDERR.puts('path ' + path.to_s)
+  STDERR.puts('exception ' + e.to_s)
+      
     raise EnginesException.new(error_hash('reg exception ' + path.to_s + "\n" + e.to_s, @base_url.to_s))
   end
 end
