@@ -74,7 +74,7 @@ end
 def uadmin_post(splat, body, params)
   c = uconnection
   c.request({method: :get,
-    query:   params,
+    query: clean_params(params),
     path: build_uri(splat),
     body: body})
 rescue Exception => e
