@@ -23,6 +23,11 @@ volumes:
   remotepath: "/ftp/ro/"
   localpath: "/var/lib/engines/apps/"
   permissions: "rw"
+ homes: 
+  name: homes
+  remotepath: "/home/users/"
+  localpath: "/var/lib/engines/home/"
+  permissions: "rw" 
 port: 
 mapped_ports:
  ftp:
@@ -58,7 +63,6 @@ mapped_ports:
 repo: na
 last_result: 
 setState: running
-nginxored: false
 conf_register_site: false
 conf_register_dns: true
 conf_zero_conf: true

@@ -1,11 +1,8 @@
-ADD home/start.bash /home/start.bash
+ADD home/start.sh /home/engines/scripts/startup/start.sh
 
-USER www-data
-
-VOLUME /var/log/
 
 WORKDIR /home/app
 
-CMD ["/home/start.bash"]
+
 
 

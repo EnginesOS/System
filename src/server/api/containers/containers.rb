@@ -15,13 +15,27 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
       false
     end
 
-    def no_op_timer(out)
+    def no_oploop_timer(out)
       require '/opt/engines/src/server/keep_alive_nooper.rb'
       timer = KeepAliveNooper.new
       timer.run(out)
       timer
     end
-    
+    def no_op_timer(out)
+         no_op = {no_op: true}.to_json
+        timer = EventMachine::PeriodicTimer.new(25) do
+           if out.closed?
+             STDERR.puts('NOOP found OUT IS CLOSED: ' + timer.to_s)
+             timer = nil
+             next
+           else
+             out << no_op # unless lock_timer == true
+             out << "\n"
+           end
+         end
+         timer
+       end
+       
     timer = nil
     
     begin

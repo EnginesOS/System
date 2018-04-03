@@ -1,0 +1,28 @@
+--- !ruby/object:ManagedService
+cont_user_id: 22035
+publisher_namespace: EnginesSystem
+type_path: settings
+container_name: settings
+ctype: service
+persistent: true
+conf_self_start: true
+last_error: 
+memory: '32'
+hostname: settings
+domain_name: 
+environments: []
+kerberos: true
+image: _Engines_System(flavor)/settings:_Engines_System(release)
+volumes: 
+ wpa_supplicant: 
+  name: wpa_supplicant
+  remotepath: "/etc/wpa_supplicant-wlan.conf"
+  localpath: "/etc/wpa_supplicant-wlan.conf"
+  permissions: "rw"
+mapped_ports: 
+repo: na
+last_result:
+setState: stopped
+conf_register_site: false
+conf_register_dns: true
+conf_self_start: true

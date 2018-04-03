@@ -3,9 +3,8 @@ RUN touch /home/app/npm-debug.log &&\
 	chown node /home/app/npm-debug.log &&\
 	mkdir -p /home/home_dir/.config &&\
 	chown $ContUser /home/home_dir/.config &&\
-ADD home/start.bash /home/start.bash
+ADD home/start.sh /home/engines/scripts/startup/start.sh
 
-USER node
 
 WORKDIR /home/app
 

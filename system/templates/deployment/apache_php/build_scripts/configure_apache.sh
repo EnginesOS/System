@@ -6,7 +6,7 @@ www_dir=''
 	www_dir=$WWW_DIR
   fi
   
-APACHE_LOG_DIR=/var/log/apache2
+APACHE_LOG_DIR=/var/log/
 
 rm /etc/apache2/sites-enabled/000-default.conf 
 cat /home/engines/setup/000-default.conf | while read LINE

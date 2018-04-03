@@ -13,7 +13,7 @@ hostname: wap
 domain_name: 
 kerberos: false
 environments: []
-image: _Engines_System(flavor)/nginx:_Engines_System(release)
+image: _Engines_System(flavor)/wap:_Engines_System(release)
 kerberos: true
 volumes: 
 port: 
@@ -31,7 +31,6 @@ mapped_ports:
 repo: na
 last_result: 
 setState: running
-nginxored: false
 conf_register_site: false
 conf_register_dns: true
 conf_self_start: true

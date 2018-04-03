@@ -8,7 +8,9 @@ service='host'
 gsscli = GSSAPI::Simple.new(host, service, '/var/lib/engines/services/auth/etc/krb5kdc/services/uadmin/uadmin.keytab')
 token = gsscli.init_context.force_encoding('binary')
 
-#puts 'token ' + token.to_s
+puts 'token ' + token.to_s
+
+
 
 def response
 end

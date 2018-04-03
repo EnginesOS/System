@@ -1,12 +1,12 @@
 parent_engine: mysqld
 publisher_namespace: EnginesSystem
 type_path: logview
-service_handle: mysql_error_logview
+service_handle: ftp_ldap_logview
 service_container_name: logview
 container_type: service
 persistent: false
 variables:
  log_file_path: error.log
  log_type: raw
- log_name: 'Mysql Error log'
+ log_name: 'Mysqld log'
  ctype: service

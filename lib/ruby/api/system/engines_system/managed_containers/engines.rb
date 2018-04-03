@@ -65,11 +65,11 @@ module Engines
     domain_name = params[:domain_name]
     SystemDebug.debug(SystemDebug.services,'Changing Domainame to ', domain_name)
 
-    container.remove_nginx_service
+    container.remove_wap_service
     container.set_hostname_details(hostname, domain_name)
     container.save_state
     # save_container(container)
-    container.add_nginx_service
+    container.add_wap_service
     true
   end
 

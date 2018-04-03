@@ -3,7 +3,7 @@ module EngineApiServiceRegistration
     if container.conf_register_dns == true
       service_hash = create_dns_service_hash(container)
       begin
-         STDERR.puts('DNS REG' + service_hash.to_s)
+        STDERR.puts('DNS REG' + service_hash.to_s)
         engines_core.create_and_register_service(service_hash)
       end
     end
@@ -46,16 +46,17 @@ module EngineApiServiceRegistration
     engines_core.deregister_non_persistent_services(engine)
   end
 
-  def remove_nginx_service(container)
-    service_hash = create_nginx_service_hash(container)
+  def remove_wap_service(container)
+    service_hash = create_wap_service_hash(container)
     # STDERR.puts('remove ' + service_hash.to_s)
     engines_core.dettach_service(service_hash)
   end
 
-  def add_nginx_service(container)
-    service_hash = create_nginx_service_hash(container)
+  def add_wap_service(container)
+    service_hash = create_wap_service_hash(container)
     engines_core.create_and_register_service(service_hash)
-  rescue
+  rescue StandardError => e
+    STDERR.puts('Add Wap Exception ' + e.to_s)
     # sometimes duplicates nginx record
   end
 

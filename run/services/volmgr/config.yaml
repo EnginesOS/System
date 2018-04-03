@@ -19,11 +19,15 @@ volumes:
   remotepath: "/var/fs/local/"
   localpath: "/var/lib/engines/apps/"
   permissions: "rw"
+ secrets: 
+  name: secrets
+  remotepath: "/var/secrets/"
+  localpath: "/var/lib/engines/secrets/"
+  permissions: "rw"
 mapped_ports: 
 repo: na
 last_result:
 setState: running
-nginxored: false
 conf_register_site: false
 conf_register_dns: true
 conf_self_start: true

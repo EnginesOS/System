@@ -9,15 +9,18 @@ module ManagedContainerOnAction
       SystemDebug.debug(SystemDebug.container_events, :ONSTART_CALLED, what)
       # MUst register post each start as IP Changes (different post reboot)
       register_with_dns
+      
       if @consumer_less == true
         @has_run = true
+        STDERR.puts('CONSUMER LESS TIN')
       else       
         if @has_run == false
-          STDERR.puts('FRST TIN')
-          add_nginx_service if @deployment_type == 'web'
+          STDERR.puts('FIRST TIME')
+          add_wap_service if @deployment_type == 'web'
+        else
+          STDERR.puts('HAS TUN TIME')
         end
         @has_run = true
-        save_state
         begin
           @container_api.register_non_persistent_services(self)
         rescue

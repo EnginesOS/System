@@ -32,7 +32,11 @@ module Services
 
   def service_is_registered?(service_hash)
     r = 'service/is_registered' + address_params(service_hash, [:parent_engine, :service_handle, :publisher_namespace, :type_path])
-    rest_get(r)
+    begin
+      rest_get(r)
+    rescue Exception=>e
+      false
+    end
   end
 
   def registered_with_service(params)

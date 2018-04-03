@@ -53,8 +53,8 @@ rm -f /opt/engines/run/system/flags/update_engines_running
 
 if test -f /usr/bin/pulseaudio
  then
- pulseaudio --check
-   if ! test $? -eq 0
+  pulseaudio --check
+   if test $? -ne 0
     then
  	 /usr/bin/pulseaudio -D
     fi

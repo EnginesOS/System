@@ -8,12 +8,12 @@ VOLUME /var/log/
 #	 ls -la  /var/www/
 
 
-ADD home/start.bash /home/start.bash
+ADD home/start.sh /home/engines/scripts/startup/start.sh
 
-RUN /home/post_build_clean.sh 
+RUN /home/engines/scripts/build/post_build_clean.sh
 	
 
-USER $ContUser
 
-CMD ["/home/start.bash"]
+
+
 

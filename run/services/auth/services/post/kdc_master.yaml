@@ -1,7 +1,7 @@
 parent_engine: auth
 publisher_namespace: EnginesSystem
 type_path: dns
-service_handle: kdc_master
+service_handle: kdc_master_udp
 container_type: service
 variables:
  engine: auth
