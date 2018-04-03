@@ -185,9 +185,9 @@ class DockerEventWatcher < ErrorsApi
   end
 
   def trigger(hash)
-    @events_mutex.synchronize {
+  #  @events_mutex.synchronize {
     l = @event_listeners.sort_by { |k, v| v[:priority] }
-    }
+   # }
     l.each do |m|
       listener = m[1][:listener]
       unless listener.container_name.nil?
