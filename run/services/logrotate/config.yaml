@@ -40,7 +40,6 @@ mapped_ports:
 repo: na
 last_result: 
 setState: stopped
-nginxored: false
 conf_register_site: false
 conf_register_dns: false
 conf_self_start: true

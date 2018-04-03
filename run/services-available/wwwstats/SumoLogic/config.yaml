@@ -15,14 +15,13 @@ volumes:
  config: 
   name: weblogs
   remotepath: "/var/log/www/"
-  localpath: "/var/log/engines/services/nginx/nginx/"
+  localpath: "/var/log/engines/services/wap/nginx/"
   permissions: ro
 port: 
 mapped_ports:
 repo: na
 last_result: 
 setState: nocontainer
-nginxored: false
 conf_register_site: false
 conf_register_dns: false
 conf_self_start: true

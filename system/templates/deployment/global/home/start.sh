@@ -32,7 +32,7 @@ if test -f /home/engines/scripts/start/startwebapp.sh
    launch_app
 elif test -f /usr/sbin/apache2ctl
  then
- export APACHE_PID_FILE $PID_FILE
+ export APACHE_PID_FILE PID_FILE
    start_apache
 elif test -d /etc/nginx
  then

@@ -25,7 +25,13 @@ class DockerEventWatcher < ErrorsApi
         if mask & 32768 == 0 # @@container_top == 0
           hash[:state] = state_from_status(hash[:status])
           SystemDebug.debug(SystemDebug.container_events, 'fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
+          begin
           r = @object.method(@method).call(hash)
+          rescue EnginesException => e
+            SystemDebug.debug(SystemDebug.container_events, e.to_s + ':' + e.backtrace.to_s)
+            STDERR.puts(e.to_s + ":\n" + e.backtrace.to_s) if e.level == :error
+            false
+          end
         end
       end
       r
@@ -179,7 +185,9 @@ class DockerEventWatcher < ErrorsApi
   end
 
   def trigger(hash)
+  #  @events_mutex.synchronize {
     l = @event_listeners.sort_by { |k, v| v[:priority] }
+   # }
     l.each do |m|
       listener = m[1][:listener]
       unless listener.container_name.nil?

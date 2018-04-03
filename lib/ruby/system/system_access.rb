@@ -48,7 +48,7 @@ class SystemAccess
     #     olsontz
   end
 
-  def  timezone
+  def timezone
     Time.now.getlocal.zone
   end
 
@@ -82,7 +82,7 @@ class SystemAccess
     @engines_api.get_service_pubkey(engine, cmd)
   end
 
-  def random cnt
+  def random(cnt)
     len = cnt.to_i
     rnd = SecureRandom.hex(len)
     rnd.byteslice(0, len)

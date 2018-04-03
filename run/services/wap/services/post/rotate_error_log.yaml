@@ -6,6 +6,6 @@ service_container_name: logrotate
 container_type: service
 persistent: true
 variables:
- log_file_path: /services/wap/nginx/error.log
+ log_file_path: /services/wap/wap/error.log
  cycle: weekly
  rotate: 52

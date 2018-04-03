@@ -19,7 +19,7 @@ class DockerFileBuilder
   def log_build_output(mesg)
     @builder.log_build_output(mesg)
   end
-
+  
   def write_files_for_docker
     @in_run = false
     write_environment_variables
@@ -95,9 +95,14 @@ class DockerFileBuilder
     insert_framework_frag_in_dockerfile('builder.end.tmpl')
     write_volume('/home/fs/')
     write_clear_env_variables
+    write_system_dockerfile_end
     @docker_file.close
   end
 
+  def write_system_dockerfile_end
+    insert_framework_frag_in_dockerfile('builder.system.end.tmpl')
+  end
+  
   def write_cd
     write_run_line('chown -R $ContUser /home/app')
     write_run_line('chmod g+w -R /home/app')

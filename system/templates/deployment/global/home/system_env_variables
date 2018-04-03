@@ -1,4 +1,5 @@
 #list of all environment variables available to templates
+HOME
 dbhost
 dbname
 dbflavor

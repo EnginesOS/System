@@ -15,7 +15,7 @@ module ManagedServiceOnAction
         @has_run = true
       else
         if  @has_run == false
-          add_nginx_service if @deployment_type == 'web'
+          add_wap_service if @deployment_type == 'web'
         end
         @has_run = true
         save_state

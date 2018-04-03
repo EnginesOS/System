@@ -1,0 +1,12 @@
+parent_engine: radius
+publisher_namespace: EnginesSystem
+type_path: certs
+service_handle: radius.engines.internal
+container_type: service
+persistent: true
+variables:
+ cert_name: radius.engines.internal
+ domain_name: engines.internal
+ common_name: radius.engines.internal
+ wild: no
+ install_target: default

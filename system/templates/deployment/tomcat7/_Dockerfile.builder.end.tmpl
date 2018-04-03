@@ -1,11 +1,5 @@
 ADD home/start.sh /home/engines/scripts/startup/start.sh
 
-USER www-data
-
-VOLUME /var/log/
 
 WORKDIR /home/app
-
-CMD ["/home/engines/scripts/startup/start.sh"]
-
 

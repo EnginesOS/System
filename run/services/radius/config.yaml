@@ -34,7 +34,6 @@ environments:
 repo: na
 last_result: 
 setState: running
-nginxored: false
 conf_register_site: false
 conf_register_dns: true
 dependant_on:

@@ -26,7 +26,7 @@ module DockerEvents
           @pipe.close
         end
       else
-        raise DockerException.new({level: 'error', error_mesg: 'pipe closed'} )
+        raise DockerException.new({level: :warning, error_mesg: 'pipe closed'} )
       end
     end
   end

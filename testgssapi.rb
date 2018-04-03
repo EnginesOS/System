@@ -11,6 +11,7 @@ token = gsscli.init_context.force_encoding('binary')
 puts 'token ' + token.to_s
 
 
+
 def response
 end
 

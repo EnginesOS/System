@@ -106,7 +106,7 @@ module SmServiceControl
       next if service_vars[k].nil?
       STDERR.puts('fld ' + k.to_s + ' = ' + service_vars[k].to_s + ' is frozen')
       next if service_vars[k].frozen?
-      service_vars[k].gsub!(/_Engines_Fields\([0-9a-z_A-Z]*\)/) { |match|
+      service_vars[k].gsub!(/_Engines_Field\([0-9a-z_A-Z]*\)/) { |match|
         resolve_field_val(match, service_vars)
       }
     end
@@ -114,7 +114,7 @@ module SmServiceControl
 
   def resolve_field_val(fld_name, service_vars)
     begin
-    fld = fld_name.sub(/_Engines_Fields\(/, '')
+    fld = fld_name.sub(/_Engines_Field\(/, '')
     fld.sub!(/[\)]/, '')
     val=''
     unless fld.nil?
