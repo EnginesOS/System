@@ -15,7 +15,7 @@ module CheckBuildParams
 
   def check_name(params)
     bad_param('Missing: Engine Name', params) unless params.key?(:engine_name)
-    bad_param('Invalid: Engine Name', params) unless acceptable_name_chars(params[:engine_name])
+    bad_param('Invalid characters in Engine Name a-z only', params) unless acceptable_name_chars(params[:engine_name], true)
   end
 
   def bad_param(message, params)
@@ -24,10 +24,19 @@ module CheckBuildParams
     raise EngineBuilderException.new(error_hash(message, params))
   end
 
-  def acceptable_name_chars(str)
+
+  
+  def acceptable_name_chars(str, lower = false)
+    def match_lower(str,lower)
+      if lower == true  
+        str.match(/^[a-z]+$/)
+      else
+      str.match(/^[a-zA-Z]/) & str.match(/[a-zA-Z0-9]+$/)
+      end        
+   end
     if str.nil?
       false
-    elsif str.match(/^[a-zA-Z]/) && str.match(/[a-zA-Z0-9]+$/)
+    elsif match(str, lower) 
       true
     else
       false

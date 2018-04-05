@@ -62,7 +62,7 @@ end
 def uadmin_put(splat, body, params)
   c = uconnection
   c.request({method: :get,
-    query: clean_params(params),
+    query: clean_api_vars(params),
     path: build_uri(splat),
     body: body})
 rescue Exception => e
@@ -74,7 +74,7 @@ end
 def uadmin_post(splat, body, params)
   c = uconnection
   c.request({method: :get,
-    query: clean_params(params),
+    query: clean_api_vars(params),
     path: build_uri(splat),
     body: body})
 rescue Exception => e
@@ -107,6 +107,16 @@ def uadmin_response(r)
       r.body
     end
   end
+end
+
+
+def clean_api_vars(params)
+ v = clean_params(params)
+ if v.nil?
+   v
+ else
+   v[:api_vars]  
+ end
 end
 
 def clean_params(params)
