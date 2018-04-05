@@ -31,7 +31,7 @@ volumes:
   permissions: "rw"
  container_public: 
   name: container_public
-  remotepath: "/home/engines/system/containers"
+  remotepath: "/home/engines/etc/containers"
   localpath: "/opt/engines/run/public/services"
   permissions: ro   
 image: _Engines_System(flavor)/auth:_Engines_System(release)

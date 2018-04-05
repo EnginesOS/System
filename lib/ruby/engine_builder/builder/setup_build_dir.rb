@@ -229,7 +229,7 @@ module BuildDirSetup
     end
     local_log_dir = SystemConfig.SystemLogRoot + '/apps/' + @build_params[:engine_name]
     Dir.mkdir(local_log_dir) unless Dir.exist?(local_log_dir)
-    rmt_log_dir_varfile.close
+    rmt_log_dir_varfile.close unless rmt_log_dir_varfile.nil?
     ' -v ' + local_log_dir + ':' + rmt_log_dir + ':rw '
   end
 
