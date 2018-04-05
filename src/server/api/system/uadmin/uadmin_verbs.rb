@@ -111,10 +111,12 @@ end
 
 
 def clean_api_vars(params)
+  STDERR.puts('I got ' + params.to_s)
  v = clean_params(params)
  if v.nil?
    v
  else
+   STDERR.puts('I give ' +  v[:api_vars].to_s  )
    v[:api_vars]  
  end
 end
