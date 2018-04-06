@@ -90,7 +90,7 @@ def uadmin_post(splat, body, params)
  # query: clean_api_vars(params),
   headers: rheaders,
   path: build_uri(splat),
-  body: body}
+  body: body.to_json}
   STDERR.puts('Request ' + r.to_s)
   c.request(r)
 rescue Exception => e
