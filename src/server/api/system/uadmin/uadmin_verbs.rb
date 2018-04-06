@@ -4,7 +4,7 @@ def uconnection
   debug_response: true,
   ssl_verify_peer: false,
   persistent: false,
-  headers: {'content_type' => content_type})
+  headers: {'content_type' => 'application/json'}) #content_type})
 rescue Excon::Error => e
   STDERR.puts('Failed to open base url ' +   'http://uadmin:8000'  + ' ' + e.to_s + ' ' + e.class.name)
   if @retries < 5
@@ -62,7 +62,7 @@ end
 def uadmin_put(splat, body, params)
   c = uconnection
   rheaders = {}
-  rheaders['Content-Type'] = 'application/json'
+  rheaders['content_type'] = 'application/json'
   c.request({method: :put,
     query: clean_api_vars(params),
     path: build_uri(splat),
@@ -78,22 +78,24 @@ def uadmin_post(splat, body, params)
   STDERR.puts( 'Post Body ' + body.to_s)
   
   rheaders = {}
-  rheaders['Content-Type'] = 'application/json'
+  rheaders['content_type'] = 'application/json'
   if body.is_a?(Hash)  
     body =  body[:api_vars] 
     #body = body.json
   end
-  #rheaders['Content-Length'] = body.length
+ # rheaders['content_length'] = body.to_json.length
   c = uconnection
-  params.merge!(body)
+  #params.merge!(body)
   r = {method: :post,
-  query: clean_api_vars(params),
+  #query: clean_params(params),
+ # query: body.to_json,
   headers: rheaders,
   path: build_uri(splat),
-  body: body}
+  body: body.to_json}
   STDERR.puts('Request ' + r.to_s)
   c.request(r)
 rescue Exception => e
+STDERR.puts( 'EXE ' + e.to_s)
   handle_exeception(e)
 ensure
   c.reset unless c.nil?
@@ -128,13 +130,13 @@ end
 
 def clean_api_vars(params)
   STDERR.puts('I got ' + params.to_s)
- v = clean_params(params)
- if v.nil?
-   v
- else
-   STDERR.puts('I give ' +  v[:api_vars].to_s  )
-   v[:api_vars]  
- end
+  v = clean_params(params)
+  if v.nil?
+    {}
+  else
+    STDERR.puts('I give ' +  v[:api_vars].to_s  )
+    v[:api_vars]
+  end
 end
 
 def clean_params(params)
