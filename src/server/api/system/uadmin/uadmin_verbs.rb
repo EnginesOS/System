@@ -79,14 +79,17 @@ def uadmin_post(splat, body, params)
   
   rheaders = {}
   rheaders['Content-Type'] = 'application/json'
-    body =  body[:api_vars] if body.is_a?(Hash)  
-  rheaders['Content-Length'] = body.size
+  if body.is_a?(Hash)  
+    body =  body[:api_vars] 
+    body = body.to_json
+  en 
+  rheaders['Content-Length'] = body.length
   c = uconnection
   r = {method: :post,
   query: clean_api_vars(params),
   headers: rheaders,
   path: build_uri(splat),
-  body: body.to_json}
+  body: body}
   STDERR.puts('Request ' + r.to_s)
   c.request(r)
 rescue Exception => e
