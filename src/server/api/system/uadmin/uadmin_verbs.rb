@@ -88,7 +88,7 @@ def uadmin_post(splat, body, params)
   #params.merge!(body)
   r = {method: :post,
   #query: clean_params(params),
-  query: body.to_json,
+ # query: body.to_json,
   headers: rheaders,
   path: build_uri(splat),
   body: body.to_json}
