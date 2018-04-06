@@ -80,6 +80,7 @@ def uadmin_post(splat, body, params)
   rheaders = {}
   rheaders['Content-Type'] = 'application/json'
     body =  body[:api_vars] if body.is_a?(Hash)  
+  rheaders['Content-Length'] = body.size
   c = uconnection
   r = {method: :post,
   query: clean_api_vars(params),
