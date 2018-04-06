@@ -83,17 +83,18 @@ def uadmin_post(splat, body, params)
     body =  body[:api_vars] 
     #body = body.json
   end
-  #rheaders['Content-Length'] = body.length
+  rheaders['Content-Length'] = body.length
   c = uconnection
   params.merge!(body)
   r = {method: :post,
-  query: clean_api_vars(params),
+ # query: clean_api_vars(params),
   headers: rheaders,
   path: build_uri(splat),
   body: body}
   STDERR.puts('Request ' + r.to_s)
   c.request(r)
 rescue Exception => e
+STDERR.puts( 'EXE ' + e.to_s)
   handle_exeception(e)
 ensure
   c.reset unless c.nil?
