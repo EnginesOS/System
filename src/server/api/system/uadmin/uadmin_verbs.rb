@@ -76,8 +76,6 @@ end
 
 def uadmin_post(splat, body, params)
   STDERR.puts( 'Post Body ' + body.to_s)
-  str = body.read(4096)
-  STDERR.puts( 'Post Body contents' + str.to_s)
   rheaders = {}
   rheaders['Content-Type'] = 'application/json'
   c = uconnection
@@ -85,7 +83,7 @@ def uadmin_post(splat, body, params)
   query: clean_api_vars(params),
   headers: rheaders,
   path: build_uri(splat),
-  body: str}
+  body: body.to_json}
   STDERR.puts('Request ' + r.to_s)
   c.request(r)
 rescue Exception => e

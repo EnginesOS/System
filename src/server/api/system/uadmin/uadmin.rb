@@ -21,11 +21,11 @@ put '/v0/system/uadmin/*' do
 end
 
 post '/v0/system/uadmin/*' do
-
+  p_params = post_params(request)
   STDERR.puts(' Post' + params.to_s)
   begin
     require_relative 'uadmin_verbs.rb'   
-  uadmin_response(uadmin_post(params[:splat][0], request.env['rack.input'], params))
+  uadmin_response(uadmin_post(params[:splat][0], p_params, params))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
