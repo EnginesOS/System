@@ -61,8 +61,6 @@ FileUtils.touch('/home/engines/run/flags/startup_complete')
     set :run, true
     set :timeout, 260
     
- 
-    
     require_relative 'helpers/helpers.rb'
     require_relative 'api/routes.rb'
   rescue StandardError => e
