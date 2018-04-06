@@ -62,7 +62,7 @@ end
 def uadmin_put(splat, body, params)
   c = uconnection
   rheaders = {}
-  rheaders['Content_Type'] = 'application/json'
+  rheaders['content_type'] = 'application/json'
   c.request({method: :put,
     query: clean_api_vars(params),
     path: build_uri(splat),
@@ -78,12 +78,12 @@ def uadmin_post(splat, body, params)
   STDERR.puts( 'Post Body ' + body.to_s)
   
   rheaders = {}
-  rheaders['Content_Type'] = 'application/json'
+  rheaders['content_type'] = 'application/json'
   if body.is_a?(Hash)  
     body =  body[:api_vars] 
     #body = body.json
   end
-  rheaders['Content_Length'] = body.to_json.length
+ # rheaders['content_length'] = body.to_json.length
   c = uconnection
   #params.merge!(body)
   r = {method: :post,
