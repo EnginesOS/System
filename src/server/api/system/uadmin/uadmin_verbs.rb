@@ -82,7 +82,7 @@ def uadmin_post(splat, body, params)
   if body.is_a?(Hash)  
     body =  body[:api_vars] 
     body = body.to_json
-  en 
+  end
   rheaders['Content-Length'] = body.length
   c = uconnection
   r = {method: :post,
