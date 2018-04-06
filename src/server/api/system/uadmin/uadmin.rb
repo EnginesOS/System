@@ -21,7 +21,7 @@ put '/v0/system/uadmin/*' do
 end
 
 post '/v0/system/uadmin/*' do
- # params = post_params(request)
+
   STDERR.puts(' Post' + params.to_s)
   begin
     require_relative 'uadmin_verbs.rb'   

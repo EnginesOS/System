@@ -72,6 +72,7 @@ ensure
 end
 
 def uadmin_post(splat, body, params)
+  STDERR.puts( 'Post Body ' + body.to_s)
   c = uconnection
   c.request({method: :post,
     query: clean_api_vars(params),
