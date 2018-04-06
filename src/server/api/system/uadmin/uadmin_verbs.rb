@@ -77,6 +77,7 @@ end
 def uadmin_post(splat, body, params)
   STDERR.puts( 'Post Body ' + body.to_s)
   str = body.read(4096)
+  STDERR.puts( 'Post Body contents' + str.to_s)
   c = uconnection
   c.request({method: :post,
     query: clean_api_vars(params),
