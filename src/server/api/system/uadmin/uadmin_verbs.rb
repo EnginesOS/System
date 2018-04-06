@@ -85,10 +85,9 @@ def uadmin_post(splat, body, params)
   end
   rheaders['Content-Length'] = body.length
   c = uconnection
-  params.merge!(body)
+  #params.merge!(body)
   r = {method: :post,
- # query: clean_api_vars(params),
-  query: body,
+  query: clean_params(params),
   headers: rheaders,
   path: build_uri(splat),
   body: body.to_json}
@@ -130,13 +129,13 @@ end
 
 def clean_api_vars(params)
   STDERR.puts('I got ' + params.to_s)
- v = clean_params(params)
- if v.nil?
-   v
- else
-   STDERR.puts('I give ' +  v[:api_vars].to_s  )
-   v[:api_vars]  
- end
+  v = clean_params(params)
+  if v.nil?
+    {}
+  else
+    STDERR.puts('I give ' +  v[:api_vars].to_s  )
+    v[:api_vars]
+  end
 end
 
 def clean_params(params)
