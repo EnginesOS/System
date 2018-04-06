@@ -21,9 +21,9 @@ put '/v0/system/uadmin/*' do
 end
 
 post '/v0/system/uadmin/*' do
+  STDERR.puts(' Post' + params.to_s)
   begin
-    require_relative 'uadmin_verbs.rb'
-    STDERR.puts(' Post' + params.to_s)
+    require_relative 'uadmin_verbs.rb'   
   uadmin_response(uadmin_post(params[:splat][0], request.env['rack.input'], params))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
