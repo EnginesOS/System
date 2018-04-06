@@ -76,8 +76,10 @@ end
 
 def uadmin_post(splat, body, params)
   STDERR.puts( 'Post Body ' + body.to_s)
+  
   rheaders = {}
   rheaders['Content-Type'] = 'application/json'
+    body =  body[:api_vars] if body.is_a?(Hash)  
   c = uconnection
   r = {method: :post,
   query: clean_api_vars(params),
