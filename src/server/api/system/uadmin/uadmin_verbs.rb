@@ -61,9 +61,12 @@ end
 
 def uadmin_put(splat, body, params)
   c = uconnection
+  rheaders = {}
+  rheaders['Content-Type'] = 'application/json'
   c.request({method: :put,
     query: clean_api_vars(params),
     path: build_uri(splat),
+    headers: rheaders,
     body: body})
 rescue Exception => e
   handle_exeception(e)
@@ -73,11 +76,12 @@ end
 
 def uadmin_post(splat, body, params)
   STDERR.puts( 'Post Body ' + body.to_s)
+  str = body.read(4096)
   c = uconnection
   c.request({method: :post,
     query: clean_api_vars(params),
     path: build_uri(splat),
-    body: body})
+    body: str})
 rescue Exception => e
   handle_exeception(e)
 ensure
