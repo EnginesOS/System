@@ -83,7 +83,7 @@ def uadmin_post(splat, body, params)
     body =  body[:api_vars] 
     #body = body.json
   end
-  rheaders['Content-Length'] = body.length
+  rheaders['Content-Length'] = body.to_json.length
   c = uconnection
   #params.merge!(body)
   r = {method: :post,
