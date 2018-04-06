@@ -61,9 +61,12 @@ end
 
 def uadmin_put(splat, body, params)
   c = uconnection
+  rheaders = {}
+  rheaders['Content-Type'] = 'application/json'
   c.request({method: :put,
     query: clean_api_vars(params),
     path: build_uri(splat),
+    headers: rheaders,
     body: body})
 rescue Exception => e
   handle_exeception(e)
@@ -72,11 +75,24 @@ ensure
 end
 
 def uadmin_post(splat, body, params)
+  STDERR.puts( 'Post Body ' + body.to_s)
+  
+  rheaders = {}
+  rheaders['Content-Type'] = 'application/json'
+  if body.is_a?(Hash)  
+    body =  body[:api_vars] 
+    #body = body.json
+  end
+  #rheaders['Content-Length'] = body.length
   c = uconnection
-  c.request({method: :post,
-    query: clean_api_vars(params),
-    path: build_uri(splat),
-    body: body})
+  params.merge!(body)
+  r = {method: :post,
+  query: clean_api_vars(params),
+  headers: rheaders,
+  path: build_uri(splat),
+  body: body}
+  STDERR.puts('Request ' + r.to_s)
+  c.request(r)
 rescue Exception => e
   handle_exeception(e)
 ensure
