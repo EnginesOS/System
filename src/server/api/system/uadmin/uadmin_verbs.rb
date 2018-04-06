@@ -4,7 +4,7 @@ def uconnection
   debug_response: true,
   ssl_verify_peer: false,
   persistent: false,
-  headers: {'content_type' => content_type})
+  headers: {'content_type' => 'application/json'}) #content_type})
 rescue Excon::Error => e
   STDERR.puts('Failed to open base url ' +   'http://uadmin:8000'  + ' ' + e.to_s + ' ' + e.class.name)
   if @retries < 5
