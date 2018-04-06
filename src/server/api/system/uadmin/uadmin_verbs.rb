@@ -125,5 +125,4 @@ def clean_params(params)
   params.delete('splat')
   params.delete('captures')
   params
-
 end
