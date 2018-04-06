@@ -61,7 +61,7 @@ end
 
 def uadmin_put(splat, body, params)
   c = uconnection
-  c.request({method: :get,
+  c.request({method: :put,
     query: clean_api_vars(params),
     path: build_uri(splat),
     body: body})
@@ -73,7 +73,7 @@ end
 
 def uadmin_post(splat, body, params)
   c = uconnection
-  c.request({method: :get,
+  c.request({method: :post,
     query: clean_api_vars(params),
     path: build_uri(splat),
     body: body})
