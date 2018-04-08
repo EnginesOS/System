@@ -74,7 +74,7 @@ ensure
   c.reset unless c.nil?
 end
 
-def uadmin_post(splat, body, params)
+def uadmin_post(splat, params, body)
   STDERR.puts( 'Post Body ' + body.to_s)
   
   rheaders = {}
@@ -101,10 +101,15 @@ ensure
   c.reset unless c.nil?
 end
 
-def uadmin_del(splat, params)
+def uadmin_del(splat, params, body)
   c = uconnection
+  if body.is_a?(Hash)  
+    body =  body[:api_vars] 
+    body = body.to_json
+  end
   c.request({method: :delete,
     query: clean_params(params),
+    body: body,
     path: build_uri(splat)})
 rescue Exception => e
   handle_exeception(e)

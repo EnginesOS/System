@@ -21,11 +21,10 @@ put '/v0/system/uadmin/*' do
 end
 
 post '/v0/system/uadmin/*' do
-  p_params = post_params(request)
-  STDERR.puts(' Post' + params.to_s)
   begin
-    require_relative 'uadmin_verbs.rb'   
-  uadmin_response(uadmin_post(params[:splat][0], p_params, params))
+    require_relative 'uadmin_verbs.rb'  
+    p_params = post_params(request) 
+  uadmin_response(uadmin_post(params[:splat][0], params, p_params))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -34,7 +33,8 @@ end
 delete '/v0/system/uadmin/*' do
   begin
     require_relative 'uadmin_verbs.rb'
-  uadmin_response(uadmin_del(params[:splat][0], params))
+    p_params = post_params(request)
+  uadmin_response(uadmin_del(params[:splat][0], params, p_params))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
