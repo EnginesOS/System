@@ -49,9 +49,14 @@ def build_uri(splat)
 end
 
 def uadmin_get(splat, params)
+  if body.is_a?(Hash)
+    body =  body[:api_vars]
+    body = body.to_json
+  end
   c = uconnection
   c.request({method: :get,
     query: clean_params(params),
+  body: body,
     path: build_uri(splat)})
 rescue Exception => e
   handle_exeception(e)
@@ -63,8 +68,12 @@ def uadmin_put(splat, body, params)
   c = uconnection
   rheaders = {}
   rheaders['content_type'] = 'application/json'
+  if body.is_a?(Hash)
+    body =  body[:api_vars]
+    body = body.to_json
+  end
   c.request({method: :put,
-    query: clean_api_vars(params),
+    query: clean_params(params),
     path: build_uri(splat),
     headers: rheaders,
     body: body})
@@ -76,26 +85,27 @@ end
 
 def uadmin_post(splat, params, body)
   STDERR.puts( 'Post Body ' + body.to_s)
-  
+
   rheaders = {}
   rheaders['content_type'] = 'application/json'
-  if body.is_a?(Hash)  
-    body =  body[:api_vars] 
-    #body = body.json
+  if body.is_a?(Hash)
+    body =  body[:api_vars]
+    body = body.to_json
   end
- # rheaders['content_length'] = body.to_json.length
+  # rheaders['content_length'] = body.to_json.length
   c = uconnection
   #params.merge!(body)
   r = {method: :post,
-  #query: clean_params(params),
- # query: body.to_json,
-  headers: rheaders,
-  path: build_uri(splat),
-  body: body.to_json}
+    #query: clean_params(params),
+    # query: body.to_json,
+    query: clean_params(params),
+    headers: rheaders,
+    path: build_uri(splat),
+    body: body}
   STDERR.puts('Request ' + r.to_s)
   c.request(r)
 rescue Exception => e
-STDERR.puts( 'EXE ' + e.to_s)
+  STDERR.puts( 'EXE ' + e.to_s)
   handle_exeception(e)
 ensure
   c.reset unless c.nil?
@@ -103,8 +113,8 @@ end
 
 def uadmin_del(splat, params, body)
   c = uconnection
-  if body.is_a?(Hash)  
-    body =  body[:api_vars] 
+  if body.is_a?(Hash)
+    body =  body[:api_vars]
     body = body.to_json
   end
   c.request({method: :delete,
@@ -132,7 +142,6 @@ def uadmin_response(r)
   end
 end
 
-
 def clean_api_vars(params)
   STDERR.puts('I got ' + params.to_s)
   v = clean_params(params)
@@ -145,7 +154,9 @@ def clean_api_vars(params)
 end
 
 def clean_params(params)
-  params.delete('splat')
-  params.delete('captures')
+  if params.is_a?(Hash)
+    params.delete('splat')
+    params.delete('captures')
+  end
   params
 end
