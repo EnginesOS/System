@@ -34,9 +34,10 @@ module CheckBuildParams
       str.match(/^[a-zA-Z]/) & str.match(/[a-zA-Z0-9]+$/)
       end        
    end
+   
     if str.nil?
       false
-    elsif match(str, lower) 
+    elsif match_lower(str, lower) 
       true
     else
       false
