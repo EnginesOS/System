@@ -4,7 +4,8 @@ get '/v0/system/uadmin/*' do
     require_relative 'uadmin_verbs.rb'
     STDERR.puts(' Getting')
     STDERR.puts('I got ' + params.to_s) 
-    uadmin_response(uadmin_get(params[:splat][0], params))
+    p_params = post_params(request) 
+    uadmin_response(uadmin_get(params[:splat][0], params, p_params))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -12,9 +13,10 @@ end
 
 put '/v0/system/uadmin/*' do
   begin
-    require_relative 'uadmin_verbs.rb'
+    require_relative 'uadmin_verbs.rb' 
+    p_params = post_params(request) 
     STDERR.puts(' Put' + params.to_s)
-    uadmin_response(uadmin_put(params[:splat][0], request.env['rack.input'], params))
+    uadmin_response(uadmin_put(params[:splat][0], params, p_params))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
