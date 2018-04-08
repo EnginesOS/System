@@ -55,7 +55,7 @@ def uadmin_get(splat, params)
   end
   c = uconnection
   c.request({method: :get,
-    query: clean_params(params),
+    query: clean_api_vars(params),
   body: body,
     path: build_uri(splat)})
 rescue Exception => e
@@ -73,7 +73,7 @@ def uadmin_put(splat, body, params)
     body = body.to_json
   end
   c.request({method: :put,
-    query: clean_params(params),
+    query: clean_api_vars(params),
     path: build_uri(splat),
     headers: rheaders,
     body: body})
@@ -98,7 +98,7 @@ def uadmin_post(splat, params, body)
   r = {method: :post,
     #query: clean_params(params),
     # query: body.to_json,
-    query: clean_params(params),
+    query: clean_api_vars(params),
     headers: rheaders,
     path: build_uri(splat),
     body: body}
@@ -118,7 +118,7 @@ def uadmin_del(splat, params, body)
     body = body.to_json
   end
   c.request({method: :delete,
-    query: clean_params(params),
+    query: clean_api_vars(params),
     body: body,
     path: build_uri(splat)})
 rescue Exception => e
