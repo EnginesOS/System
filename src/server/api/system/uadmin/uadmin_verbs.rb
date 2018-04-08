@@ -48,15 +48,12 @@ def build_uri(splat)
   uri
 end
 
-def uadmin_get(splat, params)
-  if body.is_a?(Hash)
-    body =  body[:api_vars]
-    body = body.to_json
-  end
+def uadmin_get(splat, params, body)
+  body = process_body(body)
   c = uconnection
   c.request({method: :get,
     query: clean_params(params),
-  body: body,
+    body: body,
     path: build_uri(splat)})
 rescue Exception => e
   handle_exeception(e)
@@ -64,14 +61,12 @@ ensure
   c.reset unless c.nil?
 end
 
-def uadmin_put(splat, body, params)
+def uadmin_put(splat, params, body)
   c = uconnection
   rheaders = {}
   rheaders['content_type'] = 'application/json'
-  if body.is_a?(Hash)
-    body =  body[:api_vars]
-    body = body.to_json
-  end
+
+  body = process_body(body)
   c.request({method: :put,
     query: clean_params(params),
     path: build_uri(splat),
@@ -88,16 +83,9 @@ def uadmin_post(splat, params, body)
 
   rheaders = {}
   rheaders['content_type'] = 'application/json'
-  if body.is_a?(Hash)
-    body =  body[:api_vars]
-    body = body.to_json
-  end
-  # rheaders['content_length'] = body.to_json.length
+  body = process_body(body)
   c = uconnection
-  #params.merge!(body)
   r = {method: :post,
-    #query: clean_params(params),
-    # query: body.to_json,
     query: clean_params(params),
     headers: rheaders,
     path: build_uri(splat),
@@ -113,10 +101,7 @@ end
 
 def uadmin_del(splat, params, body)
   c = uconnection
-  if body.is_a?(Hash)
-    body =  body[:api_vars]
-    body = body.to_json
-  end
+  body = process_body(body)
   c.request({method: :delete,
     query: clean_params(params),
     body: body,
@@ -151,6 +136,16 @@ def clean_api_vars(params)
     STDERR.puts('I give ' +  v[:api_vars].to_s  )
     v[:api_vars]
   end
+end
+
+def process_body(body)
+  STDERR.puts('RAW body ' + body.to_s)
+  if body.is_a?(Hash)
+    body =  body[:api_vars]
+    body = body.to_json
+    STDERR.puts('body to sned' + body.to_s)
+  end
+  body
 end
 
 def clean_params(params)
