@@ -32,7 +32,7 @@ module CheckBuildParams
         unless str.match(/^[a-z]+$/).nil? || str.match(/^[a-z0-9]+$/, 1).nil?
           true
         else
-           SDTERR.puts(' failed to match ' + str + ' r  ' +   str.match(/^[a-z]+$/).to_s + ' r2 ' + str.match(/[a-z0-9]+$/).to_s)
+           STDERR.puts(' failed to match ' + str + ' r  ' +   str.match(/^[a-z]+$/).to_s + ' r2 ' + str.match(/[a-z0-9]+$/).to_s)
           false
         end
       else
