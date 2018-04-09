@@ -29,9 +29,17 @@ module CheckBuildParams
   def acceptable_name_chars(str, lower = false)
     def match_lower(str,lower)
       if lower == true  
-        str.match(/^[a-z]+$/) & str.match(/[a-z0-9]+$/)
+        if str.match(/^[a-z]+$/) && str.match(/[a-z0-9]+$/) == true
+          true
+        else
+          false
+        end
       else
-      str.match(/^[a-zA-Z]/) & str.match(/[a-zA-Z0-9]+$/)
+       if str.match(/^[a-zA-Z]/) && str.match(/[a-zA-Z0-9]+$/) == true
+         true
+       else
+         false
+       end
       end        
    end
    
