@@ -178,7 +178,9 @@ module DockerEvents
       begin 
       while 1 != 0               
           @docker_event_listener.start
+          
           STDERR.puts( ' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+        listeners = @docker_event_listener.event_listeners
          @docker_event_listener = DockerEventWatcher.new(self, listeners)
          # @docker_event_listener.restart
         end 
