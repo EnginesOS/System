@@ -68,7 +68,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
           end
         finialise_events_stream(events_stream, timer)
         rescue StandardError => e
-          STDERR.puts('EVENTS Exception' + e.to_s + ':' + e.class.name + e.backtrace.to_s)
+         # STDERR.puts('EVENTS Exception' + e.to_s + ':' + e.class.name + e.backtrace.to_s)
           finialise_events_stream(events_stream, timer)
         end
       end
