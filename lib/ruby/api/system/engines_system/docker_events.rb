@@ -188,7 +188,7 @@ def start_docker_event_listener(listeners = {})
         STDERR.puts(' EVENT Listener started  post timeout ')       
         rescue StandardError => e
           STDERR.puts(' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!' + e.to_s)         
-          start_docker_event_listener(@docker_event_listener)   
+          start_docker_event_listener(@docker_event_listener.event_listeners)   
         STDERR.puts(' EVENT Listener started Post Exception ')                  
        end
     end
