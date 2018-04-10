@@ -4,7 +4,7 @@ module DockerEvents
 
   def create_event_listener
     @event_listener_lock = true
-    @docker_event_listener = start_docker_event_listener
+    start_docker_event_listener
     @docker_event_listener.add_event_listener([self, 'container_event'.to_sym], 16, nil, 0) unless $PROGRAM_NAME.end_with?('system_service.rb')
   end
 
@@ -176,14 +176,15 @@ def start_docker_event_listener(listeners = {})
     @event_listener_thread.exit unless @event_listener_thread.nil?
     @event_listener_thread = Thread.new do
       begin 
-      while 1 != 0               
-          @docker_event_listener.start
-          
+    #  while 1 != 0               
+          @docker_event_listener.start          
           STDERR.puts( ' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
         listeners = @docker_event_listener.event_listeners
-         @docker_event_listener = DockerEventWatcher.new(self, listeners)
+        STDERR.puts( ' EVENT LISTENER S ' + listeners.count.to_s)
+       #  @docker_event_listener = DockerEventWatcher.new(self, listeners)
          # @docker_event_listener.restart
-        end 
+      #  end 
+        start_docker_event_listener(@docker_event_listener)  
         rescue StandardError => e
           STDERR.puts(' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!' + e.to_s)         
           start_docker_event_listener(@docker_event_listener)   
@@ -191,7 +192,7 @@ def start_docker_event_listener(listeners = {})
        end
     end
     @event_listener_thread[:name] = 'docker_event_listener'
-    @docker_event_listener
+   # @docker_event_listener
   rescue StandardError =>e
     STDERR.puts(e.class.name)
     log_exception(e)
