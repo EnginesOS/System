@@ -27,16 +27,31 @@ module CheckBuildParams
 
   
   def acceptable_name_chars(str, lower = false)
+    return true
+    #FIX ME
     def match_lower(str,lower)
       if lower == true  
-        str.match(/^[a-z]+$/)
+        if str.match(/^[a-z]+$/).nil? || str.match(/[a-z0-9]+$/).nil?
+          STDERR.puts(' failed to match ' + str + ' r  ' +   str.match(/^[a-z]+$/).to_s + ' r2 ' + str.match(/[a-z0-9]+$/).to_s)
+          false
+        else
+           STDERR.puts('matched ' + str + ' r  ' +   str.match(/^[a-z]+$/).to_s + ' r2 ' + str.match(/[a-z0-9]+$/).to_s)
+           #FIXME 
+           true
+          #false
+        end
       else
-      str.match(/^[a-zA-Z]/) & str.match(/[a-zA-Z0-9]+$/)
+       if str.match(/^[a-zA-Z]/).nil? || str.match(/[a-zA-Z0-9]+$/, 1).nil?
+         false
+       else
+         true
+       end
       end        
    end
+   
     if str.nil?
       false
-    elsif match(str, lower) 
+    elsif match_lower(str, lower) 
       true
     else
       false
