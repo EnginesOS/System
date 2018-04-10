@@ -79,6 +79,7 @@ class DockerEventWatcher < ErrorsApi
 
   def start
     SystemDebug.debug(SystemDebug.container_events, 'EVENT LISTENER ' + @event_listeners.to_s)
+    STDERR.puts('EVENT LISTENER ' + @event_listeners.to_s)
     client = get_client
     client.request(Net::HTTP::Get.new('/events')) do |resp|
       json_part = nil
@@ -119,10 +120,11 @@ class DockerEventWatcher < ErrorsApi
     STDERR.puts('CLOSED docker Event Stream as close')
     client.finish if client.started?
     # @system.start_docker_event_listener(@event_listeners)
+    STDERR.puts('client closes')
   rescue Net::ReadTimeout
     log_error_mesg('Restarting docker Event Stream Read Timeout as timeout')
-    d = Date.new
-    STDERR.puts(d.to_s + ':TIMEOUT docker Event Stream as close')
+    d = Time.now
+    STDERR.puts(d.to_i.to_s + ':TIMEOUT docker Event Stream as close')
     # @system.start_docker_event_listener(@event_listeners)
     client.finish if client.started?
   rescue StandardError => e
