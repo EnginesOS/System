@@ -4,7 +4,7 @@ def uconnection
   debug_response: true,
   ssl_verify_peer: false,
   persistent: false,
-  headers: {'content_type' => content_type})
+  headers: {'content_type' => 'application/json'}) #content_type})
 rescue Excon::Error => e
   STDERR.puts('Failed to open base url ' +   'http://uadmin:8000'  + ' ' + e.to_s + ' ' + e.class.name)
   if @retries < 5
@@ -48,10 +48,12 @@ def build_uri(splat)
   uri
 end
 
-def uadmin_get(splat, params)
+def uadmin_get(splat, params, body)
+  body = process_body(body)
   c = uconnection
   c.request({method: :get,
     query: clean_params(params),
+    body: body,
     path: build_uri(splat)})
 rescue Exception => e
   handle_exeception(e)
@@ -59,11 +61,16 @@ ensure
   c.reset unless c.nil?
 end
 
-def uadmin_put(splat, body, params)
+def uadmin_put(splat, params, body)
   c = uconnection
-  c.request({method: :get,
+  rheaders = {}
+  rheaders['content_type'] = 'application/json'
+
+  body = process_body(body)
+  c.request({method: :put,
     query: clean_params(params),
     path: build_uri(splat),
+    headers: rheaders,
     body: body})
 rescue Exception => e
   handle_exeception(e)
@@ -71,22 +78,33 @@ ensure
   c.reset unless c.nil?
 end
 
-def uadmin_post(splat, body, params)
+def uadmin_post(splat, params, body)
+  STDERR.puts( 'Post Body ' + body.to_s)
+
+  rheaders = {}
+  rheaders['content_type'] = 'application/json'
+  body = process_body(body)
   c = uconnection
-  c.request({method: :get,
+  r = {method: :post,
     query: clean_params(params),
+    headers: rheaders,
     path: build_uri(splat),
-    body: body})
+    body: body}
+  STDERR.puts('Request ' + r.to_s)
+  c.request(r)
 rescue Exception => e
+  STDERR.puts( 'EXE ' + e.to_s)
   handle_exeception(e)
 ensure
   c.reset unless c.nil?
 end
 
-def uadmin_del(splat, params)
+def uadmin_del(splat, params, body)
   c = uconnection
+  body = process_body(body)
   c.request({method: :delete,
     query: clean_params(params),
+    body: body,
     path: build_uri(splat)})
 rescue Exception => e
   handle_exeception(e)
@@ -109,9 +127,31 @@ def uadmin_response(r)
   end
 end
 
-def clean_params(params)
-  params.delete('splat')
-  params.delete('captures')
-  params
+def clean_api_vars(params)
+  STDERR.puts('I got ' + params.to_s)
+  v = clean_params(params)
+  if v.nil?
+    {}
+  else
+    STDERR.puts('I give ' +  v[:api_vars].to_s  )
+    v[:api_vars]
+  end
+end
 
+def process_body(body)
+  STDERR.puts('RAW body ' + body.to_s)
+  if body.is_a?(Hash)
+    body =  body[:api_vars]
+    body = body.to_json
+    STDERR.puts('body to sned' + body.to_s)
+  end
+  body
+end
+
+def clean_params(params)
+  if params.is_a?(Hash)
+    params.delete('splat')
+    params.delete('captures')
+  end
+  params
 end

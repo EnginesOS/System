@@ -73,4 +73,21 @@ get '/v0/unauthenticated/system_ca' do
     send_encoded_exception(request: request, exception: e)
   end
 end
+
+
+# @method set_user_password
+# @overload post '/v0/unauthenticated/user/set_password'
+# params user_name current_password new_password
+# 
+#
+# @return [json]
+post '/v0/unauthenticated/user/set_password' do
+  begin
+    p_params = post_params(request)
+    cparams = assemble_params(p_params, [:user_name, :current_password, :new_password])
+    return_json(engines_api.set_user_password(cparams))
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+end
 # @!endgroup
