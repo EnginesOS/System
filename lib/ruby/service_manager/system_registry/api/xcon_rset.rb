@@ -17,12 +17,14 @@ def connection(content_type = nil)
   debug_request:  true,
   debug_response: true,
   ssl_verify_peer: false,
-  persistent: true,
+  persistent: false, #was true
   headers: headers(content_type) )
 rescue Errno::EHOSTUNREACH
   @core_api.fix_registry_problem
   retry
 rescue StandardError => e
+  @connection.reset unless @connection.nil?
+  @connection = nil
   raise EnginesException.new(error_hash('Failed to open base url to registry ' + e.to_s, @base_url.to_s))
 end
 
