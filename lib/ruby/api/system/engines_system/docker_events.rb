@@ -193,6 +193,7 @@ def start_docker_event_listener(listeners = {})
        end
     end
     @event_listener_thread[:name] = 'docker_event_listener'
+      STDERR.puts('Thread ' +  @event_listener_thread.inspect)
    # @docker_event_listener
   rescue StandardError =>e
     STDERR.puts(e.class.name)

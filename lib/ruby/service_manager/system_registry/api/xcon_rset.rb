@@ -9,7 +9,7 @@ def headers (content_type = nil)
   @headers = {'content_type' => 'application/json','ACCESS_TOKEN' => 'atest_randy', 'Accept' => '*/*'} if @headers.nil?
   @headers['content_type'] = content_type unless content_type.nil?
   @headers
-  end
+end
 
 def connection(content_type = nil)
   # STDERR.puts('open connec' )
@@ -31,6 +31,7 @@ def close_connection
   @connection.reset unless @connection.nil?
   @connection = nil
 end
+
 def reopen_connection
   # STDERR.puts('re open connec')
   @connection.reset
@@ -50,18 +51,18 @@ def rest_get(path, params = nil, time_out = 120, _headers = nil)
   req = {time_out: time_out, method: :get, path: @route_prefix.to_s + path.to_s, headers: lheaders }
   req[:query] = q unless q.nil?
   r = connection.request(req)
-close_connection
+  close_connection
   parse_xcon_response(r)
 rescue Excon::Error::Socket => e
-#STDERR.puts(e.class.name + 'Excon::Error::Socket error:' + e.socket_error.to_s)
-#unless e.socket_error == EOFError #'end of file reached'
+  #STDERR.puts(e.class.name + 'Excon::Error::Socket error:' + e.socket_error.to_s)
+  #unless e.socket_error == EOFError #'end of file reached'
   reopen_connection
   #STDERR.puts(e.class.name + 'Excon::Error::Socket with path:' + path.to_s + "\n" + 'params:' + q.to_s + ':::' + req.to_s  + ':' + e.to_s)
   cnt += 1
   retry if cnt < 5
-#end
+  #end
 rescue StandardError => e
-close_connection
+  close_connection
   raise EnginesException.new(error_hash('reg exception ' + e.to_s, @base_url.to_s))
 end
 
@@ -75,21 +76,21 @@ def rest_post(path, params = nil, lheaders = nil)
     SystemDebug.debug(SystemDebug.registry,'POST  ', path.to_s + '?' + params.to_s)
     lheaders = headers if lheaders.nil?
     r = parse_xcon_response(connection.request({read_timeout: time_out, headers: lheaders, method: :post, path: @route_prefix.to_s + path.to_s, body: query_hash(params).to_json }))
-  close_connection
-  r
+    close_connection
+    r
   rescue Excon::Error::Socket => e
-  unless e.socket_error == EOFError
-  #  STDERR.puts e.class.name
-    reopen_connection
-    cnt += 1
-     retry if cnt < 5
-  end
+    unless e.socket_error == EOFError
+      #  STDERR.puts e.class.name
+      reopen_connection
+      cnt += 1
+      retry if cnt < 5
+    end
   rescue StandardError => e
     STDERR.puts('BASE ur ' + @base_url.to_s)
     STDERR.puts('path ' + path.to_s)
-  STDERR.puts('exception ' + e.to_s)
-  close_connection
-      
+    STDERR.puts('exception ' + e.to_s)
+    close_connection
+
     raise EnginesException.new(error_hash('reg exception ' + path.to_s + "\n" + e.to_s, @base_url.to_s))
   end
 end
@@ -100,14 +101,14 @@ def rest_put(path, params = nil, lheaders = nil)
   lheaders = headers if lheaders.nil?
   r = parse_xcon_response( connection.request(read_timeout: time_out, headers: lheaders, method: :put, path: @route_prefix + path.to_s, query: query_hash(params).to_json ))
   close_connection
-  r  
+  r
 rescue Excon::Error::Socket => e
- # unless e.socket_error == EOFError
-#  STDERR.puts e.class.name
+  # unless e.socket_error == EOFError
+  #  STDERR.puts e.class.name
   reopen_connection
   cnt += 1
-   retry if cnt < 5
- # end
+  retry if cnt < 5
+  # end
 rescue StandardError => e
   close_connection
   raise EnginesException.new(error_hash('reg exception ' + e.to_s, @base_url.to_s))
@@ -128,17 +129,17 @@ def rest_delete(path, params = nil, lheaders = nil)
   q = query_hash(params)
   SystemDebug.debug(SystemDebug.registry, 'DEL ', path.to_s + '?' + q.to_s)
   lheaders = headers if lheaders.nil?
-  r = parse_xcon_response( connection.request(read_timeout: time_out, headers: lheaders, method: :delete, path: @route_prefix + path.to_s, query: q))  
-  close_connection  
+  r = parse_xcon_response( connection.request(read_timeout: time_out, headers: lheaders, method: :delete, path: @route_prefix + path.to_s, query: q))
+  close_connection
   r
- 
+
 rescue Excon::Error::Socket => e
-#  unless e.socket_error == EOFError
- # STDERR.puts e.class.name
+  #  unless e.socket_error == EOFError
+  # STDERR.puts e.class.name
   reopen_connection
   cnt += 1
-   retry if cnt < 5
-#  end
+  retry if cnt < 5
+  #  end
 rescue StandardError => e
   close_connection
   raise EnginesException.new(error_hash('reg exception ' + e.to_s, @base_url.to_s))
