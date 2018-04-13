@@ -26,7 +26,7 @@ class DockerEventWatcher < ErrorsApi
           hash[:state] = state_from_status(hash[:status])
           SystemDebug.debug(SystemDebug.container_events, 'fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
           begin
-          r = @object.method(@method).call(hash)
+            r = @object.method(@method).call(hash)
           rescue EnginesException => e
             SystemDebug.debug(SystemDebug.container_events, e.to_s + ':' + e.backtrace.to_s)
             STDERR.puts(e.to_s + ":\n" + e.backtrace.to_s) if e.level == :error
@@ -80,8 +80,8 @@ class DockerEventWatcher < ErrorsApi
   def start
     SystemDebug.debug(SystemDebug.container_events, 'EVENT LISTENER ' + @event_listeners.to_s)
     STDERR.puts('start with EVENT LISTENERS ' + @event_listeners.count.to_s)
-    client = get_client
-    client.request(Net::HTTP::Get.new('/events')) do |resp|
+    get_client
+    @client.request(Net::HTTP::Get.new('/events')) do |resp|
       json_part = nil
       resp.read_body do |chunk|
         begin
@@ -118,7 +118,8 @@ class DockerEventWatcher < ErrorsApi
     end
     log_error_mesg('Restarting docker Event Stream ')
     STDERR.puts('CLOSED docker Event Stream as close')
-    client.finish if client.started?
+    @client.finish if @client.started?
+    @client = nil
     # @system.start_docker_event_listener(@event_listeners)
     STDERR.puts('client closes')
   rescue Net::ReadTimeout
@@ -126,12 +127,14 @@ class DockerEventWatcher < ErrorsApi
     d = Time.now
     STDERR.puts(d.to_i.to_s + ':TIMEOUT docker Event Stream as close')
     # @system.start_docker_event_listener(@event_listeners)
-    client.finish if client.started?
+    @client.finish if @client.started?
+    @client = nil
   rescue StandardError => e
     log_exception(e)
     log_error_mesg('Restarting docker Event Stream post exception ')
     STDERR.puts('EXCEPTION docker Event Stream post exception due to ' + e.to_s + ' ' + e.class.name)
-    client.finish if client.started?
+    @client.finish if @client.started?
+    @client = nil
     # @system.start_docker_event_listener(@event_listeners)
   end
 
@@ -160,10 +163,11 @@ class DockerEventWatcher < ErrorsApi
   end
 
   def get_client
-    client = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
-    client.continue_timeout = 300
-    client.read_timeout = 300
-    client
+    if @client.nil?
+      @client = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
+      @client.continue_timeout = 3600
+      @client.read_timeout = 3600
+    end
   end
 
   def match_container(hash, container_name)
@@ -188,9 +192,9 @@ class DockerEventWatcher < ErrorsApi
   end
 
   def trigger(hash)
-  #  @events_mutex.synchronize {
+    #  @events_mutex.synchronize {
     l = @event_listeners.sort_by { |k, v| v[:priority] }
-   # }
+    # }
     l.each do |m|
       listener = m[1][:listener]
       unless listener.container_name.nil?
