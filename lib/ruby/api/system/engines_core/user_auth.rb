@@ -147,11 +147,13 @@ error_type: :warning,
     {}
   end
 def set_system_user_settings(settings)
-  
   sf = File.new(SystemConfig.SystemUserSettingsFile, 'w+')
-  sf.write(settings.to_yaml)
-ensure
+  sf.write(settings.to_yaml)  
   sf.close
+  true
+rescue StandardError => e
+  sf.close unless sf.nil? 
+  raise e
   end
   
   private
