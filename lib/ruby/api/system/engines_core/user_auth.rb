@@ -137,8 +137,8 @@ error_type: :warning,
 
   def system_user_settings
     
-    if File.exist?(Sysconfig.SystemUserSettingsFile)
-      data = File.read(Sysconfig.SystemUserSettingsFile)
+    if File.exist?(SystemConfig.SystemUserSettingsFile)
+      data = File.read(SystemConfig.SystemUserSettingsFile)
       YAML::load(data)           
   else
     {}
@@ -148,8 +148,9 @@ error_type: :warning,
   end
 def set_system_user_settings(settings)
   
-  sf = File.new(Sysconfig.SystemUserSettingsFile, 'w+')
+  sf = File.new(SystemConfig.SystemUserSettingsFile, 'w+')
   sf.write(settings.to_yaml)
+ensure
   sf.close
   end
   
