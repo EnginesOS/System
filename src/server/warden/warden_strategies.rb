@@ -56,7 +56,7 @@ Warden::Strategies.add(:user_access_token) do
   
   def authenticate!
      access_granted = is_user_token_valid?(request.env['HTTP_ACCESS_TOKEN'], request.env['REMOTE_ADDR'])
-     !access_granted ? fail!('Not logged in') : success!(access_granted)
+     !access_granted ? fail!('No user logged in') : success!(access_granted)
    end
    
   

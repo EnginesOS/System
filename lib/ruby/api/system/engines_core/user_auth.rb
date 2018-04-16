@@ -19,10 +19,8 @@ module UserAuth
     unless token.nil?
       if is_admin_token_valid?(token, ip)
         access = true
-        access = @user_tokens[token]
-        access = false if access.nil?
-      else
-        access = false
+      else 
+        access = @user_tokens.key?(token)
       end
     else
       access = false
