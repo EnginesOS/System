@@ -135,6 +135,28 @@ error_type: :warning,
     true
   end
 
+  def system_user_settings
+    
+    if File.exist?(SystemConfig.SystemUserSettingsFile)
+      data = File.read(SystemConfig.SystemUserSettingsFile)
+      YAML::load(data)           
+  else
+    {}
+    end
+  rescue
+    {}
+  end
+def set_system_user_settings(settings)
+  sf = File.new(SystemConfig.SystemUserSettingsFile, 'w+')
+  sf.write(settings.to_yaml)  
+  sf.close
+  true
+rescue StandardError => e
+  sf.close unless sf.nil? 
+  raise e
+  end
+  
+  private
   def update_local_token(token)
     SystemDebug.debug(SystemDebug.first_run, ' Save Token', token)
     toke_file = File.new('/home/engines/.engines_token', 'w+')
@@ -145,4 +167,5 @@ error_type: :warning,
     log_error_mesg(e.to_s)
   end
 
+  
 end
