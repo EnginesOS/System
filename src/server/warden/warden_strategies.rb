@@ -21,13 +21,7 @@ Warden::Strategies.add(:access_token) do
     access_granted = is_admin_token_valid?(request.env['HTTP_ACCESS_TOKEN'], request.env['REMOTE_ADDR'])
     !access_granted ? fail!('Not logged in') : success!(access_granted)
   end
-  
-  def user_authenticate!
-     access_granted = is_user_token_valid?(request.env['HTTP_ACCESS_TOKEN'], request.env['REMOTE_ADDR'])
-     !access_granted ? fail!('Not logged in') : success!(access_granted)
-   end
    
-  
 end
 
 # Implement Warden stratagey to validate and authorize the access_token.
@@ -55,6 +49,7 @@ Warden::Strategies.add(:user_access_token) do
 #  end
   
   def authenticate!
+    STDERR.puts('USER Auth ' +request.env['HTTP_ACCESS_TOKEN'].to_s )
      access_granted = is_user_token_valid?(request.env['HTTP_ACCESS_TOKEN'], request.env['REMOTE_ADDR'])
      !access_granted ? fail!('No user logged in') : success!(access_granted)
    end
