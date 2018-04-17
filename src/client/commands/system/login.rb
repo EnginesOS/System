@@ -1,11 +1,12 @@
 @route += ''
 last_arg = ARGV.count - 1
-if last_arg > 3
-  cn_end = last_arg - 1
-  un = ARGV[2-cn_end]
-else
+  n = 3
   un = ARGV[2]
+  while n < last_arg do
+  un = un + ARGV[n]
+  n = n + 1
 end
+
 ps =  {user_name: un,
   password: ARGV[last_arg]
   }
