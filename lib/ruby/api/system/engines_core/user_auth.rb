@@ -27,7 +27,7 @@ module UserAuth
       # authentication succeeded
     else
       # authentication failed
-    raise EnginesException.new(error_hash("failed to bind " + ldap.get_operation_result,params))
+    raise EnginesException.new(error_hash("failed to bind " + ldap.get_operation_result.to_s ,params))
 
     end       
   end
