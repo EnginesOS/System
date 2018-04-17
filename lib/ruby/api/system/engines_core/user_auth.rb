@@ -11,7 +11,7 @@ module UserAuth
   
   def ldap_user_login(params)
     tok = 'user_toke'
-    @user_tokens[tok] = params
+    $user_tokens[tok] = params
     tok
   end
 
@@ -35,7 +35,7 @@ module UserAuth
         access = true
       else
         STDERR.puts('USER TOKENS ' + @user_tokens.to_s)
-        access = @user_tokens.key?(token)
+        access = $user_tokens.key?(token)
       end
     else
       access = false
