@@ -9,9 +9,14 @@ module UserAuth
     end
   end
   
+  def ldap_user_logout(tok)
+      $user_tokens.delete(tok) if $user_tokens.key?(tok)
+    end
+  
   def ldap_user_login(params)
-    tok = 'user_toke'
+    tok =  SecureRandom.hex(48)
     $user_tokens[tok] = params
+    record_login(params)
     tok
   end
 

@@ -38,14 +38,14 @@ end
 # all params are required
 # new auth token returned
 post '/v0/system/users/' do
-begin
-  content_type 'text/plain'
-  post_s = post_params(request)
-  cparams = assemble_params(post_s, nil, [:user_name, :new_password, :token, :current_password])
-  return_boolean(engines_api.set_system_user_password(cparams))
-rescue StandardError => e
-  send_encoded_exception(request: request, exception: e)
-end
+  begin
+    content_type 'text/plain'
+    post_s = post_params(request)
+    cparams = assemble_params(post_s, nil, [:user_name, :new_password, :token, :current_password])
+    return_boolean(engines_api.set_system_user_password(cparams))
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
 end
 
 # Set Users details
@@ -55,39 +55,40 @@ end
 # :user_name and params are required
 # password is changed if new_password present
 
-
 post '/v0/system/user/:user_name' do
-begin
-  content_type 'text/plain'
-  post_s = post_params(request).merge(params)
-  cparams = assemble_params(post_s, [:user_name], [:new_password, :current_password], nil)
-  return_boolean(engines_api.set_system_user_details(cparams))
-rescue StandardError => e
-  send_encoded_exception(request: request, exception: e)
-end
+  begin
+    content_type 'text/plain'
+    post_s = post_params(request).merge(params)
+    cparams = assemble_params(post_s, [:user_name], [:new_password, :current_password], nil)
+    return_boolean(engines_api.set_system_user_details(cparams))
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
 end
 
 # get Users details
 # @method get_user
 # @overload get '/v0/system/user/:user_name'
 #
-# @return user params["user_name, :token, :uid] 
+# @return user params["user_name, :token, :uid]
 get '/v0/system/user/:user_name' do
-begin
-  content_type 'text/plain'
-  cparams = assemble_params(params, [:user_name])
-  return_json(engines_api.get_system_user_info(cparams[:user_name]))
-rescue StandardError => e
-  send_encoded_exception(request: request, exception: e)
+  begin
+    content_type 'text/plain'
+    cparams = assemble_params(params, [:user_name])
+    return_json(engines_api.get_system_user_info(cparams[:user_name]))
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
 end
-end
-
 
 # @clears Authentication token
-# FIXMe this is a no-op
-get '/v0/system/logout' do
+
+post '/v0/system/logout' do
   begin
     status(403)
+    post_s = post_params(request)
+    cparams = assemble_params(post_s, [:user_toke])
+    engines_api.log_out_user(cparams)
     ''
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
