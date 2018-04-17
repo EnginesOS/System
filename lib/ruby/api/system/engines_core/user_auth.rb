@@ -2,6 +2,20 @@ module UserAuth
   require "sqlite3"
 
   def user_login(params)
+    if params[:user_name].to_s == 'admin'
+      admin_user_login(params)
+    else
+      ldap_user_login(params)
+    end
+  end
+  
+  def ldap_user_login(params)
+    tok = 'user_toke'
+    @user_tokens[tok] = params
+    tok
+  end
+
+  def admin_user_login(params)
     q = 'select authtoken from systemaccess where username=' + "'" + params[:user_name].to_s +
     "' and password = '" + params[:password].to_s + "';"
     rows = auth_database.execute(q)
@@ -19,7 +33,7 @@ module UserAuth
     unless token.nil?
       if is_admin_token_valid?(token, ip)
         access = true
-      else 
+      else
         access = @user_tokens.key?(token)
       end
     else
