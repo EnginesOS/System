@@ -1,0 +1,11 @@
+parent_engine: uadmin
+publisher_namespace: EnginesSystem
+type_path: ldap_access
+service_handle: ldapaccess
+container_type: service
+persistent: true
+variables:
+ type: access
+ ldap_password: _Engines_System(random(8))
+ cn: uadmin
+ access_dn: uid=uadmin,ou=hosts,ou=Engines,dc=engines,dc=internal 

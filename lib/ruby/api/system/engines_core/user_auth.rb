@@ -9,10 +9,28 @@ module UserAuth
     end
   end
   
+  def ldap_user_logout(tok)
+      $user_tokens.delete(tok) if $user_tokens.key?(tok)
+    end
+  
   def ldap_user_login(params)
-    tok = 'user_toke'
-    $user_tokens[tok] = params
-    tok
+    require 'net/ldap'
+    ldap = Net::LDAP.new
+    ldap.host = 'ldap'
+    ldap.port = 389
+    STDERR.puts('LDAP LOGIN PARAMS ', params.to_s )
+    ldap.auth(params[:user_name], params[:password])
+    if ldap.bind
+      tok =  SecureRandom.hex(48)
+         $user_tokens[tok] = params
+         record_login(params)
+         tok
+      # authentication succeeded
+    else
+      # authentication failed
+    raise EnginesException.new(error_hash("failed to bind " + ldap.get_operation_result.message.to_s ,params))
+
+    end       
   end
 
   def admin_user_login(params)
