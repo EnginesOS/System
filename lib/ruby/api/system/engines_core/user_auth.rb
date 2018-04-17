@@ -2,6 +2,38 @@ module UserAuth
   require "sqlite3"
 
   def user_login(params)
+    if params[:user_name].to_s == 'admin'
+      admin_user_login(params)
+    else
+      ldap_user_login(params)
+    end
+  end
+  
+  def ldap_user_logout(tok)
+      $user_tokens.delete(tok) if $user_tokens.key?(tok)
+    end
+  
+  def ldap_user_login(params)
+    require 'net/ldap'
+    ldap = Net::LDAP.new
+    ldap.host = 'ldap'
+    ldap.port = 389
+    STDERR.puts('LDAP LOGIN PARAMS ', params.to_s )
+    ldap.auth(params[:user_name], params[:password])
+    if ldap.bind
+      tok =  SecureRandom.hex(48)
+         $user_tokens[tok] = params
+         record_login(params)
+         tok
+      # authentication succeeded
+    else
+      # authentication failed
+    raise EnginesException.new(error_hash("failed to bind " + ldap.get_operation_result.message.to_s ,params))
+
+    end       
+  end
+
+  def admin_user_login(params)
     q = 'select authtoken from systemaccess where username=' + "'" + params[:user_name].to_s +
     "' and password = '" + params[:password].to_s + "';"
     rows = auth_database.execute(q)
@@ -9,22 +41,39 @@ module UserAuth
     record_login(params)
     rows[0]
   end
-  
+
   def record_login(params)
     STDERR.puts(Time.now.to_s + ':' + params[:user_name] + ':' + params[:src_ip] )
   end
 
-  def is_token_valid?(token, ip = nil)
+  def is_user_token_valid?(token, ip = nil)
+
+    unless token.nil?
+      if is_admin_token_valid?(token, ip)
+        access = true
+      else
+        STDERR.puts('USER TOKENS ' + @user_tokens.to_s)
+        access = $user_tokens.key?(token)
+      end
+    else
+      access = false
+    end
+    access
+  rescue
+    false
+  end
+
+  def is_admin_token_valid?(token, ip = nil)
     ip = nil
     if ip == nil
       rows = auth_database.execute(\
       'select guid from systemaccess where authtoken=' + "'" + token.to_s + "';" )
     else
       rows = auth_database.execute(\
-        'select guid from systemaccess where authtoken=' + "'" + token.to_s + "' and ip_addr ='';")
+      'select guid from systemaccess where authtoken=' + "'" + token.to_s + "' and ip_addr ='';")
       if rows.count == 0
         rows = auth_database.execute(\
-          'select guid from systemaccess where authtoken=' + "'" + token.to_s + "' and ip_addr ='" + ip.to_s + "';" )
+        'select guid from systemaccess where authtoken=' + "'" + token.to_s + "' and ip_addr ='" + ip.to_s + "';" )
       end
     end
     if rows.count > 0
@@ -83,7 +132,7 @@ module UserAuth
         status: nil,
         system: 'user auth',
         error_mesg: 'Username password missmatch')
-      else      
+      else
         unless params[:new_password].nil?
           authtoken = SecureRandom.hex(64)
           query = "UPDATE systemaccess SET password = '"\
@@ -114,7 +163,7 @@ module UserAuth
       token = rws[0][0] if token.nil? # FIXMe should be if first run?
       raise EnginesException.new(
       level: :warning,
-error_type: :warning,
+      error_type: :warning,
       params: nil,
       status: nil,
       system: 'user auth',
@@ -134,6 +183,30 @@ error_type: :warning,
     auth_database.close
     true
   end
+
+  def system_user_settings
+
+    if File.exist?(SystemConfig.SystemUserSettingsFile)
+      data = File.read(SystemConfig.SystemUserSettingsFile)
+      YAML::load(data)
+    else
+      {}
+    end
+  rescue
+    {}
+  end
+
+  def set_system_user_settings(settings)
+    sf = File.new(SystemConfig.SystemUserSettingsFile, 'w+')
+    sf.write(settings.to_yaml)
+    sf.close
+    true
+  rescue StandardError => e
+    sf.close unless sf.nil?
+    raise e
+  end
+
+  private
 
   def update_local_token(token)
     SystemDebug.debug(SystemDebug.first_run, ' Save Token', token)

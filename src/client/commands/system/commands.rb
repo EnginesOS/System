@@ -43,6 +43,11 @@ when 'template'
 
 when 'version'
   require_relative 'version.rb'
-end
+  
+when 'system_user'
+  require_relative 'system_user.rb'
 
+when 'uadmin'
+require_relative 'uadmin.rb'
+end
 perform_get
