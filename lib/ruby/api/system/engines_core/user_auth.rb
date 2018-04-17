@@ -18,6 +18,7 @@ module UserAuth
     ldap = Net::LDAP.new
     ldap.host = 'ldap'
     ldap.port = 389
+    STDERR.puts('LDAP LOGIN PARAMS ', params.to_s )
     ldap.auth(params[:user_name], params[:password])
     if ldap.bind
       tok =  SecureRandom.hex(48)
@@ -27,7 +28,7 @@ module UserAuth
       # authentication succeeded
     else
       # authentication failed
-    raise EnginesException.new(error_hash("failed to bind " + ldap.get_operation_result.to_s ,params))
+    raise EnginesException.new(error_hash("failed to bind " + ldap.get_operation_result.message.to_s ,params))
 
     end       
   end
