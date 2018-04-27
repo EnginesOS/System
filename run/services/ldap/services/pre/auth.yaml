@@ -1,0 +1,12 @@
+parent_engine: ldap
+publisher_namespace: EnginesSystem
+type_path: auth
+service_handle: ldap_kerb
+container_type: service
+persistent: true
+variables:
+ kerberos: config/ldap.engines.internal
+ owner: 0
+ prefix: config
+ parent_engine: ldap
+ container_type: service
