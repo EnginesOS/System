@@ -1,11 +1,13 @@
 module EngineApiDependancies
   def start_dependancies(container)
+    started = 0
     SystemDebug.debug(SystemDebug.containers, :checking_depends,container.dependant_on)
     if container.dependant_on.is_a?(Array)
       container.dependant_on.each do |service_name|
         SystemDebug.debug(SystemDebug.containers, :checking_depends,  service_name)
         service = engines_core.loadManagedService(service_name)
         unless service.is_running?
+          started += 1
           if service.has_container?
             if service.is_active?
               raise EnginesException.new(error_hash('Failed to unpause ', service_name))  unless service.unpause_container
@@ -21,4 +23,18 @@ module EngineApiDependancies
       end
     end
   end
+  started
+end
+
+def wait_for_dependacies_startup(container)
+  if container.dependant_on.is_a?(Array)
+       container.dependant_on.each do |service_name|
+         service = engines_core.loadManagedService(service_name)
+         wait_for_dependacy_startup(service)
+       end
+end
+
+def wait_for_dependacy_startup(service, timeout = 5)
+  service.wait_for_startup(timeout)
+end
 end

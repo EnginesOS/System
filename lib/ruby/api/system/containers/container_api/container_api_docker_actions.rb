@@ -59,6 +59,7 @@ module ContainerApiDockerActions
     passed_checks = pre_start_checks(container)
     raise EnginesException.new(warning_hash('Failed pre start checks:' + passed_checks.to_s , container.container_name)) unless passed_checks.is_a?(TrueClass)
     start_dependancies(container) if container.dependant_on.is_a?(Array)
+    wait_for_dependacies_startup(container)
     @docker_api.start_container(container)
   end
 
