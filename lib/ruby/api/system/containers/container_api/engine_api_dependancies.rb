@@ -34,7 +34,7 @@ def wait_for_dependacies_startup(container)
        end
 end
 
-def wait_for_dependacy_startup(service, timeout = 5)
+def wait_for_dependacy_startup(service, timeout = 60)
   service.wait_for_startup(timeout)
 end
 end
