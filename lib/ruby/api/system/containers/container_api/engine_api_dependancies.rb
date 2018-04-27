@@ -22,19 +22,19 @@ module EngineApiDependancies
         raise EnginesException.new(error_hash('Time out in waiting for Service Dependancy Service startup' + service_name + ' to start ', service_name)) unless wait_for_startup(service, 120)
       end
     end
+    started
   end
-  started
-end
 
-def wait_for_dependacies_startup(container)
-  if container.dependant_on.is_a?(Array)
-       container.dependant_on.each do |service_name|
-         service = engines_core.loadManagedService(service_name)
-         wait_for_dependacy_startup(service)
-       end
-end
+  def wait_for_dependacies_startup(container)
+    if container.dependant_on.is_a?(Array)
+      container.dependant_on.each do |service_name|
+        service = engines_core.loadManagedService(service_name)
+        wait_for_dependacy_startup(service)
+      end
+    end
+  end
 
-def wait_for_dependacy_startup(service, timeout = 60)
-  service.wait_for_startup(timeout)
-end
+  def wait_for_dependacy_startup(service, timeout = 60)
+    service.wait_for_startup(timeout)
+  end
 end
