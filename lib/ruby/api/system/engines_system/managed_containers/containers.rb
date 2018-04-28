@@ -40,14 +40,12 @@ module Containers
     STDERR.puts('saved ' + container.container_name + ':' + caller[1].to_s + ':' + caller[2].to_s)
     true
   rescue StandardError => e
-    unlock_container_conf_file(state_dir) if File.exist?(state_dir)
+    unlock_container_conf_file(state_dir)
     container.last_error = last_error unless container.nil?
     # FIXME: Need to rename back if failure
     SystemUtils.log_exception(e)
   ensure
-    unless state_dir.nil?
-      unlock_container_conf_file(state_dir) if File.exist?(state_dir)
-    end
+      unlock_container_conf_file(state_dir)    
   end
 
   def is_startup_complete?(container)
