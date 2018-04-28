@@ -41,8 +41,8 @@ post '/v0/system/loginb' do
     post_s = post_params(request)
     cparams = assemble_params(post_s, nil, [:user_name, :password])
     cparams[:src_ip] = request.env['REMOTE_ADDR']
-    cparams[:user_name] = ' '
-    cparams[:password] = ' '
+    cparams[:user_name] = ''
+    cparams[:password] = ''
        
     engines_api.user_login(cparams)
   rescue StandardError => e

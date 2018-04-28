@@ -94,11 +94,13 @@ if test `/opt/engines/bin/system_service.rb system state` = nocontainer
 /opt/engines/bin/engines service syslog start
 
 /opt/engines/bin/engines service auth start
+/opt/engines/bin/engines service auth wait_for start 60
 
 /opt/engines/bin/engines service mysqld start
 /opt/engines/bin/engines service mysqld wait_for start 60
 
 /opt/engines/bin/engines service ldap start
+/opt/engines/bin/engines service ldap wait_for start 60
 /opt/engines/bin/engines service wap start
 
 rm /opt/engines/run/system/flags/system_starting
