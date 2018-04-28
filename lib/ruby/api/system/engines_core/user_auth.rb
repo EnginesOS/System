@@ -18,6 +18,7 @@ module UserAuth
     ldap = Net::LDAP.new
     ldap.host = 'ldap'
     ldap.port = 389
+    STDERR.puts('LDAP LOGIN PARAMS ', params.to_s )
     ldap.auth(params[:user_name], params[:password])
     if ldap.bind
       tok =  SecureRandom.hex(48)
