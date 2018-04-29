@@ -12,9 +12,9 @@ get '/v0/system/uadmin/*' do
   begin
     STDERR.puts(' Get') 
     require_relative 'uadmin_verbs.rb'
-    STDERR.puts(' Getting')
-    STDERR.puts('I got ' + params.to_s)    
+    STDERR.puts(' Getting') 
     params[:token_owner] = token_owner
+    STDERR.puts('I got ' + params.to_s)   
     p_params = post_params(request) 
     uadmin_response(uadmin_get(params[:splat][0], params, p_params))
   rescue StandardError => e
@@ -25,9 +25,9 @@ end
 put '/v0/system/uadmin/*' do
   begin
     require_relative 'uadmin_verbs.rb' 
-    p_params = post_params(request)   
+    p_params = post_params(request)  
+    params[:token_owner] = token_owner 
     STDERR.puts(' Put' + params.to_s)   
-  params[:token_owner] = token_owner
     uadmin_response(uadmin_put(params[:splat][0], params, p_params))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
@@ -39,6 +39,7 @@ post '/v0/system/uadmin/*' do
     require_relative 'uadmin_verbs.rb'  
     p_params = post_params(request) 
   params[:token_owner] = token_owner
+    STDERR.puts(' Post' + params.to_s)   
   uadmin_response(uadmin_post(params[:splat][0], params, p_params))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
