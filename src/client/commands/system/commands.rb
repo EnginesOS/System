@@ -2,6 +2,8 @@
 case ARGV[1]
 when 'login'
   require_relative 'login.rb'
+when 'loginb'
+  require_relative 'login.rb'
 when 'control'
   require_relative 'control/commands.rb'
 when 'users'
