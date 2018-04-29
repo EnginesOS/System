@@ -44,9 +44,9 @@ module EngineApiStatusFlags
               notifier = INotify::Notifier.new
               while ! File.exist?(sfn)
                 if  File.exist?(state_file_name)
-                  notifier.watch(state_file_name, :modify) { next }
+                  notifier.watch(state_file_name, :modify) {  STDERR.puts('state_file_name') ;next }
                 else
-                  notifier.watch(sfd, :modify) { next }
+                  notifier.watch(sfd, :modify) { STDERR.puts('sfd') ; next }
                 end
                 notifier.process
               end
