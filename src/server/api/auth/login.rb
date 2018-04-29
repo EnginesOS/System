@@ -24,8 +24,13 @@ post '/v0/system/login' do
     content_type 'text/plain'
     post_s = post_params(request)
     cparams = assemble_params(post_s, nil, [:user_name, :password])
-    cparams[:src_ip] = request.env['REMOTE_ADDR']
-    engines_api.user_login(cparams)
+    if cparams[:user_name].nil?
+      cparams[:password] = nil
+      raise EnginesException.new(error_hash("User name cant be blank", cparams))
+    else
+      cparams[:src_ip] = request.env['REMOTE_ADDR']
+      engines_api.user_login(cparams)
+    end
   rescue StandardError => e
     send_encoded_exception(status: 401, request: request, exception: e)
   end
@@ -43,7 +48,7 @@ post '/v0/system/loginb' do
     cparams[:src_ip] = request.env['REMOTE_ADDR']
     cparams[:user_name] = ''
     cparams[:password] = ''
-       
+
     engines_api.user_login(cparams)
   rescue StandardError => e
     send_encoded_exception(status: 401, request: request, exception: e)
