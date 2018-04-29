@@ -1,5 +1,5 @@
 #!/bin/bash
-echo Starting Engines
+echo Starting Engines System
 
 . ~/.bashrc
 
@@ -87,18 +87,25 @@ if test `/opt/engines/bin/system_service.rb system state` = nocontainer
   /opt/engines/bin/system_service.rb system wait_for start 30
 /opt/engines/bin/system_service.rb system wait_for_startup 60
 
-
-/opt/engines/bin/engines service dns start 
-/opt/engines/bin/engines service dns wait_for start 60
+if  test `/opt/engines/bin/engines service dns state` = running
+ then
+  /opt/engines/bin/engines service dns restart
+ else  
+  /opt/engines/bin/engines service dns start
+fi
+   
+/opt/engines/bin/engines service dns wait_for start 90
 
 /opt/engines/bin/engines service syslog start
 
 /opt/engines/bin/engines service auth start
+/opt/engines/bin/engines service auth wait_for start 60
 
 /opt/engines/bin/engines service mysqld start
 /opt/engines/bin/engines service mysqld wait_for start 60
 
 /opt/engines/bin/engines service ldap start
+/opt/engines/bin/engines service ldap wait_for start 60
 /opt/engines/bin/engines service wap start
 
 rm /opt/engines/run/system/flags/system_starting

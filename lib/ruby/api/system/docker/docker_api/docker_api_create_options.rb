@@ -57,7 +57,8 @@ module DockerApiCreateOptions
     elsif container.ctype == 'system_service'
       {'Name' => 'unless-stopped'}
     elsif container.ctype == 'service'
-      {'Name' => 'on-failure', 'MaximumRetryCount' => 2}
+      #{'Name' => 'on-failure', 'MaximumRetryCount' => 4}
+      {'Name' => 'no'}
     else
       {}
     end

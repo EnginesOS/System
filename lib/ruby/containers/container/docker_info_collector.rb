@@ -22,7 +22,11 @@ module DockerInfoCollector
     if docker_info.is_a?(FalseClass)
       false
     else
+      if docker_info[:NetworkSettings][:IPAddress] != ''
       docker_info[:NetworkSettings][:IPAddress]
+      else
+        false
+        end
     end
   rescue
     nil

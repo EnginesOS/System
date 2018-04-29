@@ -30,6 +30,7 @@ begin
   require_relative 'warden/warden_strategies.rb'
 
   before do
+    pass if request.path.start_with?('/v0/system/uadmin/dn_lookup')
     pass if request.path.start_with?('/v0/system/login')
     pass if request.path.start_with?('/v0/unauthenticated')
     pass if request.path.start_with?('/v0/cron/engine/') && source_is_service?(request, 'cron')
