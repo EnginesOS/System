@@ -57,7 +57,7 @@ module EngineApiStatusFlags
             r = c.is_running?
           end
         rescue Timeout::Error
-          STDERR.puts('Timeout on wait for ' + c.container_name)
+          STDERR.puts('Timeout on wait for ' + sfn)
           r = File.exist?(sfn)
         end
       end
