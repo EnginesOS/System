@@ -13,7 +13,11 @@ post '/v0/system/uadmin/dn_lookup' do
      params[:token_owner] = nil
      p_params = post_params(request)
      STDERR.puts('I got Posted ' + p_params.to_s)
+     if params.key?(:splat)
      uadmin_response(uadmin_post(params[:splat][0], params, p_params))
+  else
+    uadmin_response(uadmin_post(nil, params, p_params))
+end
    rescue StandardError => e
      send_encoded_exception(request: request, exception: e)
    end
