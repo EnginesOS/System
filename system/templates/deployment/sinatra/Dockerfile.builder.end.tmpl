@@ -2,6 +2,7 @@ WORKDIR /home/app
 
 
 RUN usermod -G $data_gid www-data &&\
+ usermod -G containers -a www-data &&\
 	chown -R  $data_uid.$data_gid  ./ &&\
 \
 	mkdir -p log &&\
