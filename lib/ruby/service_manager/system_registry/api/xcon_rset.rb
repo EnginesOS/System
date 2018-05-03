@@ -17,7 +17,7 @@ def connection(content_type = nil)
   debug_request:  true,
   debug_response: true,
   ssl_verify_peer: false,
-  persistent: false, #was true
+  persistent: true, #was false when threaded
   headers: headers(content_type) ) if @connection.nil?
   @connection
 rescue Errno::EHOSTUNREACH
