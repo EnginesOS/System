@@ -13,12 +13,12 @@ end
 
 def connection(content_type = nil)
   # STDERR.puts('open connec' )
-  @connection ||=  Excon.new(base_url,
+  @connection =  Excon.new(base_url,
   debug_request:  true,
   debug_response: true,
   ssl_verify_peer: false,
-  persistent: false, #was true
-  headers: headers(content_type) )
+  persistent: true, #was false when threaded
+  headers: headers(content_type) ) if @connection.nil?
   @connection
 rescue Errno::EHOSTUNREACH
   @core_api.fix_registry_problem
@@ -28,8 +28,8 @@ rescue StandardError => e
 end
 
 def close_connection
-  @connection.reset unless @connection.nil?
-  @connection = nil
+  #  @connection.reset unless @connection.nil?
+  #  @connection = nil
 end
 
 def reopen_connection
