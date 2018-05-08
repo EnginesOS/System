@@ -7,7 +7,7 @@ module ServiceHashChecks
     # Klugde to avoid gui bugss
     unless service_hash.key?(:container_type)
      service_hash[:container_type] = "app"        
-       STDERR.puts('APPLIED KLUDGE no 1')
+     #  STDERR.puts('APPLIED KLUDGE no 1')
     end
     # End of Kludge
     raise EnginesException.new({error_mesg: 'No parent engine',  error_type: :error , params: service_hash}) unless service_hash.key?(:parent_engine)

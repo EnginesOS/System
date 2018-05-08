@@ -11,7 +11,7 @@ module EnginesOperations
     begin
       engine = loadManagedEngine(params[:engine_name])
       if params[:rollback] == true
-        STDERR.puts(' Roll back called' + params.to_s )       
+       # STDERR.puts(' Roll back called' + params.to_s )       
         unless remove_engine_services(params)
           raise EnginesException.new(error_hash('Failed to remove engine services', params))
         end
@@ -34,7 +34,7 @@ module EnginesOperations
     params[:no_exceptions] = true
     #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
     begin
-      STDERR.puts('RE ENINGE SERVICES  ' + params.to_s)
+    #  STDERR.puts('RE ENINGE SERVICES  ' + params.to_s)
       service_manager.remove_managed_persistent_services(params)
     rescue EnginesException => e
       raise e unless e.is_a_warning?
@@ -77,7 +77,7 @@ module EnginesOperations
     builder = BuildController.new(self)
     engine.restore_engine(builder)
      @build_thread = Thread.new { engine.restore_engine(builder) }
-     STDERR.puts('Restore started on '  + engine.container_name.to_s)
+   #  STDERR.puts('Restore started on '  + engine.container_name.to_s)
      @build_thread[:name] = 'restore engine'
      unless @build_thread.alive?
        raise EnginesException.new(error_hash(params[:engine_name], 'Build Failed to start'))

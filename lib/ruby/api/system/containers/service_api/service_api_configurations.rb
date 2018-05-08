@@ -39,7 +39,7 @@ module ServiceApiConfigurations
 
   def pending_service_configurations_hashes(service_hash)
     ph = @engines_core.pending_service_configurations_hashes(service_hash)
-    STDERR.puts(' pENDINED SERVICSE ' + ph.to_s)
+  #  STDERR.puts(' pENDINED SERVICSE ' + ph.to_s)
     ph
   end
 
