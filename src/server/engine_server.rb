@@ -30,8 +30,8 @@ begin
   require_relative 'warden/warden_strategies.rb'
 
   before do
-    pass if request.path.start_with?('/v0/system/uadmin/dn_lookup')
-    pass if request.path.start_with?('/v0/system/login')
+    pass if request.path == '/v0/system/uadmin/dn_lookup'
+    pass if request.path == '/v0/system/login'
     pass if request.path.start_with?('/v0/unauthenticated')
     pass if request.path.start_with?('/v0/cron/engine/') && source_is_service?(request, 'cron')
     pass if request.path.start_with?('/v0/cron/service/') && source_is_service?(request, 'cron')
@@ -42,8 +42,10 @@ begin
     pass if request.path.start_with?('/v0/system/do_first_run') && FirstRunWizard.required?
     if request.path.start_with?('/v0/system/uadmin') 
       env['warden'].authenticate!(:user_access_token)
+    elsif  request.path == '/v0/containers/engines/status'    
+      env['warden'].authenticate!(:admin_user_access_token)
     else  
-      env['warden'].authenticate!(:access_token)
+      env['warden'].authenticate!(:api_access_token)
     end
   end
 
