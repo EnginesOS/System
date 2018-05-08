@@ -27,7 +27,7 @@ RUN	if test -d config ;\
 	fi 
 	
 
-ENV DATABASE_URL $dbflavor://$dbuser:$dbpasswd@$dbhost/$dbname
+ENV DATABASE_URL $db_flavor://$dbuser:$dbpasswd@$dbhost/$dbname
 
 USER $ContUser
 
