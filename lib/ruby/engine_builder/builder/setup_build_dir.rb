@@ -149,6 +149,7 @@ module BuildDirSetup
 
   def write_software_file(filename, content)
     ConfigFileWriter.write_templated_file(@templater, basedir + '/' + filename, content)
+    log_build_output('Wrote ' + basedir.to_s + '/' + filename.to_s)
   end
 
   def read_framework_user

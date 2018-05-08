@@ -48,7 +48,7 @@ module ServiceApiConsumers
       log_error: true,
       timeout: @@consumer_timeout,
       data: service_hash.to_json })
-      STDERR.puts('RM SERVICE:' + service_hash.to_s + ':Res:' + result.to_s)
+   #   STDERR.puts('RM SERVICE:' + service_hash.to_s + ':Res:' + result.to_s)
     raise EnginesException.new(error_hash('Failed rm_consumer_from_service ', result)) unless result[:result] == 0
   end
 end

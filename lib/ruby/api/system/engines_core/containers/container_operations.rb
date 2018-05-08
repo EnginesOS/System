@@ -32,7 +32,7 @@ module ContainerOperations
       type_path: 'wap',
       container_type: container.ctype
     })
-    STDERR.puts('SITES:' + sites.to_s)
+ #   STDERR.puts('SITES:' + sites.to_s)
     if sites.is_a?(Array)
       sites.each do |site|
         SystemDebug.debug(SystemDebug.containers,  site.to_s) unless  site.is_a?(Hash)

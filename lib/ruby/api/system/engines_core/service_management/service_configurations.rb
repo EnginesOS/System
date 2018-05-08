@@ -30,11 +30,11 @@ module ServiceConfigurations
     raise EnginesException.new(error_hash('Missing service name', service_param)) unless service_param.key?(:service_name)
     service = loadManagedService(service_param[:service_name])
     if service.is_running?
-      STDERR.puts('Service is running retrieve config direct')
+    #  STDERR.puts('Service is running retrieve config direct')
       ret_val = service.retrieve_configurator(service_param)
       #    STDERR.puts('Retrived retrieve_configuration '+ service_param.to_s + ret_val.class.name + ':' + ret_val.to_s )
     else
-      STDERR.puts('Service is no running retreive config from registry')
+   #   STDERR.puts('Service is no running retreive config from registry')
       #  STDERR.puts('Retrived retrieve_configuration '+ service_param.to_s + ret_val.class.name + ':' + ret_val.to_s )
       ret_val = retrieve_service_configuration(service_param)
     end
@@ -65,7 +65,7 @@ module ServiceConfigurations
       defs.each_value do |definition|
         if definition[:params].nil?
           variables = nil
-          STDERR.puts('nil vars for ' + definition.to_s + "\n\n" + service_hash.to_s)
+        #  STDERR.puts('nil vars for ' + definition.to_s + "\n\n" + service_hash.to_s)
         else
           variables = definition_params_to_variables(definition[:params].keys)
         end
