@@ -18,7 +18,7 @@ post '/v0/system/uadmin/dn_lookup' do
   else
  #   params[:splat] = []
   #  params[:splat][0] = 'system/uadmin/dn_lookup'
-    uadmin_response(uadmin_post('/dn_lookup', params, p_params))
+    uadmin_response(uadmin_post('/system/uadmin/dn_lookup', params, p_params))
  end
    rescue StandardError => e
      send_encoded_exception(request: request, exception: e)
