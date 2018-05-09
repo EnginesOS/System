@@ -69,6 +69,13 @@ environments:
  build_time_only: false
  immutable: true
  label: "ENGINES_ADMIN_GUI_SESSION_SECRET"
+- !ruby/object:EnvironmentVariable
+ name: RACK_ENV
+ value: production
+ has_changed: true 
+ build_time_only: false
+ immutable: true
+ label: "RACK_ENV"
 image: _Engines_System(flavor)/control:_Engines_System(release)
 repo: na
 last_result: 
