@@ -42,7 +42,7 @@ Warden::Strategies.add(:admin_user_access_token) do
     if $engines_api.is_admin_token_valid?(token, ip)
       true
     elsif $engines_api.is_user_token_valid?(token, ip)
-      if get_token_user(token) == 'admin'
+      if $engines_api.get_token_user(token) == 'admin'
         true
       else
         false
