@@ -53,8 +53,9 @@ module UserAuth
       if is_admin_token_valid?(token, ip)
         access = true
       else
-        STDERR.puts('USER TOKENS ' + @user_tokens.to_s)
+        STDERR.puts('USER TOKENS ' + $user_tokens.to_s)
         access = $user_tokens.key?(token)
+        STDERR.puts('USER Access ' + access.to_s)
       end
     else
       access = false
