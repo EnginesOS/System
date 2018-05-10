@@ -1,4 +1,4 @@
-def token_owner
+def token_owner_password
   tok_params = $user_tokens[request.env['HTTP_ACCESS_TOKEN']]
   if tok_params.nil?
     nil
@@ -6,7 +6,7 @@ def token_owner
     tok_params[:password]
   end
 end
-def token_owner_password
+def token_owner
   tok_params = $user_tokens[request.env['HTTP_ACCESS_TOKEN']]
   if tok_params.nil?
     'sysadmin'
