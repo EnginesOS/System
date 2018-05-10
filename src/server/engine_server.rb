@@ -47,6 +47,7 @@ begin
     elsif request.path.match(/containers\/engine\/[a-zA-Z]\/icon_url/) \
       ||  request.path.match(/containers\/engine\/[a-zA-Z]\/websites/)  \
       ||  request.path.match(/containers\/engine\/[a-zA-Z]\/blueprint/)
+      env['warden'].authenticate!(:admin_user_access_token)
     else  
       env['warden'].authenticate!(:api_access_token)
     end
