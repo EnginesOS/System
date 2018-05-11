@@ -28,7 +28,7 @@ begin
   require 'warden'
   require_relative 'warden/warden_config.rb'
   require_relative 'warden/warden_strategies.rb'
-
+  
   before do
     pass if request.path == '/v0/system/uadmin/dn_lookup'
     pass if request.path == '/v0/system/login'
@@ -44,9 +44,9 @@ begin
       env['warden'].authenticate!(:user_access_token)
     elsif  request.path == '/v0/containers/engines/status'    
       env['warden'].authenticate!(:admin_user_access_token)
-    elsif request.path.match(/containers\/engine\/[a-zA-Z]\/icon_url/) \
-      ||  request.path.match(/containers\/engine\/[a-zA-Z]\/websites/)  \
-      ||  request.path.match(/containers\/engine\/[a-zA-Z]\/blueprint/)
+    elsif request.path.match(/\/v0\/containers\/engine\/[a-zA-Z0-9].*\/icon_url/) \
+      ||  request.path.match(/\/v0\/containers\/engine\/[a-zA-Z0-9].*\/websites/)  \
+      ||  request.path.match(/\/v0\/containers\/engine\/[a-zA-Z0-9].*\/blueprint/)
       env['warden'].authenticate!(:admin_user_access_token)
     else  
       env['warden'].authenticate!(:api_access_token)
