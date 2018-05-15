@@ -7,14 +7,22 @@ ctype: service
 persistent: true
 conf_self_start: true
 last_error: 
-memory: '232'
+memory: '332'
 hostname: uadmin
 domain_name: 
 environments: []
 kerberos: true
 image: _Engines_System(flavor)/uadmin:_Engines_System(release)
 volumes:
-mapped_ports: 
+mapped_ports:
+environments:
+- !ruby/object:EnvironmentVariable
+ name: RACK_ENV
+ value: production
+ has_changed: true 
+ build_time_only: false
+ immutable: true
+ label: "RACK_ENV"
 repo: na
 last_result:
 setState: stopped

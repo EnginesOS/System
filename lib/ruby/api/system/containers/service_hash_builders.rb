@@ -57,7 +57,7 @@ end
 
 def create_wap_service_hash(engine)
   protocol = engine.protocol.to_s
-  STDERR.puts('PTORORO ' + engine.protocol.to_s)
+  #STDERR.puts('PTORORO ' + engine.protocol.to_s)
   protocol.downcase
   protocol.gsub!(/ /,"_")
   proto = ''
@@ -100,7 +100,7 @@ def create_wap_service_hash(engine)
   else
     service_hash[:variables][:www_path] = ''
   end
-  STDERR.puts('SERVICE HASH for WAP ' + service_hash.to_s)
+#  STDERR.puts('SERVICE HASH for WAP ' + service_hash.to_s)
   SystemDebug.debug(SystemDebug.services,'create nginx Hash', service_hash)
   service_hash
   

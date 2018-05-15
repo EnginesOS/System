@@ -8,11 +8,11 @@ module UserAuth
       ldap_user_login(params)
     end
   end
-  
+
   def ldap_user_logout(tok)
-      $user_tokens.delete(tok) if $user_tokens.key?(tok)
-    end
-  
+    $user_tokens.delete(tok) if $user_tokens.key?(tok)
+  end
+
   def ldap_user_login(params)
     require 'net/ldap'
     ldap = Net::LDAP.new
@@ -22,16 +22,16 @@ module UserAuth
     ldap.auth(params[:user_name], params[:password])
     if ldap.bind
       tok =  SecureRandom.hex(48)
-         params.delete(:password)
-         $user_tokens[tok] = params
-         record_login(params)
-         tok
+      #   params.delete(:password)
+      $user_tokens[tok] = params
+      record_login(params)
+      tok
       # authentication succeeded
     else
       # authentication failed
-    raise EnginesException.new(error_hash("failed to bind " + ldap.get_operation_result.message.to_s ,params))
+      raise EnginesException.new(error_hash("failed to bind " + ldap.get_operation_result.message.to_s ,params))
 
-    end       
+    end
   end
 
   def admin_user_login(params)
@@ -53,8 +53,9 @@ module UserAuth
       if is_admin_token_valid?(token, ip)
         access = true
       else
-        STDERR.puts('USER TOKENS ' + @user_tokens.to_s)
+        STDERR.puts('USER TOKENS ' + $user_tokens.to_s)
         access = $user_tokens.key?(token)
+        STDERR.puts('USER Access ' + access.to_s)
       end
     else
       access = false
@@ -62,6 +63,19 @@ module UserAuth
     access
   rescue
     false
+  end
+
+  def get_token_user(token)
+    if  $user_tokens.key?(token)
+      user_params = $user_tokens[token]
+      if user_params.is_a?(Hash)
+        user_params[:user_name]
+      else
+        nil
+      end
+    else
+      nil
+    end
   end
 
   def is_admin_token_valid?(token, ip = nil)

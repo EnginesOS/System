@@ -10,7 +10,7 @@ module CoreBuildController
     @build_thread.exit unless @build_thread.nil?
     @build_thread = nil
     @current_builder = nil
-    STDERR.puts('BUIL STOPPED')
+   # STDERR.puts('BUIL STOPPED')
   rescue
   end
 

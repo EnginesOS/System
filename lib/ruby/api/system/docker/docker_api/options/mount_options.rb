@@ -110,8 +110,8 @@ def registry_mounts(container)
       v_str = mount_string_from_hash(vol)
       mounts.push(v_str)
     end
-  else
-    STDERR.puts('Registry mounts was' + vols.to_s)
+ # else
+ #   STDERR.puts('Registry mounts was' + vols.to_s)
   end
 
   mounts
@@ -123,17 +123,17 @@ def  mount_string_for_secret(secret)
     src_cname =  secret[:service_owner]
     src_ctype =  secret[:container_type]
     sh = secret[:service_owner_handle]
-    STDERR.puts('Secrets mount Shared')
+ #   STDERR.puts('Secrets mount Shared')
   else
-    STDERR.puts('Secrets mount Owner')
+#    STDERR.puts('Secrets mount Owner')
     src_cname =  secret[:parent_engine]
     src_ctype =  secret[:container_type]
     sh = secret[:service_handle]
   end
-  STDERR.puts('Secrets mount' +  '/var/lib/engines/secrets/' + src_ctype.to_s + 's/' +  src_cname.to_s + '/' + sh.to_s + ':/home/.secrets/'  + sh.to_s + ':ro')
+ # STDERR.puts('Secrets mount' +  '/var/lib/engines/secrets/' + src_ctype.to_s + 's/' +  src_cname.to_s + '/' + sh.to_s + ':/home/.secrets/'  + sh.to_s + ':ro')
   s = '/var/lib/engines/secrets/' + src_ctype + 's/' +  src_cname + '/' + sh +\
   ':/home/.secrets/'  + sh + ':ro'
-  STDERR.puts('Secrets mount' + s.to_s)
+ # STDERR.puts('Secrets mount' + s.to_s)
   s
 end
 
@@ -148,8 +148,8 @@ def secrets_mounts(container)
         m_str = mount_string_for_secret(secret)
         mounts.push(m_str)
       end
-    else
-      STDERR.puts('Secrets mounts was' + secrets.to_s)
+  #  else
+   #   STDERR.puts('Secrets mounts was' + secrets.to_s)
     end
   end
   mounts

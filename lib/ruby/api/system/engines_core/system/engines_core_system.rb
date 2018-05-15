@@ -41,7 +41,7 @@ module EnginesCoreSystem
             next unless c.is_active?
             next unless c.mapped_ports.is_a?(Hash)
             c.mapped_ports.each_value do |  p|
-              STDERR.puts('Registered:' + p.to_s + ' to ' + c.container_name)
+             # STDERR.puts('Registered:' + p.to_s + ' to ' + c.container_name)
               @registered_ports[c.container_name] = p[:external] 
             end            
           end
@@ -52,7 +52,7 @@ module EnginesCoreSystem
   def is_port_available?(port)
     registered_ports.each_pair do | c , p|
       next if p.nil?
-      STDERR.puts('Check ' + port.to_s + ' with ' + p.to_s)
+    #  STDERR.puts('Check ' + port.to_s + ' with ' + p.to_s)
      return c if p == port
   end
      true
@@ -63,7 +63,7 @@ module EnginesCoreSystem
   end
 
   def deregister_port(container_name, port)
-    STDERR.puts('de reg port ' + container_name.to_s + ':' + port.to_s)
+   # STDERR.puts('de reg port ' + container_name.to_s + ':' + port.to_s)
     registered_ports.delete(container_name)
   end
 

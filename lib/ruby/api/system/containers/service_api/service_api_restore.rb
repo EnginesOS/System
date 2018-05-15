@@ -7,7 +7,7 @@ module ServiceApiRestore
     cmd = [SystemConfig.ServiceBackupScriptsRoot + '/restore.sh',params[:replace].to_s, params[:section].to_s] #, params[:section].to_s]    
     params = {container: service, command_line: cmd, log_error: true, data_stream: stream}
     SystemDebug.debug(SystemDebug.export_import, :import_service)
-    STDERR.puts('STREAM' + stream.inspect)
+   # STDERR.puts('STREAM' + stream.inspect)
     result = {}
     begin
       Timeout.timeout(@@import_timeout) do

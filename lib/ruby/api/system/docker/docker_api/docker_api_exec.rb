@@ -38,7 +38,7 @@ module DockerApiExec
       return_result = @result
       lambda do |chunk , c , t|
         if @o_stream.nil?
-          STDERR.puts('stream results')
+       #   STDERR.puts('stream results')
           DockerUtils.docker_stream_as_result(chunk, return_result)
          # return_result[:raw] = return_result[:raw] + chunk.to_s
         else
@@ -78,7 +78,7 @@ module DockerApiExec
          # return_result[:raw] = return_result[:raw] + chunk.to_s
         else
           r = DockerUtils.decode_from_docker_chunk(chunk, true)
-          STDERR.puts('stream a chunk')
+       #   STDERR.puts('stream a chunk')
           @o_stream.write(r[:stdout]) unless r.nil?
           return_result[:stderr] = return_result[:stderr].to_s + r[:stderr].to_s
         end
