@@ -175,15 +175,11 @@ def start_docker_event_listener(listeners = {})
     @docker_event_listener = DockerEventWatcher.new(self, listeners)
     @event_listener_thread.exit unless @event_listener_thread.nil?
     @event_listener_thread = Thread.new do
-      begin 
-    #  while 1 != 0               
-          @docker_event_listener.start          
-          STDERR.puts( ' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+      begin             
+        @docker_event_listener.start          
+        STDERR.puts( ' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
         listeners = @docker_event_listener.event_listeners
         STDERR.puts( ' EVENT LISTENER S ' + listeners.count.to_s)
-       #  @docker_event_listener = DockerEventWatcher.new(self, listeners)
-         # @docker_event_listener.restart
-      #  end 
         start_docker_event_listener(listeners)  
         STDERR.puts(' EVENT Listener started  post timeout ')       
         rescue StandardError => e
