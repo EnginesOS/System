@@ -1,6 +1,7 @@
 FROM engines/sinatra:_Engines_System(release)
 
 ENV CONTFSVolHome /home/fs/
+ENV RACK_ENV production
 ENV SECRET_KEY_BASE	_Engines_System(random(128))
 
 ADD home home
