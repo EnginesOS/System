@@ -175,10 +175,10 @@ module DockerEvents
   #  @docker_event_listener = DockerEventWatcher.new(self, listeners)
    # @event_listener_thread.exit unless @event_listener_thread.nil?
    # @docker_events = self;
-    Thread.new do
+   # Thread.new do
       @docker_event_listener = DockerEventWatcher.new(self, listeners)
       @event_listener_thread.exit unless @event_listener_thread.nil?
-      while 0 == 0
+    #  while 0 == 0
         
         @event_listener_thread = Thread.new do
           begin
@@ -197,11 +197,11 @@ module DockerEvents
           @event_listener_thread[:name] = 'docker_event_listener'
           @event_listener_thread.join
         end 
-      end
+     # end
      # @event_listener_thread[:name] = 'docker_event_listener'
       STDERR.puts('Thread ' +  @event_listener_thread.inspect)
       # @docker_event_listener
-    end
+    #end
   rescue StandardError =>e
     STDERR.puts(e.class.name)
     log_exception(e)
