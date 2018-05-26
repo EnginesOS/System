@@ -172,14 +172,18 @@ module DockerEvents
 
   def start_docker_event_listener(listeners = {})
     SystemDebug.debug(SystemDebug.container_events, ' Start EVENT LISTENER THREAD !!!!!!!!!!!!!!!!!!!!!!!!!!!!! with n ' + listeners.count.to_s)
-    @docker_event_listener = DockerEventWatcher.new(self, listeners)
-    @event_listener_thread.exit unless @event_listener_thread.nil?
-    @docker_events = self;
+  #  @docker_event_listener = DockerEventWatcher.new(self, listeners)
+   # @event_listener_thread.exit unless @event_listener_thread.nil?
+   # @docker_events = self;
     Thread.new do
+      @docker_event_listener = DockerEventWatcher.new(self, listeners)
+      @event_listener_thread.exit unless @event_listener_thread.nil?
       while 0 == 0
+        
         @event_listener_thread = Thread.new do
           begin
             @docker_event_listener.start
+           
             STDERR.puts( ' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
             listeners = @docker_event_listener.event_listeners
             STDERR.puts( ' EVENT LISTENER S ' + listeners.count.to_s)
@@ -187,13 +191,14 @@ module DockerEvents
             STDERR.puts(' EVENT Listener started  post timeout ')
           rescue StandardError => e
             STDERR.puts(' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!' + e.to_s)
-            start_docker_event_listener(@docker_event_listener.event_listeners)
+         #   start_docker_event_listener(@docker_event_listener.event_listeners)
             STDERR.puts(' EVENT Listener started Post Exception ')
           end
+          @event_listener_thread[:name] = 'docker_event_listener'
           @event_listener_thread.join
-        end
+        end 
       end
-      @event_listener_thread[:name] = 'docker_event_listener'
+     # @event_listener_thread[:name] = 'docker_event_listener'
       STDERR.puts('Thread ' +  @event_listener_thread.inspect)
       # @docker_event_listener
     end
