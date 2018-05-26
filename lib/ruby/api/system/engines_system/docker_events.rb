@@ -195,7 +195,7 @@ module DockerEvents
             STDERR.puts(' EVENT Listener started Post Exception ')
           end
           @event_listener_thread[:name] = 'docker_event_listener'
-          @event_listener_thread.join
+         # @event_listener_thread.join
         end 
      # end
      # @event_listener_thread[:name] = 'docker_event_listener'
