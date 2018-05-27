@@ -175,9 +175,10 @@ module DockerEvents
   #  @docker_event_listener = DockerEventWatcher.new(self, listeners)
    # @event_listener_thread.exit unless @event_listener_thread.nil?
    # @docker_events = self;
-   Thread.new do
+  
       @docker_event_listener = DockerEventWatcher.new(self, listeners)
       @event_listener_thread.exit unless @event_listener_thread.nil?
+    Thread.new do
      while 0 == 0        
         @event_listener_thread = Thread.new do
           begin
