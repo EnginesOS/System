@@ -178,10 +178,11 @@ module DockerEvents
   
       @docker_event_listener = DockerEventWatcher.new(self, listeners)
       @event_listener_thread.exit unless @event_listener_thread.nil?
-    Thread.new do
-     while 0 == 0        
+  #  Thread.new do
+   #  while 0 == 0        
         @event_listener_thread = Thread.new do
           begin
+            @event_listener_thread[:name] = 'docker_event_listener'
             @docker_event_listener.start
            
             STDERR.puts( ' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
@@ -193,10 +194,10 @@ module DockerEvents
             STDERR.puts(' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!' + e.to_s)
          #   start_docker_event_listener(@docker_event_listener.event_listeners)
             STDERR.puts(' EVENT Listener started Post Exception ')
-          end
-          @event_listener_thread[:name] = 'docker_event_listener'
-          @event_listener_thread.join
-        end 
+    #      end
+        
+     #     @event_listener_thread.join
+      #  end 
       end
      # @event_listener_thread[:name] = 'docker_event_listener'
       STDERR.puts('Thread ' +  @event_listener_thread.inspect)
