@@ -275,7 +275,7 @@ class DockerFileBuilder
         archive_details[:download_type] = 'docker' if archive_details[:extraction_command] == 'docker'  
         archive_details[:download_type] = 'git' if archive_details[:extraction_command] == 'git'
         archive_details[:download_type] = 'web' if archive_details[:download_type].nil?
-   
+        archive_details[:extraction_command] = 'false' if archive_details[:extraction_command].nil
         next if archive_details[:download_type] == 'docker'  
         source_url = archive_details[:source_url].to_s
         package_name = archive_details[:package_name].to_s
@@ -294,8 +294,8 @@ class DockerFileBuilder
         destination = '/home/app' if destination.to_s == '/home/app/' || destination == '/'  || destination == './'  || destination == ''
 
         path_to_extracted ='/' if path_to_extracted.nil? || path_to_extracted == ''
-          args = ' \'' + archive_details[:download_type] + '\' '
-        args = ' \'' + source_url + '\' '
+        args = ' \'' + archive_details[:download_type] + '\' '
+        args += ' \'' + source_url + '\' '
         args += ' \'' + package_name + '\' '
         args += ' \'' + extraction_command + '\' '
         args += ' \'' + destination + '\' '
