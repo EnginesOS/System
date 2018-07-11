@@ -272,7 +272,11 @@ class DockerFileBuilder
       write_comment('#App Archives')
       log_build_output('Dockerfile:App Archives')
       @blueprint_reader.archives_details.each do |archive_details|
-        next if archive_details[:extraction_command] == 'docker'
+        archive_details[:download_type] = 'docker' if archive_details[:extraction_command] == 'docker'  
+        archive_details[:download_type] = 'git' if archive_details[:extraction_command] == 'git'
+        archive_details[:download_type] = 'web' if archive_details[:download_type].nil?
+   
+        next if archive_details[:download_type] == 'docker'  
         source_url = archive_details[:source_url].to_s
         package_name = archive_details[:package_name].to_s
         destination = archive_details[:destination].to_s
@@ -286,16 +290,17 @@ class DockerFileBuilder
 
         # Destination can be /opt/ /home/app /home/fs/ /home/local/
         # If none of teh above then it is prefixed with /home/app
-        destination = '/home/app/' + destination.to_s  unless destination.start_with?('/opt') || destination.start_with?('/home/fs') || destination.start_with?('/home/app') || destination.start_with?('/home/local')
+        destination = '/home/app/' + destination.to_s unless destination.start_with?('/opt') || destination.start_with?('/home/fs') || destination.start_with?('/home/app') || destination.start_with?('/home/local')
         destination = '/home/app' if destination.to_s == '/home/app/' || destination == '/'  || destination == './'  || destination == ''
 
         path_to_extracted ='/' if path_to_extracted.nil? || path_to_extracted == ''
-
+          args = ' \'' + archive_details[:download_type] + '\' '
         args = ' \'' + source_url + '\' '
         args += ' \'' + package_name + '\' '
         args += ' \'' + extraction_command + '\' '
         args += ' \'' + destination + '\' '
         args += ' \'' + path_to_extracted + '\' '
+          args += ' \'' + archive_details[:command_options].to_s + '\' '
         write_run_line('/build_scripts/package_installer.sh ' + args)
       end
     end
