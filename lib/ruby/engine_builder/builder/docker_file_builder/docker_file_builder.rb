@@ -275,7 +275,7 @@ class DockerFileBuilder
         archive_details[:download_type] = 'docker' if archive_details[:extraction_command] == 'docker'  
         archive_details[:download_type] = 'git' if archive_details[:extraction_command] == 'git'
         archive_details[:download_type] = 'web' if archive_details[:download_type].nil?
-        archive_details[:extraction_command] = 'false' if archive_details[:extraction_command].nil
+        archive_details[:extraction_command] = 'false' if archive_details[:extraction_command].nil?
         next if archive_details[:download_type] == 'docker'  
         source_url = archive_details[:source_url].to_s
         package_name = archive_details[:package_name].to_s
@@ -300,8 +300,8 @@ class DockerFileBuilder
         args += ' \'' + extraction_command + '\' '
         args += ' \'' + destination + '\' '
         args += ' \'' + path_to_extracted + '\' '
-          args += ' \'' + archive_details[:command_options].to_s + '\' '
-          log_build_output('/build_scripts/package_installer.sh ' + args)
+        args += ' \'' + archive_details[:command_options].to_s + '\' '
+        log_build_output('/build_scripts/package_installer.sh ' + args)
           
         write_run_line('/build_scripts/package_installer.sh ' + args)
       end
