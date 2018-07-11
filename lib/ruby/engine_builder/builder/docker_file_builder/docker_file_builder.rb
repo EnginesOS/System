@@ -301,6 +301,8 @@ class DockerFileBuilder
         args += ' \'' + destination + '\' '
         args += ' \'' + path_to_extracted + '\' '
           args += ' \'' + archive_details[:command_options].to_s + '\' '
+          log_build_output('/build_scripts/package_installer.sh ' + args)
+          
         write_run_line('/build_scripts/package_installer.sh ' + args)
       end
     end
