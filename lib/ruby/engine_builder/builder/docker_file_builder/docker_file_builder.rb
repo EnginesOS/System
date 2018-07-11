@@ -275,6 +275,7 @@ class DockerFileBuilder
         archive_details[:download_type] = 'docker' if archive_details[:extraction_command] == 'docker'  
         archive_details[:download_type] = 'git' if archive_details[:extraction_command] == 'git'
         archive_details[:download_type] = 'web' if archive_details[:download_type].nil?
+          
         archive_details[:extraction_command] = 'false' if archive_details[:extraction_command].nil?
         next if archive_details[:download_type] == 'docker'  
         source_url = archive_details[:source_url].to_s

@@ -283,6 +283,8 @@ class BluePrintReader
         archive_details[:extraction_command] = arc_extract
         archive_details[:destination] = arc_loc
         archive_details[:path_to_extracted] = arc_dir
+        archive_details[:download_type] = clean_path(archive[:download_type])
+        archive_details[:command_options] = clean_path(archive[:command_options])
         @archives_details.push(archive_details)
       end
     end
