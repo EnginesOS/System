@@ -84,7 +84,7 @@ module BuilderBluePrint
 
   def merge_bp_entry(dest, key)
     unless key.is_a?(Array)
-    dest.merge!(@blueprint[:software][key]) if @blueprint[:software].key?
+    dest.merge!(@blueprint[:software][key]) if @blueprint[:software].key?(key)
   else 
     # FIXME Assumes only two keys
     dest.merge!(@blueprint[:software][key[0]][key[1]])if @blueprint[:software][key[0]].key?(key[1])
