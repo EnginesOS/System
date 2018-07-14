@@ -43,12 +43,12 @@ begin
     if request.path.start_with?('/v0/system/uadmin') 
       env['warden'].authenticate!(:user_access_token)
     elsif  request.path == '/v0/containers/engines/status'    
-      env['warden'].authenticate!(:admin_user_access_token)
+      env['warden'].authenticate!(:user_access_token) # was:admin_user_access_token
     elsif request.path.match(/\/v0\/containers\/engine\/[a-zA-Z0-9].*\/icon_url/) \
       ||  request.path.match(/\/v0\/containers\/engine\/[a-zA-Z0-9].*\/websites/)  \
       ||  request.path.match(/\/v0\/containers\/engine\/[a-zA-Z0-9].*\/status/)  \
       ||  request.path.match(/\/v0\/containers\/engine\/[a-zA-Z0-9].*\/blueprint/) 
-      env['warden'].authenticate!(:admin_user_access_token)
+      env['warden'].authenticate!(:user_access_token)
     else  
       env['warden'].authenticate!(:api_access_token)
     end

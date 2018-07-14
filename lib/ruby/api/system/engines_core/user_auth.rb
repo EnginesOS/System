@@ -22,6 +22,7 @@ module UserAuth
     ldap.auth(params[:user_name], params[:password])
     if ldap.bind
       tok =  SecureRandom.hex(48)
+     # pararms[:is_admin] = is_inadmin_group?(ldap,params[:user_name] )
       #   params.delete(:password)
       $user_tokens[tok] = params
       record_login(params)
