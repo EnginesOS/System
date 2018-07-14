@@ -88,9 +88,8 @@ module BuilderBluePrint
       if @blueprint[:software].key?(key)
         if @blueprint[:software][key].is_a?(Hash)
           dest[:software][key].merge!(@blueprint[:software][key])
-        elsif @blueprint[:software][key].is_a?(Array)
-          @blueprint[:software][key].concat(dest[:software][key])
-          dest[:software][key]  = @blueprint[:software][key]
+        elsif @blueprint[:software][key].is_a?(Array)          
+          dest[:software][key].concat(@blueprint[:software][key])
         else
           dest[:software][key] = @blueprint[:software][key]
         end
