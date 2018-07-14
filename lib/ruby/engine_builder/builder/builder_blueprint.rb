@@ -65,6 +65,7 @@ module BuilderBluePrint
 
       merge_bp_entry(parent,:ports)
       merge_bp_entry(parent,:variables)
+      merge_bp_entry(parent,:environment_variables)
       merge_bp_entry(parent,:actionators)
       merge_bp_entry(parent,:required_modules)
       merge_bp_entry(parent,:scripts)
