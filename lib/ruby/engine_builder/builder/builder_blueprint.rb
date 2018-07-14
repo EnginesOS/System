@@ -25,7 +25,7 @@ module BuilderBluePrint
 
   def  get_blueprint_parent(parent_url)
     download_blueprint_parent(parent_url)
-    load_blueprint(parent_blueprint.json)
+    load_blueprint('parent_blueprint.json')
   end
 
   def download_blueprint
@@ -76,7 +76,10 @@ module BuilderBluePrint
         merge_bp_entry(parent,[:framework_specific, :custom_php_inis])
         merge_bp_entry(parent,[:framework_specific, :apache_httpd_configurations])
       end
+      
+      @blueprint[:software] = parent[:software]
     end
+    
   end
 
   def merge_bp_entry(dest, key)
