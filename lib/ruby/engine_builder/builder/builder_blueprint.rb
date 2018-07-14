@@ -77,19 +77,28 @@ module BuilderBluePrint
         merge_bp_entry(parent,[:framework_specific, :custom_php_inis])
         merge_bp_entry(parent,[:framework_specific, :apache_httpd_configurations])
       end
-      
+
       @blueprint[:software] = parent[:software]
     end
-    
+
   end
 
   def merge_bp_entry(dest, key)
     unless key.is_a?(Array)
-    dest.merge!(@blueprint[:software][key]) if @blueprint[:software].key?(key)
-  else 
-    # FIXME Assumes only two keys
-    dest.merge!(@blueprint[:software][key[0]][key[1]])if @blueprint[:software][key[0]].key?(key[1])
-  end
+      if @blueprint[:software].key?(key)
+        if @blueprint[:software][key].is_a?(Hash)
+          dest[:software][key].merge!(@blueprint[:software][key])
+        elsif @blueprint[:software][key].is_a?(Array)
+          @blueprint[:software][key].concat(dest[:software][key])
+          dest[:software][key]  = @blueprint[:software][key]
+        else
+          dest[:software][key] = @blueprint[:software][key]
+        end
+      end
+    else
+      # FIXME Assumes only two keys
+      dest.merge!(@blueprint[:software][key[0]][key[1]])if @blueprint[:software][key[0]].key?(key[1])
+    end
   end
 
   def process_blueprint
