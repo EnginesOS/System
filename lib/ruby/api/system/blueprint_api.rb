@@ -19,6 +19,7 @@ class BlueprintApi < ErrorsApi
     json_hash = parser.parse(blueprint_file.read)
     blueprint_file.close
     json_hash
+
   end
 
   def load_blueprint(container)
