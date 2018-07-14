@@ -71,7 +71,7 @@ module BuilderBluePrint
       merge_bp_entry(parent,:database_seed_file)
       merge_bp_entry(parent,:schedules)
       merge_bp_entry(parent,:external_repositories)
-      if @blueprint[:software].key?(framework_specific)
+      if @blueprint[:software].key?(:framework_specific)
         merge_bp_entry(parent,[:framework_specific, :apache_htaccess_files])
         merge_bp_entry(parent,[:framework_specific, :custom_php_inis])
         merge_bp_entry(parent,[:framework_specific, :apache_httpd_configurations])
