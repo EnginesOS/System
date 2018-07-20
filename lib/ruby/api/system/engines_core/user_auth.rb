@@ -115,7 +115,7 @@ module UserAuth
 
   def init_system_password(password,  token = nil)
     SystemDebug.debug(SystemDebug.first_run, :applyin, password)
-    set_system_user_password('admin', password,  token)
+    set_system_user_password(password,  token)
     SystemDebug.debug(SystemDebug.first_run, :applied, password)
   end
 
@@ -161,7 +161,8 @@ module UserAuth
     end
   end
 
-  def set_system_user_password(user, password, token, current_password = nil)
+  def set_system_user_password(password, token, current_password = nil)
+    user = 'admin'
     if current_password.nil?
       rws = auth_database.execute("Select authtoken from systemaccess where username = '" + user.to_s + "';")
     else

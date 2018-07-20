@@ -76,6 +76,7 @@ module BuilderBluePrint
         merge_bp_entry(parent,[:framework_specific, :apache_htaccess_files])
         merge_bp_entry(parent,[:framework_specific, :custom_php_inis])
         merge_bp_entry(parent,[:framework_specific, :apache_httpd_configurations])
+        merge_bp_entry(parent,[:framework_specific, :rake_tasks])
       end
 
       @blueprint[:software] = parent[:software]
