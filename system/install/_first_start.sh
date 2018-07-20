@@ -1,5 +1,5 @@
 #!/bin/bash
-if test -f /opt/engines/bin/engines/run/system/flags/first_start_complete
+if test -f /opt/engines/bin/run/system/flags/first_start_complete
  then
   echo 'First Start already ran'
   exit 127
