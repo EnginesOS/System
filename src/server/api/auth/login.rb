@@ -98,6 +98,7 @@ get '/v0/system/user/:user_name' do
   begin
     content_type 'text/plain'
     cparams = assemble_params(params, [:user_name])
+      STDERR.puts(' debug ' + params.to_s)
     return_json(engines_api.get_system_user_info(cparams[:user_name]))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
