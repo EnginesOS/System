@@ -7,7 +7,7 @@ module SystemUser
   end
   
   def set_system_user_password(params)
-    @core_api.set_system_user_password(params[:user_name], params[:new_password],  params[:token], params[:current_password] )
+    @core_api.set_system_user_password(params[:new_password],  params[:token], params[:current_password] )
   end
 
   def get_system_user_info(cparams)
