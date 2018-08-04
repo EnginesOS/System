@@ -66,18 +66,19 @@ class DockerConnection < ErrorsApi
   end
 
   def connection
-    @connection = Excon.new('unix:///',
+    #  @connection = 
+    Excon.new('unix:///',
     :socket => '/var/run/docker.sock',
     debug_request: true,
     debug_response: true,
-    persistent: true  #,
+    persistent: false #true  #,
     #thread_safe_sockets: true
-    ) if @connection.nil?
-    @connection
+    )  #if @connection.nil?
+    # @connection
   end
 
   def reopen_connection
-    @connection.reset
+    @connection.reset unless @connection.nil?
     SystemDebug.debug(SystemDebug.docker,' REOPEN doker.sock connection ')
     @connection = Excon.new('unix:///',
     :socket => '/var/run/docker.sock',
