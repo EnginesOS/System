@@ -9,7 +9,7 @@ module ServiceApiRestore
     SystemDebug.debug(SystemDebug.export_import, :import_service)
    # STDERR.puts('STREAM' + stream.inspect)
     result = {}
-    begin
+  
       Timeout.timeout(@@import_timeout) do
         thr = Thread.new { result = @engines_core.exec_in_container(params) }
         thr.join
@@ -24,7 +24,7 @@ module ServiceApiRestore
     rescue Timeout::Error
       thr.kill
       raise EnginesException.new(error_hash('Import Timeout on Running Action ', cmd))
-    end
+  
     result
   end
   

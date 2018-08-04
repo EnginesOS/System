@@ -14,7 +14,7 @@ module EngineApiExportImport
 
     cmd = cmd_dir + '/backup.sh'
     SystemDebug.debug(SystemDebug.export_import, :export_service, cmd)
-    begin
+
       result = {}
       params = {container: container, command_line: [cmd], log_error: true }
       params[:stream] =  stream unless stream.nil?
@@ -33,7 +33,7 @@ module EngineApiExportImport
     rescue Timeout::Error
       thr.kill
       raise EnginesException.new(error_hash('Export Timeout on Running Action ', service_hash))
-    end
+
   end
 
   def import_service_data(container, service_params, stream = nil)    
