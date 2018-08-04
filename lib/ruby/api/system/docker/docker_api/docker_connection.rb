@@ -83,8 +83,8 @@ class DockerConnection < ErrorsApi
     :socket => '/var/run/docker.sock',
     debug_request: true,
     debug_response: true,
-    persistent: true,
-    thread_safe_sockets: true)
+    persistent: true)
+    #thread_safe_sockets: true)
     @connection
   end
 
@@ -92,8 +92,8 @@ class DockerConnection < ErrorsApi
     excon_params = {
       debug_request: true,
       debug_response: true,
-      persistent: false,
-      thread_safe_sockets: true
+      persistent: false 
+      #thread_safe_sockets: true
     }
 
     if stream_reader.method(:is_hijack?).call == true
