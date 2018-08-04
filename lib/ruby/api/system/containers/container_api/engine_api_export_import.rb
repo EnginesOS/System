@@ -58,7 +58,7 @@ module EngineApiExportImport
     SystemDebug.debug(SystemDebug.export_import, :import_service,  service_params)
     begin
       result = {}
-      Timeout.timeout(@@export_timeout) do
+      to = Timeout.timeout(@@export_timeout) do
         thr = Thread.new { result = @engines_core.exec_in_container(params) }
         thr.join
         thr[:name] = 'import:' + params.to_s
@@ -75,5 +75,8 @@ module EngineApiExportImport
       thr.kill
       raise EnginesException.new(error_hash('Import Timeout on Running Action ', cmd))
     end
+rescue  StandardError
+  raise EnginesException.new(error_hash('Import Error on Running Action ', container.container_name, service_params))
   end
+  
 end
