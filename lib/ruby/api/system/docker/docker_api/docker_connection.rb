@@ -70,8 +70,8 @@ class DockerConnection < ErrorsApi
     :socket => '/var/run/docker.sock',
     debug_request: true,
     debug_response: true,
-    persistent: true,
-    thread_safe_sockets: true
+    persistent: true  #,
+    #thread_safe_sockets: true
     ) if @connection.nil?
     @connection
   end
