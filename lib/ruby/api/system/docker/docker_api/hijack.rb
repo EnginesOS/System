@@ -66,7 +66,7 @@ module Excon
           datum[:hijack_block].call socket.instance_variable_get(:@socket)
         end
         r = @stack.response_call(datum)
-        #    rescue   dotn catch excepions here as is break excon
+        #    rescue   dotn catch excepions here as it breaks excon
       end
     end
   end
