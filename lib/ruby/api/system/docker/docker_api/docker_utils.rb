@@ -118,16 +118,17 @@ module DockerUtils
             l = r [0..7].unpack('C*')
             cl = l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
             r = r[8..-1]
-          #  STDERR.puts('STDERR ' + r.length.to_s + ':' + r.to_s)
+          #  STDERR.puts('STDERR ' )
           elsif r.start_with?("\u0002\u0000\u0000\u0000")
             dst = :stderr
+      STDERR.puts('STDOUT ')
             r = r[8..-1]
           elsif r.start_with?("\u0000\u0000\u0000\u0000")
             dst = :stdout
             r = r[8..-1]
-      #      STDERR.puts('STDOUT \0\0\0')
+            STDERR.puts('\0\0\0')
           else
-       #     STDERR.puts('UNMATCHED ' + r.length.to_s + ':' + r.to_s)
+            STDERR.puts('UNMATCHED ' )
             dst = :stderr
             unmatched = true
           end
