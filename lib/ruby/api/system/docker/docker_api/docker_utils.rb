@@ -141,12 +141,15 @@ STDERR.puts('STDERR ' + cl.to_s )
             length = r.length
           end
           if length > r.length
-             STDERR.puts('length > actual' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
+             STDERR.puts('WARNING length > actual' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
             length = r.length
           end
           #   STDERR.puts('len ' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
           h[dst] += r[0..length-1]
           r = r[length..-1]
+          if r.length > 0
+            STDERR.puts('Continuation')
+          end
         end
       end
       # result actually set elsewhere after exec complete
