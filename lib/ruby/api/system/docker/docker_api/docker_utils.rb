@@ -118,12 +118,12 @@ module DockerUtils
             l = r [0..7].unpack('C*')
             cl = l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
             r = r[8..-1]
-           STDERR.puts('STDOUT ') # + cl.to_s)
+           STDERR.puts('STDOUT ' + cl.to_s)
           elsif r.start_with?("\u0002\u0000\u0000\u0000")
             dst = :stderr
 l = r [0..7].unpack('C*')
 cl = l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
-STDERR.puts('STDERR ' ) #+ cl.to_s )
+STDERR.puts('STDERR ' + cl.to_s )
             r = r[8..-1]
           elsif r.start_with?("\u0000\u0000\u0000\u0000")
             dst = :stdout
