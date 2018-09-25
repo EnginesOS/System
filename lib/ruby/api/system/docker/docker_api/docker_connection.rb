@@ -172,8 +172,8 @@ class DockerConnection < ErrorsApi
     }
   rescue  Excon::Error::Socket
     STDERR.puts(' docker socket close ')
-    reopen_connection
-    retry
+   # #reopen_connection
+    #retry
   end
 
   def delete_request(uri)
@@ -186,8 +186,8 @@ class DockerConnection < ErrorsApi
       ) }
   rescue  Excon::Error::Socket
     STDERR.puts('docker socket close ')
-    reopen_connection
-    retry
+  # reopen_connection
+  # retry
   end
 
   private
