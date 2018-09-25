@@ -56,10 +56,11 @@ module ServiceApiRestore
       thr.kill unless thr.nil?
       raise EnginesException.new(error_hash('Export Timeout on Running Action ', cmd))
     end
-    if result[:result] == 0
-      result[:stdout]
-    else
-      raise EnginesException.new(error_hash("failed to export " + result.to_s , container.container_name))
-    end
+    result
+#    if result[:result] == 0
+#      result[:stdout]
+#    else
+#      raise EnginesException.new(error_hash("failed to export " + result.to_s , container.container_name))
+#    end
   end
 end
