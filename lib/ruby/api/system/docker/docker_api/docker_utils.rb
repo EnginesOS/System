@@ -109,7 +109,7 @@ module DockerUtils
         while r.length > 0
           if r[0].nil?
             return h if r.length == 1
-            #STDERR.puts('Skipping nil ')
+            STDERR.puts('Skipping nil ')
             r = r[1..-1]
             next
           end
@@ -118,7 +118,7 @@ module DockerUtils
             l = r [0..7].unpack('C*')
             cl = l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
             r = r[8..-1]
-          #  STDERR.puts('STDERR ' )
+           STDERR.puts('STDERR ' )
           elsif r.start_with?("\u0002\u0000\u0000\u0000")
             dst = :stderr
       STDERR.puts('STDOUT ')
