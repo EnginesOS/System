@@ -42,7 +42,7 @@ module ServiceApiRestore
     cmd = cmd_dir + '/backup.sh'
     SystemDebug.debug(SystemDebug.export_import, :export_service, cmd)
     begin
-      result = {}
+     # result = {result:  0}
       params = {container: container, command_line: [cmd], log_error: true }
       params[:stream] =  stream unless stream.nil?
       thr = Thread.new { result = @engines_core.exec_in_container(params) }
