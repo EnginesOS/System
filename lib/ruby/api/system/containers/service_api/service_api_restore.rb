@@ -45,8 +45,8 @@ module ServiceApiRestore
       result = {}
       params = {container: container, command_line: [cmd], log_error: true }
       params[:stream] =  stream unless stream.nil?
-      Timeout.timeout(@@export_timeout) do
-        thr = Thread.new { result = @engines_core.exec_in_container(params) }
+      thr = Thread.new { result = @engines_core.exec_in_container(params) }
+        Timeout.timeout(@@export_timeout) do       
         #SystemUtils.execute_command(cmd, true) }
         thr[:name] = 'export:' + params.to_s
         thr.join
