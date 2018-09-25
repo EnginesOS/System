@@ -139,7 +139,7 @@ module DockerUtils
             length = r.length
           end
           if length > r.length
-            #  STDERR.puts('length > actual' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
+             STDERR.puts('length > actual' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
             length = r.length
           end
           #   STDERR.puts('len ' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
