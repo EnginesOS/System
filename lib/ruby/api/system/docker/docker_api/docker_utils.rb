@@ -100,10 +100,14 @@ module DockerUtils
   end
 
   def self.docker_stream_as_result(r, h, binary = true)
+    
+    def data_length(l)
+      l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
+    end
     unmatched = false
     unless h.nil?
-      h[:stderr] = "" unless h.key?(:stderr)
-      h[:stdout] = "" unless h.key?(:stdout)
+      h[:stderr] = '' unless h.key?(:stderr)
+      h[:stdout] = '' unless h.key?(:stdout)
       cl = 0
       unless r.nil?
         while r.length > 0
@@ -115,14 +119,12 @@ module DockerUtils
           end
           if r.start_with?("\u0001\u0000\u0000\u0000")
             dst = :stdout
-            l = r [0..7].unpack('C*')
-            cl = l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
+            cl = data_length(r[0..7].unpack('C*'))           
             r = r[8..-1]
            STDERR.puts('STDOUT ' + cl.to_s + ':' + r.length.to_s)
           elsif r.start_with?("\u0002\u0000\u0000\u0000")
             dst = :stderr
-l = r [0..7].unpack('C*')
-cl = l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
+            cl = data_length(r[0..7].unpack('C*'))     
 STDERR.puts('STDERR ' + cl.to_s )
             r = r[8..-1]
           elsif r.start_with?("\u0000\u0000\u0000\u0000")

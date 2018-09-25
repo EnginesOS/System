@@ -11,8 +11,8 @@ get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/
     unless SoftwareServiceDefinition.is_consumer_exportable?(hash)
      raise EnginesException.new(warning_hash("Cannot export as single service", hash))
     end 
-    content_type 'application/octet-stream'   
     engine = get_engine(params[:engine_name])
+    content_type 'application/octet-stream'   
     unless engine.nil?
       stream do |out|
         engine.export_service_data(hash, out)
