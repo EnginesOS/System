@@ -131,7 +131,7 @@ STDERR.puts('STDERR ' + cl.to_s )
             STDERR.puts('\0\0\0')
           else
             STDERR.puts('UNMATCHED ' )
-            dst = :stderr
+            dst = :stdout
             unmatched = true
           end
           return h if r.nil?
