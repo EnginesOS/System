@@ -101,9 +101,9 @@ module DockerUtils
 
   def self.docker_stream_as_result(r, h, binary = true)
     
-    def data_length(l)
-      l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
-    end
+  #  def data_length(l)
+  #    l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
+  #  end
     unmatched = false
     unless h.nil?
       h[:stderr] = '' unless h.key?(:stderr)
