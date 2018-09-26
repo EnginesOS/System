@@ -132,7 +132,7 @@ STDERR.puts('STDERR ' + cl.to_s )
             r = r[8..-1]
             STDERR.puts('\0\0\0')
           else
-            STDERR.puts('UNMATCHED ' +  length.to_s)
+            STDERR.puts('UNMATCHED ' +  r.length.to_s)
             dst = :stdout
             unmatched = true
           end
