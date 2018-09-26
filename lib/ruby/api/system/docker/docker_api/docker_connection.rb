@@ -173,6 +173,10 @@ class DockerConnection < ErrorsApi
     }
   rescue  Excon::Error::Socket
     STDERR.puts(' docker socket close ')
+    nil
+  rescue  Excon::Error::Timeout
+     STDERR.puts(' docker socket timeout ')
+    nil
    # #reopen_connection
     #retry
   end
