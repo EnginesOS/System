@@ -4,7 +4,7 @@ require 'base64'
 # @method engine_export_persistent_service
 # @overload get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/:type_path/:service_handle/export'
 # exports the service data as a gzip
-# @return [Binary]
+# @returns octal stream
 get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/export' do
   begin
     hash = engine_service_hash_from_params(params)
