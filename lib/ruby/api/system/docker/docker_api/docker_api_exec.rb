@@ -126,7 +126,7 @@ module DockerApiExec
 
       r = post_stream_request(request, nil, stream_handler, headers, request_params.to_json)
       stream_handler.result[:result] = get_exec_result(exec_id)
-      params[:result] =  stream_reader.result
+      params[:result] =  stream_handler.result
       stream_handler.result
     else
       r
