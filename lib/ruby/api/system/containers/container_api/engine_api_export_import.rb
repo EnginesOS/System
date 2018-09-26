@@ -29,11 +29,12 @@ module EngineApiExportImport
       thr.kill
       raise EnginesException.new(error_hash('Export Timeout on Running Action ', service_hash))
     end
-    if @result[:result] == 0
-      @result #[stdout]
-    else
-      raise EnginesException.new(error_hash("failed to export " + @result.to_s ,service_hash))
-    end
+@result
+#    if @result[:result] == 0
+#      @result #[stdout]
+#    else
+#      raise EnginesException.new(error_hash("failed to export " + @result.to_s ,service_hash))
+#    end
 
   end
 
