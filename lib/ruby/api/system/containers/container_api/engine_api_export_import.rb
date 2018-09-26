@@ -24,6 +24,7 @@ module EngineApiExportImport
       Timeout.timeout(@@export_timeout) do
         thr.join
       end
+      result = params[:result]
       SystemDebug.debug(SystemDebug.export_import, :export_service, service_hash,'result code =' ,result[:result])
     rescue Timeout::Error
       thr.kill
@@ -65,6 +66,7 @@ module EngineApiExportImport
         thr.join
         
       end
+      result = params[:result]
       SystemDebug.debug(SystemDebug.export_import, :import_service,'result ' ,result.to_s)
       if result[:result] == 0
         true
