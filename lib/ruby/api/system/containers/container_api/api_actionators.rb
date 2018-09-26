@@ -21,7 +21,7 @@ module ApiActionators
       command_line: cmds,
       log_error:  true,
       data: data,
-      data_stream: stream})
+      data_stream: stream, result: nil})
 
     if result[:result] == 0
       if result[:stdout].start_with?('{') || result[:stdout].start_with?('"{')

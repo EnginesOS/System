@@ -16,7 +16,7 @@ module ServiceApiConsumers
       :command_line =>  ['/home/engines/scripts/services/add_service.sh'],
       :log_error => true,
       :timeout => @@consumer_timeout,
-      :data => service_hash.to_json})
+      :data => service_hash.to_json, result: nil})
     # STDERR.puts('ADD SERVICE' + result.to_s)
     raise EnginesException.new(error_hash('Failed add_consumer_to_service ' + result.to_s, result)) unless result[:result] == 0
   end
@@ -34,7 +34,7 @@ module ServiceApiConsumers
         command_line: ['/home/engines/scripts/services/update_service.sh'],
         log_error: true,
         timeout: @@consumer_timeout,
-        data: service_hash.to_json})
+        data: service_hash.to_json, result: nil})
       #   STDERR.puts('UPDATE SERVICE' + result.to_s)
       raise EnginesException.new(error_hash('Failed update_consumer_on_service ' + result.to_s, result)) unless result[:result] == 0
     end
@@ -47,7 +47,7 @@ module ServiceApiConsumers
       command_line: ['/home/engines/scripts/services/rm_service.sh'],
       log_error: true,
       timeout: @@consumer_timeout,
-      data: service_hash.to_json })
+      data: service_hash.to_json, result: nil })
    #   STDERR.puts('RM SERVICE:' + service_hash.to_s + ':Res:' + result.to_s)
     raise EnginesException.new(error_hash('Failed rm_consumer_from_service ', result)) unless result[:result] == 0
   end

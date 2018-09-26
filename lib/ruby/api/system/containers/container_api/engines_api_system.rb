@@ -106,7 +106,7 @@ module EnginesApiSystem
       cron_entry = @engines_core.retreive_cron_entry(cronjob, container)
       # STDERR.puts(' retreive cron entry from engine registry ' + cron_entry.to_s + ' from ' + cronjob.to_s )
       raise EnginesException.new(error_hash('nil cron line ' + cronjob.to_s )) if cron_entry.nil?
-      r = @engines_core.exec_in_container({:container => container, :command_line => cron_entry.split(" "), :log_error => true, :data => nil})
+      r = @engines_core.exec_in_container({:container => container, :command_line => cron_entry.split(" "), :log_error => true, :data => nil, result: nil})
       raise EnginesException.new(error_hash('Cron job un expected result', r)) unless r.is_a?(Hash)
       r[:stdout] + r[:stderr]
     else

@@ -16,7 +16,7 @@ module EngineApiExportImport
     SystemDebug.debug(SystemDebug.export_import, :export_service, cmd)
 
     result = {result: 0}
-    params = {container: container, command_line: [cmd], log_error: true }
+    params = {container: container, command_line: [cmd], log_error: true, result: result}
     params[:stream] =  stream unless stream.nil?
     thr = Thread.new { result = @engines_core.exec_in_container(params) }
     thr[:name] = 'export:' + params.to_s
@@ -51,7 +51,7 @@ module EngineApiExportImport
     else
       cmd = cmd_dir + '/restore.sh'
     end
-    params = {container: container, command_line: [cmd], log_error: true }
+    params = {container: container, command_line: [cmd], log_error: true, result: nil }
     unless stream.nil?
       params[:data_stream] = stream
     else

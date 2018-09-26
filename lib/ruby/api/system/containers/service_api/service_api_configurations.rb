@@ -6,7 +6,7 @@ module ServiceApiConfigurations
     {container: c,
       command_line: [cmd],
       log_error: true,
-      timeout: @@configurator_timeout})
+      timeout: @@configurator_timeout, result: nil})
     if result[:result] == 0
       variables_hash = deal_with_json(result[:stdout])
       params[:variables] = symbolize_keys(variables_hash)
@@ -27,7 +27,8 @@ module ServiceApiConfigurations
         command_line: cmd,
         log_error: true,
         timeout: @@configurator_timeout,
-        data: configurator_params[:variables].to_json })
+        result: nil,
+        data: configurator_params[:variables].to_json, result: result })
     else
       {stderr: 'Not Running', result: -1}
     end
@@ -62,7 +63,7 @@ module ServiceApiConfigurations
       command_line: cmd,
       log_error: true,
       timeout: @@configurator_timeout,
-      data: nil})[:stdout]
+      data: nil, result: nil})[:stdout]
   end
 
 end 
