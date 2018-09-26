@@ -15,23 +15,22 @@ module EngineApiExportImport
     cmd = cmd_dir + '/backup.sh'
     SystemDebug.debug(SystemDebug.export_import, :export_service, cmd)
 
-    result = {result: 0}
-    params = {container: container, command_line: [cmd], log_error: true, result: result}
+    @result = {result: 0}
+    params = {container: container, command_line: [cmd], log_error: true}
     params[:stream] =  stream unless stream.nil?
-    thr = Thread.new { result = @engines_core.exec_in_container(params) }
+    thr = Thread.new { @result = @engines_core.exec_in_container(params) }
     thr[:name] = 'export:' + params.to_s
     begin
       Timeout.timeout(@@export_timeout) do
         thr.join
       end
-      result = params[:result]
-      SystemDebug.debug(SystemDebug.export_import, :export_service, service_hash,'result code =' ,result[:result])
+     SystemDebug.debug(SystemDebug.export_import, :export_service, service_hash,'result code =' ,@result[:result])
     rescue Timeout::Error
       thr.kill
       raise EnginesException.new(error_hash('Export Timeout on Running Action ', service_hash))
     end
-    if result[:result] == 0
-      result #[stdout]
+    if @result[:result] == 0
+      @result #[stdout]
     else
       raise EnginesException.new(error_hash("failed to export " + result.to_s ,service_hash))
     end
@@ -51,7 +50,7 @@ module EngineApiExportImport
     else
       cmd = cmd_dir + '/restore.sh'
     end
-    params = {container: container, command_line: [cmd], log_error: true, result: nil }
+    params = {container: container, command_line: [cmd], log_error: true }
     unless stream.nil?
       params[:data_stream] = stream
     else
@@ -63,8 +62,7 @@ module EngineApiExportImport
       thr = Thread.new { result = @engines_core.exec_in_container(params) }
       thr[:name] = 'import:' + params.to_s
       to = Timeout.timeout(@@export_timeout) do
-        thr.join
-        
+        thr.join        
       end
       result = params[:result]
       SystemDebug.debug(SystemDebug.export_import, :import_service,'result ' ,result.to_s)

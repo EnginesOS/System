@@ -4,7 +4,7 @@ module ServiceApiReaders
     result = ''
     begin
       
-        thr = Thread.new { result =  @engines_core.exec_in_container({:container => c, :command_line => [cmd], :log_error => true , result: nil}) }          
+        thr = Thread.new { result =  @engines_core.exec_in_container({:container => c, :command_line => [cmd], :log_error => true}) }          
         thr[:name] = 'action reader ' + c.container_name
     #  STDERR.puts('Thread ' +  thr.inspect)
     Timeout.timeout(@@configurator_timeout) do
