@@ -41,8 +41,8 @@ module ServiceApiRestore
     raise EnginesException.new(error_hash("failed to export service not running " + container.container_name.to_s)) unless container.is_running?
     cmd = cmd_dir + '/backup.sh'
     SystemDebug.debug(SystemDebug.export_import, :export_service, cmd)
+    result = {result:  0}
     begin
-      result = {result:  0}
       params = {container: container, command_line: [cmd], log_error: true }
       params[:stream] =  stream unless stream.nil?
       thr = Thread.new { result = @engines_core.exec_in_container(params) }
