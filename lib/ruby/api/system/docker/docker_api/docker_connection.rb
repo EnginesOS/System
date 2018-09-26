@@ -144,9 +144,14 @@ class DockerConnection < ErrorsApi
     r
   rescue Excon::Error::Socket
     STDERR.puts(' docker socket stream close ')
-    stream_handler.close
+    stream_handler.close unless stream_handler.nil?
     sc.reset unless sc.nil?
     r
+      rescue  Excon::Error::Timeout
+         STDERR.puts(' docker socket timeout ')
+      stream_handler.close unless stream_handler.nil?
+      sc.reset unless sc.nil?
+        nil
   end
 
   def request_params(params)
@@ -191,6 +196,9 @@ class DockerConnection < ErrorsApi
       ) }
   rescue  Excon::Error::Socket
     STDERR.puts('docker socket close ')
+  rescue  Excon::Error::Timeout
+     STDERR.puts(' docker socket timeout ')
+    nil
   # reopen_connection
   # retry
   end
