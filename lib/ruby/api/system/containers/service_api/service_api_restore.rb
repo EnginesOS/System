@@ -41,25 +41,28 @@ module ServiceApiRestore
     raise EnginesException.new(error_hash("failed to export service not running " + container.container_name.to_s)) unless container.is_running?
     cmd = cmd_dir + '/backup.sh'
     SystemDebug.debug(SystemDebug.export_import, :export_service, cmd)
+       result = {result:  0}
     begin
-      result = {}
       params = {container: container, command_line: [cmd], log_error: true }
       params[:stream] =  stream unless stream.nil?
-      thr = Thread.new { result = @engines_core.exec_in_container(params) }
-        Timeout.timeout(@@export_timeout) do       
+thr = Thread.new { result = @engines_core.exec_in_container(params) } 
+        Timeout.timeout(@@export_timeout) do      
+         
         #SystemUtils.execute_command(cmd, true) }
         thr[:name] = 'export:' + params.to_s
         thr.join
         SystemDebug.debug(SystemDebug.export_import, :export_service, container.container_name, 'result code =', result[:result])
-      end
+        result 
+          end 
     rescue Timeout::Error
       thr.kill unless thr.nil?
       raise EnginesException.new(error_hash('Export Timeout on Running Action ', cmd))
-    end
-    if result[:result] == 0
-      result[:stdout]
-    else
-      raise EnginesException.new(error_hash("failed to export " + result.to_s , container.container_name))
-    end
+    
+end
+#    if result[:result] == 0
+#      result[:stdout]
+#    else
+#      raise EnginesException.new(error_hash("failed to export " + result.to_s , container.container_name))
+#    end
   end
 end
