@@ -15,18 +15,18 @@ module EngineApiExportImport
     cmd = cmd_dir + '/backup.sh'
     SystemDebug.debug(SystemDebug.export_import, :export_service, cmd)
 
-    result = {}
+    result = {result: 0}
     params = {container: container, command_line: [cmd], log_error: true }
     params[:stream] =  stream unless stream.nil?
-    thr = Thread.new { result = @engines_core.exec_in_container(params) }
+    thr = Thread.new { @result = @engines_core.exec_in_container(params) }
     Timeout.timeout(@@export_timeout) do
       #SystemUtils.execute_command(cmd, true) }
       thr[:name] = 'export:' + params.to_s
       thr.join
       SystemDebug.debug(SystemDebug.export_import, :export_service, service_hash,'result code =' ,result[:result])
     end
-    if result[:result] == 0
-      result #[stdout]
+    if @result[:result] == 0
+      @result #[stdout]
     else
       raise EnginesException.new(error_hash("failed to export " + result.to_s ,service_hash))
     end
