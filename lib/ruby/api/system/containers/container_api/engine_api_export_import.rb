@@ -77,12 +77,12 @@ result
       thr.kill
       raise EnginesException.new(error_hash('Import Timeout on Running Action ', cmd))
     end
-  rescue  StandardError => e
-    if e.is_a?(EnginesException)
-      raise e
-    else
-      raise EnginesException.new(error_hash('Import Error on Running Action ', container.container_name, service_params))
-    end
+#  rescue  StandardError => e
+#    if e.is_a?(EnginesException)
+#      raise e
+#    else
+#      raise EnginesException.new(error_hash('Import Error on Running Action ', container.container_name, service_params))
+#    end
   end
 
 end
