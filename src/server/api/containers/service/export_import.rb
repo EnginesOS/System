@@ -2,7 +2,7 @@
 # @method engine_export_persistent_service_data
 # @overload get '/v0/containers/service/:service_name/export'
 # exports the service data as a gzip
-# @return [Binary]
+# @return [octet-stream]
 get '/v0/containers/service/:service_name/export' do
   begin
     service = get_service(params[:service_name])

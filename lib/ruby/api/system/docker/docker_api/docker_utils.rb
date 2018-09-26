@@ -100,35 +100,42 @@ module DockerUtils
   end
 
   def self.docker_stream_as_result(r, h, binary = true)
+    
+  #  def data_length(l)
+  #    l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
+  #  end
     unmatched = false
     unless h.nil?
-      h[:stderr] = "" unless h.key?(:stderr)
-      h[:stdout] = "" unless h.key?(:stdout)
+      h[:stderr] = '' unless h.key?(:stderr)
+      h[:stdout] = '' unless h.key?(:stdout)
       cl = 0
       unless r.nil?
         while r.length > 0
           if r[0].nil?
             return h if r.length == 1
-            #STDERR.puts('Skipping nil ')
+            STDERR.puts('Skipping nil ')
             r = r[1..-1]
             next
           end
           if r.start_with?("\u0001\u0000\u0000\u0000")
             dst = :stdout
-            l = r [0..7].unpack('C*')
-            cl = l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
+            l = r[0..7].unpack('C*')        
+        cl = l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576  
             r = r[8..-1]
-          #  STDERR.puts('STDERR ' + r.length.to_s + ':' + r.to_s)
+           STDERR.puts('STDOUT ' + cl.to_s + ':' + r.length.to_s)
           elsif r.start_with?("\u0002\u0000\u0000\u0000")
             dst = :stderr
+            l = r[0..7].unpack('C*')        
+       cl = l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576  
+       STDERR.puts('STDERR ' + cl.to_s )
             r = r[8..-1]
           elsif r.start_with?("\u0000\u0000\u0000\u0000")
             dst = :stdout
             r = r[8..-1]
-      #      STDERR.puts('STDOUT \0\0\0')
+            STDERR.puts('\0\0\0')
           else
-       #     STDERR.puts('UNMATCHED ' + r.length.to_s + ':' + r.to_s)
-            dst = :stderr
+            STDERR.puts('UNMATCHED ' +  r.length.to_s)
+            dst = :stdout
             unmatched = true
           end
           return h if r.nil?
@@ -138,12 +145,15 @@ module DockerUtils
             length = r.length
           end
           if length > r.length
-            #  STDERR.puts('length > actual' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
+             STDERR.puts('WARNING length > actual' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
             length = r.length
           end
           #   STDERR.puts('len ' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
           h[dst] += r[0..length-1]
           r = r[length..-1]
+          if r.length > 0
+            STDERR.puts('Continuation')
+          end
         end
       end
       # result actually set elsewhere after exec complete

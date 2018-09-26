@@ -2,7 +2,7 @@
 # @method service_export_persistent_service
 # @overload get '/v0/containers/service/:service_name/service/persistent/:publisher_namespace/:type_path/:service_handle/export'
 # exports the service data as a gzip
-# @return [Binary]
+# @return [octet-stream]
 get '/v0/containers/service/:service_name/service/persistent/:publisher_namespace/*/export' do
   begin
     content_type 'application/octet-stream'

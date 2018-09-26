@@ -21,7 +21,7 @@ module DockerContainerActions
 
   def signal_container_process(pid, signal, container)
     cmds =['kill','-' + signal, pid]
-    @docker_comms.docker_exec({:container => container, :command_line=>cmds, :log_error=>false})
+    @docker_comms.docker_exec({result: nil, container: container, command_line: cmds, log_error: false})
   end
 
   def destroy_container(container)

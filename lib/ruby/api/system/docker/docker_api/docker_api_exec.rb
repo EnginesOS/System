@@ -40,9 +40,11 @@ module DockerApiExec
         if @o_stream.nil?
        #   STDERR.puts('stream results')
           DockerUtils.docker_stream_as_result(chunk, return_result)
+          STDERR.puts(' 1 a stream')
          # return_result[:raw] = return_result[:raw] + chunk.to_s
         else
           r = DockerUtils.decode_from_docker_chunk(chunk, true)
+          STDERR.puts('1 a chunk')
           @o_stream.write(r[:stdout]) unless r.nil?
           return_result[:stderr] = return_result[:stderr].to_s + r[:stderr].to_s
         end
@@ -75,10 +77,11 @@ module DockerApiExec
       lambda do |chunk , c , t|
         if @o_stream.nil?
           DockerUtils.docker_stream_as_result(chunk, return_result)
+          STDERR.puts(' 2 a stream')
          # return_result[:raw] = return_result[:raw] + chunk.to_s
         else
           r = DockerUtils.decode_from_docker_chunk(chunk, true)
-       #   STDERR.puts('stream a chunk')
+         STDERR.puts(' 2 a chunk')
           @o_stream.write(r[:stdout]) unless r.nil?
           return_result[:stderr] = return_result[:stderr].to_s + r[:stderr].to_s
         end
@@ -110,7 +113,6 @@ module DockerApiExec
       }
       unless params.key?(:data) || params.key?(:data_stream)
         stream_reader = DockerStreamReader.new(params[:stream])
-        result = {}
         r = post_stream_request(request, nil, stream_reader, headers, request_params.to_json)
         stream_reader.result[:result] = get_exec_result(exec_id)
         return stream_reader.result # DockerUtils.docker_stream_as_result(r, result)

@@ -66,25 +66,26 @@ class DockerConnection < ErrorsApi
   end
 
   def connection
-    @connection = Excon.new('unix:///',
+    #  @connection = 
+    Excon.new('unix:///',
     :socket => '/var/run/docker.sock',
     debug_request: true,
     debug_response: true,
-    persistent: true,
-    thread_safe_sockets: true
-    ) if @connection.nil?
-    @connection
+    persistent: false #true  #,
+    #thread_safe_sockets: true
+    )  #if @connection.nil?
+    # @connection
   end
 
   def reopen_connection
-    @connection.reset
+    @connection.reset unless @connection.nil?
     SystemDebug.debug(SystemDebug.docker,' REOPEN doker.sock connection ')
     @connection = Excon.new('unix:///',
     :socket => '/var/run/docker.sock',
     debug_request: true,
     debug_response: true,
-    persistent: true,
-    thread_safe_sockets: true)
+    persistent: true)
+    #thread_safe_sockets: true)
     @connection
   end
 
@@ -92,8 +93,8 @@ class DockerConnection < ErrorsApi
     excon_params = {
       debug_request: true,
       debug_response: true,
-      persistent: false,
-      thread_safe_sockets: true
+      persistent: false 
+      #thread_safe_sockets: true
     }
 
     if stream_reader.method(:is_hijack?).call == true
@@ -145,6 +146,7 @@ class DockerConnection < ErrorsApi
     STDERR.puts(' docker socket stream close ')
     stream_handler.close
     sc.reset unless sc.nil?
+    r
   end
 
   def request_params(params)
@@ -171,8 +173,12 @@ class DockerConnection < ErrorsApi
     }
   rescue  Excon::Error::Socket
     STDERR.puts(' docker socket close ')
-    reopen_connection
-    retry
+    nil
+  rescue  Excon::Error::Timeout
+     STDERR.puts(' docker socket timeout ')
+    nil
+   # #reopen_connection
+    #retry
   end
 
   def delete_request(uri)
@@ -185,8 +191,8 @@ class DockerConnection < ErrorsApi
       ) }
   rescue  Excon::Error::Socket
     STDERR.puts('docker socket close ')
-    reopen_connection
-    retry
+  # reopen_connection
+  # retry
   end
 
   private
