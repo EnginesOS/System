@@ -15,21 +15,21 @@ module EngineApiExportImport
     cmd = cmd_dir + '/backup.sh'
     SystemDebug.debug(SystemDebug.export_import, :export_service, cmd)
 
-    @result = {result: 0}
+    result = {result: 0}
     params = {container: container, command_line: [cmd], log_error: true}
     params[:stream] =  stream unless stream.nil?
-    thr = Thread.new { @result = @engines_core.exec_in_container(params) }
+    thr = Thread.new { result = @engines_core.exec_in_container(params) }
     thr[:name] = 'export:' + params.to_s
     begin
       Timeout.timeout(@@export_timeout) do
         thr.join
       end
-     SystemDebug.debug(SystemDebug.export_import, :export_service, service_hash,'result code =' ,@result[:result])
+     SystemDebug.debug(SystemDebug.export_import, :export_service, service_hash,'result code =' ,result[:result])
     rescue Timeout::Error
       thr.kill
       raise EnginesException.new(error_hash('Export Timeout on Running Action ', service_hash))
     end
-@result
+result
 #    if @result[:result] == 0
 #      @result #[stdout]
 #    else
@@ -65,7 +65,6 @@ module EngineApiExportImport
       to = Timeout.timeout(@@export_timeout) do
         thr.join        
       end
-      result = params[:result]
       SystemDebug.debug(SystemDebug.export_import, :import_service,'result ' ,result.to_s)
       if result[:result] == 0
         true
