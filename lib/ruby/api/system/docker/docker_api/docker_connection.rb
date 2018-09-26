@@ -146,6 +146,7 @@ class DockerConnection < ErrorsApi
     STDERR.puts(' docker socket stream close ')
     stream_handler.close
     sc.reset unless sc.nil?
+    r
   end
 
   def request_params(params)
