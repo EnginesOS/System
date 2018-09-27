@@ -207,17 +207,17 @@ class DockerConnection < ErrorsApi
 
   def handle_resp(resp, expect_json)
     raise DockerException.new({params: @request_param, status: 500}) if resp.nil?
-    SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE CODE' + resp.status.to_s )
+#SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE CODE' + resp.status.to_s )
     if resp.status > 399
-      SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE CODE' + resp.status.to_s )
-      SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE Body' + resp.body.to_s )
+      #  SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE CODE' + resp.status.to_s )
+      # SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE Body' + resp.body.to_s )
       SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE' + resp.to_s )
     end
     raise DockerException.new(docker_error_hash(resp, @request_params)) if resp.status >= 400
     if resp.status == 204 # nodata but all good happens on del
       true
     else
-      log_error_mesg("Un exepect response from docker", resp, resp.body, resp.headers.to_s) unless resp.status == 200 || resp.status == 201
+      log_error_mesg("Un exepected response from docker", resp, resp.body, resp.headers.to_s) unless resp.status == 200 || resp.status == 201
       if expect_json == true
         hash = response_parser.parse(resp.body)
         SystemDebug.debug(SystemDebug.docker, 'RESPOSE ' + resp.status.to_s + ' : ' + hash.to_s.slice(0..256))
