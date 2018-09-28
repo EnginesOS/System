@@ -134,7 +134,7 @@ module DockerUtils
             r = r[8..-1]
             STDERR.puts('\0\0\0')
           else
-            STDERR.puts('UNMATCHED ' +  r.length.to_s)
+            STDERR.puts('UNMATCHED ' +  r.to_s)#.length.to_s)
             dst = :stdout
             unmatched = true
           end
