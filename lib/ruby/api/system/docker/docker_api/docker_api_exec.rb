@@ -25,12 +25,12 @@ module DockerApiExec
     end
 
     def has_data?
-      if @i_stream.nil? || @i_stream.closed? || @data.nil?
-        false
-      elsif @data.length > 0
-        true
+      if @data.length > 0
+              true
+      elsif @i_stream.nil? || @i_stream.closed? || @data.nil?
+        false      
       else
-        false
+        true
       end
     end
 
