@@ -27,7 +27,7 @@ module DockerApiExec
     def has_data?
       if @data.length > 0
               true
-      elsif @i_stream.nil? || @i_stream.closed? || @data.nil?
+      elsif @i_stream.nil? || @i_stream.closed? 
         false      
       else
         true
@@ -35,18 +35,20 @@ module DockerApiExec
     end
 
     def process_response()
-      return_result = @result
+      
       lambda do |chunk , c , t|
         if @o_stream.nil?
        #   STDERR.puts('stream results')
-          DockerUtils.docker_stream_as_result(chunk, return_result)
-          STDERR.puts(' 1 a stream')
+          STDERR.puts(' hj 1 a chunker')
+          r = DockerUtils.decode_from_docker_chunk(chunk, true)
+          @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
+          @result[:stdout] = @result[:stdout].to_s + r[:stdout].to_s
          # return_result[:raw] = return_result[:raw] + chunk.to_s
         else
           r = DockerUtils.decode_from_docker_chunk(chunk, true)
-          STDERR.puts('1 a chunk')
+          STDERR.puts('hj 1 a stream')
           @o_stream.write(r[:stdout]) unless r.nil?
-          return_result[:stderr] = return_result[:stderr].to_s + r[:stderr].to_s
+          @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
         end
       end
     end
@@ -73,17 +75,20 @@ module DockerApiExec
     end
 
     def process_response()
-      return_result = @result
       lambda do |chunk , c , t|
         if @o_stream.nil?
-          DockerUtils.docker_stream_as_result(chunk, return_result)
           STDERR.puts(' 2 a stream')
+          r = DockerUtils.decode_from_docker_chunk(chunk, true)
+          next if r.nil?
+           @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s 
+          @result[:stdout] = @result[:stdout].to_s + r[:stdout].to_s 
          # return_result[:raw] = return_result[:raw] + chunk.to_s
         else
+          STDERR.puts(' 2 a chunk')
           r = DockerUtils.decode_from_docker_chunk(chunk, true)
-         STDERR.puts(' 2 a chunk')
-          @o_stream.write(r[:stdout]) unless r.nil?
-          return_result[:stderr] = return_result[:stderr].to_s + r[:stderr].to_s
+          next if r.nil?
+          @o_stream.write(r[:stdout]) 
+          @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
         end
       end
     end

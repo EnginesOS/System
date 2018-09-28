@@ -94,9 +94,9 @@ module DockerUtils
     r = {
       stderr: '',
       stdout: ''
-    }
+    } 
     self.docker_stream_as_result(chunk, r, binary)
-    r
+ 
   end
 
   def self.docker_stream_as_result(r, h, binary = true)
