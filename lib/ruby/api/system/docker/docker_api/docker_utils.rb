@@ -36,12 +36,12 @@ module DockerUtils
               end
             end
           else
-          #  STDERR.puts('send data:' + stream_reader.data.class.name)
+           STDERR.puts('send data:' + stream_reader.data.class.name)
             unless stream_reader.data.nil? ||  stream_reader.data.length == 0
               if stream_reader.data.length < Excon.defaults[:chunk_size]
             #    STDERR.puts('send data as one chunk ' + stream_reader.data.to_s)
                 socket.send(stream_reader.data, 0)
-                stream_reader.data = ''
+                stream_reader.data = nil
               else
             #    STDERR.puts('send data as chunks ')
                 while stream_reader.data.length != 0
@@ -49,7 +49,7 @@ module DockerUtils
                     socket.send(stream_reader.data.slice!(0, Excon.defaults[:chunk_size]), 0)
                   else
                     socket.send(stream_reader.data, 0)
-                    stream_reader.data = ''
+                    stream_reader.data = nil
                   end
                 end
               end

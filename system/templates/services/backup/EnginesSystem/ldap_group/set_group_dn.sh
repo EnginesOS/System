@@ -1,6 +1,5 @@
 #!/bin/sh
-SCRIPT=`realpath $0`
-SCRIPTPATH=`dirname $SCRIPT`
+
 if test $container_type = service
  then
   top=Services
