@@ -131,7 +131,7 @@ class DockerConnection < ErrorsApi
       )
       stream_handler.close
     else
-      STDERR.puts(' stream ')
+      STDERR.puts(' stream date ')
       r = sc.request(
       method: :post,
       read_timeout: 3600,

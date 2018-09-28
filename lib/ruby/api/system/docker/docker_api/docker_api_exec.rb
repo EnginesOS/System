@@ -26,6 +26,7 @@ module DockerApiExec
 
     def has_data?
       if @data.length > 0
+        STDERR.puts(' HAS DTAT ')
               true
       elsif @i_stream.nil? || @i_stream.closed? 
         false      
@@ -37,6 +38,7 @@ module DockerApiExec
     def process_response()
       
       lambda do |chunk , c , t|
+        STDERR.puts('a hijack')
         if @o_stream.nil?
        #   STDERR.puts('stream results')
           STDERR.puts(' hj 1 a chunker')
@@ -75,16 +77,17 @@ module DockerApiExec
     end
 
     def process_response()
+      STDERR.puts('  a chunk')
       lambda do |chunk , c , t|
         if @o_stream.nil?
-          STDERR.puts(' 2 a stream')
+          STDERR.puts(' SR a chunk')
           r = DockerUtils.decode_from_docker_chunk(chunk, true)
           next if r.nil?
            @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s 
           @result[:stdout] = @result[:stdout].to_s + r[:stdout].to_s 
          # return_result[:raw] = return_result[:raw] + chunk.to_s
         else
-          STDERR.puts(' 2 a chunk')
+          STDERR.puts(' SR a stream')
           r = DockerUtils.decode_from_docker_chunk(chunk, true)
           next if r.nil?
           @o_stream.write(r[:stdout]) 
