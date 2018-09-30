@@ -50,7 +50,7 @@ def get_stream(path, ostream = STDOUT)
   req = Net::HTTP::Get.new(uri)
   req['Access_Token'] = ENV['access_token']
   options = {use_ssl: true, uri.scheme => 'https', verify_mode: OpenSSL::SSL::VERIFY_NONE} if @use_https == true
-  Net::HTTP.start(uri.host, uri.port,   options)   do |http|
+  Net::HTTP.start(uri.host, uri.port, options) do |http|
     http.read_timeout = 600
     http.request(req) { |resp|
       resp.read_body do |chunk|
