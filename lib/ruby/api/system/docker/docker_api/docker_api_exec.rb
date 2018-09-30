@@ -123,7 +123,7 @@ module DockerApiExec
         stream_reader = DockerStreamReader.new(params[:stream])
         r = post_stream_request(request, nil, stream_reader, headers, request_params.to_json)
         stream_reader.result[:result] = get_exec_result(exec_id)
-          STDERR.puts('STREA ' +stream_reader.result )
+          STDERR.puts('STREA ' +stream_reader.result.to_s )
         return stream_reader.result # DockerUtils.docker_stream_as_result(r, result)
       end
       request_params['AttachStdin'] = true
