@@ -25,14 +25,21 @@ module DockerApiExec
     end
 
     def has_data?
-      if @data.length > 0
-        STDERR.puts(' HAS DTAT ')
-              true
-      elsif @i_stream.nil? || @i_stream.closed? 
-        false      
-      else
+      if @i_stream.nil? || @i_stream.closed? || @data.nil?
+        false
+      elsif @data.length > 0
         true
+      else
+        false
       end
+  #    if @data.length > 0
+#          STDERR.puts(' HAS DTAT ')
+#                true
+#        elsif @i_stream.nil? || @i_stream.closed? 
+#          false      
+#        else
+#          true
+#        end
     end
 
     def process_response()
