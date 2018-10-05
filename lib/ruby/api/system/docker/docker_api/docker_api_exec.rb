@@ -84,7 +84,6 @@ module DockerApiExec
     end
 
     def process_response()
-      STDERR.puts('  a chunk')
       lambda do |chunk , c , t|
         if @o_stream.nil?
           STDERR.puts(' SR a chunk')
