@@ -23,18 +23,20 @@ module EngineApiExportImport
       Timeout.timeout(@@export_timeout) do
         thr.join
       end
-     SystemDebug.debug(SystemDebug.export_import, :export_service, service_hash,'result code =' ,result[:result])
-       result
+      SystemDebug.debug(SystemDebug.export_import, :export_service, service_hash,'result code =' ,result[:result])
+      result
     rescue Timeout::Error
       thr.kill
-      raise EnginesException.new(error_hash('Export Timeout on Running Action ', service_hash))
+      #  raise EnginesException.new(error_hash('Export Timeout on Running Action ', service_hash))
+      result[:result] = -1;
+      result[:stderr] = 'Export Timeout on Running Action:' + cmd.to_s + ':' + result[:stderr].to_s
     end
-result
-#    if @result[:result] == 0
-#      @result #[stdout]
-#    else
-#      raise EnginesException.new(error_hash("failed to export " + @result.to_s ,service_hash))
-#    end
+    result
+    #    if @result[:result] == 0
+    #      @result #[stdout]
+    #    else
+    #      raise EnginesException.new(error_hash("failed to export " + @result.to_s ,service_hash))
+    #    end
 
   end
 
@@ -64,7 +66,7 @@ result
       thr = Thread.new { result = @engines_core.exec_in_container(params) }
       thr[:name] = 'import:' + params.to_s
       to = Timeout.timeout(@@export_timeout) do
-        thr.join        
+        thr.join
       end
       SystemDebug.debug(SystemDebug.export_import, :import_service,'result ' ,result.to_s)
       if result[:result] == 0
@@ -76,14 +78,16 @@ result
       end
     rescue Timeout::Error
       thr.kill
-      raise EnginesException.new(error_hash('Import Timeout on Running Action ', cmd))
+      result[:result] = -1;
+      result[:stderr] = 'Import Timeout on Running Action:' + cmd.to_s + ':' + result[:stderr].to_s
+
     end
-#  rescue  StandardError => e
-#    if e.is_a?(EnginesException)
-#      raise e
-#    else
-#      raise EnginesException.new(error_hash('Import Error on Running Action ', container.container_name, service_params))
-#    end
+    #  rescue  StandardError => e
+    #    if e.is_a?(EnginesException)
+    #      raise e
+    #    else
+    #      raise EnginesException.new(error_hash('Import Error on Running Action ', container.container_name, service_params))
+    #    end
   end
 
 end
