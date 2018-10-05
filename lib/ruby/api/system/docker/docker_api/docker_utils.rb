@@ -74,7 +74,7 @@ module DockerUtils
             end
           end
         rescue EOFError
-          STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
+          STDERR.puts(e.to_s + ':EEOOFF' + e.backtrace.to_s)
           write_thread.kill
         rescue StandardError => e
           STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
