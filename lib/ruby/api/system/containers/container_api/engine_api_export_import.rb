@@ -63,10 +63,13 @@ module EngineApiExportImport
       to = Timeout.timeout(@@export_timeout) do
         thr.join
       end
+      
     rescue Timeout::Error
       thr.kill
-      result[:result] = -1;
-      result[:stderr] = 'Import Timeout on Running Action:' + cmd.to_s + ':' + result[:stderr].to_s
+      eresult = {}
+      eresult[:result] = -1;
+      eresult[:stderr] = 'Import Timeout on Running Action:' + cmd.to_s + ':' + result[:stderr].to_s
+      result = eresult
     end
     SystemDebug.debug(SystemDebug.export_import, :import_service,'result ' ,result.to_s)
     result
