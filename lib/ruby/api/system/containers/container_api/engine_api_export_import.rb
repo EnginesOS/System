@@ -14,7 +14,7 @@ module EngineApiExportImport
     service_hash = engines_core.retrieve_service_hash(service_hash)
     cmd = cmd_dir + '/backup.sh'
     SystemDebug.debug(SystemDebug.export_import, :export_service, cmd)
-    result = {result:  0}
+    result = {result: 0}
     params = {container: container, command_line: [cmd], log_error: true, data: service_hash.to_json}
     params[:stream] =  stream unless stream.nil?
     thr = Thread.new { result = @engines_core.exec_in_container(params) }
@@ -31,11 +31,11 @@ module EngineApiExportImport
       result[:result] = -1;
       result[:stderr] = 'Export Timeout on Running Action:' + cmd.to_s + ':' + result[:stderr].to_s
     end
-    result
-        if @result[:result] == 0
-          @result #[stdout]
+
+        if result[:result] == 0
+          result #[stdout]
         else
-          raise EnginesException.new(error_hash("failed to export " + @result.to_s ,service_hash))
+          raise EnginesException.new(error_hash("failed to export " + result.to_s ,service_hash))
         end
 
   end

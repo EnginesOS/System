@@ -14,7 +14,7 @@ module ServiceApiRestore
     thr[:name] = 'restore:' + service.container_name.to_s
     begin
       Timeout.timeout(@@import_timeout) do
-        thr.join      
+        thr.join
       end
       SystemDebug.debug(SystemDebug.export_import, :import_service,'result ', result.to_s)
     rescue Timeout::Error
@@ -46,7 +46,7 @@ module ServiceApiRestore
       params = {container: container, command_line: [cmd], log_error: true}
       params[:stream] =  stream unless stream.nil?
       thr = Thread.new { result = @engines_core.exec_in_container(params) }
-   thr[:name] = 'export:' + params.to_s
+      thr[:name] = 'export:' + params.to_s
       Timeout.timeout(@@export_timeout) do
         thr.join
         SystemDebug.debug(SystemDebug.export_import, :export_service, container.container_name, 'result code =', result[:result])
@@ -54,9 +54,16 @@ module ServiceApiRestore
       end
     rescue Timeout::Error
       thr.kill unless thr.nil?
-      raise EnginesException.new(error_hash('Export Timeout on Running Action ', cmd))
+
+      result[:result] = -1;
+      result[:stderr] = 'Export Timeout on Running Action:' + cmd.to_s + ':' + result[:stderr].to_s
+      #raise EnginesException.new(error_hash('Export Timeout on Running Action ', cmd))
 
     end
-      
+    if result[:result] == 0
+      result #[stdout]
+    else
+      raise EnginesException.new(error_hash("failed to export " + @result.to_s ,service_hash))
+    end
   end
 end
