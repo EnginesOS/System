@@ -126,19 +126,21 @@ module DockerApiExec
       headers = {
         'Content-type' => 'application/json'
       }
+      SystemDebug.debug(SystemDebug.docker,'docker_exec ' + request_params.to_s + ' request  ' + request.to_s )
       unless params.key?(:data) || params.key?(:data_stream)
         stream_reader = DockerStreamReader.new(params[:stream])
         r = post_stream_request(request, nil, stream_reader, headers, request_params.to_json)
         stream_reader.result[:result] = get_exec_result(exec_id)
-          STDERR.puts('STREA ' +stream_reader.result.to_s )
+          STDERR.puts('\n\nSTREA ' +stream_reader.result.to_s )
         return stream_reader.result # DockerUtils.docker_stream_as_result(r, result)
       end
       request_params['AttachStdin'] = true
+     
       stream_handler = DockerHijackStreamHandler.new(params[:data], params[:data_stream], params[:ostream])
 
       headers['Connection'] = 'Upgrade'
       headers['Upgrade'] = 'tcp'
-
+      STDERR.puts('\n\Hijack ' + request_params.to_s )
       r = post_stream_request(request, nil, stream_handler, headers, request_params.to_json)
       stream_handler.result[:result] = get_exec_result(exec_id)
       stream_handler.result
