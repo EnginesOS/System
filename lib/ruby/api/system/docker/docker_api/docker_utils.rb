@@ -41,7 +41,7 @@ module DockerUtils
             unless stream_reader.data.nil? ||  stream_reader.data.length == 0
               if stream_reader.data.length < Excon.defaults[:chunk_size]
                 STDERR.puts('send data as one chunk ' + stream_reader.data.to_s)
-                socket.send(stream_reader.data, 0)
+                socket.send(stream_reader.data.to_json, 0)
                 stream_reader.data = ''
               else
             #    STDERR.puts('send data as chunks ')
