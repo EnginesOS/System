@@ -36,7 +36,7 @@ module DockerUtils
               end
             end
           else
-          #  STDERR.puts('send data:' + stream_reader.data.class.name)
+           STDERR.puts('send data:' + stream_reader.data.class.name)
             unless stream_reader.data.nil? ||  stream_reader.data.length == 0
               if stream_reader.data.length < Excon.defaults[:chunk_size]
             #    STDERR.puts('send data as one chunk ' + stream_reader.data.to_s)
@@ -94,7 +94,7 @@ module DockerUtils
     r = {
       stderr: '',
       stdout: ''
-    }
+    } 
     self.docker_stream_as_result(chunk, r, binary)
     r
   end
@@ -134,7 +134,7 @@ module DockerUtils
             r = r[8..-1]
             STDERR.puts('\0\0\0')
           else
-            STDERR.puts('UNMATCHED ' +  r.length.to_s)
+            STDERR.puts('UNMATCHED ' +  r.to_s)#.length.to_s)
             dst = :stdout
             unmatched = true
           end

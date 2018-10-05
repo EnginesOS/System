@@ -11,12 +11,11 @@ module EngineApiExportImport
 
     SystemDebug.debug(SystemDebug.export_import, :export_service, service_hash)
     cmd_dir = SystemConfig.BackupScriptsRoot + '/' + service_hash[:publisher_namespace] + '/' + service_hash[:type_path] + '/' + service_hash[:service_handle] + '/'
-
+    service_hash = engines_core.retrieve_service_hash(service_hash)
     cmd = cmd_dir + '/backup.sh'
     SystemDebug.debug(SystemDebug.export_import, :export_service, cmd)
-
-    result = {result: 0}
-    params = {container: container, command_line: [cmd], log_error: true}
+    result = {result:  0}
+    params = {container: container, command_line: [cmd], log_error: true, data: service_hash.to_json}
     params[:stream] =  stream unless stream.nil?
     thr = Thread.new { result = @engines_core.exec_in_container(params) }
     thr[:name] = 'export:' + params.to_s
@@ -25,6 +24,7 @@ module EngineApiExportImport
         thr.join
       end
      SystemDebug.debug(SystemDebug.export_import, :export_service, service_hash,'result code =' ,result[:result])
+       result
     rescue Timeout::Error
       thr.kill
       raise EnginesException.new(error_hash('Export Timeout on Running Action ', service_hash))
@@ -44,6 +44,7 @@ result
       stream.close unless stream.nil?
       raise EnginesException.new(warning_hash("Cannot import as single service", service_hash))
     end
+    service_hash = engines_core.retrieve_service_hash(service_hash)
     SystemDebug.debug(SystemDebug.export_import, :import_service, service_params,service_params[:import_method])
     cmd_dir = SystemConfig.BackupScriptsRoot + '/' + service_hash[:publisher_namespace] + '/' + service_hash[:type_path] + '/' + service_hash[:service_handle] + '/'
     if service_params[:import_method] == :replace
@@ -51,7 +52,7 @@ result
     else
       cmd = cmd_dir + '/restore.sh'
     end
-    params = {container: container, command_line: [cmd], log_error: true }
+    params = {container: container, command_line: [cmd, "'" + service_hash.to_json + "'" ], log_error: true }
     unless stream.nil?
       params[:data_stream] = stream
     else

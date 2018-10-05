@@ -13,6 +13,7 @@ module ConfigureServicesBackup
       destdir = SystemConfig.BackupScriptsRoot + '/' + service[:publisher_namespace] + '/' + service[:type_path] + '/' + service[:service_handle] + '/'
       FileUtils.mkdir_p(basedir + destdir ) unless Dir.exist?(basedir + destdir )
       SystemDebug.debug(SystemDebug.builder, script_src_dir, destdir )
+      log_build_output('Creating Backup Scripts' + script_src_dir + '->' + destdir)
       Dir.entries(script_src_dir).each do |script_src_file |
         SystemDebug.debug(SystemDebug.builder,script_src_file,destdir )
         next unless File.file?(script_src_dir + '/' + script_src_file)
