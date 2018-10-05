@@ -17,8 +17,10 @@ get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/
       stream do |out|
         begin
         engine.export_service_data(hash, out)
+          STDERR.puts('export service ');
         rescue StandardError => e
           STDERR.puts('exception ' + e.to_s)
+          out.reset
         end
       end
     else
