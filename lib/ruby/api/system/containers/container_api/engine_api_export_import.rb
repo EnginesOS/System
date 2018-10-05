@@ -33,7 +33,6 @@ module EngineApiExportImport
       result
     end
 
-   
   end
 
   def import_service_data(container, service_params, stream = nil)
@@ -64,20 +63,21 @@ module EngineApiExportImport
       to = Timeout.timeout(@@export_timeout) do
         thr.join
       end
-      rescue Timeout::Error
-        thr.kill
-        result[:result] = -1;
-        result[:stderr] = 'Import Timeout on Running Action:' + cmd.to_s + ':' + result[:stderr].to_s
-      end
-      SystemDebug.debug(SystemDebug.export_import, :import_service,'result ' ,result.to_s)
-      if result[:result] == 0
-        true
-      else        
-        raise EnginesException.new(error_hash("failed to import ",
-        {service_params: service_params,
-          result: result}))
-      end
-    
+    rescue Timeout::Error
+      thr.kill
+      result[:result] = -1;
+      result[:stderr] = 'Import Timeout on Running Action:' + cmd.to_s + ':' + result[:stderr].to_s
+    end
+    SystemDebug.debug(SystemDebug.export_import, :import_service,'result ' ,result.to_s)
+    result
+    #      if result[:result] == 0
+    #        true
+    #      else
+    #        raise EnginesException.new(error_hash("failed to import ",
+    #        {service_params: service_params,
+    #          result: result}))
+    #      end
+    #
     #  rescue  StandardError => e
     #    if e.is_a?(EnginesException)
     #      raise e
