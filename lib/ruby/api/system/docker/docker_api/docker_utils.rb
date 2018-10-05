@@ -46,7 +46,7 @@ module DockerUtils
               else
             #    STDERR.puts('send data as chunks ')
                 while stream_reader.data.length != 0
-                  if stream_reader.data.length < Excon.defaults[:chunk_size]
+                  if stream_reader.data.length > Excon.defaults[:chunk_size]
                     socket.send(stream_reader.data.slice!(0, Excon.defaults[:chunk_size]), 0)
                   else
                     socket.send(stream_reader.data, 0)
@@ -74,6 +74,7 @@ module DockerUtils
             end
           end
         rescue EOFError
+          STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
           write_thread.kill
         rescue StandardError => e
           STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
