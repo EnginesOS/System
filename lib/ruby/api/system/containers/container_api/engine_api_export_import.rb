@@ -14,11 +14,9 @@ module EngineApiExportImport
     service_hash = engines_core.retrieve_service_hash(service_hash)
     cmd = cmd_dir + '/backup.sh'
     SystemDebug.debug(SystemDebug.export_import, :export_service, cmd)
-#    params[:stream] =  stream unless stream.nil?
-#      thr = Thread.new { result = @engines_core.exec_in_container(params) }
-#   thr[:name] = 'export:' + params.to_s
-   result = {result: 0}
+
     params = {container: container, command_line: [cmd], log_error: true, data: service_hash.to_json}
+    STDERR.puts('params' + params.to_s)
     params[:stream] =  stream unless stream.nil?
     thr = Thread.new { result = @engines_core.exec_in_container(params) }
     thr[:name] = 'export:' + params.to_s
