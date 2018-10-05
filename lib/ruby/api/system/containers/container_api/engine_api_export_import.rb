@@ -30,14 +30,10 @@ module EngineApiExportImport
       #  raise EnginesException.new(error_hash('Export Timeout on Running Action ', service_hash))
       result[:result] = -1;
       result[:stderr] = 'Export Timeout on Running Action:' + cmd.to_s + ':' + result[:stderr].to_s
+      result
     end
 
-        if result[:result] == 0
-          result #[stdout]
-        else
-          raise EnginesException.new(error_hash("failed to export " + result.to_s ,service_hash))
-        end
-
+   
   end
 
   def import_service_data(container, service_params, stream = nil)
