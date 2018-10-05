@@ -27,10 +27,11 @@ module EngineApiExportImport
       result
     rescue Timeout::Error
       thr.kill
+      eresult = {}
       #  raise EnginesException.new(error_hash('Export Timeout on Running Action ', service_hash))
-      result[:result] = -1;
-      result[:stderr] = 'Export Timeout on Running Action:' + cmd.to_s + ':' + result[:stderr].to_s
-      result
+      eresult[:result] = -1;
+      eresult[:stderr] = 'Export Timeout on Running Action:' + cmd.to_s + ':' + result[:stderr].to_s
+      eresult
     end
 
   end
