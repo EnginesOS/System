@@ -15,7 +15,11 @@ get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/
     content_type 'application/octet-stream'   
     unless engine.nil?
       stream do |out|
+        begin
         engine.export_service_data(hash, out)
+        rescue StandardError => e
+          STDERR.puts('exception ' + e.to_s)
+        end
       end
     else
       send_encoded_exception(request: request, engine: engine, params: params, exception: nil)
