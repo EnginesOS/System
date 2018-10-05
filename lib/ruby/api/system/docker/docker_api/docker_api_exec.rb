@@ -128,7 +128,7 @@ module DockerApiExec
         'Content-type' => 'application/json'
       }
       SystemDebug.debug(SystemDebug.docker,'docker_exec ' + request_params.to_s + ' request  ' + request.to_s )
-      if params.key?(:stream)
+      unless params.key?(:data) || params.key?(:data_stream)
         stream_reader = DockerStreamReader.new(params[:stream])
         STDERR.puts("\n\nSTREA " + request_params.to_s )
         r = post_stream_request(request, nil, stream_reader, headers, request_params.to_json)
