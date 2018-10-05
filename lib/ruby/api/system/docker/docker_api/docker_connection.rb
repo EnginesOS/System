@@ -142,7 +142,8 @@ class DockerConnection < ErrorsApi
       read_timeout: 3600,
       query: options,
       path: uri,
-      headers: rheaders)
+      headers: rheaders,
+      body: body)
       stream_handler.close
     end
       sc.reset unless sc.nil?
