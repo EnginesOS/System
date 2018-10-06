@@ -117,12 +117,12 @@ module DockerApiExec
       request_params = {
         'Detach' => false,
         'Tty' => false,
-        'User' => '',
-        'Privileged' => false,
-        'AttachStdout' => true,
-        'AttachStderr' => true,
-        'Container' => params[:container].container_name,
-        'Cmd' => params[:command_line]
+        #'User' => '',
+      #  'Privileged' => false,
+      #  'AttachStdout' => true,
+      #  'AttachStderr' => true,
+      #  'Container' => params[:container].container_name,
+      #  'Cmd' => params[:command_line]
       }
       headers = {
         'Content-type' => 'application/json'
