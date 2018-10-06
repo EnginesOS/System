@@ -143,16 +143,14 @@ class DockerConnection < ErrorsApi
         read_timeout: 3600,
         #     query: options,
         path: uri,
-      headers: rheaders,
-        #   body: body
+      headers: rheaders
       }.to_s )
       r = sc.request(
       method: :post,
       read_timeout: 3600,
   #    query: options,
       path: uri,
-      headers: rheaders#,
-      #body: body #?
+      headers: rheaders
       )
       stream_handler.close
     end
