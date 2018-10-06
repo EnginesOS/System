@@ -128,7 +128,7 @@ module DockerApiExec
         'Content-type' => 'application/json'
       }
       SystemDebug.debug(SystemDebug.docker,'docker_exec ' + request_params.to_s + ' request  ' + request.to_s )
-      unless params.key?(:data_stream) || params.key?(:data) 
+      unless params.key?(:data_stream) || params[:data].nil? 
 
         stream_reader = DockerStreamReader.new(params[:stream])
         STDERR.puts("\n\nSTREA " + request_params.to_s )
