@@ -138,7 +138,7 @@ module DockerApiExec
         STDERR.puts("\n\nSTREA resul " + stream_reader.result.to_s)
         r = stream_reader.result
       else
-        request_params['AttachStdin'] = true
+       # request_params['AttachStdin'] = true
         stream_handler = DockerHijackStreamHandler.new(params[:data], params[:data_stream], params[:ostream])
         headers['Connection'] = 'Upgrade'
         headers['Upgrade'] = 'tcp'
