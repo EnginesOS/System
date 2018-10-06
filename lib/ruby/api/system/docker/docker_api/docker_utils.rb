@@ -32,19 +32,19 @@ module DockerUtils
                   socket.send(data, 0) unless data.nil?
                   IO.select([@stream_reader.i_stream])
                   retry
-                end                
+                end
               end
             end
           else
             STDERR.puts('send data:' + stream_reader.data.to_s)
-           STDERR.puts('send data:' + stream_reader.data.class.name) unless stream_reader.data.nil? 
+            STDERR.puts('send data:' + stream_reader.data.class.name) unless stream_reader.data.nil?
             unless stream_reader.data.nil? ||  stream_reader.data.length == 0
               if stream_reader.data.length < Excon.defaults[:chunk_size]
                 STDERR.puts('send data as one chunk ' + stream_reader.data.to_s)
                 socket.send(stream_reader.data, 0)
                 stream_reader.data = ''
               else
-            #    STDERR.puts('send data as chunks ')
+                #    STDERR.puts('send data as chunks ')
                 while stream_reader.data.length != 0
                   if stream_reader.data.length > Excon.defaults[:chunk_size]
                     socket.send(stream_reader.data.slice!(0, Excon.defaults[:chunk_size]), 0)
@@ -55,7 +55,7 @@ module DockerUtils
                 end
               end
             end
-          end     
+          end
           socket.close_write
         rescue StandardError => e
           STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
@@ -96,75 +96,75 @@ module DockerUtils
     r = {
       stderr: '',
       stdout: ''
-    } 
+    }
     self.docker_stream_as_result(chunk, r, binary)
     r
   end
 
-  def self.docker_stream_as_result(r, h, binary = true)
-    
-  #  def data_length(l)
-  #    l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
-  #  end
+  def self.docker_stream_as_result(chunk, result, binary = true)
+
+    #  def data_length(l)
+    #    l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
+    #  end
     unmatched = false
-    unless h.nil?
-      h[:stderr] = '' unless h.key?(:stderr)
-      h[:stdout] = '' unless h.key?(:stdout)
+    unless result.nil?
+      result[:stderr] = '' unless h.key?(:stderr)
+      result[:stdout] = '' unless h.key?(:stdout)
       cl = 0
-      unless r.nil?
-        while r.length > 0
-          if r[0].nil?
-            return h if r.length == 1
+      unless chunk.nil?
+        while chunk.length > 0
+          if chunk[0].nil?
+            return result if chunk.length == 1
             STDERR.puts('Skipping nil ')
-            r = r[1..-1]
+            chunk = chunk[1..-1]
             next
           end
-          if r.start_with?("\u0001\u0000\u0000\u0000")
+          if chunk.start_with?("\u0001\u0000\u0000\u0000")
             dst = :stdout
-            l = r[0..7].unpack('C*')        
-        cl = l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576  
-            r = r[8..-1]
-           STDERR.puts('STDOUT ' + cl.to_s + ':' + r.length.to_s)
-          elsif r.start_with?("\u0002\u0000\u0000\u0000")
+            l = chunk[0..7].unpack('C*')
+            cl = l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
+            chunk = chunk[8..-1]
+            STDERR.puts('STDOUT ' + cl.to_s + ':' + chunk.length.to_s)
+          elsif chunk.start_with?("\u0002\u0000\u0000\u0000")
             dst = :stderr
-            l = r[0..7].unpack('C*')        
-       cl = l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576  
-       STDERR.puts('STDERR ' + cl.to_s )
-            r = r[8..-1]
-          elsif r.start_with?("\u0000\u0000\u0000\u0000")
+            l = chunk[0..7].unpack('C*')
+            cl = l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
+            STDERR.puts('STDERR ' + cl.to_s )
+            chunk = chunk[8..-1]
+          elsif chunk.start_with?("\u0000\u0000\u0000\u0000")
             dst = :stdout
-            r = r[8..-1]
+            chunk = chunk[8..-1]
             STDERR.puts('\0\0\0')
           else
-            STDERR.puts('UNMATCHED ' +  r.to_s)#.length.to_s)
+            STDERR.puts('UNMATCHED ' +  chunk.to_s)#.length.to_s)
             dst = :stdout
             unmatched = true
           end
-          return h if r.nil?
+          return result if chunk.nil?
           unless unmatched == true
             length = cl
           else
-            length = r.length
+            length = chunk.length
           end
-          if length > r.length
-             STDERR.puts('WARNING length > actual' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
-            length = r.length
+          if length > chunk.length
+            STDERR.puts('WARNING length > actual' + length.to_s + ' bytes length .  actual ' + chunk.length.to_s)
+            length = chunk.length
           end
           #   STDERR.puts('len ' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
-          h[dst] += r[0..length-1]
-          r = r[length..-1]
-          if r.length > 0
+          h[dst] += chunk[0..length-1]
+          chunk = chunk[length..-1]
+          if chunk.length > 0
             STDERR.puts('Continuation')
           end
         end
       end
       # result actually set elsewhere after exec complete
-      h[:result] = 0
+      result[:result] = 0
       unless binary
-        h[:stdout].force_encoding(Encoding::UTF_8) unless h[:stdout].nil?
-        h[:stderr].force_encoding(Encoding::UTF_8) unless h[:stderr].nil?
+        result[:stdout].force_encoding(Encoding::UTF_8) unless result[:stdout].nil?
+        result[:stderr].force_encoding(Encoding::UTF_8) unless result[:stderr].nil?
       end
     end
-    h
+    result
   end
 end
