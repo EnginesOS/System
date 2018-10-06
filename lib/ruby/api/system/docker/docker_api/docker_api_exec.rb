@@ -129,7 +129,7 @@ module DockerApiExec
         'Content-type' => 'application/json'
       }
       SystemDebug.debug(SystemDebug.docker,'docker_exec ' + request_params.to_s + ' request  ' + request.to_s )
-      unless params.key?(:data_stream) || params[:data].nil? 
+      unless params.key?(:data_stream) || params.key?(:data)
 
         stream_reader = DockerStreamReader.new(params[:stream])
         STDERR.puts("\n\nSTREA " + request_params.to_s )
@@ -173,6 +173,7 @@ module DockerApiExec
       'DetachKeys' => 'ctrl-p,ctrl-q',
       'Cmd' => format_commands(params[:command_line])
     }
+    params.delete(:data) if params.key?(:data) && params[:data].nil? 
     if params.key?(:data) || params.key?(:data_stream)
       request_params['AttachStdin'] = true
     else
