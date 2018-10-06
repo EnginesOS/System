@@ -39,9 +39,9 @@ module DockerUtils
             STDERR.puts('send data:' + stream_reader.data.to_s)
             STDERR.puts('send data:' + stream_reader.data.class.name) unless stream_reader.data.nil?
             unless stream_reader.data.nil? ||  stream_reader.data.length == 0
-              if stream_reader.data.length < Excon.defaults[:chunk_size]
-                STDERR.puts('send data as one chunk ' + stream_reader.data.to_s)
+              if stream_reader.data.length < Excon.defaults[:chunk_size]             
                 socket.send(stream_reader.data, 0)
+                STDERR.puts('sent data as one chunk ' + stream_reader.data.to_s)
                 stream_reader.data = ''
               else
                 #    STDERR.puts('send data as chunks ')
@@ -67,24 +67,27 @@ module DockerUtils
           while chunk = socket.readpartial(32768)
             if @stream_reader.o_stream.nil?
               DockerUtils.docker_stream_as_result(chunk, return_result)
+              STDERR.puts("read srea")
             else
+              STDERR.puts("read chuck")
+             
               r = DockerUtils.decode_from_docker_chunk(chunk)
               @stream_reader.o_stream.write(r[:stdout]) unless r.nil?
               return_result[:stderr] = return_result[:stderr].to_s + r[:stderr].to_s
             end
           end
+          STDERR.puts("read doen")
         rescue EOFError
-          STDERR.puts(e.to_s + ':EEOOFF' + e.backtrace.to_s)
-          write_thread.kill
+          STDERR.puts(e.to_s + ':EEOOFF' + e.backtrace.to_s)        
         rescue StandardError => e
           STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
         end
-        write_thread.kill
       end
       write_thread.join unless write_thread.nil?
       read_thread.join unless read_thread.nil?
       @stream_reader.o_stream.close unless @stream_reader.o_stream.nil?
       @stream_reader.i_stream.close unless @stream_reader.i_stream.nil?
+      STDERR.puts("Closed")
     end
   rescue StandardError => e
     STDERR.puts('PROCESS Execp' + e.to_s + ' ' + e.backtrace.to_s )
