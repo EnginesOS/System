@@ -44,25 +44,25 @@ module DockerApiExec
       #        end
     end
 
-    def process_response()
-
-      lambda do |chunk , c , t|
-        STDERR.puts('a hijack')
-        if @o_stream.nil?
-          #   STDERR.puts('stream results')
-          STDERR.puts(' hj 1 a chunker')
-          r = DockerUtils.decode_from_docker_chunk(chunk, true)
-          @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
-          @result[:stdout] = @result[:stdout].to_s + r[:stdout].to_s
-          # return_result[:raw] = return_result[:raw] + chunk.to_s
-        else
-          r = DockerUtils.decode_from_docker_chunk(chunk, true)
-          STDERR.puts('hj 1 a stream')
-          @o_stream.write(r[:stdout]) unless r.nil?
-          @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
-        end
-      end
-    end
+#    def process_response()
+#
+#      lambda do |chunk , c , t|
+#        STDERR.puts('a hijack')
+#        if @o_stream.nil?
+#          #   STDERR.puts('stream results')
+#          STDERR.puts(' hj 1 a chunker')
+#          r = DockerUtils.decode_from_docker_chunk(chunk, true)
+#          @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
+#          @result[:stdout] = @result[:stdout].to_s + r[:stdout].to_s
+#          # return_result[:raw] = return_result[:raw] + chunk.to_s
+#        else
+#          r = DockerUtils.decode_from_docker_chunk(chunk, true)
+#          STDERR.puts('hj 1 a stream')
+#          @o_stream.write(r[:stdout]) unless r.nil?
+#          @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
+#        end
+#      end
+#    end
   end
 
   class DockerStreamReader

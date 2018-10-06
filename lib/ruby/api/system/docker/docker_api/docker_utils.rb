@@ -39,7 +39,7 @@ module DockerUtils
             STDERR.puts('send data:' + stream_reader.data.to_s)
             STDERR.puts('send data:' + stream_reader.data.class.name) unless stream_reader.data.nil?
             unless stream_reader.data.nil? ||  stream_reader.data.length == 0
-              if stream_reader.data.length < Excon.defaults[:chunk_size]             
+              if stream_reader.data.length < Excon.defaults[:chunk_size]
                 socket.send(stream_reader.data, 0)
                 STDERR.puts('sent data as one chunk ' + stream_reader.data.to_s)
                 stream_reader.data = ''
@@ -58,7 +58,7 @@ module DockerUtils
           end
           socket.close_write
         rescue StandardError => e
-          STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
+          STDERR.puts(e.to_s + ':write:' + e.backtrace.to_s)
         end
       end
       read_thread = Thread.start do
@@ -70,7 +70,7 @@ module DockerUtils
               STDERR.puts("read chunk " )
             else
               STDERR.puts("read as stream")
-             
+
               r = DockerUtils.decode_from_docker_chunk(chunk)
               @stream_reader.o_stream.write(r[:stdout]) unless r.nil?
               return_result[:stderr] = return_result[:stderr].to_s + r[:stderr].to_s
@@ -78,7 +78,7 @@ module DockerUtils
           end
           STDERR.puts("read doen")
         rescue EOFError
-          STDERR.puts(e.to_s + ':EEOOFF' + e.backtrace.to_s)        
+          STDERR.puts(e.to_s + ':EEOOFF' + e.backtrace.to_s)
         rescue StandardError => e
           STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
         end
@@ -154,7 +154,7 @@ module DockerUtils
             length = chunk.length
           end
           #   STDERR.puts('len ' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
-result[dst] += chunk[0..length-1]
+          result[dst] += chunk[0..length-1]
           chunk = chunk[length..-1]
           if chunk.length > 0
             STDERR.puts('Continuation')
