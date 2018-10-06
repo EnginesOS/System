@@ -127,7 +127,7 @@ class DockerConnection < ErrorsApi
       query: options,
       path: uri,
       headers: rheaders,
-    body: body}  )
+    body: body}.to_s  )
       r = sc.request(
       method: :post,
       read_timeout: 3600,
