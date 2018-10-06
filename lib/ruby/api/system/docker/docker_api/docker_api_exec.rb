@@ -134,7 +134,7 @@ module DockerApiExec
         r = post_stream_request(request, nil, stream_reader, headers, request_params.to_json)
         stream_reader.result[:result] = get_exec_result(exec_id)
         STDERR.puts("\n\nSTREA resul " + stream_reader.result.to_s)
-        stream_reader.result
+        r = stream_reader.result
       else
         request_params['AttachStdin'] = true
         stream_handler = DockerHijackStreamHandler.new(params[:data], params[:data_stream], params[:ostream])
@@ -144,16 +144,15 @@ module DockerApiExec
         r = post_stream_request(request, nil, stream_handler, headers, request_params.to_json)
         stream_handler.result[:result] = get_exec_result(exec_id)
         STDERR.puts("\n\Hijack resul " + stream_handler.result.to_s)
-        stream_handler.result
+        r = stream_handler.result
 
         #unless params.key?(:data_stream) ||params.key?(:data)
 
         # DockerUtils.docker_stream_as_result(r, result)
       end
-    else
-      r
+   
     end
-
+    r
   end
 
   private
