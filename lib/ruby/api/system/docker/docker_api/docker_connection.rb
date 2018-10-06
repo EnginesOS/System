@@ -114,17 +114,22 @@ class DockerConnection < ErrorsApi
     stream_handler.stream = sc
 
     if stream_handler.method(:has_data?).call == false
-      if content.nil? # Dont to_s as may be tgz
-        body = ''
-      elsif rheaders['Content-Type'] == 'application/json'
+     if rheaders['Content-Type'] == 'application/json'
         body = content.to_json
       else
         body = content
-      end
+      end  
+      STDERR.puts('No data ' + 
+      {method: :post,
+      read_timeout: 3600,
+      #    query: options,
+      path: uri,
+      headers: rheaders,
+    body: body}.to_s  )
       r = sc.request(
       method: :post,
       read_timeout: 3600,
-      query: options,
+    #  query: options,
       path: uri,
       headers: rheaders,
       body: body
@@ -134,26 +139,30 @@ class DockerConnection < ErrorsApi
       STDERR.puts(' stream data ' + {
         method: :post,
         read_timeout: 3600,
-        query: options,
+        #     query: options,
         path: uri,
-      headers: rheaders}.to_s )
+      headers: rheaders,
+        body: body
+      }.to_s )
       r = sc.request(
       method: :post,
       read_timeout: 3600,
-      query: options,
+  #    query: options,
       path: uri,
-      headers: rheaders)
+      headers: rheaders,
+      body: content
+      )
       stream_handler.close
     end
       sc.reset unless sc.nil?
     r
   rescue Excon::Error::Socket
-    STDERR.puts(' docker socket stream close ')
+    STDERR.puts('Excon docker socket stream close ')
     stream_handler.close unless stream_handler.nil?
     sc.reset unless sc.nil?
     r
       rescue  Excon::Error::Timeout
-         STDERR.puts(' docker socket timeout ')
+         STDERR.puts('Excon docker socket timeout ')
       stream_handler.close unless stream_handler.nil?
       sc.reset unless sc.nil?
         nil

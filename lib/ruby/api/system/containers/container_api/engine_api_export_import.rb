@@ -14,27 +14,25 @@ module EngineApiExportImport
     service_hash = engines_core.retrieve_service_hash(service_hash)
     cmd = cmd_dir + '/backup.sh'
     SystemDebug.debug(SystemDebug.export_import, :export_service, cmd)
-    result = {result:  0}
+    result = {result: 0}
     params = {container: container, command_line: [cmd], log_error: true, data: service_hash.to_json}
-    params[:stream] =  stream unless stream.nil?
+    params[:ostream] =  stream unless stream.nil?
     thr = Thread.new { result = @engines_core.exec_in_container(params) }
     thr[:name] = 'export:' + params.to_s
     begin
       Timeout.timeout(@@export_timeout) do
         thr.join
       end
-     SystemDebug.debug(SystemDebug.export_import, :export_service, service_hash,'result code =' ,result[:result])
-       result
+      SystemDebug.debug(SystemDebug.export_import, :export_service, service_hash,'result code =' ,result[:result])
+      result
     rescue Timeout::Error
       thr.kill
-      raise EnginesException.new(error_hash('Export Timeout on Running Action ', service_hash))
+      eresult = {}
+      #  raise EnginesException.new(error_hash('Export Timeout on Running Action ', service_hash))
+      eresult[:result] = -1;
+      eresult[:stderr] = 'Export Timeout on Running Action:' + cmd.to_s + ':' + result[:stderr].to_s
+      eresult
     end
-result
-#    if @result[:result] == 0
-#      @result #[stdout]
-#    else
-#      raise EnginesException.new(error_hash("failed to export " + @result.to_s ,service_hash))
-#    end
 
   end
 
@@ -64,26 +62,32 @@ result
       thr = Thread.new { result = @engines_core.exec_in_container(params) }
       thr[:name] = 'import:' + params.to_s
       to = Timeout.timeout(@@export_timeout) do
-        thr.join        
+        thr.join
       end
-      SystemDebug.debug(SystemDebug.export_import, :import_service,'result ' ,result.to_s)
-      if result[:result] == 0
-        true
-      else
-        raise EnginesException.new(error_hash("failed to import ",
-        {service_params: service_params,
-          result: result}))
-      end
+      
     rescue Timeout::Error
       thr.kill
-      raise EnginesException.new(error_hash('Import Timeout on Running Action ', cmd))
+      eresult = {}
+      eresult[:result] = -1;
+      eresult[:stderr] = 'Import Timeout on Running Action:' + cmd.to_s + ':' + result[:stderr].to_s
+      result = eresult
     end
-#  rescue  StandardError => e
-#    if e.is_a?(EnginesException)
-#      raise e
-#    else
-#      raise EnginesException.new(error_hash('Import Error on Running Action ', container.container_name, service_params))
-#    end
+    SystemDebug.debug(SystemDebug.export_import, :import_service,'result ' ,result.to_s)
+    result
+    #      if result[:result] == 0
+    #        true
+    #      else
+    #        raise EnginesException.new(error_hash("failed to import ",
+    #        {service_params: service_params,
+    #          result: result}))
+    #      end
+    #
+    #  rescue  StandardError => e
+    #    if e.is_a?(EnginesException)
+    #      raise e
+    #    else
+    #      raise EnginesException.new(error_hash('Import Error on Running Action ', container.container_name, service_params))
+    #    end
   end
 
 end
