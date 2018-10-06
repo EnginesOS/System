@@ -141,8 +141,8 @@ module DockerApiExec
         # request_params['AttachStdin'] = true
         stream_handler = DockerHijackStreamHandler.new(params[:data], params[:data_stream], params[:ostream])
         headers = {
-          'Connection' =>  'Upgrade',
-          'Upgrade' => 'tcp'
+          #    'Connection' =>  'Upgrade',
+          #    'Upgrade' => 'tcp'
         }
         STDERR.puts("\n\Hijack " + request_params.to_s )
         r = post_stream_request(request, nil, stream_handler, headers, request_params.to_json)
