@@ -124,12 +124,12 @@ module DockerApiExec
         'Container' => params[:container].container_name,
         'Cmd' => params[:command_line]
       }
-
+      headers = {
+        'Content-type' => 'application/json'
+      }
       SystemDebug.debug(SystemDebug.docker,'docker_exec ' + request_params.to_s + ' request  ' + request.to_s )
-      unless params.key?(:data) || params.key?(:data_stream)
-        headers = {
-          'Content-type' => 'application/json'
-        }
+      unless params.key?(:data_stream) #params.key?(:data) || 
+
         stream_reader = DockerStreamReader.new(params[:stream])
         STDERR.puts("\n\nSTREA " + request_params.to_s )
         r = post_stream_request(request, nil, stream_reader, headers, request_params.to_json)
@@ -139,7 +139,6 @@ module DockerApiExec
       else
         request_params['AttachStdin'] = true
         stream_handler = DockerHijackStreamHandler.new(params[:data], params[:data_stream], params[:ostream])
-        headers = { }
         headers['Connection'] = 'Upgrade'
         headers['Upgrade'] = 'tcp'
         STDERR.puts("\n\Hijack " + request_params.to_s )
@@ -152,7 +151,7 @@ module DockerApiExec
 
         # DockerUtils.docker_stream_as_result(r, result)
       end
-
+   
     end
     r
   end
