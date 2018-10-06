@@ -132,7 +132,7 @@ module DockerApiExec
 
         stream_reader = DockerStreamReader.new(params[:stream])
         STDERR.puts("\n\nSTREA " + request_params.to_s )
-        r = post_stream_request(request, nil, stream_reader, headers, request_params.to_json)
+        r = post_stream_request(request, nil, stream_reader, headers, request_params)
         stream_reader.result[:result] = get_exec_result(exec_id)
         STDERR.puts("\n\nSTREA resul " + stream_reader.result.to_s)
         r = stream_reader.result
@@ -142,7 +142,7 @@ module DockerApiExec
         headers['Connection'] = 'Upgrade'
         headers['Upgrade'] = 'tcp'
         STDERR.puts("\n\Hijack " + request_params.to_s )
-        r = post_stream_request(request, nil, stream_handler, headers, request_params.to_json)
+        r = post_stream_request(request, nil, stream_handler, headers, request_params)
         stream_handler.result[:result] = get_exec_result(exec_id)
         STDERR.puts("\n\Hijack resul " + stream_handler.result.to_s)
         r = stream_handler.result

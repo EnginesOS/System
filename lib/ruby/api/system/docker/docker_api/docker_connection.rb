@@ -120,7 +120,14 @@ class DockerConnection < ErrorsApi
         body = content.to_json
       else
         body = content
-      end
+      end  
+      STDERR.puts('Reqiest ' + 
+      {method: :post,
+      read_timeout: 3600,
+      query: options,
+      path: uri,
+      headers: rheaders,
+    body: body}  )
       r = sc.request(
       method: :post,
       read_timeout: 3600,
