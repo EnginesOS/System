@@ -12,7 +12,12 @@ get '/v0/containers/service/:service_name/export' do
     raise EnginesException.new(warning_hash('Service not running')) unless service.is_running?
     content_type 'application/octet-stream'  
     stream do |out|
+      begin
            service.export_data(out)
+      rescue e
+        send_encoded_exception(request: request, exception: e)
+        break
+      end
          end    
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
