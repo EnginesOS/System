@@ -126,15 +126,15 @@ class DockerConnection < ErrorsApi
       read_timeout: 3600,
       #    query: options,
       path: uri,
-      headers: rheaders.to_json,
-    body: body.to_json}.to_s  )
+      headers: rheaders,
+    body: body}.to_s  )
       r = sc.request(
       method: :post,
       read_timeout: 3600,
     #  query: options,
       path: uri,
-      headers: rheaders.to_json,
-      body: body.to_json
+      headers: rheaders,
+      body: body
       )
       stream_handler.close
     else
@@ -143,14 +143,14 @@ class DockerConnection < ErrorsApi
         read_timeout: 3600,
         #     query: options,
         path: uri,
-      headers: rheaders.to_json
+      headers: rheaders
       }.to_s )
       r = sc.request(
       method: :post,
       read_timeout: 3600,
   #    query: options,
       path: uri,
-      headers: rheaders.to_json
+      headers: rheaders
       )
       stream_handler.close
     end
