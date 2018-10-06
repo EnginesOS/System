@@ -114,9 +114,7 @@ class DockerConnection < ErrorsApi
     stream_handler.stream = sc
 
     if stream_handler.method(:has_data?).call == false
-      if content.nil? # Dont to_s as may be tgz
-        body = ''
-      elsif rheaders['Content-Type'] == 'application/json'
+     if rheaders['Content-Type'] == 'application/json'
         body = content.to_json
       else
         body = content
@@ -152,7 +150,7 @@ class DockerConnection < ErrorsApi
   #    query: options,
       path: uri,
       headers: rheaders,
-      body: body
+      body: content
       )
       stream_handler.close
     end

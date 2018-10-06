@@ -118,19 +118,14 @@ module DockerApiExec
       request_params = {
         'Detach' => false,
         'Tty' => false,
-        #'User' => '',
-        #  'Privileged' => false,
-        #  'AttachStdout' => true,
-        #  'AttachStderr' => true,
-        #  'Container' => params[:container].container_name,
-        #  'Cmd' => params[:command_line]
+      }
+      
+      headers = {
+        'Content-type' => 'application/json'
       }
 
       SystemDebug.debug(SystemDebug.docker,'docker_exec ' + request_params.to_s + ' request  ' + request.to_s )
       unless params.key?(:data_stream) || params.key?(:data)
-        headers = {
-          'Content-type' => 'application/json'
-        }
         stream_reader = DockerStreamReader.new(params[:stream])
         STDERR.puts("\n\nSTREA " + request_params.to_s )
         r = post_stream_request(request, nil, stream_reader, headers, request_params.to_json)
@@ -138,12 +133,9 @@ module DockerApiExec
         STDERR.puts("\n\nSTREA resul " + stream_reader.result.to_s)
         r = stream_reader.result
       else
-        # request_params['AttachStdin'] = true
         stream_handler = DockerHijackStreamHandler.new(params[:data], params[:data_stream], params[:ostream])
-        headers = {
-          #    'Connection' =>  'Upgrade',
-          #    'Upgrade' => 'tcp'
-        }
+          #   headers['Connection'] = 'Upgrade',
+          #    headers['Upgrade'] = 'tcp'
         STDERR.puts("\n\Hijack " + request_params.to_s )
         r = post_stream_request(request, nil, stream_handler, headers, request_params.to_json)
         stream_handler.result[:result] = get_exec_result(exec_id)
