@@ -124,7 +124,7 @@ class DockerConnection < ErrorsApi
       STDERR.puts('No data ' + 
       {method: :post,
       read_timeout: 3600,
-      query: options,
+      #    query: options,
       path: uri,
       headers: rheaders,
     body: body}.to_s  )
@@ -141,10 +141,11 @@ class DockerConnection < ErrorsApi
       STDERR.puts(' stream data ' + {
         method: :post,
         read_timeout: 3600,
-        query: options,
+        #     query: options,
         path: uri,
       headers: rheaders,
-        body: body}.to_s )
+        #   body: body
+      }.to_s )
       r = sc.request(
       method: :post,
       read_timeout: 3600,
