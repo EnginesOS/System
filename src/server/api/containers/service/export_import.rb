@@ -14,7 +14,7 @@ get '/v0/containers/service/:service_name/export' do
     stream do |out|
       begin
            service.export_data(out)
-      rescue e
+      rescue => e
         send_encoded_exception(request: request, exception: e)
         break
       end

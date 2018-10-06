@@ -63,7 +63,7 @@ module ServiceApiRestore
     if result[:result] == 0
       result #[stdout]
     else
-      raise EnginesException.new(error_hash("failed to export " + @result.to_s ,service_hash))
+      raise EnginesException.new(error_hash("failed to export " + @result.to_s, container.container_name))
     end
   end
 end
