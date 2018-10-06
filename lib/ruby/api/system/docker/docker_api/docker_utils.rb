@@ -108,8 +108,8 @@ module DockerUtils
     #  end
     unmatched = false
     unless result.nil?
-      result[:stderr] = '' unless h.key?(:stderr)
-      result[:stdout] = '' unless h.key?(:stdout)
+      result[:stderr] = '' unless result.key?(:stderr)
+      result[:stdout] = '' unless result.key?(:stdout)
       cl = 0
       unless chunk.nil?
         while chunk.length > 0
@@ -151,7 +151,7 @@ module DockerUtils
             length = chunk.length
           end
           #   STDERR.puts('len ' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
-          h[dst] += chunk[0..length-1]
+result[dst] += chunk[0..length-1]
           chunk = chunk[length..-1]
           if chunk.length > 0
             STDERR.puts('Continuation')
