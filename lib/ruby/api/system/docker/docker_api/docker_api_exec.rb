@@ -112,6 +112,7 @@ module DockerApiExec
   def docker_exec(params)
     r = create_docker_exec(params) #container, commands, have_data)
     if r.is_a?(Hash)
+      STDERR.puts(r.to_s)
       exec_id = r[:Id]
       request = '/exec/' + exec_id + '/start'
       request_params = {
@@ -160,6 +161,7 @@ module DockerApiExec
 
   def get_exec_result(exec_id)
     r = get_request('/exec/' + exec_id.to_s + '/json')
+    STDERR.puts(r.to_s)
     r[:ExitCode]
   end
 
