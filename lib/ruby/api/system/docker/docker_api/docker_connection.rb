@@ -121,7 +121,7 @@ class DockerConnection < ErrorsApi
       else
         body = content
       end  
-      STDERR.puts('Reqiest ' + 
+      STDERR.puts('No data ' + 
       {method: :post,
       read_timeout: 3600,
       query: options,
@@ -158,12 +158,12 @@ class DockerConnection < ErrorsApi
       sc.reset unless sc.nil?
     r
   rescue Excon::Error::Socket
-    STDERR.puts(' docker socket stream close ')
+    STDERR.puts('Excon docker socket stream close ')
     stream_handler.close unless stream_handler.nil?
     sc.reset unless sc.nil?
     r
       rescue  Excon::Error::Timeout
-         STDERR.puts(' docker socket timeout ')
+         STDERR.puts('Excon docker socket timeout ')
       stream_handler.close unless stream_handler.nil?
       sc.reset unless sc.nil?
         nil
