@@ -1,7 +1,7 @@
 #!/bin/sh
- nohup touch /opt/engines/run/system/flags/engines_restarting
+  touch /opt/engines/run/system/flags/engines_restarting
 
- /opt/engines/bin/system_service.rb system restart
+ nohup /opt/engines/bin/system_service.rb system restart
  #/opt/engines/bin/system_service.rb system wait_for stop 30
  #/opt/engines/bin/system_service.rb system start
  #/opt/engines/bin/system_service.rb system wait_for_start 25
