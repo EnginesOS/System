@@ -15,7 +15,7 @@ get '/v0/containers/service/:service_name/export' do
       begin
            service.export_data(out)
       rescue => e
-        send_encoded_exception(request: request, exception: e)
+        send_encoded_exception(request: request, params: params, exception: e)
       end
          end    
   rescue StandardError => e
