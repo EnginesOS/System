@@ -4,18 +4,23 @@ require 'base64'
 # @method engine_export_persistent_service
 # @overload get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/:type_path/:service_handle/export'
 # exports the service data as a gzip
-# @return [Binary]
+# @returns octal stream
 get '/v0/containers/engine/:engine_name/service/persistent/:publisher_namespace/*/export' do
   begin
     hash = engine_service_hash_from_params(params)
     unless SoftwareServiceDefinition.is_consumer_exportable?(hash)
      raise EnginesException.new(warning_hash("Cannot export as single service", hash))
     end 
-    content_type 'application/octet-stream'   
     engine = get_engine(params[:engine_name])
+    content_type 'application/octet-stream'   
     unless engine.nil?
       stream do |out|
-        engine.export_service_data(hash, out)
+        begin
+        engine.export_service_data(hash, out)       
+        rescue StandardError => e
+          STDERR.puts('engine_export_persistent_service exception ' + e.to_s)
+          send_encoded_exception(request: request, engine: engine, params: params, exception: e)
+        end
       end
     else
       send_encoded_exception(request: request, engine: engine, params: params, exception: nil)

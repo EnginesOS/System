@@ -2,7 +2,7 @@
 # @method engine_export_persistent_service_data
 # @overload get '/v0/containers/service/:service_name/export'
 # exports the service data as a gzip
-# @return [Binary]
+# @return [octet-stream]
 get '/v0/containers/service/:service_name/export' do
   begin
     service = get_service(params[:service_name])
@@ -12,7 +12,11 @@ get '/v0/containers/service/:service_name/export' do
     raise EnginesException.new(warning_hash('Service not running')) unless service.is_running?
     content_type 'application/octet-stream'  
     stream do |out|
+      begin
            service.export_data(out)
+      rescue => e
+        send_encoded_exception(request: request, params: params, exception: e)
+      end
          end    
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)

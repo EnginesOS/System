@@ -32,6 +32,7 @@ post '/v0/system/system_user/password' do
   begin
     content_type 'text/plain'
     post_s = post_params(request)
+    post_s[:api_vars][:token] = request.env['HTTP_ACCESS_TOKEN'] if request.env.key?('HTTP_ACCESS_TOKEN') && post_s.key?(:api_vars)
     cparams = assemble_params(post_s, nil, [:new_password, :token, :current_password])
     return_boolean(engines_api.set_system_user_password(cparams))
   rescue StandardError => e

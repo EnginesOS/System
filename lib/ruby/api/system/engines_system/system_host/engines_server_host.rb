@@ -168,7 +168,8 @@ module EnginesServerHost
      r = SystemUtils.execute_command(cmd, false, script_data)
      STDERR.puts(' Server Script ' + r.to_s)
      r
-    end
+      end
+
   rescue Timeout::Error
     STDERR.puts('Timeout on Running Server Script ' + script_name )
     raise EnginesException.new(error_hash('Timeout on Running Server Script ' + script_name , script_name))

@@ -36,8 +36,9 @@ module DockerEvents
       mask = container_type_mask(container.ctype)
       pipe_in, pipe_out = IO.pipe
       event_listener = WaitForContainerListener.new(what, pipe_out, mask)
+
+      add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.container_name, 100)
       Timeout::timeout(timeout) do
-        add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.container_name, 100)
         unless is_aready?(what, container.read_state)
           begin
             d = pipe_in.read
@@ -65,7 +66,7 @@ module DockerEvents
     STDERR.puts(e.backtrace.to_s)
     pipe_in.close
     pipe_out.close
-    false
+is_aready?(what, container.read_state)
   end
 
   def is_aready?(what, statein)
@@ -172,34 +173,34 @@ module DockerEvents
 
   def start_docker_event_listener(listeners = {})
     SystemDebug.debug(SystemDebug.container_events, ' Start EVENT LISTENER THREAD !!!!!!!!!!!!!!!!!!!!!!!!!!!!! with n ' + listeners.count.to_s)
-  #  @docker_event_listener = DockerEventWatcher.new(self, listeners)
-   # @event_listener_thread.exit unless @event_listener_thread.nil?
-   # @docker_events = self;
-  
-      @docker_event_listener = DockerEventWatcher.new(self, listeners)
-      @event_listener_thread.exit unless @event_listener_thread.nil?
-  #  Thread.new do
-   #  while 0 == 0        
-        @event_listener_thread = Thread.new do
-          begin
-            @event_listener_thread[:name] = 'docker_event_listener'
-            @docker_event_listener.start
-           
-            STDERR.puts( ' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-            listeners = @docker_event_listener.event_listeners
-            STDERR.puts( ' EVENT LISTENER S ' + listeners.count.to_s)
+    #  @docker_event_listener = DockerEventWatcher.new(self, listeners)
+    # @event_listener_thread.exit unless @event_listener_thread.nil?
+    # @docker_events = self;
+
+    @docker_event_listener = DockerEventWatcher.new(self, listeners)
+    @event_listener_thread.exit unless @event_listener_thread.nil?
+    #  Thread.new do
+    #  while 0 == 0
+    @event_listener_thread = Thread.new do
+      begin
+        @event_listener_thread[:name] = 'docker_event_listener'
+        @docker_event_listener.start
+
+        STDERR.puts( ' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+        listeners = @docker_event_listener.event_listeners
+        STDERR.puts( ' EVENT LISTENER S ' + listeners.count.to_s)
         #    @docker_events.start_docker_event_listener(listeners)
-            STDERR.puts(' EVENT Listener started  post timeout ')
-          rescue StandardError => e
-            STDERR.puts(' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!' + e.to_s)
-         #   start_docker_event_listener(@docker_event_listener.event_listeners)
-            STDERR.puts(' EVENT Listener started Post Exception ')
-    #      end
-        
-     #     @event_listener_thread.join
-      #  end 
+        STDERR.puts(' EVENT Listener started  post timeout ')
+      rescue StandardError => e
+        STDERR.puts(' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!' + e.to_s)
+        #   start_docker_event_listener(@docker_event_listener.event_listeners)
+        STDERR.puts(' EVENT Listener started Post Exception ')
+        #      end
+
+        #     @event_listener_thread.join
+        #  end
       end
-     # @event_listener_thread[:name] = 'docker_event_listener'
+      # @event_listener_thread[:name] = 'docker_event_listener'
       STDERR.puts('Thread ' +  @event_listener_thread.inspect)
       # @docker_event_listener
     end

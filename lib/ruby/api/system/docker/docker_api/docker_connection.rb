@@ -114,38 +114,58 @@ class DockerConnection < ErrorsApi
     stream_handler.stream = sc
 
     if stream_handler.method(:has_data?).call == false
-      if content.nil? # Dont to_s as may be tgz
-        body = ''
-      elsif rheaders['Content-Type'] == 'application/json'
+     if rheaders['Content-Type'] == 'application/json'
         body = content.to_json
       else
         body = content
-      end
+      end  
+      STDERR.puts('No data ' + 
+      {method: :post,
+      read_timeout: 3600,
+      #    query: options,
+      path: uri,
+      headers: rheaders,
+    body: body}.to_s  )
       r = sc.request(
       method: :post,
       read_timeout: 3600,
-      query: options,
+    #  query: options,
       path: uri,
       headers: rheaders,
       body: body
       )
       stream_handler.close
     else
-      STDERR.puts(' stream ')
+      STDERR.puts(' stream data ' + {
+        method: :post,
+        read_timeout: 3600,
+        #     query: options,
+        path: uri,
+      headers: rheaders,
+        body: body
+      }.to_s )
       r = sc.request(
       method: :post,
       read_timeout: 3600,
-      query: options,
+  #    query: options,
       path: uri,
-      headers: rheaders)
+      headers: rheaders,
+      body: content
+      )
       stream_handler.close
     end
       sc.reset unless sc.nil?
     r
   rescue Excon::Error::Socket
-    STDERR.puts(' docker socket stream close ')
-    stream_handler.close
+    STDERR.puts('Excon docker socket stream close ')
+    stream_handler.close unless stream_handler.nil?
     sc.reset unless sc.nil?
+    r
+      rescue  Excon::Error::Timeout
+         STDERR.puts('Excon docker socket timeout ')
+      stream_handler.close unless stream_handler.nil?
+      sc.reset unless sc.nil?
+        nil
   end
 
   def request_params(params)
@@ -172,8 +192,12 @@ class DockerConnection < ErrorsApi
     }
   rescue  Excon::Error::Socket
     STDERR.puts(' docker socket close ')
-    reopen_connection
-    retry
+    nil
+  rescue  Excon::Error::Timeout
+     STDERR.puts(' docker socket timeout ')
+    nil
+   # #reopen_connection
+    #retry
   end
 
   def delete_request(uri)
@@ -186,25 +210,28 @@ class DockerConnection < ErrorsApi
       ) }
   rescue  Excon::Error::Socket
     STDERR.puts('docker socket close ')
-    reopen_connection
-    retry
+  rescue  Excon::Error::Timeout
+     STDERR.puts(' docker socket timeout ')
+    nil
+  # reopen_connection
+  # retry
   end
 
   private
 
   def handle_resp(resp, expect_json)
     raise DockerException.new({params: @request_param, status: 500}) if resp.nil?
-    SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE CODE' + resp.status.to_s )
+#SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE CODE' + resp.status.to_s )
     if resp.status > 399
-      SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE CODE' + resp.status.to_s )
-      SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE Body' + resp.body.to_s )
+      #  SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE CODE' + resp.status.to_s )
+      # SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE Body' + resp.body.to_s )
       SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE' + resp.to_s )
     end
     raise DockerException.new(docker_error_hash(resp, @request_params)) if resp.status >= 400
     if resp.status == 204 # nodata but all good happens on del
       true
     else
-      log_error_mesg("Un exepect response from docker", resp, resp.body, resp.headers.to_s) unless resp.status == 200 || resp.status == 201
+      log_error_mesg("Un expected response from docker", resp, resp.body, resp.headers.to_s) unless resp.status == 200 || resp.status == 201
       if expect_json == true
         hash = response_parser.parse(resp.body)
         SystemDebug.debug(SystemDebug.docker, 'RESPOSE ' + resp.status.to_s + ' : ' + hash.to_s.slice(0..256))

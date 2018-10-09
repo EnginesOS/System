@@ -25,29 +25,44 @@ module DockerApiExec
     end
 
     def has_data?
-      if @i_stream.nil? || @i_stream.closed? || @data.nil?
+      if (@i_stream.nil? || @i_stream.closed? ) && @data.nil?
+        STDERR.puts("\n HAS NO DTAT ")
         false
       elsif @data.length > 0
+        STDERR.puts(' HAS STR DTAT ')
         true
       else
         false
       end
+      #    if @data.length > 0
+      #          STDERR.puts(' HAS DTAT ')
+      #                true
+      #        elsif @i_stream.nil? || @i_stream.closed?
+      #          false
+      #        else
+      #          true
+      #        end
     end
 
-    def process_response()
-      return_result = @result
-      lambda do |chunk , c , t|
-        if @o_stream.nil?
-       #   STDERR.puts('stream results')
-          DockerUtils.docker_stream_as_result(chunk, return_result)
-         # return_result[:raw] = return_result[:raw] + chunk.to_s
-        else
-          r = DockerUtils.decode_from_docker_chunk(chunk, true)
-          @o_stream.write(r[:stdout]) unless r.nil?
-          return_result[:stderr] = return_result[:stderr].to_s + r[:stderr].to_s
-        end
-      end
-    end
+#    def process_response()
+#
+#      lambda do |chunk , c , t|
+#        STDERR.puts('a hijack')
+#        if @o_stream.nil?
+#          #   STDERR.puts('stream results')
+#          STDERR.puts(' hj 1 a chunker')
+#          r = DockerUtils.decode_from_docker_chunk(chunk, true)
+#          @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
+#          @result[:stdout] = @result[:stdout].to_s + r[:stdout].to_s
+#          # return_result[:raw] = return_result[:raw] + chunk.to_s
+#        else
+#          r = DockerUtils.decode_from_docker_chunk(chunk, true)
+#          STDERR.puts('hj 1 a stream')
+#          @o_stream.write(r[:stdout]) unless r.nil?
+#          @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
+#        end
+#      end
+#    end
   end
 
   class DockerStreamReader
@@ -71,16 +86,20 @@ module DockerApiExec
     end
 
     def process_response()
-      return_result = @result
       lambda do |chunk , c , t|
         if @o_stream.nil?
-          DockerUtils.docker_stream_as_result(chunk, return_result)
-         # return_result[:raw] = return_result[:raw] + chunk.to_s
-        else
+          STDERR.puts(' SR a chunk')
           r = DockerUtils.decode_from_docker_chunk(chunk, true)
-       #   STDERR.puts('stream a chunk')
-          @o_stream.write(r[:stdout]) unless r.nil?
-          return_result[:stderr] = return_result[:stderr].to_s + r[:stderr].to_s
+          next if r.nil?
+          @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
+          @result[:stdout] = @result[:stdout].to_s + r[:stdout].to_s
+          # return_result[:raw] = return_result[:raw] + chunk.to_s
+        else
+          STDERR.puts(' SR a stream')
+          r = DockerUtils.decode_from_docker_chunk(chunk, true)
+          next if r.nil?
+          @o_stream.write(r[:stdout])
+          @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
         end
       end
     end
@@ -93,46 +112,50 @@ module DockerApiExec
   def docker_exec(params)
     r = create_docker_exec(params) #container, commands, have_data)
     if r.is_a?(Hash)
+      STDERR.puts(r.to_s)
       exec_id = r[:Id]
       request = '/exec/' + exec_id + '/start'
       request_params = {
         'Detach' => false,
         'Tty' => false,
-        'User' => '',
-        'Privileged' => false,
-        'AttachStdout' => true,
-        'AttachStderr' => true,
-        'Container' => params[:container].container_name,
-        'Cmd' => params[:command_line]
       }
+      
       headers = {
         'Content-type' => 'application/json'
       }
-      unless params.key?(:data) || params.key?(:data_stream)
+
+      SystemDebug.debug(SystemDebug.docker,'docker_exec ' + request_params.to_s + ' request  ' + request.to_s )
+      unless params.key?(:data_stream) || params.key?(:data)
         stream_reader = DockerStreamReader.new(params[:stream])
+        STDERR.puts("\n\nSTREA " + request_params.to_s )
         r = post_stream_request(request, nil, stream_reader, headers, request_params.to_json)
         stream_reader.result[:result] = get_exec_result(exec_id)
-        return stream_reader.result # DockerUtils.docker_stream_as_result(r, result)
+        STDERR.puts("\n\nSTREA resul " + stream_reader.result.to_s)
+        r = stream_reader.result
+      else
+        stream_handler = DockerHijackStreamHandler.new(params[:data], params[:data_stream], params[:ostream])
+          #   headers['Connection'] = 'Upgrade',
+          #    headers['Upgrade'] = 'tcp'
+        STDERR.puts("\n\Hijack " + request_params.to_s )
+        r = post_stream_request(request, nil, stream_handler, headers, request_params.to_json)
+        stream_handler.result[:result] = get_exec_result(exec_id)
+        STDERR.puts("\n\Hijack resul " + stream_handler.result.to_s)
+        r = stream_handler.result
+
+        #unless params.key?(:data_stream) ||params.key?(:data)
+
+        # DockerUtils.docker_stream_as_result(r, result)
       end
-      request_params['AttachStdin'] = true
-      stream_handler = DockerHijackStreamHandler.new(params[:data], params[:data_stream], params[:ostream])
 
-      headers['Connection'] = 'Upgrade'
-      headers['Upgrade'] = 'tcp'
-
-      r = post_stream_request(request, nil, stream_handler, headers, request_params.to_json)
-      stream_handler.result[:result] = get_exec_result(exec_id)
-      stream_handler.result
-    else
-      r
     end
-  
+    r
   end
 
   private
 
   def get_exec_result(exec_id)
     r = get_request('/exec/' + exec_id.to_s + '/json')
+    STDERR.puts(r.to_s)
     r[:ExitCode]
   end
 
@@ -144,6 +167,7 @@ module DockerApiExec
       'DetachKeys' => 'ctrl-p,ctrl-q',
       'Cmd' => format_commands(params[:command_line])
     }
+    params.delete(:data) if params.key?(:data) && params[:data].nil?
     if params.key?(:data) || params.key?(:data_stream)
       request_params['AttachStdin'] = true
     else

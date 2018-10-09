@@ -70,8 +70,14 @@ post '/v0/containers/service/:service_name/stream_action/:action_name' do
     service = get_service(cparams[:service_name])
     action = engines_api.get_service_actionator(service, params[:action_name])
     stream :keep_open do |out|
-    engines_api.perform_service_stream_action(params[:service_name], p_params[:action_name], cparams, out)      
+      begin
+    engines_api.perform_service_stream_action(params[:service_name], p_params[:action_name], cparams, out)
+        rescue StandardError => e
+          STDERR.puts('engine_export_persistent_service exception ' + e.to_s)
+          send_encoded_exception(request: request, params: p_params, exception: e)
+        end
     end
+   
     # STDERR.puts('action ret type '+ action[:return_type])
     # STDERR.puts('action ret ' + r.to_s )
     # STDERR.puts('action ret ' + r.to_json )
