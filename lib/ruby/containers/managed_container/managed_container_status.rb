@@ -52,7 +52,7 @@ module ManagedContainerStatus
   rescue EnginesException =>e
     expire_engine_info
     'nocontainer'
-    clear_cid
+    clear_cid unless @container_id ==  -1 
     raise e
   end
 
