@@ -1,9 +1,12 @@
 #!/bin/bash
+. /home/engines/functions/params_to_env.sh
+params_to_env
+
  mkdir -p /tmp/big/
 Archive=/tmp/big/archive
 cd /home/fs
-dirname=`basename $VOLDIR `
-cp -rp $VOLDIR /tmp/big/$dirname.bak
+dirname=`basename $engine_path `
+cp -rp $engine_path /tmp/big/$dirname.bak
 
 if test -f  /tmp/extract.err
  then
@@ -29,8 +32,8 @@ cat $Archive | tar -xpf  - 2>/tmp/extract.err
            rm -r /tmp/big/$dirname.bak
            exit 0
            else
-            rm -r $VOLDIR/*
-            cp -rp /tmp/big/$dirname.bak/. $VOLDIR
+            rm -r $engine_path/*
+            cp -rp /tmp/big/$dirname.bak/. $engine_path
             cat  /tmp/extract.err
             echo  Rolled back >&2
          fi
