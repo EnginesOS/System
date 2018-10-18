@@ -226,14 +226,14 @@ class DockerConnection < ErrorsApi
       # SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE Body' + resp.body.to_s )
       SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE' + resp.to_s ) unless resp.status == 404
     end
-    raise DockerException.new(docker_error_hash(resp, @request_params)) if resp.status >= 400
+raise DockerException.new({params:  @request_params, status: resp.status}) if resp.status >= 400
     if resp.status == 204 # nodata but all good happens on del
       true
     else
       log_error_mesg("Un expected response from docker", resp, resp.body, resp.headers.to_s) unless resp.status == 200 || resp.status == 201
       if expect_json == true
         hash = response_parser.parse(resp.body)
-        SystemDebug.debug(SystemDebug.docker, 'RESPOSE ' + resp.status.to_s + ' : ' + hash.to_s.slice(0..256))
+        # SystemDebug.debug(SystemDebug.docker, 'RESPOSE ' + resp.status.to_s + ' : ' + hash.to_s.slice(0..256))
         hash
       else
         resp.body
