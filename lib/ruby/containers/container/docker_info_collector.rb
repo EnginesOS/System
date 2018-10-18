@@ -76,7 +76,7 @@ module DockerInfoCollector
     save_state unless cid == @container_id
     @container_id
   rescue EnginesException
-    clear_cid unless  cid == -1
+    clear_cid #unless  cid == -1
     -1
   end
 
