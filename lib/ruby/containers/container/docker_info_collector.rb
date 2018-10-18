@@ -40,6 +40,7 @@ module DockerInfoCollector
   end
 
   def clear_cid
+    STDERR.puts caller.join("\n")
    # unless @container_id ==  -1  ## May break if just set to -1 Just here o test
     @container_id =  -1 
     ContainerStateFiles.clear_cid_file(self)
