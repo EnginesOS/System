@@ -189,9 +189,11 @@ class SoftwareServiceDefinition
     if service == nil
       nil
     elsif service.key?(:shareable)
+      STDERR.puts(' sharable val' +  service[:shareable].to_s) 
       service[:shareable]
     else
       # default is sharable
+      STDERR.puts(' It is sharable ' + params.to_s)
       true
     end
   end
