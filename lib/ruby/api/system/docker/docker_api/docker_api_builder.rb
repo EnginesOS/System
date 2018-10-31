@@ -1,6 +1,7 @@
 module DockerApiBuilder
   def build_options(engine_name)
-    ret_val = 'buildargs={}'
+    ret_val += 't=' + engine_name
+    ret_val += '&buildargs={}'
   #  ret_val += '&cgroupparent='
     ret_val += '&forcerm=1'
     ret_val += '&rm=1'
@@ -13,7 +14,6 @@ module DockerApiBuilder
     ret_val += '&memswap=0'
     ret_val += '&dockerfile=Dockerfile'
     #ret_val += '&ulimits=null'
-    ret_val += '&t=' + engine_name
     ret_val
   end
 
