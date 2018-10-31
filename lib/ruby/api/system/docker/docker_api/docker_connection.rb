@@ -50,8 +50,9 @@ class DockerConnection < ErrorsApi
 
   def post_request(uri, params = nil, expect_json = true , rheaders = nil, time_out = 60)
     SystemDebug.debug(SystemDebug.docker,' Post ' + uri.to_s)
-    SystemDebug.debug(SystemDebug.docker,'Post OPIOMS ' + params.to_s)
+    SystemDebug.debug(SystemDebug.docker,'Post OPIOMS ' + params.class.name + ':' + params.to_s)
     rheaders = default_headers if rheaders.nil?
+    SystemDebug.debug(SystemDebug.docker,' rheaders ' + rheaders.to_s)
     params = params.to_json if rheaders['Content-Type'] == 'application/json' && ! params.nil?
 
     @docker_api_mutex.synchronize {
@@ -122,15 +123,15 @@ class DockerConnection < ErrorsApi
       STDERR.puts('No data ' + 
       {method: :post,
       read_timeout: 3600,
-      #    query: options,
-      path: uri,
+      query: options,
+      path: uri + '?' + options.to_s,
       headers: rheaders,
     body: body}.to_s  )
       r = sc.request(
       method: :post,
       read_timeout: 3600,
     #  query: options,
-      path: uri,
+      path: uri + '?' + options.to_s,
       headers: rheaders,
       body: body
       )
@@ -140,7 +141,7 @@ class DockerConnection < ErrorsApi
         method: :post,
         read_timeout: 3600,
         #     query: options,
-        path: uri,
+        path: uri + '?' + options.to_s,
       headers: rheaders,
         body: body
       }.to_s )
@@ -148,7 +149,7 @@ class DockerConnection < ErrorsApi
       method: :post,
       read_timeout: 3600,
   #    query: options,
-      path: uri,
+      path: uri + '?' + options.to_s,
       headers: rheaders,
       body: content
       )
@@ -173,9 +174,8 @@ class DockerConnection < ErrorsApi
   end
 
   def get_request(uri,  expect_json = true, rheaders = nil, timeout = 60)
-    SystemDebug.debug(SystemDebug.docker,' Get ' + uri.to_s)
-    SystemDebug.debug(SystemDebug.docker,'Get ' + uri.to_s)
-    SystemDebug.debug(SystemDebug.docker,'GET TRUE REQUEST ' + caller[0..5].to_s)  if uri.start_with?('/containers/true/')
+    #SystemDebug.debug(SystemDebug.docker,'Get ' + uri.to_s)
+    #SystemDebug.debug(SystemDebug.docker,'GET TRUE REQUEST ' + caller[0..5].to_s)  if uri.start_with?('/containers/true/')
     rheaders = default_headers if rheaders.nil?
     @docker_api_mutex.synchronize {
       handle_resp(
@@ -225,16 +225,16 @@ class DockerConnection < ErrorsApi
     if resp.status > 399
       #  SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE CODE' + resp.status.to_s )
       # SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE Body' + resp.body.to_s )
-      SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE' + resp.to_s )
+      SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE' + resp.to_s ) unless resp.status == 404
     end
-    raise DockerException.new(docker_error_hash(resp, @request_params)) if resp.status >= 400
+raise DockerException.new({params:  @request_params, status: resp.status}) if resp.status >= 400
     if resp.status == 204 # nodata but all good happens on del
       true
     else
       log_error_mesg("Un expected response from docker", resp, resp.body, resp.headers.to_s) unless resp.status == 200 || resp.status == 201
       if expect_json == true
         hash = response_parser.parse(resp.body)
-        SystemDebug.debug(SystemDebug.docker, 'RESPOSE ' + resp.status.to_s + ' : ' + hash.to_s.slice(0..256))
+        # SystemDebug.debug(SystemDebug.docker, 'RESPOSE ' + resp.status.to_s + ' : ' + hash.to_s.slice(0..256))
         hash
       else
         resp.body

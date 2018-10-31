@@ -1,4 +1,6 @@
 #!/bin/bash
+. /home/engines/functions/params_to_env.sh
+params_to_env
 export  PGPASSWORD=$dbpasswd
 
 pg_dump  -h $dbhost -Fc -U $dbuser  $dbname |gzip -c 2>/tmp/pg_sqldump.errs

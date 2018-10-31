@@ -1,4 +1,6 @@
 #!/bin/bash
+. /home/engines/functions/params_to_env.sh
+params_to_env
  
 mysqldump -h $dbhost -u $dbuser --password=$dbpasswd $dbname 2>/tmp/mysqldump.errs
 if test $? -ne 0
