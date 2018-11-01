@@ -22,7 +22,9 @@ echo Applying update $update_id &>> $system_updates_dir/$update_id/update_log
   	echo $services |grep ALL >/dev/null
   	if test $? -eq 0
   	 then
-  	   services=`ls /opt/engines/run/services`
+  	 services=` engines services container_name |tr '"[],' ' '`
+  	 
+  	  # services=`ls /opt/engines/run/services`
   	 fi 
   	 
   		for service in $services
@@ -43,6 +45,7 @@ echo Applying update $update_id &>> $system_updates_dir/$update_id/update_log
 			fi			
 		  fi
   		 done
+  		 docker rmi `docker images |grep none |awk '{print $3}'`
   fi
   
  if test -f  $system_updates_dir/$update_id/system_services
@@ -66,6 +69,7 @@ echo Applying update $update_id &>> $system_updates_dir/$update_id/update_log
  			/opt/engines/bin/system_service.rb $service wait_for start 30
  			/opt/engines/bin/system_service.rb $service wait_for_startup 60
   		 done
+  		 docker rmi `docker images |grep none |awk '{print $3}'`
   fi
   
   if test -f  $system_updates_dir/$update_id/updater.sh
