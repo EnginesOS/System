@@ -1,0 +1,32 @@
+--- !ruby/object:ManagedService
+cont_user_id: 22037
+container_name: clamav
+publisher_namespace: EnginesSystem
+type_path: clamav
+ctype: service
+persistent: true
+last_error: 
+memory: '264'
+hostname: clamav
+domain_name: 
+environments: []
+image: _Engines_System(flavor)/clamav:_Engines_System(release)
+kerberos: true
+volumes: 
+ spool:
+  name: spool
+  remotepath: "/var/spool/clamav/"
+  localpath: "/var/lib/engines/services/clamav"
+  permissions: "rw"
+port: 
+mapped_ports: {}
+repo: na
+last_result:
+setState: running
+conf_register_site: false
+conf_register_dns: true
+conf_zero_conf: true
+conf_self_start: true
+dependant_on:
+- "dns"
+- "syslog"

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+. /home/engines/functions/params_to_env.sh
+params_to_env
+
 Archive=/tmp/big/archive 
 cd /tmp
 mkdir -p /tmp/big/
