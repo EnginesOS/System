@@ -41,7 +41,7 @@ module DockerUtils
             unless stream_reader.data.nil? ||  stream_reader.data.length == 0
               if stream_reader.data.length < Excon.defaults[:chunk_size]
                 socket.send(stream_reader.data, 0)
-                STDERR.puts('sent data as one chunk ' + stream_reader.data.to_s)
+                STDERR.puts('sent data as one chunk ' )#+ stream_reader.data.to_s)
                 stream_reader.data = ''
               else
                 #    STDERR.puts('send data as chunks ')
@@ -137,9 +137,9 @@ module DockerUtils
           elsif chunk.start_with?("\u0000\u0000\u0000\u0000")
             dst = :stdout
             chunk = chunk[8..-1]
-            STDERR.puts('\0\0\0')
+            STDERR.puts('Matched \0\0\0')
           else
-            STDERR.puts('UNMATCHED ' +  chunk.to_s)#.length.to_s)
+            STDERR.puts('UNMATCHED ' +  length.to_s)#chunk.to_s)#.length.to_s)
             dst = :stdout
             unmatched = true
           end
