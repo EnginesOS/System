@@ -18,6 +18,7 @@ options = { use_ssl: true, uri.scheme => 'https', verify_mode: OpenSSL::SSL::VER
     req['HTTP_access_token'] = ENV['access_token']
     parser = FFI_Yajl::Parser.new({symbolize_keys: true})
     http.request(req) { |resp|
+      STDERR.puts('header')
       resp.header.each_header {|key,value| STDERR.puts "#{key} = #{value}" }
       resp.read_body do |chunk|
         begin
@@ -55,6 +56,7 @@ def get_stream(path, ostream = STDOUT)
     http.read_timeout = 600
    
     http.request(req) { |resp|
+      STDERR.puts('header')
       resp.header.each_header {|key,value| STDERR.puts "#{key} = #{value}" }
       resp.read_body do |chunk|
         ostream.write(chunk)
