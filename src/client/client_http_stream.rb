@@ -18,6 +18,7 @@ options = { use_ssl: true, uri.scheme => 'https', verify_mode: OpenSSL::SSL::VER
     req['HTTP_access_token'] = ENV['access_token']
     parser = FFI_Yajl::Parser.new({symbolize_keys: true})
     http.request(req) { |resp|
+      resp.header.each_header {|key,value| STDERR.puts "#{key} = #{value}" }
       resp.read_body do |chunk|
         begin
           next if chunk == "\0" || chunk == "\n"
@@ -52,7 +53,9 @@ def get_stream(path, ostream = STDOUT)
   options = {use_ssl: true, uri.scheme => 'https', verify_mode: OpenSSL::SSL::VERIFY_NONE} if @use_https == true
   Net::HTTP.start(uri.host, uri.port, options) do |http|
     http.read_timeout = 600
+   
     http.request(req) { |resp|
+      resp.header.each_header {|key,value| STDERR.puts "#{key} = #{value}" }
       resp.read_body do |chunk|
         ostream.write(chunk)
       end
