@@ -4,6 +4,11 @@ params_to_env
 
 Archive=/tmp/big/archive 
 cd /tmp
+ if test -z $dbname
+  then
+   echo dbname cant be nill
+   exit -1
+  fi 
 mkdir -p /tmp/big/
 cat - > $Archive
 

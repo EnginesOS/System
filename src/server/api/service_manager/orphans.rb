@@ -33,15 +33,51 @@ get '/v0/service_manager/orphan_services/:publisher_namespace/*' do
     send_encoded_exception(request: request, exception: e)
   end
 end
+# @method export_orphan_service
+# @overload get '/v0/service_manager/orphan_service/export/:publisher_namespace/:type_path:/:parent_engine/:service_handle'
+# @return [octet-stream]
+get '/v0/service_manager/orphan_service/export/:publisher_namespace/*' do
+
+  begin
+    tp_plus = File.dirname(params['splat'][0])
+    params[:service_handle] = File.basename(params['splat'][0])
+    params[:parent_engine] = File.basename(tp_plus)
+    params[:type_path] = File.dirname(tp_plus)
+    cparams = assemble_params(params, [:publisher_namespace, :type_path, :service_handle, :parent_engine], [])   
+
+    hash = engines_api.retrieve_orphan(cparams) 
+    unless SoftwareServiceDefinition.is_consumer_exportable?(hash)
+      raise EnginesException.new(warning_hash("Cannot export as single service", hash))
+    end
+    
+    service = get_engine(params[:service_container])
+    content_type 'application/octet-stream'
+    unless service.nil?
+      stream do |out|
+        begin
+          service.export_service_data(hash, out)
+        rescue StandardError => e
+          STDERR.puts('engine_export_persistent_service exception ' + e.to_s)
+          send_encoded_exception(request: request, service: service, params: params, exception: e)
+        end
+      end
+    else
+      send_encoded_exception(request: request, service: service, params: params, exception: nil)
+    end
+
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+end
 # @method get_orphan_service
 # @overload get '/v0/service_manager/orphan_service/:publisher_namespace/:type_path:/:parent_engine/:service_handle'
 # @return [Hash] Orphan Service Hash
 get '/v0/service_manager/orphan_service/:publisher_namespace/*' do
   begin
     tp_plus = File.dirname(params['splat'][0])
-      params[:service_handle] = File.basename(params['splat'][0])
-      params[:parent_engine] = File.basename(tp_plus)
-      params[:type_path] = File.dirname(tp_plus)
+    params[:service_handle] = File.basename(params['splat'][0])
+    params[:parent_engine] = File.basename(tp_plus)
+    params[:type_path] = File.dirname(tp_plus)
     cparams = assemble_params(params, [:publisher_namespace, :type_path, :service_handle, :parent_engine], [])
     return_json(engines_api.retrieve_orphan(cparams))
   rescue StandardError => e
