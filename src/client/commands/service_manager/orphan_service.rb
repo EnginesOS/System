@@ -1,5 +1,5 @@
 @route += '/orphan_service/'
-
+STDERR.puts('Arg Count ' + ARGV.count.to_s)
 if ARGV.count == 5
   @route +=   ARGV[2] + '/' + ARGV[3] + '/' + ARGV[4]
 elsif ARGV.count == 6
