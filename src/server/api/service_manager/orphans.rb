@@ -47,7 +47,7 @@ get '/v0/service_manager/orphan_service/export/:publisher_namespace/*' do
       raise EnginesException.new(warning_hash('Cannot export as single service ', hash))
     end
 
-    service = get_engine(params[:service_container])
+    service = get_service(params[:service_container])
     content_type 'application/octet-stream'
     unless service.nil?
       stream do |out|
