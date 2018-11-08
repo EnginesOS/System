@@ -7,12 +7,11 @@ if ARGV[2] == 'delete'
   perform_delete
 elsif ARGV[2] == 'export'
   @route +=  ARGV[2] + '/' +  ARGV[3] + '/' + ARGV[4] + '/' + ARGV[5] + '/' + ARGV[6]
-else
-  if ARGV.count == 5
+elsif ARGV.count == 5
     @route +=   ARGV[2] + '/' + ARGV[3] + '/' + ARGV[4]
-  elsif ARGV.count == 6
+elsif ARGV.count == 6
     ARGV[2] + '/' +  ARGV[3] + '/' + ARGV[4] + '/' + ARGV[5]
-  end
+  
 end
 STDERR.puts('route ' + @route.to_s)
 perform_get
