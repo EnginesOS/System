@@ -33,13 +33,16 @@ get '/v0/service_manager/orphan_service/export/:publisher_namespace/*' do
     params[:parent_engine] = File.basename(tp_plus)
     params[:type_path] = File.dirname(tp_plus)
     cparams = assemble_params(params, [:publisher_namespace, :type_path, :service_handle, :parent_engine], [])
-    
-      STDERR.puts(' assembled params ' + cparams.to_s)
-    
+
+    STDERR.puts(' assembled params ' + cparams.to_s)
+
     hash = engines_api.retrieve_orphan(cparams)
-    
+
     STDERR.puts(' retrieved hash ' + hash.to_s)
-    
+    unless hash.is_a?(Hash)
+      raise EnginesException.new(warning_hash("Cannot find service from has", hash))
+    end
+
     unless SoftwareServiceDefinition.is_consumer_exportable?(hash)
       raise EnginesException.new(warning_hash("Cannot export as single service", hash))
     end
