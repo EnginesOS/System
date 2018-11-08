@@ -5,6 +5,11 @@ script=$0
 Script_Dir=`dirname $0`
 Archive=/tmp/big/archive 
 cd /tmp
+ if test -z $dbname
+  then
+   echo dbname cant be nill
+   exit -1
+  fi 
 mkdir -p /tmp/big/
 cat - > $Archive
 
