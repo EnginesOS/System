@@ -1,4 +1,4 @@
-ldapadmin
 mysqld
 pgsqld
 volmgr
+ldap
