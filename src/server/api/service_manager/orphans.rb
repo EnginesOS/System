@@ -40,11 +40,11 @@ get '/v0/service_manager/orphan_service/export/:publisher_namespace/*' do
 
     STDERR.puts(' retrieved hash ' + hash.to_s)
     unless hash.is_a?(Hash)
-      raise EnginesException.new(error_hash('Cannot find service from hash' + hash.to_s, hash))
+      raise EnginesException.new(error_hash('Cannot find service from hash ' + hash.to_s, hash))
     end
 
     unless SoftwareServiceDefinition.is_consumer_exportable?(hash)
-      raise EnginesException.new(warning_hash("Cannot export as single service", hash))
+      raise EnginesException.new(warning_hash('Cannot export as single service ', hash))
     end
 
     service = get_engine(params[:service_container])
