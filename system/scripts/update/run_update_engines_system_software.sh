@@ -38,6 +38,8 @@ if test -f /opt/engines/run/system/flags/update_engines_running
 	rm /opt/engines/run/system/flags/update_engines_running
 fi
 
+release=`cat /opt/engines/release`
+docker pull engines/fsconfigurator:$release
 
 if test $# -gt 0
 then
