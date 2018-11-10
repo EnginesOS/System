@@ -111,7 +111,7 @@ module DockerUtils
     #    l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
     #  end
     unmatched = false
-    STDERR.puts(' missine ' + @@missing)
+    STDERR.puts(' missine ' + @@missing.to_s)
     unless result.nil?
       result[:stderr] = '' unless result.key?(:stderr)
       result[:stdout] = '' unless result.key?(:stdout)
