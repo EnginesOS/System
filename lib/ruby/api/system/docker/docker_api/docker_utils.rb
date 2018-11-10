@@ -139,7 +139,7 @@ module DockerUtils
             chunk = chunk[8..-1]
             STDERR.puts('Matched \0\0\0')
           else
-            STDERR.puts('UNMATCHED ' +  length.to_s)#chunk.to_s)#.length.to_s)
+            STDERR.puts('UNMATCHED ' +  chunk.length.to_s)#chunk.to_s)#.length.to_s)
             dst = :stdout
             unmatched = true
           end
