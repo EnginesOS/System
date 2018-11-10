@@ -110,6 +110,7 @@ module DockerUtils
     #    l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
     #  end
     unmatched = false
+    STDERR.puts(' missine ' + @@missing)
     unless result.nil?
       result[:stderr] = '' unless result.key?(:stderr)
       result[:stdout] = '' unless result.key?(:stdout)
@@ -150,6 +151,7 @@ module DockerUtils
             length = chunk.length
           end
           if length > chunk.length
+            @@missing = length - chunk.length
             STDERR.puts('WARNING length > actual' + length.to_s + ' bytes length .  actual ' + chunk.length.to_s)
             length = chunk.length
           end

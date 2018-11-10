@@ -26,8 +26,6 @@ count=0
 /opt/engines/bin/system_service.rb registry wait_for_startup 120
 
 
-
-
 docker start system 
 /opt/engines/bin/system_service.rb system wait_for start 20
 /opt/engines/bin/system_service.rb system wait_for_startup 120
