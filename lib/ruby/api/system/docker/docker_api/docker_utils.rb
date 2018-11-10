@@ -164,8 +164,9 @@ module DockerUtils
             length = chunk.length
           end
           #   STDERR.puts('len ' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
-          if @@dst == :stdout && ! stream.nil?
-            stream.write(chunk,length)
+          unless stream.nil?
+            #result[@@dst]= chunk[0..length-1]
+            stream.write(chunk[0..length-1])
           else
           result[@@dst] += chunk[0..length-1]
           end
