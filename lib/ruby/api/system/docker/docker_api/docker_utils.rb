@@ -1,5 +1,6 @@
 module DockerUtils
-  @@missing=0;
+  @@missing=0  
+  @@dst = :stdout
   def self.process_request(stream_reader) #data , result, ostream=nil, istream=nil)
     @stream_reader = stream_reader
     return_result = @stream_reader.result
@@ -124,40 +125,46 @@ module DockerUtils
             chunk = chunk[1..-1]
             next
           end
-          if chunk.start_with?("\u0001\u0000\u0000\u0000")
-            dst = :stdout
+          if @@missing != 0
+            cl = @@missing
+            STDERR.puts('OUT ' + @@missing.to_s + ' to ' + @@dst.to_s) 
+            @@missing = 0
+          elsif chunk.start_with?("\u0001\u0000\u0000\u0000")
+            @@dst = :stdout
             l = chunk[0..7].unpack('C*')
             cl = l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
             chunk = chunk[8..-1]
             STDERR.puts('STDOUT ' + cl.to_s + ':' + chunk.length.to_s)
           elsif chunk.start_with?("\u0002\u0000\u0000\u0000")
-            dst = :stderr
+            @@dst = :stderr
             l = chunk[0..7].unpack('C*')
             cl = l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
             STDERR.puts('STDERR ' + cl.to_s )
             chunk = chunk[8..-1]
           elsif chunk.start_with?("\u0000\u0000\u0000\u0000")
-            dst = :stdout
+            @@dst = :stdout
             chunk = chunk[8..-1]
             STDERR.puts('Matched \0\0\0')
           else
             STDERR.puts('UNMATCHED ' +  chunk.length.to_s)#chunk.to_s)#.length.to_s)
-            dst = :stdout
+            @@dst = :stdout
             unmatched = true
           end
           return result if chunk.nil?
+
           unless unmatched == true
             length = cl
           else
             length = chunk.length
           end
+
           if length > chunk.length
             @@missing = length - chunk.length
             STDERR.puts('WARNING length > actual' + length.to_s + ' bytes length .  actual ' + chunk.length.to_s)
             length = chunk.length
           end
           #   STDERR.puts('len ' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
-          result[dst] += chunk[0..length-1]
+          result[@@dst] += chunk[0..length-1]
           chunk = chunk[length..-1]
           if chunk.length > 0
             STDERR.puts('Continuation')
