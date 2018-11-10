@@ -1,4 +1,5 @@
 module DockerUtils
+  @@missing=0;
   def self.process_request(stream_reader) #data , result, ostream=nil, istream=nil)
     @stream_reader = stream_reader
     return_result = @stream_reader.result
