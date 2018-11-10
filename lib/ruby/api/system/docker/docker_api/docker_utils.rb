@@ -73,8 +73,8 @@ module DockerUtils
             else
               STDERR.puts("read as stream")
 
-              r = DockerUtils.decode_from_docker_chunk(chunk)
-              @stream_reader.o_stream.write(r[:stdout]) unless r.nil?
+              r = DockerUtils.decode_from_docker_chunk(chunk, true, @stream_reader.o_stream)
+              #@stream_reader.o_stream.write(r[:stdout]) unless r.nil?
               return_result[:stderr] = return_result[:stderr].to_s + r[:stderr].to_s
             end
           end
@@ -97,22 +97,22 @@ module DockerUtils
     read_thread.kill unless read_thread.nil?
   end
 
-  def self.decode_from_docker_chunk(chunk, binary = true)
+  def self.decode_from_docker_chunk(chunk, binary = true, stream = nil)
     r = {
       stderr: '',
       stdout: ''
     }
-    self.docker_stream_as_result(chunk, r, binary)
+    self.docker_stream_as_result(chunk, r, binary, stream = nil)
     r
   end
 
-  def self.docker_stream_as_result(chunk, result, binary = true)
+  def self.docker_stream_as_result(chunk, result, binary = true, stream = nil)
 
     #  def data_length(l)
     #    l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
     #  end
     unmatched = false
-    STDERR.puts(' missine ' + @@missing.to_s)
+    
     unless result.nil?
       result[:stderr] = '' unless result.key?(:stderr)
       result[:stdout] = '' unless result.key?(:stdout)
@@ -164,7 +164,11 @@ module DockerUtils
             length = chunk.length
           end
           #   STDERR.puts('len ' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
+          if @@dst == :stdout && ! stream.nil
+            stream.write(chunk,length)
+          else
           result[@@dst] += chunk[0..length-1]
+          end
           chunk = chunk[length..-1]
           if chunk.length > 0
             STDERR.puts('Continuation')
@@ -174,8 +178,8 @@ module DockerUtils
       # result actually set elsewhere after exec complete
       result[:result] = 0
       unless binary
-        result[:stdout].force_encoding(Encoding::UTF_8) unless result[:stdout].nil?
-        result[:stderr].force_encoding(Encoding::UTF_8) unless result[:stderr].nil?
+        result[:stdout].force_encoding(Encoding::UTF_8) unless result[:stdout].nil? || ! stream.nil?
+        result[:stderr].force_encoding(Encoding::UTF_8) unless result[:stderr].nil? 
       end
     end
     result
