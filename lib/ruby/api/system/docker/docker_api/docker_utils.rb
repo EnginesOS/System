@@ -102,7 +102,7 @@ module DockerUtils
       stderr: '',
       stdout: ''
     }
-    self.docker_stream_as_result(chunk, r, binary, stream = nil)
+    self.docker_stream_as_result(chunk, r, binary, stream )
     r
   end
 
