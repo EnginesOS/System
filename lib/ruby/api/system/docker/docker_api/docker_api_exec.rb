@@ -96,9 +96,9 @@ module DockerApiExec
           # return_result[:raw] = return_result[:raw] + chunk.to_s
         else
           STDERR.puts(' SR a stream')
-          r = DockerUtils.decode_from_docker_chunk(chunk, true)
+          r = DockerUtils.decode_from_docker_chunk(chunk, true, @o_stream)
           next if r.nil?
-          @o_stream.write(r[:stdout])
+         # @o_stream.write(r[:stdout])
           @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
         end
       end
