@@ -18,7 +18,7 @@ module ServiceApiConsumers
       :timeout => @@consumer_timeout,
       :data => service_hash.to_json})
     # STDERR.puts('ADD SERVICE' + result.to_s)
-    raise EnginesException.new(error_hash('Failed add_consumer_to_service ' + result.to_s, result)) unless result[:result] == 0
+    raise EnginesException.new(error_hash('Failed add_consumer_to_service ' + result.to_s + ' 4 ' + service_hash.to_s , result)) unless result[:result] == 0
   end
 
   def update_consumer_on_service(c, service_hash)

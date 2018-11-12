@@ -76,7 +76,7 @@ module DockerUtils
               r = DockerUtils.decode_from_docker_chunk(chunk, true, @stream_reader.o_stream)
               #@stream_reader.o_stream.write(r[:stdout]) unless r.nil?
               end
-              return_result[:stderr] = return_result[:stderr].to_s + r[:stderr].to_s
+              return_result[:stderr] = return_result[:stderr].to_s + r[:stderr].to_s unless r.nil?
           end
           STDERR.puts("read doen")
         rescue EOFError
