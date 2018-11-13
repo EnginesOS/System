@@ -104,7 +104,7 @@ def handle_resp(resp, expect_json = true)
   elsif resp.status >= 200 && resp.status < 300
     resp.body
   else
-    log_error("Un exepect response from system" + resp.status.to_s + ' ' + resp.body.to_s + ' ' + resp.headers.to_s)
+    log_error("Un exepect response from system" + resp.status.to_s + ' ' + resp.body.to_s + ' ' + resp.to_s)
   end
 
  # STDERR.puts('GOT body ' + resp.body + "\nas JSON:" +  expect_json.to_s) 
