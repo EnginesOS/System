@@ -12,5 +12,7 @@ SCRIPTPATH=`dirname $SCRIPT`
    exit -1
   fi 
 
-ldapsearch -D ${ldap_dn} -w ${ldap_password} -h ${LDAP_HOST} -b $group_dn
+ldapsearch -D ${ldap_dn} -w ${ldap_password} -h ${LDAP_HOST} -b $group_dn 
+
+  
  

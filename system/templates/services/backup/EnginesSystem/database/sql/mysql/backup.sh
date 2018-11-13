@@ -7,11 +7,4 @@ params_to_env
    echo dbname cant be nill
    exit -1
   fi 
-mysqldump -h $dbhost -u $dbuser --password=$dbpasswd $dbname 2>/tmp/mysqldump.errs
-if test $? -ne 0
- then 
- 	cat  /tmp/mysqldump.errs  >&2
- 	exit -1
- fi
- 
- exit 0
+mysqldump -h $dbhost -u $dbuser --password=$dbpasswd $dbname
