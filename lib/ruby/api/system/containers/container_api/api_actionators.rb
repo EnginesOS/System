@@ -3,25 +3,27 @@ module ApiActionators
   def perform_action(c, actionator, params, data = nil)
     SystemDebug.debug(SystemDebug.actions, actionator, params)
 
-    if params.nil? || params.is_a?(String)
-      data = params
-    else
       if params.key?(:stream)
         stream = params[:stream]
         params.delete(:stream)
       else
         stream = nil
       end
-      data = params.to_json
-    end
 
     cmds = ['/home/engines/scripts/actionators/' + actionator[:name].to_s + '.sh']
-    result = engines_core.exec_in_container(
+    req = 
     {container: c,
       command_line: cmds,
       log_error:  true,
-      data: data,
-      data_stream: stream})
+      data_stream: stream}
+
+      if  params.is_a?(Hash)
+        req[:action_params] = params
+      elsif data.nil?
+        data = params
+      end
+    
+    result = engines_core.exec_in_container(req)
 
     if result[:result] == 0
       if result[:stdout].start_with?('{') || result[:stdout].start_with?('"{')

@@ -33,7 +33,7 @@ module ServiceApiRestore
     cmd_dir = SystemConfig.EngineServiceBackupScriptsRoot + '/'
     cmd = cmd_dir + '/backup.sh'
     raise EnginesException.new(error_hash("failed to export service not running " + container.container_name.to_s)) unless container.is_running?
-    params = {container: container, command_line: [cmd], log_error: true, data: service_hash.to_json}
+  params = {container: container, command_line: [cmd], log_error: true, service_variables: service_hash} #data: service_hash.to_json}
     params[:ostream] =  stream unless stream.nil?
     export(container, params)
   end

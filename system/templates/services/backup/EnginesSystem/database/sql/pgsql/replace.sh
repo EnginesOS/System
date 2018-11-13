@@ -1,6 +1,5 @@
-#!/bin/bash
-. /home/engines/functions/params_to_env.sh
-params_to_env
+#!/bin/sh
+
 script=$0
 Script_Dir=`dirname $0`
 Archive=/tmp/big/archive 

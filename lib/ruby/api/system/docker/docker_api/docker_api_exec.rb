@@ -187,11 +187,34 @@ module DockerApiExec
     commands
   end
 
+  def service_variables_to_env!(service_hash)
+    if service_hash.is_a?(Hash)
+      service_hash.merge!(service_hash[:variables])
+      service_hash.delete(:variables)
+    else
+      nil
+    end
+  end
+
   def exec_env(params)
     envs = []
-    if params[:env].is_a?(Hash)
-      params[:env].each_pair do |k,v|
-        envs.push(k.to_s + '=' + v.to_s)
+    unless params.nil?
+      if params[:service_variables].is_a?(Hash)
+        service_variables_to_env!(params[:service_variables])
+        params[:service_variables].each_pair do |k,v|
+          envs.push(k.to_s + '=' + v.to_s)
+        end
+      end
+      if params[:action_params].is_a?(Hash)
+      #  action_params_to_env!(params[:action_params])
+        params[:action_params].each_pair do |k,v|
+          envs.push(k.to_s + '=' + v.to_s)
+        end
+      end
+      if params[:configuration].is_a?(Hash)
+        params[:configuration].each_pair do |k,v|
+          envs.push(k.to_s + '=' + v.to_s)
+        end
       end
     end
     envs
