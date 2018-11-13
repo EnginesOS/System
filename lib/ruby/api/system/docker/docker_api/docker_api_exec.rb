@@ -31,9 +31,9 @@ module DockerApiExec
       elsif !@data.nil? && @data.length > 0
         STDERR.puts(' HAS STR DTAT ')
         true
-        elsif ! @i_stream.nil?
-          true
-      else  
+      elsif ! @i_stream.nil?
+        true
+      else
         false
       end
       #    if @data.length > 0
@@ -46,25 +46,25 @@ module DockerApiExec
       #        end
     end
 
-#    def process_response()
-#
-#      lambda do |chunk , c , t|
-#        STDERR.puts('a hijack')
-#        if @o_stream.nil?
-#          #   STDERR.puts('stream results')
-#          STDERR.puts(' hj 1 a chunker')
-#          r = DockerUtils.decode_from_docker_chunk(chunk, true)
-#          @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
-#          @result[:stdout] = @result[:stdout].to_s + r[:stdout].to_s
-#          # return_result[:raw] = return_result[:raw] + chunk.to_s
-#        else
-#          r = DockerUtils.decode_from_docker_chunk(chunk, true)
-#          STDERR.puts('hj 1 a stream')
-#          @o_stream.write(r[:stdout]) unless r.nil?
-#          @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
-#        end
-#      end
-#    end
+    #    def process_response()
+    #
+    #      lambda do |chunk , c , t|
+    #        STDERR.puts('a hijack')
+    #        if @o_stream.nil?
+    #          #   STDERR.puts('stream results')
+    #          STDERR.puts(' hj 1 a chunker')
+    #          r = DockerUtils.decode_from_docker_chunk(chunk, true)
+    #          @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
+    #          @result[:stdout] = @result[:stdout].to_s + r[:stdout].to_s
+    #          # return_result[:raw] = return_result[:raw] + chunk.to_s
+    #        else
+    #          r = DockerUtils.decode_from_docker_chunk(chunk, true)
+    #          STDERR.puts('hj 1 a stream')
+    #          @o_stream.write(r[:stdout]) unless r.nil?
+    #          @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
+    #        end
+    #      end
+    #    end
   end
 
   class DockerStreamReader
@@ -100,7 +100,7 @@ module DockerApiExec
           STDERR.puts(' SR a stream')
           r = DockerUtils.decode_from_docker_chunk(chunk, true, @o_stream)
           next if r.nil?
-         # @o_stream.write(r[:stdout])
+          # @o_stream.write(r[:stdout])
           @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
         end
       end
@@ -121,7 +121,7 @@ module DockerApiExec
         'Detach' => false,
         'Tty' => false,
       }
-      
+
       headers = {
         'Content-type' => 'application/json'
       }
@@ -136,8 +136,8 @@ module DockerApiExec
         r = stream_reader.result
       else
         stream_handler = DockerHijackStreamHandler.new(params[:data], params[:data_stream], params[:ostream])
-          #   headers['Connection'] = 'Upgrade',
-          #    headers['Upgrade'] = 'tcp'
+        #   headers['Connection'] = 'Upgrade',
+        #    headers['Upgrade'] = 'tcp'
         STDERR.puts("\n\Hijack " + request_params.to_s )
         r = post_stream_request(request, nil, stream_handler, headers, request_params.to_json)
         stream_handler.result[:result] = get_exec_result(exec_id)
@@ -166,6 +166,7 @@ module DockerApiExec
       'AttachStdout' => true,
       'AttachStderr' => true,
       'Tty' => false,
+      'Env' => exec_env(params),
       'DetachKeys' => 'ctrl-p,ctrl-q',
       'Cmd' => format_commands(params[:command_line])
     }
@@ -181,8 +182,19 @@ module DockerApiExec
   end
 
   def format_commands(commands)
+    STDERR.puts('Commands is an array') if commands.is_a?(Array)
     commands = [commands] unless commands.is_a?(Array)
     commands
+  end
+
+  def exec_env(params)
+    envs = []
+    if params[:env].is_a?(Hash)
+      params[:env].each_pair do |k,v|
+        envs.push(k.to_s + '=' + v.to_s)
+      end
+    end
+    envs
   end
 
 end

@@ -50,7 +50,11 @@ module EngineApiExportImport
     else
       cmd = cmd_dir + '/restore.sh'
     end
+    env = service_hash.merge!(service_hash[:variables])
+    env.delete(:variables)
     params = {container: container, command_line: [cmd, "'" + service_hash.to_json + "'" ], log_error: true }
+params = {container: container, command_line: [cmd], log_error: true, env: env }
+#params = {container: container, command_line: [cmd, "'" + service_hash.to_json + "'" ], log_error: true }
     unless stream.nil?
       params[:data_stream] = stream
     else
