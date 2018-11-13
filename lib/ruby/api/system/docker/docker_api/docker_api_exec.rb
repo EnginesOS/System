@@ -31,7 +31,7 @@ module DockerApiExec
       elsif !@data.nil? && @data.length > 0
         STDERR.puts(' HAS STR DTAT ')
         true
-        elsif ! @i_stream.open?
+        elsif ! @i_stream.nil?
           true
       else  
         false
