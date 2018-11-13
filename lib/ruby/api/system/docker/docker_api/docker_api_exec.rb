@@ -28,10 +28,12 @@ module DockerApiExec
       if (@i_stream.nil? || @i_stream.closed? ) && @data.nil?
         STDERR.puts("\n HAS NO DTAT ")
         false
-      elsif @data.length > 0
+      elsif !@data.nil? && @data.length > 0
         STDERR.puts(' HAS STR DTAT ')
         true
-      else
+        elsif ! @i_stream.open?
+          true
+      else  
         false
       end
       #    if @data.length > 0
