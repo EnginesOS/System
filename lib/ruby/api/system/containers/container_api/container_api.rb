@@ -49,8 +49,9 @@ class ContainerApi < ErrorsApi
   include ContainerApiVolumeBuilder
 
   require_relative 'container_api_services.rb'
-  include  ContainerApiServices
-
+  include ContainerApiServices
+  
+  
   def initialize(_docker_api, _system_api, _engines_core)
     @docker_api = _docker_api
     @system_api = _system_api

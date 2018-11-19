@@ -15,7 +15,7 @@ module EngineApiExportImport
     cmd = cmd_dir + '/backup.sh'
     SystemDebug.debug(SystemDebug.export_import, :export_service, cmd)
     result = {result: 0}
-    params = {container: container, command_line: [cmd], log_error: true, data: service_hash.to_json}
+    params = {container: container, command_line: [cmd], log_error: true, service_variables: service_hash } #data: service_hash.to_json}
     params[:ostream] =  stream unless stream.nil?
     thr = Thread.new { result = @engines_core.exec_in_container(params) }
     thr[:name] = 'export:' + params.to_s
@@ -36,6 +36,7 @@ module EngineApiExportImport
 
   end
 
+
   def import_service_data(container, service_params, stream = nil)
     service_hash = service_params[:service_connection]
     unless SoftwareServiceDefinition.is_consumer_exportable?(service_hash)
@@ -50,7 +51,12 @@ module EngineApiExportImport
     else
       cmd = cmd_dir + '/restore.sh'
     end
-    params = {container: container, command_line: [cmd, "'" + service_hash.to_json + "'" ], log_error: true }
+  #  env =   service_variables_to_env(service_hash)
+   # env = service_hash.merge!(service_hash[:variables])
+   # env.delete(:variables)
+  ##  params = {container: container, command_line: [cmd, "'" + service_hash.to_json + "'" ], log_error: true }
+params = {container: container, command_line: [cmd], log_error: true, service_variables: service_hash }
+#params = {container: container, command_line: [cmd, "'" + service_hash.to_json + "'" ], log_error: true }
     unless stream.nil?
       params[:data_stream] = stream
     else
