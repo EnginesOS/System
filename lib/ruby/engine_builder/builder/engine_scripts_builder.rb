@@ -5,6 +5,7 @@ module EngineScriptsBuilder
   def create_scripts
     FileUtils.mkdir_p(basedir + SystemConfig.ScriptsDir)
     create_start_script
+    create_first_run_script
     create_stop_script
     create_install_script
     create_post_install_script
@@ -18,7 +19,11 @@ module EngineScriptsBuilder
       write_software_script_file(SystemConfig.StartScript, @blueprint_reader.custom_start_script)
     end
   end
-
+  def create_first_run_script
+    unless @blueprint_reader.custom_first_run_script.nil?
+      write_software_script_file(SystemConfig.FirstRunScript, @blueprint_reader.custom_first_run_script)
+    end
+  end
   def create_stop_script
     unless @blueprint_reader.custom_stop_script.nil?
       write_software_script_file(SystemConfig.StopScript, @blueprint_reader.custom_stop_script)
