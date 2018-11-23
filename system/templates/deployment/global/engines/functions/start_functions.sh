@@ -132,7 +132,7 @@ mkdir /var/log/nginx >& /dev/null
 	then
 	  nginx &
 	  echo -n " $!" >>  $PID_FILE
-	  /home/engines/scripts/blocking.sh  &
+	  /home/engines/scripts/engine/engine/blocking.sh  &
 	  echo -n " $!" >>  $PID_FILE
 	else		
 	  nginx &

@@ -69,12 +69,12 @@ module EngineScriptsBuilder
   def write_worker_commands
     unless @blueprint_reader.worker_commands.nil?
       log_build_output('Dockerfile:Worker Commands')
-      scripts_path =  '/home/engines/scripts/'
+      scripts_path =  '/home/engines/scripts/engine/'
       if Dir.exist?(scripts_path) == false
         FileUtils.mkdir_p(scripts_path)
       end
       if @blueprint_reader.worker_commands.nil? == false && @blueprint_reader.worker_commands.length > 0
-        content = "#!/bin/bash\n"
+        content = "#!/bin/sh\n"
         content += "cd /home/app\n"
         @blueprint_reader.worker_commands.each do |command|
           content += command + "\n"
@@ -83,7 +83,7 @@ module EngineScriptsBuilder
       end
       unless @blueprint_reader.blocking_worker.nil?
 
-        content = "#!/bin/bash\n"
+        content = "#!/bin/sh\n"
         content += "cd /home/app\n"
         content += @blueprint_reader.blocking_worker.to_s
         content += "\n"
