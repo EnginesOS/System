@@ -34,11 +34,14 @@ module ManagedServiceControls
   end
 
   def recreate
-    destroy_container
+    begin
+      destroy_container
+    rescue EnginesException => e
+    end
     wait_for('destroy', 30)
     create_service
     save_state
-  rescue EnginesException =>e
+  rescue EnginesException => e
     save_state
     raise e
   end
