@@ -56,8 +56,8 @@ module ManagedContainerControls
 
   def create_container
     SystemDebug.debug(SystemDebug.containers, :teask_preping)
-    @container_mutex.synchronize {
-      @container_api.set_locale_env(self)
+    @container_mutex.synchronize {      
+      @container_api.initialize_container_env(self)
       if prep_task(:create)
         SystemDebug.debug(SystemDebug.containers, :teask_preped)
         expire_engine_info

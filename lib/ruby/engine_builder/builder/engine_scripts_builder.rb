@@ -84,7 +84,6 @@ module EngineScriptsBuilder
         content += @blueprint_reader.blocking_worker.to_s
         content += "\n"
         write_software_script_file(scripts_path + 'blocking.sh', content)
-        # File.chmod(0755, basedir + scripts_path + 'blocking.sh')
       end
     end
   end

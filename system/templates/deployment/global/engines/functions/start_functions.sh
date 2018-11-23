@@ -97,16 +97,16 @@ function start_apache {
 mkdir -p /var/log/apache2/ >& /dev/null
 if test -f /home/engines/scripts/engine/blocking.sh 
  then   
+    echo started 
    /usr/sbin/apache2ctl -DFOREGROUND &		  
    /home/engines/scripts/engine/blocking.sh  &
+   echo started blocking script
    echo  -n " $!" >> /home/engines/run/blocking.pid
     else		
    /usr/sbin/apache2ctl -DFOREGROUND &
+   echo started 
 fi
-#sleep 2
-#apache_pid=`cat /var/run/apache2/apache2.pid`
-#echo -n " $apache_pid" >> $PID_FILE
-#echo AP PID $apache_pid
+
 }
 
 function configure_passenger {
