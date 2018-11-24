@@ -55,7 +55,7 @@ module EngineScriptsBuilder
         SystemDebug.debug(SystemDebug.builder| SystemDebug.actions, 'create actionator', actionator)
         filename = SystemConfig.ActionatorDir + '/' + actionator[:name] + '.sh'
         SystemDebug.debug(SystemDebug.builder| SystemDebug.actions,"creating actionator ", actionator[:name], filename)
-
+        next if actionator[:script].nil?
         if @blueprint_reader.schema == 0
           write_software_script_file(filename, actionator[:script])
         else
