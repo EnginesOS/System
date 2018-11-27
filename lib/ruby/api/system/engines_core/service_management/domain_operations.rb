@@ -111,7 +111,7 @@ module DomainOperations
     
     raise EnginesException.new(error_hash('Domain not found' + domain_name)) if params.nil?
     raise EnginesException.new(error_hash('no params')) if params.nil?
-    raise EnginesException.new(error_hash('Cannot delete default domain!')) if domain_name == get_default_domain
+    raise EnginesException.new(error_hash('Cannot delete default domain!')) if domain_name == default_domain
     DNSHosting.rm_domain(domain_name)
     unless params[:self_hosted] == false
       service_hash = {
