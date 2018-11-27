@@ -58,7 +58,7 @@ module EngineScriptsBuilder
         next if actionator[:script].nil?
         if @blueprint_reader.schema == 0
           write_software_script_file(filename, actionator[:script])
-        else
+        else 
           write_software_script_file(filename, actionator[:script][:content])
         end
         actionator[:script].delete(:content)
