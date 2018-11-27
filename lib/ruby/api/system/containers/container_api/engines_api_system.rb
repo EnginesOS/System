@@ -37,7 +37,7 @@ module EnginesApiSystem
   end
   
   def default_domain
-    @system_api.default_domain
+    @engines_core.default_domain
   end
 
   def pre_start_checks(container)
