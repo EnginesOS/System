@@ -6,7 +6,7 @@ module EnginesApiSystem
   def initialize_container_env(container)
     container.environments = [] unless container.environments.is_a?(Array)
     set_locale_env(container)    
-    container.environments.push(EnvironmentVariable.new('default_domain', default_domain))
+    container.environments.push(EnvironmentVariable.new('external_domain_name', default_domain))
     container.environments.each do |env|
          return if env.name ==  'Engines_Debug_Run'
        end

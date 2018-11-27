@@ -57,9 +57,9 @@ module ManagedContainerControls
   def create_container
     SystemDebug.debug(SystemDebug.containers, :teask_preping)
     @container_mutex.synchronize {      
-      @container_api.initialize_container_env(self)
       if prep_task(:create)
         @domain_name = @container_api.default_domain if @domain_name.nil?
+        @container_api.initialize_container_env(self)
         SystemDebug.debug(SystemDebug.containers, :teask_preped)
         expire_engine_info
         @container_id = -1
