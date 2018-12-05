@@ -188,7 +188,7 @@ module DockerApiExec
   end
 
   def service_variables_to_env!(service_hash)
-    if service_hash.is_a?(Hash)
+    if service_hash.is_a?(Hash) && service_hash.key?(:variables)
       service_hash.merge!(service_hash[:variables])
       service_hash.delete(:variables)
     else
