@@ -203,7 +203,7 @@ module DockerApiExec
     envs = []
     unless params.nil?
       if params[:service_variables].is_a?(Hash)
-       p =  service_variables_to_env(params)
+       p =  service_variables_to_env(params[:service_variables])
         p.each_pair do |k,v|
           envs.push(k.to_s + '=' + v.to_s)
         end
