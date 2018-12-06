@@ -83,6 +83,8 @@ module BuilderBluePrint
       @blueprint[:orig] = @blueprint[:software]
       @blueprint[:software] = parent[:software]
       STDERR.puts('Merged BP ' + parent.to_s)
+    else
+      STDERR.puts('NO Inherietance' + @blueprint[:software].key?(:base).to_s)
     end
 
   end
