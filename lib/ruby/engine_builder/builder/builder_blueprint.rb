@@ -52,6 +52,7 @@ module BuilderBluePrint
     &&  @blueprint[:software][:base].key?(:inherit)
       unless @blueprint[:software][:base][:inherit].nil?
         parent = get_blueprint_parent(@blueprint[:software][:base][:inherit])
+          STDERR.puts('Parent BP ' + parent.to_s)
       end
       inherit = @blueprint[:software][:base][:inherit]
       merge_bp_entry(parent, :base)
@@ -78,8 +79,10 @@ module BuilderBluePrint
         merge_bp_entry(parent,[:framework_specific, :apache_httpd_configurations])
         merge_bp_entry(parent,[:framework_specific, :rake_tasks])
       end
+      
       @blueprint[:orig] = @blueprint[:software]
       @blueprint[:software] = parent[:software]
+      STDERR.puts('Merged BP ' + parent.to_s)
     end
 
   end
