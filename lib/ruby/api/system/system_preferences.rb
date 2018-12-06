@@ -44,7 +44,7 @@ class SystemPreferences
     end
   end
 
-  def get_default_domain
+  def default_domain
     if @preferences.key?(:default_domain)
       @preferences[:default_domain]
     else

@@ -89,7 +89,7 @@ class SoftwareServiceDefinition
   def SoftwareServiceDefinition.service_environments(service_hash)
     retval = Array.new
     service_def = SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:publisher_namespace])
-    if  service_def != nil
+    if service_def != nil
       owner= []
       owner[0]= 'service_consumer'
       path = service_hash[:publisher_namespace] + '/' + service_hash[:type_path] + ':'

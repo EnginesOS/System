@@ -157,7 +157,7 @@ class PublicApi < ErrorsApi
 
   require_relative 'system/config.rb'
   #system/config #EX
-  #  get_default_domain #EX
+  #  default_domain #EX
   #  set_default_domain #EX
   #  get_default_site #EX
   #  set_default_site #EX

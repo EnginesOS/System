@@ -37,19 +37,24 @@ if test -f "$VOLDIR/.dynamic_persistence"
 
 
 function first_run {
+
 if ! test -f /home/engines/run/flags/first_run_done
  then  
-	if test -f /home/engines/scripts/engine/post_install.sh
-	 then 				
-	   echo "Has Post install"
-		 if ! test -f /home/engines/run/flags/post_install.done
-		  then
-			echo "Running Post Install"
-			/bin/bash /home/engines/scripts/engine/post_install.sh 							
-			touch /home/engines/run/flags/post_install.done
-			 touch /home/engines/run/flags/first_run_done		
-		 fi
-	fi
+  if test -f /home/engines/scripts/engine/first_run.sh
+   then
+    /home/engines/scripts/engine/first_run.sh
+     touch /home/engines/run/flags/first_run_done		
+  fi  
+  if test -f /home/engines/scripts/engine/post_install.sh
+	then 				
+	  echo "Has Post install"
+	   if ! test -f /home/engines/run/flags/post_install.done
+		 then
+		  echo "Running Post Install"
+		  /bin/bash /home/engines/scripts/engine/post_install.sh 							
+		  touch /home/engines/run/flags/post_install.done			
+	  fi
+  fi
 fi	
 }
 
@@ -92,16 +97,16 @@ function start_apache {
 mkdir -p /var/log/apache2/ >& /dev/null
 if test -f /home/engines/scripts/engine/blocking.sh 
  then   
+    echo started 
    /usr/sbin/apache2ctl -DFOREGROUND &		  
    /home/engines/scripts/engine/blocking.sh  &
+   echo started blocking script
    echo  -n " $!" >> /home/engines/run/blocking.pid
     else		
    /usr/sbin/apache2ctl -DFOREGROUND &
+   echo started 
 fi
-#sleep 2
-#apache_pid=`cat /var/run/apache2/apache2.pid`
-#echo -n " $apache_pid" >> $PID_FILE
-#echo AP PID $apache_pid
+
 }
 
 function configure_passenger {
@@ -127,7 +132,7 @@ mkdir /var/log/nginx >& /dev/null
 	then
 	  nginx &
 	  echo -n " $!" >>  $PID_FILE
-	  /home/engines/scripts/blocking.sh  &
+	  /home/engines/scripts/engine/engine/blocking.sh  &
 	  echo -n " $!" >>  $PID_FILE
 	else		
 	  nginx &

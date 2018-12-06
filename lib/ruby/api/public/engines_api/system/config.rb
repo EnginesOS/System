@@ -7,9 +7,9 @@ module PublicApiConfig
   end
 
   # WTF SystemPreferences ??
-  def get_default_domain()
+  def default_domain()
     preferences = SystemPreferences.new
-    preferences.get_default_domain
+    preferences.default_domain
   end
 
   def set_hostname(hostname)
@@ -18,7 +18,7 @@ module PublicApiConfig
       configurator_name: 'hostname',
       variables: {
       hostname: hostname,
-      domain_name: get_default_domain
+      domain_name: default_domain
       }})
   end
 

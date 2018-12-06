@@ -5,6 +5,7 @@ module EngineScriptsBuilder
   def create_scripts
     FileUtils.mkdir_p(basedir + SystemConfig.ScriptsDir)
     create_start_script
+    create_first_run_script
     create_stop_script
     create_install_script
     create_post_install_script
@@ -18,7 +19,11 @@ module EngineScriptsBuilder
       write_software_script_file(SystemConfig.StartScript, @blueprint_reader.custom_start_script)
     end
   end
-
+  def create_first_run_script
+    unless @blueprint_reader.custom_first_run_script.nil?
+      write_software_script_file(SystemConfig.FirstRunScript, @blueprint_reader.custom_first_run_script)
+    end
+  end
   def create_stop_script
     unless @blueprint_reader.custom_stop_script.nil?
       write_software_script_file(SystemConfig.StopScript, @blueprint_reader.custom_stop_script)
@@ -50,10 +55,10 @@ module EngineScriptsBuilder
         SystemDebug.debug(SystemDebug.builder| SystemDebug.actions, 'create actionator', actionator)
         filename = SystemConfig.ActionatorDir + '/' + actionator[:name] + '.sh'
         SystemDebug.debug(SystemDebug.builder| SystemDebug.actions,"creating actionator ", actionator[:name], filename)
-
+        next if actionator[:script].nil?
         if @blueprint_reader.schema == 0
           write_software_script_file(filename, actionator[:script])
-        else
+        else 
           write_software_script_file(filename, actionator[:script][:content])
         end
         actionator[:script].delete(:content)
@@ -62,14 +67,11 @@ module EngineScriptsBuilder
   end
 
   def write_worker_commands
-    unless @blueprint_reader.worker_commands.nil?
+    unless @blueprint_reader.worker_commands.nil? && @blueprint_reader.blocking_worker.nil?
       log_build_output('Dockerfile:Worker Commands')
-      scripts_path =  '/home/engines/scripts/'
-      if Dir.exist?(scripts_path) == false
-        FileUtils.mkdir_p(scripts_path)
-      end
+      scripts_path = '/home/engines/scripts/engine/'
       if @blueprint_reader.worker_commands.nil? == false && @blueprint_reader.worker_commands.length > 0
-        content = "#!/bin/bash\n"
+        content = "#!/bin/sh\n"
         content += "cd /home/app\n"
         @blueprint_reader.worker_commands.each do |command|
           content += command + "\n"
@@ -77,13 +79,11 @@ module EngineScriptsBuilder
         write_software_script_file(scripts_path + 'pre-running.sh', content)
       end
       unless @blueprint_reader.blocking_worker.nil?
-
-        content = "#!/bin/bash\n"
+        content = "#!/bin/sh\n"
         content += "cd /home/app\n"
         content += @blueprint_reader.blocking_worker.to_s
         content += "\n"
         write_software_script_file(scripts_path + 'blocking.sh', content)
-        # File.chmod(0755, basedir + scripts_path + 'blocking.sh')
       end
     end
   end
