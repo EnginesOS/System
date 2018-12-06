@@ -53,9 +53,9 @@ module BuilderBluePrint
       unless @blueprint[:software][:base][:inherit].nil?
         parent = get_blueprint_parent(@blueprint[:software][:base][:inherit])
       end
-      inherit = @blueprint[:software][:base] [:inherit]
+      inherit = @blueprint[:software][:base][:inherit]
       merge_bp_entry(parent, :base)
-      parent[:software][:base][:inherit]  = inherit
+      parent[:software][:base][:inherit] = inherit
 
       merge_bp_entry(parent,:installed_packages)
       merge_bp_entry(parent,:file_write_permissions)
@@ -78,7 +78,7 @@ module BuilderBluePrint
         merge_bp_entry(parent,[:framework_specific, :apache_httpd_configurations])
         merge_bp_entry(parent,[:framework_specific, :rake_tasks])
       end
-
+      @blueprint[:orig] = @blueprint[:software]
       @blueprint[:software] = parent[:software]
     end
 
