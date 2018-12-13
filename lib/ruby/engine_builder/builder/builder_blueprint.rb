@@ -87,7 +87,7 @@ module BuilderBluePrint
     end
 
   end
-  install.packages(c('crayon', 'pbdZMQ', 'devtools'))
+  
   def merge_bp_entry(dest, key)
     unless key.is_a?(Array)
       if @blueprint[:software].key?(key)
