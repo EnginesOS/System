@@ -60,7 +60,6 @@ module BuilderBluePrint
 
       merge_bp_entry(parent, :installed_packages)
       merge_bp_entry(parent, :file_write_permissions)
-      merge_bp_entry(parent, :file_write_permissions)
       merge_bp_entry(parent, :workers)
       merge_bp_entry(parent, :replacement_strings)
       merge_bp_entry(parent, :system_packages)
@@ -88,7 +87,7 @@ module BuilderBluePrint
     end
 
   end
-
+  install.packages(c('crayon', 'pbdZMQ', 'devtools'))
   def merge_bp_entry(dest, key)
     unless key.is_a?(Array)
       if @blueprint[:software].key?(key)
