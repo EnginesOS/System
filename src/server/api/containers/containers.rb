@@ -21,27 +21,27 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
       timer.run(out)
       timer
     end
+
     def no_op_timer(out)
-         no_op = {no_op: true}.to_json
-        timer = EventMachine::PeriodicTimer.new(25) do
-           if out.closed?
-             STDERR.puts('NOOP found OUT IS CLOSED: ' + timer.to_s)
-             timer = nil
-             next
-           else
-             out << no_op # unless lock_timer == true
-             out << "\n"
-           end
-         end
-         timer
-       end
-       
+      no_op = {no_op: true}.to_json
+      timer = EventMachine::PeriodicTimer.new(25) do
+        if out.closed?
+          STDERR.puts('NOOP found OUT IS CLOSED: ' + timer.to_s)
+          timer.cancel
+        else
+          out << no_op # unless lock_timer == true
+          out << "\n"
+        end
+      end
+      timer
+    end
+
     timer = nil
-    
+
     begin
-    
+
       stream :keep_open do | out |
-        begin     
+        begin
           has_data = true
           timer = no_op_timer(out)
           events_stream = engines_api.container_events_stream
@@ -66,16 +66,16 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
               next
             end
           end
-        finialise_events_stream(events_stream, timer)
+          finialise_events_stream(events_stream, timer)
         rescue StandardError => e
-         # STDERR.puts('EVENTS Exception' + e.to_s + ':' + e.class.name + e.backtrace.to_s)
+          # STDERR.puts('EVENTS Exception' + e.to_s + ':' + e.class.name + e.backtrace.to_s)
           finialise_events_stream(events_stream, timer)
         end
       end
-    timer.cancel unless timer.nil? 
+      timer.cancel unless timer.nil?
     rescue StandardError => e
       STDERR.puts('Stream EVENTS Exception' + e.to_s + e.backtrace.to_s)
-    timer.cancel unless timer.nil?
+      timer.cancel unless timer.nil?
     end
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
@@ -101,6 +101,5 @@ get '/v0/containers/check_and_act' do
     send_encoded_exception(request: request, exception: e)
   end
 end
-
 
 # @!endgroup
