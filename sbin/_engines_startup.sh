@@ -15,6 +15,13 @@ rm `find /opt/engines/run -name lock`
 
 /opt/engines/system/scripts/system/rotate_system_log.sh
 
+#Clear fsconfigurator
+docker ps -a |grep fsconfig
+ if test $? -eq 0
+  then
+   docker stop fsconfigurator
+   docker rm fsconfigurator
+  fi
 if test -f ~/.complete_update
 then
    /opt/engines/system/scripts/update/finish_update.sh  
