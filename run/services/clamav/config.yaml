@@ -6,18 +6,13 @@ type_path: clamav
 ctype: service
 persistent: true
 last_error: 
-memory: '264'
+memory: '1024'
 hostname: clamav
 domain_name: 
 environments: []
 image: _Engines_System(flavor)/clamav:_Engines_System(release)
 kerberos: true
-volumes: 
- spool:
-  name: spool
-  remotepath: "/var/spool/clamav/"
-  localpath: "/var/lib/engines/services/clamav"
-  permissions: "rw"
+volumes: {}
 port: 
 mapped_ports: {}
 repo: na

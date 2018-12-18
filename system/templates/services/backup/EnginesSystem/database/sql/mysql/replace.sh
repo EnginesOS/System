@@ -1,6 +1,5 @@
-#!/bin/bash
-. /home/engines/functions/params_to_env.sh
-params_to_env
+#!/bin/sh
+
 
 script=$0
 Script_Dir=`dirname $0`
@@ -10,7 +9,11 @@ mkdir -p /tmp/big/
 cat - > $Archive
 
 $Script_Dir/backup.sh > /tmp/big/backup.sql
-  
+   if test -z $dbname
+  then
+   echo dbname cant be nill
+   exit -1
+   fi
 #cat $Script_Dir/drop_tables.sql | mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname 2> /tmp/extract.err
 echo " SET FOREIGN_KEY_CHECKS = 0;" | mysql  -h $dbhost -u $dbuser --password=$dbpasswd  $dbname
 mysql  -h $dbhost -u $dbuser --password=$dbpasswd  --silent --skip-column-names -e "SHOW TABLES" $dbname | xargs -L1 -I% echo 'DROP TABLE `%`;' | mysql -v $dbname

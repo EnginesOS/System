@@ -8,6 +8,7 @@ module ManagedServiceControls
     setup_service_keys if @system_keys.is_a?(Array)
     @container_api.setup_service_dirs(self)
     SystemDebug.debug(SystemDebug.containers, :keys_set, @system_keys )
+    #@container_api.initialize_container_env(self)
     envs = @container_api.load_and_attach_pre_services(self)
     shared_envs = @container_api.load_and_attach_shared_services(self)
     if shared_envs.is_a?(Array)
@@ -22,7 +23,8 @@ module ManagedServiceControls
       if@environments.is_a?(Array)
         @environments =  EnvironmentVariable.merge_envs(envs, @environments)
         # @environments = envs ??
-        @environments = EnvironmentVariable.merge_envs(@environments, iso_envs)
+        #@environments = EnvironmentVariable.merge_envs(@environments, iso_envs)
+        
       end
     end
 
@@ -34,26 +36,29 @@ module ManagedServiceControls
   end
 
   def recreate
-    destroy_container
+    begin
+      destroy_container
+    rescue EnginesException => e
+    end
     wait_for('destroy', 30)
     create_service
     save_state
-  rescue EnginesException =>e
+  rescue EnginesException => e
     save_state
     raise e
   end
 
-  def iso_envs
-    prefs = SystemPreferences.new
-    country = prefs.country_code
-    country = SystemConfig.DefaultCountry if country.nil?
-    lang = prefs.langauge_code
-    lang = SystemConfig.DefaultLanguage if lang.nil?
-    [EnvironmentVariable.new('LANGUAGE', lang + '_' + country + ':' + lang) ,
-      EnvironmentVariable.new('LANG', lang + '_' + country + '.UTF8' ),
-      EnvironmentVariable.new('LC_ALL', lang + '_' + country + '.UTF8' )
-    ]
-  end
+#  def iso_envs
+#    prefs = SystemPreferences.new
+#    country = prefs.country_code
+#    country = SystemConfig.DefaultCountry if country.nil?
+#    lang = prefs.langauge_code
+#    lang = SystemConfig.DefaultLanguage if lang.nil?
+#    [EnvironmentVariable.new('LANGUAGE', lang + '_' + country + ':' + lang) ,
+#      EnvironmentVariable.new('LANG', lang + '_' + country + '.UTF8' ),
+#      EnvironmentVariable.new('LC_ALL', lang + '_' + country + '.UTF8' )
+#    ]
+#  end
 
   def service_restore(stream, params)
     @container_api.service_restore(self, stream, params)

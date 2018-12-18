@@ -26,8 +26,6 @@ count=0
 /opt/engines/bin/system_service.rb registry wait_for_startup 120
 
 
-
-
 docker start system 
 /opt/engines/bin/system_service.rb system wait_for start 20
 /opt/engines/bin/system_service.rb system wait_for_startup 120
@@ -38,6 +36,8 @@ if test -f /opt/engines/run/system/flags/update_engines_running
 	rm /opt/engines/run/system/flags/update_engines_running
 fi
 
+release=`cat /opt/engines/release`
+docker pull engines/fsconfigurator:$release
 
 if test $# -gt 0
 then

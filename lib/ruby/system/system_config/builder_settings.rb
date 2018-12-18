@@ -6,6 +6,7 @@ module BuilderSettings
   @@DefaultBuildReportTemplateFile = '/opt/engines/system/templates/deployment/global/default_built_report_template'
   @@BuildOutputFile = '/home/engines/deployment/deployed/build.out'
   @@PreStartScript = '/home/engines/scripts/engine/pre-runnning.sh'
+  @@FirstRunScript = '/home/engines/scripts/engine/first_run.sh'
   @@InstallScript = '/home/engines/scripts/engine/custom_install.sh'
   @@StartScript = '/home/engines/scripts/engine/custom_start.sh'
   @@PostInstallScript = '/home/engines/scripts/engine/post_install.sh'
@@ -22,7 +23,10 @@ module BuilderSettings
   @@StopScript = '/home/engines/scripts/engine/custom_stop.sh'
   @@htaccessSourceDir = '/home/engines/htaccess_files/'
 
-
+  def SystemConfig.FirstRunScript
+    @@FirstRunScript
+  end 
+  
   def SystemConfig.htaccessSourceDir
     @@htaccessSourceDir
   end

@@ -2,13 +2,23 @@ module EnginesApiSystem
   def web_sites_for(container)
     engines_core.web_sites_for(container)
   end
+  
+  def initialize_container_env(container)
+    container.environments = [] unless container.environments.is_a?(Array)
+    set_locale_env(container)    
+    container.environments.push(EnvironmentVariable.new('external_domain_name', default_domain))
+    container.environments.each do |env|
+         return if env.name ==  'Engines_Debug_Run'
+       end
+    container.environments.push(EnvironmentVariable.new('Engines_Debug_Run', false))
+  end
 
   def get_container_memory_stats(container)
     MemoryStatistics.get_container_memory_stats(container)
   end
 
   def delete_engine(container)
-    SystemDebug.debug(SystemDebug.containers,  :container_api_delete_engine,container)
+    SystemDebug.debug(SystemDebug.containers,  :container_api_delete_engine, container)
     @system_api.rm_engine_from_cache(container.container_name)
     volbuilder = @engines_core.loadManagedUtility('fsconfigurator')
     @system_api.delete_container_configs(volbuilder, container)    
@@ -24,6 +34,10 @@ module EnginesApiSystem
 
   def save_container_log(container, options)
     @system_api.save_container_log(container, options)
+  end
+  
+  def default_domain
+    @engines_core.default_domain
   end
 
   def pre_start_checks(container)

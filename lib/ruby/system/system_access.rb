@@ -63,7 +63,7 @@ class SystemAccess
 
   def default_domain
     prefs = SystemPreferences.new()
-    prefs.get_default_domain
+    prefs.default_domain
   end
 
   def internal_domain

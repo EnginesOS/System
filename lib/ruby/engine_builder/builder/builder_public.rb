@@ -112,5 +112,10 @@ class BuilderPublic
   def service_password(cnt=8)
 
   end
+  
+  def fw_user
+    @cont_user_id
+  end
+
 
 end

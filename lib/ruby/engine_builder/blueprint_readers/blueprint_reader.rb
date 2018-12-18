@@ -45,6 +45,7 @@ class BluePrintReader
   :cont_user,
   :custom_start_script,
   :custom_stop_script,
+  :custom_first_run_script,
   :custom_install_script,
   :custom_post_install_script,
   :template_files,

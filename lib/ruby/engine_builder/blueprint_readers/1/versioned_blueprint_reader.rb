@@ -11,18 +11,26 @@ class VersionedBlueprintReader < BluePrintReader
       if @blueprint[:software][:scripts].key?(:start) \
       && @blueprint[:software][:scripts][:start].key?(:content) \
       && @blueprint[:software][:scripts][:start][:content].length > 1
+        
       @custom_stop_script = @blueprint[:software][:scripts][:shutdown][:content].gsub(/\r/, '') \
       if @blueprint[:software][:scripts].key?(:shutdown) \
       &&  @blueprint[:software][:scripts][:shutdown].key?(:content) \
       &&  @blueprint[:software][:scripts][:shutdown][:content].length > 1
+           
       @custom_install_script = @blueprint[:software][:scripts][:install][:content].gsub(/\r/, '') \
       if @blueprint[:software][:scripts].key?(:install) \
       && @blueprint[:software][:scripts][:install].key?(:content)\
       &&  @blueprint[:software][:scripts][:install][:content].length > 1
+        
       @custom_post_install_script = @blueprint[:software][:scripts][:post_install][:content].gsub(/\r/, '') \
       if  @blueprint[:software][:scripts].key?(:post_install) \
       && @blueprint[:software][:scripts][:post_install].key?(:content) \
       && @blueprint[:software][:scripts][:post_install][:content].length > 1
+        @custom_first_run_script = @blueprint[:software][:scripts][:first_run][:content].gsub(/\r/, '') \
+        if @blueprint[:software][:scripts].key?(:first_run) \
+        && @blueprint[:software][:scripts][:first_run].key?(:content) \
+        && @blueprint[:software][:scripts][:first_run][:content].length > 1
+      
     end
   end
 

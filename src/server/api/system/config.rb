@@ -1,6 +1,6 @@
 # @!group /system/config/
 
-# @method get_default_domain
+# @method default_domain
 # @overload get '/v0/system/config/default_domain'
 # get the default system domain
 #
@@ -8,7 +8,7 @@
 #test cd /opt/engines/tests/engines_api/system/config ;  make default_domain
 get '/v0/system/config/default_domain' do
   begin
-    return_text( engines_api.get_default_domain)
+    return_text( engines_api.default_domain)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

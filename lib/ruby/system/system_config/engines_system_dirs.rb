@@ -25,6 +25,10 @@ module EnginesSystemDirs
   # @@KeysDir ='/var/lib/engines/services/certs/public/keys/'
   @@CertificatesDestination = '/home/engines/etc/ssl/certs/'
   @@ServiceBackupScriptsRoot = '/home/engines/scripts/backup/'
+  @@EngineServiceBackupScriptsRoot = '/home/engines/scripts/backup/engine/'
+  def SystemConfig.EngineServiceBackupScriptsRoot
+    @@EngineServiceBackupScriptsRoot
+  end
   def SystemConfig.ServiceBackupScriptsRoot
     @@ServiceBackupScriptsRoot
   end

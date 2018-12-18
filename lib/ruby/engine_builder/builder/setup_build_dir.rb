@@ -20,7 +20,7 @@ module BuildDirSetup
     end
     read_framework_user
     init_container_info_dir
-
+    save_params
     @build_params[:mapped_ports] = @blueprint_reader.mapped_ports
     SystemDebug.debug(SystemDebug.builder, :ports, @build_params[:mapped_ports])
     SystemDebug.debug(SystemDebug.builder, :attached_services, @build_params[:attached_services])
@@ -94,7 +94,7 @@ module BuildDirSetup
     if @blueprint_reader.template_files
       @blueprint_reader.template_files.each do |template_hash|
         template_hash[:path].sub!(/^\/home/,'')
-       # unless template_hash[:path].start_with?('/home') || template_hash[:path].start_with?('/usr/local') 
+        # unless template_hash[:path].start_with?('/home') || template_hash[:path].start_with?('/usr/local')
         #  template_hash[:path] = '/home/' + template_hash[:path]
         #end
         log_build_output('creating app template file:' + template_hash[:path].to_s)
@@ -232,6 +232,12 @@ module BuildDirSetup
     Dir.mkdir(local_log_dir) unless Dir.exist?(local_log_dir)
     rmt_log_dir_varfile.close unless rmt_log_dir_varfile.nil?
     ' -v ' + local_log_dir + ':' + rmt_log_dir + ':rw '
+  end
+
+  def save_params()
+    p_file = File.open( basedir + '/build_params','w')
+    p_file.write(@build_params.to_s)
+    p_file.close
   end
 
   def init_container_info_dir

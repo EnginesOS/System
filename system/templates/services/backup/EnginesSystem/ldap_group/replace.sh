@@ -1,9 +1,15 @@
-#!/bin/bash
-. /home/engines/functions/params_to_env.sh
-params_to_env
+#!/bin/sh
+
 
 uids=`cat - |grep memberUid`
 group_name=${cn}
+
+
+ if test -z $group_name
+  then
+   echo group_name cant be nill
+   exit -1
+  fi 
 
 SCRIPT=`realpath $0`
 SCRIPTPATH=`dirname $SCRIPT`

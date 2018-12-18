@@ -39,7 +39,7 @@ module DockerApiImages
     else # app
       cd = container.split(':')
       request = '/images/create?fromImage=' + cd[0]
-      unless tag.nil?
+      if tag.nil?
         tag = cd[1] if cd.length > 1
         tag.gsub!(/ /,'')
         tag.strip!

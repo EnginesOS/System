@@ -6,4 +6,4 @@ if test $container_type = service
  else
   top=Applications
 fi    
-group_dn="cn=${cn},ou=${CONTAINER_NAME},ou=$top,ou=Groups,dc=engines,dc=internal"
+group_dn="cn=${cn},ou=${parent_engine},ou=$top,ou=Groups,dc=engines,dc=internal"

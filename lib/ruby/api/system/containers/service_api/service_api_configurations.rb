@@ -27,7 +27,8 @@ module ServiceApiConfigurations
         command_line: cmd,
         log_error: true,
         timeout: @@configurator_timeout,
-        data: configurator_params[:variables].to_json })
+        configuration: configurator_params[:variables]})
+        #data: configurator_params[:variables].to_json })
     else
       {stderr: 'Not Running', result: -1}
     end

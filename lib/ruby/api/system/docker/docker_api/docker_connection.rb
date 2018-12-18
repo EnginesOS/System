@@ -126,7 +126,8 @@ class DockerConnection < ErrorsApi
       query: options,
       path: uri + '?' + options.to_s,
       headers: rheaders,
-    body: body}.to_s  )
+    #body: body.is_nil?
+    }.to_s  )
       r = sc.request(
       method: :post,
       read_timeout: 3600,
@@ -142,8 +143,8 @@ class DockerConnection < ErrorsApi
         read_timeout: 3600,
         #     query: options,
         path: uri + '?' + options.to_s,
-      headers: rheaders,
-        body: body
+      headers: rheaders ,
+        #body: body.is_nil?
       }.to_s )
       r = sc.request(
       method: :post,
