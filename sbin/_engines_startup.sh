@@ -32,7 +32,7 @@ release=`cat /opt/engines/release`
 
 CONTROL_IP=`/opt/engines/bin/system_ip.sh`
 export CONTROL_IP
-DOCKER_IP=`fconfig docker0 |grep "inet"  |head -1 | awk ' {print $2}'
+DOCKER_IP=`ifconfig docker0 |grep "inet"  |head -1 | awk ' {print $2}'`
 #DOCKER_IP=`ifconfig docker0 |grep "inet addr" |cut -f2 -d: |cut -f1 -d" "`
 export DOCKER_IP
 
