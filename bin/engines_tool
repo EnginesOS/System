@@ -1,2 +1,2 @@
-#!/bin/bash
+#!/bin/sh
 /home/engines/.rbenv/shims/ruby /opt/engines/src/client/main.rb $*

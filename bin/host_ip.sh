@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 if test $# -eq 0
 then
