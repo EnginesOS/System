@@ -1,7 +1,7 @@
 VOLUME /var/log/
 
 RUN  mkdir -p  /var/www/ ;\
-	 ln -s /home/app /var/www/html/
+	 ln -s /home/app /var/www/html
 
 ADD home/start.sh /home/engines/scripts/startup/start.sh
 
