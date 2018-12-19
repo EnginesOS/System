@@ -5,5 +5,5 @@ ADD engines home/engines
 
 ENV CONTFSVolHome /home/fs/
 
-RUN  apt-get update -y &&\
+RUN  apt-get update -y ;\
 	chown $ContUser /opt
