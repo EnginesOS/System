@@ -4,6 +4,7 @@ ADD home home
 ADD engines home/engines
 
 ENV CONTFSVolHome /home/fs/
-
+USER 0
 RUN  apt-get update -y ;\
+	mkdir  /opt
 	chown $ContUser /opt
