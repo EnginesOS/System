@@ -1,10 +1,10 @@
-STDERR.puts('+')
-require 'gctools/oobgc'
-STDERR.puts('+')
+STDERR.puts('++')
+#require 'gctools/oobgc'
+STDERR.puts('+++')
 require '/opt/engines/lib/ruby/system/engines_error.rb'
-STDERR.puts('+')
+STDERR.puts('++++')
 begin
-  STDERR.puts('+')
+  STDERR.puts('++++')
   require 'sinatra'
   require 'sinatra/streaming'
   require 'yajl'
@@ -22,7 +22,7 @@ begin
   ObjectSpace.trace_object_allocations_start
   @events_stream = nil
   $engines_api = PublicApi.new(EnginesCore.new)
-  STDERR.puts('++++')
+  STDERR.puts('++++++')
   require 'timers'
   @timers = Timers::Group.new
   @@last_error = ''
