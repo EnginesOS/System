@@ -2,7 +2,7 @@ require 'gctools/oobgc'
 require '/opt/engines/lib/ruby/system/engines_error.rb'
 
 begin
-
+  STDERR.puts('+')
   require 'sinatra'
   require 'sinatra/streaming'
   require 'yajl'
