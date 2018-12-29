@@ -1,6 +1,8 @@
+STDERR.puts('+')
 require 'gctools/oobgc'
+STDERR.puts('+')
 require '/opt/engines/lib/ruby/system/engines_error.rb'
-
+STDERR.puts('+')
 begin
   STDERR.puts('+')
   require 'sinatra'
