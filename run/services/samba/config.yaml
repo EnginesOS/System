@@ -15,14 +15,14 @@ image: _Engines_System(flavor)/samba:_Engines_System(release)
 volumes:
  fs_rw: 
   name: fs_rw
-  remotepath: "/ftp/rw/"
+  remotepath: "/rw/"
   localpath: "/var/lib/engines/apps/"
   permissions: "rw"
  fs_ro: 
   name: fs_ro
-  remotepath: "/ftp/ro/"
+  remotepath: "/ro/"
   localpath: "/var/lib/engines/apps/"
-  permissions: "rw"
+  permissions: "ro"
  homes: 
   name: homes
   remotepath: "/home/users/"
