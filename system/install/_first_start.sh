@@ -68,10 +68,9 @@ create_system_service
 }
 
 
+#now have cert so must use https to connect to system
 unset CONTROL_HTTP
 
-DOCKER_IP=`ifconfig  docker0  |grep "inet " |cut -f2 -d: |awk {'print $1}'`
-export DOCKER_IP
 
 /opt/engines/system/scripts/system/clear_service_dir.sh firstrun 
 
@@ -118,7 +117,7 @@ for service in auth mysqld cron volmgr backup ldap ftp redis smtp uadmin logrota
        then
         ext_ip=`curl -s http://ipecho.net/ |grep "Your IP is" | sed "/^.* is /s///" | sed "/<.*$/s///"`
       fi
-  	echo "Management is now at https://$lan_ip:8484/ or https://${ext_ip}:8484/"  
+  	echo "Management is now at https://${lan_ip}:8484/ or https://${ext_ip}:8484/"  
   fi
   
 #Start Wap last, as when port 80 is open it means system and mgmt is up
