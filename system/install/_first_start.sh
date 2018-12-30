@@ -1,4 +1,11 @@
 #!/bin/bash
+
+CONTROL_IP=`/opt/engines/bin/system_ip.sh`
+export CONTROL_IP
+	
+DOCKER_IP=`/opt/engines/bin/docker_ip.sh`
+export DOCKER_IP
+
 if test -f /opt/engines/bin/run/system/flags/first_start_complete
  then
   echo 'First Start already ran'
@@ -105,7 +112,7 @@ for service in auth mysqld cron volmgr backup ldap ftp redis smtp uadmin logrota
   	echo "control Started" 
   	
   	gw_ifac=`netstat -nr |grep ^0.0.0.0 | awk '{print $8}' | head -1`
-  	lan_ip=`/sbin/ifconfig $gw_ifac |grep "inet addr"  |  cut -f 2 -d: |cut -f 1 -d" "`
+  	lan_ip=`/sbin/ifconfig $gw_ifac |grep "inet "  |  awk '{print $2}'`
     ext_ip=`curl -s http://ipecho.net/ |grep "Your IP is" | sed "/^.* is /s///" | sed "/<.*$/s///"`
       if ! test -n $ext_ip
        then
