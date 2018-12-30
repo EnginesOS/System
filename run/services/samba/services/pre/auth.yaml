@@ -1,0 +1,9 @@
+parent_engine: samba
+publisher_namespace: EnginesSystem
+type_path: auth
+service_handle: samba_kerb
+container_type: service
+persistent: true
+variables:
+ parent_engine: samba
+ container_type: service
