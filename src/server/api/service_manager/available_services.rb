@@ -1,7 +1,7 @@
 # @!group /service_manager/available_services
 
 # @method services_available_for_managed_engine_type
-# @overload get '/v0//service_manager/available_services/managed_engine'
+# @overload get '/v0/service_manager/available_services/managed_engine'
 # @return [Hash]
 #:persistent => [ServiceDefinitionSummaries]
 #:non_persistent => [ServiceDefinitionSummaries]
@@ -13,7 +13,7 @@ get '/v0/service_manager/available_services/managed_engine' do
   end
 end
 # @method services_available_for_managed_engine
-# @overload get '/v0//service_manager/available_services/managed_engine/:managed_engine'
+# @overload get '/v0/service_manager/available_services/managed_engine/:managed_engine'
 # @return [Hash]
 #:persistent => [ServiceDefinitionSummaries]
 #:non_persistent => [ServiceDefinitionSummaries]
@@ -25,7 +25,7 @@ get '/v0/service_manager/available_services/managed_engine/:managed_engine' do
   end
 end
 # @method services_available_for_type
-# @overload get '/v0//service_manager/available_services/type/:type_path'
+# @overload get '/v0/service_manager/available_services/type/:type_path'
 # @return [Hash]
 #:persistent => [ServiceDefinitionSummaries]
 #:non_persistent => [ServiceDefinitionSummaries]
