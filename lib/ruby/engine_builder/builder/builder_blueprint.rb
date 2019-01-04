@@ -47,7 +47,7 @@ module BuilderBluePrint
   end
 
   def perfom_inheritance
-    BlueprintApi.perfom_inheritance(blueprint)
+   bp = BlueprintApi.perfom_inheritance(@blueprint)
     
 #    if @blueprint.key?(:software) \
 #    && @blueprint[:software].key?(:base) \
@@ -87,7 +87,8 @@ module BuilderBluePrint
 #    else
 #      STDERR.puts('NO Inherietance' + @blueprint[:software][:base].to_s)
 #    end
-
+    STDERR.puts('Parent BP ' + bp.to_s)
+    bp
   end
   
 #  def merge_bp_entry(dest, key)
