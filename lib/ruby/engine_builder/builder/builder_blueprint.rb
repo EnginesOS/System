@@ -9,7 +9,7 @@ module BuilderBluePrint
 
   def clone_repo
     if @build_params[:repository_url].end_with?('.json')
-      download_blueprint
+      process_blueprint.download_blueprint
     else
       log_build_output('Clone Blueprint Repository ' + @build_params[:repository_url])
       SystemDebug.debug(SystemDebug.builder, "get_blueprint_from_repo",@build_params[:repository_url], @build_name, SystemConfig.DeploymentDir)
