@@ -29,4 +29,92 @@ class BlueprintApi < ErrorsApi
     raise EnginesException.new(error_hash("No Blueprint File Found", statefile)) unless File.exist?(statefile)
     BlueprintApi.load_blueprint_file(statefile)
   end
+
+  def  BlueprintApi.perfom_inheritance(blueprint)
+    if blueprint.key?(:software) \
+    && blueprint[:software].key?(:base) \
+    &&  blueprint[:software][:base].key?(:inherit)
+      unless blueprint[:software][:base][:inherit].nil?
+        parent = get_blueprint_parent(blueprint[:software][:base][:inherit])
+        STDERR.puts('Parent BP ' + parent.to_s)
+      end
+      inherit = blueprint[:software][:base][:inherit]
+      merge_bp_entry(blueprint, parent, :base)
+      parent[:software][:base][:inherit] = inherit
+
+      merge_bp_entry(blueprint, parent, :installed_packages)
+      merge_bp_entry(blueprint, parent, :file_write_permissions)
+      merge_bp_entry(blueprint, parent, :workers)
+      merge_bp_entry(blueprint, parent, :replacement_strings)
+      merge_bp_entry(blueprint, parent, :system_packages)
+      merge_bp_entry(blueprint, parent, :ports)
+      merge_bp_entry(blueprint, parent, :variables)
+      merge_bp_entry(blueprint, parent, :environment_variables)
+      merge_bp_entry(blueprint, parent, :actionators)
+      merge_bp_entry(blueprint, parent, :required_modules)
+      merge_bp_entry(blueprint, parent, :scripts)
+      merge_bp_entry(blueprint, parent, :database_seed_file)
+      merge_bp_entry(blueprint, parent, :schedules)
+      merge_bp_entry(blueprint, parent, :external_repositories)
+      if blueprint[:software].key?(:framework_specific)
+        merge_bp_entry(blueprint, parent,[:framework_specific, :apache_htaccess_files])
+        merge_bp_entry(blueprint, parent,[:framework_specific, :custom_php_inis])
+        merge_bp_entry(blueprint, parent,[:framework_specific, :apache_httpd_configurations])
+        merge_bp_entry(blueprint, parent,[:framework_specific, :rake_tasks])
+      end
+
+      blueprint[:orig] = blueprint[:software]
+      blueprint[:software] = parent[:software]
+      STDERR.puts('Merged BP ' + parent.to_s)
+    else
+      STDERR.puts('NO Inherietance' + blueprint[:software][:base].to_s)
+    end
+    blueprint
+  end
+
+  def BlueprintApi.merge_bp_entry(blueprint, dest, key)
+    unless key.is_a?(Array)
+      if blueprint[:software].key?(key)
+        if blueprint[:software][key].is_a?(Hash)
+          dest[:software][key].merge!(blueprint[:software][key])
+        elsif blueprint[:software][key].is_a?(Array)
+          dest[:software][key].concat(blueprint[:software][key])
+        else
+          dest[:software][key] = blueprint[:software][key]
+        end
+      end
+    else
+      # FIXME Assumes only two keys
+      dest.merge!(blueprint[:software][key[0]][key[1]])if blueprint[:software][key[0]].key?(key[1])
+    end
+    dest
+  end
+
+  def self.download_blueprint_parent(parent_url)
+    d = basedir + '/parent_blueprint.json'
+    self.get_http_file(parent_url, d)
+  end
+
+  def self.get_blueprint_parent(parent_url)
+    self.download_blueprint_parent(parent_url)
+    load_blueprint('parent_blueprint.json')
+  end
+
+  def self.download_blueprint
+    FileUtils.mkdir_p(basedir)
+    d = basedir + '/' + File.basename(@build_params[:repository_url])
+    self.get_http_file(@build_params[:repository_url], d)
+  end
+
+  def self.get_http_file(url, d)
+    require 'open-uri'
+    download = open(url)
+    IO.copy_stream(download, d)
+  end
+
+  def self.get_blueprint_parent(parent_url)
+    self.download_blueprint_parent(parent_url)
+    load_blueprint('parent_blueprint.json')
+  end
+
 end

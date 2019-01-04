@@ -13,6 +13,22 @@ get '/v0/engine_builder/status' do
   end
 end
 
+# @method resolve_blueprint
+# @overload get '/v0/engine_builder/resolve_blueprint'
+# params [:blueprint_url]
+# Return blue print resolved for inheritence
+# @return [Hash]   blueprint
+# test   
+get '/v0/engine_builder/resolve_blueprint' do
+  begin
+    cparams = assemble_params(params, [:blueprint_url])
+    return_json(engines_api.resolve_blueprint(cparams[:blueprint_url]))
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+end
+
+
 # @method get_current_build_params
 # @overload get '/v0/engine_builder/params'
 # Return current build params
