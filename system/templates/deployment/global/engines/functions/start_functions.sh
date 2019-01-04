@@ -50,9 +50,12 @@ if ! test -f /home/engines/run/flags/first_run_done
 	  echo "Has Post install"
 	   if ! test -f /home/engines/run/flags/post_install.done
 		 then
-		  echo "Running Post Install"
-		  /bin/bash /home/engines/scripts/engine/post_install.sh 							
-		  touch /home/engines/run/flags/post_install.done			
+		  if test -f /home/engines/run/flags/started_once
+		   then		  
+		   echo "Running Post Install"
+		   /bin/sh /home/engines/scripts/engine/post_install.sh 							
+		   touch /home/engines/run/flags/post_install.done		
+		  fi	
 	  fi
   fi
 fi	
@@ -64,10 +67,10 @@ if test -f /home/engines/run/flags/restart_required
   if test -f /home/engines/run/flags/started_once
    then
   	rm -rf /home/engines/run/flags/restart_required
-  else
-    touch  /home/engines/run/flags/started_once
+  
   fi
 fi
+
 }
 
 function custom_start {

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 engines service control stop
 engines service control destroy

@@ -153,7 +153,7 @@ module Builders
     get_base_image
     setup_engine_dirs
     create_engine_image
-    GC::OOB.run
+  #  GC::OOB.run
     @container = create_engine_container
     @service_builder.release_orphans
     #  wait_for_engine

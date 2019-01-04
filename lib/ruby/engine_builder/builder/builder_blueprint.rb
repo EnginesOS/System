@@ -52,38 +52,42 @@ module BuilderBluePrint
     &&  @blueprint[:software][:base].key?(:inherit)
       unless @blueprint[:software][:base][:inherit].nil?
         parent = get_blueprint_parent(@blueprint[:software][:base][:inherit])
+          STDERR.puts('Parent BP ' + parent.to_s)
       end
-      inherit = @blueprint[:software][:base] [:inherit]
+      inherit = @blueprint[:software][:base][:inherit]
       merge_bp_entry(parent, :base)
-      parent[:software][:base][:inherit]  = inherit
+      parent[:software][:base][:inherit] = inherit
 
-      merge_bp_entry(parent,:installed_packages)
-      merge_bp_entry(parent,:file_write_permissions)
-      merge_bp_entry(parent,:file_write_permissions)
-      merge_bp_entry(parent,:workers)
-      merge_bp_entry(parent,:replacement_strings)
-
-      merge_bp_entry(parent,:ports)
-      merge_bp_entry(parent,:variables)
-      merge_bp_entry(parent,:environment_variables)
-      merge_bp_entry(parent,:actionators)
-      merge_bp_entry(parent,:required_modules)
-      merge_bp_entry(parent,:scripts)
-      merge_bp_entry(parent,:database_seed_file)
-      merge_bp_entry(parent,:schedules)
-      merge_bp_entry(parent,:external_repositories)
+      merge_bp_entry(parent, :installed_packages)
+      merge_bp_entry(parent, :file_write_permissions)
+      merge_bp_entry(parent, :workers)
+      merge_bp_entry(parent, :replacement_strings)
+      merge_bp_entry(parent, :system_packages)
+      merge_bp_entry(parent, :ports)
+      merge_bp_entry(parent, :variables)
+      merge_bp_entry(parent, :environment_variables)
+      merge_bp_entry(parent, :actionators)
+      merge_bp_entry(parent, :required_modules)
+      merge_bp_entry(parent, :scripts)
+      merge_bp_entry(parent, :database_seed_file)
+      merge_bp_entry(parent, :schedules)
+      merge_bp_entry(parent, :external_repositories)
       if @blueprint[:software].key?(:framework_specific)
         merge_bp_entry(parent,[:framework_specific, :apache_htaccess_files])
         merge_bp_entry(parent,[:framework_specific, :custom_php_inis])
         merge_bp_entry(parent,[:framework_specific, :apache_httpd_configurations])
         merge_bp_entry(parent,[:framework_specific, :rake_tasks])
       end
-
+      
+      @blueprint[:orig] = @blueprint[:software]
       @blueprint[:software] = parent[:software]
+      STDERR.puts('Merged BP ' + parent.to_s)
+    else
+      STDERR.puts('NO Inherietance' + @blueprint[:software][:base].to_s)
     end
 
   end
-
+  
   def merge_bp_entry(dest, key)
     unless key.is_a?(Array)
       if @blueprint[:software].key?(key)

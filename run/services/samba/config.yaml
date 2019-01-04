@@ -1,26 +1,26 @@
 --- !ruby/object:ManagedService
-cont_user_id: 22010
-container_name: ftp
+cont_user_id: 22019
+container_name: samba
 ctype: service
 publisher_namespace: EnginesSystem
-type_path: filesystem/service/ftp
+type_path: filesystem/service/samba
 persistent: true
 last_error: 
-memory: '56'
-hostname: ftp
+memory: '156'
+hostname: samba
 domain_name: 
 environments: []
 kerberos: true
-image: _Engines_System(flavor)/ftp:_Engines_System(release)
+image: _Engines_System(flavor)/samba:_Engines_System(release)
 volumes:
  fs_rw: 
   name: fs_rw
-  remotepath: "/ftp/rw/"
+  remotepath: "/rw/"
   localpath: "/var/lib/engines/apps/"
   permissions: "rw"
  fs_ro: 
   name: fs_ro
-  remotepath: "/ftp/ro/"
+  remotepath: "/ro/"
   localpath: "/var/lib/engines/apps/"
   permissions: "ro"
  homes: 
@@ -30,36 +30,30 @@ volumes:
   permissions: "rw" 
 port: 
 mapped_ports:
- ftp:
-  name: ftp
-  port: 21
+ microsoft-ds: 
+  name: microsoft-ds
+  port: 445
   publicFacing: true
-  external: 21
- ftp-data: 
-  name: ftp-data
-  port: 20
+  proto_type: tcp
+  external: 445
+ netbios-ns: 
+  name: netbios-ns
+  proto_type: both
+  port: 137
   publicFacing: true
-  external: 20
- ftps:
-  name: ftps
-  port: 989
+  external: 137
+ netbios-ssn: 
+  name: netbios-ssn
+  proto_type: both
+  port: 139
   publicFacing: true
-  external: 989
- ftps-data: 
-  name: ftps-data
-  port: 990
+  external: 139
+ netbios-dgm: 
+  name: netbios-dgm
+  proto_type: both
+  port: 138
   publicFacing: true
-  external: 990
- sftp:
-  name: sftp
-  port: 115
-  publicFacing: true
-  external: 115
- active_ports:
-  name: active_ports
-  port: "49900-50000"
-  publicFacing: true
-  external: "49900-50000"
+  external: 138
 repo: na
 last_result: 
 setState: running
