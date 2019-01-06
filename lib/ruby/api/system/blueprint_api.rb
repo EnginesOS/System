@@ -100,10 +100,10 @@ class BlueprintApi < ErrorsApi
     load_blueprint('parent_blueprint.json')
   end
 
-  def self.download_blueprint
+  def self.download_blueprint(repository_url)
     FileUtils.mkdir_p(basedir)
-    d = basedir + '/' + File.basename(@build_params[:repository_url])
-    self.get_http_file(@build_params[:repository_url], d)
+    d = basedir + '/' + File.basename(repository_url)
+    self.get_http_file(repository_url, d)
   end
 
   def self.get_http_file(url, d)
