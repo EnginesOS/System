@@ -1,7 +1,8 @@
 
 # @method sub_services
 # @overload get '/v0/containers/service/:service_name/sub_services'
-# return subservices attached to :service_nam
+# optional address params :engine_name, :service_handle
+# return subservices attached to :service_name
 # @return [Hash]
 #
 get '/v0/containers/service/:service_name/sub_services' do
