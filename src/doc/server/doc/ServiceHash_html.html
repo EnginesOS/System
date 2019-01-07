@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>ServiceHash.html - RDoc Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+</script>
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/darkfish.js"></script>
+
+<link href="../../css/fonts.css" rel="stylesheet">
+<link href="../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="file">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../table_of_contents.html#pages">Pages</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="project-metadata">
+    <div id="fileindex-section" class="nav-section">
+  <h3>Pages</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../../client/tests/engine/properties/network_json.html">network.json</a>
+  
+    <li><a href="../../client/tests/engine/properties/runtime_json.html">runtime.json</a>
+  
+    <li><a href="../../client/tests/engines/builder_json.html">builder.json</a>
+  
+    <li><a href="../../server/doc/Params_html.html">Params.html</a>
+  
+    <li><a href="../../server/doc/ServiceHash_html.html">ServiceHash.html</a>
+  
+    <li><a href="../../server/doc/User_html.html">User.html</a>
+  
+    <li><a href="../../server/doc/Utils_html.html">Utils.html</a>
+  
+    <li><a href="../../server/doc/_index_html.html">_index.html</a>
+  
+    <li><a href="../../server/doc/class_list_html.html">class_list.html</a>
+  
+    <li><a href="../../server/doc/css/common_css.html">common.css</a>
+  
+    <li><a href="../../server/doc/css/full_list_css.html">full_list.css</a>
+  
+    <li><a href="../../server/doc/css/style_css.html">style.css</a>
+  
+    <li><a href="../../server/doc/file_list_html.html">file_list.html</a>
+  
+    <li><a href="../../server/doc/frames_html.html">frames.html</a>
+  
+    <li><a href="../../server/doc/index_html.html">index.html</a>
+  
+    <li><a href="../../server/doc/js/app_js.html">app.js</a>
+  
+    <li><a href="../../server/doc/js/full_list_js.html">full_list.js</a>
+  
+    <li><a href="../../server/doc/js/jquery_js.html">jquery.js</a>
+  
+    <li><a href="../../server/doc/method_list_html.html">method_list.html</a>
+  
+    <li><a href="../../server/doc/top-level-namespace_html.html">top-level-namespace.html</a>
+  
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-label="Page server/doc/ServiceHash.html">
+
+<p>&lt;!DOCTYPE html PUBLIC “-//W3C//DTD XHTML 1.0 Transitional//EN”</p>
+
+<pre>&quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;</pre>
+
+<p>&lt;html xmlns=“<a
+href="http://www.w3.org/1999/xhtml">www.w3.org/1999/xhtml</a>”
+xml:lang=“en” lang=“en”&gt; &lt;head&gt; &lt;meta http-equiv=“Content-Type”
+content=“text/html; charset=utf-8” /&gt; &lt;title&gt;Module: ServiceHash
+&amp;mdash; Documentation by YARD 0.8.7.6</p>
+
+<p>&lt;/title&gt;</p>
+
+<p>&lt;link rel=“stylesheet” href=“css/style.css” type=“text/css”</p>
+
+<pre>charset=&quot;utf-8&quot; /&gt;</pre>
+
+<p>&lt;link rel=“stylesheet” href=“css/common.css” type=“text/css”</p>
+
+<pre>charset=&quot;utf-8&quot; /&gt;</pre>
+
+<p>&lt;script type=“text/javascript” charset=“utf-8”&gt;</p>
+
+<pre class="ruby"><span class="ruby-identifier">hasFrames</span> = <span class="ruby-identifier">window</span>.<span class="ruby-identifier">top</span>.<span class="ruby-identifier">frames</span>.<span class="ruby-identifier">main</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">true</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>;
+<span class="ruby-identifier">relpath</span> = <span class="ruby-string">&#39;&#39;</span>;
+<span class="ruby-identifier">framesUrl</span> = <span class="ruby-node">&quot;frames.html#!ServiceHash.html&quot;</span>;
+</pre>
+
+<p>&lt;/script&gt;</p>
+
+<p>&lt;script type=“text/javascript” charset=“utf-8”
+src=“js/jquery.js”&gt;&lt;/script&gt;</p>
+
+<p>&lt;script type=“text/javascript” charset=“utf-8”
+src=“js/app.js”&gt;&lt;/script&gt;</p>
+
+<p>&lt;/head&gt; &lt;body&gt;</p>
+
+<pre>&lt;div id=&quot;header&quot;&gt;
+        &lt;div id=&quot;menu&quot;&gt;
+
+                &lt;a href=&quot;_index.html&quot;&gt;Index (S)&lt;/a&gt; &amp;raquo; &lt;span class=&quot;title&quot;&gt;ServiceHash&lt;/span&gt;
+
+                &lt;div class=&quot;noframes&quot;&gt;
+                        &lt;span class=&quot;title&quot;&gt;(&lt;/span&gt;&lt;a href=&quot;.&quot; target=&quot;_top&quot;&gt;no frames&lt;/a&gt;&lt;span
+                                class=&quot;title&quot;&gt;)&lt;/span&gt;
+                &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div id=&quot;search&quot;&gt;
+
+                &lt;a class=&quot;full_list_link&quot; id=&quot;class_list_link&quot; href=&quot;class_list.html&quot;&gt;
+                        Class List &lt;/a&gt; &lt;a class=&quot;full_list_link&quot; id=&quot;method_list_link&quot;
+                        href=&quot;method_list.html&quot;&gt; Method List &lt;/a&gt; &lt;a class=&quot;full_list_link&quot;
+                        id=&quot;file_list_link&quot; href=&quot;file_list.html&quot;&gt; File List &lt;/a&gt;
+
+        &lt;/div&gt;
+        &lt;div class=&quot;clear&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;iframe id=&quot;search_frame&quot;&gt;&lt;/iframe&gt;
+
+&lt;div id=&quot;content&quot;&gt;
+        &lt;h1&gt;Module: ServiceHash&lt;/h1&gt;
+
+        &lt;dl class=&quot;box&quot;&gt;
+
+                &lt;dt class=&quot;r1 last&quot;&gt;Defined in:&lt;/dt&gt;
+                &lt;dd class=&quot;r1 last&quot;&gt;utils/service_hash.rb&lt;/dd&gt;
+
+        &lt;/dl&gt;
+        &lt;div class=&quot;clear&quot;&gt;&lt;/div&gt;
+
+        &lt;h2&gt;
+                Class Method Summary &lt;small&gt;(&lt;a href=&quot;#&quot;
+                        class=&quot;summary_toggle&quot;&gt;collapse&lt;/a&gt;)
+                &lt;/small&gt;
+        &lt;/h2&gt;
+
+        &lt;ul class=&quot;summary&quot;&gt;
+
+                &lt;li class=&quot;public &quot;&gt;&lt;span class=&quot;summary_signature&quot;&gt; &lt;a
+                                href=&quot;#engine_service_hash_from_params-class_method&quot;
+                                title=&quot;engine_service_hash_from_params (class method)&quot;&gt;+
+                                        (Object) &lt;strong&gt;engine_service_hash_from_params&lt;/strong&gt;(params,
+                                        search = false)
+                        &lt;/a&gt;
+
+                &lt;/span&gt; &lt;span class=&quot;summary_desc&quot;&gt;&lt;div class=&#39;inline&#39;&gt;&lt;/div&gt;&lt;/span&gt;&lt;/li&gt;
+
+                &lt;li class=&quot;public &quot;&gt;&lt;span class=&quot;summary_signature&quot;&gt; &lt;a
+                                href=&quot;#service_hash_from_params-class_method&quot;
+                                title=&quot;service_hash_from_params (class method)&quot;&gt;+ (Object) &lt;strong&gt;service_hash_from_params&lt;/strong&gt;(params,
+                                        search)
+                        &lt;/a&gt;
+
+                &lt;/span&gt; &lt;span class=&quot;summary_desc&quot;&gt;&lt;div class=&#39;inline&#39;&gt;&lt;/div&gt;&lt;/span&gt;&lt;/li&gt;
+
+                &lt;li class=&quot;public &quot;&gt;&lt;span class=&quot;summary_signature&quot;&gt; &lt;a
+                                href=&quot;#service_service_hash_from_params-class_method&quot;
+                                title=&quot;service_service_hash_from_params (class method)&quot;&gt;+
+                                        (Object) &lt;strong&gt;service_service_hash_from_params&lt;/strong&gt;(params,
+                                        search = false)
+                        &lt;/a&gt;
+
+                &lt;/span&gt; &lt;span class=&quot;summary_desc&quot;&gt;&lt;div class=&#39;inline&#39;&gt;&lt;/div&gt;&lt;/span&gt;&lt;/li&gt;
+
+        &lt;/ul&gt;
+
+        &lt;div id=&quot;class_method_details&quot; class=&quot;method_details_list&quot;&gt;
+                &lt;h2&gt;Class Method Details&lt;/h2&gt;
+
+                &lt;div class=&quot;method_details first&quot;&gt;
+                        &lt;h3 class=&quot;signature first&quot;
+                                id=&quot;engine_service_hash_from_params-class_method&quot;&gt;
+
+                                + (
+                                &lt;tt&gt;Object&lt;/tt&gt;
+                                ) &lt;strong&gt;engine_service_hash_from_params&lt;/strong&gt;(params, search =
+                                false)
+
+                        &lt;/h3&gt;
+                        &lt;table class=&quot;source_code&quot;&gt;
+                                &lt;tr&gt;
+                                        &lt;td&gt;&lt;pre class=&quot;lines&quot;&gt;</pre>
+
+<p>15 16 17 18 19 20&lt;/pre&gt;&lt;/td&gt;</p>
+
+<pre>&lt;td&gt;&lt;pre class=&quot;code&quot;&gt;
+                &lt;span class=&quot;info file&quot;&gt;# File &#39;utils/service_hash.rb&#39;, line 15&lt;/span&gt;</pre>
+
+<p>&lt;span class=&#39;kw&#39;&gt;def&lt;/span&gt; &lt;span
+class=&#39;kw&#39;&gt;self&lt;/span&gt;&lt;span</p>
+
+<pre>                                                                      class=&#39;period&#39;&gt;.&lt;/span&gt;&lt;span
+                                                                      class=&#39;id identifier rubyid_engine_service_hash_from_params&#39;&gt;engine_service_hash_from_params&lt;/span&gt;&lt;span
+                                                                      class=&#39;lparen&#39;&gt;(&lt;/span&gt;&lt;span
+                                                                      class=&#39;id identifier rubyid_params&#39;&gt;params&lt;/span&gt;&lt;span
+                                                                      class=&#39;comma&#39;&gt;,&lt;/span&gt; &lt;span
+                                                                      class=&#39;id identifier rubyid_search&#39;&gt;search&lt;/span&gt; &lt;span
+                                                                      class=&#39;op&#39;&gt;=&lt;/span&gt; &lt;span class=&#39;kw&#39;&gt;false&lt;/span&gt;&lt;span
+                                                                      class=&#39;rparen&#39;&gt;)&lt;/span&gt;
+&lt;span class=&#39;id identifier rubyid_hash&#39;&gt;hash&lt;/span&gt; &lt;span class=&#39;op&#39;&gt;=&lt;/span&gt; &lt;span
+                                                                      class=&#39;kw&#39;&gt;self&lt;/span&gt;&lt;span class=&#39;period&#39;&gt;.&lt;/span&gt;&lt;span
+                                                                      class=&#39;id identifier rubyid_service_hash_from_params&#39;&gt;service_hash_from_params&lt;/span&gt;&lt;span
+                                                                      class=&#39;lparen&#39;&gt;(&lt;/span&gt;&lt;span
+                                                                      class=&#39;id identifier rubyid_params&#39;&gt;params&lt;/span&gt;&lt;span
+                                                                      class=&#39;comma&#39;&gt;,&lt;/span&gt; &lt;span
+                                                                      class=&#39;id identifier rubyid_search&#39;&gt;search&lt;/span&gt;&lt;span
+                                                                      class=&#39;rparen&#39;&gt;)&lt;/span&gt;
+&lt;span class=&#39;id identifier rubyid_hash&#39;&gt;hash&lt;/span&gt;&lt;span
+                                                                      class=&#39;lbracket&#39;&gt;[&lt;/span&gt;&lt;span class=&#39;symbol&#39;&gt;:parent_engine&lt;/span&gt;&lt;span
+                                                                      class=&#39;rbracket&#39;&gt;]&lt;/span&gt; &lt;span class=&#39;op&#39;&gt;=&lt;/span&gt; &lt;span
+                                                                      class=&#39;id identifier rubyid_params&#39;&gt;params&lt;/span&gt;&lt;span
+                                                                      class=&#39;lbracket&#39;&gt;[&lt;/span&gt;&lt;span class=&#39;tstring&#39;&gt;&lt;span
+                                                                      class=&#39;tstring_beg&#39;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#39;tstring_content&#39;&gt;engine_name&lt;/span&gt;&lt;span
+                                                                      class=&#39;tstring_end&#39;&gt;&amp;#39;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#39;rbracket&#39;&gt;]&lt;/span&gt;
+&lt;span class=&#39;id identifier rubyid_hash&#39;&gt;hash&lt;/span&gt;&lt;span
+                                                                      class=&#39;lbracket&#39;&gt;[&lt;/span&gt;&lt;span class=&#39;symbol&#39;&gt;:container_type&lt;/span&gt;&lt;span
+                                                                      class=&#39;rbracket&#39;&gt;]&lt;/span&gt; &lt;span class=&#39;op&#39;&gt;=&lt;/span&gt; &lt;span
+                                                                      class=&#39;tstring&#39;&gt;&lt;span class=&#39;tstring_beg&#39;&gt;&amp;#39;&lt;/span&gt;&lt;span
+                                                                      class=&#39;tstring_content&#39;&gt;container&lt;/span&gt;&lt;span
+                                                                      class=&#39;tstring_end&#39;&gt;&amp;#39;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#39;id identifier rubyid_hash&#39;&gt;hash&lt;/span&gt;</pre>
+
+<p>&lt;span class=&#39;kw&#39;&gt;end&lt;/span&gt;</p>
+
+<pre>                                &lt;/pre&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+        &lt;/table&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;method_details &quot;&gt;
+        &lt;h3 class=&quot;signature &quot; id=&quot;service_hash_from_params-class_method&quot;&gt;
+
+                + (
+                &lt;tt&gt;Object&lt;/tt&gt;
+                ) &lt;strong&gt;service_hash_from_params&lt;/strong&gt;(params, search)
+
+        &lt;/h3&gt;
+        &lt;table class=&quot;source_code&quot;&gt;
+                &lt;tr&gt;
+                        &lt;td&gt;&lt;pre class=&quot;lines&quot;&gt;</pre>
+
+<p>2 3 4 5 6 7 8 9 10 11 12 13&lt;/pre&gt;&lt;/td&gt;</p>
+
+<pre>&lt;td&gt;&lt;pre class=&quot;code&quot;&gt;
+                &lt;span class=&quot;info file&quot;&gt;# File &#39;utils/service_hash.rb&#39;, line 2&lt;/span&gt;</pre>
+
+<p>&lt;span class=&#39;kw&#39;&gt;def&lt;/span&gt; &lt;span
+class=&#39;kw&#39;&gt;self&lt;/span&gt;&lt;span</p>
+
+<pre>                                                                      class=&#39;period&#39;&gt;.&lt;/span&gt;&lt;span
+                                                                      class=&#39;id identifier rubyid_service_hash_from_params&#39;&gt;service_hash_from_params&lt;/span&gt;&lt;span
+                                                                      class=&#39;lparen&#39;&gt;(&lt;/span&gt;&lt;span
+                                                                      class=&#39;id identifier rubyid_params&#39;&gt;params&lt;/span&gt;&lt;span
+                                                                      class=&#39;comma&#39;&gt;,&lt;/span&gt; &lt;span
+                                                                      class=&#39;id identifier rubyid_search&#39;&gt;search&lt;/span&gt;&lt;span
+                                                                      class=&#39;rparen&#39;&gt;)&lt;/span&gt;
+&lt;span class=&#39;id identifier rubyid_splats&#39;&gt;splats&lt;/span&gt; &lt;span
+                                                                      class=&#39;op&#39;&gt;=&lt;/span&gt; &lt;span class=&#39;id identifier rubyid_params&#39;&gt;params&lt;/span&gt;&lt;span
+                                                                      class=&#39;lbracket&#39;&gt;[&lt;/span&gt;&lt;span class=&#39;tstring&#39;&gt;&lt;span
+                                                                      class=&#39;tstring_beg&#39;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#39;tstring_content&#39;&gt;splat&lt;/span&gt;&lt;span
+                                                                      class=&#39;tstring_end&#39;&gt;&amp;#39;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#39;rbracket&#39;&gt;]&lt;/span&gt;
+&lt;span class=&#39;id identifier rubyid_hash&#39;&gt;hash&lt;/span&gt; &lt;span class=&#39;op&#39;&gt;=&lt;/span&gt; &lt;span
+                                                                      class=&#39;lbrace&#39;&gt;{&lt;/span&gt;&lt;span class=&#39;rbrace&#39;&gt;}&lt;/span&gt;
+&lt;span class=&#39;id identifier rubyid_hash&#39;&gt;hash&lt;/span&gt;&lt;span
+                                                                      class=&#39;lbracket&#39;&gt;[&lt;/span&gt;&lt;span class=&#39;symbol&#39;&gt;:publisher_namespace&lt;/span&gt;&lt;span
+                                                                      class=&#39;rbracket&#39;&gt;]&lt;/span&gt; &lt;span class=&#39;op&#39;&gt;=&lt;/span&gt; &lt;span
+                                                                      class=&#39;id identifier rubyid_params&#39;&gt;params&lt;/span&gt;&lt;span
+                                                                      class=&#39;lbracket&#39;&gt;[&lt;/span&gt;&lt;span class=&#39;tstring&#39;&gt;&lt;span
+                                                                      class=&#39;tstring_beg&#39;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#39;tstring_content&#39;&gt;publisher_namespace&lt;/span&gt;&lt;span
+                                                                      class=&#39;tstring_end&#39;&gt;&amp;#39;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#39;rbracket&#39;&gt;]&lt;/span&gt;
+&lt;span class=&#39;kw&#39;&gt;unless&lt;/span&gt; &lt;span
+                                                                      class=&#39;id identifier rubyid_search&#39;&gt;search&lt;/span&gt;
+  &lt;span class=&#39;id identifier rubyid_hash&#39;&gt;hash&lt;/span&gt;&lt;span
+                                                                      class=&#39;lbracket&#39;&gt;[&lt;/span&gt;&lt;span class=&#39;symbol&#39;&gt;:type_path&lt;/span&gt;&lt;span
+                                                                      class=&#39;rbracket&#39;&gt;]&lt;/span&gt; &lt;span class=&#39;op&#39;&gt;=&lt;/span&gt; &lt;span
+                                                                      class=&#39;const&#39;&gt;File&lt;/span&gt;&lt;span class=&#39;period&#39;&gt;.&lt;/span&gt;&lt;span
+                                                                      class=&#39;id identifier rubyid_dirname&#39;&gt;dirname&lt;/span&gt;&lt;span
+                                                                      class=&#39;lparen&#39;&gt;(&lt;/span&gt;&lt;span
+                                                                      class=&#39;id identifier rubyid_splats&#39;&gt;splats&lt;/span&gt;&lt;span
+                                                                      class=&#39;lbracket&#39;&gt;[&lt;/span&gt;&lt;span class=&#39;int&#39;&gt;0&lt;/span&gt;&lt;span
+                                                                      class=&#39;rbracket&#39;&gt;]&lt;/span&gt;&lt;span class=&#39;rparen&#39;&gt;)&lt;/span&gt;
+  &lt;span class=&#39;id identifier rubyid_hash&#39;&gt;hash&lt;/span&gt;&lt;span
+                                                                      class=&#39;lbracket&#39;&gt;[&lt;/span&gt;&lt;span class=&#39;symbol&#39;&gt;:service_handle&lt;/span&gt;&lt;span
+                                                                      class=&#39;rbracket&#39;&gt;]&lt;/span&gt; &lt;span class=&#39;op&#39;&gt;=&lt;/span&gt; &lt;span
+                                                                      class=&#39;const&#39;&gt;File&lt;/span&gt;&lt;span class=&#39;period&#39;&gt;.&lt;/span&gt;&lt;span
+                                                                      class=&#39;id identifier rubyid_basename&#39;&gt;basename&lt;/span&gt;&lt;span
+                                                                      class=&#39;lparen&#39;&gt;(&lt;/span&gt;&lt;span
+                                                                      class=&#39;id identifier rubyid_splats&#39;&gt;splats&lt;/span&gt;&lt;span
+                                                                      class=&#39;lbracket&#39;&gt;[&lt;/span&gt;&lt;span class=&#39;int&#39;&gt;0&lt;/span&gt;&lt;span
+                                                                      class=&#39;rbracket&#39;&gt;]&lt;/span&gt;&lt;span class=&#39;rparen&#39;&gt;)&lt;/span&gt;
+&lt;span class=&#39;kw&#39;&gt;else&lt;/span&gt;
+  &lt;span class=&#39;id identifier rubyid_hash&#39;&gt;hash&lt;/span&gt;&lt;span
+                                                                      class=&#39;lbracket&#39;&gt;[&lt;/span&gt;&lt;span class=&#39;symbol&#39;&gt;:type_path&lt;/span&gt;&lt;span
+                                                                      class=&#39;rbracket&#39;&gt;]&lt;/span&gt; &lt;span class=&#39;op&#39;&gt;=&lt;/span&gt;  &lt;span
+                                                                      class=&#39;id identifier rubyid_splats&#39;&gt;splats&lt;/span&gt;&lt;span
+                                                                      class=&#39;lbracket&#39;&gt;[&lt;/span&gt;&lt;span class=&#39;int&#39;&gt;0&lt;/span&gt;&lt;span
+                                                                      class=&#39;rbracket&#39;&gt;]&lt;/span&gt;
+&lt;span class=&#39;kw&#39;&gt;end&lt;/span&gt;
+&lt;span class=&#39;id identifier rubyid_hash&#39;&gt;hash&lt;/span&gt;</pre>
+
+<p>&lt;span class=&#39;kw&#39;&gt;end&lt;/span&gt;</p>
+
+<pre>                                &lt;/pre&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+        &lt;/table&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;method_details &quot;&gt;
+        &lt;h3 class=&quot;signature &quot;
+                id=&quot;service_service_hash_from_params-class_method&quot;&gt;
+
+                + (
+                &lt;tt&gt;Object&lt;/tt&gt;
+                ) &lt;strong&gt;service_service_hash_from_params&lt;/strong&gt;(params, search
+                = false)
+
+        &lt;/h3&gt;
+        &lt;table class=&quot;source_code&quot;&gt;
+                &lt;tr&gt;
+                        &lt;td&gt;&lt;pre class=&quot;lines&quot;&gt;</pre>
+
+<p>22 23 24 25 26 27&lt;/pre&gt;&lt;/td&gt;</p>
+
+<pre>&lt;td&gt;&lt;pre class=&quot;code&quot;&gt;
+                &lt;span class=&quot;info file&quot;&gt;# File &#39;utils/service_hash.rb&#39;, line 22&lt;/span&gt;</pre>
+
+<p>&lt;span class=&#39;kw&#39;&gt;def&lt;/span&gt; &lt;span
+class=&#39;kw&#39;&gt;self&lt;/span&gt;&lt;span</p>
+
+<pre>                                                                      class=&#39;period&#39;&gt;.&lt;/span&gt;&lt;span
+                                                                      class=&#39;id identifier rubyid_service_service_hash_from_params&#39;&gt;service_service_hash_from_params&lt;/span&gt;&lt;span
+                                                                      class=&#39;lparen&#39;&gt;(&lt;/span&gt;&lt;span
+                                                                      class=&#39;id identifier rubyid_params&#39;&gt;params&lt;/span&gt;&lt;span
+                                                                      class=&#39;comma&#39;&gt;,&lt;/span&gt; &lt;span
+                                                                      class=&#39;id identifier rubyid_search&#39;&gt;search&lt;/span&gt; &lt;span
+                                                                      class=&#39;op&#39;&gt;=&lt;/span&gt; &lt;span class=&#39;kw&#39;&gt;false&lt;/span&gt;&lt;span
+                                                                      class=&#39;rparen&#39;&gt;)&lt;/span&gt;
+&lt;span class=&#39;id identifier rubyid_hash&#39;&gt;hash&lt;/span&gt; &lt;span class=&#39;op&#39;&gt;=&lt;/span&gt; &lt;span
+                                                                      class=&#39;kw&#39;&gt;self&lt;/span&gt;&lt;span class=&#39;period&#39;&gt;.&lt;/span&gt;&lt;span
+                                                                      class=&#39;id identifier rubyid_service_hash_from_params&#39;&gt;service_hash_from_params&lt;/span&gt;&lt;span
+                                                                      class=&#39;lparen&#39;&gt;(&lt;/span&gt;&lt;span
+                                                                      class=&#39;id identifier rubyid_params&#39;&gt;params&lt;/span&gt;&lt;span
+                                                                      class=&#39;comma&#39;&gt;,&lt;/span&gt; &lt;span
+                                                                      class=&#39;id identifier rubyid_search&#39;&gt;search&lt;/span&gt;&lt;span
+                                                                      class=&#39;rparen&#39;&gt;)&lt;/span&gt;
+&lt;span class=&#39;id identifier rubyid_hash&#39;&gt;hash&lt;/span&gt;&lt;span
+                                                                      class=&#39;lbracket&#39;&gt;[&lt;/span&gt;&lt;span class=&#39;symbol&#39;&gt;:parent_engine&lt;/span&gt;&lt;span
+                                                                      class=&#39;rbracket&#39;&gt;]&lt;/span&gt; &lt;span class=&#39;op&#39;&gt;=&lt;/span&gt; &lt;span
+                                                                      class=&#39;id identifier rubyid_params&#39;&gt;params&lt;/span&gt;&lt;span
+                                                                      class=&#39;lbracket&#39;&gt;[&lt;/span&gt;&lt;span class=&#39;tstring&#39;&gt;&lt;span
+                                                                      class=&#39;tstring_beg&#39;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#39;tstring_content&#39;&gt;service_name&lt;/span&gt;&lt;span
+                                                                      class=&#39;tstring_end&#39;&gt;&amp;#39;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#39;rbracket&#39;&gt;]&lt;/span&gt;
+&lt;span class=&#39;id identifier rubyid_hash&#39;&gt;hash&lt;/span&gt;&lt;span
+                                                                      class=&#39;lbracket&#39;&gt;[&lt;/span&gt;&lt;span class=&#39;symbol&#39;&gt;:container_type&lt;/span&gt;&lt;span
+                                                                      class=&#39;rbracket&#39;&gt;]&lt;/span&gt; &lt;span class=&#39;op&#39;&gt;=&lt;/span&gt; &lt;span
+                                                                      class=&#39;tstring&#39;&gt;&lt;span class=&#39;tstring_beg&#39;&gt;&amp;#39;&lt;/span&gt;&lt;span
+                                                                      class=&#39;tstring_content&#39;&gt;service&lt;/span&gt;&lt;span class=&#39;tstring_end&#39;&gt;&amp;#39;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&#39;kw&#39;&gt;return&lt;/span&gt; &lt;span class=&#39;id identifier rubyid_hash&#39;&gt;hash&lt;/span&gt;</pre>
+
+<p>&lt;span class=&#39;kw&#39;&gt;end&lt;/span&gt;</p>
+
+<pre>                                                &lt;/pre&gt;&lt;/td&gt;
+                                &lt;/tr&gt;
+                        &lt;/table&gt;
+                &lt;/div&gt;
+
+        &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div id=&quot;footer&quot;&gt;
+        Generated on Mon Oct 24 14:06:07 2016 by &lt;a href=&quot;http://yardoc.org&quot;
+                title=&quot;Yay! A Ruby Documentation Tool&quot; target=&quot;_parent&quot;&gt;yard&lt;/a&gt;
+        0.8.7.6 (ruby-2.2.5).
+&lt;/div&gt;</pre>
+
+<p>&lt;/body&gt; &lt;/html&gt;</p>
+</main>
+
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

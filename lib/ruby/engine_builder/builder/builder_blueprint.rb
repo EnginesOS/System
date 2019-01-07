@@ -9,7 +9,7 @@ module BuilderBluePrint
 
   def clone_repo
     if @build_params[:repository_url].end_with?('.json')
-      process_blueprint.download_blueprint
+      BlueprintApi.download_blueprint(basedir, @build_params[:repository_url])
     else
       log_build_output('Clone Blueprint Repository ' + @build_params[:repository_url])
       SystemDebug.debug(SystemDebug.builder, "get_blueprint_from_repo",@build_params[:repository_url], @build_name, SystemConfig.DeploymentDir)
@@ -121,7 +121,7 @@ module BuilderBluePrint
         version =  @blueprint[:schema][:version][:minor]
       end
 
-      @blueprint =  perfom_inheritance(@blueprint)
+      @blueprint =  perfom_inheritance
 
       unless File.exist?('/opt/engines/lib/ruby/engine_builder/blueprint_readers/' + version.to_s + '/versioned_blueprint_reader.rb')
         raise EngineBuilderException.new(error_hash('Failed to create Managed Container invalid blueprint schema'))

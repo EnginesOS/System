@@ -35,7 +35,7 @@ class BlueprintApi < ErrorsApi
     && blueprint[:software].key?(:base) \
     &&  blueprint[:software][:base].key?(:inherit)
       unless blueprint[:software][:base][:inherit].nil?
-        parent = get_blueprint_parent(blueprint[:software][:base][:inherit])
+        parent = get_blueprint_parent( blueprint[:software][:base][:inherit])
         STDERR.puts('Parent BP ' + parent.to_s)
       end
       inherit = blueprint[:software][:base][:inherit]
@@ -91,19 +91,19 @@ class BlueprintApi < ErrorsApi
   end
 
   def self.download_blueprint_parent(parent_url)
-    d = basedir + '/parent_blueprint.json'
+    d = '/tmp/parent_blueprint.json'
     self.get_http_file(parent_url, d)
   end
 
   def self.get_blueprint_parent(parent_url)
     self.download_blueprint_parent(parent_url)
-    load_blueprint('parent_blueprint.json')
+    load_blueprint('/tmp/parent_blueprint.json')
   end
 
-  def self.download_blueprint
+  def self.download_blueprint(basedir, repository_url)
     FileUtils.mkdir_p(basedir)
-    d = basedir + '/' + File.basename(@build_params[:repository_url])
-    self.get_http_file(@build_params[:repository_url], d)
+    d = basedir + '/' + File.basename(repository_url)
+    self.get_http_file(repository_url, d)
   end
 
   def self.get_http_file(url, d)
