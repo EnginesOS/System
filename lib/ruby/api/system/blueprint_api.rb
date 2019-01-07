@@ -35,7 +35,7 @@ class BlueprintApi < ErrorsApi
     && blueprint[:software].key?(:base) \
     &&  blueprint[:software][:base].key?(:inherit)
       unless blueprint[:software][:base][:inherit].nil?
-        parent = get_blueprint_parent('/tmp/', blueprint[:software][:base][:inherit])
+        parent = get_blueprint_parent( blueprint[:software][:base][:inherit])
         STDERR.puts('Parent BP ' + parent.to_s)
       end
       inherit = blueprint[:software][:base][:inherit]

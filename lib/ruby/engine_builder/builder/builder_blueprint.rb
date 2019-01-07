@@ -121,7 +121,7 @@ module BuilderBluePrint
         version =  @blueprint[:schema][:version][:minor]
       end
 
-      @blueprint =  perfom_inheritance(@blueprint)
+      @blueprint =  perfom_inheritance
 
       unless File.exist?('/opt/engines/lib/ruby/engine_builder/blueprint_readers/' + version.to_s + '/versioned_blueprint_reader.rb')
         raise EngineBuilderException.new(error_hash('Failed to create Managed Container invalid blueprint schema'))
