@@ -41,5 +41,8 @@ module PublicApiBuilder
       out.write(bytes.force_encoding(Encoding::UTF_8))
     end
   end
-
+  
+def resolve_blueprint
+  
+end
 end

@@ -1,6 +1,6 @@
-after do
-  GC::OOB.run
-end
+#after do
+#  GC::OOB.run
+#end
 require_relative 'auth/login.rb'
 require_relative 'containers/routes.rb'
 require_relative 'registry/registry.rb'

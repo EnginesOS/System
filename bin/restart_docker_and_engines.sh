@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 service engines stop
 service docker start

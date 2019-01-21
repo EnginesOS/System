@@ -125,6 +125,7 @@ module EnginesOperations
       if engines[:children].is_a?(Array)
         engines[:children].each do |engine_node|
           name = engine_node[:name]
+            next if name == 'system' || name == 'registry' 
           begin
             t = loadManagedEngine(name)
           rescue

@@ -15,6 +15,13 @@ rm `find /opt/engines/run -name lock`
 
 /opt/engines/system/scripts/system/rotate_system_log.sh
 
+#Clear fsconfigurator
+docker ps -a |grep fsconfig
+ if test $? -eq 0
+  then
+   docker stop fsconfigurator
+   docker rm fsconfigurator
+  fi
 if test -f ~/.complete_update
 then
    /opt/engines/system/scripts/update/finish_update.sh  
@@ -25,8 +32,8 @@ release=`cat /opt/engines/release`
 
 CONTROL_IP=`/opt/engines/bin/system_ip.sh`
 export CONTROL_IP
-
-DOCKER_IP=`ifconfig docker0 |grep "inet addr" |cut -f2 -d: |cut -f1 -d" "`
+DOCKER_IP=`ifconfig docker0 |grep "inet"  |head -1 | awk ' {print $2}'`
+#DOCKER_IP=`ifconfig docker0 |grep "inet addr" |cut -f2 -d: |cut -f1 -d" "`
 export DOCKER_IP
 
 sudo -n /opt/engines/system/scripts/startup/sudo/_check_local-kv.sh  

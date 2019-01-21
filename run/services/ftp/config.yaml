@@ -22,7 +22,7 @@ volumes:
   name: fs_ro
   remotepath: "/ftp/ro/"
   localpath: "/var/lib/engines/apps/"
-  permissions: "rw"
+  permissions: "ro"
  homes: 
   name: homes
   remotepath: "/home/users/"
