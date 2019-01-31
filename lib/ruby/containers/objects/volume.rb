@@ -31,7 +31,7 @@ class Volume < StaticService #Latter will include group and perhaps other attrib
     unless service_hash[:variables].key?(:volume_src)
       service_hash[:variables][:volume_src] = '/' # self.default_volume_name(service_hash)
     end
-    service_hash[:variables][:volume_src].strip!
+    service_hash[:variables][:volume_src].strip! unless service_hash[:variables][:volume_src].nil?
 
     if service_hash[:variables][:volume_src].to_s == ''
       service_hash[:variables][:volume_src]  = '/' # self.default_volume_name(service_hash)

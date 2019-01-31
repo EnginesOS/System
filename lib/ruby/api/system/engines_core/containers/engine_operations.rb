@@ -127,9 +127,11 @@ module EnginesOperations
           name = engine_node[:name]
             next if name == 'system' || name == 'registry' 
           begin
+            STDERR.puts('load ' + name.to_s)
             t = loadManagedEngine(name)
           rescue
             r.push(name)
+            STDERR.puts('remove engines services ' + name.to_s)
             remove_engine_services(
             {container_type: 'app', remove_all_data: 'none', parent_engine: name})
             next
