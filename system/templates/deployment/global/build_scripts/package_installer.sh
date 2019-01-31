@@ -37,7 +37,7 @@ echo Install to $destination
        url=`echo $source_url |sed "/https:../s///"`
        source_url=https://${git_credentials}@$source_url
    fi    
-  	git clone $source_url $download_options --depth 1 "./$path_to_extracted"
+  	git  clone $download_options --depth 1  $source_url "./$path_to_extracted"
   elif  test -z "$extraction_command" 
   	 then
   	  wget $download_options -O $package_name $source_url
