@@ -35,7 +35,7 @@ echo Install to $destination
     if ! test -z git_credentials
       then
        url=`echo $source_url |sed "/https:../s///"`
-       source_url=https://${git_credentials}@$source_url
+       source_url=https://${git_credentials}@$url
    fi    
   	git  clone $download_options --depth 1  $source_url "./$path_to_extracted"
   elif  test -z "$extraction_command" 
