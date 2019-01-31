@@ -25,6 +25,11 @@ echo Install to $destination
 
  if test "$extraction_command" = 'git'
   then
+    if ! test -z git_credentials
+      then
+       url=`echo $source_url |sed "/https:../s///"`
+       source_url=https://${git_credentials}@$source_url
+   fi    
   	git clone $source_url --depth 1 "./$path_to_extracted"
   elif  test -z "$extraction_command" 
   	 then
