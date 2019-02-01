@@ -53,7 +53,7 @@ def read_stdin_json
 end
 
 def perform_get(time_out = 34, params = {} )
-  r = rest_get(@route, time_out)
+  r = rest_get(@route, time_out ,params)
   write_response(r)
   exit
 end
