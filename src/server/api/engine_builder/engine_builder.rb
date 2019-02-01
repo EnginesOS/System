@@ -22,7 +22,7 @@ end
 get '/v0/engine_builder/resolve_blueprint' do
   begin
     cparams = assemble_params(params, [:blueprint_url])
-    return_json(engines_api.perform_inheritance(cparams[:blueprint_url]))
+    return_json(engines_api.resolve_blueprint(cparams[:blueprint_url]))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
