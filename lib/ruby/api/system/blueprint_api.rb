@@ -101,7 +101,7 @@ class BlueprintApi < ErrorsApi
 
   def self.get_blueprint_parent(parent_url)
     self.download_blueprint_parent(parent_url)
-    self.load_blueprint('/tmp/parent_blueprint.json')
+    self.load_blueprint_file('/tmp/parent_blueprint.json')
   end
 
   def self.download_blueprint(basedir, repository_url)
