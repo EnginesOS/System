@@ -30,11 +30,11 @@ class BlueprintApi < ErrorsApi
     BlueprintApi.load_blueprint_file(statefile)
   end
   
-  def  BlueprintApi.perform_inheritance_f(blueprint_url)
+  def  self.perform_inheritance_f(blueprint_url)
     BlueprintApi.perform_inheritance(sel.get_blueprint_parent(blueprint_url))
   end 
 
-  def  BlueprintApi.perform_inheritance(blueprint)
+  def  self.perform_inheritance(blueprint)
     if blueprint.key?(:software) \
     && blueprint[:software].key?(:base) \
     &&  blueprint[:software][:base].key?(:inherit)
