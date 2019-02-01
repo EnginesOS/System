@@ -46,8 +46,8 @@ module BuilderBluePrint
     clone_repo
   end
 
-  def perfom_inheritance
-   bp = BlueprintApi.perfom_inheritance(@blueprint)
+  def perform_inheritance
+   bp = BlueprintApi.perform_inheritance(@blueprint)
     
 #    if @blueprint.key?(:software) \
 #    && @blueprint[:software].key?(:base) \
@@ -121,7 +121,7 @@ module BuilderBluePrint
         version =  @blueprint[:schema][:version][:minor]
       end
 
-      @blueprint =  perfom_inheritance
+      @blueprint =  perform_inheritance
 
       unless File.exist?('/opt/engines/lib/ruby/engine_builder/blueprint_readers/' + version.to_s + '/versioned_blueprint_reader.rb')
         raise EngineBuilderException.new(error_hash('Failed to create Managed Container invalid blueprint schema'))
