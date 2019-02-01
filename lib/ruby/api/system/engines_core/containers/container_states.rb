@@ -12,4 +12,7 @@ module ContainerStates
      
 end
 
+  def user_clear_error(container)
+    container.user_clear_error
+  end
 end

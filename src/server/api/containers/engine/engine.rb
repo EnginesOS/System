@@ -170,7 +170,7 @@ end
 get '/v0/containers/engine/:engine_name/clear_error' do
   begin
     engine = get_engine(params[:engine_name])
-    return_boolean(engine.clear_error)
+    return_boolean(engines_api.user_clear_error(engine)) #engine.clear_error)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
