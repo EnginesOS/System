@@ -42,7 +42,7 @@ module PublicApiBuilder
     end
   end
   
-def resolve_blueprint
-  
+def resolve_blueprint(blueprint_url)
+  BlueprintApi.perform_inheritance_f(blueprint_url)
 end
 end

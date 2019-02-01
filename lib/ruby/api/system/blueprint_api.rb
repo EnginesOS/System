@@ -29,8 +29,12 @@ class BlueprintApi < ErrorsApi
     raise EnginesException.new(error_hash("No Blueprint File Found", statefile)) unless File.exist?(statefile)
     BlueprintApi.load_blueprint_file(statefile)
   end
+  
+  def  BlueprintApi.perform_inheritance_f(blueprint_url)
+    BlueprintApi.perform_inheritance(self.get_blueprint_parent(blueprint_url))
+  end 
 
-  def  BlueprintApi.perfom_inheritance(blueprint)
+  def  BlueprintApi.perform_inheritance(blueprint)
     if blueprint.key?(:software) \
     && blueprint[:software].key?(:base) \
     &&  blueprint[:software][:base].key?(:inherit)
@@ -112,6 +116,8 @@ class BlueprintApi < ErrorsApi
     IO.copy_stream(download, d)
   end
 
+  
+  
   def self.get_blueprint_parent(parent_url)
     self.download_blueprint_parent(parent_url)
     load_blueprint('parent_blueprint.json')
