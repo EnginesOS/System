@@ -142,6 +142,7 @@ def rest_get(uri, time_out = 135, params = nil)
   if params.nil?
     connection.request({read_timeout: time_out, method: :get, path: uri})
   else
+    STDERR.puts('Got Params ' +params.to_s)
     connection.request({read_timeout: time_out, method: :get, path: uri, body: params.to_json})
   end
 rescue Excon::Error::Socket => e
