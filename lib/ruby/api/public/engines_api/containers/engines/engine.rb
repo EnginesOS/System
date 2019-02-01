@@ -14,5 +14,7 @@ module PublicApiEngine
   def reinstall_engine(engine)
     @core_api.reinstall_engine(engine)
   end
-
+  def user_clear_error(container)
+    @core_api.user_clear_error(container)
+  end
 end

@@ -31,8 +31,13 @@ echo Extract with $extraction_command from  $package_name to $path_to_extracted
 echo Install to $destination
 
  if test "$download_type" = 'git'
-  then
-  	git clone $source_url $download_options --depth 1 "./$path_to_extracted"
+  then   
+    if ! test -z git_username
+      then
+       url=`echo $source_url |sed "/https:../s///"`
+       source_url=https://${git_username}:${git_password}@$url
+   fi    
+  	git  clone $download_options --depth 1  $source_url "./$path_to_extracted"
   elif  test -z "$extraction_command" 
   	 then
   	  wget $download_options -O $package_name $source_url
