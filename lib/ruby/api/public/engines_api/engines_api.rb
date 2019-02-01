@@ -1,5 +1,5 @@
 require '/opt/engines/lib/ruby/api/system/errors_api.rb'
-require '/opt/engines/lib/ruby/api/system/blueprint_api.rb'
+
 require_relative 'engines_public_api_error.rb'
 
 class PublicApi < ErrorsApi
