@@ -52,7 +52,7 @@ def read_stdin_json
   json_parser.parse(read_stdin_data)
 end
 
-def perform_get(time_out = 34)
+def perform_get(time_out = 34, params = {} )
   r = rest_get(@route, time_out)
   write_response(r)
   exit
