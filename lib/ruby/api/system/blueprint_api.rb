@@ -118,9 +118,9 @@ class BlueprintApi < ErrorsApi
 
   
   
-  def self.get_blueprint_parent(parent_url)
-    self.download_blueprint_parent(parent_url)
-   
-  end
+#  def self.get_blueprint_parent(parent_url)
+ #  self.download_blueprint_parent(parent_url)
+#   
+#  end
 
 end
