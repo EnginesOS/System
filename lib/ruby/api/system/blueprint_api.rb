@@ -31,7 +31,7 @@ class BlueprintApi < ErrorsApi
   end
   
   def  self.perform_inheritance_f(blueprint_url)
-    BlueprintApi.perform_inheritance(sel.get_blueprint_parent(blueprint_url))
+    BlueprintApi.perform_inheritance(self.get_blueprint_parent(blueprint_url))
   end 
 
   def  self.perform_inheritance(blueprint)
