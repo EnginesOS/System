@@ -18,6 +18,7 @@ class BlueprintApi < ErrorsApi
     parser = Yajl::Parser.new
     json_hash = parser.parse(blueprint_file.read)
     blueprint_file.close
+    STDERR.puts('read:' + json_hash.to_s)
     json_hash
 
   end
@@ -41,6 +42,8 @@ class BlueprintApi < ErrorsApi
       unless blueprint[:software][:base][:inherit].nil?
         parent = get_blueprint_parent( blueprint[:software][:base][:inherit])
         STDERR.puts('Parent BP ' + parent.to_s)
+      else
+        STDERR.puts('NO Inherietance' + blueprint[:software][:base].to_s)  
       end
       inherit = blueprint[:software][:base][:inherit]
       merge_bp_entry(blueprint, parent, :base)
@@ -71,7 +74,7 @@ class BlueprintApi < ErrorsApi
       blueprint[:software] = parent[:software]
       STDERR.puts('Merged BP ' + parent.to_s)
     else
-      STDERR.puts('NO Inherietance' + blueprint[:software][:base].to_s)
+      STDERR.puts('NO blueprint' + blueprint.to_s)
     end
     blueprint
   end
@@ -93,7 +96,14 @@ class BlueprintApi < ErrorsApi
     end
     dest
   end
-
+def self.download_blueprint(url)
+   d = '/tmp/blueprint.json'
+   self.get_http_file(url, d)
+  self.load_blueprint_file('/tmp/blueprint.json')
+ end
+ 
+ 
+ 
   def self.download_blueprint_parent(parent_url)
     d = '/tmp/parent_blueprint.json'
     self.get_http_file(parent_url, d)
