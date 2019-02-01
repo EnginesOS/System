@@ -13,7 +13,7 @@ class BlueprintApi < ErrorsApi
     f.close
   end
 
-  def self.load_blueprint_file(blueprint_file_name)
+  def self.download_blueprint(blueprint_file_name)
     blueprint_file = File.open(blueprint_file_name, 'r')
     parser = Yajl::Parser.new
     json_hash = parser.parse(blueprint_file.read)
@@ -32,7 +32,7 @@ class BlueprintApi < ErrorsApi
   end
   
   def  self.perform_inheritance_f(blueprint_url)
-    BlueprintApi.perform_inheritance(self.get_blueprint_parent(blueprint_url))
+    BlueprintApi.perform_inheritance(self.load_blueprint_file(blueprint_url))
   end 
 
   def  self.perform_inheritance(blueprint)
