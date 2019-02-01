@@ -31,7 +31,7 @@ class BlueprintApi < ErrorsApi
   end
   
   def  BlueprintApi.perform_inheritance_f(blueprint_url)
-    BlueprintApi.perform_inheritance(self.get_blueprint_parent(blueprint_url))
+    BlueprintApi.perform_inheritance(sel.get_blueprint_parent(blueprint_url))
   end 
 
   def  BlueprintApi.perform_inheritance(blueprint)
@@ -101,7 +101,7 @@ class BlueprintApi < ErrorsApi
 
   def self.get_blueprint_parent(parent_url)
     self.download_blueprint_parent(parent_url)
-    load_blueprint('/tmp/parent_blueprint.json')
+    self.load_blueprint('/tmp/parent_blueprint.json')
   end
 
   def self.download_blueprint(basedir, repository_url)
@@ -120,7 +120,7 @@ class BlueprintApi < ErrorsApi
   
   def self.get_blueprint_parent(parent_url)
     self.download_blueprint_parent(parent_url)
-    load_blueprint('parent_blueprint.json')
+   
   end
 
 end
