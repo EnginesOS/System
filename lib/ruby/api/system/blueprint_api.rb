@@ -116,7 +116,7 @@ def self.download_blueprint(url)
     self.load_blueprint_file('/tmp/parent_blueprint.json')
   end
 
-  def self.download_blueprint(basedir, repository_url)
+  def self.download_and_save_blueprint(basedir, repository_url)
     FileUtils.mkdir_p(basedir)
     d = basedir + '/' + File.basename(repository_url)
     self.get_http_file(repository_url, d)
