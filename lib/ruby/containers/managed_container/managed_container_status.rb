@@ -71,6 +71,7 @@ module ManagedContainerStatus
   end
 
   def clear_error
+    #Sychronise somewhere
     @out_of_memory = false
     @had_out_memory = false
     save_state

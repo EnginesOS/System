@@ -123,6 +123,9 @@ rm /opt/engines/run/system/flags/system_starting
 if test -f ~/.complete_install
 then
    /opt/engines/system/install/complete_install.sh 
+ else
+   engines service_manager orphan_lost_services
+   engines engines clear_lost
 fi 
 
 

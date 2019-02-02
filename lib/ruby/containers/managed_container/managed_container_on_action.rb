@@ -31,6 +31,12 @@ module ManagedContainerOnAction
       @container_api.register_ports(@container_name, @mapped_ports) if @mapped_ports.is_a?(Hash)
     }
   end
+  
+  def user_clear_error
+    @container_mutex.synchronize {
+      clear_error
+    }
+  end
 
   def on_create(event_hash)
     @container_mutex.synchronize {

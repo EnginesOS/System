@@ -42,7 +42,8 @@ module PublicApiBuilder
     end
   end
   
-def resolve_blueprint
-  
+def resolve_blueprint(blueprint_url)
+  require '/opt/engines/lib/ruby/api/system/blueprint_api.rb'
+  BlueprintApi.perform_inheritance_f(blueprint_url)
 end
 end
