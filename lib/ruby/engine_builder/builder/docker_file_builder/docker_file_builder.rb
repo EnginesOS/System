@@ -212,6 +212,7 @@ class DockerFileBuilder
           unless repo[:key].nil?
             write_run_line('wget -qO - ' + repo[:key] + ' | apt-key add -')
          end
+        end
         write_run_line('add-apt-repository  -y  ' + repo[:source])
       end
       write_run_line('apt-get -y update ')
