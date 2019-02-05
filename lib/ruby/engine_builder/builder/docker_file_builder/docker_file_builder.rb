@@ -208,6 +208,10 @@ class DockerFileBuilder
       write_comment('#Repositories')
       @blueprint_reader.external_repositories.each do |repo|
         next unless repo.key?(:source)
+        if repo.key?(:key) 
+          unless repo[:key].nil?
+            write_run_line('wget -qO - ' + repo[:key] + ' | apt-key add -')
+         end
         write_run_line('add-apt-repository  -y  ' + repo[:source])
       end
       write_run_line('apt-get -y update ')
