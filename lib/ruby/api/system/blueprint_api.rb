@@ -84,7 +84,7 @@ class BlueprintApi < ErrorsApi
     STDERR.puts('Parent BP ' + blueprint.to_s + "\n is a " + blueprint.class.name)
     STDERR.puts('dest BP ' + dest.to_s + "\n is a " + dest.class.name)
     STDERR.puts('key BP ' + key.to_s + " is a " + key.class.name)
-    STDERR.puts('dest software[' + key.to + ']' + blueprint[:software][key] + "\nis a " +  blueprint[:software][key].class.name)
+    STDERR.puts('dest software[' + key.to_s + ']' + blueprint[:software][key].to_s + "\nis a " +  blueprint[:software][key].class.name)
     unless key.is_a?(Array)
       if blueprint[:software].key?(key)
         if blueprint[:software][key].is_a?(Hash)
