@@ -81,7 +81,7 @@ class BlueprintApi < ErrorsApi
   end
 
   def self.merge_bp_entry(blueprint, dest, key)
-    STDERR.puts('Parent BP ' + parent.to_s + "\n is a " + parent.class.name)
+    STDERR.puts('Parent BP ' + blueprint.to_s + "\n is a " + blueprint.class.name)
     STDERR.puts('dest BP ' + dest.to_s + "\n is a " + dest.class.name)
     STDERR.puts('key BP ' + dest.to_s + "\n is a " + key.class.name)
     unless key.is_a?(Array)
