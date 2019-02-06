@@ -3,8 +3,7 @@ require 'git'
 module BuilderBluePrint
   def load_blueprint(bp_name = 'blueprint.json')
     log_build_output('Reading Blueprint')
-    json_hash = BlueprintApi.load_blueprint_file(basedir + '/' + bp_name)
-    symbolize_keys(json_hash)
+    BlueprintApi.load_blueprint_file(basedir + '/' + bp_name)    
   end
 
   def clone_repo
