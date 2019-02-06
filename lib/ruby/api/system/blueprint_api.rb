@@ -19,6 +19,7 @@ class BlueprintApi < ErrorsApi
     json_hash = parser.parse(blueprint_file.read)
     blueprint_file.close
     STDERR.puts('read:' + json_hash.to_s)
+    symbolize_keys(json_hash)
     json_hash
 
   end
