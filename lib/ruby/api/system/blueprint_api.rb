@@ -82,14 +82,17 @@ class BlueprintApi < ErrorsApi
 
   def self.merge_bp_entry(blueprint, dest, key)
    # STDERR.puts('Parent BP ' + blueprint.to_s + "\n is a " + blueprint.class.name)
+    STDERR.puts("\n\n\n\n")
+    STDERR.puts('key BP ' + key.to_s + " is a " + key.class.name)
     STDERR.puts('dest BP ' + dest.to_s + "\n is a " + dest.class.name)
+    STDERR.puts("\n\n\n\n")
     STDERR.puts('key BP ' + key.to_s + " is a " + key.class.name)
     STDERR.puts('dest software[' + key.to_s + ']' + dest[:software].to_s  + "\nis a " +  dest[:software].class.name)
     unless key.is_a?(Array)
       if blueprint[:software].key?(key)
         if blueprint[:software][key].is_a?(Hash)
           if dest[:software][key].nil?
-            dest[:software][key]=blueprint[:software][key]
+            dest[:software][key] = blueprint[:software][key]
           else
             dest[:software][key].merge!(blueprint[:software][key])
           end
