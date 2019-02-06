@@ -42,7 +42,7 @@ class BlueprintApi < ErrorsApi
     &&  blueprint[:software][:base].key?(:inherit)
       unless blueprint[:software][:base][:inherit].nil?
         parent = get_blueprint_parent( blueprint[:software][:base][:inherit])
-        STDERR.puts('Parent BP ' + parent.to_s)
+        STDERR.puts('Parent BP ' + parent.to_s + "\n is a " + parent.class.name)
       else
         STDERR.puts('NO Inherietance' + blueprint[:software][:base].to_s)
       end
@@ -80,7 +80,7 @@ class BlueprintApi < ErrorsApi
     blueprint
   end
 
-  def BlueprintApi.merge_bp_entry(blueprint, dest, key)
+  def self.merge_bp_entry(blueprint, dest, key)
     unless key.is_a?(Array)
       if blueprint[:software].key?(key)
         if blueprint[:software][key].is_a?(Hash)
