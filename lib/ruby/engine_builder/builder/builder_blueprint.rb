@@ -128,7 +128,7 @@ module BuilderBluePrint
       require '/opt/engines/lib/ruby/engine_builder/blueprint_readers/' + version.to_s + '/versioned_blueprint_reader.rb'
     end
 
-    log_build_output('Using Blueprint Schema ' + version.to_s + ' ' + @blueprint[:origin].to_s)
+    log_build_output('Using Blueprint Schema ' + version.to_s + ' Inheriting from arent ' + @blueprint[:origin].to_s)
 
     @blueprint_reader = VersionedBlueprintReader.new(@build_params[:engine_name], @blueprint, self)
     @blueprint_reader.process_blueprint
