@@ -132,7 +132,7 @@ class BlueprintApi < ErrorsApi
     FileUtils.mkdir_p(basedir)
     d = basedir + '/' + File.basename(repository_url)
     self.get_http_file(repository_url, d)
-    download = open(url)
+   # download = open(url)
    # bp_str = download.read()
  #   bp = symbolize_keys(bp_str)
    # f = File.new(d)
