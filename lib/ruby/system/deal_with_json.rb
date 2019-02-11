@@ -24,7 +24,7 @@ def symbolise_json(res)
   else
     res
   end
-  STDERR.puts("\n symbolised  " + + res.to_s)
+  STDERR.puts("\n symbolised  RES " + + res.to_s)
   res
 end
 
