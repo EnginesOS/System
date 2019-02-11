@@ -55,7 +55,7 @@ def symbolize_keys(hash)
     when String then key.to_sym
     else key
     end
-    STDERR.puts('key ' + key.to_s)
+    STDERR.puts('key ' + key.to_s + ':' +key.class.name)
     new_value = case value
     when Hash then symbolize_keys(value)
     when Array   then
