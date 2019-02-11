@@ -15,13 +15,13 @@ class BlueprintApi < ErrorsApi
 
   def self.load_blueprint_file(blueprint_file_name)
     blueprint_file = File.open(blueprint_file_name, 'r')
-    parser = Yajl::Parser.new
+    parser = Yajl::Parser.new(:symbolize_keys => true)
     json_hash = parser.parse(blueprint_file.read)
     blueprint_file.close
     STDERR.puts('read as ' + json_hash.to_s)
-    Hashie.symbolize_keys!(json_hash)
-   # json_hash = symbolise_json(json_hash)
-    STDERR.puts('read:' + json_hash.to_s)
+  #  Hashie.symbolize_keys!(json_hash)
+    #json_hash = symbolise_json(json_hash)
+  #  STDERR.puts('read:' + json_hash.to_s)
    json_hash
 
   end
