@@ -20,8 +20,8 @@ class BlueprintApi < ErrorsApi
     blueprint_file.close
     STDERR.puts('read as ' + json_hash.to_s)
     symbolise_json(json_hash)
-    STDERR.puts('read:' + json_hash.to_s)
-    json_hash
+ #   STDERR.puts('read:' + json_hash.to_s)
+  #  json_hash
 
   end
 
