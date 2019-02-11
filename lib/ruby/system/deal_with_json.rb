@@ -25,6 +25,7 @@ def symbolise_json(res)
     res
   end
   STDERR.puts("\n symbolised  " + + res.to_s)
+  res
 end
 
 def symbolize_keys_array_members(array)
