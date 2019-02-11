@@ -54,7 +54,7 @@ end
 def symbolize_keys(hash)
   STDERR.puts("Symbolising " + hash.class.name)
    return hash unless hash.is_a?(Hash)
-  hash.inject({}){|result, (key, value)|
+  hash.inject({}){|result, (new_key, value)|
     new_key = case key
     when String then key.to_sym
     else key
