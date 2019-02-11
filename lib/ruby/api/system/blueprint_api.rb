@@ -19,12 +19,13 @@ class BlueprintApi < ErrorsApi
     json_hash = parser.parse(blueprint_file.read)
     blueprint_file.close
     STDERR.puts('read as ' + json_hash.to_s)
-    json_hash = symbolise_json(json_hash)
+   # Hashie.symbolize_keys!(json_hash)
+   # json_hash = symbolise_json(json_hash)
     STDERR.puts('read:' + json_hash.to_s)
    json_hash
 
   end
-
+  
   def load_blueprint(container)
     state_dir = ContainerStateFiles.container_state_dir(container)
     raise EnginesException.new(error_hash('No Statedir', container.container_name)) unless File.directory?(state_dir)
