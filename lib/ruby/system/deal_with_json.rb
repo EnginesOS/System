@@ -4,7 +4,9 @@ def deal_with_json(res)
     symbolise_json(res)
   end
 rescue StandardError => e
-  log_error_mesg(' parse problem with ' + res.to_s)
+  #log_error_mesg(' parse problem with ' + res.to_s)
+  STDERR.puts('Exception: '+ e/to_s + "\n" + e.backtrace.to_e )
+
   res
 end
 
