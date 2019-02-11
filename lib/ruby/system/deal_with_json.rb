@@ -74,6 +74,7 @@ def symbolize_keys(hash)
     result[new_key] = new_value
     result
   }
+  hash
 end
 
 def boolean_if_true_false_str(r)
