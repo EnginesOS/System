@@ -49,7 +49,7 @@ class ManagedUtility< ManagedContainer
 
     r =  ''
     #  command_name = command_name.to_sym unless @commands.key?(command_name)
-    raise EnginesException.new(error_hash('No such command: ' + command_name.to_s,  command_params)) unless @commands.key?(command_name)
+    raise EnginesException.new(error_hash('No such command: ' + command_name.to_s + ' in ' + @commands.to_s,  command_params)) unless @commands.key?(command_name)
     command = command_details(command_name)
     raise EnginesException.new(error_hash('Missing params in Exe' + command_params.to_s, r)) unless (r = check_params(command, command_params)) == true
     begin

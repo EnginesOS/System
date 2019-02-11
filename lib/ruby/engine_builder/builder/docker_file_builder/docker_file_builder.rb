@@ -1,7 +1,6 @@
 class DockerFileBuilder
 
   require_relative 'persistence.rb'
-
   def initialize(reader, build_params, webport, builder)
     @build_params = build_params
     @hostname = @build_params[:host_name]
@@ -19,7 +18,7 @@ class DockerFileBuilder
   def log_build_output(mesg)
     @builder.log_build_output(mesg)
   end
-  
+
   def write_files_for_docker
     @in_run = false
     write_environment_variables
@@ -66,7 +65,7 @@ class DockerFileBuilder
     write_data_permissions
     finalise_files
   end
-  
+
   private
   require_relative 'framework_modules.rb'
   include FrameworkModules
@@ -102,7 +101,7 @@ class DockerFileBuilder
   def write_system_dockerfile_end
     insert_framework_frag_in_dockerfile('builder.system.end.tmpl')
   end
-  
+
   def write_cd
     write_run_line('chown -R $ContUser /home/app')
     write_run_line('chmod g+w -R /home/app')
@@ -113,7 +112,7 @@ class DockerFileBuilder
     @env_file.close
   end
 
-  def prepare_persitant_source    
+  def prepare_persitant_source
     write_build_script('prepare_persitent_source.sh')
     write_volume('/home/fs_src/')
   end
@@ -155,7 +154,6 @@ class DockerFileBuilder
       write_env('WWW_DIR', @blueprint_reader.web_root.to_s) unless @blueprint_reader.web_root.nil?
     end
   end
-
 
   def write_data_permissions
     write_comment('#Data Permissions')
@@ -204,13 +202,21 @@ class DockerFileBuilder
   end
 
   def write_repos
-    unless @blueprint_reader.respond_to?(:external_repositories) || @blueprint_reader.external_repositories.nil? || @blueprint_reader.external_repositories.empty?
-      write_comment('#Repositories')
-      @blueprint_reader.external_repositories.each do |repo|
-        next unless repo.key?(:source)
-        write_run_line('add-apt-repository  -y  ' + repo[:source])
+    if @blueprint_reader.respond_to?(:external_repositories)
+      unless  @blueprint_reader.external_repositories.nil? || @blueprint_reader.external_repositories.empty?
+        write_comment('#Repositories')
+        @blueprint_reader.external_repositories.each do |repo|
+          next unless repo.key?(:source)
+          if repo.key?(:key)
+            unless repo[:key].nil?
+              write_run_line('wget -qO - ' + repo[:key] + ' | apt-key add -')
+            end
+          end
+         # write_run_line('echo deb ' +  repo[:source] + ' > /etc/apt/sources.list.d/custom.list')
+          write_run_line('add-apt-repository  -y  ' + repo[:source])
+        end
+        write_run_line('apt-get -y update ')
       end
-      write_run_line('apt-get -y update ')
     end
   end
 
@@ -272,12 +278,12 @@ class DockerFileBuilder
       write_comment('#App Archives')
       log_build_output('Dockerfile:App Archives')
       @blueprint_reader.archives_details.each do |archive_details|
-        archive_details[:download_type] = 'docker' if archive_details[:extraction_command] == 'docker'  
+        archive_details[:download_type] = 'docker' if archive_details[:extraction_command] == 'docker'
         archive_details[:download_type] = 'git' if archive_details[:extraction_command] == 'git'
         archive_details[:download_type] = 'web' if archive_details[:download_type].nil?
-          
+
         archive_details[:extraction_command] = 'false' if archive_details[:extraction_command].nil?
-        next if archive_details[:download_type] == 'docker'  
+        next if archive_details[:download_type] == 'docker'
         source_url = archive_details[:source_url].to_s
         package_name = archive_details[:package_name].to_s
         destination = archive_details[:destination].to_s
@@ -303,7 +309,7 @@ class DockerFileBuilder
         args += ' \'' + path_to_extracted + '\' '
         args += ' \'' + archive_details[:command_options].to_s + '\' '
         log_build_output('/build_scripts/package_installer.sh ' + args)
-          
+
         write_run_line('/build_scripts/package_installer.sh ' + args)
       end
     end

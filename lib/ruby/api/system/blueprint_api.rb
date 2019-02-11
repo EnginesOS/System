@@ -15,14 +15,13 @@ class BlueprintApi < ErrorsApi
 
   def self.load_blueprint_file(blueprint_file_name)
     blueprint_file = File.open(blueprint_file_name, 'r')
-    parser = Yajl::Parser.new
+    parser = Yajl::Parser.new(:symbolize_keys => true)
     json_hash = parser.parse(blueprint_file.read)
     blueprint_file.close
-    STDERR.puts('read:' + json_hash.to_s)
-    json_hash
+   json_hash
 
   end
-
+  
   def load_blueprint(container)
     state_dir = ContainerStateFiles.container_state_dir(container)
     raise EnginesException.new(error_hash('No Statedir', container.container_name)) unless File.directory?(state_dir)
@@ -30,11 +29,11 @@ class BlueprintApi < ErrorsApi
     raise EnginesException.new(error_hash("No Blueprint File Found", statefile)) unless File.exist?(statefile)
     BlueprintApi.load_blueprint_file(statefile)
   end
-  
+
   def  self.perform_inheritance_f(blueprint_url)
 
     BlueprintApi.perform_inheritance(self.download_blueprint(blueprint_url))
-  end 
+  end
 
   def  self.perform_inheritance(blueprint)
     if blueprint.key?(:software) \
@@ -42,9 +41,9 @@ class BlueprintApi < ErrorsApi
     &&  blueprint[:software][:base].key?(:inherit)
       unless blueprint[:software][:base][:inherit].nil?
         parent = get_blueprint_parent( blueprint[:software][:base][:inherit])
-        STDERR.puts('Parent BP ' + parent.to_s)
+        STDERR.puts('Parent BP ' + parent.to_s + "\n is a " + parent.class.name)
       else
-        STDERR.puts('NO Inherietance' + blueprint[:software][:base].to_s)  
+        STDERR.puts('NO Inherietance' + blueprint[:software][:base].to_s)
       end
       inherit = blueprint[:software][:base][:inherit]
       merge_bp_entry(blueprint, parent, :base)
@@ -80,11 +79,22 @@ class BlueprintApi < ErrorsApi
     blueprint
   end
 
-  def BlueprintApi.merge_bp_entry(blueprint, dest, key)
+  def self.merge_bp_entry(blueprint, dest, key)
+   # STDERR.puts('Parent BP ' + blueprint.to_s + "\n is a " + blueprint.class.name)
+    STDERR.puts("\n\n\n\n")
+    STDERR.puts('key BP ' + key.to_s + " is a " + key.class.name)
+    STDERR.puts('dest BP ' + dest.to_s + "\n is a " + dest.class.name)
+    STDERR.puts("\n\n\n\n")
+    STDERR.puts('key BP ' + key.to_s + " is a " + key.class.name)
+    STDERR.puts('dest software[' + key.to_s + ']' + dest[:software].to_s  + "\nis a " +  dest[:software].class.name)
     unless key.is_a?(Array)
       if blueprint[:software].key?(key)
         if blueprint[:software][key].is_a?(Hash)
-          dest[:software][key].merge!(blueprint[:software][key])
+          if dest[:software][key].nil?
+            dest[:software][key] = blueprint[:software][key]
+          else
+            dest[:software][key].merge!(blueprint[:software][key])
+          end
         elsif blueprint[:software][key].is_a?(Array)
           dest[:software][key].concat(blueprint[:software][key])
         else
@@ -97,18 +107,17 @@ class BlueprintApi < ErrorsApi
     end
     dest
   end
-def self.download_blueprint(url)
-   d = '/tmp/blueprint.json'
-   self.get_http_file(url, d)
-  self.load_blueprint_file('/tmp/blueprint.json')
- end
- 
- 
- 
+
+  def self.download_blueprint(url)
+    d = '/tmp/blueprint.json'
+    self.get_http_file(url, d)
+    self.load_blueprint_file('/tmp/blueprint.json')
+  end
+
   def self.download_blueprint_parent(parent_url)
     d = '/tmp/parent_blueprint.json'
     self.get_http_file(parent_url, d)
-    
+
   end
 
   def self.get_blueprint_parent(parent_url)
@@ -120,6 +129,13 @@ def self.download_blueprint(url)
     FileUtils.mkdir_p(basedir)
     d = basedir + '/' + File.basename(repository_url)
     self.get_http_file(repository_url, d)
+    STDERR.puts("\n\n Downloaded BP \n\n\n from " + repository_url.to_s + ' to ' + basedir.to_s + '/' + basedir.to_s)
+   # download = open(url)
+   # bp_str = download.read()
+ #   bp = symbolize_keys(bp_str)
+   # f = File.new(d)
+   # f.write (bp)
+   # f.close
   end
 
   def self.get_http_file(url, d)
@@ -128,11 +144,9 @@ def self.download_blueprint(url)
     IO.copy_stream(download, d)
   end
 
-  
-  
-#  def self.get_blueprint_parent(parent_url)
- #  self.download_blueprint_parent(parent_url)
-#   
-#  end
+  #  def self.get_blueprint_parent(parent_url)
+  #  self.download_blueprint_parent(parent_url)
+  #
+  #  end
 
 end

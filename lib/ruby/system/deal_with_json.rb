@@ -4,7 +4,8 @@ def deal_with_json(res)
     symbolise_json(res)
   end
 rescue StandardError => e
-  log_error_mesg(' parse problem with ' + res.to_s)
+  #log_error_mesg(' parse problem with ' + res.to_s)
+  STDERR.puts('Exception: '+ e.to_s + "\n" + e.backtrace.to_s )
   res
 end
 
@@ -48,12 +49,14 @@ def symbolize_keys_array_members(array)
 end
 
 def symbolize_keys(hash)
+  STDERR.puts("Symbolising " + hash.class.name)
    return hash unless hash.is_a?(Hash)
   hash.inject({}){|result, (key, value)|
     new_key = case key
     when String then key.to_sym
     else key
     end
+    STDERR.puts('key ' + new_key.to_s + ':' +new_key.class.name)
     new_value = case value
     when Hash then symbolize_keys(value)
     when Array   then
