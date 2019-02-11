@@ -1,7 +1,7 @@
 class BlueprintApi < ErrorsApi
   require 'yajl'
   require '/opt/engines/lib/ruby/api/system/container_state_files.rb'
-  include Hashie::Extensions::SymbolizeKeys
+ # include Hashie::Extensions::SymbolizeKeys
   def save_blueprint(blueprint, container)
     # return log_error_mesg('Cannot save incorrect format',blueprint) unless blueprint.is_a?(Hash)
     SystemDebug.debug(SystemDebug.builder, blueprint.class.name)
