@@ -52,7 +52,7 @@ def symbolize_keys_array_members(array)
 end
 
 def symbolize_keys(hash)
-  STDERR.puts("Symbolised\n\n\n\ ")
+  STDERR.puts("Symbolising " + hash.class.name)
    return hash unless hash.is_a?(Hash)
   hash.inject({}){|result, (key, value)|
     new_key = case key
