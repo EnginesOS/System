@@ -195,6 +195,7 @@ class BluePrintReader
 
   def read_services
     log_build_output('Read Services')
+    STDERR.puts( ' BP ' + @blueprint[:software].to_s + ':' + @blueprint['software'].to_s  )
     services = @blueprint[:software][:service_configurations]
     if services.is_a?(Array) # not an error just nada
       services.each do |service|
