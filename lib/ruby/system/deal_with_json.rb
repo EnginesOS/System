@@ -6,7 +6,6 @@ def deal_with_json(res)
 rescue StandardError => e
   #log_error_mesg(' parse problem with ' + res.to_s)
   STDERR.puts('Exception: '+ e.to_s + "\n" + e.backtrace.to_s )
-
   res
 end
 
@@ -26,8 +25,6 @@ def symbolise_json(res)
   else
     res
   end
-  STDERR.puts("\n symbolised  RES " + + res.to_s)
-  res
 end
 
 def symbolize_keys_array_members(array)
@@ -76,8 +73,6 @@ def symbolize_keys(hash)
     result[new_key] = new_value
     result
   }
-  STDERR.puts("Symbolised\n\n" + hash.to_s + "\n\n\ ")
-  hash
 end
 
 def boolean_if_true_false_str(r)
