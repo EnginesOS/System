@@ -28,6 +28,7 @@ def volumes_mounts(container)
 end
 
 def mount_string(volume)
+  STDERR.puts('Volume ' + volume.to_s)
   volume = symbolize_keys(volume)
   perms = 'ro'
   if volume[:permissions] == 'rw'
