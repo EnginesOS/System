@@ -9,7 +9,7 @@ class SoftwareServiceDefinition
       serviceDefinition[:persistent] = serviceDefinition[:persistent] unless serviceDefinition.key?(:persistent)
       serviceDefinition
     rescue Exception=>e
-      raise EnginesException.new(self.error_hash('Problem loading Yaml', yaml))
+      raise EnginesException.new(self.error_hash('Problem loading Yaml ' + "\n" +  e.to_s + "\n " + e.backtrace.to_s + "\n", yaml))
     end
   end
 
