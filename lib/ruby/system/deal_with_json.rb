@@ -76,7 +76,7 @@ def symbolize_keys(hash)
     result[new_key] = new_value
     result
   }
-  STDERR.puts("Symbolised\n\n" + result.to_s + "\n\n\ ")
+  STDERR.puts("Symbolised\n\n" + hash.to_s + "\n\n\ ")
   hash
 end
 
