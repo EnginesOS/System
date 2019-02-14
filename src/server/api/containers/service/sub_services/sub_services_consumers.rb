@@ -15,7 +15,7 @@ get '/v0/containers/service/:service_name/sub_services' do
   end
 end
 # @method create_sub_service
-# @overload post '/v0/containers/services/:service_name/sub_services/:engine_name/:service_handle/:sub_handle'
+# @overload post '/v0/containers/service/:service_name/sub_services/:engine_name/:service_handle/:sub_handle'
 # create subservice addressed by :service_name :engine_name :service_handle :sub_handle with params from post
 # @return [Hash]
 #
