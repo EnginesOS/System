@@ -22,6 +22,7 @@ end
 post '/v0/containers/service/:service_name/sub_services/:engine_name/:service_handle/:sub_handle' do
   begin
     params.merge!(post_params(request))
+    
     params = assemble_params(params, [:service_name, :engine_name, :service_handle, :sub_handle], nil, :all)
     engines_api.attach_subservice(params)
     return_true
