@@ -26,7 +26,7 @@ post '/v0/containers/service/:service_name/sub_services/:engine_name/:service_ha
        
     hash = service_service_hash_from_params(params)
     STDERR.puts("\nHASH " + hash.to_s)
-    hash[:parent_engine]= hash[:engine_name]
+   
     p_params = post_params(request)
     STDERR.puts("\np_params " + p_params.to_s)
     hash.merge!(p_params)
@@ -34,6 +34,7 @@ post '/v0/containers/service/:service_name/sub_services/:engine_name/:service_ha
     STDERR.puts("\nparams " + params.to_s)
     cparams = assemble_params(params, [:service_name, :engine_name, :service_handle, :sub_handle], nil, :all)
     STDERR.puts("\ncparams " + cparams.to_s)
+    cparams[:parent_engine]= cparams[:engine_name]
     engines_api.attach_subservice(cparams)
     return_true
   rescue StandardError => e
@@ -50,8 +51,9 @@ post '/v0/containers/service/:service_name/sub_service/:engine_name/:service_han
   begin
     params.merge!(post_params(request))
     params[:parent_engine] = params[:engine_name]
-    params = assemble_params(params, [:service_name, :engine_name, :service_handle, :sub_handle], nil, :all)
-   engines_api.update_subservice(params)
+    cparams = assemble_params(params, [:service_name, :engine_name, :service_handle, :sub_handle], nil, :all)
+    cparams[:parent_engine] = cparams[:engine_name]
+   engines_api.update_subservice(cparams)
     return_true
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
