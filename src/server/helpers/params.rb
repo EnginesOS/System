@@ -14,8 +14,8 @@ rescue StandardError => e
 end
 
 def assemble_params(ps, address_params, required_params = nil, accept_params = nil)
-  STDERR.puts('pfs' + ps.to_s)
-  raise EnginesException.new(error_hash('No params Supplied')) if ps.nil?
+  STDERR.puts('pfs' + ps.to_s, + caller[0].to_s + "\n" +  caller[1].to_s + "\n" +  caller[2].to_s  + "\n" +  caller[3].to_s )
+  raise EnginesException.new(error_hash('No Params Supplied:' + ps.to_s)) if ps.nil?
   ps = deal_with_json(ps) # actually just symbolize
   if address_params.nil?
     a_params = {}
