@@ -56,10 +56,10 @@ get '/v0/registry/shares/' do
   end
 end
 # @method get_subservices_services_tree
-# @overload get '/v0/registry/subservices/'
+# @overload get '/v0/registry/sub_services/'
 # Return subservices registry tree
 # @return [RubyTree]
-get '/v0/registry/subservices/' do
+get '/v0/registry/sub_services/' do
   begin
     return_json(engines_api.subservices_registry)
   rescue StandardError => e
