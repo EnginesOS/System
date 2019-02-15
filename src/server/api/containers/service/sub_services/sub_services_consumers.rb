@@ -5,7 +5,7 @@
 # return subservices attached to :service_name
 # @return [Hash]
 #
-get '/v0/containers/service/:service_name/sub_services/:engine_name/:service_handle' do
+get '/v0/containers/service/:service_name/sub_services' do
   begin
     STDERR.puts("\nparams " + params.to_s)
     #  opt_param = [:engine_name, :service_handle]
