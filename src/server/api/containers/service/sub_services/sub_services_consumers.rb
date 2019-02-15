@@ -5,10 +5,8 @@
 # return subservices attached to :service_name
 # @return [Hash]
 #
-get '/v0/containers/service/:service_name/sub_services' do
+get '/v0/containers/service/:service_name/sub_services/:engine_name/:service_handle' do
   begin
-    STDERR.puts("\nparams " + params.to_s)
-    params.merge!(post_params(request))
     STDERR.puts("\nparams " + params.to_s)
     #  opt_param = [:engine_name, :service_handle]
     params = assemble_params(params, [:service_name], nil, [:engine_name, :service_handle])
