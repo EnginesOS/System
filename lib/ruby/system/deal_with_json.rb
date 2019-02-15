@@ -15,6 +15,7 @@ end
 
 def symbolise_json(res)
   STDERR.puts("Symbolising " + hash.class.name)
+  STDERR.puts('Debug:' + caller[1].to_s + ':'+ caller[2].to_s )
   if res.is_a?(Hash)
     symbolize_keys(res)
   elsif res.is_a?(Array)
