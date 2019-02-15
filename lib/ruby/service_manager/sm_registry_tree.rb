@@ -30,6 +30,10 @@ module SmRegistryTree
     system_registry_client.shared_services_registry
   end
 
+  def subservices_registry
+    system_registry_client.subservices_registry
+  end
+  
   def registry_root()
     system_registry_client.registry_root()
   end
