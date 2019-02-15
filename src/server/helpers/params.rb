@@ -99,11 +99,13 @@ rescue StandardError => e
 end
 
 def service_hash_from_params(params, search)
-  if search
-    params[:type_path] = params['splat'][0]
-  else
-    params[:type_path] = File.dirname(params['splat'][0])
-    params[:service_handle] = File.basename(params['splat'][0])
+  if(params.key?('splat'))
+    if search
+      params[:type_path] = params['splat'][0]
+    else
+      params[:type_path] = File.dirname(params['splat'][0])
+      params[:service_handle] = File.basename(params['splat'][0])
+    end
   end
   params
 end
