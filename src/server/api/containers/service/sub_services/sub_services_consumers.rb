@@ -26,7 +26,7 @@ post '/v0/containers/service/:service_name/sub_services/:engine_name/:service_ha
        
     hash = service_service_hash_from_params(params)
     STDERR.puts("\nHASH " + hash.to_s)
-    
+    hash[:parent_engine]= hash[:engine_name]
     p_params = post_params(request)
     STDERR.puts("\np_params " + p_params.to_s)
     hash.merge!(p_params)
@@ -49,6 +49,7 @@ end
 post '/v0/containers/service/:service_name/sub_service/:engine_name/:service_handle/:sub_handle' do
   begin
     params.merge!(post_params(request))
+    params[:parent_engine] = params[:engine_name]
     params = assemble_params(params, [:service_name, :engine_name, :service_handle, :sub_handle], nil, :all)
    engines_api.update_subservice(params)
     return_true
