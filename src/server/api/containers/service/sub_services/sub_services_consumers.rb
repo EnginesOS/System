@@ -10,7 +10,7 @@ get '/v0/containers/service/:service_name/sub_services' do
     STDERR.puts("\nparams " + params.to_s)
     #  opt_param = [:engine_name, :service_handle]
     cparams = assemble_params(params, [:service_name], nil, [:engine_name, :service_handle])
-    return_json_array(engines_api.services_subservices(cparams))
+    return_json_array(engines_api.subservices_provided(cparams)) #was subservices_provided
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
