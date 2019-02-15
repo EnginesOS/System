@@ -7,6 +7,7 @@
 #
 get '/v0/containers/service/:service_name/sub_services' do
   begin
+    STDERR.puts("\nparams " + params.to_s)
     #  opt_param = [:engine_name, :service_handle]
     params = assemble_params(params, [:service_name], nil, [:engine_name, :service_handle])
     return_json_array(engines_api.services_subservices(params))
