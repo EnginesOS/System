@@ -21,18 +21,19 @@ end
 #
 post '/v0/containers/service/:service_name/sub_services/:engine_name/:service_handle/:sub_handle' do
   begin
-    STDERR.puts('params ' + params.to_s)
+    STDERR.puts("\nparams " + params.to_s)
+   
        
     hash = service_service_hash_from_params(params)
-    STDERR.puts('HASH ' + hash.to_s)
+    STDERR.puts("\nHASH " + hash.to_s)
     
     p_params = post_params(request)
-    STDERR.puts('p_params ' + p_params.to_s)
+    STDERR.puts("\np_params " + p_params.to_s)
     hash.merge!(p_params)
     params.merge!(hash)
-    STDERR.puts('params ' + params.to_s)
+    STDERR.puts("\nparams " + params.to_s)
     cparams = assemble_params(params, [:service_name, :engine_name, :service_handle, :sub_handle], nil, :all)
-    STDERR.puts('cparams ' + cparams.to_s)
+    STDERR.puts("\ncparams " + cparams.to_s)
     engines_api.attach_subservice(cparams)
     return_true
   rescue StandardError => e
