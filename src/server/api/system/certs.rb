@@ -138,7 +138,7 @@ get '/v0/system/certs/service_certs' do
 end
 
 # @method get_certificate
-# @overload get '/v0/system/certs/:store/:cert_name'
+# @overload get '/v0/system/cert/:cert_type/:owner_type/:owner/:cert_name'
 # returns PEM encoded Public certificate
 # @return [String] 
 get '/v0/system/certs/:cert_type/:owner_type/:owner/:cert_name' do
