@@ -141,11 +141,12 @@ end
 # @overload get '/v0/system/certs/:store/:cert_name'
 # returns PEM encoded Public certificate
 # @return [String] 
-get '/v0/system/certs/*' do
+get '/v0/system/certs/:cert_type/*' do
   begin
     p = {
       cert_name: File.basename(params[:splat][0]),
-      store: File.dirname(params[:splat][0])
+      store: File.dirname(params[:splat][0]),
+      cert_type: params[:cert_type]
     }
     return_text(engines_api.get_cert(p))
   rescue StandardError => e
