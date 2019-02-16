@@ -17,7 +17,8 @@ module ServiceHashChecks
   end
 
   def check_sub_service_hash(service_hash)
-    check_service_hash(service_hash)
+   # check_service_hash(service_hash)
+    check_hash(service_hash)
   # parent _service nopt used raise EnginesException.new({error_mesg: 'No parent service',  error_type: :error , params: service_hash}) unless service_hash.key?(:parent_service)
   end
 
