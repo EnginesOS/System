@@ -56,7 +56,7 @@ mapped_ports:
   external: 138
 repo: na
 last_result: 
-setState: running
+setState: nocontainer
 conf_register_site: false
 conf_register_dns: true
 conf_zero_conf: true

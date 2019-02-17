@@ -40,7 +40,8 @@ module Subservices
 
   def subservices_provided(params)
     r = 'sub_services/providers'
-    r += address_params(params, [:publisher_namespace, :type_path])
+  #  /v0/system_registry/sub_services/consumers/:service_name/:engine_name/:service_handle
+    r += address_params(params, [:service_name, :engine_name,:service_handle])
     rest_get(r)
   end
 
