@@ -18,10 +18,10 @@ class BlueprintApi < ErrorsApi
     parser = Yajl::Parser.new(:symbolize_keys => true)
     json_hash = parser.parse(blueprint_file.read)
     blueprint_file.close
-   json_hash
+    json_hash
 
   end
-  
+
   def load_blueprint(container)
     state_dir = ContainerStateFiles.container_state_dir(container)
     raise EnginesException.new(error_hash('No Statedir', container.container_name)) unless File.directory?(state_dir)
@@ -80,7 +80,7 @@ class BlueprintApi < ErrorsApi
   end
 
   def self.merge_bp_entry(blueprint, dest, key)
-   # STDERR.puts('Parent BP ' + blueprint.to_s + "\n is a " + blueprint.class.name)
+    # STDERR.puts('Parent BP ' + blueprint.to_s + "\n is a " + blueprint.class.name)
     STDERR.puts("\n\n\n\n")
     STDERR.puts('key BP ' + key.to_s + " is a " + key.class.name)
     STDERR.puts('dest BP ' + dest.to_s + "\n is a " + dest.class.name)
@@ -130,12 +130,12 @@ class BlueprintApi < ErrorsApi
     d = basedir + '/' + File.basename(repository_url)
     self.get_http_file(repository_url, d)
     STDERR.puts("\n\n Downloaded BP \n\n\n from " + repository_url.to_s + ' to ' + basedir.to_s + '/' + basedir.to_s)
-   # download = open(url)
-   # bp_str = download.read()
- #   bp = symbolize_keys(bp_str)
-   # f = File.new(d)
-   # f.write (bp)
-   # f.close
+    # download = open(url)
+    # bp_str = download.read()
+    #   bp = symbolize_keys(bp_str)
+    # f = File.new(d)
+    # f.write (bp)
+    # f.close
   end
 
   def self.get_http_file(url, d)
