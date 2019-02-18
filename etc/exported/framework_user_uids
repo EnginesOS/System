@@ -5,7 +5,7 @@ tomcat			www-data		22671
 node 			node			22673
 ruby	 		ruby			22672
 rails4			ruby			22672
-rails5			ruby			22672
+rails5			www-data		22672
 sinatra			www-data		22671
 node	 		node			22673
 python	 		python			22674
