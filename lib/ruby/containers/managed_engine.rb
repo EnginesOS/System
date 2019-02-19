@@ -21,6 +21,7 @@ class ManagedEngine < ManagedContainer
     @mapped_ports = build_params[:mapped_ports]
     @data_uid = build_params[:data_uid]
     @data_gid = build_params[:data_gid]
+    @cont_user_id = build_params[:cont_user_id]
     @conf_register_dns = true
     @conf_zero_conf = true
     @deployment_type = runtime_params.deployment_type
