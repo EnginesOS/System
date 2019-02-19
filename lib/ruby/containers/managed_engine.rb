@@ -36,6 +36,7 @@ class ManagedEngine < ManagedContainer
     @capabilities = runtime_params.capabilities
     @volume_service_builder = build_params[:service_builder]
     expire_engine_info
+    STDERR.puts("\n cont_user_id:" + @cont_user_id.to_s)
     save_state # no running.yaml throws a no such container so save so others can use
   end
 
