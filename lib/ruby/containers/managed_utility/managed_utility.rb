@@ -40,6 +40,7 @@ class ManagedUtility< ManagedContainer
   end
 
   def execute_command(command_name, command_params)
+    STDERR.puts("\n EXECutre Cmd " + command.to_s + ':' + command_params.to_s)
     if is_active?
       expire_engine_info     
       wait_for('stop', 60)
