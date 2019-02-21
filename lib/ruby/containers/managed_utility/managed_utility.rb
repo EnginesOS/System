@@ -43,8 +43,8 @@ class ManagedUtility< ManagedContainer
     STDERR.puts("\n EXECutre Cmd " + command.to_s + ':' + command_params.to_s)
     if is_active?
       expire_engine_info     
-      wait_for('stop', 60)
-      raise EnginesException.new(error_hash('Utility ' + container_name + ' in use ', command_name)) if is_active?
+      wait_for('stop', 120)
+      raise EnginesException.new(error_hash('Utility Still active ' + container_name + ' in use ', command_name)) if is_active?
       destroy_container
     end
 
