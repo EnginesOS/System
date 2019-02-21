@@ -23,6 +23,7 @@ class BluePrintReader
   :pear_modules,
   :apache_modules,
   :php_modules,
+  :python_modules,
   :lua_modules,
   :pecl_modules,
   :npm_modules,
@@ -233,6 +234,7 @@ class BluePrintReader
     @apache_modules = []
     @pear_modules = []
     @php_modules = []
+    @python_modules = []
     @pecl_modules = []
     @npm_modules = []
     @lua_modules = []

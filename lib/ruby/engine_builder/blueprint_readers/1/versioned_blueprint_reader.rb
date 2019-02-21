@@ -151,6 +151,8 @@ class VersionedBlueprintReader < BluePrintReader
           @pecl_modules.push(modname)
         elsif pkg_module_type == 'php'
           @php_modules.push(modname)
+        elsif pkg_module_type == 'python'
+          @python_modules.push(modname)
         elsif pkg_module_type == 'apache'
           @apache_modules.push(modname)
         elsif pkg_module_type == 'npm'
