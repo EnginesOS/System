@@ -5,7 +5,7 @@
     for mod in $*
      do
      mod=`echo $mod | sed "/[;&]/s///g"`
-     pecl install $mod
+    echo " " |  pecl install $mod
      done
    
   
