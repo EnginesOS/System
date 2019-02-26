@@ -263,6 +263,8 @@ class BluePrintReader
           @npm_modules.push(modname)
         elsif pkg_module_type == 'lua'
           @lua_modules.push(modname)
+        elsif pkg_module_type == 'python'
+          @python_modules.push(modname)
         else
           raise EngineBuilderException.new(error_hash('pkg module_type ' + pkg_module_type + ' Unknown for ' + modname))
         end
