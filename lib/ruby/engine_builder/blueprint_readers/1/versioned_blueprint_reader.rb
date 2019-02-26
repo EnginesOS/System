@@ -129,6 +129,8 @@ class VersionedBlueprintReader < BluePrintReader
     @pecl_modules = []
     @npm_modules = []
     @lua_modules = []
+    @python_modules = []  
+    
 
     pkg_modules = @blueprint[:software][:required_modules]
     if pkg_modules.is_a?(Array)  # not an error just nada
