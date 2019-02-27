@@ -4,7 +4,8 @@ def deal_with_json(res)
     symbolise_json(res)
   end
 rescue StandardError => e
-  log_error_mesg(' parse problem with ' + res.to_s)
+  #log_error_mesg(' parse problem with ' + res.to_s)
+  STDERR.puts('Exception: '+ e.to_s + "\n" + e.backtrace.to_s )
   res
 end
 
@@ -13,6 +14,8 @@ def parse_as_json(res)
 end
 
 def symbolise_json(res)
+  STDERR.puts("Symbolising " + hash.class.name)
+  STDERR.puts('Debug:' + caller[1].to_s + ':'+ caller[2].to_s )
   if res.is_a?(Hash)
     symbolize_keys(res)
   elsif res.is_a?(Array)
@@ -54,6 +57,7 @@ def symbolize_keys(hash)
     when String then key.to_sym
     else key
     end
+#    STDERR.puts('key ' + new_key.to_s + ':' +new_key.class.name)
     new_value = case value
     when Hash then symbolize_keys(value)
     when Array   then
@@ -83,6 +87,7 @@ def boolean_if_true_false_str(r)
 end
 
 def symbolize_tree(tree)
+  STDERR.puts("Symbolising " + tree.class.name)
   nodes = tree.children
   nodes.each do |node|
     node.content = symbolize_keys(node.content) if node.content.is_a?(Hash)

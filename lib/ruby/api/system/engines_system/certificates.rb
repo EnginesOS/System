@@ -121,6 +121,7 @@ module Certificates
   def get_cert(params)
     certs_service = loadManagedService('certs')
     cert_name = 'engines' if cert_name == 'default'
+      params[:common_name] = params[:cert_name] if params[:common_name].nil?
     actionator = get_service_actionator(certs_service, 'fetch_cert')
     certs_service.perform_action(actionator, params)
   end

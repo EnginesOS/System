@@ -18,4 +18,7 @@ module PublicApiRegistry
   def shared_services_registry
     @core_api.shared_services_registry
   end
+  def subservices_registry
+    @core_api.subservices_registry
+  end
 end

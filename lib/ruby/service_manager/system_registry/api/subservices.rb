@@ -1,4 +1,7 @@
 module Subservices
+  def subservices_registry
+    rest_get('sub_services/tree', nil)
+  end
   def services_subservices(params)
     r ='sub_services/consumers'
     r += address_params(params, [:service_name, :engine_name, :service_handle])
@@ -37,7 +40,8 @@ module Subservices
 
   def subservices_provided(params)
     r = 'sub_services/providers'
-    r += address_params(params, [:publisher_namespace, :type_path])
+  #  /v0/system_registry/sub_services/consumers/:service_name/:engine_name/:service_handle
+    r += address_params(params, [:service_name, :engine_name,:service_handle])
     rest_get(r)
   end
 

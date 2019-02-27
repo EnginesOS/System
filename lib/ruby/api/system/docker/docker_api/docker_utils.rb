@@ -79,7 +79,7 @@ module DockerUtils
               return_result[:stderr] = return_result[:stderr].to_s + r[:stderr].to_s unless r.nil?
           end
           STDERR.puts("read doen")
-        rescue EOFError
+        rescue EOFError => e
           STDERR.puts(e.to_s + ':EEOOFF' + e.backtrace.to_s)
         rescue StandardError => e
           STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
