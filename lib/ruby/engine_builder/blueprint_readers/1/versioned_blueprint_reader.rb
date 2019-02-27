@@ -129,6 +129,8 @@ class VersionedBlueprintReader < BluePrintReader
     @pecl_modules = []
     @npm_modules = []
     @lua_modules = []
+    @python_modules = []  
+    
 
     pkg_modules = @blueprint[:software][:required_modules]
     if pkg_modules.is_a?(Array)  # not an error just nada
@@ -151,6 +153,8 @@ class VersionedBlueprintReader < BluePrintReader
           @pecl_modules.push(modname)
         elsif pkg_module_type == 'php'
           @php_modules.push(modname)
+        elsif pkg_module_type == 'python'
+          @python_modules.push(modname)
         elsif pkg_module_type == 'apache'
           @apache_modules.push(modname)
         elsif pkg_module_type == 'npm'

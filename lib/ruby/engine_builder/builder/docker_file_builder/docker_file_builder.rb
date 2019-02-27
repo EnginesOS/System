@@ -130,6 +130,7 @@ class DockerFileBuilder
   def write_modules
     write_pear_modules
     write_php_modules
+    write_python_modules
     write_npm_modules
     write_lua_modules
     write_pecl_modules

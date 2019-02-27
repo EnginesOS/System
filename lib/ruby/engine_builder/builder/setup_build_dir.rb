@@ -168,9 +168,10 @@ module BuildDirSetup
           i = line.split('=')
           @cont_user_id = i[1].strip
         end
-      end
+      end      
       stef.close
     end
+    STDERR.puts("\n" + ' web user ' + @web_user.to_s + ':' + "cont user id:" +@cont_user_id.to_s)
     @web_user
   end
 

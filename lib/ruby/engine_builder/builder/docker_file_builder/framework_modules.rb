@@ -83,4 +83,14 @@ module FrameworkModules
       write_build_script('install_php_modules.sh ' + php_modules_str)
     end
   end
+  def write_python_modules
+    unless @blueprint_reader.python_modules.nil? || @blueprint_reader.python_modules.empty?
+      write_comment('#PythonModules')
+      python_modules_str = ''
+      @blueprint_reader.python_modules.each do |python_module|
+        python_modules_str += python_module + ' ' unless python_module.nil?
+      end
+      write_build_script('install_python_modules.sh ' + python_modules_str)
+    end
+  end
 end
