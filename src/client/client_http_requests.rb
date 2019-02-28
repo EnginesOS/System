@@ -54,7 +54,7 @@ def stream_file(uri_s, src_f, headers = nil)
   } if headers.nil?
   # STDERR.puts('stream header ' + headers.to_s)
   uri = URI(@base_url + uri_s)
-  STDERR.puts('uri ' + uri.to_s)
+ # STDERR.puts('uri ' + uri.to_s)
   conn = Net::HTTP.new(uri.host, uri.port)  
   conn.use_ssl = true
   conn.verify_mode = OpenSSL::SSL::VERIFY_NONE
