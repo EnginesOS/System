@@ -55,7 +55,7 @@ def get_stream(path, ostream = STDOUT)
     http.read_timeout = 600
    
     http.request(req) { |resp|
-      STDERR.puts('header')
+   #   STDERR.puts('header')
       resp.header.each_header {|key,value| STDERR.puts "#{key} = #{value}" }
       resp.read_body do |chunk|
         ostream.write(chunk)
