@@ -24,7 +24,7 @@ module EngineApiExportImport
       command_line: [cmd], 
       log_error: true, 
       service_variables: service_hash } #data: service_hash.to_json}
-    params[:stream] =  stream unless stream.nil?
+    params[:stdio_stream] = stream unless stream.nil?
       
     thr = Thread.new { result = @engines_core.exec_in_container(params) }
     thr[:name] = 'export:' + params.to_s
