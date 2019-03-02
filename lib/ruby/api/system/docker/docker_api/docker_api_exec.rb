@@ -128,7 +128,7 @@ module DockerApiExec
 
       SystemDebug.debug(SystemDebug.docker,'docker_exec ' + request_params.to_s + ' request  ' + request.to_s )
       unless params.key?(:stdin_stream) || params.key?(:data)
-        stream_reader = DockerStreamReader.new(params[:stdin_stream])
+        stream_reader = DockerStreamReader.new(params[:stdout_stream])
         STDERR.puts("\n\nSTREA " + request_params.to_s )
         r = post_stream_request(request, nil, stream_reader, headers, request_params.to_json)
         stream_reader.result[:result] = get_exec_result(exec_id)
