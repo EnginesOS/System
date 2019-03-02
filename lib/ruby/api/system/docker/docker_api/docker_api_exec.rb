@@ -122,6 +122,7 @@ module DockerApiExec
         'Tty' => false,
       }
       STDERR.puts(' exce oarens ' + params.keys.to_s)
+      
       headers = {
         'Content-type' => 'application/json'
       }
