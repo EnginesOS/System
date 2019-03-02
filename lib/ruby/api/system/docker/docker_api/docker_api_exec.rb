@@ -122,7 +122,7 @@ module DockerApiExec
         'Tty' => false,
       }
       STDERR.puts(' exce oarens ' + params.keys.to_s)
-      
+
       headers = {
         'Content-type' => 'application/json'
       }
@@ -197,20 +197,20 @@ module DockerApiExec
     else
       nil
     end
-    
+
   end
 
   def exec_env(params)
     envs = []
     unless params.nil?
       if params[:service_variables].is_a?(Hash)
-       p =  service_variables_to_env(params[:service_variables])
+        p =  service_variables_to_env(params[:service_variables])
         p.each_pair do |k,v|
           envs.push(k.to_s + '=' + v.to_s)
         end
       end
       if params[:action_params].is_a?(Hash)
-      #  action_params_to_env!(params[:action_params])
+        #  action_params_to_env!(params[:action_params])
         params[:action_params].each_pair do |k,v|
           envs.push(k.to_s + '=' + v.to_s)
         end
@@ -221,7 +221,7 @@ module DockerApiExec
         end
       end
     end
-    envs
+   envs
   end
 
 end

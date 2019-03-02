@@ -51,7 +51,6 @@ module ServiceApiRestore
 
   def export(container, params)
     begin
-
       result = {result:  0}
       thr = Thread.new { result = @engines_core.exec_in_container(params) }
       thr[:name] = 'export:' + params.to_s
@@ -62,11 +61,9 @@ module ServiceApiRestore
       end
     rescue Timeout::Error
       thr.kill unless thr.nil?
-
       result[:result] = -1;
       result[:stderr] = 'Export Timeout on Running Action:' + cmd.to_s + ':' + result[:stderr].to_s
       #raise EnginesException.new(error_hash('Export Timeout on Running Action ', cmd))
-
     end
     if result[:result] == 0
       result #[stdout]

@@ -67,7 +67,7 @@ module DockerUtils
         read_thread[:name] = 'docker_stream_reader'
         begin
           while chunk = socket.readpartial(32768)
-            if @stream_reader.o_stream.nil?
+            if @stream_reader.out_stream.nil?
               DockerUtils.docker_stream_as_result(chunk, return_result)
               STDERR.puts("read chunk " )
             else
