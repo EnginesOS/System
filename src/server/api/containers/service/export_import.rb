@@ -4,6 +4,7 @@
 # exports the service data as a gzip
 # @return [octet-stream]
 get '/v0/containers/service/:service_name/export' do
+  STDERR.puts('Sex IMPORT')
   begin
     service = get_service(params[:service_name])
 #    unless SoftwareServiceDefinition.is_consumer_exportable?(hash)
