@@ -5,7 +5,7 @@ module ServiceApiRestore
 
     raise EnginesException.new(error_hash("failed to import service not running " + service.container_name.to_s)) unless service.is_running?
     cmd = [SystemConfig.ServiceBackupScriptsRoot + '/restore.sh',params[:replace].to_s, params[:section].to_s] #, params[:section].to_s]
-    params = {container: service, command_line: cmd, log_error: true, data_stream: stream}
+    params = {container: service, command_line: cmd, log_error: true, stdin_stream: stream}
     SystemDebug.debug(SystemDebug.export_import, :import_service)
     # STDERR.puts('STREAM' + stream.inspect)
     result = {}
