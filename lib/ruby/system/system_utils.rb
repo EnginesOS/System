@@ -145,7 +145,7 @@ class SystemUtils
             line.gsub!(/\/r/,'')
           end
           if out.nil?
-            STDERR.puts(' TO result')
+            STDERR.puts(' TO result ' + line.to_s)
             retval[:stdout] += line
           else
             STDERR.puts(' TO out')
