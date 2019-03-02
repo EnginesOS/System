@@ -16,7 +16,7 @@ module EngineApiExportImport
     SystemDebug.debug(SystemDebug.export_import, :export_service, cmd)
     result = {result: 0}
     params = {container: container, command_line: [cmd], log_error: true, service_variables: service_hash } #data: service_hash.to_json}
-    params[:ostream] =  stream unless stream.nil?
+    params[:stream] =  stream unless stream.nil? # was ostrean
     thr = Thread.new { result = @engines_core.exec_in_container(params) }
     thr[:name] = 'export:' + params.to_s
     begin

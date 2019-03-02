@@ -85,12 +85,15 @@ module SystemApiBackup
     services = @engines_api.engines_services_to_backup(engine)
     services.each do |service|
       n+=1
-      paths['service'+n.to_s] =  engine + '/service/' + service[:publisher_namespace] + '/' + service[:type_path] + '/' + + service[:service_handle]
+      paths['service'+n.to_s] = engine + '/service/' + service[:publisher_namespace] + '/' + service[:type_path] + '/' + + service[:service_handle]
     end
     paths
   end
 
   def backup_engine_service(service_hash, out)
+    # move following to @engines_api.
+    #engine = loadManagedEngine(service_hash[:parent_engine])
+    #engine.export_service_data(service_hash, out)
     @engines_api.backup_engine_service(service_hash, out)
   end
 end
