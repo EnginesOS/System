@@ -1,5 +1,6 @@
 module SystemApiBackup
   def backup_system_files(out)
+    STDERR.puts('backup system files to class ', + out.class.name)
     SystemUtils.execute_command('/opt/engines/system/scripts/backup/system_files.sh', true, false, out)
   end
 
