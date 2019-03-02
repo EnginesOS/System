@@ -11,7 +11,7 @@ module SystemApiBackup
   def backup_system_registry(out)
     reg = loadSystemService('registry')
     params = {
-      container: registry,
+      container: reg,
       data_stream: out,
       command_line: ['/home/engines/scripts/backup/backup.sh'],
       log_error: true }
