@@ -165,6 +165,7 @@ class SystemUtils
         retval[:stderr] += stderr.read_nonblock(256)
       rescue IO::WaitReadable
         retry #unless th.status == false
+        STDERR.puts(' retyr' );
         # retval[:result] = th.value.exitstatus
         #return retval
       rescue EOFError
