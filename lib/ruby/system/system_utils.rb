@@ -180,6 +180,10 @@ class SystemUtils
         break
         #return retval
         #  end
+      resuce StandardError => e
+        retval[:stderr] += stderr.read_nonblock(1000)
+        retval[:result] = th.value.exitstatus
+        break
       end
       # File.delete('/tmp/import') if File.exist?('/tmp/import')
 
