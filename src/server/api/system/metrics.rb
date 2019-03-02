@@ -1,5 +1,19 @@
 # @!group /system/metrics/
 
+# @method get_system_metrics_summary
+# @overload get '/v0/system/metrics/summary'
+# Return System summary usage
+#  values are integers and in bytes
+# @return [Hash] 
+# test cd /opt/engines/tests/engines_api/system/metrics_summary ; summary
+get '/v0/system/metrics/summary' do
+  begin
+    return_json(engines_api.get_system_metrics_summary)
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+end 
+
 # @method get_system_metrics_memory
 # @overload get '/v0/system/metrics/memory'
 # Return System Memory usage

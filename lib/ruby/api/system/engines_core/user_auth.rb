@@ -3,10 +3,11 @@ module UserAuth
 
   def user_login(params)
     if params[:user_name].to_s == 'admin'
-      admin_user_login(params)
+     admin_user_login(params)
     else
-      ldap_user_login(params)
+     ldap_user_login(params)
     end
+  #  {tok"api_version" => 0}    
   end
 
   def ldap_user_logout(tok)
@@ -31,7 +32,6 @@ module UserAuth
     else
       # authentication failed
       raise EnginesException.new(error_hash("failed to bind " + ldap.get_operation_result.message.to_s ,params))
-
     end
   end
 
