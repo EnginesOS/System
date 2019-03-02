@@ -119,7 +119,7 @@ class SystemUtils
     retval[:stderr] = ''
     retval[:result] = -1
     retval[:command] = cmd
-    STDERR.puts('exec command ' + cmd.to_s + ' out:' + out.class.name)
+  #  STDERR.puts('exec command ' + cmd.to_s + ' out:' + out.class.name)
     Open3.popen3(cmd)  do |_stdin, stdout, stderr, th|
       unless data.is_a?(FalseClass) || data.nil?
         if data.kind_of?(String)
@@ -145,10 +145,10 @@ class SystemUtils
             line.gsub!(/\/r/,'')
           end
           if out.nil?
-            STDERR.puts(' TO result ')
+          #  STDERR.puts(' TO result ')
             retval[:stdout] += line
           else
-            STDERR.puts(' TO out:' + line.to_s)
+           # STDERR.puts(' TO out:' + line.to_s)
             out << line
           end
           retval[:stderr] += stderr.read_nonblock(256) if stderr_is_open
