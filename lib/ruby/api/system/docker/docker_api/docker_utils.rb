@@ -1,7 +1,7 @@
 module DockerUtils
   @@missing=0  
   @@dst = :stdout
-  def self.process_request(stream_reader) #data , result, ostream=nil, istream=nil)
+  def self.process_request(stream_reader) #data , result, stdout_stream=nil, istream=nil)
     @stream_reader = stream_reader
     return_result = @stream_reader.result
     write_thread = nil
@@ -73,8 +73,8 @@ module DockerUtils
             else
               STDERR.puts("read as stream")
 
-              r = DockerUtils.decode_from_docker_chunk(chunk, true, @stream_reader.o_stream)
-              #@stream_reader.o_stream.write(r[:stdout]) unless r.nil?
+              r = DockerUtils.decode_from_docker_chunk(chunk, true, @stream_reader.out_stream)
+              #@stream_reader.out_stream.write(r[:stdout]) unless r.nil?
               end
               return_result[:stderr] = return_result[:stderr].to_s + r[:stderr].to_s unless r.nil?
           end
@@ -87,7 +87,7 @@ module DockerUtils
       end
       write_thread.join unless write_thread.nil?
       read_thread.join unless read_thread.nil?
-      @stream_reader.o_stream.close unless @stream_reader.o_stream.nil?
+      @stream_reader.stdout_stream.close unless @stream_reader.stdout_stream.nil?
       @stream_reader.i_stream.close unless @stream_reader.i_stream.nil?
       STDERR.puts("Closed")
     end
