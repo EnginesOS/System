@@ -121,7 +121,7 @@ module DockerApiExec
         'Detach' => false,
         'Tty' => false,
       }
-
+      STDERR.puts(' exce oarens ' + params.to_s)
       headers = {
         'Content-type' => 'application/json'
       }
