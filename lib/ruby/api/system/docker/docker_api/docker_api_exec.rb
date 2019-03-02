@@ -2,7 +2,7 @@ module DockerApiExec
 
   require_relative 'docker_utils.rb'
   class DockerHijackStreamHandler
-    attr_accessor :result, :data, :i_stream, :out_stream
+    attr_accessor :result, :data, :i_stream, :out_stream, :stream
     def initialize(data, istream = nil, out_stream = nil)
       @i_stream = istream
       @out_stream = out_stream
@@ -17,6 +17,7 @@ module DockerApiExec
     def close
       @out_stream.close unless @out_stream.nil?
       @i_stream.close unless @i_stream.nil?
+      @stream.reset unless @stream.nil?
     end
 
     def is_hijack?
@@ -70,7 +71,7 @@ module DockerApiExec
     def is_hijack?
       false
     end
-    attr_accessor :result
+    attr_accessor :result, :stream
 
     def initialize(stream = nil)
       @out_stream = stream
@@ -83,6 +84,7 @@ module DockerApiExec
 
     def close
       @out_stream.close unless @out_stream.nil?
+      @stream.reset unless @stream.nil?
     end
 
     def process_response()
@@ -126,7 +128,7 @@ module DockerApiExec
 
       SystemDebug.debug(SystemDebug.docker,'docker_exec ' + request_params.to_s + ' request  ' + request.to_s )
       unless params.key?(:stdin_stream) || params.key?(:data)
-        stream_reader = DockerStreamReader.new(params[:stdout_stream])
+        stream_reader = DockerStreamReader.new(params[:stdin_stream])
         STDERR.puts("\n\nSTREA " + request_params.to_s )
         r = post_stream_request(request, nil, stream_reader, headers, request_params.to_json)
         stream_reader.result[:result] = get_exec_result(exec_id)
