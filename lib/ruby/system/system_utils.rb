@@ -145,10 +145,10 @@ class SystemUtils
             line.gsub!(/\/r/,'')
           end
           if out.nil?
-            STDERR.puts(' TO result ' + line.to_s)
+            STDERR.puts(' TO result ')
             retval[:stdout] += line
           else
-            STDERR.puts(' TO out')
+            STDERR.puts(' TO out:' + line.to_s)
             out << line
           end
           retval[:stderr] += stderr.read_nonblock(256) if stderr_is_open
