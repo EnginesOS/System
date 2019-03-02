@@ -12,7 +12,7 @@ module SystemApiBackup
     reg = loadSystemService('registry')
     params = {
       container: reg,
-      data_stream: out,
+      ostream: out,
       command_line: ['/home/engines/scripts/backup/backup.sh'],
       log_error: true }
     result = @engines_api.exec_in_container(params)
@@ -62,7 +62,7 @@ module SystemApiBackup
     if service.is_running?
       params = {
         container: service,
-       data_stream: out,
+        ostream: out,
         command_line: ['/home/engines/scripts/backup/backup.sh'],
         log_error: true}
       result = @engines_api.exec_in_container(params)
