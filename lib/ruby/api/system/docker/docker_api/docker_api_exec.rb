@@ -2,7 +2,7 @@ module DockerApiExec
 
   require_relative 'docker_utils.rb'
   class DockerHijackStreamHandler
-    attr_accessor :result, :data, :i_stream, :out_stream, :stream
+    attr_accessor :result, :data, :i_stream, :out_stream
     def initialize(data, istream = nil, out_stream = nil)
       @i_stream = istream
       @out_stream = out_stream
@@ -17,7 +17,6 @@ module DockerApiExec
     def close
       @out_stream.close unless @out_stream.nil?
       @i_stream.close unless @i_stream.nil?
-      @stream.reset unless @stream.nil?
     end
 
     def is_hijack?
@@ -71,7 +70,7 @@ module DockerApiExec
     def is_hijack?
       false
     end
-    attr_accessor :result, :stream
+    attr_accessor :result
 
     def initialize(stream = nil)
       @out_stream = stream
@@ -84,7 +83,6 @@ module DockerApiExec
 
     def close
       @out_stream.close unless @out_stream.nil?
-      @stream.reset unless @stream.nil?
     end
 
     def process_response()
@@ -127,15 +125,15 @@ module DockerApiExec
       }
 
       SystemDebug.debug(SystemDebug.docker,'docker_exec ' + request_params.to_s + ' request  ' + request.to_s )
-      unless params.key?(:data_stream) || params.key?(:data)
-        stream_reader = DockerStreamReader.new(params[:stream])
+      unless params.key?(:stdin_stream) || params.key?(:data)
+        stream_reader = DockerStreamReader.new(params[:stdout_stream])
         STDERR.puts("\n\nSTREA " + request_params.to_s )
         r = post_stream_request(request, nil, stream_reader, headers, request_params.to_json)
         stream_reader.result[:result] = get_exec_result(exec_id)
         STDERR.puts("\n\nSTREA resul " + stream_reader.result.to_s)
         r = stream_reader.result
       else
-        stream_handler = DockerHijackStreamHandler.new(params[:data], params[:data_stream], params[:stdout_stream])
+        stream_handler = DockerHijackStreamHandler.new(params[:data], params[:stdin_stream], params[:stdout_stream])
         #   headers['Connection'] = 'Upgrade',
         #    headers['Upgrade'] = 'tcp'
         STDERR.puts("\n\Hijack " + request_params.to_s )
@@ -144,7 +142,7 @@ module DockerApiExec
         STDERR.puts("\n\Hijack resul " + stream_handler.result.to_s)
         r = stream_handler.result
 
-        #unless params.key?(:data_stream) ||params.key?(:data)
+        #unless params.key?(:stdin_stream) ||params.key?(:data)
 
         # DockerUtils.docker_stream_as_result(r, result)
       end
@@ -171,7 +169,7 @@ module DockerApiExec
       'Cmd' => format_commands(params[:command_line])
     }
     params.delete(:data) if params.key?(:data) && params[:data].nil?
-    if params.key?(:data) || params.key?(:data_stream)
+    if params.key?(:data) || params.key?(:stdin_stream)
       request_params['AttachStdin'] = true
     else
       request_params['AttachStdin'] = false

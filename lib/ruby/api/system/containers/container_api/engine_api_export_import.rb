@@ -67,7 +67,7 @@ module EngineApiExportImport
 params = {container: container, command_line: [cmd], log_error: true, service_variables: service_hash }
 #params = {container: container, command_line: [cmd, "'" + service_hash.to_json + "'" ], log_error: true }
     unless stream.nil?
-      params[:data_stream] = stream
+      params[:stdin_stream] = stream
     else
       params[:data] = Base64.decode64(service_params[:data])
     end
