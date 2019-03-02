@@ -5,5 +5,5 @@
 @route += '/' + ARGV[4] if ARGV.count > 4
 @route += '/' + ARGV[5] if ARGV.count > 5
 STDERR.puts("\nRoute " + @route.to_s)
-perform_get
+#perform_get
 get_stream(@route)
