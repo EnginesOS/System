@@ -107,7 +107,7 @@ class SystemUtils
   # @return hash
   #:result_code = command exit/result code
   #:stdout = what was written to standard out
-  #:stderr = what was written to standard err
+  #:stderr = what was written to standard errtrue, false, out)
   def SystemUtils.execute_command(cmd, binary=false, data = false, out = nil)
     @@last_error = ''
     require 'open3'
@@ -125,7 +125,7 @@ class SystemUtils
         if data.kind_of?(String)
           _stdin.write(data)
         else
-          begin
+          begin            
             IO.copy_stream(data, _stdin)
           rescue
             STDERR.puts('ERROR SENDING ' + data.class.name + "\n" + data.to_s)
@@ -147,6 +147,7 @@ class SystemUtils
           if out.nil?
             retval[:stdout] += line
           else
+            STDERR.puts(' TO out')
             out << line
           end
           retval[:stderr] += stderr.read_nonblock(256) if stderr_is_open
