@@ -11,8 +11,6 @@ ADD engines home/engines
 RUN apt-get update -y &&\
 	chowns=`find /var /usr/share /usr/local /home -user $ContUser`  &&\
 	/usr/sbin/usermod -u 22674 $ContUser &&\
-	virtualenv /home/app/venv/ &&\	
-	 source /home/app/venv/bin/activate&&\	
 	if test `echo $chowns | sed "/ /s///g" | wc -c` -gt 1 ;\
 	then\
 		chown $ContUser $chowns;\

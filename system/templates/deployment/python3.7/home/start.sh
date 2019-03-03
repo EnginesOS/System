@@ -1,2 +1,2 @@
 #!/bin/sh
- source /home/app/venv/bin/activate
+ . /home/app/venv/bin/activate

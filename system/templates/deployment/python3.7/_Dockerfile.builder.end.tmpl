@@ -1,8 +1,11 @@
-RUN ln -s /home/app /var/www
+RUN ln -s /home/app /var/www&&\
+	virtualenv --system-site-packages /home/app/venv/ &&\	
+	source /home/app/venv/bin/activate&&\	
 
 ADD home/start.sh /home/engines/scripts/startup/start.sh
 
 
+	
 WORKDIR /home/app
 
 	 
