@@ -1,4 +1,9 @@
 #!/bin/sh
- . /home/app/venv/bin/activate
+ if test -f /home/app/venv/bin/activate
+  then
+   echo Activating virtual env
+   . /home/app/venv/bin/activate
+ fi
+ echo Start Calling /home/_start.sh
  /home/_start.sh
  
