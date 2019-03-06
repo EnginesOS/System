@@ -112,7 +112,7 @@ class DockerConnection < ErrorsApi
     SystemDebug.debug(SystemDebug.docker,'post stream ' + uri.to_s + '?' + options.to_s + ' Headeded by:' + rheaders.to_s)
     content = '' if content.nil?
     sc = stream_connection(stream_handler)
-    stream_handler.stream = sc
+    #stream_handler.stream = sc
 
     if stream_handler.method(:has_data?).call == false
      if rheaders['Content-Type'] == 'application/json'
