@@ -21,14 +21,12 @@ module DockerApiBuilder
     def initialize(stream, builder)
       @io_stream = stream
       @builder = builder
-      @stream = nil
       @parser = FFI_Yajl::Parser.new({:symbolize_keys => true})
     end
-    attr_accessor :stream
 
     def close
       @io_stream.close unless @io_stream.nil?
-      @stream.reset unless @stream.nil?
+     # @stream.reset unless @stream.nil?
     end
 
     def is_hijack?

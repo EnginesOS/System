@@ -5,7 +5,9 @@ module PublicApiSystemMetrics
   def get_system_memory_info
     @system_api.get_system_memory_info
   end
-
+  def get_system_metrics_summary
+    @system_api.get_system_metrics_summary
+  end
   def get_system_load_info
     @system_api.get_system_load_info
   end

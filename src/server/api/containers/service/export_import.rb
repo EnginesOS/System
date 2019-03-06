@@ -4,6 +4,7 @@
 # exports the service data as a gzip
 # @return [octet-stream]
 get '/v0/containers/service/:service_name/export' do
+  STDERR.puts('Sex IMPORT')
   begin
     service = get_service(params[:service_name])
 #    unless SoftwareServiceDefinition.is_consumer_exportable?(hash)
@@ -29,9 +30,9 @@ end
 # data is streamed as application/octet-stream
 # @return [true]
 put '/v0/containers/service/:service_name/import' do
+  STDERR.puts('SIN IMPORT')
   begin
     service = get_service(params[:service_name])
-  STDERR.puts('SIN IMPORT')
         return_json(service.import_data(request.env['rack.input']))
    # return_json(service.import_data(request.body)) 
    

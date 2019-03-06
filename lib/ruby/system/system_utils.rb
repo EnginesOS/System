@@ -107,7 +107,7 @@ class SystemUtils
   # @return hash
   #:result_code = command exit/result code
   #:stdout = what was written to standard out
-  #:stderr = what was written to standard err
+  #:stderr = what was written to standard errtrue, false, out)
   def SystemUtils.execute_command(cmd, binary=false, data = false, out = nil)
     @@last_error = ''
     require 'open3'
@@ -119,13 +119,13 @@ class SystemUtils
     retval[:stderr] = ''
     retval[:result] = -1
     retval[:command] = cmd
-
+  #  STDERR.puts('exec command ' + cmd.to_s + ' out:' + out.class.name)
     Open3.popen3(cmd)  do |_stdin, stdout, stderr, th|
       unless data.is_a?(FalseClass) || data.nil?
         if data.kind_of?(String)
           _stdin.write(data)
         else
-          begin
+          begin            
             IO.copy_stream(data, _stdin)
           rescue
             STDERR.puts('ERROR SENDING ' + data.class.name + "\n" + data.to_s)
@@ -145,8 +145,10 @@ class SystemUtils
             line.gsub!(/\/r/,'')
           end
           if out.nil?
+          #  STDERR.puts(' TO result ')
             retval[:stdout] += line
           else
+           # STDERR.puts(' TO out:' + line.to_s)
             out << line
           end
           retval[:stderr] += stderr.read_nonblock(256) if stderr_is_open
@@ -163,6 +165,7 @@ class SystemUtils
         retval[:stderr] += stderr.read_nonblock(256)
       rescue IO::WaitReadable
         retry #unless th.status == false
+        STDERR.puts(' retyr' );
         # retval[:result] = th.value.exitstatus
         #return retval
       rescue EOFError
@@ -178,6 +181,10 @@ class SystemUtils
         break
         #return retval
         #  end
+      resuce StandardError => e
+        retval[:stderr] += stderr.read_nonblock(1000)
+        retval[:result] = th.value.exitstatus
+        break
       end
       # File.delete('/tmp/import') if File.exist?('/tmp/import')
 

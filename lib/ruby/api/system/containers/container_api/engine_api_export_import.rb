@@ -15,8 +15,13 @@ module EngineApiExportImport
     cmd = cmd_dir + '/backup.sh'
     SystemDebug.debug(SystemDebug.export_import, :export_service, cmd)
     result = {result: 0}
-    params = {container: container, command_line: [cmd], log_error: true, service_variables: service_hash } #data: service_hash.to_json}
-    params[:ostream] =  stream unless stream.nil?
+    params = {
+      container: container, 
+      command_line: [cmd], 
+      log_error: true, 
+      service_variables: service_hash } #data: service_hash.to_json}
+    params[:stdout_stream] = stream unless stream.nil?
+      
     thr = Thread.new { result = @engines_core.exec_in_container(params) }
     thr[:name] = 'export:' + params.to_s
     begin
@@ -58,7 +63,7 @@ module EngineApiExportImport
 params = {container: container, command_line: [cmd], log_error: true, service_variables: service_hash }
 #params = {container: container, command_line: [cmd, "'" + service_hash.to_json + "'" ], log_error: true }
     unless stream.nil?
-      params[:data_stream] = stream
+      params[:stdin_stream] = stream
     else
       params[:data] = Base64.decode64(service_params[:data])
     end

@@ -50,7 +50,21 @@ module EnginesServerHost
       -1
     end
   end
-
+  def  get_system_metrics_summary
+    r = {:"Memory" =>
+          {"Total" => 1024,
+            "Free"  => 2048,
+          },
+         "Disks" => {
+           'disk a' => {
+             'size' => 100,
+             'free' => 100,
+           }
+      } 
+    }
+    r
+  end
+  
   def get_system_memory_info
     # r = run_server_script('memory_stats')
     r = SystemUtils.execute_command('/opt/engines/system/scripts/ssh/memory_stats.sh', false, nil)

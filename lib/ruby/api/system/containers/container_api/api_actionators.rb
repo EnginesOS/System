@@ -16,7 +16,7 @@ module ApiActionators
     {container: c,
       command_line: cmds,
       log_error:  true,
-      data_stream: stream}
+      stdin_stream: stream}
 
     if  params.is_a?(Hash)
       req[:action_params] = params

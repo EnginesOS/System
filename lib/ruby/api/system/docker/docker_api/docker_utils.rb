@@ -1,7 +1,7 @@
 module DockerUtils
   @@missing=0  
   @@dst = :stdout
-  def self.process_request(stream_reader) #data , result, ostream=nil, istream=nil)
+  def self.process_request(stream_reader) #data , result, stdout_stream=nil, istream=nil)
     @stream_reader = stream_reader
     return_result = @stream_reader.result
     write_thread = nil
@@ -22,7 +22,7 @@ module DockerUtils
                   data = nil
                   data = @stream_reader.i_stream.read_nonblock(Excon.defaults[:chunk_size])
                   STDERR.puts('String IO bytes' + data.length.to_s)
-                  break if socket.closed
+                  break if socket.closed?
                   socket.send(data, 0) unless data.nil?
                 rescue EOFError
                   eof = true
@@ -67,14 +67,12 @@ module DockerUtils
         read_thread[:name] = 'docker_stream_reader'
         begin
           while chunk = socket.readpartial(32768)
-            if @stream_reader.o_stream.nil?
+            if @stream_reader.out_stream.nil?
               DockerUtils.docker_stream_as_result(chunk, return_result)
               STDERR.puts("read chunk " )
             else
               STDERR.puts("read as stream")
-
-              r = DockerUtils.decode_from_docker_chunk(chunk, true, @stream_reader.o_stream)
-              #@stream_reader.o_stream.write(r[:stdout]) unless r.nil?
+              r = DockerUtils.decode_from_docker_chunk(chunk, true, @stream_reader.out_stream)
               end
               return_result[:stderr] = return_result[:stderr].to_s + r[:stderr].to_s unless r.nil?
           end
@@ -87,7 +85,7 @@ module DockerUtils
       end
       write_thread.join unless write_thread.nil?
       read_thread.join unless read_thread.nil?
-      @stream_reader.o_stream.close unless @stream_reader.o_stream.nil?
+      @stream_reader.stdout_stream.close unless @stream_reader.stdout_stream.nil?
       @stream_reader.i_stream.close unless @stream_reader.i_stream.nil?
       STDERR.puts("Closed")
     end
@@ -127,26 +125,26 @@ module DockerUtils
           end
           if @@missing != 0
             cl = @@missing
-            STDERR.puts('OUT ' + @@missing.to_s + ' to ' + @@dst.to_s) 
+          #  STDERR.puts('OUT ' + @@missing.to_s + ' to ' + @@dst.to_s) 
             @@missing = 0
           elsif chunk.start_with?("\u0001\u0000\u0000\u0000")
             @@dst = :stdout
             l = chunk[0..7].unpack('C*')
             cl = l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
             chunk = chunk[8..-1]
-            STDERR.puts('STDOUT ' + cl.to_s + ':' + chunk.length.to_s)
+           # STDERR.puts('STDOUT ' + cl.to_s + ':' + chunk.length.to_s)
           elsif chunk.start_with?("\u0002\u0000\u0000\u0000")
             @@dst = :stderr
             l = chunk[0..7].unpack('C*')
             cl = l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
-            STDERR.puts('STDERR ' + cl.to_s )
+         #   STDERR.puts('STDERR ' + cl.to_s )
             chunk = chunk[8..-1]
           elsif chunk.start_with?("\u0000\u0000\u0000\u0000")
             @@dst = :stdout
             chunk = chunk[8..-1]
-            STDERR.puts('Matched \0\0\0')
+          #  STDERR.puts('Matched \0\0\0')
           else
-            STDERR.puts('UNMATCHED ' +  chunk.length.to_s)#chunk.to_s)#.length.to_s)
+          #  STDERR.puts('UNMATCHED ' +  chunk.length.to_s)#chunk.to_s)#.length.to_s)
             @@dst = :stdout
             unmatched = true
           end
@@ -171,9 +169,9 @@ module DockerUtils
           result[@@dst] += chunk[0..length-1]
           end
           chunk = chunk[length..-1]
-          if chunk.length > 0
-            STDERR.puts('Continuation')
-          end
+     #     if chunk.length > 0
+     #       STDERR.puts('Continuation')
+     #     end
         end
       end
       # result actually set elsewhere after exec complete

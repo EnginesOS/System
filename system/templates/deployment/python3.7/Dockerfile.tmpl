@@ -1,0 +1,19 @@
+FROM  engines/python3.7:_Engines_System(release)
+
+ENV CONTFSVolHome /home/fs/
+ENV ContUser python
+
+ADD build_scripts /build_scripts
+ADD home home
+ADD engines home/engines
+
+
+RUN apt-get update -y &&\
+	chowns=`find /var /usr/share /usr/local /home -user $ContUser`  &&\
+	/usr/sbin/usermod -u 22674 $ContUser &&\
+	if test `echo $chowns | sed "/ /s///g" | wc -c` -gt 1 ;\
+	then\
+		chown $ContUser $chowns;\
+		fi ;\
+	chown $ContUser home/fs/ &&\
+	chown $ContUser /opt	

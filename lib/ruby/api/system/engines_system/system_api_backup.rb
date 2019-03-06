@@ -1,5 +1,6 @@
 module SystemApiBackup
   def backup_system_files(out)
+    STDERR.puts('backup system files to class ', + out.class.name)
     SystemUtils.execute_command('/opt/engines/system/scripts/backup/system_files.sh', true, false, out)
   end
 
@@ -11,7 +12,7 @@ module SystemApiBackup
     reg = loadSystemService('registry')
     params = {
       container: reg,
-      stream: out,
+      stdout_stream: out,
       command_line: ['/home/engines/scripts/backup/backup.sh'],
       log_error: true }
     result = @engines_api.exec_in_container(params)
@@ -26,7 +27,7 @@ module SystemApiBackup
     reg = loadSystemService('registry')
     params = {
       container: reg,
-      data_stream: out,
+      stdin_stream: out,
       command_line: ['/home/engines/scripts/backup/restore.sh'],
       log_error: true}
     result = @engines_api.exec_in_container(params)
@@ -61,7 +62,7 @@ module SystemApiBackup
     if service.is_running?
       params = {
         container: service,
-        stream: out,
+        stdout_stream: out,
         command_line: ['/home/engines/scripts/backup/backup.sh'],
         log_error: true}
       result = @engines_api.exec_in_container(params)
@@ -84,12 +85,15 @@ module SystemApiBackup
     services = @engines_api.engines_services_to_backup(engine)
     services.each do |service|
       n+=1
-      paths['service'+n.to_s] =  engine + '/service/' + service[:publisher_namespace] + '/' + service[:type_path] + '/' + + service[:service_handle]
+      paths['service'+n.to_s] = engine + '/service/' + service[:publisher_namespace] + '/' + service[:type_path] + '/' + + service[:service_handle]
     end
     paths
   end
 
   def backup_engine_service(service_hash, out)
+    # move following to @engines_api.
+    #engine = loadManagedEngine(service_hash[:parent_engine])
+    #engine.export_service_data(service_hash, out)
     @engines_api.backup_engine_service(service_hash, out)
   end
 end
