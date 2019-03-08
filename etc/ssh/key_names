@@ -9,7 +9,8 @@ load_avgs
 memory_stats
 network_stats
 power_off_base_os
-public_key
+user_public_key
+system_public_key
 recreate_system_service
 regen_private
 remove_cert
