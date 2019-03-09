@@ -1,7 +1,7 @@
 
 
 function create_mgmt_script_key {
-	script_name=$1
+#	script_name=$1
 	ssh-keygen -f ~/.ssh/system/${script_name} -N ""
 	pubkey=`cat ~/.ssh/system/${script_name}.pub`
 	echo "command=\"/opt/engines/system/scripts/ssh/${script_name}.sh\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty  $pubkey " >  ~/.ssh/_${script_name}_authorized_keys
@@ -21,10 +21,9 @@ do
 		if test -f ~/.ssh/system/${script_name}
 			  then
 	 			rm -r ~/.ssh/system/${script_name} ~/.ssh/system/${script_name}.pub
-	 		  fi
-	 		  
-				create_mgmt_script_key  $script_name 
-echo create_mgmt_script_key  $script_name 
+	 		  fi	 		  
+	create_mgmt_script_key # $script_name 
+    echo create_mgmt_script_key  $script_name 
 		done 
 		
 if test -f ~/.ssh/authorized_keys.system
