@@ -12,6 +12,8 @@ when 'user'
   require_relative 'user.rb'
 when 'keys'
   require_relative 'keys/commands.rb'
+when 'key'
+  require_relative 'keys/commands.rb'
 
 when 'certs'
   require_relative 'certs.rb'

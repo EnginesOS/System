@@ -42,7 +42,7 @@ if test -f /opt/engines/system/startup/flags/replace_keys
  then
   /opt/engines/system/scripts/startup/replace_keys.sh 
   rm /opt/engines/system/startup/flags/replace_keys 
- fi
+fi
 
 echo Clearing Flags
 cp /etc/os-release /opt/engines/etc/os-release-host 
