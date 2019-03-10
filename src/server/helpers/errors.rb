@@ -38,15 +38,24 @@ def send_encoded_exception(api_exception)#request, error_object, *args)
     error_mesg = {
       route: request.fullpath,
       method: request.request_method,
-     # query: request.query_string, Dont this may be huge
+      # query: request.query_string, Dont this may be huge
       params: request.params,
       error_object: {}
     }
   end
   STDERR.puts('send_encoded_exception with request ' + api_exception.to_s)
   if api_exception[:exception].is_a?(EnginesException)
+    STDERR.puts('EnginesException')
     error_mesg[:error_object] = api_exception[:exception].to_h
     error_mesg[:params] = api_exception[:params].to_s
+    if error_mesg[:error_object].is_a?(Hash)
+      if error_mesg[:error_object].key?(:status_code)
+        status_code = error_mesg[:error_object][:status_code]
+      elsif error_mesg[:error_object][:error_type] == :warning
+        status_code = 409
+      end
+    end
+    status_code = 500 if status_code.nil?
   elsif api_exception[:exception].is_a?(Exception)
     error_mesg[:error_object] = {error_mesg: api_exception[:exception].to_s, error_type: :failure}
     error_mesg[:source] = api_exception[:exception].backtrace.to_s
@@ -59,7 +68,7 @@ def send_encoded_exception(api_exception)#request, error_object, *args)
   return_json(error_mesg, status_code)
 rescue Exception => e
   STDERR.puts e.to_s + '  ' + e.backtrace.to_s
-status_code = 500
+  status_code = 500
   #  send_encoded_exception(request: 'send_encoded_exception', exception: e, status: 500)
 end
 

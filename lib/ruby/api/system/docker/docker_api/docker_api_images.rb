@@ -68,8 +68,10 @@ module DockerApiImages
   end
 
   def delete_image(image_name)
+    thr = Thread.new {       
     request = '/images/' + image_name
-    delete_request(request)
+    delete_request(request)}
+      thr[:name] = 'Docker delete image:' + image_name.to_s
   end
 
   def clean_up_dangling_images

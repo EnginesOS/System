@@ -30,6 +30,12 @@ docker start system
 /opt/engines/bin/system_service.rb system wait_for start 20
 /opt/engines/bin/system_service.rb system wait_for_startup 120
 
+if test -f /opt/engines/system/startup/flags/replace_keys
+ then
+  /opt/engines/system/scripts/startup/replace_keys.sh 
+  rm /opt/engines/system/startup/flags/replace_keys 
+fi
+
 touch /opt/engines/run/system/flags/update_engines_run
 if test -f /opt/engines/run/system/flags/update_engines_running
  then

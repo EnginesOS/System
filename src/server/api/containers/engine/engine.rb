@@ -121,8 +121,8 @@ get '/v0/containers/engine/:engine_name/ps' do
   begin
     engine = get_engine(params[:engine_name])
     return_json(engine.ps_container)
-  rescue
-    send_encoded_exception(request: 'ps', exception: 'Container not running')
+  rescue StandardError => e
+    send_encoded_exception(request: 'ps', exception: e)
   end
 end
 # @method wait_for_engine
