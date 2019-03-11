@@ -77,7 +77,7 @@ class DockerFileBuilder
   def add_sudoers
     if @blueprint_reader.respond_to?(sudo_list)
       if @blueprint_reader.sudo_list.is_a(Array)
-        copyin_sudoer_file
+        copyin_sudoer_file if @blueprint_reader.sudo_list.length > 0
       end
     end
   end
