@@ -8,7 +8,7 @@ class ConfigFileWriter
   end
 
   def self.create_sudoers_file(sudo_list, user, basedir)
-    if sudo_list.is_a?(Array)
+    if sudo_list.is_a?(Array) && sudo_list.count > 0
       out_file = File.new(basedir + '/sudo_list', 'w+', :crlf_newline => false)
       sudo_list.each do |entry|
         out_file.puts(user.to_s + ' ALL=(ALL) NOPASSWD: ' + entry.to_s)
