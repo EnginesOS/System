@@ -20,6 +20,7 @@ module BuildDirSetup
     end
     read_framework_user
     init_container_info_dir
+   
     save_params
     @build_params[:mapped_ports] = @blueprint_reader.mapped_ports
     SystemDebug.debug(SystemDebug.builder, :ports, @build_params[:mapped_ports])
@@ -88,6 +89,7 @@ module BuildDirSetup
     create_httaccess
     create_apache_config
     create_scripts
+    ConfigFileWriter.create_sudoers_file(@blueprint_reader.sudo_list, @web_user, basedir)
   end
 
   def create_template_files

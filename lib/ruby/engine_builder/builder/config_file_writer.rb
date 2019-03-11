@@ -7,6 +7,17 @@ class ConfigFileWriter
 
   end
 
+  def self.create_sudoers_file(sudo_list, user, basedir)
+    if sudo_list.is_a?(Array)
+      out_file = File.new(basedir + '/sudo_list', 'w+', :crlf_newline => false)
+      sudo_list.each do |entry|
+        out_file.puts(user.to_s + ' ALL=(ALL) NOPASSWD: ' + entry.to_s)
+      end
+      out_file.puts("\n")
+      out_file.close
+    end
+  end
+
   def self.write_templated_file(templater, filename, content)
     if content.nil?
       SystemUtils.log_error('NO Content for ' + filename.to_s)
@@ -24,7 +35,7 @@ class ConfigFileWriter
   def self.process_dockerfile_tmpl(templater, filename)
     template = File.read(filename)
     template = templater.process_templated_string(template)
-    output_filename = filename.sub(/.tmpl/, '')    
+    output_filename = filename.sub(/.tmpl/, '')
     out_file = File.new(output_filename, 'wb', :crlf_newline => false)
     out_file.write(template)
     out_file.close

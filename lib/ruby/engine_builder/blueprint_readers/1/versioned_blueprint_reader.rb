@@ -4,7 +4,9 @@ class VersionedBlueprintReader < BluePrintReader
   @schema = 1
   attr_reader :continuous_deployment,
   :schedules ,
-  :external_repositories
+  :external_repositories,
+  :sudo_list
+  
   def read_scripts
     if @blueprint[:software].key?(:scripts)
       @custom_start_script = @blueprint[:software][:scripts][:start][:content].gsub(/\r/, '') \
@@ -33,7 +35,7 @@ class VersionedBlueprintReader < BluePrintReader
       
     end
   end
-
+ 
   def read_sed_strings
     log_build_output('Read Sed Strings')
     @sed_strings = {
@@ -114,6 +116,17 @@ class VersionedBlueprintReader < BluePrintReader
   def blueprint_env_varaibles
     @blueprint[:software][:environment_variables]
   end
+  
+  def sudoer_list
+  unless @blueprint[:software][:environment_variables].nil?
+   @blueprint[:software][:environment_variables].each do |env_var| 
+    if env_var[:name] == 'sudo_list'
+     @sudo_list = env_var[:value].split(/[ \r\n,;]/)  
+    end
+  end
+  end
+  end
+ 
 
   def read_sql_seed
     if @blueprint[:software].key?(:database_seed_file) && @blueprint[:software][:database_seed_file][:content].nil? == false
@@ -198,6 +211,7 @@ class VersionedBlueprintReader < BluePrintReader
     super
     read_schedules
     read_repos
+    sudoer_list
   end
 
   def read_apache_htaccess_files
