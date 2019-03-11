@@ -5,6 +5,10 @@ def write_comment(cmt)
     write_run_line("echo \"" + cmt + "\"")
   end
 end
+def write_sudo_list
+  @docker_file.write("\\\n     " + cmd)
+  @docker_file.write('COPY sudo_list /etc/sudoers.d/' + @build_name.to_s)    
+end
 
 def write_run_line(cmd)
   write_run_start unless @in_run == true
