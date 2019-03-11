@@ -6,6 +6,12 @@ def write_comment(cmt)
   end
 end
 
+def copyin_sudoer_file
+  @docker_file.write("\\\n     ")
+  @docker_file.write('COPY sudo_list /etc/sudoers.d/' + @build_name.to_s)
+  count_layer
+end
+
 def write_run_line(cmd)
   write_run_start unless @in_run == true
   if @first_line == true
@@ -53,8 +59,8 @@ def insert_framework_frag_in_dockerfile(frag_name)
 end
 
 def count_layer
-   @layer_count += 1
-   if @layer_count > @max_layers
-     raise EngineBuilderException.new(error_hash("More than 75 layers!"))
-   end
- end
+  @layer_count += 1
+  if @layer_count > @max_layers
+    raise EngineBuilderException.new(error_hash("More than 75 layers!"))
+  end
+end
