@@ -20,7 +20,7 @@ module BuildDirSetup
     end
     read_framework_user
     init_container_info_dir
-    ConfigFileWriter.add_sudoers(@blueprint_reader.sudo_list, @web_user)
+    ConfigFileWriter.create_sudoers_file(@blueprint_reader.sudo_list, @web_user)
     save_params
     @build_params[:mapped_ports] = @blueprint_reader.mapped_ports
     SystemDebug.debug(SystemDebug.builder, :ports, @build_params[:mapped_ports])
