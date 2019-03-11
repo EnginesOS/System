@@ -61,7 +61,7 @@ class DockerFileBuilder
     write_run_install_script
     set_user('0')
     setup_persitant_app if @build_params[:app_is_persistent]
-    add_sudoers
+    copyin_sudoer_file
     prepare_persitant_source
     write_data_permissions
     finalise_files
@@ -77,7 +77,7 @@ class DockerFileBuilder
   def add_sudoers
     if @blueprint_reader.respond_to?(sudo_list)
       if @blueprint_reader.sudo_list.is_a(Array)
-        write_sudo_list
+        copyin_sudoer_file
       end
     end
   end
