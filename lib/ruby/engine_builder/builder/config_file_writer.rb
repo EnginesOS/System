@@ -8,7 +8,7 @@ class ConfigFileWriter
   end
 
   def self.add_sudoers(sudo_list, user)
-    if sudo_list.is_a(Array)
+    if sudo_list.is_a?(Array)
       write_sudo_list
       out_file = File.new('sudo_list', 'w+', :crlf_newline => false)
       sudo_list.each do |entry|
