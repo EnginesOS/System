@@ -6,8 +6,9 @@ def write_comment(cmt)
   end
 end
 def write_sudo_list
-  @docker_file.write("\\\n     " + cmd)
-  @docker_file.write('COPY sudo_list /etc/sudoers.d/' + @build_name.to_s)    
+  @docker_file.write("\\\n     ")
+  @docker_file.write('COPY sudo_list /etc/sudoers.d/' + @build_name.to_s)   
+  count_layer 
 end
 
 def write_run_line(cmd)
