@@ -64,7 +64,10 @@ module DockerApiImages
 
   def delete_container_image(container)
     request = '/images/' + container.image
+    thr = Thread.new {       
     delete_request(request)
+    }
+    thr[:name] = 'Docker delete container ' + container.image
   end
 
   def delete_image(image_name)
