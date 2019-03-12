@@ -54,7 +54,7 @@ module EnginesOperations
       engine_name: engine.container_name,
       reinstall: true
     }
-    engine.wait_for('destroy', 10)
+    engine.wait_for('destroy', 30)
     delete_engine_and_services(params)
     builder = BuildController.new(self)
     @build_thread = Thread.new { engine.reinstall_engine(builder) }
