@@ -60,7 +60,7 @@ module SmServiceControl
         raise e unless service_query.key?(:force)
       end
       begin
-        system_registry_client.remove_from_managed_engine(service_hash)
+       
         remove_from_managed_service(service_hash) ## continue if
       rescue StandardError => e
         raise e unless service_query.key?(:force)

@@ -7,7 +7,11 @@ module SmOrphanServices
       STDERR.puts('ORPHAN:' + params.to_s)
     SystemDebug.debug(SystemDebug.orphans, :Orphanate, params)
     params[:fresh] = false
+    begin
     system_registry_client.orphanate_service(params)
+     rescue RegistryException => e
+      raise e unless params.key[:lost].is_a?(TrueClass) 
+     end
     begin
       system_registry_client.remove_from_managed_engine(params)
     rescue StandardError => e
