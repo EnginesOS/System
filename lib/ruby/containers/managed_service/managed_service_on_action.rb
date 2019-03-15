@@ -30,7 +30,7 @@ module ManagedServiceOnAction
     }
     service_configurations = @container_api.pending_service_configurations_hashes({service_name: @container_name, publisher_namespace: @publisher_namespace, type_path: @type_path })
     if service_configurations.is_a?(Array) || registered_consumers.is_a?(Array)
-      if wait_for_startup
+      if wait_for_startup(30)
         if service_configurations.is_a?(Array) && ! service_configurations.empty?
           service_configurations.each do |configuration|
             begin
@@ -43,6 +43,7 @@ module ManagedServiceOnAction
         end
         reregister_consumers
       else
+        #FIXME schedule this to happen
         STDERR.puts('SERVICE FAILED To STARTUP ' + @container_name)
       end
     end
