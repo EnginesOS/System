@@ -1,4 +1,4 @@
-framework: rails4
+framework: rails5
 user: www-data
 port: 8000
 log_dirs:

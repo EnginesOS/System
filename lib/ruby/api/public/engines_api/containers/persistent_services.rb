@@ -26,4 +26,9 @@ module PublicApiContainersPersistentServices
   def list_persistent_services(engine)
     @core_api.list_persistent_services(engine)
   end
+  
+  def force_deregister_persistent_service
+    @core_api.force_deregister_persistent_service(service_hash)
+  end
+     
 end
