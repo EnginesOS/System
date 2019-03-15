@@ -1,7 +1,7 @@
 # @!group /system/key
 
 
-# @method get_system_pub_key
+# @method get_system_public_key
 # @overload get '/v0/system/key/system'
 # return public key for the engines system
 # @return [String]
