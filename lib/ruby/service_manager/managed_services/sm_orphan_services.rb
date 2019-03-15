@@ -10,7 +10,7 @@ module SmOrphanServices
     begin
     system_registry_client.orphanate_service(params)
      rescue RegistryException => e
-      raise e unless params.key[:lost].is_a?(TrueClass) 
+      raise e unless params.key[:lost].is_a?(TrueClass)         
      end
     begin
       system_registry_client.remove_from_managed_engine(params)
