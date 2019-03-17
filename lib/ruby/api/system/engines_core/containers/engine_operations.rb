@@ -127,7 +127,7 @@ module EnginesOperations
       if engines[:children].is_a?(Array)
         engines[:children].each do |engine_node|
           name = engine_node[:name]
-          next if name == 'system' || name == 'registry'
+          next if name == 'system' || name == 'registry'  || name == 'utility'
           begin
             STDERR.puts('load ' + name.to_s)
             t = loadManagedEngine(name)
@@ -136,17 +136,15 @@ module EnginesOperations
             STDERR.puts('remove engines services ' + name.to_s)
             begin
               remove_engine_services(
-              {lost: true, container_type: 'app', remove_all_data: 'none', parent_engine: name})
-            rescue StandardError =>e
-              
+              {lost: true, container_type: 'app', remove_all_data: 'none', parent_engine: name})              
+            rescue StandardError =>e              
               # here find services on engine but not on service
               services = get_engine_persistent_services({ parent_engine: name })
             services.each do | service|
-              begin
-                service[:lost] = true
-                service_manager.delete_and_remove_service(service)
+              begin               
+                service_manager.remove_service_from_engine_only(service)
+                next 
               rescue
-                service_manager.remove_from_services_registry(service)
                 next
               end  
               
