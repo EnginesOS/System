@@ -141,7 +141,7 @@ class BlueprintApi < ErrorsApi
   def self.get_http_file(url, d)
     require 'open-uri'
     #FIX ME get real certs and drop this
-    download = open(url), {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}
+    download = open(url, {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE})
     IO.copy_stream(download, d)
   end
 
