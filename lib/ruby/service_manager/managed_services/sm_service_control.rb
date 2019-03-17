@@ -50,7 +50,7 @@ module SmServiceControl
     complete_service_query = set_top_level_service_params(service_query, service_query[:parent_engine])
     STDERR.puts('delete_service QUERRY ' + service_query.to_s)
     service_hash = retrieve_engine_service_hash(complete_service_query)
-    service_hash[:lost] = service_hash[:lost] if service_hash.key?(:lost)
+    service_hash[:lost] = service_hash[:lost] if service_query.key?(:lost)
     raise EnginesException.new(error_hash('Not Matching Service to remove', complete_service_query)) unless service_hash.is_a?(Hash)
     if service_hash[:shared] == true
       remove_shared_service_from_engine(service_query)
@@ -58,7 +58,7 @@ module SmServiceControl
       begin
         remove_from_managed_service(service_hash) ## continue if
       rescue StandardError => e
-        raise e unless service_query.key?(:force)
+        raise e unless service_query.key?(:force) || service_query.key?(:lost)
       end
       begin
        
