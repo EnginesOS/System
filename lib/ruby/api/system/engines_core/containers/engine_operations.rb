@@ -8,8 +8,10 @@ module EnginesOperations
     SystemDebug.debug(SystemDebug.containers, :delete_engines, params)
     params[:container_type] = 'app' # Force This
     params[:parent_engine] = params[:engine_name]
-    begin
+    
       engine = loadManagedEngine(params[:engine_name])
+     #Following is for the roll back of a failed build 
+     begin       
       if params[:rollback] == true
        # STDERR.puts(' Roll back called' + params.to_s )       
         unless remove_engine_services(params)
