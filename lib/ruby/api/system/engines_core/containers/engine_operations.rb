@@ -141,7 +141,7 @@ module EnginesOperations
               
               # here find services on engine but not on service
               services = get_engine_persistent_services({ parent_engine: name })
-            serivces.each do | service|
+            services.each do | service|
               begin
                 service[:lost] = true
                 service_manager.delete_and_remove_service(service)
