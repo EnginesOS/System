@@ -138,7 +138,19 @@ module EnginesOperations
               remove_engine_services(
               {lost: true, container_type: 'app', remove_all_data: 'none', parent_engine: name})
             rescue StandardError =>e
+              
               # here find services on engine but not on service
+              services = get_engine_persistent_services({ engine_name: name })
+            serivces.each do | service|
+              begin
+                service[:lost] = true
+                service_manager.delete_and_remove_service(service)
+              rescue
+                service_manager.remove_from_services_registry(service)
+                next
+              end  
+              
+            end
             end
             next
           end
