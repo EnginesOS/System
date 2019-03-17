@@ -140,7 +140,7 @@ module EnginesOperations
             rescue StandardError =>e
               
               # here find services on engine but not on service
-              services = get_engine_persistent_services({ engine_name: name })
+              services = get_engine_persistent_services({ parent_engine: name })
             serivces.each do | service|
               begin
                 service[:lost] = true
