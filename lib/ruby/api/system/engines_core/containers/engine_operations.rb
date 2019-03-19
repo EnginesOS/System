@@ -11,7 +11,7 @@ module EnginesOperations
 
     engine = loadManagedEngine(params[:engine_name])
     #Following is for the roll back of a failed build
-    b
+    
     if params[:rollback] == true
       # STDERR.puts(' Roll back called' + params.to_s )
       begin
