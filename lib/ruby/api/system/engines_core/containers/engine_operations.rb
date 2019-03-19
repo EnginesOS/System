@@ -11,23 +11,24 @@ module EnginesOperations
 
     engine = loadManagedEngine(params[:engine_name])
     #Following is for the roll back of a failed build
-    begin
-      if params[:rollback] == true
-        # STDERR.puts(' Roll back called' + params.to_s )
+    
+    if params[:rollback] == true
+      # STDERR.puts(' Roll back called' + params.to_s )
+      begin
         unless remove_engine_services(params)
           raise EnginesException.new(error_hash('Failed to remove engine services', params))
         end
         true
       end
+    else
+      if engine.has_container?
+        raise EnginesException.new(error_hash('Container Exists Please Destroy engine first' , params)) unless params[:reinstall] .is_a?(TrueClass)
+      end
+      remove_engine_services(params) #engine_name, reinstall, params[:remove_all_data])
+      engine.delete_image if engine.has_image? == true
+      SystemDebug.debug(SystemDebug.containers, :engine_image_deleted, engine)
+      engine.delete_engine unless params[:reinstall] == true
     end
-
-    if engine.has_container?
-      raise EnginesException.new(error_hash('Container Exists Please Destroy engine first' , params)) unless params[:reinstall] .is_a?(TrueClass)
-    end
-    remove_engine_services(params) #engine_name, reinstall, params[:remove_all_data])
-    engine.delete_image if engine.has_image? == true
-    SystemDebug.debug(SystemDebug.containers, :engine_image_deleted, engine)
-    engine.delete_engine unless params[:reinstall] == true
   end
 
   def remove_engine_services(params)
@@ -39,8 +40,9 @@ module EnginesOperations
       #  STDERR.puts('RE ENINGE SERVICES  ' + params.to_s)
       service_manager.remove_managed_persistent_services(params)
     rescue EnginesException => e
+      STDERR.puts('Except  ' + e.to_s)
       raise e unless e.is_a_warning?
-      STERR.puts('WarnINGES  ' + e.to_s)
+      STDERR.puts('WarnINGES  ' + e.to_s)
     end
     begin
       service_manager.remove_engine_non_persistent_services(params)
@@ -128,7 +130,7 @@ module EnginesOperations
         engines[:children].each do |engine_node|
           name = engine_node[:name]
           next if name == 'system' || name == 'registry'  || name == 'utility'
-          begin           
+          begin
             t = loadManagedEngine(name)
           rescue
             r.push(name)
@@ -136,12 +138,12 @@ module EnginesOperations
             begin
               remove_engine_services(
               {lost: true, container_type: 'app', remove_all_data: 'none', parent_engine: name})
-            rescue StandardError =>e              
+            rescue StandardError =>e
             end
-          STDERR.puts(' remove_service_from_engine_only')
+            STDERR.puts(' remove_service_from_engine_only')
             # here find services on engine but not on service
             services = get_engine_persistent_services({ parent_engine: name })
-          STDERR.puts(' remove_service_from_engine_only ' +services.to_s)
+            STDERR.puts(' remove_service_from_engine_only ' +services.to_s)
             services.each do | service|
               begin
                 STDERR.puts(' remove_service_from_engine_only ' + service.to_s )
