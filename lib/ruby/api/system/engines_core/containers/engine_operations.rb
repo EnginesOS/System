@@ -138,8 +138,10 @@ module EnginesOperations
               {lost: true, container_type: 'app', remove_all_data: 'none', parent_engine: name})
             rescue StandardError =>e              
             end
+          STDERR.puts(' remove_service_from_engine_only')
             # here find services on engine but not on service
             services = get_engine_persistent_services({ parent_engine: name })
+          STDERR.puts(' remove_service_from_engine_only ' +services.to_s)
             services.each do | service|
               begin
                 STDERR.puts(' remove_service_from_engine_only ' + service.to_s )
