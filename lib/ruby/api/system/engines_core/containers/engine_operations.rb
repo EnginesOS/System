@@ -37,7 +37,7 @@ module EnginesOperations
     params[:no_exceptions] = true
     #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
     begin
-      #  STDERR.puts('RE ENINGE SERVICES  ' + params.to_s)
+       STDERR.puts('RE ENINGE SERVICES  ' + params.to_s)
       service_manager.remove_managed_persistent_services(params)
     rescue EnginesException => e
       STDERR.puts('Except  ' + e.to_s)
