@@ -74,6 +74,11 @@ module SmServiceControl
       orphanate_service(service_hash)
       STDERR.puts('ORPH SERV data' + service_hash.to_s)
     end
+    begin
+    system_registry_client.remove_from_managed_engine(service_hash)
+    rescue StandardError => e
+      STDERR.puts('FAiled to remove from managed engines registry')
+    end
   end
 
   def update_attached_service(params)
