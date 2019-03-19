@@ -128,8 +128,7 @@ module EnginesOperations
         engines[:children].each do |engine_node|
           name = engine_node[:name]
           next if name == 'system' || name == 'registry'  || name == 'utility'
-          begin
-            STDERR.puts('load ' + name.to_s)
+          begin           
             t = loadManagedEngine(name)
           rescue
             r.push(name)
