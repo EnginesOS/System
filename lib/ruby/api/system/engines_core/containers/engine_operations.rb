@@ -40,9 +40,9 @@ module EnginesOperations
       #  STDERR.puts('RE ENINGE SERVICES  ' + params.to_s)
       service_manager.remove_managed_persistent_services(params)
     rescue EnginesException => e
-      STERR.puts('Except  ' + e.to_s)
+      STDERR.puts('Except  ' + e.to_s)
       raise e unless e.is_a_warning?
-      STERR.puts('WarnINGES  ' + e.to_s)
+      STDERR.puts('WarnINGES  ' + e.to_s)
     end
     begin
       service_manager.remove_engine_non_persistent_services(params)
