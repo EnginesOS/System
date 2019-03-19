@@ -60,12 +60,11 @@ module SmServiceControl
       rescue StandardError => e
         raise e unless service_query.key?(:force) || service_query.key?(:lost)
       end
-      begin
-       
-        remove_from_managed_service(service_hash) ## continue if
-      rescue StandardError => e
-        raise e unless service_query.key?(:force)
-      end
+#      begin       
+#        remove_from_managed_service(service_hash) ## continue if
+#      rescue StandardError => e
+#        raise e unless service_query.key?(:force)
+#      end
       begin
         system_registry_client.remove_from_services_registry(service_hash)
       rescue StandardError => e
@@ -74,6 +73,11 @@ module SmServiceControl
     else
       orphanate_service(service_hash)
       STDERR.puts('ORPH SERV data' + service_hash.to_s)
+    end
+    begin
+    system_registry_client.remove_from_managed_engine(service_hash)
+    rescue StandardError => e
+      STDERR.puts('FAiled to remove from managed engines registry')
     end
   end
 

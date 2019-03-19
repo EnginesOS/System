@@ -5,13 +5,16 @@ module EnginesOperations
   #Retrieves all persistent service registered to :engine_name and destroys the underlying service (fs db etc)
   # They are removed from the tree if delete is sucessful
   def delete_engine_and_services(params)
+    STDERR.puts('delete_engine_and_services ' + params.to_s)
     SystemDebug.debug(SystemDebug.containers, :delete_engines, params)
     params[:container_type] = 'app' # Force This
     params[:parent_engine] = params[:engine_name]
-
-    engine = loadManagedEngine(params[:engine_name])
-    #Following is for the roll back of a failed build
-    
+    begin
+      engine = loadManagedEngine(params[:engine_name])
+      #Following is for the roll back of a failed build
+    rescue StandardError => e
+      raise e unless params[:rollback] == true
+    end
     if params[:rollback] == true
       # STDERR.puts(' Roll back called' + params.to_s )
       begin
@@ -24,6 +27,7 @@ module EnginesOperations
       if engine.has_container?
         raise EnginesException.new(error_hash('Container Exists Please Destroy engine first' , params)) unless params[:reinstall] .is_a?(TrueClass)
       end
+      STDERR.puts('bouBOSDRFSDAFt to remove_engine_services')
       remove_engine_services(params) #engine_name, reinstall, params[:remove_all_data])
       engine.delete_image if engine.has_image? == true
       SystemDebug.debug(SystemDebug.containers, :engine_image_deleted, engine)
@@ -37,7 +41,7 @@ module EnginesOperations
     params[:no_exceptions] = true
     #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
     begin
-      #  STDERR.puts('RE ENINGE SERVICES  ' + params.to_s)
+      STDERR.puts('RE ENINGE SERVICES  ' + params.to_s)
       service_manager.remove_managed_persistent_services(params)
     rescue EnginesException => e
       STDERR.puts('Except  ' + e.to_s)
