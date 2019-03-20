@@ -10,6 +10,7 @@ module SmOrphanServices
     begin
     system_registry_client.orphanate_service(params)
      rescue RegistryException => e
+      STDERR.puts('Rescue ORPHAN:' + params.to_s)
       raise e unless params.key[:lost].is_a?(TrueClass)         
      end
     begin

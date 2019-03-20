@@ -6,4 +6,4 @@
    echo dbname cant be nill
    exit -1
   fi 
-mysqldump -h $dbhost -u $dbuser --password=$dbpasswd $dbname
+mysqldump -h $dbhost -u $dbuser --password=$dbpasswd $dbname 2> /dev/null
