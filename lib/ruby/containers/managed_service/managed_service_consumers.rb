@@ -57,9 +57,11 @@ module ManagedServiceConsumers
         if registered_hashes.is_a?(Array)
           registered_hashes.each do |service_hash|
             begin
+              STDERR.puts('add consume ' + service_hash.to_s)
               add_consumer_to_service(service_hash) if service_hash[:persistent] == false
             rescue StandardError => e
               STDERR.puts('add consumer error:' + e.to_s)
+              next
             end
           end
         end
