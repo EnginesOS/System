@@ -6,4 +6,4 @@ container_type: service
 persistent: true
 variables:
  type: group
- cn: "ftp users"
+ cn: "ftp_users"
