@@ -4,10 +4,7 @@ module ManagedContainerControls
   end
 
   def wait_for_startup(timeout = 60)
-    STDERR.puts( 'MC Wait for Startup ' + @container_name)
-    r = @container_api.wait_for_startup(self, timeout)
-    STDERR.puts( 'MC over  ' + @container_name)
-    r
+    @container_api.wait_for_startup(self, timeout)
   end
 
   def update_memory(new_memory)
