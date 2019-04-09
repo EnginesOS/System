@@ -1,5 +1,6 @@
 #Framework 		#User 			#UID	
 apache_php		www-data		22671
+apache_php56	www-data		22671
 base_c			www-data		22671
 tomcat			www-data		22671
 node 			node			22673
