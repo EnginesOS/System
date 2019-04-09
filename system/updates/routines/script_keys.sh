@@ -1,4 +1,4 @@
-
+#!/bin/bash
 
 function create_mgmt_script_key {
 #	script_name=$1
