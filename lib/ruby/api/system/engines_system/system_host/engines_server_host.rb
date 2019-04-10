@@ -74,7 +74,7 @@ module EnginesServerHost
            "file_cache" => mem_stats[:file_cache] ,
             "buffers" => mem_stats[:buffers] 
           },
-         "disks" => disks
+         "storage" => disks
     }
     r
   end
