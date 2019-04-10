@@ -61,7 +61,13 @@ module EnginesServerHost
 #    usage: values[5],
 #    mount: values[6]
     disks = {}
-      
+    dstats.each_pair do | key, value|
+      disks[key] = {
+        mount: value[:mount],
+        size: value[:blocks],
+        free: value[:available]
+    }
+    end 
     r = {:"Memory" =>
           {"Total" => mem_stats[:total].to_i,
             "Free"  => mem_stats[:free].to_i + mem_stats[:file].to_i ,
