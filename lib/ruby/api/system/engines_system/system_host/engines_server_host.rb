@@ -51,16 +51,30 @@ module EnginesServerHost
     end
   end
   def  get_system_metrics_summary
-    r = {:"Memory" =>
-          {"Total" => 1024,
-            "Free"  => 2048,
+    mem_stats = get_system_memory_info
+    dstats = get_disk_statistics
+    
+#    type: values[1],
+#    blocks: values[2],
+#    used: values[3],
+#    available: values[4],
+#    usage: values[5],
+#    mount: values[6]
+    disks = {}
+    dstats.each_pair do | key, value|
+      disks[key] = {
+        mount: value[:mount],
+        size: value[:blocks],
+        free: value[:available]
+    }
+    end 
+    r = {:"memory" =>
+          {"total" => mem_stats[:total].to_i,
+           "free"  => mem_stats[:free].to_i ,
+           "file_cache" => mem_stats[:file_cache].to_i ,
+            "buffers" => mem_stats[:buffers].to_i 
           },
-         "Disks" => {
-           'disk a' => {
-             'size' => 100,
-             'free' => 100,
-           }
-      } 
+         "storage" => disks
     }
     r
   end

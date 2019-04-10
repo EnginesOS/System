@@ -48,7 +48,7 @@ class DockerConnection < ErrorsApi
     @default_headers ||= {'Content-Type' =>'application/json', 'Accept' => '*/*'}
   end
 
-  def post_request(uri, params = nil, expect_json = true , rheaders = nil, time_out = 60)
+  def post_request(uri, params = nil, expect_json = true , rheaders = nil, time_out = 180)
     SystemDebug.debug(SystemDebug.docker,' Post ' + uri.to_s)
     SystemDebug.debug(SystemDebug.docker,'Post OPIOMS ' + params.class.name + ':' + params.to_s)
     rheaders = default_headers if rheaders.nil?

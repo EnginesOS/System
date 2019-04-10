@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 if test -f /home/engines/.ssh/console_access 
  then
 	rm /home/engines/.ssh/console_access
