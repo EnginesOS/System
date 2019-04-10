@@ -64,7 +64,7 @@ module EnginesServerHost
       
     r = {:"Memory" =>
           {"Total" => mem_stats[:total],
-            "Free"  => mem_stats[:free] + ' free ' +  mem_stats[:free] + ' buffers ' + mem_stats[:file] + ' file ',
+            "Free"  => mem_stats[:free] + mem_stats[:file] ,
           },
          "Disks" => disks
     }
