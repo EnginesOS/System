@@ -68,11 +68,13 @@ module EnginesServerHost
         free: value[:available]
     }
     end 
-    r = {:"Memory" =>
-          {"Total" => mem_stats[:total].to_i,
-            "Free"  => mem_stats[:free].to_i + mem_stats[:file].to_i ,
+    r = {:"memory" =>
+          {"total" => mem_stats[:total].to_i,
+           "free"  => mem_stats[:free] ,
+           "file" => mem_stats[:file] ,
+            "buffers" => mem_stats[:buffers] 
           },
-         "Disks" => disks
+         "disks" => disks
     }
     r
   end
