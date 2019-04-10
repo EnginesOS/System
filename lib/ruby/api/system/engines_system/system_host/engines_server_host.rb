@@ -71,7 +71,7 @@ module EnginesServerHost
     r = {:"memory" =>
           {"total" => mem_stats[:total].to_i,
            "free"  => mem_stats[:free] ,
-           "file" => mem_stats[:file] ,
+           "file_cache" => mem_stats[:file_cache] ,
             "buffers" => mem_stats[:buffers] 
           },
          "disks" => disks
