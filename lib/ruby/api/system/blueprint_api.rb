@@ -48,7 +48,7 @@ class BlueprintApi < ErrorsApi
       inherit = blueprint[:software][:base][:inherit]
       merge_bp_entry(blueprint, parent, :base)
       parent[:software][:base][:inherit] = inherit
-      merge_bp_entry(blueprint, parent, :services)
+      merge_bp_entry(blueprint, parent, :service_configurations)
       merge_bp_entry(blueprint, parent, :installed_packages)
       merge_bp_entry(blueprint, parent, :file_write_permissions)
       merge_bp_entry(blueprint, parent, :workers)
