@@ -48,7 +48,7 @@ class BlueprintApi < ErrorsApi
       inherit = blueprint[:software][:base][:inherit]
       merge_bp_entry(blueprint, parent, :base)
       parent[:software][:base][:inherit] = inherit
-
+      merge_bp_entry(blueprint, parent, :service_configurations)
       merge_bp_entry(blueprint, parent, :installed_packages)
       merge_bp_entry(blueprint, parent, :file_write_permissions)
       merge_bp_entry(blueprint, parent, :workers)
@@ -96,6 +96,7 @@ class BlueprintApi < ErrorsApi
             dest[:software][key].merge!(blueprint[:software][key])
           end
         elsif blueprint[:software][key].is_a?(Array)
+          dest[:software][key] = [] if dest[:software][key].nil?
           dest[:software][key].concat(blueprint[:software][key])
         else
           dest[:software][key] = blueprint[:software][key]
