@@ -96,7 +96,7 @@ class BlueprintApi < ErrorsApi
             dest[:software][key].merge!(blueprint[:software][key])
           end
         elsif blueprint[:software][key].is_a?(Array)
-          dest[:software][key] = [] if dest[:software].nil?
+          dest[:software][key] = [] if dest[:software][key].nil?
           dest[:software][key].concat(blueprint[:software][key])
         else
           dest[:software][key] = blueprint[:software][key]
