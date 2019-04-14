@@ -28,6 +28,11 @@ volumes:
   remotepath: "/home/users/"
   localpath: "/var/lib/engines/home/"
   permissions: "rw" 
+ keys: 
+  name: keys
+  remotepath: "/etc/sftp/authorized_keys/"
+  localpath: "/opt/engines/etc/user/keys"
+  permissions: "rw" 
 port: 
 mapped_ports:
  ftp:
