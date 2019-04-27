@@ -142,12 +142,20 @@ def  mount_string_for_secret(secret)
 end
 
 def  mount_string_for_homes(home)
-  s =''
+  s = []   
     src_cname =  home[:parent_engine]
     src_ctype =  home[:container_type]
 if  home[:variables][:home_type] == 'all'
  # STDERR.puts('Secrets mount' +  '/var/lib/engines/secrets/' + src_ctype.to_s + 's/' +  src_cname.to_s + '/' + sh.to_s + ':/home/.secrets/'  + sh.to_s + ':ro')
    s = '/var/lib/engines/home/:/home/users/:'  + home[:variables][:access]
+  elsif home[:variables][:home_type] == 'seperate' 
+  home[:variables][:homes].split(", \n").each do | user |
+    STDERR.puts('SDFSDF ' + '/var/lib/engines/home/' + user)
+    
+    next unless Dir.exist?('/var/lib/engines/home/' + user)
+    STDERR.puts('SDFSDF ' + '/var/lib/engines/home/' + user + '/' +  home[:parent_engine] + ':/home/users/' + user  + '/' +  home[:parent_engine] + ':'  + home[:variables][:access])
+    s.push('/var/lib/engines/home/' + user + '/' +  home[:parent_engine] + ':/home/users/' + user  + '/' +  home[:parent_engine] + ':'  + home[:variables][:access])
+  end
 else
   STDERR.puts('serr ' + home.to_s)
 end
