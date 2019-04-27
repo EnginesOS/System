@@ -139,16 +139,16 @@ def  mount_string_for_secret(secret)
 end
 
 def  mount_string_for_homes(home)
-
+  s =''
     src_cname =  home[:parent_engine]
     src_ctype =  home[:container_type]
 if  home[:home_type] == all
  # STDERR.puts('Secrets mount' +  '/var/lib/engines/secrets/' + src_ctype.to_s + 's/' +  src_cname.to_s + '/' + sh.to_s + ':/home/.secrets/'  + sh.to_s + ':ro')
-   '/var/lib/engines/home/:/home/users/:'  + home[:access]
+   s = '/var/lib/engines/home/:/home/users/:'  + home[:access]
 else
-  STDERR.outs('serr')
+  STDERR.outs('serr ')
 end
- # STDERR.puts('Secrets mount' + s.to_s)
+  STDERR.puts('Secrets mount' + s.to_s)
   
 end
 def homes_mounts(container)
