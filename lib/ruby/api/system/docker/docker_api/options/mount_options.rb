@@ -138,6 +138,41 @@ def  mount_string_for_secret(secret)
   s
 end
 
+def  mount_string_for_homes(home)
+
+    src_cname =  home[:parent_engine]
+    src_ctype =  home[:container_type]
+if  home[:home_type] == all
+ # STDERR.puts('Secrets mount' +  '/var/lib/engines/secrets/' + src_ctype.to_s + 's/' +  src_cname.to_s + '/' + sh.to_s + ':/home/.secrets/'  + sh.to_s + ':ro')
+   '/var/lib/engines/home/:/home/users/:'  + home[:access]
+else
+  STDERR.outs('serr')
+end
+ # STDERR.puts('Secrets mount' + s.to_s)
+  
+end
+def homes_mounts(container)
+    mounts = []
+    unless container.ctype == 'system_service'
+      homes = container.attached_services(
+      {type_path: 'homes'
+      })
+      if homes.is_a?(Array)
+        homes.each do | home |
+          m_str = mount_string_for_homes(home)
+          if m_str.is_a?(String)            
+           mounts.push(m_str)
+          elsif m_str.is_a?(Array)    
+            mounts.concat(m_str)
+          end 
+        end
+    #  else
+     #   STDERR.puts('Secrets mounts was' + secrets.to_s)
+      end
+    end
+    mounts
+  end
+  
 def secrets_mounts(container)
   mounts = []
   unless container.ctype == 'system_service'
