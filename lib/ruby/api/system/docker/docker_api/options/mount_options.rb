@@ -19,7 +19,10 @@ def volumes_mounts(container)
 
   secrets = secrets_mounts(container)
   mounts.concat(secrets) unless secrets.nil?
-
+  
+  homes = homes_mounts(container)
+  mounts.concat(homes) unless homes.nil?
+  
   unless container.ctype == 'system_service'
     rm = registry_mounts(container)
     mounts.concat(rm) unless rm.nil?
