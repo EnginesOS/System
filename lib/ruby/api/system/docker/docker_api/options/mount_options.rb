@@ -145,7 +145,7 @@ def  mount_string_for_homes(home)
   s =''
     src_cname =  home[:parent_engine]
     src_ctype =  home[:container_type]
-if  home[:home_type] == all
+if  home[:home_type] == 'all'
  # STDERR.puts('Secrets mount' +  '/var/lib/engines/secrets/' + src_ctype.to_s + 's/' +  src_cname.to_s + '/' + sh.to_s + ':/home/.secrets/'  + sh.to_s + ':ro')
    s = '/var/lib/engines/home/:/home/users/:'  + home[:access]
 else
