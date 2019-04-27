@@ -149,10 +149,10 @@ if  home[:home_type] == 'all'
  # STDERR.puts('Secrets mount' +  '/var/lib/engines/secrets/' + src_ctype.to_s + 's/' +  src_cname.to_s + '/' + sh.to_s + ':/home/.secrets/'  + sh.to_s + ':ro')
    s = '/var/lib/engines/home/:/home/users/:'  + home[:access]
 else
-  STDERR.puts('serr ')
+  STDERR.puts('serr ' + home.to_s)
 end
-  STDERR.puts('Secrets mount' + s.to_s)
-  
+  STDERR.puts('Homes mount' + s.to_s)
+  s
 end
 def homes_mounts(container)
     mounts = []
