@@ -7,5 +7,4 @@ ADD build_scripts /build_scripts
 ADD home home
 ADD engines home/engines
 
-RUN apt-get update -y &&\
-	chown $ContUser /opt
+RUN apt-get update -y

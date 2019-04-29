@@ -88,6 +88,7 @@ class DockerFileBuilder
 
   def setup_user_local
     #  write_run_start()
+    write_build_script('set_cont_user.sh')
     write_run_line('ln -s /usr/local/ /home/local')
     write_run_line('chown -R $ContUser /usr/local/ ')
 
@@ -340,6 +341,8 @@ class DockerFileBuilder
     write_comment('#Stack Env')
     write_line('')
     # write_env('Memory' ,@builder.memory.to_s)
+
+    write_env('cont_uid', @cont_user_id)
     write_env('Hostname', @hostname)
     write_env('Domainname', @domain_name)
     write_env('fqdn', @hostname + '.' + @domain_name)
