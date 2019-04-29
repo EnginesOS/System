@@ -341,8 +341,8 @@ class DockerFileBuilder
     write_comment('#Stack Env')
     write_line('')
     # write_env('Memory' ,@builder.memory.to_s)
-
-    write_env('cont_uid', @cont_user_id)
+   # write_env('cont_uid', build_params
+    write_env('cont_uid', @builder.cont_user_id)
     write_env('Hostname', @hostname)
     write_env('Domainname', @domain_name)
     write_env('fqdn', @hostname + '.' + @domain_name)

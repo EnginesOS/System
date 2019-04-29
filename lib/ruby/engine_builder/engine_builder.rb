@@ -44,7 +44,8 @@ class EngineBuilder < ErrorsApi
   :data_uid,
   :data_gid,
   :build_error,
-  :container
+  :container,
+  :cont_user_id
 
   attr_accessor :app_is_persistent
 
