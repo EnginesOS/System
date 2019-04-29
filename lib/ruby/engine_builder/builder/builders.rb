@@ -49,7 +49,7 @@ module Builders
      '1111'
   end
   
-  def new_data_gui
+  def new_data_gid
     '1114'
   end
   
