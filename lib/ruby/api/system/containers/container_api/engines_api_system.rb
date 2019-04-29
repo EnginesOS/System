@@ -2,25 +2,25 @@ module EnginesApiSystem
   def web_sites_for(container)
     engines_core.web_sites_for(container)
   end
-  
+
   def initialize_container_env(container)
     container.environments = [] unless container.environments.is_a?(Array)
-    set_locale_env(container)    
+    set_locale_env(container)
     replace_or_add_if_new(container.environments, 'external_domain_name', default_domain)
-    replace_or_add_if_new(container.environments, 'Engines_Debug_Run', false)   
+    replace_or_add_if_new(container.environments, 'Engines_Debug_Run', false)
   end
-  
-  def replace_or_add_if_new(environments, k, v) 
+
+  def replace_or_add_if_new(environments, k, v)
     d_set = false
-      environments.each do |env|
-             if env.name == k
-               env.value = v
-               d_set = true
-             end
-          end
-       environments.push(EnvironmentVariable.new(k, v)) unless d_set.is_a?(TrueClass)
+    environments.each do |env|
+      if env.name == k
+        env.value = v
+        d_set = true
+      end
+    end
+    environments.push(EnvironmentVariable.new(k, v)) unless d_set.is_a?(TrueClass)
   end
-  
+
   def get_container_memory_stats(container)
     MemoryStatistics.get_container_memory_stats(container)
   end
@@ -29,7 +29,7 @@ module EnginesApiSystem
     SystemDebug.debug(SystemDebug.containers,  :container_api_delete_engine, container)
     @system_api.rm_engine_from_cache(container.container_name)
     volbuilder = @engines_core.loadManagedUtility('fsconfigurator')
-    @system_api.delete_container_configs(volbuilder, container)    
+    @system_api.delete_container_configs(volbuilder, container)
   end
 
   def get_container_network_metrics(container)
@@ -43,7 +43,7 @@ module EnginesApiSystem
   def save_container_log(container, options)
     @system_api.save_container_log(container, options)
   end
-  
+
   def default_domain
     @engines_core.default_domain
   end
