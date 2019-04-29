@@ -30,7 +30,7 @@ module Builders
     setup_log_output
     @rebuild = true if @build_params[:reinstall]
     @data_uid = new_data_uid
-    @data_gid = new__data_gid
+    @data_gid = new_data_gid
     @build_params[:data_uid] =  @data_uid 
     @build_params[:data_gid] = @data_gid
     SystemDebug.debug(SystemDebug.builder, :builder_init, @build_params)
