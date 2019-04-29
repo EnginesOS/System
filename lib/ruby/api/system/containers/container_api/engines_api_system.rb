@@ -12,13 +12,13 @@ module EnginesApiSystem
   
   def replace_or_add_if_new(environments, k, v ) 
     d_set = false
-       container.environments.each do |env|
+      environments.each do |env|
              if env.name ==  k
                env.val =  v
                d_set = true
              end
           end
-       container.environments.push(EnvironmentVariable.new(k, v)) unless d_set.is_a?(TrueClass)
+       environments.push(EnvironmentVariable.new(k, v)) unless d_set.is_a?(TrueClass)
   end
   
   def get_container_memory_stats(container)
