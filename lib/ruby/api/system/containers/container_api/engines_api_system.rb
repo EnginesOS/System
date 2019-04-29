@@ -6,13 +6,21 @@ module EnginesApiSystem
   def initialize_container_env(container)
     container.environments = [] unless container.environments.is_a?(Array)
     set_locale_env(container)    
-    container.environments.push(EnvironmentVariable.new('external_domain_name', default_domain))
-    container.environments.each do |env|
-         return if env.name ==  'Engines_Debug_Run'
-       end
-    container.environments.push(EnvironmentVariable.new('Engines_Debug_Run', false))
+    replace_or_add_if_new(environments, 'external_domain_name', default_domain)
+    replace_or_add_if_new(environments, 'Engines_Debug_Run', false)   
   end
-
+  
+  def replace_or_add_if_new(environments, k, v ) 
+    d_set = false
+       container.environments.each do |env|
+             if env.name ==  k
+               env.val =  v
+               d_set = true
+             end
+          end
+       container.environments.push(EnvironmentVariable.new(k, v)) unless d_set.is_a?(TrueClass)
+  end
+  
   def get_container_memory_stats(container)
     MemoryStatistics.get_container_memory_stats(container)
   end
