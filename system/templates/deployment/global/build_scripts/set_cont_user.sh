@@ -37,3 +37,13 @@ if test -f /home/engines/etc/group/dirs
     chown -R $group $dir
    done
 fi   
+
+/usr/sbin/usermod -u $data_uid data_user
+/usr/sbin/groupmod -g $data_gid data_user
+/usr/sbin/usermod -g data_user data_user 
+/usr/sbin/usermod -G data_user $user
+/usr/sbin/usermod -g $group $user
+
+
+
+
