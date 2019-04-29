@@ -29,9 +29,9 @@ module Builders
     backup_lastbuild
     setup_log_output
     @rebuild = true if @build_params[:reinstall]
-    @data_uid = '11111'
-    @data_gid = '11111'
-    @build_params[:data_uid] =  @data_uid
+    @data_uid = new_uid
+    @data_gid = new_gid
+    @build_params[:data_uid] =  @data_uid 
     @build_params[:data_gid] = @data_gid
     SystemDebug.debug(SystemDebug.builder, :builder_init, @build_params)
     @service_builder = ServiceBuilder.new(@core_api, @templater, @build_params[:engine_name], @attached_services, basedir)
@@ -44,7 +44,19 @@ module Builders
     log_exception(e)
     raise e
   end
-
+  
+  def new_data_uid
+     '1111'
+  end
+  
+  def new_data_gui
+    '1114'
+  end
+  
+  def new_container_uid
+    '30000'
+  end
+  
   def restore_managed_container(engine)
     @engine = engine
     @rebuild = true   
