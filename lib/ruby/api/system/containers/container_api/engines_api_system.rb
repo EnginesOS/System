@@ -6,8 +6,8 @@ module EnginesApiSystem
   def initialize_container_env(container)
     container.environments = [] unless container.environments.is_a?(Array)
     set_locale_env(container)    
-    replace_or_add_if_new(environments, 'external_domain_name', default_domain)
-    replace_or_add_if_new(environments, 'Engines_Debug_Run', false)   
+    replace_or_add_if_new(container.environments, 'external_domain_name', default_domain)
+    replace_or_add_if_new(container.environments, 'Engines_Debug_Run', false)   
   end
   
   def replace_or_add_if_new(environments, k, v ) 
