@@ -10,11 +10,11 @@ module EnginesApiSystem
     replace_or_add_if_new(container.environments, 'Engines_Debug_Run', false)   
   end
   
-  def replace_or_add_if_new(environments, k, v ) 
+  def replace_or_add_if_new(environments, k, v) 
     d_set = false
       environments.each do |env|
-             if env.name ==  k
-               env.val =  v
+             if env.name == k
+               env.value = v
                d_set = true
              end
           end
