@@ -1,6 +1,9 @@
 #!/bin/sh
+
 user=`cat /home/engines/etc/user/name`
+
 /usr/sbin/usermod -u $cont_uid $user
+
 if test -f /home/engines/etc/user/files
  then
   for file in cat `cat /home/engines/etc/user/files`
@@ -17,7 +20,9 @@ if test -f /home/engines/etc/user/dirs
 fi
 
 group=`cat /home/engines/etc/group/name`
+
 /usr/sbin/groupmod -g $cont_uid $group
+
 if test -f /home/engines/etc/group/files
  then
   for file in cat `cat /home/engines/etc/group/files`
