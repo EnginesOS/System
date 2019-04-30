@@ -30,7 +30,7 @@ module Builders
     if @build_params[:reinstall]
       @rebuild = true
     else
-      if @build_params[:permission_as]
+      unless @build_params[:permission_as].nil?
         @cont_user_id = @core_api.lookup_app_uid(@build_params[:permission_as])
         @data_uid = @core_api.lookup_app_duid(@build_params[:permission_as])
         @data_gid = @core_api.lookup_app_dgid(@build_params[:permission_as])
