@@ -6,15 +6,16 @@ user=`cat /home/engines/etc/user/name`
 
 if test -f /home/engines/etc/user/files
  then
-  for file in cat `cat /home/engines/etc/user/files`
+  for file in `cat /home/engines/etc/user/files`
    do
     chown $user $file
    done
 fi
 if test -f /home/engines/etc/user/dirs
  then
-  for dir in cat `cat /home/engines/etc/user/dirs`
+  for dir in  `cat /home/engines/etc/user/dirs`
    do
+    mkdir -p $dir
     chown -R $user $dir
    done
 fi
@@ -25,23 +26,24 @@ group=`cat /home/engines/etc/group/name`
 
 if test -f /home/engines/etc/group/files
  then
-  for file in cat `cat /home/engines/etc/group/files`
+  for file in  `cat /home/engines/etc/group/files`
    do
     chown $group $file
    done
 fi
 if test -f /home/engines/etc/group/dirs
  then
-  for dir in cat `cat /home/engines/etc/group/dirs`
+  for dir in  `cat /home/engines/etc/group/dirs`
    do
+   mkdir -p $dir
     chown -R $group $dir
    done
 fi   
 
-/usr/sbin/usermod -u $data_uid data_user
-/usr/sbin/groupmod -g $data_gid data_user
-/usr/sbin/usermod -g data_user data_user 
-/usr/sbin/usermod -G data_user $user
+/usr/sbin/usermod -u $data_uid data-user
+/usr/sbin/groupmod -g $data_gid data-user
+/usr/sbin/usermod -g data-user data-user 
+/usr/sbin/usermod -G data-user $user
 /usr/sbin/usermod -g $group $user
 
 
