@@ -4,6 +4,7 @@ user=`cat /home/engines/etc/user/name`
 
 /usr/sbin/usermod -u $cont_uid $user
 
+
 if test -f /home/engines/etc/user/files
  then
   for file in `cat /home/engines/etc/user/files`
@@ -45,7 +46,7 @@ fi
 /usr/sbin/usermod -g data-user data-user 
 /usr/sbin/usermod -G data-user $user
 /usr/sbin/usermod -g $group $user
-
+/usr/sbin/usermod -G containers $user
 
 
 
