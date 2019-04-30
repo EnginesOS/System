@@ -10,7 +10,6 @@ module Builders
   require_relative 'base_image.rb'
   require_relative 'build_image.rb'
   require_relative 'physical_checks.rb'
-  
   def setup_build
     check_build_params(@build_params)
     @build_params[:engine_name].freeze
@@ -28,10 +27,20 @@ module Builders
     @runtime =  ''
     backup_lastbuild
     setup_log_output
-    @rebuild = true if @build_params[:reinstall]
-    @data_uid = new_data_uid
-    @data_gid = new_data_gid
-    @build_params[:data_uid] =  @data_uid 
+    if @build_params[:reinstall]
+      @rebuild = true
+    else
+      if @build_params[:permission_as]
+        @cont_user_id = @core_api.lookup_app_uid(@build_params[:permission_as])
+        @data_uid = @core_api.lookup_app_duid(@build_params[:permission_as])
+        @data_gid = @core_api.lookup_app_dgid(@build_params[:permission_as])
+      else
+        @cont_user_id = new_container_uid
+        @data_uid = new_data_uid
+        @data_gid = new_data_gid
+      end
+    end
+    @build_params[:data_uid] = @data_uid
     @build_params[:data_gid] = @data_gid
     SystemDebug.debug(SystemDebug.builder, :builder_init, @build_params)
     @service_builder = ServiceBuilder.new(@core_api, @templater, @build_params[:engine_name], @attached_services, basedir)
@@ -44,22 +53,22 @@ module Builders
     log_exception(e)
     raise e
   end
-  
+
   def new_data_uid
-     '1111'
+    '1111'
   end
-  
+
   def new_data_gid
     '1114'
   end
-  
+
   def new_container_uid
     '30000'
   end
-  
+
   def restore_managed_container(engine)
     @engine = engine
-    @rebuild = true   
+    @rebuild = true
     log_build_output('Starting Restore')
     setup_rebuild
     build_container
@@ -72,7 +81,7 @@ module Builders
   ensure
     File.delete('/opt/engines/run/system/flags/building_params') if File.exist?('/opt/engines/run/system/flags/building_params')
   end
-  
+
   def rebuild_managed_container(engine)
     @engine = engine
     @rebuild = true
@@ -150,7 +159,7 @@ module Builders
     rescue
       #dont panic if no container
     end
-    
+
     @result_mesg = @result_mesg.to_s + ' Roll Back Complete'
     SystemDebug.debug(SystemDebug.builder,'Roll Back Complete')
     close_all
@@ -165,7 +174,7 @@ module Builders
     get_base_image
     setup_engine_dirs
     create_engine_image
-  #  GC::OOB.run
+    #  GC::OOB.run
     @container = create_engine_container
     @service_builder.release_orphans
     #  wait_for_engine

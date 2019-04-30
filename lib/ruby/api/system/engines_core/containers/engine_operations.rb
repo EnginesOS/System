@@ -1,4 +1,19 @@
 module EnginesOperations
+  
+ def lookup_app_uid(container_name)
+   engine = loadManagedEngine(container_name)
+   engine.cont_user_id
+ end
+ 
+  def lookup_app_duid(container_name)
+    engine = loadManagedEngine(container_name)
+    engine.data_uid
+  end
+  
+  def lookup_app_dgid(container_name)
+    engine = loadManagedEngine(container_name)
+    engine.data_gid
+  end
   #require_relative 'service_manager_access.rb'
   # @return boolean indicating sucess
   # @params [Hash] :engine_name

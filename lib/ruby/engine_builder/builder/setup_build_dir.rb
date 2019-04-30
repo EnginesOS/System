@@ -160,7 +160,7 @@ module BuildDirSetup
       @cont_user_id =  @blueprint_reader.cont_user #fix me and add id
       #   STDERR.puts("Set web user to:" + @web_user.to_s)
     else
-      @cont_user_id = new_container_uid 
+      
       log_build_output('Read Web User')
       stef = File.open(basedir + '/home/engines/etc/stack.env', 'r')
       while line = stef.gets do
