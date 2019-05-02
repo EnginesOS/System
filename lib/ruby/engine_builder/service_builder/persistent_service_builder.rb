@@ -99,7 +99,7 @@ module PersistantServiceBuilder
     # end
     SystemDebug.debug(SystemDebug.builder, :builder_attach_service, service_hash)
 
-    match_variables(service_hash)
+    #   match_variables(service_hash)
     @templater.fill_in_dynamic_vars(service_hash) 
 
     constants = SoftwareServiceDefinition.service_constants(service_hash)
