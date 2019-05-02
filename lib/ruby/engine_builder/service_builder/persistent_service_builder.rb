@@ -21,7 +21,7 @@ module PersistantServiceBuilder
       skey = consumer_params[cp_key][:name]
       unless service_hash[:variables].key?(skey)
         STDERR.puts('MISSING service_hash[' + skey.to_s + ']<->consumer_params[:' + cp_key.to_s + '] ' + service_hash[:variables][skey].to_s + ' = ' + consumer_params[cp_key][:value].to_s)
-        service_hash[:variables][skey] = consumer_params[cp_key][:value] unless consumer_params[cp_key][:value].nil?
+       # service_hash[:variables][skey] = consumer_params[cp_key][:value] unless consumer_params[cp_key][:value].nil?
       end
     end
   end
@@ -102,7 +102,7 @@ module PersistantServiceBuilder
 
     match_variables(service_hash)
     @templater.fill_in_dynamic_vars(service_hash)
-
+    match_variables(service_hash)
     constants = SoftwareServiceDefinition.service_constants(service_hash)
     environ.concat(constants)
     service_environment = SoftwareServiceDefinition.service_environments(service_hash)
