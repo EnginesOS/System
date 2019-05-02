@@ -19,7 +19,7 @@ module ContainerGuids
     r = false
     @build_params[:attached_services].each do |service|
       next unless service[:create_type] == 'orphan'
-      r = lookup_ids(service) if service[:create_type] == 'filesystem/local/filesystem'
+      r = lookup_ids(service) if service[:type_path] == 'filesystem/local/filesystem'
       if r == true
         STDERR.puts('Got ids from orphan ' + service.to_s)
         break
