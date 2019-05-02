@@ -19,28 +19,30 @@ module ContainerGuids
     r = false
     @build_params[:attached_services].each do |service|
       next unless service[:create_type] == 'orphan'
-        r = lookup_ids(service) if service[:create_type] == 'filesystem/local/filesystem'
-         if r == true
-           STDERR.puts('Got ids from orphan ' + service.to_s)
-           break
-         end
+      r = lookup_ids(service) if service[:create_type] == 'filesystem/local/filesystem'
+      if r == true
+        STDERR.puts('Got ids from orphan ' + service.to_s)
+        break
+      end
     end
     STDERR.puts('Get ids from orphan status' + r.to_s)
     r
   end
-  
+
   def lookup_ids(service)
     r = false
     service_hash = @core_api.retrieve_orphan(service)
-   if service_hash.is_a?(Hash)
-     if service_hash[:varaibles].is_a?(Hash)     
-      @cont_user_id = service_hash[:varaibles][:fw_id]
-      @data_uid = service_hash[:varaibles][:user]
-      @data_gid = service_hash[:varaibles][:group]
-      r = true
-     end
-   end
-   STDERR.puts('Failed to get ID from orphan ' + service.to_s + "\n retrieved:" + service_hash.to_s) unless r == true
-   r
+    if service_hash.is_a?(Hash)
+      if service_hash[:varaibles].is_a?(Hash)
+        if service_hash[:varaibles].key?(:fw_user)
+          @cont_user_id = service_hash[:varaibles][:fw_user]
+          r = true
+          @data_uid = service_hash[:varaibles][:user]
+          @data_gid = service_hash[:varaibles][:group]
+        end
+      end
+    end
+    STDERR.puts('Failed to get ID from orphan ' + service.to_s + "\n retrieved:" + service_hash.to_s) unless r == true
+    r
   end
 end
