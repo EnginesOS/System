@@ -7,6 +7,9 @@ module Builders
   require_relative 'engine_scripts_builder.rb'
   include EngineScriptsBuilder
 
+  require_relative 'container_guids.rb'
+  include ContainerGuids
+  
   require_relative 'base_image.rb'
   require_relative 'build_image.rb'
   require_relative 'physical_checks.rb'
@@ -30,16 +33,9 @@ module Builders
     if @build_params[:reinstall]
       @rebuild = true
     else
-      unless @build_params[:permission_as].nil?
-        @cont_user_id = @core_api.lookup_app_uid(@build_params[:permission_as])
-        @data_uid = @core_api.lookup_app_duid(@build_params[:permission_as])
-        @data_gid = @core_api.lookup_app_dgid(@build_params[:permission_as])
-      else
-        @cont_user_id = new_container_uid
-        @data_uid = new_data_uid
-        @data_gid = new_data_gid
-      end
+      set_container_guids
     end
+    #FIXME Do I need these next two lines
     @build_params[:data_uid] = @data_uid
     @build_params[:data_gid] = @data_gid
     SystemDebug.debug(SystemDebug.builder, :builder_init, @build_params)
@@ -59,7 +55,7 @@ module Builders
   end
 
   def new_data_gid
-    '1114'
+    '1111'
   end
 
   def new_container_uid
