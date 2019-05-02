@@ -13,7 +13,7 @@ module ContainerGuids
     end
   end
 
-  def set_orphan_id
+  def set_guids_from_orphan
     r = false
     @build_params[:attached_services].each do |service|
       next unless service[:create_type] == 'orphan'
