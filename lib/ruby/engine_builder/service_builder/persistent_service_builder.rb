@@ -17,8 +17,8 @@ module PersistantServiceBuilder
   
   def match_variables(service_hash, service_def)
     service_def[:consumer_params].keys.each do |key|
-      unless service_hash.key?(service_def[:consumer_params][key][:name])
-        service_hash[service_def[:consumer_params][key][:name]] = service_def[:consumer_params][key][:value]
+      unless service_hash[:variables].key?(service_def[:consumer_params][key][:name])
+        service_hash[service_def[:variables][:consumer_params][key][:name]] = service_def[:consumer_params][key][:value]
       end
     end
   end
