@@ -18,6 +18,7 @@ module ContainerGuids
     @build_params[:attached_services].each do |service|
       next unless service[:create_type] == 'orphan'
         r = lookup_ids(service) if service[:create_type] == 'filesystem/local/filesystem'
+        break if r == true
     end
     r
   end
@@ -27,9 +28,9 @@ module ContainerGuids
     service_hash = @core_api.retrieve_orphan(service)
    if service_hash.is_a?(Hash)
      if service_hash[:varaibles].is_a?(Hash)     
-      @cont_user_id = service_hash[:varaibles]
-      @data_uid = service_hash[:varaibles]
-      @data_gid = service_hash[:varaibles]
+      @cont_user_id = service_hash[:varaibles][]
+      @data_uid = service_hash[:varaibles][:user]
+      @data_gid = service_hash[:varaibles][:group]
       r = true
      end
    end

@@ -4,6 +4,7 @@ module PersistantServiceBuilder
     services.each do | service_hash |
       SystemDebug.debug(SystemDebug.builder, :servicer_hash, service_hash)
       service_def = software_service_definition(service_hash)
+      match_variables(service_hash, service_def)
       raise EngineBuilderException.new(error_hash('no matching service definition for ' + service_hash.to_s, self)) if service_def.nil?
       if service_def[:persistent]
         service_hash[:persistent] = true
@@ -13,6 +14,14 @@ module PersistantServiceBuilder
   end
 
   private
+  
+  def match_variables(service_hash, service_def)
+    service_def[:consumer_params].keys.each do |key|
+      unless service_hash.key?(service_def[:consumer_params][key][:name])
+        service_hash[service_def[:consumer_params][key][:name]] = service_def[:consumer_params][key][:value]
+      end
+    end
+  end
 
   def match_service_to_existing(service_hash, use_existing)
     unless use_existing.nil?
@@ -87,6 +96,7 @@ module PersistantServiceBuilder
     #  raise EngineBuilderException.new(error_hash('failed to create fs', self)) unless result
     # end
     SystemDebug.debug(SystemDebug.builder, :builder_attach_service, service_hash)
+    
     @templater.fill_in_dynamic_vars(service_hash) 
 
     constants = SoftwareServiceDefinition.service_constants(service_hash)
