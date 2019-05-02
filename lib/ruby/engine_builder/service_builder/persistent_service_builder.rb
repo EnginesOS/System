@@ -20,7 +20,7 @@ module PersistantServiceBuilder
     consumer_params.keys.each do |cp_key|
       skey = consumer_params[cp_key][:name]
       unless service_hash[:variables].key?(skey)
-        service_hash[:variables][skey] = consumer_params[cp_key][:value]
+        STDERR.puts ('MISSING service_hash[' + skey.to_s + ']<->consumer_params[:' + cp_key.to_s + '] ' + service_hash[:variables][skey].to_s + ' = ' + consumer_params[cp_key][:value].to_s)
       end
     end
   end
@@ -99,7 +99,7 @@ module PersistantServiceBuilder
     # end
     SystemDebug.debug(SystemDebug.builder, :builder_attach_service, service_hash)
 
-    #   match_variables(service_hash)
+     match_variables(service_hash)
     @templater.fill_in_dynamic_vars(service_hash) 
 
     constants = SoftwareServiceDefinition.service_constants(service_hash)
