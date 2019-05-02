@@ -87,7 +87,6 @@ module PersistantServiceBuilder
     elsif @core_api.service_is_registered?(service_hash) == false
       @first_build = true
       service_hash[:fresh] = true
-      match_variables(service_hash)
     else # elseif over attach to existing true attached to existing
       service_hash[:fresh] = false
       raise EngineBuilderException.new(error_hash('Failed to build cannot over write ' + service_hash[:service_handle].to_s + ' Service Found', self))
@@ -99,7 +98,8 @@ module PersistantServiceBuilder
     #  raise EngineBuilderException.new(error_hash('failed to create fs', self)) unless result
     # end
     SystemDebug.debug(SystemDebug.builder, :builder_attach_service, service_hash)
-    
+
+    match_variables(service_hash)
     @templater.fill_in_dynamic_vars(service_hash) 
 
     constants = SoftwareServiceDefinition.service_constants(service_hash)
