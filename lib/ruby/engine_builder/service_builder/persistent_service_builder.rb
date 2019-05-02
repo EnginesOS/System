@@ -4,7 +4,6 @@ module PersistantServiceBuilder
     services.each do | service_hash |
       SystemDebug.debug(SystemDebug.builder, :servicer_hash, service_hash)
       service_def = software_service_definition(service_hash)
-      match_variables(service_hash, service_def)
       raise EngineBuilderException.new(error_hash('no matching service definition for ' + service_hash.to_s, self)) if service_def.nil?
       if service_def[:persistent]
         service_hash[:persistent] = true
@@ -15,11 +14,13 @@ module PersistantServiceBuilder
 
   private
   
-  def match_variables(service_hash, service_def)
-    service_def[:consumer_params].keys.each do |sd_key|
-      skey = service_def[:consumer_params][sd_key][:name]
+  #ensure service hash has all variables
+  def match_variables(service_hash)
+    consumer_params = SoftwareServiceDefinition.consumer_params(service_hash)
+    consumer_params.keys.each do |cp_key|
+      skey = consumer_params[cp_key][:name]
       unless service_hash[:variables].key?(skey)
-        service_hash[:variables][skey] = service_def[:consumer_params][sd_key][:value]
+        service_hash[:variables][skey] = consumer_params[cp_key][:value]
       end
     end
   end
@@ -86,6 +87,7 @@ module PersistantServiceBuilder
     elsif @core_api.service_is_registered?(service_hash) == false
       @first_build = true
       service_hash[:fresh] = true
+      match_variables(service_hash)
     else # elseif over attach to existing true attached to existing
       service_hash[:fresh] = false
       raise EngineBuilderException.new(error_hash('Failed to build cannot over write ' + service_hash[:service_handle].to_s + ' Service Found', self))
