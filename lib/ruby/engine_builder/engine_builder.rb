@@ -26,6 +26,9 @@ class EngineBuilder < ErrorsApi
 
   require_relative 'builder/container_creation.rb'
   include  ContainerCreation
+  
+  require_relative 'builder/container_guids.rb'
+  include ContainerGuids
 
   require_relative '../templater/templater.rb'
 

@@ -7,8 +7,7 @@ module Builders
   require_relative 'engine_scripts_builder.rb'
   include EngineScriptsBuilder
 
-  require_relative 'container_guids.rb'
-  include ContainerGuids
+
   
   require_relative 'base_image.rb'
   require_relative 'build_image.rb'
