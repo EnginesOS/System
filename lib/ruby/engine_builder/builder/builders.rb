@@ -34,9 +34,11 @@ module Builders
     else
       set_container_guids
     end
-    #FIXME Do I need these next two lines
+
     @build_params[:data_uid] = @data_uid
     @build_params[:data_gid] = @data_gid
+    @build_params[:cont_user_id] = @cont_user_id  
+      
     SystemDebug.debug(SystemDebug.builder, :builder_init, @build_params)
     @service_builder = ServiceBuilder.new(@core_api, @templater, @build_params[:engine_name], @attached_services, basedir)
     SystemDebug.debug(SystemDebug.builder, :builder_init__service_builder, @build_params)
