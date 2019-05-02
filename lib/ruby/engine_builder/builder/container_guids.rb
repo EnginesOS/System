@@ -33,12 +33,12 @@ module ContainerGuids
     r = false
     service_hash = @core_api.retrieve_orphan(service)
     if service_hash.is_a?(Hash)
-      if service_hash[:varaibles].is_a?(Hash)
-        if service_hash[:varaibles].key?(:fw_user)
-          @cont_user_id = service_hash[:varaibles][:fw_user]
+      if service_hash[:variables].is_a?(Hash)
+        if service_hash[:variables].key?(:fw_user)
+          @cont_user_id = service_hash[:variables][:fw_user]
           r = true
-          @data_uid = service_hash[:varaibles][:user]
-          @data_gid = service_hash[:varaibles][:group]
+          @data_uid = service_hash[:variables][:user]
+          @data_gid = service_hash[:variables][:group]
         end
       end
     end
