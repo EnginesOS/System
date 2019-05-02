@@ -13,14 +13,15 @@ module PersistantServiceBuilder
   end
 
   private
-  
+
   #ensure service hash has all variables
   def match_variables(service_hash)
     consumer_params = SoftwareServiceDefinition.consumer_params(service_hash)
     consumer_params.keys.each do |cp_key|
       skey = consumer_params[cp_key][:name]
       unless service_hash[:variables].key?(skey)
-        STDERR.puts ('MISSING service_hash[' + skey.to_s + ']<->consumer_params[:' + cp_key.to_s + '] ' + service_hash[:variables][skey].to_s + ' = ' + consumer_params[cp_key][:value].to_s)
+        STDERR.puts('MISSING service_hash[' + skey.to_s + ']<->consumer_params[:' + cp_key.to_s + '] ' + service_hash[:variables][skey].to_s + ' = ' + consumer_params[cp_key][:value].to_s)
+        service_hash[:variables][skey].to_s = consumer_params[cp_key][:value] unless consumer_params[cp_key][:value].nil?
       end
     end
   end
@@ -99,8 +100,8 @@ module PersistantServiceBuilder
     # end
     SystemDebug.debug(SystemDebug.builder, :builder_attach_service, service_hash)
 
-     match_variables(service_hash)
-    @templater.fill_in_dynamic_vars(service_hash) 
+    match_variables(service_hash)
+    @templater.fill_in_dynamic_vars(service_hash)
 
     constants = SoftwareServiceDefinition.service_constants(service_hash)
     environ.concat(constants)
