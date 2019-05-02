@@ -17,9 +17,9 @@ module PersistantServiceBuilder
   
   def match_variables(service_hash, service_def)
     service_def[:consumer_params].keys.each do |sd_key|
-      skey = service_def[:consumer_params][sdkey][:name]
+      skey = service_def[:consumer_params][sd_key][:name]
       unless service_hash[:variables].key?(skey)
-        service_hash[:variables][skey] = service_def[:consumer_params][sdkey][:value]
+        service_hash[:variables][skey] = service_def[:consumer_params][sd_key][:value]
       end
     end
   end
