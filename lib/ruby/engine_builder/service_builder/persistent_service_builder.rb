@@ -21,7 +21,7 @@ module PersistantServiceBuilder
       skey = consumer_params[cp_key][:name]
       unless service_hash[:variables].key?(skey)
         STDERR.puts('MISSING service_hash[' + skey.to_s + ']<->consumer_params[:' + cp_key.to_s + '] ' + service_hash[:variables][skey].to_s + ' = ' + consumer_params[cp_key][:value].to_s)
-        service_hash[:variables][skey].to_s = consumer_params[cp_key][:value] unless consumer_params[cp_key][:value].nil?
+        service_hash[:variables][skey] = consumer_params[cp_key][:value] unless consumer_params[cp_key][:value].nil?
       end
     end
   end
