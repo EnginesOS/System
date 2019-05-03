@@ -18,7 +18,7 @@ module ContainerGuids
   def set_guids_from_orphan
     r = false
     @build_params[:attached_services].each do |service|
-      next unless service[:create_type] == 'orphan'
+      next if service[:create_type] == 'share'
       r = lookup_ids(service) if service[:type_path] == 'filesystem/local/filesystem'
       if r == true
         STDERR.puts('Got ids from orphan ' + service.to_s)
@@ -44,5 +44,7 @@ module ContainerGuids
     end
     STDERR.puts('Failed to get ID from orphan ' + service.to_s + "\n retrieved:" + service_hash.to_s) unless r == true
     r
+  rescue
+    false
   end
 end
