@@ -52,7 +52,12 @@ volumes:
  BackupKeys: 
   name: BackupKeys
   remotepath: "/home/backup/.gnupg"
-  localpath: "/opt/engines/etc/backup/keys/"
+  localpath: "/opt/engines/etc/backup/gupg/keys/"
+  permissions: "rw"
+ SSHKeys: 
+  name: SSHKeys
+  remotepath: "/home/backup/.ssh"
+  localpath: "/opt/engines/etc/backup/ssh/keys/"
   permissions: "rw"
 port: 
 mapped_ports: 
