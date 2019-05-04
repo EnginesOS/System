@@ -10,8 +10,9 @@ def set_top_level_service_params(service_hash, container_name)
   service_hash[:parent_engine] = container_name
   service_hash[:container_type] = 'app' if service_hash.has_key?(:container_type) == false || service_hash[:container_type] ==nil
   service_hash[:soft_service] = service_def[:soft_service]
-  service_hash[:variables] = {} unless service_hash.has_key?(:variables)
+  service_hash[:variables] = {} unless service_hash.has_key?(:variables)    
   service_hash[:variables][:parent_engine] = container_name
+    match_variables(service_hash)
   if service_def.key?(:priority)
     service_hash[:priority] = service_def[:priority]
   else
@@ -28,6 +29,17 @@ def set_top_level_service_params(service_hash, container_name)
   end
   service_hash
 end
+
+def match_variables(service_hash)
+   consumer_params = SoftwareServiceDefinition.consumer_params(service_hash)
+   consumer_params.keys.each do |cp_key|
+     skey = consumer_params[cp_key][:name]
+     unless service_hash[:variables].key?(skey)
+       STDERR.puts('MISSING service_hash[' + skey.to_s + ']<->consumer_params[:' + cp_key.to_s + '] ' + service_hash[:variables][skey].to_s + ' = ' + consumer_params[cp_key][:value].to_s)
+      # service_hash[:variables][skey] = consumer_params[cp_key][:value] unless consumer_params[cp_key][:value].nil?
+     end
+   end
+ end
 
 def is_soft_service?(service_hash)
   soft = SoftwareServiceDefinition.is_soft_service?(service_hash)
