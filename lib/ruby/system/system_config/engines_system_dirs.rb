@@ -28,8 +28,8 @@ module EnginesSystemDirs
   @@EngineServiceBackupScriptsRoot = '/home/engines/scripts/backup/engine/'
   
   #Container UID historical store
-  @@ContainerUIDdir = '/opt/engines/etc/countainers/uids'
-  @@ContainerNextUIDFile = '/opt/engines/etc/countainers/uid/next'
+  @@ContainerUIDdir = '/opt/engines/etc/containers/uids'
+  @@ContainerNextUIDFile = '/opt/engines/etc/containers/uid/next'
   
   def SystemConfig.ContainerUIDdir
     @@ContainerUIDdir

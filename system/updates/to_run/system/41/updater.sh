@@ -1,3 +1,3 @@
 #!/bin/sh
-mkdir -p /opt/engines/etc/countainers/uids
-chown engines /opt/engines/etc/countainers/uids
+mkdir -p /opt/engines/etc/containers/uids
+chown engines /opt/engines/etc/containers/uids
