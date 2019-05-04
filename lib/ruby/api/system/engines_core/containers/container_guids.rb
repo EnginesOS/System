@@ -16,8 +16,8 @@ module ContainerGuids
   private
 
   def read_historical_id(container_name)
-    if File.exist?(SystemConfig.ContainerUIDdir + container_name.to_s)
-      id_file = File.new(SystemConfig.ContainerUIDdir + container_name.to_s,'r')
+    if File.exist?(SystemConfig.ContainerUIDdir + '/' + container_name.to_s)
+      id_file = File.new(SystemConfig.ContainerUIDdir + '/' + container_name.to_s,'r')
       uid_s =  id_file.read
       id_file.close
       uid_s.strip
@@ -43,7 +43,7 @@ module ContainerGuids
   end
 
   def save_container_id(uid, container_name)
-    id_file = File.new(SystemConfig.ContainerUIDdir + container_name.to_s,'w+')
+    id_file = File.new(SystemConfig.ContainerUIDdir + '/' + container_name.to_s,'w+')
     id_file.puts(uid.to_s)
     id_file.close
   end
