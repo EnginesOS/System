@@ -1,7 +1,7 @@
 module ContainerGuids
-  def new_container_uid
-    @core_api.new_container_uid(@build_params[:engine_name])
-  end
+#  def new_container_uid
+#    @core_api.new_container_uid(@build_params[:engine_name])
+#  end
   def set_container_guids
     unless set_guids_from_orphan.is_a?(TrueClass)
       unless @build_params[:permission_as].nil?
