@@ -29,7 +29,7 @@ module EnginesSystemDirs
   
   #Container UID historical store
   @@ContainerUIDdir = '/opt/engines/etc/containers/uids'
-  @@ContainerNextUIDFile = '/opt/engines/etc/containers/uid/next'
+  @@ContainerNextUIDFile = '/opt/engines/etc/containers/uids/next'
   
   def SystemConfig.ContainerUIDdir
     @@ContainerUIDdir
