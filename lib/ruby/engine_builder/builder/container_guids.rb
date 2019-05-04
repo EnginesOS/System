@@ -11,7 +11,7 @@ module ContainerGuids
         @data_gid = @core_api.lookup_app_dgid(@build_params[:permission_as])
       else
         STDERR.puts('NEW CONT ID')
-        @cont_user_id = new_container_uid
+        @cont_user_id = @core_api.new_container_uid(@build_params[:engine_name]) #new_container_uid
         @data_uid = new_data_uid
         @data_gid = new_data_gid
       end
