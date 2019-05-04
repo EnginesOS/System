@@ -1,4 +1,7 @@
 module ContainerGuids
+  def new_container_id
+    @core_api.new_container_id(@build_params[:build])
+  end
   def set_container_guids
     unless set_guids_from_orphan.is_a?(TrueClass)
       unless @build_params[:permission_as].nil?
@@ -14,6 +17,15 @@ module ContainerGuids
       end
     end
   end
+  def new_data_uid    
+    @core_api.new_data_uid
+  end
+
+  def new_data_gid   
+    @core_api.new_data_gid
+  end
+
+ 
 
   def set_guids_from_orphan
     r = false

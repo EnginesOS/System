@@ -51,17 +51,6 @@ module Builders
     raise e
   end
 
-  def new_data_uid
-    '1111'
-  end
-
-  def new_data_gid
-    '1111'
-  end
-
-  def new_container_uid
-    '30001'
-  end
 
   def restore_managed_container(engine)
     @engine = engine
