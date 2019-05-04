@@ -12,17 +12,10 @@ module ContainerGuids
       else
         STDERR.puts('NEW CONT ID')
         @cont_user_id = @core_api.new_container_uid(@build_params[:engine_name]) #new_container_uid
-        @data_uid = new_data_uid
-        @data_gid = new_data_gid
+        @data_uid = new_data_uid(@build_params[:engine_name])
+        @data_gid = @core_api.new_data_gid(@build_params[:engine_name])
       end
     end
-  end
-  def new_data_uid    
-    @core_api.new_data_uid(@build_params[:engine_name])
-  end
-
-  def new_data_gid   
-    @core_api.new_data_gid(@build_params[:engine_name])
   end
 
  
