@@ -102,7 +102,7 @@ module PersistantServiceBuilder
 
     match_variables(service_hash)
     @templater.fill_in_dynamic_vars(service_hash)
-    match_variables(service_hash)
+   
     constants = SoftwareServiceDefinition.service_constants(service_hash)
     environ.concat(constants)
     service_environment = SoftwareServiceDefinition.service_environments(service_hash)
@@ -110,7 +110,7 @@ module PersistantServiceBuilder
     #environ.concat(SoftwareServiceDefinition.service_environments(service_hash))
 
     SystemDebug.debug(SystemDebug.builder, :with_env, environ)
-
+    match_variables(service_hash)
     @attached_services.push(service_hash)
     @core_api.create_and_register_service(service_hash)
   end
