@@ -18,10 +18,10 @@ module PersistantServiceBuilder
   def match_variables(service_hash)
     consumer_params = SoftwareServiceDefinition.consumer_params(service_hash)
     consumer_params.keys.each do |cp_key|
-      skey = consumer_params[cp_key][:name]
+      skey = consumer_params[cp_key][:name].to_sym
       unless service_hash[:variables].key?(skey)
         STDERR.puts('MISSING service_hash[' + skey.to_s + ']<->consumer_params[:' + cp_key.to_s + '] ' + service_hash[:variables][skey].to_s + ' = ' + consumer_params[cp_key][:value].to_s)
-       # service_hash[:variables][skey] = consumer_params[cp_key][:value] unless consumer_params[cp_key][:value].nil?
+       service_hash[:variables][skey] = consumer_params[cp_key][:value] unless consumer_params[cp_key][:value].nil?
       end
     end
   end
@@ -110,7 +110,7 @@ module PersistantServiceBuilder
     #environ.concat(SoftwareServiceDefinition.service_environments(service_hash))
 
     SystemDebug.debug(SystemDebug.builder, :with_env, environ)
-    match_variables(service_hash)
+ 
     @attached_services.push(service_hash)
     @core_api.create_and_register_service(service_hash)
   end
