@@ -1,6 +1,7 @@
 #!/bin/bash
 
 PID_FILE=/home/engines/run/engines.pid	
+
 export PID_FILE
 
 if test -f /home/engines/functions/trap.sh 
@@ -32,6 +33,7 @@ if test -f /home/engines/scripts/start/startwebapp.sh
    launch_app
 elif test -f /usr/sbin/apache2ctl
  then
+ APACHE_PID_FILE=$PID_FILE
  export APACHE_PID_FILE PID_FILE
    start_apache
 elif test -d /etc/nginx
