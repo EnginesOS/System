@@ -40,7 +40,7 @@ class ManagedEngine < ManagedContainer
     save_state # no running.yaml throws a no such container so save so others can use
   end
 
-  attr_reader :plugins_path, :extract_plugins, :web_root
+  attr_reader :plugins_path, :extract_plugins, :web_root, :cont_user_id, :data_uid, :data_gid
 
   def lock_values
     @ctype = 'app' if @ctype.nil?

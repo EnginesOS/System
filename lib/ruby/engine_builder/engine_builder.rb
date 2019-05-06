@@ -26,6 +26,9 @@ class EngineBuilder < ErrorsApi
 
   require_relative 'builder/container_creation.rb'
   include  ContainerCreation
+  
+  require_relative 'builder/container_guids.rb'
+  include ContainerGuids
 
   require_relative '../templater/templater.rb'
 
@@ -44,7 +47,8 @@ class EngineBuilder < ErrorsApi
   :data_uid,
   :data_gid,
   :build_error,
-  :container
+  :container,
+  :cont_user_id
 
   attr_accessor :app_is_persistent
 

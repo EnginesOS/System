@@ -7,10 +7,11 @@ module Builders
   require_relative 'engine_scripts_builder.rb'
   include EngineScriptsBuilder
 
+
+  
   require_relative 'base_image.rb'
   require_relative 'build_image.rb'
   require_relative 'physical_checks.rb'
-  
   def setup_build
     check_build_params(@build_params)
     @build_params[:engine_name].freeze
@@ -28,11 +29,16 @@ module Builders
     @runtime =  ''
     backup_lastbuild
     setup_log_output
-    @rebuild = true if @build_params[:reinstall]
-    @data_uid = '11111'
-    @data_gid = '11111'
-    @build_params[:data_uid] =  @data_uid
+    if @build_params[:reinstall]
+      @rebuild = true
+    else
+      set_container_guids
+    end
+
+    @build_params[:data_uid] = @data_uid
     @build_params[:data_gid] = @data_gid
+    @build_params[:cont_user_id] = @cont_user_id  
+      
     SystemDebug.debug(SystemDebug.builder, :builder_init, @build_params)
     @service_builder = ServiceBuilder.new(@core_api, @templater, @build_params[:engine_name], @attached_services, basedir)
     SystemDebug.debug(SystemDebug.builder, :builder_init__service_builder, @build_params)
@@ -45,9 +51,10 @@ module Builders
     raise e
   end
 
+
   def restore_managed_container(engine)
     @engine = engine
-    @rebuild = true   
+    @rebuild = true
     log_build_output('Starting Restore')
     setup_rebuild
     build_container
@@ -60,7 +67,7 @@ module Builders
   ensure
     File.delete('/opt/engines/run/system/flags/building_params') if File.exist?('/opt/engines/run/system/flags/building_params')
   end
-  
+
   def rebuild_managed_container(engine)
     @engine = engine
     @rebuild = true
@@ -138,7 +145,7 @@ module Builders
     rescue
       #dont panic if no container
     end
-    
+
     @result_mesg = @result_mesg.to_s + ' Roll Back Complete'
     SystemDebug.debug(SystemDebug.builder,'Roll Back Complete')
     close_all
@@ -153,7 +160,7 @@ module Builders
     get_base_image
     setup_engine_dirs
     create_engine_image
-  #  GC::OOB.run
+    #  GC::OOB.run
     @container = create_engine_container
     @service_builder.release_orphans
     #  wait_for_engine

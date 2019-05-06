@@ -19,6 +19,11 @@ volumes:
   remotepath: "/var/fs/local/"
   localpath: "/var/lib/engines/apps/"
   permissions: "rw"
+ homes: 
+  name: homes
+  remotepath: "/var/fs/homes/"
+  localpath: "/var/lib/engines/home/"
+  permissions: "rw"
  secrets: 
   name: secrets
   remotepath: "/var/secrets/"

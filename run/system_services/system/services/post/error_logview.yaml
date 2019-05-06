@@ -1,4 +1,4 @@
-parent_engine: mgmt
+parent_engine: system
 publisher_namespace: EnginesSystem
 type_path: logview
 service_handle: admin_error_logview

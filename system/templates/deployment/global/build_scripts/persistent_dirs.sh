@@ -50,7 +50,7 @@ if test -d /home/volumes/
      
      echo "cp -rnp $dir_abs_path $destination "
   	cp -rnp $dir_abs_path  $destination 
-  	rm -r $dir_abs_path
+  	rm -rf $dir_abs_path
   	echo "ln -s $ln_destination $dir_abs_path"
   	ln -s $ln_destination $dir_abs_path
   done 

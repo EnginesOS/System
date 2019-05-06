@@ -1,0 +1,13 @@
+
+RUN touch /home/app/npm-debug.log &&\
+	chown $ContUser /home/app/npm-debug.log
+	
+ADD home/start.sh /home/engines/scripts/startup/start.sh
+
+
+WORKDIR /home/app
+
+	 
+
+
+

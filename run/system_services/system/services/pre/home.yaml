@@ -1,0 +1,10 @@
+parent_engine: system
+publisher_namespace: EnginesSystem
+type_path: homes
+service_handle: user_homes
+service_container_name: volmgr
+container_type: service
+persistent: true
+variables:
+ access: rw
+ home_type: all

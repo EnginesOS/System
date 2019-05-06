@@ -19,7 +19,10 @@ def volumes_mounts(container)
 
   secrets = secrets_mounts(container)
   mounts.concat(secrets) unless secrets.nil?
-
+  
+  homes = homes_mounts(container)
+  mounts.concat(homes) unless homes.nil?
+  
   unless container.ctype == 'system_service'
     rm = registry_mounts(container)
     mounts.concat(rm) unless rm.nil?
@@ -138,6 +141,49 @@ def  mount_string_for_secret(secret)
   s
 end
 
+def  mount_string_for_homes(home)
+  s = nil
+    src_cname =  home[:parent_engine]
+    src_ctype =  home[:container_type]
+if  home[:variables][:home_type] == 'all'
+ # STDERR.puts('Secrets mount' +  '/var/lib/engines/secrets/' + src_ctype.to_s + 's/' +  src_cname.to_s + '/' + sh.to_s + ':/home/.secrets/'  + sh.to_s + ':ro')
+   s = '/var/lib/engines/home/:/home/users/:'  + home[:variables][:access]
+  elsif home[:variables][:home_type] == 'seperate'
+    s = [] 
+  home[:variables][:homes].split(", \n").each do | user |
+    STDERR.puts('SDFSDF ' + '/var/lib/engines/home/' + user)      
+    next unless Dir.exist?('/home/users/' + user  )
+    STDERR.puts('SDFSDF ' + '/var/lib/engines/home/' + user + '/' +  home[:parent_engine] + ':/home/users/' + user  + '/' +  home[:parent_engine] + ':'  + home[:variables][:access])
+    s.push('/var/lib/engines/home/' + user + '/' +  home[:parent_engine] + ':/home/users/' + user  + '/' +  home[:parent_engine] + ':'  + home[:variables][:access])
+  end
+else
+  STDERR.puts('serr ' + home.to_s)
+end
+  STDERR.puts('Homes mount' + s.to_s)
+  s
+end
+def homes_mounts(container)
+    mounts = []
+    unless container.ctype == 'system_service'
+      homes = container.attached_services(
+      {type_path: 'homes'
+      })
+      if homes.is_a?(Array)
+        homes.each do | home |
+          m_str = mount_string_for_homes(home)
+          if m_str.is_a?(String)            
+           mounts.push(m_str)
+          elsif m_str.is_a?(Array)    
+            mounts.concat(m_str)
+          end 
+        end
+    #  else
+     #   STDERR.puts('Secrets mounts was' + secrets.to_s)
+      end
+    end
+    mounts
+  end
+  
 def secrets_mounts(container)
   mounts = []
   unless container.ctype == 'system_service'

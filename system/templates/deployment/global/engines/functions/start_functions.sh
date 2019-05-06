@@ -101,12 +101,15 @@ mkdir -p /var/log/apache2/ >& /dev/null
 if test -f /home/engines/scripts/engine/blocking.sh 
  then   
     echo started 
-   /usr/sbin/apache2ctl -DFOREGROUND &		  
+   /usr/sbin/apache2ctl -DFOREGROUND &		
+      echo -n " $!" >  $PID_FILE
    /home/engines/scripts/engine/blocking.sh  &
+    echo -n " $!" >>  $PID_FILE
    echo started blocking script
    echo  -n " $!" >> /home/engines/run/blocking.pid
     else		
    /usr/sbin/apache2ctl -DFOREGROUND &
+      echo -n " $!" >  $PID_FILE
    echo started 
 fi
 
@@ -134,12 +137,12 @@ mkdir /var/log/nginx >& /dev/null
   if test -f /home/engines/scripts/engine/blocking.sh 
 	then
 	  nginx &
-	  echo -n " $!" >>  $PID_FILE
+	  echo -n " $!" >> $PID_FILE
 	  /home/engines/scripts/engine/engine/blocking.sh  &
-	  echo -n " $!" >>  $PID_FILE
+	  echo -n " $!" >> $PID_FILE
 	else		
 	  nginx &
-	  echo -n " $!" >>  $PID_FILE
+	  echo -n " $!" >> $PID_FILE
   fi
 }
 

@@ -14,6 +14,18 @@ module PersistantServiceBuilder
 
   private
 
+  #ensure service hash has all variables
+  def match_variables(service_hash)
+    consumer_params = SoftwareServiceDefinition.consumer_params(service_hash)
+    consumer_params.keys.each do |cp_key|
+      skey = consumer_params[cp_key][:name].to_sym
+      unless service_hash[:variables].key?(skey)
+        STDERR.puts('MISSING service_hash[' + skey.to_s + ']<->consumer_params[:' + cp_key.to_s + '] ' + service_hash[:variables][skey].to_s + ' = ' + consumer_params[cp_key][:value].to_s)
+       service_hash[:variables][skey] = consumer_params[cp_key][:value] unless consumer_params[cp_key][:value].nil?
+      end
+    end
+  end
+
   def match_service_to_existing(service_hash, use_existing)
     unless use_existing.nil?
       raise EngineBuilderException.new(error_hash(" Existing Attached services should be an array", use_existing)) unless use_existing.is_a?(Array)
@@ -87,8 +99,10 @@ module PersistantServiceBuilder
     #  raise EngineBuilderException.new(error_hash('failed to create fs', self)) unless result
     # end
     SystemDebug.debug(SystemDebug.builder, :builder_attach_service, service_hash)
-    @templater.fill_in_dynamic_vars(service_hash) 
 
+    match_variables(service_hash)
+    @templater.fill_in_dynamic_vars(service_hash)
+   
     constants = SoftwareServiceDefinition.service_constants(service_hash)
     environ.concat(constants)
     service_environment = SoftwareServiceDefinition.service_environments(service_hash)
@@ -96,7 +110,7 @@ module PersistantServiceBuilder
     #environ.concat(SoftwareServiceDefinition.service_environments(service_hash))
 
     SystemDebug.debug(SystemDebug.builder, :with_env, environ)
-
+ 
     @attached_services.push(service_hash)
     @core_api.create_and_register_service(service_hash)
   end
