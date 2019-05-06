@@ -4,7 +4,7 @@
 set_guids()
 {
 user=`cat /home/engines/etc/user/name`
-getent passwd $user | grep $user> /dev/null 2&>1
+getent passwd $user | grep $user
  if test $? -eq 0
   then
 	/usr/sbin/usermod -u $cont_uid $user
@@ -14,7 +14,7 @@ getent passwd $user | grep $user> /dev/null 2&>1
 
 group=`cat /home/engines/etc/group/name`
 
-/usr/bin/getent group $group| grep $group 2>&1 > /dev/null 
+/usr/bin/getent group $group | grep $group 
 if test $? -ne 0
  then
   /usr/sbin/groupadd -g $cont_uid $group
