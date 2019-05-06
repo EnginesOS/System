@@ -25,7 +25,14 @@ first_run
 restart_required
 pre_running
 custom_start
+
 touch  /home/engines/run/flags/started_once
+
+if ! test $exit_start
+ then
+  exit
+fi   
+1012
 
 #for non apache framework (or use custom start)
 if test -f /home/engines/scripts/start/startwebapp.sh 

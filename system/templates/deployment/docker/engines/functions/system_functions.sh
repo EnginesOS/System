@@ -32,6 +32,8 @@ for P_FILE in $PID_FILE
  
 touch /home/engines/run/flags/shutdown
 echo "Shutdown Complete"
+exit_start=true
+export exit_start
 exit $exit_code
 }
 
