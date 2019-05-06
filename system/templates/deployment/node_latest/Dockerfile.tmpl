@@ -1,4 +1,4 @@
-FROM  engines/node7:_Engines_System(release)
+FROM  engines/node_latest:_Engines_System(release)
 
 ENV CONTFSVolHome /home/fs/
 ENV ContUser node
@@ -7,7 +7,6 @@ ADD build_scripts /build_scripts
 ADD home home
 ADD engines home/engines
 
-RUN apt-get update -y &&\
-	mkdir -p  /home/home_dir/.npm
+RUN apt-get update -y 
 
 
