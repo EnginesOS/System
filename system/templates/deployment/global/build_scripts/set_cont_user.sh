@@ -81,7 +81,7 @@ if test -f /home/engines/etc/group/dirs
 fi   
 }
 
-setguids
+set_guids
 set_permissions
 
 
