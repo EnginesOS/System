@@ -43,6 +43,7 @@ if test -f /home/engines/etc/user/files
   for file in `cat /home/engines/etc/user/files`
    do
     if ! test -f $file
+    then
      touch $file
     fi
     chown $user $file
@@ -65,6 +66,7 @@ if test -f /home/engines/etc/group/files
   for file in  `cat /home/engines/etc/group/files`
    do
     if ! test -f $file
+    then
      touch $file
     fi
      

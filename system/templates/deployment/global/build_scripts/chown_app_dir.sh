@@ -20,6 +20,7 @@ if test -f /home/engines/etc/user/files_post_install
   for file in `cat /home/engines/etc/user/files_post_install`
    do
     if ! test -f $file
+    then
      touch $file
     fi
     chown $user $file
@@ -42,6 +43,7 @@ if test -f /home/engines/etc/group/files_post_install
   for file in  `cat /home/engines/etc/group/files_post_install`
    do
     if ! test -f $file
+    then
      touch $file
     fi
      
