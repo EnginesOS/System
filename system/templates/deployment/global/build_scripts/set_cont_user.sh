@@ -1,7 +1,5 @@
 #!/bin/sh
 
-setguids
-set_permissions
 
 set_guids()
 {
@@ -82,5 +80,8 @@ if test -f /home/engines/etc/group/dirs
    done
 fi   
 }
+
+setguids
+set_permissions
 
 

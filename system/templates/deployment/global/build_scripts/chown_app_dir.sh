@@ -60,6 +60,6 @@ if test -f /home/engines/etc/group/dirs_post_install
 fi   
 }
 
-
+set_permissions
  
   
