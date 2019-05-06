@@ -28,7 +28,7 @@ custom_start
 
 touch  /home/engines/run/flags/started_once
 
-if ! test $exit_start
+if ! test -z $exit_start
  then
   exit
 fi   
