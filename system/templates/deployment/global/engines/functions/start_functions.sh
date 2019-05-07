@@ -131,9 +131,10 @@ configure_passenger()
 cp /home/ruby_env /home/.env_vars
   for env_name in `cat /home/app.env `
   	do
-   	  if ! test -z  "${!env_name}"
+  	  env_name=`eval echo '$'$env_name`
+   	  if ! test -z  "${env_name}"
         then
-  	      echo  "passenger_env_var $env_name \"${!env_name}\";" >> /home/.env_vars
+  	      echo  "passenger_env_var $env_name \"${env_name}\";" >> /home/.env_vars
   	  fi
   	done
 echo " passenger_env_var RAILS_ENV $RAILS_ENV;" >> /home/.env_vars
@@ -158,6 +159,7 @@ if ! test -d /var/log/nginx
 	  echo -n " $!" >> $PID_FILE
 	else		
 	  nginx &
+	  echo -n "pid $!"
 	  echo -n " $!" >> $PID_FILE
   fi
 }

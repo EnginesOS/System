@@ -37,7 +37,7 @@ if ! test -z $exit_start
   exit
 fi   
 
-echo started_oncePids PID_FILE=$PID_FILE>&2
+echo started_oncePids PID_FILE=$PID_FILE >&2
 #for non apache framework (or use custom start)
 if test -f /home/engines/scripts/start/startwebapp.sh 
  then
@@ -54,11 +54,11 @@ elif test -f /usr/sbin/apache2ctl
 #  PID_FILE=$APACHE_PID_FILE
 # fi
  export APACHE_PID_FILE 
- echo start_apachePids PID_FILE=$PID_FILE APACHE_PID_FILE=$APACHE_PID_FILE>&2
+ echo start_apachePids PID_FILE=$PID_FILE APACHE_PID_FILE=$APACHE_PID_FILE >&2
    start_apache
 elif test -d /etc/nginx
  then
- echo start_nginxPids PID_FILE=$PID_FILE APACHE_PID_FILE=$APACHE_PID_FILE>&2
+ echo start_nginxPids PID_FILE=$PID_FILE APACHE_PID_FILE=$APACHE_PID_FILE >&2
    start_nginx	
 elif test -f /home/engines/scripts/blocking.sh 
   then
