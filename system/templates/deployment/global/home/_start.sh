@@ -45,6 +45,8 @@ if test -f /home/engines/scripts/start/startwebapp.sh
 elif test -f /usr/sbin/apache2ctl
  then
  echo Pids PID_FILE=$PID_FILE
+ ls -la /var/run/engines/apache2.pid
+ cat /var/run/engines/apache2.pid
  if test -z $APACHE_PID_FILE
   then
   APACHE_PID_FILE=$PID_FILE
