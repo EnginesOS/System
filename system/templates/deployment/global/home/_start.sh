@@ -32,7 +32,7 @@ if ! test -z $exit_start
  then
   exit
 fi   
-1012
+
 
 #for non apache framework (or use custom start)
 if test -f /home/engines/scripts/start/startwebapp.sh 
@@ -40,7 +40,12 @@ if test -f /home/engines/scripts/start/startwebapp.sh
    launch_app
 elif test -f /usr/sbin/apache2ctl
  then
- APACHE_PID_FILE=$PID_FILE
+ if test -z $APACHE_PID_FILE
+  then
+  APACHE_PID_FILE=$PID_FILE
+ else
+  PID_FILE=$APACHE_PID_FILE
+ fi
  export APACHE_PID_FILE PID_FILE
    start_apache
 elif test -d /etc/nginx
@@ -53,7 +58,7 @@ elif test -f /home/engines/scripts/blocking.sh
 else
  echo "Nothing to run!"
 fi
-		
+
 startup_complete
 wait 
 exit_code=$?
