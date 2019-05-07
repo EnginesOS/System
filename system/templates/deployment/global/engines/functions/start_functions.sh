@@ -105,7 +105,7 @@ fi
 
 start_apache()
 {
-mkdir -p /var/log/apache2/ >& /dev/null
+mkdir -p /var/log/apache2/ 2>&1 /dev/null
 if test -f /home/engines/scripts/engine/blocking.sh 
  then   
     echo started 
@@ -139,7 +139,7 @@ echo " passenger_env_var SECRET_KEY_BASE $SECRET_KEY_BASE;" >> /home/.env_vars
  
 start_nginx()
 {
-mkdir /var/log/nginx >& /dev/null
+mkdir /var/log/nginx 2>&1 /dev/null
  if test -f /home/ruby_env 
    then
      configure_passenger
