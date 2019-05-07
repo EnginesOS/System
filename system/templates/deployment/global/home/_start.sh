@@ -45,15 +45,15 @@ if test -f /home/engines/scripts/start/startwebapp.sh
 elif test -f /usr/sbin/apache2ctl
  then
  echo Pids PID_FILE=$PID_FILE
- ls -la /var/run/engines/apache2.pid
+ ls -la /var/run/engines
  cat /var/run/engines/apache2.pid
- if test -z $APACHE_PID_FILE
-  then
-  APACHE_PID_FILE=$PID_FILE
- else
-  PID_FILE=$APACHE_PID_FILE
- fi
- export APACHE_PID_FILE PID_FILE
+# if test -z $APACHE_PID_FILE
+#  then
+#  APACHE_PID_FILE=$PID_FILE
+# else
+#  PID_FILE=$APACHE_PID_FILE
+# fi
+ export APACHE_PID_FILE 
  echo start_apachePids PID_FILE=$PID_FILE APACHE_PID_FILE=$APACHE_PID_FILE>&2
    start_apache
 elif test -d /etc/nginx
