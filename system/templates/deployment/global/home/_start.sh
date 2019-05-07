@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 PID_FILE=/home/engines/run/engines.pid	
 
