@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 
 for path in `cat $VOLDIR/.dynamic_persistence`

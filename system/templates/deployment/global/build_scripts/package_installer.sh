@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 download_type=$1
 shift

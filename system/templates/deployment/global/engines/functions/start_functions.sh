@@ -1,4 +1,5 @@
-function wait_for_debug {
+wait_for_debug()
+{
 if ! test -z "$Engines_Debug_Run"
  then
   if test "$Engines_Debug_Run" = true
@@ -11,7 +12,8 @@ if ! test -z "$Engines_Debug_Run"
 fi  	 
  }
   
-function volume_setup {	 
+volume_setup()
+{	 
 if test  ! -f /home/engines/run/flags/volume_setup_complete
  then
    echo "Waiting for Volume setup to Complete"
@@ -24,7 +26,8 @@ if test  ! -f /home/engines/run/flags/volume_setup_complete
 fi
 }
 
-function dynamic_persistence {	  
+dynamic_persistence()
+{	  
 if test -f "$VOLDIR/.dynamic_persistence"
   then
 	if ! test -f /home/app/.dynamic_persistence_restored
@@ -36,7 +39,8 @@ if test -f "$VOLDIR/.dynamic_persistence"
 }
 
 
-function first_run {
+first_run()
+{
 
 if ! test -f /home/engines/run/flags/first_run_done
  then  
@@ -61,7 +65,8 @@ if ! test -f /home/engines/run/flags/first_run_done
 fi	
 }
 
-function restart_required {	
+restart_required()
+{	
 if test -f /home/engines/run/flags/restart_required 
  then
   if test -f /home/engines/run/flags/started_once
@@ -73,7 +78,8 @@ fi
 
 }
 
-function custom_start {
+custom_start()
+{
 #if not blocking continues
 if test -f /home/engines/scripts/engine/custom_start.sh
  then
@@ -88,15 +94,17 @@ if test -f /home/engines/scripts/engine/custom_start.sh
 fi
 }
 
-function pre_running {
+pre_running()
+{
 if test -f /home/engines/scripts/engine/pre-running.sh
  then
 	echo "launch pre running"
-	bash /home/engines/scripts/engine/pre-running.sh
+	/home/engines/scripts/engine/pre-running.sh
 fi	
 }
 
-function start_apache {
+start_apache()
+{
 mkdir -p /var/log/apache2/ >& /dev/null
 if test -f /home/engines/scripts/engine/blocking.sh 
  then   
@@ -115,7 +123,8 @@ fi
 
 }
 
-function configure_passenger {
+configure_passenger()
+{
 cp /home/ruby_env /home/.env_vars
   for env_name in `cat /home/app.env `
   	do
@@ -126,9 +135,10 @@ cp /home/ruby_env /home/.env_vars
   	done
 echo " passenger_env_var RAILS_ENV $RAILS_ENV;" >> /home/.env_vars
 echo " passenger_env_var SECRET_KEY_BASE $SECRET_KEY_BASE;" >> /home/.env_vars
- }
+}
  
-function start_nginx {
+start_nginx()
+{
 mkdir /var/log/nginx >& /dev/null
  if test -f /home/ruby_env 
    then
@@ -146,8 +156,8 @@ mkdir /var/log/nginx >& /dev/null
   fi
 }
 
-function launch_app {
-
+launch_app()
+{
 /home/engines/scripts/start/startwebapp.sh 
 echo $! > $PID_FILE
  if test -f /home/engines/scripts/engine/blocking.sh

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #cat /home/fs/vol_dir_maps
 #echo ls -l fs
 #ls -l /home/fs
