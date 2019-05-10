@@ -23,4 +23,7 @@ module PublicApiSystemKeys
     @system_api.get_system_public_key
   end
 
+  def  get_repo_keys_names
+    @system_api.get_repo_keys_names
+  end
 end
