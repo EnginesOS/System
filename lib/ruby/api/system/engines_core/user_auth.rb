@@ -3,11 +3,11 @@ module UserAuth
 
   def user_login(params)
     if params[:user_name].to_s == 'admin'
-     admin_user_login(params)
+      admin_user_login(params)
     else
-     ldap_user_login(params)
+      ldap_user_login(params)
     end
-  #  {tok"api_version" => 0}    
+    #  {tok"api_version" => 0}
   end
 
   def ldap_user_logout(tok)
@@ -23,7 +23,7 @@ module UserAuth
     ldap.auth(params[:user_name], params[:password])
     if ldap.bind
       tok =  SecureRandom.hex(48)
-     # pararms[:is_admin] = is_inadmin_group?(ldap,params[:user_name] )
+      # pararms[:is_admin] = is_inadmin_group?(ldap,params[:user_name] )
       #   params.delete(:password)
       $user_tokens[tok] = params
       record_login(params)
@@ -39,10 +39,11 @@ module UserAuth
     q = 'select authtoken from systemaccess where username=' + "'" + params[:user_name].to_s +
     "' and password = '" + params[:password].to_s + "';"
     rows = auth_database.execute(q)
-    auth_database.close
     raise EnginesException.new(error_hash("failed to select " + q.to_s, params)) unless rows.count > 0
     record_login(params)
     rows[0]
+ensure
+  auth_database.close
   end
 
   def record_login(params)
@@ -102,6 +103,8 @@ module UserAuth
     STDERR.puts('token verify error  ' + e.to_s)
     STDERR.puts('token verify error exception name  ' + e.class.name)
     false
+  ensure
+    auth_database.close
   end
 
   def auth_database
@@ -126,6 +129,8 @@ module UserAuth
       auth_token: rws[0][1],
       uid: rws[0][2],
     }if rws[0].is_a?(Array)
+ensure
+  auth_database.close
   end
 
   #[:user_name,   | :new_password  & :current_password])
@@ -160,6 +165,8 @@ module UserAuth
         end
       end
     end
+    ensure
+      auth_database.close
   end
 
   def set_system_user_password(password, token, current_password = nil)
@@ -194,12 +201,15 @@ module UserAuth
       auth_database.execute(query)
       update_local_token(authtoken) if user == 'admin'
     end
+
     authtoken
   rescue StandardError => e
     SystemDebug.debug(SystemDebug.first_run,"Exception ", e)
     log_error_mesg(e.to_s)
     auth_database.close
     true
+ensure
+  auth_database.close
   end
 
   def system_user_settings
@@ -216,8 +226,11 @@ module UserAuth
 
   def set_system_user_settings(settings)
     sf = File.new(SystemConfig.SystemUserSettingsFile, 'w+')
-    sf.write(settings.to_yaml)
-    sf.close
+    begin
+      sf.write(settings.to_yaml)
+    ensure
+      sf.close
+    end
     true
   rescue StandardError => e
     sf.close unless sf.nil?
@@ -229,8 +242,11 @@ module UserAuth
   def update_local_token(token)
     SystemDebug.debug(SystemDebug.first_run, ' Save Token', token)
     toke_file = File.new('/home/engines/.engines_token', 'w+')
-    toke_file.puts(token)
-    toke_file.close
+    begin
+      toke_file.puts(token)
+    ensure
+      toke_file.close
+    end
   rescue StandardError => e
     SystemDebug.debug(SystemDebug.first_run,"Exception ", e)
     log_error_mesg(e.to_s)
