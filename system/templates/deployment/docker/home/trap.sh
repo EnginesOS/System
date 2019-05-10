@@ -57,7 +57,7 @@ trap_term()
                 		echo no wait for  \"$pid\"
         		else
                 		#echo wait \"$pid\"
-                		wait $pid   >& /dev/null
+                		wait $pid   2>&1 /dev/null
 				fi			
 		fi
 	  touch /home/engines/run/flags/termed	 			

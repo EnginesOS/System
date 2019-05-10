@@ -1,6 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 
-function copy_substituted_templates {
+copy_substituted_templates()
+{
 
 if test -d /home/engines/templates/
  then

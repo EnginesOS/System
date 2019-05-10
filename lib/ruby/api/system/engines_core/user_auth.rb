@@ -39,6 +39,7 @@ module UserAuth
     q = 'select authtoken from systemaccess where username=' + "'" + params[:user_name].to_s +
     "' and password = '" + params[:password].to_s + "';"
     rows = auth_database.execute(q)
+    auth_database.close
     raise EnginesException.new(error_hash("failed to select " + q.to_s, params)) unless rows.count > 0
     record_login(params)
     rows[0]

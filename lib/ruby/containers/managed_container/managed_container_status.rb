@@ -69,7 +69,15 @@ module ManagedContainerStatus
     end
     r
   end
+  
+  def set_debug
+    @container_api.set_debug(self)
+  end
 
+  def clear_debug
+    @container_api.clear_debug(self)
+  end
+    
   def clear_error
     #Sychronise somewhere
     @out_of_memory = false

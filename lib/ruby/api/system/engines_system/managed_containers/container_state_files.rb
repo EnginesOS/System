@@ -15,6 +15,16 @@ module ContainerSystemStateFiles
     end
   end
 
+  def set_debug(c)
+    STDERR.puts( ' touch ' + container_state_dir(c) + '/wait_before_shutdown')
+    FileUtils.touch(container_state_dir(c) + '/wait_before_shutdown')
+  end
+
+  def clear_debug(c)
+    df = container_state_dir(c) + '/wait_before_shutdown'
+      FileUtils.rm(fd) if File.exist?(fd)
+  end
+  
   def schedules_dir(c)
     container_state_dir(c) + '/schedules/'
   end

@@ -134,6 +134,7 @@ module DomainOperations
   end
 
   def get_ext_ip_for_hosted_dns
+    #FIXME are we closing here
    e_ip = open('https://jsonip.com/') { |s| JSON::parse(s.string)['ip'] }
     STDERR.puts('EX ERR = ' + e_ip.to_s)
     e_ip    

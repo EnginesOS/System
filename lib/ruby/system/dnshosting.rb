@@ -8,19 +8,22 @@ require 'open-uri'
 module DNSHosting
   def self.get_local_ip
     if File.exist?('/opt/engines/etc/exported/net/exported/ip')
-       File.read('/opt/engines/etc/exported/net/exported/ip').strip
+      File.read('/opt/engines/etc/exported/net/exported/ip').strip
     else
-    # devel/lachlan case
-    Socket.ip_address_list.each do |addr|
-      return addr.ip_address if addr.ipv4? && addr.ipv4_loopback? == false
-    end
+      # devel/lachlan case
+      Socket.ip_address_list.each do |addr|
+        return addr.ip_address if addr.ipv4? && addr.ipv4_loopback? == false
+      end
     end
   end
 
   def self.save_domains(domains)
     domain_file = File.open(SystemConfig.DomainsFile, 'w')
-    domain_file.write(domains.to_yaml)
-    domain_file.close
+    begin
+      domain_file.write(domains.to_yaml)
+    ensure
+      domain_file.close
+    end
     true
   end
 
@@ -31,8 +34,11 @@ module DNSHosting
       {}
     else
       domains_file = File.open(SystemConfig.DomainsFile, 'r')
+      begin
       domains = YAML::load(domains_file)
+    ensure
       domains_file.close
+    end
       SystemDebug.debug(SystemDebug.system,:loading_domain_list, domains.to_s)
       domains
     end

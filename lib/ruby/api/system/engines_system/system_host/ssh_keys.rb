@@ -37,6 +37,10 @@ module SshKeys
 
   end
 
+  def get_repo_keys_names
+    {repo_key_names: ['system']}
+  end
+
   def regen_system_ssh_key
     run_server_script('regen_private')[:stdout]
   end

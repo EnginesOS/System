@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 
 source_url=$1
