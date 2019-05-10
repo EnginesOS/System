@@ -39,12 +39,14 @@ module SystemExceptions
     error_log_hash[:return_url] = 'system'
     error_log_hash[:user_comment] = ''
     error_log_hash[:user_email] = 'backend@engines.onl'
+    STDERR.puts('BUG LOGGER is a ' + ENV['BUG_REPORTS_SERVER'])
     uri = URI.parse(ENV['BUG_REPORTS_SERVER'])
     conn = nil
     Net::HTTP.start(uri.host, uri.port) do |http|
       conn = http
       request = Net::HTTP.post_form(uri, error_log_hash)
       response = http.request request # Net::HTTPResponse object
+      STDERR.puts('BUG LOGGER RESPONSE ' + resposnse.to_s)
       http.finish
     end
     true
