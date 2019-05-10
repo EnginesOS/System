@@ -37,7 +37,9 @@ module SystemExceptions
     error_log_hash[:user_comment] = ''
     error_log_hash[:user_email] = 'backend@engines.onl'
     uri = URI.parse(ENV['BUG_REPORTS_SERVER'])
+      conn = nil
     Net::HTTP.start(uri.host, uri.port) do |http|
+      conn = http
       request = Net::HTTP.post_form(uri, error_log_hash)
       response = http.request request # Net::HTTPResponse object
       http.finish
@@ -46,7 +48,7 @@ module SystemExceptions
   rescue
     false
   ensure 
-    http.finish unless http.nil?
+    conn.finish unless conn.nil?
   end
 
 end
