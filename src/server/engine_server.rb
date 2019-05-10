@@ -2,6 +2,7 @@ STDERR.puts('++')
 #require 'gctools/oobgc'
 STDERR.puts('+++')
 require '/opt/engines/lib/ruby/system/engines_error.rb'
+
 STDERR.puts('++++')
 begin
   STDERR.puts('++++')
@@ -18,7 +19,6 @@ begin
   require 'objspace'
   require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
 
-  
   ObjectSpace.trace_object_allocations_start
   @events_stream = nil
   $engines_api = PublicApi.new(EnginesCore.new)
@@ -30,7 +30,7 @@ begin
   require 'warden'
   require_relative 'warden/warden_config.rb'
   require_relative 'warden/warden_strategies.rb'
-  
+
   before do
     pass if request.path == '/v0/system/uadmin/dn_lookup'
     pass if request.path == '/v0/system/login'
@@ -42,16 +42,16 @@ begin
     pass if request.path.start_with?('/v0/backup/') && source_is_service?(request, 'backup')
     pass if request.path.start_with?('/v0/restore/') && source_is_service?(request, 'backup')
     pass if request.path.start_with?('/v0/system/do_first_run') && FirstRunWizard.required?
-    if request.path.start_with?('/v0/system/uadmin') 
+    if request.path.start_with?('/v0/system/uadmin')
       env['warden'].authenticate!(:user_access_token)
-    elsif  request.path == '/v0/containers/engines/status'    
+    elsif  request.path == '/v0/containers/engines/status'
       env['warden'].authenticate!(:user_access_token) # was:admin_user_access_token
     elsif request.path.match(/\/v0\/containers\/engine\/[a-zA-Z0-9].*\/icon_url/) \
-      ||  request.path.match(/\/v0\/containers\/engine\/[a-zA-Z0-9].*\/websites/)  \
-      ||  request.path.match(/\/v0\/containers\/engine\/[a-zA-Z0-9].*\/status/)  \
-      ||  request.path.match(/\/v0\/containers\/engine\/[a-zA-Z0-9].*\/blueprint/) 
+    ||  request.path.match(/\/v0\/containers\/engine\/[a-zA-Z0-9].*\/websites/)  \
+    ||  request.path.match(/\/v0\/containers\/engine\/[a-zA-Z0-9].*\/status/)  \
+    ||  request.path.match(/\/v0\/containers\/engine\/[a-zA-Z0-9].*\/blueprint/)
       env['warden'].authenticate!(:user_access_token)
-    else  
+    else
       env['warden'].authenticate!(:api_access_token)
     end
   end
@@ -63,18 +63,21 @@ begin
     end
   end
 
-FileUtils.touch('/home/engines/run/flags/startup_complete')
- sf = File.new('/home/engines/run/flags/state','w')
- sf.puts('/home/engines/run/flags/state')
- sf.close
- 
+  FileUtils.touch('/home/engines/run/flags/startup_complete')
+  sf = File.new('/home/engines/run/flags/state','w')
+  begin
+    sf.puts('/home/engines/run/flags/state')
+  ensure
+    sf.close
+  end
+
   class Application < Sinatra::Base
     @events_s = nil
     set :sessions, true
     set :logging, true
     set :run, true
     set :timeout, 260
-    
+
     require_relative 'helpers/helpers.rb'
     require_relative 'api/routes.rb'
   rescue StandardError => e
@@ -82,7 +85,7 @@ FileUtils.touch('/home/engines/run/flags/startup_complete')
     r = EnginesError.new('Unhandled Exception' + e.to_s + '\n' + e.backtrace.to_s, :error, 'api')
     STDERR.puts('Unhandled Exception' + e.to_s + '\n' + e.backtrace.to_s )
     r.to_json
-    
+
   end
 
   def source_is_service?(request, service_name)

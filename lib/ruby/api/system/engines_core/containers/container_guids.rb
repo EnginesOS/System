@@ -18,8 +18,11 @@ module ContainerGuids
   def read_historical_id(container_name)
     if File.exist?(SystemConfig.ContainerUIDdir + '/' + container_name.to_s)
       id_file = File.new(SystemConfig.ContainerUIDdir + '/' + container_name.to_s,'r')
-      uid_s =  id_file.read
-      id_file.close
+      begin
+        uid_s =  id_file.read
+      ensure
+        id_file.close
+      end
       uid_s.strip
       uid_s.to_i
     else
@@ -30,8 +33,11 @@ module ContainerGuids
   def next_id(container_name)
     if File.exist?(SystemConfig.ContainerNextUIDFile)
       next_id_file = File.new(SystemConfig.ContainerNextUIDFile,'r')
-      uid_s =  next_id_file.read
-      next_id_file.close
+      begin
+        uid_s =  next_id_file.read
+      ensure
+        next_id_file.close
+      end
       uid_s.strip
       uid = uid_s.to_i
     else
@@ -44,15 +50,21 @@ module ContainerGuids
 
   def save_container_id(uid, container_name)
     id_file = File.new(SystemConfig.ContainerUIDdir + '/' + container_name.to_s,'w+')
-    id_file.puts(uid.to_s)
-    id_file.close
+    begin
+      id_file.puts(uid.to_s)
+    ensure
+      id_file.close
+    end
   end
 
   def inc_uid_file(uid)
     next_id_file = File.new(SystemConfig.ContainerNextUIDFile,'w+')
-    uid = uid + 1
-    next_id_file.puts(uid.to_s)
-    next_id_file.close
+    begin
+      uid = uid + 1
+      next_id_file.puts(uid.to_s)
+    ensure
+      next_id_file.close
+    end
   end
 
 end

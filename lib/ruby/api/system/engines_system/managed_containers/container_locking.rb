@@ -19,18 +19,18 @@ module ContainerLocking
 
   def is_container_conf_file_locked?(state_dir)
     lock_fn = state_dir + '/lock'
-   if File.exists?(lock_fn)
-    loop = 0
-    while File.exists?(lock_fn)
-      sleep(0.2)
-      STDERR.puts('_container_conf_file_locked ')
-      loop != 1
-      break if loop > 5
+    if File.exists?(lock_fn)
+      loop = 0
+      while File.exists?(lock_fn)
+        sleep(0.2)
+        STDERR.puts('_container_conf_file_locked ')
+        loop != 1
+        break if loop > 5
+      end
+      File.exists?(lock_fn)
+    else
+      false
     end
-     File.exists?(lock_fn)
-   else
-     false
-   end
   end
 
   def lock_container_conf_file(state_dir)
@@ -51,8 +51,11 @@ module ContainerLocking
       end
     else
       lock = File.new(lock_fn, File::CREAT | File::TRUNC | File::RDWR, 0644)
-      lock.puts(Process.pid.to_s)
-      lock.close()
+      begin
+        lock.puts(Process.pid.to_s)
+      ensure
+        lock.close()
+      end
     end
     true
   rescue StandardError => e

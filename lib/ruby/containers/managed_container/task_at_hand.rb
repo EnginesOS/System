@@ -135,7 +135,7 @@ module TaskAtHand
       status
       out_of_mem('oom')
     when 'destroy'
-      status  
+      status
     end
     true
   rescue StandardError => e
@@ -210,8 +210,11 @@ module TaskAtHand
       end
       SystemDebug.debug(SystemDebug.engine_tasks, 'next Multistep Task ' + @task_at_hand.to_s)
       f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand','w+')
-      f.write(@task_at_hand.to_s)
-      f.close
+      begin
+        f.write(@task_at_hand.to_s)
+      ensure
+        f.close
+      end
     else
       SystemDebug.debug(SystemDebug.engine_tasks, 'cleared Task ' + @task_at_hand.to_s)
       @task_at_hand = nil
@@ -236,7 +239,7 @@ module TaskAtHand
 
   private
 
-  def tasks_final_state(task)    
+  def tasks_final_state(task)
     case task
     when :create,:start,:recreate,:unpause,:restart,:rebuild,:build,:reinstall
       s = 'running'
@@ -280,8 +283,11 @@ module TaskAtHand
     @task_at_hand = state
     if Dir.exist?(ContainerStateFiles.container_state_dir(self)) # happens on reinstall
       f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand', 'w+')
-      f.write(state)
-      f.close
+      begin
+        f.write(state)
+      ensure
+        f.close
+      end
     end
   rescue StandardError => e
     log_exception(e)

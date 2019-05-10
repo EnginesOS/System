@@ -16,8 +16,11 @@ module SshKeys
 
   def set_ms_public_key(key_data)
     keyf = File.new('/home/engines/.ssh/mother_ship.pub','w+')
-    keyf.write(key_data)
-    keyf.close
+    begin
+      keyf.write(key_data)
+    ensure
+      keyf.close
+    end
   end
 
   def get_ms_public_key

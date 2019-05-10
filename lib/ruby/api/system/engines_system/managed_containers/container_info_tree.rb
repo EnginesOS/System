@@ -6,8 +6,11 @@ module ContainerInfoTree
     keys.each do |k, v|
       next if v.nil?
       kf = File.new(container_info_tree_dir(c) + '/' + k.to_s,'w')
-      kf.write(v.to_s)
-      kf.close
+      begin
+        kf.write(v.to_s)
+      ensure
+        kf.close
+      end
     end
   end
 

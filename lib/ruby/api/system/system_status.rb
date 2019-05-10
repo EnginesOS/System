@@ -55,23 +55,32 @@ class SystemStatus
 
   def self.build_failed(params)
     param_file = File.new(SystemConfig.BuildFailedFile, 'w+')
-    param_file.puts(params.to_yaml)
-    param_file.close
+    begin
+      param_file.puts(params.to_yaml)
+    ensure
+      param_file.close
+    end
     #   STDERR.puts('build failed writen')
     File.delete(SystemConfig.BuildRunningParamsFile) if File.exist?(SystemConfig.BuildRunningParamsFile)
   end
 
   def self.build_complete(params)
     param_file = File.new(SystemConfig.BuildBuiltFile, 'w+')
-    param_file.puts(params.to_yaml)
-    param_file.close
+    begin
+      param_file.puts(params.to_yaml)
+    ensure
+      param_file.close
+    end
     File.delete(SystemConfig.BuildRunningParamsFile) if File.exist?(SystemConfig.BuildRunningParamsFile)
   end
 
   def self.build_starting(params)
     param_file = File.new(SystemConfig.BuildRunningParamsFile, 'w+')
-    param_file.puts(params.to_yaml)
-    param_file.close
+    begin
+      param_file.puts(params.to_yaml)
+    ensure
+      param_file.close
+    end
     File.delete(SystemConfig.BuildFailedFile) if File.exist?(SystemConfig.BuildFailedFile)
   end
 
@@ -113,7 +122,11 @@ class SystemStatus
   def self.current_build_params
     if File.exist?(SystemConfig.BuildRunningParamsFile)
       param_file = File.new(SystemConfig.BuildRunningParamsFile, 'r')
-      param_raw = param_file.read
+      begin
+        param_raw = param_file.read
+      ensure
+        param_file.close
+      end
       YAML.load(param_raw)
     end
   end
@@ -123,7 +136,11 @@ class SystemStatus
       raise EnginesException.new(error_hash('No last_build_params', SystemConfig.BuildBuiltFile))
     end
     param_file = File.new(SystemConfig.BuildBuiltFile, 'r')
-    param_raw = param_file.read
+    begin
+      param_raw = param_file.read
+    ensure
+      param_file.close
+    end
     YAML.load(param_raw)
   end
 
@@ -132,7 +149,11 @@ class SystemStatus
       raise EnginesException.new(error_hash('No last_build_failure_params ', SystemConfig.BuildFailedFile))
     end
     param_file = File.new(SystemConfig.BuildFailedFile, 'r')
-    param_raw = param_file.read
+    begin
+      param_raw = param_file.read
+    ensure
+      param_file.close
+    end
     YAML.load(param_raw)
   end
 

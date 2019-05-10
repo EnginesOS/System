@@ -7,18 +7,21 @@ class ContainerStateFiles
       running_config = templator.process_templated_string(config_template)
       yam1_file_name = service_type_dir + service_name + '/running.yaml'
       yaml_file = File.new(yam1_file_name, 'w+')
-      yaml_file.write(running_config)
-      yaml_file.close
+      begin
+        yaml_file.write(running_config)
+      ensure
+        yaml_file.close
+      end
       true
     else
       SystemUtils.log_error_mesg('Running exist', service_name)
     end
   end
- 
+
   def self.container_secretsdir(container)
     '/var/lib/engines/secrets/' + container.ctype + '/' + container.container_name
   end
-  
+
   def self.schedules_dir(container)
     self.container_state_dir(container) + '/schedules/'
   end
@@ -38,7 +41,7 @@ class ContainerStateFiles
   def self.kerberos_dir(container)
     '/var/lib/engines/services/auth/etc/krb5kdc/' + container.ctype + 's/' + container.container_name
   end
-  
+
   def self.restart_flag_file(container)
     self.container_flag_dir(container) + 'restart_required'
   end

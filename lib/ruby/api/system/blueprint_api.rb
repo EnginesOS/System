@@ -9,8 +9,11 @@ class BlueprintApi < ErrorsApi
     Dir.mkdir(state_dir) if File.directory?(state_dir) == false
     statefile = state_dir + '/blueprint.json'
     f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0644)
-    f.write(blueprint.to_json)
-    f.close
+    begin
+      f.write(blueprint.to_json)
+    ensure
+      f.close
+    end
   end
 
   def self.load_blueprint_file(blueprint_file_name)

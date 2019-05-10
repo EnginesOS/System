@@ -10,6 +10,7 @@ class DockerFileBuilder
     @builder = builder
     @docker_file = File.open(@builder.basedir + '/Dockerfile', 'a')
     @layer_count = 0
+    #FIXME
     @env_file = File.new(@builder.basedir + '/build.env', 'w+')
     # this should be read as it is framework dep
     @max_layers = 75
