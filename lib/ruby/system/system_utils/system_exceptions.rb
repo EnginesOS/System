@@ -45,6 +45,8 @@ module SystemExceptions
     true
   rescue
     false
+  ensure 
+    http.finish unless http.nil?
   end
 
 end
