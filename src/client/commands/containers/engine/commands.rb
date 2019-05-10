@@ -40,6 +40,9 @@ when 'destroy'
 when 'delete'
   @route += '/' + ARGV[3] if ARGV.count > 3
   perform_delete
+when 'debug'
+  @route += '/' + ARGV[3]
+  perform_put
 when 'wait_for'
   @route += '/' + ARGV[3] if ARGV.count > 3
   if ARGV.count > 4
