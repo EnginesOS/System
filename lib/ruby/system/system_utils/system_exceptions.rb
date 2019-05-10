@@ -13,8 +13,11 @@ module SystemExceptions
     SystemUtils.log_output(e_str, 10)
     e_str +="\n\n"
     elof = File.open("/tmp/exceptions.log", "a+")
-    elof.write(e_str)
-    elof.close
+    begin
+      elof.write(e_str)
+    ensure
+      elof.close
+    end
     SystemUtils.log_exception_to_bugcatcher(e) unless File.exists?(SystemConfig.NoRemoteExceptionLoggingFlagFile)
     EnginesError.new(e_str.to_s, :exception)
   end
@@ -37,7 +40,7 @@ module SystemExceptions
     error_log_hash[:user_comment] = ''
     error_log_hash[:user_email] = 'backend@engines.onl'
     uri = URI.parse(ENV['BUG_REPORTS_SERVER'])
-      conn = nil
+    conn = nil
     Net::HTTP.start(uri.host, uri.port) do |http|
       conn = http
       request = Net::HTTP.post_form(uri, error_log_hash)
@@ -47,7 +50,7 @@ module SystemExceptions
     true
   rescue
     false
-  ensure 
+  ensure
     conn.finish unless conn.nil?
   end
 

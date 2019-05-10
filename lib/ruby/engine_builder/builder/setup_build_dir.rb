@@ -20,7 +20,7 @@ module BuildDirSetup
     end
     read_framework_user
     init_container_info_dir
-   
+
     save_params
     @build_params[:mapped_ports] = @blueprint_reader.mapped_ports
     SystemDebug.debug(SystemDebug.builder, :ports, @build_params[:mapped_ports])
@@ -160,19 +160,22 @@ module BuildDirSetup
       @cont_user_id =  @blueprint_reader.cont_user #fix me and add id
       #   STDERR.puts("Set web user to:" + @web_user.to_s)
     else
-      
+
       log_build_output('Read Web User')
       stef = File.open(basedir + '/home/engines/etc/stack.env', 'r')
-      while line = stef.gets do
-        if line.include?('USER')
-          i = line.split('=')
-          @web_user = i[1].strip
-#        elsif line.include?('UID=')
-#          i = line.split('=')
-#          @cont_user_id = i[1].strip
+      begin
+        while line = stef.gets do
+          if line.include?('USER')
+            i = line.split('=')
+            @web_user = i[1].strip
+            #        elsif line.include?('UID=')
+            #          i = line.split('=')
+            #          @cont_user_id = i[1].strip
+          end
         end
-      end      
-      stef.close
+      ensure
+        stef.close
+      end
     end
     STDERR.puts("\n" + ' web user ' + @web_user.to_s + ':' + "cont user id:" + @cont_user_id.to_s)
     @web_user
@@ -187,14 +190,17 @@ module BuildDirSetup
   def read_web_port
     log_build_output('Setting Web port')
     stef = File.open(basedir + '/home/engines/etc/stack.env', 'r')
-    while line = stef.gets do
-      if line.include?('PORT')
-        i = line.split('=')
-        @web_port = i[1].strip
-        SystemDebug.debug(SystemDebug.builder, :web_port_line, line)
+    begin
+      while line = stef.gets do
+        if line.include?('PORT')
+          i = line.split('=')
+          @web_port = i[1].strip
+          SystemDebug.debug(SystemDebug.builder, :web_port_line, line)
+        end
       end
+    ensure
+      stef.close
     end
-    stef.close
     #      throw BuildStandardError.new(e,'setting web port')
   end
 
@@ -228,20 +234,26 @@ module BuildDirSetup
     rmt_log_dir_var_fname = basedir + '/home/engines/etc/LOG_DIR'
     if File.exist?(rmt_log_dir_var_fname)
       rmt_log_dir_varfile = File.open(rmt_log_dir_var_fname)
-      rmt_log_dir = rmt_log_dir_varfile.read
+      begin
+        rmt_log_dir = rmt_log_dir_varfile.read
+      ensure
+        rmt_log_dir_varfile.close
+      end
     else
       rmt_log_dir = '/var/log'
     end
     local_log_dir = SystemConfig.SystemLogRoot + '/apps/' + @build_params[:engine_name]
     Dir.mkdir(local_log_dir) unless Dir.exist?(local_log_dir)
-    rmt_log_dir_varfile.close unless rmt_log_dir_varfile.nil?
     ' -v ' + local_log_dir + ':' + rmt_log_dir + ':rw '
   end
 
   def save_params()
     p_file = File.open( basedir + '/build_params','w')
-    p_file.write(@build_params.to_s)
-    p_file.close
+    begin
+      p_file.write(@build_params.to_s)
+    ensure
+      p_file.close
+    end
   end
 
   def init_container_info_dir

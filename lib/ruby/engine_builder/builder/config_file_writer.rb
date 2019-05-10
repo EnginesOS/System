@@ -26,9 +26,12 @@ class ConfigFileWriter
       dir = File.dirname(filename)
       FileUtils.mkdir_p(dir) unless Dir.exist?(dir)
       out_file  = File.open(filename, 'wb', :crlf_newline => false)
-      content = templater.process_templated_string(content)
-      out_file.write(content)
-      out_file.close
+      begin
+        content = templater.process_templated_string(content)
+        out_file.write(content)
+      ensure
+        out_file.close
+      end
     end
   end
 

@@ -1,8 +1,11 @@
 def read_base_image_from_dockerfile
   dockerfile = File.open(basedir + '/Dockerfile', 'r')
-  from_line = dockerfile.gets("\n", 100)
-  from_line.gsub!(/^FROM[ ]*/, '')
-  dockerfile.close
+  begin
+    from_line = dockerfile.gets("\n", 100)
+    from_line.gsub!(/^FROM[ ]*/, '')
+  ensure
+    dockerfile.close
+  end
   from_line
 end
 

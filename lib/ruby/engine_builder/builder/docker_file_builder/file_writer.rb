@@ -50,12 +50,15 @@ def insert_framework_frag_in_dockerfile(frag_name)
   write_run_end if @in_run == true
   write_comment('#Framework Frag')
   frame_build_docker_frag = File.open(build_dir + '/Dockerfile.' + frag_name)
-  builder_frag = frame_build_docker_frag.read
-  @docker_file.write("\n")
-  write_comment('#Docker Fragment ' + frag_name.to_s)
-  @docker_file.write(builder_frag)
-  @docker_file.write("\n")
-  frame_build_docker_frag.close
+  begin
+    builder_frag = frame_build_docker_frag.read
+    @docker_file.write("\n")
+    write_comment('#Docker Fragment ' + frag_name.to_s)
+    @docker_file.write(builder_frag)
+    @docker_file.write("\n")
+  ensure
+    frame_build_docker_frag.close
+  end
 end
 
 def count_layer

@@ -1,7 +1,7 @@
 module AvailableServices
 
   require_relative 'service_manager_access.rb'
-#  require '/opt/engines/lib/ruby/managed_services/system_services/volume_service.rb'
+  #  require '/opt/engines/lib/ruby/managed_services/system_services/volume_service.rb'
   require '/opt/engines/lib/ruby/managed_services/service_definitions/service_top_level.rb'
 
   def load_avail_services_for_type(typename)
@@ -53,8 +53,11 @@ module AvailableServices
   def load_service_definition(filename)
     #open soft link not actual
     yaml_file = File.open(filename)
-    s = SoftwareServiceDefinition.from_yaml(yaml_file)
-    yaml_file.close
+    begin
+      s = SoftwareServiceDefinition.from_yaml(yaml_file)
+    ensure
+      yaml_file.close
+    end
     s
   end
 
