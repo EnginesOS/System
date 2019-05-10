@@ -42,7 +42,7 @@ when 'delete'
   perform_delete
 when 'debug'
   @route += '/' + ARGV[3]
-  perform_put
+  perform_put(nil)
 when 'wait_for'
   @route += '/' + ARGV[3] if ARGV.count > 3
   if ARGV.count > 4
