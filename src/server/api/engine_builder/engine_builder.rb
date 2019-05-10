@@ -115,8 +115,8 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream;charset=asc
         end
       end
     end
-  ensure
-    build_log_file.close unless build_log_file.closed?
+#  ensure
+ #   build_log_file.close unless build_log_file.closed?
   end
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
