@@ -13,7 +13,7 @@ kerberos: true
 environments:
 - !ruby/object:EnvironmentVariable
  name: BUG_REPORTS_SERVER
- value: http://buglog.prod.engines.org
+ value: https://buglog.current.engines.org/api/v0/contact/bug_reports
  setatrun: false 
 - !ruby/object:EnvironmentVariable
  name: CONTROL_IP
