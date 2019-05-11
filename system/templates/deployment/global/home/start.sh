@@ -1,3 +1,3 @@
-#!/bin/bash
+#!/bin/sh
 
-/home/_start.sh
+exec /home/_start.sh

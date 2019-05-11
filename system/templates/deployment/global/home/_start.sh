@@ -1,6 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 
 PID_FILE=/home/engines/run/engines.pid	
+
 export PID_FILE
 
 if test -f /home/engines/functions/trap.sh 
@@ -21,10 +22,20 @@ if test -f /home/_init.sh
 fi
 
 first_run
+
 restart_required
+
 pre_running
+
 custom_start
+
+
 touch  /home/engines/run/flags/started_once
+
+if ! test -z $exit_start
+ then
+  exit
+fi   
 
 #for non apache framework (or use custom start)
 if test -f /home/engines/scripts/start/startwebapp.sh 
@@ -32,7 +43,8 @@ if test -f /home/engines/scripts/start/startwebapp.sh
    launch_app
 elif test -f /usr/sbin/apache2ctl
  then
- export APACHE_PID_FILE PID_FILE
+
+ export APACHE_PID_FILE 
    start_apache
 elif test -d /etc/nginx
  then
@@ -44,7 +56,7 @@ elif test -f /home/engines/scripts/blocking.sh
 else
  echo "Nothing to run!"
 fi
-		
+
 startup_complete
 wait 
 exit_code=$?

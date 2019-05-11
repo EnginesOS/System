@@ -20,6 +20,9 @@ def volumes_mounts(container)
   secrets = secrets_mounts(container)
   mounts.concat(secrets) unless secrets.nil?
 
+  homes = homes_mounts(container)
+  mounts.concat(homes) unless homes.nil?
+
   unless container.ctype == 'system_service'
     rm = registry_mounts(container)
     mounts.concat(rm) unless rm.nil?
@@ -111,8 +114,8 @@ def registry_mounts(container)
       v_str = mount_string_from_hash(vol)
       mounts.push(v_str)
     end
- # else
- #   STDERR.puts('Registry mounts was' + vols.to_s)
+    # else
+    #   STDERR.puts('Registry mounts was' + vols.to_s)
   end
 
   mounts
@@ -124,18 +127,62 @@ def  mount_string_for_secret(secret)
     src_cname =  secret[:service_owner]
     src_ctype =  secret[:container_type]
     sh = secret[:service_owner_handle]
- #   STDERR.puts('Secrets mount Shared')
+    #   STDERR.puts('Secrets mount Shared')
   else
-#    STDERR.puts('Secrets mount Owner')
+    #    STDERR.puts('Secrets mount Owner')
     src_cname =  secret[:parent_engine]
     src_ctype =  secret[:container_type]
     sh = secret[:service_handle]
   end
- # STDERR.puts('Secrets mount' +  '/var/lib/engines/secrets/' + src_ctype.to_s + 's/' +  src_cname.to_s + '/' + sh.to_s + ':/home/.secrets/'  + sh.to_s + ':ro')
+  # STDERR.puts('Secrets mount' +  '/var/lib/engines/secrets/' + src_ctype.to_s + 's/' +  src_cname.to_s + '/' + sh.to_s + ':/home/.secrets/'  + sh.to_s + ':ro')
   s = '/var/lib/engines/secrets/' + src_ctype + 's/' +  src_cname + '/' + sh +\
   ':/home/.secrets/'  + sh + ':ro'
- # STDERR.puts('Secrets mount' + s.to_s)
+  # STDERR.puts('Secrets mount' + s.to_s)
   s
+end
+
+def  mount_string_for_homes(home)
+  s = nil
+  src_cname =  home[:parent_engine]
+  src_ctype =  home[:container_type]
+  if  home[:variables][:home_type] == 'all'
+    # STDERR.puts('Secrets mount' +  '/var/lib/engines/secrets/' + src_ctype.to_s + 's/' +  src_cname.to_s + '/' + sh.to_s + ':/home/.secrets/'  + sh.to_s + ':ro')
+    s = '/var/lib/engines/home/:/home/users/:'  + home[:variables][:access]
+  elsif home[:variables][:home_type] == 'seperate'
+    s = []
+    home[:variables][:homes].split(", \n").each do | user |
+      STDERR.puts('SDFSDF ' + '/var/lib/engines/home/' + user)
+      next unless Dir.exist?('/home/users/' + user  )
+      STDERR.puts('SDFSDF ' + '/var/lib/engines/home/' + user + '/' +  home[:parent_engine] + ':/home/users/' + user  + '/' +  home[:parent_engine] + ':'  + home[:variables][:access])
+      s.push('/var/lib/engines/home/' + user + '/' +  home[:parent_engine] + ':/home/users/' + user  + '/' +  home[:parent_engine] + ':'  + home[:variables][:access])
+    end
+  else
+    STDERR.puts('serr ' + home.to_s)
+  end
+  STDERR.puts('Homes mount' + s.to_s)
+  s
+end
+
+def homes_mounts(container)
+  mounts = []
+  unless container.ctype == 'system_service'
+    homes = container.attached_services(
+    {type_path: 'homes'
+    })
+    if homes.is_a?(Array)
+      homes.each do | home |
+        m_str = mount_string_for_homes(home)
+        if m_str.is_a?(String)
+          mounts.push(m_str)
+        elsif m_str.is_a?(Array)
+          mounts.concat(m_str)
+        end
+      end
+      #  else
+      #   STDERR.puts('Secrets mounts was' + secrets.to_s)
+    end
+  end
+  mounts
 end
 
 def secrets_mounts(container)
@@ -149,8 +196,8 @@ def secrets_mounts(container)
         m_str = mount_string_for_secret(secret)
         mounts.push(m_str)
       end
-  #  else
-   #   STDERR.puts('Secrets mounts was' + secrets.to_s)
+      #  else
+      #   STDERR.puts('Secrets mounts was' + secrets.to_s)
     end
   end
   mounts
@@ -164,8 +211,11 @@ def system_mounts(container)
     mounts_file_name = SystemConfig.ManagedServiceMountsFile
   end
   mounts_file = File.open(mounts_file_name, 'r')
-  volumes = YAML::load(mounts_file)
-  mounts_file.close
+  begin
+    volumes = YAML::load(mounts_file)
+  ensure
+    mounts_file.close
+  end
 
   volumes.each_value do |volume|
     mounts.push(mount_string(volume))

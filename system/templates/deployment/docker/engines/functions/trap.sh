@@ -8,6 +8,8 @@ trap trap_term 15
 trap trap_hup  1
 trap trap_quit 3
 
+echo Trap 1 3 and 15 set
+ 
 if ! test -d /home/engines/run/flags/
  then 
   mkdir -p /home/engines/run/flags/

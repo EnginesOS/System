@@ -26,6 +26,18 @@ module EnginesSystemDirs
   @@CertificatesDestination = '/home/engines/etc/ssl/certs/'
   @@ServiceBackupScriptsRoot = '/home/engines/scripts/backup/'
   @@EngineServiceBackupScriptsRoot = '/home/engines/scripts/backup/engine/'
+  
+  #Container UID historical store
+  @@ContainerUIDdir = '/opt/engines/etc/containers/uids'
+  @@ContainerNextUIDFile = '/opt/engines/etc/containers/uids/next'
+  
+  def SystemConfig.ContainerUIDdir
+    @@ContainerUIDdir
+  end
+  def SystemConfig.ContainerNextUIDFile
+    @@ContainerNextUIDFile
+  end
+  
   def SystemConfig.EngineServiceBackupScriptsRoot
     @@EngineServiceBackupScriptsRoot
   end

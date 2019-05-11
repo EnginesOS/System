@@ -20,8 +20,11 @@ module BuildReport
   def save_build_report(container, build_report)
     STDERR.puts('Build Resport ' + build_report.to_s)
     f = File.new(container_state_dir(container) + '/buildreport.txt', File::CREAT | File::TRUNC | File::RDWR, 0644)
-    f.puts(build_report)
-    f.close
+    begin
+      f.puts(build_report)
+    ensure
+      f.close
+    end
     true
   end
 

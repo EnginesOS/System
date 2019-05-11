@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #cat /home/fs/vol_dir_maps
 #echo ls -l fs
 #ls -l /home/fs
@@ -50,7 +50,7 @@ if test -d /home/volumes/
      
      echo "cp -rnp $dir_abs_path $destination "
   	cp -rnp $dir_abs_path  $destination 
-  	rm -r $dir_abs_path
+  	rm -rf $dir_abs_path
   	echo "ln -s $ln_destination $dir_abs_path"
   	ln -s $ln_destination $dir_abs_path
   done 

@@ -27,6 +27,9 @@ class EngineBuilder < ErrorsApi
   require_relative 'builder/container_creation.rb'
   include  ContainerCreation
 
+  require_relative 'builder/container_guids.rb'
+  include ContainerGuids
+
   require_relative '../templater/templater.rb'
 
   attr_reader   :templater,
@@ -44,7 +47,8 @@ class EngineBuilder < ErrorsApi
   :data_uid,
   :data_gid,
   :build_error,
-  :container
+  :container,
+  :cont_user_id
 
   attr_accessor :app_is_persistent
 
@@ -81,7 +85,7 @@ class EngineBuilder < ErrorsApi
     @core_api = core_api
     @container = nil
     @build_params = params
-    @blueprint = nil   
+    @blueprint = nil
   end
 
   def service_resource(service_name, what)
@@ -121,8 +125,11 @@ class EngineBuilder < ErrorsApi
     restart_flag_file = ContainerStateFiles.restart_flag_file(mc)
     FileUtils.mkdir_p(ContainerStateFiles.container_flag_dir(mc)) unless Dir.exist?(ContainerStateFiles.container_flag_dir(mc))
     f = File.new(restart_flag_file, 'w+')
-    f.puts(restart_reason)
-    f.close
+    begin
+      f.puts(restart_reason)
+    ensure
+      f.close
+    end
     File.chmod(0660, restart_flag_file)
     FileUtils.chown(nil, 'containers', restart_flag_file)
   end

@@ -35,8 +35,8 @@ if test $? -eq 0
 	    cat /tmp/big/backup.sql|  env  PGPASSWORD=$dbpasswd pgsql   -h $dbhost -U $dbuser  $dbname  2> /tmp/roll_back.err
 	    cat  /tmp/extract.err
 	    cat /tmp/roll_back.err
-	    echo  Rolled back >&2
-	    rm /tmp/big/backup.sql $Archive
+	    echo  Rolled back2>&1
+	    	    rm /tmp/big/backup.sql $Archive
 	 fi 
 
 

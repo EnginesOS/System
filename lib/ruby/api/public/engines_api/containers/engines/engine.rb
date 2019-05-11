@@ -7,6 +7,14 @@ module PublicApiEngine
     @core_api.get_resolved_engine_string(env_value, engine)
   end
 
+  def set_debug(engine_name)
+    loadManagedEngine(engine_name).set_debug
+  end
+  
+  def clear_debug
+    loadManagedEngine(engine_name).clear_debug
+  end
+  
   def get_build_report(engine_name)
     @core_api.get_build_report(engine_name)
   end

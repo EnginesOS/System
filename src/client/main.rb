@@ -15,15 +15,16 @@ include ClientHTTPStream
 
 @silent = true
 @verbose = false
+
 def log_error(*args)
   unless @silent == true
-     
-  if @verbose == true
-    STDERR.puts(args.to_s)
-  else
-    STDERR.puts(args.to_s[0..64])
+
+    if @verbose == true
+      STDERR.puts(args.to_s)
+    else
+      STDERR.puts(args.to_s[0..64])
+    end
   end
-end
 end
 
 def command_usage(mesg=nil)
@@ -76,7 +77,11 @@ def stream_put(data_io)
 end
 
 def perform_put(params, content_type = 'application/json')
-  post_params = {api_vars: params}
+  unless params == nil
+    post_params = {api_vars: params}
+  else
+    post_params = nil
+  end
   #STDERR.puts('Posting ' + post_params.to_s)
   rest_put(@route, post_params, content_type)
   exit
@@ -93,7 +98,7 @@ end
 
 def handle_resp(resp, expect_json = true)
   r = nil
-#  STDERR.puts('GOT JSON' + resp.body)
+  #  STDERR.puts('GOT JSON' + resp.body)
   if resp.status >= 400
     log_error("Error " + resp.status.to_s)
     if resp.body.nil?
@@ -107,12 +112,12 @@ def handle_resp(resp, expect_json = true)
     log_error("Un exepect response from system" + resp.status.to_s + ' ' + resp.body.to_s + ' ' + resp.to_s)
   end
 
- # STDERR.puts('GOT body ' + resp.body + "\nas JSON:" +  expect_json.to_s) 
+  # STDERR.puts('GOT body ' + resp.body + "\nas JSON:" +  expect_json.to_s)
   if expect_json == true && r.nil?
-  #  STDERR.puts('GOT JSON' + resp.body)
+    #  STDERR.puts('GOT JSON' + resp.body)
     o = json_parser.parse(resp.body)
     #o = JSON.parse(resp.body)
-   # STDERR.puts('O IS' + o.class.name)
+    # STDERR.puts('O IS' + o.class.name)
     o.to_s
   else
     if r.nil?
@@ -127,14 +132,14 @@ rescue StandardError => e
 end
 
 def write_response(r)
- # STDERR.puts('Response Class for name ' + r.class.name)
+  # STDERR.puts('Response Class for name ' + r.class.name)
   if r.nil?
     log_error('nil response')
   elsif r.headers['Content-Type'] == 'application/octet-stream'
     STDOUT.write(r.body.b) unless r.body.nil?
   else
     expect_json = false
-    expect_json = true if r.headers['Content-Type'] == 'application/json' || r.body.start_with?('{')    
+    expect_json = true if r.headers['Content-Type'] == 'application/json' || r.body.start_with?('{')
     puts handle_resp(r, expect_json)
   end
 rescue StandardError => e
@@ -163,7 +168,6 @@ require_relative 'default_connection_settings.rb'
 
 ENV['access_token'] = @options[:access_token] if @options.key?(:access_token)
 load_token if ENV['access_token'].nil?
-
 
 require_relative 'commands/commands.rb'
 

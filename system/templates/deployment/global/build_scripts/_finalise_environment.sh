@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 
 	grep :$data_gid: /etc/group >/dev/null

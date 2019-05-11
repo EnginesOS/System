@@ -10,7 +10,7 @@ def set_top_level_service_params(service_hash, container_name)
   service_hash[:parent_engine] = container_name
   service_hash[:container_type] = 'app' if service_hash.has_key?(:container_type) == false || service_hash[:container_type] ==nil
   service_hash[:soft_service] = service_def[:soft_service]
-  service_hash[:variables] = {} unless service_hash.has_key?(:variables)
+  service_hash[:variables] = {} unless service_hash.has_key?(:variables)    
   service_hash[:variables][:parent_engine] = container_name
   if service_def.key?(:priority)
     service_hash[:priority] = service_def[:priority]
@@ -28,6 +28,8 @@ def set_top_level_service_params(service_hash, container_name)
   end
   service_hash
 end
+
+
 
 def is_soft_service?(service_hash)
   soft = SoftwareServiceDefinition.is_soft_service?(service_hash)

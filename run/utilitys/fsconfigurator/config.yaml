@@ -64,9 +64,13 @@ environments:
  name: data_gid
  value: _Engines_Template(data_gid)
  setatrun: false 
+- !ruby/object:EnvironmentVariable
+ name: data_uid
+ value: _Engines_Template(data_uid)
+ setatrun: false 
 image: _Engines_System(flavor)/fsconfigurator:_Engines_System(release)
 volumes: 
- state_dir: 
+ state_dir:
   name: state_dir
   remotepath: "/client/state/"
   localpath: /opt/engines/run/apps/_Engines_Template(target)/run/

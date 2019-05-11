@@ -7,8 +7,11 @@ module EnginesCoreSystem
   def dump_heap_stats
     ObjectSpace.garbage_collect
     file = File.open("/home/engines/run/heap.dump", 'w')
-    ObjectSpace.dump_all(output: file)
-    file.close
+    begin
+      ObjectSpace.dump_all(output: file)
+    ensure
+      file.close
+    end
     true
   end
 
@@ -36,15 +39,15 @@ module EnginesCoreSystem
   def registered_ports
     unless @registered_ports.is_a?(Hash)
       @registered_ports = {}
-        containers = getManagedEngines.concat(getManagedServices).concat(getSystemServices)
-          containers.each do | c |
-            next unless c.is_active?
-            next unless c.mapped_ports.is_a?(Hash)
-            c.mapped_ports.each_value do |  p|
-             # STDERR.puts('Registered:' + p.to_s + ' to ' + c.container_name)
-              @registered_ports[c.container_name] = p[:external] 
-            end            
-          end
+      containers = getManagedEngines.concat(getManagedServices).concat(getSystemServices)
+      containers.each do | c |
+        next unless c.is_active?
+        next unless c.mapped_ports.is_a?(Hash)
+        c.mapped_ports.each_value do |  p|
+          # STDERR.puts('Registered:' + p.to_s + ' to ' + c.container_name)
+          @registered_ports[c.container_name] = p[:external]
+        end
+      end
     end
     @registered_ports
   end
@@ -52,10 +55,10 @@ module EnginesCoreSystem
   def is_port_available?(port)
     registered_ports.each_pair do | c , p|
       next if p.nil?
-    #  STDERR.puts('Check ' + port.to_s + ' with ' + p.to_s)
-     return c if p == port
-  end
-     true
+      #  STDERR.puts('Check ' + port.to_s + ' with ' + p.to_s)
+      return c if p == port
+    end
+    true
   end
 
   def register_port(container_name, port)
@@ -63,7 +66,7 @@ module EnginesCoreSystem
   end
 
   def deregister_port(container_name, port)
-   # STDERR.puts('de reg port ' + container_name.to_s + ':' + port.to_s)
+    # STDERR.puts('de reg port ' + container_name.to_s + ':' + port.to_s)
     registered_ports.delete(container_name)
   end
 

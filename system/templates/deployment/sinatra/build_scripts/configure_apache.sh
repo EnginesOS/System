@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 
 cat /etc/apache2/sites-enabled/000-default.conf  | sed "s/^#SERVER_NAME/ ServerName $fqdn/" > /tmp/.000-default.conf

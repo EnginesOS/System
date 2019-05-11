@@ -10,6 +10,7 @@ class DockerFileBuilder
     @builder = builder
     @docker_file = File.open(@builder.basedir + '/Dockerfile', 'a')
     @layer_count = 0
+    #FIXME
     @env_file = File.new(@builder.basedir + '/build.env', 'w+')
     # this should be read as it is framework dep
     @max_layers = 75
@@ -23,6 +24,7 @@ class DockerFileBuilder
     @in_run = false
     write_environment_variables
     write_stack_env
+    write_container_user
     write_file_service
     set_user('0')
     write_user_local = true
@@ -36,9 +38,7 @@ class DockerFileBuilder
     #write_run_start
     write_app_archives
     write_app_templates
-
-    set_user('$ContUser')
-    write_container_user
+  
     set_user('0')
     chown_home_app
     set_user('$ContUser')
@@ -88,6 +88,7 @@ class DockerFileBuilder
 
   def setup_user_local
     #  write_run_start()
+    write_build_script('set_cont_user.sh')
     write_run_line('ln -s /usr/local/ /home/local')
     write_run_line('chown -R $ContUser /usr/local/ ')
 
@@ -330,6 +331,7 @@ class DockerFileBuilder
     write_comment('#Container Data User')
     log_build_output('Dockerfile:User')
     # FIXME: needs to by dynamic
+    write_env('cont_uid', @builder.cont_user_id)
     write_env('data_gid', @builder.data_gid.to_s)
     write_env('data_uid', @builder.data_uid.to_s)
   end
@@ -340,6 +342,8 @@ class DockerFileBuilder
     write_comment('#Stack Env')
     write_line('')
     # write_env('Memory' ,@builder.memory.to_s)
+   # write_env('cont_uid', build_params
+   
     write_env('Hostname', @hostname)
     write_env('Domainname', @domain_name)
     write_env('fqdn', @hostname + '.' + @domain_name)

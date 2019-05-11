@@ -16,8 +16,11 @@ module SshKeys
 
   def set_ms_public_key(key_data)
     keyf = File.new('/home/engines/.ssh/mother_ship.pub','w+')
-    keyf.write(key_data)
-    keyf.close
+    begin
+      keyf.write(key_data)
+    ensure
+      keyf.close
+    end
   end
 
   def get_ms_public_key
@@ -35,6 +38,10 @@ module SshKeys
       run_server_script('system_public_key')[:stdout]
     end
 
+  end
+
+  def get_repo_keys_names
+    {repo_key_names: ['system']}
   end
 
   def regen_system_ssh_key

@@ -22,7 +22,7 @@ if test -f /home/engines/run/flags/wait_before_shutdown
   sleep 210
 fi
 
-for P_FILE in $PID_FILE 
+for P_FILE in $PID_FILES
  do
   if test -f $P_FILE 
    then 
@@ -32,6 +32,8 @@ for P_FILE in $PID_FILE
  
 touch /home/engines/run/flags/shutdown
 echo "Shutdown Complete"
+exit_start=true
+export exit_start
 exit $exit_code
 }
 

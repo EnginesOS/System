@@ -15,7 +15,31 @@ get '/v0/containers/engine/:engine_name' do
     # send_encoded_exception(request: request, exception: e)
   end
 end
+# @method set_engine_debug
+# @overload get '/v0/containers/engine/:engine_name/set/debug'
+# set engine debug
+# @return [boolean]
 
+put '/v0/containers/engine/:engine_name/debug/set' do
+  begin
+    engine = get_engine(params[:engine_name])
+    return_boolean(engine.set_debug)
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+end
+# @method clear_engine_debug
+# @overload get '/v0/containers/engine/:engine_name/clear/debug'
+# clear engine debug
+# @return [boolean]
+put '/v0/containers/engine/:engine_name/debug/clear' do
+  begin
+    engine = get_engine(params[:engine_name])
+    return_boolean(engine.clear_debug)
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+end
 # @method get_engine_status
 # @overload get '/v0/containers/engine/:engine_name/status'
 # get engine status

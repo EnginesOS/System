@@ -15,6 +15,14 @@ module EngineApiStatusFlags
     end
   end
 
+  def set_debug(container)
+    @system_api.set_debug(container)
+  end
+
+  def clear_debug(container)
+    @system_api.clear_debug(container)
+  end
+
   def rebuild_reason(container)
     if File.exist?(@system_api.rebuild_flag_file(container))
       File.read(@system_api.restart_flag_file(container))
@@ -29,11 +37,11 @@ module EngineApiStatusFlags
   end
 
   def wait_for_startup(c, timeout = 5)
-    r = false    
+    r = false
     sfd = @system_api.container_state_dir(c) +'/run/flags'
-      unless Dir.exist?(sfd)
-        FileUtils.mkdir_p(sfd)
-      end
+    unless Dir.exist?(sfd)
+      FileUtils.mkdir_p(sfd)
+    end
     state_file_name = sfd + '/state'
     sfn = sfd + '/startup_complete'
     if c.is_running?
@@ -55,7 +63,7 @@ module EngineApiStatusFlags
               end
             rescue Exception => e
               STDERR.puts('Select for wait for startup complete raise Exception ' + c.container_name.to_s + "\n" + + e.to_s)
-             # STDERR.puts('Backtrace ' + e.backtrace.to_s)
+              # STDERR.puts('Backtrace ' + e.backtrace.to_s)
             end
             r = c.is_running?
           end

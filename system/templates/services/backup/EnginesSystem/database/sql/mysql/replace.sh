@@ -36,7 +36,7 @@ if test $? -eq 0
 	    cat /tmp/big/backup.sql| mysql -h $dbhost -u $dbuser --password=$dbpasswd $dbname 2> /tmp/roll_back.err
 	    cat  /tmp/extract.err
 	    cat /tmp/roll_back.err
-	    echo  Rolled back >&2
+	    echo  Rolled back 2>&1
 	    rm /tmp/big/backup.sql $Archive
 	    exit 127
 	 fi 

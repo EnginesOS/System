@@ -10,7 +10,7 @@ class BuilderPublic
   end
 
   def cont_user_id
-    @cont_user_id
+    @builder.cont_user_id
   end
 
   def engine_name
@@ -114,7 +114,7 @@ class BuilderPublic
   end
   
   def fw_user
-    @cont_user_id
+    @builder.cont_user_id
   end
 
 

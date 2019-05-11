@@ -13,8 +13,11 @@ module SystemExceptions
     SystemUtils.log_output(e_str, 10)
     e_str +="\n\n"
     elof = File.open("/tmp/exceptions.log", "a+")
-    elof.write(e_str)
-    elof.close
+    begin
+      elof.write(e_str)
+    ensure
+      elof.close
+    end
     SystemUtils.log_exception_to_bugcatcher(e) unless File.exists?(SystemConfig.NoRemoteExceptionLoggingFlagFile)
     EnginesError.new(e_str.to_s, :exception)
   end
@@ -36,15 +39,24 @@ module SystemExceptions
     error_log_hash[:return_url] = 'system'
     error_log_hash[:user_comment] = ''
     error_log_hash[:user_email] = 'backend@engines.onl'
-    uri = URI.parse('http://buglog.engines.onl/api/v0/contact/bug_reports')
+    STDERR.puts('BUG LOGGER is a ' + ENV['BUG_REPORTS_SERVER'])
+    uri = URI.parse(ENV['BUG_REPORTS_SERVER'])
+    conn = nil
+    req = Net::HTTP.post_form(uri)
+    req.set_form_data(error_log_hash)
+    
     Net::HTTP.start(uri.host, uri.port) do |http|
-      request = Net::HTTP.post_form(uri, error_log_hash)
-      response = http.request request # Net::HTTPResponse object
+      conn = http
+      response = http.request(req) # Net::HTTPResponse object
+      STDERR.puts('BUG LOGGER RESPONSE ' + resposnse.to_s)
       http.finish
     end
     true
-  rescue
+  rescue StandardError =>e
+    STDERR.puts('Exceptiion ' + e.to_s)
     false
+  ensure
+    conn.finish unless conn.nil?
   end
 
 end

@@ -9,15 +9,21 @@ class BlueprintApi < ErrorsApi
     Dir.mkdir(state_dir) if File.directory?(state_dir) == false
     statefile = state_dir + '/blueprint.json'
     f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0644)
-    f.write(blueprint.to_json)
-    f.close
+    begin
+      f.write(blueprint.to_json)
+    ensure
+      f.close
+    end
   end
 
   def self.load_blueprint_file(blueprint_file_name)
     blueprint_file = File.open(blueprint_file_name, 'r')
-    parser = Yajl::Parser.new(:symbolize_keys => true)
-    json_hash = parser.parse(blueprint_file.read)
-    blueprint_file.close
+    begin
+      parser = Yajl::Parser.new(:symbolize_keys => true)
+      json_hash = parser.parse(blueprint_file.read)
+    ensure
+      blueprint_file.close
+    end
     json_hash
 
   end
@@ -144,6 +150,7 @@ class BlueprintApi < ErrorsApi
     #FIX ME get real certs and drop this
     download = open(url, {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE})
     IO.copy_stream(download, d)
+    download.close
   end
 
   #  def self.get_blueprint_parent(parent_url)
