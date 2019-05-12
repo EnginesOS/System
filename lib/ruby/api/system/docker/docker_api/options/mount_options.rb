@@ -152,7 +152,8 @@ def  mount_string_for_homes(home)
     s = []
     home[:variables][:homes].split(", \n").each do | user |
       STDERR.puts('SDFSDF ' + '/var/lib/engines/home/' + user)
-      next unless Dir.exist?('/home/users/' + user  )
+      #FIXME do a ldap looku for user if user exists create else next
+    #  next unless Dir.exist?('/home/users/' + user  )
       STDERR.puts('SDFSDF ' + '/var/lib/engines/home/' + user + '/' +  home[:parent_engine] + ':/home/users/' + user  + '/' +  home[:parent_engine] + ':'  + home[:variables][:access])
       s.push('/var/lib/engines/home/' + user + '/' +  home[:parent_engine] + ':/home/users/' + user  + '/' +  home[:parent_engine] + ':'  + home[:variables][:access])
     end
@@ -169,6 +170,7 @@ def homes_mounts(container)
     homes = container.attached_services(
     {type_path: 'homes'
     })
+    STDERR.puts('HOMES ' + homes.to_s)
     if homes.is_a?(Array)
       homes.each do | home |
         m_str = mount_string_for_homes(home)
