@@ -6,3 +6,4 @@ command_usage unless params_data.is_a?(String)
 end
   
 @route += '/' + ARGV[3]
+perform_get
