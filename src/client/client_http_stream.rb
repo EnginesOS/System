@@ -29,7 +29,7 @@ options = { use_ssl: true, uri.scheme => 'https', verify_mode: OpenSSL::SSL::VER
           #dont panic on bad json_parser as it is the \0 keep alive
         rescue StandardError => e
           p e
-          STDERR.puts('_'+ chunk + '_')
+          STDERR.puts('_BAD_CHUNK'+ chunk + '_')
           next
         end
       end
