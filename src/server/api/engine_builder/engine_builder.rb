@@ -76,6 +76,7 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream;charset=asc
     build_log_file = File.new(SystemConfig.BuildOutputFile, 'r')
     has_data = true
     build_over = false
+    begin
     stream :keep_open do |out|
       while has_data == true
         begin
@@ -114,6 +115,9 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream;charset=asc
         end
       end
     end
+#  ensure
+ #   build_log_file.close unless build_log_file.closed?
+  end
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

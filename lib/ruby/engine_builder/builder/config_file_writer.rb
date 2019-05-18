@@ -10,11 +10,14 @@ class ConfigFileWriter
   def self.create_sudoers_file(sudo_list, user, basedir)
     if sudo_list.is_a?(Array) && sudo_list.count > 0
       out_file = File.new(basedir + '/sudo_list', 'w+', :crlf_newline => false)
-      sudo_list.each do |entry|
-        out_file.puts(user.to_s + ' ALL=(ALL) NOPASSWD: ' + entry.to_s)
+      begin
+        sudo_list.each do |entry|
+          out_file.puts(user.to_s + ' ALL=(ALL) NOPASSWD: ' + entry.to_s)
+        end
+        out_file.puts("\n")
+      ensure
+        out_file.close
       end
-      out_file.puts("\n")
-      out_file.close
     end
   end
 
@@ -40,7 +43,10 @@ class ConfigFileWriter
     template = templater.process_templated_string(template)
     output_filename = filename.sub(/.tmpl/, '')
     out_file = File.new(output_filename, 'wb', :crlf_newline => false)
-    out_file.write(template)
-    out_file.close
+    begin
+      out_file.write(template)
+    ensure
+      out_file.close
+    end
   end
 end

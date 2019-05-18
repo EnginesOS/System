@@ -9,9 +9,12 @@ module ContainerSystemStateFiles
       running_config = templator.process_templated_string(config_template)
       yam1_file_name = service_type_dir + service_name + '/running.yaml'
       yaml_file = File.new(yam1_file_name, 'w+')
-      yaml_file.write(running_config)
-      yaml_file.close
-      true
+      begin
+        yaml_file.write(running_config)
+      ensure
+        yaml_file.close
+        true
+      end
     end
   end
 
@@ -22,9 +25,9 @@ module ContainerSystemStateFiles
 
   def clear_debug(c)
     df = container_state_dir(c) + '/wait_before_shutdown'
-      FileUtils.rm(fd) if File.exist?(fd)
+    FileUtils.rm(fd) if File.exist?(fd)
   end
-  
+
   def schedules_dir(c)
     container_state_dir(c) + '/schedules/'
   end
@@ -160,15 +163,18 @@ module ContainerSystemStateFiles
         log_name = 'last.log'
       end
       log_file = File.new(container_log_dir(c) + '/' + log_name, 'w+')
-      unless  options.key?(:max_length)
-        options[:max_length] = 4096
+      begin
+        unless options.key?(:max_length)
+          options[:max_length] = 4096
+        end
+        log_file.write(
+        #DockerUtils.docker_stream_as_result(
+        c.logs_container(options[:max_length])
+        #, {}).to_yaml
+        )
+      ensure
+        log_file.close
       end
-      log_file.write(
-      #DockerUtils.docker_stream_as_result(
-      c.logs_container(options[:max_length])
-      #, {}).to_yaml
-      )
-      log_file.close
     end
   end
 end

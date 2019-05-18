@@ -7,8 +7,6 @@ module Builders
   require_relative 'engine_scripts_builder.rb'
   include EngineScriptsBuilder
 
-
-  
   require_relative 'base_image.rb'
   require_relative 'build_image.rb'
   require_relative 'physical_checks.rb'
@@ -37,8 +35,8 @@ module Builders
 
     @build_params[:data_uid] = @data_uid
     @build_params[:data_gid] = @data_gid
-    @build_params[:cont_user_id] = @cont_user_id  
-      
+    @build_params[:cont_user_id] = @cont_user_id
+
     SystemDebug.debug(SystemDebug.builder, :builder_init, @build_params)
     @service_builder = ServiceBuilder.new(@core_api, @templater, @build_params[:engine_name], @attached_services, basedir)
     SystemDebug.debug(SystemDebug.builder, :builder_init__service_builder, @build_params)
@@ -50,7 +48,6 @@ module Builders
     log_exception(e)
     raise e
   end
-
 
   def restore_managed_container(engine)
     @engine = engine
@@ -197,8 +194,11 @@ module Builders
     blue_print = @engine.load_blueprint
     statefile = basedir + '/blueprint.json'
     f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0644)
-    f.write(blue_print.to_json)
-    f.close
+    begin
+      f.write(blue_print.to_json)
+    ensure
+      f.close
+    end
   end
 
 end

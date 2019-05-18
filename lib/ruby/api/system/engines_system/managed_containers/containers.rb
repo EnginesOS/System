@@ -27,9 +27,12 @@ module Containers
       File.rename(statefile, statefile_bak)
     end
     f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0644)
-    f.puts(serialized_object)
-    f.flush()
-    f.close
+    begin
+      f.puts(serialized_object)
+      f.flush()
+    ensure
+      f.close
+    end
     begin
       ts =  File.mtime(statefile)
     rescue StandardError => e
@@ -45,7 +48,7 @@ module Containers
     # FIXME: Need to rename back if failure
     SystemUtils.log_exception(e)
   ensure
-      unlock_container_conf_file(state_dir)    
+    unlock_container_conf_file(state_dir)
   end
 
   def is_startup_complete?(container)
@@ -58,9 +61,12 @@ module Containers
       serialized_object = YAML.dump(actionators)
 
       f = File.new(actionator_dir(container) + '/actionators.yaml', File::CREAT | File::TRUNC | File::RDWR, 0644)
+      begin
       f.puts(serialized_object)
       f.flush()
+      ensure
       f.close
+      end
     end
   end
 

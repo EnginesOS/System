@@ -139,14 +139,17 @@ module BuildDirSetup
   def write_env_file
     log_build_output('Setting up Environments')
     env_file = File.new(basedir + '/home/app.env', 'a')
-    env_file.puts('')
-    @blueprint_reader.environments.each do |env|
-      env_file.puts(env.name) unless env.build_time_only
+    begin
+      env_file.puts('')
+      @blueprint_reader.environments.each do |env|
+        env_file.puts(env.name) unless env.build_time_only
+      end
+      @set_environments.each do |env|
+        env_file.puts(env[0])
+      end
+    ensure
+      env_file.close
     end
-    @set_environments.each do |env|
-      env_file.puts(env[0])
-    end
-    env_file.close
   end
 
   def write_software_file(filename, content)
@@ -224,8 +227,11 @@ module BuildDirSetup
       df = File.read(basedir + '/_Dockerfile.tmpl')
       df = 'FROM ' + @blueprint_reader.base_image + "\n" + 'ENV ContUser ' + @blueprint_reader.cont_user + "\n" + df
       fw = File.new(basedir  + '/Dockerfile.tmpl', 'w+')
-      fw.write(df)
-      fw.close
+      begin
+        fw.write(df)
+      ensure
+        fw.close
+      end
     end
   end
 
