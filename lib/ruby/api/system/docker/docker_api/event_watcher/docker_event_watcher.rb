@@ -97,9 +97,10 @@ class DockerEventWatcher < ErrorsApi
           end
           chunk.sub!(/}[ \n\r]*$/, '}')
           chunk.sub!(/^[ \n\r]*{/,'{')
-          #STDERR.puts(' Chunk |' + chunk.to_s + '|')
+          STDERR.puts(' Chunk |' + chunk.to_s + '|')
           parser ||= Yajl::Parser.new({:symbolize_keys => true})
           hash = parser.parse(chunk)
+          STDERR.puts(' Hash ' + hash.to_s)
           SystemDebug.debug(SystemDebug.container_events, 'got ' + hash.to_s)
           next unless is_valid_docker_event?(hash)
           #  t = Thread.new {trigger(hash)}
