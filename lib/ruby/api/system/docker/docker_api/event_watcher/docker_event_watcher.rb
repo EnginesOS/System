@@ -164,7 +164,7 @@ class DockerEventWatcher < ErrorsApi
 def handle_event(event_hash)
   STDERR.puts(' Hash ' + event_hash.to_s)
   SystemDebug.debug(SystemDebug.container_events, 'got ' + event_hash.to_s)
-  @events_mutex.synchronize { trigger(event_hash) } if is_valid_docker_event?(hash)
+  @events_mutex.synchronize { trigger(event_hash) } if is_valid_docker_event?(event_hash)
 end
 
 
