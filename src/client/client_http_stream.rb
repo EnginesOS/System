@@ -4,7 +4,7 @@ module ClientHTTPStream
 
   
 def parse_complete(hash)
-  p hash.to_json
+  p(Time.now.getutc.to_s + ':' +hash.to_json)
 end
 #used by events
 def get_json_stream(path)
