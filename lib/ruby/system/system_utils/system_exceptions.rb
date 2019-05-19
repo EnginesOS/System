@@ -47,6 +47,8 @@ module SystemExceptions
     
     Net::HTTP.start(uri.host, uri.port) do |http|
       conn = http
+      #FIX ME needs to be verified so never spoofed
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       response = http.request(req) # Net::HTTPResponse object
       STDERR.puts('BUG LOGGER RESPONSE ' + resposnse.to_s)
       http.finish
