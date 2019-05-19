@@ -3,7 +3,9 @@ module ClientHTTPStream
   require 'net/http'
 
   
-  
+def parse_complete(hash)
+  p hash.to_json
+end
 #used by events
 def get_json_stream(path)
   require 'yajl'
@@ -17,18 +19,20 @@ options = { use_ssl: true, uri.scheme => 'https', verify_mode: OpenSSL::SSL::VER
     req['access_token'] = ENV['access_token']
     req['HTTP_access_token'] = ENV['access_token']
     parser = FFI_Yajl::Parser.new({symbolize_keys: true})
+  parser.on_complete =method(parse_complete)
     http.request(req) { |resp|
       resp.header.each_header {|key,value| STDERR.puts "#{key} = #{value}" }
       resp.read_body do |chunk|
         begin
           next if chunk == "\0" || chunk == "\n"
-          chunk.sub!(/}[ \n]$/, '}')         
-          hash = parser.parse(chunk)  #do |hash|
-            p hash.to_json
+          chunk.sub!(/}[ \n]$/, '}')   
+          parser << chunk
+         # hash = parser.parse(chunk)  #do |hash|
+        #    p hash.to_json
             #  end
-          #dont panic on bad json_parser as it is the \0 keep alive
         rescue StandardError => e
           p e
+          #Can be because chunk is not the complete json
           STDERR.puts('_BAD_CHUNK'+ chunk + '_')
           next
         end
