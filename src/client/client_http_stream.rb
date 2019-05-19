@@ -21,11 +21,11 @@ options = { use_ssl: true, uri.scheme => 'https', verify_mode: OpenSSL::SSL::VER
     parser = Yajl::Parser.new({symbolize_keys: true})
   parser.on_parse_complete = method(:parse_complete)
     http.request(req) { |resp|
-      resp.header.each_header {|key,value| STDERR.puts "#{key} = #{value}" }
+      #  resp.header.each_header {|key,value| STDERR.puts "#{key} = #{value}" }
       resp.read_body do |chunk|
         begin
-          next if chunk == "\0" || chunk == "\n"
-          chunk.gsub!(/}[ \n]$/, '}')   
+       #   next if chunk == "\0" || chunk == "\n"
+       #   chunk.gsub!(/}[ \n]$/, '}')   
           parser << chunk
         rescue StandardError => e
           p e
