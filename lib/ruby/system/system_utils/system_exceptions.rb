@@ -40,7 +40,8 @@ module SystemExceptions
     error_log_hash[:user_comment] = ''
     error_log_hash[:user_email] = 'backend@engines.onl'
     STDERR.puts('BUG LOGGER is a ' + ENV['BUG_REPORTS_SERVER'])
-    uri = URI.parse(ENV['BUG_REPORTS_SERVER'].sub!(/https/,'http'))
+      url_s = ENV['BUG_REPORTS_SERVER'].sub(/https/,'http')
+    uri = URI.parse(url_s)
     conn = nil
     req = Net::HTTP.post_form(uri, error_log_hash )
   #  req.set_form_data(error_log_hash)
