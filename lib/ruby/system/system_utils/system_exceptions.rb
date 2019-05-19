@@ -45,10 +45,11 @@ module SystemExceptions
     req = Net::HTTP.post_form(uri, error_log_hash )
   #  req.set_form_data(error_log_hash)
     
-    Net::HTTP.start(uri.host, uri.port) do |http|
+    Net::HTTP.start(uri.host, uri.port, 
+    :use_ssl => uri.scheme == 'https', 
+    :verify_mode => OpenSSL::SSL::VERIFY_NONE) do |http|
       conn = http
       #FIX ME needs to be verified so never spoofed
-      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       response = http.request(req) # Net::HTTPResponse object
       STDERR.puts('BUG LOGGER RESPONSE ' + resposnse.to_s)
       http.finish
