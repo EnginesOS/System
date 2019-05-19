@@ -42,8 +42,8 @@ module SystemExceptions
     STDERR.puts('BUG LOGGER is a ' + ENV['BUG_REPORTS_SERVER'])
     uri = URI.parse(ENV['BUG_REPORTS_SERVER'])
     conn = nil
-    req = Net::HTTP.post_form(uri)
-    req.set_form_data(error_log_hash)
+    req = Net::HTTP.post_form(uri, error_log_hash )
+  #  req.set_form_data(error_log_hash)
     
     Net::HTTP.start(uri.host, uri.port) do |http|
       conn = http
