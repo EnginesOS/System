@@ -18,7 +18,7 @@ options = { use_ssl: true, uri.scheme => 'https', verify_mode: OpenSSL::SSL::VER
     req = Net::HTTP::Get.new(uri)
     req['access_token'] = ENV['access_token']
     req['HTTP_access_token'] = ENV['access_token']
-    parser = FFI_Yajl::Parser.new({symbolize_keys: true})
+    parser = Yajl::Parser.new({symbolize_keys: true})
   parser.on_parse_complete = method(:parse_complete)
     http.request(req) { |resp|
       resp.header.each_header {|key,value| STDERR.puts "#{key} = #{value}" }
