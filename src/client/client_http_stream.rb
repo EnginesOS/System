@@ -19,7 +19,7 @@ options = { use_ssl: true, uri.scheme => 'https', verify_mode: OpenSSL::SSL::VER
     req['access_token'] = ENV['access_token']
     req['HTTP_access_token'] = ENV['access_token']
     parser = FFI_Yajl::Parser.new({symbolize_keys: true})
-  parser.on_complete = method(:parse_complete)
+  parser.on_parse_complete = method(:parse_complete)
     http.request(req) { |resp|
       resp.header.each_header {|key,value| STDERR.puts "#{key} = #{value}" }
       resp.read_body do |chunk|
