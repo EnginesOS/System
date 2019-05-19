@@ -1,5 +1,5 @@
 # @!group /containers
-
+NOOP_PERIOD=15
 # @method get_container_event_stream
 # @overload get '/v0/containers/events/stream'
 # Add listener to container events and write event-stream of events as json to client
@@ -24,7 +24,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
 
     def no_op_timer(out)
       no_op = {no_op: true}.to_json
-      timer = EventMachine::PeriodicTimer.new(25) do
+      timer = EventMachine::PeriodicTimer.new(NOOP_PERIOD) do
         if out.closed?
           STDERR.puts('NOOP found OUT IS CLOSED: ' + timer.to_s)
           timer.cancel
@@ -59,6 +59,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
                 bytes = ''
               end
             rescue IO::WaitReadable
+              STDERR.puts('Waiting on events stream')
               IO.select([events_stream.rd])
               retry
             rescue IOError
