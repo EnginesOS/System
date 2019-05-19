@@ -12,7 +12,7 @@ module ContainerApiDockerActions
 
   def pause_container(container)
     clear_error
-    @docker_api.pause_container(container)
+    @docker_api.pause_container(acontainer)
   end
 
   def image_exist?(container_name)

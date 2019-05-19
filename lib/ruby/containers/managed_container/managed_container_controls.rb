@@ -104,8 +104,6 @@ module ManagedContainerControls
 
   def pause_container
     @container_mutex.synchronize {
-      listthis
-    
       if prep_task(:pause)
         if super
           true
