@@ -98,8 +98,8 @@ class DockerEventWatcher < ErrorsApi
 #          else
 #            json_part = nil
 #          end
-#          chunk.sub!(/}[ \n\r]*$/, '}')
-#          chunk.sub!(/^[ \n\r]*{/,'{')
+          chunk.gsub!(/}[ \n\r]*$/, '}')
+          chunk.gsub!(/^[ \n\r]*{/,'{')
 #          STDERR.puts(' Chunk |' + chunk.to_s + '|')
           parser << chunk
 #          hash = parser.parse(chunk)

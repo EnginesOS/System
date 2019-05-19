@@ -25,7 +25,7 @@ options = { use_ssl: true, uri.scheme => 'https', verify_mode: OpenSSL::SSL::VER
       resp.read_body do |chunk|
         begin
           next if chunk == "\0" || chunk == "\n"
-          chunk.sub!(/}[ \n]$/, '}')   
+          chunk.gsub!(/}[ \n]$/, '}')   
           parser << chunk
         rescue StandardError => e
           p e
