@@ -96,7 +96,7 @@ end
 # test cd /opt/engines/tests/engines_api/engine ; make pause 
 get '/v0/containers/engine/:engine_name/pause' do
   begin
-    engine = get_engine(params[:engine_name])
+    engine = get_engineh(params[:engine_name])
     return_text(engine.pause_container)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
