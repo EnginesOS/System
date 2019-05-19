@@ -54,6 +54,7 @@ module SystemExceptions
     true
   rescue StandardError =>e
     STDERR.puts('Exceptiion ' + e.to_s)
+    STDERR.puts('backtrace ' + e.backtrace.to_s)
     false
   ensure
     conn.finish unless conn.nil?
