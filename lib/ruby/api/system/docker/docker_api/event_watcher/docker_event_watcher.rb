@@ -82,9 +82,10 @@ class DockerEventWatcher < ErrorsApi
     SystemDebug.debug(SystemDebug.container_events, 'EVENT LISTENER ' + @event_listeners.to_s)
     STDERR.puts('start with EVENT LISTENERS ' + @event_listeners.count.to_s)
     get_client
+    parser = yparser # ||= Yajl::Parser.new({:symbolize_keys => true})
+    parser.on_parse_complete = method(:handle_event)
     @client.request(Net::HTTP::Get.new('/events')) do |resp|
-      parser ||= Yajl::Parser.new({:symbolize_keys => true})
-      parser.on_parse_complete = method(:handle_event)
+    
       json_part = nil
       resp.read_body do |chunk|
         begin
@@ -100,7 +101,7 @@ class DockerEventWatcher < ErrorsApi
 #          end
           chunk.gsub!(/}[ \n\r]*$/, '}')
           chunk.gsub!(/^[ \n\r]*{/,'{')
-#          STDERR.puts(' Chunk |' + chunk.to_s + '|')
+          STDERR.puts(' Chunk |' + chunk.to_s + '|')
           parser << chunk
 #          hash = parser.parse(chunk)
 #          STDERR.puts(' Hash ' + hash.to_s)
