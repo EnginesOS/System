@@ -48,7 +48,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
           out.callback{ finialise_events_stream(events_stream, timer) }
           while has_data == true
             begin
-              bytes = events_stream.rd.read_nonblock(2048)
+              bytes = events_stream.rd.read_nonblock(8192)
               next if bytes.nil?
               if out.closed?
                 has_data = finialise_events_stream(events_stream, timer)

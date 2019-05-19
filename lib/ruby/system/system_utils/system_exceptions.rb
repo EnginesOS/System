@@ -40,13 +40,17 @@ module SystemExceptions
     error_log_hash[:user_comment] = ''
     error_log_hash[:user_email] = 'backend@engines.onl'
     STDERR.puts('BUG LOGGER is a ' + ENV['BUG_REPORTS_SERVER'])
-    uri = URI.parse(ENV['BUG_REPORTS_SERVER'])
+      url_s = ENV['BUG_REPORTS_SERVER'].sub(/https/,'http')
+    uri = URI.parse(url_s)
     conn = nil
-    req = Net::HTTP.post_form(uri)
-    req.set_form_data(error_log_hash)
-    
-    Net::HTTP.start(uri.host, uri.port) do |http|
+    req = Net::HTTP.post_form(uri, error_log_hash )
+  #  req.set_form_data(error_log_hash)
+    Net::HTTP.start(uri.host, uri.port, {
+      :use_ssl => uri.scheme == 'https', 
+      :verify_mode => OpenSSL::SSL::VERIFY_NONE}) do |http| #
+    #  http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       conn = http
+      #FIX ME needs to be verified so never spoofed
       response = http.request(req) # Net::HTTPResponse object
       STDERR.puts('BUG LOGGER RESPONSE ' + resposnse.to_s)
       http.finish
@@ -54,6 +58,7 @@ module SystemExceptions
     true
   rescue StandardError =>e
     STDERR.puts('Exceptiion ' + e.to_s)
+    STDERR.puts('backtrace ' + e.backtrace.to_s)
     false
   ensure
     conn.finish unless conn.nil?
