@@ -28,9 +28,8 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
         if out.closed?
           STDERR.puts('NOOP found OUT IS CLOSED: ' + timer.to_s)
           timer.cancel
-        else
-          out << no_op # unless lock_timer == true
-          out << "\n"
+        elsif lock_timer.is_a?(FalseClass)
+          out << no_op + "\n"
         end
       end
       timer
@@ -43,12 +42,15 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
       stream :keep_open do | out |
         begin
           has_data = true
+          lock_timer = false
           timer = no_op_timer(out)
           events_stream = engines_api.container_events_stream
           out.callback{ finialise_events_stream(events_stream, timer) }
           while has_data == true
             begin
+              lock_timer = false
               bytes = events_stream.rd.read_nonblock(8192)
+              lock_timer = true
               next if bytes.nil?
               if out.closed?
                 has_data = finialise_events_stream(events_stream, timer)
