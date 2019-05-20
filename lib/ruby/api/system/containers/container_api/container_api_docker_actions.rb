@@ -36,7 +36,7 @@ module ContainerApiDockerActions
 
   def stop_container(container)
     clear_error
-    Thread.new(@docker_api.stop_container(container))
+    @docker_api.stop_container(container)
     #rotate_log(container)
     true
   end
