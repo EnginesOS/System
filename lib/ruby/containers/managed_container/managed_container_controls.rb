@@ -33,7 +33,7 @@ module ManagedContainerControls
       end
     end
     thr.name('Destroy:' + container_name)
-    'ok'
+    thr
   end
 
   def delete_engine
@@ -41,7 +41,7 @@ module ManagedContainerControls
       @container_api.delete_engine(self)
     end
     thr.name('Delete:' + container_name)
-    'ok'
+    thr
   end
 
   def setup_container
@@ -86,24 +86,17 @@ module ManagedContainerControls
       }
     end
     thr.name('Create:' + container_name)
-    'ok'
+    thr
   end
 
   def recreate_container
     thr = Thread.new do
-      if destroy_container
-        wait_for('destroy', 30)
-        if create_container
-          true
-        else
-          task_failed('create/recreate')
-        end
-      else
-        task_failed('destroy/recreate')
-      end
+        destroy_container
+        wait_for('destroy', 30)        
+        create_container
     end
     thr.name('Recreate:' + container_name)
-    'ok'
+    thr
   end
 
   def unpause_container
@@ -119,7 +112,7 @@ module ManagedContainerControls
       }
     end
     thr.name('Unpause:' + container_name)
-    'ok'
+    thr
   end
 
   def pause_container
@@ -135,7 +128,7 @@ module ManagedContainerControls
       }
     end
     thr.name('Pause:' + container_name)
-    'ok'
+    thr
   end
 
   def stop_container
@@ -151,7 +144,7 @@ module ManagedContainerControls
       }
     end
     thr.name('Stop:' + container_name)
-    'ok'
+    thr
   end
 
   def halt_container
@@ -161,7 +154,7 @@ module ManagedContainerControls
       }
     end
     thr.name('Halt:' + container_name)
-    'ok'
+    thr
   end
 
   def start_container
@@ -178,24 +171,18 @@ module ManagedContainerControls
       }
     end
     thr.name('Start:' + container_name)
-    'ok'
+    thr
   end
 
   def restart_container
     thr = Thread.new do
-      if stop_container
-        wait_for('stop')
-        if start_container
-          true
-        else
-          task_failed('restart/start')
-        end
-      else
-        task_failed('restart/stop')
-      end
+      sthr = stop_container
+     # sthr.join
+      wait_for('stop')
+      start_container
     end
     thr.name('Restart:' + container_name)
-    'ok'
+    thr
   end
 
   def restore_engine(builder)
@@ -218,7 +205,7 @@ module ManagedContainerControls
       }
     end
     thr.name('Rebuild:' + container_name)
-    'ok'
+    thr
   end
 
   def correct_current_state
