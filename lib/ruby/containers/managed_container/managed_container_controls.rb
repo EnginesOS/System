@@ -15,7 +15,7 @@ module ManagedContainerControls
   end
 
   def destroy_container(reinstall = false)
-    Thread.new('Destroy:' + container_name) do
+    thr = Thread.new do
       if reinstall == true
         task = prep_task(:reinstall)
       else
@@ -32,12 +32,16 @@ module ManagedContainerControls
         false
       end
     end
+    thr.name = 'Destroy:' + container_name
+    thr
   end
 
   def delete_engine
-    thr = Thread.new('Delete:' + container_name) do
+    thr = Thread.new do
       @container_api.delete_engine(self)
     end
+    thr.name = 'Delete:' + container_name
+    thr
   end
 
   def setup_container
@@ -59,7 +63,7 @@ module ManagedContainerControls
 
   def create_container
     SystemDebug.debug(SystemDebug.containers, :teask_preping)
-    Thread.new('Create:' + container_name) do
+    thr = Thread.new do
       @container_mutex.synchronize {
         if prep_task(:create)
           @domain_name = @container_api.default_domain if @domain_name.nil?
@@ -81,20 +85,22 @@ module ManagedContainerControls
         end
       }
     end
+    thr.name = 'Create:' + container_name
+    thr
   end
 
   def recreate_container
     thr = Thread.new do
-        destroy_container
+       destroy_container
         wait_for('destroy', 30)        
         create_container
     end
-    thr.name('Recreate:' + container_name)
+    thr.name = 'Recreate:' + container_name
     thr
   end
 
   def unpause_container
-    Thread.new('Unpause:' + container_name) do
+    thr = Thread.new do
       @container_mutex.synchronize {
         if prep_task(:unpause)
           if super
@@ -105,10 +111,12 @@ module ManagedContainerControls
         end
       }
     end
+    thr.name = 'Unpause:' + container_name
+    thr
   end
 
   def pause_container
-    thr = Thread.new('Pause:' + container_name) do
+    thr = Thread.new do
       @container_mutex.synchronize {
         if prep_task(:pause)
           if super
@@ -119,10 +127,12 @@ module ManagedContainerControls
         end
       }
     end
+    thr.name = 'Pause:' + container_name
+    thr
   end
 
   def stop_container
-    thr = Thread.new('Stop:' + container_name) do
+    thr = Thread.new do
       @container_mutex.synchronize {
         if prep_task(:stop)
           if super
@@ -133,18 +143,22 @@ module ManagedContainerControls
         end
       }
     end
+    thr.name = 'Stop:' + container_name
+    thr
   end
 
   def halt_container
-    Thread.new('Halt:' + container_name) do
+    thr = Thread.new do
       @container_mutex.synchronize {
         super if prep_task(:halt)
       }
     end
+    thr.name = 'Halt:' + container_name
+    thr
   end
 
   def start_container
-    Thread.new('Start:' + container_name) do
+    thr = Thread.new do
       @container_mutex.synchronize {
         if prep_task(:start)
           if super
@@ -156,15 +170,19 @@ module ManagedContainerControls
         end
       }
     end
+    thr.name = 'Start:' + container_name
+    thr
   end
 
   def restart_container
-      Thread.new('Restart:' + container_name) do
+    thr = Thread.new do
       sthr = stop_container
-     # sthr.join
+      sthr.join
       wait_for('stop')
       start_container
     end
+    thr.name = 'Restart:' + container_name
+    thr
   end
 
   def restore_engine(builder)
@@ -172,7 +190,7 @@ module ManagedContainerControls
   end
 
   def rebuild_container
-    Thread.new('Rebuild:' + container_name) do
+    thr = Thread.new do
 
       @container_mutex.synchronize {
         if prep_task(:reinstall)
@@ -186,6 +204,8 @@ module ManagedContainerControls
         end
       }
     end
+    thr.name = 'Rebuild:' + container_name
+    thr
   end
 
   def correct_current_state
