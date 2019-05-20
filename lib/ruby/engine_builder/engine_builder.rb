@@ -110,9 +110,15 @@ class EngineBuilder < ErrorsApi
     country = prefs.country_code if country.nil?
     ##  STDERR.puts("LANGUAGE " + lang.to_s)
     #  STDERR.puts("country_code " + country.to_s)
-    @blueprint_reader.environments.push(EnvironmentVariable.new('LANGUAGE', lang.to_s + '_' + country.to_s + ':' + lang.to_s))
-    @blueprint_reader.environments.push(EnvironmentVariable.new('LANG', lang.to_s + '_' + country.to_s + '.UTF8'))
-    @blueprint_reader.environments.push(EnvironmentVariable.new('LC_ALL', lang.to_s + '_' + country.to_s + '.UTF8'))
+    @blueprint_reader.environments.push(EnvironmentVariable.new({name: 'LANGUAGE',
+                                                                value: lang.to_s + '_' + country.to_s + ':' + lang.to_s,
+                                                                own_type: 'application'}))
+    @blueprint_reader.environments.push(EnvironmentVariable.new({name: 'LANG', 
+                                                                value: lang.to_s + '_' + country.to_s + '.UTF8',
+                                                                own_type: 'application'}))
+    @blueprint_reader.environments.push(EnvironmentVariable.new({name: 'LC_ALL',
+                                                                value: lang.to_s + '_' + country.to_s + '.UTF8',
+                                                                own_type: 'application'}))
   end
 
   def engine_environment

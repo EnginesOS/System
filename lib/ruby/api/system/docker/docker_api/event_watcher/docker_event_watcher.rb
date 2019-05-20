@@ -101,7 +101,7 @@ class DockerEventWatcher < ErrorsApi
 #          end
           chunk.gsub!(/}[ \n\r]*$/, '}')
           chunk.gsub!(/^[ \n\r]*{/,'{')
-          STDERR.puts(' Chunk |' + chunk.to_s + '|')
+          #           STDERR.puts(' Chunk |' + chunk.to_s + '|')
           parser << chunk
 #          hash = parser.parse(chunk)
 #          STDERR.puts(' Hash ' + hash.to_s)
@@ -162,7 +162,7 @@ class DockerEventWatcher < ErrorsApi
 
   private
 def handle_event(event_hash)
-  STDERR.puts(' Hash ' + event_hash.to_s)
+  #   STDERR.puts(' Hash ' + event_hash.to_s)
   SystemDebug.debug(SystemDebug.container_events, 'got ' + event_hash.to_s)
   @events_mutex.synchronize { trigger(event_hash) } if is_valid_docker_event?(event_hash)
 end

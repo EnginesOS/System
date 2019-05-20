@@ -451,7 +451,13 @@ class BluePrintReader
 
         end
         name.gsub!(/ /, '_')
-        ev = EnvironmentVariable.new(name, value, ask, mandatory, build_time_only, label, immutable)
+        ev = EnvironmentVariable.new({name: name, 
+                                    value: value, 
+                                    ask_at_build_time: ask, 
+                                    mandatory: mandatory, 
+                                    build_time_only: build_time_only, 
+                                    label: label, 
+                                    immutable: immutable})
         @environments.push(ev)
       end
     end

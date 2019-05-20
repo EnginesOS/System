@@ -132,7 +132,11 @@ module BuilderBluePrint
 
     @blueprint_reader = VersionedBlueprintReader.new(@build_params[:engine_name], @blueprint, self)
     @blueprint_reader.process_blueprint
-    ev = EnvironmentVariable.new('Memory', @memory, false, true, false, 'Memory', false)
+    ev = EnvironmentVariable.new({name: 'Memory',
+                                  value: @memory,
+                                  owner_type: 'system',
+                                  immutable: "true"
+                                  })
     @blueprint_reader.environments.push(ev)
   end
 end

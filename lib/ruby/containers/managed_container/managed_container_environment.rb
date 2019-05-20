@@ -5,7 +5,7 @@ module ManagedContainerEnvironment
     s = false
     if add == true
       SystemDebug.debug(SystemDebug.containers, :update_environment, "added")
-      env = EnvironmentVariable.new(key.to_s, value)
+    env = EnvironmentVariable.new({name: key.to_s, value: value})
       @environments.push(env)
     else
       @environments.each do |environment|

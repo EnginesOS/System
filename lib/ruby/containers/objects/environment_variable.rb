@@ -16,8 +16,41 @@ class EnvironmentVariable
       @owner_path = ''
       @owner_type = 'application'# |service_consumer |system
     end
-
     @immutable = immutable
+    @has_changed = true
+  end
+
+  def initialize(env_hash)
+    @name = env_hash[:name]
+    @value = env_hash[:value]
+    if env_hash.key?(:ask_at_build_time)
+     @ask_at_build_time = env_hash[:ask_at_build_time]
+    else
+      @ask_at_build_time = false
+    end
+    if env_hash.key?(:build_time_only)
+     @build_time_only = env_hash[:build_time_only]
+    else
+      @build_time_only = false
+    end   
+    if env_hash.key?(:mandatory)
+    @mandatory = env_hash[:mandatory]
+    else
+      @mandatory = false
+    end  
+    @label = env_hash[:label] if env_hash.key?(:label)
+    if env_hash.key?(:owner_type)
+      @owner_type = env_hash[:owner_type] 
+      @owner_path = env_hash[:owner_path] if env_hash.key?(:owner_path)
+    else
+      @owner_path = ''
+      @owner_type = 'application'# |service_consumer |system
+    end
+    if env_hash.key?(:immutable)
+    @immutable = env_hash[:immutable]
+    else
+      @immutable = false
+    end
     @has_changed = true
   end
 
