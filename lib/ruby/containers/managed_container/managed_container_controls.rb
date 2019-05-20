@@ -55,7 +55,7 @@ module ManagedContainerControls
 
   def create_container
     SystemDebug.debug(SystemDebug.containers, :teask_preping)
-    @container_mutex.synchronize {      
+    @container_mutex.synchronize {
       if prep_task(:create)
         @domain_name = @container_api.default_domain if @domain_name.nil?
         @container_api.initialize_container_env(self)
@@ -115,16 +115,17 @@ module ManagedContainerControls
   end
 
   def stop_container
-    SystemDebug.debug(SystemDebug.containers, :stop_read_sta, read_state)
-    @container_mutex.synchronize {
-      if prep_task(:stop)
-        if super
-          true
-        else
-          task_failed('stop')
+    Thread.new(*args) do
+      @container_mutex.synchronize {
+        if prep_task(:stop)
+          if super
+            true
+          else
+            task_failed('stop')
+          end
         end
-      end
-    }
+      }
+    end
   end
 
   def halt_container
@@ -158,9 +159,9 @@ module ManagedContainerControls
       task_failed('restart/stop')
     end
   end
-  
+
   def restore_engine(builder)
-      builder.restore_engine(self) if prep_task(:build)
+    builder.restore_engine(self) if prep_task(:build)
   end
 
   def rebuild_container
