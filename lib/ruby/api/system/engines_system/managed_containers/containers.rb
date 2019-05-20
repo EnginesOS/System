@@ -24,7 +24,11 @@ module Containers
     log_error_mesg('container locked', container.container_name) unless lock_container_conf_file(state_dir)
     if File.exist?(statefile)
       statefile_bak = statefile + '.bak'
+      begin
+      File.delete(statefile_bak) if File.exist?(statefile_bak)
       File.rename(statefile, statefile_bak)
+      rescue StandardError > e
+      end
     end
     f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0644)
     begin
