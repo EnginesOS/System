@@ -79,7 +79,7 @@ class SoftwareServiceDefinition
       #owner = []
       #owner[0] = 'service_consumer'
       #owner[1] = service_hash[:publisher_namespace] + '/' + service_hash[:type_path] + ':' + name
-  retval.push(EnvironmentVariable.new({name: env_variable_pair[:name], 
+  ret_val.push(EnvironmentVariable.new({name: env_variable_pair[:name], 
                                      value: env_variable_pair[:value], 
                                      mandatory: true,                                      
                                      build_time_only: false, 
