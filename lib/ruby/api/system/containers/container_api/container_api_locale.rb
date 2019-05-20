@@ -18,15 +18,18 @@ module ContainerApiLocale
     country = prefs.country_code
     container.environments.push(EnvironmentVariable.new(
       { name: 'LANGUAGE',
-        value: lang + '_' + country + ':' + lang
+        value: lang + '_' + country + ':' + lang,
+        owner_type: 'system'
       }))
     container.environments.push(EnvironmentVariable.new(
     { name: 'LANG', 
-      value: lang + '_' + country + '.UTF8'
+      value: lang + '_' + country + '.UTF8',
+      owner_type: 'system'
     }))
     container.environments.push(EnvironmentVariable.new({
      name: 'LC_ALL', 
-     value: lang + '_' + country + '.UTF8'
+     value: lang + '_' + country + '.UTF8',
+      owner_type: 'system'
     }))    
   end
 end
