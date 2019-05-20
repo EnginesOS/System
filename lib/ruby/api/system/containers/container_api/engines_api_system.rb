@@ -23,10 +23,11 @@ module EnginesApiSystem
     environments.each do |env|
       if env.name == env_hash[:name]
         env.value = env_hash[:value]
+          d_set = true
         next
       end
-      environments.push(EnvironmentVariable.new(env_hash))
     end
+    environments.push(EnvironmentVariable.new(env_hash)) unless d_set.is_a?(TrueClass)
   end
 
   def get_container_memory_stats(container)
