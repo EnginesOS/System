@@ -115,7 +115,7 @@ module ManagedContainerControls
   end
 
   def stop_container
-    Thread.new(*args) do
+    Thread.new do
       @container_mutex.synchronize {
         if prep_task(:stop)
           if super
