@@ -37,7 +37,7 @@ module ServiceOperations
   #Attach the service defined in service_hash [Hash]
   # @return boolean indicating sucess
   def create_and_register_service(service_hash)
-    SystemDebug.debug(SystemDebug.services, :attach_ing_create_and_egister_service, service_hash)
+   # SystemDebug.debug(SystemDebug.services, :attach_ing_create_and_egister_service, service_hash)
     create_and_register_managed_service(service_hash)
   end
 
@@ -90,10 +90,10 @@ module ServiceOperations
 
   def create_and_register_managed_service(service_hash)
     raise EnginesException.new(error_hash('Attached Service passed no variables ' +  service_hash.to_s, service_hash)) unless service_hash.key?(:variables)
-    SystemDebug.debug(SystemDebug.services, "osapicreate_and_register_managed_service", service_hash)
+  #  SystemDebug.debug(SystemDebug.services, "osapicreate_and_register_managed_service", service_hash)
     service_hash[:variables][:parent_engine] = service_hash[:parent_engine] unless service_hash[:variables].has_key?(:parent_engine)   
     check_engine_service_hash(service_hash)
-    SystemDebug.debug(SystemDebug.services,"calling service ", service_hash)
+  #  SystemDebug.debug(SystemDebug.services,"calling service ", service_hash)
     service_manager.create_and_register_service(service_hash)
   end
 

@@ -19,7 +19,7 @@ module ContainerSystemStateFiles
   end
 
   def set_debug(c)
-    STDERR.puts( ' touch ' + container_state_dir(c) + '/wait_before_shutdown')
+    #STDERR.puts( ' touch ' + container_state_dir(c) + '/wait_before_shutdown')
     FileUtils.touch(container_state_dir(c) + '/wait_before_shutdown')
   end
 

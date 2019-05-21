@@ -161,7 +161,7 @@ class EngineBuilder < ErrorsApi
   private
 
   def process_supplied_envs(custom_env)
-    SystemDebug.debug(SystemDebug.builder, custom_env, custom_env)
+   # SystemDebug.debug(SystemDebug.builder, custom_env, custom_env)
     if custom_env.nil?
       @set_environments = {}
       @environments = []
@@ -171,7 +171,7 @@ class EngineBuilder < ErrorsApi
       @set_environments = {}
     else
       custom_env_hash = custom_env
-      SystemDebug.debug(SystemDebug.builder, :Merged_custom_env, custom_env_hash)
+    #  SystemDebug.debug(SystemDebug.builder, :Merged_custom_env, custom_env_hash)
       @set_environments = custom_env_hash
       @environments = []
     end

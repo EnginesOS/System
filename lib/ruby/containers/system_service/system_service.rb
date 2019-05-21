@@ -42,7 +42,7 @@ class SystemService < ManagedService
   end
 
   def forced_recreate
-    SystemDebug.debug(SystemDebug.system, 'Forced recreate  System Service ' + container_name)
+   # SystemDebug.debug(SystemDebug.system, 'Forced recreate  System Service ' + container_name)
     begin
       unpause_container
     rescue
@@ -59,7 +59,7 @@ class SystemService < ManagedService
   end
 
   def inspect_container
-    SystemDebug.debug(SystemDebug.system, :system_service_inspect_container)
+  #  SystemDebug.debug(SystemDebug.system, :system_service_inspect_container)
     if @docker_info.nil? || @docker_info.is_a?(FalseClass)
       #  @container_api.inspect_container(self)
       @docker_info =  @container_api.inspect_container(self)
@@ -77,7 +77,7 @@ class SystemService < ManagedService
         end
       end
     end
-    SystemDebug.debug(SystemDebug.system, :system_service_inspected_container)
+   # SystemDebug.debug(SystemDebug.system, :system_service_inspected_container)
     @docker_info
   end
 

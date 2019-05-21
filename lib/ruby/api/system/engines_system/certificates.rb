@@ -18,7 +18,7 @@ module Certificates
         type_path: 'certs',
         service_handle: params[:cert_name]
       }
-      STDERR.puts('CERT SERVICe IS:' + service.to_s)
+     # STDERR.puts('CERT SERVICe IS:' + service.to_s)
     # begin
        s = @engines_api.retrieve_engine_service_hash(service)
      #   STDERR.puts('CERT SERVICe R:' + s.to_s)

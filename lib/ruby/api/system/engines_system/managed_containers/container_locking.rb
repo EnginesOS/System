@@ -37,8 +37,8 @@ module ContainerLocking
     lock_fn = state_dir + '/lock'
     if  File.exists?(lock_fn) && lock_has_expired(lock_fn) == false
       loop = 0
-
-      while  File.exists?(lock_fn)
+#FIXME use ioctl
+      while File.exists?(lock_fn)
         sleep(0.2)
         loop += 1
         STDERR.puts('waiting_to_clr_container_conf_file_locked ')

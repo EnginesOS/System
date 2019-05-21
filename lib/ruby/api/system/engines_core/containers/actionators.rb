@@ -12,7 +12,7 @@ module Actionators
   end
 
   def perform_engine_action(engine, actionator_name, params)
-    SystemDebug.debug(SystemDebug.actions, engine, actionator_name, params)
+   # SystemDebug.debug(SystemDebug.actions, engine, actionator_name, params)
     actionator = get_engine_actionator(engine, actionator_name)    
     if engine.is_running?
       engine.perform_action(actionator, params)
@@ -42,7 +42,7 @@ module Actionators
   end
 
   def perform_service_action(service_name, actionator_name, params)
-    SystemDebug.debug(SystemDebug.actions, service_name, actionator_name, params)
+  #  SystemDebug.debug(SystemDebug.actions, service_name, actionator_name, params)
     service = loadManagedService(service_name)
     actionator = get_service_actionator(service, actionator_name)
     if service.is_running?

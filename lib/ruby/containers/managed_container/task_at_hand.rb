@@ -10,7 +10,7 @@ module TaskAtHand
     @setState = state.to_s
     set_task_at_hand(step)
     save_state
-    SystemDebug.debug(SystemDebug.engine_tasks, 'Task at Hand:' + state.to_s + ' Current set state:' + current_set_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s + ' in ' + curr_state)
+   # SystemDebug.debug(SystemDebug.engine_tasks, 'Task at Hand:' + state.to_s + ' Current set state:' + current_set_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s + ' in ' + curr_state)
     # rescue StandardError => e
     #   log_exception(e)
   end
@@ -18,11 +18,11 @@ module TaskAtHand
   def in_progress(action)
     curr_state = read_state
     final_state = tasks_final_state(action)
-    SystemDebug.debug(SystemDebug.engine_tasks, :final_state, final_state)
+ #   SystemDebug.debug(SystemDebug.engine_tasks, :final_state, final_state)
     if final_state == curr_state && action != 'restart'
       @setState = curr_state
       @container_id ==  -1 if curr_state == 'nocontainer'
-      SystemDebug.debug(SystemDebug.engine_tasks, :curr_state, curr_state)
+    #  SystemDebug.debug(SystemDebug.engine_tasks, :curr_state, curr_state)
       return save_state
     end
     if @steps_to_go.nil? || @steps_to_go <= 0
@@ -32,7 +32,7 @@ module TaskAtHand
     end
     step = @steps[0]
 
-    SystemDebug.debug(SystemDebug.engine_tasks, :read_state, curr_state)
+  #  SystemDebug.debug(SystemDebug.engine_tasks, :read_state, curr_state)
     # FIX ME Finx the source 0 :->:
     curr_state.sub!(/\:->\:/,'')
     @last_task = action
@@ -43,13 +43,13 @@ module TaskAtHand
       @steps_to_go = 2
       r = desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
     when :stop
-      STDERR.puts(' stop  steps' + @steps.to_s + ' count ' + @steps_to_go.to_s)
+  #    STDERR.puts(' stop  steps' + @steps.to_s + ' count ' + @steps_to_go.to_s)
       r = desired_state(step, final_state, curr_state) if curr_state== 'running'
     when :start
-      STDERR.puts(' start  steps' + @steps.to_s + ' count ' + @steps_to_go.to_s)
+  #    STDERR.puts(' start  steps' + @steps.to_s + ' count ' + @steps_to_go.to_s)
       r = desired_state(step, final_state, curr_state) if curr_state== 'stopped'
     when :pause
-      STDERR.puts(' pause  steps' + @steps.to_s + ' count ' + @steps_to_go.to_s)
+   #   STDERR.puts(' pause  steps' + @steps.to_s + ' count ' + @steps_to_go.to_s)
       r = desired_state(step, final_state, curr_state) if curr_state== 'running'
     when :halt
       r = true
@@ -100,7 +100,7 @@ module TaskAtHand
 
   def process_container_event(event_hash)
     expire_engine_info
-    SystemDebug.debug(SystemDebug.container_events, :PROCESS_CONTAINER_vents, @container_name,  event_hash)
+  #  SystemDebug.debug(SystemDebug.container_events, :PROCESS_CONTAINER_vents, @container_name,  event_hash)
     case event_hash[:status]
     when 'create'
       status
@@ -145,13 +145,13 @@ module TaskAtHand
   def task_complete(action)
 
     @steps_to_go = 0 if @steps_to_go.nil?
-    SystemDebug.debug(SystemDebug.engine_tasks, :task_complete, ' ', action.to_s + ' as action for task ' +  task_at_hand.to_s + " " + @steps_to_go.to_s + '-1 stesp remaining step completed ',@steps)
+  #  SystemDebug.debug(SystemDebug.engine_tasks, :task_complete, ' ', action.to_s + ' as action for task ' +  task_at_hand.to_s + " " + @steps_to_go.to_s + '-1 stesp remaining step completed ',@steps)
 
     clear_task_at_hand
-    SystemDebug.debug(SystemDebug.builder, :last_task,  @last_task, :steps_to, @steps_to_go)
+   # SystemDebug.debug(SystemDebug.builder, :last_task,  @last_task, :steps_to, @steps_to_go)
     return save_state unless @last_task == :delete_image && @steps_to_go <= 0
     # FixMe Kludge unless docker event listener
-    SystemDebug.debug(SystemDebug.builder, :delete_engine,  @last_task, :steps_to, @steps_to_go)
+ #   SystemDebug.debug(SystemDebug.builder, :delete_engine,  @last_task, :steps_to, @steps_to_go)
     delete_engine
     true
     # rescue StandardError => e
@@ -160,7 +160,7 @@ module TaskAtHand
 
   def task_at_hand
     fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
-    SystemDebug.debug(SystemDebug.containers, :task_at_handfile, + ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
+ #   SystemDebug.debug(SystemDebug.containers, :task_at_handfile, + ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
     if File.exist?(fn)
       thf = File.new(fn, 'r')
       begin
@@ -171,15 +171,15 @@ module TaskAtHand
         nil
       end
       unless @task_at_hand.nil?
-        SystemDebug.debug(SystemDebug.containers, :task_at_hand_read_as, @task_at_hand)
+     #   SystemDebug.debug(SystemDebug.containers, :task_at_hand_read_as, @task_at_hand)
         if task_has_expired?(@task_at_hand)
           expire_task_at_hand
-          SystemDebug.debug(SystemDebug.containers, :task_at_hand_expired)
+     #     SystemDebug.debug(SystemDebug.containers, :task_at_hand_expired)
         elsif tasks_final_state(@task_at_hand) == read_state(raw = true)
           clear_task_at_hand
-          SystemDebug.debug(SystemDebug.containers, :task_at_clear)
+    #      SystemDebug.debug(SystemDebug.containers, :task_at_clear)
         else
-          SystemDebug.debug(SystemDebug.containers, :task_at_is, @task_at_hand)
+      #    SystemDebug.debug(SystemDebug.containers, :task_at_is, @task_at_hand)
           @task_at_hand
         end
       else
@@ -196,19 +196,19 @@ module TaskAtHand
   end
 
   def expire_task_at_hand
-    SystemDebug.debug(SystemDebug.engine_tasks, 'expire Task ' + @task_at_hand.to_s )
+#    SystemDebug.debug(SystemDebug.engine_tasks, 'expire Task ' + @task_at_hand.to_s )
     clear_task_at_hand
   end
 
   def clear_task_at_hand
     @steps_to_go -= 1
     if  @steps_to_go > 0
-      SystemDebug.debug(SystemDebug.engine_tasks, 'Multistep Task ' + @task_at_hand.to_s )
+  #    SystemDebug.debug(SystemDebug.engine_tasks, 'Multistep Task ' + @task_at_hand.to_s )
       if @steps.is_a?(Array)
         @steps.pop(0)
         @task_at_hand = @steps[0]
       end
-      SystemDebug.debug(SystemDebug.engine_tasks, 'next Multistep Task ' + @task_at_hand.to_s)
+    #  SystemDebug.debug(SystemDebug.engine_tasks, 'next Multistep Task ' + @task_at_hand.to_s)
       f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand','w+')
       begin
         f.write(@task_at_hand.to_s)
@@ -216,7 +216,7 @@ module TaskAtHand
         f.close
       end
     else
-      SystemDebug.debug(SystemDebug.engine_tasks, 'cleared Task ' + @task_at_hand.to_s)
+  #   SystemDebug.debug(SystemDebug.engine_tasks, 'cleared Task ' + @task_at_hand.to_s)
       @task_at_hand = nil
       fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
       File.delete(fn) if File.exist?(fn)
@@ -230,9 +230,9 @@ module TaskAtHand
 
   def task_failed(msg)
     clear_task_at_hand
-    SystemDebug.debug(SystemDebug.engine_tasks, :TASK_FAILES______Doing, @task_at_hand)
+ #   SystemDebug.debug(SystemDebug.engine_tasks, :TASK_FAILES______Doing, @task_at_hand)
     @last_error = @container_api.last_error unless @container_api.nil?
-    SystemDebug.debug(SystemDebug.engine_tasks, :WITH, @last_error.to_s, msg.to_s)
+  #  SystemDebug.debug(SystemDebug.engine_tasks, :WITH, @last_error.to_s, msg.to_s)
     task_complete(:failed)
     false
   end
@@ -259,10 +259,10 @@ module TaskAtHand
   def task_has_expired?(task)
     fmtime = File.mtime(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
     mtime = fmtime  + task_set_timeout(task)
-    SystemDebug.debug(SystemDebug.container, mtime, fmtime, task, task_set_timeout(task))
+  #  SystemDebug.debug(SystemDebug.container, mtime, fmtime, task, task_set_timeout(task))
     if mtime < Time.now
       File.delete(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
-      SystemDebug.debug(SystemDebug.engine_tasks, :expired_task, task, ' after ', task_set_timeout(task))
+   #   SystemDebug.debug(SystemDebug.engine_tasks, :expired_task, task, ' after ', task_set_timeout(task))
       true
     else
       false

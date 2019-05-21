@@ -34,7 +34,7 @@ module SystemOperations
   def set_engines_ssh_pw(params)
     pass = params[:ssh_password]
     cmd = 'echo -e ' + pass + "\n" + pass + ' | passwd engines'
-    SystemDebug.debug(SystemDebug.system,'ssh_pw', cmd)
+#    SystemDebug.debug(SystemDebug.system,'ssh_pw', cmd)
     SystemUtils.run_system(cmd)
   end
 

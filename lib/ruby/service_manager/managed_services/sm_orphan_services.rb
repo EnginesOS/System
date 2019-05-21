@@ -2,10 +2,10 @@
 
 module SmOrphanServices
   def orphanate_service(params)
-    STDERR.puts('ORPHAN:' + params.to_s)
+    #STDERR.puts('ORPHAN:' + params.to_s)
     set_top_level_service_params(params, params[:parent_engine])
-      STDERR.puts('ORPHAN:' + params.to_s)
-    SystemDebug.debug(SystemDebug.orphans, :Orphanate, params)
+  #    STDERR.puts('ORPHAN:' + params.to_s)
+   # SystemDebug.debug(SystemDebug.orphans, :Orphanate, params)
     params[:fresh] = false
     begin
     system_registry_client.orphanate_service(params)
@@ -21,7 +21,7 @@ module SmOrphanServices
 
   ## ????
   def release_orphan(params)
-    SystemDebug.debug(SystemDebug.orphans, :release_orphan, params)
+   # SystemDebug.debug(SystemDebug.orphans, :release_orphan, params)
     system_registry_client.release_orphan(params)
   end
 
@@ -30,7 +30,7 @@ module SmOrphanServices
   end
 
   def rollback_orphaned_service(service_hash)
-    SystemDebug.debug(SystemDebug.orphans, :rollback_orphaned_service, service_hash)
+   # SystemDebug.debug(SystemDebug.orphans, :rollback_orphaned_service, service_hash)
     system_registry_client.rollback_orphaned_service(service_hash)
   end
 
@@ -47,7 +47,7 @@ module SmOrphanServices
 
   def match_orphan_service(service_hash)
     res = retrieve_orphan(service_hash)
-    STDERR.puts(" MATCHED  rphan" + res.to_s)
+  #  STDERR.puts(" MATCHED  rphan" + res.to_s)
     if res.is_a?(Hash)
       if res[:publisher_namespace] == service_hash[:publisher_namespace]
         true
@@ -68,7 +68,7 @@ module SmOrphanServices
   # @ removes underly service and remove entry from orphaned services
   # @returns boolean indicating success
   def remove_orphaned_service(service_query_hash)
-    SystemDebug.debug(SystemDebug.orphans, :remove_orphaned_service, service_query_hash)
+   # SystemDebug.debug(SystemDebug.orphans, :remove_orphaned_service, service_query_hash)
     begin
       service_hash = retrieve_orphan(service_query_hash)
       if service_query_hash[:remove_all_data] == 'none'

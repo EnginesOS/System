@@ -40,7 +40,7 @@ class ManagedUtility< ManagedContainer
   end
 
   def execute_command(command_name, command_params)
-    STDERR.puts("\n EXECutre Cmd " + command.to_s + ':' + command_params.to_s)
+   # STDERR.puts("\n EXECutre Cmd " + command.to_s + ':' + command_params.to_s)
     if is_active?
       expire_engine_info     
       wait_for('stop', 120)
@@ -67,7 +67,7 @@ class ManagedUtility< ManagedContainer
     clear_configs
     apply_templates(command, command_params)
     save_state
-       STDERR.puts('Create FSCONFIG')
+   #    STDERR.puts('Create FSCONFIG')
     create_container()
    
 #    wait_for('stopped',120) unless is_stopped?

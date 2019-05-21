@@ -6,7 +6,7 @@ module EngineServiceOperations
       persistent:  true,
       container_type: 'app'
     }
-    SystemDebug.debug(SystemDebug.services, :engine_persistent_services, params)
+    #SystemDebug.debug(SystemDebug.services, :engine_persistent_services, params)
     service_manager.get_engine_persistent_services(params)
   end
 
@@ -21,7 +21,7 @@ module EngineServiceOperations
       persistent: true,
       container_type: 'service'
     }
-    SystemDebug.debug(SystemDebug.services, :engine_persistent_services, params)
+  #  SystemDebug.debug(SystemDebug.services, :engine_persistent_services, params)
     service_manager.get_engine_persistent_services(params)
   end
 
@@ -55,7 +55,7 @@ module EngineServiceOperations
   end
 
   def share_service_to_engine(params)
-    SystemDebug.debug(SystemDebug.services, 'core attach existing service', params)
+  #  SystemDebug.debug(SystemDebug.services, 'core attach existing service', params)
     check_engine_hash(params)
     service_manager.share_service_to_engine(params)
   end
@@ -82,10 +82,10 @@ module EngineServiceOperations
   end
 
   def add_file_share(service_hash)
-    SystemDebug.debug(SystemDebug.services, service_hash[:variables][:name].to_s + ' ' + service_hash.to_s)
+  #  SystemDebug.debug(SystemDebug.services, service_hash[:variables][:name].to_s + ' ' + service_hash.to_s)
     # service_hash = Volume.complete_service_hash(service_hash)
 
-    SystemDebug.debug(SystemDebug.services,'complete_VOLUME_FOR SHARE_service_hash', service_hash)
+  #  SystemDebug.debug(SystemDebug.services,'complete_VOLUME_FOR SHARE_service_hash', service_hash)
     #  STDERR.puts('Add File Service ' + service_hash.to_s)
     # FixME when building an exception is ok, but not once the engine is running
     begin #on build this fails which is ok

@@ -14,12 +14,12 @@ class BuildController
   end
 
   def abort_build
-    SystemDebug.debug(SystemDebug.builder, :abort_build)
+   # SystemDebug.debug(SystemDebug.builder, :abort_build)
     @core_api.abort_build
   end
 
   def prepare_engine_build(params)
-    SystemDebug.debug(SystemDebug.builder, :builder_params, params)
+    #SystemDebug.debug(SystemDebug.builder, :builder_params, params)
     @build_params = params
     SystemStatus.build_starting(@build_params)
     @engine_builder = get_engine_builder(@build_params)
@@ -28,7 +28,7 @@ class BuildController
 
   def build_engine()
     @engine = @engine_builder.build_from_blue_print
-    SystemDebug.debug(SystemDebug.builder, :build_error, @engine_builder.build_error.to_s) unless  @engine_builder.build_error.nil?
+    #SystemDebug.debug(SystemDebug.builder, :build_error, @engine_builder.build_error.to_s) unless  @engine_builder.build_error.nil?
     build_complete(@build_params)
   end
 
@@ -59,7 +59,7 @@ class BuildController
       reinstall: true
     }
     SystemStatus.build_starting(@build_params)
-    SystemDebug.debug(SystemDebug.builder, 'Starting resinstall with params ', @build_params)
+   # SystemDebug.debug(SystemDebug.builder, 'Starting resinstall with params ', @build_params)
     @engine_builder = get_engine_builder(@build_params)
     if @engine_builder.is_a?(EngineBuilder)
       @engine = @engine_builder.rebuild_managed_container(engine)
@@ -85,7 +85,7 @@ class BuildController
         #attached_services: engine.engine_persistent_services
       }
       SystemStatus.build_starting(@build_params)
-      SystemDebug.debug(SystemDebug.builder, 'Starting restore with params ', @build_params)
+    #  SystemDebug.debug(SystemDebug.builder, 'Starting restore with params ', @build_params)
       @engine_builder = get_engine_builder(@build_params)
       if @engine_builder.is_a?(EngineBuilder)
         @engine = @engine_builder.restore_managed_container(engine)

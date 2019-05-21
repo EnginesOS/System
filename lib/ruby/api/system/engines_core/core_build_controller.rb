@@ -15,7 +15,7 @@ module CoreBuildController
   end
 
   def abort_build()
-    SystemDebug.debug(SystemDebug.builder, @build_controller)
+  #  SystemDebug.debug(SystemDebug.builder, @build_controller)
     @build_controller.abort_build() unless @build_controller.nil?
     @build_thread.terminate unless @build_thread.nil?
     build_stopped()

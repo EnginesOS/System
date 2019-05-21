@@ -40,11 +40,11 @@ module DockerInfoCollector
   end
 
   def clear_cid
-    STDERR.puts caller.join("\n")
+   # STDERR.puts caller.join("\n")
    # unless @container_id ==  -1  ## May break if just set to -1 Just here o test
     @container_id =  -1 
     ContainerStateFiles.clear_cid_file(self)
-    SystemDebug.debug(SystemDebug.containers, 'clear cid')
+   # SystemDebug.debug(SystemDebug.containers, 'clear cid')
     save_state
   #  end
   end
@@ -53,25 +53,25 @@ module DockerInfoCollector
   def read_container_id
     cid = @container_id
     @container_id = ContainerStateFiles.read_container_id(self)
-    SystemDebug.debug(SystemDebug.containers, 'read container from file ', @container_id)
+  #  SystemDebug.debug(SystemDebug.containers, 'read container from file ', @container_id)
     if @container_id == -1 && setState != 'nocontainer'
       info = @container_api.inspect_container_by_name(self) # docker_info
       return -1 if info.nil?
 
-      SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ', info)
+  #    SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ', info)
       if info.is_a?(Array)
-        SystemDebug.debug(SystemDebug.containers, 'array')
+     #   SystemDebug.debug(SystemDebug.containers, 'array')
         info = info[0]
         return -1 if info.nil?
       end
-      SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ', info)
-      if info.is_a?(Hash)
-        SystemDebug.debug(SystemDebug.containers, 'hash')
-      end
+   #   SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ', info)
+   #   if info.is_a?(Hash)
+   #     SystemDebug.debug(SystemDebug.containers, 'hash')
+   #   end
       return -1 unless info.is_a?(Hash)
       return -1 if info.key?(:RepoTags) #No container by that name and it will return images by that name WTF
       @container_id = info[:Id] if info.key?(:Id)
-      SystemDebug.debug(SystemDebug.containers, @container_id)
+   #   SystemDebug.debug(SystemDebug.containers, @container_id)
     end
     save_state unless cid == @container_id
     @container_id

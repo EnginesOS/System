@@ -30,7 +30,7 @@ class SoftwareServiceDefinition
   def SoftwareServiceDefinition.consumer_params(service_hash)
     ret_val = []
     service_def = SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:publisher_namespace])
-    SystemDebug.debug(SystemDebug.services,:SERVICE_Constants, :loaded, service_hash[:type_path], service_hash[:publisher_namespace], service_def)
+   # SystemDebug.debug(SystemDebug.services,:SERVICE_Constants, :loaded, service_hash[:type_path], service_hash[:publisher_namespace], service_def)
     return ret_val if service_def.nil?
     return ret_val unless service_def.key?(:consumer_params)
     consumer_params = service_def[:consumer_params]
@@ -65,14 +65,14 @@ class SoftwareServiceDefinition
   def SoftwareServiceDefinition.service_constants(service_hash)
     ret_val = []
     service_def = SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:publisher_namespace])
-    SystemDebug.debug(SystemDebug.services, :SERVICE_Constants, :loaded, service_hash[:type_path], service_hash[:publisher_namespace], service_def)
+   # SystemDebug.debug(SystemDebug.services, :SERVICE_Constants, :loaded, service_hash[:type_path], service_hash[:publisher_namespace], service_def)
     return ret_val unless service_def.key?(:constants)
-    SystemDebug.debug(SystemDebug.services, :SERVICE_Constants,:with, service_def[:constants])
+   # SystemDebug.debug(SystemDebug.services, :SERVICE_Constants,:with, service_def[:constants])
     constants = service_def[:constants]
     return retval unless constants.is_a?(Hash)
-    SystemDebug.debug(SystemDebug.services, :SERVICE_Constants, constants)
+   # SystemDebug.debug(SystemDebug.services, :SERVICE_Constants, constants)
     constants.values.each do |env_variable_pair|
-      SystemDebug.debug(SystemDebug.services, :env_variable_pair, env_variable_pair)
+     # SystemDebug.debug(SystemDebug.services, :env_variable_pair, env_variable_pair)
      # name = env_variable_pair[:name]
       #value = env_variable_pair[:value]
       # initialize(name, value, setatrun, mandatory, build_time_only,label, immutable)
@@ -87,7 +87,7 @@ class SoftwareServiceDefinition
                                      owner_type: 'service_consumer',
                                      immutable: true}))
      # env = EnvironmentVariable.new(name, value, false, true, false, service_hash[:type_path] + name, true, owner)
-    #    SystemDebug.debug(SystemDebug.services, :SERVICE_Constants, :new_env ,env)
+    #   # SystemDebug.debug(SystemDebug.services, :SERVICE_Constants, :new_env ,env)
     #  # ret_val.push( env) # env_name , value
     end
     ret_val
@@ -104,7 +104,7 @@ class SoftwareServiceDefinition
       service_environment_variables = service_def[:target_environment_variables]
         STDERR.puts( 'service_variables' + service_environment_variables.to_s )
       service_variables = service_def[:consumer_params]
-      SystemDebug.debug(SystemDebug.services,:SERVICE_ENVIRONMENT_VARIABLES, service_environment_variables)
+     # SystemDebug.debug(SystemDebug.services,:SERVICE_ENVIRONMENT_VARIABLES, service_environment_variables)
       unless service_environment_variables.nil?
         service_environment_variables.values.each do |env_variable_pair|
           env_name = env_variable_pair[:environment_variable_name]
@@ -136,7 +136,7 @@ class SoftwareServiceDefinition
     else
       raise EnginesException.new(self.error_hash('Failed to load service definition', service_hash))
     end
-    SystemDebug.debug(SystemDebug.builder, :COMPLETE_SERVICE_ENVS, retval)
+   # SystemDebug.debug(SystemDebug.builder, :COMPLETE_SERVICE_ENVS, retval)
     retval
 
   end
