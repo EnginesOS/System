@@ -1,5 +1,5 @@
 # @!group /containers
-NOOP_PERIOD=15
+NOOP_PERIOD=25
 # @method get_container_event_stream
 # @overload get '/v0/containers/events/stream'
 # Add listener to container events and write event-stream of events as json to client
