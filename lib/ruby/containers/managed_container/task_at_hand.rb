@@ -240,7 +240,7 @@ module TaskAtHand
   private
 
   def tasks_final_state(task)
-    case task
+    case task.to_sym
     when :create,:start,:recreate,:unpause,:restart,:rebuild,:build,:reinstall
       s = 'running'
     when :stop
