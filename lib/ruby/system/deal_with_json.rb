@@ -1,4 +1,5 @@
 def deal_with_json(r)
+  STDERR.puts("Symbolising " + r.to_s)
   unless r.nil?
     r = parse_as_json(r) unless r.is_a?(Hash)
     symbolise_json(r)
