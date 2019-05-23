@@ -40,6 +40,9 @@ def mount_string(volume)
     perms = 'ro'
   end
   volume[:localpath] + ':' + volume[:remotepath] + ':' + perms
+rescue StandardError => e
+  STDERR.puts('Problem with ' + volume.to_s)
+ raise e
 end
 
 def cert_mounts(container)
