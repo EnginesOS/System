@@ -1,83 +1,83 @@
-def deal_with_json(res)
-  unless res.nil?
-    res = parse_as_json(res) unless res.is_a?(Hash)
-    symbolise_json(res)
+def deal_with_json(r)
+  unless r.nil?
+    r = parse_as_json(r) unless r.is_a?(Hash)
+    symbolise_json(r)
   end
 rescue StandardError => e
-  #log_error_mesg(' parse problem with ' + res.to_s)
+  #log_error_mesg(' parse problem with ' + r.to_s)
   STDERR.puts('Exception: '+ e.to_s + "\n" + e.backtrace.to_s )
-  res
+  r
 end
 
-def parse_as_json(res)
-  JSON.parse(res, create_additions: true)
+def parse_as_json(r)
+  JSON.parse(r, create_additions: true)
 end
 
-def symbolise_json(res)
-  STDERR.puts("Symbolising " + hash.class.name)
-  STDERR.puts('Debug:' + caller[1].to_s + ':'+ caller[2].to_s )
-  if res.is_a?(Hash)
-    symbolize_keys(res)
-  elsif res.is_a?(Array)
-    symbolize_keys_array_members(res)
-  elsif res.is_a?(Tree::TreeNode)
-    symbolize_tree(res)
-  elsif res.is_a?(String)
-    boolean_if_true_false_str(res)
+def symbolise_json(r)
+  # STDERR.puts("Symbolising " + hash.class.name)
+  # STDERR.puts('Debug:' + caller[1].to_s + ':'+ caller[2].to_s )
+  if r.is_a?(Hash)
+    symbolize_keys(r)
+  elsif r.is_a?(Array)
+    symbolize_keys_array_members(r)
+  elsif r.is_a?(Tree::TreeNode)
+    symbolize_tree(r)
+  elsif r.is_a?(String)
+    boolean_if_true_false_str(r)
   else
-    res
+    r
   end
 end
 
-def symbolize_keys_array_members(array)
-  unless array.count == 0
-    if array[0].is_a?(Hash)
-      retval = []
+def symbolize_keys_array_members(ar)
+  unless ar.count == 0
+    if ar[0].is_a?(Hash)
+      rv = []
       i = 0
-      array.each do |hash|
-        retval[i] = array[i]
-        next if hash.nil?
+      ar.each do |h|
+        rv[i] = ar[i]
+        next if h.nil?
         next unless hash.is_a?(Hash)
-        retval[i] = symbolize_keys(hash)
+        rv[i] = symbolize_keys(h)
         i += 1
       end
-      retval
+      rv
     else
-      array
+      ar
     end
   else
-    array
+    ar
   end
 end
 
-def symbolize_keys(hash)
-   return hash unless hash.is_a?(Hash)
-  hash.inject({}){|result, (key, value)|
-    new_key = case key
-    when String then key.to_sym
-    else key
+def symbolize_keys(h)
+  return h unless h.is_a?(Hash)
+  h.inject({}){|r, (k, v)|
+    nk = case k
+    when String then k.to_sym
+    else k
     end
-#    STDERR.puts('key ' + new_key.to_s + ':' +new_key.class.name)
-    new_value = case value
-    when Hash then symbolize_keys(value)
+    #    STDERR.puts('k ' + nk.to_s + ':' +nk.class.name)
+    new_value = case v
+    when Hash then symbolize_keys(v)
     when Array   then
-      newval = []
-      value.each do |array_val|
-        if array_val.is_a?(Hash)
-          array_val = symbolize_keys(array_val)
+      nv = []
+      v.each do |av|
+        if av.is_a?(Hash)
+          av = symbolize_keys(av)
         end
-        newval.push(array_val)
+        nv.push(av)
       end
-      newval
-    else value
+      nv
+    else v
     end
-    result[new_key] = new_value
-    result
+    r[nk] = nv
+    r
   }
 end
 
 def boolean_if_true_false_str(r)
-  if  r == 'true'
+  if r == 'true'
     true
   elsif r == 'false'
     false
@@ -86,13 +86,12 @@ def boolean_if_true_false_str(r)
   end
 end
 
-def symbolize_tree(tree)
-  STDERR.puts("Symbolising " + tree.class.name)
-  nodes = tree.children
-  nodes.each do |node|
-    node.content = symbolize_keys(node.content) if node.content.is_a?(Hash)
-    symbolize_tree(node)
+def symbolize_tree(tr)
+  #  STDERR.puts("Symbolising " + tree.class.name)
+  ns = tr.children
+  ns.each do |n|
+    n.content = symbolize_keys(n.content) if n.content.is_a?(Hash)
+    symbolize_tree(n)
   end
-  tree
-
+  tr
 end
