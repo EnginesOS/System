@@ -1,9 +1,9 @@
 def post_params(request)
   r = request.env['rack.input'].read
   unless r.nil?
- #   STDERR.puts('Post Params Raw ' + r.to_s)
+    STDERR.puts('Post Params Raw ' + r.to_s)
     h = json_parser.parse(r)
-  #  STDERR.puts(' parsed prams as ' + h.to_s)
+    STDERR.puts(' parsed prams as ' + h.to_s)
     h
   else
     {}
@@ -16,9 +16,9 @@ end
 def assemble_params(ps, address_params, required_params = nil, accept_params = nil)
   #STDERR.puts('pfs' + ps.to_s, + caller[0].to_s + "\n" +  caller[1].to_s + "\n" +  caller[2].to_s  + "\n" +  caller[3].to_s )
   raise EnginesException.new(error_hash('No Params Supplied:' + ps.to_s)) if ps.nil?
-#  STDERR.puts(' PS IS ' + ps.to_s )
-#  ps = deal_with_json(ps) # actually just symbolize
- # STDERR.puts('AND became ' + ps.to_s )
+  STDERR.puts(' PS IS ' + ps.to_s )
+  ps = deal_with_json(ps) # actually just symbolize
+ STDERR.puts('AND became ' + ps.to_s )
   if address_params.nil?
     a_params = {}
   else
