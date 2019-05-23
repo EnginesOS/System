@@ -16,7 +16,12 @@ volumes:
  spool:
   name: spool
   remotepath: "/var/spool/postfix/"
-  localpath: "/var/lib/engines/services/smtp"
+  localpath: "/var/lib/engines/services/smtp/spool"
+  permissions: "rw"
+ dkim:
+  name: dkim
+  remotepath: "/etc/opendkim/keys"
+  localpath: "/var/lib/engines/services/smtp/dkim"
   permissions: "rw"
 port: 
 mapped_ports: 
@@ -25,11 +30,6 @@ mapped_ports:
   port: 465
   publicFacing: true
   external: 465
- subs_smtp: 
-  name: subs_smtp
-  port: 587
-  publicFacing: true
-  external: 587
 repo: na
 last_result:
 setState: running
