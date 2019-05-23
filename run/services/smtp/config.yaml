@@ -6,7 +6,7 @@ type_path: smtp
 ctype: service
 persistent: true
 last_error: 
-memory: '64'
+memory: '96'
 hostname: smtp
 domain_name: 
 environments: []
