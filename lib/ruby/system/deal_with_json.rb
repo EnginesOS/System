@@ -60,7 +60,7 @@ def symbolize_keys(h)
     #    STDERR.puts('k ' + nk.to_s + ':' +nk.class.name)
     new_value = case v
     when Hash then symbolize_keys(v)
-    when Array   then
+    when Array then
       nv = []
       v.each do |av|
         if av.is_a?(Hash)

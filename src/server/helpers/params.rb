@@ -1,9 +1,9 @@
 def post_params(request)
   r = request.env['rack.input'].read
   unless r.nil?
-    STDERR.puts('Post Params Raw ' + r.to_s)
+ #   STDERR.puts('Post Params Raw ' + r.to_s)
     h = json_parser.parse(r)
-    STDERR.puts(' parsed prams as ' + h.to_s)
+  #  STDERR.puts(' parsed prams as ' + h.to_s)
     h
   else
     {}
