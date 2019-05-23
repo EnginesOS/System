@@ -54,7 +54,12 @@ module Cache
     raise EnginesException.new(error_hash('Get ts passed nil Engine ', engine)) if engine.nil?
     yam_file_name = SystemConfig.RunDir + '/' + engine.ctype + 's/' + engine.engine_name + '/running.yaml'
     if File.exist?(yam_file_name)
+      begin
       File.mtime(yam_file_name)
+      rescue StandardError => e
+        STDERR.puts( yam_file_name + 'not found')
+        -1
+      end
     else
       -1
     end
