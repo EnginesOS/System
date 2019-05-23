@@ -40,6 +40,7 @@ class ManagedUtility< ManagedContainer
   end
 
   def execute_command(command_name, command_params)
+    
     # STDERR.puts("\n EXECutre Cmd " + command.to_s + ':' + command_params.to_s)
     if is_active?
       expire_engine_info
@@ -144,10 +145,6 @@ class ManagedUtility< ManagedContainer
     end
     r
   end
-
-  #  def container_logs_as_result
-  #
-  #  end
 
   def clear_configs
     FileUtils.rm(ContainerStateFiles.container_state_dir(self) + '/running.yaml') if File.exist?(ContainerStateFiles.container_state_dir(self) + '/running.yaml')
