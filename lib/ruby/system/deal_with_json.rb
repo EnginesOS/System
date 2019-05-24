@@ -1,10 +1,9 @@
 def deal_with_json(r)
-  STDERR.puts("Symbolising " + r.to_s)
   unless r.nil?
     r = parse_as_json(r) unless r.is_a?(Hash)
     symbolise_json(r)
   end
-rescue StandardError => e
+rcue StandardError => e
   #log_error_mesg(' parse problem with ' + r.to_s)
   STDERR.puts('Exception: '+ e.to_s + "\n" + e.backtrace.to_s )
   r
@@ -15,8 +14,8 @@ def parse_as_json(r)
 end
 
 def symbolise_json(r)
-  # STDERR.puts("Symbolising " + hash.class.name)
-  # STDERR.puts('Debug:' + caller[1].to_s + ':'+ caller[2].to_s )
+  STDERR.puts("Symbolising " + h.class.name)
+  STDERR.puts('Debug:' + caller[1].to_s + ':'+ caller[2].to_s )
   if r.is_a?(Hash)
     symbolize_keys(r)
   elsif r.is_a?(Array)
@@ -30,46 +29,46 @@ def symbolise_json(r)
   end
 end
 
-def symbolize_keys_array_members(ar)
-  unless ar.count == 0
-    if ar[0].is_a?(Hash)
-      rv = []
+def symbolize_keys_array_members(a)
+  unless a.count == 0
+    if a[0].is_a?(Hash)
+      r = []
       i = 0
-      ar.each do |h|
-        rv[i] = ar[i]
+      a.each do |h|
+        r[i] = a[i]
         next if h.nil?
-        next unless hash.is_a?(Hash)
-        rv[i] = symbolize_keys(h)
+        next unless h.is_a?(Hash)
+        r[i] = symbolize_keys(h)
         i += 1
       end
-      rv
+      r
     else
-      ar
+      a
     end
   else
-    ar
+    a
   end
 end
 
 def symbolize_keys(h)
-  return h unless h.is_a?(Hash)
-  h.inject({}){|r, (k, v)|
-    nk = case k
-    when String then k.to_sym
-    else k
+   return h unless h.is_a?(Hash)
+  h.inject({}){|r, (key, v)|
+    nk = case key
+    when String then key.to_sym
+    else key
     end
-    #    STDERR.puts('k ' + nk.to_s + ':' +nk.class.name)
-    new_value = case v
+#    STDERR.puts('key ' + nk.to_s + ':' +nk.class.name)
+    nv = case v
     when Hash then symbolize_keys(v)
-    when Array then
-      nv = []
+    when Array   then
+      newval = []
       v.each do |av|
         if av.is_a?(Hash)
           av = symbolize_keys(av)
         end
-        nv.push(av)
+        newval.push(av)
       end
-      nv
+      newval
     else v
     end
     r[nk] = nv
@@ -78,7 +77,7 @@ def symbolize_keys(h)
 end
 
 def boolean_if_true_false_str(r)
-  if r == 'true'
+  if  r == 'true'
     true
   elsif r == 'false'
     false
@@ -87,12 +86,12 @@ def boolean_if_true_false_str(r)
   end
 end
 
-def symbolize_tree(tr)
-  #  STDERR.puts("Symbolising " + tree.class.name)
-  ns = tr.children
+def symbolize_tree(t)
+  STDERR.puts("Symbolising " + t.class.name)
+  ns = t.children
   ns.each do |n|
     n.content = symbolize_keys(n.content) if n.content.is_a?(Hash)
     symbolize_tree(n)
   end
-  tr
+  t
 end
