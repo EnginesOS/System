@@ -27,7 +27,7 @@ module Containers
       begin
       File.delete(statefile_bak) if File.exist?(statefile_bak)
       File.rename(statefile, statefile_bak)
-      rescue StandardError > e
+      rescue StandardError => e
       end
     end
     f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0644)
