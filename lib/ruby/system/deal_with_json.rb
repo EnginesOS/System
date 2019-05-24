@@ -3,7 +3,7 @@ def deal_with_json(r)
     r = parse_as_json(r) unless r.is_a?(Hash)
     symbolise_json(r)
   end
-rcue StandardError => e
+rescue StandardError => e
   #log_error_mesg(' parse problem with ' + r.to_s)
   STDERR.puts('Exception: '+ e.to_s + "\n" + e.backtrace.to_s )
   r
