@@ -10,11 +10,13 @@ rcue StandardError => e
 end
 
 def parse_as_json(r)
+  STDERR.puts("PARSE_AS_JSPN " + r.class.name)
+  STDERR.puts('Debug:' + caller[1].to_s + ':'+ caller[2].to_s )
   JSON.parse(r, create_additions: true)
 end
 
 def symbolise_json(r)
-  STDERR.puts("Symbolising " + h.class.name)
+  STDERR.puts("Symbolising " + r.class.name)
   STDERR.puts('Debug:' + caller[1].to_s + ':'+ caller[2].to_s )
   if r.is_a?(Hash)
     symbolize_keys(r)
