@@ -45,16 +45,16 @@ module EngineScriptsBuilder
 
   def create_actionator_scripts
     unless @blueprint_reader.actionators.nil?
-      SystemDebug.debug(SystemDebug.builder| SystemDebug.actions, "creating actionators ", @blueprint_reader.actionators)
+   #   SystemDebug.debug(SystemDebug.builder| SystemDebug.actions, "creating actionators ", @blueprint_reader.actionators)
       log_build_output('Creating Actionators')
       destdir = SystemConfig.ActionatorDir
       FileUtils.mkdir_p(basedir + destdir ) unless Dir.exist?(basedir + destdir )
 
       @blueprint_reader.actionators.keys.each do | key|
         actionator = @blueprint_reader.actionators[key]
-        SystemDebug.debug(SystemDebug.builder| SystemDebug.actions, 'create actionator', actionator)
+     #   SystemDebug.debug(SystemDebug.builder| SystemDebug.actions, 'create actionator', actionator)
         filename = SystemConfig.ActionatorDir + '/' + actionator[:name] + '.sh'
-        SystemDebug.debug(SystemDebug.builder| SystemDebug.actions,"creating actionator ", actionator[:name], filename)
+    #    SystemDebug.debug(SystemDebug.builder| SystemDebug.actions,"creating actionator ", actionator[:name], filename)
         next if actionator[:script].nil?
         if @blueprint_reader.schema == 0
           write_software_script_file(filename, actionator[:script])

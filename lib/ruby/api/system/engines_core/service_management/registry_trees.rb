@@ -25,7 +25,7 @@ module RegistryTrees
     service_manager.registry_root
   end
   
-  def  subservices_registry
+  def subservices_registry
     service_manager.subservices_registry
   end
   

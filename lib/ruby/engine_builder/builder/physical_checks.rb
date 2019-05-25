@@ -2,7 +2,7 @@ def check_avail_space
   log_build_output('Checking Free space')
   space = @core_api.system_image_free_space
   space /= 1024
-  SystemDebug.debug(SystemDebug.builder,  ' free space /var/lib/docker only ' + space.to_s + 'MB')
+#  SystemDebug.debug(SystemDebug.builder,  ' free space /var/lib/docker only ' + space.to_s + 'MB')
   raise EngineBuilderException.new(warning_hash('Not enough free space /var/lib/docker only ' + space.to_s + 'MB')) if space < SystemConfig.MinimumFreeImageSpace  && space != -1
   log_build_output(space.to_s + 'MB free > ' +  SystemConfig.MinimumFreeImageSpace.to_s + ' required')
 end

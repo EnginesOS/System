@@ -28,7 +28,7 @@ def create_dns_service_hash(engine)
     ip: engine.get_ip_str.to_s },
     overwrite: true
   }
-  SystemDebug.debug(SystemDebug.services,  service_hash.to_s)
+#  SystemDebug.debug(SystemDebug.services,  service_hash.to_s)
   service_hash
 end
 
@@ -48,7 +48,7 @@ def create_zeroconf_service_hash(engine)
     overwrite: true
     }
   }
-  SystemDebug.debug(SystemDebug.containers, :created_zeroconfdns_service_hash, service_hash)
+ # SystemDebug.debug(SystemDebug.containers, :created_zeroconfdns_service_hash, service_hash)
   service_hash
 end
 
@@ -101,7 +101,7 @@ def create_wap_service_hash(engine)
     service_hash[:variables][:www_path] = ''
   end
 #  STDERR.puts('SERVICE HASH for WAP ' + service_hash.to_s)
-  SystemDebug.debug(SystemDebug.services,'create nginx Hash', service_hash)
+#  SystemDebug.debug(SystemDebug.services,'create nginx Hash', service_hash)
   service_hash
   
 end

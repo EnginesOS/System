@@ -12,12 +12,12 @@ module ManagedServiceConfigurations
     configurator_params[:service_name] = @container_name
     if  is_running? == false
     r = retrieve_service_configuration(configurator_params)
-    STDERR.puts(' recevie ARGS ' + r.to_s)
+   # STDERR.puts(' recevie ARGS ' + r.to_s)
     r
     else
       raise EnginesException.new(error_hash('service missing cont_user_id ', configurator_params)) if check_cont_uid == false
      r = @container_api.retrieve_configurator(self, configurator_params)
-      STDERR.puts(' recevie ARGS ' + r.to_s)
+   #   STDERR.puts(' recevie ARGS ' + r.to_s)
           r
     end
   end

@@ -36,7 +36,7 @@ module Engines
     raise EnginesException.new(error_hash('no protocol field')) if protocol.nil?
     protocol.downcase
     protocol.gsub!(/ /,"_")
-    SystemDebug.debug(SystemDebug.services,'Changing protocol to _', protocol)
+   # SystemDebug.debug(SystemDebug.services,'Changing protocol to _', protocol)
     if protocol.include?('https_only')
       engine.enable_https_only
     elsif protocol.include?('http_only')
@@ -63,7 +63,7 @@ module Engines
     end
 
     domain_name = params[:domain_name]
-    SystemDebug.debug(SystemDebug.services,'Changing Domainame to ', domain_name)
+#    SystemDebug.debug(SystemDebug.services,'Changing Domainame to ', domain_name)
 
     container.remove_wap_service
     container.set_hostname_details(hostname, domain_name)

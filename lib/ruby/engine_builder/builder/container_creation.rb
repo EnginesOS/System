@@ -30,7 +30,8 @@ module ContainerCreation
   def launch_deploy(managed_container)
     log_build_output('Launching Engine')
     save_engine_built_configuration(managed_container)
-    managed_container.create_container
+    thr = managed_container.create_container
+    thr.join
     raise EngineBuilderException.new(error_hash('Failed to create Engine container from Image')) unless managed_container.has_container?
   end
 

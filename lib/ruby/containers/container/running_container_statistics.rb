@@ -5,7 +5,7 @@ module RunningContainerStatistics
       started = docker_info[:State][:StartedAt]
       stopped = docker_info[:State][:FinishedAt]
       ps_json = ps_container
-      SystemDebug.debug(SystemDebug.containers,'ps_container json result',container_name,ps_json)
+   #   SystemDebug.debug(SystemDebug.containers,'ps_container json result',container_name,ps_json)
       cpu_time =[0,0,0]
       vss = 0
       rss = 0

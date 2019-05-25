@@ -4,7 +4,7 @@ class BlueprintApi < ErrorsApi
 
   def save_blueprint(blueprint, container)
     # return log_error_mesg('Cannot save incorrect format',blueprint) unless blueprint.is_a?(Hash)
-    SystemDebug.debug(SystemDebug.builder, blueprint.class.name)
+  #  SystemDebug.debug(SystemDebug.builder, blueprint.class.name)
     state_dir = ContainerStateFiles.container_state_dir(container)
     Dir.mkdir(state_dir) if File.directory?(state_dir) == false
     statefile = state_dir + '/blueprint.json'
@@ -48,8 +48,8 @@ class BlueprintApi < ErrorsApi
       unless blueprint[:software][:base][:inherit].nil?
         parent = get_blueprint_parent( blueprint[:software][:base][:inherit])
         STDERR.puts('Parent BP ' + parent.to_s + "\n is a " + parent.class.name)
-      else
-        STDERR.puts('NO Inherietance' + blueprint[:software][:base].to_s)
+    #  else
+     #   STDERR.puts('NO Inherietance' + blueprint[:software][:base].to_s)
       end
       inherit = blueprint[:software][:base][:inherit]
       merge_bp_entry(blueprint, parent, :base)

@@ -137,7 +137,7 @@ class BluePrintReader
 
   def read_web_root
     @web_root = @blueprint[:software][:web_root_directory] if @blueprint[:software].key?(:web_root_directory)
-    SystemDebug.debug(SystemDebug.builder,  ' @web_root ',  @web_root)
+ #  SystemDebug.debug(SystemDebug.builder,  ' @web_root ',  @web_root)
   end
 
   def read_deployment_type
@@ -196,8 +196,8 @@ class BluePrintReader
 
   def read_services
     log_build_output('Read Services')
-    STDERR.puts( ' BP ' + @blueprint[:software].to_s + "\n\n:" + @blueprint['software'].to_s  )
-    STDERR.puts( 'service_configurations ' + @blueprint[:software][:service_configurations].to_s)
+   # STDERR.puts( ' BP ' + @blueprint[:software].to_s + "\n\n:" + @blueprint['software'].to_s  )
+   # STDERR.puts( 'service_configurations ' + @blueprint[:software][:service_configurations].to_s)
     services = @blueprint[:software][:service_configurations]
     if services.is_a?(Array) # not an error just nada
       services.each do |service|
@@ -208,7 +208,7 @@ class BluePrintReader
   end
 
   def add_service(service_hash)
-    SystemDebug.debug(SystemDebug.builder, :add_service, service_hash)
+   # SystemDebug.debug(SystemDebug.builder, :add_service, service_hash)
     @builder.templater.fill_in_dynamic_vars(service_hash)
     @services.push(service_hash)
   end
@@ -407,7 +407,7 @@ class BluePrintReader
         type = 'both' if type == 'TCP and UDP'
         type.downcase!
         # FIXME: when public ports supported
-        SystemDebug.debug(SystemDebug.builder, 'Port ' + name + ':' + portnum.to_s + ':' + external.to_s + '/' + type)
+       # SystemDebug.debug(SystemDebug.builder, 'Port ' + name + ':' + portnum.to_s + ':' + external.to_s + '/' + type)
         # @mapped_ports.push(WorkPort.work_port_hash(name, portnum, external, false, type))
         @mapped_ports[name] = WorkPort.work_port_hash(name, portnum, external, true, type)
       end
@@ -436,13 +436,13 @@ class BluePrintReader
 
         unless @builder.set_environments.nil?
           log_build_output('Merging supplied Environment Variable:' + name.to_s)
-          SystemDebug.debug(SystemDebug.builder, :looking_for_, name)
-          SystemDebug.debug(SystemDebug.builder, 'from ' ,@builder.set_environments)
+    #      SystemDebug.debug(SystemDebug.builder, :looking_for_, name)
+     #     SystemDebug.debug(SystemDebug.builder, 'from ' ,@builder.set_environments)
           if ask && @builder.set_environments.key?(name.to_sym)
             entered_value = @builder.set_environments[name.to_sym]
             if entered_value.nil? == false && entered_value.length != 0 # FIXME: needs to be removed
               value = entered_value
-              SystemDebug.debug(SystemDebug.builder, :value_set, value)
+     #         SystemDebug.debug(SystemDebug.builder, :value_set, value)
             end
             log_build_output('Merged supplied Environment Variable:' + name.to_s)
           else
@@ -451,7 +451,13 @@ class BluePrintReader
 
         end
         name.gsub!(/ /, '_')
-        ev = EnvironmentVariable.new(name, value, ask, mandatory, build_time_only, label, immutable)
+        ev = EnvironmentVariable.new({name: name, 
+                                    value: value, 
+                                    ask_at_build_time: ask, 
+                                    mandatory: mandatory, 
+                                    build_time_only: build_time_only, 
+                                    label: label, 
+                                    immutable: immutable})
         @environments.push(ev)
       end
     end
@@ -459,7 +465,7 @@ class BluePrintReader
 
   def read_actionators
     log_build_output('Read Actionators')
-    SystemDebug.debug(SystemDebug.builder, ' readin in actionators', @blueprint[:software][:actionators])
+  #  SystemDebug.debug(SystemDebug.builder, ' readin in actionators', @blueprint[:software][:actionators])
     #  STDERR.puts(' readin in actionators', @blueprint[:software][:actionators].to_s)
     if @blueprint[:software].key?(:actionators)
       @actionators = {}
@@ -467,9 +473,9 @@ class BluePrintReader
         @actionators[actionator[:name]] = actionator
       end
       #     STDERR.puts('Red actionators', @blueprint[:software][:actionators].to_s)
-      SystemDebug.debug(SystemDebug.builder, @actionators)
+  #    SystemDebug.debug(SystemDebug.builder, @actionators)
     else
-      SystemDebug.debug(SystemDebug.builder, 'No actionators')
+ #     SystemDebug.debug(SystemDebug.builder, 'No actionators')
       @actionators = nil
     end
   end

@@ -8,11 +8,11 @@ module PersistantServices
       service_details.push(service_detail)
     end
     retval = service_details.to_json
-    SystemDebug.debug(SystemDebug.services, :engine_persistent_services, retval)
+   # SystemDebug.debug(SystemDebug.services, :engine_persistent_services, retval)
     retval.gsub!(/\"\[/,'[')
-    SystemDebug.debug(SystemDebug.services, :engine_persistent_services, retval)
+   # SystemDebug.debug(SystemDebug.services, :engine_persistent_services, retval)
     retval.gsub!(/\]\"/,']')
-    SystemDebug.debug(SystemDebug.services, :engine_persistent_services, retval)
+  #  SystemDebug.debug(SystemDebug.services, :engine_persistent_services, retval)
     retval
   end
 
@@ -25,7 +25,7 @@ def service_to_str(service_hash)
   service_hash[:variables].each do |variable|
     retval += ',' + variable[1].to_s
   end
-  SystemDebug.debug(SystemDebug.services,  :service_to_str, retval)
+  #SystemDebug.debug(SystemDebug.services,  :service_to_str, retval)
   retval
 
 end

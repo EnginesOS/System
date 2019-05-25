@@ -57,7 +57,7 @@ module ManagedServiceConsumers
         if registered_hashes.is_a?(Array)
           registered_hashes.each do |service_hash|
             begin
-              STDERR.puts('add consume ' + service_hash.to_s)
+      #        STDERR.puts('add consume ' + service_hash.to_s)
               add_consumer_to_service(service_hash) if service_hash[:persistent] == false
             rescue StandardError => e
               STDERR.puts('add consumer error:' + e.to_s)
@@ -107,8 +107,8 @@ module ManagedServiceConsumers
   def add_consumer_to_service(service_hash)
     raise EnginesException.new(error_hash('service missing cont_user_id '+ container_name, service_hash)) unless check_cont_uid
     unless is_startup_complete?
-      STDERR.puts('START UP BOT CPMPLEYE ' )
-      STDERR.puts('soft_service' + @soft_service.to_s)
+     # STDERR.puts('START UP BOT CPMPLEYE ' )
+    #  STDERR.puts('soft_service' + @soft_service.to_s)
       unless @soft_service == true
         raise EnginesException.new(error_hash('service startup not complete ' + container_name, service_hash))
       end

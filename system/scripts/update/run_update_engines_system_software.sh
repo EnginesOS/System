@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 touch /opt/engines/run/system/flags/update_engines_running 
 
 sudo -n /opt/engines/system/scripts/update/sudo/_update_engines_system_software.sh 

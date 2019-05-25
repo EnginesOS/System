@@ -9,11 +9,11 @@ module EngineApiExportImport
     #      raise EnginesException.new(warning_hash("Cannot export as single service", service_hash))
     #    end
 
-    SystemDebug.debug(SystemDebug.export_import, :export_service, service_hash)
+   # SystemDebug.debug(SystemDebug.export_import, :export_service, service_hash)
     cmd_dir = SystemConfig.BackupScriptsRoot + '/' + service_hash[:publisher_namespace] + '/' + service_hash[:type_path] + '/' + service_hash[:service_handle] + '/'
     service_hash = engines_core.retrieve_service_hash(service_hash)
     cmd = cmd_dir + '/backup.sh'
-    SystemDebug.debug(SystemDebug.export_import, :export_service, cmd)
+  #  SystemDebug.debug(SystemDebug.export_import, :export_service, cmd)
     result = {result: 0}
     params = {
       container: container, 
@@ -28,7 +28,7 @@ module EngineApiExportImport
       Timeout.timeout(@@export_timeout) do
         thr.join
       end
-      SystemDebug.debug(SystemDebug.export_import, :export_service, service_hash,'result code =' ,result[:result])
+    #  SystemDebug.debug(SystemDebug.export_import, :export_service, service_hash,'result code =' ,result[:result])
       result
     rescue Timeout::Error
       thr.kill
@@ -49,7 +49,7 @@ module EngineApiExportImport
       raise EnginesException.new(warning_hash("Cannot import as single service", service_hash))
     end
     service_hash = engines_core.retrieve_service_hash(service_hash)
-    SystemDebug.debug(SystemDebug.export_import, :import_service, service_params,service_params[:import_method])
+  #  SystemDebug.debug(SystemDebug.export_import, :import_service, service_params,service_params[:import_method])
     cmd_dir = SystemConfig.BackupScriptsRoot + '/' + service_hash[:publisher_namespace] + '/' + service_hash[:type_path] + '/' + service_hash[:service_handle] + '/'
     if service_params[:import_method] == :replace
       cmd = cmd_dir + '/replace.sh'
@@ -67,7 +67,7 @@ params = {container: container, command_line: [cmd], log_error: true, service_va
     else
       params[:data] = Base64.decode64(service_params[:data])
     end
-    SystemDebug.debug(SystemDebug.export_import, :import_service,  service_params)
+  #  SystemDebug.debug(SystemDebug.export_import, :import_service,  service_params)
     begin
       result = {}
       thr = Thread.new { result = @engines_core.exec_in_container(params) }
@@ -83,7 +83,7 @@ params = {container: container, command_line: [cmd], log_error: true, service_va
       eresult[:stderr] = 'Import Timeout on Running Action:' + cmd.to_s + ':' + result[:stderr].to_s
       result = eresult
     end
-    SystemDebug.debug(SystemDebug.export_import, :import_service,'result ' ,result.to_s)
+  #  SystemDebug.debug(SystemDebug.export_import, :import_service,'result ' ,result.to_s)
     result
     #      if result[:result] == 0
     #        true

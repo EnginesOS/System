@@ -45,7 +45,7 @@ class Volume < StaticService #Latter will include group and perhaps other attrib
     unless service_hash[:variables].key?(:permissions)
       service_hash[:variables][:permissions] = PermissionRights.new(service_hash[:parent_engine] , '', '')
     end
-    SystemDebug.debug(SystemDebug.builder, :Complete_Volume_service_hash, service_hash)
+ #   SystemDebug.debug(SystemDebug.builder, :Complete_Volume_service_hash, service_hash)
     service_hash
   rescue Exception => e
       STDERR.puts('Problem with ' +service_hash.to_s)

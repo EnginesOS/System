@@ -37,9 +37,9 @@ module Builders
     @build_params[:data_gid] = @data_gid
     @build_params[:cont_user_id] = @cont_user_id
 
-    SystemDebug.debug(SystemDebug.builder, :builder_init, @build_params)
+  #  SystemDebug.debug(SystemDebug.builder, :builder_init, @build_params)
     @service_builder = ServiceBuilder.new(@core_api, @templater, @build_params[:engine_name], @attached_services, basedir)
-    SystemDebug.debug(SystemDebug.builder, :builder_init__service_builder, @build_params)
+   # SystemDebug.debug(SystemDebug.builder, :builder_init__service_builder, @build_params)
     self
   rescue StandardError => e
     #log_exception(e)
@@ -124,9 +124,9 @@ module Builders
     # deregister non persistent services (if created)
     # FIXME: need to re orphan here if using an orphan Well this should happen on the fresh
     # FIXME: don't delete shared service but remove share entry
-    SystemDebug.debug(SystemDebug.builder, :Clean_up_of_Failed_build)
-    SystemDebug.debug(SystemDebug.builder, "Called From", caller[0..15])
-    SystemDebug.debug(SystemDebug.builder, caller.to_s)
+ #   SystemDebug.debug(SystemDebug.builder, :Clean_up_of_Failed_build)
+ ##   SystemDebug.debug(SystemDebug.builder, "Called From", caller[0..15])
+#    SystemDebug.debug(SystemDebug.builder, caller.to_s)
     # FIXME: Stop it if started (ie vol builder failure)
     # FIXME: REmove container if created
     #  unless @build_params[:reinstall].is_a?(TrueClass)
@@ -144,12 +144,12 @@ module Builders
     end
 
     @result_mesg = @result_mesg.to_s + ' Roll Back Complete'
-    SystemDebug.debug(SystemDebug.builder,'Roll Back Complete')
+  #  SystemDebug.debug(SystemDebug.builder,'Roll Back Complete')
     close_all
   end
 
   def build_container
-    SystemDebug.debug(SystemDebug.builder, 'Starting build with params ', @build_params)
+#    SystemDebug.debug(SystemDebug.builder, 'Starting build with params ', @build_params)
     process_blueprint
     meets_physical_requirements
     set_locale

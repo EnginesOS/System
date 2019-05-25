@@ -11,9 +11,9 @@ module BuilderBluePrint
       BlueprintApi.download_and_save_blueprint(basedir, @build_params[:repository_url])
     else
       log_build_output('Clone Blueprint Repository ' + @build_params[:repository_url])
-      SystemDebug.debug(SystemDebug.builder, "get_blueprint_from_repo",@build_params[:repository_url], @build_name, SystemConfig.DeploymentDir)
+      #SystemDebug.debug(SystemDebug.builder, "get_blueprint_from_repo",@build_params[:repository_url], @build_name, SystemConfig.DeploymentDir)
       g = Git.clone(@build_params[:repository_url], @build_name, :path => SystemConfig.DeploymentDir)
-      SystemDebug.debug(SystemDebug.builder, 'GIT GOT ' + g.to_s)
+  #    SystemDebug.debug(SystemDebug.builder, 'GIT GOT ' + g.to_s)
     end
   end
 #
@@ -132,7 +132,11 @@ module BuilderBluePrint
 
     @blueprint_reader = VersionedBlueprintReader.new(@build_params[:engine_name], @blueprint, self)
     @blueprint_reader.process_blueprint
-    ev = EnvironmentVariable.new('Memory', @memory, false, true, false, 'Memory', false)
+    ev = EnvironmentVariable.new({name: 'Memory',
+                                  value: @memory,
+                                  owner_type: 'system',
+                                  immutable: "true"
+                                  })
     @blueprint_reader.environments.push(ev)
   end
 end

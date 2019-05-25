@@ -1,5 +1,5 @@
 # @!group /containers
-
+NOOP_PERIOD=25
 # @method get_container_event_stream
 # @overload get '/v0/containers/events/stream'
 # Add listener to container events and write event-stream of events as json to client
@@ -8,6 +8,7 @@
 #  Do not use the "from" key
 # test FixME there is none
 get '/v0/containers/events/stream', provides: 'text/event-stream' do
+  @lock_timer = false
   begin
     def finialise_events_stream(events_stream, timer)
       events_stream.stop unless events_stream.nil?
@@ -24,13 +25,12 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
 
     def no_op_timer(out)
       no_op = {no_op: true}.to_json
-      timer = EventMachine::PeriodicTimer.new(25) do
+      timer = EventMachine::PeriodicTimer.new(NOOP_PERIOD) do
         if out.closed?
           STDERR.puts('NOOP found OUT IS CLOSED: ' + timer.to_s)
           timer.cancel
-        else
-          out << no_op # unless lock_timer == true
-          out << "\n"
+        elsif @lock_timer.is_a?(FalseClass)
+          out << no_op + "\n"
         end
       end
       timer
@@ -42,13 +42,15 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
 
       stream :keep_open do | out |
         begin
-          has_data = true
+          has_data = true          
           timer = no_op_timer(out)
           events_stream = engines_api.container_events_stream
           out.callback{ finialise_events_stream(events_stream, timer) }
           while has_data == true
             begin
-              bytes = events_stream.rd.read_nonblock(2048)
+              @lock_timer = false
+              bytes = events_stream.rd.read_nonblock(8192)
+              @lock_timer = true
               next if bytes.nil?
               if out.closed?
                 has_data = finialise_events_stream(events_stream, timer)
@@ -59,6 +61,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
                 bytes = ''
               end
             rescue IO::WaitReadable
+              STDERR.puts('Waiting on events stream')
               IO.select([events_stream.rd])
               retry
             rescue IOError

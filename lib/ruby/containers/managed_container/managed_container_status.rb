@@ -16,7 +16,7 @@ module ManagedContainerStatus
     state = super
     if state == 'na'
       expire_engine_info
-      SystemDebug.debug(SystemDebug.containers, container_name, 'in na',  :info)
+    #  SystemDebug.debug(SystemDebug.containers, container_name, 'in na',  :info)
       'nocontainer'
     else
       state

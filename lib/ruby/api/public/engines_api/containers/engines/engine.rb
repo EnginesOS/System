@@ -3,6 +3,10 @@ module PublicApiEngine
     @system_api.loadManagedEngine(engine_name)
   end
 
+  def fix_containers_fsid
+    @system_api.fix_containers_fsid
+  end
+  
   def get_resolved_engine_string #ex
     @core_api.get_resolved_engine_string(env_value, engine)
   end

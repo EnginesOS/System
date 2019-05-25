@@ -24,7 +24,11 @@ module Containers
     log_error_mesg('container locked', container.container_name) unless lock_container_conf_file(state_dir)
     if File.exist?(statefile)
       statefile_bak = statefile + '.bak'
+      begin
+      File.delete(statefile_bak) if File.exist?(statefile_bak)
       File.rename(statefile, statefile_bak)
+      rescue StandardError => e
+      end
     end
     f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0644)
     begin
@@ -40,7 +44,7 @@ module Containers
     end
     unlock_container_conf_file(state_dir)
     cache_engine(container, ts) unless cache_update_ts(container, ts)
-    STDERR.puts('saved ' + container.container_name + ':' + caller[1].to_s + ':' + caller[2].to_s)
+    #STDERR.puts('saved ' + container.container_name + ':' + caller[1].to_s + ':' + caller[2].to_s)
     true
   rescue StandardError => e
     unlock_container_conf_file(state_dir)
@@ -73,8 +77,8 @@ module Containers
   def get_service_actionator(container, action)
     actionators = load_service_actionators(container)
     # STDERR.puts(' ACITONATORS ' + actionators.to_s)
-    STDERR.puts('LOOKING 4 ' + action.to_s)
-    STDERR.puts('is it ' + actionators[action.to_sym].to_s)
+   # STDERR.puts('LOOKING 4 ' + action.to_s)
+   # STDERR.puts('is it ' + actionators[action.to_sym].to_s)
     actionators[action.to_sym]
   end
 
@@ -94,17 +98,17 @@ module Containers
 
   def get_engine_actionator(container, action)
     actionators = load_engine_actionators(container)
-    SystemDebug.debug(SystemDebug.actions, container, actionators[action]) #.to_sym])
+#    SystemDebug.debug(SystemDebug.actions, container, actionators[action]) #.to_sym])
     #  STDERR.puts('ACRTION ' + action.to_s)
     actionators[action]
   end
 
   def load_engine_actionators(container)
-    SystemDebug.debug(SystemDebug.actions, container, actionator_dir(container) + '/actionators.yaml')
+ #   SystemDebug.debug(SystemDebug.actions, container, actionator_dir(container) + '/actionators.yaml')
     if File.exist?(actionator_dir(container) + '/actionators.yaml')
       yaml = File.read(actionator_dir(container) + '/actionators.yaml')
       actionators = YAML::load(yaml)
-      SystemDebug.debug(SystemDebug.actions,container ,actionators)
+ #     SystemDebug.debug(SystemDebug.actions,container ,actionators)
       actionators if actionators.is_a?(Hash)
     else
       {}
