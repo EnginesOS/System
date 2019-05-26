@@ -5,39 +5,44 @@ require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
 require 'thread'
 require 'yaml'
 
-
-core_api = EnginesCore.new  
+core_api = EnginesCore.new
 
 system_api = core_api.system_api
 
 service = system_api.loadSystemService(ARGV[0])
 if service.is_a?(EnginesError)
-p service.to_s
-exit 127
-end 
+  p service.to_s
+  exit 127
+end
 
 case ARGV[1]
 when 'restart'
-  STDOUT.puts service.restart_container.to_s
+  t = service.restart_container
+  t.join
 when 'start'
-  STDOUT.puts service.start_container.to_s
+  t =  service.start_container
+  t.join
 when 'create'
-  STDOUT.puts service.create_container.to_s
+  t=service.create_container
+  t.join
 when 'stop'
-  STDOUT.puts service.stop_container.to_s
+  t=service.stop_container
+  t.join
 when 'destroy'
-  STDOUT.puts service.destroy_container.to_s
+  t=service.destroy_container
+  t.join
 when 'state'
-  STDOUT.puts service.read_state.to_s
+  t=service.read_state
+  t.join
 when 'set_state'
   STDOUT.puts service.set_state.to_s
-when 'status'  
+when 'status'
   STDOUT.puts service.status.to_s
-when 'mem_stat' 
-STDOUT.puts MemoryStatistics.container_memory_stats(service).to_s
+when 'mem_stat'
+  STDOUT.puts MemoryStatistics.container_memory_stats(service).to_s
 when 'wait_for'
   STDOUT.puts service.wait_for(ARGV[2],ARGV[3].to_i)
 when 'wait_for_startup'
-  STDOUT.puts service.wait_for_startup(ARGV[2].to_i)  
-end 
+  STDOUT.puts service.wait_for_startup(ARGV[2].to_i)
+end
 
