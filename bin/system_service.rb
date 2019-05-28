@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-#/home/engines/.rbenv/shims/ruby
+
 
 require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
 require 'thread'
