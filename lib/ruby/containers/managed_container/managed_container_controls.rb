@@ -62,13 +62,13 @@ module ManagedContainerControls
   end
 
   def create_container
- #   SystemDebug.debug(SystemDebug.containers, :teask_preping)
+    #   SystemDebug.debug(SystemDebug.containers, :teask_preping)
     thr = Thread.new do
       @container_mutex.synchronize {
         if prep_task(:create)
           @domain_name = @container_api.default_domain if @domain_name.nil?
           @container_api.initialize_container_env(self)
-        #  SystemDebug.debug(SystemDebug.containers, :teask_preped)
+          #  SystemDebug.debug(SystemDebug.containers, :teask_preped)
           expire_engine_info
           @container_id = -1
           save_state
@@ -76,10 +76,10 @@ module ManagedContainerControls
             task_failed('create')
           else
             save_state #save new containerid)
-        #    SystemDebug.debug(SystemDebug.containers, :create_super_ran)
-         #   SystemDebug.debug(SystemDebug.containers, @setState, @docker_info_cache.class.name)
+            #    SystemDebug.debug(SystemDebug.containers, :create_super_ran)
+            #   SystemDebug.debug(SystemDebug.containers, @setState, @docker_info_cache.class.name)
             expire_engine_info
-         #   SystemDebug.debug(SystemDebug.containers, @setState, @docker_info_cache.class.name)
+            #   SystemDebug.debug(SystemDebug.containers, @setState, @docker_info_cache.class.name)
             true
           end
         end
@@ -91,9 +91,9 @@ module ManagedContainerControls
 
   def recreate_container
     thr = Thread.new do
-       destroy_container
-        wait_for('destroy', 30)        
-        create_container
+      destroy_container
+      wait_for('destroy', 30)
+      create_container
     end
     thr.name = 'Recreate:' + container_name
     thr
@@ -212,10 +212,16 @@ module ManagedContainerControls
     when 'stopped'
       stop_container if is_running?
     when 'running'
-      start_container unless is_active?
-      unpause_container if is_paused?
+      if has_container?
+        start_container unless is_active?
+        unpause_container if is_paused?
+      else
+        create_container
+      end
     when 'nocontainer'
-      create_container
+      unpause_container if is_paused?
+      stop_container if is_active?
+      destroy_container if has_container?
     when 'paused'
       pause_container unless is_active?
     else
@@ -227,12 +233,12 @@ module ManagedContainerControls
 
   def prep_task(action_sym)
     tah = task_at_hand
-  ##  unless tah.nil?
-  #    SystemDebug.debug(SystemDebug.containers, 'saved task at hand', tah, 'next', action_sym)
-  #  end
-  #  SystemDebug.debug(SystemDebug.containers, :current_tah_prep_task, tah)
+    ##  unless tah.nil?
+    #    SystemDebug.debug(SystemDebug.containers, 'saved task at hand', tah, 'next', action_sym)
+    #  end
+    #  SystemDebug.debug(SystemDebug.containers, :current_tah_prep_task, tah)
     unless in_progress(action_sym)
-    #  SystemDebug.debug(SystemDebug.containers, :inprogress_run)
+      #  SystemDebug.debug(SystemDebug.containers, :inprogress_run)
       save_state
     end
     true
