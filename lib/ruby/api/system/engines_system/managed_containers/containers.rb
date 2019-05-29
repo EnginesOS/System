@@ -18,7 +18,7 @@ module Containers
     #synchronise ?
     serialized_object = YAML.dump(container)
     state_dir = container_state_dir(container)
-    FileUtils.mkdir_p(state_dir)  if Dir.exist?(state_dir) == false
+    FileUtils.mkdir_p(state_dir) if Dir.exist?(state_dir) == false
     statefile = state_dir + '/running.yaml'
     # BACKUP Current file with rename
     log_error_mesg('container locked', container.container_name) unless lock_container_conf_file(state_dir)
