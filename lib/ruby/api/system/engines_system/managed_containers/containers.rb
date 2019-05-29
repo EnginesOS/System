@@ -25,17 +25,25 @@ module Containers
     if File.exist?(statefile)
       statefile_bak = statefile + '.bak'
       begin
-      File.delete(statefile_bak) if File.exist?(statefile_bak)
-      File.rename(statefile, statefile_bak)
+      if File.exist?(statefile_bak)
+        #double handle in case fs full 
+        #if fs full mv fails and delete doesn't happen
+        FileUtils.mv(statefile_bak,statefile_bak + '.bak')
+        #Fixme check statefile is valid before over writing a good backup
+        File.rename(statefile, statefile_bak)
+        File.delete(statefile_bak + '.bak')
+      end
       rescue StandardError => e
       end
     end
-    f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0644)
+    f = File.new(statefile + '_tmp', File::CREAT | File::TRUNC | File::RDWR, 0644)
     begin
       f.puts(serialized_object)
       f.flush()
+      #Do it this way so a failure to write doesn't trash a working file
+      FileUtils.mv(statefile + '_tmp',statefile)
     ensure
-      f.close
+      f.close          
     end
     begin
       ts =  File.mtime(statefile)
