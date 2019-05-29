@@ -54,29 +54,34 @@ def symbolize_keys_array_members(a)
 end
 
 def symbolize_keys(h)
-   return h unless h.is_a?(Hash)
-  h.inject({}){|r, (key, v)|
-    nk = case key
-    when String then key.to_sym
-    else key
-    end
-#    STDERR.puts('key ' + nk.to_s + ':' +nk.class.name)
-    nv = case v
-    when Hash then symbolize_keys(v)
-    when Array   then
-      newval = []
-      v.each do |av|
-        if av.is_a?(Hash)
-          av = symbolize_keys(av)
-        end
-        newval.push(av)
+  if !h.is_a?(Hash)
+    h
+  elsif  h.is_a?(Sinatra::IndifferentHash)
+    h
+  else
+    h.inject({}){|r, (key, v)|
+      nk = case key
+      when String then key.to_sym
+      else key
       end
-      newval
-    else v
-    end
-    r[nk] = nv
-    r
-  }
+      #    STDERR.puts('key ' + nk.to_s + ':' +nk.class.name)
+      nv = case v
+      when Hash then symbolize_keys(v)
+      when Array   then
+        newval = []
+        v.each do |av|
+          if av.is_a?(Hash)
+            av = symbolize_keys(av)
+          end
+          newval.push(av)
+        end
+        newval
+      else v
+      end
+      r[nk] = nv
+      r
+    }
+  end
 end
 
 def boolean_if_true_false_str(r)
