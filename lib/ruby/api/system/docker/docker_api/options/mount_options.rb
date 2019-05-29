@@ -33,6 +33,7 @@ end
 def mount_string(volume)
   STDERR.puts('Volume ' + volume.to_s)
   volume = symbolize_keys(volume)
+  STDERR.puts('Volume ' + volume.to_s)
   perms = 'ro'
   if volume[:permissions] == 'rw'
     perms = 'rw'
@@ -40,6 +41,9 @@ def mount_string(volume)
     perms = 'ro'
   end
   volume[:localpath] + ':' + volume[:remotepath] + ':' + perms
+rescue StandardError => e
+  STDERR.puts('Problem with ' + volume.to_s)
+ raise e
 end
 
 def cert_mounts(container)
@@ -151,16 +155,16 @@ def  mount_string_for_homes(home)
   elsif home[:variables][:home_type] == 'seperate'
     s = []
     home[:variables][:homes].split(", \n").each do | user |
-      STDERR.puts('SDFSDF ' + '/var/lib/engines/home/' + user)
+ #     STDERR.puts('SDFSDF ' + '/var/lib/engines/home/' + user)
       #FIXME do a ldap looku for user if user exists create else next
     #  next unless Dir.exist?('/home/users/' + user  )
-      STDERR.puts('SDFSDF ' + '/var/lib/engines/home/' + user + '/' +  home[:parent_engine] + ':/home/users/' + user  + '/' +  home[:parent_engine] + ':'  + home[:variables][:access])
+ #     STDERR.puts('SDFSDF ' + '/var/lib/engines/home/' + user + '/' +  home[:parent_engine] + ':/home/users/' + user  + '/' +  home[:parent_engine] + ':'  + home[:variables][:access])
       s.push('/var/lib/engines/home/' + user + '/' +  home[:parent_engine] + ':/home/users/' + user  + '/' +  home[:parent_engine] + ':'  + home[:variables][:access])
     end
   else
     STDERR.puts('serr ' + home.to_s)
   end
-  STDERR.puts('Homes mount' + s.to_s)
+ # STDERR.puts('Homes mount' + s.to_s)
   s
 end
 
@@ -170,7 +174,7 @@ def homes_mounts(container)
     homes = container.attached_services(
     {type_path: 'homes'
     })
-    STDERR.puts('HOMES ' + homes.to_s)
+ #   STDERR.puts('HOMES ' + homes.to_s)
     if homes.is_a?(Array)
       homes.each do | home |
         m_str = mount_string_for_homes(home)

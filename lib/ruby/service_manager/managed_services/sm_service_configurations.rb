@@ -4,7 +4,7 @@ module SmServiceConfigurations
     service_definition = software_service_definition(config_hash)
     raise EnginesException.new(error_hash('Missing Service definition file ', config_hash))  unless service_definition.is_a?(Hash)
     config_hash[:no_save] = service_definition[:no_save]
-    SystemDebug.debug(SystemDebug.services,:update_service, service_definition)
+   # SystemDebug.debug(SystemDebug.services,:update_service, service_definition)
     raise EnginesException.new(error_hash('Missing Configurators in service definition', config_hash)) unless service_definition.key?(:configurators)
     configurators = service_definition[:configurators]
     raise EnginesException.new(error_hash('Missing Configurator ', config_hash[:configurator_name])) unless configurators.key?(config_hash[:configurator_name].to_sym)

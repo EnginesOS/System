@@ -19,10 +19,10 @@ module SmServiceForcedMethods
   end
   
   def force_register_non_persistent_service(service_query)
-    STDERR.puts('Service query ' + service_query.to_s)
+    #STDERR.puts('Service query ' + service_query.to_s)
     complete_service_query = set_top_level_service_params(service_query, service_query[:parent_engine])
     service_hash = retrieve_engine_service_hash(complete_service_query)
-    STDERR.puts('found Service hash ' + service_query.to_s)
+ #   STDERR.puts('found Service hash ' + service_query.to_s)
     add_to_managed_service(service_hash)
   end
 

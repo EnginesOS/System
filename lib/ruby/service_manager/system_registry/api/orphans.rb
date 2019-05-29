@@ -26,7 +26,7 @@ module Orphans
   def release_orphan(params)
     r = 'services/orphans/del'
     r += address_params(params, [:parent_engine, :service_handle, :publisher_namespace, :type_path])
-      STDERR.puts(' rel orphan ' + r.to_s + "\nFrom:" + params.to_s)
+    #  STDERR.puts(' rel orphan ' + r.to_s + "\nFrom:" + params.to_s)
     rest_delete(r)
   end
 

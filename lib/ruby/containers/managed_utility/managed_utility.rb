@@ -40,9 +40,10 @@ class ManagedUtility< ManagedContainer
   end
 
   def execute_command(command_name, command_params)
-    STDERR.puts("\n EXECutre Cmd " + command.to_s + ':' + command_params.to_s)
+    
+    # STDERR.puts("\n EXECutre Cmd " + command.to_s + ':' + command_params.to_s)
     if is_active?
-      expire_engine_info     
+      expire_engine_info
       wait_for('stop', 120)
       raise EnginesException.new(error_hash('Utility Still active ' + container_name + ' in use ', command_name)) if is_active?
       destroy_container
@@ -52,7 +53,7 @@ class ManagedUtility< ManagedContainer
     #  command_name = command_name.to_sym unless @commands.key?(command_name)
     raise EnginesException.new(error_hash('No such command: ' + command_name.to_s + ' in ' + @commands.to_s,  command_params)) unless @commands.key?(command_name)
     command = command_details(command_name)
-    raise EnginesException.new(error_hash('Missing params in Exe' + command_params.to_s, r)) unless (r = check_params(command, command_params)) == true
+    raise EnginesException.new(error_hash('Missing params in Exe' + command_params.to_s + ' for ' + command_name.to_s, r)) unless (r = check_params(command, command_params)) == true
     begin
       destroy_container
     rescue
@@ -67,23 +68,23 @@ class ManagedUtility< ManagedContainer
     clear_configs
     apply_templates(command, command_params)
     save_state
-       STDERR.puts('Create FSCONFIG')
+    #    STDERR.puts('Create FSCONFIG')
     create_container()
-   
-#    wait_for('stopped',120) unless is_stopped?
-#    begin
-#      r = @container_api.logs_container(self, 512) #_as_result
-#      STDERR.puts('UIL RESULT:' + r.to_s)
-#      if r.is_a?(Hash)
-#        r
-#      else
-#        {stdout: r.to_s, result: 0}
-#      end
-#    rescue StandardError => e
-#      STDERR.puts(e.to_s  + "\n" + e.backtrace.to_s)
-#      STDERR.puts('FSCONFIG EXCEPTION' + e.to_s)
-#      {stderr: 'Failed', result: -1}
-#    end
+
+    #    wait_for('stopped',120) unless is_stopped?
+    #    begin
+    #      r = @container_api.logs_container(self, 512) #_as_result
+    #      STDERR.puts('UIL RESULT:' + r.to_s)
+    #      if r.is_a?(Hash)
+    #        r
+    #      else
+    #        {stdout: r.to_s, result: 0}
+    #      end
+    #    rescue StandardError => e
+    #      STDERR.puts(e.to_s  + "\n" + e.backtrace.to_s)
+    #      STDERR.puts('FSCONFIG EXCEPTION' + e.to_s)
+    #      {stderr: 'Failed', result: -1}
+    #    end
   end
 
   def construct_cmdline(command, command_params, templater)
@@ -132,18 +133,18 @@ class ManagedUtility< ManagedContainer
 
   def check_params(cmd, params)
     r = true
-    #   STDERR.puts('Command ' + cmd.to_s + ':' + params.to_s)
-    cmd[:requires].each do |required_param|
-      next if params.key?(required_param.to_sym)
-      r = 'Missing:' if r == true
-      r +=  ' ' + required_param.to_s
+    if cmd.nil?
+      STDERR.puts('Command ' + cmd.to_s + ':' + params.to_s)
+      r = false
+    else
+      cmd[:requires].each do |required_param|
+        next if params.key?(required_param.to_sym)
+        r = 'Missing:' if r == true
+        r +=  ' ' + required_param.to_s
+      end
     end
     r
   end
-
-#  def container_logs_as_result
-#
-#  end
 
   def clear_configs
     FileUtils.rm(ContainerStateFiles.container_state_dir(self) + '/running.yaml') if File.exist?(ContainerStateFiles.container_state_dir(self) + '/running.yaml')
@@ -155,12 +156,12 @@ class ManagedUtility< ManagedContainer
       system: :managed_utility,
       params: params }
   end
-  
-def accepts_stream?
-   @accepts_stream |= false
- end
 
- def provides_stream?
-   @provides_stream |= false
- end
+  def accepts_stream?
+    @accepts_stream |= false
+  end
+
+  def provides_stream?
+    @provides_stream |= false
+  end
 end

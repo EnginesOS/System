@@ -21,22 +21,22 @@ class RegistryHandler < ErrorsApi
     registry_service.wait_for('stop', 20)
     registry_service.start_container
     force_registry_recreate unless registry_service.wait_for_startup('start', 30)
-    SystemDebug.debug(SystemDebug.registry, :restarted_registry)
+  #  SystemDebug.debug(SystemDebug.registry, :restarted_registry)
     true
   end
 
   def registry_root_ip
-    STDERR.puts( 'Registry IP ' + @registry_ip.to_s)
+#    STDERR.puts( 'Registry IP ' + @registry_ip.to_s)
     if @registry_ip.is_a?(FalseClass)
       registry_service = @system_api.loadSystemService('registry') # FIXME: Panic if this fails
       unless registry_service.is_running?
         fix_problem(registry_service)
         @registry_ip = registry_service.get_ip_str
-        STDERR.puts( 'Registry IP ' + @registry_ip.to_s)
+   #     STDERR.puts( 'Registry IP ' + @registry_ip.to_s)
         force_registry_recreate unless registry_service.is_running?
       end
       @registry_ip = registry_service.get_ip_str
-      STDERR.puts( 'Registry IP ' + @registry_ip.to_s)
+    #  STDERR.puts( 'Registry IP ' + @registry_ip.to_s)
     end
     @registry_ip
   rescue Exception
@@ -46,14 +46,14 @@ class RegistryHandler < ErrorsApi
   end
 
   def fix_problem(registry_service = nil)
-    STDERR.puts('FIX PROBLEMS ')
+   # STDERR.puts('FIX PROBLEMS ')
     registry_service = @system_api.loadSystemService('registry') if registry_service.nil?
     registry_service.create_container unless registry_service.has_container?
     registry_service.upause_container if registry_service.is_paused?
     registry_service.start_container if registry_service.is_stopped?
-    STDERR.puts(' waited 15 for start') unless registry_service.wait_for('start', 15)
+ #   STDERR.puts(' waited 15 for start') unless registry_service.wait_for('start', 15)
     unless registry_service.wait_for_startup(40)
-      STDERR.puts(' waited 40 for startup  complete')
+ #     STDERR.puts(' waited 40 for startup  complete')
       @registry_ip = false
       unless registry_service.has_container?
         force_registry_recreate
@@ -63,7 +63,7 @@ class RegistryHandler < ErrorsApi
       end
     end
     #  wait_for_startup(40)
-    SystemDebug.debug(SystemDebug.registry, :registry_is_up)
+  #  SystemDebug.debug(SystemDebug.registry, :registry_is_up)
     true
   rescue Exception
     @registry_ip = false
@@ -79,7 +79,7 @@ class RegistryHandler < ErrorsApi
     if registry_service.forced_recreate
       registry_service.wait_for('start', 90)
       unless registry_service.wait_for_startup(30)
-        SystemDebug.debug(SystemDebug.registry, :recreate_wait)
+     #   SystemDebug.debug(SystemDebug.registry, :recreate_wait)
         log_error_mesg('Failed to complete startup in 90s')
       else
         true

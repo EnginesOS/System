@@ -10,7 +10,7 @@ module ServiceApiLoadServices
   end
 
   def load_and_attach_post_services(container)
-    SystemDebug.debug(SystemDebug.services,:load_and_attach_post_services,container.container_name)
+   # SystemDebug.debug(SystemDebug.services,:load_and_attach_post_services,container.container_name)
     dirname = container_services_dir(container) + '/post/'
     engines_core.load_and_attach_static_services(dirname, container)
   end

@@ -30,7 +30,7 @@ module DomainOperations
   end
 
   def add_domain(params)
-     STDERR.puts(' ADD DOMAIN VARIABLE ' + params.to_s)
+   #  STDERR.puts(' ADD DOMAIN VARIABLE ' + params.to_s)
     DNSHosting.add_domain(params)
     if params[:self_hosted]
       service_hash = {
@@ -51,7 +51,7 @@ module DomainOperations
         service_hash[:variables][:wan_or_lan] = 'wan'
        # service_hash[:variables][:ip] =  get_ext_ip_for_hosted_dns()
       end
-         STDERR.puts(' ADD DOMAIN VARIABLES' + service_hash.to_s)
+       #  STDERR.puts(' ADD DOMAIN VARIABLES' + service_hash.to_s)
       create_and_register_service(service_hash)
     else
       true
@@ -89,7 +89,7 @@ module DomainOperations
         service_hash[:variables][:wan_or_lan] = 'wan'
         service_hash[:variables][:ip] = get_ext_ip_for_hosted_dns()
       end
-      STDERR.puts(' COMPLETEd DNS HASH ' + service_hash.to_s )
+   #   STDERR.puts(' COMPLETEd DNS HASH ' + service_hash.to_s )
       begin
         dettach_service(service_hash)
       rescue
@@ -136,7 +136,7 @@ module DomainOperations
   def get_ext_ip_for_hosted_dns
     #FIXME are we closing here
    e_ip = open('https://jsonip.com/') { |s| JSON::parse(s.string)['ip'] }
-    STDERR.puts('EX ERR = ' + e_ip.to_s)
+  #  STDERR.puts('EX ERR = ' + e_ip.to_s)
     e_ip    
   end
 

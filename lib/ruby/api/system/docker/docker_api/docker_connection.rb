@@ -49,10 +49,10 @@ class DockerConnection < ErrorsApi
   end
 
   def post_request(uri, params = nil, expect_json = true , rheaders = nil, time_out = 180)
-    SystemDebug.debug(SystemDebug.docker,' Post ' + uri.to_s)
-    SystemDebug.debug(SystemDebug.docker,'Post OPIOMS ' + params.class.name + ':' + params.to_s)
+   # SystemDebug.debug(SystemDebug.docker,' Post ' + uri.to_s)
+  #  SystemDebug.debug(SystemDebug.docker,'Post OPIOMS ' + params.class.name + ':' + params.to_s)
     rheaders = default_headers if rheaders.nil?
-    SystemDebug.debug(SystemDebug.docker,' rheaders ' + rheaders.to_s)
+ #   SystemDebug.debug(SystemDebug.docker,' rheaders ' + rheaders.to_s)
     params = params.to_json if rheaders['Content-Type'] == 'application/json' && ! params.nil?
 
     @docker_api_mutex.synchronize {
@@ -80,7 +80,7 @@ class DockerConnection < ErrorsApi
 
   def reopen_connection
     @connection.reset unless @connection.nil?
-    SystemDebug.debug(SystemDebug.docker,' REOPEN doker.sock connection ')
+  #  SystemDebug.debug(SystemDebug.docker,' REOPEN doker.sock connection ')
     @connection = Excon.new('unix:///',
     :socket => '/var/run/docker.sock',
     debug_request: true,
@@ -109,7 +109,7 @@ class DockerConnection < ErrorsApi
 
   def post_stream_request(uri, options, stream_handler, rheaders = nil, content = nil)
     rheaders = default_headers if rheaders.nil?
-    SystemDebug.debug(SystemDebug.docker,'post stream ' + uri.to_s + '?' + options.to_s + ' Headeded by:' + rheaders.to_s)
+  #  SystemDebug.debug(SystemDebug.docker,'post stream ' + uri.to_s + '?' + options.to_s + ' Headeded by:' + rheaders.to_s)
     content = '' if content.nil?
     sc = stream_connection(stream_handler)
     #stream_handler.stream = sc
@@ -120,14 +120,14 @@ class DockerConnection < ErrorsApi
       else
         body = content
       end  
-      STDERR.puts('No data ' + 
-      {method: :post,
-      read_timeout: 3600,
-      query: options,
-      path: uri + '?' + options.to_s,
-      headers: rheaders,
-    #body: body.is_nil?
-    }.to_s  )
+#      STDERR.puts('No data ' + 
+#      {method: :post,
+#      read_timeout: 3600,
+#      query: options,
+#      path: uri + '?' + options.to_s,
+#      headers: rheaders,
+#    #body: body.is_nil?
+#    }.to_s  )
       r = sc.request(
       method: :post,
       read_timeout: 3600,
@@ -138,14 +138,14 @@ class DockerConnection < ErrorsApi
       )
       stream_handler.close
     else
-      STDERR.puts(' stream data ' + {
-        method: :post,
-        read_timeout: 3600,
-        #     query: options,
-        path: uri + '?' + options.to_s,
-      headers: rheaders ,
-        #body: body.is_nil?
-      }.to_s )
+#      STDERR.puts(' stream data ' + {
+#        method: :post,
+#        read_timeout: 3600,
+#        #     query: options,
+#        path: uri + '?' + options.to_s,
+#      headers: rheaders ,
+#        #body: body.is_nil?
+#      }.to_s )
       r = sc.request(
       method: :post,
       read_timeout: 3600,
@@ -203,7 +203,7 @@ class DockerConnection < ErrorsApi
 
   def delete_request(uri)
 
-    SystemDebug.debug(SystemDebug.docker,' Delete ' + uri.to_s)
+  #  SystemDebug.debug(SystemDebug.docker,' Delete ' + uri.to_s)
    @docker_api_mutex.synchronize {
       handle_resp(connection.request(request_params({method: :delete,
         path: uri})),

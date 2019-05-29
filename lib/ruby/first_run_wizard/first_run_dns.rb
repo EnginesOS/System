@@ -1,6 +1,6 @@
 module FirstRunDNS
   def apply_hostname(params)
-    SystemDebug.debug(SystemDebug.first_run, 'setting hostname')
+ #   SystemDebug.debug(SystemDebug.first_run, 'setting hostname')
     @api.update_service_configuration({
       service_name: 'system',
       configurator_name: 'hostname',
@@ -9,7 +9,7 @@ module FirstRunDNS
       domain_name: params[:domain_name]
       }
     })
-    SystemDebug.debug(SystemDebug.first_run, 'set hostname')
+  #  SystemDebug.debug(SystemDebug.first_run, 'set hostname')
   end
 
   def get_domain_params(params)
@@ -31,7 +31,7 @@ module FirstRunDNS
       domain_hash[:self_hosted] = false
       configure_dyndns_service(params)
     end
-    SystemDebug.debug(SystemDebug.first_run, 'domain_hash ' + domain_hash.to_s)
+   # SystemDebug.debug(SystemDebug.first_run, 'domain_hash ' + domain_hash.to_s)
     domain_hash
   end
 
@@ -67,12 +67,12 @@ module FirstRunDNS
     domain_hash = get_domain_params(@first_run_params)
     return log_error_mesg('Fail to add nill domain ', domain_hash) if domain_hash[:domain_name].nil?
     @api.add_domain_service(domain_hash)
-    SystemDebug.debug(SystemDebug.first_run, 'added Domain')
+   # SystemDebug.debug(SystemDebug.first_run, 'added Domain')
     apply_hostname(@first_run_params)
     @api.set_default_domain(domain_hash)
-    SystemDebug.debug(SystemDebug.first_run, 'set_default_domain Domain')
+   # SystemDebug.debug(SystemDebug.first_run, 'set_default_domain Domain')
     set_default_email_domain(domain_hash[:default_domain])
-    SystemDebug.debug(SystemDebug.first_run, 'set_default_email_domain Domain')
+  #  SystemDebug.debug(SystemDebug.first_run, 'set_default_email_domain Domain')
     true
   end
 

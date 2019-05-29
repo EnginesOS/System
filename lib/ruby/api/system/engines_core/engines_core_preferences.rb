@@ -1,6 +1,6 @@
 module EnginesCorePreferences
   def set_default_domain(params)
-    SystemDebug.debug(SystemDebug.system, :set_default_domain, params)
+    #SystemDebug.debug(SystemDebug.system, :set_default_domain, params)
     preferences = SystemPreferences.new
     preferences.set_default_domain(params)
   end

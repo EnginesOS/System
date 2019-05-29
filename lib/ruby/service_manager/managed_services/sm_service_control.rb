@@ -10,17 +10,17 @@ module SmServiceControl
     set_top_level_service_params(service_hash, service_hash[:parent_engine])
     resolve_field_template(service_hash) unless service_hash.frozen?
    # match_variables(service_hash)
-    SystemDebug.debug(SystemDebug.services, :sm_create_and_register_service, service_hash)
+   # SystemDebug.debug(SystemDebug.services, :sm_create_and_register_service, service_hash)
     #register with Engine
     unless service_hash[:soft_service] == true && ! is_service_persistent?(service_hash)
       system_registry_client.add_to_managed_engines_registry(service_hash)
       # FIXME not checked because of builder createing services prior to engine
-      SystemDebug.debug(SystemDebug.services, :create_and_register_service_register, service_hash)
+     # SystemDebug.debug(SystemDebug.services, :create_and_register_service_register, service_hash)
     end
     unless service_hash.key?(:shared) && service_hash[:shared] == true
       # add to service and register with service
       if is_service_persistent?(service_hash)
-        SystemDebug.debug(SystemDebug.services, :create_and_register_service_persistr, service_hash)
+       # SystemDebug.debug(SystemDebug.services, :create_and_register_service_persistr, service_hash)
         begin
           add_to_managed_service(service_hash)
         rescue StandardError => e
@@ -30,7 +30,7 @@ module SmServiceControl
         end
         system_registry_client.add_to_services_registry(service_hash)
       else
-        SystemDebug.debug(SystemDebug.services, :create_and_register_service_nonpersistr, service_hash)
+       # SystemDebug.debug(SystemDebug.services, :create_and_register_service_nonpersistr, service_hash)
         add_to_managed_service(service_hash)
         system_registry_client.add_to_services_registry(service_hash)
       end
@@ -40,7 +40,7 @@ module SmServiceControl
 
   def remove_service_from_engine_only(service_query)
     complete_service_query = set_top_level_service_params(service_query, service_query[:parent_engine])
-    STDERR.puts('delete_service QUERRY ' + service_query.to_s)
+  #  STDERR.puts('delete_service QUERRY ' + service_query.to_s)
     service_hash = retrieve_engine_service_hash(complete_service_query)
     system_registry_client.remove_from_managed_engine(service_hash)
   end
@@ -49,7 +49,7 @@ module SmServiceControl
   # @return false
   def delete_and_remove_service(service_query)
     complete_service_query = set_top_level_service_params(service_query, service_query[:parent_engine])
-    STDERR.puts('delete_service QUERRY ' + service_query.to_s)
+ #   STDERR.puts('delete_service QUERRY ' + service_query.to_s)
     service_hash = retrieve_engine_service_hash(complete_service_query)
     service_hash[:lost] = service_hash[:lost] if service_query.key?(:lost)
     raise EnginesException.new(error_hash('Not Matching Service to remove', complete_service_query)) unless service_hash.is_a?(Hash)
@@ -73,7 +73,7 @@ module SmServiceControl
       end
     else
       orphanate_service(service_hash)
-      STDERR.puts('ORPH SERV data' + service_hash.to_s)
+   #   STDERR.puts('ORPH SERV data' + service_hash.to_s)
     end
     begin
     system_registry_client.remove_from_managed_engine(service_hash)
@@ -117,7 +117,7 @@ module SmServiceControl
     service_vars = service_hash[:variables]
     service_hash[:variables].keys.each do | k|
       next if service_vars[k].nil?
-      STDERR.puts('fld ' + k.to_s + ' = ' + service_vars[k].to_s + ' is frozen')
+   #   STDERR.puts('fld ' + k.to_s + ' = ' + service_vars[k].to_s + ' is frozen')
       next if service_vars[k].frozen?
       service_vars[k].gsub!(/_Engines_Field\([0-9a-z_A-Z]*\)/) { |match|
         resolve_field_val(match, service_vars)

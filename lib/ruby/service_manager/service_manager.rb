@@ -22,6 +22,9 @@ class ServiceManager  < ErrorsApi
   require_relative 'errors/engines_service_manager_errors.rb'
   require_relative 'managed_services/sm_engine_cron_service.rb'
   
+  require_relative 'fixes/filesystem_contid.rb'
+  include FileSystemContid
+  
   require_relative 'managed_services/sm_list_services.rb'
   #  require_relative 'sm_public_key_access.rb'
   def initialize(core_api)

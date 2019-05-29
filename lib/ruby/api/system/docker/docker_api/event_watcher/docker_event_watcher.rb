@@ -70,7 +70,7 @@ class DockerEventWatcher < ErrorsApi
     @event_listeners = event_listeners
     # add_event_listener([system, :container_event])
     @events_mutex =  Mutex.new
-    SystemDebug.debug(SystemDebug.container_events, 'EVENT LISTENER')
+    #  SystemDebug.debug(SystemDebug.container_events, 'EVENT LISTENER')
   end
 
   def restart
@@ -79,7 +79,7 @@ class DockerEventWatcher < ErrorsApi
 
 
   def start
-    SystemDebug.debug(SystemDebug.container_events, 'EVENT LISTENER ' + @event_listeners.to_s)
+    # SystemDebug.debug(SystemDebug.container_events, 'EVENT LISTENER ' + @event_listeners.to_s)
     STDERR.puts('start with EVENT LISTENERS ' + @event_listeners.count.to_s)
     get_client
     parser = yparser # ||= Yajl::Parser.new({:symbolize_keys => true})
@@ -150,11 +150,11 @@ class DockerEventWatcher < ErrorsApi
       { listener: event_listener ,
         priority: event_listener.priority}
     }
-    SystemDebug.debug(SystemDebug.container_events, 'ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
+#  SystemDebug.debug(SystemDebug.container_events, 'ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
   end
 
   def rm_event_listener(listener)
-    SystemDebug.debug(SystemDebug.container_events, 'REMOVED listenter ' + listener.class.name + ':' + listener.object_id.to_s)
+    #   SystemDebug.debug(SystemDebug.container_events, 'REMOVED listenter ' + listener.class.name + ':' + listener.object_id.to_s)
     @events_mutex.synchronize {
       @event_listeners.delete(listener.object_id.to_s) if @event_listeners.key?(listener.object_id.to_s)
     }
@@ -163,7 +163,7 @@ class DockerEventWatcher < ErrorsApi
   private
 def handle_event(event_hash)
   #   STDERR.puts(' Hash ' + event_hash.to_s)
-  SystemDebug.debug(SystemDebug.container_events, 'got ' + event_hash.to_s)
+  # SystemDebug.debug(SystemDebug.container_events, 'got ' + event_hash.to_s)
   @events_mutex.synchronize { trigger(event_hash) } if is_valid_docker_event?(event_hash)
 end
 

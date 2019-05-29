@@ -42,8 +42,9 @@ module DockerApiBuilder
     end
 
     def process_response()
-      lambda do |chunk , c , t|
+      lambda do |chunk , c , t|        
         begin
+          #FIXME stuff chunck in stringio and use streaming parser on the stringio
           chunk.sub!(/}[ \n\r]*$/,'}')
           chunk.sub!(/^[ \n\r]*{/,'{')
           hash = @parser.parse(chunk)  #do |hash|

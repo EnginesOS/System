@@ -110,7 +110,7 @@ class VersionedBlueprintReader < BluePrintReader
 
   def read_web_root
     @web_root = @blueprint[:software][:base][:web_root_directory] if @blueprint[:software][:base].key?(:web_root_directory)
-    SystemDebug.debug(SystemDebug.builder, ' @web_root ', @web_root)
+  #  SystemDebug.debug(SystemDebug.builder, ' @web_root ', @web_root)
   end
 
   def blueprint_env_varaibles
@@ -158,7 +158,7 @@ class VersionedBlueprintReader < BluePrintReader
         end
 
         modname = pkg_module[:name]
-        SystemDebug.debug(SystemDebug.builder, ' modules  modname',  modname)
+#        SystemDebug.debug(SystemDebug.builder, ' modules  modname',  modname)
         pkg_module_type.downcase!
         if pkg_module_type == 'pear'
           @pear_modules.push(modname)
@@ -183,7 +183,7 @@ class VersionedBlueprintReader < BluePrintReader
 
   def read_actionators
     log_build_output('Read Actionators')
-    SystemDebug.debug(SystemDebug.builder,' readin in actionators', @blueprint[:software][:actionators])
+ #   SystemDebug.debug(SystemDebug.builder,' readin in actionators', @blueprint[:software][:actionators])
     #   STDERR.puts(' readin in actionators', @blueprint[:software][:actionators].to_s)
     if @blueprint[:software].key?(:actionators)
       @actionators = {}
@@ -191,9 +191,9 @@ class VersionedBlueprintReader < BluePrintReader
         @actionators[actionator[:name]] = actionator
       end
       #   STDERR.puts('Red actionators', @blueprint[:software][:actionators].to_s)
-      SystemDebug.debug(SystemDebug.builder, @actionators)
+ #     SystemDebug.debug(SystemDebug.builder, @actionators)
     else
-      SystemDebug.debug(SystemDebug.builder, 'No actionators')
+#      SystemDebug.debug(SystemDebug.builder, 'No actionators')
       @actionators = nil
     end
   end

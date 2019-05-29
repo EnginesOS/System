@@ -9,9 +9,9 @@ module ContainerSchedules
     schedules = load_schedules(container)
     # STDERR.puts('SCHEDULES loaded ' + schedules.to_s)
     unless schedules.nil?
-      SystemDebug.debug(SystemDebug.schedules, 'Creating schedules:', schedules)
+     # SystemDebug.debug(SystemDebug.schedules, 'Creating schedules:', schedules)
       schedules.each do |schedule|
-        SystemDebug.debug(SystemDebug.schedules, 'Creating cro line:', schedule)
+      #  SystemDebug.debug(SystemDebug.schedules, 'Creating cro line:', schedule)
         create_cron_service(container, schedule)
       end
     else
@@ -34,7 +34,7 @@ module ContainerSchedules
       parent_engine: container.container_name }
     }
 
-    STDERR.puts(' CRON SERVIEC HASH ' + t.to_s)
+    #STDERR.puts(' CRON SERVIEC HASH ' + t.to_s)
     begin
       @engines_api.create_and_register_service(t)
     rescue StandardError => e
@@ -78,7 +78,7 @@ module ContainerSchedules
   end
 
   def cron_line(timespec)
-    SystemDebug.debug(SystemDebug.schedules, 'Creating cron  timespec:' , timespec)
+#    SystemDebug.debug(SystemDebug.schedules, 'Creating cron  timespec:' , timespec)
     timespec[:minute] + ' ' + timespec[:hour] + ' ' + timespec[:day_of_month] + ' ' + timespec[:month] + ' ' + timespec[:day_of_week]
   end
 

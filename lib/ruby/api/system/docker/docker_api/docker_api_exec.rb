@@ -26,10 +26,10 @@ module DockerApiExec
 
     def has_data?
       if (@i_stream.nil? || @i_stream.closed? ) && @data.nil?
-        STDERR.puts("\n HAS NO DTAT ")
+        #    STDERR.puts("\n HAS NO DTAT ")
         false
       elsif !@data.nil? && @data.length > 0
-        STDERR.puts(' HAS STR DTAT ')
+        #  STDERR.puts(' HAS STR DTAT ')
         true
       elsif ! @i_stream.nil?
         true
@@ -90,14 +90,14 @@ module DockerApiExec
     def process_response()
       lambda do |chunk , c , t|
         if @out_stream.nil?
-          STDERR.puts(' SR a chunk')
+          #  STDERR.puts(' SR a chunk')
           r = DockerUtils.decode_from_docker_chunk(chunk, true)
           next if r.nil?
           @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
           @result[:stdout] = @result[:stdout].to_s + r[:stdout].to_s
           # return_result[:raw] = return_result[:raw] + chunk.to_s
         else
-          STDERR.puts(' SR a stream')
+          #   STDERR.puts(' SR a stream')
           r = DockerUtils.decode_from_docker_chunk(chunk, true, @out_stream)
           next if r.nil?
           # @out_stream.write(r[:stdout])
@@ -114,35 +114,35 @@ module DockerApiExec
   def docker_exec(params)
     r = create_docker_exec(params) #container, commands, have_data)
     if r.is_a?(Hash)
-      STDERR.puts(r.to_s)
+      # STDERR.puts(r.to_s)
       exec_id = r[:Id]
       request = '/exec/' + exec_id + '/start'
       request_params = {
         'Detach' => false,
         'Tty' => false,
       }
-      STDERR.puts(' exce oarens ' + params.keys.to_s)
+      #   STDERR.puts(' exce oarens ' + params.keys.to_s)
 
       headers = {
         'Content-type' => 'application/json'
       }
 
-      SystemDebug.debug(SystemDebug.docker,'docker_exec ' + request_params.to_s + ' request  ' + request.to_s )
+      #   SystemDebug.debug(SystemDebug.docker,'docker_exec ' + request_params.to_s + ' request  ' + request.to_s )
       unless params.key?(:stdin_stream) || params.key?(:data)
         stream_reader = DockerStreamReader.new(params[:stdout_stream])
-        STDERR.puts("\n\nSTREA " + request_params.to_s )
+        #    STDERR.puts("\n\nSTREA " + request_params.to_s )
         r = post_stream_request(request, nil, stream_reader, headers, request_params.to_json)
         stream_reader.result[:result] = get_exec_result(exec_id)
-        STDERR.puts("\n\nSTREA resul " + stream_reader.result.to_s)
+        #   STDERR.puts("\n\nSTREA resul " + stream_reader.result.to_s)
         r = stream_reader.result
       else
         stream_handler = DockerHijackStreamHandler.new(params[:data], params[:stdin_stream], params[:stdout_stream])
         #   headers['Connection'] = 'Upgrade',
         #    headers['Upgrade'] = 'tcp'
-        STDERR.puts("\n\Hijack " + request_params.to_s )
+        #    STDERR.puts("\n\Hijack " + request_params.to_s )
         r = post_stream_request(request, nil, stream_handler, headers, request_params.to_json)
         stream_handler.result[:result] = get_exec_result(exec_id)
-        STDERR.puts("\n\Hijack resul " + stream_handler.result.to_s)
+      #   STDERR.puts("\n\Hijack resul " + stream_handler.result.to_s)
         r = stream_handler.result
 
         #unless params.key?(:stdin_stream) ||params.key?(:data)
@@ -158,7 +158,7 @@ module DockerApiExec
 
   def get_exec_result(exec_id)
     r = get_request('/exec/' + exec_id.to_s + '/json')
-    STDERR.puts(r.to_s)
+   # STDERR.puts(r.to_s)
     r[:ExitCode]
   end
 
@@ -178,12 +178,12 @@ module DockerApiExec
       request_params['AttachStdin'] = false
     end
     request = '/containers/' + params[:container].container_id.to_s + '/exec'
-    SystemDebug.debug(SystemDebug.docker,'create_docker_exec ' + request_params.to_s + ' request  ' + request.to_s )
+  #  SystemDebug.debug(SystemDebug.docker,'create_docker_exec ' + request_params.to_s + ' request  ' + request.to_s )
     post_request(request, request_params)
   end
 
   def format_commands(commands)
-    STDERR.puts('Commands is an array') if commands.is_a?(Array)
+  #  STDERR.puts('Commands is an array') if commands.is_a?(Array)
     commands = [commands] unless commands.is_a?(Array)
     commands
   end

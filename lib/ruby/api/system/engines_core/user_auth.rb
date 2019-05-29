@@ -19,7 +19,7 @@ module UserAuth
     ldap = Net::LDAP.new
     ldap.host = 'ldap'
     ldap.port = 389
-    STDERR.puts('LDAP LOGIN PARAMS ', params.to_s )
+   # STDERR.puts('LDAP LOGIN PARAMS ', params.to_s )
     ldap.auth(params[:user_name], params[:password])
     if ldap.bind
       tok =  SecureRandom.hex(48)
@@ -47,6 +47,7 @@ ensure
   end
 
   def record_login(params)
+    #FIXME save to file
     STDERR.puts(Time.now.to_s + ':' + params[:user_name] + ':' + params[:src_ip] )
   end
 
@@ -56,9 +57,9 @@ ensure
       if is_admin_token_valid?(token, ip)
         access = true
       else
-        STDERR.puts('USER TOKENS ' + $user_tokens.to_s)
+    #    STDERR.puts('USER TOKENS ' + $user_tokens.to_s)
         access = $user_tokens.key?(token)
-        STDERR.puts('USER Access ' + access.to_s)
+     #   STDERR.puts('USER Access ' + access.to_s)
       end
     else
       access = false
@@ -118,9 +119,9 @@ ensure
   end
 
   def init_system_password(password,  token = nil)
-    SystemDebug.debug(SystemDebug.first_run, :applyin, password)
+   # SystemDebug.debug(SystemDebug.first_run, :applyin, password)
     set_system_user_password(password,  token)
-    SystemDebug.debug(SystemDebug.first_run, :applied, password)
+   # SystemDebug.debug(SystemDebug.first_run, :applied, password)
   end
 
   def get_system_user_info(user_name)
@@ -181,7 +182,7 @@ ensure
     if rws.nil? || rws.count == 0
       query = 'INSERT INTO systemaccess (username, password,  authtoken, uid)
                  VALUES (?, ?, ?, ?, ?)'
-      SystemDebug.debug(SystemDebug.first_run,:applyin,  query, [user, password, authtoken, 0])
+    #  SystemDebug.debug(SystemDebug.first_run,:applyin,  query, [user, password, authtoken, 0])
       auth_database.execute(query, [user, password, authtoken, 0])
       update_local_token(authtoken) if user == 'admin'
     else
@@ -197,14 +198,14 @@ ensure
       + password.to_s  \
       + "', authtoken ='" + authtoken.to_s \
       + "' where username = '" + user + "' and authtoken = '" + token.to_s + "';"
-      SystemDebug.debug(SystemDebug.first_run,:applyin, query)
+     # SystemDebug.debug(SystemDebug.first_run,:applyin, query)
       auth_database.execute(query)
       update_local_token(authtoken) if user == 'admin'
     end
 
     authtoken
   rescue StandardError => e
-    SystemDebug.debug(SystemDebug.first_run,"Exception ", e)
+ #   SystemDebug.debug(SystemDebug.first_run,"Exception ", e)
     log_error_mesg(e.to_s)
     auth_database.close
     true
@@ -240,7 +241,7 @@ ensure
   private
 
   def update_local_token(token)
-    SystemDebug.debug(SystemDebug.first_run, ' Save Token', token)
+  #  SystemDebug.debug(SystemDebug.first_run, ' Save Token', token)
     toke_file = File.new('/home/engines/.engines_token', 'w+')
     begin
       toke_file.puts(token)
@@ -248,7 +249,7 @@ ensure
       toke_file.close
     end
   rescue StandardError => e
-    SystemDebug.debug(SystemDebug.first_run,"Exception ", e)
+ #   SystemDebug.debug(SystemDebug.first_run,"Exception ", e)
     log_error_mesg(e.to_s)
   end
 

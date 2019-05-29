@@ -46,7 +46,7 @@ module DockerApiContainerStatus
     # request='/containers/json?son?all=false&name=/' + container.container_name
     request='/containers/' + container.container_name + '/json'
     containers_info = get_request(request)
-    SystemDebug.debug(SystemDebug.containers, 'docker:container_id_from_name  ' ,container.container_name   )
+    #  SystemDebug.debug(SystemDebug.containers, 'docker:container_id_from_name  ' ,container.container_name   )
     if containers_info.is_a?(Array)
       containers_info.each do |info|
         #  SystemDebug.debug(SystemDebug.containers, 'container_id_from_name  ' ,info['Names'][0]  )

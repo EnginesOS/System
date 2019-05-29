@@ -2,7 +2,7 @@ module ContainerStatus
   def read_state
     state = 'nocontainer'
     info = docker_info
-    SystemDebug.debug(SystemDebug.containers, :info)
+#    SystemDebug.debug(SystemDebug.containers, :info)
     if info.is_a?(Hash)
       if info.key?(:State)
         if info[:State][:Running] == true
@@ -16,11 +16,11 @@ module ContainerStatus
         elsif info[:State][:Status] == 'exited'
           state = 'stopped'
         end
-      else
-        SystemDebug.debug(SystemDebug.containers, :no_matched_info, info)
+   #   else
+   #     SystemDebug.debug(SystemDebug.containers, :no_matched_info, info)
       end
     end
-    SystemDebug.debug(SystemDebug.containers, 'in State', state.to_s)
+#    SystemDebug.debug(SystemDebug.containers, 'in State', state.to_s)
     state
   end
 
@@ -69,16 +69,16 @@ module ContainerStatus
 
   def uptime
     info = docker_info
-    STDERR.puts( ' Docker info is a ' + info.class.name)
-    STDERR.puts( ' Docker info is ' + info[:State][:StartedAt].to_s)
+   # STDERR.puts( ' Docker info is a ' + info.class.name)
+  #  STDERR.puts( ' Docker info is ' + info[:State][:StartedAt].to_s)
     
     if info.is_a?(FalseClass) ||info.nil? || info[:State][:StartedAt].nil?
       0
     else
       begin
-        STDERR.puts( ' Now ' + DateTime.now.to_s)
-        STDERR.puts( ' Data parse ' + DateTime.parse(info[:State][:StartedAt]).to_s)
-        STDERR.puts( ' duff '  + (DateTime.now - DateTime.parse(info[:State][:StartedAt])).to_s )
+   #     STDERR.puts( ' Now ' + DateTime.now.to_s)
+   #     STDERR.puts( ' Data parse ' + DateTime.parse(info[:State][:StartedAt]).to_s)
+   #     STDERR.puts( ' duff '  + (DateTime.now - DateTime.parse(info[:State][:StartedAt])).to_s )
      DateTime.now - DateTime.parse(info[:State][:StartedAt])
       rescue StandardError => e
         STDERR.puts( ' ex ' + e.to_s)

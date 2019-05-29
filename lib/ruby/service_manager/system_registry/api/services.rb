@@ -1,7 +1,7 @@
 module Services
   # Services Methods
   def all_engines_registered_to(service_type)
-    SystemDebug.debug(SystemDebug.registry,'  All registered to  ', service_type.to_s)
+ #   SystemDebug.debug(SystemDebug.registry,'  All registered to  ', service_type.to_s)
     rest_get('service/registered/engines/' + service_type )
   end
 
@@ -18,7 +18,7 @@ module Services
   end
 
   def add_to_services_registry(service_hash)
-    SystemDebug.debug(SystemDebug.services,'sm add_to_servicess_registry ', service_hash)
+ #   SystemDebug.debug(SystemDebug.services,'sm add_to_servicess_registry ', service_hash)
     r = 'services/add'
     r += address_params(service_hash, [:parent_engine, :service_handle, :publisher_namespace, :type_path])
     rest_post( r,  {:api_vars => service_hash} )

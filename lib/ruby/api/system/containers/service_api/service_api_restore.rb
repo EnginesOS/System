@@ -5,7 +5,7 @@ module ServiceApiRestore
     raise EnginesException.new(error_hash("failed to import service not running " + service.container_name.to_s)) unless service.is_running?
     cmd = [SystemConfig.ServiceBackupScriptsRoot + '/restore.sh',params[:replace].to_s, params[:section].to_s] #, params[:section].to_s]
     params = {container: service, command_line: cmd, log_error: true, stdin_stream: stream}
-    SystemDebug.debug(SystemDebug.export_import, :import_service)
+   # SystemDebug.debug(SystemDebug.export_import, :import_service)
     # STDERR.puts('STREAM' + stream.inspect)
     result = {}
 
@@ -15,7 +15,7 @@ module ServiceApiRestore
       Timeout.timeout(@@import_timeout) do
         thr.join
       end
-      SystemDebug.debug(SystemDebug.export_import, :import_service,'result ', result.to_s)
+   #   SystemDebug.debug(SystemDebug.export_import, :import_service,'result ', result.to_s)
     rescue Timeout::Error
       thr.kill
       raise EnginesException.new(error_hash('Import Timeout on Running Action ', cmd))
@@ -39,13 +39,13 @@ module ServiceApiRestore
 
   def export_data(container, stream)
 
-    SystemDebug.debug(SystemDebug.export_import, :export_service, container.container_name)
+  #  SystemDebug.debug(SystemDebug.export_import, :export_service, container.container_name)
     cmd_dir = SystemConfig.ServiceBackupScriptsRoot + '/'
     raise EnginesException.new(error_hash("failed to export service not running " + container.container_name.to_s)) unless container.is_running?
     cmd = cmd_dir + '/backup.sh'
     params = {container: container, command_line: [cmd], log_error: true}
     params[:stdout_stream] = stream unless stream.nil?
-    SystemDebug.debug(SystemDebug.export_import, :export_service, cmd)
+ #   SystemDebug.debug(SystemDebug.export_import, :export_service, cmd)
     export(container, params)
   end
 
@@ -56,7 +56,7 @@ module ServiceApiRestore
       thr[:name] = 'export:' + params.to_s
       Timeout.timeout(@@export_timeout) do
         thr.join
-        SystemDebug.debug(SystemDebug.export_import, :export_service, container.container_name, 'result code =', result[:result])
+    #    SystemDebug.debug(SystemDebug.export_import, :export_service, container.container_name, 'result code =', result[:result])
         result
       end
     rescue Timeout::Error
