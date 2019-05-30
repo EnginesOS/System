@@ -42,7 +42,7 @@ module Containers
       f.flush()
       f.close
       #Do it this way so a failure to write doesn't trash a working file
-      FileUtils.mv(statefile + '_tmp', statefile)
+      FileUtils.mv(statefile + '_tmp', statefile)  if File.exist?(statefile + '_tmp')
     ensure
       f.close unless f.nil?          
     end
