@@ -40,10 +40,11 @@ module Containers
     begin
       f.puts(serialized_object)
       f.flush()
+      f.close
       #Do it this way so a failure to write doesn't trash a working file
-      FileUtils.mv(statefile + '_tmp',statefile)
+      FileUtils.mv(statefile + '_tmp', statefile)
     ensure
-      f.close          
+      f.close if f.open?          
     end
     begin
       ts =  File.mtime(statefile)
