@@ -84,8 +84,7 @@ class DockerEventWatcher < ErrorsApi
     get_client
     parser = yparser # ||= Yajl::Parser.new({:symbolize_keys => true})
     parser.on_parse_complete = method(:handle_event)
-    @client.request(Net::HTTP::Get.new('/events')) do |resp|
-    
+    @client.request(Net::HTTP::Get.new('/events')) do |resp|    
       json_part = nil
       resp.read_body do |chunk|
         begin
@@ -101,7 +100,7 @@ class DockerEventWatcher < ErrorsApi
 #          end
           chunk.gsub!(/}[ \n\r]*$/, '}')
           chunk.gsub!(/^[ \n\r]*{/,'{')
-          #           STDERR.puts(' Chunk |' + chunk.to_s + '|')
+          STDERR.puts(' Chunk |' + chunk.to_s + '|')
           parser << chunk
 #          hash = parser.parse(chunk)
 #          STDERR.puts(' Hash ' + hash.to_s)
@@ -135,9 +134,9 @@ class DockerEventWatcher < ErrorsApi
     @client.finish if @client.started?
     @client = nil
   rescue StandardError => e
-    log_exception(e)
-    log_error_mesg('Restarting docker Event Stream post exception ')
     STDERR.puts('EXCEPTION docker Event Stream post exception due to ' + e.to_s + ' ' + e.class.name)
+    log_exception(e)
+    log_error_mesg('Restarting docker Event Stream post exception ') 
     @client.finish if @client.started?
     @client = nil
     # @system.start_docker_event_listener(@event_listeners)
