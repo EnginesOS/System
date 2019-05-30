@@ -44,7 +44,7 @@ module Containers
       #Do it this way so a failure to write doesn't trash a working file
       FileUtils.mv(statefile + '_tmp', statefile)
     ensure
-      f.close if f.open?          
+      f.close unless f.nil?          
     end
     begin
       ts =  File.mtime(statefile)
