@@ -36,13 +36,13 @@ module Containers
       rescue StandardError => e
       end
     end
-    f = File.new(statefile + '_tmp', File::CREAT | File::TRUNC | File::RDWR, 0644)
+    f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0600) # was statefile + '_tmp
     begin
       f.puts(serialized_object)
       f.flush()
       f.close
       #Do it this way so a failure to write doesn't trash a working file
-      FileUtils.mv(statefile + '_tmp', statefile)  if File.exist?(statefile + '_tmp')
+    #  FileUtils.mv(statefile + '_tmp', statefile) if File.exist?(statefile + '_tmp')
     ensure
       f.close unless f.nil?          
     end
