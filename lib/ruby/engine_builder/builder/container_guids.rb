@@ -1,7 +1,7 @@
 module ContainerGuids
-#  def new_container_uid
-#    @core_api.new_container_uid(@build_params[:engine_name])
-#  end
+  #  def new_container_uid
+  #    @core_api.new_container_uid(@build_params[:engine_name])
+  #  end
   def set_container_guids
     unless set_guids_from_orphan.is_a?(TrueClass)
       unless @build_params[:permission_as].nil?
@@ -18,8 +18,6 @@ module ContainerGuids
     end
   end
 
- 
-
   def set_guids_from_orphan
     r = false
     @build_params[:attached_services].each do |service|
@@ -28,6 +26,17 @@ module ContainerGuids
       if r == true
         STDERR.puts('Got ids from orphan ' + service.to_s)
         break
+      else
+        service_hash[:variables][:fw_user] = @core_api.volume_ownership({container_type: params[:container_type],
+          container_name: params[:container_name],
+          volume_name: params[:variables][:service_name]
+        })
+        if service_hash[:variables][:fw_user] == '-1' || service_hash[:variables][:fw_user].nil?
+          r = false
+        else
+          r = true
+          break
+        end
       end
     end
     STDERR.puts('Get ids from orphan status' + r.to_s)
@@ -42,9 +51,9 @@ module ContainerGuids
         if service_hash[:variables].key?(:fw_user)
           @cont_user_id = service_hash[:variables][:fw_user]
           r = true
-          @data_uid = service_hash[:variables][:user]
-          @data_gid = service_hash[:variables][:group]
         end
+        @data_uid = service_hash[:variables][:user]
+        @data_gid = service_hash[:variables][:group]
       end
     end
     STDERR.puts('Failed to get ID from orphan ' + service.to_s + "\n retrieved:" + service_hash.to_s) unless r == true
