@@ -76,7 +76,7 @@ module Builders
     close_all
   rescue StandardError => e
     post_failed_build_clean_up
-    log_exception(e)
+    #log_exception(e)
   ensure
     File.delete('/opt/engines/run/system/flags/building_params') if File.exist?('/opt/engines/run/system/flags/building_params')
   end
@@ -90,7 +90,7 @@ module Builders
     close_all
   rescue StandardError => e
     post_failed_build_clean_up
-    log_exception(e)
+    #log_exception(e)
   ensure
     File.delete('/opt/engines/run/system/flags/building_params') if File.exist?('/opt/engines/run/system/flags/building_params')
   end
@@ -165,8 +165,8 @@ module Builders
     log_build_errors('Engine Build Aborted Due to:' + e.to_s)
     STDERR.puts(e.backtrace.to_s)
     # post_failed_build_clean_up
-    log_exception(e)
-    raise e
+   # log_exception(e)
+   # raise e
     #  close_all
   end
 
