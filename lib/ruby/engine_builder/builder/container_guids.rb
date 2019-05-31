@@ -29,7 +29,7 @@ module ContainerGuids
       else
         service[:variables][:fw_user] = @core_api.volume_ownership({container_type: service[:container_type],
           container_name: service[:container_name],
-          volume_name: service[:variables][:service_name]
+          volume_name: service[:service_handle]
         })
         if service[:variables][:fw_user] == '-1' || service[:variables][:fw_user].nil?
           r = false
