@@ -75,7 +75,9 @@ class SystemApi < ErrorsApi
 
   require_relative 'service_management.rb'
   include ServiceManagement
-
+  
+  require_relative 'system_host/engines_volumes.rb'
+  include EnginesVolumes
   # FixMe
   # Put if first run needed around this
   require_relative 'first_run_complete.rb'
