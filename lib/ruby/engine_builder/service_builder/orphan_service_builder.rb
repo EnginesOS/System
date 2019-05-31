@@ -16,8 +16,9 @@ module OrphansServiceBuilder
   end
 
   def release_orphans()
-    @orphans.each do |service_hash|
-      @core_api.release_orphan(service_hash)
-    end
+  #  @orphans.each do |service_hash|
+  #    @core_api.release_orphan(service_hash)
+  #  end
+    @orphans.each {|service_hash|@core_api.release_orphan(service_hash)}
   end
 end
