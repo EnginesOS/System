@@ -26,17 +26,6 @@ module ContainerGuids
       if r == true
         STDERR.puts('Got ids from orphan ' + service.to_s)
         break
-      else
-        service[:variables][:fw_user] = @core_api.volume_ownership({container_type: service[:container_type],
-          container_name: service[:container_name],
-          volume_name: service[:service_handle]
-        })
-        if service[:variables][:fw_user] == '-1' || service[:variables][:fw_user].nil?
-          r = false
-        else
-          r = true
-          break
-        end
       end
     end
     STDERR.puts('Get ids from orphan status' + r.to_s)
@@ -51,6 +40,16 @@ module ContainerGuids
         if service_hash[:variables].key?(:fw_user)
           @cont_user_id = service_hash[:variables][:fw_user]
           r = true
+        else
+          service[:variables][:fw_user] = @core_api.volume_ownership({container_type: service[:container_type],
+            container_name: service[:container_name],
+            volume_name: service[:service_handle]
+          })
+          if service[:variables][:fw_user] == '-1' || service[:variables][:fw_user].nil?
+            r = false
+          else
+            r = true
+          end
         end
         @data_uid = service_hash[:variables][:user]
         @data_gid = service_hash[:variables][:group]
