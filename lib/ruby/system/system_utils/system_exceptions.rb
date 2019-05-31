@@ -1,6 +1,10 @@
 module SystemExceptions
   def SystemUtils.log_exception(*args)
+    
     e = args[0]
+    if e.is_a?(EnginesException)
+      return unless e.level == :error         
+    end
     e_str = '  BT'
     e.backtrace.each do |bt|
       e_str += bt + " \n"
