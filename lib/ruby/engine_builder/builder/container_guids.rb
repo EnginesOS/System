@@ -27,11 +27,11 @@ module ContainerGuids
         STDERR.puts('Got ids from orphan ' + service.to_s)
         break
       else
-        service_hash[:variables][:fw_user] = @core_api.volume_ownership({container_type: params[:container_type],
-          container_name: params[:container_name],
-          volume_name: params[:variables][:service_name]
+        service[:variables][:fw_user] = @core_api.volume_ownership({container_type: service[:container_type],
+          container_name: service[:container_name],
+          volume_name: service[:variables][:service_name]
         })
-        if service_hash[:variables][:fw_user] == '-1' || service_hash[:variables][:fw_user].nil?
+        if service[:variables][:fw_user] == '-1' || service[:variables][:fw_user].nil?
           r = false
         else
           r = true
