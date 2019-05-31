@@ -106,6 +106,8 @@ module EnginesOperations
       raise EnginesException.new(error_hash(params[:engine_name], 'Build Failed to start'))
     end
     @build_thread
+  rescue StandardError =>e
+    STDERR.puts('Build Thread Excepted ' + e.to_s + "\n" + e.backtrace.to_s)
   end
 
   def set_container_runtime_properties(container, params)
