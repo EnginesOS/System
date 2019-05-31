@@ -1,29 +1,30 @@
 module SystemExceptions
   def SystemUtils.log_exception(*args)
-    
+    loggable=true
     e = args[0]
     if e.is_a?(EnginesException)
-      return unless e.level == :error         
+      loggable = false unless e.level == :error
     end
-    e_str = '  BT'
-    e.backtrace.each do |bt|
-      e_str += bt + " \n"
+    if loggable.is_a?(FalseClass)
+      e_str = '  BT'
+      e.backtrace.each do |bt|
+        e_str += bt + " \n"
+      end
+      args.each do |arg|
+        e_str += arg.to_s + ' '
+      end
+      @@last_error = e_str
+      SystemUtils.log_output(e_str, 10)
+      e_str +="\n\n"
+      begin
+        elof = File.open("/tmp/exceptions.log", "a+")
+        elof.write(e_str)
+      ensure
+        elof.close
+      end
+      SystemUtils.log_exception_to_bugcatcher(e) unless File.exists?(SystemConfig.NoRemoteExceptionLoggingFlagFile)
+      EnginesError.new(e_str.to_s, :exception)
     end
-
-    args.each do |arg|
-      e_str += arg.to_s + ' '
-    end
-    @@last_error = e_str
-    SystemUtils.log_output(e_str, 10)
-    e_str +="\n\n"
-    elof = File.open("/tmp/exceptions.log", "a+")
-    begin
-      elof.write(e_str)
-    ensure
-      elof.close
-    end
-    SystemUtils.log_exception_to_bugcatcher(e) unless File.exists?(SystemConfig.NoRemoteExceptionLoggingFlagFile)
-    EnginesError.new(e_str.to_s, :exception)
   end
 
   def SystemUtils.log_exception_to_bugcatcher(e)
@@ -44,15 +45,15 @@ module SystemExceptions
     error_log_hash[:user_comment] = ''
     error_log_hash[:user_email] = 'backend@engines.onl'
     STDERR.puts('BUG LOGGER is a ' + ENV['BUG_REPORTS_SERVER'])
-      url_s = ENV['BUG_REPORTS_SERVER'].sub(/https/,'http')
+    url_s = ENV['BUG_REPORTS_SERVER'].sub(/https/,'http')
     uri = URI.parse(url_s)
     conn = nil
     req = Net::HTTP.post_form(uri, error_log_hash )
-  #  req.set_form_data(error_log_hash)
+    #  req.set_form_data(error_log_hash)
     Net::HTTP.start(uri.host, uri.port, {
-      :use_ssl => uri.scheme == 'https', 
+      :use_ssl => uri.scheme == 'https',
       :verify_mode => OpenSSL::SSL::VERIFY_NONE}) do |http| #
-    #  http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      #  http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       conn = http
       #FIX ME needs to be verified so never spoofed
       response = http.request(req) # Net::HTTPResponse object
