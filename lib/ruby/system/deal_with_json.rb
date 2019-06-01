@@ -1,11 +1,11 @@
 def deal_with_json(r)
   unless r.nil?
     r = parse_as_json(r) unless r.is_a?(Hash)
-    unless r.is_a?(Sinatra::IndifferentHash)
+  #  unless r.is_a?(Sinatra::IndifferentHash)
       symbolise_json(r)
-    else
-      r
-    end
+  #  else
+ #     r
+ #   end
   end
 rescue StandardError => e
   #log_error_mesg(' parse problem with ' + r.to_s)
