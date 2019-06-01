@@ -1,8 +1,8 @@
 module ManagedContainerControls
   def reinstall_engine(builder)
     builder.reinstall_engine(self) if prep_task(:build)
-    rescue StandardError =>e
-      SystemUtils.log_exception(e , 'Reinstall:' + container_name)
+  rescue StandardError =>e
+    SystemUtils.log_exception(e , 'Reinstall:' + container_name)
   end
 
   def wait_for_startup(timeout = 60)
@@ -36,8 +36,9 @@ module ManagedContainerControls
     end
     thr.name = 'Destroy:' + container_name
     thr
-    rescue StandardError =>e
-      SystemUtils.log_exception(e , 'Destroy:' + container_name)
+  rescue StandardError =>e
+    SystemUtils.log_exception(e , 'Destroy:' + container_name)
+    thr.exit unless thr.nil?
   end
 
   def delete_engine
@@ -46,8 +47,9 @@ module ManagedContainerControls
     end
     thr.name = 'Delete:' + container_name
     thr
-    rescue StandardError =>e
-      SystemUtils.log_exception(e , 'Delete Engine:' + container_name)
+  rescue StandardError =>e
+    SystemUtils.log_exception(e , 'Delete Engine:' + container_name)
+    thr.exit unless thr.nil?
   end
 
   def setup_container
@@ -95,6 +97,7 @@ module ManagedContainerControls
     thr
   rescue StandardError =>e
     SystemUtils.log_exception(e , 'Create:' + container_name)
+    thr.exit unless thr.nil?
   end
 
   def recreate_container
@@ -105,8 +108,9 @@ module ManagedContainerControls
     end
     thr.name = 'Recreate:' + container_name
     thr
-    rescue StandardError =>e
-      SystemUtils.log_exception(e , 'ReCreate:' + container_name)
+  rescue StandardError =>e
+    SystemUtils.log_exception(e , 'ReCreate:' + container_name)
+    thr.exit unless thr.nil?
   end
 
   def unpause_container
@@ -123,8 +127,10 @@ module ManagedContainerControls
     end
     thr.name = 'Unpause:' + container_name
     thr
-    rescue StandardError =>e
-      SystemUtils.log_exception(e , 'Unpause :' + container_name)
+  rescue StandardError =>e
+    SystemUtils.log_exception(e , 'Unpause :' + container_name)
+    thr.exit unless thr.nil?
+
   end
 
   def pause_container
@@ -141,8 +147,9 @@ module ManagedContainerControls
     end
     thr.name = 'Pause:' + container_name
     thr
-    rescue StandardError =>e
-      SystemUtils.log_exception(e , 'Pause:' + container_name)
+  rescue StandardError =>e
+    SystemUtils.log_exception(e , 'Pause:' + container_name)
+    thr.exit unless thr.nil?
   end
 
   def stop_container
@@ -159,8 +166,9 @@ module ManagedContainerControls
     end
     thr.name = 'Stop:' + container_name
     thr
-    rescue StandardError =>e
-      SystemUtils.log_exception(e , 'Stop:' + container_name)
+  rescue StandardError =>e
+    SystemUtils.log_exception(e , 'Stop:' + container_name)
+    thr.exit unless thr.nil?
   end
 
   def halt_container
@@ -171,8 +179,9 @@ module ManagedContainerControls
     end
     thr.name = 'Halt:' + container_name
     thr
-    rescue StandardError =>e
-      SystemUtils.log_exception(e , 'Halt:' + container_name)
+  rescue StandardError =>e
+    SystemUtils.log_exception(e , 'Halt:' + container_name)
+    thr.exit unless thr.nil?
   end
 
   def start_container
@@ -190,8 +199,9 @@ module ManagedContainerControls
     end
     thr.name = 'Start:' + container_name
     thr
-    rescue StandardError =>e
-      SystemUtils.log_exception(e , 'Start:' + container_name)
+  rescue StandardError =>e
+    SystemUtils.log_exception(e , 'Start:' + container_name)
+    thr.exit unless thr.nil?
   end
 
   def restart_container
@@ -203,8 +213,9 @@ module ManagedContainerControls
     end
     thr.name = 'Restart:' + container_name
     thr
-    rescue StandardError =>e
-      SystemUtils.log_exception(e , 'Restart:' + container_name)
+  rescue StandardError =>e
+    SystemUtils.log_exception(e , 'Restart:' + container_name)
+    thr.exit unless thr.nil?
   end
 
   def restore_engine(builder)
@@ -227,8 +238,9 @@ module ManagedContainerControls
     end
     thr.name = 'Rebuild:' + container_name
     thr
-    rescue StandardError =>e
-      SystemUtils.log_exception(e , 'Restore:' + container_name)
+  rescue StandardError =>e
+    SystemUtils.log_exception(e , 'Restore:' + container_name)
+    thr.exit unless thr.nil?
   end
 
   def correct_current_state
