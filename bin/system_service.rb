@@ -3,7 +3,9 @@
 require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
 require 'thread'
 require 'yaml'
-
+#FIXME
+#need sinatra for indirecthash in deal_with_jason 
+require 'sinatra'
 core_api = EnginesCore.new
 
 system_api = core_api.system_api
