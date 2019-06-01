@@ -21,8 +21,8 @@ module EnginesSystemUpdate
     }
     true
   end
-    rescue StandardError => e
-        SystemUtils.log_exception(e , 'update_engines_system_software:')
-        thr.exit unless thr.nil?   
+    rescue StandardError => e       
+        thr.exit unless thr.nil?
+        raise e   
   end
 end
