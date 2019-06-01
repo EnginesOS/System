@@ -59,8 +59,8 @@ end
 def symbolize_keys(h)
   if !h.is_a?(Hash)
     h
-  elsif  h.is_a?(Sinatra::IndifferentHash)
-    h
+ # elsif  h.is_a?(Sinatra::IndifferentHash)
+#    h
   else
     h.inject({}){|r, (key, v)|
       nk = case key
