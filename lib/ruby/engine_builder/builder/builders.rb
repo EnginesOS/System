@@ -23,7 +23,7 @@ module Builders
     @first_build = true
     @attached_services = []
     create_templater
-    process_supplied_envs(@build_params[:variables])
+    
     @runtime =  ''
     backup_lastbuild
     setup_log_output
@@ -32,7 +32,8 @@ module Builders
     else
       set_container_guids
     end
-
+    process_supplied_envs(@build_params[:variables])
+      
     @build_params[:data_uid] = @data_uid
     @build_params[:data_gid] = @data_gid
     @build_params[:cont_user_id] = @cont_user_id
