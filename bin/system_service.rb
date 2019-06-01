@@ -21,8 +21,14 @@ when 'restart'
 when 'start'
   t = service.start_container
   t.join
+when 'create_only'
+  t = service.create_container
+  t.join
 when 'create'
   t = service.create_container
+  t.join
+  service.wait_for('create', 120)
+  t = service.start_container
   t.join
 when 'recreate'
   t = service.destroy_container
