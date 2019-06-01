@@ -40,5 +40,10 @@ module CoreBuildController
       raise EnginesException.new(error_hash(params[:engine_name], 'Build Failed to start'))
     end
     true
+
+    rescue StandardError => e
+      SystemUtils.log_exception(e , 'reinstall_engine:' + params)
+    @build_thread.exit unless @build_thread.nil?
+      false
   end
 end

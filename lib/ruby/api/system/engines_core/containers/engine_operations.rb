@@ -85,6 +85,9 @@ module EnginesOperations
     unless @build_thread.alive?
       raise EnginesException.new(error_hash(params[:engine_name], 'Build Failed to start'))
     end
+    rescue StandardError => e
+      SystemUtils.log_exception(e , 'reinstall_engine:' + params)
+      thr.exit unless thr.nil?
   end
 
   #install from fresh copy of blueprint in repository

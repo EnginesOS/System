@@ -3,16 +3,19 @@ module ServiceApiReaders
     cmd = '/home/readers/' + reader_name + '.sh'
     result = ''
     begin
-      
-        thr = Thread.new { result =  @engines_core.exec_in_container({:container => c, :command_line => [cmd], :log_error => true}) }          
-        thr[:name] = 'action reader ' + c.container_name
-    #  STDERR.puts('Thread ' +  thr.inspect)
-    Timeout.timeout(@@configurator_timeout) do
+
+      thr = Thread.new { result =  @engines_core.exec_in_container({:container => c, :command_line => [cmd], :log_error => true}) }
+      thr[:name] = 'action reader ' + c.container_name
+      #  STDERR.puts('Thread ' +  thr.inspect)
+      Timeout.timeout(@@configurator_timeout) do
         thr.join
       end
     rescue Timeout::Error
       thr.kill
       raise EnginesException.new(error_hash('Timeout on running reader', cmd))
+    rescue StandardError => e
+      SystemUtils.log_exception(e , 'retrieve_reader:' + cmd)
+      thr.exit unless thr.nil?
     end
     raise EnginesException.new(error_hash('Invalid Reader Result', result)) unless result.is_a?(Hash)
     @last_error = result[:stderr] # Dont log just set

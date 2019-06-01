@@ -8,6 +8,9 @@ module BaseOsSystem
     else
       raise EnginesException.new(error_hash('Failed to update os ', res))
     end
+  rescue StandardError => e
+    SystemUtils.log_exception(e , 'update_base_os:')
+    res.exit unless res.nil?
   end
 
   def restart_base_os
@@ -69,5 +72,5 @@ module BaseOsSystem
       r
     end
   end
-  
+
 end
