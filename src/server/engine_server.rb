@@ -20,7 +20,7 @@ begin
   require 'objspace'
   require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
   
-  Thread.abort_on_exception = true
+  #Thread.abort_on_exception = true
   ObjectSpace.trace_object_allocations_start
   
   @events_stream = nil
