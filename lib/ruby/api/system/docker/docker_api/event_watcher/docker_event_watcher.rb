@@ -19,12 +19,12 @@ class DockerEventWatcher < ErrorsApi
     def trigger(hash)
       r = true
       mask = EventMask.event_mask(hash)
-      SystemDebug.debug(SystemDebug.container_events, 'trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask:' + @event_mask.to_s + ' result ' )#+ (@event_mask & mask).to_s)
+      #  SystemDebug.debug(SystemDebug.container_events, 'trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask:' + @event_mask.to_s + ' result ' )#+ (@event_mask & mask).to_s)
       unless @event_mask & mask == 0
         # skip top
         if mask & 32768 == 0 # @@container_top == 0
           hash[:state] = state_from_status(hash[:status])
-          SystemDebug.debug(SystemDebug.container_events, 'fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
+          # SystemDebug.debug(SystemDebug.container_events, 'fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
           begin
             r = @object.method(@method).call(hash)
           rescue EnginesException => e
@@ -100,7 +100,7 @@ class DockerEventWatcher < ErrorsApi
 #          end
           chunk.gsub!(/}[ \n\r]*$/, '}')
           chunk.gsub!(/^[ \n\r]*{/,'{')
-          STDERR.puts(' Chunk |' + chunk.to_s + '|')
+          #        STDERR.puts(' Chunk |' + chunk.to_s + '|')
           parser << chunk
 #          hash = parser.parse(chunk)
 #          STDERR.puts(' Hash ' + hash.to_s)
