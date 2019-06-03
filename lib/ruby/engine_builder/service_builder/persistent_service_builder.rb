@@ -115,7 +115,7 @@ module PersistantServiceBuilder
     if @core_api.match_orphan_service(service_hash) == true
       fresh_build(service_hash, false)
       use_orphan(service_hash)
-    elsif @core_api.service_is_registered? == false
+    elsif @core_api.service_is_registered?(service_hash) == false
       fresh_build(service_hash, true)
       service_hash
     else
