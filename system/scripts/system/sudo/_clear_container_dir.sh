@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 echo clear_container_dir /opt/engines/run/apps/$1 >/tmp/cler_container_dir
 
 if test $# -eq 1
