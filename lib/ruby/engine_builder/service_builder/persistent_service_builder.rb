@@ -124,7 +124,7 @@ module PersistantServiceBuilder
   end
 
   def fresh_build(service_hash, is_fresh)
-    ervice_hash[:fresh] = is_fresh
+    service_hash[:fresh] = is_fresh
     @first_build = is_fresh
   end
 
