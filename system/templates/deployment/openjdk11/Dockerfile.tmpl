@@ -1,0 +1,15 @@
+FROM  engines/openjdk11:_Engines_System(release)
+
+ENV ContUser www-data
+ENV CONTFSVolHome /home/fs/
+
+ADD build_scripts /build_scripts
+ADD home home
+ADD engines home/engines
+
+RUN apt-get update -y &&\
+	/usr/sbin/usermod -u 22671 www-data &&\
+	usermod -a -G data-user www-data &&\
+	chown $ContUser /opt
+	
+	
