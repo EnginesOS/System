@@ -21,7 +21,7 @@ module ContainerCreation
     @core_api.init_engine_dirs(@build_params[:engine_name])
     flag_restart_required(@container) if @has_post_install == true
     launch_deploy(@container)
-    @core_api.trigger_install_event(params[:engine_name], 'installed')
+    @core_api.trigger_install_event(@build_params[:engine_name], 'installed')
     # log_build_output('Applying Volume settings and Log Permissions' + @container.to_s)
     #  log_build_errors('Error Failed to Apply FS' + @container.to_s) unless @service_builder.run_volume_builder(@container, @web_user)
     @container
