@@ -91,7 +91,11 @@ class EnginesCore < ErrorsApi
     require_relative 'user_auth.rb'
     include UserAuth
   end
-
+  
+  require_relative 'fixes/cont_id_fix.rb'
+  include ContainerFixes
+  
+  
   require_relative '../containers/container_api/container_api.rb'
   require_relative '../containers/service_api/service_api.rb'
   require_relative '../docker/docker_api.rb'
@@ -110,6 +114,7 @@ class EnginesCore < ErrorsApi
     @service_api = ServiceApi.new(@docker_api, @system_api, self)
     @service_manager = ServiceManager.new(self) # create_service_manager
     $user_tokens = {}
+    
   end
 
   attr_reader :system_api, :container_api, :service_api
