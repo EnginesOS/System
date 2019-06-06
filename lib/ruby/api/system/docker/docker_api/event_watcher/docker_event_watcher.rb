@@ -141,7 +141,7 @@ class DockerEventWatcher < ErrorsApi
 
   private
 def handle_event(event_hash)
-  #   STDERR.puts(' Hash ' + event_hash.to_s)
+    STDERR.puts(' Hash ' + event_hash.to_s)
   # SystemDebug.debug(SystemDebug.container_events, 'got ' + event_hash.to_s)
   @events_mutex.synchronize { trigger(event_hash) } if is_valid_docker_event?(event_hash)
 end
@@ -182,9 +182,10 @@ end
   end
 
   def trigger(hash)
-      @events_mutex.synchronize {
+    STDERR.puts(' Trigger ' + hash.to_s)
+   #   @events_mutex.synchronize {
     l = @event_listeners.sort_by { |k, v| v[:priority] }
-     }
+   #  }
       STDERR.puts(' Trigger ' + hash.to_s)
     l.each do |m|
       listener = m[1][:listener]
