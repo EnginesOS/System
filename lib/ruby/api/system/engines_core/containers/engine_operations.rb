@@ -1,19 +1,19 @@
 module EnginesOperations
-  
- def lookup_app_uid(container_name)
-   engine = loadManagedEngine(container_name)
-   engine.cont_user_id
- end
- 
+  def lookup_app_uid(container_name)
+    engine = loadManagedEngine(container_name)
+    engine.cont_user_id
+  end
+
   def lookup_app_duid(container_name)
     engine = loadManagedEngine(container_name)
     engine.data_uid
   end
-  
+
   def lookup_app_dgid(container_name)
     engine = loadManagedEngine(container_name)
     engine.data_gid
   end
+
   #require_relative 'service_manager_access.rb'
   # @return boolean indicating sucess
   # @params [Hash] :engine_name
@@ -21,33 +21,42 @@ module EnginesOperations
   # They are removed from the tree if delete is sucessful
   def delete_engine_and_services(params)
     #STDERR.puts('delete_engine_and_services ' + params.to_s)
-   # SystemDebug.debug(SystemDebug.containers, :delete_engines, params)
+    # SystemDebug.debug(SystemDebug.containers, :delete_engines, params)
+    trigger_event(c, 'uninstalling', 'uninstall')
     params[:container_type] = 'app' # Force This
     params[:parent_engine] = params[:engine_name]
     begin
       engine = loadManagedEngine(params[:engine_name])
       #Following is for the roll back of a failed build
     rescue StandardError => e
-      raise e unless params[:rollback] == true
+      unless params[:rollback] == true
+        trigger_event(c, 'failed', 'uninstall')
+        raise e
+      end
     end
     if params[:rollback] == true
       # STDERR.puts(' Roll back called' + params.to_s )
       begin
         unless remove_engine_services(params)
+          trigger_event(c, 'failed', 'uninstall')
           raise EnginesException.new(error_hash('Failed to remove engine services', params))
         end
         true
       end
     else
       if engine.has_container?
+        trigger_event(c, 'failed', 'uninstall')
         raise EnginesException.new(error_hash('Container Exists Please Destroy engine first' , params)) unless params[:reinstall] .is_a?(TrueClass)
       end
-   #   STDERR.puts('bouBOSDRFSDAFt to remove_engine_services')
+      #   STDERR.puts('bouBOSDRFSDAFt to remove_engine_services')
       remove_engine_services(params) #engine_name, reinstall, params[:remove_all_data])
       engine.delete_image if engine.has_image? == true
-   #   SystemDebug.debug(SystemDebug.containers, :engine_image_deleted, engine)
+      #   SystemDebug.debug(SystemDebug.containers, :engine_image_deleted, engine)
       engine.delete_engine unless params[:reinstall] == true
     end
+  rescue Exception => e
+    trigger_event(c, 'failed', 'uninstall')
+    raise e
   end
 
   def remove_engine_services(params)
@@ -56,7 +65,7 @@ module EnginesOperations
     params[:no_exceptions] = true
     #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
     begin
- #    STDERR.puts('RE ENINGE SERVICES  ' + params.to_s)
+      #    STDERR.puts('RE ENINGE SERVICES  ' + params.to_s)
       service_manager.remove_managed_persistent_services(params)
     rescue EnginesException => e
       STDERR.puts('Except  ' + e.to_s)
@@ -85,9 +94,9 @@ module EnginesOperations
     unless @build_thread.alive?
       raise EnginesException.new(error_hash(params[:engine_name], 'Build Failed to start'))
     end
-    rescue StandardError => e
-      SystemUtils.log_exception(e , 'reinstall_engine:' + params)
-      thr.exit unless thr.nil?
+  rescue StandardError => e
+    SystemUtils.log_exception(e , 'reinstall_engine:' + params)
+    thr.exit unless thr.nil?
   end
 
   #install from fresh copy of blueprint in repository
@@ -153,24 +162,24 @@ module EnginesOperations
       if engines[:children].is_a?(Array)
         engines[:children].each do |engine_node|
           name = engine_node[:name]
-          next if name == 'system' || name == 'registry'  || name == 'utility'
+          next if name == 'system' || name == 'registry' || name == 'utility'
           begin
             t = loadManagedEngine(name)
           rescue
             r.push(name)
-      #      STDERR.puts('remove engines services ' + name.to_s)
+            #      STDERR.puts('remove engines services ' + name.to_s)
             begin
               remove_engine_services(
               {lost: true, container_type: 'app', remove_all_data: 'none', parent_engine: name})
             rescue StandardError =>e
             end
-      #      STDERR.puts(' remove_service_from_engine_only')
+            #      STDERR.puts(' remove_service_from_engine_only')
             # here find services on engine but not on service
             services = get_engine_persistent_services({ parent_engine: name })
-    #        STDERR.puts(' remove_service_from_engine_only ' +services.to_s)
+            #        STDERR.puts(' remove_service_from_engine_only ' +services.to_s)
             services.each do | service|
               begin
-            #    STDERR.puts(' remove_service_from_engine_only ' + service.to_s )
+                #    STDERR.puts(' remove_service_from_engine_only ' + service.to_s )
                 service_manager.remove_service_from_engine_only(service)
                 next
               rescue
