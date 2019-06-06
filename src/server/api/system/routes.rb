@@ -13,3 +13,5 @@ require_relative 'version.rb'
 require_relative 'builder.rb'
 require_relative 'system_user.rb'
 require_relative 'uadmin/uadmin.rb'
+require_relative 'fixes/fs_id.rb'
+

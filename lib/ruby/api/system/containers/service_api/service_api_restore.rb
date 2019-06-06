@@ -18,7 +18,10 @@ module ServiceApiRestore
    #   SystemDebug.debug(SystemDebug.export_import, :import_service,'result ', result.to_s)
     rescue Timeout::Error
       thr.kill
-      raise EnginesException.new(error_hash('Import Timeout on Running Action ', cmd))
+      raise EnginesException.new(error_hash('Import Timeout on Running Action ', params))
+      rescue StandardError => e
+          SystemUtils.log_exception(e , 'service_restore:' + params)
+          thr.exit unless thr.nil?   
     end
     if result[:result] == 0
       true
@@ -64,6 +67,9 @@ module ServiceApiRestore
       result[:result] = -1;
       result[:stderr] = 'Export Timeout on Running Action:' + cmd.to_s + ':' + result[:stderr].to_s
       #raise EnginesException.new(error_hash('Export Timeout on Running Action ', cmd))
+    rescue StandardError => e
+        SystemUtils.log_exception(e , 'export:' + params)
+        thr.exit unless thr.nil?   
     end
     if result[:result] == 0
       result #[stdout]

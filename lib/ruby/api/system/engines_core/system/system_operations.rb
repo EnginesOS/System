@@ -53,5 +53,10 @@ module SystemOperations
   def system_hostname
     @system_api.system_hostname
   end
+  
+  def volume_ownership(params)
+    @system_api.volume_ownership(params)
+  end
+  
 
 end

@@ -23,7 +23,7 @@ module Builders
     @first_build = true
     @attached_services = []
     create_templater
-    process_supplied_envs(@build_params[:variables])
+    
     @runtime =  ''
     backup_lastbuild
     setup_log_output
@@ -32,7 +32,8 @@ module Builders
     else
       set_container_guids
     end
-
+    process_supplied_envs(@build_params[:variables])
+      
     @build_params[:data_uid] = @data_uid
     @build_params[:data_gid] = @data_gid
     @build_params[:cont_user_id] = @cont_user_id
@@ -76,7 +77,7 @@ module Builders
     close_all
   rescue StandardError => e
     post_failed_build_clean_up
-    log_exception(e)
+    #log_exception(e)
   ensure
     File.delete('/opt/engines/run/system/flags/building_params') if File.exist?('/opt/engines/run/system/flags/building_params')
   end
@@ -90,7 +91,7 @@ module Builders
     close_all
   rescue StandardError => e
     post_failed_build_clean_up
-    log_exception(e)
+    #log_exception(e)
   ensure
     File.delete('/opt/engines/run/system/flags/building_params') if File.exist?('/opt/engines/run/system/flags/building_params')
   end
@@ -139,6 +140,7 @@ module Builders
       @service_builder.service_roll_back
       @build_params[:rollback]
       @core_api.delete_engine_and_services(@build_params)
+      @core_api.trigger_install_event(@build_params[:engine_name], 'failed')
     rescue
       #dont panic if no container
     end
@@ -157,19 +159,16 @@ module Builders
     get_base_image
     setup_engine_dirs
     create_engine_image
-    #  GC::OOB.run
     @container = create_engine_container
     @service_builder.release_orphans
-    #  wait_for_engine
-    #   SystemStatus.build_complete(@build_params)
     @container
   rescue StandardError => e
     #log_exception(e)
     log_build_errors('Engine Build Aborted Due to:' + e.to_s)
     STDERR.puts(e.backtrace.to_s)
     # post_failed_build_clean_up
-    log_exception(e)
-    raise e
+   # log_exception(e)
+   # raise e
     #  close_all
   end
 

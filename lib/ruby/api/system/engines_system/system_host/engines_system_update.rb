@@ -21,5 +21,8 @@ module EnginesSystemUpdate
     }
     true
   end
+    rescue StandardError => e       
+        thr.exit unless thr.nil?
+        raise e   
   end
 end

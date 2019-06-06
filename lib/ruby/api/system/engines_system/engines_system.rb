@@ -8,7 +8,10 @@ class SystemApi < ErrorsApi
   require '/opt/engines/lib/ruby/containers/system_service/system_service.rb'
   require '/opt/engines/lib/ruby/system/system_config.rb'
   require '/opt/engines/lib/ruby/system/engines_error.rb'
-
+  
+  require_relative 'events_trigger.rb'
+  include EventsTrigger
+  
   require_relative 'system_host/base_os_system.rb'
   include BaseOsSystem
 
@@ -75,7 +78,9 @@ class SystemApi < ErrorsApi
 
   require_relative 'service_management.rb'
   include ServiceManagement
-
+  
+  require_relative 'system_host/engines_volumes.rb'
+  include EnginesVolumes
   # FixMe
   # Put if first run needed around this
   require_relative 'first_run_complete.rb'

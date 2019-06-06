@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 touch /opt/engines/run/system/flags/system_starting
 cp /opt/engines/run/system/flags/{system_shutdown,system_shutdown.last}
@@ -13,7 +13,7 @@ if ! /usr/bin/test $? -eq 0
 	/usr/sbin/service docker start
  fi
 
-/bin/su  engines /opt/engines/sbin/_engines_startup.sh
+/bin/su engines /opt/engines/sbin/_engines_startup.sh
 
 
 touch /opt/engines/run/system/flags/system_started

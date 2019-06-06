@@ -32,7 +32,7 @@ module ContainerControls
       raise EnginesException.new(warning_hash("Can\'t Stop " + container_name + ' as is ' + read_state.to_s, container_name)) unless read_state == 'running'
       r = @container_api.stop_container(self)
       expire_engine_info
-    end    
+    end
     r
   end
 
@@ -78,7 +78,7 @@ module ContainerControls
 
   def create_container
     expire_engine_info
-  #  SystemDebug.debug(SystemDebug.containers, :create_container, :containerid)
+    #  SystemDebug.debug(SystemDebug.containers, :create_container, :containerid)
     raise EnginesException.new(warning_hash('Cannot create container as container exists ' + container_name.to_s, container_name)) if has_container?
     @container_id = -1
     @container_api.create_container(self)

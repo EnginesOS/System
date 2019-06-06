@@ -64,28 +64,37 @@ module DockerApiImages
 
   def delete_container_image(container)
     request = '/images/' + container.image
-    thr = Thread.new {       
-    delete_request(request)
+    thr = Thread.new {
+      delete_request(request)
     }
     thr[:name] = 'Docker delete container ' + container.image
+  rescue StandardError => e
+    SystemUtils.log_exception(e , 'delete_container_image:' + container.container_name)
+    thr.exit unless thr.nil?
   end
 
   def delete_image(image_name)
-    thr = Thread.new {       
-    request = '/images/' + image_name
-    delete_request(request)}
-      thr[:name] = 'Docker delete image:' + image_name.to_s
+    thr = Thread.new {
+      request = '/images/' + image_name
+      delete_request(request)}
+    thr[:name] = 'Docker delete image:' + image_name.to_s
+  rescue StandardError => e
+    SystemUtils.log_exception(e , 'delete_image:' + image_name)
+    thr.exit unless thr.nil?
   end
 
   def clean_up_dangling_images
-    thr = Thread.new {       
-    images = find_images('dangling=true')
-    unless images.is_a?(FalseClass)
-      images.each do |image|
-        next unless image.is_a?(Hash) && image.key?(:Id)
-        @docker_comms.delete_image(image[:Id])
-      end
-    end }
+    thr = Thread.new {
+      images = find_images('dangling=true')
+      unless images.is_a?(FalseClass)
+        images.each do |image|
+          next unless image.is_a?(Hash) && image.key?(:Id)
+          @docker_comms.delete_image(image[:Id])
+        end
+      end }
     thr[:name] = 'clean_up_dangling_images:'
+  rescue StandardError => e
+    SystemUtils.log_exception(e , 'clean_up_dangling_images:')
+    thr.exit unless thr.nil?
   end
 end

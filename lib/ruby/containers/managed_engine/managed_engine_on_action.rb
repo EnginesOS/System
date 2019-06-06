@@ -10,7 +10,7 @@ module ManagedEngineOnAction
   #    {type_path: 'filesystem/local/filesystem'
   #    })
   #  if vols.is_a?(Array) && vols.length > 0 
-  #  STDERR.puts('RuN VOLBUILER')        
+    STDERR.puts('RuN VOLBUILER ' + @cont_user_id.to_s + ':' + container_name)        
     @container_api.run_volume_builder(self, @cont_user_id, 'all')
     #  end
       @volume_service_builder = false

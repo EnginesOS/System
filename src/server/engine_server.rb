@@ -7,6 +7,7 @@ STDERR.puts('++++')
 begin
   STDERR.puts('++++')
   require 'sinatra'
+
   require 'sinatra/streaming'
   require 'yajl'
   require 'ffi_yajl'
@@ -18,8 +19,10 @@ begin
 
   require 'objspace'
   require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
-
+  
+  #Thread.abort_on_exception = true
   ObjectSpace.trace_object_allocations_start
+  
   @events_stream = nil
   $engines_api = PublicApi.new(EnginesCore.new)
   STDERR.puts('++++++')

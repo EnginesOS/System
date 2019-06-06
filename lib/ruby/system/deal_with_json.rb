@@ -1,7 +1,11 @@
 def deal_with_json(r)
   unless r.nil?
     r = parse_as_json(r) unless r.is_a?(Hash)
-    symbolise_json(r)
+  #  unless r.is_a?(Sinatra::IndifferentHash)
+      symbolise_json(r)
+  #  else
+ #     r
+ #   end
   end
 rescue StandardError => e
   #log_error_mesg(' parse problem with ' + r.to_s)
@@ -17,7 +21,7 @@ end
 
 def symbolise_json(r)
   STDERR.puts("Symbolising " + r.class.name)
-  STDERR.puts('Debug:' + caller[1].to_s + ':'+ caller[2].to_s )
+#  STDERR.puts('Debug:' + caller[1].to_s + ':'+ caller[2].to_s )
   if r.is_a?(Hash)
     symbolize_keys(r)
   elsif r.is_a?(Array)
@@ -53,29 +57,34 @@ def symbolize_keys_array_members(a)
 end
 
 def symbolize_keys(h)
-   return h unless h.is_a?(Hash)
-  h.inject({}){|r, (key, v)|
-    nk = case key
-    when String then key.to_sym
-    else key
-    end
-#    STDERR.puts('key ' + nk.to_s + ':' +nk.class.name)
-    nv = case v
-    when Hash then symbolize_keys(v)
-    when Array   then
-      newval = []
-      v.each do |av|
-        if av.is_a?(Hash)
-          av = symbolize_keys(av)
-        end
-        newval.push(av)
+  if !h.is_a?(Hash)
+    h
+ # elsif  h.is_a?(Sinatra::IndifferentHash)
+#    h
+  else
+    h.inject({}){|r, (key, v)|
+      nk = case key
+      when String then key.to_sym
+      else key
       end
-      newval
-    else v
-    end
-    r[nk] = nv
-    r
-  }
+      #    STDERR.puts('key ' + nk.to_s + ':' +nk.class.name)
+      nv = case v
+      when Hash then symbolize_keys(v)
+      when Array   then
+        newval = []
+        v.each do |av|
+          if av.is_a?(Hash)
+            av = symbolize_keys(av)
+          end
+          newval.push(av)
+        end
+        newval
+      else v
+      end
+      r[nk] = nv
+      r
+    }
+  end
 end
 
 def boolean_if_true_false_str(r)
