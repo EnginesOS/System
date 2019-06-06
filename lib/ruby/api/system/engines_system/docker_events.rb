@@ -174,6 +174,7 @@ module DockerEvents
   def trigger_container_event(hash)
          STDERR.puts(' Trigger C ' + hash.to_s)
          @listeners.each do |m|
+           STDERR.puts('          @listeners ' + m.to_s)
          unless m[1].container_name.nil?
            next unless match_container(hash, m[1].container_name)
          end
