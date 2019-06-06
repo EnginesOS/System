@@ -140,7 +140,7 @@ module Builders
       @service_builder.service_roll_back
       @build_params[:rollback]
       @core_api.delete_engine_and_services(@build_params)
-      @core_api.trigger_install_event(params[:engine_name], 'failed')
+      @core_api.trigger_install_event(@build_params[:engine_name], 'failed')
     rescue
       #dont panic if no container
     end
