@@ -121,7 +121,6 @@ class DockerEventWatcher < ErrorsApi
     log_error_mesg('Restarting docker Event Stream post exception ') 
     @client.finish if @client.started?
     @client = nil
-    # @system.start_docker_event_listener(@event_listeners)
   end
 
   def add_event_listener(listener, event_mask = nil, container_name = nil, priority=200)
@@ -131,7 +130,6 @@ class DockerEventWatcher < ErrorsApi
       { listener: event_listener ,
         priority: event_listener.priority}
     }
-#  SystemDebug.debug(SystemDebug.container_events, 'ADDED listenter ' + listener.class.name + ' Now have ' + @event_listeners.keys.count.to_s + ' Listeners ')
   end
 
   def rm_event_listener(listener)
@@ -187,6 +185,7 @@ end
     #  @events_mutex.synchronize {
     l = @event_listeners.sort_by { |k, v| v[:priority] }
     # }
+      STDERR.puts(' Trigger ' + hash.to_s)
     l.each do |m|
       listener = m[1][:listener]
       unless listener.container_name.nil?
