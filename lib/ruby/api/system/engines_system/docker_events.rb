@@ -171,6 +171,10 @@ module DockerEvents
     log_exception(e)
   end
 
+  def trigger_container_event(hash)
+    @docker_event_listener.trigger(hash)
+  end
+  
   def start_docker_event_listener(listeners = {})
     #  SystemDebug.debug(SystemDebug.container_events, ' Start EVENT LISTENER THREAD !!!!!!!!!!!!!!!!!!!!!!!!!!!!! with n ' + listeners.count.to_s)
     #  @docker_event_listener = DockerEventWatcher.new(self, listeners)
