@@ -23,5 +23,22 @@ module EventsTrigger
   #   timeNano: 1559794578908591607
   })
 end
+  
+def trigger_install_event(engine_name, status) 
+  trigger_container_event({
+   status: status,
+   id: -1,
+   from: engine_name, 
+   Type: "container", 
+   Action: 'install', 
+    Actor:
+       {ID: "system", 
+         Attributes: 
+          {container_name: engine_name, 
+            container_type: 'app',
+          }
+        }, 
+ })
+end
 
 end
