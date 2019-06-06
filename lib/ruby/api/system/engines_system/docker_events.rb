@@ -174,11 +174,11 @@ module DockerEvents
   def trigger_container_event(hash)
          STDERR.puts(' Trigger C ' + hash.to_s)
          @listeners.each do |m|
-         unless m[:listener].container_name.nil?
-           next unless match_container(hash, m[:listener].container_name)
+         unless m[1].container_name.nil?
+           next unless match_container(hash, m[1].container_name)
          end
          begin
-           m[:listener].trigger(hash)
+           m[1].trigger(hash)
          rescue StandardError => e
            SystemDebug.debug(SystemDebug.container_events, hash.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)
           # rm_event_listener(listener)
