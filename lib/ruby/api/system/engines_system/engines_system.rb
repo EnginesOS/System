@@ -9,8 +9,9 @@ class SystemApi < ErrorsApi
   require '/opt/engines/lib/ruby/system/system_config.rb'
   require '/opt/engines/lib/ruby/system/engines_error.rb'
   
-  require_relative 'system_host/events_trigger.rb'
+  require_relative 'events_trigger.rb'
   include EventsTrigger
+  
   require_relative 'system_host/base_os_system.rb'
   include BaseOsSystem
 
