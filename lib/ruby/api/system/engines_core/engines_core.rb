@@ -93,7 +93,7 @@ class EnginesCore < ErrorsApi
   end
   
   require_relative 'fixes/cont_id_fix.rb'
-  include ContainerFixes
+  include ContFsIdFix
   
   
   require_relative '../containers/container_api/container_api.rb'
