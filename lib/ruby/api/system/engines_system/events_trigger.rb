@@ -12,7 +12,7 @@ module EventsTrigger
         {ID: "system", 
           Attributes: 
            {container_name: engine.container_name, 
-             container_type: engine.container_type,
+             container_type: engine.ctype,
   #           image: "elasticsearch",
   #           name: "elasticsearch", 
   #           signal: "15"
