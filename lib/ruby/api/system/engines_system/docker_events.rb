@@ -2,6 +2,7 @@ module DockerEvents
   require '/opt/engines/lib/ruby/api/system/docker/docker_api/event_watcher/docker_event_watcher.rb'
   require '/opt/engines/lib/ruby/system/system_config.rb'
 
+  
   def create_event_listener
     @event_listener_lock = true
     start_docker_event_listener
@@ -36,7 +37,6 @@ module DockerEvents
       mask = container_type_mask(container.ctype)
       pipe_in, pipe_out = IO.pipe
       event_listener = WaitForContainerListener.new(what, pipe_out, mask)
-
       add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.container_name, 100)
       Timeout::timeout(timeout) do
         unless is_aready?(what, container.read_state)
@@ -172,7 +172,18 @@ module DockerEvents
   end
 
   def trigger_container_event(hash)
-    @docker_event_listener.trigger(hash)
+         STDERR.puts(' Trigger C ' + hash.to_s)
+         @listeners.each do |m|
+         unless m[:listener].container_name.nil?
+           next unless match_container(hash, m[:listener].container_name)
+         end
+         begin
+           m[:listener].trigger(hash)
+         rescue StandardError => e
+           SystemDebug.debug(SystemDebug.container_events, hash.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)
+          # rm_event_listener(listener)
+         end
+  end
   end
   
   def start_docker_event_listener(listeners = {})
@@ -180,7 +191,7 @@ module DockerEvents
     #  @docker_event_listener = DockerEventWatcher.new(self, listeners)
     # @event_listener_thread.exit unless @event_listener_thread.nil?
     # @docker_events = self;
-
+    @listeners = listeners
     @docker_event_listener = DockerEventWatcher.new(self, listeners)
     @event_listener_thread.exit unless @event_listener_thread.nil?
     #  Thread.new do
@@ -191,10 +202,10 @@ module DockerEvents
           @event_listener_thread[:name] = 'docker_event_listener'
           @docker_event_listener.start
           STDERR.puts( ' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-          listeners = @docker_event_listener.event_listeners
-          STDERR.puts( ' EVENT LISTENER S ' + listeners.count.to_s)
-          #    @docker_events.start_docker_event_listener(listeners)
-          @docker_event_listener = DockerEventWatcher.new(self, listeners)
+          @listeners = @docker_event_listener.event_listeners
+          STDERR.puts( ' EVENT LISTENER S ' + @listeners.count.to_s)
+          # @docker_events.start_docker_event_listener(listeners)
+          @docker_event_listener = DockerEventWatcher.new(self, @listeners)
           STDERR.puts(' EVENT Listener started  post timeout ')
         end
       rescue StandardError => e

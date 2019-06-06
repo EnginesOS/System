@@ -182,9 +182,9 @@ end
   end
 
   def trigger(hash)
-    #  @events_mutex.synchronize {
+      @events_mutex.synchronize {
     l = @event_listeners.sort_by { |k, v| v[:priority] }
-    # }
+     }
       STDERR.puts(' Trigger ' + hash.to_s)
     l.each do |m|
       listener = m[1][:listener]
@@ -195,7 +195,8 @@ end
         listener.trigger(hash)
       rescue StandardError => e
         SystemDebug.debug(SystemDebug.container_events, hash.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)
-        rm_event_listener(listener)
+        STDERR.puts(hash.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)
+        #rm_event_listener(listener)
       end
     end
   rescue StandardError => e
