@@ -22,15 +22,16 @@ module EnginesOperations
   def delete_engine_and_services(params)
     #STDERR.puts('delete_engine_and_services ' + params.to_s)
     # SystemDebug.debug(SystemDebug.containers, :delete_engines, params)
-    trigger_event(c, 'uninstalling', 'uninstall')
+    
     params[:container_type] = 'app' # Force This
     params[:parent_engine] = params[:engine_name]
     begin
       engine = loadManagedEngine(params[:engine_name])
+      trigger_event(engine, 'uninstalling', 'uninstall')
       #Following is for the roll back of a failed build
     rescue StandardError => e
       unless params[:rollback] == true
-        trigger_event(c, 'failed', 'uninstall')
+        trigger_event(engine, 'failed', 'uninstall')
         raise e
       end
     end
@@ -38,14 +39,14 @@ module EnginesOperations
       # STDERR.puts(' Roll back called' + params.to_s )
       begin
         unless remove_engine_services(params)
-          trigger_event(c, 'failed', 'uninstall')
+          trigger_event(engine, 'failed', 'uninstall')
           raise EnginesException.new(error_hash('Failed to remove engine services', params))
         end
         true
       end
     else
       if engine.has_container?
-        trigger_event(c, 'failed', 'uninstall')
+        trigger_event(engine, 'failed', 'uninstall')
         raise EnginesException.new(error_hash('Container Exists Please Destroy engine first' , params)) unless params[:reinstall] .is_a?(TrueClass)
       end
       #   STDERR.puts('bouBOSDRFSDAFt to remove_engine_services')
@@ -55,7 +56,7 @@ module EnginesOperations
       engine.delete_engine unless params[:reinstall] == true
     end
   rescue Exception => e
-    trigger_event(c, 'failed', 'uninstall')
+    trigger_event(engine, 'failed', 'uninstall')
     raise e
   end
 
