@@ -28,6 +28,7 @@ module SystemExceptions
   end
 
   def SystemUtils.log_exception_to_bugcatcher(e)
+    STDERR.puts('Logging: ' + e.to_s + "\n" + e.backtrace.to_s)
     require "net/http"
     require "uri"
     SystemDebug.debug(SystemDebug.system, :bug_catcher, e, e.backtrace)
