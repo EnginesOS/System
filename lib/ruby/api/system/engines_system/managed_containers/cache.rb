@@ -48,6 +48,12 @@ module Cache
     end
   end
 
+def rm_engine_from_cache(engine_name)
+  #  SystemDebug.debug(SystemDebug.cache, :RM_FROM_CACHE, engine_name)
+  @engines_conf_cache.delete(engine_name.to_sym)
+end
+
+
   private
 
   def get_ident(container)
@@ -77,11 +83,6 @@ module Cache
     ident = @engines_conf_cache[id]
     ident.gsub!(/services\//, '') unless ident.nil?
     ident
-  end
-
-  def rm_engine_from_cache(engine_name)
-    #  SystemDebug.debug(SystemDebug.cache, :RM_FROM_CACHE, engine_name)
-    @engines_conf_cache.delete(engine_name.to_sym)
   end
 
 end
