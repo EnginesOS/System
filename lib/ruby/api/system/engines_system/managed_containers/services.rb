@@ -50,6 +50,7 @@ module Services
     end
     ret_val
   end
+  private
 
   def _list_services(type='service')
     ret_val = []

@@ -37,7 +37,6 @@ class BlueprintApi < ErrorsApi
   end
 
   def  self.perform_inheritance_f(blueprint_url)
-
     BlueprintApi.perform_inheritance(self.download_blueprint(blueprint_url))
   end
 
@@ -137,12 +136,6 @@ class BlueprintApi < ErrorsApi
     d = basedir + '/' + File.basename(repository_url)
     self.get_http_file(repository_url, d)
     STDERR.puts("\n\n Downloaded BP \n\n\n from " + repository_url.to_s + ' to ' + basedir.to_s + '/' + basedir.to_s)
-    # download = open(url)
-    # bp_str = download.read()
-    #   bp = symbolize_keys(bp_str)
-    # f = File.new(d)
-    # f.write (bp)
-    # f.close
   end
 
   def self.get_http_file(url, d)
@@ -153,9 +146,5 @@ class BlueprintApi < ErrorsApi
     download.close
   end
 
-  #  def self.get_blueprint_parent(parent_url)
-  #  self.download_blueprint_parent(parent_url)
-  #
-  #  end
 
 end

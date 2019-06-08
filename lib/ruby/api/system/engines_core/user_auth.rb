@@ -10,131 +10,16 @@ module UserAuth
     #  {tok"api_version" => 0}
   end
 
-  def ldap_user_logout(tok)
-    $user_tokens.delete(tok) if $user_tokens.key?(tok)
-  end
-
-  def ldap_user_login(params)
-    require 'net/ldap'
-    ldap = Net::LDAP.new
-    ldap.host = 'ldap'
-    ldap.port = 389
-   # STDERR.puts('LDAP LOGIN PARAMS ', params.to_s )
-    ldap.auth(params[:user_name], params[:password])
-    if ldap.bind
-      tok =  SecureRandom.hex(48)
-      # pararms[:is_admin] = is_inadmin_group?(ldap,params[:user_name] )
-      #   params.delete(:password)
-      $user_tokens[tok] = params
-      record_login(params)
-      tok
-      # authentication succeeded
-    else
-      # authentication failed
-      raise EnginesException.new(error_hash("failed to bind " + ldap.get_operation_result.message.to_s ,params))
-    end
-  end
-
-  def admin_user_login(params)
-    q = 'select authtoken from systemaccess where username=' + "'" + params[:user_name].to_s +
-    "' and password = '" + params[:password].to_s + "';"
-    rows = auth_database.execute(q)
-    raise EnginesException.new(error_hash("failed to select " + q.to_s, params)) unless rows.count > 0
-    record_login(params)
-    rows[0]
-ensure
-  auth_database.close
-  end
-
-  def record_login(params)
-    #FIXME save to file
-    STDERR.puts(Time.now.to_s + ':' + params[:user_name] + ':' + params[:src_ip] )
-  end
-
-  def is_user_token_valid?(token, ip = nil)
-
-    unless token.nil?
-      if is_admin_token_valid?(token, ip)
-        access = true
-      else
-    #    STDERR.puts('USER TOKENS ' + $user_tokens.to_s)
-        access = $user_tokens.key?(token)
-     #   STDERR.puts('USER Access ' + access.to_s)
-      end
-    else
-      access = false
-    end
-    access
-  rescue
-    false
-  end
-
-  def get_token_user(token)
-    if  $user_tokens.key?(token)
-      user_params = $user_tokens[token]
-      if user_params.is_a?(Hash)
-        user_params[:user_name]
-      else
-        nil
-      end
-    else
-      nil
-    end
-  end
-
-  def is_admin_token_valid?(token, ip = nil)
-    ip = nil
-    if ip == nil
-      rows = auth_database.execute(\
-      'select guid from systemaccess where authtoken=' + "'" + token.to_s + "';" )
-    else
-      rows = auth_database.execute(\
-      'select guid from systemaccess where authtoken=' + "'" + token.to_s + "' and ip_addr ='';")
-      if rows.count == 0
-        rows = auth_database.execute(\
-        'select guid from systemaccess where authtoken=' + "'" + token.to_s + "' and ip_addr ='" + ip.to_s + "';" )
-      end
-    end
-    if rows.count > 0
-      true
-    else
-      false
-    end
-  rescue StandardError => e
-    STDERR.puts('token verify error  ' + e.to_s)
-    STDERR.puts('token verify error exception name  ' + e.class.name)
-    false
-  ensure
-    auth_database.close
-  end
-
-  def auth_database
-    $auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if $auth_db.nil?
-    $auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if $auth_db.is_a?(FalseClass)
-    $auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if $auth_db.closed?
-    $auth_db
-  rescue StandardError => e
-    STDERR.puts('Exception failed to open sql_lite_database: ' + e.to_s)
-    false
-  end
-
-  def init_system_password(password,  token = nil)
-   # SystemDebug.debug(SystemDebug.first_run, :applyin, password)
-    set_system_user_password(password,  token)
-   # SystemDebug.debug(SystemDebug.first_run, :applied, password)
-  end
-
   def get_system_user_info(user_name)
     rws = auth_database.execute("Select username,  authtoken, uid from systemaccess where username = '" + user_name.to_s + "';")
     { user_name: rws[0][0],
       auth_token: rws[0][1],
       uid: rws[0][2],
     }if rws[0].is_a?(Array)
-ensure
-  auth_database.close
+  ensure
+    auth_database.close
   end
 
-  #[:user_name,   | :new_password  & :current_password])
   def set_system_user_details(params)
     if params[:current_password].nil?
       raise EnginesException.new(
@@ -166,8 +51,8 @@ ensure
         end
       end
     end
-    ensure
-      auth_database.close
+  ensure
+    auth_database.close
   end
 
   def set_system_user_password(password, token, current_password = nil)
@@ -181,8 +66,8 @@ ensure
     authtoken = SecureRandom.hex(64)
     if rws.nil? || rws.count == 0
       query = 'INSERT INTO systemaccess (username, password,  authtoken, uid)
-                 VALUES (?, ?, ?, ?, ?)'
-    #  SystemDebug.debug(SystemDebug.first_run,:applyin,  query, [user, password, authtoken, 0])
+                  VALUES (?, ?, ?, ?, ?)'
+      #  SystemDebug.debug(SystemDebug.first_run,:applyin,  query, [user, password, authtoken, 0])
       auth_database.execute(query, [user, password, authtoken, 0])
       update_local_token(authtoken) if user == 'admin'
     else
@@ -198,19 +83,19 @@ ensure
       + password.to_s  \
       + "', authtoken ='" + authtoken.to_s \
       + "' where username = '" + user + "' and authtoken = '" + token.to_s + "';"
-     # SystemDebug.debug(SystemDebug.first_run,:applyin, query)
+      # SystemDebug.debug(SystemDebug.first_run,:applyin, query)
       auth_database.execute(query)
       update_local_token(authtoken) if user == 'admin'
     end
 
     authtoken
   rescue StandardError => e
- #   SystemDebug.debug(SystemDebug.first_run,"Exception ", e)
+    #   SystemDebug.debug(SystemDebug.first_run,"Exception ", e)
     log_error_mesg(e.to_s)
     auth_database.close
     true
-ensure
-  auth_database.close
+  ensure
+    auth_database.close
   end
 
   def system_user_settings
@@ -238,10 +123,126 @@ ensure
     raise e
   end
 
+  def is_admin_token_valid?(token, ip = nil)
+    ip = nil
+    if ip == nil
+      rows = auth_database.execute(\
+      'select guid from systemaccess where authtoken=' + "'" + token.to_s + "';" )
+    else
+      rows = auth_database.execute(\
+      'select guid from systemaccess where authtoken=' + "'" + token.to_s + "' and ip_addr ='';")
+      if rows.count == 0
+        rows = auth_database.execute(\
+        'select guid from systemaccess where authtoken=' + "'" + token.to_s + "' and ip_addr ='" + ip.to_s + "';" )
+      end
+    end
+    if rows.count > 0
+      true
+    else
+      false
+    end
+  rescue StandardError => e
+    STDERR.puts('token verify error  ' + e.to_s)
+    STDERR.puts('token verify error exception name  ' + e.class.name)
+    false
+  ensure
+    auth_database.close
+  end
+
+  def is_user_token_valid?(token, ip = nil)
+
+    unless token.nil?
+      if is_admin_token_valid?(token, ip)
+        access = true
+      else
+        #    STDERR.puts('USER TOKENS ' + $user_tokens.to_s)
+        access = $user_tokens.key?(token)
+        #   STDERR.puts('USER Access ' + access.to_s)
+      end
+    else
+      access = false
+    end
+    access
+  rescue
+    false
+  end
+
+  def get_token_user(token)
+    if  $user_tokens.key?(token)
+      user_params = $user_tokens[token]
+      if user_params.is_a?(Hash)
+        user_params[:user_name]
+      else
+        nil
+      end
+    else
+      nil
+    end
+  end
+
   private
 
+  def ldap_user_logout(tok)
+    $user_tokens.delete(tok) if $user_tokens.key?(tok)
+  end
+
+  def ldap_user_login(params)
+    require 'net/ldap'
+    ldap = Net::LDAP.new
+    ldap.host = 'ldap'
+    ldap.port = 389
+    # STDERR.puts('LDAP LOGIN PARAMS ', params.to_s )
+    ldap.auth(params[:user_name], params[:password])
+    if ldap.bind
+      tok =  SecureRandom.hex(48)
+      # pararms[:is_admin] = is_inadmin_group?(ldap,params[:user_name] )
+      #   params.delete(:password)
+      $user_tokens[tok] = params
+      record_login(params)
+      tok
+      # authentication succeeded
+    else
+      # authentication failed
+      raise EnginesException.new(error_hash("failed to bind " + ldap.get_operation_result.message.to_s ,params))
+    end
+  end
+
+  def admin_user_login(params)
+    q = 'select authtoken from systemaccess where username=' + "'" + params[:user_name].to_s +
+    "' and password = '" + params[:password].to_s + "';"
+    rows = auth_database.execute(q)
+    raise EnginesException.new(error_hash("failed to select " + q.to_s, params)) unless rows.count > 0
+    record_login(params)
+    rows[0]
+  ensure
+    auth_database.close
+  end
+
+  def record_login(params)
+    #FIXME save to file
+    STDERR.puts(Time.now.to_s + ':' + params[:user_name] + ':' + params[:src_ip] )
+  end
+
+  def auth_database
+    $auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if $auth_db.nil?
+    $auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if $auth_db.is_a?(FalseClass)
+    $auth_db = SQLite3::Database.new SystemConfig.SystemAccessDB if $auth_db.closed?
+    $auth_db
+  rescue StandardError => e
+    STDERR.puts('Exception failed to open sql_lite_database: ' + e.to_s)
+    false
+  end
+
+  def init_system_password(password,  token = nil)
+    # SystemDebug.debug(SystemDebug.first_run, :applyin, password)
+    set_system_user_password(password,  token)
+    # SystemDebug.debug(SystemDebug.first_run, :applied, password)
+  end
+
+  #[:user_name,   | :new_password  & :current_password])
+
   def update_local_token(token)
-  #  SystemDebug.debug(SystemDebug.first_run, ' Save Token', token)
+    #  SystemDebug.debug(SystemDebug.first_run, ' Save Token', token)
     toke_file = File.new('/home/engines/.engines_token', 'w+')
     begin
       toke_file.puts(token)
@@ -249,7 +250,7 @@ ensure
       toke_file.close
     end
   rescue StandardError => e
- #   SystemDebug.debug(SystemDebug.first_run,"Exception ", e)
+    #   SystemDebug.debug(SystemDebug.first_run,"Exception ", e)
     log_error_mesg(e.to_s)
   end
 

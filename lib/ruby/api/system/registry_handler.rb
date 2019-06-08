@@ -4,12 +4,6 @@ class RegistryHandler < ErrorsApi
     @registry_ip = false
   end
 
-  #  # FIXME: take out or registry_root ip ..
-  #  def start
-  #    @registry_ip = false
-  #    registry_root_ip
-  #  end
-
   def force_registry_restart
     # start in thread in case timeout clobbers
     @registry_ip = false

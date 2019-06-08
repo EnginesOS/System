@@ -27,6 +27,8 @@ module ContainerChecks
     result
   end
 
+  private
+  
   def act_on(container_name, ctype)
     if ctype == 'app'
       container = loadManagedEngine(container_name)

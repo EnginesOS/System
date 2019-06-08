@@ -60,25 +60,7 @@ module EnginesOperations
     raise e
   end
 
-  def remove_engine_services(params)
-    #SystemDebug.debug(SystemDebug.containers, :delete_engines, params)
-    params[:container_type] = 'app'
-    params[:no_exceptions] = true
-    #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
-    begin
-      #    STDERR.puts('RE ENINGE SERVICES  ' + params.to_s)
-      service_manager.remove_managed_persistent_services(params)
-    rescue EnginesException => e
-      STDERR.puts('Except  ' + e.to_s)
-      raise e unless e.is_a_warning?
-      STDERR.puts('WarnINGES  ' + e.to_s)
-    end
-    begin
-      service_manager.remove_engine_non_persistent_services(params)
-    rescue EnginesException => e
-      raise e unless e.is_a_warning?
-    end
-  end
+ 
 
   #install from fresh copy of blueprint in repository
   def reinstall_engine(engine)
@@ -196,4 +178,24 @@ module EnginesOperations
     end
     r
   end
+  private 
+def remove_engine_services(params)
+   #SystemDebug.debug(SystemDebug.containers, :delete_engines, params)
+   params[:container_type] = 'app'
+   params[:no_exceptions] = true
+   #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
+   begin
+     #    STDERR.puts('RE ENINGE SERVICES  ' + params.to_s)
+     service_manager.remove_managed_persistent_services(params)
+   rescue EnginesException => e
+     STDERR.puts('Except  ' + e.to_s)
+     raise e unless e.is_a_warning?
+     STDERR.puts('WarnINGES  ' + e.to_s)
+   end
+   begin
+     service_manager.remove_engine_non_persistent_services(params)
+   rescue EnginesException => e
+     raise e unless e.is_a_warning?
+   end
+ end
 end
