@@ -228,6 +228,7 @@ end
   end
 
   def add_event_listener(listener, mask, container_id = nil, priority = 200)
+    STDERR.puts('ESDE ADD EVENT LISTENER')
     @docker_event_listener.add_event_listener(listener, mask, container_id, priority)
   end
 
