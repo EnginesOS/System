@@ -90,7 +90,7 @@ module DockerEvents
   def rm_event_listener(listener)
     @docker_event_listener.rm_event_listener(listener)
   end
-  
+
   private
 
   def is_aready?(what, statein)
@@ -236,14 +236,16 @@ module DockerEvents
   end
 
   def is_engines_container_event?(event_hash)
-    r = false
-    unless event_hash[:container_type].nil? || event_hash[:container_name].nil?
-      if event_hash[:container_type] == 'service' ||  event_hash[:container_type] == 'system_service'||  event_hash[:container_type] == 'utility'
-        # Enable Cold load of service from config.yaml
-        r = File.exist?(SystemConfig.RunDir + '/' + event_hash[:container_type] + 's/' + event_hash[:container_name] + '/config.yaml')
-      else
-        # engines always have a running.yaml
-        r = File.exist?(SystemConfig.RunDir + '/' + event_hash[:container_type] + 's/' + event_hash[:container_name] + '/running.yaml')
+    unless event_hash['id'] == 'system'
+      r = false
+      unless event_hash[:container_type].nil? || event_hash[:container_name].nil?
+        if event_hash[:container_type] == 'service' ||  event_hash[:container_type] == 'system_service'||  event_hash[:container_type] == 'utility'
+          # Enable Cold load of service from config.yaml
+          r = File.exist?(SystemConfig.RunDir + '/' + event_hash[:container_type] + 's/' + event_hash[:container_name] + '/config.yaml')
+        else
+          # engines always have a running.yaml
+          r = File.exist?(SystemConfig.RunDir + '/' + event_hash[:container_type] + 's/' + event_hash[:container_name] + '/running.yaml')
+        end
       end
     end
     #  SystemDebug.debug(SystemDebug.container_events, 'A Non Managed Container EVENT') unless r == true
