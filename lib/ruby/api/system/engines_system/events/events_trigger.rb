@@ -20,9 +20,9 @@ module EventsTrigger
   def trigger_install_event(engine_name, status)
     trigger_event_notification({
       status: status,
-      id: -1,
-      from: engine_name,
-      Type: "container",
+      id: 'system',
+      from: 'system',
+      Type: 'system',
       Action: 'install',
       Actor:
       {ID: "system",
