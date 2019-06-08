@@ -20,6 +20,7 @@ class DockerEventWatcher < ErrorsApi
       r = true
       mask = EventMask.event_mask(hash)
       #  SystemDebug.debug(SystemDebug.container_events, 'trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask:' + @event_mask.to_s + ' result ' )#+ (@event_mask & mask).to_s)
+      STDERR.puts('checking mask on ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
       unless @event_mask & mask == 0
         # skip top
         if mask & 32768 == 0 # @@container_top == 0
