@@ -68,86 +68,96 @@ module DockerEvents
     is_aready?(what, container.read_state)
   end
 
-
-def trigger_container_event(hash)
-  STDERR.puts(' Trigger C ' + hash.to_s)
-  @listeners.each do |m|
-    listener = m[1][:listener]
-    unless listener.container_name.nil?
-      next unless match_container(hash, listener.container_name)
-    end
-    begin
-      listener.trigger(hash)
-    rescue StandardError => e
-      SystemDebug.debug(SystemDebug.container_events, hash.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)
-      # rm_event_listener(listener)
-    end
-  end
-end
-
-private
-def is_aready?(what, statein)
-  #  STDERR.puts(' What ' + what.to_s )
-  #  STDERR.puts(' statein ' + statein.to_s )
-  r = false
-  case what
-  when statein
-    r = true
-  when 'stop'
-    r = true if statein == 'stopped'
-  when 'start'
-    r = true if statein == 'running'
-  when 'unpause'
-    r = true if statein == 'running'
-  when 'pause'
-    r = true if statein == 'paused'
-  when 'create'
-    r = true if statein != 'nocontainer'
-  when 'destroy'
-    r = true if statein == 'nocontainer'
-  end
-  r
-end
-
-def fill_in_event_system_values(event_hash)
-  if event_hash.key?(:Actor) && event_hash[:Actor][:Attributes].is_a?(Hash)
-    event_hash[:container_name] = event_hash[:Actor][:Attributes][:container_name]
-    event_hash[:container_type] = event_hash[:Actor][:Attributes][:container_type]
-  else
-    cn_and_t = @engines_api.container_name_and_type_from_id(event_hash[:id])
-    raise EnginesException.new(error_hash('cn_and_t Not an array' + cn_and_t.to_s + ':' +  cn_and_t.class.name)) unless cn_and_t.is_a?(Array)
-    event_hash[:container_name] = cn_and_t[0]
-    event_hash[:container_type] = cn_and_t[1]
-  end
-  event_hash
-end
-
-def container_event(event_hash)
-  unless event_hash.nil? # log_error_mesg('Nil event hash passed to container event','')
-    fill_in_event_system_values(event_hash)
-    #   SystemDebug.debug(SystemDebug.container_events,'2 CONTAINER EVENTS' + event_hash.to_s)
-    if is_engines_container_event?(event_hash)
-      inform_container(event_hash)
-      case event_hash[:status]
-      when 'start', 'oom', 'stop', 'pause', 'unpause', 'create', 'destroy', 'kill', 'die'
-        inform_container_tracking(event_hash[:container_name], event_hash[:container_type], event_hash[:status])
-        # else
-        #    SystemDebug.debug(SystemDebug.container_events, 'Untracked event', event_hash.to_s )
+  def trigger_container_event(hash)
+    STDERR.puts(' Trigger C ' + hash.to_s)
+    @listeners.each do |m|
+      listener = m[1][:listener]
+      unless listener.container_name.nil?
+        next unless match_container(hash, listener.container_name)
+      end
+      begin
+        listener.trigger(hash)
+      rescue StandardError => e
+        SystemDebug.debug(SystemDebug.container_events, hash.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)
+        # rm_event_listener(listener)
       end
     end
   end
-  true
-rescue StandardError => e
-  log_exception(e, event_hash)
-end
-def inform_container_tracking(container_name, ctype, event_name)
-  #  SystemDebug.debug(SystemDebug.container_events, 'inform_container_tracking', container_name, ctype, event_name)
-  c = get_event_container(container_name, ctype)
-  c.task_complete(event_name) if c.is_a?(ManagedContainer)
-  #   inform_container_monitor(container_name, ctype, event_name)
-rescue StandardError =>e
-  log_exception(e)
-end
+
+  def add_event_listener(listener, mask, container_id = nil, priority = 200)
+    STDERR.puts('ESDE ADD EVENT LISTENER')
+    @docker_event_listener.add_event_listener(listener, mask, container_id, priority)
+  end
+
+  def rm_event_listener(listener)
+    @docker_event_listener.rm_event_listener(listener)
+  end
+  
+  private
+
+  def is_aready?(what, statein)
+    #  STDERR.puts(' What ' + what.to_s )
+    #  STDERR.puts(' statein ' + statein.to_s )
+    r = false
+    case what
+    when statein
+      r = true
+    when 'stop'
+      r = true if statein == 'stopped'
+    when 'start'
+      r = true if statein == 'running'
+    when 'unpause'
+      r = true if statein == 'running'
+    when 'pause'
+      r = true if statein == 'paused'
+    when 'create'
+      r = true if statein != 'nocontainer'
+    when 'destroy'
+      r = true if statein == 'nocontainer'
+    end
+    r
+  end
+
+  def fill_in_event_system_values(event_hash)
+    if event_hash.key?(:Actor) && event_hash[:Actor][:Attributes].is_a?(Hash)
+      event_hash[:container_name] = event_hash[:Actor][:Attributes][:container_name]
+      event_hash[:container_type] = event_hash[:Actor][:Attributes][:container_type]
+    else
+      cn_and_t = @engines_api.container_name_and_type_from_id(event_hash[:id])
+      raise EnginesException.new(error_hash('cn_and_t Not an array' + cn_and_t.to_s + ':' +  cn_and_t.class.name)) unless cn_and_t.is_a?(Array)
+      event_hash[:container_name] = cn_and_t[0]
+      event_hash[:container_type] = cn_and_t[1]
+    end
+    event_hash
+  end
+
+  def container_event(event_hash)
+    unless event_hash.nil? # log_error_mesg('Nil event hash passed to container event','')
+      fill_in_event_system_values(event_hash)
+      #   SystemDebug.debug(SystemDebug.container_events,'2 CONTAINER EVENTS' + event_hash.to_s)
+      if is_engines_container_event?(event_hash)
+        inform_container(event_hash)
+        case event_hash[:status]
+        when 'start', 'oom', 'stop', 'pause', 'unpause', 'create', 'destroy', 'kill', 'die'
+          inform_container_tracking(event_hash[:container_name], event_hash[:container_type], event_hash[:status])
+          # else
+          #    SystemDebug.debug(SystemDebug.container_events, 'Untracked event', event_hash.to_s )
+        end
+      end
+    end
+    true
+  rescue StandardError => e
+    log_exception(e, event_hash)
+  end
+
+  def inform_container_tracking(container_name, ctype, event_name)
+    #  SystemDebug.debug(SystemDebug.container_events, 'inform_container_tracking', container_name, ctype, event_name)
+    c = get_event_container(container_name, ctype)
+    c.task_complete(event_name) if c.is_a?(ManagedContainer)
+    #   inform_container_monitor(container_name, ctype, event_name)
+  rescue StandardError =>e
+    log_exception(e)
+  end
 
   def get_event_container(container_name, ctype)
     c = container_from_cache(container_name)
@@ -225,15 +235,6 @@ end
   rescue StandardError =>e
     STDERR.puts(e.class.name)
     log_exception(e)
-  end
-
-  def add_event_listener(listener, mask, container_id = nil, priority = 200)
-    STDERR.puts('ESDE ADD EVENT LISTENER')
-    @docker_event_listener.add_event_listener(listener, mask, container_id, priority)
-  end
-
-  def rm_event_listener(listener)
-    @docker_event_listener.rm_event_listener(listener)
   end
 
   def is_engines_container_event?(event_hash)
