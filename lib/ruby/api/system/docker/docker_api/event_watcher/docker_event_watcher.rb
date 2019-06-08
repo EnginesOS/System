@@ -125,6 +125,7 @@ class DockerEventWatcher < ErrorsApi
   end
 
   def add_event_listener(listener, event_mask = nil, container_name = nil, priority=200)
+    STDERR.puts('ADD EVENT LISTENER')
     event_listener = EventListener.new(listener, event_mask, container_name, priority)
     @events_mutex.synchronize {
       @event_listeners[event_listener.hash_name] =
