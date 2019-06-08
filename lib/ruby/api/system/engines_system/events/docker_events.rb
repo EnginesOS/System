@@ -68,7 +68,7 @@ module DockerEvents
     is_aready?(what, container.read_state)
   end
 
-  def trigger_container_event(hash)
+  def trigger_event_notification(hash)
     @listeners.each do |m|
       listener = m[1][:listener]
       unless listener.container_name.nil?
