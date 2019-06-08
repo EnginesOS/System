@@ -7,6 +7,7 @@ module LocalFileServiceBuilder
     true
   end
 
+  private
   def write_vol_map(service_hash)
     begin
       FileUtils.mkdir(@basedir.to_s + '/home/volumes/') unless File.directory?(@basedir.to_s + '/home/volumes/')

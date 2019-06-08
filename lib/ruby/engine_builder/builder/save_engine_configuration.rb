@@ -7,6 +7,8 @@ module SaveEngineConfiguration
     SystemPreferences.set_container_icon_url(mc, @build_params[:icon_url]) unless @build_params[:icon_url].nil?
   end
 
+  private
+
   def write_schedules(container, schedules)
     unless schedules.nil?
       FileUtils.mkdir_p(ContainerStateFiles.schedules_dir(container)) unless Dir.exist?(ContainerStateFiles.schedules_dir(container))
