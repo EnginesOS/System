@@ -17,7 +17,7 @@ module BaseOsSystem
   end
 
   def restart_base_os
-    trigger_engines_restart_event(status)
+    trigger_engines_restart_event('restarting')
     run_server_script('restart_base_os')
     #  system('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/system/restart_system engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/restart_system.sh') }
     # FIXME: check a status flag after sudo side post ssh run ie when we know it's definititly happenging
