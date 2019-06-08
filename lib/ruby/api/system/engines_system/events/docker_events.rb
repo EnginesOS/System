@@ -69,9 +69,6 @@ module DockerEvents
   end
 
 
-
-
-
 def trigger_container_event(hash)
   STDERR.puts(' Trigger C ' + hash.to_s)
   @listeners.each do |m|

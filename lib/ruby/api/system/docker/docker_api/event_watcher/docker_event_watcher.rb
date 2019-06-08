@@ -30,7 +30,7 @@ class DockerEventWatcher < ErrorsApi
           rescue EnginesException => e
             SystemDebug.debug(SystemDebug.container_events, e.to_s + ':' + e.backtrace.to_s)
             STDERR.puts(e.to_s + ":\n" + e.backtrace.to_s) if e.level == :error
-            false
+            r = false
           end
         end
       end
