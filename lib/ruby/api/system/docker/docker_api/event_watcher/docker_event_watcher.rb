@@ -28,11 +28,14 @@ class DockerEventWatcher < ErrorsApi
           # SystemDebug.debug(SystemDebug.container_events, 'fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
           begin
             STDERR.puts('firing ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
-            r = @object.method(@method).call(hash)
+            thr = Thread.new {@object.method(@method).call(hash)}
+            thr.name = @object.to_s + ':' + @method.to_s           
+             r = true
           rescue EnginesException => e
             SystemDebug.debug(SystemDebug.container_events, e.to_s + ':' + e.backtrace.to_s)
             STDERR.puts(e.to_s + ":\n" + e.backtrace.to_s) if e.level == :error
-            r = false
+            thr.exit()
+            false
           end
         end
       end

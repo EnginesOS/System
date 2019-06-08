@@ -69,7 +69,6 @@ module DockerEvents
   end
 
   def trigger_container_event(hash)
-    STDERR.puts(' Trigger C ' + hash.to_s)
     @listeners.each do |m|
       listener = m[1][:listener]
       unless listener.container_name.nil?
@@ -85,7 +84,6 @@ module DockerEvents
   end
 
   def add_event_listener(listener, mask, container_id = nil, priority = 200)
-    STDERR.puts('ESDE ADD EVENT LISTENER')
     @docker_event_listener.add_event_listener(listener, mask, container_id, priority)
   end
 
