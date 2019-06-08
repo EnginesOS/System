@@ -27,7 +27,7 @@ class DockerEventWatcher < ErrorsApi
           hash[:state] = state_from_status(hash[:status])
           # SystemDebug.debug(SystemDebug.container_events, 'fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
           begin
-            STDERR.puts('firing ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
+         #   STDERR.puts('firing ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
             thr = Thread.new {@object.method(@method).call(hash)}
             thr.name = @object.to_s + ':' + @method.to_s
            # @object.method(@method).call(hash)   
