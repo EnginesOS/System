@@ -19,8 +19,7 @@ module EnginesSystemUpdate
     thr = Thread.new { result = run_server_script('update_engines_system_software')
       thr[:name] = 'update_engines_system_software'
       raise EnginesException.new(error_hash(result[:stdout].to_s + 'Error:' + result[:stderr].to_s)) if result[:result] == -1
-    }
-      trigger_engines_update_event('finished')
+    }      
     true
   end
     rescue StandardError => e       

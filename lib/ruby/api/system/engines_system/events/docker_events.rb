@@ -120,18 +120,18 @@ module DockerEvents
     if event_hash.key?(:Actor) && event_hash[:Actor][:Attributes].is_a?(Hash)
       event_hash[:container_name] = event_hash[:Actor][:Attributes][:container_name]
       event_hash[:container_type] = event_hash[:Actor][:Attributes][:container_type]
-    else
-      cn_and_t = @engines_api.container_name_and_type_from_id(event_hash[:id])
-      raise EnginesException.new(error_hash('cn_and_t Not an array' + cn_and_t.to_s + ':' +  cn_and_t.class.name)) unless cn_and_t.is_a?(Array)
-      event_hash[:container_name] = cn_and_t[0]
-      event_hash[:container_type] = cn_and_t[1]
+    #else
+     # cn_and_t = @engines_api.container_name_and_type_from_id(event_hash[:id])
+      #raise EnginesException.new(error_hash('cn_and_t Not an array' + cn_and_t.to_s + ':' +  cn_and_t.class.name)) unless cn_and_t.is_a?(Array)
+      #event_hash[:container_name] = cn_and_t[0]
+      #event_hash[:container_type] = cn_and_t[1]
     end
     event_hash
   end
 
   def container_event(event_hash)
     unless event_hash.nil? # log_error_mesg('Nil event hash passed to container event','')
-      unless event_hash['id'] == 'system'
+      unless event_hash[:id] == 'system'
         fill_in_event_system_values(event_hash)
         #   SystemDebug.debug(SystemDebug.container_events,'2 CONTAINER EVENTS' + event_hash.to_s)
         if is_engines_container_event?(event_hash)
