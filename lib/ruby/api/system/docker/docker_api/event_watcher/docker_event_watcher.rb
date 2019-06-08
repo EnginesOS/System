@@ -79,7 +79,6 @@ class DockerEventWatcher < ErrorsApi
     start
   end
 
-
   def start
     # SystemDebug.debug(SystemDebug.container_events, 'EVENT LISTENER ' + @event_listeners.to_s)
     STDERR.puts('start with EVENT LISTENERS ' + @event_listeners.count.to_s)
