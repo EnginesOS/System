@@ -13,14 +13,8 @@ module EventsTrigger
           Attributes: 
            {container_name: engine.container_name, 
              container_type: engine.ctype,
-  #           image: "elasticsearch",
-  #           name: "elasticsearch", 
-  #           signal: "15"
            }
          }, 
-  #   scope: "local",
-  #   time: 1559794578,
-  #   timeNano: 1559794578908591607
   })
 end
   
