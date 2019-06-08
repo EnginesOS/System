@@ -2,6 +2,7 @@ module SystemExceptions
   def SystemUtils.log_exception(*args)
     loggable=true
     e = args[0]
+  STDERR.puts('Logging: ' + e.to_s + "\n" + e.backtrace.to_s)
     if e.is_a?(EnginesException)
       loggable = false unless e.level == :error
     end
