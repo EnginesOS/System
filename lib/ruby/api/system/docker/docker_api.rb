@@ -11,8 +11,6 @@ class DockerApi < ErrorsApi
   require_relative 'docker_api/docker_container_actions.rb'
   include DockerContainerActions
   
-#  require_relative 'docker_api/docker_container_images.rb'
-#  include  DockerImages
   require_relative 'docker_api/docker_errors.rb'
   include DockerErrors
   require_relative 'docker_conn/docker_connection.rb'
