@@ -154,6 +154,13 @@ def handle_event(event_hash)
   @events_mutex.synchronize { trigger(event_hash) } if is_valid_docker_event?(event_hash)
 end
 
+def fill_in_event_system_values(event_hash)
+  if event_hash.key?(:Actor) && event_hash[:Actor][:Attributes].is_a?(Hash)
+    event_hash[:container_name] = event_hash[:Actor][:Attributes][:container_name]
+    event_hash[:container_type] = event_hash[:Actor][:Attributes][:container_type]
+  end
+  event_hash
+end
 
   def yparser
     @parser ||= Yajl::Parser.new({:symbolize_keys => true})
@@ -190,6 +197,7 @@ end
   end
 
   def trigger(hash)
+    fill_in_event_system_values(hash)
      # STDERR.puts(' Triggering: ' + hash[:status].to_s )
    #   @events_mutex.synchronize {
     l = @event_listeners.sort_by { |k, v| v[:priority] }
