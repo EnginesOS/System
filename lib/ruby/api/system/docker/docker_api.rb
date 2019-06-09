@@ -2,7 +2,7 @@ class DockerApi < ErrorsApi
 
   require '/opt/engines/lib/ruby/exceptions/docker_exception.rb'
   
-  require_relative 'docker_images.rb'
+  require_relative 'docker_api/docker_images.rb'
   include DockerImages
 
   require_relative 'docker_api/docker_container_status.rb'
