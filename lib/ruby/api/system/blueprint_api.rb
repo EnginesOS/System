@@ -2,10 +2,10 @@ class BlueprintApi < ErrorsApi
   require 'yajl'
   require '/opt/engines/lib/ruby/api/system/container_state_files.rb'
   require 'git'
-  
+
   def save_blueprint(blueprint, container)
     # return log_error_mesg('Cannot save incorrect format',blueprint) unless blueprint.is_a?(Hash)
-  #  SystemDebug.debug(SystemDebug.builder, blueprint.class.name)
+    #  SystemDebug.debug(SystemDebug.builder, blueprint.class.name)
     state_dir = ContainerStateFiles.container_state_dir(container)
     Dir.mkdir(state_dir) if File.directory?(state_dir) == false
     statefile = state_dir + '/blueprint.json'
@@ -48,8 +48,8 @@ class BlueprintApi < ErrorsApi
       unless blueprint[:software][:base][:inherit].nil?
         parent = get_blueprint_parent( blueprint[:software][:base][:inherit])
         STDERR.puts('Parent BP ' + parent.to_s + "\n is a " + parent.class.name)
-    #  else
-     #   STDERR.puts('NO Inherietance' + blueprint[:software][:base].to_s)
+        #  else
+        #   STDERR.puts('NO Inherietance' + blueprint[:software][:base].to_s)
       end
       inherit = blueprint[:software][:base][:inherit]
       merge_bp_entry(blueprint, parent, :base)
@@ -115,26 +115,33 @@ class BlueprintApi < ErrorsApi
     dest
   end
 
-  def self.download_blueprint(url)
-    d = '/tmp/blueprint.json'
-    self.get_http_file(url, d)
-    self.load_blueprint_file('/tmp/blueprint.json')
+  def self.download_blueprint(url, d = '/tmp/blueprint.json')
+    if url.end_with?('.json')
+      self.get_http_file(url, d)
+      self.load_blueprint_file('/tmp/blueprint.json')
+    else
+      name = Dir.basename(url)
+      #FixMe no ../ in path ?
+        FileUtils.rm_f('/tmp/' + name) if Dir.exist?('/tmp/' + name)
+        self.clone_repo(url, name, '/tmp/')
+        self.load_blueprint_file('/tmp/' + name + '/blueprint.json')
+    end
   end
 
   def self.download_blueprint_parent(parent_url)
-    d = '/tmp/parent_blueprint.json'
-    self.get_http_file(parent_url, d)
+    #d = '/tmp/parent_blueprint.json'
+    #self.get_http_file(parent_url, d)
+    self.download_blueprint(parent_url, '/tmp/parent_blueprint.json')
   end
 
   def self.get_blueprint_parent(parent_url)
     self.download_blueprint_parent(parent_url)
     self.load_blueprint_file('/tmp/parent_blueprint.json')
   end
-  
 
-    def self.clone_repo(repository_url, build_name, path )
-      Git.clone(repository_url, build_name, :path => path)
-    end
+  def self.clone_repo(repository_url, build_name, path )
+    Git.clone(repository_url, build_name, :path => path)
+  end
 
   def self.download_and_save_blueprint(basedir, repository_url)
     FileUtils.mkdir_p(basedir)
@@ -150,6 +157,5 @@ class BlueprintApi < ErrorsApi
     IO.copy_stream(download, d)
     download.close
   end
-
 
 end
