@@ -43,13 +43,19 @@ module ContainerLocking
       STDERR.puts('waiting_to_clr_container_conf_file_locked ' +  state_dir.to_s + "\n by:" + thr.to_s)
       begin
         Timeout.timeout(@@lock_timeout) do
-          thr.join
-          log_error_mesg("lock holder thread returned ",state_dir)
+          begin
+            thr.join
+            STDERR.puts("lock holder thread returned " + state_dir.to_s)
+          rescue             
+            STDERR.puts("lock holder thread join excepted " + state_dir.to_s)
+          ensure
+            unlock_container_conf_file(state_dir)          
+          end
           true
         end
       rescue Timeout::Error
         unlock_container_conf_file(state_dir)
-        log_error_mesg("Force cleared lock in ",state_dir)
+        STDERR.puts("Timeout Forced cleared lock in "+ state_dir.to_s)
         false
       end
     else
