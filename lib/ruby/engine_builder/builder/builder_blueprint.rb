@@ -1,4 +1,4 @@
-require 'git'
+
 
 module BuilderBluePrint
   def load_blueprint(bp_name = 'blueprint.json')
@@ -6,16 +6,7 @@ module BuilderBluePrint
     BlueprintApi.load_blueprint_file(basedir + '/' + bp_name)
   end
 
-  def clone_repo
-    if @build_params[:repository_url].end_with?('.json')
-      BlueprintApi.download_and_save_blueprint(basedir, @build_params[:repository_url])
-    else
-      log_build_output('Clone Blueprint Repository ' + @build_params[:repository_url])
-      #SystemDebug.debug(SystemDebug.builder, "get_blueprint_from_repo",@build_params[:repository_url], @build_name, SystemConfig.DeploymentDir)
-      g = Git.clone(@build_params[:repository_url], @build_name, :path => SystemConfig.DeploymentDir)
-      #    SystemDebug.debug(SystemDebug.builder, 'GIT GOT ' + g.to_s)
-    end
-  end
+
 
   def get_blueprint_from_repo
     log_build_output('Backup last build')
@@ -61,4 +52,16 @@ module BuilderBluePrint
     })
     @blueprint_reader.environments.push(ev)
   end
+  
+def clone_repo
+  if @build_params[:repository_url].end_with?('.json')
+    BlueprintApi.download_and_save_blueprint(basedir, @build_params[:repository_url])
+  else
+    log_build_output('Clone Blueprint Repository ' + @build_params[:repository_url])
+    #SystemDebug.debug(SystemDebug.builder, "get_blueprint_from_repo",@build_params[:repository_url], @build_name, SystemConfig.DeploymentDir)
+    #g = Git.clone(@build_params[:repository_url], @build_name, :path => SystemConfig.DeploymentDir)
+    BlueprintApi.clone_repo(@build_params[:repository_url], @build_name, :path => SystemConfig.DeploymentDir)
+    #    SystemDebug.debug(SystemDebug.builder, 'GIT GOT ' + g.to_s)
+  end
+end
 end

@@ -1,7 +1,8 @@
 class BlueprintApi < ErrorsApi
   require 'yajl'
   require '/opt/engines/lib/ruby/api/system/container_state_files.rb'
-
+  require 'git'
+  
   def save_blueprint(blueprint, container)
     # return log_error_mesg('Cannot save incorrect format',blueprint) unless blueprint.is_a?(Hash)
   #  SystemDebug.debug(SystemDebug.builder, blueprint.class.name)
@@ -123,13 +124,17 @@ class BlueprintApi < ErrorsApi
   def self.download_blueprint_parent(parent_url)
     d = '/tmp/parent_blueprint.json'
     self.get_http_file(parent_url, d)
-
   end
 
   def self.get_blueprint_parent(parent_url)
     self.download_blueprint_parent(parent_url)
     self.load_blueprint_file('/tmp/parent_blueprint.json')
   end
+  
+
+    def self.clone_repo(repository_url, build_name, path )
+      Git.clone(repository_url, build_name, :path => path)
+    end
 
   def self.download_and_save_blueprint(basedir, repository_url)
     FileUtils.mkdir_p(basedir)
