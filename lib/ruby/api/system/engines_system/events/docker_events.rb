@@ -129,8 +129,7 @@ module DockerEvents
 #    event_hash
 #  end
 
-  def container_event(event)
-    #event_hash = event.dup
+  def container_event(event_hash)
     unless event_hash.nil? # log_error_mesg('Nil event hash passed to container event','')
       unless event_hash[:id] == 'system'
         #  fill_in_event_system_values(event_hash) Has been move to docker/event_watcher
