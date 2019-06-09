@@ -92,6 +92,7 @@ class SystemApi < ErrorsApi
   def initialize(api)
     @engines_api = api
     @engines_conf_cache = {}
+    @container_conf_locks = {}
     create_event_listener #unless $PROGRAM_NAME.end_with?('system_service.rb')
   end
 

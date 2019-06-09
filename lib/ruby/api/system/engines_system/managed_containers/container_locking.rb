@@ -12,12 +12,16 @@ module ContainerLocking
   end
 
   def unlock_container_conf_file(state_dir)
+    @container_conf_locks.delete(state_dir) if @container_conf_locks.key?(state_dir)
     File.delete(state_dir + '/lock') if  File.exists?(state_dir + '/lock')
   rescue StandardError
     false
   end
 
   def is_container_conf_file_locked?(state_dir)
+    r = @container_conf_locks.key?(state_dir)
+    STDERR.puts('Container ' + state_dir.to_s + ' locked =' + r.to_s)
+
     lock_fn = state_dir + '/lock'
     if File.exists?(lock_fn)
       loop = 0
@@ -34,10 +38,15 @@ module ContainerLocking
   end
 
   def lock_container_conf_file(state_dir)
+    if @container_conf_locks.key?(state_dir)
+      STDERR.puts('waiting_to_clr_container_conf_file_locked ' +  state_dir.to_s + "\n by:" + @container_conf_locks[state_dir])
+    else
+      @container_conf_locks[state_dir] = Thread.current
+    end
     lock_fn = state_dir + '/lock'
     if  File.exists?(lock_fn) && lock_has_expired(lock_fn) == false
       loop = 0
-#FIXME use ioctl
+      #FIXME use ioctl
       while File.exists?(lock_fn)
         sleep(0.2)
         loop += 1
