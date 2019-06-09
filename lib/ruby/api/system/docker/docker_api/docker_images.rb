@@ -12,8 +12,7 @@ module DockerImages
   end
 
   def clean_up_dangling_images
-    @docker_comms.clean_up_dangling_images
-   
+    @docker_comms.clean_up_dangling_images   
     true # often warning not error
   end
 
