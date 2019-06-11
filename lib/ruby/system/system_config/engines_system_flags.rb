@@ -11,7 +11,7 @@ module EnginesSystemFlags
   @@EngineSystemIsStartingFile =  '/opt/engines/run/system/flags/system_starting'
   @@EngineSystemIsStartedFile =  '/opt/engines/run/system/flags/system_started'
   @@EngineSystemIsStoppingFile =  '/opt/engines/run/system/flags/system_shutdown'
-  
+  @@ContainersExtraDNS = '/opt/engines/containers_extra_dns'
   def SystemConfig.is_system_stopping?
     File.exists?(@@EngineSystemIsStoppingFile)
   end
@@ -55,5 +55,15 @@ module EnginesSystemFlags
   def SystemConfig.DontVerifyBlueprintRepoSSL
     File.exist?(@@dont_verifyBlueprintRepoSSLFlagFile)    
   end
+  
+  def SystemConfig.extraDNS
+    if File.exist?(@@ContainersExtraDNS)
+      dns_servers = File.load(ContainersExtraDNS)
+      dns_servers.split("\n ,")
+    else
+      nil
+    end
+  end
+  
 
 end

@@ -1,23 +1,27 @@
 def get_dns_search
-   search = []
-   search.push(SystemConfig.internal_domain)
-   search
- end
- require '/opt/engines/lib/ruby/api/system/system_status.rb'
+  search = []
+  search.push(SystemConfig.internal_domain)
+  search
+end
 
- def get_dns_servers
-   servers = []
-   servers.push( SystemStatus.get_docker_ip)
-   servers
- end
- 
+require '/opt/engines/lib/ruby/api/system/system_status.rb'
+
+def get_dns_servers
+  servers = []
+  servers.push(SystemStatus.get_docker_ip)
+  eds = SystemConfig.extraDNS
+  servers.merge!(eds) if eds.is_a?(Array)
+  servers
+end
+
 def container_get_dns_servers(container)
-   get_dns_servers
- end
+  get_dns_servers
+end
 
- def container_dns_search(container)
-   get_dns_search
- end
+def container_dns_search(container)
+  get_dns_search
+end
+
 def hostname(container)
   #  return nil if container.on_host_net? == true
   if container.hostname.nil?

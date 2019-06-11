@@ -34,7 +34,7 @@ end
 
 def reopen_connection
   # STDERR.puts('re open connec')
-  @connection.reset
+  @connection.reset unless @connection.nil?
   @connection = nil
   @connection = connection
   @connection
