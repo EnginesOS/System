@@ -58,7 +58,7 @@ module EnginesSystemFlags
   
   def SystemConfig.extraDNS
     if File.exist?(@@ContainersExtraDNS)
-      dns_servers = File.load(@@ContainersExtraDNS)
+      dns_servers = File.read(@@ContainersExtraDNS)
       dns_servers.split("\n ,")
     else
       nil
