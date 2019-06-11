@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 
-
 require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
 require 'thread'
 require 'yaml'
@@ -20,19 +19,30 @@ when 'restart'
   t = service.restart_container
   t.join
 when 'start'
-  t =  service.start_container
+  t = service.start_container
+  t.join
+when 'create_only'
+  t = service.create_container
   t.join
 when 'create'
-  t=service.create_container
+  t = service.create_container
+  t.join
+  service.wait_for('create', 120)
+  t = service.start_container
+  t.join
+when 'recreate'
+  t = service.destroy_container
+  t.join
+  t = service.create_container
   t.join
 when 'stop'
-  t=service.stop_container
+  t = service.stop_container
   t.join
 when 'destroy'
-  t=service.destroy_container
+  t = service.destroy_container
   t.join
 when 'state'
-  t=service.read_state
+  t = service.read_state
   t.join
 when 'set_state'
   STDOUT.puts service.set_state.to_s

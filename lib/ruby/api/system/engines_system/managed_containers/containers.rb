@@ -18,24 +18,33 @@ module Containers
     #synchronise ?
     serialized_object = YAML.dump(container)
     state_dir = container_state_dir(container)
-    FileUtils.mkdir_p(state_dir)  if Dir.exist?(state_dir) == false
+    FileUtils.mkdir_p(state_dir) if Dir.exist?(state_dir) == false
     statefile = state_dir + '/running.yaml'
     # BACKUP Current file with rename
     log_error_mesg('container locked', container.container_name) unless lock_container_conf_file(state_dir)
     if File.exist?(statefile)
       statefile_bak = statefile + '.bak'
       begin
-      File.delete(statefile_bak) if File.exist?(statefile_bak)
-      File.rename(statefile, statefile_bak)
+      if File.exist?(statefile_bak)
+        #double handle in case fs full 
+        #if fs full mv fails and delete doesn't happen
+        FileUtils.mv(statefile_bak,statefile_bak + '.bak')
+        #Fixme check statefile is valid before over writing a good backup
+        File.rename(statefile, statefile_bak)
+        File.delete(statefile_bak + '.bak')
+      end
       rescue StandardError => e
       end
     end
-    f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0644)
+    f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0600) # was statefile + '_tmp
     begin
       f.puts(serialized_object)
       f.flush()
-    ensure
       f.close
+      #Do it this way so a failure to write doesn't trash a working file
+    #  FileUtils.mv(statefile + '_tmp', statefile) if File.exist?(statefile + '_tmp')
+    ensure
+      f.close unless f.nil?          
     end
     begin
       ts =  File.mtime(statefile)

@@ -1,18 +1,19 @@
 class DockerApi < ErrorsApi
-  require_relative 'docker_errors.rb'
+
   require '/opt/engines/lib/ruby/exceptions/docker_exception.rb'
-  require_relative 'docker_images.rb'
+  
+  require_relative 'docker_api/docker_images.rb'
   include DockerImages
 
-  require_relative 'docker_container_status.rb'
+  require_relative 'docker_api/docker_container_status.rb'
   include DockerContainerStatus
 
-  require_relative 'docker_container_actions.rb'
+  require_relative 'docker_api/docker_container_actions.rb'
   include DockerContainerActions
-  require_relative 'docker_container_actions.rb'
-  require_relative 'docker_errors.rb'
+  
+  require_relative 'docker_api/docker_errors.rb'
   include DockerErrors
-  require_relative 'docker_api/docker_connection.rb'
+  require_relative 'docker_conn/docker_connection.rb'
 
   def initialize()
     @docker_comms = DockerConnection.new

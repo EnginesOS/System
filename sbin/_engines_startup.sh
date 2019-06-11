@@ -93,7 +93,7 @@ if test `/opt/engines/bin/system_service.rb system state` = nocontainer
  fi
   /opt/engines/bin/system_service.rb system wait_for start 30
 /opt/engines/bin/system_service.rb system wait_for_startup 60
-
+q
 if  test `/opt/engines/bin/engines service dns state` = running
  then
   /opt/engines/bin/engines service dns restart

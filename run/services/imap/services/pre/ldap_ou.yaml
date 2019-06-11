@@ -1,6 +1,6 @@
 parent_engine: imap
 publisher_namespace: EnginesSystem
-type_path: ldap
+type_path: ldap_ou
 service_handle: imapou
 container_type: service
 persistent: true

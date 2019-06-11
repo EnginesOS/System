@@ -1,0 +1,9 @@
+parent_engine: wap
+publisher_namespace: EnginesSystem
+type_path: ldap_ou
+service_handle: wapou
+container_type: service
+persistent: true
+variables:
+ type: ou
+ cn: wap

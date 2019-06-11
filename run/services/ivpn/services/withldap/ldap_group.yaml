@@ -1,6 +1,6 @@
 parent_engine: ivpn
 publisher_namespace: EnginesSystem
-type_path: ldap
+type_path: ldap_group
 service_handle: vpngroup
 container_type: service
 persistent: true

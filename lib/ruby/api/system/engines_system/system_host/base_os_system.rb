@@ -1,20 +1,24 @@
 module BaseOsSystem
   def update_base_os
+    trigger_system_update_event('OS updating')
     res = Thread.new { run_server_script('update_base_os', false, 600) }
     # FIXME: check a status flag after sudo side post ssh run ie when we know it's definititly happenging
     res[:name] = 'update_base_os'
     if res.status == 'run'
       true
     else
+      trigger_system_update_event('failed')
       raise EnginesException.new(error_hash('Failed to update os ', res))
     end
+  rescue StandardError => e
+    SystemUtils.log_exception(e , 'update_base_os:')
+    trigger_system_update_event('failed')
+    res.exit unless res.nil?
   end
 
   def restart_base_os
+    trigger_engines_restart_event('OS restarting')
     run_server_script('restart_base_os')
-    #  system('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/system/restart_system engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/restart_system.sh') }
-    # FIXME: check a status flag after sudo side post ssh run ie when we know it's definititly happenging
-    # return true if res.status == 'run'
     true
   end
 
@@ -69,5 +73,5 @@ module BaseOsSystem
       r
     end
   end
-  
+
 end

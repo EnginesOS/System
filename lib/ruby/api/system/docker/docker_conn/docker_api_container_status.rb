@@ -24,11 +24,11 @@ module DockerApiContainerStatus
   def container_name_and_type_from_id(id)
     request = '/containers/' + id.to_s + '/json'
     begin
-      get_request(request)
+      r = get_request(request)
     rescue DockerException => e
       if e.status == 409
         sleep 0.1
-        get_request(request)
+        r = get_request(request)
       else raise e
       end
     end

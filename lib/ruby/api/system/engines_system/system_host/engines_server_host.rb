@@ -1,5 +1,5 @@
 module EnginesServerHost
-
+#FixMe seperate metrics into EnginesServerHostMetrics
   @@server_script_timeout = 15
   def system_image_free_space
     result =   run_server_script('free_docker_lib_space')
@@ -19,6 +19,9 @@ module EnginesServerHost
     else
       raise EnginesException.new(error_hash('Failed recreate_engines_system_service ', res))
     end
+  rescue StandardError => e
+    SystemUtils.log_exception(e , 'restart_system_service:')
+    res.exit unless res.nil?
   end
 
   def recreate_engines_system_service
@@ -30,13 +33,19 @@ module EnginesServerHost
     else
       raise EnginesException.new(error_hash('Failed recreate_engines_system_service ', res))
     end
+  rescue StandardError => e
+    SystemUtils.log_exception(e , 'recreate_system_service:')
+    res.exit unless res.nil?
   end
 
   def halt_base_os(reason)
     log_error_mesg("Shutdown Due to:" + reason.to_s)
     File.delete(SystemConfig.BuildRunningParamsFile) if File.exist?(SystemConfig.BuildRunningParamsFile)
-   pthre = Thread.new { run_server_script('power_off_base_os') }
+    pthre = Thread.new { run_server_script('power_off_base_os') }
     pthre[:name] = 'power_off_base_os thread'
+  rescue StandardError => e
+    SystemUtils.log_exception(e , 'halt_base_os:')
+    pthre.exit unless pthre.nil?
   end
 
   def available_ram
@@ -50,35 +59,36 @@ module EnginesServerHost
       -1
     end
   end
-  def  get_system_metrics_summary
+
+  def get_system_metrics_summary
     mem_stats = get_system_memory_info
     dstats = get_disk_statistics
-    
-#    type: values[1],
-#    blocks: values[2],
-#    used: values[3],
-#    available: values[4],
-#    usage: values[5],
-#    mount: values[6]
+
+    #    type: values[1],
+    #    blocks: values[2],
+    #    used: values[3],
+    #    available: values[4],
+    #    usage: values[5],
+    #    mount: values[6]
     disks = {}
     dstats.each_pair do | key, value|
       disks[key] = {
         mount: value[:mount],
         size: value[:blocks],
         free: value[:available]
-    }
-    end 
+      }
+    end
     r = {:"memory" =>
-          {"total" => mem_stats[:total].to_i,
-           "free"  => mem_stats[:free].to_i ,
-           "file_cache" => mem_stats[:file_cache].to_i ,
-            "buffers" => mem_stats[:buffers].to_i 
-          },
-         "storage" => disks
+      {"total" => mem_stats[:total].to_i,
+      "free"  => mem_stats[:free].to_i ,
+      "file_cache" => mem_stats[:file_cache].to_i ,
+      "buffers" => mem_stats[:buffers].to_i
+      },
+      "storage" => disks
     }
     r
   end
-  
+
   def get_system_memory_info
     # r = run_server_script('memory_stats')
     r = SystemUtils.execute_command('/opt/engines/system/scripts/ssh/memory_stats.sh', false, nil)
@@ -193,10 +203,10 @@ module EnginesServerHost
 
     # STDERR.puts('RUN SERVER SCRIPT cmd'  + cmd.to_s)
     Timeout.timeout(script_timeout) do
-     SystemUtils.execute_command(cmd, false, script_data)
-    # STDERR.puts(' Server Script ' + r.to_s)
-    # r
-      end
+      SystemUtils.execute_command(cmd, false, script_data)
+      # STDERR.puts(' Server Script ' + r.to_s)
+      # r
+    end
 
   rescue Timeout::Error
     STDERR.puts('Timeout on Running Server Script ' + script_name )

@@ -1,5 +1,5 @@
 module EnginesSystemFlags
-
+  @@dont_verifyBlueprintRepoSSLFlagFile = '/opt/engines/run/system/flags/dont_verfify_bp_ssl'  
   @@EnginesSystemUpdatedFlag = '/opt/engines/run/system/flags/update_engines_run'
   @@EnginesSystemUpdatingFlag = '/opt/engines/run/system/flags/update_engines_running'
   @@SystemUpdatedFlag = '/opt/engines/run/system/flags/update_run'
@@ -50,6 +50,10 @@ module EnginesSystemFlags
 
   def SystemConfig.FirstRunRan
     @@FirstRunRan
+  end
+  
+  def SystemConfig.DontVerifyBlueprintRepoSSL
+    File.exist?(@@dont_verifyBlueprintRepoSSLFlagFile)    
   end
 
 end

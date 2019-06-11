@@ -1,3 +1,9 @@
+def meets_physical_requirements
+  check_avail_memory
+  check_avail_space
+  check_avail_ports
+end
+
 def check_avail_space
   log_build_output('Checking Free space')
   space = @core_api.system_image_free_space
@@ -28,8 +34,3 @@ def check_avail_ports
   end
 end
 
-def meets_physical_requirements
-  check_avail_memory
-  check_avail_space
-  check_avail_ports
-end

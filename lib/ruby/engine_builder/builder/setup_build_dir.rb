@@ -20,18 +20,17 @@ module BuildDirSetup
     end
     read_framework_user
     init_container_info_dir
-
     save_params
     @build_params[:mapped_ports] = @blueprint_reader.mapped_ports
-  #  SystemDebug.debug(SystemDebug.builder, :ports, @build_params[:mapped_ports])
-  #  SystemDebug.debug(SystemDebug.builder, :attached_services, @build_params[:attached_services])
+    #  SystemDebug.debug(SystemDebug.builder, :ports, @build_params[:mapped_ports])
+    #  SystemDebug.debug(SystemDebug.builder, :attached_services, @build_params[:attached_services])
     @service_builder.required_services_are_running?
     @service_builder.create_persistent_services(@blueprint_reader.services, @blueprint_reader.environments, @build_params[:attached_services])
- #   SystemDebug.debug(SystemDebug.builder, 'Services Attached')
+    #   SystemDebug.debug(SystemDebug.builder, 'Services Attached')
     apply_templates_to_environments
-  #  SystemDebug.debug(SystemDebug.builder, 'Templates Applied')
+    #  SystemDebug.debug(SystemDebug.builder, 'Templates Applied')
     create_engines_config_files
-#    SystemDebug.debug(SystemDebug.builder, 'Configs written')
+    #    SystemDebug.debug(SystemDebug.builder, 'Configs written')
     index = 0
     unless @blueprint_reader.sed_strings.nil? || @blueprint_reader.sed_strings[:sed_str].nil?
       @blueprint_reader.sed_strings[:sed_str].each do |sed_string|
@@ -43,11 +42,11 @@ module BuildDirSetup
     @build_params[:app_is_persistent] = @service_builder.app_is_persistent
     dockerfile_builder = DockerFileBuilder.new(@blueprint_reader, @build_params, @web_port, self)
     dockerfile_builder.write_files_for_docker
-  #  SystemDebug.debug(SystemDebug.builder, 'Docker file  written')
+    #  SystemDebug.debug(SystemDebug.builder, 'Docker file  written')
     write_env_file
-  #  SystemDebug.debug(SystemDebug.builder, 'Eviron file  written')
+    #  SystemDebug.debug(SystemDebug.builder, 'Eviron file  written')
     setup_framework_logging
- #   SystemDebug.debug(SystemDebug.builder, 'Logging setup')
+    #   SystemDebug.debug(SystemDebug.builder, 'Logging setup')
     write_persistent_vol_maps
 
     #  rescue StandardError => e
@@ -56,6 +55,13 @@ module BuildDirSetup
     #    log_exception(e)
     #    raise e
   end
+
+  def write_software_file(filename, content)
+    ConfigFileWriter.write_templated_file(@templater, basedir + '/' + filename, content)
+    log_build_output('Wrote ' + basedir.to_s + '/' + filename.to_s)
+  end
+
+  private
 
   def write_persistent_vol_maps
     persistent_dirs =  @blueprint_reader.persistent_dirs
@@ -66,13 +72,12 @@ module BuildDirSetup
       end
       write_software_file('/home/fs/vol_dir_maps', content)
     end
-
     persistent_files = @blueprint_reader.persistent_files
     unless persistent_files.nil?
       content = ''
       persistent_files.each do |persistent|
         persistent[:volume_name] = @service_builder.default_vol if persistent[:volume_name].nil?
-    #    STDERR.puts('persistent[:path]:' +  persistent[:path].to_s + ' persistent[:volume_name]:' + persistent[:volume_name].to_s  + "\n")
+        #    STDERR.puts('persistent[:path]:' +  persistent[:path].to_s + ' persistent[:volume_name]:' + persistent[:volume_name].to_s  + "\n")
         content += persistent[:path] + ' ' + persistent[:volume_name] + "\n"
       end
       write_software_file('/home/fs/vol_file_maps', content)
@@ -152,18 +157,12 @@ module BuildDirSetup
     end
   end
 
-  def write_software_file(filename, content)
-    ConfigFileWriter.write_templated_file(@templater, basedir + '/' + filename, content)
-    log_build_output('Wrote ' + basedir.to_s + '/' + filename.to_s)
-  end
-
   def read_framework_user
     if @blueprint_reader.framework == 'docker'
       @web_user = @blueprint_reader.cont_user
       @cont_user_id =  @blueprint_reader.cont_user #fix me and add id
       #   STDERR.puts("Set web user to:" + @web_user.to_s)
     else
-
       log_build_output('Read Web User')
       stef = File.open(basedir + '/home/engines/etc/stack.env', 'r')
       begin
@@ -180,7 +179,7 @@ module BuildDirSetup
         stef.close
       end
     end
-  #  STDERR.puts("\n" + ' web user ' + @web_user.to_s + ':' + "cont user id:" + @cont_user_id.to_s)
+    #  STDERR.puts("\n" + ' web user ' + @web_user.to_s + ':' + "cont user id:" + @cont_user_id.to_s)
     @web_user
   end
 
