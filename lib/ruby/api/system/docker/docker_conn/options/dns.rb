@@ -10,7 +10,7 @@ def get_dns_servers
   servers = []
   servers.push(SystemStatus.get_docker_ip)
   eds = SystemConfig.extraDNS
-  servers.merge!(eds) if eds.is_a?(Array)
+  servers.concat(eds) if eds.is_a?(Array)
   servers
 end
 
