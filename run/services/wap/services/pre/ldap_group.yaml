@@ -1,9 +1,9 @@
-parent_engine: email
+parent_engine: wap
 publisher_namespace: EnginesSystem
 type_path: ldap_group
-service_handle: emailgroup
+service_handle: wapgroup
 container_type: service
 persistent: true
 variables:
  type: group
- cn: "email users"
+ cn: "wap users"

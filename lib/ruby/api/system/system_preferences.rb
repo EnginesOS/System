@@ -52,19 +52,6 @@ class SystemPreferences
     end
   end
 
-  def save_preferences
-    if File.exist?(SystemConfig.SystemPreferencesFile)
-      File.rename(SystemConfig.SystemPreferencesFile, SystemConfig.SystemPreferencesFile + '.bak')
-    end
-    serialized_object = YAML.dump(@preferences)
-    f = File.new(SystemConfig.SystemPreferencesFile, File::CREAT | File::TRUNC | File::RDWR, 0644)
-    begin
-      f.puts(serialized_object)
-    ensure
-      f.close
-    end
-  end
-
   def SystemPreferences.set_container_icon_url(container, url)
     url_f = File.new(ContainerStateFiles.container_state_dir(container) + '/icon.url', 'w+')
     begin
@@ -92,5 +79,18 @@ class SystemPreferences
   rescue StandardError => e
     url_f.close unless url_f.nil?
     raise e
+  end
+  private
+  def save_preferences
+    if File.exist?(SystemConfig.SystemPreferencesFile)
+      File.rename(SystemConfig.SystemPreferencesFile, SystemConfig.SystemPreferencesFile + '.bak')
+    end
+    serialized_object = YAML.dump(@preferences)
+    f = File.new(SystemConfig.SystemPreferencesFile, File::CREAT | File::TRUNC | File::RDWR, 0644)
+    begin
+      f.puts(serialized_object)
+    ensure
+      f.close
+    end
   end
 end

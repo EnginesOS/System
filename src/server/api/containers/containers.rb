@@ -39,7 +39,6 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
     timer = nil
 
     begin
-
       stream :keep_open do | out |
         begin
           has_data = true          
@@ -57,6 +56,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
                 # STDERR.puts('OUT IS CLOSED but have ' + jason_event.to_s)
                 next
               else
+                STDERR.puts('E Stream Bytes ' + bytes.to_s)
                 out << bytes unless bytes.nil?
                 bytes = ''
               end
@@ -66,12 +66,13 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
               retry
             rescue IOError
               has_data = finialise_events_stream(events_stream, timer)
+            STDERR.puts('IORError on events stream')
               next
             end
           end
           finialise_events_stream(events_stream, timer)
         rescue StandardError => e
-          # STDERR.puts('EVENTS Exception' + e.to_s + ':' + e.class.name + e.backtrace.to_s)
+           STDERR.puts('EVENTS Exception' + e.to_s + ':' + e.class.name + e.backtrace.to_s)
           finialise_events_stream(events_stream, timer)
         end
       end

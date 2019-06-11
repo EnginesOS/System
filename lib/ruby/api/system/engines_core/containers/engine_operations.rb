@@ -27,11 +27,11 @@ module EnginesOperations
     params[:parent_engine] = params[:engine_name]
     begin
       engine = loadManagedEngine(params[:engine_name])
-      @system_api.trigger_event(engine, 'uninstalling', 'uninstall')
+      @system_api.trigger_engine_event(engine, 'uninstalling', 'uninstall')
       #Following is for the roll back of a failed build
     rescue StandardError => e
       unless params[:rollback] == true
-        @system_api.trigger_event(engine, 'failed', 'uninstall')
+        @system_api.trigger_engine_event(engine, 'failed', 'uninstall')
         raise e
       end
     end
@@ -39,14 +39,14 @@ module EnginesOperations
       # STDERR.puts(' Roll back called' + params.to_s )
       begin
         unless remove_engine_services(params)
-          @system_api.trigger_event(engine, 'failed', 'uninstall')
+          @system_api.trigger_engine_event(engine, 'failed', 'uninstall')
           raise EnginesException.new(error_hash('Failed to remove engine services', params))
         end
         true
       end
     else
       if engine.has_container?
-        @system_api.trigger_event(engine, 'failed', 'uninstall')
+        @system_api.trigger_engine_event(engine, 'failed', 'uninstall')
         raise EnginesException.new(error_hash('Container Exists Please Destroy engine first' , params)) unless params[:reinstall] .is_a?(TrueClass)
       end
       #   STDERR.puts('bouBOSDRFSDAFt to remove_engine_services')
@@ -56,33 +56,15 @@ module EnginesOperations
       engine.delete_engine unless params[:reinstall] == true
     end
   rescue Exception => e
-    @system_api.trigger_event(engine, 'failed', 'uninstall')
+    @system_api.trigger_engine_event(engine, 'failed', 'uninstall')
     raise e
   end
 
-  def remove_engine_services(params)
-    #SystemDebug.debug(SystemDebug.containers, :delete_engines, params)
-    params[:container_type] = 'app'
-    params[:no_exceptions] = true
-    #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
-    begin
-      #    STDERR.puts('RE ENINGE SERVICES  ' + params.to_s)
-      service_manager.remove_managed_persistent_services(params)
-    rescue EnginesException => e
-      STDERR.puts('Except  ' + e.to_s)
-      raise e unless e.is_a_warning?
-      STDERR.puts('WarnINGES  ' + e.to_s)
-    end
-    begin
-      service_manager.remove_engine_non_persistent_services(params)
-    rescue EnginesException => e
-      raise e unless e.is_a_warning?
-    end
-  end
+ 
 
   #install from fresh copy of blueprint in repository
   def reinstall_engine(engine)
-    @system_api.trigger_event(engine, 'reinstalling', 'reinstall')
+    @system_api.trigger_engine_event(engine, 'reinstalling', 'reinstall')
     engine.destroy_container(true) if engine.has_container?
     params = {
       engine_name: engine.container_name,
@@ -94,11 +76,11 @@ module EnginesOperations
     @build_thread = Thread.new { engine.reinstall_engine(builder) }
     @build_thread[:name] = 'reinstall engine'
     unless @build_thread.alive?
-      @system_api.trigger_event(engine, 'fail', 'reinstall')
+      @system_api.trigger_engine_event(engine, 'fail', 'reinstall')
       raise EnginesException.new(error_hash(params[:engine_name], 'Build Failed to start'))
     end
   rescue StandardError => e
-    @system_api.trigger_event(engine, 'fail', 'reinstall')
+    @system_api.trigger_engine_event(engine, 'fail', 'reinstall')
     SystemUtils.log_exception(e , 'reinstall_engine:' + params)
     thr.exit unless thr.nil?
   end
@@ -196,4 +178,24 @@ module EnginesOperations
     end
     r
   end
+  private 
+def remove_engine_services(params)
+   #SystemDebug.debug(SystemDebug.containers, :delete_engines, params)
+   params[:container_type] = 'app'
+   params[:no_exceptions] = true
+   #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
+   begin
+     #    STDERR.puts('RE ENINGE SERVICES  ' + params.to_s)
+     service_manager.remove_managed_persistent_services(params)
+   rescue EnginesException => e
+     STDERR.puts('Except  ' + e.to_s)
+     raise e unless e.is_a_warning?
+     STDERR.puts('WarnINGES  ' + e.to_s)
+   end
+   begin
+     service_manager.remove_engine_non_persistent_services(params)
+   rescue EnginesException => e
+     raise e unless e.is_a_warning?
+   end
+ end
 end

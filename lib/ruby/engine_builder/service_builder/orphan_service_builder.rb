@@ -18,9 +18,10 @@ module OrphansServiceBuilder
 
   def release_orphans()
     @orphans.each do |service_hash|
+      STDERR.puts('releasing_orphan ' + service_hash.to_s)
       @core_api.release_orphan(service_hash)
 
-    STDERR.puts('release_orphan ' + service_hash.to_s)
+    STDERR.puts('released_orphan ' + service_hash.to_s)
    end
   #  @orphans.each {|service_hash|@core_api.release_orphan(service_hash)}
   end

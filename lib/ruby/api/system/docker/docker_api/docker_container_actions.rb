@@ -1,6 +1,6 @@
 module DockerContainerActions
   def create_container(container, create_only = false)
-    r = @docker_comms.create_container(container)
+     @docker_comms.create_container(container)
   end
 
   def start_container(container)

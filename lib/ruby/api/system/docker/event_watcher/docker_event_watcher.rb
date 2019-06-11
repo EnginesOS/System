@@ -20,17 +20,25 @@ class DockerEventWatcher < ErrorsApi
       r = true
       mask = EventMask.event_mask(hash)
       #  SystemDebug.debug(SystemDebug.container_events, 'trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask:' + @event_mask.to_s + ' result ' )#+ (@event_mask & mask).to_s)
+      #   STDERR.puts('checking mask on ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
       unless @event_mask & mask == 0
         # skip top
         if mask & 32768 == 0 # @@container_top == 0
           hash[:state] = state_from_status(hash[:status])
           # SystemDebug.debug(SystemDebug.container_events, 'fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
           begin
-            r = @object.method(@method).call(hash)
+         #   STDERR.puts('firing ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
+            thr = Thread.new {@object.method(@method).call(hash)}
+            thr.name = @object.to_s + ':' + @method.to_s
+           # @object.method(@method).call(hash)   
+             r = true
           rescue EnginesException => e
             SystemDebug.debug(SystemDebug.container_events, e.to_s + ':' + e.backtrace.to_s)
             STDERR.puts(e.to_s + ":\n" + e.backtrace.to_s) if e.level == :error
+            thr.exit()
             false
+            rescue StandardError => e
+            STDERR.puts('EXCPETION:' + e.to_s + ":\n" + e.backtrace.to_s) 
           end
         end
       end
@@ -76,7 +84,6 @@ class DockerEventWatcher < ErrorsApi
   def restart
     start
   end
-
 
   def start
     # SystemDebug.debug(SystemDebug.container_events, 'EVENT LISTENER ' + @event_listeners.to_s)
@@ -124,6 +131,7 @@ class DockerEventWatcher < ErrorsApi
   end
 
   def add_event_listener(listener, event_mask = nil, container_name = nil, priority=200)
+    STDERR.puts('DEW ADD EVENT LISTENER')
     event_listener = EventListener.new(listener, event_mask, container_name, priority)
     @events_mutex.synchronize {
       @event_listeners[event_listener.hash_name] =
@@ -146,6 +154,13 @@ def handle_event(event_hash)
   @events_mutex.synchronize { trigger(event_hash) } if is_valid_docker_event?(event_hash)
 end
 
+def fill_in_event_system_values(event_hash)
+  if event_hash.key?(:Actor) && event_hash[:Actor][:Attributes].is_a?(Hash)
+    event_hash[:container_name] = event_hash[:Actor][:Attributes][:container_name]
+    event_hash[:container_type] = event_hash[:Actor][:Attributes][:container_type]
+  end
+  event_hash
+end
 
   def yparser
     @parser ||= Yajl::Parser.new({:symbolize_keys => true})
@@ -182,7 +197,8 @@ end
   end
 
   def trigger(hash)
-    #  STDERR.puts(' Trigger ' + hash.to_s)
+    fill_in_event_system_values(hash)
+     # STDERR.puts(' Triggering: ' + hash[:status].to_s )
    #   @events_mutex.synchronize {
     l = @event_listeners.sort_by { |k, v| v[:priority] }
    #  }
@@ -193,6 +209,7 @@ end
         next unless match_container(hash, listener.container_name)
       end
       begin
+      #  STDERR.puts(' Trigger ' +  listener.hash_name.to_s )
         listener.trigger(hash)
       rescue StandardError => e
         SystemDebug.debug(SystemDebug.container_events, hash.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)

@@ -64,8 +64,7 @@ class BuildController
     if @engine_builder.is_a?(EngineBuilder)
       @engine = @engine_builder.rebuild_managed_container(engine)
       @build_error = @engine_builder.tail_of_build_error_log
-      build_complete(@build_params)
-        
+      build_complete(@build_params)        
     else
       build_failed(params, 'No Builder')
     end

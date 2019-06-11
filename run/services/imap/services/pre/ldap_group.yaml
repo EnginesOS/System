@@ -1,7 +1,7 @@
 parent_engine: imap
 publisher_namespace: EnginesSystem
-type_path: ldap
-service_handle: vpngroup
+type_path: ldap_group
+service_handle: imapgroup
 container_type: service
 persistent: true
 variables:

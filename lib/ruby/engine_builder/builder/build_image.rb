@@ -13,6 +13,8 @@ def build_init
   log_build_output('Cancelable:false')
 end
 
+private
+
 def create_build_tar
   dest_file = SystemConfig.DeploymentDir + '/' + @build_name.to_s + '.tgz'
   cmd = ' cd ' + basedir + ' ; tar -czf ' + dest_file + ' .'

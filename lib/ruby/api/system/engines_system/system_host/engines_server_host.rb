@@ -1,5 +1,5 @@
 module EnginesServerHost
-
+#FixMe seperate metrics into EnginesServerHostMetrics
   @@server_script_timeout = 15
   def system_image_free_space
     result =   run_server_script('free_docker_lib_space')
@@ -60,7 +60,7 @@ module EnginesServerHost
     end
   end
 
-  def  get_system_metrics_summary
+  def get_system_metrics_summary
     mem_stats = get_system_memory_info
     dstats = get_disk_statistics
 

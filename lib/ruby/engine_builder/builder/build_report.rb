@@ -2,10 +2,11 @@ module BuildReport
   def get_build_report_template(blueprint)
     if @blueprint_reader.install_report_template.nil?
       get_default_build_report_template
-    else    
-    @blueprint_reader.install_report_template
+    else
+      @blueprint_reader.install_report_template
     end
   end
+  private
 
   def get_default_build_report_template
     File.read(SystemConfig.DefaultBuildReportTemplateFile)

@@ -8,7 +8,7 @@ module EngineApiEvents
 
     def write_event(hash)
       unless hash.nil?
-       # STDERR.puts('event ' + hash.to_s)
+        STDERR.puts('write_event ' + hash.to_s)
         @wr.write(hash.to_json)
         @wr.write("\n")
         @wr.flush
@@ -35,6 +35,7 @@ module EngineApiEvents
 
   def container_events_stream
     stream = EventsStreamWriter.new(@system_api)
+    STDERR.puts('new event streamwriter')
     @system_api.add_event_listener([stream, 'write_event'.to_sym], 16) # was 16
     stream.start
     stream

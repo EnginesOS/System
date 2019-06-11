@@ -1,6 +1,6 @@
 parent_engine: email
 publisher_namespace: EnginesSystem
-type_path: ldap
+type_path: ldap_ou
 service_handle: domains
 container_type: service
 persistent: true

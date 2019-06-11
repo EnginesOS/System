@@ -83,6 +83,7 @@ module Builders
   end
 
   def build_from_blue_print
+   
     get_blueprint_from_repo
     log_build_output('Cloned Blueprint')
     build_container

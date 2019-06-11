@@ -1,0 +1,11 @@
+parent_engine: wap
+publisher_namespace: EnginesSystem
+type_path: ldap_access
+service_handle: ldapaccess
+container_type: service
+persistent: true
+variables:
+ type: access
+ ldap_password: _Engines_System(random(8))
+ cn: wap
+ access_dn: uid=wap,ou=hosts,ou=Engines,dc=engines,dc=internal 
