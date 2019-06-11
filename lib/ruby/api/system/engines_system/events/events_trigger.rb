@@ -40,7 +40,14 @@ module EventsTrigger
       id: 'system',
       from: 'system',
       Type: 'system',
-      Action: 'update'})
+      Action: 'update',
+      Actor:
+      {ID: 'system',
+      Attributes:
+      {container_name: 'system',
+      container_type: 'system',
+      }
+      },})
   end
 
   def trigger_engines_restart_event(status)
@@ -49,7 +56,14 @@ module EventsTrigger
       id: 'system',
       from: 'system',
       Type: 'system',
-      Action: 'restart'})
+      Action: 'restart',
+      Actor:
+      {ID: 'system',
+      Attributes:
+      {container_name: 'system',
+      container_type: 'system',
+      }
+      },})
   end
 
   def trigger_system_update_event(status)
@@ -58,6 +72,13 @@ module EventsTrigger
       id: 'system',
       from: 'system',
       Type: 'system',
-      Action: 'system update'})
+      Action: 'system update',
+      Actor:
+      {ID: "system",
+      Attributes:
+      {container_name: 'system',
+      container_type: 'system',
+      }
+      },})
   end
 end
