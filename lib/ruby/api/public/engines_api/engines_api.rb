@@ -243,5 +243,6 @@ class PublicApi < ErrorsApi
   include SystemUser 
   require_relative 'system/gui_prefs.rb'
   include GuiPrefs
-
+  require_relative 'system/fixes/public_api_fixes.rb'
+  include PublicApiFixes
 end
