@@ -122,9 +122,9 @@ class BlueprintApi < ErrorsApi
     else
       name = Dir.basename(url)
       #FixMe no ../ in path ?
-        FileUtils.rm_f('/tmp/' + name) if Dir.exist?('/tmp/' + name)
-        self.clone_repo(url, name, '/tmp/')
-        self.load_blueprint_file('/tmp/' + name + '/blueprint.json')
+      FileUtils.rm_f('/tmp/' + name) if Dir.exist?('/tmp/' + name)
+      self.clone_repo(url, name, '/tmp/')
+      self.load_blueprint_file('/tmp/' + name + '/blueprint.json')
     end
   end
 
@@ -152,8 +152,15 @@ class BlueprintApi < ErrorsApi
 
   def self.get_http_file(url, d)
     require 'open-uri'
-    #FIX ME get real certs and drop this
-    download = open(url, {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE})
+
+    if SystemConfig.DontVerifyBlueprintRepoSSL
+     # pa = {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}
+      download = open(url,{ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE})
+    else
+    download = open(url)
+      #pa = {}
+    end
+    #download = open(url, pa)
     IO.copy_stream(download, d)
     download.close
   end
