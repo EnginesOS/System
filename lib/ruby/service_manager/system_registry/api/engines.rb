@@ -49,7 +49,7 @@ module Engines
   end
 
   def update_registered_managed_engine(params)
-    r = 'engine/services/update'
+    r = 'engine/service/update'
     r += address_params(params, [:container_type, :parent_engine, :service_handle, :publisher_namespace, :type_path])
     rest_post(r,{:api_vars => params })
   end

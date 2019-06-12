@@ -22,7 +22,7 @@ module EnginesOperations
   def delete_engine_and_services(params)
     #STDERR.puts('delete_engine_and_services ' + params.to_s)
     # SystemDebug.debug(SystemDebug.containers, :delete_engines, params)
-    
+
     params[:container_type] = 'app' # Force This
     params[:parent_engine] = params[:engine_name]
     begin
@@ -59,8 +59,6 @@ module EnginesOperations
     @system_api.trigger_engine_event(engine, 'failed', 'uninstall')
     raise e
   end
-
- 
 
   #install from fresh copy of blueprint in repository
   def reinstall_engine(engine)
@@ -135,67 +133,70 @@ module EnginesOperations
   end
 
   def clear_lost_engines
-    r = []
-    engines_tree = service_manager.managed_engines_registry[:children]
-    engines = nil
-    engines_tree.each do |node|
-      if node[:name] == 'Application'
-        engines = node
-        break
+    if SystemStatus.is_building?
+      []
+    else
+      r = []
+      engines_tree = service_manager.managed_engines_registry[:children]
+      engines = nil
+      engines_tree.each do |node|
+        if node[:name] == 'Application'
+          engines = node
+          break
+        end
       end
-    end
-    unless engines.nil?
-      if engines[:children].is_a?(Array)
-        engines[:children].each do |engine_node|
-          name = engine_node[:name]
-          next if name == 'system' || name == 'registry' || name == 'utility'
-          begin
-            t = loadManagedEngine(name)
-          rescue
-            r.push(name)
-            #      STDERR.puts('remove engines services ' + name.to_s)
+      unless engines.nil?
+        if engines[:children].is_a?(Array)
+          engines[:children].each do |engine_node|
+            name = engine_node[:name]
+            next if name == 'system' || name == 'registry' || name == 'utility' #avoided a past bug
             begin
-              remove_engine_services(
-              {lost: true, container_type: 'app', remove_all_data: 'none', parent_engine: name})
-            rescue StandardError =>e
-            end
-            #      STDERR.puts(' remove_service_from_engine_only')
-            # here find services on engine but not on service
-            services = get_engine_persistent_services({ parent_engine: name })
-            #        STDERR.puts(' remove_service_from_engine_only ' +services.to_s)
-            services.each do | service|
+              t = loadManagedEngine(name)
+            rescue
+              r.push(name)
               begin
-                #    STDERR.puts(' remove_service_from_engine_only ' + service.to_s )
-                service_manager.remove_service_from_engine_only(service)
-                next
-              rescue
-                next
+                remove_engine_services(
+                {lost: true, container_type: 'app', remove_all_data: 'none', parent_engine: name})
+              rescue StandardError =>e
+              end
+              # here find services on engine but not on service
+              services = get_engine_persistent_services({ parent_engine: name})
+              #        STDERR.puts(' remove_service_from_engine_only ' +services.to_s)
+              services.each do |service|
+                begin
+                  #    STDERR.puts(' remove_service_from_engine_only ' + service.to_s )
+                  service_manager.remove_service_from_engine_only(service)
+                  # next
+                rescue
+                  next
+                end
               end
             end
           end
         end
       end
+      r
     end
-    r
   end
-  private 
-def remove_engine_services(params)
-   #SystemDebug.debug(SystemDebug.containers, :delete_engines, params)
-   params[:container_type] = 'app'
-   params[:no_exceptions] = true
-   #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
-   begin
-     #    STDERR.puts('RE ENINGE SERVICES  ' + params.to_s)
-     service_manager.remove_managed_persistent_services(params)
-   rescue EnginesException => e
-     STDERR.puts('Except  ' + e.to_s)
-     raise e unless e.is_a_warning?
-     STDERR.puts('WarnINGES  ' + e.to_s)
-   end
-   begin
-     service_manager.remove_engine_non_persistent_services(params)
-   rescue EnginesException => e
-     raise e unless e.is_a_warning?
-   end
- end
+  private
+
+  def remove_engine_services(params)
+    #SystemDebug.debug(SystemDebug.containers, :delete_engines, params)
+    params[:container_type] = 'app'
+    params[:no_exceptions] = true
+    #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
+    begin
+      #    STDERR.puts('RE ENINGE SERVICES  ' + params.to_s)
+      service_manager.remove_managed_persistent_services(params)
+    rescue EnginesException => e
+      STDERR.puts('Except  ' + e.to_s)
+      raise e unless e.is_a_warning?
+      STDERR.puts('WarnINGES  ' + e.to_s)
+    end
+    begin
+      service_manager.remove_engine_non_persistent_services(params)
+    rescue EnginesException => e
+      raise e unless e.is_a_warning?
+    end
+  end
 end
