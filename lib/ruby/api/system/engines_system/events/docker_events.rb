@@ -78,7 +78,6 @@ module DockerEvents
         listener.trigger(hash)
       rescue StandardError => e
         SystemDebug.debug(SystemDebug.container_events, hash.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)
-        # rm_event_listener(listener)
       end
     end
   end
@@ -94,8 +93,6 @@ module DockerEvents
   private
 
   def is_aready?(what, statein)
-    #  STDERR.puts(' What ' + what.to_s )
-    #  STDERR.puts(' statein ' + statein.to_s )
     r = false
     case what
     when statein
@@ -116,31 +113,14 @@ module DockerEvents
     r
   end
 
-#  def fill_in_event_system_values(event_hash)
-#    if event_hash.key?(:Actor) && event_hash[:Actor][:Attributes].is_a?(Hash)
-#      event_hash[:container_name] = event_hash[:Actor][:Attributes][:container_name]
-#      event_hash[:container_type] = event_hash[:Actor][:Attributes][:container_type]
-#      #else
-#      # cn_and_t = @engines_api.container_name_and_type_from_id(event_hash[:id])
-#      #raise EnginesException.new(error_hash('cn_and_t Not an array' + cn_and_t.to_s + ':' +  cn_and_t.class.name)) unless cn_and_t.is_a?(Array)
-#      #event_hash[:container_name] = cn_and_t[0]
-#      #event_hash[:container_type] = cn_and_t[1]
-#    end
-#    event_hash
-#  end
-
   def container_event(event_hash)
     unless event_hash.nil? # log_error_mesg('Nil event hash passed to container event','')
       unless event_hash[:id] == 'system'
-        #  fill_in_event_system_values(event_hash) Has been move to docker/event_watcher
-        #   SystemDebug.debug(SystemDebug.container_events,'2 CONTAINER EVENTS' + event_hash.to_s)
         if is_engines_container_event?(event_hash)
           inform_container(event_hash)
           case event_hash[:status]
           when 'start', 'oom', 'stop', 'pause', 'unpause', 'create', 'destroy', 'kill', 'die'
             inform_container_tracking(event_hash[:container_name], event_hash[:container_type], event_hash[:status])
-            # else
-            #    SystemDebug.debug(SystemDebug.container_events, 'Untracked event', event_hash.to_s )
           end
         end
       else
@@ -154,10 +134,8 @@ module DockerEvents
   end
 
   def inform_container_tracking(container_name, ctype, event_name)
-    #  SystemDebug.debug(SystemDebug.container_events, 'inform_container_tracking', container_name, ctype, event_name)
     c = get_event_container(container_name, ctype)
     c.task_complete(event_name) if c.is_a?(ManagedContainer)
-    #   inform_container_monitor(container_name, ctype, event_name)
   rescue StandardError =>e
     log_exception(e)
   end
@@ -186,12 +164,9 @@ module DockerEvents
   end
 
   def inform_container(event_hash)
-    # SystemDebug.debug(SystemDebug.container_events, 'recevied inform_container', event_hash[:container_name],  event_hash[:status])
     c = get_event_container(event_hash[:container_name], event_hash[:container_type])
     if c.is_a?(ManagedContainer)
-      #    SystemDebug.debug(SystemDebug.container_events, 'informing _container', event_hash[:container_name],  event_hash[:status])
       c.process_container_event(event_hash)
-      #  SystemDebug.debug(SystemDebug.container_events, 'informed _container', event_hash[:container_name],  event_hash[:status])
       true
     else
       false
@@ -201,15 +176,9 @@ module DockerEvents
   end
 
   def start_docker_event_listener(listeners = {})
-    #  SystemDebug.debug(SystemDebug.container_events, ' Start EVENT LISTENER THREAD !!!!!!!!!!!!!!!!!!!!!!!!!!!!! with n ' + listeners.count.to_s)
-    #  @docker_event_listener = DockerEventWatcher.new(self, listeners)
-    # @event_listener_thread.exit unless @event_listener_thread.nil?
-    # @docker_events = self;
     @listeners = listeners
     @docker_event_listener = DockerEventWatcher.new(self, listeners)
     @event_listener_thread.exit unless @event_listener_thread.nil?
-    #  Thread.new do
-    #  while 0 == 0
     @event_listener_thread = Thread.new do
       begin
         while 0 == 0
@@ -217,23 +186,14 @@ module DockerEvents
           @docker_event_listener.start
           STDERR.puts( ' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
           @listeners = @docker_event_listener.event_listeners
-          STDERR.puts( ' EVENT LISTENER S ' + @listeners.count.to_s)
-          # @docker_events.start_docker_event_listener(listeners)
+          STDERR.puts( 'Starting again with EVENT LISTENER S ' + @listeners.count.to_s)
           @docker_event_listener = DockerEventWatcher.new(self, @listeners)
           STDERR.puts(' EVENT Listener started  post timeout ')
         end
       rescue StandardError => e
         STDERR.puts(' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!' + e.to_s)
-        #   start_docker_event_listener(@docker_event_listener.event_listeners)
-        STDERR.puts(' EVENT Listener started Post Exception ')
-        #      end
-
-        #     @event_listener_thread.join
-        #  end
       end
-      # @event_listener_thread[:name] = 'docker_event_listener'
       STDERR.puts('Thread ' +  @event_listener_thread.inspect)
-      # @docker_event_listener
     end
   rescue StandardError =>e
     STDERR.puts(e.class.name)
@@ -241,19 +201,17 @@ module DockerEvents
   end
 
   def is_engines_container_event?(event_hash)
-
-    r = false
     unless event_hash[:container_type].nil? || event_hash[:container_name].nil?
       if event_hash[:container_type] == 'service' ||  event_hash[:container_type] == 'system_service'||  event_hash[:container_type] == 'utility'
         # Enable Cold load of service from config.yaml
-        r = File.exist?(SystemConfig.RunDir + '/' + event_hash[:container_type] + 's/' + event_hash[:container_name] + '/config.yaml')
+        File.exist?(SystemConfig.RunDir + '/' + event_hash[:container_type] + 's/' + event_hash[:container_name] + '/config.yaml')
       else
         # engines always have a running.yaml
-        r = File.exist?(SystemConfig.RunDir + '/' + event_hash[:container_type] + 's/' + event_hash[:container_name] + '/running.yaml')
+        File.exist?(SystemConfig.RunDir + '/' + event_hash[:container_type] + 's/' + event_hash[:container_name] + '/running.yaml')
       end
+    else
+      false
     end
-    #  SystemDebug.debug(SystemDebug.container_events, 'A Non Managed Container EVENT') unless r == true
-    r
   end
 
   def container_type_mask(ctype)
