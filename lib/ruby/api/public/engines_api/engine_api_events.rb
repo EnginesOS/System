@@ -13,7 +13,11 @@ module EngineApiEvents
         @wr.write("\n")
         @wr.flush
       end
-      true    
+      true
+    rescue StandardError => e
+      p e.to_s
+      p e.backtrace.to_s
+      STDERR.puts('SHOULD I  CLOSE THIS HERE? TELL ME OH LOG')
     end
 
     def start
@@ -26,7 +30,8 @@ module EngineApiEvents
     def stop
       @system_api.rm_event_listener(self)
       @wr.close #  if @wr.is_open?
-      @rd.close #if @rd.is_open?   
+      @rd.close #if @rd.is_open?
+      STDERR.puts('Event StreamWriter Closed')
     rescue StandardError => e
       p e.to_s
       p e.backtrace.to_s
@@ -35,7 +40,7 @@ module EngineApiEvents
 
   def container_events_stream
     stream = EventsStreamWriter.new(@system_api)
-    STDERR.puts('new event streamwriter')
+    STDERR.puts('new Event StreamWriter')
     @system_api.add_event_listener([stream, 'write_event'.to_sym], 16) # was 16
     stream.start
     stream
