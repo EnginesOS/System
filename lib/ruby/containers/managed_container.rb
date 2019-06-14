@@ -94,6 +94,7 @@ class ManagedContainer < Container
     @status[:restart_required] = restart_required?
     @status[:error] = true if @status[:state] != @status[:set_state] && @status[:progress_to].nil?
     @status[:error] = false if @status[:state] == 'stopped' && is_stopped_ok?
+      STDERR.puts(' STATUS ' + @status.to_s)
     @status
   end
 
