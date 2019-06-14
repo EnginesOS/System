@@ -269,12 +269,15 @@ module ManagedContainerControls
 
   def prep_task(action_sym)
     tah = task_at_hand
+    STDERR.puts('TAH ' + tah.to_s)
     ##  unless tah.nil?
     #    SystemDebug.debug(SystemDebug.containers, 'saved task at hand', tah, 'next', action_sym)
     #  end
     #  SystemDebug.debug(SystemDebug.containers, :current_tah_prep_task, tah)
+    r = in_progress(action_sym)
+    STDERR.puts('in_progress ' + r.to_e)
     unless in_progress(action_sym)
-      #  SystemDebug.debug(SystemDebug.containers, :inprogress_run)
+        STDERR.puts('SAVE STATE :inprogress_run  ')
       save_state
     end
     true
