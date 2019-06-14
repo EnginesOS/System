@@ -10,7 +10,7 @@ module TaskAtHand
     @setState = state.to_s
     set_task_at_hand(step)
     save_state
-   # SystemDebug.debug(SystemDebug.engine_tasks, 'Task at Hand:' + state.to_s + ' Current set state:' + current_set_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s + ' in ' + curr_state)
+   STDERR.puts( 'Task at Hand:' + state.to_s + ' Current set state:' + current_set_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s + ' in ' + curr_state)
     # rescue StandardError => e
     #   log_exception(e)
   end
