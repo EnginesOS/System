@@ -275,7 +275,7 @@ module ManagedContainerControls
     #  end
     #  SystemDebug.debug(SystemDebug.containers, :current_tah_prep_task, tah)
     r = in_progress(action_sym)
-    STDERR.puts('in_progress ' + r.to_e)
+    STDERR.puts('in_progress ' + r.to_s)
     unless in_progress(action_sym)
         STDERR.puts('SAVE STATE :inprogress_run  ')
       save_state
