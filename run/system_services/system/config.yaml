@@ -10,6 +10,11 @@ hostname: 'system'
 no_cert_map: false
 domain_name: 
 kerberos: true
+limits:
+ nofile:
+  name: nofile
+  soft: 1024
+  hard: 1024
 environments:
 - !ruby/object:EnvironmentVariable
  name: BUG_REPORTS_SERVER
