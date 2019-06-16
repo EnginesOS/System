@@ -138,7 +138,7 @@ class DockerEventWatcher < ErrorsApi
       { listener: event_listener ,
         priority: event_listener.priority}
     }
-    @event_listeners = @event_listeners.sort_by { |k, v| v[:priority] }
+   # @event_listeners = @event_listeners.sort_by { |k, v| v[:priority] }
   end
 
   def rm_event_listener(listener)
@@ -202,10 +202,10 @@ class DockerEventWatcher < ErrorsApi
     fill_in_event_system_values(hash)
     # STDERR.puts(' Triggering: ' + hash[:status].to_s )
     #   @events_mutex.synchronize {
-   # l = @event_listeners.sort_by { |k, v| v[:priority] }
+    l = @event_listeners.sort_by { |k, v| v[:priority] }
     #  }
-    #   STDERR.puts(' Trigger ' + hash.to_s)
-    @event_listeners.each do |m|
+       STDERR.puts(' Trigger ' + hash.to_s)
+    l.each do |m|
       listener = m[1][:listener]
       unless listener.container_name.nil?
         next unless match_container(hash, listener.container_name)
