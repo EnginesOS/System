@@ -1,0 +1,13 @@
+parent_engine: ivpn
+publisher_namespace: EnginesSystem
+type_path: certs
+service_handle: IPSEC_VPN_CA
+container_type: service
+persistent: true
+variables:
+ cert_name: ipvpn._Engines_System(default_domain)
+ domain_name: _Engines_System(default_domain)
+ common_name: IPSEC_VPN_CA
+ wild: no
+ cert_usage: ca
+ ca_name: IPSEC_VPN_CA
