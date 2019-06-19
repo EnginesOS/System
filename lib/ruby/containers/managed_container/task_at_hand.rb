@@ -216,14 +216,14 @@ module TaskAtHand
       @task_at_hand = nil
       fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
       File.delete(fn) if File.exist?(fn)
-
     end
     @task_at_hand
   rescue StandardError => e
     STDERR.puts( ' clear task at hand ' + e.to_s + "\n" + e.backtrace.to_s)
     # log_exception(e) Dont log exception
     # well perhaps a perms or disk error but definitly not no such file
-    true  #possbile exception such file (another process alsop got the eot mesg and removed)
+   #possbile exception such file (another process alsop got the eot mesg and removed)
+   @task_at_hand
   end
 
   def task_failed(msg)
