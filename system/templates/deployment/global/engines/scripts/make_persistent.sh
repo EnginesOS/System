@@ -5,7 +5,7 @@
       do
       path=`echo $path | sed "/[.][.]/s///g" | sed "/[&;><|]/s///g"` 
       echo $path >> $VOLDIR/.dynamic_persistence
-      if test -d/home/app/$path
+      if test -d /home/app/$path
        then
  			path=`echo $path | sed "/\/$/s///"`
 			dirname=`dirname "$path" `
