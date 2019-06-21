@@ -1,6 +1,4 @@
-#!/bin/bash
-
-
+#!/bin/sh
 
     for mod in $*
      do
@@ -8,4 +6,4 @@
     echo " " |  pecl install $mod
      done
    
-  
+ 
