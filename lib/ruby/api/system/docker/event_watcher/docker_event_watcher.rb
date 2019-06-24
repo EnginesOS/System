@@ -27,18 +27,18 @@ class DockerEventWatcher < ErrorsApi
           hash[:state] = state_from_status(hash[:status])
           # SystemDebug.debug(SystemDebug.container_events, 'fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
           begin
-         #   STDERR.puts('firing ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
+              STDERR.puts('firing ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
             thr = Thread.new {@object.method(@method).call(hash)}
             thr.name = @object.to_s + ':' + @method.to_s
-           # @object.method(@method).call(hash)   
-             r = true
+            # @object.method(@method).call(hash)
+            r = true
           rescue EnginesException => e
             SystemDebug.debug(SystemDebug.container_events, e.to_s + ':' + e.backtrace.to_s)
             STDERR.puts(e.to_s + ":\n" + e.backtrace.to_s) if e.level == :error
             thr.exit()
             false
-            rescue StandardError => e
-            STDERR.puts('EXCPETION:' + e.to_s + ":\n" + e.backtrace.to_s) 
+          rescue StandardError => e
+            STDERR.puts('EXCPETION:' + e.to_s + ":\n" + e.backtrace.to_s)
           end
         end
       end
@@ -91,7 +91,7 @@ class DockerEventWatcher < ErrorsApi
     get_client
     parser = yparser # ||= Yajl::Parser.new({:symbolize_keys => true})
     parser.on_parse_complete = method(:handle_event)
-    @client.request(Net::HTTP::Get.new('/events')) do |resp|    
+    @client.request(Net::HTTP::Get.new('/events')) do |resp|
       json_part = nil
       resp.read_body do |chunk|
         begin
@@ -125,7 +125,7 @@ class DockerEventWatcher < ErrorsApi
   rescue StandardError => e
     STDERR.puts('EXCEPTION docker Event Stream post exception due to ' + e.to_s + ' ' + e.class.name)
     log_exception(e)
-    log_error_mesg('Restarting docker Event Stream post exception ') 
+    log_error_mesg('Restarting docker Event Stream post exception ')
     @client.finish if @client.started?
     @client = nil
   end
@@ -138,6 +138,7 @@ class DockerEventWatcher < ErrorsApi
       { listener: event_listener ,
         priority: event_listener.priority}
     }
+   # @event_listeners = @event_listeners.sort_by { |k, v| v[:priority] }
   end
 
   def rm_event_listener(listener)
@@ -148,19 +149,20 @@ class DockerEventWatcher < ErrorsApi
   end
 
   private
-def handle_event(event_hash)
-  #   STDERR.puts(' Hash ' + event_hash.to_s)
-  # SystemDebug.debug(SystemDebug.container_events, 'got ' + event_hash.to_s)
-  @events_mutex.synchronize { trigger(event_hash) } if is_valid_docker_event?(event_hash)
-end
 
-def fill_in_event_system_values(event_hash)
-  if event_hash.key?(:Actor) && event_hash[:Actor][:Attributes].is_a?(Hash)
-    event_hash[:container_name] = event_hash[:Actor][:Attributes][:container_name]
-    event_hash[:container_type] = event_hash[:Actor][:Attributes][:container_type]
+  def handle_event(event_hash)
+    #   STDERR.puts(' Hash ' + event_hash.to_s)
+    # SystemDebug.debug(SystemDebug.container_events, 'got ' + event_hash.to_s)
+    @events_mutex.synchronize { trigger(event_hash) } if is_valid_docker_event?(event_hash)
   end
-  event_hash
-end
+
+  def fill_in_event_system_values(event_hash)
+    if event_hash.key?(:Actor) && event_hash[:Actor][:Attributes].is_a?(Hash)
+      event_hash[:container_name] = event_hash[:Actor][:Attributes][:container_name]
+      event_hash[:container_type] = event_hash[:Actor][:Attributes][:container_type]
+    end
+    event_hash
+  end
 
   def yparser
     @parser ||= Yajl::Parser.new({:symbolize_keys => true})
@@ -198,18 +200,18 @@ end
 
   def trigger(hash)
     fill_in_event_system_values(hash)
-     # STDERR.puts(' Triggering: ' + hash[:status].to_s )
-   #   @events_mutex.synchronize {
+    # STDERR.puts(' Triggering: ' + hash[:status].to_s )
+    #   @events_mutex.synchronize {
     l = @event_listeners.sort_by { |k, v| v[:priority] }
-   #  }
-   #   STDERR.puts(' Trigger ' + hash.to_s)
+    #  }
+       STDERR.puts(' Trigger ' + hash.to_s)
     l.each do |m|
       listener = m[1][:listener]
       unless listener.container_name.nil?
         next unless match_container(hash, listener.container_name)
       end
       begin
-      #  STDERR.puts(' Trigger ' +  listener.hash_name.to_s )
+        #  STDERR.puts(' Trigger ' +  listener.hash_name.to_s )
         listener.trigger(hash)
       rescue StandardError => e
         SystemDebug.debug(SystemDebug.container_events, hash.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)

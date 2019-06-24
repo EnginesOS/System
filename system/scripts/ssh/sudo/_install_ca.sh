@@ -1,4 +1,5 @@
 #!/bin/sh
+#Install CA certificate on local machine and triggers a install ca event on engines
 
 #FIXME check arugments and verifice .crt is a pem
 #ca_cert_file=/home/engines/etc/ssl/engines_internal_ca.crt 
