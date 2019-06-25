@@ -15,7 +15,6 @@ module EnginesApiSystem
       value: false ,
       immutable: false}
     )
-
   end
 
   def replace_or_add_if_new(environments, env_hash)
@@ -119,6 +118,7 @@ module EnginesApiSystem
 
   def create_container(container)
     clear_error
+    container.expire_engine_info
     raise EnginesException.new(warning_hash('Failed To create container exists by the same name', container)) if container.ctype != 'system_service' && container.has_container?
     raise EnginesException.new(error_hash('Failed to create state files', self)) unless @system_api.create_container_dirs(container)
     @system_api.clear_cid_file(container)
