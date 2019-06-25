@@ -1,12 +1,13 @@
 parent_engine: ivpn
 publisher_namespace: EnginesSystem
 type_path: certs
-service_handle: ipvpn._Engines_System(default_domain)
+service_handle: IPSEC_VPN
 container_type: service
 persistent: true
 variables:
  cert_name: ipvpn._Engines_System(default_domain)
  domain_name: _Engines_System(default_domain)
- common_name: ivpn._Engines_System(default_domain)
+ common_name: IPSEC_VPN
  wild: no
- install_target: default
+ cert_usage: ca
+ ca_name: IPSEC_VPN

@@ -10,3 +10,5 @@ variables:
  port: 8000
  fqdn: logview._Engines_System(default_domain)
  internal_dir: /
+ require_client_ssl: true
+ ca_name: system
