@@ -62,7 +62,7 @@ module Actionators
   def format_action_response(a, h)
     if a[:return_type] == 'json'
       unless h.is_a?(Hash)
-        STDERR.puts('h is ' + h.class.name + ':' + h.to_s)
+        STDERR.puts('Warning h is ' + h.class.name + ':' + h.to_s)
       else
         h.keys.each do |key|
           h[key] = '' if h[key].nil?
