@@ -15,7 +15,7 @@ module Actionators
    # SystemDebug.debug(SystemDebug.actions, engine, actionator_name, params)
     actionator = get_engine_actionator(engine, actionator_name)    
     if engine.is_running?
-      do_action(actionator, params)
+      do_action(engine, actionator, params)
     else
       raise EnginesException.new(warning_hash('Engine not running', engine.container_name))
     end
@@ -46,7 +46,7 @@ module Actionators
     service = loadManagedService(service_name)
     actionator = get_service_actionator(service, actionator_name)
     if service.is_running?
-      do_action(actionator, params)
+      do_action(service, actionator, params)
      # service.perform_action(actionator, params)
     else
       raise EnginesException.new(warning_hash('Service not running', service.container_name))
@@ -54,8 +54,8 @@ module Actionators
   end
   
   private
-  def do_action(actionator, params)
-    format_action_response(actionator, engine.perform_action(actionator, params))
+  def do_action(c, actionator, params)
+    format_action_response(actionator, c.perform_action(actionator, params))
   end
   
   def format_action_response(a, h)
