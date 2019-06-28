@@ -20,19 +20,6 @@ module Actionators
       raise EnginesException.new(warning_hash('Engine not running', engine.container_name))
     end
   end
-
-  def do_action(actionator, params)
-    format_action_response(actionator, engine.perform_action(actionator, params))
-  end
-  
-  def format_action_response(actionator, h)
-    if actionator[:return_type] == 'json'
-       h.keys.each do |key|
-        h.delete(key) if h[:key].nil? 
-        end
-      end
-    h
-  end
   
   def list_service_actionators(service)
     if service.is_a?(Hash)
@@ -59,10 +46,25 @@ module Actionators
     service = loadManagedService(service_name)
     actionator = get_service_actionator(service, actionator_name)
     if service.is_running?
-      service.perform_action(actionator, params)
+      do_action(actionator, params)
+     # service.perform_action(actionator, params)
     else
       raise EnginesException.new(warning_hash('Service not running', service.container_name))
     end
+  end
+  
+  private
+  def do_action(actionator, params)
+    format_action_response(actionator, engine.perform_action(actionator, params))
+  end
+  
+  def format_action_response(a, h)
+    if a[:return_type] == 'json'
+       h.keys.each do |key|
+        h.delete(key) if h[:key].nil? 
+        end
+      end
+    h
   end
   
 end
