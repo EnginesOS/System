@@ -12,15 +12,15 @@ module Actionators
   end
 
   def perform_engine_action(engine, actionator_name, params)
-   # SystemDebug.debug(SystemDebug.actions, engine, actionator_name, params)
-    actionator = get_engine_actionator(engine, actionator_name)    
+    # SystemDebug.debug(SystemDebug.actions, engine, actionator_name, params)
+    actionator = get_engine_actionator(engine, actionator_name)
     if engine.is_running?
       do_action(engine, actionator, params)
     else
       raise EnginesException.new(warning_hash('Engine not running', engine.container_name))
     end
   end
-  
+
   def list_service_actionators(service)
     if service.is_a?(Hash)
       SoftwareServiceDefinition.software_service_definition(service)
@@ -33,40 +33,44 @@ module Actionators
     unless service_def.key?(:actionators)
       raise EnginesException.new(warning_hash('list_actionators no actionators', service_def))
     end
-  #  unless service_def[:actionators].is_a?(Array)
-      #    SystemDebug.debug(SystemDebug.actions,service.container_name,service_def[:actionators],service_def)
-  #    return service_def[:actionators]
-  #  end
+    #  unless service_def[:actionators].is_a?(Array)
+    #    SystemDebug.debug(SystemDebug.actions,service.container_name,service_def[:actionators],service_def)
+    #    return service_def[:actionators]
+    #  end
     # SystemDebug.debug(SystemDebug.actions,service.container_name,service_def[:actionators],service_def)
     service_def[:actionators]
   end
 
   def perform_service_action(service_name, actionator_name, params)
-  #  SystemDebug.debug(SystemDebug.actions, service_name, actionator_name, params)
+    #  SystemDebug.debug(SystemDebug.actions, service_name, actionator_name, params)
     service = loadManagedService(service_name)
     actionator = get_service_actionator(service, actionator_name)
     if service.is_running?
       do_action(service, actionator, params)
-     # service.perform_action(actionator, params)
+      # service.perform_action(actionator, params)
     else
       raise EnginesException.new(warning_hash('Service not running', service.container_name))
     end
   end
-  
+
   private
+
   def do_action(c, actionator, params)
-    format_action_response(actionator, c.perform_action(actionator, params))
+    c.perform_action(actionator, params)
+    #format_action_response(actionator, c.perform_action(actionator, params))
   end
-  
+
   def format_action_response(a, h)
     STDERR.puts('h is ' + h.to_s)
     if a[:return_type] == 'json'
-       h.keys.each do |key|
-         STDERR.puts('h[:' + key.to_s + ']= ' + h[:key].to_s)
-        h.delete(key) if h[:key].nil? 
-        end
+      h.keys.each do |key|
+        STDERR.puts('h[:' + key.to_s + ']= ' + h[:key].to_s)
+        h.delete(key) if h[:key].nil?
       end
+    end
+    STDERR.puts('h is ' + h.to_s)
     h
   end
-  
+
 end
+
