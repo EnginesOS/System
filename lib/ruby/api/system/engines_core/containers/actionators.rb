@@ -15,12 +15,25 @@ module Actionators
    # SystemDebug.debug(SystemDebug.actions, engine, actionator_name, params)
     actionator = get_engine_actionator(engine, actionator_name)    
     if engine.is_running?
-      engine.perform_action(actionator, params)
+      do_action(actionator, params)
     else
       raise EnginesException.new(warning_hash('Engine not running', engine.container_name))
     end
   end
 
+  def do_action(actionator, params)
+    format_action_response(actionator, engine.perform_action(actionator, params))
+  end
+  
+  def format_action_response(actionator, h)
+    if actionator[:return_type] == 'json'
+       h.keys.each do |key|
+        h.delete(key) if h[:key].nil? 
+        end
+      end
+    h
+  end
+  
   def list_service_actionators(service)
     if service.is_a?(Hash)
       SoftwareServiceDefinition.software_service_definition(service)
