@@ -61,6 +61,7 @@ module Actionators
   def format_action_response(a, h)
     if a[:return_type] == 'json'
        h.keys.each do |key|
+         STDERR.puts('h[:' + key.to_s + ']= ' + h[:key].to_s)
         h.delete(key) if h[:key].nil? 
         end
       end
