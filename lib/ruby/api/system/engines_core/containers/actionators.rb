@@ -65,7 +65,7 @@ module Actionators
     if a[:return_type] == 'json'
       h.keys.each do |key|
         STDERR.puts('h[:' + key.to_s + ']= ' + h[:key].to_s)
-        h.delete(key) if h[:key].nil?
+        h.delete(key) if h[key].nil?
       end
     end
     STDERR.puts('h is ' + h.to_s)
