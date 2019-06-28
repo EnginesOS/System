@@ -56,8 +56,8 @@ module Actionators
   private
 
   def do_action(c, actionator, params)
-    c.perform_action(actionator, params)
-    #format_action_response(actionator, c.perform_action(actionator, params))
+    #   c.perform_action(actionator, params)
+   format_action_response(actionator, c.perform_action(actionator, params))
   end
 
   def format_action_response(a, h)
