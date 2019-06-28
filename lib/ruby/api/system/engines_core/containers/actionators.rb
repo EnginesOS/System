@@ -56,19 +56,19 @@ module Actionators
   private
 
   def do_action(c, actionator, params)
-    #   c.perform_action(actionator, params)
     format_action_response(actionator, c.perform_action(actionator, params))
   end
 
   def format_action_response(a, h)
-    STDERR.puts('h is ' + h.to_s)
     if a[:return_type] == 'json'
-      h.keys.each do |key|
-        STDERR.puts('h[:' + key.to_s + ']= ' + h[:key].to_s)
-        h[key] = '' if h[key].nil?
+      unless h.is_a?(Hash)
+        STDERR.puts('h is ' + h.class.name + ':' + h.to_s)
+      else
+        h.keys.each do |key|
+          h[key] = '' if h[key].nil?
+        end
       end
     end
-    STDERR.puts('h is ' + h.to_s)
     h
   end
 
