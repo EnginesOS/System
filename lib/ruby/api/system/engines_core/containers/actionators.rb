@@ -12,10 +12,10 @@ module Actionators
   end
 
   def perform_engine_action(engine, actionator_name, params)
-   # SystemDebug.debug(SystemDebug.actions, engine, actionator_name, params)
-    actionator = get_engine_actionator(engine, actionator_name)    
+    # SystemDebug.debug(SystemDebug.actions, engine, actionator_name, params)
+    actionator = get_engine_actionator(engine, actionator_name)
     if engine.is_running?
-      engine.perform_action(actionator, params)
+      do_action(engine, actionator, params)
     else
       raise EnginesException.new(warning_hash('Engine not running', engine.container_name))
     end
@@ -33,23 +33,44 @@ module Actionators
     unless service_def.key?(:actionators)
       raise EnginesException.new(warning_hash('list_actionators no actionators', service_def))
     end
-  #  unless service_def[:actionators].is_a?(Array)
-      #    SystemDebug.debug(SystemDebug.actions,service.container_name,service_def[:actionators],service_def)
-  #    return service_def[:actionators]
-  #  end
+    #  unless service_def[:actionators].is_a?(Array)
+    #    SystemDebug.debug(SystemDebug.actions,service.container_name,service_def[:actionators],service_def)
+    #    return service_def[:actionators]
+    #  end
     # SystemDebug.debug(SystemDebug.actions,service.container_name,service_def[:actionators],service_def)
     service_def[:actionators]
   end
 
   def perform_service_action(service_name, actionator_name, params)
-  #  SystemDebug.debug(SystemDebug.actions, service_name, actionator_name, params)
+    #  SystemDebug.debug(SystemDebug.actions, service_name, actionator_name, params)
     service = loadManagedService(service_name)
     actionator = get_service_actionator(service, actionator_name)
     if service.is_running?
-      service.perform_action(actionator, params)
+      do_action(service, actionator, params)
+      # service.perform_action(actionator, params)
     else
       raise EnginesException.new(warning_hash('Service not running', service.container_name))
     end
   end
-  
+
+  private
+
+  def do_action(c, actionator, params)
+    format_action_response(actionator, c.perform_action(actionator, params))
+  end
+
+  def format_action_response(a, h)
+    if a[:return_type] == 'json'
+      unless h.is_a?(Hash)
+        STDERR.puts('Warning h is ' + h.class.name + ':' + h.to_s)
+      else
+        h.keys.each do |key|
+          h[key] = '' if h[key].nil?
+        end
+      end
+    end
+    h
+  end
+
 end
+
