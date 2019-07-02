@@ -39,29 +39,29 @@ class SystemUtils
     SystemUtils.system_release + '-' + SystemConfig.api_version.to_s + '-' + SystemConfig.engines_system_version.to_s
   end
 
-#  def SystemUtils.symbolize_keys(hash)
-#    hash.inject({}){|result, (key, value)|
-#      new_key = case key
-#      when String then key.to_sym
-#      else key
-#      end
-#      new_value = case value
-#      when Hash then symbolize_keys(value)
-#      when Array   then
-#        newval = []
-#        value.each do |array_val|
-#          if array_val.is_a?(Hash)
-#            array_val = SystemUtils.symbolize_keys(array_val)
-#          end
-#          newval.push(array_val)
-#        end
-#        newval
-#      else value
-#      end
-#      result[new_key] = new_value
-#      result
-#    }
-#  end
+  #  def SystemUtils.symbolize_keys(hash)
+  #    hash.inject({}){|result, (key, value)|
+  #      new_key = case key
+  #      when String then key.to_sym
+  #      else key
+  #      end
+  #      new_value = case value
+  #      when Hash then symbolize_keys(value)
+  #      when Array   then
+  #        newval = []
+  #        value.each do |array_val|
+  #          if array_val.is_a?(Hash)
+  #            array_val = SystemUtils.symbolize_keys(array_val)
+  #          end
+  #          newval.push(array_val)
+  #        end
+  #        newval
+  #      else value
+  #      end
+  #      result[new_key] = new_value
+  #      result
+  #    }
+  #  end
 
   #Execute @param cmd [String]
   #if sucessful exit code == 0 @return
@@ -86,22 +86,22 @@ class SystemUtils
     end
   end
 
-#  def SystemUtils.hash_string_to_hash(hash_string)
-#    retval = {}
-#    hash_pairs = hash_string.split(':')
-#    hash_pairs.each do |hash_pair|
-#      pair = hash_pair.split('=')
-#      if pair.length > 1
-#        val = pair[1]
-#      else
-#        val = nil
-#      end
-#      retval[pair[0].to_sym] = val if pair.nil? == false && pair[0].nil? == false
-#    end
-#    retval
-#  rescue Exception=>e
-#    SystemUtils.log_exception(e)
-#  end
+  #  def SystemUtils.hash_string_to_hash(hash_string)
+  #    retval = {}
+  #    hash_pairs = hash_string.split(':')
+  #    hash_pairs.each do |hash_pair|
+  #      pair = hash_pair.split('=')
+  #      if pair.length > 1
+  #        val = pair[1]
+  #      else
+  #        val = nil
+  #      end
+  #      retval[pair[0].to_sym] = val if pair.nil? == false && pair[0].nil? == false
+  #    end
+  #    retval
+  #  rescue Exception=>e
+  #    SystemUtils.log_exception(e)
+  #  end
 
   #Execute @param cmd [String]
   # @return hash
@@ -111,7 +111,7 @@ class SystemUtils
   def SystemUtils.execute_command(cmd, binary=false, data = false, out = nil)
     @@last_error = ''
     require 'open3'
- #   SystemDebug.debug(SystemDebug.execute,'exec command ', cmd)
+    #   SystemDebug.debug(SystemDebug.execute,'exec command ', cmd)
 
     retval = {}
 
@@ -119,13 +119,13 @@ class SystemUtils
     retval[:stderr] = ''
     retval[:result] = -1
     retval[:command] = cmd
-  #  STDERR.puts('exec command ' + cmd.to_s + ' out:' + out.class.name)
+    #  STDERR.puts('exec command ' + cmd.to_s + ' out:' + out.class.name)
     Open3.popen3(cmd)  do |_stdin, stdout, stderr, th|
       unless data.is_a?(FalseClass) || data.nil?
         if data.kind_of?(String)
           _stdin.write(data)
         else
-          begin            
+          begin
             IO.copy_stream(data, _stdin)
           rescue
             STDERR.puts('ERROR SENDING ' + data.class.name + "\n" + data.to_s)
@@ -145,10 +145,10 @@ class SystemUtils
             line.gsub!(/\/r/,'')
           end
           if out.nil?
-          #  STDERR.puts(' TO result ')
+            #  STDERR.puts(' TO result ')
             retval[:stdout] += line
           else
-           # STDERR.puts(' TO out:' + line.to_s)
+            # STDERR.puts(' TO out:' + line.to_s)
             out << line
           end
           retval[:stderr] += stderr.read_nonblock(256) if stderr_is_open
@@ -161,7 +161,7 @@ class SystemUtils
           out << line
         end
         retval[:stdout] += stdout.read_nonblock(256)
-    #    SystemDebug.debug(SystemDebug.execute,'read stderr', oline)
+        #    SystemDebug.debug(SystemDebug.execute,'read stderr', oline)
         retval[:stderr] += stderr.read_nonblock(256)
       rescue IO::WaitReadable
         retry #unless th.status == false
@@ -181,10 +181,14 @@ class SystemUtils
         break
         #return retval
         #  end
-      resuce StandardError => e
+        resuce StandardError => e
         retval[:stderr] += stderr.read_nonblock(1000)
         retval[:result] = th.value.exitstatus
         break
+        ensure
+          _stdin.close unless _stdin.closed?
+          stdout.close unless stdout.closed?
+          stderr.close unless stderr.closed?
       end
       # File.delete('/tmp/import') if File.exist?('/tmp/import')
 
@@ -200,6 +204,7 @@ class SystemUtils
     retval[:stderr] += 'Exception Error in SystemUtils.run_system(' + cmd + '): ' + e.to_s
     retval[:result] = -99
     retval
+
   end
 
   #Execute @param cmd [String]
@@ -210,7 +215,7 @@ class SystemUtils
     begin
       cmd = cmd + ' 2>&1'
       res= %x<#{cmd}>
-   #   SystemDebug.debug(SystemDebug.execute,'Run ' + cmd + ' ResultCode:' + $?.to_s + ' Output:', res)
+      #   SystemDebug.debug(SystemDebug.execute,'Run ' + cmd + ' ResultCode:' + $?.to_s + ' Output:', res)
       res
     rescue Exception=>e
       SystemUtils.log_exception(e)
@@ -234,9 +239,10 @@ class SystemUtils
     os_data_hash['Major Version'] = vers[0]
     os_data_hash['Minor Version'] = vers[1]
     os_data_hash['Patch Version'] = vers[2] if vers.count > 2
-    os_data_file.close
     # FIXME catch sub numbers as in 14.04.1
     os_data_hash
+  ensure
+    os_data_file.close
   end
 
   def SystemUtils.cgroup_mem_dir(container_id_str)

@@ -141,8 +141,9 @@ rescue Excon::Error::Socket => e
   retry if cnt < 5
   #  end
 rescue StandardError => e
-  close_connection
   raise EnginesException.new(error_hash('reg exception ' + e.to_s, @base_url.to_s))
+ensure
+  close_connection
   #end
 end
 
