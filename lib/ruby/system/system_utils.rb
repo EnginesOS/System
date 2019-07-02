@@ -185,6 +185,10 @@ class SystemUtils
         retval[:stderr] += stderr.read_nonblock(1000)
         retval[:result] = th.value.exitstatus
         break
+        ensure
+          _stdin.close unless _stdin.closed?
+          stdout.close unless stdout.closed?
+          stderr.close unless stderr.closed?
       end
       # File.delete('/tmp/import') if File.exist?('/tmp/import')
 
@@ -200,10 +204,7 @@ class SystemUtils
     retval[:stderr] += 'Exception Error in SystemUtils.run_system(' + cmd + '): ' + e.to_s
     retval[:result] = -99
     retval
-  ensure
-    _stdin.close unless _stdin.closed?
-    stdout.close unless stdout.closed?
-    stderr.close unless stderr.closed?
+
   end
 
   #Execute @param cmd [String]
