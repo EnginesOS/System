@@ -1,0 +1,26 @@
+--- !ruby/object:ManagedService
+cont_user_id: 22038
+container_name: wap-auth
+publisher_namespace: EnginesSystem
+type_path: wap-auth
+ctype: service
+persistent: false
+publisher_namespace: EnginesSystem
+type_path: wap-auth
+last_error: 
+memory: '80'
+hostname: wap-auth
+domain_name: 
+kerberos: false
+environments: []
+image: _Engines_System(flavor)/wap_auth:_Engines_System(release)
+kerberos: true
+volumes: 
+repo: na
+last_result: 
+setState: running
+conf_register_site: false
+conf_register_dns: true
+conf_self_start: true
+dependant_on:
+- "wap"
