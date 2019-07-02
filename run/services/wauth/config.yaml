@@ -1,15 +1,15 @@
 --- !ruby/object:ManagedService
 cont_user_id: 22038
-container_name: wap-auth
+container_name: wauth
 publisher_namespace: EnginesSystem
-type_path: wap-auth
+type_path: wauth
 ctype: service
 persistent: false
 publisher_namespace: EnginesSystem
-type_path: wap-auth
+type_path: wauth
 last_error: 
 memory: '80'
-hostname: wap-auth
+hostname: wauth
 domain_name: 
 kerberos: false
 environments: []
