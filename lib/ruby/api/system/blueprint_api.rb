@@ -152,7 +152,6 @@ class BlueprintApi < ErrorsApi
 
   def self.get_http_file(url, d)
     require 'open-uri'
-
     if SystemConfig.DontVerifyBlueprintRepoSSL
      # pa = {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}
       download = open(url,{ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE})
@@ -162,6 +161,7 @@ class BlueprintApi < ErrorsApi
     end
     #download = open(url, pa)
     IO.copy_stream(download, d)
+   ensure
     download.close
   end
 
