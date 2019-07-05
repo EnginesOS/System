@@ -37,6 +37,7 @@ class DockerFileBuilder
 
     #write_run_start
     write_app_archives
+    write_permissions
     write_app_templates
   
     set_user('0')
@@ -53,7 +54,8 @@ class DockerFileBuilder
     insert_framework_frag_in_dockerfile('builder.mid.tmpl')
     write_rake_list
     set_user('0')
-    write_permissions
+    # moved below to above templates
+   # write_permissions
     write_run_line('mkdir -p /home/fs/local/')
 
     set_user('$ContUser') unless @blueprint_reader.framework == 'docker'
