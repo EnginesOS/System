@@ -61,7 +61,6 @@ module Engines
     else
       hostname = params[:hostname]
     end
-
     domain_name = params[:domain_name]
 #    SystemDebug.debug(SystemDebug.services,'Changing Domainame to ', domain_name)
 
@@ -89,10 +88,11 @@ module Engines
   end
 
   def loadManagedEngine(engine_name)
-    raise EnginesException.new(error_hash('No Engine name', engine_name)) if engine_name.nil? || engine_name.length == 0
+    raise EnginesException.new(error_hash('No Engine name', engine_name)) unless engine_name.is_a?(String) || engine_name.length == 0
     engine = engine_from_cache(engine_name)
     unless engine.is_a?(ManagedEngine)
       yaml_file_name = SystemConfig.RunDir + '/apps/' + engine_name + '/running.yaml'
+        STDERR.puts('Engine file:' + yaml_file_name.to_s)
       raise EnginesException.new(error_hash('No Engine file:' + engine_name.to_s , engine_name)) unless File.exist?(yaml_file_name)
    #   raise EnginesException.new(error_hash('Engine File Locked', yaml_file_name)) if is_container_conf_file_locked?(SystemConfig.RunDir + '/apps/' + engine_name)
       lock_container_conf_file(SystemConfig.RunDir + '/apps/' + engine_name)

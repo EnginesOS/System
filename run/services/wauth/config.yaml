@@ -1,0 +1,26 @@
+--- !ruby/object:ManagedService
+cont_user_id: 22038
+container_name: wauth
+publisher_namespace: EnginesSystem
+type_path: wauth
+ctype: service
+persistent: false
+publisher_namespace: EnginesSystem
+type_path: wauth
+last_error: 
+memory: '80'
+hostname: wauth
+domain_name: 
+kerberos: false
+environments: []
+image: _Engines_System(flavor)/wap_auth:_Engines_System(release)
+kerberos: true
+volumes: 
+repo: na
+last_result: 
+setState: running
+conf_register_site: false
+conf_register_dns: true
+conf_self_start: true
+dependant_on:
+- "wap"
