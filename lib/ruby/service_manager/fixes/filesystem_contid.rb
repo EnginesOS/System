@@ -18,7 +18,11 @@ module FileSystemContid
       next if service_hash[:variables].key?(:fw_user)
       service_hash[:variables][:fw_user] = engine.cont_user_id
      # system_registry_client.update_registered_managed_engine(service_hash)
+        begin
       system_registry_client.update_attached_service(service_hash)
+        rescue StandardError => e
+          STDERR.puts(e.to_s)
+        end
     end
     
 end
