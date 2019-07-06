@@ -20,7 +20,8 @@ module FileSystemContid
      # system_registry_client.update_registered_managed_engine(service_hash)
         begin
       system_registry_client.update_attached_service(service_hash)
-        rescue
+        rescue StandardError => e
+          STDERR.puts(e.to_s)
         end
     end
     
