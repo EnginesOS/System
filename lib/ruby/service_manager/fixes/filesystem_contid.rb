@@ -1,7 +1,8 @@
 module FileSystemContid
   def fix_containers_fsid(engines)
+    STDERR.puts('DOING ')  
     engines.each do |engine|
-      STDERR.puts(' doing ' + engine.container_name.to_s)
+      STDERR.puts('DOING ' + engine.container_name.to_s)
       fix_fs_cont_id(engine)
     end
   end
@@ -13,8 +14,9 @@ module FileSystemContid
       publisher_namespace: 'EnginesSystem',
       type_path: 'filesystem/local/filesystem'
     }
-
+    STDERR.puts('H:' + params.to_s)
     fs_hashs = system_registry_client.find_engine_services_hashes(params)
+    STDERR.puts(' fs_hashes ' + fs_hashs.class.name)
     if fs_hashs.is_a?(Array)
       fs_hashs.each do | service_hash |
         #  next if service_hash[:variables].key?(:fw_user)
