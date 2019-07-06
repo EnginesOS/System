@@ -44,8 +44,8 @@ module DockerEvents
           rescue
           end
         end
-        pipe_in.close unless pipe_in.closed?
-        pipe_out.close unless pipe_out.closed?
+        #     pipe_in.close unless pipe_in.closed?
+        #    pipe_out.close unless pipe_out.closed?
         rm_event_listener(event_listener)
         break
         # return true
@@ -56,16 +56,19 @@ module DockerEvents
     STDERR.puts(' Wait for timeout on ' + container.container_name.to_s + ' for ' + what)
     rm_event_listener(event_listener) unless event_listener.nil?
     event_listener = nil
-    pipe_in.close
-    pipe_out.close
+    #   pipe_in.close
+    # pipe_out.close
     is_aready?(what, container.read_state) #check for last sec call
   rescue StandardError => e
     rm_event_listener(event_listener) unless event_listener.nil?
     STDERR.puts(e.to_s)
     STDERR.puts(e.backtrace.to_s)
-    pipe_in.close
-    pipe_out.close
+    #pipe_in.close
+    #  pipe_out.close
     is_aready?(what, container.read_state)
+  ensure
+    pipe_in.close unless pipe_in.closed?
+    pipe_out.close unless pipe_out.closed?
   end
 
   def trigger_event_notification(hash)
