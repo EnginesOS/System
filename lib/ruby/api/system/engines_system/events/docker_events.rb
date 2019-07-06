@@ -173,7 +173,8 @@ module DockerEvents
       c
     end
   rescue StandardError =>e
-    log_exception(e)
+    #log_exception(e)
+    STDERR.puts('FAiled to find ' + container_name.to_s + ' of type ' + ctype.to_s)
   end
 
   def inform_container(event_hash)
