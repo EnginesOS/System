@@ -15,7 +15,7 @@ module FileSystemContid
     }
 
     fs_hashs = system_registry_client.find_engine_services_hashes(params)
-    unless fs_hashs.is_a?(Array)
+    if fs_hashs.is_a?(Array)
       fs_hashs.each do | service_hash |
         #  next if service_hash[:variables].key?(:fw_user)
        # service_hash[:variables][:fw_user] = engine.cont_user_id
