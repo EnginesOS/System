@@ -32,6 +32,7 @@ module DockerEvents
   end
 
   def wait_for(container, what, timeout)
+    r = false
     unless is_aready?(what, container.read_state)
       mask = container_type_mask(container.ctype)
       pipe_in, pipe_out = IO.pipe
@@ -44,28 +45,40 @@ module DockerEvents
           rescue
           end
         end
-        pipe_in.close unless pipe_in.closed?
-        pipe_out.close unless pipe_out.closed?
+        #     pipe_in.close unless pipe_in.closed?
+        #    pipe_out.close unless pipe_out.closed?
         rm_event_listener(event_listener)
         break
         # return true
       end
     end
-    true
+    r = true
   rescue Timeout::Error
     STDERR.puts(' Wait for timeout on ' + container.container_name.to_s + ' for ' + what)
     rm_event_listener(event_listener) unless event_listener.nil?
     event_listener = nil
-    pipe_in.close
-    pipe_out.close
-    is_aready?(what, container.read_state) #check for last sec call
+    #   pipe_in.close
+    # pipe_out.close
+    #is_aready?(what, container.read_state) #check for last sec call
   rescue StandardError => e
     rm_event_listener(event_listener) unless event_listener.nil?
     STDERR.puts(e.to_s)
     STDERR.puts(e.backtrace.to_s)
-    pipe_in.close
-    pipe_out.close
-    is_aready?(what, container.read_state)
+    #pipe_in.close
+    #  pipe_out.close
+    #is_aready?(what, container.read_state)
+  ensure
+    unless pipe_in.nil?
+      pipe_in.close unless pipe_in.closed?
+    end
+    unless pipe_out.nil?
+      pipe_out.close unless pipe_out.closed?
+    end
+    if r.is_a?(TrueClass)
+      true
+    else
+      is_aready?(what, container.read_state)
+    end
   end
 
   def trigger_event_notification(hash)
@@ -160,7 +173,8 @@ module DockerEvents
       c
     end
   rescue StandardError =>e
-    log_exception(e)
+    #log_exception(e)
+    STDERR.puts('FAiled to find ' + container_name.to_s + ' of type ' + ctype.to_s)
   end
 
   def inform_container(event_hash)
