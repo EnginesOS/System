@@ -26,11 +26,11 @@ module DockerUtils
                   socket.send(data, 0) unless data.nil?
                 rescue EOFError
                   eof = true
-                  break if socket.closed
+                  break if socket.closed?
                   socket.send(data, 0) unless data.nil?
                   next
                 rescue IO::WaitReadable
-                  break if socket.closed
+                  break if socket.closed?
                   socket.send(data, 0) unless data.nil?
                   IO.select([@stream_reader.i_stream])
                   retry
