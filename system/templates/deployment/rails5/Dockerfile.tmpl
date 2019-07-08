@@ -15,5 +15,8 @@ ADD home home
 ADD engines home/engines
 
 RUN apt-get update &&\
-	chown $ContUser /opt
+	chown $ContUser /opt &&\
+	mkdir /home/home_dir/.bundle/ /home/home_dir/.gem/&&\
+	chown -R $ContUser /home/home_dir/.gem/ /home/home_dir/.bundle/ &&\
+	gem install bundle 
 	
