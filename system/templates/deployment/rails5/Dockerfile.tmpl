@@ -18,5 +18,5 @@ RUN apt-get update &&\
 	chown $ContUser /opt &&\
 	mkdir -p /home/home_dir/.bundle/ &&\
 	chown -R $ContUser /home/home_dir/.gem/ /home/home_dir/.bundle/ &&\
-	gem install bundle 
+	gem install bundle bundler
 	
