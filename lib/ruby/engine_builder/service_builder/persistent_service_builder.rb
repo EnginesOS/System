@@ -50,7 +50,7 @@ module PersistantServiceBuilder
     s[:variables][:engine_path] = service_hash[:variables][:engine_path] if service_hash[:type_path] == 'filesystem/local/filesystem'
     s[:fresh] = false
     s[:shared] = true
-    #   SystemDebug.debug(SystemDebug.builder, :usering_active_Serviec, s)
+    STDERR.puts(':usering_active_Serviec ' + s.to_s)   
     s
   end
 
