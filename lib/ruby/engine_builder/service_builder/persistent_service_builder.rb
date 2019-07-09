@@ -28,16 +28,16 @@ module PersistantServiceBuilder
     unless use_existing.nil?
       raise EngineBuilderException.new(error_hash(" Existing Attached services should be an array", use_existing)) unless use_existing.is_a?(Array)
       use_existing.each do |existing_service|
-        #    SystemDebug.debug(SystemDebug.builder, :create_type, existing_service)
+        SystemDebug.debug(SystemDebug.builder, :create_type, existing_service)
         next if existing_service[:create_type] == 'new'
         next if existing_service[:create_type].nil?
         #    SystemDebug.debug(SystemDebug.builder, existing_service[:type_path] + " and " + service_hash[:type_path], existing_service[:publisher_namespace] + " and " + service_hash[:publisher_namespace])
         if existing_service[:publisher_namespace] == service_hash[:publisher_namespace]\
         && existing_service[:type_path] == service_hash[:type_path]
-          #      SystemDebug.debug(SystemDebug.builder, :comparing_services)
+          SystemDebug.debug(SystemDebug.builder, :comparing_services)
           # FIX ME run a check here on service hash
           return use_active_service(service_hash, existing_service) if @rebuild.is_a?(TrueClass)
-          return use_active_service(service_hash, existing_service) if existing_service[:create_type] == 'existing'
+          return use_active_service(service_hash, existing_service) if service_hash[:create_type] == 'existing'
           return use_orphan(existing_service) if existing_service[:create_type] == 'orphan'
         end
       end
@@ -47,10 +47,12 @@ module PersistantServiceBuilder
 
   def use_active_service(service_hash, existing_service )
     s = @core_api.get_service_entry(existing_service)
-    s[:variables][:engine_path] = service_hash[:variables][:engine_path] if service_hash[:type_path] == 'filesystem/local/filesystem'
-    s[:fresh] = false
-    s[:shared] = true
-    STDERR.puts(':usering_active_Serviec ' + s.to_s)   
+    unless @rebuild.is_a?(TrueClass)
+      s[:variables][:engine_path] = service_hash[:variables][:engine_path] if service_hash[:type_path] == 'filesystem/local/filesystem'
+      s[:fresh] = false
+      s[:shared] = true
+    end
+    STDERR.puts(':usering_active_Serviec ' + s.to_s)
     s
   end
 
