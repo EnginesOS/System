@@ -53,6 +53,7 @@ module Builders
   def restore_managed_container(engine)
     @engine = engine
     @rebuild = true
+    @build_params[:permission_as] = engine.container_name
     log_build_output('Starting Restore')
     setup_rebuild
     build_container
@@ -69,6 +70,7 @@ module Builders
   def rebuild_managed_container(engine)
     @engine = engine
     @rebuild = true
+    @build_params[:permission_as] = engine.container_name
     log_build_output('Starting Rebuild')
     setup_rebuild
     build_container
