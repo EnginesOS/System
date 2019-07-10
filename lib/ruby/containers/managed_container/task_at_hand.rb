@@ -197,7 +197,11 @@ module TaskAtHand
   end
 
   def clear_task_at_hand
-    @steps_to_go -= 1
+    if @steps_to_go.nil?
+      @steps_to_go = 0
+    else
+      @steps_to_go -= 1
+    end
     if  @steps_to_go > 0
       #    SystemDebug.debug(SystemDebug.engine_tasks, 'Multistep Task ' + @task_at_hand.to_s )
       if @steps.is_a?(Array)
@@ -222,8 +226,8 @@ module TaskAtHand
     STDERR.puts( ' clear task at hand ' + e.to_s + "\n" + e.backtrace.to_s)
     # log_exception(e) Dont log exception
     # well perhaps a perms or disk error but definitly not no such file
-   #possbile exception such file (another process alsop got the eot mesg and removed)
-   @task_at_hand
+    #possbile exception such file (another process alsop got the eot mesg and removed)
+    @task_at_hand
   end
 
   def task_failed(msg)
