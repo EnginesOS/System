@@ -96,7 +96,7 @@ module PersistantServiceBuilder
     add_service_env_to_env(environ, service_environment)
     #environ.concat(SoftwareServiceDefinition.service_environments(service_hash))
 
-      SystemDebug.debug(SystemDebug.builder, service_hash, environ)
+      SystemDebug.debug(SystemDebug.builder, service_hash)
     unless service_hash[:shared].is_a?(TrueClass?)
       @attached_services.push(service_hash)
       @core_api.create_and_register_service(service_hash)
