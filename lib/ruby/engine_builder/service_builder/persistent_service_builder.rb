@@ -83,7 +83,7 @@ module PersistantServiceBuilder
     result = add_file_service(service_hash)  if service_hash[:type_path] == 'filesystem/local/filesystem'
     #  raise EngineBuilderException.new(error_hash('failed to create fs', self)) unless result
     # end
-    #  SystemDebug.debug(SystemDebug.builder, :builder_attach_service, service_hash)
+     SystemDebug.debug(SystemDebug.builder, :builder_attach_service, service_hash)
 
     match_variables(service_hash)
     @templater.fill_in_dynamic_vars(service_hash)
@@ -96,9 +96,10 @@ module PersistantServiceBuilder
     #environ.concat(SoftwareServiceDefinition.service_environments(service_hash))
 
     #   SystemDebug.debug(SystemDebug.builder, :with_env, environ)
-
-    @attached_services.push(service_hash)
-    @core_api.create_and_register_service(service_hash)
+    unless service_hash[:shared].is_a?(TrueClass?)
+      @attached_services.push(service_hash)
+      @core_api.create_and_register_service(service_hash)
+    end
   end
 
   def process_existing(service_hash, use_existing)
