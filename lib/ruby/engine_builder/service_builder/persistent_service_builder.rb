@@ -18,13 +18,14 @@ module PersistantServiceBuilder
     consumer_params.keys.each do |cp_key|
       skey = consumer_params[cp_key][:name].to_sym
       unless service_hash[:variables].key?(skey)
-        STDERR.puts('MISSING service_hash[' + skey.to_s + ']<->consumer_params[:' + cp_key.to_s + '] ' + service_hash[:variables][skey].to_s + ' = ' + consumer_params[cp_key][:value].to_s)
+        STDERR.puts('set default value for service_hash[' + skey.to_s + ']<->consumer_params[:' + cp_key.to_s + '] ' + service_hash[:variables][skey].to_s + ' = ' + consumer_params[cp_key][:value].to_s)
         service_hash[:variables][skey] = consumer_params[cp_key][:value] unless consumer_params[cp_key][:value].nil?
       end
     end
   end
 
   def match_service_to_existing(service_hash, use_existing)
+    SystemDebug.debug(SystemDebug.builder, service_hash, use_existing)
     unless use_existing.nil?
       raise EngineBuilderException.new(error_hash(" Existing Attached services should be an array", use_existing)) unless use_existing.is_a?(Array)
       use_existing.each do |existing_service|
@@ -37,7 +38,7 @@ module PersistantServiceBuilder
           SystemDebug.debug(SystemDebug.builder, :comparing_services)
           # FIX ME run a check here on service hash
           return use_active_service(service_hash, existing_service) if @rebuild.is_a?(TrueClass)
-          return use_active_service(service_hash, existing_service) if service_hash[:create_type] == 'existing'
+          return use_active_service(service_hash, existing_service) if existing_service[:create_type] == 'existing'
           return use_orphan(existing_service) if existing_service[:create_type] == 'orphan'
         end
       end
