@@ -1,6 +1,10 @@
 require_relative 'private/service_container_actions.rb'
 module SharedServices
-
+  
+  def rollback_shared_service(service_hash)
+    system_registry_client.remove_from_shared_services_registry(service_hash)
+   end
+   
   def share_service_to_engine(shared_service_params)
    set_top_level_service_params(shared_service_params, shared_service_params[:parent_engine])
     existing_service = shared_service_params[:existing_service]

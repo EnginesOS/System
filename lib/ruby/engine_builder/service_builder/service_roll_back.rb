@@ -1,9 +1,9 @@
 module ServiceRollBack
   def service_roll_back
     @attached_services.each do |service_hash|
-      if service_hash[:shared]
+      if service_hash[:shared].is_a?(TrueClass)
         rollback_shared_service(service_hash)
-      elsif service_hash[:freed_orphan]
+      elsif service_hash[:freed_orphan].is_a?(TrueClass)
         roll_back_orphan(service_hash)
       elsif service_hash[:fresh] = true
         roll_back_new_service(service_hash)
