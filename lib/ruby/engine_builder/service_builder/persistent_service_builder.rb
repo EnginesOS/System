@@ -18,24 +18,26 @@ module PersistantServiceBuilder
     consumer_params.keys.each do |cp_key|
       skey = consumer_params[cp_key][:name].to_sym
       unless service_hash[:variables].key?(skey)
-        STDERR.puts('MISSING service_hash[' + skey.to_s + ']<->consumer_params[:' + cp_key.to_s + '] ' + service_hash[:variables][skey].to_s + ' = ' + consumer_params[cp_key][:value].to_s)
+        STDERR.puts('set default value for service_hash[' + skey.to_s + ']<->consumer_params[:' + cp_key.to_s + '] ' + service_hash[:variables][skey].to_s + ' = ' + consumer_params[cp_key][:value].to_s)
         service_hash[:variables][skey] = consumer_params[cp_key][:value] unless consumer_params[cp_key][:value].nil?
       end
     end
   end
 
   def match_service_to_existing(service_hash, use_existing)
+    SystemDebug.debug(SystemDebug.builder, service_hash, use_existing)
     unless use_existing.nil?
       raise EngineBuilderException.new(error_hash(" Existing Attached services should be an array", use_existing)) unless use_existing.is_a?(Array)
       use_existing.each do |existing_service|
-        #    SystemDebug.debug(SystemDebug.builder, :create_type, existing_service)
+        SystemDebug.debug(SystemDebug.builder, :create_type, existing_service)
         next if existing_service[:create_type] == 'new'
         next if existing_service[:create_type].nil?
         #    SystemDebug.debug(SystemDebug.builder, existing_service[:type_path] + " and " + service_hash[:type_path], existing_service[:publisher_namespace] + " and " + service_hash[:publisher_namespace])
         if existing_service[:publisher_namespace] == service_hash[:publisher_namespace]\
         && existing_service[:type_path] == service_hash[:type_path]
-          #      SystemDebug.debug(SystemDebug.builder, :comparing_services)
+          SystemDebug.debug(SystemDebug.builder, :comparing_services)
           # FIX ME run a check here on service hash
+          return use_active_service(service_hash, existing_service) if @rebuild.is_a?(TrueClass)
           return use_active_service(service_hash, existing_service) if existing_service[:create_type] == 'existing'
           return use_orphan(existing_service) if existing_service[:create_type] == 'orphan'
         end
@@ -46,10 +48,12 @@ module PersistantServiceBuilder
 
   def use_active_service(service_hash, existing_service )
     s = @core_api.get_service_entry(existing_service)
-    s[:variables][:engine_path] = service_hash[:variables][:engine_path] if service_hash[:type_path] == 'filesystem/local/filesystem'
-    s[:fresh] = false
-    s[:shared] = true
-    #   SystemDebug.debug(SystemDebug.builder, :usering_active_Serviec, s)
+    unless @rebuild.is_a?(TrueClass)
+      s[:variables][:engine_path] = service_hash[:variables][:engine_path] if service_hash[:type_path] == 'filesystem/local/filesystem'
+      s[:fresh] = false
+      s[:shared] = true
+    end
+    STDERR.puts(':usering_active_Serviec ' + s.to_s)
     s
   end
 
@@ -79,22 +83,24 @@ module PersistantServiceBuilder
     result = add_file_service(service_hash)  if service_hash[:type_path] == 'filesystem/local/filesystem'
     #  raise EngineBuilderException.new(error_hash('failed to create fs', self)) unless result
     # end
-    #  SystemDebug.debug(SystemDebug.builder, :builder_attach_service, service_hash)
+     SystemDebug.debug(SystemDebug.builder, :builder_attach_service, service_hash)
 
     match_variables(service_hash)
     @templater.fill_in_dynamic_vars(service_hash)
-
+    SystemDebug.debug(SystemDebug.builder, :builder_attach_service2, service_hash)
     constants = SoftwareServiceDefinition.service_constants(service_hash)
     environ.concat(constants)
-
+    SystemDebug.debug(SystemDebug.builder, :builder_attach_service3, service_hash)
     service_environment = SoftwareServiceDefinition.service_environments(service_hash)
+    SystemDebug.debug(SystemDebug.builder, :builder_attach_service4, service_hash)
     add_service_env_to_env(environ, service_environment)
     #environ.concat(SoftwareServiceDefinition.service_environments(service_hash))
-
-    #   SystemDebug.debug(SystemDebug.builder, :with_env, environ)
-
-    @attached_services.push(service_hash)
-    @core_api.create_and_register_service(service_hash)
+    SystemDebug.debug(SystemDebug.builder, :builder_attach_service5, service_hash)
+      SystemDebug.debug(SystemDebug.builder, service_hash[:shared].to_s)
+    unless service_hash[:shared].is_a?(TrueClass)
+      @attached_services.push(service_hash)
+      @core_api.create_and_register_service(service_hash)
+    end
   end
 
   def process_existing(service_hash, use_existing)

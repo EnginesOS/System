@@ -19,7 +19,7 @@ module SharedServices
 
     existing_service_hash = get_service_entry(service_query)
 
-   # SystemDebug.debug(SystemDebug.services, 'sm using existing service', existing_service_hash)
+    SystemDebug.debug(SystemDebug.builder, 'sm using existing service', existing_service_hash)
     merge_variables(shared_service, existing_service_hash)
     shared_service[:shared] = true
     shared_service[:service_handle] = shared_service[:parent_engine] + ':' + existing_service[:service_handle]
@@ -27,7 +27,7 @@ module SharedServices
     shared_service[:container_type] = existing_service[:container_type]
     shared_service[:service_container_name] = existing_service[:service_container_name]
 
-   # SystemDebug.debug(SystemDebug.services, 'sm regsitring ', shared_service)
+    SystemDebug.debug(SystemDebug.builder, 'sm regsitring ', shared_service)
     if shared_service[:type_path] == 'filesystem/local/filesystem'
       shared_service[:variables][:volume_src] = existing_service[:variables][:volume_src] + '/' +  shared_service[:variables][:volume_src]   
     end
@@ -49,7 +49,7 @@ module SharedServices
 
   def merge_variables(shared_service, existing_service_hash)
     shared_service[:variables] = {} unless shared_service.key?(:variables)
-    existing_service_hash[:variables].each_pair.each do |name, value |
+    existing_service_hash[:variables].each_pair.each do |name, value |      
       shared_service[:variables][name] = value unless shared_service[:variables].key?(name)
     end
   end
