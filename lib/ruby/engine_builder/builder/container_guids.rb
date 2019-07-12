@@ -14,6 +14,9 @@ module ContainerGuids
         @data_gid = @core_api.new_data_gid(@build_params[:engine_name])
       end
     end
+    @build_params[:data_uid] = @data_uid
+    @build_params[:data_gid] = @data_gid
+    @build_params[:cont_user_id] = @cont_user_id
   end
 
   private

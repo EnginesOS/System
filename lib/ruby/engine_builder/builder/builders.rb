@@ -29,14 +29,15 @@ module Builders
     setup_log_output
     if @build_params[:reinstall]
       @rebuild = true
-    else
-      set_container_guids
+      @build_params[:permission_as] = @build_params[:engine_name]
+#      @build_params[:data_uid] = engine.data_uid
+#      @build_params[:data_gid] = engine.data_gid
+#      @build_params[:cont_user_id] = engine.cont_user_id
     end
+    set_container_guids
     process_supplied_envs(@build_params[:variables])
       
-    @build_params[:data_uid] = @data_uid
-    @build_params[:data_gid] = @data_gid
-    @build_params[:cont_user_id] = @cont_user_id
+    
 
   #  SystemDebug.debug(SystemDebug.builder, :builder_init, @build_params)
     @service_builder = ServiceBuilder.new(@core_api, @templater, @build_params[:engine_name], @attached_services, basedir)
