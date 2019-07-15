@@ -4,7 +4,7 @@ container_name: email
 ctype: service
 persistent: true
 last_error: 
-memory: '90'
+memory: '256'
 hostname: email
 publisher_namespace: EnginesSystem
 type_path: email
