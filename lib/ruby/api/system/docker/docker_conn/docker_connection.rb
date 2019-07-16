@@ -228,7 +228,7 @@ class DockerConnection < ErrorsApi
       # SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE Body' + resp.body.to_s )
       #SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE' + resp.to_s ) unless resp.status == 404
     end
-raise DockerException.new({params:  @request_params, status: resp.status}) if resp.status >= 400
+    raise DockerException.new({params:  @request_params, status: resp.status, body: resp.body}) if resp.status >= 400
     if resp.status == 204 # nodata but all good happens on del
       true
     else
