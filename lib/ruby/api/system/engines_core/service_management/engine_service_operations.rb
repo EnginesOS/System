@@ -59,6 +59,11 @@ module EngineServiceOperations
     check_engine_hash(params)
     service_manager.share_service_to_engine(params)
   end
+#  
+#  def rollback_shared_service(service_hash)
+#    check_engine_hash(service_hash)
+#    service_manager.rollback_shared_service(service_hash)
+#  end
 
   def connect_share_service(service_hash)
    # STDERR.puts('SHARE '  + service_hash.to_s)

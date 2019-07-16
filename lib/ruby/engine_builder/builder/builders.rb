@@ -29,14 +29,15 @@ module Builders
     setup_log_output
     if @build_params[:reinstall]
       @rebuild = true
-    else
-      set_container_guids
+      @build_params[:permission_as] = @build_params[:engine_name]
+#      @build_params[:data_uid] = engine.data_uid
+#      @build_params[:data_gid] = engine.data_gid
+#      @build_params[:cont_user_id] = engine.cont_user_id
     end
+    set_container_guids
     process_supplied_envs(@build_params[:variables])
       
-    @build_params[:data_uid] = @data_uid
-    @build_params[:data_gid] = @data_gid
-    @build_params[:cont_user_id] = @cont_user_id
+    
 
   #  SystemDebug.debug(SystemDebug.builder, :builder_init, @build_params)
     @service_builder = ServiceBuilder.new(@core_api, @templater, @build_params[:engine_name], @attached_services, basedir)
@@ -140,14 +141,13 @@ module Builders
         @container.destroy_container if @container.has_container?
         @container.delete_image if @container.has_image?
       end
-      @service_builder.service_roll_back
+      @service_builder.service_roll_back unless @rebuild.is_a?(TrueClass)
       @build_params[:rollback]
       @core_api.delete_engine_and_services(@build_params)
       @core_api.trigger_install_event(@build_params[:engine_name], 'failed')
     rescue
       #dont panic if no container
     end
-
     @result_mesg = @result_mesg.to_s + ' Roll Back Complete'
   #  SystemDebug.debug(SystemDebug.builder,'Roll Back Complete')
     close_all

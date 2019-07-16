@@ -1,7 +1,4 @@
 module ContainerGuids
-  #  def new_container_uid
-  #    @core_api.new_container_uid(@build_params[:engine_name])
-  #  end
   def set_container_guids
     unless set_guids_from_orphan.is_a?(TrueClass)
       unless @build_params[:permission_as].nil?
@@ -16,17 +13,23 @@ module ContainerGuids
         @data_gid = @core_api.new_data_gid(@build_params[:engine_name])
       end
     end
+    @build_params[:data_uid] = @data_uid
+    @build_params[:data_gid] = @data_gid
+    @build_params[:cont_user_id] = @cont_user_id
   end
 
   private
+
   def set_guids_from_orphan
     r = false
-    @build_params[:attached_services].each do |service|
-      next if service[:create_type] == 'share'
-      r = lookup_ids(service) if service[:type_path] == 'filesystem/local/filesystem'
-      if r == true
-        STDERR.puts('Got ids from orphan ' + service.to_s)
-        break
+    if  build_params[:attached_services].is_a?(Array)
+      @build_params[:attached_services].each do |service|
+        next if service[:create_type] == 'share'
+        r = lookup_ids(service) if service[:type_path] == 'filesystem/local/filesystem'
+        if r == true
+          STDERR.puts('Got ids from orphan ' + service.to_s)
+          break
+        end
       end
     end
     STDERR.puts('Get ids from orphan status' + r.to_s)

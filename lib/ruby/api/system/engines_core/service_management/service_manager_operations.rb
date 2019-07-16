@@ -58,6 +58,7 @@ module ServiceManagerOperations
   end
 
   def rollback_shared_service(service_hash)
+    check_engine_hash(service_hash)
     service_manager.rollback_shared_service(service_hash)
   end
 
