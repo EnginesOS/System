@@ -25,8 +25,8 @@ module PublicApiBuilder
     build_log_file = File.new(SystemConfig.BuildOutputFile, 'r')
     begin
       while
-        begin
-          STDERR.puts('read_nonblock follow_build')
+        begin  
+          STDERR.puts('read_nonblock follow_build ')
           bytes = build_log_file.read_nonblock(1000)
           bytes.gsub!(/[\x80-\xFF]/n,'')
         rescue IO::WaitReadable
