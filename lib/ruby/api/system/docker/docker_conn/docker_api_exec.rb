@@ -121,7 +121,7 @@ module DockerApiExec
         'Detach' => false,
         'Tty' => false,
       }
-      #   STDERR.puts(' exce oarens ' + params.keys.to_s)
+        STDERR.puts('Exec Starting ' + params.keys.to_s)
 
       headers = {
         'Content-type' => 'application/json'
@@ -178,7 +178,7 @@ module DockerApiExec
       request_params['AttachStdin'] = false
     end
     request = '/containers/' + params[:container].container_id.to_s + '/exec'
-  #  SystemDebug.debug(SystemDebug.docker,'create_docker_exec ' + request_params.to_s + ' request  ' + request.to_s )
+    SystemDebug.debug(SystemDebug.docker,'create_docker_exec ' + request_params.to_s + ' request  ' + request.to_s )
     post_request(request, request_params)
   end
 
