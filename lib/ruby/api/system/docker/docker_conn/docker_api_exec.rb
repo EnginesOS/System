@@ -112,10 +112,11 @@ STDERR.puts('Exec Starting ' + params.keys.to_s)
 
   private
 
-  def get_exec_result(exec_id)
-STDERR.puts("GET EXEC Result")  
+  def get_exec_result(exec_id)     
     r = get_request('/exec/' + exec_id.to_s + '/json')
-STDERR.puts(r.to_s)
+    if(r[:Running].is_a?(TrueClass))      
+      STDERR.puts('WARNING EXEC STILL RUNNING:' + r.to_s)
+    end
     r[:ExitCode]
   end
 
