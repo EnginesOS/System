@@ -36,35 +36,8 @@ module DockerApiExec
       else
         false
       end
-      #    if @data.length > 0
-      #          STDERR.puts(' HAS DTAT ')
-      #                true
-      #        elsif @i_stream.nil? || @i_stream.closed?
-      #          false
-      #        else
-      #          true
-      #        end
     end
 
-    #    def process_response()
-    #
-    #      lambda do |chunk , c , t|
-    #        STDERR.puts('a hijack')
-    #        if @out_stream.nil?
-    #          #   STDERR.puts('stream results')
-    #          STDERR.puts(' hj 1 a chunker')
-    #          r = DockerUtils.decode_from_docker_chunk(chunk, true)
-    #          @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
-    #          @result[:stdout] = @result[:stdout].to_s + r[:stdout].to_s
-    #          # return_result[:raw] = return_result[:raw] + chunk.to_s
-    #        else
-    #          r = DockerUtils.decode_from_docker_chunk(chunk, true)
-    #          STDERR.puts('hj 1 a stream')
-    #          @out_stream.write(r[:stdout]) unless r.nil?
-    #          @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
-    #        end
-    #      end
-    #    end
   end
 
   class DockerStreamReader
@@ -95,12 +68,10 @@ module DockerApiExec
           next if r.nil?
           @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
           @result[:stdout] = @result[:stdout].to_s + r[:stdout].to_s
-          # return_result[:raw] = return_result[:raw] + chunk.to_s
         else
           #   STDERR.puts(' SR a stream')
           r = DockerUtils.decode_from_docker_chunk(chunk, true, @out_stream)
           next if r.nil?
-          # @out_stream.write(r[:stdout])
           @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
         end
       end
@@ -112,44 +83,29 @@ module DockerApiExec
   end
 
   def docker_exec(params)
-    r = create_docker_exec(params) #container, commands, have_data)
+    r = create_docker_exec(params)
     if r.is_a?(Hash)
-      # STDERR.puts(r.to_s)
       exec_id = r[:Id]
       request = '/exec/' + exec_id + '/start'
       request_params = {
         'Detach' => false,
         'Tty' => false,
       }
-        STDERR.puts('Exec Starting ' + params.keys.to_s)
-
+STDERR.puts('Exec Starting ' + params.keys.to_s)
       headers = {
         'Content-type' => 'application/json'
       }
-
-      #   SystemDebug.debug(SystemDebug.docker,'docker_exec ' + request_params.to_s + ' request  ' + request.to_s )
       unless params.key?(:stdin_stream) || params.key?(:data)
         stream_reader = DockerStreamReader.new(params[:stdout_stream])
-        #    STDERR.puts("\n\nSTREA " + request_params.to_s )
         r = post_stream_request(request, nil, stream_reader, headers, request_params.to_json)
         stream_reader.result[:result] = get_exec_result(exec_id)
-        #   STDERR.puts("\n\nSTREA resul " + stream_reader.result.to_s)
         r = stream_reader.result
       else
         stream_handler = DockerHijackStreamHandler.new(params[:data], params[:stdin_stream], params[:stdout_stream])
-        #   headers['Connection'] = 'Upgrade',
-        #    headers['Upgrade'] = 'tcp'
-        #    STDERR.puts("\n\Hijack " + request_params.to_s )
         r = post_stream_request(request, nil, stream_handler, headers, request_params.to_json)
         stream_handler.result[:result] = get_exec_result(exec_id)
-      #   STDERR.puts("\n\Hijack resul " + stream_handler.result.to_s)
         r = stream_handler.result
-
-        #unless params.key?(:stdin_stream) ||params.key?(:data)
-
-        # DockerUtils.docker_stream_as_result(r, result)
       end
-
     end
     r
   end
@@ -157,8 +113,9 @@ module DockerApiExec
   private
 
   def get_exec_result(exec_id)
+STDERR.puts("GET EXEC Result")  
     r = get_request('/exec/' + exec_id.to_s + '/json')
-   # STDERR.puts(r.to_s)
+STDERR.puts(r.to_s)
     r[:ExitCode]
   end
 
@@ -210,7 +167,6 @@ module DockerApiExec
         end
       end
       if params[:action_params].is_a?(Hash)
-        #  action_params_to_env!(params[:action_params])
         params[:action_params].each_pair do |k,v|
           envs.push(k.to_s + '=' + v.to_s)
         end
