@@ -127,7 +127,7 @@ module DockerApiExec
   def signal_exec(params)
     r = get_exec_details(params[:exec_id])
     STDERR.puts(' Timeout signal_exec ' + params[:exec_id].to_s + ':' + r.to_s )
-     params[:command_line] = 'kill -' +  params[:signal] + ' ' + r[:Pid]
+     params[:command_line] = 'kill -' +  params[:signal] + ' ' + r[:Pid].to_s
     docker_exec(params)
   end
   
@@ -178,7 +178,6 @@ module DockerApiExec
     else
       nil
     end
-
   end
 
   def exec_env(params)
