@@ -12,7 +12,7 @@ module DockerOperations
   end
 
   def exec_in_container(params)
-    params[:background] = false unless params.key?[:background]     
+    params[:background] = false unless params.key?(:background)     
          STDERR.puts('EXEC IN CONTAINER PARAMS ' + params.to_s)
     @docker_api.docker_exec(params)
   end
