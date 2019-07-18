@@ -7,9 +7,9 @@ conf_self_start: true
 publisher_namespace: EnginesSystem
 type_path: cadvisor
 last_error: 
-memory: '96'
+memory: '128'
 shareable: false
-hostname: auth
+hostname: cadvisor
 domain_name: engines.internal
 kerberos: false
 environments: []

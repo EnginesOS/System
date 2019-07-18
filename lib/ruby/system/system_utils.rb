@@ -111,7 +111,7 @@ class SystemUtils
   def SystemUtils.execute_command(cmd, binary=false, data = false, out = nil)
     @@last_error = ''
     require 'open3'
-    #   SystemDebug.debug(SystemDebug.execute,'exec command ', cmd)
+      SystemDebug.debug(SystemDebug.execute,'exec command ', cmd)
 
     retval = {}
 
