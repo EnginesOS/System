@@ -88,33 +88,56 @@ module DockerApiExec
       exec_id = r[:Id]
       request = '/exec/' + exec_id + '/start'
       request_params = {
-        'Detach' => params[:background],
+        'Detach' => params[:background] ,
         'Tty' => false,
       }
-STDERR.puts('Exec Starting ' + params.keys.to_s)
+      STDERR.puts('Exec Starting ' + params.keys.to_s)
       headers = {
         'Content-type' => 'application/json'
       }
-      unless params.key?(:stdin_stream) || params.key?(:data)
-        stream_reader = DockerStreamReader.new(params[:stdout_stream])
-        r = post_stream_request(request, nil, stream_reader, headers, request_params.to_json)
-        stream_reader.result[:result] = get_exec_result(exec_id)
-        r = stream_reader.result
-      else
-        stream_handler = DockerHijackStreamHandler.new(params[:data], params[:stdin_stream], params[:stdout_stream])
-        r = post_stream_request(request, nil, stream_handler, headers, request_params.to_json)
-        stream_handler.result[:result] = get_exec_result(exec_id)
-        r = stream_handler.result
+      Timeout.timeout(params[:timeout] + 2) do # wait 1 sec longer incase another timeout prior
+        unless params.key?(:stdin_stream) || params.key?(:data)
+          stream_reader = DockerStreamReader.new(params[:stdout_stream])
+          r = post_stream_request(request, nil, stream_reader, headers, request_params.to_json)
+          stream_reader.result[:result] = get_exec_result(exec_id)
+          r = stream_reader.result
+        else
+          stream_handler = DockerHijackStreamHandler.new(params[:data], params[:stdin_stream], params[:stdout_stream])
+          r = post_stream_request(request, nil, stream_handler, headers, request_params.to_json)
+          stream_handler.result[:result] = get_exec_result(exec_id)
+          r = stream_handler.result
+        end
       end
     end
     r
+  rescue Timeout::Error
+    #FIX ME and kill process
+    # 
+     signal_exec({exec_id: exec_id, signal: 'KILL', container: params[:container]})
+    #
+    r = {}
+    r[:result] = -1;
+    r[:stderr] = 'Timeout on Docker exec :' + params[:command_line].to_s + ':' + params[:container].container_name.to_s
+    STDERR.puts(' Timeout ' + r.to_s)
+    raise EnginesException.new(warning_hash('Timeout on Docker exec', r))
   end
 
   private
 
-  def get_exec_result(exec_id)     
-    r = get_request('/exec/' + exec_id.to_s + '/json')
-    if(r[:Running].is_a?(TrueClass))      
+  def signal_exec(params)
+    r = get_exec_result(params[:exec_id])
+    STDERR.puts(' Timeout signal_exec' + r.to_s)
+     params[:command_line] = 'kill -' +  params[:signal] + ' ' + r[:pid]
+    docker_exec(params)
+  end
+  
+  def get_exec_details(exec_id)
+     get_request('/exec/' + exec_id.to_s + '/json')
+  end
+  
+  def get_exec_result(exec_id)
+    r = get_exec_details(exec_id)
+    if(r[:Running].is_a?(TrueClass))
       STDERR.puts('WARNING EXEC STILL RUNNING:' + r.to_s)
     end
     r[:ExitCode]
@@ -141,7 +164,7 @@ STDERR.puts('Exec Starting ' + params.keys.to_s)
   end
 
   def format_commands(commands)
-  #  STDERR.puts('Commands is an array') if commands.is_a?(Array)
+    #  STDERR.puts('Commands is an array') if commands.is_a?(Array)
     commands = [commands] unless commands.is_a?(Array)
     commands
   end
@@ -178,7 +201,7 @@ STDERR.puts('Exec Starting ' + params.keys.to_s)
         end
       end
     end
-   envs
+    envs
   end
 
 end

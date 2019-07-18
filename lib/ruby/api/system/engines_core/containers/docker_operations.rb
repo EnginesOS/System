@@ -19,12 +19,16 @@ module DockerOperations
     end
   rescue Timeout::Error
     #FIX ME and kill process
+    # params[:signal]
+   # @docker_api.docker_signal_exec(params)
+    #    
     r = {}
     r[:result] = -1;
     r[:stderr] = 'Timeout on Docker exec :' + params[:command_line].to_s + ':' + params[:container].container_name.to_s
     STDERR.puts(' Timeout ' + r.to_s)
     raise EnginesException.new(warning_hash('Timeout on Docker exec', r))
   end
+  
 
   def container_name_and_type_from_id(id)
     @docker_api.container_name_and_type_from_id(id)
