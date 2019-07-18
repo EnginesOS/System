@@ -88,7 +88,7 @@ module DockerApiExec
       exec_id = r[:Id]
       request = '/exec/' + exec_id + '/start'
       request_params = {
-        'Detach' => false,
+        'Detach' => params[:background],
         'Tty' => false,
       }
 STDERR.puts('Exec Starting ' + params.keys.to_s)
