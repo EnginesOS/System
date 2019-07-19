@@ -82,16 +82,24 @@ module DockerApiExec
     end
   end
 
-  def do_it(params, request,headers, exec_id)
+  def do_it(params)
+    request_params = {
+      'Detach' => params[:background] ,
+      'Tty' => false,
+    }
+    STDERR.puts('Exec Starting ' + params.keys.to_s)
+    headers = {
+      'Content-type' => 'application/json'
+    }
     unless params.key?(:stdin_stream) || params.key?(:data)
       stream_reader = DockerStreamReader.new(params[:stdout_stream])
-      r = post_stream_request(request, nil, stream_reader, headers, request_params.to_json)
+      r = post_stream_request(params[:request], nil, stream_reader, headers, request_params.to_json)
       stream_reader.result[:result] = get_exec_result(exec_id)
       stream_reader.result
     else
       stream_handler = DockerHijackStreamHandler.new(params[:data], params[:stdin_stream], params[:stdout_stream])
       r = post_stream_request(request, nil, stream_handler, headers, request_params.to_json)
-      stream_handler.result[:result] = get_exec_result(exec_id)
+      stream_handler.result[:result] = get_exec_result(params[:exec_id])
       stream_handler.result
     end
   end
@@ -99,22 +107,14 @@ module DockerApiExec
   def docker_exec(params)
     r = create_docker_exec(params)
     if r.is_a?(Hash)
-      exec_id = r[:Id]
-      request = '/exec/' + exec_id + '/start'
-      request_params = {
-        'Detach' => params[:background] ,
-        'Tty' => false,
-      }
-      STDERR.puts('Exec Starting ' + params.keys.to_s)
-      headers = {
-        'Content-type' => 'application/json'
-      }
+      params[:exec_id] = r[:Id]
+      params[:request] = '/exec/' + params[:exec_id] + '/start'
       unless params[:background].is_a?(TrueClass)
-      Timeout.timeout(params[:timeout] + 2) do # wait 1 sec longer incase another timeout prior
-        do_it(params, request,headers,exec_id)
-      end
+        Timeout.timeout(params[:timeout] + 1) do # wait 1 sec longer incase another timeout in caller
+          do_it(params)
+        end
       else
-        do_it(params, request,headers,exec_id)
+        do_it(params, exec_id)
       end
     end
     r
