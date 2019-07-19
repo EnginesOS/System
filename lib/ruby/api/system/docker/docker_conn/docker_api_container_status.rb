@@ -26,11 +26,8 @@ module DockerApiContainerStatus
     begin
       r = get_request(request)
     rescue DockerException => e
-      if e.status == 409
-        sleep 0.1
-        r = get_request(request)
-      else raise e
-      end
+      raise DockerException.new(warning_hash('Not ready', id, 409))  if e.status == 409
+      raise e
     end
 
     raise DockerException.new(error_hash('no such engine', id, 404)) if r == true # happens on a destroy
@@ -68,9 +65,9 @@ module DockerApiContainerStatus
     request = '/containers/' + container.container_id .to_s + '/logs?stderr=1&stdout=1&timestamps=1&follow=0&tail=' + count.to_s
     r = get_request(request, false)
     r = DockerUtils.decode_from_docker_chunk(r, {})
-      r[:stdout].gsub!(/[\x80-\xFF]/n,'')
-      r[:stderr].gsub!(/[\x80-\xFF]/n,'') 
-        r
+    r[:stdout].gsub!(/[\x80-\xFF]/n,'')
+    r[:stderr].gsub!(/[\x80-\xFF]/n,'')
+    r
   end
 
 end

@@ -20,6 +20,7 @@ module DockerUtils
               while eof == false
                 begin
                   data = nil
+                  STDERR.puts('read_nonblock process_request ')
                   data = @stream_reader.i_stream.read_nonblock(Excon.defaults[:chunk_size])
              #     STDERR.puts('String IO bytes' + data.length.to_s)
                   break if socket.closed?
@@ -32,6 +33,7 @@ module DockerUtils
                 rescue IO::WaitReadable
                   break if socket.closed?
                   socket.send(data, 0) unless data.nil?
+                  STDERR.puts('IOSELECT process_request')
                   IO.select([@stream_reader.i_stream])
                   retry
                 end
@@ -66,6 +68,7 @@ module DockerUtils
       read_thread = Thread.start do
         read_thread[:name] = 'docker_stream_reader'
         begin
+          STDERR.puts('readpartial process_request')          
           while chunk = socket.readpartial(32768)
             if @stream_reader.out_stream.nil?
               DockerUtils.docker_stream_as_result(chunk, return_result)

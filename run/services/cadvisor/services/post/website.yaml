@@ -1,0 +1,14 @@
+parent_engine: cadvisor
+publisher_namespace: EnginesSystem
+type_path: wap
+service_handle: cadvisor
+service_container_name: wap
+container_type: service
+persistent: false
+variables:
+ proto: https
+ port: 8080
+ fqdn: cadvisor._Engines_System(default_domain)
+ internal_dir: /
+ require_client_ssl: true
+ ca_name: system

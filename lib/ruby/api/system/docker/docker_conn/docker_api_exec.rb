@@ -36,35 +36,8 @@ module DockerApiExec
       else
         false
       end
-      #    if @data.length > 0
-      #          STDERR.puts(' HAS DTAT ')
-      #                true
-      #        elsif @i_stream.nil? || @i_stream.closed?
-      #          false
-      #        else
-      #          true
-      #        end
     end
 
-    #    def process_response()
-    #
-    #      lambda do |chunk , c , t|
-    #        STDERR.puts('a hijack')
-    #        if @out_stream.nil?
-    #          #   STDERR.puts('stream results')
-    #          STDERR.puts(' hj 1 a chunker')
-    #          r = DockerUtils.decode_from_docker_chunk(chunk, true)
-    #          @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
-    #          @result[:stdout] = @result[:stdout].to_s + r[:stdout].to_s
-    #          # return_result[:raw] = return_result[:raw] + chunk.to_s
-    #        else
-    #          r = DockerUtils.decode_from_docker_chunk(chunk, true)
-    #          STDERR.puts('hj 1 a stream')
-    #          @out_stream.write(r[:stdout]) unless r.nil?
-    #          @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
-    #        end
-    #      end
-    #    end
   end
 
   class DockerStreamReader
@@ -95,12 +68,10 @@ module DockerApiExec
           next if r.nil?
           @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
           @result[:stdout] = @result[:stdout].to_s + r[:stdout].to_s
-          # return_result[:raw] = return_result[:raw] + chunk.to_s
         else
           #   STDERR.puts(' SR a stream')
           r = DockerUtils.decode_from_docker_chunk(chunk, true, @out_stream)
           next if r.nil?
-          # @out_stream.write(r[:stdout])
           @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
         end
       end
@@ -111,54 +82,98 @@ module DockerApiExec
     end
   end
 
-  def docker_exec(params)
-    r = create_docker_exec(params) #container, commands, have_data)
-    if r.is_a?(Hash)
-      # STDERR.puts(r.to_s)
-      exec_id = r[:Id]
-      request = '/exec/' + exec_id + '/start'
-      request_params = {
-        'Detach' => false,
-        'Tty' => false,
-      }
-      #   STDERR.puts(' exce oarens ' + params.keys.to_s)
-
-      headers = {
-        'Content-type' => 'application/json'
-      }
-
-      #   SystemDebug.debug(SystemDebug.docker,'docker_exec ' + request_params.to_s + ' request  ' + request.to_s )
-      unless params.key?(:stdin_stream) || params.key?(:data)
-        stream_reader = DockerStreamReader.new(params[:stdout_stream])
-        #    STDERR.puts("\n\nSTREA " + request_params.to_s )
-        r = post_stream_request(request, nil, stream_reader, headers, request_params.to_json)
-        stream_reader.result[:result] = get_exec_result(exec_id)
-        #   STDERR.puts("\n\nSTREA resul " + stream_reader.result.to_s)
-        r = stream_reader.result
-      else
-        stream_handler = DockerHijackStreamHandler.new(params[:data], params[:stdin_stream], params[:stdout_stream])
-        #   headers['Connection'] = 'Upgrade',
-        #    headers['Upgrade'] = 'tcp'
-        #    STDERR.puts("\n\Hijack " + request_params.to_s )
-        r = post_stream_request(request, nil, stream_handler, headers, request_params.to_json)
-        stream_handler.result[:result] = get_exec_result(exec_id)
-      #   STDERR.puts("\n\Hijack resul " + stream_handler.result.to_s)
-        r = stream_handler.result
-
-        #unless params.key?(:stdin_stream) ||params.key?(:data)
-
-        # DockerUtils.docker_stream_as_result(r, result)
-      end
-
+  def do_it(params)
+    request_params = {
+      'Detach' => params[:background] ,
+      'Tty' => false,
+    }
+    STDERR.puts('Exec Starting ' + params.keys.to_s)
+    headers = {
+      'Content-type' => 'application/json'
+    }
+    unless params.key?(:stdin_stream) || params.key?(:data)
+      stream_reader = DockerStreamReader.new(params[:stdout_stream])
+      r = post_stream_request(params[:request], nil, stream_reader, headers, request_params.to_json)
+      stream_reader.result[:result] = get_exec_result(params[:exec_id])
+      stream_reader.result
+    else
+      stream_handler = DockerHijackStreamHandler.new(params[:data], params[:stdin_stream], params[:stdout_stream])
+      r = post_stream_request(params[:request], nil, stream_handler, headers, request_params.to_json)
+      stream_handler.result[:result] = get_exec_result(params[:exec_id])
+      stream_handler.result
     end
-    r
+  end
+
+  def docker_exec(params)
+    r = create_docker_exec(params)
+    if r.is_a?(Hash)
+      params[:exec_id] = r[:Id]
+      params[:request] = '/exec/' + params[:exec_id] + '/start'
+      unless params[:background].is_a?(TrueClass)
+        Timeout.timeout(params[:timeout] + 1) do # wait 1 sec longer incase another timeout in caller
+          do_it(params)
+        end
+      else
+        do_it(params)
+      end
+    end    
+  rescue Timeout::Error
+    signal_exec({exec_id: params[:exec_id], signal: 'TERM', container: params[:container], background: true})
+    r = {}
+    r[:result] = -1;
+    r[:stderr] = 'Timeout on Docker exec :' + params[:command_line].to_s + ':' + params[:container].container_name.to_s
+    STDERR.puts(' Timeout ' + r.to_s)
+    raise EnginesException.new(warning_hash('Timeout on Docker exec', r))
   end
 
   private
 
+  def resolve_pid_to_container_id(pid)
+    s = get_pid_status(pid)
+    unless s.is_a?(FalseClass)
+      STDERR.puts('Status ' + s.to_s)
+      r = s[/NSpid:.*\n/]
+      unless r.nil?
+        r = r.split[' ']
+        r[2]
+      else
+        -1
+      end
+    end
+  end
+
+  def get_pid_status(pid)
+    if File.exists?('/host/sys/' + pid.to_s + '/status')
+      begin
+        f = File.open('/host/sys/' + pid.to_s + '/status')
+        f.read
+      ensure
+        f.close
+      end
+    else
+      STDERR.puts('NO such File:/host/sys/' + pid.to_s + '/status')
+      false
+    end
+  end
+
+  def signal_exec(params)
+    r = get_exec_details(params[:exec_id])
+    STDERR.puts(' Timeout signal_exec ' + params[:exec_id].to_s + ':' + r.to_s )
+    pid = resolve_pid_to_container_id(r[:Pid])
+    params[:command_line] = 'kill -' +  params[:signal] + ' ' + pid.to_s
+    params[:timeout] = 0 #note actually 2
+    docker_exec(params) unless pid == -1
+  end
+
+  def get_exec_details(exec_id)
+    get_request('/exec/' + exec_id.to_s + '/json')
+  end
+
   def get_exec_result(exec_id)
-    r = get_request('/exec/' + exec_id.to_s + '/json')
-   # STDERR.puts(r.to_s)
+    r = get_exec_details(exec_id)
+    if(r[:Running].is_a?(TrueClass))
+      STDERR.puts('WARNING EXEC STILL RUNNING:' + r.to_s)
+    end
     r[:ExitCode]
   end
 
@@ -178,12 +193,12 @@ module DockerApiExec
       request_params['AttachStdin'] = false
     end
     request = '/containers/' + params[:container].container_id.to_s + '/exec'
-  #  SystemDebug.debug(SystemDebug.docker,'create_docker_exec ' + request_params.to_s + ' request  ' + request.to_s )
+    SystemDebug.debug(SystemDebug.docker,'create_docker_exec ' + request_params.to_s + ' request  ' + request.to_s )
     post_request(request, request_params)
   end
 
   def format_commands(commands)
-  #  STDERR.puts('Commands is an array') if commands.is_a?(Array)
+    #  STDERR.puts('Commands is an array') if commands.is_a?(Array)
     commands = [commands] unless commands.is_a?(Array)
     commands
   end
@@ -197,7 +212,6 @@ module DockerApiExec
     else
       nil
     end
-
   end
 
   def exec_env(params)
@@ -210,7 +224,6 @@ module DockerApiExec
         end
       end
       if params[:action_params].is_a?(Hash)
-        #  action_params_to_env!(params[:action_params])
         params[:action_params].each_pair do |k,v|
           envs.push(k.to_s + '=' + v.to_s)
         end
@@ -221,7 +234,7 @@ module DockerApiExec
         end
       end
     end
-   envs
+    envs
   end
 
 end

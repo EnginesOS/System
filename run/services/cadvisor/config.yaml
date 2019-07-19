@@ -1,0 +1,40 @@
+--- !ruby/object:ManagedService
+cont_user_id: 0
+container_name: cadvisor
+ctype: service
+persistent: false
+conf_self_start: true
+publisher_namespace: EnginesSystem
+type_path: cadvisor
+last_error: 
+memory: '128'
+shareable: false
+hostname: cadvisor
+domain_name: engines.internal
+kerberos: false
+environments: []
+volumes:
+ rootfs: 
+  name: rootfs
+  remotepath: "/rootfs/"
+  localpath: "/"
+  permissions: "ro"
+ sys: 
+  name: sys
+  remotepath: "/sys"
+  localpath: "/sys"
+  permissions: "ro"
+ docker: 
+  name: docker
+  remotepath: "/var/lib/docker/"
+  localpath: "/var/lib/docker/"
+  permissions: "ro" 
+image: _Engines_System(flavor)/cadvisor:_Engines_System(release)
+port: 
+repo: na
+last_result: 
+setState: running
+conf_register_site: false
+conf_register_dns: true
+dependant_on:
+- "dns"

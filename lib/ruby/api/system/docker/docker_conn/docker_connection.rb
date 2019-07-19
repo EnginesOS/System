@@ -120,36 +120,18 @@ class DockerConnection < ErrorsApi
       else
         body = content
       end  
-#      STDERR.puts('No data ' + 
-#      {method: :post,
-#      read_timeout: 3600,
-#      query: options,
-#      path: uri + '?' + options.to_s,
-#      headers: rheaders,
-#    #body: body.is_nil?
-#    }.to_s  )
       r = sc.request(
       method: :post,
       read_timeout: 3600,
-    #  query: options,
       path: uri + '?' + options.to_s,
       headers: rheaders,
       body: body
       )
       stream_handler.close
     else
-#      STDERR.puts(' stream data ' + {
-#        method: :post,
-#        read_timeout: 3600,
-#        #     query: options,
-#        path: uri + '?' + options.to_s,
-#      headers: rheaders ,
-#        #body: body.is_nil?
-#      }.to_s )
       r = sc.request(
       method: :post,
       read_timeout: 3600,
-  #    query: options,
       path: uri + '?' + options.to_s,
       headers: rheaders,
       body: content
@@ -158,6 +140,7 @@ class DockerConnection < ErrorsApi
     end
       sc.reset unless sc.nil?
     r
+    
   rescue Excon::Error::Socket
     STDERR.puts('Excon docker socket stream close ')
     stream_handler.close unless stream_handler.nil?
