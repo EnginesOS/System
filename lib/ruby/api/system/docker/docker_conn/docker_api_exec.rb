@@ -114,7 +114,7 @@ module DockerApiExec
           do_it(params)
         end
       else
-        do_it(params, exec_id)
+        do_it(params)
       end
     end
     r
