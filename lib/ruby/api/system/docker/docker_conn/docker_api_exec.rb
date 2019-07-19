@@ -116,8 +116,7 @@ module DockerApiExec
       else
         do_it(params)
       end
-    end
-    r
+    end    
   rescue Timeout::Error
     signal_exec({exec_id: params[:exec_id], signal: 'TERM', container: params[:container], background: true})
     r = {}
