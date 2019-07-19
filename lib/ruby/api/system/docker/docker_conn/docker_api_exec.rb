@@ -82,6 +82,20 @@ module DockerApiExec
     end
   end
 
+  def do_it(params, request,headers, exec_id)
+    unless params.key?(:stdin_stream) || params.key?(:data)
+      stream_reader = DockerStreamReader.new(params[:stdout_stream])
+      r = post_stream_request(request, nil, stream_reader, headers, request_params.to_json)
+      stream_reader.result[:result] = get_exec_result(exec_id)
+      stream_reader.result
+    else
+      stream_handler = DockerHijackStreamHandler.new(params[:data], params[:stdin_stream], params[:stdout_stream])
+      r = post_stream_request(request, nil, stream_handler, headers, request_params.to_json)
+      stream_handler.result[:result] = get_exec_result(exec_id)
+      stream_handler.result
+    end
+  end
+
   def docker_exec(params)
     r = create_docker_exec(params)
     if r.is_a?(Hash)
@@ -95,26 +109,17 @@ module DockerApiExec
       headers = {
         'Content-type' => 'application/json'
       }
+      unless params[:background].is_a?(TrueClass)
       Timeout.timeout(params[:timeout] + 2) do # wait 1 sec longer incase another timeout prior
-        unless params.key?(:stdin_stream) || params.key?(:data)
-          stream_reader = DockerStreamReader.new(params[:stdout_stream])
-          r = post_stream_request(request, nil, stream_reader, headers, request_params.to_json)
-          stream_reader.result[:result] = get_exec_result(exec_id)
-          r = stream_reader.result
-        else
-          stream_handler = DockerHijackStreamHandler.new(params[:data], params[:stdin_stream], params[:stdout_stream])
-          r = post_stream_request(request, nil, stream_handler, headers, request_params.to_json)
-          stream_handler.result[:result] = get_exec_result(exec_id)
-          r = stream_handler.result
-        end
+        do_it(params, request,headers,exec_id)
+      end
+      else
+        do_it(params, request,headers,exec_id)
       end
     end
     r
   rescue Timeout::Error
-    #FIX ME and kill process
-    # 
-     signal_exec({exec_id: exec_id, signal: 'TERM', container: params[:container]})
-    #
+    signal_exec({exec_id: exec_id, signal: 'TERM', container: params[:container], background: true})
     r = {}
     r[:result] = -1;
     r[:stderr] = 'Timeout on Docker exec :' + params[:command_line].to_s + ':' + params[:container].container_name.to_s
@@ -123,46 +128,48 @@ module DockerApiExec
   end
 
   private
-def resolve_pid_to_container_id(pid)
-  s = get_pid_status(pid)
-  unless s.is_a?(FalseClass)
-    STDERR.puts('Status ' + s.to_s)
-    r = s[/NSpid:.*\n/]
-    unless r.nil?
-      r = r.split[' ']
-      r[2] 
-    else
-      -1  
-    end
-  end
-end
 
-def get_pid_status(pid)
-  if File.exists?('/host/sys/' + pid.to_s + '/status')
-    begin
-      f = File.open('/host/sys/' + pid.to_s + '/status')
-      f.read
-    ensure
-      f.close
+  def resolve_pid_to_container_id(pid)
+    s = get_pid_status(pid)
+    unless s.is_a?(FalseClass)
+      STDERR.puts('Status ' + s.to_s)
+      r = s[/NSpid:.*\n/]
+      unless r.nil?
+        r = r.split[' ']
+        r[2]
+      else
+        -1
+      end
     end
-  else
-    STDERR.puts('NO such File:/host/sys/' + pid.to_s + '/status')
-    false
   end
-end
+
+  def get_pid_status(pid)
+    if File.exists?('/host/sys/' + pid.to_s + '/status')
+      begin
+        f = File.open('/host/sys/' + pid.to_s + '/status')
+        f.read
+      ensure
+        f.close
+      end
+    else
+      STDERR.puts('NO such File:/host/sys/' + pid.to_s + '/status')
+      false
+    end
+  end
+
   def signal_exec(params)
     r = get_exec_details(params[:exec_id])
     STDERR.puts(' Timeout signal_exec ' + params[:exec_id].to_s + ':' + r.to_s )
-      pid = resolve_pid_to_container_id(r[:Pid])
-     params[:command_line] = 'kill -' +  params[:signal] + ' ' + pid.to_s
+    pid = resolve_pid_to_container_id(r[:Pid])
+    params[:command_line] = 'kill -' +  params[:signal] + ' ' + pid.to_s
     params[:timeout] = 0 #note actually 2
     docker_exec(params) unless pid == -1
   end
-  
+
   def get_exec_details(exec_id)
-     get_request('/exec/' + exec_id.to_s + '/json')
+    get_request('/exec/' + exec_id.to_s + '/json')
   end
-  
+
   def get_exec_result(exec_id)
     r = get_exec_details(exec_id)
     if(r[:Running].is_a?(TrueClass))
