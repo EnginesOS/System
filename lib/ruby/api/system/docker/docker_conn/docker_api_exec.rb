@@ -113,7 +113,7 @@ module DockerApiExec
   rescue Timeout::Error
     #FIX ME and kill process
     # 
-     signal_exec({exec_id: exec_id, signal: 'KILL', container: params[:container]})
+     signal_exec({exec_id: exec_id, signal: 'TERM', container: params[:container]})
     #
     r = {}
     r[:result] = -1;
@@ -123,13 +123,38 @@ module DockerApiExec
   end
 
   private
+def resolve_pid_to_container_id(pid)
+  s = get_pid_status
+  unless s.is_a?(FalseClass)
+    r = s[/NSpid:.*\n/]
+    unless r.nil?
+      r = r.split[' ']
+      r[2] 
+    else
+      -1  
+    end
+  end
+end
 
+def get_pid_status(pid)
+  if File.exists?('/host/sys/' + pid.to_s + '/status')
+    begin
+      f = File.open('/host/sys/' + pid.to_s + '/status')
+      f.read
+    ensure
+      f.close
+    end
+  else
+    false
+  end
+end
   def signal_exec(params)
     r = get_exec_details(params[:exec_id])
     STDERR.puts(' Timeout signal_exec ' + params[:exec_id].to_s + ':' + r.to_s )
-     params[:command_line] = 'kill -' +  params[:signal] + ' ' + r[:Pid].to_s
+      pid = resolve_pid_to_container_id(r[:Pid])
+     params[:command_line] = 'kill -' +  params[:signal] + ' ' + pid.to_s
     params[:timeout] = 0 #note actually 2
-    docker_exec(params)
+    docker_exec(params) unless pid == -1
   end
   
   def get_exec_details(exec_id)
