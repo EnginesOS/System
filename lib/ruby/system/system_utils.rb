@@ -111,7 +111,7 @@ class SystemUtils
   def SystemUtils.execute_command(cmd, binary=false, data = false, out = nil)
     @@last_error = ''
     require 'open3'
-    #   SystemDebug.debug(SystemDebug.execute,'exec command ', cmd)
+      SystemDebug.debug(SystemDebug.execute,'exec command ', cmd)
 
     retval = {}
 
@@ -151,7 +151,8 @@ class SystemUtils
             # STDERR.puts(' TO out:' + line.to_s)
             out << line
           end
-          retval[:stderr] += stderr.read_nonblock(256) if stderr_is_open
+          STDERR.puts('read_nonblock stderr.SystemUtils.execute_command ')
+          retval[:stderr] += stderr.read_nonblock(2048) if stderr_is_open
         end
         retval[:result] = th.value.exitstatus
       rescue Errno::EIO
@@ -160,9 +161,11 @@ class SystemUtils
         else
           out << line
         end
-        retval[:stdout] += stdout.read_nonblock(256)
+        STDERR.puts('read_nonblock stdout.SystemUtils.execute_command ')
+        retval[:stdout] += stdout.read_nonblock(2048)
         #    SystemDebug.debug(SystemDebug.execute,'read stderr', oline)
-        retval[:stderr] += stderr.read_nonblock(256)
+        STDERR.puts('read_nonblock stderr.SystemUtils.execute_command ')
+        retval[:stderr] += stderr.read_nonblock(2048)
       rescue IO::WaitReadable
         retry #unless th.status == false
         STDERR.puts(' retyr' );
@@ -176,12 +179,14 @@ class SystemUtils
         #          retval[:result] = th.value.exitstatus
         #          return retval
         #        elsif stderr.closed? == false
+        STDERR.puts('read_nonblock stderr.SystemUtils.execute_command ')
         retval[:stderr] += stderr.read_nonblock(1000)
         retval[:result] = th.value.exitstatus
         break
         #return retval
         #  end
         resuce StandardError => e
+        STDERR.puts('read_nonblock stderr.SystemUtils.execute_command ')
         retval[:stderr] += stderr.read_nonblock(1000)
         retval[:result] = th.value.exitstatus
         break
