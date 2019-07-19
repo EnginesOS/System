@@ -124,7 +124,7 @@ module DockerApiExec
 
   private
 def resolve_pid_to_container_id(pid)
-  s = get_pid_status
+  s = get_pid_status(pid)
   unless s.is_a?(FalseClass)
     STDERR.puts('Status ' + s.to_s)
     r = s[/NSpid:.*\n/]
