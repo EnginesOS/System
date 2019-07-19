@@ -98,7 +98,7 @@ module DockerApiExec
       stream_reader.result
     else
       stream_handler = DockerHijackStreamHandler.new(params[:data], params[:stdin_stream], params[:stdout_stream])
-      r = post_stream_request(request, nil, stream_handler, headers, request_params.to_json)
+      r = post_stream_request(params[:request], nil, stream_handler, headers, request_params.to_json)
       stream_handler.result[:result] = get_exec_result(params[:exec_id])
       stream_handler.result
     end
