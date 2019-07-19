@@ -146,6 +146,7 @@ def get_pid_status(pid)
       f.close
     end
   else
+    STDERR.puts('NO such File:/host/sys/' + pid.to_s + '/status')
     false
   end
 end
