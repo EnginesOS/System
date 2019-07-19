@@ -119,7 +119,7 @@ module DockerApiExec
     end
     r
   rescue Timeout::Error
-    signal_exec({exec_id: exec_id, signal: 'TERM', container: params[:container], background: true})
+    signal_exec({exec_id: params[:exec_id], signal: 'TERM', container: params[:container], background: true})
     r = {}
     r[:result] = -1;
     r[:stderr] = 'Timeout on Docker exec :' + params[:command_line].to_s + ':' + params[:container].container_name.to_s
