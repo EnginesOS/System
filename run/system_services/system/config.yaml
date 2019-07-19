@@ -77,8 +77,13 @@ volumes:
   permissions: rw
  engines_sys: 
   name: engines_sys
-  remotepath: "/sys"
+  remotepath: "/host/sys"
   localpath: "/sys"
+  permissions: ro 
+ engines_proc: 
+  name: engines_proc
+  remotepath: "/host/proc"
+  localpath: "/proc"
   permissions: ro 
 port: 
 mapped_ports:
