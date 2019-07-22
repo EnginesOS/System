@@ -278,12 +278,12 @@ def in_container_log_dir(container)
     '/var/log'
   else
     container_logdetails_file_name = false
-    framework_logdetails_file_name = SystemConfig.DeploymentTemplates + '/' + container.framework + '/home/LOG_DIR'
+    framework_logdetails_file_name = SystemConfig.DeploymentTemplates + '/' + container.framework + '/home/engines/etc/LOG_DIR'
     SystemDebug.debug(SystemDebug.docker, 'Frame logs details', framework_logdetails_file_name)
     if File.exist?(framework_logdetails_file_name)
       container_logdetails_file_name = framework_logdetails_file_name
     else
-      container_logdetails_file_name = SystemConfig.DeploymentTemplates + '/global/home/LOG_DIR'
+      container_logdetails_file_name = SystemConfig.DeploymentTemplates + '/global/home/engines/etc/LOG_DIR'
     end
     SystemDebug.debug(SystemDebug.docker,'Container log details', container_logdetails_file_name)
     begin
