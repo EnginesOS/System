@@ -27,6 +27,7 @@ class DockerFileBuilder
     write_container_user
     write_file_service
     set_user('0')
+    add_sudoers
     write_user_local = true
     setup_user_local if write_user_local
     write_repos
@@ -57,7 +58,7 @@ class DockerFileBuilder
     # moved below to above templates
    # write_permissions
     write_run_line('mkdir -p /home/fs/local/')
-    add_sudoers
+
     set_user('$ContUser') unless @blueprint_reader.framework == 'docker'  
     write_run_install_script
     set_user('0')
