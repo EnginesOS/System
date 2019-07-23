@@ -59,11 +59,11 @@ class DockerFileBuilder
     write_run_line('mkdir -p /home/fs/local/')
 
     set_user('$ContUser') unless @blueprint_reader.framework == 'docker'
-
+    add_sudoers
     write_run_install_script
     set_user('0')
     setup_persitant_app if @build_params[:app_is_persistent]
-    add_sudoers
+
     prepare_persitant_source
     write_data_permissions
     finalise_files
