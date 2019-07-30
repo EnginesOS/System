@@ -22,17 +22,7 @@ end
 get '/v0/containers/engine/:engine_name/action/:action_name' do
   begin
     engine = get_engine(params[:engine_name])
-   a = get_engine_actionator(engine, params[:action_name])
-  if a[:return_type] = 'file'     
-    STDERR.puts('ret type FILE ' )
-    return_stream(engines_api.get_engine_actionator(engine, params[:action_name])) # application/octet-stream
-  elsif a[:return_type] = 'json'   
-    STDERR.puts('ret type JSON ' )
     return_json(engines_api.get_engine_actionator(engine, params[:action_name]))
-  else    
-    STDERR.puts('ret type TEXT ' )
-    return_text(engines_api.get_engine_actionator(engine, params[:action_name]))    
-  end   
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -56,12 +46,22 @@ post '/v0/containers/engine/:engine_name/action/:action_name' do
     r = engines_api.perform_engine_action(engine, params[:action_name], cparams)
     # STDERR.puts('action ret type '+ action[:return_type])
     # STDERR.puts('action ret ' + r.to_s )
-    if action[:return_type] == 'json'
+    if action[:return_type] = 'file'     
+      STDERR.puts('ret type FILE ' )
+      return_stream(r) # application/octet-stream
+    elsif action[:return_type] = 'json'   
+      STDERR.puts('ret type JSON ' )
       return_json(r)
-    else
-      #   STDERR.puts('action ret ' + r.to_s )
+    else    
+      STDERR.puts('ret type TEXT ' )
       return_text(r)
     end
+#    if action[:return_type] == 'json'
+#      return_json(r)
+#    else
+#      #   STDERR.puts('action ret ' + r.to_s )
+#      return_text(r)
+#    end
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
