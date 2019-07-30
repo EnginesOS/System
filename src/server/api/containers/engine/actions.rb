@@ -46,10 +46,10 @@ post '/v0/containers/engine/:engine_name/action/:action_name' do
     r = engines_api.perform_engine_action(engine, params[:action_name], cparams)
     # STDERR.puts('action ret type '+ action[:return_type])
     # STDERR.puts('action ret ' + r.to_s )
-    if action[:return_type] = 'file'     
+    if action[:return_type] == 'file'     
       STDERR.puts('ret type FILE ' )
       return_stream(r) # application/octet-stream
-    elsif action[:return_type] = 'json'   
+    elsif action[:return_type] == 'json'   
       STDERR.puts('ret type JSON ' )
       return_json(r)
     else    
