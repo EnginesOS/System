@@ -22,7 +22,14 @@ end
 get '/v0/containers/engine/:engine_name/action/:action_name' do
   begin
     engine = get_engine(params[:engine_name])
+   a = get_engine_actionator(engine, params[:action_name])
+  if a[:return_type] = 'file'     
+    return_stream(engines_api.get_engine_actionator(engine, params[:action_name])) # application/octet-stream
+  elsif a[:return_type] = 'json'   
     return_json(engines_api.get_engine_actionator(engine, params[:action_name]))
+  else   
+    return_text(engines_api.get_engine_actionator(engine, params[:action_name]))    
+  end   
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
