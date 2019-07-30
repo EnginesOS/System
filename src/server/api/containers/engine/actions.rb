@@ -24,10 +24,13 @@ get '/v0/containers/engine/:engine_name/action/:action_name' do
     engine = get_engine(params[:engine_name])
    a = get_engine_actionator(engine, params[:action_name])
   if a[:return_type] = 'file'     
+    STDERR.puts('ret type FILE ' )
     return_stream(engines_api.get_engine_actionator(engine, params[:action_name])) # application/octet-stream
   elsif a[:return_type] = 'json'   
+    STDERR.puts('ret type JSON ' )
     return_json(engines_api.get_engine_actionator(engine, params[:action_name]))
-  else   
+  else    
+    STDERR.puts('ret type TEXT ' )
     return_text(engines_api.get_engine_actionator(engine, params[:action_name]))    
   end   
   rescue StandardError => e
