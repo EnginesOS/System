@@ -134,7 +134,7 @@ module DockerApiExec
       STDERR.puts('Status ' + s.to_s)
       r = s[/NSpid:.*\n/]
       unless r.nil?
-        r = r.split[' ']
+        r = r.split(' ')
         r[2]
       else
         -1
