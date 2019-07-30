@@ -48,7 +48,8 @@ post '/v0/containers/engine/:engine_name/action/:action_name' do
     # STDERR.puts('action ret ' + r.to_s )
     if action[:return_type] == 'file'     
       STDERR.puts('ret type FILE ' )
-      return_stream(r) # application/octet-stream
+      return_text(r)
+      #  return_stream(r) # application/octet-stream
     elsif action[:return_type] == 'json'   
       STDERR.puts('ret type JSON ' )
       return_json(r)
