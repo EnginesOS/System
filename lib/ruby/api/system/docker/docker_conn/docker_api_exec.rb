@@ -143,15 +143,15 @@ module DockerApiExec
   end
 
   def get_pid_status(pid)
-    if File.exists?('/host/sys/' + pid.to_s + '/status')
+    if File.exists?('/host/proc/' + pid.to_s + '/status')
       begin
-        f = File.open('/host/sys/' + pid.to_s + '/status')
+        f = File.open('/host/proc/' + pid.to_s + '/status')
         f.read
       ensure
         f.close
       end
     else
-      STDERR.puts('NO such File:/host/sys/' + pid.to_s + '/status')
+      STDERR.puts('NO such File:/host/proc/' + pid.to_s + '/status')
       false
     end
   end
@@ -162,7 +162,7 @@ module DockerApiExec
     pid = resolve_pid_to_container_id(r[:Pid])
     params[:command_line] = 'kill -' +  params[:signal] + ' ' + pid.to_s
     params[:timeout] = 1 #note actually 2
-      STDERR.puts('KILL ' + params[:signal].to_s + ' container pi ' + pid.to_s + ':system:' + params[:exec_id].to_s)
+      STDERR.puts('KILL ' + params[:signal].to_s + ' container pi ' + pid.to_s + ':system:' + r[:Pid].to_s)
     docker_exec(params) unless pid == -1
   end
 
