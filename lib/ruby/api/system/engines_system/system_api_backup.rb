@@ -97,8 +97,7 @@ module SystemApiBackup
   end
   
   def export_engine_registry(engine_name, out)
-    out.write(@engines_api.service_manager.retrieve_engine_service_hash(
-    {container_type: 'app', parent_engine: engine_name}).to_yaml)    
+    out.write(@engines_api.engine_attached_services(engine_name).to_yaml)    
   end
 
   def backup_engine_service(service_hash, out)
