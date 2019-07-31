@@ -39,20 +39,20 @@ module SystemApiBackup
   end
 
   def restore_system_files(out, p)
-   # STDERR.puts('RESTORE SYSTEM_' + out.class.name)
+    # STDERR.puts('RESTORE SYSTEM_' + out.class.name)
     #FixMe need to support path and $replace
     SystemUtils.execute_command('/opt/engines/system/scripts/restore/system_files.sh', true, out, nil)
 
   end
 
   def restore_engines
-   # STDERR.puts('RESTORE engines' )
+    # STDERR.puts('RESTORE engines' )
     getManagedEngines.each do |engine |
-    #  STDERR.puts('engine' + engine.container_name.to_s)
+      #  STDERR.puts('engine' + engine.container_name.to_s)
       if engine.read_state == 'nocontainer'
-      #  STDERR.puts('RESTORE engine' + engine.container_name.to_s)
-       build_thr = @engines_api.restore_engine(engine)
-       build_thr.join
+        #  STDERR.puts('RESTORE engine' + engine.container_name.to_s)
+        build_thr = @engines_api.restore_engine(engine)
+        build_thr.join
       end
     end
   end
@@ -68,7 +68,7 @@ module SystemApiBackup
       result = @engines_api.exec_in_container(params)
       if result[:result] != 0
         result
-    #    STDERR.puts(' BACKUP SERVICE ' + result.to_s)
+        #    STDERR.puts(' BACKUP SERVICE ' + result.to_s)
       else
         true
       end
@@ -79,7 +79,8 @@ module SystemApiBackup
     engine = loadManagedEngine(engine_name)
     STDERR.puts(container_state_dir(engine) + '/registry.dump')
     f = File.open(container_state_dir(engine) + '/registry.dump', 'w+')
-    export_engine_registry(engine_name, f)    
+    f.close 
+    export_engine_registry(engine_name, f)
     SystemUtils.execute_command('/opt/engines/system/scripts/backup/engine_config.sh ' + engine_name , true, false, out)
   ensure
     f.close unless f.nil?
@@ -95,11 +96,11 @@ module SystemApiBackup
     end
     paths
   end
-  
+
   def export_engine_registry(engine_name, out)
     serialized_object = YAML::dump(@engines_api.engine_attached_services(engine_name))
     STDERR.puts("\n\n v " + serialized_object.to_s)
-    out.puts(serialized_object)    
+    out.puts(serialized_object)
   end
 
   def backup_engine_service(service_hash, out)
