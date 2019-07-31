@@ -97,7 +97,9 @@ module SystemApiBackup
   end
   
   def export_engine_registry(engine_name, out)
-    out.write(@engines_api.engine_attached_services(engine_name).to_yaml)    
+    v = @engines_api.engine_attached_services(engine_name)
+    STDERR.puts("\n\n v " + v.to_s)
+    out.write(v.to_yaml)    
   end
 
   def backup_engine_service(service_hash, out)
