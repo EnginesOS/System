@@ -79,8 +79,8 @@ module SystemApiBackup
     engine = loadManagedEngine(engine_name)
     STDERR.puts(container_state_dir(engine) + '/registry.dump')
     f = File.open(container_state_dir(engine) + '/registry.dump', 'w+')
-    f.close 
     export_engine_registry(engine_name, f)
+    f.close 
     SystemUtils.execute_command('/opt/engines/system/scripts/backup/engine_config.sh ' + engine_name , true, false, out)
   ensure
     f.close unless f.nil?
