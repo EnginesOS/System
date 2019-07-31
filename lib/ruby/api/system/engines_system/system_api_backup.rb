@@ -77,11 +77,12 @@ module SystemApiBackup
 
   def backup_engine_config(engine_name, out)
     engine = loadManagedEngine(engine_name)
+    STDERR.puts(container_state_dir(engine) + '/registry.dump')
     f = fopen(container_state_dir(engine) + '/registry.dump')
     export_engine_registry(engine_name, f)    
     SystemUtils.execute_command('/opt/engines/system/scripts/backup/engine_config.sh ' + engine_name , true, false, out)
   ensure
-    f.close
+    f.close unless f.nil?
   end
 
   def engines_services_to_backup(engine)
