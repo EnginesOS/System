@@ -7,6 +7,8 @@ module Engines
   end
 
   def find_engine_services_hashes(params)
+    
+  STDERR.puts("\n\n find_engine_services_hashes" + params.to_s)
     r = 'engine/services'
     r += address_params(params, [:container_type, :parent_engine, :type_path])
     rest_get(r)
