@@ -76,7 +76,12 @@ module SystemApiBackup
   end
 
   def backup_engine_config(engine_name, out)
+    engine = loadManagedEngine(engine_name)
+    f = fopen(container_state_dir(engine) + '/registry.dump')
+    export_engine_registry(engine_name, f)    
     SystemUtils.execute_command('/opt/engines/system/scripts/backup/engine_config.sh ' + engine_name , true, false, out)
+  ensure
+    f.close
   end
 
   def engines_services_to_backup(engine)
@@ -88,6 +93,11 @@ module SystemApiBackup
       paths['service'+n.to_s] = engine + '/service/' + service[:publisher_namespace] + '/' + service[:type_path] + '/' + + service[:service_handle]
     end
     paths
+  end
+  
+  def export_engine_registry(engine_name, out)
+    out.write(@engines_api.service_manager.retrieve_engine_service_hash(
+    {container_type: 'app', parent_engine: engine_name}).to_yaml)    
   end
 
   def backup_engine_service(service_hash, out)
