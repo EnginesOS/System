@@ -3,6 +3,10 @@ module PublicApiBackup
     @system_api.backup_system_files(out)
   end
 
+  def engine_bundle(engine_name, out)
+    @system_api.engine_bundle(engine_name, out)
+  end
+
   def backup_system_db(out)
     @system_api.backup_system_db(out)
   end
