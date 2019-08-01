@@ -49,6 +49,7 @@ def rest_get(path, params = nil, time_out = 120, _headers = nil)
   lheaders.merge(_headers) unless _headers == nil
   lheaders.delete('Content-Type' ) if q.nil?
   req = {time_out: time_out, method: :get, path: @route_prefix.to_s + path.to_s, headers: lheaders }
+STDERR.puts(' REG GET ' + req.to_s)
   req[:query] = q unless q.nil?
   r = connection.request(req)
   close_connection
