@@ -116,6 +116,10 @@ module SystemApiBackup
   private
   
   def mk_engine_bundle_dir(en)
+    dn = SystemConfig.BackupTmpDir + '/'+ en
+    if Dir.exist?(dn)
+      FileUtils.rm_r(dn, :force => true )
+    end
     Dir.mkdir(SystemConfig.BackupTmpDir + '/'+ en)
   end
   
