@@ -14,6 +14,12 @@ module EnginesSystemFiles
   @@SystemAccessDB = '/home/app/db/production.sqlite3'
   @@SystemUserSettingsFile = '/home/engines/deployment/settings.yaml'
   
+  @@BackupTmpDir = '/tmp/'
+  
+  def SystemConfig.BackupTmpDir
+    @@BackupTmpDir
+  end
+  
   def SystemConfig.SystemUserSettingsFile
     @@SystemUserSettingsFile
   end
