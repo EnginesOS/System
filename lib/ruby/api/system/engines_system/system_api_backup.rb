@@ -7,7 +7,7 @@ module SystemApiBackup
   def engine_bundle(engine_name, out)
     export_engine_registry(engine_name)
     mk_engine_bundle_dir(engine_name)
-    services = get_engines_persistent_services(engine_name)
+    services = get_engine_persistent_services(engine_name)
     services.each do |service|
       begin
         service_out = engines_bundle_service_file(service)
