@@ -24,7 +24,7 @@ rescue Errno::EHOSTUNREACH
   @core_api.fix_registry_problem
   retry
 rescue StandardError => e
-  raise EnginesException.new(error_hash('Failed to open base url to registry ' + e.to_s, @base_url.to_s))
+  raise EnginesException.new(error_hash('Failed to open base url to registry ' + e.to_s, base_url.to_s))
 end
 
 def close_connection
@@ -64,7 +64,7 @@ rescue Excon::Error::Socket => e
   #end
 rescue StandardError => e
   close_connection
-  raise EnginesException.new(error_hash('reg exception ' + e.to_s, @base_url.to_s))
+  raise EnginesException.new(error_hash('reg exception ' + e.to_s, base_url.to_s))
 end
 
 def time_out
@@ -87,12 +87,12 @@ def rest_post(path, params = nil, lheaders = nil)
       retry if cnt < 5
     end
   rescue StandardError => e
-    STDERR.puts('BASE ur ' + @base_url.to_s)
+    STDERR.puts('BASE ur ' + base_url.to_s)
     STDERR.puts('path ' + path.to_s)
     STDERR.puts('exception ' + e.to_s)
     close_connection
 
-    raise EnginesException.new(error_hash('reg exception ' + path.to_s + "\n" + e.to_s, @base_url.to_s))
+    raise EnginesException.new(error_hash('reg exception ' + path.to_s + "\n" + e.to_s, base_url.to_s))
   end
 end
 
@@ -112,7 +112,7 @@ rescue Excon::Error::Socket => e
   # end
 rescue StandardError => e
   close_connection
-  raise EnginesException.new(error_hash('reg exception ' + e.to_s, @base_url.to_s))
+  raise EnginesException.new(error_hash('reg exception ' + e.to_s, base_url.to_s))
 end
 
 def query_hash(params)
@@ -142,7 +142,7 @@ rescue Excon::Error::Socket => e
   retry if cnt < 5
   #  end
 rescue StandardError => e
-  raise EnginesException.new(error_hash('reg exception ' + e.to_s, @base_url.to_s))
+  raise EnginesException.new(error_hash('reg exception ' + e.to_s, base_url.to_s))
 ensure
   close_connection
   #end
