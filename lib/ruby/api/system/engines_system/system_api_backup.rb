@@ -8,10 +8,10 @@ module SystemApiBackup
     export_engine_registry(engine_name)
     mk_engine_bundle_dir(engine_name)
     services = @engines_api.get_engine_persistent_services({parent_engine: engine_name, container_type: 'app' })
-    services.each do |service|
+    services.each do |sh|
       begin
-        service_out = engines_bundle_service_file(service)
-        backup_engine_service(service_hash, service_out)
+        service_out = engines_bundle_service_file(sh)
+        backup_engine_service(sh, service_out)
       ensure
         service_out.close unless service_out.nil?
       end
@@ -107,9 +107,6 @@ module SystemApiBackup
   end
 
   def backup_engine_service(sh, out)
-    # move following to @engines_api.
-    #engine = loadManagedEngine(service_hash[:parent_engine])
-    #engine.export_service_data(service_hash, out)
     @engines_api.backup_engine_service(sh, out)
   end
 
