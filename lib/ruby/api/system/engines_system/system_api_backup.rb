@@ -7,7 +7,7 @@ module SystemApiBackup
   def engine_bundle(engine_name, out)
     export_engine_registry(engine_name)
     mk_engine_bundle_dir(engine_name)
-    services = get_engine_persistent_services({parent_engine: engine_name, container_type: 'app' })
+    services = @engines_api.get_engine_persistent_services({parent_engine: engine_name, container_type: 'app' })
     services.each do |service|
       begin
         service_out = engines_bundle_service_file(service)
@@ -139,7 +139,6 @@ module SystemApiBackup
       f = File.open(container_state_dir(engine) + '/registry.dump', 'w+')
       serialized_object = YAML::dump(@engines_api.engine_attached_services(engine_name))
     end
-    STDERR.puts("\n\n v " + serialized_object.to_s)
     f.puts(serialized_object)
   ensure
     f.close unless f.nil?
