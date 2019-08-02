@@ -107,7 +107,7 @@ module SystemApiBackup
   end
 
   def backup_engine_service(sh, out)
-    @engines_api.backup_engine_service(sh, out)
+    loadManagedEngine(sh[:parent_engine]).export_service_data(sh, out)
   end
 
   private
@@ -130,11 +130,10 @@ module SystemApiBackup
   end
 
   def export_engine_registry(engine_name, f=nil)
-    engine = loadManagedEngine(engine_name)
+    serialized_object = YAML::dump(@engines_api.engine_attached_services(engine_name))
     if f.nil?
       engine = loadManagedEngine(engine_name)
-      f = File.open(container_state_dir(engine) + '/registry.dump', 'w+')
-      serialized_object = YAML::dump(@engines_api.engine_attached_services(engine_name))
+      f = File.open(container_state_dir(engine) + '/registry.dump', 'w+')     
     end
     f.puts(serialized_object)
   ensure
