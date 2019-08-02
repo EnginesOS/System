@@ -128,7 +128,7 @@ module SystemApiBackup
     fp = SystemConfig.BackupTmpDir + '/' \
     + sh[:parent_engine] \
     + '/' + type_path  \
-    + '/' + sh[:service_handle]
+    + '.' + sh[:service_handle]
     File.open(fp,'w')
   end
 
