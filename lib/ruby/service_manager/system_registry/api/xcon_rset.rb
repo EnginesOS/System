@@ -195,7 +195,9 @@ def error_result_exception(resp)
 end
 
 def base_url
-  'http://' + @core_api.registry_root_ip + ':4567'
+ r = 'http://' + @core_api.registry_root_ip + ':4567'
+    STDERR.puts('REG base ' + r.to_s)
+    r
 rescue  StandardError => e
   raise EnginesException.new('Cannot Deterine Base URL' + e.to_s)
 end
