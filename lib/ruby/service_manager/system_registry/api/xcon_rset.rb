@@ -196,6 +196,7 @@ end
 
 def base_url
   STDERR.puts('REG base Core is ' + @core_api.class.name)
+  STDERR.puts(caller.to_s ) if @core_api.nil?
   'http://' + @core_api.registry_root_ip + ':4567'
 
 rescue  StandardError => e
