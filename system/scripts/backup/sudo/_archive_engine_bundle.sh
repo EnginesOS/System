@@ -1,3 +1,3 @@
 #!/bin/sh
 
-tar -cphf - $BUNDLE_DIR /opt/engines/run/apps/$1
+tar -cphf - $1 /opt/engines/run/apps/$2
