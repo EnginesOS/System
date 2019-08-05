@@ -1,9 +1,10 @@
 #@route += '/' + ARGV[0] + '/' + ARGV[1] + '/' + ARGV[2] + '/' + ARGV[3]
 
-n=0
-while n < ARGV.count
-  @route += '/' + ARGV[n]
-  n = n + 1
+
+if ARGV[1] == 'bundle_engine'
+@route += '/' + ARGV[1] + '/' + ARGV[2]
+else
+  @route += '/' + ARGV[0] + '/' + ARGV[1] + '/' + ARGV[2] + '/' + ARGV[3] 
 end
 
 content_type='application/octet-stream'
