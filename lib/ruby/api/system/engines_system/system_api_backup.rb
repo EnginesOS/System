@@ -9,11 +9,15 @@ module SystemApiBackup
     mk_engine_bundle_dir(engine_name)
     services = @engines_api.get_engine_persistent_services({parent_engine: engine_name, container_type: 'app' })
     services.each do |sh|
-      begin
-        service_out = engines_bundle_service_file(sh)
-        backup_engine_service(sh, service_out)
-      ensure
-        service_out.close unless service_out.nil?
+      if is_es_filesystem?(sh).is_a?(TrueClass)
+        link_in_fs(sh)
+      else
+        begin
+          service_out = engines_bundle_service_file(sh)
+          backup_engine_service(sh, service_out)
+        ensure
+          service_out.close unless service_out.nil?
+        end
       end
     end
     SystemUtils.execute_command('/opt/engines/system/scripts/backup/engine_bundle.sh ' + engine_name, true, false, out)
@@ -111,7 +115,20 @@ module SystemApiBackup
   end
 
   private
-  
+
+  def is_es_filesystem?(sh)
+    if sh[:publisher_namespace] == 'EnginesSystem' && sh[:type_path] == 'filesystem/local/filesystem'
+      true
+    else
+      false
+    end
+  end
+
+  def link_in_fs(sh)
+    SystemConfig.LocalFSVolHome + sh[:parent_engine] + '/' + sh[:service_handle]
+    FileUtils.ln_s(local_dir, service_path(sh) + '/' + sh[:service_handle])
+  end
+
   def mk_engine_bundle_dir(en)
     dn = SystemConfig.BackupTmpDir + '/'+ en
     if Dir.exist?(dn)
@@ -120,20 +137,26 @@ module SystemApiBackup
     Dir.mkdir_p(SystemConfig.BackupTmpDir + '/'+ en)
   end
   
+  def service_path(sh)
+    SystemConfig.BackupTmpDir + '/' \
+     + sh[:parent_engine] \
+     + '/' + sh[:type_path]
+  end
+  
+   def make_service_dir(sh)
+     Dir.mkdir_p(SystemConfig.BackupTmpDir + '/' + service_path(sh))
+   end
+   
   def engines_bundle_service_file(sh)
-    type_path = sh[:type_path].gsub(/\//,'.')
-    fp = SystemConfig.BackupTmpDir + '/' \
-    + sh[:parent_engine] \
-    + '/' + type_path  \
-    + '.' + sh[:service_handle]
-    File.open(fp,'w')
+    make_service_dir
+    File.open(service_path(sh) + '/' + sh[:service_handle], 'w')
   end
 
   def export_engine_registry(engine_name, f=nil)
     serialized_object = YAML::dump(@engines_api.engine_attached_services(engine_name))
     if f.nil?
       engine = loadManagedEngine(engine_name)
-      f = File.open(container_state_dir(engine) + '/registry.dump', 'w+')     
+      f = File.open(container_state_dir(engine) + '/registry.dump', 'w+')
     end
     f.puts(serialized_object)
   ensure

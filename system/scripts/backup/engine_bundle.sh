@@ -4,7 +4,6 @@ if test -d /opt/engines/run/apps/$1
  then
   if test -d $BUNDLE_DIR
     then
-     # cp -rp /opt/engines/run/apps/$1 $BUNDLE_DIR
       tar -cpf - $BUNDLE_DIR /opt/engines/run/apps/$1 
        if test $? -eq 0
         then
