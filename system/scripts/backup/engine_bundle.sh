@@ -1,7 +1,7 @@
 #!/bin/sh
 BUNDLE_DIR=/tmp/backup_bundles/$1
 FS_ROOT=/var/lib/engines/apps/
-for fs `ls $BUNDLE_DIR/filesystem/local/filesystem/*.lnk`
+for fs in `ls $BUNDLE_DIR/filesystem/local/filesystem/*.lnk`
  do
   name=`basename $fs |cut -f1 -d.`
   src=`cat $fs`
