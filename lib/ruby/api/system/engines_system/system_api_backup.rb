@@ -127,7 +127,11 @@ module SystemApiBackup
 
   def link_in_fs(sh)
     #SystemConfig.LocalFSVolHome + '/' + sh[:parent_engine] + '/' + sh[:service_handle],
-    FileUtils.touch(SystemConfig.BackupTmpDir + '/' + service_path(sh) + '/' + sh[:service_handle])
+    #FileUtils.touch(SystemConfig.BackupTmpDir + '/' + service_path(sh) + '/' + sh[:service_handle])
+    lf = File.open(SystemConfig.BackupTmpDir + '/' + service_path(sh) + '/' + sh[:service_handle] + '.lnk', 'w')
+    lf.puts(service_path(sh))
+  ensure
+    lf.close unless lf.nil?
   end
 
   def mk_engine_bundle_dir(en)
@@ -137,16 +141,16 @@ module SystemApiBackup
     end
     FileUtils.mkdir_p(SystemConfig.BackupTmpDir + '/'+ en)
   end
-  
+
   def service_path(sh)
-      sh[:parent_engine] + '/' + sh[:type_path]
+    sh[:parent_engine] + '/' + sh[:type_path]
   end
-  
-   def make_service_dir(sh)
-     STDERR.puts('MKDIR ' + SystemConfig.BackupTmpDir + '/' + service_path(sh))
-     FileUtils.mkdir_p(SystemConfig.BackupTmpDir + '/' + service_path(sh))
-   end
-   
+
+  def make_service_dir(sh)
+    STDERR.puts('MKDIR ' + SystemConfig.BackupTmpDir + '/' + service_path(sh))
+    FileUtils.mkdir_p(SystemConfig.BackupTmpDir + '/' + service_path(sh))
+  end
+
   def engines_bundle_service_file(sh)
     File.open(SystemConfig.BackupTmpDir + '/' + service_path(sh) + '/' + sh[:service_handle], 'w')
   end
