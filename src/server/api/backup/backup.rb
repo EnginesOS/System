@@ -104,7 +104,7 @@ get '/v0/backup/engine/:engine_name/service/:publisher_namespace/*' do
   end
 end
 
-# @method backup_engine_bundle
+# @method stream_engine_bundle
 # @overload put '/v0/backup/bundle_engine/:engine_name'
 #
 #
@@ -113,7 +113,7 @@ get '/v0/backup/bundle_engine/:engine_name' do
   begin
     stream do |out|
       begin
-      engines_api.engine_bundle(params[:engine_name], out)
+      engines_api.stream_engine_bundle(params[:engine_name], out)
         rescue StandardError => e
           STDERR.puts('engine_export_persistent_service exception ' + e.to_s)
           send_encoded_exception(request: request, exception: e)

@@ -3,8 +3,12 @@ module SystemApiBackup
     STDERR.puts('backup system files to class ', + out.class.name)
     SystemUtils.execute_command('/opt/engines/system/scripts/backup/system_files.sh', true, false, out)
   end
-
-  def engine_bundle(engine_name, out)
+  
+  def import_engine_bundle(istream, params)
+    SystemUtils.execute_command('/opt/engines/system/scripts/backup/import_engine_bundle.sh ' + params[:engine_name], false, istream , nil)
+  end
+  
+  def stream_engine_bundle(engine_name, out)
     export_engine_registry(engine_name)
     mk_engine_bundle_dir(engine_name)
     services = @engines_api.get_engine_persistent_services({parent_engine: engine_name, container_type: 'app' })
