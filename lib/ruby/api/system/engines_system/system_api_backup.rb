@@ -127,7 +127,7 @@ module SystemApiBackup
 
   def link_in_fs(sh)
     #SystemConfig.LocalFSVolHome + '/' + sh[:parent_engine] + '/' + sh[:service_handle],
-    FileUtils.touch(service_path(sh) + '/' + sh[:service_handle])
+    FileUtils.touch(SystemConfig.BackupTmpDir + '/' + service_path(sh) + '/' + sh[:service_handle])
   end
 
   def mk_engine_bundle_dir(en)
@@ -139,9 +139,7 @@ module SystemApiBackup
   end
   
   def service_path(sh)
-    SystemConfig.BackupTmpDir + '/' \
-     + sh[:parent_engine] \
-     + '/' + sh[:type_path]
+      sh[:parent_engine] + '/' + sh[:type_path]
   end
   
    def make_service_dir(sh)
@@ -150,7 +148,7 @@ module SystemApiBackup
    end
    
   def engines_bundle_service_file(sh)
-    File.open(service_path(sh) + '/' + sh[:service_handle], 'w')
+    File.open(SystemConfig.BackupTmpDir + '/' + service_path(sh) + '/' + sh[:service_handle], 'w')
   end
 
   def export_engine_registry(engine_name, f=nil)
