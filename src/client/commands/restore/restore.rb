@@ -2,7 +2,7 @@
 
 
 if ARGV[1] == 'bundle_engine'
-@route += '/' + ARGV[1] + '/' + ARGV[2]
+@route += '/' + ARGV[0] + '/' + ARGV[1] + '/' + ARGV[2]
 else
   @route += '/' + ARGV[0] + '/' + ARGV[1] + '/' + ARGV[2] + '/' + ARGV[3] 
 end
