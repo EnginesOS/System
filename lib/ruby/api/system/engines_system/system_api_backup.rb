@@ -145,6 +145,7 @@ module SystemApiBackup
   end
   
    def make_service_dir(sh)
+     STDERR.puts('MKDIR ' + SystemConfig.BackupTmpDir + '/' + service_path(sh))
      FileUtils.mkdir_p(SystemConfig.BackupTmpDir + '/' + service_path(sh))
    end
    
