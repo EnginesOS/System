@@ -5,7 +5,8 @@ module SystemApiBackup
   end
   
   def restore_engine_bundle(istream, params)
-    SystemUtils.execute_command('/opt/engines/system/scripts/backup/import_engine_bundle.sh ' + params[:engine_name], false, istream , nil)
+    STDERR.puts('RESTORE WITH ' + params.to_s)
+    SystemUtils.execute_command('/opt/engines/system/scripts/backup/import_engine_bundle.sh ' + params[:engine_name].to_s, false, istream , nil)
   end
   
   def stream_engine_bundle(engine_name, out)
