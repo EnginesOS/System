@@ -134,7 +134,7 @@ module SystemApiBackup
     if Dir.exist?(dn)
       FileUtils.rm_r(dn, :force => true )
     end
-    Dir.mkdir_p(SystemConfig.BackupTmpDir + '/'+ en)
+    FileUtils.mkdir_p(SystemConfig.BackupTmpDir + '/'+ en)
   end
   
   def service_path(sh)
@@ -144,7 +144,7 @@ module SystemApiBackup
   end
   
    def make_service_dir(sh)
-     Dir.mkdir_p(SystemConfig.BackupTmpDir + '/' + service_path(sh))
+     FileUtils.mkdir_p(SystemConfig.BackupTmpDir + '/' + service_path(sh))
    end
    
   def engines_bundle_service_file(sh)
