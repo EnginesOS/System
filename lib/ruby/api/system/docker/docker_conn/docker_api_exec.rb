@@ -110,7 +110,9 @@ module DockerApiExec
       params[:exec_id] = r[:Id]
       params[:request] = '/exec/' + params[:exec_id] + '/start'
       unless params[:background].is_a?(TrueClass)
-        Timeout.timeout(params[:timeout] + 1) do # wait 1 sec longer incase another timeout in caller
+        to = params[:timeout]
+        to = 5 if to.nil?
+        Timeout.timeout(to + 1) do # wait 1 sec longer incase another timeout in caller
           do_it(params)
         end
       else
