@@ -125,7 +125,8 @@ module SystemApiBackup
   end
 
   def link_in_fs(sh)
-    FileUtils.ln_s(SystemConfig.LocalFSVolHome + '/' + sh[:parent_engine] + '/' + sh[:service_handle], service_path(sh) + '/' + sh[:service_handle])
+    #SystemConfig.LocalFSVolHome + '/' + sh[:parent_engine] + '/' + sh[:service_handle],
+    FileUtils.touch(service_path(sh) + '/' + sh[:service_handle])
   end
 
   def mk_engine_bundle_dir(en)
