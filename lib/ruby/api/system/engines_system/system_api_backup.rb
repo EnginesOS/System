@@ -9,6 +9,7 @@ module SystemApiBackup
     mk_engine_bundle_dir(engine_name)
     services = @engines_api.get_engine_persistent_services({parent_engine: engine_name, container_type: 'app' })
     services.each do |sh|
+      make_service_dir(sh)
       if is_es_filesystem?(sh).is_a?(TrueClass)
         link_in_fs(sh)
       else
@@ -148,7 +149,6 @@ module SystemApiBackup
    end
    
   def engines_bundle_service_file(sh)
-    make_service_dir
     File.open(service_path(sh) + '/' + sh[:service_handle], 'w')
   end
 
