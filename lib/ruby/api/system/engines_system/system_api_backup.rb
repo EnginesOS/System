@@ -6,7 +6,7 @@ module SystemApiBackup
   def restore_engine_bundle(istream, params)
     SystemUtils.execute_command('/opt/engines/system/scripts/backup/import_engine_bundle.sh ' + params[:engine_name].to_s, false, istream , nil)
     begin
-      reg_file = File.open(SystemConfig.BackupTmpDir + '/' + params[:engine_name] + 'opt/engines/run/apps/' + params[:engine_name] + '/registry.dump')
+      reg_file = File.open(SystemConfig.BackupTmpDir + '/' + params[:engine_name] + '/opt/engines/run/apps/' + params[:engine_name] + '/registry.dump')
       registry = YAML::load(reg_file)
     ensure
       reg_file.close unless reg_file.nil?
