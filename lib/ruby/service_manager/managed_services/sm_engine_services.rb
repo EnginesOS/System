@@ -130,14 +130,14 @@ private
 
 def get_all_leafs_service_hashes(branch)
   return if branch.nil?
-  if branch.children.count == 0
+  if branch.children.nil?
     branch.content if branch.content.is_a?(Hash)
   else
     ret_val = []
     # SystemUtils.debug_output('top node',branch.name)
     branch.children.each do |sub_branch|
       #    SystemUtils.debug_output('on node',sub_branch.name)
-      if sub_branch.children.count == 0
+      if sub_branch.children..nil?
         ret_val.push(sub_branch.content) if sub_branch.content.is_a?(Hash)
       else
         ret_val.concat(get_all_leafs_service_hashes(sub_branch))

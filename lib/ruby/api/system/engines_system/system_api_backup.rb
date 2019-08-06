@@ -1,5 +1,4 @@
 module SystemApiBackup
-  require 'rubytree'
   
   def backup_system_files(out)
     SystemUtils.execute_command('/opt/engines/system/scripts/backup/system_files.sh', true, false, out)
