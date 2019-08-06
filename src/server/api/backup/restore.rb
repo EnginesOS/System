@@ -108,7 +108,7 @@ put '/v0/restore/engine/:engine_name/:replace/*' do
         replace: params[:replace],
         section: nil}
     end
-    p[:engine_name] = params[:engine_name]
+    p[:engine_name] = params['engine_name']
     engines_api.restore_engine(request.env['rack.input'], p)
 
   rescue StandardError => e
