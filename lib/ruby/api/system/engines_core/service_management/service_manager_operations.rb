@@ -74,8 +74,8 @@ module ServiceManagerOperations
     service_manager.retrieve_cron_jobs(container)
   end
   
-  def import_engine_registry(engine_name, registry)
-    service_manager.import_engine_registry(engine_name, registry)
+  def import_engine_registry(registry)
+    service_manager.import_engine_registry(registry)
   end
   
   def taken_hostnames
