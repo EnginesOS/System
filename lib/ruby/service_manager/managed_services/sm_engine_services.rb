@@ -101,6 +101,7 @@ module SmEngineServices
       STDERR.puts(' CAR ' + service.to_s)
       create_and_register_service(service)
     end
+    services
   end
 
   # @ remove an engine matching :engine_name from the service registry, all non persistent serices are removed
