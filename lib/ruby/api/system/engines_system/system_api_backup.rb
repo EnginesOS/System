@@ -11,7 +11,7 @@ module SystemApiBackup
     ensure
       reg_file.close unless reg_file.nil?
     end
-    import_engine_registry(params[:engine_name], registry)
+    @engines_api.import_engine_registry(params[:engine_name], registry)
     re_install_engine(params[:engine_name])
   end
 
