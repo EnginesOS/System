@@ -104,14 +104,14 @@ module DockerApiExec
     end
   end
 
-  def docker_exec(params)
+  def docker_exec(p)
+    params = p.dup
+    params[:timeout] = 5 if params[:timeout].nil? 
     r = create_docker_exec(p)
     if r.is_a?(Hash)
-      p =  params.dup
       params[:exec_id] = r[:Id]
       params[:request] = '/exec/' + params[:exec_id] + '/start'
-      unless params[:background].is_a?(TrueClass)
-      params[:timeout] = 5 if params[:timeout].nil?        
+      unless params[:background].is_a?(TrueClass)       
         Timeout.timeout(params[:timeout] + 1) do # wait 1 sec longer incase another timeout in caller
           do_it(params)
         end
