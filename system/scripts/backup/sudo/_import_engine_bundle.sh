@@ -1,6 +1,5 @@
 #!/bin/sh
 
-
 tar -xpf - 
 pwd=`pwd`
 app=`basename $pwd`
