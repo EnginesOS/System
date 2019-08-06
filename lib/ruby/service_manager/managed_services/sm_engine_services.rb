@@ -1,5 +1,4 @@
 module SmEngineServices
-  
   #def find_engine_services(params)
   #  system_registry_client.find_engine_services(params)
   #end
@@ -35,8 +34,8 @@ module SmEngineServices
         container_type: engine.ctype
       })
     rescue StandardError => e
-     # STDERR.puts('NO services ' +  engine.container_name.to_s + ';' + e.to_s)
-    # return false # No services
+      # STDERR.puts('NO services ' +  engine.container_name.to_s + ';' + e.to_s)
+      # return false # No services
       services = nil
     end
     if services.is_a?(Array)
@@ -53,8 +52,6 @@ module SmEngineServices
     end
   end
 
- 
-
   #service manager get non persistent services for engine_name
   #for each servie_hash load_service_container and add hash
   #add to service registry even if container is down
@@ -63,12 +60,12 @@ module SmEngineServices
       parent_engine: engine.container_name,
       container_type: engine.ctype
     })
-   # SystemDebug.debug(SystemDebug.services,:register_non_persistent, services)
+    # SystemDebug.debug(SystemDebug.services,:register_non_persistent, services)
     if services.is_a?(Array)
       services.each do |service_hash|
         begin
           register_non_persistent_service(service_hash)
-         # SystemDebug.debug(SystemDebug.services,:register_non_persistent,service_hash)
+          # SystemDebug.debug(SystemDebug.services,:register_non_persistent,service_hash)
         rescue
           next
         end
@@ -82,7 +79,7 @@ module SmEngineServices
     begin
       services = get_engine_nonpersistent_services(params) # find_engine_services_hashes(params)
     rescue
-      return 
+      return
     end
     #   return services unless services.is_a?(Array)
     #   STDERR.puts('remove_engine_services ' + services.to_s)
@@ -98,6 +95,13 @@ module SmEngineServices
     end
   end
 
+  def import_engine_registry(registry)
+    services = get_all_leafs_service_hashes(registry)
+    services.each do |service|
+      STDERR.puts(' CAR ' + service.to_s)
+      create_and_register_service(service)
+    end
+  end
 
   # @ remove an engine matching :engine_name from the service registry, all non persistent serices are removed
   # @ if :remove_all_data is true all data is deleted and all persistent services removed
@@ -106,18 +110,40 @@ module SmEngineServices
   def remove_managed_persistent_services(params)
     begin
       services = get_engine_persistent_services(params)  #system_registry_client.
-    rescue 
+    rescue
       services = nil
     end
-  #  STDERR.puts('RM SERVICES: ' + params.to_s  + ' Services' + services.to_s)
+    #  STDERR.puts('RM SERVICES: ' + params.to_s  + ' Services' + services.to_s)
     if services.is_a?(Array)
       services.each do | service |
         #STDERR.puts('RM SERVICE: ' + service.to_s)
         service[:lost] = params[:lost] if params.key?(:lost)
         service[:remove_all_data] = params[:remove_all_data] if params.key?(:remove_all_data)
-     #   STDERR.puts('RM SERVICE: ' + service.to_s)
+        #   STDERR.puts('RM SERVICE: ' + service.to_s)
         delete_and_remove_service(service)
       end
     end
   end
+end
+
+private
+
+def get_all_leafs_service_hashes(branch)
+  return if branch.nil?
+  if branch.children.count == 0
+    branch.content if branch.content.is_a?(Hash)
+  else
+    ret_val = []
+    # SystemUtils.debug_output('top node',branch.name)
+    branch.children.each do |sub_branch|
+      #    SystemUtils.debug_output('on node',sub_branch.name)
+      if sub_branch.children.count == 0
+        ret_val.push(sub_branch.content) if sub_branch.content.is_a?(Hash)
+      else
+        ret_val.concat(get_all_leafs_service_hashes(sub_branch))
+      end
+    end
+    ret_val
+  end
+  
 end

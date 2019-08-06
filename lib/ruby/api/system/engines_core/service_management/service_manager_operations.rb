@@ -73,7 +73,11 @@ module ServiceManagerOperations
   def retreive_cron_jobs(container)
     service_manager.retrieve_cron_jobs(container)
   end
-
+  
+  def import_engine_registry(engine_name, registry)
+    service_manager.import_engine_registry(engine_name, registry)
+  end
+  
   def taken_hostnames
     hashes = service_manager.all_engines_registered_to('wap')
     sites = []

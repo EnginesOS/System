@@ -11,13 +11,12 @@ if test -d /opt/engines/run/apps/$1
  then
   if test -d $BUNDLE_DIR
     then
-    sudo -n /opt/engines/system/scripts/backup/sudo/_archive_engine_bundle.sh  $BUNDLE_DIR $1  
-     # tar -cpf - $BUNDLE_DIR /opt/engines/run/apps/$1
+      sudo -n /opt/engines/system/scripts/backup/sudo/_archive_engine_bundle.sh  $BUNDLE_DIR $1      
       #UNCOMMENT FOR PRODUCTION 
-    #   if test $? -eq 0
-    #    then
-    #     rm -r $BUNDLE_DIR
-    #   fi 
+       if test $? -eq 0
+        then
+         rm -r $BUNDLE_DIR
+       fi 
   else
    echo '{"result":"error","mesg":"No bundle dir"}'
    exit 2

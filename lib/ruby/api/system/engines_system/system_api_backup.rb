@@ -1,14 +1,20 @@
 module SystemApiBackup
   def backup_system_files(out)
-    STDERR.puts('backup system files to class ', + out.class.name)
     SystemUtils.execute_command('/opt/engines/system/scripts/backup/system_files.sh', true, false, out)
   end
-  
+
   def restore_engine_bundle(istream, params)
-    STDERR.puts('RESTORE WITH ' + params.to_s)
     SystemUtils.execute_command('/opt/engines/system/scripts/backup/import_engine_bundle.sh ' + params[:engine_name].to_s, false, istream , nil)
+    begin
+      reg_file = File.open(SystemConfig.BackupTmpDir + '/' + params[:engine_name] + 'opt/engines/run/apps/' + params[:engine_name] + '/registry.dump')
+      registry = YAML::load(reg_file)
+    ensure
+      reg_file.close unless reg_file.nil?
+    end
+    import_engine_registry(params[:engine_name], registry)
+    re_install_engine(params[:engine_name])
   end
-  
+
   def stream_engine_bundle(engine_name, out)
     export_engine_registry(engine_name)
     mk_engine_bundle_dir(engine_name)
@@ -152,7 +158,6 @@ module SystemApiBackup
   end
 
   def make_service_dir(sh)
-    STDERR.puts('MKDIR ' + SystemConfig.BackupTmpDir + '/' + service_path(sh))
     FileUtils.mkdir_p(SystemConfig.BackupTmpDir + '/' + service_path(sh))
   end
 

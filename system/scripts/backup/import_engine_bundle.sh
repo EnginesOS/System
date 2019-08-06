@@ -1,7 +1,7 @@
 #!/bin/sh
+BUNDLE_DIR=/tmp/backup_bundles/
+mkdir -p $BUNDLE_DIR/$1
 
-mkdir -p /tmp/bundles/$1
-cat - > /tmp/t
-cd /tmp/bundles/$1
-cat /tmp/t | sudo -n /opt/engines/system/scripts/backup/sudo/_import_engine_bundle.sh $1
+cd $BUNDLE_DIR/$
+cat - | sudo -n /opt/engines/system/scripts/backup/sudo/_import_engine_bundle.sh $1
 
