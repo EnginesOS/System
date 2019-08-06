@@ -107,7 +107,7 @@ module DockerApiExec
   def docker_exec(params)
     r = create_docker_exec(p)
     if r.is_a?(Hash)
-      params = p.dup
+      p =  params.dup
       params[:exec_id] = r[:Id]
       params[:request] = '/exec/' + params[:exec_id] + '/start'
       unless params[:background].is_a?(TrueClass)
