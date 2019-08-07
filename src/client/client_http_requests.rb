@@ -47,7 +47,7 @@ def stream_io(uri_s, io_h)
     io_h.read(Excon.defaults[:chunk_size]).to_s
   end
   uri = URI(@base_url + uri_s)
-  r = Excon.post(uri, :request_block => chunker)
+  r = Excon.post(@base_url + uri_s, :request_block => chunker)
   io_h.close
   STDERR.puts('r')
   #stream_file(uri_s, io_h, headers)
