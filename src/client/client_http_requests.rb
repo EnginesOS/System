@@ -46,7 +46,8 @@ def stream_io(uri_s, io_h)
     # to_s will convert the nil received after everything is read to the final empty chunk
     io_h.read(Excon.defaults[:chunk_size]).to_s
   end
-  r = Excon.post(uri_s, :request_block => chunker)
+  uri = URI(@base_url + uri_s)
+  r = Excon.post(uri, :request_block => chunker)
   io_h.close
   STDERR.puts('r')
   #stream_file(uri_s, io_h, headers)
