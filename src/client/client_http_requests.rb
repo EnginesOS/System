@@ -41,7 +41,15 @@ def stream_io(uri_s, io_h)
     'Transfer-Encoding' => 'chunked'
    #  'Content-Length' => src_f.size.to_s
   } 
-  stream_file(uri_s, io_h, headers)
+  chunker = lambda do
+    # Excon.defaults[:chunk_size] defaults to 1048576, ie 1MB
+    # to_s will convert the nil received after everything is read to the final empty chunk
+    io_h.read(Excon.defaults[:chunk_size]).to_s
+  end
+  r = Excon.post(uri_s, :request_block => chunker)
+  io_h.close
+  STDERR.puts('r')
+  #stream_file(uri_s, io_h, headers)
 end
 
 def stream_file(uri_s, src_f, headers = nil)
