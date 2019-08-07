@@ -16,6 +16,7 @@ class ConfigFileWriter
         end
         out_file.puts("\n")
       ensure
+        out_file.puts("\n")
         out_file.close
       end
     end

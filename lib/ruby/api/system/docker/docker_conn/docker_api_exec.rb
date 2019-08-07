@@ -104,12 +104,14 @@ module DockerApiExec
     end
   end
 
-  def docker_exec(params)
-    r = create_docker_exec(params)
+  def docker_exec(p)
+    params = p.dup
+    params[:timeout] = 5 if params[:timeout].nil? 
+    r = create_docker_exec(p)
     if r.is_a?(Hash)
       params[:exec_id] = r[:Id]
       params[:request] = '/exec/' + params[:exec_id] + '/start'
-      unless params[:background].is_a?(TrueClass)
+      unless params[:background].is_a?(TrueClass)       
         Timeout.timeout(params[:timeout] + 1) do # wait 1 sec longer incase another timeout in caller
           do_it(params)
         end
@@ -134,7 +136,7 @@ module DockerApiExec
       STDERR.puts('Status ' + s.to_s)
       r = s[/NSpid:.*\n/]
       unless r.nil?
-        r = r.split[' ']
+        r = r.split(' ')
         r[2]
       else
         -1
@@ -143,15 +145,15 @@ module DockerApiExec
   end
 
   def get_pid_status(pid)
-    if File.exists?('/host/sys/' + pid.to_s + '/status')
+    if File.exists?('/host/proc/' + pid.to_s + '/status')
       begin
-        f = File.open('/host/sys/' + pid.to_s + '/status')
+        f = File.open('/host/proc/' + pid.to_s + '/status')
         f.read
       ensure
         f.close
       end
     else
-      STDERR.puts('NO such File:/host/sys/' + pid.to_s + '/status')
+      STDERR.puts('NO such File:/host/proc/' + pid.to_s + '/status')
       false
     end
   end
@@ -161,7 +163,8 @@ module DockerApiExec
     STDERR.puts(' Timeout signal_exec ' + params[:exec_id].to_s + ':' + r.to_s )
     pid = resolve_pid_to_container_id(r[:Pid])
     params[:command_line] = 'kill -' +  params[:signal] + ' ' + pid.to_s
-    params[:timeout] = 0 #note actually 2
+    params[:timeout] = 1 #note actually 2
+      STDERR.puts('KILL ' + params[:signal].to_s + ' container pi ' + pid.to_s + ':system:' + r[:Pid].to_s)
     docker_exec(params) unless pid == -1
   end
 

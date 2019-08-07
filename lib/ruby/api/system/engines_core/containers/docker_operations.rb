@@ -11,10 +11,9 @@ module DockerOperations
   end
 
   def exec_in_container(params)
-    params[:background] = false unless params.key?(:background)
     STDERR.puts('EXEC IN CONTAINER PARAMS ' + params.keys.to_s)
     STDERR.puts('Time Out ' + params[:timeout].to_s)
-    params[:timeout] = 5 unless params.key?(:timeout)
+   # params[:timeout] = 5 unless params.key?(:timeout)
     @docker_api.docker_exec(params)
   end
 

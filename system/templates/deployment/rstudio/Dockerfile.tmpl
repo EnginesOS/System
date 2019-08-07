@@ -1,6 +1,6 @@
-FROM  engines/lua:_Engines_System(release)
+FROM  engines/rstudio:_Engines_System(release)
 
-ENV ContUser www-data
+ENV ContUser rstudio
 ENV CONTFSVolHome /home/fs/
 
 ADD build_scripts /build_scripts

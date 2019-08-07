@@ -20,7 +20,8 @@ end
 get '/v0/containers/service/:service_name/action/:action_name' do
   begin
     service = get_service(params[:service_name])
-    return_json(engines_api.get_service_actionator(service, params[:action_name]))
+
+   return_json(engines_api.get_service_actionator(service, params[:action_name]))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -44,12 +45,19 @@ post '/v0/containers/service/:service_name/action/:action_name' do
     # STDERR.puts('action ret type '+ action[:return_type])
     # STDERR.puts('action ret ' + r.to_s )
     # STDERR.puts('action ret ' + r.to_json )
-    if action[:return_type] == 'json'
-      return_json(r)
-    else
-      #    STDERR.puts('action ret ' + r.to_s )
-      return_text(r)
-    end
+
+   if action[:return_type] == 'file'     
+     STDERR.puts('ret type FILE ' )
+     return_text(r)
+    # return_stream(r) # application/octet-stream
+   elsif action[:return_type] == 'json'   
+     STDERR.puts('ret type JSON ' )
+     return_json(r)
+   else    
+     STDERR.puts('ret type TEXT ' )
+     return_text(r)    
+   end  
+ 
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

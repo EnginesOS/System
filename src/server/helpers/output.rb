@@ -44,7 +44,22 @@ def return_text(r, s = 202)
     end
   end
 end
-
+def return_stream(r, s = 202)
+  if r.nil?
+    status(204)
+  else
+    if r.is_a?(TrueClass) || r.is_a?(FalseClass)
+      return_boolean(r, s)
+    elsif r.is_a?(EnginesError)
+      return_error(r)
+    else
+      content_type 'application/octet-stream'
+      headers['Access-Control-Allow-Origin'] ='*'
+      status(s)
+      r.to_s
+    end
+  end
+end
 def return_true(s = 200)
   return_text('true', s)
 end

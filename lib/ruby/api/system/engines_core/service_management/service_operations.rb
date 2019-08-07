@@ -84,8 +84,7 @@ module ServiceOperations
   def clear_service_from_registry(service, persistence=:non_persistent)
     service_manager.clear_service_from_registry({:parent_engine => service.container_name, :container_type => 'service', :persistence => persistence})
   end
-
-
+  
   protected
 
   def create_and_register_managed_service(service_hash)

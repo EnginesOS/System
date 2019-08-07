@@ -3,6 +3,13 @@ module PublicApiBackup
     @system_api.backup_system_files(out)
   end
 
+  def stream_engine_bundle(engine_name, out)
+    @system_api.stream_engine_bundle(engine_name, out)
+  end
+  def restore_engine_bundle(istream, params)
+    @system_api.restore_engine_bundle(istream, params)
+  end
+  
   def backup_system_db(out)
     @system_api.backup_system_db(out)
   end
