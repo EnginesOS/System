@@ -34,7 +34,7 @@ post '/v0/containers/service/:service_name/import' do
   begin
     service = get_service(params[:service_name])
     #   return_json(service.import_data(request.env['rack.input']))
-  return_json(service.import_data(request.body)) 
+    #  return_json(service.import_data(request.body)) 
     r = request.body.read
     STDERR.puts('SIN IMPORT ' + r.to_s)
     return_json(service.import_data(r))
