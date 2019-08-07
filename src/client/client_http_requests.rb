@@ -51,7 +51,7 @@ def stream_io(uri_s, io_h)
   end
   uri = URI(@base_url + uri_s)
   Excon.defaults[:ssl_verify_peer] = false
-  r = Excon.put(@base_url + uri_s, :request_block => chunker)
+  r = Excon.post(@base_url + uri_s, :request_block => chunker)
   io_h.close
   STDERR.puts('r')
   #stream_file(uri_s, io_h, headers)
