@@ -33,8 +33,8 @@ post '/v0/containers/service/:service_name/import' do
   STDERR.puts('SIN IMPORT')
   begin
     service = get_service(params[:service_name])
-        return_json(service.import_data(request.env['rack.input']))
-   # return_json(service.import_data(request.body)) 
+    #   return_json(service.import_data(request.env['rack.input']))
+  return_json(service.import_data(request.body)) 
    
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
