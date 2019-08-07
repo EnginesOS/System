@@ -47,6 +47,7 @@ def stream_io(uri_s, io_h)
     io_h.read(Excon.defaults[:chunk_size]).to_s
   end
   uri = URI(@base_url + uri_s)
+  Excon.defaults[:ssl_verify_peer] = false
   r = Excon.post(@base_url + uri_s, :request_block => chunker)
   io_h.close
   STDERR.puts('r')
