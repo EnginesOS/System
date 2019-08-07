@@ -26,7 +26,7 @@ module PublicApiBuilder
     begin
       while
         begin  
-          STDERR.puts('read_nonblock follow_build ')
+        #  STDERR.puts('read_nonblock follow_build ')
           bytes = build_log_file.read_nonblock(1000)
           bytes.gsub!(/[\x80-\xFF]/n,'')
         rescue IO::WaitReadable

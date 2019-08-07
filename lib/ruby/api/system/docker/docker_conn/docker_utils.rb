@@ -20,7 +20,7 @@ module DockerUtils
               while eof == false
                 begin
                   data = nil
-                  STDERR.puts('read_nonblock process_request ')
+               #   STDERR.puts('read_nonblock process_request ')
                   data = @stream_reader.i_stream.read_nonblock(Excon.defaults[:chunk_size])
              #     STDERR.puts('String IO bytes' + data.length.to_s)
                   break if socket.closed?

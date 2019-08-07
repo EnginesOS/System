@@ -31,6 +31,12 @@ module EnginesSystemDirs
   @@ContainerUIDdir = '/opt/engines/etc/containers/uids'
   @@ContainerNextUIDFile = '/opt/engines/etc/containers/uids/next'
   
+  @@BackupTmpDir = '/tmp/backup_bundles/'
+   
+   def SystemConfig.BackupTmpDir
+     @@BackupTmpDir
+   end
+   
   def SystemConfig.ContainerUIDdir
     @@ContainerUIDdir
   end

@@ -39,30 +39,6 @@ class SystemUtils
     SystemUtils.system_release + '-' + SystemConfig.api_version.to_s + '-' + SystemConfig.engines_system_version.to_s
   end
 
-  #  def SystemUtils.symbolize_keys(hash)
-  #    hash.inject({}){|result, (key, value)|
-  #      new_key = case key
-  #      when String then key.to_sym
-  #      else key
-  #      end
-  #      new_value = case value
-  #      when Hash then symbolize_keys(value)
-  #      when Array   then
-  #        newval = []
-  #        value.each do |array_val|
-  #          if array_val.is_a?(Hash)
-  #            array_val = SystemUtils.symbolize_keys(array_val)
-  #          end
-  #          newval.push(array_val)
-  #        end
-  #        newval
-  #      else value
-  #      end
-  #      result[new_key] = new_value
-  #      result
-  #    }
-  #  end
-
   #Execute @param cmd [String]
   #if sucessful exit code == 0 @return
   #else
@@ -86,22 +62,6 @@ class SystemUtils
     end
   end
 
-  #  def SystemUtils.hash_string_to_hash(hash_string)
-  #    retval = {}
-  #    hash_pairs = hash_string.split(':')
-  #    hash_pairs.each do |hash_pair|
-  #      pair = hash_pair.split('=')
-  #      if pair.length > 1
-  #        val = pair[1]
-  #      else
-  #        val = nil
-  #      end
-  #      retval[pair[0].to_sym] = val if pair.nil? == false && pair[0].nil? == false
-  #    end
-  #    retval
-  #  rescue Exception=>e
-  #    SystemUtils.log_exception(e)
-  #  end
 
   #Execute @param cmd [String]
   # @return hash
@@ -151,7 +111,7 @@ class SystemUtils
             # STDERR.puts(' TO out:' + line.to_s)
             out << line
           end
-          STDERR.puts('read_nonblock stderr.SystemUtils.execute_command ')
+      #    STDERR.puts('read_nonblock stderr.SystemUtils.execute_command ')
           retval[:stderr] += stderr.read_nonblock(2048) if stderr_is_open
         end
         retval[:result] = th.value.exitstatus
@@ -161,10 +121,10 @@ class SystemUtils
         else
           out << line
         end
-        STDERR.puts('read_nonblock stdout.SystemUtils.execute_command ')
+      #  STDERR.puts('read_nonblock stdout.SystemUtils.execute_command ')
         retval[:stdout] += stdout.read_nonblock(2048)
         #    SystemDebug.debug(SystemDebug.execute,'read stderr', oline)
-        STDERR.puts('read_nonblock stderr.SystemUtils.execute_command ')
+      #  STDERR.puts('read_nonblock stderr.SystemUtils.execute_command ')
         retval[:stderr] += stderr.read_nonblock(2048)
       rescue IO::WaitReadable
         retry #unless th.status == false
@@ -186,7 +146,7 @@ class SystemUtils
         #return retval
         #  end
         resuce StandardError => e
-        STDERR.puts('read_nonblock stderr.SystemUtils.execute_command ')
+      #  STDERR.puts('read_nonblock stderr.SystemUtils.execute_command ')
         retval[:stderr] += stderr.read_nonblock(1000)
         retval[:result] = th.value.exitstatus
         break

@@ -118,12 +118,10 @@ class VersionedBlueprintReader < BluePrintReader
   end
   
   def sudoer_list
-  unless @blueprint[:software][:environment_variables].nil?
-   @blueprint[:software][:environment_variables].each do |env_var| 
-    if env_var[:name] == 'sudo_list'
-     @sudo_list = env_var[:value].split(/[ \r\n,;]/)  
-    end
-  end
+  unless @blueprint[:software][:base][:sudo_list].nil?
+     @sudo_list =  @blueprint[:software][:base][:sudo_list].split(/[ \r\n,;]/)  
+  else
+    @sudo_list = nil
   end
   end
  

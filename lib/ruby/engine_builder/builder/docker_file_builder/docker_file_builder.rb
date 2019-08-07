@@ -27,43 +27,30 @@ class DockerFileBuilder
     write_container_user
     write_file_service
     set_user('0')
+    add_sudoers
     write_user_local = true
     setup_user_local if write_user_local
     write_repos
     write_os_packages
     write_modules
-
-    # set_user('0')
-
-    #write_run_start
     write_app_archives
     write_permissions
     write_app_templates
-  
     set_user('0')
     chown_home_app
     set_user('$ContUser')
     write_database_seed
-    # write_worker_commands
-
-    #  write_run_start
     write_sed_strings
     write_persistent_dirs
     write_persistent_files
-
     insert_framework_frag_in_dockerfile('builder.mid.tmpl')
     write_rake_list
     set_user('0')
-    # moved below to above templates
-   # write_permissions
     write_run_line('mkdir -p /home/fs/local/')
-
-    set_user('$ContUser') unless @blueprint_reader.framework == 'docker'
-
+    set_user('$ContUser') unless @blueprint_reader.framework == 'docker'  
     write_run_install_script
     set_user('0')
     setup_persitant_app if @build_params[:app_is_persistent]
-    add_sudoers
     prepare_persitant_source
     write_data_permissions
     finalise_files
