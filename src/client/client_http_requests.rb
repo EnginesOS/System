@@ -35,13 +35,7 @@ rescue StandardError =>e
 end
 
 def stream_io(uri_s, io_h)
-  headers = {
-    'content-type' => 'application/octet-stream',
-    'Accept-Encoding' => 'gzip',
-    'ACCESS_TOKEN' => load_token,
-    'Transfer-Encoding' => 'chunked'
-    #  'Content-Length' => src_f.size.to_s
-  }
+
   chunker = lambda do
     # Excon.defaults[:chunk_size] defaults to 1048576, ie 1MB
     # to_s will convert the nil received after everything is read to the final empty chunk
@@ -55,8 +49,12 @@ def stream_io(uri_s, io_h)
     'Content-Type' => 'application/octet-stream',
     'ACCESS_TOKEN' => load_token,
   }
-  Excon.defaults[:ssl_verify_peer] = false
-  r = Excon.put(@base_url + uri_s, :request_block => chunker, headers: headers)
+
+  r = Excon.put(@base_url + uri_s, :request_block => chunker, headers: headers,
+  debug_request: true,
+  debug_response: true,
+  ssl_verify_peer: false,
+  persistent: true)
   STDERR.puts('r')
   io_h.close
   STDERR.puts('r')
