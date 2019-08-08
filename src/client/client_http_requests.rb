@@ -47,7 +47,7 @@ def stream_io(uri_s, io_h)
     # to_s will convert the nil received after everything is read to the final empty chunk
     STDERR.puts('Get Chunk')
     c = io_h.read(Excon.defaults[:chunk_size]).to_s
-     STDERR.puts('Got Chunk ' + c.length.to_s)
+     STDERR.puts('Got Chunk ' + c.length)
     c
   end
   uri = URI(@base_url + uri_s)
@@ -80,7 +80,7 @@ def stream_file(uri_s, src_f, headers = nil)
   # if  post == true
   #  request = Net::HTTP::Post.new(uri.request_uri, headers)
   #  else
-  request = Net::HTTP::Post.new(uri.request_uri, headers)
+  request = Net::HTTP::Put.new(uri.request_uri, headers)
   # STDERR.puts('request ' + request.to_s)
   #  end
   request.body_stream = src_f
