@@ -29,7 +29,7 @@ end
 # import the service data gzip optional
 # data is streamed as application/octet-stream
 # @return [true]
-post '/v0/containers/service/:service_name/import' do
+put '/v0/containers/service/:service_name/import' do
   STDERR.puts('SIN IMPORT:' + request.to_s)
   begin
     service = get_service(params[:service_name])
