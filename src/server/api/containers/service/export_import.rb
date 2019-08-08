@@ -37,7 +37,7 @@ post '/v0/containers/service/:service_name/import' do
     # return_json(service.import_data(request.body)) 
      r = request.env['rack.input'].read
      STDERR.puts('SIN IMPORT ' + r.length.to_s)
-    STDERR.puts('SIN IMPORT ' + request.body)
+    STDERR.puts('SIN IMPORT ' + request.body.read)
   #  return_json(service.import_data(request.env['rack.input']))
     # return_json(service.import_data(request.body))
   rescue StandardError => e
