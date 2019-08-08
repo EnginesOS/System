@@ -44,7 +44,7 @@ class Chunked
   def read(foo, bar)
     STDERR.puts('FOO:' + foo.to_s + ' Bar:' + bar.to_s)
     if @file
-      @file.read(@size)
+      @file.read(foo)
     end
   end
   def eof!
