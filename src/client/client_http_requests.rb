@@ -41,7 +41,7 @@ class Chunked
     end
   end
   
-  def read(foo)
+  def read(foo, bar)
     if @file
       @file.read(@size)
     end
