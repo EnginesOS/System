@@ -33,10 +33,10 @@ put '/v0/containers/service/:service_name/import' do
   STDERR.puts('SIN IMPORT:' + request.to_s)
   begin
     service = get_service(params[:service_name])
-    #   return_json(service.import_data(request.env['rack.input']))
-    #  return_json(service.import_data(request.body)) 
-   r = request.env['rack.input'].read
-    STDERR.puts('SIN IMPORT ' + r.length.to_s)
+    # return_json(service.import_data(request.env['rack.input']))
+    # return_json(service.import_data(request.body)) 
+    # r = request.env['rack.input'].read
+    # STDERR.puts('SIN IMPORT ' + r.length.to_s)
     return_json(service.import_data(request.env['rack.input']))
     # return_json(service.import_data(request.body))
   rescue StandardError => e
