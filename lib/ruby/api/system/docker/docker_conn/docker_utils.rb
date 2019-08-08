@@ -81,7 +81,7 @@ module DockerUtils
           end
           STDERR.puts("read doen")
         rescue EOFError => e
-          STDERR.puts(e.to_s + ':EEOOFF' + e.backtrace.to_s)
+          STDERR.puts(e.to_s + ':EEOOFF' )
           next
         rescue StandardError => e
           STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
