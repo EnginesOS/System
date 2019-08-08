@@ -47,7 +47,9 @@ def stream_io(uri_s, io_h)
   uri = URI(@base_url + uri_s)
   headers = {
     'Content-Type' => 'application/octet-stream',
-    'ACCESS_TOKEN' => load_token,
+    'ACCESS_TOKEN' => load_token,   
+    'Transfer-Encoding' => 'chunked',
+
   }
 
   r = Excon.put(@base_url + uri_s, :request_block => chunker, headers: headers,
@@ -66,7 +68,7 @@ def stream_file(uri_s, src_f, headers = nil)
     'Content-Type' => 'application/octet-stream',
     'Accept-Encoding' => 'gzip',
     'ACCESS_TOKEN' => load_token,
-    # 'Transfer-Encoding' => 'chunked'
+     #'Transfer-Encoding' => 'chunked',
     'Content-Length' => src_f.size.to_s
   } if headers.nil?
   # STDERR.puts('stream header ' + headers.to_s)
