@@ -31,10 +31,55 @@ rescue Excon::Error => e
   STDERR.puts('Failed to open base url ' + @base_url.to_s + ' after ' + @retries.to_s = ' attempts')
 rescue StandardError =>e
   STDERR.puts('Uncatch E ' + e.class.name + ' ' + e.to_s)
-
 end
 
+class Chunked
+  def initialize(data, chunk_size)
+    @size = chunk_size
+    if data.respond_to? :read
+      @file = data
+    end
+  end
+  
+  def read(foo)
+    if @file
+      @file.read(@size)
+    end
+  end
+  def eof!
+    @file.eof!
+  end
+  def eof?
+    @file.eof?
+  end
+end
 def stream_io(uri_s, io_h)
+chunked = Chunked.new(io_h, Excon.defaults[:chunk_size])
+  headers = {
+    'Content-Type' => 'application/octet-stream',
+    'ACCESS_TOKEN' => load_token,   
+    'Transfer-Encoding' => 'chunked',
+  }
+#request = Net::HTTP::Put.new parsed.request_uri, {'x-auth-token' => @auth_token, 'Transfer-Encoding' => 'chunked', 'content-type' => 'text/plain'}
+  uri = URI(@base_url + uri_s)
+    # STDERR.puts('uri ' + uri.to_s)
+    conn = Net::HTTP.new(uri.host, uri.port)
+    conn.use_ssl = true
+    conn.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    # if  post == true
+    #  request = Net::HTTP::Post.new(uri.request_uri, headers)
+    #  else
+    request = Net::HTTP::Put.new(uri.request_uri, headers)
+    # STDERR.puts('request ' + request.to_s)
+    #  end
+  #    request.body_stream = src_f
+  #  r = conn.request(request)
+request.body_stream = chunked
+conn.start do |http| 
+  http.request(request)
+end
+end
+def ostream_io(uri_s, io_h)
 
   chunker = lambda do
     # Excon.defaults[:chunk_size] defaults to 1048576, ie 1MB
