@@ -30,7 +30,7 @@ end
 # data is streamed as application/octet-stream
 # @return [true]
 put '/v0/containers/service/:service_name/import' do
-  STDERR.puts('SIN IMPORT')
+  STDERR.puts('SIN IMPORT:' + request.to_s)
   begin
     service = get_service(params[:service_name])
     #   return_json(service.import_data(request.env['rack.input']))
