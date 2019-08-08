@@ -49,7 +49,6 @@ def stream_io(uri_s, io_h)
     'Content-Type' => 'application/octet-stream',
     'ACCESS_TOKEN' => load_token,   
     'Transfer-Encoding' => 'chunked',
-
   }
 
   r = Excon.post(@base_url + uri_s, :request_block => chunker, headers: headers,
