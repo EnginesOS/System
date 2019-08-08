@@ -72,9 +72,9 @@ module DockerUtils
           while chunk = socket.readpartial(32768)
             if @stream_reader.out_stream.nil?
               DockerUtils.docker_stream_as_result(chunk, return_result)
-       #       STDERR.puts("read chunk " )
+              STDERR.puts("read chunk " )
             else
-       #       STDERR.puts("read as stream")
+              STDERR.puts("read as stream")
               r = DockerUtils.decode_from_docker_chunk(chunk, true, @stream_reader.out_stream)
               end
               return_result[:stderr] = return_result[:stderr].to_s + r[:stderr].to_s unless r.nil?
