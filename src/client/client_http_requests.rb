@@ -54,7 +54,7 @@ class Chunked
     @file.eof?
   end
 end
-def stream_io(uri_s, io_h)
+def mstream_io(uri_s, io_h)
 chunked = Chunked.new(io_h, Excon.defaults[:chunk_size])
   headers = {
     'Content-Type' => 'application/octet-stream',
@@ -81,7 +81,7 @@ conn.start do |http|
 end
 exit
 end
-def ostream_io(uri_s, io_h)
+def stream_io(uri_s, io_h)
 
   chunker = lambda do
     # Excon.defaults[:chunk_size] defaults to 1048576, ie 1MB
