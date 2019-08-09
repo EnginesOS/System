@@ -25,7 +25,7 @@ get '/v0/containers/service/:service_name/export' do
 end
 
 
-options "/v0/containers/service/*" do
+options '/v0/containers/service/certs/import' do
     response.headers["Allow"] = "GET, PUT, POST, DELETE, OPTIONS"
     response.headers["Access-Control-Allow-Headers"] = "Authorization, Content-Type, Accept, X-User-Email, X-Auth-Token, Origin, X-Requested-With, cache-control"
     response.headers["Access-Control-Allow-Origin"] = "*"
