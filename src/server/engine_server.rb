@@ -76,7 +76,9 @@ begin
     set :logging, true
     set :run, true
     set :timeout, 260
-    set :cross_origin, true
+     configure do
+    enable :cross_origin
+  end 
   ## for puma ?  
  #   set :session_secret, 'super secret'
 ##    use Rack::Session::Cookie, :key => 'rack.session',
