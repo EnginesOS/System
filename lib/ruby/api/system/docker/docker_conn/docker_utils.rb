@@ -71,7 +71,6 @@ module DockerUtils
         begin
           STDERR.puts('readpartial process_request')          
           while chunk = socket.readpartial(32768)
-
             STDERR.puts("read chunk ", chunk.to_s)
             if @stream_reader.out_stream.nil?
               DockerUtils.docker_stream_as_result(chunk, return_result)
