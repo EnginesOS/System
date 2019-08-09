@@ -22,7 +22,7 @@ module DockerUtils
                   data = nil
                #   STDERR.puts('read_nonblock process_request ')
                   data = @stream_reader.i_stream.read_nonblock(Excon.defaults[:chunk_size])
-             #     STDERR.puts('String IO bytes' + data.length.to_s)
+                  STDERR.puts('String IO bytes' + data.length.to_s)
                   break if socket.closed?
                   socket.send(data, 0) unless data.nil?
                 rescue EOFError
