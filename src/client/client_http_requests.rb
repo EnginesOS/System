@@ -79,6 +79,7 @@ request.body_stream = chunked
 conn.start do |http| 
   http.request(request)
 end
+exit
 end
 def ostream_io(uri_s, io_h)
 
@@ -106,6 +107,7 @@ def ostream_io(uri_s, io_h)
   io_h.close
   STDERR.puts('r')
   #stream_file(uri_s, io_h, headers)
+  exit
 end
 
 def stream_file(uri_s, src_f, headers = nil)
