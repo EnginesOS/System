@@ -74,13 +74,13 @@ chunked = Chunked.new(io_h, Excon.defaults[:chunk_size])
      STDERR.puts('request ' + request.to_s)
   STDERR.puts('request ' +headers.to_s)
     #  end
-      request.body_stream = io_h
-      r = conn.request(request)
-      write_response(r)
-#request.body_stream = chunked
-#conn.start do |http| 
- # http.request(request)
-#end
+ #     request.body_stream = io_h
+ #     r = conn.request(request)
+#      write_response(r)
+request.body_stream = chunked
+conn.start do |http| 
+  http.request(request)
+end
 exit
 end
 def estream_io(uri_s, io_h)
