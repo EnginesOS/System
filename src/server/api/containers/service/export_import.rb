@@ -29,6 +29,7 @@ options "/v0/containers/service/*" do
     response.headers["Allow"] = "GET, PUT, POST, DELETE, OPTIONS"
     response.headers["Access-Control-Allow-Headers"] = "Authorization, Content-Type, Accept, X-User-Email, X-Auth-Token, Origin, X-Requested-With, cache-control"
     response.headers["Access-Control-Allow-Origin"] = "*"
+  STDERR.puts('SIN IMPORT:' + response.headers.to_s)
     200
   end 
 
