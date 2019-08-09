@@ -29,7 +29,7 @@ end
 # import the service data gzip optional
 # data is streamed as application/octet-stream
 # @return [true]
-put '/v0/containers/service/:service_name/import' do
+post '/v0/containers/service/:service_name/import' do
   STDERR.puts('SIN IMPORT:' + request.to_s)
   begin
     service = get_service(params[:service_name])
@@ -39,6 +39,7 @@ put '/v0/containers/service/:service_name/import' do
        
       STDERR.puts('SIN IMPORT params' + params.to_s)
     #  STDERR.puts('SIN IMPORT ' + request.body.read)
+      
     #   sleep 2
     #STDERR.puts('SIN IMPORT ' + request.body.read)
     return_json(service.import_data(request.env['rack.input']))
