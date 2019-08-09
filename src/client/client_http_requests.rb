@@ -73,12 +73,13 @@ chunked = Chunked.new(io_h, Excon.defaults[:chunk_size])
     request = Net::HTTP::Post.new(uri.request_uri, headers)
     # STDERR.puts('request ' + request.to_s)
     #  end
-  #    request.body_stream = src_f
-  #  r = conn.request(request)
-request.body_stream = chunked
-conn.start do |http| 
-  http.request(request)
-end
+      request.body_stream = src_f
+      r = conn.request(request)
+      write_response(r)
+#request.body_stream = chunked
+#conn.start do |http| 
+ # http.request(request)
+#end
 exit
 end
 def stream_io(uri_s, io_h)
