@@ -79,7 +79,8 @@ chunked = Chunked.new(io_h, Excon.defaults[:chunk_size])
 #      write_response(r)
 request.body_stream = chunked
 conn.start do |http| 
-  http.request(request)
+ r = http.request(request)
+  STDERR.puts('request res ' + r.to_s)
 end
 exit
 end
