@@ -59,7 +59,7 @@ chunked = Chunked.new(io_h, Excon.defaults[:chunk_size])
   headers = {
     'Content-Type' => 'application/octet-stream',
     'ACCESS_TOKEN' => load_token,   
-    'Transfer-Encoding' => 'chunked',
+   # 'Transfer-Encoding' => 'chunked',
   }
 #request = Net::HTTP::Put.new parsed.request_uri, {'x-auth-token' => @auth_token, 'Transfer-Encoding' => 'chunked', 'content-type' => 'text/plain'}
   uri = URI(@base_url + uri_s)
@@ -71,7 +71,8 @@ chunked = Chunked.new(io_h, Excon.defaults[:chunk_size])
     #  request = Net::HTTP::Post.new(uri.request_uri, headers)
     #  else
     request = Net::HTTP::Post.new(uri.request_uri, headers)
-    # STDERR.puts('request ' + request.to_s)
+     STDERR.puts('request ' + request.to_s)
+  STDERR.puts('request ' +headers.to_s)
     #  end
       request.body_stream = io_h
       r = conn.request(request)
