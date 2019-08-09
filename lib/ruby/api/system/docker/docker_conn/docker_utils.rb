@@ -12,10 +12,10 @@ module DockerUtils
         begin
           unless @stream_reader.i_stream.nil?
             unless @stream_reader.i_stream.is_a?(StringIO)
-            #  STDERR.puts('COPY STREAMS ')
+              STDERR.puts('COPY STREAMS ')
               IO.copy_stream(@stream_reader.i_stream, socket) unless @stream_reader.i_stream.eof?
             else
-            #  STDERR.puts('String IO')
+              STDERR.puts('String IO')
               eof = false
               while eof == false
                 begin
@@ -70,9 +70,10 @@ module DockerUtils
         begin
           STDERR.puts('readpartial process_request')          
           while chunk = socket.readpartial(32768)
+
+            STDERR.puts("read chunk ", chunk.to_s)
             if @stream_reader.out_stream.nil?
               DockerUtils.docker_stream_as_result(chunk, return_result)
-              STDERR.puts("read chunk " )
             else
               STDERR.puts("read as stream")
               r = DockerUtils.decode_from_docker_chunk(chunk, true, @stream_reader.out_stream)
