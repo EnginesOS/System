@@ -34,7 +34,7 @@ begin
     pass if request.path == '/v0/system/uadmin/dn_lookup'
     pass if request.path == '/v0/system/login'
     pass if request.path.start_with?('/v0/unauthenticated')
-    pass if request.path == '/v0/containers/service/certs/import'
+ #   pass if request.path == '/v0/containers/service/certs/import'
     pass if request.path.start_with?('/v0/cron/engine/') && source_is_service?(request, 'cron')
     pass if request.path.start_with?('/v0/cron/service/') && source_is_service?(request, 'cron')
     pass if request.path.start_with?('/v0/schedule/engine/') && source_is_service?(request, 'cron')

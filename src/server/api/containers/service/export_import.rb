@@ -24,14 +24,20 @@ get '/v0/containers/service/:service_name/export' do
   end
 end
 
-
-options '/v0/containers/service/certs/import' do
+post '/v0/containers/service/:service_name/import/chunked' do
+  STDERR.puts('SIN IMPORT:' + request.to_s)
+  
+  STDERR.puts('SIN IMPORT params' + params.to_s)
+end
+   ##REMOVE THIS KLUDGY TEST
+options '/v0/containers/service/:service_name/import/chunked' do
     response.headers["Allow"] = "GET, PUT, POST, DELETE, OPTIONS"
     response.headers["Access-Control-Allow-Headers"] = "Authorization, Content-Type, Accept, X-User-Email, access_token, X-Auth-Token, Origin, X-Requested-With, cache-control"
     response.headers["Access-Control-Allow-Origin"] = "*"
   STDERR.puts('SIN IMPORT:' + response.headers.to_s)
     200
   end 
+  ###
 
 # @method engine_import_persistent_service_data
 # @overload put '/v0/containers/service/:service_name/import'
