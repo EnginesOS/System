@@ -27,6 +27,7 @@ module DockerUtils
                   socket.send(data, 0) unless data.nil?
                 rescue EOFError
                   eof = true
+                  STDERR.puts('String IO EOF')
                   break if socket.closed?
                   socket.send(data, 0) unless data.nil?
                   next
