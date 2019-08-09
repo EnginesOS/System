@@ -80,7 +80,16 @@ begin
     set :logging, true
     set :run, true
     set :timeout, 260
-
+    
+  ## for puma ?  
+    set :session_secret, 'super secret'
+    use Rack::Session::Cookie, :key => 'rack.session',
+      :domain => 'engines.local',
+      :path => '/',
+      :expire_after => 2592000,
+      :secret => 'change_me' 
+  ##
+      
     require_relative 'helpers/helpers.rb'
     require_relative 'api/routes.rb'
   rescue StandardError => e
