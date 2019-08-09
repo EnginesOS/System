@@ -24,6 +24,14 @@ get '/v0/containers/service/:service_name/export' do
   end
 end
 
+
+options "/v0/containers/service/*" do
+    response.headers["Allow"] = "GET, PUT, POST, DELETE, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "Authorization, Content-Type, Accept, X-User-Email, X-Auth-Token, Origin, X-Requested-With, cache-control"
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    200
+  end 
+
 # @method engine_import_persistent_service_data
 # @overload put '/v0/containers/service/:service_name/import'
 # import the service data gzip optional
@@ -32,6 +40,7 @@ end
 post '/v0/containers/service/:service_name/import' do
   STDERR.puts('SIN IMPORT:' + request.to_s)
   begin
+    response.headers['Access-Control-Allow-Origin'] = '*' 
     service = get_service(params[:service_name])
     # return_json(service.import_data(request.env['rack.input']))
     # return_json(service.import_data(request.body)) 

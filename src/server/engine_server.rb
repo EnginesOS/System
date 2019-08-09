@@ -1,13 +1,9 @@
-STDERR.puts('++')
-#require 'gctools/oobgc'
-STDERR.puts('+++')
+
 require '/opt/engines/lib/ruby/system/engines_error.rb'
 
-STDERR.puts('++++')
 begin
-  STDERR.puts('++++')
   require 'sinatra'
-
+  require 'sinatra-cross_origin'
   require 'sinatra/streaming'
   require 'yajl'
   require 'ffi_yajl'
@@ -80,7 +76,7 @@ begin
     set :logging, true
     set :run, true
     set :timeout, 260
-    
+    set :cross_origin, true
   ## for puma ?  
  #   set :session_secret, 'super secret'
 ##    use Rack::Session::Cookie, :key => 'rack.session',
