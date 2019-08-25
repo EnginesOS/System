@@ -114,6 +114,7 @@ class BlueprintApi < ErrorsApi
       # FIXME Assumes only two keys
       dest.merge!(blueprint[:software][key[0]][key[1]])if blueprint[:software][key[0]].key?(key[1])
     end
+STDERR.puts('dest software[' + key.to_s + ']' + dest[:software].to_s  + "\nis a " +  dest[:software].class.name)
     dest
   end
 
