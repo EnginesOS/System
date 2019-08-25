@@ -47,6 +47,7 @@ class BlueprintApi < ErrorsApi
     &&  blueprint[:software][:base].key?(:inherit)
       unless blueprint[:software][:base][:inherit].nil?
         parent = get_blueprint_parent( blueprint[:software][:base][:inherit])
+        parent = lueprintApi.perform_inheritance(parent)
         STDERR.puts('Parent BP ' + parent.to_s + "\n is a " + parent.class.name)
         #  else
         #   STDERR.puts('NO Inherietance' + blueprint[:software][:base].to_s)
