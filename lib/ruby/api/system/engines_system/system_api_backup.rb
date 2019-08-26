@@ -1,5 +1,4 @@
 module SystemApiBackup
-  
   def backup_system_files(out)
     SystemUtils.execute_command('/opt/engines/system/scripts/backup/system_files.sh', true, false, out)
   end
@@ -13,8 +12,32 @@ module SystemApiBackup
       reg_file.close unless reg_file.nil?
     end
     services = @engines_api.import_engine_registry(registry)
-    
+    services.each do |sh|
+      if sh[:persisent].is_a?(TrueClass)
+        restore_service_from_bundle(sh)
+      end
+    end
     re_install_engine(params[:engine_name])
+      clear_bundle_dir(params[:engine_name])
+  end
+
+  def clear_bundle_dir (engine_name )
+    SystemUtils.execute_command('/opt/engines/system/scripts/backup/clear_engine_bundle.sh ' + engine_name, false, nil , nil)
+  end
+  
+  def restore_service_from_bundle(sh)
+    unless sh[:type_path] == 'filesystem/local/filesystem'
+      begin
+        sf = File.open(SystemConfig.BackupTmpDir + '/' + sh[:parent_engine] + '/' + sh[:type_path] + '/' + sh[:service_handle])
+        restore_service(sh, sf)
+      ensure
+        sf.close unless sf.nil?
+      end
+    end
+  end
+  
+  def restore_service(sh, sf)
+    
   end
 
   def stream_engine_bundle(engine_name, out)

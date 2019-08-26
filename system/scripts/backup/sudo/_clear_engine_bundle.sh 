@@ -1,0 +1,5 @@
+#!/bin/sh
+if ! test -z $1
+ then
+   rm -r /tmp/backup_bundles/$1
+fi   

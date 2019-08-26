@@ -12,21 +12,22 @@ module DockerUtils
         begin
           unless @stream_reader.i_stream.nil?
             unless @stream_reader.i_stream.is_a?(StringIO)
-            #  STDERR.puts('COPY STREAMS ')
+              STDERR.puts('COPY STREAMS ')
               IO.copy_stream(@stream_reader.i_stream, socket) unless @stream_reader.i_stream.eof?
             else
-            #  STDERR.puts('String IO')
+              STDERR.puts('String IO')
               eof = false
               while eof == false
                 begin
                   data = nil
-               #   STDERR.puts('read_nonblock process_request ')
+                  STDERR.puts('read_nonblock process_request ')
                   data = @stream_reader.i_stream.read_nonblock(Excon.defaults[:chunk_size])
-             #     STDERR.puts('String IO bytes' + data.length.to_s)
+                  STDERR.puts('String IO bytes' + data.length.to_s)
                   break if socket.closed?
                   socket.send(data, 0) unless data.nil?
                 rescue EOFError
                   eof = true
+                  STDERR.puts('String IO EOF')
                   break if socket.closed?
                   socket.send(data, 0) unless data.nil?
                   next
@@ -41,14 +42,14 @@ module DockerUtils
             end
           else
            # STDERR.puts('send data:' + stream_reader.data.to_s)
-          #  STDERR.puts('send data:' + stream_reader.data.class.name) unless stream_reader.data.nil?
-            unless stream_reader.data.nil? ||  stream_reader.data.length == 0
+            STDERR.puts('send data:' + stream_reader.data.class.name) unless stream_reader.data.nil?
+            unless stream_reader.data.nil? || stream_reader.data.length == 0
               if stream_reader.data.length < Excon.defaults[:chunk_size]
                 socket.send(stream_reader.data, 0)
-           #     STDERR.puts('sent data as one chunk ' )#+ stream_reader.data.to_s)
+                STDERR.puts('sent data as one chunk ' )#+ stream_reader.data.to_s)
                 stream_reader.data = ''
               else
-                #    STDERR.puts('send data as chunks ')
+                    STDERR.puts('send data as chunks ')
                 while stream_reader.data.length != 0
                   if stream_reader.data.length > Excon.defaults[:chunk_size]
                     socket.send(stream_reader.data.slice!(0, Excon.defaults[:chunk_size]), 0)
@@ -70,18 +71,19 @@ module DockerUtils
         begin
           STDERR.puts('readpartial process_request')          
           while chunk = socket.readpartial(32768)
+            STDERR.puts("read chunk ", chunk.to_s)
             if @stream_reader.out_stream.nil?
               DockerUtils.docker_stream_as_result(chunk, return_result)
-       #       STDERR.puts("read chunk " )
             else
-       #       STDERR.puts("read as stream")
+              STDERR.puts("read as stream")
               r = DockerUtils.decode_from_docker_chunk(chunk, true, @stream_reader.out_stream)
               end
               return_result[:stderr] = return_result[:stderr].to_s + r[:stderr].to_s unless r.nil?
           end
           STDERR.puts("read doen")
         rescue EOFError => e
-          STDERR.puts(e.to_s + ':EEOOFF' + e.backtrace.to_s)
+          STDERR.puts(e.to_s + ':EEOOFF' )
+          next
         rescue StandardError => e
           STDERR.puts(e.to_s + ':' + e.backtrace.to_s)
         end

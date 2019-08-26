@@ -1,13 +1,9 @@
-STDERR.puts('++')
-#require 'gctools/oobgc'
-STDERR.puts('+++')
+
 require '/opt/engines/lib/ruby/system/engines_error.rb'
 
-STDERR.puts('++++')
 begin
-  STDERR.puts('++++')
   require 'sinatra'
-
+  require 'sinatra/cross_origin'
   require 'sinatra/streaming'
   require 'yajl'
   require 'ffi_yajl'
@@ -38,6 +34,7 @@ begin
     pass if request.path == '/v0/system/uadmin/dn_lookup'
     pass if request.path == '/v0/system/login'
     pass if request.path.start_with?('/v0/unauthenticated')
+ #   pass if request.path == '/v0/containers/service/certs/import'
     pass if request.path.start_with?('/v0/cron/engine/') && source_is_service?(request, 'cron')
     pass if request.path.start_with?('/v0/cron/service/') && source_is_service?(request, 'cron')
     pass if request.path.start_with?('/v0/schedule/engine/') && source_is_service?(request, 'cron')
@@ -76,11 +73,22 @@ begin
 
   class Application < Sinatra::Base
     @events_s = nil
-    set :sessions, true
+  #  set :sessions, true
     set :logging, true
     set :run, true
     set :timeout, 260
-
+     configure do
+    enable :cross_origin
+  end 
+  ## for puma ?  
+ #   set :session_secret, 'super secret'
+##    use Rack::Session::Cookie, :key => 'rack.session',
+  #    :domain => 'engines.local',
+  #    :path => '/',
+ #     :expire_after => 2592000,
+ #     :secret => 'change_me' 
+  ##
+      
     require_relative 'helpers/helpers.rb'
     require_relative 'api/routes.rb'
   rescue StandardError => e
