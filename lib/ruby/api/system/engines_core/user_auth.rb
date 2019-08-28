@@ -180,6 +180,12 @@ module UserAuth
     end
   end
 
+  def init_system_password(password,  token = nil)
+    # SystemDebug.debug(SystemDebug.first_run, :applyin, password)
+    set_system_user_password(password,  token)
+    # SystemDebug.debug(SystemDebug.first_run, :applied, password)
+  end
+  
   private
 
   def ldap_user_logout(tok)
@@ -231,12 +237,6 @@ module UserAuth
   rescue StandardError => e
     STDERR.puts('Exception failed to open sql_lite_database: ' + e.to_s)
     false
-  end
-
-  def init_system_password(password,  token = nil)
-    # SystemDebug.debug(SystemDebug.first_run, :applyin, password)
-    set_system_user_password(password,  token)
-    # SystemDebug.debug(SystemDebug.first_run, :applied, password)
   end
 
   #[:user_name,   | :new_password  & :current_password])
