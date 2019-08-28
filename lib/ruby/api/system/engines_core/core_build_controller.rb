@@ -48,7 +48,7 @@ module CoreBuildController
     end
     true
     rescue StandardError => e
-      SystemUtils.log_exception(e , 'reinstall_engine:' + params)
+      SystemUtils.log_exception(e , 'reinstall_engine:' + params.to_s)
     @build_thread.exit unless @build_thread.nil?
       false
   end
