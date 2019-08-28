@@ -44,7 +44,8 @@ module FirstRunCerts
       install_target: 'all',
       cert_src: 'system_services/system/',
       cert_type: 'generated',
-      common_name: def_domain
+      common_name: def_domain,
+      ca_name: 'system'
     })
   end
 
