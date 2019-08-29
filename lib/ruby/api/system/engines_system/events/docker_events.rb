@@ -85,7 +85,8 @@ module DockerEvents
     @listeners.each do |m|
       listener = m[1][:listener]
       unless listener.container_name.nil?
-        next unless match_container(hash, listener.container_name)
+        #WTF just added @docker_event_listener. to match_container
+        next unless @docker_event_listener.match_container(hash, listener.container_name)
       end
       begin
         listener.trigger(hash)
