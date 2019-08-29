@@ -1,15 +1,9 @@
 #!/bin/sh
 
- if test -f /home/app/venv/bin/activate
-  then
-   echo Activating virtual env
-   . /home/app/venv/bin/activate
-   else
-    virtualenv --system-site-packages /home/app/venv
-    echo Creating virtualenv
-    echo Activating virtual env
-   . /home/app/venv/bin/activate
- fi
+ . /home/app/venv/bin/activate
+ export APACHE_RUN_USER=python
+ export APACHE_RUN_GROUP=python
+ . /etc/apache2/envvars
  echo Start Calling /home/_start.sh
  /home/_start.sh
  
