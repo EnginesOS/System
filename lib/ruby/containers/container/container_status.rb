@@ -76,9 +76,9 @@ module ContainerStatus
       0
     else
       begin
-   #     STDERR.puts( ' Now ' + DateTime.now.to_s)
-   #     STDERR.puts( ' Data parse ' + DateTime.parse(info[:State][:StartedAt]).to_s)
-   #     STDERR.puts( ' duff '  + (DateTime.now - DateTime.parse(info[:State][:StartedAt])).to_s )
+        STDERR.puts( ' Now ' + DateTime.now.to_s)
+        STDERR.puts( ' Data parse ' + DateTime.parse(info[:State][:StartedAt]).to_s)
+        STDERR.puts( ' duff '  + (DateTime.now - DateTime.parse(info[:State][:StartedAt])).to_s )
      DateTime.now - DateTime.parse(info[:State][:StartedAt])
       rescue StandardError => e
         STDERR.puts( ' ex ' + e.to_s)
