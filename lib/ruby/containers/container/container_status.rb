@@ -70,15 +70,10 @@ module ContainerStatus
   def uptime
     info = docker_info
    # STDERR.puts( ' Docker info is a ' + info.class.name)
-    STDERR.puts( ' Docker info is ' + info[:State][:StartedAt].to_s)
-    
     if info.is_a?(FalseClass) ||info.nil? || info[:State][:StartedAt].nil?
       0
     else
-      begin
-        STDERR.puts( ' Now ' + Time.now.to_s)
-        STDERR.puts( ' Data parse ' + Time.parse(info[:State][:StartedAt]).to_s)
-        STDERR.puts( ' duff '  + (Time.now.to_i - Time.parse(info[:State][:StartedAt]).to_i).to_s )
+      begin        
      Time.now.to_i - Time.parse(info[:State][:StartedAt]).to_i
       rescue StandardError => e
         STDERR.puts( ' ex ' + e.to_s)
