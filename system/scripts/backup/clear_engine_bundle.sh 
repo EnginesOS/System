@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if ! test -z $1
+ then
+   sudo -n /opt/engines/system/scripts/backup/sudo/_clear_engine_bundle.sh$1
+ fi

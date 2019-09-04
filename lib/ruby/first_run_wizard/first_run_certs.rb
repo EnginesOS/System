@@ -32,7 +32,8 @@ module FirstRunCerts
       organisation: params[:ssl_organisation_name],
       person: params[:ssl_person_name],
       common_name: params[:domain_name], #params[:default_domain]
-      service_handle: 'default_ssl_cert'
+      service_handle: 'default_ssl_cert',
+      ca_name: 'system'
       },
     }
     @api.create_and_register_service(service_param)
@@ -43,7 +44,8 @@ module FirstRunCerts
       install_target: 'all',
       cert_src: 'system_services/system/',
       cert_type: 'generated',
-      common_name: def_domain
+      common_name: def_domain,
+      ca_name: 'system'
     })
   end
 

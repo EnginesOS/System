@@ -47,6 +47,7 @@ class BlueprintApi < ErrorsApi
     &&  blueprint[:software][:base].key?(:inherit)
       unless blueprint[:software][:base][:inherit].nil?
         parent = get_blueprint_parent( blueprint[:software][:base][:inherit])
+        parent = self.perform_inheritance(parent)
         STDERR.puts('Parent BP ' + parent.to_s + "\n is a " + parent.class.name)
         #  else
         #   STDERR.puts('NO Inherietance' + blueprint[:software][:base].to_s)
@@ -113,6 +114,7 @@ class BlueprintApi < ErrorsApi
       # FIXME Assumes only two keys
       dest.merge!(blueprint[:software][key[0]][key[1]])if blueprint[:software][key[0]].key?(key[1])
     end
+STDERR.puts('dest software[' + key.to_s + ']' + dest[:software].to_s  + "\nis a " +  dest[:software].class.name)
     dest
   end
 
