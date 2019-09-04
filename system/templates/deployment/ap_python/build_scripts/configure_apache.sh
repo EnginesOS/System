@@ -1,5 +1,9 @@
 #!/bin/sh
-cp /etc/apache2/sites-enabled/000-default.conf /tmp/000-default.conf.orig
+ if test -f /home/engines/templates/site_config.conf
+  then
+      cp /home/engines/templates/site_config.conf /home/engines/setup/000-default.conf
+fi   
+
 www_dir=''
  if ! test -z $WWW_DIR
   then
@@ -29,7 +33,7 @@ mv /tmp/apache2.conf /etc/apache2/apache2.conf
 	fi	
 	if [ -f /home/engines/configs/apache2/site.conf ] 
 		then
-			cp /home/engines/configs/apache2/site.conf /etc/apache2/sites-enabled/000-default.conf
+		 cp /home/engines/configs/apache2/site.conf /etc/apache2/sites-enabled/000-default.conf
 	fi
 	
 /build_scripts/install_htaccess.sh

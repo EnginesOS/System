@@ -7,7 +7,7 @@ persistent: true
 publisher_namespace: EnginesSystem
 type_path: certs
 last_error: 
-memory: '32'
+memory: '64'
 hostname: certs
 no_cert_map: true
 domain_name: 
