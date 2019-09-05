@@ -165,7 +165,7 @@ STDERR.puts('dest software[' + key.to_s + ']' + dest[:software].to_s  + "\nis a 
     #download = open(url, pa)
     IO.copy_stream(download, d)
    ensure
-    download.close
+    download.close unless download.nil?
   end
 
 end
