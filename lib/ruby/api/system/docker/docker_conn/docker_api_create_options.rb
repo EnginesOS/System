@@ -129,6 +129,7 @@ module DockerApiCreateOptions
     top_level['ExposedPorts'] = exposed_ports(container) unless container.on_host_net?
     top_level['HostConfig']['PortBindings'] = port_bindings(container) unless container.on_host_net?
     set_entry_point(container, top_level)
+    STDERR.puts('Options:' + top_level.to_s)
     top_level
   end
 
