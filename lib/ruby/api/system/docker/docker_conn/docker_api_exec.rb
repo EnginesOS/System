@@ -26,10 +26,8 @@ module DockerApiExec
 
     def has_data?
       if (@i_stream.nil? || @i_stream.closed? ) && @data.nil?
-        #    STDERR.puts("\n HAS NO DTAT ")
         false
       elsif !@data.nil? && @data.length > 0
-        #  STDERR.puts(' HAS STR DTAT ')
         true
       elsif ! @i_stream.nil?
         true
@@ -63,13 +61,11 @@ module DockerApiExec
     def process_response()
       lambda do |chunk , c , t|
         if @out_stream.nil?
-          #  STDERR.puts(' SR a chunk')
           r = DockerUtils.decode_from_docker_chunk(chunk, true)
           next if r.nil?
           @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
           @result[:stdout] = @result[:stdout].to_s + r[:stdout].to_s
         else
-          #   STDERR.puts(' SR a stream')
           r = DockerUtils.decode_from_docker_chunk(chunk, true, @out_stream)
           next if r.nil?
           @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
@@ -180,7 +176,7 @@ module DockerApiExec
     r[:ExitCode]
   end
 
-  def create_docker_exec(params) #container, commands, have_data)
+  def create_docker_exec(params)
     request_params = {
       'AttachStdout' => true,
       'AttachStderr' => true,
@@ -195,13 +191,11 @@ module DockerApiExec
     else
       request_params['AttachStdin'] = false
     end
-    request = '/containers/' + params[:container].container_id.to_s + '/exec'
-    SystemDebug.debug(SystemDebug.docker,'create_docker_exec ' + request_params.to_s + ' request  ' + request.to_s )
+    request = '/containers/' + params[:container].container_id.to_s + '/exec'    
     post_request(request, request_params)
   end
 
   def format_commands(commands)
-    #  STDERR.puts('Commands is an array') if commands.is_a?(Array)
     commands = [commands] unless commands.is_a?(Array)
     commands
   end

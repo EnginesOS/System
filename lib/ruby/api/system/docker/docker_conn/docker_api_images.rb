@@ -89,7 +89,7 @@ module DockerApiImages
       unless images.is_a?(FalseClass)
         images.each do |image|
           next unless image.is_a?(Hash) && image.key?(:Id)
-          @docker_comms.delete_image(image[:Id])
+          delete_image(image[:Id]) # was @docker_comms.
         end
       end }
     thr[:name] = 'clean_up_dangling_images:'

@@ -1,6 +1,5 @@
 module DockerApiContainerStatus
   def inspect_container_by_name(container)
-    # container.set_cont_id if container.container_id.to_s == '-1' || container.container_id.nil?
     request = '/containers/' + container.container_name.to_s + '/json'
     get_request(request, true)
   end
@@ -40,7 +39,6 @@ module DockerApiContainerStatus
 
   def container_id_from_name(container)
     id = -1
-    # request='/containers/json?son?all=false&name=/' + container.container_name
     request='/containers/' + container.container_name + '/json'
     containers_info = get_request(request)
     #  SystemDebug.debug(SystemDebug.containers, 'docker:container_id_from_name  ' ,container.container_name   )

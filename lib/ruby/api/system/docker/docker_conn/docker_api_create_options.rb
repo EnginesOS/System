@@ -118,7 +118,6 @@ module DockerApiCreateOptions
       'Volumes' => {},
       'WorkingDir' => '',
       'NetworkDisabled' => false,
-
       'StopSignal' => 'SIGTERM',
       #       "StopTimeout": 10,
       'Hostname' => hostname(container),
