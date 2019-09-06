@@ -1,8 +1,8 @@
 # @!group /system/repo/keys
 
 
-# @method get_system_public_key
-# @overload get '/v0/system/key/system'
+# @method get_repo_keys_names
+# @overload get '/v0/system/keys/repo'
 # return public key for the engines system
 # @return [String]
 # test make public
