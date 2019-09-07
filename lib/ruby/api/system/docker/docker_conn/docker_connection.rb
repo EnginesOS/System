@@ -165,7 +165,7 @@ class DockerConnection < ErrorsApi
         method: :get,
         path: p[:uri],
         read_timeout: p[:timeout],
-        headers: rheaders
+        headers: p[:headers] 
       }
       )
       ), p[:expect_json])
