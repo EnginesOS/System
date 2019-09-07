@@ -4,8 +4,7 @@ module DockerApiContainerOps
     if container.container_id.to_s == '-1' || container.container_id.to_s == ''
       r = @docker_comms.inspect_container_by_name(container)
     else
-      request = '/containers/' + container.container_id.to_s + '/json'
-      r = get_request(request)
+    r = get_request({uri: '/containers/' + container.container_id.to_s + '/json'})
     end
     if r.is_a?(Hash)
       true
@@ -19,9 +18,8 @@ module DockerApiContainerOps
   def destroy_container(container)
     if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
       EnginesDockerApiError.new('Missing Container id', :warning)
-    else
-      request = '/containers/' + container.container_id.to_s
-      delete_request(request)
+    else     
+    delete_request({uri: '/containers/' + container.container_id.to_s})
     end
   end
 
@@ -33,6 +31,6 @@ module DockerApiContainerOps
     request = '/containers/create?name=' + container.container_name
     #  STDERR.puts('/containers/create?name=' +  container.container_name)
     #  STDERR.puts('opts' + request_params.to_s)
-    post_request(request, request_params)
+  post_request({uri: request, params: request_params})
   end
 end

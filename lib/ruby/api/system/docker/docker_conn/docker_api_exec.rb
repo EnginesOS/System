@@ -89,7 +89,10 @@ module DockerApiExec
     }
     unless params.key?(:stdin_stream) || params.key?(:data)
       stream_reader = DockerStreamReader.new(params[:stdout_stream])
-      r = post_stream_request(params[:request], nil, stream_reader, headers, request_params.to_json)
+      r = post_stream_request({uri: params[:request],
+                                 stream_handler: stream_reader, 
+                                headers: headers, 
+                                content: request_params})
       stream_reader.result[:result] = get_exec_result(params[:exec_id])
       stream_reader.result
     else
@@ -165,7 +168,7 @@ module DockerApiExec
   end
 
   def get_exec_details(exec_id)
-    get_request('/exec/' + exec_id.to_s + '/json')
+  get_request({uri: '/exec/' + exec_id.to_s + '/json'})
   end
 
   def get_exec_result(exec_id)
@@ -192,7 +195,7 @@ module DockerApiExec
       request_params['AttachStdin'] = false
     end
     request = '/containers/' + params[:container].container_id.to_s + '/exec'    
-    post_request(request, request_params)
+    post_request({uri: request, params: request_params})
   end
 
   def format_commands(commands)

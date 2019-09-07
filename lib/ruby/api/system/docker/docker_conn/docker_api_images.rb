@@ -1,7 +1,6 @@
 module DockerApiImages
   def image_exist_by_name?(image_name)
-    request = '/images/json?filter=' + image_name
-    r =  get_request(request, true)
+  r =  get_request({uri: '/images/json?filter=' + image_name})
     if r.is_a?(Array)
       r = r[0]
       if r.is_a?(Hash) && r.key?(:Id)
@@ -15,8 +14,7 @@ module DockerApiImages
   end
 
   def find_images(search)
-    request = '/images/json?filter=' + search
-    r =  get_request(request, true)
+  r =  get_request({uri: '/images/json?filter=' + search})
     if r.is_a?(Array)
       r
     else
@@ -47,7 +45,7 @@ module DockerApiImages
       end
     end
     headers = { 'X-Registry-Config'  => registry_root_auth, 'Content-Type' =>'plain/text', 'Accept-Encoding' => 'gzip'}
-    post_request(request, nil, false, headers, 600)
+    post_request({uri: request, expect_json: false, headers: headers, time_out: 600})
   rescue
     false #No new fresh ?
   end
