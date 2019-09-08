@@ -79,6 +79,7 @@ module DockerApiExec
   end
 
   def do_it(params)
+    params[:background] = false unless params.key?(:background)
     request_params = {
       'Detach' => params[:background] ,
       'Tty' => false,
