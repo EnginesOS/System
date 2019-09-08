@@ -181,13 +181,13 @@ class DockerConnection < ErrorsApi
   def delete_request(p)
     @docker_api_mutex.synchronize {
       STDERR.puts(' dele ' + {
-      method: :del,
+      method: :delete,
       path: p[:uri],
       read_timeout: p[:timeout],
       headers: p[:headers] 
     }.to_s)
     handle_resp(connection.request( {
-      method: :del,
+      method: :delete,
       path: p[:uri],
       read_timeout: p[:timeout],
       headers: p[:headers] 
