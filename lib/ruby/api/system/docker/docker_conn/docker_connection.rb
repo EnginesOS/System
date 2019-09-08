@@ -180,6 +180,7 @@ class DockerConnection < ErrorsApi
 
   def delete_request(p)
     @docker_api_mutex.synchronize {
+      STDERR.puts(' dele ' + p.to_s)
     handle_resp(connection.request(p),
       false
       ) }
