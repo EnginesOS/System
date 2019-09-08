@@ -111,7 +111,7 @@ module DockerApiExec
   def docker_exec(p)
     params = p.dup
     params[:timeout] = 5 if params[:timeout].nil?
-    STDERR.puts(' get_exec_result ' + params.keys.to_s)
+    
     r = create_docker_exec(params)    
     if r.is_a?(Hash)
       params[:exec_id] = r[:Id]
@@ -197,6 +197,8 @@ module DockerApiExec
     }
     params.delete(:data) if params.key?(:data) && params[:data].nil?
     params.delete(:stdin_stream) if params.key?(:stdin_stream) && params[:stdin_stream].nil?
+    STDERR.puts(' get_exec_result ' + params.keys.to_s)
+    
     if params.key?(:data) || params.key?(:stdin_stream)
       request_params['AttachStdin'] = true
     else
