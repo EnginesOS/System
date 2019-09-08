@@ -84,7 +84,7 @@ module DockerApiExec
       'Detach' => params[:background] ,
       'Tty' => false,
     }
-    STDERR.puts('Exec Starting ' + params.keys.to_s)
+    STDERR.puts('Exec Starting ' + params[:request].to_s  + ':' + params.keys.to_s)
     headers = {
       'Content-type' => 'application/json'
     }
