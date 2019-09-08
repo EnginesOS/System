@@ -196,6 +196,7 @@ module DockerApiExec
       'Cmd' => format_commands(params[:command_line])
     }
     params.delete(:data) if params.key?(:data) && params[:data].nil?
+    params.delete(:stdin_stream) if params.key?(:stdin_stream) && params[:stdin_stream].nil?
     if params.key?(:data) || params.key?(:stdin_stream)
       request_params['AttachStdin'] = true
     else
