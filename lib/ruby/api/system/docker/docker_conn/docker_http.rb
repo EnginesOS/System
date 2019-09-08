@@ -33,7 +33,7 @@ module DockerHttp
     else
       body = p[:content]
     end
-    sc.request(
+   sc.request(
     method: :post,
     read_timeout: p[:timeout],
     path: p[:uri] + '?' + p[:options].to_s,
@@ -42,9 +42,9 @@ module DockerHttp
     )
 
   rescue Excon::Error::Socket
-    STDERR.puts('Excon docker socket stream close ')
+    STDERR.puts('Excon docker socket stream close ' + e.to_s)
       rescue  Excon::Error::Timeout
-    STDERR.puts('Excon docker socket timeout ')    
+    STDERR.puts('Excon docker socket timeout ' + e.to_s)    
   ensure
     p[:stream_handler].close unless p[:stream_handler].nil?
     sc.reset unless sc.nil?
@@ -70,9 +70,9 @@ module DockerHttp
       ), p[:expect_json])
     }
   rescue  Excon::Error::Socket
-    STDERR.puts(' docker get socket close ')    
+    STDERR.puts(' docker get socket close ' + e.to_s)    
   rescue  Excon::Error::Timeout
-    STDERR.puts(' docker get socket timeout ')
+    STDERR.puts(' docker get socket timeout ' + e.to_s)
     nil
   end
 
@@ -87,9 +87,9 @@ module DockerHttp
       false
       ) }
   rescue  Excon::Error::Socket
-    STDERR.puts('docker delete socket close ')
+    STDERR.puts('docker delete socket close ' + e.to_s)
   rescue  Excon::Error::Timeout
-    STDERR.puts(' docker delete socket timeout ')
+    STDERR.puts(' docker delete socket timeout ' + e.to_s)
     nil
   end
 
