@@ -91,37 +91,37 @@ module DockerApiExec
       stream_handler = DockerStreamReader.new(params[:stdout_stream])
     else
       stream_handler = DockerHijackStreamHandler.new(params[:data], params[:stdin_stream], params[:stdout_stream])
-#      r = post_stream_request({uri: params[:request],
-#        stream_handler: stream_handler,
-#        headers: headers,
-#        content: request_params} )
-#      #  params[:request], nil, stream_handler, headers, request_params.to_json)
-#      stream_handler.result[:result] = get_exec_result(params[:exec_id])
-#      stream_handler.result
+      #      r = post_stream_request({uri: params[:request],
+      #        stream_handler: stream_handler,
+      #        headers: headers,
+      #        content: request_params} )
+      #      #  params[:request], nil, stream_handler, headers, request_params.to_json)
+      #      stream_handler.result[:result] = get_exec_result(params[:exec_id])
+      #      stream_handler.result
     end
-  r = post_stream_request({uri: params[:request],
-                                  stream_handler: stream_handler, 
-                                 headers: headers, 
-                                 content: request_params})
-     stream_handler.result[:result] = get_exec_result(params[:exec_id])
-     stream_handler.result
+    r = post_stream_request({uri: params[:request],
+      stream_handler: stream_handler,
+      headers: headers,
+      content: request_params})
+    stream_handler.result[:result] = get_exec_result(params[:exec_id])
+    stream_handler.result
   end
 
   def docker_exec(p)
     params = p.dup
-    params[:timeout] = 5 if params[:timeout].nil? 
+    params[:timeout] = 5 if params[:timeout].nil?
     r = create_docker_exec(p)
     if r.is_a?(Hash)
       params[:exec_id] = r[:Id]
       params[:request] = '/exec/' + params[:exec_id] + '/start'
-      unless params[:background].is_a?(TrueClass)       
+      unless params[:background].is_a?(TrueClass)
         Timeout.timeout(params[:timeout] + 1) do # wait 1 sec longer incase another timeout in caller
           do_it(params)
         end
       else
         do_it(params)
       end
-    end    
+    end
   rescue Timeout::Error
     signal_exec({exec_id: params[:exec_id], signal: 'TERM', container: params[:container], background: true})
     r = {}
@@ -167,12 +167,12 @@ module DockerApiExec
     pid = resolve_pid_to_container_id(r[:Pid])
     params[:command_line] = 'kill -' +  params[:signal] + ' ' + pid.to_s
     params[:timeout] = 1 #note actually 2
-      STDERR.puts('KILL ' + params[:signal].to_s + ' container pi ' + pid.to_s + ':system:' + r[:Pid].to_s)
+    STDERR.puts('KILL ' + params[:signal].to_s + ' container pi ' + pid.to_s + ':system:' + r[:Pid].to_s)
     docker_exec(params) unless pid == -1
   end
 
   def get_exec_details(exec_id)
-  get_request({uri: '/exec/' + exec_id.to_s + '/json'})
+    get_request({uri: '/exec/' + exec_id.to_s + '/json'})
   end
 
   def get_exec_result(exec_id)
@@ -198,8 +198,8 @@ module DockerApiExec
     else
       request_params['AttachStdin'] = false
     end
-    request = '/containers/' + params[:container].container_id.to_s + '/exec'    
-    post_request({uri: request, params: request_params})
+    STDERR.puts('EXEC Prams ' + request_params.to_s)
+    post_request({uri: '/containers/' + params[:container].container_id.to_s + '/exec' , params: request_params})
   end
 
   def format_commands(commands)
