@@ -41,9 +41,9 @@ module DockerHttp
     body: body
     )
 
-  rescue Excon::Error::Socket
+  rescue Excon::Error::Socket =>e 
     STDERR.puts('Excon docker socket stream close ' + e.to_s)
-      rescue  Excon::Error::Timeout
+      rescue  Excon::Error::Timeout =>e 
     STDERR.puts('Excon docker socket timeout ' + e.to_s)    
   ensure
     p[:stream_handler].close unless p[:stream_handler].nil?
@@ -69,9 +69,9 @@ module DockerHttp
       } )
       ), p[:expect_json])
     }
-  rescue  Excon::Error::Socket
+  rescue  Excon::Error::Socket =>e 
     STDERR.puts(' docker get socket close ' + e.to_s)    
-  rescue  Excon::Error::Timeout
+  rescue  Excon::Error::Timeout =>e 
     STDERR.puts(' docker get socket timeout ' + e.to_s)
     nil
   end
@@ -86,9 +86,9 @@ module DockerHttp
       }),
       false
       ) }
-  rescue  Excon::Error::Socket
+  rescue  Excon::Error::Socket =>e 
     STDERR.puts('docker delete socket close ' + e.to_s)
-  rescue  Excon::Error::Timeout
+  rescue  Excon::Error::Timeout =>e 
     STDERR.puts(' docker delete socket timeout ' + e.to_s)
     nil
   end
