@@ -1,6 +1,5 @@
 module DockerApiContainerOps
   def container_exist?(container)
-
     if container.container_id.to_s == '-1' || container.container_id.to_s == ''
       r = @docker_comms.inspect_container_by_name(container)
     else

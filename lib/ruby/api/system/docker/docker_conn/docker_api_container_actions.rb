@@ -3,8 +3,7 @@ module DockerApiContainerActions
     if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
       EnginesDockerApiError.new('Missing Container id', :warning)
     else
-      request = '/containers/' + container.container_id.to_s + '/start'
-      post_request({uri: request})
+      post_request({uri: '/containers/' + container.container_id.to_s + '/start'})
     end
   end
 
@@ -12,8 +11,7 @@ module DockerApiContainerActions
     if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
       EnginesDockerApiError.new('Missing Container id', :warning)
     else
-      request = '/containers/' + container.container_id.to_s + '/pause'
-      post_request({uri: request})
+      post_request({uri: '/containers/' + container.container_id.to_s + '/pause'})
     end
   end
 
@@ -21,8 +19,7 @@ module DockerApiContainerActions
     if container.container_id.to_s == '-1' || container.container_id.to_s  == ''
       EnginesDockerApiError.new('Missing Container id', :warning)
     else
-      request = '/containers/' + container.container_id.to_s + '/unpause'
-      post_request({uri: request})
+      post_request({uri: '/containers/' + container.container_id.to_s + '/unpause'})
     end
   end
 
@@ -32,8 +29,7 @@ module DockerApiContainerActions
     else
       stop_timeout = 25
       stop_timeout = container.stop_timeout unless container.stop_timeout.nil?
-      request = '/containers/' + container.container_id.to_s + '/stop?t=' + stop_timeout.to_s
-      post_request({uri: request})
+      post_request({uri: '/containers/' + container.container_id.to_s + '/stop?t=' + stop_timeout.to_s})
     end
   end
 end
