@@ -61,9 +61,9 @@ module DockerApiImages
   end
 
   def delete_container_image(container)
-    request = '/images/' + container.image
+    request = 
     thr = Thread.new {
-      delete_request(request)
+    delete_request({uri: '/images/' + container.image})
     }
     thr[:name] = 'Docker delete container ' + container.image
   rescue StandardError => e
@@ -72,9 +72,7 @@ module DockerApiImages
   end
 
   def delete_image(image_name)
-    thr = Thread.new {
-      request = '/images/' + image_name
-      delete_request(request)}
+    thr = Thread.new { delete_request({uri: '/images/' + image_name}) }
     thr[:name] = 'Docker delete image:' + image_name.to_s
   rescue StandardError => e
     SystemUtils.log_exception(e , 'delete_image:' + image_name)

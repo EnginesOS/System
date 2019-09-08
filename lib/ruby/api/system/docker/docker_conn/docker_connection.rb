@@ -178,9 +178,9 @@ class DockerConnection < ErrorsApi
     nil
   end
 
-  def delete_request(uri)
+  def delete_request(p)
     @docker_api_mutex.synchronize {
-      handle_resp(connection.request(method: :delete, path: uri),
+    handle_resp(connection.request(p),
       false
       ) }
   rescue  Excon::Error::Socket
