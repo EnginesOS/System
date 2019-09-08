@@ -2,7 +2,7 @@ module DockerApiBuilder
   def build_options(engine_name)
     ret_val = 't=' + engine_name
     ret_val += '&buildargs={}'
-  #  ret_val += '&cgroupparent='
+    #  ret_val += '&cgroupparent='
     ret_val += '&forcerm=1'
     ret_val += '&rm=1'
     ret_val += '&cpuperiod=0'
@@ -26,7 +26,7 @@ module DockerApiBuilder
 
     def close
       @io_stream.close unless @io_stream.nil?
-     # @stream.reset unless @stream.nil?
+      # @stream.reset unless @stream.nil?
     end
 
     def is_hijack?
@@ -42,7 +42,7 @@ module DockerApiBuilder
     end
 
     def process_response()
-      lambda do |chunk , c , t|        
+      lambda do |chunk , c , t|
         begin
           #FIXME stuff chunck in stringio and use streaming parser on the stringio
           chunk.sub!(/}[ \n\r]*$/,'}')
@@ -82,15 +82,11 @@ module DockerApiBuilder
       'Accept' => '*/*',
       'Content-Length' => File.size(build_archive_filename).to_s
     }
-  
     stream_handler = DockerStreamHandler.new(nil, builder) #File.new(build_archive_filename,'r'))
-    r =  post_stream_request('/build' , options, stream_handler, header, File.read(build_archive_filename) )
-    stream_handler.close
-    r
-  rescue StandardError => e
+    post_stream_request('/build' , options, stream_handler, header, File.read(build_archive_filename) )
+    
+  ensure
     stream_handler.close unless stream_handler.nil?
-
-    raise e
   end
 
 end

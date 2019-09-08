@@ -88,19 +88,23 @@ module DockerApiExec
       'Content-type' => 'application/json'
     }
     unless params.key?(:stdin_stream) || params.key?(:data)
-      stream_reader = DockerStreamReader.new(params[:stdout_stream])
-      r = post_stream_request({uri: params[:request],
-                                 stream_handler: stream_reader, 
-                                headers: headers, 
-                                content: request_params})
-      stream_reader.result[:result] = get_exec_result(params[:exec_id])
-      stream_reader.result
+      stream_handler = DockerStreamReader.new(params[:stdout_stream])
     else
       stream_handler = DockerHijackStreamHandler.new(params[:data], params[:stdin_stream], params[:stdout_stream])
-      r = post_stream_request(params[:request], nil, stream_handler, headers, request_params.to_json)
-      stream_handler.result[:result] = get_exec_result(params[:exec_id])
-      stream_handler.result
+#      r = post_stream_request({uri: params[:request],
+#        stream_handler: stream_handler,
+#        headers: headers,
+#        content: request_params} )
+#      #  params[:request], nil, stream_handler, headers, request_params.to_json)
+#      stream_handler.result[:result] = get_exec_result(params[:exec_id])
+#      stream_handler.result
     end
+  r = post_stream_request({uri: params[:request],
+                                  stream_handler: stream_handler, 
+                                 headers: headers, 
+                                 content: request_params})
+     stream_handler.result[:result] = get_exec_result(params[:exec_id])
+     stream_handler.result
   end
 
   def docker_exec(p)
