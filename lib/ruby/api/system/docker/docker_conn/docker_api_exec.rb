@@ -111,7 +111,8 @@ module DockerApiExec
   def docker_exec(p)
     params = p.dup
     params[:timeout] = 5 if params[:timeout].nil?
-    r = create_docker_exec(p)
+    STDERR.puts(' get_exec_result ' + params.to_s)
+    r = create_docker_exec(params)    
     if r.is_a?(Hash)
       params[:exec_id] = r[:Id]
       params[:request] = '/exec/' + params[:exec_id] + '/start'
