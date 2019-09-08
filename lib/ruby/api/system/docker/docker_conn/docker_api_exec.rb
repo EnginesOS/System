@@ -102,7 +102,7 @@ module DockerApiExec
       #      stream_handler.result[:result] = get_exec_result(params[:exec_id])
       #      stream_handler.result
     end
-    STDERR.puts('Drequest_params', + request_params.to_s)
+    STDERR.puts('Drequest_params' + request_params.to_s)
     post_stream_request({uri: params[:request],
       stream_handler: stream_handler,
       headers: headers,
@@ -200,7 +200,7 @@ module DockerApiExec
       'Cmd' => format_commands(params[:command_line])
     }
     params.delete(:data) if params.key?(:data) && params[:data].nil?
-    params.delete(:stdin_stream) if params.key?(:stdin_stream) && params[:stdin_stream].nil?
+  #  params.delete(:stdin_stream) if params.key?(:stdin_stream) && params[:stdin_stream].nil?
     STDERR.puts(' get_exec_result ' + params.keys.to_s)
     
     if params.key?(:data) || params.key?(:stdin_stream)
