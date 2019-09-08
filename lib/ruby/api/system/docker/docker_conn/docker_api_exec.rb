@@ -178,6 +178,7 @@ module DockerApiExec
 
   def get_exec_result(exec_id)
     r = get_exec_details(exec_id)
+    STDERR.puts(' exec results ' + r.to_s)
     if(r[:Running].is_a?(TrueClass))
       STDERR.puts('WARNING EXEC STILL RUNNING:' + r.to_s)
     end
