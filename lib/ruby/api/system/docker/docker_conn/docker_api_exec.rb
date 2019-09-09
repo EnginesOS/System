@@ -78,39 +78,6 @@ module DockerApiExec
     end
   end
 
-  def do_it(params)
-    params[:background] = false unless params.key?(:background)
-    request_params = {
-      'Detach' => params[:background] ,
-      'Tty' => false,
-    }
-    STDERR.puts('Exec Starting ' + params[:request].to_s  + ':' + params.keys.to_s)
-    headers = {
-      'Content-type' => 'application/json'
-    }
-    unless params.key?(:stdin_stream) || params.key?(:data)
-      STDERR.puts('DockerStreamReader')
-      stream_handler = DockerStreamReader.new(params[:stdout_stream])
-    else
-      STDERR.puts('DockerHijackStreamHandler')
-      stream_handler = DockerHijackStreamHandler.new(params[:data], params[:stdin_stream], params[:stdout_stream])
-      #      r = post_stream_request({uri: params[:request],
-      #        stream_handler: stream_handler,
-      #        headers: headers,
-      #        content: request_params} )
-      #      #  params[:request], nil, stream_handler, headers, request_params.to_json)
-      #      stream_handler.result[:result] = get_exec_result(params[:exec_id])
-      #      stream_handler.result
-    end
-    STDERR.puts('Drequest_params' + request_params.to_s)
-    post_stream_request({uri: params[:request],
-      stream_handler: stream_handler,
-      headers: headers,
-      content: request_params})
-    stream_handler.result[:result] = get_exec_result(params[:exec_id])
-    STDERR.puts('Exec result' + stream_handler.result.to_s)
-    stream_handler.result
-  end
 
   def docker_exec(p)
     params = p.dup
@@ -138,6 +105,33 @@ module DockerApiExec
   end
 
   private
+
+def do_it(params)
+  params[:background] = false unless params.key?(:background)
+  request_params = {
+    'Detach' => params[:background] ,
+    'Tty' => false,
+  }
+  STDERR.puts('Exec Starting ' + params[:request].to_s  + ':' + params.keys.to_s)
+  headers = {
+    'Content-type' => 'application/json'
+  }
+  unless params.key?(:stdin_stream) || params.key?(:data)
+    STDERR.puts('DockerStreamReader')
+    stream_handler = DockerStreamReader.new(params[:stdout_stream])
+  else
+    STDERR.puts('DockerHijackStreamHandler')
+    stream_handler = DockerHijackStreamHandler.new(params[:data], params[:stdin_stream], params[:stdout_stream])     
+  end
+  STDERR.puts('Drequest_params' + request_params.to_s)
+  post_stream_request({uri: params[:request],
+    stream_handler: stream_handler,
+    headers: headers,
+    content: request_params})
+  stream_handler.result[:result] = get_exec_result(params[:exec_id])
+  STDERR.puts('Exec result' + stream_handler.result.to_s)
+  stream_handler.result
+end
 
   def resolve_pid_to_container_id(pid)
     s = get_pid_status(pid)

@@ -22,7 +22,7 @@ module DockerNet
      thread_safe_sockets: true)
      @connection
    end
- 
+   
    def stream_connection(stream_reader)
      excon_params = {
        debug_request: true,
