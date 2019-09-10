@@ -88,10 +88,10 @@ module DockerApiExec
       params[:request] = '/exec/' + params[:exec_id] + '/start'
       unless params[:background].is_a?(TrueClass)
         Timeout.timeout(params[:timeout] + 1) do # wait 1 sec longer incase another timeout in caller
-          do_it(params)
+          start_exec(params)
         end
       else
-        do_it(params)
+        start_exec(params)
       end
     end
   rescue Timeout::Error
@@ -105,31 +105,25 @@ module DockerApiExec
 
   private
 
-  def do_it(params)
+  def start_exec(params)
     params[:background] = false unless params.key?(:background)
     request_params = {
       'Detach' => params[:background] ,
       'Tty' => false,
     }
-    STDERR.puts('Exec Starting ' + params[:request].to_s  + ':' + params.keys.to_s)
     headers = {
       'Content-type' => 'application/json'
     }
     unless params.key?(:stdin_stream) || params.key?(:data)
-      STDERR.puts('DockerStreamReader ' + params[:stdout_stream].to_s)
       stream_handler = DockerStreamReader.new(params[:stdout_stream])
     else
-      STDERR.puts('DockerHijackStreamHandler')
       stream_handler = DockerHijackStreamHandler.new(params[:data], params[:stdin_stream], params[:stdout_stream])
     end
-    STDERR.puts('Drequest_params' + request_params.to_s)
     post_stream_request({uri: params[:request],
       stream_handler: stream_handler,
       headers: headers,
       content: request_params.to_json})
-
     stream_handler.result[:result] = get_exec_result(params[:exec_id])
-    STDERR.puts('Exec result' + stream_handler.result.to_s)
     stream_handler.result
   end
 
@@ -195,14 +189,11 @@ module DockerApiExec
     }
     params.delete(:data) if params.key?(:data) && params[:data].nil?
     params.delete(:stdin_stream) if params.key?(:stdin_stream) && params[:stdin_stream].nil?
-    STDERR.puts(' get_exec_result ' + params.keys.to_s)
-
     if params.key?(:data) || params.key?(:stdin_stream)
       request_params['AttachStdin'] = true
     else
       request_params['AttachStdin'] = false
     end
-    STDERR.puts('EXEC Prams ' + request_params.to_s)
     post_request({uri: '/containers/' + params[:container].container_id.to_s + '/exec' , params: request_params})
   end
 
