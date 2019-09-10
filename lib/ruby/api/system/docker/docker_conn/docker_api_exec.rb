@@ -126,8 +126,9 @@ def do_it(params)
   STDERR.puts('Drequest_params' + request_params.to_s)
   post_stream_request({uri: params[:request],
     stream_handler: stream_handler,
-    headers: headers,
-    content: request_params})
+headers: headers}) #,
+    #content: request_params})
+    
   stream_handler.result[:result] = get_exec_result(params[:exec_id])
   STDERR.puts('Exec result' + stream_handler.result.to_s)
   stream_handler.result
