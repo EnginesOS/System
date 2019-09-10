@@ -1,33 +1,57 @@
 class DockerApi < ErrorsApi
 
-  require '/opt/engines/lib/ruby/exceptions/docker_exception.rb'
+  require 'net_x/http_unix'
+  require 'socket'
+  require 'yajl'
+  require 'rubygems'
+  require 'excon'
+
+  require_relative 'hijack.rb'
+  Excon.defaults[:middlewares].unshift Excon::Middleware::Hijack
+
+  require_relative 'docker_api_errors.rb'
+  include EnginesDockerApiErrors
+  require_relative 'docker_api_exec.rb'
+  include DockerApiExec
+
+  require_relative 'docker_api_container_actions.rb'
+  include DockerApiContainerActions
+  require_relative 'docker_api_container_status.rb'
+  include DockerApiContainerStatus
+
+  require_relative 'docker_api_images.rb'
+  include DockerApiImages
+
+  require_relative 'docker_api_container_ops.rb'
+  include DockerApiContainerOps
+
+  require_relative 'docker_api_builder.rb'
+  include DockerApiBuilder
   
-  require_relative 'docker_api/docker_images.rb'
-  include DockerImages
-
-  require_relative 'docker_api/docker_container_status.rb'
-  include DockerContainerStatus
-
-  require_relative 'docker_api/docker_container_actions.rb'
-  include DockerContainerActions
+  require_relative 'docker_net.rb'
+  include DockerNet
   
-  require_relative 'docker_api/docker_errors.rb'
-  include DockerErrors
-  require_relative 'docker_conn/docker_connection.rb'
-
-  def initialize()
-    @docker_comms = DockerConnection.new
+  require_relative 'docker_http.rb'
+  include DockerHttp
+  
+  def response_parser
+    @parser ||= FFI_Yajl::Parser.new({:symbolize_keys => true})
   end
 
-  def docker_exec(params)
-    @docker_comms.docker_exec(params)
+  def initialize
+    @connection = nil
+    @docker_api_mutex = Mutex.new
   end
 
-  def container_name_and_type_from_id(id)
-    @docker_comms.container_name_and_type_from_id(id)
+  require "base64"
+
+  def registry_root_auth
+    r = {"auth"=> "", "email" => "", "username" => '' ,'password' => '' }
+    Base64.encode64(r.to_json).gsub(/\n/, '')
   end
 
-  def build_engine(engine_name, build_archive_filename, builder)
-    @docker_comms.build_engine(engine_name, build_archive_filename, builder)
-  end
+ 
+
+
+
 end
