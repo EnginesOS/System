@@ -78,12 +78,11 @@ module DockerApiExec
     end
   end
 
-
   def docker_exec(p)
     params = p.dup
     params[:timeout] = 5 if params[:timeout].nil?
-    
-    r = create_docker_exec(params)    
+
+    r = create_docker_exec(params)
     if r.is_a?(Hash)
       params[:exec_id] = r[:Id]
       params[:request] = '/exec/' + params[:exec_id] + '/start'
@@ -106,33 +105,33 @@ module DockerApiExec
 
   private
 
-def do_it(params)
-  params[:background] = false unless params.key?(:background)
-  request_params = {
-    'Detach' => params[:background] ,
-    'Tty' => false,
-  }
-  STDERR.puts('Exec Starting ' + params[:request].to_s  + ':' + params.keys.to_s)
-  headers = {
-    'Content-type' => 'application/json'
-  }
-  unless params.key?(:stdin_stream) || params.key?(:data)
-    STDERR.puts('DockerStreamReader')
-    stream_handler = DockerStreamReader.new(params[:stdout_stream])
-  else
-    STDERR.puts('DockerHijackStreamHandler')
-    stream_handler = DockerHijackStreamHandler.new(params[:data], params[:stdin_stream], params[:stdout_stream])     
+  def do_it(params)
+    params[:background] = false unless params.key?(:background)
+    request_params = {
+      'Detach' => params[:background] ,
+      'Tty' => false,
+    }
+    STDERR.puts('Exec Starting ' + params[:request].to_s  + ':' + params.keys.to_s)
+    headers = {
+      'Content-type' => 'application/json'
+    }
+    unless params.key?(:stdin_stream) || params.key?(:data)
+      STDERR.puts('DockerStreamReader ' + params[:stdout_stream].to_s)
+      stream_handler = DockerStreamReader.new(params[:stdout_stream])
+    else
+      STDERR.puts('DockerHijackStreamHandler')
+      stream_handler = DockerHijackStreamHandler.new(params[:data], params[:stdin_stream], params[:stdout_stream])
+    end
+    STDERR.puts('Drequest_params' + request_params.to_s)
+    post_stream_request({uri: params[:request],
+      stream_handler: stream_handler,
+      headers: headers,
+      content: request_params})
+
+    stream_handler.result[:result] = get_exec_result(params[:exec_id])
+    STDERR.puts('Exec result' + stream_handler.result.to_s)
+    stream_handler.result
   end
-  STDERR.puts('Drequest_params' + request_params.to_s)
-  post_stream_request({uri: params[:request],
-    stream_handler: stream_handler,
-headers: headers}) #,
-    #content: request_params})
-    
-  stream_handler.result[:result] = get_exec_result(params[:exec_id])
-  STDERR.puts('Exec result' + stream_handler.result.to_s)
-  stream_handler.result
-end
 
   def resolve_pid_to_container_id(pid)
     s = get_pid_status(pid)
@@ -197,7 +196,7 @@ end
     params.delete(:data) if params.key?(:data) && params[:data].nil?
     params.delete(:stdin_stream) if params.key?(:stdin_stream) && params[:stdin_stream].nil?
     STDERR.puts(' get_exec_result ' + params.keys.to_s)
-    
+
     if params.key?(:data) || params.key?(:stdin_stream)
       request_params['AttachStdin'] = true
     else
