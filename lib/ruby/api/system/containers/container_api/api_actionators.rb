@@ -39,6 +39,7 @@ module ApiActionators
         result[:stdout]
       end
     else
+      raise EnginesException.new(warning_hash('Error on starting action ' + c.container_name.to_s + ':' + actionator[:name].to_s , result)) if result[:result].nil?
       raise EnginesException.new(warning_hash('Error on performing action ' + c.container_name.to_s + ':' + actionator[:name].to_s , result)) if result[:result] < 127
       raise EnginesException.new(error_hash('Error on performing action ' + c.container_name.to_s + ':' + actionator[:name].to_s , result))
     end
