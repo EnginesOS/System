@@ -5,7 +5,9 @@ class DockerApi < ErrorsApi
   require 'yajl'
   require 'rubygems'
   require 'excon'
-
+  
+  require '/opt/engines/lib/ruby/exceptions/docker_exception.rb'
+  
   require_relative 'hijack.rb'
   Excon.defaults[:middlewares].unshift Excon::Middleware::Hijack
 
