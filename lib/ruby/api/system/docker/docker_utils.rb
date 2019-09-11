@@ -76,7 +76,7 @@ module DockerUtils
               DockerUtils.docker_stream_as_result({chunk: chunk, result: return_result})
             else
               STDERR.puts("read as stream")
-          r = DockerUtils.decode_from_docker_chunk({chunk: chunk, binary: true, stream: @stream_reader.out_stream})
+              r = DockerUtils.decode_from_docker_chunk({chunk: chunk, binary: true, stream: @stream_reader.out_stream})
             end
             return_result[:stderr] = return_result[:stderr].to_s + r[:stderr].to_s unless r.nil?
           end
@@ -101,7 +101,7 @@ module DockerUtils
   end
 
   def self.decode_from_docker_chunk(frag_p) #chunk, binary = true, stream = nil)
-   # frag_p = {chuck: chunk, binary: true}
+    # frag_p = {chuck: chunk, binary: true}
     frag_p[:result] = {
       stderr: '',
       stdout: ''
@@ -170,7 +170,7 @@ module DockerUtils
               frag_p[:result][@@dst] += frag_p[:chunk][0..length-1]
             end
           end
-          chunk = frag_p[:chunk][length..-1]
+          frag_p[:chunk] = frag_p[:chunk][length..-1]
           #     if chunk.length > 0
           #       STDERR.puts('Continuation')
           #     end
