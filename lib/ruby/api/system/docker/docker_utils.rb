@@ -122,7 +122,7 @@ module DockerUtils
     unless result.nil?
       chunk_p[:result][:stderr] = '' unless result.key?(:stderr)
       chunk_p[:result][:stdout] = '' unless result.key?(:stdout)
-      cl = 0
+
       unless chunk_p[:chunk].nil?
         while chunk_p[:chunk].length > 0
           if chunk_p[:chunk][0].nil?
@@ -131,17 +131,16 @@ module DockerUtils
             chunk_p[:chunk] = chunk_p[:chunk][1..-1]
             next
           end
-          chunk_p = {chunk: chunk, cl: 0}
           if @@missing != 0
-            cl = @@missing
+            chunk_p[:cl] = @@missing
             @@missing = 0
-          elsif chunk.start_with?("\u0001\u0000\u0000\u0000")
+          elsif  chunk_p[:chunk].start_with?("\u0001\u0000\u0000\u0000")
             @@dst = :stdout
             self.extract_chunk(chunk_p)
-          elsif chunk.start_with?("\u0002\u0000\u0000\u0000")
+          elsif  chunk_p[:chunk].start_with?("\u0002\u0000\u0000\u0000")
             @@dst = :stderr
             self.extract_chunk(chunk_p)
-          elsif chunk.start_with?("\u0000\u0000\u0000\u0000")
+          elsif  chunk_p[:chunk].start_with?("\u0000\u0000\u0000\u0000")
             @@dst = :stdout
             STDERR.puts('Matched \0\0\0')
           else
@@ -159,15 +158,16 @@ module DockerUtils
 
           if length > chunk_p[:chunk].length
             @@missing = length - chunk_p[:chunk].length
-            #        STDERR.puts('WARNING length > actual' + length.to_s + ' bytes length .  actual ' + chunk.length.to_s)
             length = chunk_p[:chunk].length
           end
-          #   STDERR.puts('len ' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
-          unless stream.nil?
-            #result[@@dst]= chunk[0..length-1]
-            stream.write(chunk_p[:chunk][0..length-1])
-          else
+          if @@dst == :stderr
             result[@@dst] += chunk_p[:chunk][0..length-1]
+          else
+            unless stream.nil?
+              stream.write(chunk_p[:chunk][0..length-1])
+            else
+              result[@@dst] += chunk_p[:chunk][0..length-1]
+            end
           end
           chunk = chunk_p[:chunk][length..-1]
           #     if chunk.length > 0
