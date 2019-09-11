@@ -76,7 +76,7 @@ module DockerUtils
               DockerUtils.docker_stream_as_result({chunk: chunk, result: return_result})
             else
               STDERR.puts("read as stream")
-              r = DockerUtils.decode_from_docker_chunk(chunk, true, @stream_reader.out_stream)
+          r = DockerUtils.decode_from_docker_chunk({chunk: chunk, binary: true, stream: @stream_reader.out_stream})
             end
             return_result[:stderr] = return_result[:stderr].to_s + r[:stderr].to_s unless r.nil?
           end
@@ -100,8 +100,8 @@ module DockerUtils
     read_thread.kill unless read_thread.nil?
   end
 
-  def self.decode_from_docker_chunk(chunk, binary = true, stream = nil)
-    chunk_p = {chuck: chunk, binary: true}
+  def self.decode_from_docker_chunk(chunk_p) #chunk, binary = true, stream = nil)
+   # chunk_p = {chuck: chunk, binary: true}
     chunk_p[:result] = {
       stderr: '',
       stdout: ''
@@ -119,7 +119,7 @@ module DockerUtils
   def self.docker_stream_as_result(chunk_p) #chunk, result, binary = true, stream = nil)
 
     unmatched = false
-
+    chunk_p[:binary] = true unless chunk_p.key?(:binary)
     unless chunk_p[:result].nil?
       chunk_p[:result][:stderr] = '' unless chunk_p[:result].key?(:stderr)
       chunk_p[:result][:stdout] = '' unless chunk_p[:result].key?(:stdout)
@@ -178,7 +178,7 @@ module DockerUtils
       end
       # result actually set elsewhere after exec complete
       chunk_p[:result][:result] = 0
-      unless binary
+      unless chunk_p[:binary]
         chunk_p[:result][:stdout].force_encoding(Encoding::UTF_8) unless chunk_p[:result][:stdout].nil? || ! stream.nil?
         chunk_p[:result][:stderr].force_encoding(Encoding::UTF_8) unless chunk_p[:result][:stderr].nil?
       end
