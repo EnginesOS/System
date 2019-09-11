@@ -73,7 +73,7 @@ module DockerUtils
           while chunk = socket.readpartial(32768)
             STDERR.puts("read chunk ", chunk.to_s)
             if @stream_reader.out_stream.nil?
-            DockerUtils.docker_stream_as_result({chunk: chunk, result: return_result})
+              DockerUtils.docker_stream_as_result({chunk: chunk, result: return_result})
             else
               STDERR.puts("read as stream")
               r = DockerUtils.decode_from_docker_chunk(chunk, true, @stream_reader.out_stream)
@@ -101,12 +101,12 @@ module DockerUtils
   end
 
   def self.decode_from_docker_chunk(chunk, binary = true, stream = nil)
-  chunk_p = {chuck: chunk, binary: true}
-  chunk_p[:result] = {
+    chunk_p = {chuck: chunk, binary: true}
+    chunk_p[:result] = {
       stderr: '',
       stdout: ''
     }
-    self.docker_stream_as_result(chunk_p) 
+    self.docker_stream_as_result(chunk_p)
     chunk_p[:result]
   end
 
@@ -118,17 +118,16 @@ module DockerUtils
 
   def self.docker_stream_as_result(chunk_p) #chunk, result, binary = true, stream = nil)
 
-    
     unmatched = false
 
-    unless result.nil?
-      chunk_p[:result][:stderr] = '' unless result.key?(:stderr)
-      chunk_p[:result][:stdout] = '' unless result.key?(:stdout)
+    unless chunk_p[:result].nil?
+      chunk_p[:result][:stderr] = '' unless chunk_p[:result].key?(:stderr)
+      chunk_p[:result][:stdout] = '' unless chunk_p[:result].key?(:stdout)
 
       unless chunk_p[:chunk].nil?
         while chunk_p[:chunk].length > 0
           if chunk_p[:chunk][0].nil?
-            return result if chunk_p[:chunk].length == 1
+            return chunk_p[:result] if chunk_p[:chunk].length == 1
             STDERR.puts('Skipping nil ')
             chunk_p[:chunk] = chunk_p[:chunk][1..-1]
             next
@@ -150,7 +149,7 @@ module DockerUtils
             @@dst = :stdout
             unmatched = true
           end
-          return result if chunk.nil?
+          return chunk_p[:result] if chunk.nil?
 
           unless unmatched == true
             length = chunk_p[:cl]
@@ -163,12 +162,12 @@ module DockerUtils
             length = chunk_p[:chunk].length
           end
           if @@dst == :stderr
-            result[@@dst] += chunk_p[:chunk][0..length-1]
+            chunk_p[:result][@@dst] += chunk_p[:chunk][0..length-1]
           else
             unless stream.nil?
               stream.write(chunk_p[:chunk][0..length-1])
             else
-              result[@@dst] += chunk_p[:chunk][0..length-1]
+              chunk_p[:result][@@dst] += chunk_p[:chunk][0..length-1]
             end
           end
           chunk = chunk_p[:chunk][length..-1]
@@ -178,12 +177,12 @@ module DockerUtils
         end
       end
       # result actually set elsewhere after exec complete
-      result[:result] = 0
+      chunk_p[:result][:result] = 0
       unless binary
-        result[:stdout].force_encoding(Encoding::UTF_8) unless result[:stdout].nil? || ! stream.nil?
-        result[:stderr].force_encoding(Encoding::UTF_8) unless result[:stderr].nil?
+        chunk_p[:result][:stdout].force_encoding(Encoding::UTF_8) unless chunk_p[:result][:stdout].nil? || ! stream.nil?
+        chunk_p[:result][:stderr].force_encoding(Encoding::UTF_8) unless chunk_p[:result][:stderr].nil?
       end
     end
-    result
+    chunk_p[:result]
   end
 end
