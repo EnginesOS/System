@@ -164,8 +164,8 @@ module DockerUtils
           if @@dst == :stderr
             frag_p[:result][@@dst] += frag_p[:chunk][0..length-1]
           else
-            unless stream.nil?
-              stream.write(frag_p[:chunk][0..length-1])
+            if frag_p.key?[:stream]
+              frag_p[:stream].write(frag_p[:chunk][0..length-1])
             else
               frag_p[:result][@@dst] += frag_p[:chunk][0..length-1]
             end
