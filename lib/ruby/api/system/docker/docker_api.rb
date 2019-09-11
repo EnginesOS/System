@@ -50,8 +50,5 @@ class DockerApi < ErrorsApi
     Base64.encode64(r.to_json).gsub(/\n/, '')
   end
 
- 
-
-
 
 end
