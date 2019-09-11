@@ -100,14 +100,14 @@ module DockerUtils
     read_thread.kill unless read_thread.nil?
   end
 
-  def self.decode_from_docker_chunk(chunk_p) #chunk, binary = true, stream = nil)
-   # chunk_p = {chuck: chunk, binary: true}
-    chunk_p[:result] = {
+  def self.decode_from_docker_chunk(frag_p) #chunk, binary = true, stream = nil)
+   # frag_p = {chuck: chunk, binary: true}
+    frag_p[:result] = {
       stderr: '',
       stdout: ''
     }
-    self.docker_stream_as_result(chunk_p)
-    chunk_p[:result]
+    self.docker_stream_as_result(frag_p)
+    frag_p[:result]
   end
 
   def self.extract_chunk(p)
@@ -116,73 +116,73 @@ module DockerUtils
     p[:chunk] = p[:chunk][8..-1]
   end
 
-  def self.docker_stream_as_result(chunk_p) #chunk, result, binary = true, stream = nil)
+  def self.docker_stream_as_result(frag_p) #chunk, result, binary = true, stream = nil)
 
     unmatched = false
-    chunk_p[:binary] = true unless chunk_p.key?(:binary)
-    unless chunk_p[:result].nil?
-      chunk_p[:result][:stderr] = '' unless chunk_p[:result].key?(:stderr)
-      chunk_p[:result][:stdout] = '' unless chunk_p[:result].key?(:stdout)
+    frag_p[:binary] = true unless frag_p.key?(:binary)
+    unless frag_p[:result].nil?
+      frag_p[:result][:stderr] = '' unless frag_p[:result].key?(:stderr)
+      frag_p[:result][:stdout] = '' unless frag_p[:result].key?(:stdout)
 
-      unless chunk_p[:chunk].nil?
-        while chunk_p[:chunk].length > 0
-          if chunk_p[:chunk][0].nil?
-            return chunk_p[:result] if chunk_p[:chunk].length == 1
+      unless frag_p[:chunk].nil?
+        while frag_p[:chunk].length > 0
+          if frag_p[:chunk][0].nil?
+            return frag_p[:result] if frag_p[:chunk].length == 1
             STDERR.puts('Skipping nil ')
-            chunk_p[:chunk] = chunk_p[:chunk][1..-1]
+            frag_p[:chunk] = frag_p[:chunk][1..-1]
             next
           end
           if @@missing != 0
-            chunk_p[:cl] = @@missing
+            frag_p[:cl] = @@missing
             @@missing = 0
-          elsif  chunk_p[:chunk].start_with?("\u0001\u0000\u0000\u0000")
+          elsif  frag_p[:chunk].start_with?("\u0001\u0000\u0000\u0000")
             @@dst = :stdout
-            self.extract_chunk(chunk_p)
-          elsif  chunk_p[:chunk].start_with?("\u0002\u0000\u0000\u0000")
+            self.extract_chunk(frag_p)
+          elsif  frag_p[:chunk].start_with?("\u0002\u0000\u0000\u0000")
             @@dst = :stderr
-            self.extract_chunk(chunk_p)
-          elsif  chunk_p[:chunk].start_with?("\u0000\u0000\u0000\u0000")
+            self.extract_chunk(frag_p)
+          elsif  frag_p[:chunk].start_with?("\u0000\u0000\u0000\u0000")
             @@dst = :stdout
             STDERR.puts('Matched \0\0\0')
           else
-            STDERR.puts('UNMATCHED ' +  chunk_p[:chunk].length.to_s)#chunk.to_s)#.length.to_s)
+            STDERR.puts('UNMATCHED ' +  frag_p[:chunk].length.to_s)#chunk.to_s)#.length.to_s)
             @@dst = :stdout
             unmatched = true
           end
-          return chunk_p[:result] if chunk.nil?
+          return frag_p[:result] if frag_p[:chunk].nil?
 
           unless unmatched == true
-            length = chunk_p[:cl]
+            length = frag_p[:cl]
           else
-            length = chunk_p[:chunk].length
+            length = frag_p[:chunk].length
           end
 
-          if length > chunk_p[:chunk].length
-            @@missing = length - chunk_p[:chunk].length
-            length = chunk_p[:chunk].length
+          if length > frag_p[:chunk].length
+            @@missing = length - frag_p[:chunk].length
+            length = frag_p[:chunk].length
           end
           if @@dst == :stderr
-            chunk_p[:result][@@dst] += chunk_p[:chunk][0..length-1]
+            frag_p[:result][@@dst] += frag_p[:chunk][0..length-1]
           else
             unless stream.nil?
-              stream.write(chunk_p[:chunk][0..length-1])
+              stream.write(frag_p[:chunk][0..length-1])
             else
-              chunk_p[:result][@@dst] += chunk_p[:chunk][0..length-1]
+              frag_p[:result][@@dst] += frag_p[:chunk][0..length-1]
             end
           end
-          chunk = chunk_p[:chunk][length..-1]
+          chunk = frag_p[:chunk][length..-1]
           #     if chunk.length > 0
           #       STDERR.puts('Continuation')
           #     end
         end
       end
       # result actually set elsewhere after exec complete
-      chunk_p[:result][:result] = 0
-      unless chunk_p[:binary]
-        chunk_p[:result][:stdout].force_encoding(Encoding::UTF_8) unless chunk_p[:result][:stdout].nil? || ! stream.nil?
-        chunk_p[:result][:stderr].force_encoding(Encoding::UTF_8) unless chunk_p[:result][:stderr].nil?
+      frag_p[:result][:result] = 0
+      unless frag_p[:binary]
+        frag_p[:result][:stdout].force_encoding(Encoding::UTF_8) unless frag_p[:result][:stdout].nil? || ! stream.nil?
+        frag_p[:result][:stderr].force_encoding(Encoding::UTF_8) unless frag_p[:result][:stderr].nil?
       end
     end
-    chunk_p[:result]
+    frag_p[:result]
   end
 end
