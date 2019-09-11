@@ -73,7 +73,7 @@ module DockerUtils
           while chunk = socket.readpartial(32768)
             STDERR.puts("read chunk ", chunk.to_s)
             if @stream_reader.out_stream.nil?
-              DockerUtils.docker_stream_as_result(chunk, return_result)
+            DockerUtils.docker_stream_as_result({chunk: chunk, result: return_result})
             else
               STDERR.puts("read as stream")
               r = DockerUtils.decode_from_docker_chunk(chunk, true, @stream_reader.out_stream)
@@ -101,12 +101,13 @@ module DockerUtils
   end
 
   def self.decode_from_docker_chunk(chunk, binary = true, stream = nil)
-    r = {
+  chunk_p = {chuck: chunk, binary: true}
+  chunk_p[:result] = {
       stderr: '',
       stdout: ''
     }
-    self.docker_stream_as_result(chunk, r, binary, stream )
-    r
+    self.docker_stream_as_result(chunk_p) 
+    chunk_p[:result]
   end
 
   def self.extract_chunk(p)
@@ -115,8 +116,9 @@ module DockerUtils
     p[:chunk] = p[:chunk][8..-1]
   end
 
-  def self.docker_stream_as_result(chunk, result, binary = true, stream = nil)
+  def self.docker_stream_as_result(chunk_p) #chunk, result, binary = true, stream = nil)
 
+    
     unmatched = false
 
     unless result.nil?
