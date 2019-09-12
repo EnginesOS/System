@@ -10,7 +10,7 @@ module ApiActionators
     else
       stream = nil
     end
-
+    
     cmds = ['/home/engines/scripts/actionators/' + actionator[:name].to_s + '.sh']
     req =
     {container: c,
@@ -29,8 +29,9 @@ module ApiActionators
     if result[:result] == 0
       if result[:stdout].start_with?('{') || result[:stdout].start_with?('"{')
         begin
-          STDERR.puts(result[:stdout].to_s)
-          deal_with_json(result[:stdout]) if actionator[:return_type] == 'json'
+          # deal_with_json(result[:stdout]) if actionator[:return_type] == 'json'
+          parser = Yajl::Parser.new({:symbolize_keys => true})
+          result[:stdout] = parser.parse(result[:stdout])
         rescue
           result[:stdout]
         end

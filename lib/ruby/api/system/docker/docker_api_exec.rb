@@ -1,6 +1,5 @@
 module DockerApiExec
   require_relative 'decoder/docker_decoder.rb'
-  require_relative 'docker_utils.rb'
   class DockerHijackStreamHandler
     attr_accessor :result, :data, :i_stream, :out_stream, :stream
     def initialize(data, istream = nil, out_stream = nil)

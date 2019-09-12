@@ -1,4 +1,4 @@
-module DockerUtils
+module DockerHijack
 
   require_relative 'decoder/docker_decoder.rb'
   
