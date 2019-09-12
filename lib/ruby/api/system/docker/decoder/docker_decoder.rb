@@ -28,7 +28,7 @@ class DockerDecoder
   end
 
   def docker_stream_as_result(frag_p) #chunk, result, binary = true, stream = nil)
-
+STDERR.puts('Stream as r ' + frag_p.to_s)
     unmatched = false
     frag_p[:binary] = true unless frag_p.key?(:binary)
     unless frag_p[:result].nil?

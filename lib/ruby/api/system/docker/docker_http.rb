@@ -78,6 +78,11 @@ module DockerHttp
     else
       body = p[:content]
     end
+    STDERR.puts({method: :post,
+    read_timeout: p[:timeout],
+    path: p[:uri] + '?' + p[:options].to_s,
+    headers: p[:headers],
+    body: body}.to_s)
     sc.request(
     method: :post,
     read_timeout: p[:timeout],
