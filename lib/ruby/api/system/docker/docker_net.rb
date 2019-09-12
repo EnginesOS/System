@@ -1,5 +1,5 @@
 module DockerNet
-  require_relative 'hijack/docker_hijack.rb'
+  require_relative 'docker_hijack.rb'
   def connection
     #  @connection =
     Excon.new('unix:///',
