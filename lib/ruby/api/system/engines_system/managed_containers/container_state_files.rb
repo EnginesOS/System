@@ -164,8 +164,7 @@ module ContainerSystemStateFiles
         unless options.key?(:max_length)
           options[:max_length] = 4096
         end
-        log_file.write(
-        #DockerUtils.docker_stream_as_result(
+        log_file.write(     
         c.logs_container(options[:max_length])
         #, {}).to_yaml
         )

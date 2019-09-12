@@ -1,7 +1,6 @@
 module DockerApiImages
   def image_exist_by_name?(image_name)
-    request = '/images/json?filter=' + image_name
-    r =  get_request(request, true)
+  r =  get_request({uri: '/images/json?filter=' + image_name})
     if r.is_a?(Array)
       r = r[0]
       if r.is_a?(Hash) && r.key?(:Id)
@@ -15,8 +14,7 @@ module DockerApiImages
   end
 
   def find_images(search)
-    request = '/images/json?filter=' + search
-    r =  get_request(request, true)
+  r =  get_request({uri: '/images/json?filter=' + search})
     if r.is_a?(Array)
       r
     else
@@ -47,7 +45,7 @@ module DockerApiImages
       end
     end
     headers = { 'X-Registry-Config'  => registry_root_auth, 'Content-Type' =>'plain/text', 'Accept-Encoding' => 'gzip'}
-    post_request(request, nil, false, headers, 600)
+    post_request({uri: request, expect_json: false, headers: headers, time_out: 600})
   rescue
     false #No new fresh ?
   end
@@ -63,9 +61,9 @@ module DockerApiImages
   end
 
   def delete_container_image(container)
-    request = '/images/' + container.image
+    request = 
     thr = Thread.new {
-      delete_request(request)
+    delete_request({uri: '/images/' + container.image})
     }
     thr[:name] = 'Docker delete container ' + container.image
   rescue StandardError => e
@@ -74,9 +72,7 @@ module DockerApiImages
   end
 
   def delete_image(image_name)
-    thr = Thread.new {
-      request = '/images/' + image_name
-      delete_request(request)}
+    thr = Thread.new { delete_request({uri: '/images/' + image_name}) }
     thr[:name] = 'Docker delete image:' + image_name.to_s
   rescue StandardError => e
     SystemUtils.log_exception(e , 'delete_image:' + image_name)
@@ -89,7 +85,7 @@ module DockerApiImages
       unless images.is_a?(FalseClass)
         images.each do |image|
           next unless image.is_a?(Hash) && image.key?(:Id)
-          @docker_comms.delete_image(image[:Id])
+          delete_image(image[:Id]) # was @docker_comms.
         end
       end }
     thr[:name] = 'clean_up_dangling_images:'
