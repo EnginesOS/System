@@ -77,6 +77,7 @@ class DockerDecoder
           length = frag_p[:chunk].length
         end
         
+        STDERR.puts('FPGRA ' + frag_p.to_s)
         if length > frag_p[:chunk].length
           @missing = length - frag_p[:chunk].length
           length = frag_p[:chunk].length
