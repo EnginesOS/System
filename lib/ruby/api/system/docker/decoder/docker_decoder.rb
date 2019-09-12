@@ -83,30 +83,30 @@ class DockerDecoder
 
     unless frag_p[:chunk].nil?
       while frag_p[:chunk].length > 0
-        next if skip_nil(frag_p)
+       # next if skip_nil(frag_p)
         if extract_data_and_source(frag_p)
-          length = frag_p[:cl]
+          pkt_length = frag_p[:cl]
         else #no match
-          length = frag_p[:chunk].length
+          pkt_length = frag_p[:chunk].length
         end
 
-        STDERR.puts('FPGRA ' + frag_p[:chunk].length.to_s)
-        if length > frag_p[:chunk].length
-          @missing = length - frag_p[:chunk].length
-          length = frag_p[:chunk].length
+        STDERR.puts('FPGRA ' + frag_p[:chunk].length.to_s + ' chunk ' + frag_p[:cl] + ' pkt ' + length.to_s )
+        if pkt_length > frag_p[:chunk].length
+          @missing = pkt_length - frag_p[:chunk].length
+          pkt_length = frag_p[:chunk].length
         end
 
         if @dst == :stderr #/stderr only goes in the result never the stream
-          frag_p[:result][:stderr] += frag_p[:chunk][0..length-1]
+          frag_p[:result][:stderr] += frag_p[:chunk][0..pkt_length-1]
         else
           if frag_p.key?(:stream)
-            frag_p[:stream].write(frag_p[:chunk][0..length-1])
+            frag_p[:stream].write(frag_p[:chunk][0..pkt_length-1])
           else
-            frag_p[:result][@dst] += frag_p[:chunk][0..length-1]
+            frag_p[:result][@dst] += frag_p[:chunk][0..pkt_length-1]
           end
         end
-        frag_p[:chunk] = frag_p[:chunk][length..-1]
-        if  frag_p[:chunk].length > 0
+        frag_p[:chunk] = frag_p[:chunk][pkt_length..-1]
+        if frag_p[:chunk].length > 0
           STDERR.puts('Continuation')
         end
       end
