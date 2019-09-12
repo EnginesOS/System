@@ -17,9 +17,9 @@ module DockerNet
      @connection = Excon.new('unix:///',
      :socket => '/var/run/docker.sock',
      debug_request: true,
-     debug_response: true,
-     persistent: true,
-     thread_safe_sockets: true)
+     debug_response: true) #,
+     #persistent: true,
+     #thread_safe_sockets: true)
      @connection
    end
    

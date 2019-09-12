@@ -97,7 +97,7 @@ class DockerDecoder
         end
 
         if @dst == :stderr #/stderr only goes in the result never the stream
-          frag_p[:result][@dst] += frag_p[:chunk][0..length-1]
+          frag_p[:result][:stderr] += frag_p[:chunk][0..length-1]
         else
           if frag_p.key?(:stream)
             frag_p[:stream].write(frag_p[:chunk][0..length-1])
@@ -110,10 +110,11 @@ class DockerDecoder
           STDERR.puts('Continuation')
         end
       end
-      force_encoding(result) unless frag_p[:binary]
+     # force_encoding(result) unless frag_p[:binary]
     end
     frag_p[:result]
   rescue =>e
     STDERR.puts('Exception E ' + e.to_s + "\n" )
+    raise e
   end
 end
