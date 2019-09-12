@@ -8,6 +8,7 @@ class DockerDecoder
   def initialize(params)
     @ini_params = params
     @missing=0
+    
     @dst=:stdout
   end
 
@@ -83,7 +84,7 @@ class DockerDecoder
           length = frag_p[:chunk].length
         end
         
-        STDERR.puts('FPGRA ' + frag_p[:chunk].length)
+        STDERR.puts('FPGRA ' + frag_p[:chunk].length.to_s)
         if length > frag_p[:chunk].length
           @missing = length - frag_p[:chunk].length
           length = frag_p[:chunk].length
