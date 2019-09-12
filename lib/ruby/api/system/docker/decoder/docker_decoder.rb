@@ -21,8 +21,9 @@ class DockerDecoder
   end
 
   def extract_chunk(p)
+    STDERR.puts('chunk ' + p[:chunk].to_s + ' dest ' + @dst.to_s )
     l = p[:chunk][0..7].unpack('C*')
-  STDERR.puts('chunk ' + p[:chunk].to_s + ' dest ' + @dst.to_s + ' len ' + l.to_s )
+  STDERR.puts('len str ' + l.to_s )
     p[:cl] = l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
     p[:chunk] = p[:chunk][8..-1]
     p[:cl] = p[:chunk].length if p[:cl]  == 0
@@ -46,6 +47,7 @@ class DockerDecoder
       @missing = 0
     elsif frag_p[:chunk].start_with?("\u0001\u0000\u0000\u0000")
       @dst = :stdout
+      STDERR.puts('UNMATCHED ' +  frag_p[:chunk].length.to_s)
       extract_chunk(frag_p)
     elsif  frag_p[:chunk].start_with?("\u0002\u0000\u0000\u0000")
       @dst = :stderr
