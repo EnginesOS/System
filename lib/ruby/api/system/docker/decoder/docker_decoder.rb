@@ -9,6 +9,7 @@ class DockerDecoder
     @ini_params = params
     @missing=0
     @dst=:stdout
+    @ini_params[:binary] = false unless params.key?(:binary)
   end
 
   def decode_from_docker_chunk(p)
@@ -24,19 +25,15 @@ class DockerDecoder
   end
 
   def extract_chunk(p)
-    STDERR.puts( ' dest ' + @dst.to_s )
     l = p[:chunk][0..7].unpack('C*')
-    STDERR.puts('len str ' + l.to_s )
     p[:cl] = l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
     p[:chunk] = p[:chunk][8..-1]
     p[:cl] = p[:chunk].length if p[:cl]  == 0
-    STDERR.puts(' len ' + l.to_s + ' ' + p[:cl].to_s)
   end
 
   def skip_nil(frag_p)
     if frag_p[:chunk][0].nil?
       return frag_p[:result] if frag_p[:chunk].length == 1
-      STDERR.puts('Skipping nil ')
       frag_p[:chunk] = frag_p[:chunk][1..-1]
       true
     end
@@ -77,13 +74,12 @@ class DockerDecoder
   end
 
   def docker_stream_as_result(frag_p) #chunk, result, binary = true, stream = nil)
-    STDERR.puts('Stream as r ')
-    frag_p[:binary] = false unless frag_p.key?(:binary)
+
     create_blank_result(frag_p) unless frag_p.key?(:result)
 
     unless frag_p[:chunk].nil?
       while frag_p[:chunk].length > 0
-       # next if skip_nil(frag_p)
+        # next if skip_nil(frag_p)
         if extract_data_and_source(frag_p)
           pkt_length = frag_p[:cl]
         else #no match
@@ -103,17 +99,13 @@ class DockerDecoder
             frag_p[:stream].write(frag_p[:chunk][0..pkt_length-1])
           else
             frag_p[:result][@dst] += frag_p[:chunk][0..pkt_length-1]
-    
-      STDERR.puts('frag_p[:result] ' + frag_p[:chunk][0..pkt_length-1].to_s)
-        
+            STDERR.puts('frag_p[:result] ' + frag_p[:chunk][0..pkt_length-1].to_s)
           end
         end
         frag_p[:chunk] = frag_p[:chunk][pkt_length..-1]
-    STDERR.puts('Continuation')  if frag_p[:chunk].length > 0
-         
-    
+        STDERR.puts('Continuation')  if frag_p[:chunk].length > 0
       end
-     # force_encoding(result) unless frag_p[:binary]
+      # force_encoding(result) unless frag_p[:binary]
     end
     frag_p[:result]
   rescue =>e

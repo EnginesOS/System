@@ -64,14 +64,14 @@ module DockerApiExec
     def process_response()
       lambda do |chunk , c , t|
         if @out_stream.nil?
-        r = @decoder.decode_from_docker_chunk({chunk: chunk, binary: true})
+          r = @decoder.decode_from_docker_chunk({chunk: chunk, binary: true, result: @result})
           next if r.nil?
-          @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
-          @result[:stdout] = @result[:stdout].to_s + r[:stdout].to_s
+          #@result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
+          #@result[:stdout] = @result[:stdout].to_s + r[:stdout].to_s
         else
-      r = @decoder.decode_from_docker_chunk({chunk: chunk, binary: true, stream: @out_stream})
+          r = @decoder.decode_from_docker_chunk({chunk: chunk, binary: true, stream: @out_stream, result: @result})
           next if r.nil?
-          @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
+        #  @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
         end
       end
     end
