@@ -63,7 +63,7 @@ class DockerDecoder
     STDERR.puts('Stream as r ' + frag_p.to_s)
     frag_p[:binary] = false unless frag_p.key?(:binary)
 
-    unless frag_p[:result].key?
+    unless frag_p.key?(:result)
       frag_p[:result][:stderr] = '' unless frag_p[:result].key?(:stderr)
       frag_p[:result][:stdout] = '' unless frag_p[:result].key?(:stdout)
     end
