@@ -29,11 +29,12 @@ class DockerDecoder
 
   def skip_nil(frag_p)
     if frag_p[:chunk][0].nil?
-      return frag_p[:result] if frag_p[:chunk].length == 1
-      STDERR.puts('Skipping nil ')
-      frag_p[:chunk] = frag_p[:chunk][1..-1]
-      next
-    end
+         return frag_p[:result] if frag_p[:chunk].length == 1
+         STDERR.puts('Skipping nil ')
+         frag_p[:chunk] = frag_p[:chunk][1..-1]
+         true
+       end
+       false
   end
 
   def extract_data_and_source(frag_p)
@@ -60,7 +61,6 @@ class DockerDecoder
 
   def docker_stream_as_result(frag_p) #chunk, result, binary = true, stream = nil)
     STDERR.puts('Stream as r ' + frag_p.to_s)
-
     frag_p[:binary] = false unless frag_p.key?(:binary)
 
     unless frag_p[:result].key?
@@ -70,7 +70,7 @@ class DockerDecoder
 
     unless frag_p[:chunk].nil?
       while frag_p[:chunk].length > 0
-        skip_nil(frag_p)
+        next if skip_nil(frag_p)
         if extract_data_and_source(frag_p)
           length = frag_p[:cl]
         else #no match
