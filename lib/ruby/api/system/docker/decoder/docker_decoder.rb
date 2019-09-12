@@ -112,5 +112,7 @@ class DockerDecoder
       end
     end
     frag_p[:result]
+rescue =>e
+  STDERR.puts('Exception E ' + e.to_s + "\n" )
   end
 end
