@@ -1,8 +1,12 @@
 module DockerUtils
+
+  require_relative 'decode/docker_decoder.rb'
+  
   @@missing=0
   @@dst = :stdout
   def self.process_request(stream_reader) #data , result, stdout_stream=nil, istream=nil)
     @stream_reader = stream_reader
+    @decoder = DockerDecoder.new
     return_result = @stream_reader.result
     write_thread = nil
     read_thread = nil
@@ -73,10 +77,10 @@ module DockerUtils
           while chunk = socket.readpartial(32768)
             STDERR.puts("read chunk ", chunk.to_s)
             if @stream_reader.out_stream.nil?
-              DockerUtils.docker_stream_as_result({chunk: chunk, result: return_result})
+              @decoder.docker_stream_as_result({chunk: chunk, result: return_result})
             else
               STDERR.puts("read as stream")
-              r = DockerUtils.decode_from_docker_chunk({chunk: chunk, binary: true, stream: @stream_reader.out_stream})
+              r = @decoder.decode_from_docker_chunk({chunk: chunk, binary: true, stream: @stream_reader.out_stream})
             end
             return_result[:stderr] = return_result[:stderr].to_s + r[:stderr].to_s unless r.nil?
           end

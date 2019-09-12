@@ -1,4 +1,7 @@
 module DockerApiContainerStatus
+
+  require_relative 'decode/docker_decoder.rb'
+  
   def inspect_container_by_name(container)
     get_request({uri: '/containers/' + container.container_name.to_s + '/json'})
   end
