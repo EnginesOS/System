@@ -1,12 +1,14 @@
 class DockerDecoder
-  @missing=0
-  @dst=:stdout
   def initialize()
     @ini_params = {}
+    @missing=0
+    @dst=:stdout
   end
 
   def initialize(params)
     @ini_params = params
+    @missing=0
+    @dst=:stdout
   end
 
   def decode_from_docker_chunk(p)
