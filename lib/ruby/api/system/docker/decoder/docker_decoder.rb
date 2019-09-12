@@ -25,12 +25,14 @@ class DockerDecoder
     l = p[:chunk][0..7].unpack('C*')
     p[:cl] = l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
     p[:chunk] = p[:chunk][8..-1]
+    STDERR.puts('chunk ' + p[:chunk].to_s + ' dest ' + @dst.to_s + ' len ' + l.to_s)      
   end
 
   def docker_stream_as_result(frag_p) #chunk, result, binary = true, stream = nil)
-STDERR.puts('Stream as r ' + frag_p.to_s)
+    STDERR.puts('Stream as r ' + frag_p.to_s)
     unmatched = false
     frag_p[:binary] = true unless frag_p.key?(:binary)
+      
     unless frag_p[:result].nil?
       frag_p[:result][:stderr] = '' unless frag_p[:result].key?(:stderr)
       frag_p[:result][:stdout] = '' unless frag_p[:result].key?(:stdout)
