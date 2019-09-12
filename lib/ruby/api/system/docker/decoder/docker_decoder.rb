@@ -109,6 +109,7 @@ class DockerDecoder
         if frag_p[:chunk].length > 0
           STDERR.puts('Continuation')
         end
+    STDERR.puts('frag_p[:result] ' + frag_p[:result][:stdout].to_s)
       end
      # force_encoding(result) unless frag_p[:binary]
     end
