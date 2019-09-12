@@ -29,6 +29,7 @@ module ApiActionators
     if result[:result] == 0
       if result[:stdout].start_with?('{') || result[:stdout].start_with?('"{')
         begin
+          STDERR.puts(result[:stdout].to_s)
           deal_with_json(result[:stdout]) if actionator[:return_type] == 'json'
         rescue
           result[:stdout]
