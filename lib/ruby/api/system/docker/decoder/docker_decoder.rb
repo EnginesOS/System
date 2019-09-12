@@ -25,7 +25,7 @@ class DockerDecoder
     l = p[:chunk][0..7].unpack('C*')
     p[:cl] = l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
     p[:chunk] = p[:chunk][8..-1]
-    STDERR.puts('chunk ' + p[:chunk].to_s + ' dest ' + @dst.to_s + ' len ' + l.to_s)      
+    STDERR.puts('chunk ' + p[:chunk].to_s + ' dest ' + @dst.to_s + ' len ' + l.to_s + ' ' + p[:cl])      
   end
 
   def docker_stream_as_result(frag_p) #chunk, result, binary = true, stream = nil)
