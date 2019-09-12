@@ -16,7 +16,7 @@ class DockerDecoder
     frag_p[:result] = {
       stderr: '',
       stdout: ''
-    } unless frag_p.keys?(:result)
+    } unless frag_p.key?(:result)
     docker_stream_as_result(frag_p)
     frag_p[:result]
   end
