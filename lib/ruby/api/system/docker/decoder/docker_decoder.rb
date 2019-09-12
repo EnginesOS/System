@@ -1,6 +1,6 @@
 class DockerDecoder
   def initialize()
-    @ini_params = {}
+    @ini_params = {binary: false}
     @missing=0
     @dst=:stdout
   end
@@ -66,7 +66,7 @@ class DockerDecoder
   end
 
   def docker_stream_as_result(frag_p) #chunk, result, binary = true, stream = nil)
-    STDERR.puts('Stream as r ' + frag_p.to_s)
+    STDERR.puts('Stream as r ')
     frag_p[:binary] = false unless frag_p.key?(:binary)
 
     unless frag_p.key?(:result)
@@ -83,7 +83,7 @@ class DockerDecoder
           length = frag_p[:chunk].length
         end
         
-        STDERR.puts('FPGRA ' + frag_p.to_s)
+        STDERR.puts('FPGRA ' + frag_p[:chunk].length)
         if length > frag_p[:chunk].length
           @missing = length - frag_p[:chunk].length
           length = frag_p[:chunk].length
