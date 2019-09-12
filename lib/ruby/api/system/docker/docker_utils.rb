@@ -1,6 +1,6 @@
 module DockerUtils
 
-  require_relative 'decode/docker_decoder.rb'
+  require_relative 'decoder/docker_decoder.rb'
   
   @@missing=0
   @@dst = :stdout
