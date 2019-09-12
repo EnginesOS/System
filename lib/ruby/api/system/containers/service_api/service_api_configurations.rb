@@ -10,7 +10,7 @@ module ServiceApiConfigurations
     if result[:result] == 0
       parser = Yajl::Parser.new({:symbolize_keys => true})
       params[:variables] = parser.parse(result[:stdout])
-    #  variables_hash = deal_with_json(result[:stdout])
+   #  variables_hash = deal_with_json(result[:stdout])
    #   params[:variables] = symbolize_keys(variables_hash)      
       params
     else
