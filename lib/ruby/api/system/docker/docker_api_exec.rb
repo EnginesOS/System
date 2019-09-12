@@ -51,6 +51,9 @@ module DockerApiExec
         stdout: '',
         stderr: ''
       }
+      
+      @decoder = DockerDecoder.new({ result:  @result})
+      
     end
 
     def close
@@ -61,12 +64,12 @@ module DockerApiExec
     def process_response()
       lambda do |chunk , c , t|
         if @out_stream.nil?
-        r = DockerUtils.decode_from_docker_chunk({chunk: chunk, binary: true})
+        r = @decoder.decode_from_docker_chunk({chunk: chunk, binary: true})
           next if r.nil?
           @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
           @result[:stdout] = @result[:stdout].to_s + r[:stdout].to_s
         else
-      r = DockerUtils.decode_from_docker_chunk({chunk: chunk, binary: true, stream: @out_stream})
+      r = @decoder.decode_from_docker_chunk({chunk: chunk, binary: true, stream: @out_stream})
           next if r.nil?
           @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
         end

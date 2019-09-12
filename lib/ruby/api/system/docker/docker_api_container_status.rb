@@ -53,7 +53,8 @@ module DockerApiContainerStatus
     raise DockerException.new(docker_error_hash(' No Container ID ', container.container_name)) if container.container_id == -1   
     request = '/containers/' + container.container_id .to_s + '/logs?stderr=1&stdout=1&timestamps=1&follow=0&tail=' + count.to_s
     r = get_request({uri: request ,expect_json: false})
-    r = DockerUtils.decode_from_docker_chunk({chunk: r, result:  {}})
+    decoder = DockerDecoder.new({chunk: r, result:  {}})
+    decoder.decode_from_docker_chunk({chunk: r, result:  {}})
     r[:stdout].gsub!(/[\x80-\xFF]/n,'')
     r[:stderr].gsub!(/[\x80-\xFF]/n,'')
     r
