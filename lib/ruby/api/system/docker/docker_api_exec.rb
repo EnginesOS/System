@@ -122,6 +122,10 @@ module DockerApiExec
     else
       stream_handler = DockerHijackStreamHandler.new(params[:data], params[:stdin_stream], params[:stdout_stream])
     end
+    STDERR.puts( {uri: params[:request],
+      stream_handler: stream_handler,
+      headers: headers,
+      content: request_params.to_json}.to_s)
     post_stream_request({uri: params[:request],
       stream_handler: stream_handler,
       headers: headers,
@@ -197,6 +201,7 @@ module DockerApiExec
     else
       request_params['AttachStdin'] = false
     end
+    STDERR.puts({uri: '/containers/' + params[:container].container_id.to_s + '/exec' , params: request_params}.to_s)
     post_request({uri: '/containers/' + params[:container].container_id.to_s + '/exec' , params: request_params})
   end
 
