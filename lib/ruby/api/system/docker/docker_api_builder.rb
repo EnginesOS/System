@@ -83,7 +83,7 @@ module DockerApiBuilder
       'Content-Length' => File.size(build_archive_filename).to_s
     }
     stream_handler = DockerStreamHandler.new(nil, builder) #File.new(build_archive_filename,'r'))
-    post_stream_request('/build' , options, stream_handler, header, File.read(build_archive_filename) )
+    post_stream_request({ uri: '/build' , options: options, stream_handler: stream_handler, headers: header, content: File.read(build_archive_filename) } )
     
   ensure
     stream_handler.close unless stream_handler.nil?
