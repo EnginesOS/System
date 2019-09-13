@@ -63,7 +63,7 @@ class DockerDecoder
     r
   end
 
-  def create_blank_result
+  def create_blank_result(frag_p)
     frag_p[:result] = {} unless frag_p.key?(:result) 
     frag_p[:result][:stderr] = '' unless frag_p[:result][:stderr]
     frag_p[:result][:stdout] = '' unless frag_p[:result][:stdout]
