@@ -79,7 +79,7 @@ class DockerDecoder
 
     unless frag_p[:chunk].nil?
       while frag_p[:chunk].length > 0
-        # next if skip_nil(frag_p)
+         next if skip_nil(frag_p)
         if extract_data_and_source(frag_p)
           pkt_length = frag_p[:cl]
         else #no match
