@@ -57,10 +57,11 @@ module DockerApiContainerStatus
     request = '/containers/' + container.container_id .to_s + '/logs?stderr=1&stdout=1&timestamps=1&follow=0&tail=' + count.to_s
     r = get_request({uri: request ,expect_json: false})
     decoder = DockerDecoder.new({chunk: r, result:  {}})
-    decoder.decode_from_docker_chunk({chunk: r, result:  {}})
-    r[:stdout].gsub!(/[\x80-\xFF]/n,'')
-    r[:stderr].gsub!(/[\x80-\xFF]/n,'')
-    r
+    result = {}
+    decoder.decode_from_docker_chunk({chunk: r, result:  result})
+    result[:stdout].gsub!(/[\x80-\xFF]/n,'')
+    result[:stderr].gsub!(/[\x80-\xFF]/n,'')
+    result
   end
 
 end
