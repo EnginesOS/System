@@ -6,7 +6,7 @@ type_path: database/sql/pgsql
 ctype: service
 persistent: true
 last_error: 
-memory: '256'
+memory: '768'
 stop_timeout: 500
 hostname: pgsql
 domain_name: 

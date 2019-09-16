@@ -63,9 +63,10 @@ class DockerDecoder
     r
   end
 
-  def create_blank_result
-    frag_p[:result][:stderr] = '' unless frag_p[:result].key?(:stderr)
-    frag_p[:result][:stdout] = '' unless frag_p[:result].key?(:stdout)
+  def create_blank_result(frag_p)
+    frag_p[:result] = {} unless frag_p.key?(:result) 
+    frag_p[:result][:stderr] = '' unless frag_p[:result][:stderr]
+    frag_p[:result][:stdout] = '' unless frag_p[:result][:stdout]
   end
 
   def force_encoding(result)
@@ -74,12 +75,10 @@ class DockerDecoder
   end
 
   def docker_stream_as_result(frag_p) #chunk, result, binary = true, stream = nil)
-
-    create_blank_result(frag_p) unless frag_p.key?(:result)
-
+    create_blank_result(frag_p) 
     unless frag_p[:chunk].nil?
       while frag_p[:chunk].length > 0
-        # next if skip_nil(frag_p)
+         next if skip_nil(frag_p)
         if extract_data_and_source(frag_p)
           pkt_length = frag_p[:cl]
         else #no match
