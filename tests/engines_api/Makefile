@@ -1,5 +1,5 @@
 SUBDIRS=system engines engine containers services service engine_builder registry service_manager
-ENGINES=plainguitest testengine
+ENGINES=markengine phppgadmin
 tests:
 	echo -n "\033[0;31m System State tests \033[0;30m\n"
 	@$(foreach dir,$(SUBDIRS), cd $(dir);echo  $(dir):; make -s tests; cd ..;)
