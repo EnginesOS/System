@@ -30,7 +30,7 @@ class Streamer
     end
   end
 
-  def  process_request(stream_reader)
+  def process_request(stream_reader)
     @stream_reader = stream_reader
     write_thread = nil
     read_thread = nil
