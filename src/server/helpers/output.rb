@@ -34,6 +34,8 @@ def return_text(r, s = 202)
   else
     if r.is_a?(TrueClass) || r.is_a?(FalseClass)
       return_boolean(r, s)
+    elsif r.is_a?(Thread)
+      return_boolean(true, s)
     elsif r.is_a?(EnginesError)
       return_error(r)
     else
@@ -44,6 +46,7 @@ def return_text(r, s = 202)
     end
   end
 end
+
 def return_stream(r, s = 202)
   if r.nil?
     status(204)
@@ -60,6 +63,7 @@ def return_stream(r, s = 202)
     end
   end
 end
+
 def return_true(s = 200)
   return_text('true', s)
 end
