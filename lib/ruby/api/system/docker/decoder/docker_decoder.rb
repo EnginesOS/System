@@ -47,7 +47,7 @@ class DockerDecoder
       @missing = 0
     elsif frag_p[:chunk].start_with?("\u0001\u0000\u0000\u0000")
       @dst = :stdout
-      STDERR.puts('MATCHED stdout ' +  frag_p[:chunk].length.to_s)
+  #    STDERR.puts('MATCHED stdout ' +  frag_p[:chunk].length.to_s)
       extract_chunk(frag_p)
     elsif frag_p[:chunk].start_with?("\u0002\u0000\u0000\u0000")
       @dst = :stderr
@@ -85,7 +85,7 @@ class DockerDecoder
           pkt_length = frag_p[:chunk].length
         end
 
-        STDERR.puts('FPGRA ' + frag_p[:chunk].length.to_s + ' chunk ' + frag_p[:cl].to_s + ' pkt ' + pkt_length.to_s )
+    #    STDERR.puts('FPGRA ' + frag_p[:chunk].length.to_s + ' chunk ' + frag_p[:cl].to_s + ' pkt ' + pkt_length.to_s )
         if pkt_length > frag_p[:chunk].length
           @missing = pkt_length - frag_p[:chunk].length
           pkt_length = frag_p[:chunk].length
@@ -98,11 +98,11 @@ class DockerDecoder
             frag_p[:stream].write(frag_p[:chunk][0..pkt_length-1])
           else
             frag_p[:result][@dst] += frag_p[:chunk][0..pkt_length-1]
-            STDERR.puts('frag_p[:result] ' + frag_p[:chunk][0..pkt_length-1].to_s)
+        #    STDERR.puts('frag_p[:result] ' + frag_p[:chunk][0..pkt_length-1].to_s)
           end
         end
         frag_p[:chunk] = frag_p[:chunk][pkt_length..-1]
-        STDERR.puts('Continuation')  if frag_p[:chunk].length > 0
+     #   STDERR.puts('Continuation')  if frag_p[:chunk].length > 0
       end
       # force_encoding(result) unless frag_p[:binary]
     end

@@ -136,7 +136,7 @@ module DockerApiExec
   def resolve_pid_to_container_id(pid)
     s = get_pid_status(pid)
     unless s.is_a?(FalseClass)
-      STDERR.puts('Status ' + s.to_s)
+     # STDERR.puts('Status ' + s.to_s)
       r = s[/NSpid:.*\n/]
       unless r.nil?
         r = r.split(' ')
@@ -177,7 +177,7 @@ module DockerApiExec
 
   def get_exec_result(exec_id)
     r = get_exec_details(exec_id)
-    STDERR.puts(' exec results ' + r.to_s)
+   # STDERR.puts(' exec results ' + r.to_s)
     if(r[:Running].is_a?(TrueClass))
       STDERR.puts('WARNING EXEC STILL RUNNING:' + r.to_s)
     end
