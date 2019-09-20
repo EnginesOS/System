@@ -17,7 +17,7 @@ module Archives
 
         path_to_extracted ='/' if path_to_extracted.nil? || path_to_extracted == ''
         args = ' \'' + archive_details[:download_type] + '\' '
-        args += ' \'' + source_url(archive_details[:source_url]) + '\' '
+        args += ' \'' + source_url(archive_details[:source_url], pn) + '\' '
         args += ' \'' + pn + '\' '
         args += ' \'' + extraction_command + '\' '
         args += ' \'' + archive_destination(archive_details[:destination]) + '\' '
