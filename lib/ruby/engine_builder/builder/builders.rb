@@ -85,8 +85,7 @@ module Builders
     File.delete('/opt/engines/run/system/flags/building_params') if File.exist?('/opt/engines/run/system/flags/building_params')
   end
 
-  def build_from_blue_print
-   
+  def build_from_blue_print   
     get_blueprint_from_repo
     log_build_output('Cloned Blueprint')
     build_container
@@ -106,19 +105,18 @@ module Builders
     if @container.nil?
       'not yet'
     else
-      @container.wait_for('start', 25)
-      @container.wait_for_startup(25)
+      wait_for_start_up
       @container.logs_container
     end
   end
 
   private
 
-  def wait_for_start_up
+  def wait_for_start_up(d=25)
     log_build_output('Waiting for start')
-    @container.wait_for('start', 25)
+    @container.wait_for('start', d)
     log_build_output('Waiting for startup completion')
-    @container.wait_for_startup(25)
+    @container.wait_for_startup(d)
   end
 
   def post_failed_build_clean_up
