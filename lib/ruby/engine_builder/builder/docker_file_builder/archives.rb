@@ -13,7 +13,6 @@ module Archives
         pn = archive_details[:package_name].to_s
         extraction_command = archive_details[:extraction_command].to_s
         path_to_extracted = archive_details[:path_to_extracted].to_s
-
         path_to_extracted ='/' if path_to_extracted.nil? || path_to_extracted == ''
         args = ' \'' + archive_details[:download_type] + '\' '
         args += ' \'' + source_url(archive_details[:source_url], pn) + '\' '
