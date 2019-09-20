@@ -11,7 +11,6 @@ module Archives
         archive_details[:extraction_command] = 'false' if archive_details[:extraction_command].nil?
 
         pn = archive_details[:package_name].to_s
-        source_url(archive_details[:source_url], pn)
         extraction_command = archive_details[:extraction_command].to_s
         path_to_extracted = archive_details[:path_to_extracted].to_s
 
