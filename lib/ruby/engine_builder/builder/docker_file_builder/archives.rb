@@ -64,7 +64,7 @@ module Archives
     if pc[:type] == 'credentials'
       u = pc[:credentials][:username]
       p =  pc[:credentials][:password]
-      url.sub!(/https:\/\//, 'https://' + user  + ':' + password + '@' )
+      url.sub!(/https:\/\//, 'https://' + u  + ':' + p + '@' )
     end
     url
   end
