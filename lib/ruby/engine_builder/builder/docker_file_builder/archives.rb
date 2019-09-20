@@ -41,7 +41,7 @@ module Archives
 
     # Destination can be /opt/ /home/app /home/fs/ /home/local/
     # If none of teh above then it is prefixed with /home/app
-    dest = '/home/app/' + dest.to_s unless destination.start_with?('/opt') || dest.start_with?('/home/fs') || dest.start_with?('/home/app') || dest.start_with?('/home/local')
+    dest = '/home/app/' + dest.to_s unless dest.start_with?('/opt') || dest.start_with?('/home/fs') || dest.start_with?('/home/app') || dest.start_with?('/home/local')
     dest = '/home/app' if dest.to_s == '/home/app/' || dest == '/'  || dest == './'  || dest == ''
     dest
   end
