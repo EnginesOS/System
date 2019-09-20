@@ -1,11 +1,11 @@
 #!/bin/sh
 
-
-source_url=$1
-package_name=$2
-extraction_command=$3
-destination=$4
-path_to_extracted=$5
+dl_type=$1
+source_url=$2
+package_name=$3
+extraction_command=$4
+destination=$5
+path_to_extracted=$6
 cd /tmp
 
 export PACKAGE_INSTALLER_RUN=yes
@@ -23,7 +23,7 @@ echo Extract with $extraction_command from  $package_name to $path_to_extracted
 echo Install to $destination
 
 
- if test "$extraction_command" = 'git'
+ if test "$dl_type" = 'git'
   then
 #    if ! test -z $git_username
 #      then
