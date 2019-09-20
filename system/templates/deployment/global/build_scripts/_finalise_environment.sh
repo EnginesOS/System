@@ -16,7 +16,7 @@ echo "	id $ContUser | grep $data_gid '"
 		usermod -G $data_gid -a $ContUser
 	fi
 	chown -R  $data_uid.$data_gid  /home/app
-	
+	chown -R $ContUser /home/home_dir
 	 mkdir -p ~$ContUser/.ssh
      chown -R $ContUser ~$ContUser/.ssh
  

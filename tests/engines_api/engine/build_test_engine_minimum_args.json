@@ -4,7 +4,7 @@
 	"domain_name": "current.engines.org",
 	"http_protocol": "https",
 	"memory": 164,
-	"repository_url":"https://github.com/EnginesBlueprints/test_engine",	
+	"repository_url":"https://raw.githubusercontent.com/EnginesBlueprints/test_engine/master/blueprint.json",	
 	"variables": {
 		"test_envvar": "test_value",
 		"mandatory": "mandatory_value",
