@@ -49,8 +49,8 @@ module Archives
   end
 
   def source_url(surl, pn)
-    s = nil
-    if @build_params.key?(:installed_packages)
+    s = nil   
+    unless @build_params[:installed_packages].nil? 
       if @build_params[:installed_packages].key?(pn.to_sym)
         s = authenticated_source(
         surl,
