@@ -78,7 +78,7 @@ module DockerApiImages
     thr[:name] = 'Docker delete image:' + image_name.to_s
       thr.join if wait == true
   rescue StandardError => e
-    SystemUtils.log_exception(e , 'delete_image:' + image_name)
+    SystemUtils.log_exception(e , 'delete_image:' + image_name.to_s)
     thr.exit unless thr.nil?
   end
 
