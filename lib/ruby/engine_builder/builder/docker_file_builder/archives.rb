@@ -59,10 +59,12 @@ module Archives
 
   def
   authenticated_source(url, pc)
-    if pc[:type] == 'credentials'
-      u = pc[:credentials][:username]
-      p =  pc[:credentials][:password]
-      url.sub!(/https:\/\//, 'https://' + u  + ':' + p + '@' )
+    unless pc[:type].nil?
+      if pc[:type] == 'credentials'
+        u = pc[:credentials][:username]
+        p =  pc[:credentials][:password]
+        url.sub!(/https:\/\//, 'https://' + u  + ':' + p + '@' )
+      end
     end
     url
   end
