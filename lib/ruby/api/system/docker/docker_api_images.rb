@@ -44,9 +44,11 @@ module DockerApiImages
         request = request + '&tag=' + tag.to_s
       end
     end
+    STDERR.puts(' Pulling ' + request.to_s)
     headers = { 'X-Registry-Config'  => registry_root_auth, 'Content-Type' =>'plain/text', 'Accept-Encoding' => 'gzip'}
     post_request({uri: request, expect_json: false, headers: headers, time_out: 600})
-  rescue
+  rescue StandardError =>e
+    STDERR.puts('docker image pull got ' + e.to_s)
     false #No new fresh ?
   end
 
@@ -71,11 +73,12 @@ module DockerApiImages
     thr.exit unless thr.nil?
   end
 
-  def delete_image(image_name)
+  def delete_image(image_name, wait = false)
     thr = Thread.new { delete_request({uri: '/images/' + image_name}) }
     thr[:name] = 'Docker delete image:' + image_name.to_s
+      thr.join if wait == true
   rescue StandardError => e
-    SystemUtils.log_exception(e , 'delete_image:' + image_name)
+    SystemUtils.log_exception(e , 'delete_image:' + image_name.to_s)
     thr.exit unless thr.nil?
   end
 
