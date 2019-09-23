@@ -67,7 +67,7 @@ module DockerHttp
     fillin_params(p)
 
     p[:content] = '' if p[:content].nil?
-    sc = stream_connection(p[:stream_handler])
+    sc = stream_connection(p)
 
     if p[:stream_handler].method(:has_data?).call == false
       if  p[:headers]['Content-Type'] == 'application/json'
