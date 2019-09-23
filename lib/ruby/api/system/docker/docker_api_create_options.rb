@@ -4,9 +4,9 @@ module DockerApiCreateOptions
   end
   require '/opt/engines/lib/ruby/api/system/container_state_files.rb'
 
-  require_relative 'options/mount_options.rb'
-  require_relative 'options/ports.rb'
-  require_relative 'options/dns.rb'
+  require_relative 'create_options/mount_options.rb'
+  require_relative 'create_options/ports.rb'
+  require_relative 'create_options/dns.rb'
 
   def create_options(container)
     @top_level = build_top_level(container)
@@ -118,7 +118,6 @@ module DockerApiCreateOptions
       'Volumes' => {},
       'WorkingDir' => '',
       'NetworkDisabled' => false,
-
       'StopSignal' => 'SIGTERM',
       #       "StopTimeout": 10,
       'Hostname' => hostname(container),

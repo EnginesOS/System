@@ -30,7 +30,7 @@ class Streamer
     end
   end
 
-  def  process_request(stream_reader)
+  def process_request(stream_reader)
     @stream_reader = stream_reader
     write_thread = nil
     read_thread = nil
@@ -43,7 +43,7 @@ class Streamer
             
             chunk = @stream_reader.i_stream.readpartial(2048)
             socket.write(chunk)
-            STDERR.puts('COPY STREAMS ' +  @stream_reader.i_stream.eof?.to_s)
+            #STDERR.puts('COPY STREAMS ' +  @stream_reader.i_stream.eof?.to_s)
             #IO.copy_stream(@stream_reader.i_stream, socket) unless @stream_reader.i_stream.eof?
           end
         #   STDERR.puts('CLSING')
@@ -56,7 +56,7 @@ class Streamer
       read_thread = Thread.start do
         read_thread[:name] = 'docker_stream_reader'
         begin
-          STDERR.puts('Socket ' + socket.inspect)       
+         # STDERR.puts('Socket ' + socket.inspect)       
           while chunk = socket.readpartial(32768)
             #puts chunk.to_s
             puts(' got a chunk' + chunk.to_s)
@@ -68,7 +68,7 @@ class Streamer
         end
         write_thread.kill
       end
-      STDERR.puts('JOINS')
+   #   STDERR.puts('JOINS')
       write_thread.join unless write_thread.nil?
       read_thread.join unless read_thread.nil?
       @stream_reader.o_stream.close unless @stream_reader.o_stream.nil?

@@ -1,8 +1,12 @@
-module DockerUtils
-  @@missing=0  
+module DockerHijack
+
+  require_relative 'decoder/docker_decoder.rb'
+  
+  @@missing=0
   @@dst = :stdout
   def self.process_request(stream_reader) #data , result, stdout_stream=nil, istream=nil)
     @stream_reader = stream_reader
+    @decoder = DockerDecoder.new
     return_result = @stream_reader.result
     write_thread = nil
     read_thread = nil
@@ -41,7 +45,7 @@ module DockerUtils
               end
             end
           else
-           # STDERR.puts('send data:' + stream_reader.data.to_s)
+            # STDERR.puts('send data:' + stream_reader.data.to_s)
             STDERR.puts('send data:' + stream_reader.data.class.name) unless stream_reader.data.nil?
             unless stream_reader.data.nil? || stream_reader.data.length == 0
               if stream_reader.data.length < Excon.defaults[:chunk_size]
@@ -49,7 +53,7 @@ module DockerUtils
                 STDERR.puts('sent data as one chunk ' )#+ stream_reader.data.to_s)
                 stream_reader.data = ''
               else
-                    STDERR.puts('send data as chunks ')
+                STDERR.puts('send data as chunks ')
                 while stream_reader.data.length != 0
                   if stream_reader.data.length > Excon.defaults[:chunk_size]
                     socket.send(stream_reader.data.slice!(0, Excon.defaults[:chunk_size]), 0)
@@ -69,16 +73,16 @@ module DockerUtils
       read_thread = Thread.start do
         read_thread[:name] = 'docker_stream_reader'
         begin
-          STDERR.puts('readpartial process_request')          
+          STDERR.puts('readpartial process_request')
           while chunk = socket.readpartial(32768)
             STDERR.puts("read chunk ", chunk.to_s)
             if @stream_reader.out_stream.nil?
-              DockerUtils.docker_stream_as_result(chunk, return_result)
+              @decoder.docker_stream_as_result({chunk: chunk, result: return_result})
             else
               STDERR.puts("read as stream")
-              r = DockerUtils.decode_from_docker_chunk(chunk, true, @stream_reader.out_stream)
-              end
-              return_result[:stderr] = return_result[:stderr].to_s + r[:stderr].to_s unless r.nil?
+              r = @decoder.decode_from_docker_chunk({chunk: chunk, binary: true, stream: @stream_reader.out_stream})
+            end
+            return_result[:stderr] = return_result[:stderr].to_s + r[:stderr].to_s unless r.nil?
           end
           STDERR.puts("read doen")
         rescue EOFError => e
@@ -92,7 +96,7 @@ module DockerUtils
       read_thread.join unless read_thread.nil?
       @stream_reader.stdout_stream.close unless @stream_reader.stdout_stream.nil?
       @stream_reader.i_stream.close unless @stream_reader.i_stream.nil?
-   #   STDERR.puts("Closed")
+      #   STDERR.puts("Closed")
     end
   rescue StandardError => e
     STDERR.puts('PROCESS Execp' + e.to_s + ' ' + e.backtrace.to_s )
@@ -100,92 +104,4 @@ module DockerUtils
     read_thread.kill unless read_thread.nil?
   end
 
-  def self.decode_from_docker_chunk(chunk, binary = true, stream = nil)
-    r = {
-      stderr: '',
-      stdout: ''
-    }
-    self.docker_stream_as_result(chunk, r, binary, stream )
-    r
-  end
-
-  def self.docker_stream_as_result(chunk, result, binary = true, stream = nil)
-
-    #  def data_length(l)
-    #    l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
-    #  end
-    unmatched = false
-    
-    unless result.nil?
-      result[:stderr] = '' unless result.key?(:stderr)
-      result[:stdout] = '' unless result.key?(:stdout)
-      cl = 0
-      unless chunk.nil?
-        while chunk.length > 0
-          if chunk[0].nil?
-            return result if chunk.length == 1
-            STDERR.puts('Skipping nil ')
-            chunk = chunk[1..-1]
-            next
-          end
-          if @@missing != 0
-            cl = @@missing
-          #  STDERR.puts('OUT ' + @@missing.to_s + ' to ' + @@dst.to_s) 
-            @@missing = 0
-          elsif chunk.start_with?("\u0001\u0000\u0000\u0000")
-            @@dst = :stdout
-            l = chunk[0..7].unpack('C*')
-            cl = l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
-            chunk = chunk[8..-1]
-           # STDERR.puts('STDOUT ' + cl.to_s + ':' + chunk.length.to_s)
-          elsif chunk.start_with?("\u0002\u0000\u0000\u0000")
-            @@dst = :stderr
-            l = chunk[0..7].unpack('C*')
-            cl = l[7] + l[6] * 256 + l[5] * 4096 + l[4] * 65536 + l[3] * 1048576
-         #   STDERR.puts('STDERR ' + cl.to_s )
-            chunk = chunk[8..-1]
-          elsif chunk.start_with?("\u0000\u0000\u0000\u0000")
-            @@dst = :stdout
-            chunk = chunk[8..-1]
-          #  STDERR.puts('Matched \0\0\0')
-          else
-          #  STDERR.puts('UNMATCHED ' +  chunk.length.to_s)#chunk.to_s)#.length.to_s)
-            @@dst = :stdout
-            unmatched = true
-          end
-          return result if chunk.nil?
-
-          unless unmatched == true
-            length = cl
-          else
-            length = chunk.length
-          end
-
-          if length > chunk.length
-            @@missing = length - chunk.length
-    #        STDERR.puts('WARNING length > actual' + length.to_s + ' bytes length .  actual ' + chunk.length.to_s)
-            length = chunk.length
-          end
-          #   STDERR.puts('len ' + length.to_s + ' bytes length .  actual ' + r.length.to_s)
-          unless stream.nil?
-            #result[@@dst]= chunk[0..length-1]
-            stream.write(chunk[0..length-1])
-          else
-          result[@@dst] += chunk[0..length-1]
-          end
-          chunk = chunk[length..-1]
-     #     if chunk.length > 0
-     #       STDERR.puts('Continuation')
-     #     end
-        end
-      end
-      # result actually set elsewhere after exec complete
-      result[:result] = 0
-      unless binary
-        result[:stdout].force_encoding(Encoding::UTF_8) unless result[:stdout].nil? || ! stream.nil?
-        result[:stderr].force_encoding(Encoding::UTF_8) unless result[:stderr].nil? 
-      end
-    end
-    result
-  end
 end

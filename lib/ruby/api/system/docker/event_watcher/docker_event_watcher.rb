@@ -200,8 +200,6 @@ class DockerEventWatcher < ErrorsApi
 
   def trigger(hash)
     fill_in_event_system_values(hash)
-    # STDERR.puts(' Triggering: ' + hash[:status].to_s )
-    #   @events_mutex.synchronize {
     l = @event_listeners.sort_by { |k, v| v[:priority] }
     #  }
     #    STDERR.puts(' Trigger ' + hash.to_s)

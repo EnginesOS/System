@@ -1,5 +1,5 @@
-#!/bin/bash
+#!/bin/sh
 
 
-#FixME make a sinatra framework
+
  usermod -G containers -a www-data

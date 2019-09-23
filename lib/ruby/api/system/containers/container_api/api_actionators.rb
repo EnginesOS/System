@@ -10,13 +10,13 @@ module ApiActionators
     else
       stream = nil
     end
-
+    
     cmds = ['/home/engines/scripts/actionators/' + actionator[:name].to_s + '.sh']
     req =
     {container: c,
       command_line: cmds,
-      log_error:  true,
-      stdin_stream: stream}
+      log_error:  true }
+    req[:stdin_stream] = stream unless stream.nil?
 
     if  params.is_a?(Hash)
       req[:action_params] = params
@@ -29,7 +29,9 @@ module ApiActionators
     if result[:result] == 0
       if result[:stdout].start_with?('{') || result[:stdout].start_with?('"{')
         begin
-          deal_with_json(result[:stdout]) if actionator[:return_type] == 'json'
+          # deal_with_json(result[:stdout]) if actionator[:return_type] == 'json'
+          parser = Yajl::Parser.new({:symbolize_keys => true})
+          result[:stdout] = parser.parse(result[:stdout])
         rescue
           result[:stdout]
         end
@@ -39,6 +41,7 @@ module ApiActionators
         result[:stdout]
       end
     else
+      raise EnginesException.new(warning_hash('Error on starting action ' + c.container_name.to_s + ':' + actionator[:name].to_s , result)) if result[:result].nil?
       raise EnginesException.new(warning_hash('Error on performing action ' + c.container_name.to_s + ':' + actionator[:name].to_s , result)) if result[:result] < 127
       raise EnginesException.new(error_hash('Error on performing action ' + c.container_name.to_s + ':' + actionator[:name].to_s , result))
     end
