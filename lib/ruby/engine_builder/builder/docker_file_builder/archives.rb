@@ -11,6 +11,10 @@ module Archives
         archive_details[:extraction_command] = 'false' if archive_details[:extraction_command].nil?
 
         pn = archive_details[:package_name].to_s
+          if pn.nil?
+          STDERR.puts(" Nil package name" + archive_details.to_s)
+          next
+        end
         extraction_command = archive_details[:extraction_command].to_s
         path_to_extracted = archive_details[:path_to_extracted].to_s
         path_to_extracted ='/' if path_to_extracted.nil? || path_to_extracted == ''
