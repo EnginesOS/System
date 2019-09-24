@@ -32,7 +32,7 @@ echo Install to $destination
 
  if test "$download_type" = 'git'
   then   
-    if ! test -z git_username
+    if ! test -z $git_username
       then
        url=`echo $source_url |sed "/https:../s///"`
        source_url=https://${git_username}:${git_password}@$url

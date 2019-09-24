@@ -32,12 +32,7 @@ echo Install to $destination
 
 
  if test "$dl_type" = 'git'
-  then
-#    if ! test -z $git_username
-#      then
-#       url=`echo $source_url |sed "/https:../s///"`
-#       source_url=https://${git_username}:${git_password}@$url
-#   fi    
+  then  
   	git  clone $download_options --depth 1  $source_url "./$path_to_extracted"
   elif  test -z "$extraction_command" 
   	 then
