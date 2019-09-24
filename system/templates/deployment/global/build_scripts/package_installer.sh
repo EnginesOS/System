@@ -80,6 +80,10 @@ if test -d  $destination
  		cp -rp "./$path_to_extracted/." $destination
  	 fi
  else
+  if ! test -d `dirname $destination`
+   then
+  	 mkdir -p `dirname $destination`
+  fi
  	mv "./$path_to_extracted" $destination
 fi
 if test -f /tmp/$path_to_extracted
