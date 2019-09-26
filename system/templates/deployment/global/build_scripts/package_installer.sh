@@ -32,7 +32,7 @@ echo Install to $destination
 
  if test "$download_type" = 'git'
   then   
-    if ! test -z git_username
+    if ! test -z $git_username
       then
        url=`echo $source_url |sed "/https:../s///"`
        source_url=https://${git_username}:${git_password}@$url
@@ -80,6 +80,12 @@ if test -d  $destination
  		cp -rp "./$path_to_extracted/." $destination
  	 fi
  else
+  echo moving ./$path_to_extracted $destination `dirname $destination`
+  
+  if ! test -d `dirname $destination`
+   then
+  	 mkdir -p `dirname $destination`
+  fi
  	mv "./$path_to_extracted" $destination
 fi
 if test -f /tmp/$path_to_extracted

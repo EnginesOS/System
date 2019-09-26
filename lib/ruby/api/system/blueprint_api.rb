@@ -62,6 +62,8 @@ class BlueprintApi < ErrorsApi
       merge_bp_entry(blueprint, parent, :actionators) 
       merge_bp_entry(blueprint, parent, :installed_packages)
       merge_bp_entry(blueprint, parent, :workers)
+      merge_bp_entry(blueprint, parent, :persistent_files)
+      merge_bp_entry(blueprint, parent, :persistent_directories)
       merge_bp_entry(blueprint, parent, :replacement_strings)
       merge_bp_entry(blueprint, parent, :system_packages)
       merge_bp_entry(blueprint, parent, :ports)

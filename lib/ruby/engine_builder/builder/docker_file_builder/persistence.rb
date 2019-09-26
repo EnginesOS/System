@@ -1,6 +1,6 @@
 def write_persistent_files
   unless @blueprint_reader.persistent_files.nil?
-    write_comment('#Persistant Files')
+    write_comment('#Persistant Files' + @blueprint_reader.persistent_files.to_s)
     log_build_output('set setup_env')
     paths = ''
     src_paths = @blueprint_reader.persistent_files

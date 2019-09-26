@@ -158,6 +158,7 @@ class BluePrintReader
     log_build_output('Read Persistant Dirs')
     @persistent_dirs = []
     pds = @blueprint[:software][:persistent_directories]
+    log_build_output('loading persistent dirs ' + pds.to_s)
     if pds.is_a?(Array) # not an error just nada
       pds.each do |dir|
         dir[:volume_name] = @builder.templater.process_templated_string(dir[:volume_name])
@@ -171,6 +172,7 @@ class BluePrintReader
     log_build_output('Read Persistant Files')
     @persistent_files = []
     pfs = @blueprint[:software][:persistent_files]
+    log_build_output('loading persistent files ' + pfs.to_s)
     if pfs.is_a?(Array) # not an error just nada
       pfs.each do |file|
         file[:volume_name] = @builder.templater.process_templated_string(file[:volume_name])
@@ -178,6 +180,7 @@ class BluePrintReader
         @persistent_files.push(file)
       end      
     end
+    STDERR.puts('loaded persistent files ' + @persistent_files.to_s)
       @persistent_files
   end
 
