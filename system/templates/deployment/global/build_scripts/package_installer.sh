@@ -81,6 +81,7 @@ if test -d  $destination
  	 fi
  else
   echo moving ./$path_to_extracted $destination `dirname $destination`
+  
   if ! test -d `dirname $destination`
    then
   	 mkdir -p `dirname $destination`
