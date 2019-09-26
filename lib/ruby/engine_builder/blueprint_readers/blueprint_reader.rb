@@ -178,6 +178,7 @@ class BluePrintReader
         @persistent_files.push(file)
       end      
     end
+    STDERR.puts('loaded persistent files ' + @persistent_files.to_s)
       @persistent_files
   end
 
