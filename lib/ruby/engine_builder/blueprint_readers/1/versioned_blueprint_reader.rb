@@ -61,9 +61,9 @@ class VersionedBlueprintReader < BluePrintReader
         if template_file.nil? == false
           src_file = '/home/engines/templates/' + template_file
         else
-          src_file = '/home/app/' + file
+          src_file = '/home/app/' + file unless file.start_with?('/home/app/')
         end
-        dest_file = '/home/app/' + dest
+        dest_file = '/home/app/' + dest unless dest.start_with?('/home/app/')
         sedstr = sed[:string]
         @sed_strings[:src_file].push(src_file)
         @sed_strings[:dest_file].push(dest_file)
