@@ -158,7 +158,7 @@ class BluePrintReader
     log_build_output('Read Persistant Dirs')
     @persistent_dirs = []
     pds = @blueprint[:software][:persistent_directories]
-    log_build_output('loading persistent files ' + pds.to_s)
+    log_build_output('loading persistent dirs ' + pds.to_s)
     if pds.is_a?(Array) # not an error just nada
       pds.each do |dir|
         dir[:volume_name] = @builder.templater.process_templated_string(dir[:volume_name])
