@@ -16,36 +16,19 @@ module Containers
     #    container.last_result = ''
     #synchronise ?
     serialized_object = YAML.dump(container)
-    state_dir = container_state_dir(container)
-    FileUtils.mkdir_p(state_dir) if Dir.exist?(state_dir) == false
-    statefile = state_dir + '/running.yaml'
+
     # BACKUP Current file with rename
+    statefile = state_file(container, true) 
     log_error_mesg('container locked', container.container_name) unless lock_container_conf_file(state_dir)
-    if File.exist?(statefile)
-      statefile_bak = statefile + '.bak'
-      begin
-      if File.exist?(statefile_bak)
-        #double handle in case fs full 
-        #if fs full mv fails and delete doesn't happen
-        FileUtils.mv(statefile_bak,statefile_bak + '.bak')        
-        #Fixme check statefile is valid before over writing a good backup
-        File.rename(statefile, statefile_bak)
-        File.delete(statefile_bak + '.bak')
-      else 
-        File.rename(statefile, statefile_bak)
-      end                
-      rescue StandardError => e
-      end
-    end
+    backup_statefile(statefile)
     f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0600) # was statefile + '_tmp
     begin
       f.puts(serialized_object)
       f.flush()
-      f.close
       #Do it this way so a failure to write doesn't trash a working file
-    #  FileUtils.mv(statefile + '_tmp', statefile) if File.exist?(statefile + '_tmp')
+      #  FileUtils.mv(statefile + '_tmp', statefile) if File.exist?(statefile + '_tmp')
     ensure
-      f.close unless f.nil?          
+      f.close unless f.nil?
     end
     begin
       ts =  File.mtime(statefile)
@@ -73,13 +56,12 @@ module Containers
     unless actionators.nil?
       Dir.mkdir_p(actionator_dir(container)) unless Dir.exist?(actionator_dir(container))
       serialized_object = YAML.dump(actionators)
-
       f = File.new(actionator_dir(container) + '/actionators.yaml', File::CREAT | File::TRUNC | File::RDWR, 0644)
       begin
-      f.puts(serialized_object)
-      f.flush()
+        f.puts(serialized_object)
+        f.flush()
       ensure
-      f.close
+        f.close
       end
     end
   end
@@ -87,8 +69,8 @@ module Containers
   def get_service_actionator(container, action)
     actionators = load_service_actionators(container)
     # STDERR.puts(' ACITONATORS ' + actionators.to_s)
-   # STDERR.puts('LOOKING 4 ' + action.to_s)
-   # STDERR.puts('is it ' + actionators[action.to_sym].to_s)
+    # STDERR.puts('LOOKING 4 ' + action.to_s)
+    # STDERR.puts('is it ' + actionators[action.to_sym].to_s)
     actionators[action.to_sym]
   end
 
@@ -108,21 +90,51 @@ module Containers
 
   def get_engine_actionator(container, action)
     actionators = load_engine_actionators(container)
-#    SystemDebug.debug(SystemDebug.actions, container, actionators[action]) #.to_sym])
+    #    SystemDebug.debug(SystemDebug.actions, container, actionators[action]) #.to_sym])
     #  STDERR.puts('ACRTION ' + action.to_s)
     actionators[action]
   end
 
   def load_engine_actionators(container)
- #   SystemDebug.debug(SystemDebug.actions, container, actionator_dir(container) + '/actionators.yaml')
+    #   SystemDebug.debug(SystemDebug.actions, container, actionator_dir(container) + '/actionators.yaml')
     if File.exist?(actionator_dir(container) + '/actionators.yaml')
       yaml = File.read(actionator_dir(container) + '/actionators.yaml')
       actionators = YAML::load(yaml)
- #     SystemDebug.debug(SystemDebug.actions,container ,actionators)
+      #     SystemDebug.debug(SystemDebug.actions,container ,actionators)
       actionators if actionators.is_a?(Hash)
     else
       {}
     end
   end
 
+  private
+
+  def backup_state_file(statefile)
+    if File.exist?(statefile)
+      statefile_bak = statefile + '.bak'
+
+      begin
+        if File.exist?(statefile_bak)
+          #double handle in case fs full
+          #if fs full mv fails and delete doesn't happen
+          FileUtils.mv(statefile_bak,statefile_bak + '.bak')
+          #Fixme check statefile is valid before over writing a good backup
+          File.rename(statefile, statefile_bak)
+          File.delete(statefile_bak + '.bak')
+        else
+          File.rename(statefile, statefile_bak)
+        end
+      rescue StandardError => e
+      end
+    end
+  end
+  
+  def state_file(container, create = false)
+    FileUtils.mkdir_p(state_dir) if Dir.exist?(state_dir) == false && create == true
+    state_dir + '/running.yaml'
+  end
+
+  def state_dir
+    container_state_dir(container)
+  end
 end
