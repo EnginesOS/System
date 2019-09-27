@@ -14,7 +14,6 @@ module Containers
     #    #  last_error = container.last_error
     #    # save_last_result_and_error(container)
     #    container.last_result = ''
-
     #synchronise ?
     serialized_object = YAML.dump(container)
     state_dir = container_state_dir(container)
@@ -28,11 +27,13 @@ module Containers
       if File.exist?(statefile_bak)
         #double handle in case fs full 
         #if fs full mv fails and delete doesn't happen
-        FileUtils.mv(statefile_bak,statefile_bak + '.bak')
+        FileUtils.mv(statefile_bak,statefile_bak + '.bak')        
         #Fixme check statefile is valid before over writing a good backup
         File.rename(statefile, statefile_bak)
         File.delete(statefile_bak + '.bak')
-      end
+      else 
+        File.rename(statefile, statefile_bak)
+      end                
       rescue StandardError => e
       end
     end
