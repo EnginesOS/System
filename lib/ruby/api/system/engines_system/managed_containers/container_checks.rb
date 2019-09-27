@@ -18,6 +18,8 @@ module ContainerChecks
       if containers_status[container_name][:error] == true
         begin
           result[container_name] = act_on(container_name, ctype)
+          # FixME use a fcntl or something to wait
+          sleep 1
         rescue StandardError
         end
       else
