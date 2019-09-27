@@ -22,7 +22,7 @@ module EnginesApiSystem
     environments.each do |env|
       if env.name == env_hash[:name]
         env.value = env_hash[:value]
-          d_set = true
+        d_set = true
         next
       end
     end
@@ -34,7 +34,7 @@ module EnginesApiSystem
   end
 
   def delete_engine(container)
- #   SystemDebug.debug(SystemDebug.containers,  :container_api_delete_engine, container)
+    #   SystemDebug.debug(SystemDebug.containers,  :container_api_delete_engine, container)
     @system_api.rm_engine_from_cache(container.container_name)
     volbuilder = @engines_core.loadManagedUtility('fsconfigurator')
     @system_api.delete_container_configs(volbuilder, container)
@@ -137,7 +137,11 @@ module EnginesApiSystem
       cron_entry = @engines_core.retreive_cron_entry(cronjob, container)
       # STDERR.puts(' retreive cron entry from engine registry ' + cron_entry.to_s + ' from ' + cronjob.to_s )
       raise EnginesException.new(error_hash('nil cron line ' + cronjob.to_s )) if cron_entry.nil?
-      r = @engines_core.exec_in_container({:container => container, :command_line => cron_entry.split(" "), :log_error => true, :data => nil})
+      r = @engines_core.exec_in_container({container: container,
+        command_line: cron_entry.split(" "),
+        log_error: true,
+        data: nil,
+        timeout:  210})
       raise EnginesException.new(error_hash('Cron job un expected result', r)) unless r.is_a?(Hash)
       r[:stdout] + r[:stderr]
     else
