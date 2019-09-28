@@ -22,12 +22,20 @@ module Containers
     statedir =   container_state_dir(container)
     log_error_mesg('container locked', container.container_name) unless lock_container_conf_file(statefile)
     backup_state_file(statefile)
-    f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0600) # was statefile + '_tmp
+    f = File.new(statefile + '_tmp', File::CREAT | File::TRUNC | File::RDWR, 0600) # was statefile + '_tmp
     begin
       f.puts(serialized_object)
       f.flush()
       #Do it this way so a failure to write doesn't trash a working file
-      #  FileUtils.mv(statefile + '_tmp', statefile) if File.exist?(statefile + '_tmp')
+      if File.exist?(statefile + '_tmp')
+        #FixMe check valid yaml
+       FileUtils.mv(statefile + '_tmp', statefile)
+      else
+        roll_back(statefile)      
+      end 
+    rescue 
+      STDERR.puts('Exception in writing Rolling back')
+      roll_back(statefile)      
     ensure
       f.close unless f.nil?
     end
@@ -70,7 +78,7 @@ module Containers
         else
           File.rename(statefile, statefile_bak)
         end
-      rescue StandardError => e
+      #rescue StandardError => e
       end
     end
   end
@@ -81,5 +89,8 @@ module Containers
     state_dir + '/running.yaml'
   end
 
+  def roll_back(statefile)
+    FileUtils.mv(statefile + '.bak', statefile)
+  end
  
 end
