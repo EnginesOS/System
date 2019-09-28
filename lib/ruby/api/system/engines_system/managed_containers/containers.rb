@@ -51,7 +51,6 @@ module Containers
   rescue StandardError => e
     unlock_container_conf_file(statedir)
     container.last_error = last_error unless container.nil?
-    # FIXME: Need to rename back if failure
     SystemUtils.log_exception(e)
   ensure
     unlock_container_conf_file(statedir)
@@ -78,7 +77,7 @@ module Containers
         else
           File.rename(statefile, statefile_bak)
         end
-      #rescue StandardError => e
+      rescue StandardError => e
       end
     end
   end
