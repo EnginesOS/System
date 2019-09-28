@@ -46,7 +46,9 @@ module DockerApiImages
     end
     STDERR.puts(' Pulling ' + request.to_s)
     headers = { 'X-Registry-Config'  => registry_root_auth, 'Content-Type' =>'plain/text', 'Accept-Encoding' => 'gzip'}
-    post_request({uri: request, expect_json: false, headers: headers, time_out: 600})
+    r = post_request({uri: request, expect_json: false, headers: headers, time_out: 600})
+    STDERR.puts('Docker pull got' + r.to_s)
+    r
   rescue StandardError =>e
     STDERR.puts('docker image pull got ' + e.to_s)
     false #No new fresh ?
