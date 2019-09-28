@@ -76,8 +76,9 @@ module Containers
   end
   
   def state_file(container, create = true)
+    state_dir = container_state_dir(container) 
     FileUtils.mkdir_p(state_dir) if Dir.exist?(state_dir) == false && create == true
-    container_state_dir(container)  + '/running.yaml'
+    state_dir + '/running.yaml'
   end
 
  
