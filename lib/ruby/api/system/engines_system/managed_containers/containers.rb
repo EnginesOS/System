@@ -21,7 +21,7 @@ module Containers
     statefile = state_file(container, true) 
     statedir =   container_state_dir(container)
     log_error_mesg('container locked', container.container_name) unless lock_container_conf_file(statefile)
-    backup_statefile(statefile)
+    backup_state_file(statefile)
     f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0600) # was statefile + '_tmp
     begin
       f.puts(serialized_object)
