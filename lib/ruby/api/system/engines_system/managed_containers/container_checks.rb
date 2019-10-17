@@ -19,7 +19,7 @@ module ContainerChecks
         begin
           result[container_name] = act_on(container_name, ctype)
           # FixME use a fcntl or something to wait
-          sleep 1
+      # sleep 1
         rescue StandardError
         end
       else
@@ -39,7 +39,10 @@ module ContainerChecks
     else
       container = loadSystemService(container_name)
     end
-    container.correct_current_state
+    if container.correct_current_state == true
     'fixed'
+    else
+      'broken'
+    end  
   end
 end
