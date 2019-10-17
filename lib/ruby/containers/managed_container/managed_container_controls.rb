@@ -261,7 +261,7 @@ module ManagedContainerControls
     when 'paused'
       pause_container unless is_active?
     else
-      'fail'
+      false
     end
   end
 
