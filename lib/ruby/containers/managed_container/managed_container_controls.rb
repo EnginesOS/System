@@ -269,7 +269,7 @@ module ManagedContainerControls
 
   def prep_task(action_sym)
     tah = task_at_hand
-    STDERR.puts('TAH ' + tah.to_s)
+    STDERR.puts("TAH   #{tah} action #{action_sym}")
     ##  unless tah.nil?
     #    SystemDebug.debug(SystemDebug.containers, 'saved task at hand', tah, 'next', action_sym)
     #  end
