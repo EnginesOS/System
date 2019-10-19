@@ -119,7 +119,7 @@ def handle_resp(resp, expect_json = true)
    #o = json_parser.parse(resp.body)
     #o = JSON.parse(resp.body)
     # STDERR.puts('O IS' + o.class.name)
-    o.to_s
+    #o.to_s
   else
     if r.nil?
       resp.body
