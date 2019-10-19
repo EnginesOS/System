@@ -57,6 +57,7 @@ module ManagedContainerOnAction
 
   def on_stop(what, exit_code = 0)
     @exit_code = exit_code
+    STDERR.puts("ONStop_CALLED, #{what}")
   #  SystemDebug.debug(SystemDebug.container_events, :ONStop_CALLED, what)
     @stop_reason = what if @stop_reason.nil?
     if what == 'die'
