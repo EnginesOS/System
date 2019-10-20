@@ -64,21 +64,25 @@ module EnginesOperations
   def reinstall_engine(engine)
     r = false
     @system_api.trigger_engine_event(engine, 'reinstalling', 'reinstall')
-    engine.destroy_container(true) if engine.has_container?
+    if engine.has_container?
+      engine.destroy_container(true)
+      engine.wait_for('destroy', 30)
+    end
+    
     params = {
       engine_name: engine.container_name,
       reinstall: true
     }
-    engine.wait_for('destroy', 30)
-   # delete_engine_and_services(params)
+
+    # delete_engine_and_services(params)
     builder = BuildController.new(self)
     @build_thread = Thread.new { engine.reinstall_engine(builder) }
     @build_thread[:name] = 'reinstall engine'
     unless @build_thread.alive?
       @system_api.trigger_engine_event(engine, 'fail', 'reinstall')
-      raise EnginesException.new(error_hash(params[:engine_name], 'Build Failed to start'))  
+      raise EnginesException.new(error_hash(params[:engine_name], 'Build Failed to start'))
     else
-      r = true     
+      r = true
     end
     r
   rescue StandardError => e
@@ -163,7 +167,7 @@ module EnginesOperations
                 {lost: true, container_type: 'app', remove_all_data: 'none', parent_engine: name})
               rescue StandardError =>e
               end
-              # here find services on engine but not on service              
+              # here find services on engine but not on service
               services = get_engine_persistent_services({ parent_engine: name})
               #        STDERR.puts(' remove_service_from_engine_only ' +services.to_s)
               services.each do |service|
