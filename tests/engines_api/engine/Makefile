@@ -1,8 +1,8 @@
 TESTS=prepare state stop start pause unpause engine status blueprint websites logs ps template mem_stat net_stat\
 	blueprint build_report properties_net properties_run\
 	actions cron services \
-	halt start restart create recreate destroy reinstall delete 
- 
+	start restart create recreate reinstall delete 
+ #halt
 	
 tests:
 	echo -n "\033[0;31m Engine tests \033[0;30m\n"
@@ -100,6 +100,7 @@ properties_env:
 destroy:
 	engines engine enginetest stop  | engines_test_expects bool true
 	engines engine enginetest wait_for stop 20 | engines_test_expects bool true
+	sleep 8
 	engines engine enginetest destroy  | engines_test_expects bool true
 	engines engine enginetest wait_for destroy 20 | engines_test_expects bool true
 	echo -n " Checking:"
@@ -108,6 +109,7 @@ destroy:
 create:
 	engines engine enginetest stop  | engines_test_expects bool true
 	engines engine enginetest wait_for stop 20 | engines_test_expects bool true
+	sleep 8
 	engines engine enginetest destroy  | engines_test_expects bool true
 	engines engine enginetest wait_for destroy 20 | engines_test_expects bool true
 	engines engine enginetest create  | engines_test_expects bool true
@@ -118,12 +120,18 @@ create:
 recreate:
 	engines engine enginetest stop | engines_test_expects bool true
 	engines engine enginetest wait_for stop 20 | engines_test_expects bool true
+	sleep 8
 	engines engine enginetest recreate | engines_test_expects bool true
 	engines engine enginetest wait_for start 20 | engines_test_expects bool true
 	echo -n " Checking:"
 	engines engine enginetest state | engines_test_expects text is running
 	
 reinstall:
+	engines engine enginetest stop | engines_test_expects bool true
+	sleep 8
+	engines engine enginetest wait_for stop 20 | engines_test_expects bool true
+	engines engine enginetest destroy | engines_test_expects bool true
+	engines engine enginetest wait_for destroy 30 | engines_test_expects bool true
 	engines engine enginetest reinstall | engines_test_expects bool true
 	engines engine enginetest wait_for start 220 | engines_test_expects bool true	
 	echo -n " Checking:"
