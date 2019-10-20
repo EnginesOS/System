@@ -33,7 +33,7 @@ module PublicApiBuilder
           retry
         rescue EOFError
           out.write(bytes.force_encoding(Encoding::UTF_8))
-          'OK'
+        # 'OK.' 
         rescue => e
           out.write(bytes)
           'Maybe ' + e.to_s
