@@ -105,7 +105,7 @@ def handle_resp(resp, expect_json = true)
       r = 'fail'
     end
   elsif resp.status == 204   # nodata but all good happens on del
-    r = 'OK'
+    r = 'true'
   elsif resp.status >= 200 && resp.status < 300
     resp.body
   else
