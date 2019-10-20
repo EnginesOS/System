@@ -62,6 +62,7 @@ module EnginesOperations
 
   #install from fresh copy of blueprint in repository
   def reinstall_engine(engine)
+    r = false
     @system_api.trigger_engine_event(engine, 'reinstalling', 'reinstall')
     engine.destroy_container(true) if engine.has_container?
     params = {
@@ -75,11 +76,14 @@ module EnginesOperations
     @build_thread[:name] = 'reinstall engine'
     unless @build_thread.alive?
       @system_api.trigger_engine_event(engine, 'fail', 'reinstall')
-      raise EnginesException.new(error_hash(params[:engine_name], 'Build Failed to start'))
+      raise EnginesException.new(error_hash(params[:engine_name], 'Build Failed to start'))  
+    else
+      r = true     
     end
+    r
   rescue StandardError => e
     @system_api.trigger_engine_event(engine, 'fail', 'reinstall')
-    SystemUtils.log_exception(e , 'reinstall_engine:' + params)
+    SystemUtils.log_exception(e, 'reinstall_engine:' + params)
     thr.exit unless thr.nil?
   end
 
