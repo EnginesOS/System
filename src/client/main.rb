@@ -105,7 +105,7 @@ def handle_resp(resp, expect_json = true)
       r = 'fail'
     end
   elsif resp.status == 204   # nodata but all good happens on del
-    r = 'OK'
+    r = 'true'
   elsif resp.status >= 200 && resp.status < 300
     resp.body
   else
@@ -115,10 +115,11 @@ def handle_resp(resp, expect_json = true)
   # STDERR.puts('GOT body ' + resp.body + "\nas JSON:" +  expect_json.to_s)
   if expect_json == true && r.nil?
      # STDERR.puts('GOT JSON' + resp.body)
-    o = json_parser.parse(resp.body)
+    resp.body
+   #o = json_parser.parse(resp.body)
     #o = JSON.parse(resp.body)
     # STDERR.puts('O IS' + o.class.name)
-    o.to_s
+    #o.to_s
   else
     if r.nil?
       resp.body

@@ -33,7 +33,7 @@ image: _Engines_System(flavor)/cadvisor:_Engines_System(release)
 port: 
 repo: na
 last_result: 
-setState: running
+setState: nocontainer
 conf_register_site: false
 conf_register_dns: true
 dependant_on:

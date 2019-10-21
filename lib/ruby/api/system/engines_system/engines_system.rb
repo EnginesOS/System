@@ -41,7 +41,10 @@ class SystemApi < ErrorsApi
 
   require_relative 'managed_containers/containers'
   include Containers
-
+  
+  require_relative 'managed_containers/container_actionators.rb'
+  include ContainerActionators
+  
   require_relative 'managed_containers/engines.rb'
   include Engines
 
