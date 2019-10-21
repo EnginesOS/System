@@ -1,3 +1,5 @@
+require_relative 'cache'
+
 module Services
   def getManagedServices
     get_services_by_type('service')
@@ -20,20 +22,25 @@ module Services
   end
 
   def loadManagedService(service_name)
-    s = engine_from_cache('services/' + service_name)
-    unless s.is_a?(ManagedService)
+    s = cache.container('services/' + service_name)
+    unless s.is_a?(Container::ManagedService)
       if service_name == 'system'
         s = loadSystemService(service_name)
       else
         s = _loadManagedService(service_name, '/services/')
         ts = File.mtime(SystemConfig.RunDir + '/services/' + service_name + '/running.yaml')
-        cache_engine(s, ts)
+        cache.add(s, ts)
       end
     end
     s
   end
 
+
   private
+
+  def cache
+    Container::Cache.instance
+  end
 
   def get_services_by_type(type = 'service')
     services = _list_services(type)
@@ -43,7 +50,7 @@ module Services
         begin
           service = loadManagedService(service_name) if type == 'service'
           service = loadSystemService(service_name) if type == 'system_service'
-          ret_val.push(service) if service.is_a?(ManagedService)
+          ret_val.push(service) if service.is_a?(Container::ManagedService)
         rescue # skip bad loads
         end
       end
@@ -76,8 +83,11 @@ module Services
     yaml_file = File.read(yam1_file_name)
     unlock_container_conf_file(SystemConfig.RunDir + service_type_dir + service_name)
     STDERR.puts('Panic nill  engine_api') if @engines_api.nil?
-    managed_service = SystemService.from_yaml(yaml_file, @engines_api.service_api) if service_type_dir ==  '/system_services/'
-    managed_service = ManagedService.from_yaml(yaml_file, @engines_api.service_api)
+    managed_service = if service_type_dir ==  '/system_services/'
+      Container::SystemService.from_yaml(yaml_file, @engines_api.service_api)
+    else
+      Container::ManagedService.from_yaml(yaml_file, @engines_api.service_api)
+    end
     raise EnginesException.new(error_hash('Failed to load ' + yam1_file_name.to_s , yaml_file)) if managed_service.nil?
     managed_service
   end

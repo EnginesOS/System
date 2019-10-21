@@ -1,4 +1,4 @@
---- !ruby/object:ManagedService
+--- !ruby/object:Container::ManagedService
 cont_user_id: 22007
 publisher_namespace: EnginesSystem
 type_path: filesystem/local/filesystem

@@ -9,7 +9,7 @@ class RegistryHandler < ErrorsApi
     @registry_ip = false
     log_error_mesg("Forcing registry restart", nil)
     registry_service = @system_api.loadSystemService('registry')
-    raise EnginesException.new("PANIC cannot load resgitry service definition", registry_service) unless registry_service.is_a?(SystemService)
+    raise EnginesException.new("PANIC cannot load resgitry service definition", registry_service) unless registry_service.is_a?(Container::SystemService)
     #      restart_thread = Thread.new {
     registry_service.stop_container
     registry_service.wait_for('stop', 20)

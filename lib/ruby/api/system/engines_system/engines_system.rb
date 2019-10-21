@@ -11,10 +11,10 @@ class SystemApi < ErrorsApi
 
   require_relative 'events/docker_events.rb'
   include DockerEvents
-  
+
   require_relative 'events/events_trigger.rb'
   include EventsTrigger
-  
+
   require_relative 'system_host/base_os_system.rb'
   include BaseOsSystem
 
@@ -33,18 +33,15 @@ class SystemApi < ErrorsApi
   require_relative 'managed_containers/managed_container_status.rb'
   include ManagedContainerStatus
 
-  require_relative 'managed_containers/cache.rb'
-  include Cache
-
   require_relative 'managed_containers/container_state_files.rb'
   include ContainerSystemStateFiles
 
   require_relative 'managed_containers/containers'
   include Containers
-  
+
   require_relative 'managed_containers/container_actionators.rb'
   include ContainerActionators
-  
+
   require_relative 'managed_containers/engines.rb'
   include Engines
 
@@ -68,11 +65,11 @@ class SystemApi < ErrorsApi
 
   require_relative 'managed_containers/managed_utilities.rb'
   include ManagedUtilities
-  
-  
+
+
   require_relative 'managed_containers/container_info_tree.rb'
   include ContainerInfoTree
-    
+
   require_relative 'build_report.rb'
   include BuildReport
 
@@ -82,7 +79,7 @@ class SystemApi < ErrorsApi
 
   require_relative 'service_management.rb'
   include ServiceManagement
-  
+
   require_relative 'system_host/engines_volumes.rb'
   include EnginesVolumes
   # FixMe
@@ -94,7 +91,6 @@ class SystemApi < ErrorsApi
 
   def initialize(api)
     @engines_api = api
-    @engines_conf_cache = {}
     @container_conf_locks = {}
     create_event_listener #unless $PROGRAM_NAME.end_with?('system_service.rb')
   end

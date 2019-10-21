@@ -1,4 +1,4 @@
---- !ruby/object:ManagedService
+--- !ruby/object:Container::ManagedService
 cont_user_id: 0
 container_name: cadvisor
 ctype: service

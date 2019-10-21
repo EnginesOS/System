@@ -18,7 +18,7 @@ module Containers
     serialized_object = YAML.dump(container)
 
     # BACKUP Current file with rename
-    statefile = state_file(container, true) 
+    statefile = state_file(container, true)
     statedir =   container_state_dir(container)
     log_error_mesg('container locked', container.container_name) unless lock_container_conf_file(statefile)
     backup_state_file(statefile)
@@ -31,11 +31,11 @@ module Containers
         #FixMe check valid yaml
        FileUtils.mv(statefile + '_tmp', statefile)
       else
-        roll_back(statefile)      
-      end 
-    rescue 
+        roll_back(statefile)
+      end
+    rescue
       STDERR.puts('Exception in writing Rolling back')
-      roll_back(statefile)      
+      roll_back(statefile)
     ensure
       f.close unless f.nil?
     end
@@ -45,7 +45,7 @@ module Containers
       ts = Time.now
     end
     unlock_container_conf_file(statedir)
-    cache_engine(container, ts) unless cache_update_ts(container, ts)
+    cache.add(container, ts) unless cache.update(container, ts)
     #STDERR.puts('saved ' + container.container_name + ':' + caller[1].to_s + ':' + caller[2].to_s)
     true
   rescue StandardError => e
@@ -59,8 +59,12 @@ module Containers
   def is_startup_complete?(container)
     File.exist?(container_state_dir(container) + '/run/flags/startup_complete')
   end
-  
+
   private
+
+  def cache
+    Container::Cache.instance
+  end
 
   def backup_state_file(statefile)
     if File.exist?(statefile)
@@ -81,9 +85,9 @@ module Containers
       end
     end
   end
-  
+
   def state_file(container, create = true)
-    state_dir = container_state_dir(container) 
+    state_dir = container_state_dir(container)
     FileUtils.mkdir_p(state_dir) if Dir.exist?(state_dir) == false && create == true
     state_dir + '/running.yaml'
   end
@@ -91,5 +95,5 @@ module Containers
   def roll_back(statefile)
     FileUtils.mv(statefile + '.bak', statefile)
   end
- 
+
 end

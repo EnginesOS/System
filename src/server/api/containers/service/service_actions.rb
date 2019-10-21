@@ -21,7 +21,7 @@ end
 get '/v0/containers/service/:service_name/recreate' do
   begin
     service = get_service(params[:service_name])
-    # unless service.is_a?(ManagedService)
+    # unless service.is_a?(Container::ManagedService)
      #  send_encoded_exception(request: request, exception: e)
     # else
     return_text(service.recreate)

@@ -6,14 +6,14 @@ def attach_shared_volume(shared_service)
     
   end
   #used by the builder whn no engine to add volume to def
-  #  return engine unless engine.is_a?(ManagedEngine)
+  #  return engine unless engine.is_a?(Container::ManagedEngine)
   # Volume.complete_service_hash(shared_service)
   true
 end
 
 #def dettach_shared_volume(service_hash)
 #  engine = @core_api.loadManagedEngine(service_hash[:parent_engine])
-#  return engine unless engine.is_a?(ManagedEngine)
+#  return engine unless engine.is_a?(Container::ManagedEngine)
 #
 #  engine.del_volume(service_hash)
 #end

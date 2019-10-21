@@ -1,4 +1,4 @@
---- !ruby/object:ManagedService
+--- !ruby/object:Container::ManagedService
 cont_user_id: 22006
 container_name: mysqld
 publisher_namespace: EnginesSystem

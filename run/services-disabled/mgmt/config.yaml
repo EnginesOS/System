@@ -1,4 +1,4 @@
---- !ruby/object:ManagedService
+--- !ruby/object:Container::ManagedService
 container_name: mgmt
 ctype: service
 persistent: true

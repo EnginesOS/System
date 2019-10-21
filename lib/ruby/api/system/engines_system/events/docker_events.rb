@@ -1,3 +1,5 @@
+require_relative '../managed_containers/cache'
+
 module DockerEvents
   require '/opt/engines/lib/ruby/api/system/docker/event_watcher/docker_event_watcher.rb'
   require '/opt/engines/lib/ruby/system/system_config.rb'
@@ -149,13 +151,13 @@ module DockerEvents
 
   def inform_container_tracking(container_name, ctype, event_name)
     c = get_event_container(container_name, ctype)
-    c.task_complete(event_name) if c.is_a?(ManagedContainer)
+    c.task_complete(event_name) if c.is_a?(Container::ManagedContainer)
   rescue StandardError =>e
     log_exception(e)
   end
 
   def get_event_container(container_name, ctype)
-    c = container_from_cache(container_name)
+    c = cache.container(container_name)
     if c.nil?
       case ctype
       when 'app'
@@ -174,13 +176,14 @@ module DockerEvents
       c
     end
   rescue StandardError =>e
-    #log_exception(e)
+
     STDERR.puts('FAiled to find ' + container_name.to_s + ' of type ' + ctype.to_s)
+    log_exception(e)
   end
 
   def inform_container(event_hash)
     c = get_event_container(event_hash[:container_name], event_hash[:container_type])
-    if c.is_a?(ManagedContainer)
+    if c.is_a?(Container::ManagedContainer)
       c.process_container_event(event_hash)
       true
     else
@@ -240,5 +243,11 @@ module DockerEvents
       mask |= 16384
     end
     mask
+  end
+
+  private
+
+  def cache
+    Container::Cache.instance
   end
 end

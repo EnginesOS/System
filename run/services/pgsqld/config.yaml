@@ -1,4 +1,4 @@
---- !ruby/object:ManagedService
+--- !ruby/object:Container::ManagedService
 cont_user_id: 22002
 container_name: pgsqld
 publisher_namespace: EnginesSystem

@@ -2,7 +2,7 @@ module ContainerCreation
   def create_engine_container
     log_build_output('Creating Deploy Image')
     @container = create_managed_container
-    raise EngineBuilderException.new(error_hash('Failed to create Managed Container')) unless @container.is_a?(ManagedEngine)
+    raise EngineBuilderException.new(error_hash('Failed to create Managed Container')) unless @container.is_a?(Container::ManagedEngine)
     @core_api.trigger_install_event(@build_params[:engine_name], 'installed')
     @service_builder.create_non_persistent_services(@blueprint_reader.services)
     @container
@@ -14,7 +14,7 @@ module ContainerCreation
     @build_params[:volumes] = @service_builder.volumes
     @build_params[:service_builder] = true
     @build_params[:cont_user_id] = @cont_user_id
-    @container = ManagedEngine.new(@build_params, @blueprint_reader, @core_api.container_api)
+    @container = Container::ManagedEngine.new(@build_params, @blueprint_reader, @core_api.container_api)
     @container.save_state # no running.yaml throws a no such container so save so others can use
     @container.save_blueprint(@blueprint)
     log_build_output('Launching ' + @container.to_s)
@@ -32,7 +32,7 @@ module ContainerCreation
     log_build_output('Launching Engine')
     save_engine_built_configuration(managed_container)
     thr = managed_container.create_container
-    thr.join    
+    thr.join
     raise EngineBuilderException.new(error_hash('Failed to create Engine container from Image')) unless managed_container.has_container?
   end
 

@@ -1,3 +1,5 @@
+require_relative 'cache'
+
 module Engines
   class FakeContainer
     attr_reader :container_name, :ctype
@@ -54,7 +56,7 @@ module Engines
         p container.container_name
         p params
     #FIXME change port
-    #FIXME change proto    
+    #FIXME change proto
     #FIXME [:hostname]  silly host_name from gui drop it
     if params.key?(:host_name)
       hostname = params[:host_name]
@@ -89,8 +91,8 @@ module Engines
 
   def loadManagedEngine(engine_name)
     raise EnginesException.new(error_hash('No Engine name', engine_name)) unless engine_name.is_a?(String) || engine_name.length == 0
-    engine = engine_from_cache(engine_name)
-    unless engine.is_a?(ManagedEngine)
+    engine = cache.container(engine_name)
+    unless engine.is_a?(Container::ManagedEngine)
       yaml_file_name = SystemConfig.RunDir + '/apps/' + engine_name + '/running.yaml'
         STDERR.puts('Engine file:' + yaml_file_name.to_s)
       raise EnginesException.new(error_hash('No Engine file:' + engine_name.to_s , engine_name)) unless File.exist?(yaml_file_name)
@@ -99,15 +101,21 @@ module Engines
       yaml_file = File.new(yaml_file_name, 'r')
       begin
         ts = File.mtime(yaml_file_name)
-        engine = ManagedEngine.from_yaml(yaml_file.read, @engines_api.container_api)
+        engine = Container::ManagedEngine.from_yaml(yaml_file.read, @engines_api.container_api)
         unlock_container_conf_file(SystemConfig.RunDir + '/apps/' + engine_name)
         yaml_file.close
-        cache_engine(engine, ts)
+        cache.add(engine, ts)
       ensure
         yaml_file.close unless yaml_file.nil?
       end
     end
     engine
+  end
+
+  private
+
+  def cache
+    Container::Cache.instance
   end
 
 end
