@@ -19,6 +19,8 @@ def check_regex(exp)
   false
 end
 
+
+
 def check_text(key, value)
 
   if key == nil || key == 'is'
