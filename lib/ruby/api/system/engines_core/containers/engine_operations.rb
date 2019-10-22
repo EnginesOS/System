@@ -68,7 +68,7 @@ module EnginesOperations
       engine.destroy_container(true)
       engine.wait_for('destroy', 30)
     end
-    
+
     params = {
       engine_name: engine.container_name,
       reinstall: true
@@ -137,7 +137,7 @@ module EnginesOperations
   end
 
   def docker_build_engine(engine_name, build_archive_filename, builder)
-    @docker_api.build_engine(engine_name, build_archive_filename, builder)
+    docker_api.build_engine(engine_name, build_archive_filename, builder)
   end
 
   def clear_lost_engines

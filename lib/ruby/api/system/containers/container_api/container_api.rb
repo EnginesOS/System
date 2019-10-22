@@ -50,10 +50,9 @@ class ContainerApi < ErrorsApi
 
   require_relative 'container_api_services.rb'
   include ContainerApiServices
-  
-  
-  def initialize(_docker_api, _system_api, _engines_core)
-    @docker_api = _docker_api
+
+
+  def initialize(_system_api, _engines_core)
     @system_api = _system_api
     @engines_core = _engines_core
   end
@@ -62,4 +61,9 @@ class ContainerApi < ErrorsApi
     @engines_core.system_value_access
   end
 
+  private
+
+  def docker_api
+    @docker_api ||= DockerApi.instance
+  end
 end

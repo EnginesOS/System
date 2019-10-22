@@ -127,7 +127,7 @@ module EnginesApiSystem
     @system_api.clear_container_var_run(container)
     start_dependancies(container) if container.dependant_on.is_a?(Hash)
     container.pull_image if container.ctype != 'app'
-    @docker_api.create_container(container)
+    docker_api.create_container(container)
   end
 
   def container_cid_file(container)
