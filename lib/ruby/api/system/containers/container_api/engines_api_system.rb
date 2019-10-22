@@ -1,4 +1,4 @@
-require_relative '../../engines_system/managed_containers/cache'
+require '/opt/engines/lib/ruby/containers/store/cache'
 
 module EnginesApiSystem
   def web_sites_for(container)

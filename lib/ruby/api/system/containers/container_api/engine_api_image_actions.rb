@@ -1,4 +1,4 @@
-require_relative '../../engines_system/managed_containers/cache'
+require '/opt/engines/lib/ruby/containers/store/cache'
 
 module EngineApiImageActions
   def delete_image(container, wait=true)

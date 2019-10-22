@@ -1,4 +1,4 @@
-require_relative '../managed_containers/cache'
+require '/opt/engines/lib/ruby/containers/store/cache'
 
 module DockerEvents
   require '/opt/engines/lib/ruby/api/system/docker/event_watcher/docker_event_watcher.rb'
