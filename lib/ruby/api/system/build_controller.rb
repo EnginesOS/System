@@ -6,8 +6,7 @@ class BuildController
   :engine,
   :engine_builder
 
-  def initialize(api)
-    @core_api = api
+  def initialize
     @engine = nil
     @build_error = 'none'
     @engine_builder = nil
@@ -15,7 +14,7 @@ class BuildController
 
   def abort_build
    # SystemDebug.debug(SystemDebug.builder, :abort_build)
-    @core_api.abort_build
+    core.abort_build
   end
 
   def prepare_engine_build(params)
@@ -23,7 +22,7 @@ class BuildController
     @build_params = params
     SystemStatus.build_starting(@build_params)
     @engine_builder = get_engine_builder(@build_params)
-    
+
   end
 
   def build_engine()
@@ -64,12 +63,12 @@ class BuildController
     if @engine_builder.is_a?(EngineBuilder)
       @engine = @engine_builder.rebuild_managed_container(engine)
       @build_error = @engine_builder.tail_of_build_error_log
-      build_complete(@build_params)        
+      build_complete(@build_params)
     else
       build_failed(params, 'No Builder')
     end
   end
-  
+
   def restore_engine(engine)
       @build_params = {
         engine_name: engine.container_name,
@@ -99,7 +98,7 @@ class BuildController
   private
 
   def get_engine_builder(params)
-    @engine_builder = EngineBuilder.new(params, @core_api)
+    @engine_builder = EngineBuilder.new(params)
     @engine_builder.setup_build
   end
 
@@ -117,7 +116,7 @@ class BuildController
   def build_failed(params, err)
     params[:error] = err.to_s
     @build_error = err
-    @core_api.build_stopped()
+    core.build_stopped()
     SystemUtils.log_error_mesg(err.to_s, params)
     SystemStatus.build_failed(params)
     raise EngnesException.new(error_hash(params[:engine_name] + err.to_s + params.to_s, :build_error))
@@ -127,7 +126,13 @@ class BuildController
     bp = build_params.dup
     bp.delete(:service_builder)
     SystemStatus.build_complete(bp)
-    @core_api.build_stopped()
+    core.build_stopped()
     true
+  end
+
+  private
+
+  def core
+    @core ||= EnginesCore.instance
   end
 end

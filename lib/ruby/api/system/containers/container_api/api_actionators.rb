@@ -10,7 +10,7 @@ module ApiActionators
     else
       stream = nil
     end
-    
+
     cmds = ['/home/engines/scripts/actionators/' + actionator[:name].to_s + '.sh']
     req =
     {container: c,
@@ -24,7 +24,7 @@ module ApiActionators
       data = params
     end
 
-    result = engines_core.exec_in_container(req)
+    result = core.exec_in_container(req)
 
     if result[:result] == 0
       if result[:stdout].start_with?('{') || result[:stdout].start_with?('"{')

@@ -1,6 +1,5 @@
 class SystemRegistryClient < ErrorsApi
-  def initialize(core_api)
-    @core_api = core_api
+  def initialize
     @route_prefix = '/v0/system_registry/'
   end
 
@@ -34,4 +33,9 @@ class SystemRegistryClient < ErrorsApi
     system_registry_tree
   end
 
+  private
+
+  def core
+    @core ||= EnginesCore.instance
+  end
 end

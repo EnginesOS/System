@@ -4,7 +4,7 @@ module EngineApiServiceRegistration
       service_hash = create_dns_service_hash(container)
       begin
        # STDERR.puts('DNS REG' + service_hash.to_s)
-        engines_core.create_and_register_service(service_hash)
+        core.create_and_register_service(service_hash)
       end
     end
   end
@@ -12,7 +12,7 @@ module EngineApiServiceRegistration
   def deregister_with_dns(container)
     if container.conf_register_dns == true
       service_hash = create_dns_service_hash(container)
-      engines_core.dettach_service(service_hash)
+      core.dettach_service(service_hash)
     end
   end
 
@@ -20,7 +20,7 @@ module EngineApiServiceRegistration
     if container.conf_register_dns == true
       service_hash = create_zeroconf_service_hash(container)
       begin
-        engines_core.dettach_service(service_hash)
+        core.dettach_service(service_hash)
       rescue
       end
     end
@@ -30,7 +30,7 @@ module EngineApiServiceRegistration
     if container.conf_register_dns == true
       service_hash = create_zeroconf_service_hash(container)
       begin
-        engines_core.create_and_register_service(service_hash)
+        core.create_and_register_service(service_hash)
       rescue
       end
     end
@@ -38,23 +38,23 @@ module EngineApiServiceRegistration
 
   # Called by Managed Containers
   def register_non_persistent_services(engine)
-    engines_core.register_non_persistent_services(engine)
+    core.register_non_persistent_services(engine)
   end
 
   # Called by Managed Containers
   def deregister_non_persistent_services(engine)
-    engines_core.deregister_non_persistent_services(engine)
+    core.deregister_non_persistent_services(engine)
   end
 
   def remove_wap_service(container)
     service_hash = create_wap_service_hash(container)
     # STDERR.puts('remove ' + service_hash.to_s)
-    engines_core.dettach_service(service_hash)
+    core.dettach_service(service_hash)
   end
 
   def add_wap_service(container)
     service_hash = create_wap_service_hash(container)
-    engines_core.create_and_register_service(service_hash)
+    core.create_and_register_service(service_hash)
   rescue StandardError => e
     STDERR.puts('Add Wap Exception ' + e.to_s)
     # sometimes duplicates nginx record
@@ -62,9 +62,9 @@ module EngineApiServiceRegistration
 
   def engine_persistent_services(container)
     if container.ctype != 'service'
-      engines_core.engine_persistent_services(container.container_name)
+      core.engine_persistent_services(container.container_name)
     else
-      engines_core.service_persistent_services(container.container_name)
+      core.service_persistent_services(container.container_name)
     end
   end
 

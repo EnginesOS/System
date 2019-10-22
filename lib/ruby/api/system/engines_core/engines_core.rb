@@ -12,6 +12,11 @@ require '/opt/engines/lib/ruby/managed_services/service_definitions/service_top_
 require '/opt/engines/lib/ruby/api/system/system_preferences.rb'
 
 class EnginesCore < ErrorsApi
+  class << self
+    def instance
+      @@instance ||= self.new
+    end
+  end
 
   require_relative 'errors/engines_core_errors.rb'
   include EnginesCoreErrors
@@ -84,18 +89,18 @@ class EnginesCore < ErrorsApi
   require_relative 'engines_core_version.rb'
   include EnginesCoreVersion
   def self.command_is_system_service?
-    true if $PROGRAM_NAME.end_with?('system_service.rb')   
+    true if $PROGRAM_NAME.end_with?('system_service.rb')
   end
 
   unless $PROGRAM_NAME.end_with?('system_service.rb')
     require_relative 'user_auth.rb'
     include UserAuth
   end
-  
+
   require_relative 'fixes/cont_id_fix.rb'
   include ContFsIdFix
-  
-  
+
+
   require_relative '../containers/container_api/container_api.rb'
   require_relative '../containers/service_api/service_api.rb'
   require_relative '../docker/docker_api.rb'
@@ -107,17 +112,20 @@ class EnginesCore < ErrorsApi
   def initialize
     Signal.trap('HUP', proc { dump_stats })  #api_shutdown })
     Signal.trap('TERM', proc { api_shutdown })
-    @docker_api = DockerApi.new
-    @system_api = SystemApi.new(self)  # will change to to docker_api and not self
+    @system_api = SystemApi.new  # will change to to docker_api and not self
     @registry_handler = RegistryHandler.new(@system_api)
-    @container_api = ContainerApi.new(@docker_api, @system_api, self)
-    @service_api = ServiceApi.new(@docker_api, @system_api, self)
-    @service_manager = ServiceManager.new(self) # create_service_manager
+    @container_api = ContainerApi.new(@system_api)
+    @service_api = ServiceApi.new(@system_api)
+    @service_manager = ServiceManager.new # create_service_manager
     $user_tokens = {}
-    
+
   end
 
   attr_reader :system_api, :container_api, :service_api
 
-  protected
+  private
+
+  def docker_api
+    @docker_api ||= DockerApi.instance
+  end
 end

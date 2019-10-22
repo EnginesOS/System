@@ -3,9 +3,8 @@ require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 require_relative 'engines_public_api_error.rb'
 
 class PublicApi < ErrorsApi
-  def initialize(core_api )
-    @core_api = core_api
-    @system_api = @core_api.system_api
+  def initialize
+    @system_api = core.system_api
     # @service_manager = core_api.service_manager
   end
 
@@ -240,9 +239,15 @@ class PublicApi < ErrorsApi
   require_relative 'system/user_auth.rb'
   include UserAuth
   require_relative 'system/system_user.rb'
-  include SystemUser 
+  include SystemUser
   require_relative 'system/gui_prefs.rb'
   include GuiPrefs
   require_relative 'system/fixes/public_api_fixes.rb'
   include PublicApiFixes
+
+  private
+
+  def core
+    @core ||= EnginesCore.instance
+  end
 end

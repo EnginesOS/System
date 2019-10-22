@@ -5,7 +5,7 @@ module SmAttachStaticServices
     container.environments  = [] if container.environments.nil?
     curr_service_file = ''
    # SystemDebug.debug(SystemDebug.services, :Globbing, container.container_name, dirname + '/*.yaml')
-    service_files = Dir.glob(dirname + '/*.yaml').sort   
+    service_files = Dir.glob(dirname + '/*.yaml').sort
     service_files.each do |service_file|
 
       curr_service_file = service_file
@@ -18,7 +18,7 @@ module SmAttachStaticServices
      # SystemDebug.debug(SystemDebug.services, :loaded_service_hash, service_hash)
       set_top_level_service_params(service_hash, container.container_name)
       if service_hash.has_key?(:shared_service) == false || service_hash[:shared_service] == false
-        templater =  Templater.new(@core_api.system_value_access, container)
+        templater =  Templater.new(core.system_value_access, container)
         templater.proccess_templated_service_hash(service_hash)
        # SystemDebug.debug(SystemDebug.services, :templated_service_hash, service_hash)
        # SystemDebug.debug(SystemDebug.services, 'is registreed ', system_registry_client.service_is_registered?(service_hash))

@@ -47,7 +47,7 @@ module PersistantServiceBuilder
   end
 
   def use_active_service(service_hash, existing_service )
-    s = @core_api.get_service_entry(existing_service)
+    s = core.get_service_entry(existing_service)
     unless @rebuild.is_a?(TrueClass)
       s[:variables][:engine_path] = service_hash[:variables][:engine_path] if service_hash[:type_path] == 'filesystem/local/filesystem'
       s[:fresh] = false
@@ -61,7 +61,7 @@ module PersistantServiceBuilder
     #   SystemDebug.debug(SystemDebug.builder, :share_service_to_engine, service_hash, existing)
     service_hash[:owner] = existing[:parent_engine]
     service_hash[:existing_service] = existing
-    if @core_api.connect_share_service(service_hash)
+    if core.connect_share_service(service_hash)
       add_file_service(service_hash) if service_hash[:type_path] == 'filesystem/local/filesystem'
       @attached_services.push(service_hash)
     else
@@ -99,7 +99,7 @@ module PersistantServiceBuilder
       SystemDebug.debug(SystemDebug.builder, service_hash[:shared].to_s)
     unless service_hash[:shared].is_a?(TrueClass)
       @attached_services.push(service_hash)
-      @core_api.create_and_register_service(service_hash)
+      core.create_and_register_service(service_hash)
     end
   end
 
@@ -111,17 +111,17 @@ module PersistantServiceBuilder
       existing
     elsif use_existing.is_a?(TrueClass)
       fresh_build(service_hash, false)
-      @core_api.get_service_entry(service_hash)
+      core.get_service_entry(service_hash)
     else
       false
     end
   end
 
   def orphan_or_fresh(service_hash)
-    if @core_api.match_orphan_service(service_hash) == true
+    if core.match_orphan_service(service_hash) == true
       fresh_build(service_hash, false)
       use_orphan(service_hash)
-    elsif @core_api.service_is_registered?(service_hash) == false
+    elsif core.service_is_registered?(service_hash) == false
       fresh_build(service_hash, true)
       service_hash
     else

@@ -89,8 +89,7 @@ class SystemApi < ErrorsApi
   require_relative 'system_api_backup.rb'
   include SystemApiBackup
 
-  def initialize(api)
-    @engines_api = api
+  def initialize
     @container_conf_locks = {}
     create_event_listener #unless $PROGRAM_NAME.end_with?('system_service.rb')
   end
@@ -99,4 +98,9 @@ class SystemApi < ErrorsApi
     @system_services ||= ['system', 'registry']
   end
 
+  private
+
+  def core
+    @core ||= EnginesCore.instance
+  end
 end

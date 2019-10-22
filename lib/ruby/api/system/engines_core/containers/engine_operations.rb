@@ -68,14 +68,14 @@ module EnginesOperations
       engine.destroy_container(true)
       engine.wait_for('destroy', 30)
     end
-    
+
     params = {
       engine_name: engine.container_name,
       reinstall: true
     }
 
     # delete_engine_and_services(params)
-    builder = BuildController.new(self)
+    builder = BuildController.new
     @build_thread = Thread.new { engine.reinstall_engine(builder) }
     @build_thread[:name] = 'reinstall engine'
     unless @build_thread.alive?
@@ -101,7 +101,7 @@ module EnginesOperations
     }
     # engine.wait_for('destroy', 10)
     delete_engine_and_services(params)
-    builder = BuildController.new(self)
+    builder = BuildController.new
     engine.restore_engine(builder)
     @build_thread = Thread.new { engine.restore_engine(builder) }
     #  STDERR.puts('Restore started on '  + engine.container_name.to_s)
@@ -137,7 +137,7 @@ module EnginesOperations
   end
 
   def docker_build_engine(engine_name, build_archive_filename, builder)
-    @docker_api.build_engine(engine_name, build_archive_filename, builder)
+    docker_api.build_engine(engine_name, build_archive_filename, builder)
   end
 
   def clear_lost_engines

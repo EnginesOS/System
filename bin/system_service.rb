@@ -4,9 +4,9 @@ require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
 require 'thread'
 require 'yaml'
 
-core_api = EnginesCore.new
+core = EnginesCore.instance
 
-system_api = core_api.system_api
+system_api = core.system_api
 
 service = system_api.loadSystemService(ARGV[0])
 if service.is_a?(EnginesError)
@@ -55,4 +55,3 @@ when 'wait_for'
 when 'wait_for_startup'
   STDOUT.puts service.wait_for_startup(ARGV[2].to_i)
 end
-

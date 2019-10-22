@@ -29,13 +29,13 @@ module CoreBuildController
   def save_build_report(container, build_report)
     @system_api.save_build_report(container, build_report)
   end
-  
+
   def trigger_install_event(engine_name, state = nil)
     @system_api.trigger_install_event(engine_name, state)
   end
-  
-  def build_engine(params)    
-    @build_controller = BuildController.new(self) unless @build_controller
+
+  def build_engine(params)
+    @build_controller = BuildController.new unless @build_controller
     @build_thread.exit unless @build_thread.nil?
     @build_controller.prepare_engine_build(params)
     @build_thread = Thread.new { @build_controller.build_engine }

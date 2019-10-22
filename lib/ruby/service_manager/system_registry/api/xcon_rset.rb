@@ -21,7 +21,7 @@ def connection(content_type = nil)
   headers: headers(content_type) ) if @connection.nil?
   @connection
 rescue Errno::EHOSTUNREACH
-  @core_api.fix_registry_problem
+  core.fix_registry_problem
   retry
 rescue StandardError => e
   raise EnginesException.new(error_hash('Failed to open base url to registry ' + e.to_s, base_url.to_s))
@@ -195,11 +195,10 @@ def error_result_exception(resp)
 end
 
 def base_url
-  STDERR.puts('REG base Core is ' + @core_api.class.name)
-  STDERR.puts(caller.to_s ) if @core_api.nil?
-  'http://' + @core_api.registry_root_ip + ':4567'
+  STDERR.puts('REG base Core is ' + core.class.name)
+  STDERR.puts(caller.to_s ) if core.nil?
+  'http://' + core.registry_root_ip + ':4567'
 
 rescue  StandardError => e
   raise EnginesException.new('Cannot Determine Base URL' + e.to_s)
 end
-

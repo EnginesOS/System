@@ -13,7 +13,7 @@ module PublicApiSystemMetrics
   end
 
   def total_memory_statistics()
-    MemoryStatistics.total_memory_statistics(@core_api)
+    MemoryStatistics.total_memory_statistics(core)
   end
 
   def get_disk_statistics

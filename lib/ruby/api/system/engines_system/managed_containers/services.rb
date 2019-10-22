@@ -72,21 +72,21 @@ module Services
 
   def _loadManagedService(service_name, service_type_dir)
     raise EnginesException.new(error_hash('No Service Name', service_type_dir)) if service_name.nil? || service_name.length == 0
-    raise EnginesException.new(error_hash("no System api to attach ", @engines_api.to_s)) if @engines_api.service_api.nil?
+    raise EnginesException.new(error_hash("no System api to attach ", core.to_s)) if core.service_api.nil?
 
     yam1_file_name = SystemConfig.RunDir + service_type_dir + service_name + '/running.yaml'
    # raise EnginesException.new(error_hash('Engine File Locked', yam1_file_name)) if is_container_conf_file_locked?(SystemConfig.RunDir + service_type_dir + service_name)
     unless File.exist?(yam1_file_name)
-      raise EnginesException.new(error_hash('failed to create service file ', SystemConfig.RunDir + service_type_dir + '/' + service_name.to_s)) unless build_running_service(service_name, SystemConfig.RunDir + service_type_dir, @engines_api.system_value_access)
+      raise EnginesException.new(error_hash('failed to create service file ', SystemConfig.RunDir + service_type_dir + '/' + service_name.to_s)) unless build_running_service(service_name, SystemConfig.RunDir + service_type_dir, core.system_value_access)
     end
     lock_container_conf_file(SystemConfig.RunDir + service_type_dir + service_name)
     yaml_file = File.read(yam1_file_name)
     unlock_container_conf_file(SystemConfig.RunDir + service_type_dir + service_name)
-    STDERR.puts('Panic nill  engine_api') if @engines_api.nil?
+    STDERR.puts('Panic nill  engine_api') if core.nil?
     managed_service = if service_type_dir ==  '/system_services/'
-      Container::SystemService.from_yaml(yaml_file, @engines_api.service_api)
+      Container::SystemService.from_yaml(yaml_file, core.service_api)
     else
-      Container::ManagedService.from_yaml(yaml_file, @engines_api.service_api)
+      Container::ManagedService.from_yaml(yaml_file, core.service_api)
     end
     raise EnginesException.new(error_hash('Failed to load ' + yam1_file_name.to_s , yaml_file)) if managed_service.nil?
     managed_service

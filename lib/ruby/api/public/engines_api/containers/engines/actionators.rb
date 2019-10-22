@@ -8,7 +8,7 @@ module PublicApiEngineActionators
   end
 
   def perform_engine_action(engine, actionator, params)
-    @core_api.perform_engine_action(engine, actionator, params)
+    core.perform_engine_action(engine, actionator, params)
   end
 
 end

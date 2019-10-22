@@ -1,10 +1,5 @@
 class SystemAccess
-  def initialize(system)
-    @engines_api = system
-  end
 
-  #This Class is the public face of the system
-  #release etc
   def release
     SystemUtils.system_release
   end
@@ -34,7 +29,7 @@ class SystemAccess
   end
 
   def timezone_country_city
-    @engines_api.get_timezone
+    core.get_timezone
     #  olsontz = File.read('/etc/timezone')
     #    olsontz = `if [ -f /etc/timezone ]; then
     #      cat /etc/timezone
@@ -71,7 +66,7 @@ class SystemAccess
   end
 
   def publickey
-    @engines_api.get_public_key()
+    core.get_public_key()
   end
 
   def pubkey(type)
@@ -79,7 +74,7 @@ class SystemAccess
     engine = args[0]
     cmd = args[1]
     cmd.gsub!(/\)/, '')
-    @engines_api.get_service_pubkey(engine, cmd)
+    core.get_service_pubkey(engine, cmd)
   end
 
   def random(cnt)
@@ -90,7 +85,7 @@ class SystemAccess
 
   def service_resource(service_name, what)
     #  STDERR.puts('SERVICE RESOURCE ')
-    @engines_api.service_resource(service_name, what)
+    core.service_resource(service_name, what)
   end
 
   # where ssh goes
@@ -115,7 +110,7 @@ class SystemAccess
   end
 
   def system_hostname
-    @engines_api.system_hostname
+    core.system_hostname
   end
 
 end

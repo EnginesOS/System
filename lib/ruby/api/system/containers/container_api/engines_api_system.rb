@@ -1,8 +1,8 @@
-require_relative '../../engines_system/managed_containers/cache'
+require '/opt/engines/lib/ruby/containers/store/cache'
 
 module EnginesApiSystem
   def web_sites_for(container)
-    engines_core.web_sites_for(container)
+    core.web_sites_for(container)
   end
 
   def initialize_container_env(container)
@@ -38,7 +38,7 @@ module EnginesApiSystem
   def delete_engine(container)
     #   SystemDebug.debug(SystemDebug.containers,  :container_api_delete_engine, container)
     Container::Cache.instance.remove(container.container_name)
-    volbuilder = @engines_core.loadManagedUtility('fsconfigurator')
+    volbuilder = core.loadManagedUtility('fsconfigurator')
     @system_api.delete_container_configs(volbuilder, container)
   end
 
@@ -55,7 +55,7 @@ module EnginesApiSystem
   end
 
   def default_domain
-    @engines_core.default_domain
+    core.default_domain
   end
 
   def pre_start_checks(container)
@@ -74,7 +74,7 @@ module EnginesApiSystem
     unless mapped_ports.nil?
       mapped_ports.values.each do |mp|
         if mp[:publicFacing] == true
-          unless (pa = @engines_core.is_port_available?(mp[:external])).is_a?(TrueClass)
+          unless (pa = core.is_port_available?(mp[:external])).is_a?(TrueClass)
             r = 'Port clash with ' + pa + ' over Port ' + mp[:external].to_s
             break
           end
@@ -89,7 +89,7 @@ module EnginesApiSystem
       mapped_ports.values.each do |mp|
         if mp[:publicFacing] == true
           port = mp[:port]
-          @engines_core.register_port(container_name, port)
+          core.register_port(container_name, port)
         end
       end
     end
@@ -100,7 +100,7 @@ module EnginesApiSystem
       mapped_ports.values.each do |mp|
         if mp[:publicFacing] = true
           port = mp[:port]
-          @engines_core.deregister_port(container_name, port)
+          core.deregister_port(container_name, port)
         end
       end
     end
@@ -127,7 +127,7 @@ module EnginesApiSystem
     @system_api.clear_container_var_run(container)
     start_dependancies(container) if container.dependant_on.is_a?(Hash)
     container.pull_image if container.ctype != 'app'
-    @docker_api.create_container(container)
+    docker_api.create_container(container)
   end
 
   def container_cid_file(container)
@@ -136,10 +136,10 @@ module EnginesApiSystem
 
   def run_cronjob(cronjob, container)
     if container.is_running?
-      cron_entry = @engines_core.retreive_cron_entry(cronjob, container)
+      cron_entry = core.retreive_cron_entry(cronjob, container)
       # STDERR.puts(' retreive cron entry from engine registry ' + cron_entry.to_s + ' from ' + cronjob.to_s )
       raise EnginesException.new(error_hash('nil cron line ' + cronjob.to_s )) if cron_entry.nil?
-      r = @engines_core.exec_in_container({container: container,
+      r = core.exec_in_container({container: container,
         command_line: cron_entry.split(" "),
         log_error: true,
         data: nil,
@@ -152,7 +152,7 @@ module EnginesApiSystem
   end
 
   def certificates(container)
-    @engines_core.containers_certificates(container)
+    core.containers_certificates(container)
   rescue
     nil
   end
