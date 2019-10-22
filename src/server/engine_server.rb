@@ -20,7 +20,7 @@ begin
   ObjectSpace.trace_object_allocations_start
 
   @events_stream = nil
-  $engines_api = PublicApi.new(EnginesCore.instance)
+  $engines_api = PublicApi.new
   STDERR.puts('++++++')
   require 'timers'
   @timers = Timers::Group.new

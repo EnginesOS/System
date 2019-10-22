@@ -13,7 +13,7 @@ module PublicApiConfig
   end
 
   def set_hostname(hostname)
-    @core_api.update_service_configuration( {
+    core.update_service_configuration( {
       service_name: 'system',
       configurator_name: 'hostname',
       variables: {
@@ -25,7 +25,7 @@ module PublicApiConfig
   def set_default_site(params)
     default_site_url = params
     default_site_url =  params[:default_site_url] unless  params.is_a?(String)
-    @core_api.update_service_configuration({
+    core.update_service_configuration({
       service_name: 'wap',
       configurator_name: 'default_site',
       variables: {
@@ -35,7 +35,7 @@ module PublicApiConfig
   end
 
   def get_default_site()
-    config_params = @core_api.retrieve_service_configuration(
+    config_params = core.retrieve_service_configuration(
     {
       service_name:  'wap',
       configurator_name: 'default_site'
@@ -54,12 +54,12 @@ module PublicApiConfig
 
   # FIXME should use System
   def enable_remote_exception_logging
-    @core_api.enable_remote_exception_logging
+    core.enable_remote_exception_logging
   end
 
   # FIXME should use System
   def disable_remote_exception_logging
-    @core_api.disable_remote_exception_logging
+    core.disable_remote_exception_logging
   end
 
   # FIXME should use System

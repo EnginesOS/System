@@ -8,7 +8,7 @@ module PublicApiEngines
   end
 
   def clear_lost_engines
-    @core_api.clear_lost_engines
+    core.clear_lost_engines
   end
 
   def get_engines_states
@@ -20,11 +20,11 @@ module PublicApiEngines
   end
 
   def build_engine(params)
-    @core_api.build_engine(params)
+    core.build_engine(params)
   end
 
   def delete_engine(params)
-    @core_api.delete_engine_and_services(params)
+    core.delete_engine_and_services(params)
   end
 
 end

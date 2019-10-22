@@ -81,8 +81,7 @@ class EngineBuilder < ErrorsApi
     }
   end
 
-  def initialize(params, core_api)
-    @core_api = core_api
+  def initialize(params)
     @container = nil
     @build_params = params
     @blueprint = nil
@@ -114,7 +113,7 @@ class EngineBuilder < ErrorsApi
     @blueprint_reader.environments.push(EnvironmentVariable.new({name: 'LANGUAGE',
                                                                 value: lang.to_s + '_' + country.to_s + ':' + lang.to_s,
                                                                 own_type: 'application'}))
-    @blueprint_reader.environments.push(EnvironmentVariable.new({name: 'LANG', 
+    @blueprint_reader.environments.push(EnvironmentVariable.new({name: 'LANG',
                                                                 value: lang.to_s + '_' + country.to_s + '.UTF8',
                                                                 own_type: 'application'}))
     @blueprint_reader.environments.push(EnvironmentVariable.new({name: 'LC_ALL',
@@ -160,6 +159,10 @@ class EngineBuilder < ErrorsApi
   end
 
   private
+
+  def core
+    @core ||= EnginesCore.instance
+  end
 
   def process_supplied_envs(custom_env)
    # SystemDebug.debug(SystemDebug.builder, custom_env, custom_env)

@@ -40,7 +40,7 @@ module Builders
 
 
   #  SystemDebug.debug(SystemDebug.builder, :builder_init, @build_params)
-    @service_builder = ServiceBuilder.new(@core_api, @templater, @build_params[:engine_name], @attached_services, basedir)
+    @service_builder = ServiceBuilder.new(@templater, @build_params[:engine_name], @attached_services, basedir)
    # SystemDebug.debug(SystemDebug.builder, :builder_init__service_builder, @build_params)
     self
   rescue StandardError => e
@@ -141,8 +141,8 @@ module Builders
       end
       @service_builder.service_roll_back unless @rebuild.is_a?(TrueClass)
       @build_params[:rollback]
-      @core_api.delete_engine_and_services(@build_params)
-      @core_api.trigger_install_event(@build_params[:engine_name], 'failed')
+      core.delete_engine_and_services(@build_params)
+      core.trigger_install_event(@build_params[:engine_name], 'failed')
     rescue
       #dont panic if no container
     end
@@ -176,7 +176,7 @@ module Builders
   def save_build_result
     log_build_output('Generating Build Report')
     build_report = generate_build_report(@templater, @blueprint)
-    @core_api.save_build_report(@container, build_report)
+    core.save_build_report(@container, build_report)
     @result_mesg = 'Build Successful'
     log_build_output('Build Successful')
     FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.out', ContainerStateFiles.container_state_dir(@container) + '/build.log')
@@ -185,7 +185,7 @@ module Builders
   end
 
   def create_templater
-    @templater = Templater.new(@core_api.system_value_access, BuilderPublic.new(self))
+    @templater = Templater.new(core.system_value_access, BuilderPublic.new(self))
   end
 
   def setup_rebuild

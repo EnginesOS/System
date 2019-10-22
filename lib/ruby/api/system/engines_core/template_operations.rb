@@ -2,7 +2,7 @@ module TemplateOperations
   def system_value_access
    # return @system_value_accessor unless @system_value_accessor.nil?
    # @system_value_accessor = SystemAccess.new(self)
-    @system_value_accessor ||= SystemAccess.new(self)
+    @system_value_accessor ||= SystemAccess.new
   end
 
   def fillin_template_for_service_def(service_hash)
@@ -25,7 +25,7 @@ module TemplateOperations
     templater.apply_build_variables(env_value)
     templater.apply_system_variables(env_value)
     templater.apply_engines_variables(env_value)
-    
+
   rescue StandardError => e
     raise EnginesException.new(error_hash(e, env_value, container.container_name))
   end

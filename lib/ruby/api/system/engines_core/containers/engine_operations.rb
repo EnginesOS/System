@@ -75,7 +75,7 @@ module EnginesOperations
     }
 
     # delete_engine_and_services(params)
-    builder = BuildController.new(self)
+    builder = BuildController.new
     @build_thread = Thread.new { engine.reinstall_engine(builder) }
     @build_thread[:name] = 'reinstall engine'
     unless @build_thread.alive?
@@ -101,7 +101,7 @@ module EnginesOperations
     }
     # engine.wait_for('destroy', 10)
     delete_engine_and_services(params)
-    builder = BuildController.new(self)
+    builder = BuildController.new
     engine.restore_engine(builder)
     @build_thread = Thread.new { engine.restore_engine(builder) }
     #  STDERR.puts('Restore started on '  + engine.container_name.to_s)

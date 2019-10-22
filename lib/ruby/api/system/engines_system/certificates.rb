@@ -10,7 +10,7 @@ module Certificates
   def remove_cert(params)
     certs_service = loadManagedService('certs')
     actionator = get_service_actionator(certs_service, 'remove_cert')
-   
+
     unless params[:store].nil? || params[:store].start_with?('imported')
       service = { container_type: container_type(params[:store]),
         parent_engine: engine_name(params[:store]),
@@ -20,14 +20,14 @@ module Certificates
       }
      # STDERR.puts('CERT SERVICe IS:' + service.to_s)
     # begin
-       s = @engines_api.retrieve_engine_service_hash(service)
+       s = core.retrieve_engine_service_hash(service)
      #   STDERR.puts('CERT SERVICe R:' + s.to_s)
      # rescue StandardError => e
       #  STDERR.puts('CERT SERVICE E is:' + e.to_s + "\n" + e.backtrace.to_s)
      #   s = nil
      # end
       unless s.nil?
-      @engines_api.dettach_service(service) 
+      core.dettach_service(service)
       else
         raise EnginesException.new(error_hash('Cert service entry  not found' + service.to_s))
       end
@@ -91,12 +91,12 @@ module Certificates
       end
       # FixME
       #return raise EnginesException(....) instead of return false
-      @engines_api.dettach_service(params)
+      core.dettach_service(params)
     rescue
       #no cert exception is what we want
     end
 
-    @engines_api.create_and_register_service({
+    core.create_and_register_service({
       parent_engine: params[:parent_engine],
       type_path: 'certs',
       service_container_name: 'certs',

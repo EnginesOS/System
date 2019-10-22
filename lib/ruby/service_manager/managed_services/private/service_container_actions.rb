@@ -3,7 +3,7 @@
 #@param service_hash [Hash]
 def add_to_managed_service(service_hash)
  # SystemDebug.debug(SystemDebug.services, :add_to_managed_service, service_hash)
-  service =  @core_api.load_software_service(service_hash)
+  service =  core.load_software_service(service_hash)
   # return service unless service.is_a?(Container::ManagedService)
   if service.is_soft_service? && !service.is_running?
     true
@@ -15,7 +15,7 @@ end
 
 def update_on_managed_service(service_hash)
  # SystemDebug.debug(SystemDebug.services, :update_on_managed_service, service_hash)
-  service =  @core_api.load_software_service(service_hash)
+  service =  core.load_software_service(service_hash)
   # return service unless service.is_a?(Container::ManagedService)
   if service.is_soft_service? && !service.is_running?
     true
@@ -30,7 +30,7 @@ end
 # @param service_hash [Hash]
 # remove persistent services only if service is up
 def remove_from_managed_service(service_hash)
-  service =  @core_api.load_software_service(service_hash)
+  service =  core.load_software_service(service_hash)
   #return service unless service.is_a?(Container::ManagedService)
   if service.persistent == false || service.is_running?
     service.remove_consumer(service_hash)

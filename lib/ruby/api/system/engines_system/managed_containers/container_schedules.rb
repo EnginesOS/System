@@ -36,7 +36,7 @@ module ContainerSchedules
 
     #STDERR.puts(' CRON SERVIEC HASH ' + t.to_s)
     begin
-      @engines_api.create_and_register_service(t)
+      core.create_and_register_service(t)
     rescue StandardError => e
       STDERR.puts('Create Cron service Error ' + e.to_s )
       #FIxMe raise exception except when have existing Entry

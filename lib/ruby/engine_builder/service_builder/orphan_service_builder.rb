@@ -1,7 +1,7 @@
 module OrphansServiceBuilder
   def use_orphan(service_hash)
     build_vars = service_hash.dup
-    service_hash = @core_api.retrieve_orphan(service_hash)
+    service_hash = core.retrieve_orphan(service_hash)
     @orphans.push(service_hash.dup)
     service_hash[:fresh] = false
     reparent_orphan(service_hash)
@@ -13,16 +13,15 @@ module OrphansServiceBuilder
 
   def reparent_orphan(service_hash)
     STDERR.puts('REparent ' + service_hash.to_s)
-    @core_api.reparent_orphan(service_hash, @engine_name)
+    core.reparent_orphan(service_hash, @engine_name)
   end
 
   def release_orphans()
     @orphans.each do |service_hash|
       STDERR.puts('releasing_orphan ' + service_hash.to_s)
-      @core_api.release_orphan(service_hash)
+      core.release_orphan(service_hash)
 
     STDERR.puts('released_orphan ' + service_hash.to_s)
    end
-  #  @orphans.each {|service_hash|@core_api.release_orphan(service_hash)}
   end
 end

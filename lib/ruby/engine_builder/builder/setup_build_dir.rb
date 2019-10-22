@@ -263,7 +263,7 @@ module BuildDirSetup
   end
 
   def init_container_info_dir
-    @core_api.init_container_info_dir(
+    core.init_container_info_dir(
     {ctype: 'app',
       name: @build_params[:engine_name],
       keys: {

@@ -11,7 +11,7 @@ module SystemApiBackup
     ensure
       reg_file.close unless reg_file.nil?
     end
-    services = @engines_api.import_engine_registry(registry)
+    services = core.import_engine_registry(registry)
     services.each do |sh|
       if sh[:persisent].is_a?(TrueClass)
         restore_service_from_bundle(sh)
@@ -24,7 +24,7 @@ module SystemApiBackup
   def clear_bundle_dir (engine_name )
     SystemUtils.execute_command('/opt/engines/system/scripts/backup/clear_engine_bundle.sh ' + engine_name, false, nil , nil)
   end
-  
+
   def restore_service_from_bundle(sh)
     unless sh[:type_path] == 'filesystem/local/filesystem'
       begin
@@ -35,15 +35,15 @@ module SystemApiBackup
       end
     end
   end
-  
+
   def restore_service(sh, sf)
-    
+
   end
 
   def stream_engine_bundle(engine_name, out)
     export_engine_registry(engine_name)
     mk_engine_bundle_dir(engine_name)
-    services = @engines_api.get_engine_persistent_services({parent_engine: engine_name, container_type: 'app' })
+    services = core.get_engine_persistent_services({parent_engine: engine_name, container_type: 'app' })
     services.each do |sh|
       make_service_dir(sh)
       if is_es_filesystem?(sh).is_a?(TrueClass)
@@ -71,7 +71,7 @@ module SystemApiBackup
       stdout_stream: out,
       command_line: ['/home/engines/scripts/backup/backup.sh'],
       log_error: true }
-    result = @engines_api.exec_in_container(params)
+    result = core.exec_in_container(params)
     if result[:result] != 0
       result
     else
@@ -86,7 +86,7 @@ module SystemApiBackup
       stdin_stream: out,
       command_line: ['/home/engines/scripts/backup/restore.sh'],
       log_error: true}
-    result = @engines_api.exec_in_container(params)
+    result = core.exec_in_container(params)
     if result[:result] != 0
       result
     else
@@ -107,7 +107,7 @@ module SystemApiBackup
       #  STDERR.puts('engine' + engine.container_name.to_s)
       if engine.read_state == 'nocontainer'
         #  STDERR.puts('RESTORE engine' + engine.container_name.to_s)
-        build_thr = @engines_api.restore_engine(engine)
+        build_thr = core.restore_engine(engine)
         build_thr.join
       end
     end
@@ -121,7 +121,7 @@ module SystemApiBackup
         stdout_stream: out,
         command_line: ['/home/engines/scripts/backup/backup.sh'],
         log_error: true}
-      result = @engines_api.exec_in_container(params)
+      result = core.exec_in_container(params)
       if result[:result] != 0
         result
         #    STDERR.puts(' BACKUP SERVICE ' + result.to_s)
@@ -139,7 +139,7 @@ module SystemApiBackup
   def engines_services_to_backup(engine)
     paths = {}
     n=0
-    services = @engines_api.engines_services_to_backup(engine)
+    services = core.engines_services_to_backup(engine)
     services.each do |service|
       n+=1
       paths['service'+n.to_s] = engine + '/service/' + service[:publisher_namespace] + '/' + service[:type_path] + '/' + + service[:service_handle]
@@ -191,7 +191,7 @@ module SystemApiBackup
   end
 
   def export_engine_registry(engine_name, f=nil)
-    serialized_object = YAML::dump(@engines_api.engine_attached_services(engine_name))
+    serialized_object = YAML::dump(core.engine_attached_services(engine_name))
     if f.nil?
       engine = loadManagedEngine(engine_name)
       f = File.open(container_state_dir(engine) + '/registry.dump', 'w+')
