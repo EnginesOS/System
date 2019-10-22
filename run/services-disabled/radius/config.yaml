@@ -1,4 +1,4 @@
---- !ruby/object:ManagedService
+--- !ruby/object:Container::ManagedService
 cont_user_id: 22034
 container_name: radius
 publisher_namespace: EnginesSystem

@@ -23,7 +23,7 @@ module Builders
     @first_build = true
     @attached_services = []
     create_templater
-    
+
     @runtime =  ''
     backup_lastbuild
     setup_log_output
@@ -36,8 +36,8 @@ module Builders
     end
     set_container_guids
     process_supplied_envs(@build_params[:variables])
-      
-    
+
+
 
   #  SystemDebug.debug(SystemDebug.builder, :builder_init, @build_params)
     @service_builder = ServiceBuilder.new(@core_api, @templater, @build_params[:engine_name], @attached_services, basedir)
@@ -85,7 +85,7 @@ module Builders
     File.delete('/opt/engines/run/system/flags/building_params') if File.exist?('/opt/engines/run/system/flags/building_params')
   end
 
-  def build_from_blue_print   
+  def build_from_blue_print
     get_blueprint_from_repo
     log_build_output('Cloned Blueprint')
     build_container
@@ -134,7 +134,7 @@ module Builders
     # FIXME: REmove container if created
     #  unless @build_params[:reinstall].is_a?(TrueClass)
     begin
-      if @container.is_a?(ManagedContainer)
+      if @container.is_a?(Container::ManagedContainer)
         @container.stop_container if @container.is_running?
         @container.destroy_container if @container.has_container?
         @container.delete_image if @container.has_image?

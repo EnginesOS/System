@@ -1,4 +1,4 @@
---- !ruby/object:ManagedService
+--- !ruby/object:Container::ManagedService
 cont_user_id: 22017
 container_name: auth
 ctype: service
@@ -6,7 +6,7 @@ persistent: true
 conf_self_start: true
 publisher_namespace: EnginesSystem
 type_path: auth
-last_error: 
+last_error:
 memory: '96'
 shareable: false
 hostname: auth
@@ -14,28 +14,28 @@ domain_name: engines.internal
 kerberos: false
 environments: []
 volumes:
- auth_scripts: 
+ auth_scripts:
   name: auth_static_store
   remotepath: "/home/auth/static/"
   localpath: "/opt/engines/etc/auth/"
   permissions: "rw"
- krbkdc_etc: 
+ krbkdc_etc:
   name: krbkdc_etc
   remotepath: "/etc/krb5kdc"
   localpath: "/var/lib/engines/services/auth/etc/krb5kdc/"
   permissions: "rw"
- krbkdc_lib: 
+ krbkdc_lib:
   name: krbkdc_lib
   remotepath: "/var/krb5/"
   localpath: "/var/lib/engines/services/auth/lib/krb5/"
   permissions: "rw"
- container_public: 
+ container_public:
   name: container_public
   remotepath: "/home/engines/etc/containers"
   localpath: "/opt/engines/run/public/services"
-  permissions: ro   
+  permissions: ro
 image: _Engines_System(flavor)/auth:_Engines_System(release)
-port: 
+port:
 mapped_ports:
  ldap:
   name: kauth
@@ -43,7 +43,7 @@ mapped_ports:
   publicFacing: false
   external: 88
 repo: na
-last_result: 
+last_result:
 setState: running
 conf_register_site: false
 conf_register_dns: true

@@ -1,4 +1,4 @@
---- !ruby/object:ManagedService
+--- !ruby/object:Container::ManagedService
 container_name: docker_stats
 publisher_namespace: SumoLogic
 type_path: dockerstats

@@ -1,4 +1,4 @@
---- !ruby/object:ManagedService
+--- !ruby/object:Container::ManagedService
 container_name: wwwstats
 publisher_namespace: EnginesSystem
 type_path: wwwstats
