@@ -5,7 +5,7 @@ module EngineApiDependancies
     if container.dependant_on.is_a?(Array)
       container.dependant_on.each do |service_name|
         SystemDebug.debug(SystemDebug.containers, :checking_depends,  service_name)
-        service = engines_core.loadManagedService(service_name)
+        service = core.loadManagedService(service_name)
         unless service.is_running?
           started += 1
           if service.has_container?
@@ -28,7 +28,7 @@ module EngineApiDependancies
   def wait_for_dependacies_startup(container)
     if container.dependant_on.is_a?(Array)
       container.dependant_on.each do |service_name|
-        service = engines_core.loadManagedService(service_name)
+        service = core.loadManagedService(service_name)
         wait_for_dependacy_startup(service)
       end
     end

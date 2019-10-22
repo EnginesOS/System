@@ -9,7 +9,7 @@ module ServiceApiRestore
     # STDERR.puts('STREAM' + stream.inspect)
     result = {}
 
-    thr = Thread.new { result = @engines_core.exec_in_container(params) }
+    thr = Thread.new { result = core.exec_in_container(params) }
     thr[:name] = 'restore:' + service.container_name.to_s
     begin
       Timeout.timeout(@@import_timeout) do
@@ -21,7 +21,7 @@ module ServiceApiRestore
       raise EnginesException.new(error_hash('Import Timeout on Running Action ', params))
       rescue StandardError => e
           SystemUtils.log_exception(e , 'service_restore:' + params)
-          thr.exit unless thr.nil?   
+          thr.exit unless thr.nil?
     end
     if result[:result] == 0
       true
@@ -55,7 +55,7 @@ module ServiceApiRestore
   def export(container, params)
     begin
       result = {result:  0}
-      thr = Thread.new { result = @engines_core.exec_in_container(params) }
+      thr = Thread.new { result = core.exec_in_container(params) }
       thr[:name] = 'export:' + params.to_s
       Timeout.timeout(@@export_timeout) do
         thr.join
@@ -69,7 +69,7 @@ module ServiceApiRestore
       #raise EnginesException.new(error_hash('Export Timeout on Running Action ', cmd))
     rescue StandardError => e
         SystemUtils.log_exception(e , 'export:' + params)
-        thr.exit unless thr.nil?   
+        thr.exit unless thr.nil?
     end
     if result[:result] == 0
       result #[stdout]

@@ -114,8 +114,8 @@ class EnginesCore < ErrorsApi
     Signal.trap('TERM', proc { api_shutdown })
     @system_api = SystemApi.new(self)  # will change to to docker_api and not self
     @registry_handler = RegistryHandler.new(@system_api)
-    @container_api = ContainerApi.new(@system_api, self)
-    @service_api = ServiceApi.new(@system_api, self)
+    @container_api = ContainerApi.new(@system_api)
+    @service_api = ServiceApi.new(@system_api)
     @service_manager = ServiceManager.new(self) # create_service_manager
     $user_tokens = {}
 
