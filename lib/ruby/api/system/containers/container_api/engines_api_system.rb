@@ -39,19 +39,19 @@ module EnginesApiSystem
     #   SystemDebug.debug(SystemDebug.containers,  :container_api_delete_engine, container)
     Container::Cache.instance.remove(container.container_name)
     volbuilder = core.loadManagedUtility('fsconfigurator')
-    @system_api.delete_container_configs(volbuilder, container)
+    system_api.delete_container_configs(volbuilder, container)
   end
 
   def get_container_network_metrics(container)
-    @system_api.get_container_network_metrics(container)
+    system_api.get_container_network_metrics(container)
   end
 
   def save_container(container)
-    @system_api.save_container(container)
+    system_api.save_container(container)
   end
 
   def save_container_log(container, options)
-    @system_api.save_container_log(container, options)
+    system_api.save_container_log(container, options)
   end
 
   def default_domain
@@ -61,7 +61,7 @@ module EnginesApiSystem
   def pre_start_checks(container)
     r = true
     unless have_enough_ram?(container)
-      r = 'Free memory' + @system_api.available_ram.to_s + ' Required:' + memory_required(container).to_s + "\n"
+      r = 'Free memory' + system_api.available_ram.to_s + ' Required:' + memory_required(container).to_s + "\n"
     end
     if (c = port_clash?(container.mapped_ports))
       r = c
@@ -111,7 +111,7 @@ module EnginesApiSystem
   end
 
   def have_enough_ram?(container)
-    if @system_api.available_ram > memory_required(container)
+    if system_api.available_ram > memory_required(container)
       true
     else
       false
@@ -122,16 +122,16 @@ module EnginesApiSystem
     clear_error
     container.expire_engine_info
     raise EnginesException.new(warning_hash('Failed To create container exists by the same name', container)) if container.ctype != 'system_service' && container.has_container?
-    raise EnginesException.new(error_hash('Failed to create state files', self)) unless @system_api.create_container_dirs(container)
-    @system_api.clear_cid_file(container)
-    @system_api.clear_container_var_run(container)
+    raise EnginesException.new(error_hash('Failed to create state files', self)) unless system_api.create_container_dirs(container)
+    system_api.clear_cid_file(container)
+    system_api.clear_container_var_run(container)
     start_dependancies(container) if container.dependant_on.is_a?(Hash)
     container.pull_image if container.ctype != 'app'
     docker_api.create_container(container)
   end
 
   def container_cid_file(container)
-    @system_api.container_cid_file(container)
+    system_api.container_cid_file(container)
   end
 
   def run_cronjob(cronjob, container)

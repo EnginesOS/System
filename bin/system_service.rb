@@ -6,7 +6,7 @@ require 'yaml'
 
 core = EnginesCore.instance
 
-system_api = core.system_api
+
 
 service = system_api.loadSystemService(ARGV[0])
 if service.is_a?(EnginesError)

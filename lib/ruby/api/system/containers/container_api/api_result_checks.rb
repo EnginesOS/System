@@ -4,8 +4,8 @@ module ApiResultChecks
      result
   end
 
-  def test_system_api_result(result)
-    @last_error = @system_api.last_error if result == false || result.nil?
+  def test_system_api._result(result)
+    @last_error = system_api.last_error if result == false || result.nil?
      result
   end
 

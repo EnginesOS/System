@@ -1,31 +1,31 @@
 module EngineApiStatusFlags
   def restart_required?(container)
-    File.exist?(@system_api.restart_flag_file(container))
+    File.exist?(system_api.restart_flag_file(container))
   end
 
   def rebuild_required?(container)
-    File.exist?(@system_api.rebuild_flag_file(container))
+    File.exist?(system_api.rebuild_flag_file(container))
   end
 
   def restart_reason(container)
-    if File.exist?(@system_api.restart_flag_file(container))
-      File.read(@system_api.restart_flag_file(container))
+    if File.exist?(system_api.restart_flag_file(container))
+      File.read(system_api.restart_flag_file(container))
     else
       false
     end
   end
 
   def set_debug(container)
-    @system_api.set_debug(container)
+    system_api.set_debug(container)
   end
 
   def clear_debug(container)
-    @system_api.clear_debug(container)
+    system_api.clear_debug(container)
   end
 
   def rebuild_reason(container)
-    if File.exist?(@system_api.rebuild_flag_file(container))
-      File.read(@system_api.restart_flag_file(container))
+    if File.exist?(system_api.rebuild_flag_file(container))
+      File.read(system_api.restart_flag_file(container))
     else
       false
     end
@@ -33,12 +33,12 @@ module EngineApiStatusFlags
 
   def is_startup_complete?(container)
     clear_error
-    @system_api.is_startup_complete?(container)
+    system_api.is_startup_complete?(container)
   end
 
   def wait_for_startup(c, timeout = 5)
     r = false
-    sfd = @system_api.container_state_dir(c) +'/run/flags'
+    sfd = system_api.container_state_dir(c) +'/run/flags'
     unless Dir.exist?(sfd)
       FileUtils.mkdir_p(sfd)
     end
@@ -77,6 +77,6 @@ module EngineApiStatusFlags
   end
 
   def init_container_info_dir(c)
-    @system_api.init_container_info_dir(c)
+    system_api.init_container_info_dir(c)
   end
 end

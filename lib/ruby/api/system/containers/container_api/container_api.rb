@@ -49,15 +49,15 @@ class ContainerApi < ErrorsApi
   include ContainerApiServices
 
 
-  def initialize(_system_api)
-    @system_api = _system_api
-  end
-
   def system_value_access
     core.system_value_access
   end
 
-  private
+  protected
+
+  def system_api
+    @system_api ||= SystemApi.instance
+  end
 
   def docker_api
     @docker_api ||= DockerApi.instance

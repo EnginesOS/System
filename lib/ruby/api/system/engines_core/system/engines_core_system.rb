@@ -84,15 +84,15 @@ module EnginesCoreSystem
   end
 
   def get_timezone
-    @system_api.get_timezone
+    system_api.get_timezone
   end
 
   def set_timezone(tz)
-    @system_api.set_timezone(tz)
+    system_api.set_timezone(tz)
   end
 
   def shutdown(reason)
     # FIXME: @registry_handler.api_dissconnect
-    @system_api.api_shutdown(reason)
+    system_api.api_shutdown(reason)
   end
 end
