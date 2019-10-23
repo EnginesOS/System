@@ -14,7 +14,7 @@ module ContainerCreation
     @build_params[:volumes] = @service_builder.volumes
     @build_params[:service_builder] = true
     @build_params[:cont_user_id] = @cont_user_id
-    @container = Container::ManagedEngine.new(@build_params, @blueprint_reader, core.container_api)
+    @container = Container::ManagedEngine.new(@build_params, @blueprint_reader)
     @container.save_state # no running.yaml throws a no such container so save so others can use
     @container.save_blueprint(@blueprint)
     log_build_output('Launching ' + @container.to_s)

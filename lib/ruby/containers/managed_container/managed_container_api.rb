@@ -1,6 +1,6 @@
 module ManagedContainerApi
   def save_state()
-    @container_api.save_container(self.dup)
+    container_api.save_container(self.dup)
   end
 
   def clear_to_save
@@ -11,7 +11,7 @@ module ManagedContainerApi
   end
 
   def save_blueprint blueprint
-    @container_api.save_blueprint(blueprint, self)
+    container_api.save_blueprint(blueprint, self)
   end
 
   def accepts_stream?
@@ -23,6 +23,6 @@ module ManagedContainerApi
   end
 
   def run_cronjob(cronjob)
-    @container_api.run_cronjob(cronjob, self)
+    container_api.run_cronjob(cronjob, self)
   end
 end

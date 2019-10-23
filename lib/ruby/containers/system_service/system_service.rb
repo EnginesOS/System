@@ -17,7 +17,7 @@ module Container
     end
 
     def create_service()
-      @container_api.create_container(self)
+      container_api.create_container(self)
     end
 
     def error_type_hash(mesg, params = nil)
@@ -27,19 +27,19 @@ module Container
     end
 
     def unpause_container
-      @container_api.unpause_container(self)
+      container_api.unpause_container(self)
     end
 
     def stop_container
-      @container_api.stop_container(self)
+      container_api.stop_container(self)
     end
 
     def destroy_container
-      @container_api.destroy_container(self)
+      container_api.destroy_container(self)
     end
 
     def start_container
-      @container_api.start_container(self)
+      container_api.start_container(self)
     end
 
     def forced_recreate
@@ -56,14 +56,14 @@ module Container
         destroy_container
       rescue
       end
-      @container_api.create_container(self)         #start as engine/container or will end up in a loop getting configurations and consumers
+      container_api.create_container(self)         #start as engine/container or will end up in a loop getting configurations and consumers
     end
 
     def inspect_container
     #  SystemDebug.debug(SystemDebug.system, :system_service_inspect_container)
       if @docker_info.nil? || @docker_info.is_a?(FalseClass)
-        #  @container_api.inspect_container(self)
-        @docker_info =  @container_api.inspect_container(self)
+        #  container_api.inspect_container(self)
+        @docker_info =  container_api.inspect_container(self)
         # @docker_info = @last_result
         if @docker_info.is_a?(FalseClass)
           unless has_image?
@@ -71,7 +71,7 @@ module Container
             pull_image
           end
           SystemUtils.log_output('Creating system service' + container_name.to_s, 10)
-          @container_api.create_container(self)
+          container_api.create_container(self)
           @docker_info = @last_result
           if @docker_info.is_a?(FalseClass)
             raise EnginesException.new(error_hash('failed to create system service', container_name))

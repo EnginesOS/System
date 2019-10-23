@@ -1,12 +1,13 @@
 #!/usr/bin/ruby
 
-require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
+require '/opt/engines/lib/ruby/api/system/engines_system/engines_system'
 require 'thread'
 require 'yaml'
 
-core = EnginesCore.instance
+require '/opt/engines/lib/ruby/system/engines_error'
+require '/opt/engines/lib/ruby/api/system/errors_api'
 
-
+system_api = SystemApi.instance
 
 service = system_api.loadSystemService(ARGV[0])
 if service.is_a?(EnginesError)

@@ -113,15 +113,11 @@ class EnginesCore < ErrorsApi
     Signal.trap('HUP', proc { dump_stats })  #api_shutdown })
     Signal.trap('TERM', proc { api_shutdown })
     @registry_handler = RegistryHandler.new
-    @container_api = ContainerApi.new
-    @service_api = ServiceApi.new
     @service_manager = ServiceManager.new # create_service_manager
     $user_tokens = {}
   end
 
-  attr_reader :container_api, :service_api
-
-  private
+  protected
 
   def system_api
     @system_api ||= SystemApi.instance

@@ -5,7 +5,7 @@ module ManagedServiceConfigurations
     raise EnginesException.new({error_mesg: 'service variables not a hash', error_type: :error , params: configurator_params}) unless configurator_params[:variables].is_a?(Hash)
     raise EnginesException.new(warning_hash('service not running ', configurator_params)) unless is_running?
     raise EnginesException.new(error_hash('service missing cont_user_id ', configurator_params)) if check_cont_uid == false
-    @container_api.run_configurator(self, configurator_params)
+    container_api.run_configurator(self, configurator_params)
   end
 
   def retrieve_configurator(configurator_params)
@@ -16,14 +16,14 @@ module ManagedServiceConfigurations
     r
     else
       raise EnginesException.new(error_hash('service missing cont_user_id ', configurator_params)) if check_cont_uid == false
-     r = @container_api.retrieve_configurator(self, configurator_params)
+     r = container_api.retrieve_configurator(self, configurator_params)
    #   STDERR.puts(' recevie ARGS ' + r.to_s)
           r
     end
   end
 
   def retrieve_service_configuration(configurator_params)
-    @container_api.retrieve_service_configuration(
+    container_api.retrieve_service_configuration(
     {service_name: @container_name,
       type_path: @type_path,
       publisher_namespace: @publisher_namespace,
@@ -32,7 +32,7 @@ module ManagedServiceConfigurations
   end
 
   def retrieve_service_configurations
-    @container_api.retrieve_service_configurations(
+    container_api.retrieve_service_configurations(
     {service_name: @container_name,
       type_path: @type_path,
       publisher_namespace: @publisher_namespace })
@@ -40,7 +40,7 @@ module ManagedServiceConfigurations
 
   def service_resource(what)
     #STDERR.puts('SERVICE RESOURCE' + self.container_name)
-    @container_api.service_resource(self, what)
+    container_api.service_resource(self, what)
   end
 
 end

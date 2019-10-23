@@ -6,6 +6,7 @@ require '/opt/engines/lib/ruby/containers/managed_service.rb'
 require '/opt/engines/lib/ruby/containers/system_service/system_service.rb'
 require '/opt/engines/lib/ruby/system/system_config.rb'
 require '/opt/engines/lib/ruby/system/engines_error.rb'
+require '/opt/engines/lib/ruby/api/system/engines_core/engines_core'
 
 class SystemApi < ErrorsApi
   class << self
@@ -91,8 +92,12 @@ class SystemApi < ErrorsApi
   # Put if first run needed around this
   require_relative 'first_run_complete.rb'
   include FirstRunComplete
+
   require_relative 'system_api_backup.rb'
   include SystemApiBackup
+
+  require_relative 'engines_system_errors'
+  include EnginesSystemErrors
 
   def initialize
     @container_conf_locks = {}

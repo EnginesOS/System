@@ -101,7 +101,7 @@ module Engines
       yaml_file = File.new(yaml_file_name, 'r')
       begin
         ts = File.mtime(yaml_file_name)
-        engine = Container::ManagedEngine.from_yaml(yaml_file.read, core.container_api)
+        engine = Container::ManagedEngine.from_yaml(yaml_file.read)
         unlock_container_conf_file(SystemConfig.RunDir + '/apps/' + engine_name)
         yaml_file.close
         cache.add(engine, ts)

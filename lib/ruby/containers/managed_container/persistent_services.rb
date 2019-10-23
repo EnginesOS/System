@@ -1,6 +1,6 @@
 module PersistantServices
   def engine_persistent_services
-    services = @container_api.engine_persistent_services(self)
+    services = container_api.engine_persistent_services(self)
     service_details = []
     services.each do |service|
       service_detail = service.dup

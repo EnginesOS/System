@@ -6,7 +6,7 @@ module Container
       # Basically parent super but no lock on image
       expire_engine_info
       begin
-        info = @container_api.inspect_container_by_name(self)
+        info = container_api.inspect_container_by_name(self)
         @container_id = info[:Id] if info.is_a?(Hash)
       rescue
       end
@@ -61,7 +61,7 @@ module Container
       end
       wait_for('nocontainer') if has_container?
       begin
-        @container_api.destroy_container(self) if has_container?
+        container_api.destroy_container(self) if has_container?
         wait_for('nocontainer')
       rescue
       end
@@ -74,7 +74,7 @@ module Container
 
       #    wait_for('stopped',120) unless is_stopped?
       #    begin
-      #      r = @container_api.logs_container(self, 512) #_as_result
+      #      r = container_api.logs_container(self, 512) #_as_result
       #      STDERR.puts('UIL RESULT:' + r.to_s)
       #      if r.is_a?(Hash)
       #        r
@@ -95,7 +95,7 @@ module Container
     end
 
     def apply_templates(command, command_params)
-      templater = Templater.new(@container_api.system_value_access,nil)
+      templater = Templater.new(container_api.system_value_access,nil)
       @image = templater.process_templated_string(@image)
       construct_cmdline(command, command_params, templater)
       apply_env_templates(command_params, templater) unless @environments.nil?

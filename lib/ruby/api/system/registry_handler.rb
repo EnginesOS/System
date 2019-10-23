@@ -68,7 +68,7 @@ class RegistryHandler < ErrorsApi
   def force_registry_recreate
     log_error_mesg("Forcing registry recreate", nil)
     @registry_ip = false
-    registry_service = system_api..loadSystemService('registry')
+    registry_service = system_api.loadSystemService('registry')
     if registry_service.forced_recreate
       registry_service.wait_for('start', 90)
       unless registry_service.wait_for_startup(30)

@@ -1,4 +1,13 @@
+require_relative '../../engines_system/engines_system'
+require_relative '../../engines_core/engines_core'
+
+
 class ContainerApi < ErrorsApi
+  class << self
+    def instance
+      @@instance ||= self.new
+    end
+  end
 
   require_relative '../service_hash_builders.rb'
   require '/opt/engines/lib/ruby/system/deal_with_json.rb'

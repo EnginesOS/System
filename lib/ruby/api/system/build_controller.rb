@@ -130,7 +130,7 @@ class BuildController
     true
   end
 
-  private
+  protected
 
   def core
     @core ||= EnginesCore.instance
