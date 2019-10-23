@@ -7,6 +7,6 @@ module ManagedUtilities
     lock_container_conf_file(SystemConfig.RunDir + '/utilitys/' + utility_name)
     yaml_file = File.read(yaml_file_name)
     unlock_container_conf_file(SystemConfig.RunDir + '/utilitys/' + utility_name)
-    Container::ManagedUtility.from_yaml(yaml_file, core.container_api)
+    Container::ManagedUtility.from_yaml(yaml_file)
   end
 end

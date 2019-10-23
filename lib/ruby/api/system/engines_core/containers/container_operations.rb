@@ -1,7 +1,7 @@
 module ContainerOperations
 
   def init_engine_dirs(engine_name)
-    @system_api.init_engine_dirs(engine_name)
+    system_api.init_engine_dirs(engine_name)
   end
 
   def image_exist?(container_name)
@@ -21,7 +21,7 @@ module ContainerOperations
   end
 
   def get_changed_containers
-    @system_api.get_changed_containers
+    system_api.get_changed_containers
   end
 
   def web_sites_for(container)
@@ -53,9 +53,9 @@ module ContainerOperations
   end
 
   def get_container_network_metrics(engine_name)
-    engine = @system_api.loadManagedEngine(engine_name)
+    engine = system_api.loadManagedEngine(engine_name)
     unless engine.is_a?(Container::ManagedEngine)
-      engine = @system_api.loadManagedService(engine_name)
+      engine = system_api.loadManagedService(engine_name)
       unless engine.is_a?(Container::ManagedService)
         raise EnginesException.new(error_hash("Failed to load network stats", engine_name))
       end

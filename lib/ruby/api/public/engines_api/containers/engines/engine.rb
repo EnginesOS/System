@@ -1,6 +1,6 @@
 module PublicApiEngine
   def loadManagedEngine(engine_name)   #vc engines system
-    @system_api.loadManagedEngine(engine_name)
+    system_api.loadManagedEngine(engine_name)
   end
 
   def fix_containers_fsid

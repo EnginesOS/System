@@ -24,8 +24,21 @@ module Container
     require_relative 'managed_service/managed_service_import_export.rb'
     include ManagedServiceImportExport
 
+    def self.from_yaml(yaml)
+      container = YAML::load(yaml)
+      raise EnginesException.new(error_hash('Failed to Load yaml_' + @container_name.to_s + '_ nil', yaml[0..256])) if container.nil?
+      raise EnginesException.new(error_hash('Failed to Load yaml_' + @container_name.to_s + '_ false', yaml[0..256])) if container.is_a?(FalseClass)
+      container.post_load
+      container
+    rescue StandardError => e
+      STDERR.puts('Problem ' + e.to_s)
+      STDERR.puts('With: ' + yaml.to_s)
+      raise e
+    end
+
     @ctype='service'
     @soft_service = false
+
     def lock_values
       super
       @ctype = 'service' if @ctype.nil?
@@ -88,5 +101,11 @@ module Container
       obj_str = object.to_s.slice(0, 512)
       SystemUtils.log_error_mesg(msg, object)
     end
+  end
+
+  protected
+
+  def container_api
+    @container_api ||= ServiceApi.instance
   end
 end

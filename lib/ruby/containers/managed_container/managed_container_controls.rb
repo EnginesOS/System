@@ -6,7 +6,7 @@ module ManagedContainerControls
   end
 
   def wait_for_startup(timeout = 60)
-    @container_api.wait_for_startup(self, timeout)
+    container_api.wait_for_startup(self, timeout)
   end
 
   def update_memory(new_memory)
@@ -43,7 +43,7 @@ module ManagedContainerControls
 
   def delete_engine
     thr = Thread.new do
-      @container_api.delete_engine(self)
+      container_api.delete_engine(self)
     end
     thr.name = 'Delete:' + container_name
     thr
@@ -56,7 +56,7 @@ module ManagedContainerControls
     if prep_task(:create)
       ret_val = false
       unless has_container?
-        ret_val = @container_api.setup_container(self)
+        ret_val = container_api.setup_container(self)
         expire_engine_info
       else
         task_failed('setup')
@@ -74,8 +74,8 @@ module ManagedContainerControls
     thr = Thread.new do
       @container_mutex.synchronize {
         if prep_task(:create)
-          @domain_name = @container_api.default_domain if @domain_name.nil?
-          @container_api.initialize_container_env(self)
+          @domain_name = container_api.default_domain if @domain_name.nil?
+          container_api.initialize_container_env(self)
           #  SystemDebug.debug(SystemDebug.containers, :teask_preped)
           expire_engine_info
           @container_id = -1
@@ -226,7 +226,7 @@ module ManagedContainerControls
     thr = Thread.new do
       @container_mutex.synchronize {
         if prep_task(:reinstall)
-          ret_val = @container_api.rebuild_image(self)
+          ret_val = container_api.rebuild_image(self)
           expire_engine_info
           if ret_val
             true

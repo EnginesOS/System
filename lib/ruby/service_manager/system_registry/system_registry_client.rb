@@ -33,7 +33,7 @@ class SystemRegistryClient < ErrorsApi
     system_registry_tree
   end
 
-  private
+  protected
 
   def core
     @core ||= EnginesCore.instance

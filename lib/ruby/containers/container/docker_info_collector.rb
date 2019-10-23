@@ -55,7 +55,7 @@ module DockerInfoCollector
     @container_id = ContainerStateFiles.read_container_id(self)
   #  SystemDebug.debug(SystemDebug.containers, 'read container from file ', @container_id)
     if @container_id == -1 && setState != 'nocontainer'
-      info = @container_api.inspect_container_by_name(self) # docker_info
+      info = container_api.inspect_container_by_name(self) # docker_info
       return -1 if info.nil?
 
   #    SystemDebug.debug(SystemDebug.containers, 'DockerInfoCollector:Meth read_container_id ', info)
@@ -99,7 +99,7 @@ module DockerInfoCollector
     if @docker_info_cache == false && @setState == 'nocontainer'
       false
     else
-      @docker_info_cache = @container_api.inspect_container(self) if @docker_info_cache.nil?
+      @docker_info_cache = container_api.inspect_container(self) if @docker_info_cache.nil?
       @docker_info_cache = @docker_info_cache[0] if @docker_info_cache.is_a?(Array)
       @docker_info_cache
     end

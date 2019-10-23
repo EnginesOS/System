@@ -42,7 +42,7 @@ module ContainerApiDockerActions
   end
 
   def rotate_log(container)
-    @system_api.rotate_container_log(container.container_id)
+    system_api.rotate_container_log(container.container_id)
   end
 
   def ps_container(container)

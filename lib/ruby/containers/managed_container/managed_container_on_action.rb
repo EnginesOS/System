@@ -22,13 +22,13 @@ module ManagedContainerOnAction
         end
         @has_run = true
         begin
-          @container_api.register_non_persistent_services(self)
+          container_api.register_non_persistent_services(self)
         rescue
           return on_stop(nil) unless is_running?
         end
       end
       save_state
-      @container_api.register_ports(@container_name, @mapped_ports) if @mapped_ports.is_a?(Hash)
+      container_api.register_ports(@container_name, @mapped_ports) if @mapped_ports.is_a?(Hash)
     }
   end
   
@@ -46,12 +46,12 @@ module ManagedContainerOnAction
       @has_run = false
       @out_of_memory = false
       @had_out_memory = false
-      @container_api.apply_schedules(self)
+      container_api.apply_schedules(self)
       @created = true
       save_state
     #  SystemDebug.debug(SystemDebug.container_events, :ON_Create_Finised, event_hash)
     }
-    @container_api.init_container_info_dir(self)
+    container_api.init_container_info_dir(self)
     start_container
   end
 
@@ -66,8 +66,8 @@ module ManagedContainerOnAction
       save_state
       #return true if @consumer_less
       # deregister_with_dns # Really its in the following nowMUst register each time as IP Changes
-      @container_api.deregister_non_persistent_services(self)
-      @container_api.deregister_ports(@container_name, @mapped_ports) if @mapped_ports.is_a?(Hash)
+      container_api.deregister_non_persistent_services(self)
+      container_api.deregister_ports(@container_name, @mapped_ports) if @mapped_ports.is_a?(Hash)
     end
   end
 

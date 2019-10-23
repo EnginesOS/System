@@ -57,7 +57,7 @@ module ManagedContainerStatus
   end
 
   def is_startup_complete?
-    @container_api.is_startup_complete?(self)
+    container_api.is_startup_complete?(self)
   end
 
   def is_error?
@@ -71,11 +71,11 @@ module ManagedContainerStatus
   end
   
   def set_debug
-    @container_api.set_debug(self)
+    container_api.set_debug(self)
   end
 
   def clear_debug
-    @container_api.clear_debug(self)
+    container_api.clear_debug(self)
   end
     
   def clear_error
@@ -87,19 +87,19 @@ module ManagedContainerStatus
   end
 
   def restart_required?
-    @container_api.restart_required?(self)
+    container_api.restart_required?(self)
   end
 
   def restart_reason
-    @container_api.restart_reason(self)
+    container_api.restart_reason(self)
   end
 
   def rebuild_required?
-    @container_api.rebuild_required?(self)
+    container_api.rebuild_required?(self)
   end
 
   def rebuild_reason
-    @container_api.rebuild_reason(self)
+    container_api.rebuild_reason(self)
   end
 
   def in_two_step?

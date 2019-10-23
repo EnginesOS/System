@@ -112,18 +112,16 @@ class EnginesCore < ErrorsApi
   def initialize
     Signal.trap('HUP', proc { dump_stats })  #api_shutdown })
     Signal.trap('TERM', proc { api_shutdown })
-    @system_api = SystemApi.new  # will change to to docker_api and not self
-    @registry_handler = RegistryHandler.new(@system_api)
-    @container_api = ContainerApi.new(@system_api)
-    @service_api = ServiceApi.new(@system_api)
+    @registry_handler = RegistryHandler.new
     @service_manager = ServiceManager.new # create_service_manager
     $user_tokens = {}
-
   end
 
-  attr_reader :system_api, :container_api, :service_api
+  protected
 
-  private
+  def system_api
+    @system_api ||= SystemApi.instance
+  end
 
   def docker_api
     @docker_api ||= DockerApi.instance

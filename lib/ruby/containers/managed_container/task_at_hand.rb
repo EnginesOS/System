@@ -233,7 +233,7 @@ module TaskAtHand
   def task_failed(msg)
     clear_task_at_hand
     #   SystemDebug.debug(SystemDebug.engine_tasks, :TASK_FAILES______Doing, @task_at_hand)
-    @last_error = @container_api.last_error unless @container_api.nil?
+    @last_error = container_api.last_error unless container_api.nil?
     #  SystemDebug.debug(SystemDebug.engine_tasks, :WITH, @last_error.to_s, msg.to_s)
     task_complete(:failed)
     false

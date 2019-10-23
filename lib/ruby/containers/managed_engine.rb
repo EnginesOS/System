@@ -5,7 +5,7 @@ module Container
     require_relative 'managed_engine/managed_engine_on_action.rb'
     include ManagedEngineOnAction
 
-    def initialize(build_params, runtime_params, core_api)
+    def initialize(build_params, runtime_params)
       @container_mutex = Mutex.new
       @memory = build_params[:memory]
       @hostname = build_params[:host_name]
@@ -30,7 +30,6 @@ module Container
       @web_port = build_params[:web_port]
       @web_root = runtime_params.web_root
       @last_result = ''
-      @container_api = core_api
       @setState = 'running'
       @ctype = 'app'
       @conf_self_start = true
@@ -62,7 +61,7 @@ module Container
     end
 
     def load_blueprint
-      @container_api.load_blueprint(self)
+      container_api.load_blueprint(self)
     end
 
     def plugins_path
@@ -87,7 +86,7 @@ module Container
     end
 
     def engine_attached_services
-      @container_api.engine_attached_services(self)
+      container_api.engine_attached_services(self)
     end
 
     def error_type_hash(mesg, params = nil)

@@ -31,11 +31,11 @@ module RunningContainerStatistics
   end
 
   def get_container_memory_stats()
-    @container_api.get_container_memory_stats(self)
+    container_api.get_container_memory_stats(self)
   end
 
   def get_container_network_metrics()
-    @container_api.get_container_network_metrics(self)
+    container_api.get_container_network_metrics(self)
   end
 
   private

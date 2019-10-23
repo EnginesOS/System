@@ -49,7 +49,7 @@ module PublicApiConfig
   end
 
   def system_hostname
-    @system_api.system_hostname
+    system_api.system_hostname
   end
 
   # FIXME should use System

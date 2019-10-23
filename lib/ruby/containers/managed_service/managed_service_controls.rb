@@ -6,11 +6,11 @@ module ManagedServiceControls
   def create_service()
     #SystemUtils.run_command('/opt/engines/system/scripts/system/setup_service_dir.sh ' + container_name)
     setup_service_keys if @system_keys.is_a?(Array)
-    @container_api.setup_service_dirs(self)
+    container_api.setup_service_dirs(self)
     #SystemDebug.debug(SystemDebug.containers, :keys_set, @system_keys )
-    #@container_api.initialize_container_env(self)
-    envs = @container_api.load_and_attach_pre_services(self)
-    shared_envs = @container_api.load_and_attach_shared_services(self)
+    #container_api.initialize_container_env(self)
+    envs = container_api.load_and_attach_pre_services(self)
+    shared_envs = container_api.load_and_attach_shared_services(self)
     if shared_envs.is_a?(Array)
       if envs.is_a?(Array) == false
         envs = shared_envs
@@ -61,7 +61,7 @@ module ManagedServiceControls
 #  end
 
   def service_restore(stream, params)
-    @container_api.service_restore(self, stream, params)
+    container_api.service_restore(self, stream, params)
   end
 
   private

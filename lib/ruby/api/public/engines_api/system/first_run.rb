@@ -11,6 +11,6 @@ module PublicApiSystemFirstRun
   end
 
   def first_run_complete(install_mgmt)
-    @system_api.first_run_complete(install_mgmt)
+    system_api.first_run_complete(install_mgmt)
   end
 end

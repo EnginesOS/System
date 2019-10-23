@@ -1,6 +1,6 @@
 module PublicApiService
   def loadManagedService(service_name)
-    @system_api.loadManagedService(service_name)
+    system_api.loadManagedService(service_name)
   end
 
   def get_resolved_engine_string(env_value, engine)
