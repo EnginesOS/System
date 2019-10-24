@@ -1,7 +1,7 @@
 module EnginesCoreSystem
   def api_shutdown
    # SystemDebug.debug(SystemDebug.system,  :BEING_SHUTDOWN)
-    @registry_handler.api_shutdown
+    service_manager.api_shutdown
   end
 
   def dump_heap_stats

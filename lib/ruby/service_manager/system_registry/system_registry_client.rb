@@ -4,6 +4,7 @@ class SystemRegistryClient < ErrorsApi
   end
 
   def api_shutdown
+    close_connection
   end
 
   require_relative 'api/xcon_rset.rb'

@@ -27,10 +27,10 @@ rescue StandardError => e
   raise EnginesException.new(error_hash('Failed to open base url to registry ' + e.to_s, base_url.to_s))
 end
 
-#def close_connection
-#  #  @connection.reset unless @connection.nil?
-#  #  @connection = nil
-#end
+def close_connection
+  @connection.reset unless @connection.nil?
+  @connection = nil
+end
 
 def reopen_connection
   # STDERR.puts('re open connec')
