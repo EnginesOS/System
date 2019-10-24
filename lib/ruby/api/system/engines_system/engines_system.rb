@@ -72,7 +72,6 @@ class SystemApi < ErrorsApi
   require_relative 'managed_containers/managed_utilities.rb'
   include ManagedUtilities
 
-
   require_relative 'managed_containers/container_info_tree.rb'
   include ContainerInfoTree
 
@@ -81,7 +80,6 @@ class SystemApi < ErrorsApi
 
   require_relative 'certificates.rb'
   include Certificates
-
 
   require_relative 'service_management.rb'
   include ServiceManagement
@@ -108,7 +106,7 @@ class SystemApi < ErrorsApi
     @system_services ||= ['system', 'registry']
   end
 
-  private
+  protected
 
   def core
     @core ||= EnginesCore.instance

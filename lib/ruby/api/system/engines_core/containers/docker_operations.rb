@@ -10,8 +10,7 @@ module DockerOperations
     docker_api.clean_up_dangling_images
   end
 
-  def exec_in_container(params)
-    STDERR.puts('EXEC IN CONTAINER PARAMS ' + params.keys.to_s)
+  def exec_in_container(params)  
     docker_api.docker_exec(params)
   end
 
