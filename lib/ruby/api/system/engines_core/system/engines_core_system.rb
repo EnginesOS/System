@@ -20,7 +20,7 @@ module EnginesCoreSystem
     params = params_from_gui.dup
     #SystemDebug.debug(SystemDebug.first_run,params)
     first_run = FirstRunWizard.new(params)
-    first_run.apply(self)
+    first_run.apply
     first_run.sucess
   end
 
