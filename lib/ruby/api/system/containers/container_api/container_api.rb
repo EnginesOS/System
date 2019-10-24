@@ -5,7 +5,7 @@ require_relative '../../engines_core/engines_core'
 class ContainerApi < ErrorsApi
   class << self
     def instance
-      @@instance ||= self.new
+      @@container_instance ||= self.new
     end
   end
 

@@ -30,21 +30,20 @@ module Container
       raise e
     end
 
-    attr_reader :container_id,\
-    :memory,\
-    :container_name,\
-    :image,\
-    :web_port,\
-    :volumes,\
-    :mapped_ports,\
-    :environments,\
-    :setState
+    attr_reader :container_id,
+      :memory,
+      :container_name,
+      :image,
+      :web_port,
+      :volumes,
+      :mapped_ports,
+      :environments,
+      :setState
 
-    attr_accessor :last_error,\
-    :container_api,
-    :last_result,
-    :container_id,
-    :arguments
+    attr_accessor :last_error,
+      :last_result,
+      :container_id,
+      :arguments
 
     def update_memory(new_memory)
       @memory = new_memory
