@@ -76,7 +76,7 @@ module Services
     yam1_file_name = SystemConfig.RunDir + service_type_dir + service_name + '/running.yaml'
    # raise EnginesException.new(error_hash('Engine File Locked', yam1_file_name)) if is_container_conf_file_locked?(SystemConfig.RunDir + service_type_dir + service_name)
     unless File.exist?(yam1_file_name)
-      raise EnginesException.new(error_hash('failed to create service file ', SystemConfig.RunDir + service_type_dir + '/' + service_name.to_s)) unless build_running_service(service_name, SystemConfig.RunDir + service_type_dir, core.system_value_access)
+      raise EnginesException.new(error_hash('failed to create service file ', SystemConfig.RunDir + service_type_dir + '/' + service_name.to_s)) unless build_running_service(service_name, SystemConfig.RunDir + service_type_dir) 
     end
     lock_container_conf_file(SystemConfig.RunDir + service_type_dir + service_name)
     yaml_file = File.read(yam1_file_name)

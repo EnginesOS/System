@@ -95,7 +95,7 @@ module Container
     end
 
     def apply_templates(command, command_params)
-      templater = Templater.new(container_api.system_value_access,nil)
+      templater = Templater.new(nil)
       @image = templater.process_templated_string(@image)
       construct_cmdline(command, command_params, templater)
       apply_env_templates(command_params, templater) unless @environments.nil?

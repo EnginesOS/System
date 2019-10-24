@@ -185,7 +185,7 @@ module Builders
   end
 
   def create_templater
-    @templater = Templater.new(core.system_value_access, BuilderPublic.new(self))
+    @templater = Templater.new(BuilderPublic.new(self))
   end
 
   def setup_rebuild

@@ -57,11 +57,6 @@ class ContainerApi < ErrorsApi
   require_relative 'container_api_services.rb'
   include ContainerApiServices
 
-
-  def system_value_access
-    core.system_value_access
-  end
-
   protected
 
   def system_api

@@ -1,4 +1,9 @@
 class SystemAccess
+  class << self
+    def instance
+      @@instance ||= self.new
+    end
+  end
 
   def release
     SystemUtils.system_release
@@ -113,4 +118,9 @@ class SystemAccess
     core.system_hostname
   end
 
+  protected
+
+  def core
+    @core ||= EnginesCore.instance
+  end
 end

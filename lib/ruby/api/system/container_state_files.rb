@@ -1,9 +1,9 @@
 class ContainerStateFiles
-  def self.build_running_service(service_name, service_type_dir, system_value_access)
+  def self.build_running_service(service_name, service_type_dir)
     config_template_file_name = service_type_dir + service_name + '/config.yaml'
     if File.exist?(config_template_file_name)
       config_template = File.read(config_template_file_name)
-      templator = Templater.new(system_value_access, nil)
+      templator = Templater.new(nil)
       running_config = templator.process_templated_string(config_template)
       yam1_file_name = service_type_dir + service_name + '/running.yaml'
       yaml_file = File.new(yam1_file_name, 'w+')

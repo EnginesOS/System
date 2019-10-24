@@ -18,7 +18,7 @@ module SmAttachStaticServices
      # SystemDebug.debug(SystemDebug.services, :loaded_service_hash, service_hash)
       set_top_level_service_params(service_hash, container.container_name)
       if service_hash.has_key?(:shared_service) == false || service_hash[:shared_service] == false
-        templater =  Templater.new(core.system_value_access, container)
+        templater =  Templater.new(container)
         templater.proccess_templated_service_hash(service_hash)
        # SystemDebug.debug(SystemDebug.services, :templated_service_hash, service_hash)
        # SystemDebug.debug(SystemDebug.services, 'is registreed ', system_registry_client.service_is_registered?(service_hash))
