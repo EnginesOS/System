@@ -16,7 +16,7 @@ class FirstRunWizard <ErrorsApi
     @first_run_params = params
   end
 
-  def apply(api)
+  def apply()
     if @has_ran == true
       false
     else
