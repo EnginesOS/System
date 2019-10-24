@@ -5,7 +5,7 @@ module PublicApiSystemFirstRun
     SystemDebug.debug(SystemDebug.first_run, params)
     first_run = FirstRunWizard.new(params)
     SystemDebug.debug(SystemDebug.first_run,  'istantiated')
-    first_run.apply(core)
+    first_run.apply
     raise EnginesException.new(error_hash('First Run Failed + first_run.last_error', params)) unless first_run.sucess
     first_run.sucess
   end
