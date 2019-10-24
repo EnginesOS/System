@@ -55,4 +55,8 @@ class ServiceManager  < ErrorsApi
   def core
     @core ||= EnginesCore.instance
   end
+
+  def api_shutdown
+    @system_registry.api_shutdown
+  end
 end
