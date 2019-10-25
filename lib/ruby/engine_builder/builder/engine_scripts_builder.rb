@@ -11,7 +11,7 @@ module EngineScriptsBuilder
     create_post_install_script
     write_worker_commands
     create_actionator_scripts
-    configure_services_backup(@service_builder.attached_services)
+    configure_services_backup(service_builder.attached_services)
   end
 
   def write_software_script_file(scripts_path, content)

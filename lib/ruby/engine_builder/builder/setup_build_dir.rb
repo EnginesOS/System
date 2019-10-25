@@ -12,7 +12,7 @@ module BuildDirSetup
 
   def setup_build_dir
     setup_default_files
-    ConfigFileWriter.compile_base_docker_files(@templater, basedir)
+    ConfigFileWriter.compile_base_docker_files(templater, basedir)
     unless @blueprint_reader.web_port.nil?
       @web_port = @blueprint_reader.web_port
     else
@@ -24,8 +24,8 @@ module BuildDirSetup
     @build_params[:mapped_ports] = @blueprint_reader.mapped_ports
     #  SystemDebug.debug(SystemDebug.builder, :ports, @build_params[:mapped_ports])
     #  SystemDebug.debug(SystemDebug.builder, :attached_services, @build_params[:attached_services])
-    @service_builder.required_services_are_running?
-    @service_builder.create_persistent_services(@blueprint_reader.services, @blueprint_reader.environments, @build_params[:attached_services])
+    service_builder.required_services_are_running?
+    service_builder.create_persistent_services(@blueprint_reader.services, @blueprint_reader.environments, @build_params[:attached_services])
     #   SystemDebug.debug(SystemDebug.builder, 'Services Attached')
     apply_templates_to_environments
     #  SystemDebug.debug(SystemDebug.builder, 'Templates Applied')
@@ -34,12 +34,12 @@ module BuildDirSetup
     index = 0
     unless @blueprint_reader.sed_strings.nil? || @blueprint_reader.sed_strings[:sed_str].nil?
       @blueprint_reader.sed_strings[:sed_str].each do |sed_string|
-        sed_string = @templater.process_templated_string(sed_string)
+        sed_string = templater.process_templated_string(sed_string)
         @blueprint_reader.sed_strings[:sed_str][index] = sed_string
         index += 1
       end
     end
-    @build_params[:app_is_persistent] = @service_builder.app_is_persistent
+    @build_params[:app_is_persistent] = service_builder.app_is_persistent
     dockerfile_builder = DockerFileBuilder.new(@blueprint_reader, @build_params, @web_port, self)
     dockerfile_builder.write_files_for_docker
     #  SystemDebug.debug(SystemDebug.builder, 'Docker file  written')
@@ -57,7 +57,7 @@ module BuildDirSetup
   end
 
   def write_software_file(filename, content)
-    ConfigFileWriter.write_templated_file(@templater, basedir + '/' + filename, content)
+    ConfigFileWriter.write_templated_file(templater, basedir + '/' + filename, content)
     log_build_output('Wrote ' + basedir.to_s + '/' + filename.to_s)
   end
 
@@ -76,7 +76,7 @@ module BuildDirSetup
     unless persistent_files.nil?
       content = ''
       persistent_files.each do |persistent|
-        persistent[:volume_name] = @service_builder.default_vol if persistent[:volume_name].nil?
+        persistent[:volume_name] = service_builder.default_vol if persistent[:volume_name].nil?
         #    STDERR.puts('persistent[:path]:' +  persistent[:path].to_s + ' persistent[:volume_name]:' + persistent[:volume_name].to_s  + "\n")
         content += persistent[:path] + ' ' + persistent[:volume_name] + "\n"
       end
@@ -101,7 +101,7 @@ module BuildDirSetup
     if @blueprint_reader.template_files
       @blueprint_reader.template_files.each do |template_hash|
         template_hash[:path].sub!(/^\/home/,'')
-        template_hash[:path] = @templater.process_templated_string(template_hash[:path].sub(/^\/home/,''))
+        template_hash[:path] = templater.process_templated_string(template_hash[:path].sub(/^\/home/,''))
         # unless template_hash[:path].start_with?('/home') || template_hash[:path].start_with?('/usr/local')
         #  template_hash[:path] = '/home/' + template_hash[:path]
         #end
@@ -186,7 +186,7 @@ module BuildDirSetup
 
   def apply_templates_to_environments
     @blueprint_reader.environments.each do |env|
-      env.value = @templater.process_templated_string(env.value) if env.value.is_a?(String)
+      env.value = templater.process_templated_string(env.value) if env.value.is_a?(String)
     end
   end
 

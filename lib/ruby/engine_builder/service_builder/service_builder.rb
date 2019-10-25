@@ -1,8 +1,6 @@
-#require '/opt/engines/lib/ruby/managed_services/service_definitions/service_top_level.rb'
-
 class ServiceBuilder < ErrorsApi
 
-  attr_reader :volumes, :app_is_persistent, :attached_services, :default_vol
+  attr_reader :volumes, :app_is_persistent, :attached_services, :default_vol, :templater
 
   require_relative 'orphan_service_builder.rb'
   include OrphansServiceBuilder
@@ -27,6 +25,7 @@ class ServiceBuilder < ErrorsApi
     @volumes = {}
     @orphans = []
     @app_is_persistent = false
+    STDERR.puts self.inspect.to_s 
   end
 
   def service_resource(service_name, what)

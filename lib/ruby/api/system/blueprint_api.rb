@@ -26,7 +26,6 @@ class BlueprintApi < ErrorsApi
       blueprint_file.close
     end
     json_hash
-
   end
 
   def load_blueprint(container)
@@ -41,7 +40,7 @@ class BlueprintApi < ErrorsApi
     BlueprintApi.perform_inheritance(self.download_blueprint(blueprint_url))
   end
 
-  def  self.perform_inheritance(blueprint)
+  def self.perform_inheritance(blueprint)
     if blueprint.key?(:software) \
     && blueprint[:software].key?(:base) \
     &&  blueprint[:software][:base].key?(:inherit)
@@ -58,8 +57,8 @@ class BlueprintApi < ErrorsApi
       merge_bp_entry(blueprint, parent, :scripts)
       merge_bp_entry(blueprint, parent, :service_configurations)
       merge_bp_entry(blueprint, parent, :template_files)
-      merge_bp_entry(blueprint, parent, :file_write_permissions)    
-      merge_bp_entry(blueprint, parent, :actionators) 
+      merge_bp_entry(blueprint, parent, :file_write_permissions)
+      merge_bp_entry(blueprint, parent, :actionators)
       merge_bp_entry(blueprint, parent, :installed_packages)
       merge_bp_entry(blueprint, parent, :workers)
       merge_bp_entry(blueprint, parent, :persistent_files)
@@ -82,9 +81,9 @@ class BlueprintApi < ErrorsApi
 
       blueprint[:orig] = blueprint[:software]
       blueprint[:software] = parent[:software]
-      STDERR.puts('Merged BP ' + parent.to_s)
-    else
-      STDERR.puts('NO blueprint' + blueprint.to_s)
+      #   STDERR.puts('Merged BP ' + parent.to_s)
+      #   else
+      #    STDERR.puts('NO blueprint' + blueprint.to_s)
     end
     blueprint
   end
@@ -116,7 +115,7 @@ class BlueprintApi < ErrorsApi
       # FIXME Assumes only two keys
       dest.merge!(blueprint[:software][key[0]][key[1]])if blueprint[:software][key[0]].key?(key[1])
     end
-STDERR.puts('dest software[' + key.to_s + ']' + dest[:software].to_s  + "\nis a " +  dest[:software].class.name)
+    STDERR.puts('dest software[' + key.to_s + ']' + dest[:software].to_s  + "\nis a " +  dest[:software].class.name)
     dest
   end
 
@@ -158,16 +157,15 @@ STDERR.puts('dest software[' + key.to_s + ']' + dest[:software].to_s  + "\nis a 
   def self.get_http_file(url, d)
     require 'open-uri'
     if SystemConfig.DontVerifyBlueprintRepoSSL
-     # pa = {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}
+      # pa = {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}
       download = open(url,{ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE})
     else
-    download = open(url)
+      download = open(url)
       #pa = {}
     end
     #download = open(url, pa)
     IO.copy_stream(download, d)
-   ensure
+  ensure
     download.close unless download.nil?
   end
-
 end

@@ -32,8 +32,7 @@ class EngineBuilder < ErrorsApi
 
   require_relative '../templater/templater.rb'
 
-  attr_reader   :templater,
-  :repoName,
+  attr_reader     :repoName,
   :build_name,
   :set_environments,
   :environments,
@@ -89,11 +88,11 @@ class EngineBuilder < ErrorsApi
   end
 
   def service_resource(service_name, what)
-    @service_builder.service_resource(service_name, what)
+    service_builder.service_resource(service_name, what)
   end
 
   def volumes
-    @service_builder.volumes
+    service_builder.volumes
   end
 
   def setup_engine_dirs
@@ -146,8 +145,8 @@ class EngineBuilder < ErrorsApi
     super
   end
 
-  def basedir
-    SystemConfig.DeploymentDir + '/' + @build_name.to_s
+  def basedir    
+    @basedir ||= SystemConfig.DeploymentDir + '/' + @build_name.to_s
   end
 
   def log_exception(e)
@@ -158,7 +157,7 @@ class EngineBuilder < ErrorsApi
     super
   end
 
-  private
+  protected
 
   def core
     @core ||= EnginesCore.instance

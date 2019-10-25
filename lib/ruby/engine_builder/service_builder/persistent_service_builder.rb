@@ -37,13 +37,18 @@ module PersistantServiceBuilder
         && existing_service[:type_path] == service_hash[:type_path]
           SystemDebug.debug(SystemDebug.builder, :comparing_services)
           # FIX ME run a check here on service hash
-          return use_active_service(service_hash, existing_service) if @rebuild.is_a?(TrueClass)
-          return use_active_service(service_hash, existing_service) if existing_service[:create_type] == 'existing'
-          return use_orphan(existing_service) if existing_service[:create_type] == 'orphan'
+          if @rebuild.is_a?(TrueClass)
+           use_active_service(service_hash, existing_service)
+          elsif existing_service[:create_type] == 'existing'
+           use_active_service(service_hash, existing_service) 
+          elsif existing_service[:create_type] == 'orphan' 
+            use_orphan(existing_service)
+          else
+            false
+          end 
         end
       end
     end
-    false
   end
 
   def use_active_service(service_hash, existing_service )
@@ -53,12 +58,12 @@ module PersistantServiceBuilder
       s[:fresh] = false
       s[:shared] = true
     end
-    STDERR.puts(':usering_active_Serviec ' + s.to_s)
+    SystemDebug.debug(SystemDebug.builder, ':usering_active_Serviec ' + s.to_s)
     s
   end
 
   def share_service_to_engine(service_hash, existing)
-    #   SystemDebug.debug(SystemDebug.builder, :share_service_to_engine, service_hash, existing)
+    SystemDebug.debug(SystemDebug.builder, :share_service_to_engine, service_hash, existing)
     service_hash[:owner] = existing[:parent_engine]
     service_hash[:existing_service] = existing
     if core.connect_share_service(service_hash)
@@ -67,26 +72,20 @@ module PersistantServiceBuilder
     else
       raise EngineBuilderException.new(error_hash('failed to share_service_to_engine(params)', params))
     end
-    true
   end
 
   def process_persistent_service(service_hash, environ, use_existing)
     service_hash = set_top_level_service_params(service_hash, @engine_name)
-
     sh = process_existing(service_hash, use_existing)
     if sh.is_a?(FalseClass)
       service_hash = orphan_or_fresh(service_hash)
     else
       service_hash = sh
     end
-
-    result = add_file_service(service_hash)  if service_hash[:type_path] == 'filesystem/local/filesystem'
-    #  raise EngineBuilderException.new(error_hash('failed to create fs', self)) unless result
-    # end
+    add_file_service(service_hash)  if service_hash[:type_path] == 'filesystem/local/filesystem'
      SystemDebug.debug(SystemDebug.builder, :builder_attach_service, service_hash)
-
     match_variables(service_hash)
-    @templater.fill_in_dynamic_vars(service_hash)
+    templater.fill_in_dynamic_vars(service_hash)
     SystemDebug.debug(SystemDebug.builder, :builder_attach_service2, service_hash)
     constants = SoftwareServiceDefinition.service_constants(service_hash)
     environ.concat(constants)

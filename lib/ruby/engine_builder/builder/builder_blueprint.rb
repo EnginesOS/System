@@ -16,7 +16,7 @@ module BuilderBluePrint
 
   def perform_inheritance
     bp = BlueprintApi.perform_inheritance(@blueprint)
-    STDERR.puts('Parent BP ' + bp.to_s)
+    #STDERR.puts('Parent BP ' + bp.to_s)
     bp
   end
 

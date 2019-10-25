@@ -4,7 +4,6 @@ module LocalFileServiceBuilder
     service_hash = Volume.complete_service_hash(service_hash)
     @default_vol = service_hash[:variables][:service_name] if @default_vol.nil?
     write_vol_map(service_hash)
-    true
   end
 
   private

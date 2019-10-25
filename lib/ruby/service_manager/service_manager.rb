@@ -44,11 +44,15 @@ class ServiceManager  < ErrorsApi
   include SMListServices
   require '/opt/engines/lib/ruby/exceptions/registry_exception.rb'
   require '/opt/engines/lib/ruby/managed_services/service_definitions/service_top_level.rb'
-
+  
+  def api_shutdown
+    @system_registry.api_shutdown
+  end
+  
   protected
   
   require_relative 'system_registry/system_registry_client.rb'
-
+  
   def system_registry_client
     @system_registry ||= SystemRegistryClient.new
   end
@@ -57,7 +61,4 @@ class ServiceManager  < ErrorsApi
     @core ||= EnginesCore.instance
   end
 
-  def api_shutdown
-    @system_registry.api_shutdown
-  end
 end

@@ -13,8 +13,7 @@ module Builders
   def setup_build
     check_build_params(@build_params)
     @build_params[:engine_name].freeze
-    @build_params[:image] = @build_params[:engine_name] #.gsub(/[-_]/, '')
-    #@build_name = File.basename(@build_params[:repository_url]).sub(/\.git$/, '')
+    @build_params[:image] = @build_params[:engine_name]
     @build_name =  @build_params[:engine_name]
     @web_port = SystemConfig.default_webport
     @memory = @build_params[:memory]
@@ -22,26 +21,16 @@ module Builders
     @result_mesg = 'Incomplete'
     @first_build = true
     @attached_services = []
-    create_templater
-
     @runtime =  ''
     backup_lastbuild
     setup_log_output
     if @build_params[:reinstall]
       @rebuild = true
       @build_params[:permission_as] = @build_params[:engine_name]
-#      @build_params[:data_uid] = engine.data_uid
-#      @build_params[:data_gid] = engine.data_gid
-#      @build_params[:cont_user_id] = engine.cont_user_id
     end
     set_container_guids
     process_supplied_envs(@build_params[:variables])
-
-
-
-  #  SystemDebug.debug(SystemDebug.builder, :builder_init, @build_params)
-    @service_builder = ServiceBuilder.new(@templater, @build_params[:engine_name], @attached_services, basedir)
-   # SystemDebug.debug(SystemDebug.builder, :builder_init__service_builder, @build_params)
+    @service_builder ||= ServiceBuilder.new(templater, @build_params[:engine_name], @attached_services, basedir)
     self
   rescue StandardError => e
     #log_exception(e)
@@ -110,8 +99,16 @@ module Builders
     end
   end
 
-  private
+  def templater
+    @templater ||= Templater.new(BuilderPublic.new(self))
+  end
 
+  protected
+
+ def service_builder 
+    @service_builder ||= ServiceBuilder.new(templater, @build_params[:engine_name], @attached_services, basedir)
+ end
+    
   def wait_for_start_up(d=25)
     log_build_output('Waiting for start')
     @container.wait_for('start', d)
@@ -121,25 +118,13 @@ module Builders
 
   def post_failed_build_clean_up
     SystemStatus.build_failed(@build_params)
-    #return close_all if @rebuild
-    # remove containers
-    # remove persistent services (if created/new)
-    # deregister non persistent services (if created)
-    # FIXME: need to re orphan here if using an orphan Well this should happen on the fresh
-    # FIXME: don't delete shared service but remove share entry
- #   SystemDebug.debug(SystemDebug.builder, :Clean_up_of_Failed_build)
- ##   SystemDebug.debug(SystemDebug.builder, "Called From", caller[0..15])
-#    SystemDebug.debug(SystemDebug.builder, caller.to_s)
-    # FIXME: Stop it if started (ie vol builder failure)
-    # FIXME: REmove container if created
-    #  unless @build_params[:reinstall].is_a?(TrueClass)
     begin
       if @container.is_a?(Container::ManagedContainer)
         @container.stop_container if @container.is_running?
         @container.destroy_container if @container.has_container?
         @container.delete_image if @container.has_image?
       end
-      @service_builder.service_roll_back unless @rebuild.is_a?(TrueClass)
+      service_builder.service_roll_back unless @rebuild.is_a?(TrueClass)
       @build_params[:rollback]
       core.delete_engine_and_services(@build_params)
       core.trigger_install_event(@build_params[:engine_name], 'failed')
@@ -152,7 +137,7 @@ module Builders
   end
 
   def build_container
-#    SystemDebug.debug(SystemDebug.builder, 'Starting build with params ', @build_params)
+    SystemDebug.debug(SystemDebug.builder, 'Starting build with params ', @build_params)
     process_blueprint
     meets_physical_requirements
     set_locale
@@ -161,7 +146,7 @@ module Builders
     setup_engine_dirs
     create_engine_image
     @container = create_engine_container
-    @service_builder.release_orphans
+    service_builder.release_orphans
     @container
   rescue StandardError => e
     #log_exception(e)
@@ -175,7 +160,7 @@ module Builders
 
   def save_build_result
     log_build_output('Generating Build Report')
-    build_report = generate_build_report(@templater, @blueprint)
+    build_report = generate_build_report(templater, @blueprint)
     core.save_build_report(@container, build_report)
     @result_mesg = 'Build Successful'
     log_build_output('Build Successful')
@@ -184,9 +169,6 @@ module Builders
     true
   end
 
-  def create_templater
-    @templater = Templater.new(BuilderPublic.new(self))
-  end
 
   def setup_rebuild
     log_build_output('Setting up rebuild')

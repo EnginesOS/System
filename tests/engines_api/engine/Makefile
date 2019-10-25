@@ -98,10 +98,10 @@ properties_env:
 	engines engine enginetest   | engines_test_expects text valuewer32342342
 
 destroy:
-	engines engine enginetest stop  | engines_test_expects bool true
+	engines engine enginetest stop | engines_test_expects bool true
 	engines engine enginetest wait_for stop 35 | engines_test_expects bool true
 	sleep 8
-	engines engine enginetest destroy  | engines_test_expects bool true
+	engines engine enginetest destroy | engines_test_expects bool true
 	engines engine enginetest wait_for destroy 35 | engines_test_expects bool true
 	echo -n " Checking:"
 	engines engine enginetest state | engines_test_expects text is nocontainer
