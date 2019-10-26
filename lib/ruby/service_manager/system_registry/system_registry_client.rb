@@ -7,35 +7,45 @@ class SystemRegistryClient < ErrorsApi
     close_connection
   end
 
-  require_relative 'api/xcon_rset.rb'
+  require_relative 'api/xcon_rest.rb'
+  include XconRest
+  
   require_relative 'api/configurations.rb'
-  require_relative 'api/services.rb'
-  require_relative 'api/engines.rb'
-  require_relative 'api/registry.rb'
-  require_relative 'api/orphans.rb'
-  require_relative 'api/subservices.rb'
-  require_relative 'api/shares.rb'
-  require_relative 'errors/engines_registry_client_errors.rb'
-  require_relative 'errors/engines_registry_error.rb'
-  require_relative 'engines_registry_utils.rb'
-  require '/opt/engines/lib/ruby/exceptions/registry_exception.rb'
-
-#  include EnginesRegistryUtils
-  include EnginesRegistryClientErrors
   include Configurations
+  require_relative 'api/services.rb'
   include Services
+  require_relative 'api/engines.rb'
   include Engines
-  include Orphans
+  require_relative 'api/registry.rb'
   include Registry
+  require_relative 'api/orphans.rb'
+  include Orphans
+  require_relative 'api/subservices.rb'
   include Subservices
-  include Shares
+  require_relative 'api/shares.rb'
+  include Shares  
+  require_relative 'errors/engines_registry_client_errors.rb'
+  include EnginesRegistryClientErrors
+
+  require_relative 'errors/engines_registry_error.rb'
+  require '/opt/engines/lib/ruby/exceptions/registry_exception.rb'
 
   def registry_root()
     system_registry_tree
   end
 
   protected
-
+  
+  def address_params(hash, param_symbols)
+    r = ''
+    param_symbols.each do | sym |
+      break unless hash.key?(sym)
+      r += '/' + hash[sym].to_s
+    end
+    SystemDebug.debug(SystemDebug.services, r.to_s)
+    r
+  end
+  
   def core
     @core ||= EnginesCore.instance
   end
