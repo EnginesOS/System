@@ -1,6 +1,4 @@
 module ServiceOperations
-
-  require_relative 'service_manager_access.rb'
   def signal_service_process(pid, sig, name)
     container = loadManagedService(name)
     docker_api.signal_container_process(pid, sig, container)

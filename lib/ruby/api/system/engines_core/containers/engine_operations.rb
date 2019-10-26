@@ -14,7 +14,6 @@ module EnginesOperations
     engine.data_gid
   end
 
-  #require_relative 'service_manager_access.rb'
   # @return boolean indicating sucess
   # @params [Hash] :engine_name
   #Retrieves all persistent service registered to :engine_name and destroys the underlying service (fs db etc)

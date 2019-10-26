@@ -1,6 +1,5 @@
 module DomainOperations
   require '/opt/engines/lib/ruby/system/dnshosting.rb'
-  require_relative 'service_manager_access.rb'
 
   def add_domain_service(params)
 

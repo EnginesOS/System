@@ -41,7 +41,6 @@ module SmOrphanServices
     service_hash[:parent_engine] = engine_name
     service_hash[:fresh] = false
     service_hash[:freed_orphan] = true
-    #resuse_service_hash = @service_manager.reparent_orphan(service_hash)
     service_hash
   end
 

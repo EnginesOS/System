@@ -112,11 +112,13 @@ class EnginesCore < ErrorsApi
     Signal.trap('HUP', proc { dump_stats })  #api_shutdown })
     Signal.trap('TERM', proc { api_shutdown })
     @registry_handler = RegistryHandler.new
-    @service_manager = ServiceManager.new # create_service_manager
     $user_tokens = {}
   end
 
   protected
+  def service_manager
+    @service_manager ||= ServiceManager.instance
+  end
 
   def system_api
     @system_api ||= SystemApi.instance

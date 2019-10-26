@@ -1,6 +1,5 @@
 module ServiceManagerOperations
 
-  require_relative 'service_manager_access.rb'
   def register_non_persistent_services(engine)
     service_manager.register_non_persistent_services(engine)
   end

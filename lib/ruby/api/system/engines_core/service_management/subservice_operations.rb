@@ -1,5 +1,4 @@
 module SubserviceOperations
-  require_relative 'service_manager_access.rb'
   def services_subservices(params)
     check_sub_service_hash(params)
     service_manager.services_subservices(params)

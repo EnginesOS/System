@@ -1,5 +1,4 @@
 module ServiceConfigurations
-  require_relative 'service_manager_access.rb'
   def retrieve_service_configuration(config)
     retrieve_configuration(config)
   end
