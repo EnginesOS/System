@@ -1,4 +1,9 @@
 class SystemRegistryClient < ErrorsApi
+  class << self
+    def instance
+      @@instance ||= self.new
+    end
+  end
   def initialize
     @route_prefix = '/v0/system_registry/'
   end

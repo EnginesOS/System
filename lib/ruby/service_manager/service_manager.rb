@@ -54,7 +54,7 @@ class ServiceManager  < ErrorsApi
   require_relative 'system_registry/system_registry_client.rb'
   
   def system_registry_client
-    @system_registry ||= SystemRegistryClient.new
+    @system_registry ||= SystemRegistryClient.instance
   end
 
   def core
