@@ -191,10 +191,7 @@ class Templater
   def fill_in_service_def_values(service_def)
     #  p :fill_in_service_def_values
     if service_def.key?(:consumer_params) && service_def[:consumer_params].is_a?(Hash)
-      #    p service_def[:consumer_params]
-      #      p service_def[:consumer_params].values
       service_def[:consumer_params].values.each do |field|
-
         if field.key?(:value)
           field[:value] = process_templated_string(field[:value])
         end
