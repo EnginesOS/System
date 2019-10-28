@@ -3,13 +3,13 @@ module Configurations
   def retrieve_service_configurations(config_hash)
     r = 'service/configurations'
     r += address_params(config_hash, [:service_name])
-    get(r)
+    rest_get(r)
   end
 
   def retrieve_service_configuration(config_hash)
     r = 'service/configuration'
     r += address_params(config_hash, [:service_name, :configurator_name])
-    get(r)
+    rest_get(r)
   end
 
   def update_service_configuration(config_hash)
@@ -31,6 +31,6 @@ module Configurations
   end
 
   def service_configurations_registry
-    get('services/configurations/tree', nil)
+    rest_get('services/configurations/tree', nil)
   end
 end

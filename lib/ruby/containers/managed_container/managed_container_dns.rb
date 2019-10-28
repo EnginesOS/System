@@ -17,7 +17,7 @@ module ManagedContainerDns
     if @domain_name.nil?
       'N/A'
     else
-      @hostname.to_s + '.' + @domain_name.to_s
+      "#{@hostname}.#{@domain_name}"
     end
   end
 

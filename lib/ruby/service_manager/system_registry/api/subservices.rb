@@ -1,11 +1,11 @@
 module Subservices
   def subservices_registry
-    get('sub_services/tree', nil)
+    rest_get('sub_services/tree', nil)
   end
   def services_subservices(params)
     r ='sub_services/consumers'
     r += address_params(params, [:service_name, :engine_name, :service_handle])
-    get(r)
+    rest_get(r)
   end
 
   def update_subservice(params)
@@ -29,20 +29,20 @@ module Subservices
   def attached_subservice(params)
     r = 'sub_service/consumers'
     r += full_address(params)
-    get(r)
+    rest_get(r)
   end
 
   def subservice_provided(params)
     r = 'sub_service/providers'
     r += address_params(params, [:service_handle, :publisher_namespace, :type_path])
-    get(r)
+    rest_get(r)
   end
 
   def subservices_provided(params)
     r = 'sub_services/providers'
   #  /v0/system_registry/sub_services/consumers/:service_name/:engine_name/:service_handle
     r += address_params(params, [:service_name, :engine_name,:service_handle])
-    get(r)
+    rest_get(r)
   end
 
   def full_address(params)

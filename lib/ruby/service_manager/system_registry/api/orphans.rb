@@ -8,13 +8,13 @@ module Orphans
   def retrieve_orphan(params)
     r = 'services/orphan'
     r += address_params(params, full_path)
-    get(r)
+    rest_get(r)
   end
 
   def orphaned_services(params)
     r = 'services/orphans'
     r += address_params(params, [:publisher_namespace, :type_path])
-    get(r)
+    rest_get(r)
   end
 
   def orphanate_service(params)
@@ -31,11 +31,11 @@ module Orphans
   end
 
   def orphaned_services_registry
-    get('services/orphans/tree', nil)
+    rest_get('services/orphans/tree', nil)
   end
 
   def orphan_lost_services
-    get('services/orphan_lost', nil)
+    rest_get('services/orphan_lost', nil)
   end
 
   def full_path

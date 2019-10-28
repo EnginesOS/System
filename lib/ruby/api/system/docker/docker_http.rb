@@ -3,7 +3,7 @@ module DockerHttp
     @default_headers ||= {'Content-Type' =>'application/json', 'Accept' => '*/*'}
   end
 
-  def post_request(p)
+  def post(p)
     fillin_params(p)
     p[:params] = p[:params].to_json if p[:headers]['Content-Type'] == 'application/json' && ! p[:params].nil?
     STDERR.puts('docker uri ' + p[:uri].to_s)
@@ -18,50 +18,50 @@ module DockerHttp
       p[:expect_json])}
   end
 
-#  def post_stream_request(uri, options, stream_handler, rheaders = nil, content = nil)
-#    rheaders = default_headers if rheaders.nil?
-#    #  SystemDebug.debug(SystemDebug.docker,'post stream ' + uri.to_s + '?' + options.to_s + ' Headeded by:' + rheaders.to_s)
-#    content = '' if content.nil?
-#    sc = stream_connection(stream_handler)
-#
-#    if stream_handler.method(:has_data?).call == false
-#      if rheaders['Content-Type'] == 'application/json'
-#        body = content.to_json
-#      else
-#        body = content
-#      end
-#      r = sc.request(
-#      method: :post,
-#      read_timeout: 3600,
-#      path: uri + '?' + options.to_s,
-#      headers: rheaders,
-#      body: body
-#      )
-#      stream_handler.close
-#    else
-#      r = sc.request(
-#      method: :post,
-#      read_timeout: 3600,
-#      path: uri + '?' + options.to_s,
-#      headers: rheaders,
-#      body: content
-#      )
-#      stream_handler.close
-#    end
-#    sc.reset unless sc.nil?
-#    r
-#
-#  rescue Excon::Error::Socket
-#    STDERR.puts('Excon docker socket stream close ')
-#    stream_handler.close unless stream_handler.nil?
-#    sc.reset unless sc.nil?
-#    r
-#  rescue  Excon::Error::Timeout
-#    STDERR.puts('Excon docker socket timeout ')
-#    stream_handler.close unless stream_handler.nil?
-#    sc.reset unless sc.nil?
-#    nil
-#  end
+  #  def post_stream_request(uri, options, stream_handler, rheaders = nil, content = nil)
+  #    rheaders = default_headers if rheaders.nil?
+  #    #  SystemDebug.debug(SystemDebug.docker,'post stream ' + uri.to_s + '?' + options.to_s + ' Headeded by:' + rheaders.to_s)
+  #    content = '' if content.nil?
+  #    sc = stream_connection(stream_handler)
+  #
+  #    if stream_handler.method(:has_data?).call == false
+  #      if rheaders['Content-Type'] == 'application/json'
+  #        body = content.to_json
+  #      else
+  #        body = content
+  #      end
+  #      r = sc.request(
+  #      method: :post,
+  #      read_timeout: 3600,
+  #      path: uri + '?' + options.to_s,
+  #      headers: rheaders,
+  #      body: body
+  #      )
+  #      stream_handler.close
+  #    else
+  #      r = sc.request(
+  #      method: :post,
+  #      read_timeout: 3600,
+  #      path: uri + '?' + options.to_s,
+  #      headers: rheaders,
+  #      body: content
+  #      )
+  #      stream_handler.close
+  #    end
+  #    sc.reset unless sc.nil?
+  #    r
+  #
+  #  rescue Excon::Error::Socket
+  #    STDERR.puts('Excon docker socket stream close ')
+  #    stream_handler.close unless stream_handler.nil?
+  #    sc.reset unless sc.nil?
+  #    r
+  #  rescue  Excon::Error::Timeout
+  #    STDERR.puts('Excon docker socket timeout ')
+  #    stream_handler.close unless stream_handler.nil?
+  #    sc.reset unless sc.nil?
+  #    nil
+  #  end
 
   def post_stream_request(p)
     fillin_params(p)
@@ -78,11 +78,11 @@ module DockerHttp
     else
       body = p[:content]
     end
-#    STDERR.puts({method: :post,
-#    read_timeout: p[:timeout],
-#    path: p[:uri] + '?' + p[:options].to_s,
-#    headers: p[:headers],
-#    body: body}.to_s)
+    #    STDERR.puts({method: :post,
+    #    read_timeout: p[:timeout],
+    #    path: p[:uri] + '?' + p[:options].to_s,
+    #    headers: p[:headers],
+    #    body: body}.to_s)
     sc.request(
     method: :post,
     read_timeout: p[:timeout],
@@ -148,11 +148,11 @@ module DockerHttp
   def handle_resp(resp, expect_json)
     raise DockerException.new({params: @request_param, status: 500}) if resp.nil?
     #SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE CODE' + resp.status.to_s )
-      if resp.status > 399
+    if resp.status > 399
       SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE CODE' + resp.status.to_s )
-     SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE Body' + resp.body.to_s )
-    SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE' + resp.to_s ) unless resp.status == 404
-     end
+      SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE Body' + resp.body.to_s )
+      SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE' + resp.to_s ) unless resp.status == 404
+    end
     raise DockerException.new({params: @request_params, status: resp.status, body: resp.body}) if resp.status >= 400
     if resp.status == 204 # nodata but all good happens on del
       true

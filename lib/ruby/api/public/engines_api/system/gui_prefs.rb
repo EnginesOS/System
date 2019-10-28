@@ -1,9 +1,9 @@
 module GuiPrefs
-  def set_container_icon_url(container, url)
-    SystemPreferences.set_container_icon_url(container, url)
+  def set_container_icon_url(ca, url)
+    SystemPreferences.set_container_icon_url(ca, url)
   end
 
-  def container_icon_url(container)
-    SystemPreferences.container_icon_url(container)
+  def container_icon_url(ca)
+    SystemPreferences.container_icon_url(ca)
   end
 end

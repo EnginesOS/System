@@ -1,6 +1,6 @@
 module Shares
   def shared_services_registry
-    get('shares/tree', nil)
+    rest_get('shares/tree', nil)
   end
 
   def remove_from_shared_services_registry(shared_service)

@@ -119,7 +119,7 @@ class BuildController
     core.build_stopped()
     SystemUtils.log_error_mesg(err.to_s, params)
     SystemStatus.build_failed(params)
-    raise EngnesException.new(error_hash(params[:engine_name] + err.to_s + params.to_s, :build_error))
+    raise EnginesException.new(error_hash(params[:engine_name] + err.to_s + params.to_s, :build_error))
   end
 
   def build_complete(build_params)

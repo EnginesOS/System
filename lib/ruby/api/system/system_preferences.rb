@@ -52,8 +52,8 @@ class SystemPreferences
     end
   end
 
-  def SystemPreferences.set_container_icon_url(container, url)
-    url_f = File.new(ContainerStateFiles.container_state_dir(container) + '/icon.url', 'w+')
+  def SystemPreferences.set_container_icon_url(ca, url)
+    url_f = File.new("#{ContainerStateFiles.container_state_dir(ca)}/icon.url", 'w+')
     begin
       url_f.puts(url)
     ensure
@@ -64,9 +64,9 @@ class SystemPreferences
     raise e
   end
 
-  def SystemPreferences.container_icon_url(container)
-    if File.exists?(ContainerStateFiles.container_state_dir(container) + '/icon.url')
-      url_f = File.new(ContainerStateFiles.container_state_dir(container) + '/icon.url', 'r')
+  def SystemPreferences.container_icon_url(ca)
+    if File.exists?("#{ContainerStateFiles.container_state_dir(ca)}/icon.url")
+      url_f = File.new("#{ContainerStateFiles.container_state_dir(ca)}/icon.url", 'r')
       begin
         url = url_f.gets(url)
       ensure
@@ -83,7 +83,7 @@ class SystemPreferences
   private
   def save_preferences
     if File.exist?(SystemConfig.SystemPreferencesFile)
-      File.rename(SystemConfig.SystemPreferencesFile, SystemConfig.SystemPreferencesFile + '.bak')
+      File.rename(SystemConfig.SystemPreferencesFile, "#{SystemConfig.SystemPreferencesFile}.bak")
     end
     serialized_object = YAML.dump(@preferences)
     f = File.new(SystemConfig.SystemPreferencesFile, File::CREAT | File::TRUNC | File::RDWR, 0644)

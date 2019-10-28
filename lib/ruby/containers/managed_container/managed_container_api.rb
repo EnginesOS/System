@@ -11,7 +11,7 @@ module ManagedContainerApi
   end
 
   def save_blueprint blueprint
-    container_api.save_blueprint(blueprint, self)
+    container_api.save_blueprint(blueprint, store_address)
   end
 
   def accepts_stream?

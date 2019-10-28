@@ -3,7 +3,7 @@ module Engines
   def retrieve_engine_service_hash(params)
     r = 'engine/service'
     r += address_params(params, [:container_type, :parent_engine, :service_handle, :type_path])  
-    get(r)
+    rest_get(r)
   end
 
   def find_engine_services_hashes(params)
@@ -11,21 +11,21 @@ module Engines
   STDERR.puts("\n\n find_engine_services_hashes" + params.to_s)
     r = 'engine/services'
     r += address_params(params, [:container_type, :parent_engine, :type_path])
-    get(r)
+    rest_get(r)
   end
 
   def get_engine_nonpersistent_services(params)
     params[:persistent] = false
     r = 'engine/services/nonpersistent'
     r += address_params(params, [:container_type, :parent_engine])
-    get(r)
+    rest_get(r)
   end
 
   def get_engine_persistent_services(params)
     params[:persistent] = true
     r =  'engine/services/persistent'
     r += address_params(params, [:container_type, :parent_engine])
-    get(r)
+    rest_get(r)
   end
 
   def add_to_managed_engines_registry(service_hash)
@@ -48,7 +48,7 @@ module Engines
   end
 
   def managed_engines_registry
-    get('engines/tree', nil)
+    rest_get('engines/tree', nil)
   end
 
   private

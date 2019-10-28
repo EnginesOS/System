@@ -39,7 +39,7 @@ def reopen_connection
   @connection
 end
 
-def get(path, params = nil, time_out = 120, _headers = nil)
+def rest_get(path, params = nil, time_out = 120, _headers = nil)
   cnt = 0
   q = query_hash(params)
   lheaders = headers

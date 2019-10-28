@@ -1,6 +1,6 @@
 module ServiceApiReaders
   def retrieve_reader(c, reader_name)
-    cmd = '/home/readers/' + reader_name + '.sh'
+    cmd = "/home/readers/#{reader_name}.sh"
     result = ''
     begin
 

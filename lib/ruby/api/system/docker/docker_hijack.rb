@@ -1,7 +1,7 @@
 module DockerHijack
 
   require_relative 'decoder/docker_decoder.rb'
-  
+
   @@missing=0
   @@dst = :stdout
   def self.process_request(stream_reader) #data , result, stdout_stream=nil, istream=nil)
@@ -82,7 +82,7 @@ module DockerHijack
               STDERR.puts("read as stream")
               r = @decoder.decode_from_docker_chunk({chunk: chunk, binary: true, stream: @stream_reader.out_stream})
             end
-            return_result[:stderr] = return_result[:stderr].to_s + r[:stderr].to_s unless r.nil?
+            return_result[:stderr] = "#{return_result[:stderr]}#{r[:stderr]}" unless r.nil?
           end
           STDERR.puts("read doen")
         rescue EOFError => e

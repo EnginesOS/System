@@ -78,7 +78,7 @@ module ManagedContainerControls
           container_api.initialize_container_env(self)
           #  SystemDebug.debug(SystemDebug.containers, :teask_preped)
           expire_engine_info
-          @container_id = -1
+          @id = -1
           save_state
           unless super
             task_failed('create')

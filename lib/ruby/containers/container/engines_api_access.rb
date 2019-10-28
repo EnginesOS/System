@@ -5,12 +5,12 @@ module EnginesApiAccess
   end
 
   def logs_container(count = 100)
-    container_api.logs_container(self, count)
+    container_api.logs_container(container_id, count)
   end
 
   def ps_container
     raise EnginesException.new(warning_hash("Can\'t ps stopped container", '')) unless is_running?
-    container_api.ps_container(self)
+    container_api.ps_container(container_id)
   end
 
 end

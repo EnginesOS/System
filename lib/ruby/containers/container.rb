@@ -17,7 +17,6 @@ module Container
     include RunningContainerStatistics
     require_relative 'container/engines_api_access.rb'
     include EnginesApiAccess
-
     def self.from_yaml(yaml)
       container = YAML::load(yaml)
       raise EnginesException.new(error_hash('Failed to Load yaml_' + @container_name.to_s + '_ nil', yaml[0..256])) if container.nil?
@@ -30,20 +29,18 @@ module Container
       raise e
     end
 
-    attr_reader :container_id,
-      :memory,
-      :container_name,
-      :image,
-      :web_port,
-      :volumes,
-      :mapped_ports,
-      :environments,
-      :setState
+    attr_reader   :memory,
+    :container_name,
+    :image,
+    :web_port,
+    :volumes,
+    :mapped_ports,
+    :environments,
+    :setState
 
     attr_accessor :last_error,
-      :last_result,
-      :container_id,
-      :arguments
+    :last_result,
+    :arguments
 
     def update_memory(new_memory)
       @memory = new_memory
@@ -57,8 +54,11 @@ module Container
       end
     end
 
-    def to_h
+    def stop_timeout
+      @stop_timeout ||= 25
+    end
 
+    def to_h
       self.instance_variables.each_with_object({}) do |var, hash|
         var.to_s.delete!("@")
         next if var.end_with?('_api')

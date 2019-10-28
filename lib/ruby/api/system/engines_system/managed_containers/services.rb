@@ -28,7 +28,7 @@ module Services
         s = loadSystemService(service_name)
       else
         s = _loadManagedService(service_name, '/services/')
-        ts = File.mtime(SystemConfig.RunDir + '/services/' + service_name + '/running.yaml')
+        ts = File.mtime("#{SystemConfig.RunDir}/services/#{service_name}/running.yaml")
         cache.add(s, ts)
       end
     end

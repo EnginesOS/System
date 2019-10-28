@@ -127,8 +127,8 @@ class EngineBuilder < ErrorsApi
   def flag_restart_required(mc)
     restart_reason='Restart to run post install script, as required in blueprint'
     # FixME this should be elsewhere
-    restart_flag_file = ContainerStateFiles.restart_flag_file(mc)
-    FileUtils.mkdir_p(ContainerStateFiles.container_flag_dir(mc)) unless Dir.exist?(ContainerStateFiles.container_flag_dir(mc))
+    restart_flag_file = ContainerStateFiles.restart_flag_file(mc.store_address)
+    FileUtils.mkdir_p(ContainerStateFiles.container_flag_dir(mc.store_address)) unless Dir.exist?(ContainerStateFiles.container_flag_dir(mc.store_address))
     f = File.new(restart_flag_file, 'w+')
     begin
       f.puts(restart_reason)

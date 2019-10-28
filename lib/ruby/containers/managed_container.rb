@@ -82,10 +82,14 @@ module Container
       @container_name.to_s + '-set to:' +  @setState + ':' + status.to_s + ':' + @ctype
     end
 
+    def store_address
+      @store_address ||= { c_name: @container_name.to_s, c_type: @ctype.to_s }      
+    end
+
     def status
       @status = {} if @status.nil?
       @status[:state] = read_state
-       # STDERR.puts(' STATE GOT ' + container_name.to_s + ':' + @status[:state].to_s)
+      # STDERR.puts(' STATE GOT ' + container_name.to_s + ':' + @status[:state].to_s)
       @status[:set_state] = @setState
       @status[:progress_to] = task_at_hand
       @status[:error] = false
@@ -95,26 +99,26 @@ module Container
       @status[:restart_required] = restart_required?
       @status[:error] = true if @status[:state] != @status[:set_state] && @status[:progress_to].nil?
       @status[:error] = false if @status[:state] == 'stopped' && is_stopped_ok?
-       # STDERR.puts(' STATUS ' + @status.to_s)
+      # STDERR.puts(' STATUS ' + @status.to_s)
       @status
     end
 
     def post_load
       @container_mutex = Mutex.new
-      i = @container_id
+      i = @id
       super
       status
-      save_state if @container_id != -1 && @container_id != i
+      save_state if @id != -1 && @id != i
     end
 
-    def container_id
-      if @container_id == -1
-        @container_id = read_container_id unless setState == 'noncontainer'
-      end
-      @container_id
-    rescue
-      -1
-    end
+#    def container_id
+#      if @id == -1
+#        @id = read_container_id unless setState == 'noncontainer'
+#      end
+#      @id
+#    rescue
+#      -1
+#    end
 
     def repo
       @repository
@@ -138,8 +142,7 @@ module Container
     :domain_name,\
     :ctype,
     :conf_self_start,
-    :large_temp,
-    :stop_timeout
+    :large_temp
 
     def engine_name
       @container_name

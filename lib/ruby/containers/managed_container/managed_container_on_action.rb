@@ -41,7 +41,7 @@ module ManagedContainerOnAction
   def on_create(event_hash)
     @container_mutex.synchronize {
    #   SystemDebug.debug(SystemDebug.container_events, :ON_Create_CALLED, event_hash)
-      @container_id = event_hash[:id]
+      @id = event_hash[:id]
       clear_error
       @has_run = false
       @out_of_memory = false

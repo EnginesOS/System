@@ -61,7 +61,7 @@ module Container
     end
 
     def load_blueprint
-      container_api.load_blueprint(self)
+      container_api.load_blueprint(ca)
     end
 
     def plugins_path
@@ -73,7 +73,7 @@ module Container
     end
 
     def add_shared_volume(service_hash)
-      volume_name = service_hash[:owner] + '_' + service_hash[:service_handle]
+      volume_name = "#{service_hash[:owner]}_#{service_hash[:service_handle]}"
       @volumes[volume_name] = {
         volume_name: volume_name,
         localpath: service_hash[:variables][:volume_src],

@@ -3,12 +3,12 @@ class BlueprintApi < ErrorsApi
   require '/opt/engines/lib/ruby/api/system/container_state_files.rb'
   require 'git'
 
-  def save_blueprint(blueprint, container)
+  def save_blueprint(blueprint, ca)
     # return log_error_mesg('Cannot save incorrect format',blueprint) unless blueprint.is_a?(Hash)
     #  SystemDebug.debug(SystemDebug.builder, blueprint.class.name)
-    state_dir = ContainerStateFiles.container_state_dir(container)
+    state_dir = ContainerStateFiles.container_state_dir(ca)
     Dir.mkdir(state_dir) if File.directory?(state_dir) == false
-    statefile = state_dir + '/blueprint.json'
+    statefile = "#{state_dir}/blueprint.json}"
     f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0644)
     begin
       f.write(blueprint.to_json)
@@ -28,11 +28,11 @@ class BlueprintApi < ErrorsApi
     json_hash
   end
 
-  def load_blueprint(container)
-    state_dir = ContainerStateFiles.container_state_dir(container)
-    raise EnginesException.new(error_hash('No Statedir', container.container_name)) unless File.directory?(state_dir)
-    statefile = state_dir + '/blueprint.json'
-    raise EnginesException.new(error_hash("No Blueprint File Found", statefile)) unless File.exist?(statefile)
+  def load_blueprint(ca)
+    state_dir = ContainerStateFiles.container_state_dir(ca)
+    raise EnginesException.new(error_hash('No Statedir', ca[:c_name])) unless File.directory?(state_dir)
+    statefile = "#{state_dir}/blueprint.json"
+    raise EnginesException.new(error_hash('No Blueprint File Found', statefile)) unless File.exist?(statefile)
     BlueprintApi.load_blueprint_file(statefile)
   end
 
@@ -126,9 +126,9 @@ class BlueprintApi < ErrorsApi
     else
       name = Dir.basename(url)
       #FixMe no ../ in path ?
-      FileUtils.rm_f('/tmp/' + name) if Dir.exist?('/tmp/' + name)
+      FileUtils.rm_f('/tmp/' + name) if Dir.exist?("/tmp/#{name}")
       self.clone_repo(url, name, '/tmp/')
-      self.load_blueprint_file('/tmp/' + name + '/blueprint.json')
+      self.load_blueprint_file("/tmp/#{name}/blueprint.json")
     end
   end
 

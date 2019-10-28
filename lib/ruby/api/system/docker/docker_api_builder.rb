@@ -84,7 +84,7 @@ module DockerApiBuilder
     }
     stream_handler = DockerStreamHandler.new(nil, builder) #File.new(build_archive_filename,'r'))
     post_stream_request({ timeout: 300, uri: '/build' , options: options, stream_handler: stream_handler, headers: header, content: File.read(build_archive_filename) } )
-    
+
   ensure
     stream_handler.close unless stream_handler.nil?
   end

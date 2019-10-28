@@ -50,9 +50,7 @@ module DockerApiExec
         stdout: '',
         stderr: ''
       }
-      
       @decoder = DockerDecoder.new({ result:  @result})
-      
     end
 
     def close
@@ -70,7 +68,7 @@ module DockerApiExec
         else
           r = @decoder.decode_from_docker_chunk({chunk: chunk, binary: true, stream: @out_stream, result: @result})
           next if r.nil?
-        #  @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
+          #  @result[:stderr] = @result[:stderr].to_s + r[:stderr].to_s
         end
       end
     end
@@ -136,7 +134,7 @@ module DockerApiExec
   def resolve_pid_to_container_id(pid)
     s = get_pid_status(pid)
     unless s.is_a?(FalseClass)
-     # STDERR.puts('Status ' + s.to_s)
+      # STDERR.puts('Status ' + s.to_s)
       r = s[/NSpid:.*\n/]
       unless r.nil?
         r = r.split(' ')
@@ -148,15 +146,15 @@ module DockerApiExec
   end
 
   def get_pid_status(pid)
-    if File.exists?('/host/proc/' + pid.to_s + '/status')
+    if File.exists?("/host/proc/#{pid}/status")
       begin
-        f = File.open('/host/proc/' + pid.to_s + '/status')
+        f = File.open("/host/proc/#{pid}/status")
         f.read
       ensure
         f.close
       end
     else
-      STDERR.puts('NO such File:/host/proc/' + pid.to_s + '/status')
+      STDERR.puts("NO such File:/host/proc/#{pid}/status")
       false
     end
   end
@@ -165,19 +163,19 @@ module DockerApiExec
     r = get_exec_details(params[:exec_id])
     STDERR.puts(' Timeout signal_exec ' + params[:exec_id].to_s + ':' + r.to_s )
     pid = resolve_pid_to_container_id(r[:Pid])
-    params[:command_line] = 'kill -' +  params[:signal] + ' ' + pid.to_s
+    params[:command_line] = "kill -#{params[:signal]} #{pid}"
     params[:timeout] = 1 #note actually 2
     STDERR.puts('KILL ' + params[:signal].to_s + ' container pi ' + pid.to_s + ':system:' + r[:Pid].to_s)
     docker_exec(params) unless pid == -1
   end
 
   def get_exec_details(exec_id)
-    get_request({uri: '/exec/' + exec_id.to_s + '/json'})
+    get_request({uri: "/exec/#{exec_id}/json"})
   end
 
   def get_exec_result(exec_id)
     r = get_exec_details(exec_id)
-   # STDERR.puts(' exec results ' + r.to_s)
+    # STDERR.puts(' exec results ' + r.to_s)
     if(r[:Running].is_a?(TrueClass))
       STDERR.puts('WARNING EXEC STILL RUNNING:' + r.to_s)
     end
@@ -201,7 +199,7 @@ module DockerApiExec
       request_params['AttachStdin'] = false
     end
     STDERR.puts({uri: '/containers/' + params[:container].container_id.to_s + '/exec' , params: request_params}.to_s)
-    post_request({uri: '/containers/' + params[:container].container_id.to_s + '/exec' , params: request_params})
+    post({uri: "/containers/#{params[:container].container_id}/exec" , params: request_params})
   end
 
   def format_commands(commands)

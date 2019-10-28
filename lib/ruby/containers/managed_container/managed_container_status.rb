@@ -52,7 +52,7 @@ module ManagedContainerStatus
   rescue EnginesException =>e
     expire_engine_info
     'nocontainer'
-    clear_cid #unless @container_id ==  -1 
+    clear_cid 
     raise e
   end
 
@@ -103,7 +103,14 @@ module ManagedContainerStatus
   end
 
   def in_two_step?
-    File.exist?(ContainerStateFiles.container_state_dir(self) + '/in_progress')
+    File.exist?("#{ContainerStateFiles.container_state_dir(store_address)}/in_progress")
+  end
+  
+  def container_id
+    if @id == -1 || @id.nil?   
+     @id = read_container_id
+    end 
+     @id 
   end
 
 end

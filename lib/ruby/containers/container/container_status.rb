@@ -1,4 +1,5 @@
 module ContainerStatus
+  
   def read_state
     state = 'nocontainer'
     info = docker_info
@@ -83,6 +84,7 @@ module ContainerStatus
   end
   
   def to_s
-    @container_name + ':' + @ctype
+    "#{@container_name}:#{@ctype}"
   end
+  
 end

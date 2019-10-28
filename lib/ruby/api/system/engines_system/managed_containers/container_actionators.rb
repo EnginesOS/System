@@ -30,8 +30,8 @@ module ContainerActionators
  
    def load_engine_actionators(container)
      #   SystemDebug.debug(SystemDebug.actions, container, actionator_dir(container) + '/actionators.yaml')
-     if File.exist?(actionator_dir(container) + '/actionators.yaml')
-       yaml = File.read(actionator_dir(container) + '/actionators.yaml')
+     if File.exist?("#{actionator_dir(container)}/actionators.yaml")
+       yaml = File.read("#{actionator_dir(container)}/actionators.yaml")
        actionators = YAML::load(yaml)
        #     SystemDebug.debug(SystemDebug.actions,container ,actionators)
        actionators if actionators.is_a?(Hash)
@@ -45,7 +45,7 @@ def write_actionators(container, actionators)
   unless actionators.nil?
     Dir.mkdir_p(actionator_dir(container)) unless Dir.exist?(actionator_dir(container))
     serialized_object = YAML.dump(actionators)
-    f = File.new(actionator_dir(container) + '/actionators.yaml', File::CREAT | File::TRUNC | File::RDWR, 0644)
+    f = File.new("#{actionator_dir(container)}/actionators.yaml", File::CREAT | File::TRUNC | File::RDWR, 0644)
     begin
       f.puts(serialized_object)
       f.flush()

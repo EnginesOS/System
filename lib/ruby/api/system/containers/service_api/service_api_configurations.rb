@@ -20,7 +20,7 @@ module ServiceApiConfigurations
 
   def run_configurator(c, configurator_params)
     if c.is_running?
-      cmd = ['/home/engines/scripts/configurators/set_' + configurator_params[:configurator_name].to_s + '.sh']
+      cmd = ["/home/engines/scripts/configurators/set_#{configurator_params[:configurator_name]}.sh"]
       core.exec_in_container(
       {container: c,
         command_line: cmd,
@@ -54,7 +54,7 @@ module ServiceApiConfigurations
   end
 
   def service_resource(c, what)
-    cmd = '/home/engines/scripts/services/resources/' + what + '.sh'
+  cmd = "/home/engines/scripts/services/resources/#{what}.sh"
     # STDERR.puts('SERVICE RESOURCE' + cmd.to_s)
     #  STDERR.puts('SERVICE RESOURCE' + c.container_name)
     core.exec_in_container(

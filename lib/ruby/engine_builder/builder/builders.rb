@@ -164,8 +164,8 @@ module Builders
     core.save_build_report(@container, build_report)
     @result_mesg = 'Build Successful'
     log_build_output('Build Successful')
-    FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.out', ContainerStateFiles.container_state_dir(@container) + '/build.log')
-    FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.err', ContainerStateFiles.container_state_dir(@container) + '/build.err')
+    FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.out', ContainerStateFiles.container_state_dir(@container.store_address) + '/build.log')
+    FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.err', ContainerStateFiles.container_state_dir(@container.store_address) + '/build.err')
     true
   end
 

@@ -21,7 +21,7 @@ module TaskAtHand
     #   SystemDebug.debug(SystemDebug.engine_tasks, :final_state, final_state)
     if final_state == curr_state && action != 'restart'
       @setState = curr_state
-      @container_id ==  -1 if curr_state == 'nocontainer'
+      @id ==  -1 if curr_state == 'nocontainer'
       #  SystemDebug.debug(SystemDebug.engine_tasks, :curr_state, curr_state)
       return save_state
     end
@@ -159,8 +159,8 @@ module TaskAtHand
   end
 
   def task_at_hand
-    fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
-    #   SystemDebug.debug(SystemDebug.containers, :task_at_handfile, + ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
+    fn = ContainerStateFiles.container_state_dir(store_address) + '/task_at_hand'
+    #   SystemDebug.debug(SystemDebug.containers, :task_at_handfile, + ContainerStateFiles.container_state_dir(store_address) + '/task_at_hand')
     if File.exist?(fn)
       thf = File.new(fn, 'r')
       begin
@@ -209,7 +209,7 @@ module TaskAtHand
         @task_at_hand = @steps[0]
       end
       #  SystemDebug.debug(SystemDebug.engine_tasks, 'next Multistep Task ' + @task_at_hand.to_s)
-      f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand','w+')
+      f = File.new(ContainerStateFiles.container_state_dir(store_address) + '/task_at_hand','w+')
       begin
         f.write(@task_at_hand.to_s)
       ensure
@@ -218,7 +218,7 @@ module TaskAtHand
     else
       #   SystemDebug.debug(SystemDebug.engine_tasks, 'cleared Task ' + @task_at_hand.to_s)
       @task_at_hand = nil
-      fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
+      fn = ContainerStateFiles.container_state_dir(store_address) + '/task_at_hand'
       File.delete(fn) if File.exist?(fn)
     end
     @task_at_hand
@@ -259,11 +259,11 @@ module TaskAtHand
   end
 
   def task_has_expired?(task)
-    fmtime = File.mtime(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
+    fmtime = File.mtime(ContainerStateFiles.container_state_dir(store_address) + '/task_at_hand')
     mtime = fmtime  + task_set_timeout(task)
     #  SystemDebug.debug(SystemDebug.container, mtime, fmtime, task, task_set_timeout(task))
     if mtime < Time.now
-      File.delete(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
+      File.delete(ContainerStateFiles.container_state_dir(store_address) + '/task_at_hand')
       #   SystemDebug.debug(SystemDebug.engine_tasks, :expired_task, task, ' after ', task_set_timeout(task))
       true
     else
@@ -282,9 +282,11 @@ module TaskAtHand
   end
 
   def set_task_at_hand(state)
+    STDERR.puts("SA" * 45)
+      STDERR.puts("STORE ADDRESS #{store_address}")
     @task_at_hand = state
-    if Dir.exist?(ContainerStateFiles.container_state_dir(self)) # happens on reinstall
-      f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand', 'w+')
+    if Dir.exist?(ContainerStateFiles.container_state_dir(store_address)) # happens on reinstall
+      f = File.new(ContainerStateFiles.container_state_dir(store_address) + '/task_at_hand', 'w+')
       begin
         f.write(state)
       ensure

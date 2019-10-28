@@ -74,12 +74,12 @@ module ContainerSchedules
   end
 
   def format_actioncron_job(actionator)
-    '/home/engines/scripts/actionators/' + actionator[:name] + '.sh ' + actionator[:params].to_json.to_s
+    "/home/engines/scripts/actionators/#{actionator[:name]}.sh #{actionator[:params].to_json}"
   end
 
   def cron_line(timespec)
 #    SystemDebug.debug(SystemDebug.schedules, 'Creating cron  timespec:' , timespec)
-    timespec[:minute] + ' ' + timespec[:hour] + ' ' + timespec[:day_of_month] + ' ' + timespec[:month] + ' ' + timespec[:day_of_week]
+    "#{timespec[:minute]} #{timespec[:hour]} #{timespec[:day_of_month]} #{timespec[:month]} #{timespec[:day_of_week]}"
   end
 
 end

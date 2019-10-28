@@ -45,7 +45,7 @@ class SystemRegistryClient < ErrorsApi
     r = ''
     param_symbols.each do | sym |
       break unless hash.key?(sym)
-      r += '/' + hash[sym].to_s
+      r += "/#{hash[sym]}"
     end
     SystemDebug.debug(SystemDebug.services, r.to_s)
     r

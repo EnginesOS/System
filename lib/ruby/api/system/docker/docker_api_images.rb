@@ -1,6 +1,6 @@
 module DockerApiImages
   def image_exist_by_name?(image_name)
-  r =  get_request({uri: '/images/json?filter=' + image_name})
+    r =  get_request({uri: "/images/json?filter=#{image_name}"})
     if r.is_a?(Array)
       r = r[0]
       if r.is_a?(Hash) && r.key?(:Id)
@@ -14,7 +14,7 @@ module DockerApiImages
   end
 
   def find_images(search)
-  r =  get_request({uri: '/images/json?filter=' + search})
+    r =  get_request({uri: "/images/json?filter=#{search}"})
     if r.is_a?(Array)
       r
     else
@@ -31,22 +31,22 @@ module DockerApiImages
       d = cd[0]
       tag = cd[1] if cd.length > 1
 
-      d = container.image_repo.to_s  + '/' + d unless container.image_repo.nil?
-      request = '/images/create?fromImage=' + d.to_s
-      request = request + '&tag=' + tag.to_s unless tag.nil?
+      d = "#{container.image_repo}/#{d}" unless container.image_repo.nil?
+      request = "/images/create?fromImage=#{d}"
+      request = "#{request}&tag=#{tag}" unless tag.nil?
     else # app
       cd = container.split(':')
-      request = '/images/create?fromImage=' + cd[0]
+      request = "/images/create?fromImage=#{cd[0]}"
       if tag.nil?
         tag = cd[1] if cd.length > 1
         tag.gsub!(/ /,'')
         tag.strip!
-        request = request + '&tag=' + tag.to_s
+        request = "#{request}&tag=#{tag}"
       end
     end
     STDERR.puts(' Pulling ' + request.to_s)
     headers = { 'X-Registry-Config'  => registry_root_auth, 'Content-Type' =>'plain/text', 'Accept-Encoding' => 'gzip'}
-    r = post_request({uri: request, expect_json: false, headers: headers, time_out: 600})
+    r = post({uri: request, expect_json: false, headers: headers, time_out: 600})
     STDERR.puts('Docker pull got' + r.to_s)
     r
   rescue StandardError =>e
@@ -65,9 +65,9 @@ module DockerApiImages
   end
 
   def delete_container_image(container)
-    request = 
+    request =
     thr = Thread.new {
-    delete_request({uri: '/images/' + container.image})
+      delete_request({uri: "/images/#{container.image}"})
     }
     thr[:name] = 'Docker delete container ' + container.image
   rescue StandardError => e
@@ -76,10 +76,10 @@ module DockerApiImages
   end
 
   def delete_image(image_name, wait = false)
-    thr = Thread.new { delete_request({uri: '/images/' + image_name}) }
-    thr[:name] = 'Docker delete image:' + image_name.to_s
-      STDERR.puts( 'Docker Delete ' + '/images/' + image_name.to_s + ' Wiar? ' + wait.to_s)      
-      thr.join if wait == true
+    thr = Thread.new { delete_request({uri: "/images/#{image_name}"}) }
+    thr[:name] = "Docker delete image:#{image_name}"
+    STDERR.puts( 'Docker Delete ' + '/images/' + image_name.to_s + ' Wiar? ' + wait.to_s)
+    thr.join if wait == true
   rescue StandardError => e
     SystemUtils.log_exception(e , 'delete_image:' + image_name.to_s)
     thr.exit unless thr.nil?

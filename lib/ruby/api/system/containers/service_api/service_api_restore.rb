@@ -3,7 +3,7 @@ module ServiceApiRestore
   @@export_timeout = 300
   def service_restore(service, stream, params)
     raise EnginesException.new(error_hash("failed to import service not running " + service.container_name.to_s)) unless service.is_running?
-    cmd = [SystemConfig.ServiceBackupScriptsRoot + '/restore.sh',params[:replace].to_s, params[:section].to_s, params[:parent_engine].to_s] #, params[:section].to_s]
+    cmd = ["#{SystemConfig.ServiceBackupScriptsRoot}/restore.sh", params[:replace].to_s, params[:section].to_s, params[:parent_engine].to_s] #, params[:section].to_s]
     params = {container: service, command_line: cmd, log_error: true, stdin_stream: stream}
    # SystemDebug.debug(SystemDebug.export_import, :import_service)
     # STDERR.puts('STREAM' + stream.inspect)
@@ -32,8 +32,8 @@ module ServiceApiRestore
   end
 
   def export_service_data(container, service_hash, stream)
-    cmd_dir = SystemConfig.EngineServiceBackupScriptsRoot + '/'
-    cmd = cmd_dir + '/backup.sh'
+    cmd_dir = "#{SystemConfig.EngineServiceBackupScriptsRoot}/"
+    cmd = "#{cmd_dir}/backup.sh"
     raise EnginesException.new(error_hash("failed to export service not running " + container.container_name.to_s)) unless container.is_running?
     params = {container: container, command_line: [cmd], log_error: true, service_variables: service_hash} #data: service_hash.to_json}
     params[:stdout_stream] = stream unless stream.nil?
@@ -43,9 +43,9 @@ module ServiceApiRestore
   def export_data(container, stream)
 
   #  SystemDebug.debug(SystemDebug.export_import, :export_service, container.container_name)
-    cmd_dir = SystemConfig.ServiceBackupScriptsRoot + '/'
+    cmd_dir = "#{SystemConfig.ServiceBackupScriptsRoot}/"
     raise EnginesException.new(error_hash("failed to export service not running " + container.container_name.to_s)) unless container.is_running?
-    cmd = cmd_dir + '/backup.sh'
+    cmd = "#{cmd_dir}/backup.sh"
     params = {container: container, command_line: [cmd], log_error: true}
     params[:stdout_stream] = stream unless stream.nil?
  #   SystemDebug.debug(SystemDebug.export_import, :export_service, cmd)
@@ -65,7 +65,7 @@ module ServiceApiRestore
     rescue Timeout::Error
       thr.kill unless thr.nil?
       result[:result] = -1;
-      result[:stderr] = 'Export Timeout on Running Action:' + cmd.to_s + ':' + result[:stderr].to_s
+      result[:stderr] = "Export Timeout on Running Action:#{cmd}:#{result[:stderr]}"
       #raise EnginesException.new(error_hash('Export Timeout on Running Action ', cmd))
     rescue StandardError => e
         SystemUtils.log_exception(e , 'export:' + params)
