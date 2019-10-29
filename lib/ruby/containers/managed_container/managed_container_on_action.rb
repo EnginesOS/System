@@ -17,7 +17,6 @@ module ManagedContainerOnAction
         if @has_run == false
      #     STDERR.puts('FIRST TIME')
           add_wap_service if @deployment_type == 'web'
-     #   else
      #     STDERR.puts('HAS TUN TIME')
         end
         @has_run = true
@@ -64,8 +63,6 @@ module ManagedContainerOnAction
       @had_out_memory = @out_of_memory
       @out_of_memory = false
       save_state
-      #return true if @consumer_less
-      # deregister_with_dns # Really its in the following nowMUst register each time as IP Changes
       container_api.deregister_non_persistent_services(self)
       container_api.deregister_ports(@container_name, @mapped_ports) if @mapped_ports.is_a?(Hash)
     end

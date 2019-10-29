@@ -99,7 +99,7 @@ class SystemApi < ErrorsApi
 
   def initialize
     @container_conf_locks = {}
-    create_event_listener #unless $PROGRAM_NAME.end_with?('system_service.rb')
+    create_event_listener 
   end
 
   def list_system_services

@@ -85,7 +85,7 @@ module DockerApiExec
     r = create_docker_exec(params)
     if r.is_a?(Hash)
       params[:exec_id] = r[:Id]
-      params[:request] = '/exec/' + params[:exec_id] + '/start'
+      params[:request] = "/exec/#{params[:exec_id]}/start"
       unless params[:background].is_a?(TrueClass)
         Timeout.timeout(params[:timeout] + 1) do # wait 1 sec longer incase another timeout in caller
           start_exec(params)
@@ -98,7 +98,7 @@ module DockerApiExec
     signal_exec({exec_id: params[:exec_id], signal: 'TERM', container: params[:container], background: true})
     r = {}
     r[:result] = -1;
-    r[:stderr] = 'Timeout on Docker exec :' + params[:command_line].to_s + ':' + params[:container].container_name.to_s
+    r[:stderr] = "Timeout on Docker exec:#{params[:command_line]}:#{params[:container].container_name}"
     STDERR.puts(' Timeout ' + r.to_s)
     raise EnginesException.new(warning_hash('Timeout on Docker exec', r))
   end
@@ -224,17 +224,17 @@ module DockerApiExec
       if params[:service_variables].is_a?(Hash)
         p =  service_variables_to_env(params[:service_variables])
         p.each_pair do |k,v|
-          envs.push(k.to_s + '=' + v.to_s)
+          envs.push("#{k}=#{v}")
         end
       end
       if params[:action_params].is_a?(Hash)
         params[:action_params].each_pair do |k,v|
-          envs.push(k.to_s + '=' + v.to_s)
+          envs.push("#{k}=#{v}")
         end
       end
       if params[:configuration].is_a?(Hash)
         params[:configuration].each_pair do |k,v|
-          envs.push(k.to_s + '=' + v.to_s)
+          envs.push("#{k}=#{v}")
         end
       end
     end

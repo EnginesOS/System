@@ -91,7 +91,6 @@ module ManagedServiceConsumers
 
     #note we add to service regardless of whether the consumer is already registered
     #for a reason
-    # return result unless result
     save_state if result
     result
   end
@@ -113,7 +112,6 @@ module ManagedServiceConsumers
         raise EnginesException.new(error_hash('service startup not complete ' + container_name, service_hash))
       end
     end
-    # end
     container_api.add_consumer_to_service(self, service_hash)
   end
 

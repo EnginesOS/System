@@ -20,7 +20,6 @@ module ServiceConfigurations
   end
 
   def update_service_configuration(service_param)
-    # configurator = ConfigurationsApi.new(self)
     update_configuration_on_service(service_param)
     #This is down above    service_manager.update_service_configuration(service_param)
   end
@@ -29,12 +28,8 @@ module ServiceConfigurations
     raise EnginesException.new(error_hash('Missing service name', service_param)) unless service_param.key?(:service_name)
     service = loadManagedService(service_param[:service_name])
     if service.is_running?
-    #  STDERR.puts('Service is running retrieve config direct')
       ret_val = service.retrieve_configurator(service_param)
-      #    STDERR.puts('Retrived retrieve_configuration '+ service_param.to_s + ret_val.class.name + ':' + ret_val.to_s )
     else
-   #   STDERR.puts('Service is no running retreive config from registry')
-      #  STDERR.puts('Retrived retrieve_configuration '+ service_param.to_s + ret_val.class.name + ':' + ret_val.to_s )
       ret_val = retrieve_service_configuration(service_param)
     end
     ret_val
@@ -64,7 +59,6 @@ module ServiceConfigurations
       defs.each_value do |definition|
         if definition[:params].nil?
           variables = nil
-        #  STDERR.puts('nil vars for ' + definition.to_s + "\n\n" + service_hash.to_s)
         else
           variables = definition_params_to_variables(definition[:params].keys)
         end
@@ -88,7 +82,6 @@ module ServiceConfigurations
     begin
       service = loadManagedService(service_param[:service_name])
     rescue
-      # STDERR.puts(' loadSystemService ' + service_param.to_s + 'so loading ' + service_param[:service_name].to_s)
       service = loadSystemService(service_param[:service_name])
     end
     service_param[:publisher_namespace] = service.publisher_namespace.to_s  # need as saving in config tree

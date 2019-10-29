@@ -63,7 +63,6 @@ module Container
     #  SystemDebug.debug(SystemDebug.system, :system_service_inspect_container)
       if @docker_info.nil? || @docker_info.is_a?(FalseClass)
         @docker_info =  container_api.inspect_container(container_id)
-        # @docker_info = @last_result
         if @docker_info.is_a?(FalseClass)
           unless has_image?
             SystemUtils.log_output('pulling system service' + container_name.to_s, 10)

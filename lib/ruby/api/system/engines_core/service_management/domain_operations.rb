@@ -38,17 +38,15 @@ module DomainOperations
         domain_name: params[:domain_name],
         type: 'domain'
         },
-        service_handle: params[:domain_name] + '_dns',
+        service_handle: "#{params[:domain_name]}_dns",
         container_type: 'system',
         publisher_namespace: 'EnginesSystem',
         type_path: 'domains'
       }
       if params[:internal_only]
         service_hash[:variables][:wan_or_lan] = 'lan'
-       # service_hash[:variables][:ip] =  get_lan_ip_for_hosted_dns()
       else
         service_hash[:variables][:wan_or_lan] = 'wan'
-       # service_hash[:variables][:ip] =  get_ext_ip_for_hosted_dns()
       end
        #  STDERR.puts(' ADD DOMAIN VARIABLES' + service_hash.to_s)
       create_and_register_service(service_hash)
@@ -66,7 +64,7 @@ module DomainOperations
         container_type: 'system',
         publisher_namespace: 'EnginesSystem',
         type_path: 'domains',
-        service_handle: params[:domain_name] + '_dns',
+        service_handle: "#{params[:domain_name]}_dns",
         variables: {
         domain_name: params[:domain_name],
         type: 'domain' 
@@ -75,10 +73,10 @@ module DomainOperations
     if params[:self_hosted]
       if params.key?(:original_domain_name)
         service_hash[:variables][:domain_name] = old_domain_name
-        service_hash[:service_handle] = old_domain_name + '_dns'
+        service_hash[:service_handle] = "#{old_domain_name}_dns"
       else
         service_hash[:variables][:domain_name] = params[:domain_name]
-        service_hash[:service_handle] = params[:domain_name] + '_dns'
+        service_hash[:service_handle] = "#{params[:domain_name]}_dns"
       end
 
       if params[:internal_only]        
@@ -118,7 +116,7 @@ module DomainOperations
         variables:  {
         domain_name: domain_name
         },
-        service_handle: domain_name + '_dns',
+        service_handle: "#{domain_name}_dns",
         container_type: 'system',
         publisher_namespace: 'EnginesSystem',
         type_path: 'domains',

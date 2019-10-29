@@ -73,8 +73,7 @@ module Services
   def _loadManagedService(service_name, service_type_dir)
     raise EnginesException.new(error_hash('No Service Name', service_type_dir)) if service_name.nil? || service_name.length == 0
 
-    yam1_file_name = SystemConfig.RunDir + service_type_dir + service_name + '/running.yaml'
-   # raise EnginesException.new(error_hash('Engine File Locked', yam1_file_name)) if is_container_conf_file_locked?(SystemConfig.RunDir + service_type_dir + service_name)
+    yam1_file_name = SystemConfig.RunDir + service_type_dir + service_name + '/running.yaml'   
     unless File.exist?(yam1_file_name)
       raise EnginesException.new(error_hash('failed to create service file ', SystemConfig.RunDir + service_type_dir + '/' + service_name.to_s)) unless build_running_service(service_name, SystemConfig.RunDir + service_type_dir) 
     end

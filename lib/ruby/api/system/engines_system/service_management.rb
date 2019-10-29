@@ -6,7 +6,6 @@ module ServiceManagement
   end
 
   def enable_service(service_name)
-    #raise EnginesException.new(error_hash("service exists", service_name)) unless
     begin
       core.loadManagedService(service_name)
       raise EnginesException.new(error_hash("service exists", service_name))

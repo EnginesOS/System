@@ -9,7 +9,7 @@ module SmServiceControl
   def create_and_register_service(service_hash) # , no_engine = false)
     set_top_level_service_params(service_hash, service_hash[:parent_engine])
     resolve_field_template(service_hash) unless service_hash.frozen?
-   # match_variables(service_hash)
+
    # SystemDebug.debug(SystemDebug.services, :sm_create_and_register_service, service_hash)
     #register with Engine
     unless service_hash[:soft_service] == true && ! is_service_persistent?(service_hash)
@@ -61,11 +61,6 @@ module SmServiceControl
       rescue StandardError => e
         raise e unless service_query.key?(:force) || service_query.key?(:lost)
       end
-#      begin       
-#        remove_from_managed_service(service_hash) ## continue if
-#      rescue StandardError => e
-#        raise e unless service_query.key?(:force)
-#      end
       begin
         system_registry_client.remove_from_services_registry(service_hash)
       rescue StandardError => e
@@ -138,14 +133,5 @@ module SmServiceControl
 end
 
   end
-#  def match_variables(service_hash)
-#    consumer_params = SoftwareServiceDefinition.consumer_params(service_hash)
-#    consumer_params.keys.each do |cp_key|
-#      skey = consumer_params[cp_key][:name].to_sym
-#      unless service_hash[:variables].key?(skey)
-#        STDERR.puts('CMISSING service_hash[' + skey.to_s + ']<->consumer_params[:' + cp_key.to_s + '] ' + service_hash[:variables][skey].to_s + ' = ' + consumer_params[cp_key][:value].to_s)
-#        # service_hash[:variables][skey] = consumer_params[cp_key][:value] unless consumer_params[cp_key][:value].nil?
-#      end
-#    end
-#  end  
+ 
 end

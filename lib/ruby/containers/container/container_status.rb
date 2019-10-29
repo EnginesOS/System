@@ -17,7 +17,6 @@ module ContainerStatus
         elsif info[:State][:Status] == 'exited'
           state = 'stopped'
         end
-   #   else
    #     SystemDebug.debug(SystemDebug.containers, :no_matched_info, info)
       end
     end

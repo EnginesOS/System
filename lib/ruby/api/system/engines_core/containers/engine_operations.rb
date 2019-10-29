@@ -48,14 +48,19 @@ module EnginesOperations
         system_api.trigger_engine_event(engine, 'failed', 'uninstall')
         raise EnginesException.new(error_hash('Container Exists Please Destroy engine first' , params)) unless params[:reinstall] .is_a?(TrueClass)
       end
-      #   STDERR.puts('bouBOSDRFSDAFt to remove_engine_services')
-      remove_engine_services(params) #engine_name, reinstall, params[:remove_all_data])
+        STDERR.puts('bouBOSDRFSDAFt to remove_engine_services')
+      remove_engine_services(params) #engine_name, reinstall, params[:remove_all_data]) 
+      STDERR.puts('bouBOSDRFSDAFt to image')
       engine.delete_image if engine.has_image? == true
       #   SystemDebug.debug(SystemDebug.containers, :engine_image_deleted, engine)
+      STDERR.puts('bouBOSDRFSDAFt to delete_engine')
+
+      system_api.trigger_engine_event(engine, 'success', 'uninstall') unless params[:reinstall] == true
       engine.delete_engine unless params[:reinstall] == true
+      STDERR.puts('bouBOSDRFSDAFt to  trudde')
     end
   rescue Exception => e
-    system_api.trigger_engine_event(engine, 'failed', 'uninstall')
+    system_api.trigger_engine_event(engine, 'failed', 'uninstall') unless engine.nil?
     raise e
   end
 
@@ -72,8 +77,6 @@ module EnginesOperations
       engine_name: engine.container_name,
       reinstall: true
     }
-
-    # delete_engine_and_services(params)
     builder = BuildController.new
     @build_thread = Thread.new { engine.reinstall_engine(builder) }
     @build_thread[:name] = 'reinstall engine'
@@ -98,7 +101,6 @@ module EnginesOperations
       reinstall: true,
       restore: true
     }
-    # engine.wait_for('destroy', 10)
     delete_engine_and_services(params)
     builder = BuildController.new
     engine.restore_engine(builder)
@@ -173,7 +175,6 @@ module EnginesOperations
                 begin
                   #    STDERR.puts(' remove_service_from_engine_only ' + service.to_s )
                   service_manager.remove_service_from_engine_only(service)
-                  # next
                 rescue
                   next
                 end

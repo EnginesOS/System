@@ -1,8 +1,8 @@
 class DockerFileBuilder
   require_relative 'archives.rb'
-  
+
   include Archives
-  
+
   require_relative 'persistence.rb'
   def initialize(reader, build_params, webport, builder)
     @build_params = build_params
@@ -11,10 +11,10 @@ class DockerFileBuilder
     @web_port = webport
     @blueprint_reader = reader
     @builder = builder
-    @docker_file = File.open(@builder.basedir + '/Dockerfile', 'a')
+    @docker_file = File.open("#{@builder.basedir}/Dockerfile", 'a')
     @layer_count = 0
     #FIXME
-    @env_file = File.new(@builder.basedir + '/build.env', 'w+')
+    @env_file = File.new("#{@builder.basedir}/build.env", 'w+')
     # this should be read as it is framework dep
     @max_layers = 75
   end
@@ -50,7 +50,7 @@ class DockerFileBuilder
     write_rake_list
     set_user('0')
     write_run_line('mkdir -p /home/fs/local/')
-    set_user('$ContUser') unless @blueprint_reader.framework == 'docker'  
+    set_user('$ContUser') unless @blueprint_reader.framework == 'docker'
     write_run_install_script
     set_user('0')
     setup_persitant_app if @build_params[:app_is_persistent]
@@ -65,7 +65,7 @@ class DockerFileBuilder
 
   require_relative 'docker_commands.rb'
   require_relative 'file_writer.rb'
-  
+
   def add_sudoers
     if @blueprint_reader.respond_to?('sudo_list')
       if @blueprint_reader.sudo_list.is_a?(Array)
@@ -89,7 +89,7 @@ class DockerFileBuilder
   def finalise_docker_file
     write_build_script('_finalise_environment.sh')
     if @blueprint_reader.respond_to?(:continuous_deployment)
-      log_build_output("Setting up Continuos Deployment:" + @blueprint_reader.continuous_deployment.to_s ) if @blueprint_reader.continuous_deployment
+      log_build_output("Setting up Continuos Deployment:#{@blueprint_reader.continuous_deployment}" ) if @blueprint_reader.continuous_deployment
       write_cd if @blueprint_reader.continuous_deployment
     end
     write_run_end if @in_run == true
@@ -182,8 +182,6 @@ class DockerFileBuilder
       @builder.volumes.each_value do |vol|
         dest = File.basename(vol[:remotepath])
         write_comment('#FS Env')
-        # write_line('RUN mkdir -p $CONTFSVolHome/' + dest)
-        # write_line('RUN mkdir -p $CONTFSVolHome/$VOLDIR' )
       end
     end
   end
@@ -197,8 +195,8 @@ class DockerFileBuilder
         dest_file = @blueprint_reader.sed_strings[:dest_file][n]
         sed_str = @blueprint_reader.sed_strings[:sed_str][n]
         tmp_file = @blueprint_reader.sed_strings[:tmp_file][n]
-        write_run_line('cat ' + src_file + " | sed \"" + sed_str + "\" > " + tmp_file)
-        write_run_line('cp ' + tmp_file + ' ' + dest_file)
+        write_run_line("cat #{src_file} | sed \"#{sed_str}\" > #{tmp_file}")
+        write_run_line("cp #{tmp_file} #{dest_file}")
         n += 1
       end
     end
@@ -212,11 +210,10 @@ class DockerFileBuilder
           next unless repo.key?(:source)
           if repo.key?(:key)
             unless repo[:key].nil?
-              write_run_line('wget -qO - ' + repo[:key] + ' | apt-key add -')
+              write_run_line("wget -qO - #{repo[:key]} | apt-key add -")
             end
           end
-         # write_run_line('echo deb ' +  repo[:source] + ' > /etc/apt/sources.list.d/custom.list')
-          write_run_line('add-apt-repository  -y  ' + repo[:source])
+        write_run_line("add-apt-repository  -y #{repo[:source]}")
         end
         write_run_line('apt-get -y update ')
       end
@@ -233,13 +230,13 @@ class DockerFileBuilder
         end
       end
       if packages.length > 1
-        write_run_line('apt-get install -y ' + packages)
+        write_run_line("apt-get install -y #{packages}")
       end
     end
   end
 
   def deploy_dir
-    SystemConfig.DeploymentTemplates + '/' + @blueprint_reader.framework
+    "#{SystemConfig.DeploymentTemplates}/#{@blueprint_reader.framework}"
   end
 
   def build_dir
@@ -260,7 +257,7 @@ class DockerFileBuilder
       @blueprint_reader.single_chmods.each do |path|
         paths += path + ' ' unless path.nil?
       end
-      write_run_line('/build_scripts/write_permissions.sh ' + paths)
+      write_run_line("/build_scripts/write_permissions.sh #{paths}")
     end
   end
 
@@ -272,11 +269,9 @@ class DockerFileBuilder
       @blueprint_reader.recursive_chmods.each do |directory|
         dirs += directory + ' ' unless directory.nil?
       end
-      write_run_line('/build_scripts/recursive_write_permissions.sh ' + dirs)
+      write_run_line("/build_scripts/recursive_write_permissions.sh #{dirs}")
     end
   end
-
- 
 
   def write_container_user
     write_run_end if @in_run == true
@@ -293,9 +288,6 @@ class DockerFileBuilder
     log_build_output('Dockerfile:Stack Environment')
     write_comment('#Stack Env')
     write_line('')
-    # write_env('Memory' ,@builder.memory.to_s)
-   # write_env('cont_uid', build_params
-   
     write_env('Hostname', @hostname)
     write_env('Domainname', @domain_name)
     write_env('fqdn', @hostname + '.' + @domain_name)

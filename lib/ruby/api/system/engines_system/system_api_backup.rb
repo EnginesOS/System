@@ -162,8 +162,6 @@ module SystemApiBackup
   end
 
   def link_in_fs(sh)
-    #SystemConfig.LocalFSVolHome + '/' + sh[:parent_engine] + '/' + sh[:service_handle],
-    #FileUtils.touch(SystemConfig.BackupTmpDir + '/' + service_path(sh) + '/' + sh[:service_handle])
     lf = File.open("#{SystemConfig.BackupTmpDir}/#{service_path(sh)}/#{sh[:service_handle]}.lnk", 'w')
     lf.puts(service_path(sh))
   ensure
@@ -171,7 +169,7 @@ module SystemApiBackup
   end
 
   def mk_engine_bundle_dir(en)
-    dn = SystemConfig.BackupTmpDir + '/'+ en
+    dn = "#{SystemConfig.BackupTmpDir}/en"
     if Dir.exist?(dn)
       FileUtils.rm_r(dn, :force => true )
     end

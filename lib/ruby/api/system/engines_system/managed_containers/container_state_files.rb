@@ -1,13 +1,13 @@
 module ContainerSystemStateFiles
   def build_running_service(service_name, service_type_dir)
-    config_template_file_name =  "{#service_type_dir}#{service_name}/config.yaml"
+    config_template_file_name =  "#{service_type_dir}#{service_name}/config.yaml"
     unless File.exist?(config_template_file_name)
       SystemUtils.log_error_mesg('Running exist', service_name)
     else
       config_template = File.read(config_template_file_name)
       templator = Templater.new(nil)
       running_config = templator.process_templated_string(config_template)
-      yam1_file_name = "{#service_type_dir}#{service_name}/running.yaml"
+      yam1_file_name = "#{service_type_dir}#{service_name}/running.yaml"
       yaml_file = File.new(yam1_file_name, 'w+')
       begin
         yaml_file.write(running_config)
@@ -71,7 +71,7 @@ module ContainerSystemStateFiles
       Dir.mkdir(state_dir)
       Dir.mkdir("#{state_dir}/run") unless Dir.exist?("#{state_dir}/run")
       Dir.mkdir("#{state_dir}/run/flags") unless Dir.exist?("#{state_dir}/run/flags")
-      FileUtils.chown_R(nil, 'containers', state_dir + '/run')
+      FileUtils.chown_R(nil, 'containers', "#{state_dir}/run")
       FileUtils.chmod_R('u+r', "#{state_dir}/run")
       FileUtils.chmod_R('g+w', "#{state_dir}/run")
     end
@@ -169,9 +169,7 @@ module ContainerSystemStateFiles
           options[:max_length] = 4096
         end
         log_file.write(
-        c.logs_container(options[:max_length])
-        #, {}).to_yaml
-        )
+        c.logs_container(options[:max_length])        )
       ensure
         log_file.close
       end

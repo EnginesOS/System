@@ -7,9 +7,6 @@ get '/v0/containers/service/:service_name/export' do
   STDERR.puts('Sex EXPORT')
   begin
     service = get_service(params[:service_name])
-#    unless SoftwareServiceDefinition.is_consumer_exportable?(hash)
-#         raise EnginesException.new(warning_hash("Cannot export as single service", hash))
-#        end 
     raise EnginesException.new(warning_hash('Service not running')) unless service.is_running?
     content_type 'application/octet-stream'  
     stream do |out|
@@ -49,8 +46,6 @@ post '/v0/containers/service/:service_name/import' do
   begin
     response.headers['Access-Control-Allow-Origin'] = '*' 
     service = get_service(params[:service_name])
-    # return_json(service.import_data(request.env['rack.input']))
-    # return_json(service.import_data(request.body)) 
       r = request.env['rack.input']
     STDERR.puts('SIN IMPORT:' + request.to_s)
     STDERR.puts('SIN IMPORT params' + params.to_s)

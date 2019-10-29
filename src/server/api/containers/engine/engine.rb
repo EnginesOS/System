@@ -167,6 +167,25 @@ get '/v0/containers/engine/:engine_name/wait_for/:what' do
   end
   end
 end
+# @method wait_for_service_statup
+# @overload get '/v0/containers/service/:service/wait_for_statup'
+#
+# @return true|false
+# test cd /opt/engines/tests/engines_api/service ; make service wait_for_startup
+get '/v0/containers/engine/:engine_name/wait_for_startup/:timeout' do
+  stream do |out|
+    begin
+      engine = get_engine(params[:engine_name])
+      r = engine.wait_for_startup(params[:timeout].to_i)
+      out << r.to_s unless out.closed?
+      return_boolean(r)
+    rescue StandardError => e
+      out << false.to_s unless out.closed?
+      send_encoded_exception(request: request, exception: e)
+    end
+  end
+end
+
 # @method wait_for_engine_delat
 # @overload get '/v0/containers/engine/:engine_name/wait_for/:what/:delay'
 #

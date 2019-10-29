@@ -27,7 +27,7 @@ module SaveEngineConfiguration
     unless actionators.nil?
       FileUtils.mkdir_p(ContainerStateFiles.actionator_dir(ca)) unless Dir.exist?(ContainerStateFiles.actionator_dir(ca))
       serialized_object = YAML.dump(actionators)
-      f = File.new(ContainerStateFiles.actionator_dir(ca) + '/actionators.yaml', File::CREAT | File::TRUNC | File::RDWR, 0644)
+      f = File.new("#{ContainerStateFiles.actionator_dir(ca)}/actionators.yaml", File::CREAT | File::TRUNC | File::RDWR, 0644)
       begin
         f.write(serialized_object)
         f.flush()

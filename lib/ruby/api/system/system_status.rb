@@ -5,12 +5,12 @@ class SystemStatus
 
   # return [String] representing the address of public host interface (ie ifconfig eth0)
   def SystemStatus.get_base_host_ip
-    ENV['CONTROL_IP'] #'control.engines.internal'
+    ENV['CONTROL_IP'] 
   end
 
   # return [String] representing the address docker interface
   def SystemStatus.get_docker_ip
-    ENV['DOCKER_IP'] #'control.engines.internal'
+    ENV['DOCKER_IP']
   end
 
   def self.is_rebooting?

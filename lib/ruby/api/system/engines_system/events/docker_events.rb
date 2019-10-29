@@ -47,11 +47,8 @@ module DockerEvents
           rescue
           end
         end
-        #     pipe_in.close unless pipe_in.closed?
-        #    pipe_out.close unless pipe_out.closed?
         rm_event_listener(event_listener)
         break
-        # return true
       end
     end
     r = true
@@ -59,16 +56,10 @@ module DockerEvents
     STDERR.puts(' Wait for timeout on ' + container.container_name.to_s + ' for ' + what)
     rm_event_listener(event_listener) unless event_listener.nil?
     event_listener = nil
-    #   pipe_in.close
-    # pipe_out.close
-    #is_aready?(what, container.read_state) #check for last sec call
   rescue StandardError => e
     rm_event_listener(event_listener) unless event_listener.nil?
     STDERR.puts(e.to_s)
     STDERR.puts(e.backtrace.to_s)
-    #pipe_in.close
-    #  pipe_out.close
-    #is_aready?(what, container.read_state)
   ensure
     unless pipe_in.nil?
       pipe_in.close unless pipe_in.closed?
@@ -222,10 +213,10 @@ module DockerEvents
     unless event_hash[:container_type].nil? || event_hash[:container_name].nil?
       if event_hash[:container_type] == 'service' ||  event_hash[:container_type] == 'system_service'||  event_hash[:container_type] == 'utility'
         # Enable Cold load of service from config.yaml
-        File.exist?(SystemConfig.RunDir + '/' + event_hash[:container_type] + 's/' + event_hash[:container_name] + '/config.yaml')
+        File.exist?("#{SystemConfig.RunDir }/#{event_hash[:container_type]}s/#{event_hash[:container_name]}/config.yaml")
       else
         # engines always have a running.yaml
-        File.exist?(SystemConfig.RunDir + '/' + event_hash[:container_type] + 's/' + event_hash[:container_name] + '/running.yaml')
+        File.exist?("#{SystemConfig.RunDir }/#{event_hash[:container_type]}s/#{event_hash[:container_name]}/running.yaml")
       end
     else
       false

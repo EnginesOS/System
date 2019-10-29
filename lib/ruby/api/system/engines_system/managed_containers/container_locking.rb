@@ -8,7 +8,6 @@ module ContainerLocking
   end
 
   def lock_container_conf_file(lock_key)
-    #lock_key
     STDERR.puts("LOCKING " + lock_key.to_s)
     if is_container_conf_file_locked?(lock_key).is_a?(TrueClass)
       wait_on_lock(lock_key)

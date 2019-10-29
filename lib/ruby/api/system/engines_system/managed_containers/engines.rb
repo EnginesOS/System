@@ -69,7 +69,6 @@ module Engines
     container.remove_wap_service
     container.set_hostname_details(hostname, domain_name)
     container.save_state
-    # save_container(container)
     container.add_wap_service
     true
   end
@@ -95,8 +94,7 @@ module Engines
     unless engine.is_a?(Container::ManagedEngine)
       yaml_file_name = SystemConfig.RunDir + '/apps/' + engine_name + '/running.yaml'
         STDERR.puts('Engine file:' + yaml_file_name.to_s)
-      raise EnginesException.new(error_hash('No Engine file:' + engine_name.to_s , engine_name)) unless File.exist?(yaml_file_name)
-   #   raise EnginesException.new(error_hash('Engine File Locked', yaml_file_name)) if is_container_conf_file_locked?(SystemConfig.RunDir + '/apps/' + engine_name)
+      raise EnginesException.new(error_hash('No Engine file:' + engine_name.to_s , engine_name)) unless File.exist?(yaml_file_name)  
       lock_container_conf_file(SystemConfig.RunDir + '/apps/' + engine_name)
       yaml_file = File.new(yaml_file_name, 'r')
       begin

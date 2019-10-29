@@ -7,9 +7,7 @@ module DockerNet
     debug_request: true,
     debug_response: true,
     persistent: false, #true  #,
-    thread_safe_sockets: true
-    )  #if @connection.nil?
-    # @connection
+    thread_safe_sockets: true)
   end
 
   def reopen_connection
@@ -18,9 +16,7 @@ module DockerNet
     @connection = Excon.new('unix:///',
     :socket => '/var/run/docker.sock',
     debug_request: true,
-    debug_response: true) #,
-    #persistent: true,
-    #thread_safe_sockets: true)
+    debug_response: true) 
     @connection
   end
 

@@ -34,7 +34,7 @@ module Builders
     self
   rescue StandardError => e
     #log_exception(e)
-    log_build_errors('Engine Build Aborted Due to:' + e.to_s)
+    log_build_errors("Engine Build Aborted Due to:#{e}")
     post_failed_build_clean_up
     log_exception(e)
     raise e
@@ -131,7 +131,7 @@ module Builders
     rescue
       #dont panic if no container
     end
-    @result_mesg = @result_mesg.to_s + ' Roll Back Complete'
+    @result_mesg = "#{@result_mesg} Roll Back Complete"
   #  SystemDebug.debug(SystemDebug.builder,'Roll Back Complete')
     close_all
   end
@@ -149,13 +149,8 @@ module Builders
     service_builder.release_orphans
     @container
   rescue StandardError => e
-    #log_exception(e)
-    log_build_errors('Engine Build Aborted Due to:' + e.to_s)
+    log_build_errors("Engine Build Aborted Due to:#{e}")
     STDERR.puts(e.backtrace.to_s)
-    # post_failed_build_clean_up
-   # log_exception(e)
-   # raise e
-    #  close_all
   end
 
   def save_build_result
@@ -164,8 +159,8 @@ module Builders
     core.save_build_report(@container, build_report)
     @result_mesg = 'Build Successful'
     log_build_output('Build Successful')
-    FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.out', ContainerStateFiles.container_state_dir(@container.store_address) + '/build.log')
-    FileUtils.copy_file(SystemConfig.DeploymentDir + '/build.err', ContainerStateFiles.container_state_dir(@container.store_address) + '/build.err')
+    FileUtils.copy_file("#{SystemConfig.DeploymentDir}/build.out", "#{ContainerStateFiles.container_state_dir(@container.store_address)}/build.log")
+    FileUtils.copy_file("#{SystemConfig.DeploymentDir}/build.err", "#{ContainerStateFiles.container_state_dir(@container.store_address)}/build.err")
     true
   end
 
@@ -174,7 +169,7 @@ module Builders
     log_build_output('Setting up rebuild')
     create_build_dir
     blue_print = @engine.load_blueprint
-    statefile = basedir + '/blueprint.json'
+    statefile = "#{basedir}/blueprint.json"
     f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0644)
     begin
       f.write(blue_print.to_json)

@@ -42,8 +42,8 @@ module EngineApiStatusFlags
     unless Dir.exist?(sfd)
       FileUtils.mkdir_p(sfd)
     end
-    state_file_name = sfd + '/state'
-    sfn = sfd + '/startup_complete'
+    state_file_name = "#{sfd}/state"
+    sfn = "#{sfd}/startup_complete"
     if c.is_running?
       if is_startup_complete?(c)
         r = true

@@ -1,7 +1,7 @@
 module ServiceApiConfigurations
   @@configurator_timeout = 10
   def retrieve_configurator(c, params)
-    cmd = '/home/engines/scripts/configurators/read_' + params[:configurator_name].to_s + '.sh'
+    cmd = "/home/engines/scripts/configurators/read_#{params[:configurator_name]}.sh"
     result =  core.exec_in_container(
     {container: c,
       command_line: [cmd],

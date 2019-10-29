@@ -18,51 +18,7 @@ module DockerHttp
       p[:expect_json])}
   end
 
-  #  def post_stream_request(uri, options, stream_handler, rheaders = nil, content = nil)
-  #    rheaders = default_headers if rheaders.nil?
-  #    #  SystemDebug.debug(SystemDebug.docker,'post stream ' + uri.to_s + '?' + options.to_s + ' Headeded by:' + rheaders.to_s)
-  #    content = '' if content.nil?
-  #    sc = stream_connection(stream_handler)
-  #
-  #    if stream_handler.method(:has_data?).call == false
-  #      if rheaders['Content-Type'] == 'application/json'
-  #        body = content.to_json
-  #      else
-  #        body = content
-  #      end
-  #      r = sc.request(
-  #      method: :post,
-  #      read_timeout: 3600,
-  #      path: uri + '?' + options.to_s,
-  #      headers: rheaders,
-  #      body: body
-  #      )
-  #      stream_handler.close
-  #    else
-  #      r = sc.request(
-  #      method: :post,
-  #      read_timeout: 3600,
-  #      path: uri + '?' + options.to_s,
-  #      headers: rheaders,
-  #      body: content
-  #      )
-  #      stream_handler.close
-  #    end
-  #    sc.reset unless sc.nil?
-  #    r
-  #
-  #  rescue Excon::Error::Socket
-  #    STDERR.puts('Excon docker socket stream close ')
-  #    stream_handler.close unless stream_handler.nil?
-  #    sc.reset unless sc.nil?
-  #    r
-  #  rescue  Excon::Error::Timeout
-  #    STDERR.puts('Excon docker socket timeout ')
-  #    stream_handler.close unless stream_handler.nil?
-  #    sc.reset unless sc.nil?
-  #    nil
-  #  end
-
+  
   def post_stream_request(p)
     fillin_params(p)
 
@@ -86,7 +42,7 @@ module DockerHttp
     sc.request(
     method: :post,
     read_timeout: p[:timeout],
-    path: p[:uri] + '?' + p[:options].to_s,
+    path: "#{p[:uri]}?#{p[:options]}",
     headers: p[:headers],
     body: body
     )

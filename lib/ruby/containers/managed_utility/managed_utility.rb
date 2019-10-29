@@ -16,7 +16,6 @@ module Container
       @container_name.freeze
       @data_uid.freeze
       @data_gid.freeze
-      #  @image.freeze This is the one difference
       @repository = '' if @repository.nil?
       @repository.freeze
       @container_mutex = Mutex.new
@@ -51,7 +50,6 @@ module Container
       end
 
       r =  ''
-      #  command_name = command_name.to_sym unless @commands.key?(command_name)
       raise EnginesException.new(error_hash('No such command: ' + command_name.to_s + ' in ' + @commands.to_s,  command_params)) unless @commands.key?(command_name)
       command = command_details(command_name)
       raise EnginesException.new(error_hash('Missing params in Exe' + command_params.to_s + ' for ' + command_name.to_s, r)) unless (r = check_params(command, command_params)) == true
@@ -125,7 +123,7 @@ module Container
         cmd[:requires].each do |required_param|
           next if params.key?(required_param.to_sym)
           r = 'Missing:' if r == true
-          r +=  ' ' + required_param.to_s
+          r +=  " #{required_param}"
         end
       end
       r

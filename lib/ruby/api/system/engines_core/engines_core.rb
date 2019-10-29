@@ -109,7 +109,7 @@ class EnginesCore < ErrorsApi
 
 
   def initialize
-    Signal.trap('HUP', proc { dump_stats })  #api_shutdown })
+    Signal.trap('HUP', proc { dump_stats })  
     Signal.trap('TERM', proc { api_shutdown })
     @registry_handler = RegistryHandler.new
     $user_tokens = {}

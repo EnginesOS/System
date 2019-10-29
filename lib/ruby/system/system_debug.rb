@@ -21,9 +21,8 @@ class SystemDebug
   @@registry = 262144
   @@schedules = 524288
   @@all_debug_flags = @@execute |@@engine_tasks |@@first_run |@@docker |@@containers|@@container_events| @@services | @@orphans |@@environment |@@templater | @@builder |@@system  |@@cache |@@update|@@registry |@@actions
-  #if File.exist?(debug_flag)
-  # require(debug_flags)
-  #else
+
+
   if File.exist?('/opt/engines/etc/debug/debug_flags.rb')
     @@debug_flags = 0
     require '/opt/engines/etc/debug/debug_flags.rb'
@@ -126,9 +125,9 @@ class SystemDebug
   end
 
   def self.print_debug(args)
-    mesg = 'Debug:' + caller[1].to_s + ':'
+    mesg = "Debug:#{caller[1]}:"
     args.each do |arg|
-      mesg += arg.to_s + ' '
+      mesg += "#{arg} "
     end
     STDERR.puts(mesg )
   end

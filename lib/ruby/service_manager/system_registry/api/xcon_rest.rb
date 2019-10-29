@@ -45,7 +45,7 @@ def rest_get(path, params = nil, time_out = 120, _headers = nil)
   lheaders = headers
   lheaders.merge(_headers) unless _headers == nil
   lheaders.delete('Content-Type' ) if q.nil?
-  req = {time_out: time_out, method: :get, path: @route_prefix.to_s + path.to_s, headers: lheaders }
+  req = {time_out: time_out, method: :get, path: "#{@route_prefix}#{path}", headers: lheaders }
   req[:query] = q unless q.nil?
   r = connection.request(req)
   parse_xcon_response(r)
@@ -68,7 +68,7 @@ def post(path, params = nil, lheaders = nil)
   begin
    # SystemDebug.debug(SystemDebug.registry,'POST  ', path.to_s + '?' + params.to_s)
     lheaders = headers if lheaders.nil?
-    parse_xcon_response(connection.request({read_timeout: time_out, headers: lheaders, method: :post, path: @route_prefix.to_s + path.to_s, body: query_hash(params).to_json }))
+    parse_xcon_response(connection.request({read_timeout: time_out, headers: lheaders, method: :post, path: "#{@route_prefix}#{path}", body: query_hash(params).to_json }))
   rescue Excon::Error::Socket => e
     unless e.socket_error == EOFError
       reopen_connection
@@ -87,7 +87,7 @@ end
 def put(path, params = nil, lheaders = nil)
   cnt = 0
   lheaders = headers if lheaders.nil?
-  parse_xcon_response( connection.request(read_timeout: time_out, headers: lheaders, method: :put, path: @route_prefix + path.to_s, query: query_hash(params).to_json ))
+  parse_xcon_response( connection.request(read_timeout: time_out, headers: lheaders, method: :put, path: "#{@route_prefix}#{path}", query: query_hash(params).to_json ))
 rescue Excon::Error::Socket => e
   reopen_connection
   cnt += 1
@@ -112,7 +112,7 @@ def delete(path, params = nil, lheaders = nil)
   q = query_hash(params)
  # SystemDebug.debug(SystemDebug.registry, 'DEL ', path.to_s + '?' + q.to_s)
   lheaders = headers if lheaders.nil?
-  parse_xcon_response( connection.request(read_timeout: time_out, headers: lheaders, method: :delete, path: @route_prefix + path.to_s, query: q))  
+  parse_xcon_response( connection.request(read_timeout: time_out, headers: lheaders, method: :delete, path:"#{@route_prefix}#{path}", query: q))  
 rescue Excon::Error::Socket => e
   reopen_connection
   cnt += 1
@@ -163,7 +163,7 @@ def error_result_exception(resp)
 end
 
 def base_url
-  'http://' + core.registry_root_ip + ':4567'
+  "http://#{core.registry_root_ip}:4567"
 rescue  StandardError => e
   raise EnginesException.new('Cannot Determine Base URL' + e.to_s)
 end

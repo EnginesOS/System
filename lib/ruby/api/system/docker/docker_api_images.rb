@@ -24,8 +24,7 @@ module DockerApiImages
 
   def pull_image(container)
     unless container.is_a?(String) # non app
-      #container.image_repo = 'registry.hub.docker.com' if  container.image_repo.nil?
-      #d = container.image
+
       tag= ''
       cd = container.image.split(':')
       d = cd[0]
@@ -69,7 +68,7 @@ module DockerApiImages
     thr = Thread.new {
       delete_request({uri: "/images/#{container.image}"})
     }
-    thr[:name] = 'Docker delete container ' + container.image
+    thr[:name] = "Docker delete container #{container.image}"
   rescue StandardError => e
     SystemUtils.log_exception(e , 'delete_container_image:' + container.container_name)
     thr.exit unless thr.nil?
@@ -91,7 +90,7 @@ module DockerApiImages
       unless images.is_a?(FalseClass)
         images.each do |image|
           next unless image.is_a?(Hash) && image.key?(:Id)
-          delete_image(image[:Id]) # was @docker_comms.
+          delete_image(image[:Id])
         end
       end }
     thr[:name] = 'clean_up_dangling_images:'

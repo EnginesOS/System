@@ -21,9 +21,9 @@ module PersistantServices
 end
 
 def service_to_str(service_hash)
-  retval = service_hash[:publisher_namespace].to_s + '/' + service_hash[:type_path].to_s
+  retval = "#{service_hash[:publisher_namespace]}/#{service_hash[:type_path]}"
   service_hash[:variables].each do |variable|
-    retval += ',' + variable[1].to_s
+    retval += ",#{variable[1]}"
   end
   #SystemDebug.debug(SystemDebug.services,  :service_to_str, retval)
   retval

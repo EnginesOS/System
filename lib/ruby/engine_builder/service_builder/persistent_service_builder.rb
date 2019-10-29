@@ -93,7 +93,6 @@ module PersistantServiceBuilder
     service_environment = SoftwareServiceDefinition.service_environments(service_hash)
     SystemDebug.debug(SystemDebug.builder, :builder_attach_service4, service_hash)
     add_service_env_to_env(environ, service_environment)
-    #environ.concat(SoftwareServiceDefinition.service_environments(service_hash))
     SystemDebug.debug(SystemDebug.builder, :builder_attach_service5, service_hash)
       SystemDebug.debug(SystemDebug.builder, service_hash[:shared].to_s)
     unless service_hash[:shared].is_a?(TrueClass)

@@ -43,11 +43,6 @@ module ServiceOperations
     service_manager.delete_and_remove_service(service_hash)
 #    check_service_hash(service_hash)
 #    SystemDebug.debug(SystemDebug.services, :dettach_service, service_hash)
-#    if service_hash[:shared] == true
-#      service_manager.remove_shared_service_from_engine(service_hash)
-#    else
-#      service_manager.delete_and_remove_service(service_hash)
-#    end
   end
 
   # @ returns  complete service hash matching PNS,SP,PE,SH

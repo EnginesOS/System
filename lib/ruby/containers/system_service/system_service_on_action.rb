@@ -33,8 +33,6 @@ module SystemSystemOnAction
       @out_of_memory = false
       save_state
     end
-    #return true if @consumer_less
-    # deregister_with_dns # Really its in the following nowMUst register each time as IP Changes
   end
 
   def out_of_mem(what)

@@ -80,8 +80,7 @@ class BuildController
         repository_url: engine.container_name,
         variables: engine.environments,
         reinstall: true,
-        restore: true#,
-        #attached_services: engine.engine_persistent_services
+        restore: true
       }
       SystemStatus.build_starting(@build_params)
     #  SystemDebug.debug(SystemDebug.builder, 'Starting restore with params ', @build_params)
@@ -110,7 +109,6 @@ class BuildController
       environment: environment
     }
     get_engine_builder(@build_params)
-    #@engine_builder.setup_build
   end
 
   def build_failed(params, err)

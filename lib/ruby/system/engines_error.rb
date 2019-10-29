@@ -22,7 +22,7 @@ class EnginesError # < FalseClass
   end
 
   def to_s
-    @sub_system.to_s + ':' +  @error_type.to_s + ':'  + @error_mesg.to_s + ':' + @source.to_s
+    "#{@sub_system}:#{@error_type}:#{@error_mesg}:#{@source}"
   end
 
   def to_json(opt=nil)

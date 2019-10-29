@@ -60,10 +60,6 @@ module EngineServiceOperations
     service_manager.share_service_to_engine(params)
   end
 #  
-#  def rollback_shared_service(service_hash)
-#    check_engine_hash(service_hash)
-#    service_manager.rollback_shared_service(service_hash)
-#  end
 
   def connect_share_service(service_hash)
    # STDERR.puts('SHARE '  + service_hash.to_s)
@@ -79,16 +75,11 @@ module EngineServiceOperations
       next unless params[:existing_service][:variables].keys(k)
       params[:variables][k] = params[:existing_service][:variables][k]
     end
-    r = share_service_to_engine(params)
-#    if service_hash[:type_path] == 'filesystem/local/filesystem'
-#      add_file_share(params)
-#    end
-    r
+     share_service_to_engine(params)
   end
 
   def add_file_share(service_hash)
   #  SystemDebug.debug(SystemDebug.services, service_hash[:variables][:name].to_s + ' ' + service_hash.to_s)
-    # service_hash = Volume.complete_service_hash(service_hash)
 
   #  SystemDebug.debug(SystemDebug.services,'complete_VOLUME_FOR SHARE_service_hash', service_hash)
     #  STDERR.puts('Add File Service ' + service_hash.to_s)

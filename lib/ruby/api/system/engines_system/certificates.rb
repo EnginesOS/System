@@ -4,7 +4,7 @@ module Certificates
   #  STDERR.puts(' Cert  ' +  params[:certificate] )
   #  STDERR.puts(' KEY  ' +  params[:private_key] )
     actionator = get_service_actionator(certs_service, 'import_cert')
-    certs_service.perform_action(actionator, params) #[:domain_name], params[:certificate] + params[:private_key])
+    certs_service.perform_action(actionator, params)
   end
 
   def remove_cert(params)
@@ -19,13 +19,8 @@ module Certificates
         service_handle: params[:cert_name]
       }
      # STDERR.puts('CERT SERVICe IS:' + service.to_s)
-    # begin
        s = core.retrieve_engine_service_hash(service)
      #   STDERR.puts('CERT SERVICe R:' + s.to_s)
-     # rescue StandardError => e
-      #  STDERR.puts('CERT SERVICE E is:' + e.to_s + "\n" + e.backtrace.to_s)
-     #   s = nil
-     # end
       unless s.nil?
       core.dettach_service(service)
       else
@@ -83,7 +78,7 @@ module Certificates
 
     begin
       actionator = get_service_actionator(certs_service, 'fetch_cert')
-      c = certs_service.perform_action(actionator, {cert_name: params[:container_type] +'_' + params[:parent_engine]  + '_' + params[:domain_name]})
+      c = certs_service.perform_action(actionator, {cert_name: "#{params[:container_type]}_#{params[:parent_engine]}_#{params[:domain_name]}" })
 
       #  STDERR.puts('GTO c ' + c.to_s)
       if c.include?('BEGIN CERTIFICATE')

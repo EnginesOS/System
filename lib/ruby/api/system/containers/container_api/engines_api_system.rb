@@ -61,7 +61,7 @@ module EnginesApiSystem
   def pre_start_checks(container)
     r = true
     unless have_enough_ram?(container)
-      r = 'Free memory' + system_api.available_ram.to_s + ' Required:' + memory_required(container).to_s + "\n"
+      r = "Free memory#{system_api.available_ram} Required:#{memory_required(container)}\n"
     end
     if (c = port_clash?(container.mapped_ports))
       r = c
@@ -75,7 +75,7 @@ module EnginesApiSystem
       mapped_ports.values.each do |mp|
         if mp[:publicFacing] == true
           unless (pa = core.is_port_available?(mp[:external])).is_a?(TrueClass)
-            r = 'Port clash with ' + pa + ' over Port ' + mp[:external].to_s
+          r = "Port clash with #{pa} over Port #{mp[:external]}"
             break
           end
         end
@@ -145,7 +145,7 @@ module EnginesApiSystem
         data: nil,
         timeout:  210})
       raise EnginesException.new(error_hash('Cron job un expected result', r)) unless r.is_a?(Hash)
-      r[:stdout] + r[:stderr]
+      "#{r[:stdout]}{[:stderr]}"
     else
       false
     end

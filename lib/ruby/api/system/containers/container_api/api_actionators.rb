@@ -11,7 +11,7 @@ module ApiActionators
       stream = nil
     end
 
-    cmds = ['/home/engines/scripts/actionators/' + actionator[:name].to_s + '.sh']
+    cmds = ["/home/engines/scripts/actionators/#{actionator[:name]}.sh"]
     req =
     {container: c,
       command_line: cmds,
@@ -51,7 +51,7 @@ module ApiActionators
     unless params.nil?
       r = ' '
       params.each do |param|
-        r += param.to_s + ' '
+        r += "#{param} "
       end
       r
     end

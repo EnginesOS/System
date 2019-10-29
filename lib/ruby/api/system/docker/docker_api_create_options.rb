@@ -153,14 +153,14 @@ module DockerApiCreateOptions
       next if env.build_time_only
       env.value ='NULL!' if env.value.nil?
       env.name = 'NULL' if env.name.nil?
-      envs.push(env.name.to_s + '=' + env.value.to_s)
+      envs.push("#{env.name}=#{env.value}")
     end
     envs
   end
 
   def system_envs(container)
     envs = []
-    envs[0] = 'CONTAINER_NAME=' + container.container_name
+    envs[0] = "CONTAINER_NAME=#{container.container_name}"
     envs[1] = "KRB5_KTNAME=/etc/krb5kdc/keys/#{container.container_name}.keytab" if container.kerberos == true
     envs
   end

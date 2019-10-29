@@ -5,7 +5,7 @@ module SystemLogging
       if level == 10
         STDERR.puts 'Error[' + Process.pid.to_s + ']:' + object.to_s
       else
-        puts 'Info[' + Process.pid.to_s + ']:' + object.to_s
+        puts "Info[#{Process.pid}]:#{object}"
       end
     end
     false
@@ -16,7 +16,7 @@ module SystemLogging
   # error mesg is truncated to 512 bytes
   # returns nothing
   def SystemUtils.log_error_mesg(msg, *objects)
-    err = msg.to_s  + ':->:' + objects.to_s
+  err = "#{msg}:->:#{objects}"
     #SystemUtils.log_output( msg.to_s + ':->:' + objects.to_s ,10)
     EnginesError.new(err.to_s,:error)
   end

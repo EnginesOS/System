@@ -1,18 +1,5 @@
 module DockerApiContainerOps
-  #  def container_exist?(container)
-  #    if container.container_id.to_s == '-1' || container.container_id.to_s == ''
-  #      r = @docker_comms.inspect_container_by_name(container)
-  #    else
-  #      r = get_request({uri: "/containers/#{container.container_id}/json"})
-  #    end
-  #    if r.is_a?(Hash)
-  #      true
-  #    else
-  #      false
-  #    end
-  #  rescue
-  #    false
-  #  end
+
   def destroy_container(cid)
     delete_request({uri: "/containers/#{cid}"})
   end

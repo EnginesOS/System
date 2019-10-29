@@ -35,17 +35,6 @@ class SystemAccess
 
   def timezone_country_city
     core.get_timezone
-    #  olsontz = File.read('/etc/timezone')
-    #    olsontz = `if [ -f /etc/timezone ]; then
-    #      cat /etc/timezone
-    #    elif [ -h /etc/localtime ]; then
-    #      readlink /etc/localtime | sed "s/\\/usr\\/share\\/zoneinfo\\///"
-    #    else
-    #      checksum=\`md5sum /etc/localtime | cut -d' ' -f1\`
-    #      find /usr/share/zoneinfo/ -type f -exec md5sum {} \\; | grep "^$checksum" | sed "s/.*\\/usr\\/share\\/zoneinfo\\///" | head -n 1
-    #    fi`.chomp
-    #    return "  " if olsontz.nil?
-    #     olsontz
   end
 
   def timezone
@@ -109,9 +98,6 @@ class SystemAccess
   def docker_ip
     # FixME read docker0 ip or cmd line option
     '172.17.0.1'
-    #    require 'socket'
-    #
-    #    addr_infos = Socket.ip_address_list
   end
 
   def system_hostname

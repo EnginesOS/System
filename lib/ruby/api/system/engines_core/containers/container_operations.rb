@@ -45,7 +45,7 @@ module ContainerOperations
           protocol = site[:variables][:proto]
           protocol = 'http' if protocol.nil?
         end
-        url = protocol.to_s + '://' + site[:variables][:fqdn].to_s
+        url = "#{protocol}://#{site[:variables][:fqdn]}"
         urls.push(url)
       end
     end

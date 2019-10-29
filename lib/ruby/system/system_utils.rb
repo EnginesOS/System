@@ -36,7 +36,7 @@ class SystemUtils
   end
 
   def SystemUtils.version
-    SystemUtils.system_release + '-' + SystemConfig.api_version.to_s + '-' + SystemConfig.engines_system_version.to_s
+    "#{SystemUtils.system_release}-#{SystemConfig.api_version}'-'#{SystemConfig.engines_system_version}"
   end
 
   #Execute @param cmd [String]
@@ -46,7 +46,7 @@ class SystemUtils
   def SystemUtils.run_system(cmd)
     @@last_error = ''
     begin
-      cmd = cmd + ' 2>&1'
+      cmd =  "#{cmd} 2>&1"
       res= %x<#{cmd}>
       SystemDebug.debug(SystemDebug.execute,'Run ' + cmd + ' ResultCode:' + $?.to_s + ' Output:', res)
       if $?.to_i == 0
@@ -129,22 +129,13 @@ class SystemUtils
       rescue IO::WaitReadable
         retry #unless th.status == false
         STDERR.puts(' retyr' );
-        # retval[:result] = th.value.exitstatus
-        #return retval
       rescue EOFError
         retry if stdout.closed? == false
-        #        if stdout.closed? == false
-        #          stderr_is_open = false
-        #          retry unless th.status == false
-        #          retval[:result] = th.value.exitstatus
-        #          return retval
-        #        elsif stderr.closed? == false
+
         STDERR.puts('read_nonblock stderr.SystemUtils.execute_command ')
         retval[:stderr] += stderr.read_nonblock(1000)
         retval[:result] = th.value.exitstatus
         break
-        #return retval
-        #  end
         resuce StandardError => e
       #  STDERR.puts('read_nonblock stderr.SystemUtils.execute_command ')
         retval[:stderr] += stderr.read_nonblock(1000)
@@ -155,12 +146,7 @@ class SystemUtils
           stdout.close unless stdout.closed?
           stderr.close unless stderr.closed?
       end
-      # File.delete('/tmp/import') if File.exist?('/tmp/import')
-
-      #return retval
     end
-    # File.delete('/tmp/import') if File.exist?('/tmp/import')
-
     retval
   rescue Exception=>e
     #  File.delete('/tmp/import') if File.exist?('/tmp/import')
@@ -178,7 +164,7 @@ class SystemUtils
   def SystemUtils.run_command(cmd)
     @@last_error = ''
     begin
-      cmd = cmd + ' 2>&1'
+      cmd = "#{cmd} 2>&1"
       res= %x<#{cmd}>
       #   SystemDebug.debug(SystemDebug.execute,'Run ' + cmd + ' ResultCode:' + $?.to_s + ' Output:', res)
       res
@@ -212,11 +198,11 @@ class SystemUtils
 
   def SystemUtils.cgroup_mem_dir(container_id_str)
     if SystemUtils.get_os_release_data['Major Version'] == '14'
-      '/sys/fs/cgroup/memory/docker/' + container_id_str + '/'
-    elsif Dir.exist?('/sys/fs/cgroup/memory/docker/' + container_id_str + '/')
-      '/sys/fs/cgroup/memory/docker/' + container_id_str + '/'
+      "/sys/fs/cgroup/memory/docker/#{container_id_str}/"
+    elsif Dir.exist?("/sys/fs/cgroup/memory/docker/${container_id_str}/")
+    "/sys/fs/cgroup/memory/docker/#{container_id_str}/"
     else
-      '/sys/fs/cgroup/memory/system.slice/docker-' + container_id_str + '.scope'
+      "/sys/fs/cgroup/memory/system.slice/docker-#{container_id_str}.scope"
     end
     # old pre docker 1.9. return '/sys/fs/cgroup/memory/system.slice/docker-' + container_id_str + '.scope'
   end

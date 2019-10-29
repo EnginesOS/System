@@ -1,6 +1,6 @@
 module DockerApiBuilder
   def build_options(engine_name)
-    ret_val = 't=' + engine_name
+  ret_val = "t=#{engine_name}"
     ret_val += '&buildargs={}'
     #  ret_val += '&cgroupparent='
     ret_val += '&forcerm=1'
@@ -26,7 +26,6 @@ module DockerApiBuilder
 
     def close
       @io_stream.close unless @io_stream.nil?
-      # @stream.reset unless @stream.nil?
     end
 
     def is_hijack?

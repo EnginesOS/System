@@ -1,6 +1,6 @@
 class ConfigFileWriter
   def self.compile_base_docker_files(templater, basedir)
-    file_list = Dir.glob(basedir + '/Dockerfile*.tmpl')
+    file_list = Dir.glob("#{basedir}/Dockerfile*.tmpl")
     file_list.each do |file|
       process_dockerfile_tmpl(templater, file)
     end
@@ -9,10 +9,10 @@ class ConfigFileWriter
 
   def self.create_sudoers_file(sudo_list, user, basedir)
     if sudo_list.is_a?(Array) && sudo_list.count > 0
-      out_file = File.new(basedir + '/sudo_list', 'w+', :crlf_newline => false)
+      out_file = File.new("#{basedir}/sudo_list", 'w+', :crlf_newline => false)
       begin
         sudo_list.each do |entry|
-          out_file.puts(user.to_s + ' ALL=(ALL) NOPASSWD: ' + entry.to_s)
+          out_file.puts("#{user} ALL=(ALL) NOPASSWD: #{entry}")
         end
         out_file.puts("\n")
       ensure
@@ -24,7 +24,7 @@ class ConfigFileWriter
 
   def self.write_templated_file(templater, filename, content)
     if content.nil?
-      SystemUtils.log_error('NO Content for ' + filename.to_s)
+    SystemUtils.log_error("NO Content for #{filename}")
     else
       content.gsub!(/\r/, '')
       dir = File.dirname(filename)

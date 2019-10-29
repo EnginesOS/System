@@ -4,7 +4,7 @@ module SmPublicKeyAccess
   end
 
   def load_pubkey(engine, cmd)
-    kfn = SystemConfig.container_ssh_keydir(engine) + '/' + cmd.to_s + '_rsa.pub'
+    kfn = "#{SystemConfig.container_ssh_keydir(engine)}/#{cmd}_rsa.pub"
     if File.exists?(kfn)
       k = File.read(kfn)
       k.split(' ')[1]

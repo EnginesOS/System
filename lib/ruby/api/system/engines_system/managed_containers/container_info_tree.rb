@@ -5,7 +5,7 @@ module ContainerInfoTree
     end
     keys.each do |k, v|
       next if v.nil?
-      kf = File.new(container_info_tree_dir(c) + '/' + k.to_s,'w')
+      kf = File.new("#{container_info_tree_dir(c)}/#{k}",'w')
       begin
         kf.write(v.to_s)
       ensure

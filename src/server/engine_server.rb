@@ -16,7 +16,6 @@ begin
   require 'objspace'
   require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
 
-  #Thread.abort_on_exception = true
   ObjectSpace.trace_object_allocations_start
 
   @events_stream = nil
@@ -34,7 +33,6 @@ begin
     pass if request.path == '/v0/system/uadmin/dn_lookup'
     pass if request.path == '/v0/system/login'
     pass if request.path.start_with?('/v0/unauthenticated')
- #   pass if request.path == '/v0/containers/service/certs/import'
     pass if request.path.start_with?('/v0/cron/engine/') && source_is_service?(request, 'cron')
     pass if request.path.start_with?('/v0/cron/service/') && source_is_service?(request, 'cron')
     pass if request.path.start_with?('/v0/schedule/engine/') && source_is_service?(request, 'cron')
@@ -80,14 +78,6 @@ begin
      configure do
     enable :cross_origin
   end
-  ## for puma ?
- #   set :session_secret, 'super secret'
-##    use Rack::Session::Cookie, :key => 'rack.session',
-  #    :domain => 'engines.local',
-  #    :path => '/',
- #     :expire_after => 2592000,
- #     :secret => 'change_me'
-  ##
 
     require_relative 'helpers/helpers.rb'
     require_relative 'api/routes.rb'

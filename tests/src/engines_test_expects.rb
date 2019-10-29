@@ -141,6 +141,7 @@ elsif ARGV.count > 2
 end
 
 @data = read_stdin_data
+exit -1 if @data.nil?
 
 if @data.include?("Incorrect usage")
   p 'Error with Test entry ' + @data.to_s

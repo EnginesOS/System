@@ -50,7 +50,7 @@ class BuilderPublic
   end
 
   def fqdn
-    hostname + '.' + domain_name
+    "#{hostname}.#{domain_name}"
   end
 
   def domain
@@ -100,10 +100,6 @@ class BuilderPublic
   def memory
     @builder.build_params[:memory]
   end
-  #  require 'hmac-md5'
-  #  def md5_sum(password)
-  #    HMAC::MD5.new(password).digest
-  #  end
 
   def service_account(suffix=nil)
 

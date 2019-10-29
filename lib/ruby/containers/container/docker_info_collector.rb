@@ -40,13 +40,11 @@ module DockerInfoCollector
   end
 
   def clear_cid
-    # STDERR.puts caller.join("\n")
-    # unless @id ==  -1  ## May break if just set to -1 Just here o test
+    # STDERR.puts caller.join("\n")  
     @id =  -1
     ContainerStateFiles.clear_cid_file(store_address)
     # SystemDebug.debug(SystemDebug.containers, 'clear cid')
     save_state
-    #  end
   end
 
   # Kludge until using docker socker to create (thne get id back on build completion)

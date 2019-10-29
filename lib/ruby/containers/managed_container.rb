@@ -58,12 +58,6 @@ module Container
       init_task_at_hand
     end
 
-    # Note desired state is teh next step and not the final result desired state is stepped through
-    #  def log_error_mesg(msg, *objects)
-    #    #task_failed(msg)
-    #    super
-    #  end
-
     def kerberos
       @kerberos = true if @kerberos.nil?
       @kerberos
@@ -79,7 +73,7 @@ module Container
     end
 
     def to_s
-      @container_name.to_s + '-set to:' +  @setState + ':' + status.to_s + ':' + @ctype
+      "#{@container_name}-set to:#{@setState}:#{status}:#{@ctype}"
     end
 
     def store_address
@@ -110,15 +104,6 @@ module Container
       status
       save_state if @id != -1 && @id != i
     end
-
-#    def container_id
-#      if @id == -1
-#        @id = read_container_id unless setState == 'noncontainer'
-#      end
-#      @id
-#    rescue
-#      -1
-#    end
 
     def repo
       @repository
@@ -152,9 +137,7 @@ module Container
       @environments
     end
 
-    #  def to_s
-    #    "#{@container_name.to_s}, #{@ctype}, #{@memory}, #{@hostname}, #{@conf_self_start}, #{@environments}, #{@image}, #{@volumes}, #{@web_port}, #{@mapped_ports}  \n"
-    #  end
+
     def to_h
       s = self.dup
       envs = []

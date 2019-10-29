@@ -38,7 +38,7 @@ def mount_string(volume)
   else
     perms = 'ro'
   end
-  volume[:localpath] + ':' + volume[:remotepath] + ':' + perms
+  "#{volume[:localpath]}:#{volume[:remotepath]}:#{perms}"
 rescue StandardError => e
   STDERR.puts('Problem with ' + volume.to_s)
   raise e
@@ -46,16 +46,16 @@ end
 
 def cert_mounts(ca)
     store = "#{ca[:c_type]}s/#{ca[:c_name]}/"
-    [SystemConfig.CertAuthTop + store + 'certs:' + SystemConfig.CertificatesDestination + ':ro',
-      SystemConfig.CertAuthTop + store + 'keys:' + SystemConfig.KeysDestination + ':ro']
+    ["#{SystemConfig.CertAuthTop}#{store}certs:#{SystemConfig.CertificatesDestination}:ro",
+      "#{SystemConfig.CertAuthTop}#{store}keys:#{SystemConfig.KeysDestination}:ro"]
 end
 
 def get_local_prefix(vol)
-  unless vol[:variables][:volume_src].start_with?('/var/lib/engines/apps/') == true  || vol[:variables][:volume_src].start_with?('/var/lib/engines/services/') == true
+  unless vol[:variables][:volume_src].start_with?('/var/lib/engines/apps/') == true || vol[:variables][:volume_src].start_with?('/var/lib/engines/services/') == true
     unless vol[:shared] == true
-      '/var/lib/engines/' + vol[:container_type] + 's/' + vol[:parent_engine] + '/' +  vol[:service_handle] + '/'
+      "/var/lib/engines/#{vol[:container_type]}s/#{vol[:parent_engine]}/#{vol[:service_handle]}/"
     else
-      '/var/lib/engines/' + vol[:container_type] + 's/' + vol[:service_owner] + '/' +  vol[:service_owner_handle] + '/'
+      "/var/lib/engines/#{vol[:container_type]}s/#{vol[:service_owner]}/#{vol[:service_owner_handle]}/"
     end
   else
     ''
@@ -94,7 +94,7 @@ def  mount_string_from_hash(vol)
     end
     vol[:variables][:volume_src].strip!
     vol[:variables][:volume_src].gsub!(/[ \t]*$/,'')
-    get_local_prefix(vol) + vol[:variables][:volume_src] + ':' + get_remote_prefix(vol) + vol[:variables][:engine_path] + ':' + perms
+    "#{get_local_prefix(vol)}#{vol[:variables][:volume_src]}:#{get_remote_prefix(vol)}#{vol[:variables][:engine_path]}:#{perms}"
   else
     STDERR.puts('missing keys in vol ' + vol.to_s )
     ''
@@ -131,8 +131,7 @@ def  mount_string_for_secret(secret)
     sh = secret[:service_handle]
   end
   # STDERR.puts('Secrets mount' +  '/var/lib/engines/secrets/' + src_ctype.to_s + 's/' +  src_cname.to_s + '/' + sh.to_s + ':/home/.secrets/'  + sh.to_s + ':ro')
-  s = '/var/lib/engines/secrets/' + src_ctype + 's/' +  src_cname + '/' + sh +\
-  ':/home/.secrets/'  + sh + ':ro'
+  s = "/var/lib/engines/secrets/#{src_ctype}s/#{src_cname}/#{sh}:/home/.secrets/#{sh}:ro"
   # STDERR.puts('Secrets mount' + s.to_s)
   s
 end
@@ -143,7 +142,7 @@ def  mount_string_for_homes(home)
   src_ctype =  home[:container_type]
   if  home[:variables][:home_type] == 'all'
     # STDERR.puts('Secrets mount' +  '/var/lib/engines/secrets/' + src_ctype.to_s + 's/' +  src_cname.to_s + '/' + sh.to_s + ':/home/.secrets/'  + sh.to_s + ':ro')
-    s = '/var/lib/engines/home/:/home/users/:'  + home[:variables][:access]
+    s = "/var/lib/engines/home/:/home/users/:#{home[:variables][:access]}"
   elsif home[:variables][:home_type] == 'seperate'
     s = []
     home[:variables][:homes].split(", \n").each do | user |
@@ -151,7 +150,7 @@ def  mount_string_for_homes(home)
       #FIXME do a ldap looku for user if user exists create else next
       #  next unless Dir.exist?('/home/users/' + user  )
       #     STDERR.puts('SDFSDF ' + '/var/lib/engines/home/' + user + '/' +  home[:parent_engine] + ':/home/users/' + user  + '/' +  home[:parent_engine] + ':'  + home[:variables][:access])
-      s.push('/var/lib/engines/home/' + user + '/' +  home[:parent_engine] + ':/home/users/' + user  + '/' +  home[:parent_engine] + ':'  + home[:variables][:access])
+      s.push("/var/lib/engines/home/#{user}/#{home[:parent_engine]}:/home/users/#{user}/#{home[:parent_engine]}:#{home[:variables][:access]}")
     end
   else
     STDERR.puts('serr ' + home.to_s)
@@ -194,8 +193,6 @@ def secrets_mounts(container)
         m_str = mount_string_for_secret(secret)
         mounts.push(m_str)
       end
-      #  else
-      #   STDERR.puts('Secrets mounts was' + secrets.to_s)
     end
   end
   mounts
@@ -229,27 +226,27 @@ def system_mounts(container)
 end
 
 def ssh_keydir_mount(ca)
-  ContainerStateFiles.container_ssh_keydir(ca) + ':/home/home_dir/.ssh:rw'
+  "#{ContainerStateFiles.container_ssh_keydir(ca)}:/home/home_dir/.ssh:rw"
 end
 
 def secrets_mount(ca)
-  ContainerStateFiles.secretsdir(ca) + ':/home/.secrets:ro'
+  "#{ContainerStateFiles.secretsdir(ca)}:/home/.secrets:ro"
 end
 
 def kerberos_mount(ca)
-  ContainerStateFiles.kerberos_dir(ca) + ':/etc/krb5kdc/keys/:ro'
+  "#{ContainerStateFiles.kerberos_dir(ca)}:/etc/krb5kdc/keys/:ro"
 end
 
 def vlogdir_mount(ca)
-  container_local_log_dir(ca) + ':/var/log/:rw'
+  "#{container_local_log_dir(ca)}':/var/log/:rw"
 end
 
 def logdir_mount(c)
-  container_local_log_dir(c.store_address) + ':' + in_container_log_dir(c) + ':rw'
+  "#{container_local_log_dir(c.store_address)}:#{in_container_log_dir(c)}:rw"
 end
 
 def state_mount(ca)
-  container_state_dir(ca) + '/run:/home/engines/run:rw'
+  "#{container_state_dir(ca)}/run:/home/engines/run:rw"
 end
 
 def container_state_dir(ca)
@@ -269,12 +266,12 @@ def in_container_log_dir(container)
     '/var/log'
   else
     container_logdetails_file_name = false
-    framework_logdetails_file_name = SystemConfig.DeploymentTemplates + '/' + container.framework + '/home/engines/etc/LOG_DIR'
+    framework_logdetails_file_name = "#{SystemConfig.DeploymentTemplates}/#{container.framework}/home/engines/etc/LOG_DIR"
     SystemDebug.debug(SystemDebug.docker, 'Frame logs details', framework_logdetails_file_name)
     if File.exist?(framework_logdetails_file_name)
       container_logdetails_file_name = framework_logdetails_file_name
     else
-      container_logdetails_file_name = SystemConfig.DeploymentTemplates + '/global/home/engines/etc/LOG_DIR'
+      container_logdetails_file_name = "#{SystemConfig.DeploymentTemplates}/global/home/engines/etc/LOG_DIR"
     end
     SystemDebug.debug(SystemDebug.docker,'Container log details', container_logdetails_file_name)
     begin

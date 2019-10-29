@@ -36,7 +36,6 @@ module Container
       @capabilities = runtime_params.capabilities
       @volume_service_builder = build_params[:service_builder]
       expire_engine_info
-  #  STDERR.puts("\n cont_user_id:" + @cont_user_id.to_s)
       save_state # no running.yaml throws a no such container so save so others can use
     end
 
@@ -52,16 +51,13 @@ module Container
       restart_required?
     end
 
-
-
     def volume_service_builder=(is_built)
-      #raise EnginesException,ew('Error alread run', :error) unless @volume_service_builder.nil?
       #   STDERR.puts(' SET @service_builder.run_volume_builder ' +  builder.to_s )
       @volume_service_builder = is_built
     end
 
     def load_blueprint
-      container_api.load_blueprint(ca)
+      container_api.load_blueprint(store_address)
     end
 
     def plugins_path

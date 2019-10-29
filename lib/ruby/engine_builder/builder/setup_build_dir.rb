@@ -4,7 +4,7 @@ module BuildDirSetup
   require_relative 'docker_file_builder/docker_file_builder.rb'
   def backup_lastbuild
     dir = basedir
-    backup = dir + '.backup'
+    backup = "#{dir}.backup"
     FileUtils.rm_rf(backup) if Dir.exist?(backup)
     FileUtils.mv(dir, backup) if Dir.exist?(dir)
     true
@@ -48,17 +48,11 @@ module BuildDirSetup
     setup_framework_logging
     #   SystemDebug.debug(SystemDebug.builder, 'Logging setup')
     write_persistent_vol_maps
-
-    #  rescue StandardError => e
-    #    log_build_errors('Engine Build Aborted Due to:' + e.to_s)
-    #    post_failed_build_clean_up
-    #    log_exception(e)
-    #    raise e
   end
 
   def write_software_file(filename, content)
-    ConfigFileWriter.write_templated_file(templater, basedir + '/' + filename, content)
-    log_build_output('Wrote ' + basedir.to_s + '/' + filename.to_s)
+    ConfigFileWriter.write_templated_file(templater, "#{basedir}/#{filename}", content)
+    log_build_output("Wrote #{basedir}/#{filename}")
   end
 
   private
@@ -102,9 +96,6 @@ module BuildDirSetup
       @blueprint_reader.template_files.each do |template_hash|
         template_hash[:path].sub!(/^\/home/,'')
         template_hash[:path] = templater.process_templated_string(template_hash[:path].sub(/^\/home/,''))
-        # unless template_hash[:path].start_with?('/home') || template_hash[:path].start_with?('/usr/local')
-        #  template_hash[:path] = '/home/' + template_hash[:path]
-        #end
         log_build_output('creating app template file:' + template_hash[:path].to_s)
         write_software_file('/home/engines/templates/' + template_hash[:path], template_hash[:content])
       end
@@ -171,9 +162,6 @@ module BuildDirSetup
           if line.include?('USER')
             i = line.split('=')
             @web_user = i[1].strip
-            #        elsif line.include?('UID=')
-            #          i = line.split('=')
-            #          @cont_user_id = i[1].strip
           end
         end
       ensure
@@ -204,7 +192,6 @@ module BuildDirSetup
     ensure
       stef.close
     end
-    #      throw BuildStandardError.new(e,'setting web port')
   end
 
   def setup_default_files

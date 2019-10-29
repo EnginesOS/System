@@ -34,7 +34,7 @@ module ManagedContainerControls
         false
       end
     end
-    thr.name = 'Destroy:' + container_name
+    thr.name = "Destroy:#{container_name}"
     thr
   rescue StandardError =>e
     SystemUtils.log_exception(e , 'Destroy:' + container_name)
@@ -45,7 +45,7 @@ module ManagedContainerControls
     thr = Thread.new do
       container_api.delete_engine(self)
     end
-    thr.name = 'Delete:' + container_name
+    thr.name = "Delete:#{container_name}"
     thr
   rescue StandardError =>e
     SystemUtils.log_exception(e , 'Delete Engine:' + container_name)
@@ -93,7 +93,7 @@ module ManagedContainerControls
         end
       }
     end
-    thr.name = 'Create:' + container_name
+    thr.name = "Create:#{container_name}"
     thr
   rescue StandardError =>e
     SystemUtils.log_exception(e , 'Create:' + container_name)
@@ -106,7 +106,7 @@ module ManagedContainerControls
       wait_for('destroy', 30)
       create_container
     end
-    thr.name = 'Recreate:' + container_name
+    thr.name = "Recreate:#{container_name}"
     thr
   rescue StandardError =>e
     SystemUtils.log_exception(e , 'ReCreate:' + container_name)
@@ -125,7 +125,7 @@ module ManagedContainerControls
         end
       }
     end
-    thr.name = 'Unpause:' + container_name
+    thr.name = "Unpause:#{container_name}"
     thr
   rescue StandardError =>e
     SystemUtils.log_exception(e , 'Unpause :' + container_name)
@@ -145,7 +145,7 @@ module ManagedContainerControls
         end
       }
     end
-    thr.name = 'Pause:' + container_name
+    thr.name = "Pause:#{container_name}"
     thr
   rescue StandardError =>e
     SystemUtils.log_exception(e , 'Pause:' + container_name)
@@ -164,7 +164,7 @@ module ManagedContainerControls
         end
       }
     end
-    thr.name = 'Stop:' + container_name
+    thr.name = "Stop:#{container_name}"
     thr
   rescue StandardError =>e
     SystemUtils.log_exception(e , 'Stop:' + container_name)
@@ -177,7 +177,7 @@ module ManagedContainerControls
         super if prep_task(:halt)
       }
     end
-    thr.name = 'Halt:' + container_name
+    thr.name = "Halt:#{container_name}"
     thr
   rescue StandardError =>e
     SystemUtils.log_exception(e , 'Halt:' + container_name)
@@ -197,7 +197,7 @@ module ManagedContainerControls
         end
       }
     end
-    thr.name = 'Start:' + container_name
+    thr.name = "Start:#{container_name}"
     thr
   rescue StandardError =>e
     SystemUtils.log_exception(e , 'Start:' + container_name)
@@ -211,7 +211,7 @@ module ManagedContainerControls
       wait_for('stop')
       start_container
     end
-    thr.name = 'Restart:' + container_name
+    thr.name = "Restart:#{container_name}"
     thr
   rescue StandardError =>e
     SystemUtils.log_exception(e , 'Restart:' + container_name)
@@ -236,7 +236,7 @@ module ManagedContainerControls
         end
       }
     end
-    thr.name = 'Rebuild:' + container_name
+    thr.name = "Rebuild:#{container_name}"
     thr
   rescue StandardError =>e
     SystemUtils.log_exception(e , 'Restore:' + container_name)
@@ -270,10 +270,6 @@ module ManagedContainerControls
   def prep_task(action_sym)
     tah = task_at_hand
     STDERR.puts("TAH   #{tah} action #{action_sym}")
-    ##  unless tah.nil?
-    #    SystemDebug.debug(SystemDebug.containers, 'saved task at hand', tah, 'next', action_sym)
-    #  end
-    #  SystemDebug.debug(SystemDebug.containers, :current_tah_prep_task, tah)
     r = in_progress(action_sym)
     STDERR.puts('in_progress ' + r.to_s)
     if in_progress(action_sym) #.is_a?(TrueClass)

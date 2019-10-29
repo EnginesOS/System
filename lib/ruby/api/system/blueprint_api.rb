@@ -8,7 +8,7 @@ class BlueprintApi < ErrorsApi
     #  SystemDebug.debug(SystemDebug.builder, blueprint.class.name)
     state_dir = ContainerStateFiles.container_state_dir(ca)
     Dir.mkdir(state_dir) if File.directory?(state_dir) == false
-    statefile = "#{state_dir}/blueprint.json}"
+    statefile = "#{state_dir}/blueprint.json"
     f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0644)
     begin
       f.write(blueprint.to_json)
@@ -126,15 +126,13 @@ class BlueprintApi < ErrorsApi
     else
       name = Dir.basename(url)
       #FixMe no ../ in path ?
-      FileUtils.rm_f('/tmp/' + name) if Dir.exist?("/tmp/#{name}")
+      FileUtils.rm_f("/tmp/#{name}") if Dir.exist?("/tmp/#{name}")
       self.clone_repo(url, name, '/tmp/')
       self.load_blueprint_file("/tmp/#{name}/blueprint.json")
     end
   end
 
   def self.download_blueprint_parent(parent_url)
-    #d = '/tmp/parent_blueprint.json'
-    #self.get_http_file(parent_url, d)
     self.download_blueprint(parent_url, '/tmp/parent_blueprint.json')
   end
 
@@ -149,7 +147,7 @@ class BlueprintApi < ErrorsApi
 
   def self.download_and_save_blueprint(basedir, repository_url)
     FileUtils.mkdir_p(basedir)
-    d = basedir + '/' + File.basename(repository_url)
+    d = "#{basedir}/#{File.basename(repository_url)}"
     self.get_http_file(repository_url, d)
     STDERR.puts("\n\n Downloaded BP \n\n\n from " + repository_url.to_s + ' to ' + basedir.to_s + '/' + basedir.to_s)
   end
@@ -157,13 +155,10 @@ class BlueprintApi < ErrorsApi
   def self.get_http_file(url, d)
     require 'open-uri'
     if SystemConfig.DontVerifyBlueprintRepoSSL
-      # pa = {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}
       download = open(url,{ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE})
     else
       download = open(url)
-      #pa = {}
     end
-    #download = open(url, pa)
     IO.copy_stream(download, d)
   ensure
     download.close unless download.nil?

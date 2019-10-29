@@ -5,7 +5,7 @@ module SmAttachStaticServices
     container.environments  = [] if container.environments.nil?
     curr_service_file = ''
    # SystemDebug.debug(SystemDebug.services, :Globbing, container.container_name, dirname + '/*.yaml')
-    service_files = Dir.glob(dirname + '/*.yaml').sort
+    service_files = Dir.glob("#{dirname}/*.yaml").sort
     service_files.each do |service_file|
 
       curr_service_file = service_file

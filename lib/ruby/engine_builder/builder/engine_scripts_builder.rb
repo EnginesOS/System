@@ -3,7 +3,7 @@ module EngineScriptsBuilder
   require_relative 'configure_services_backup.rb'
   include ConfigureServicesBackup
   def create_scripts
-    FileUtils.mkdir_p(basedir + SystemConfig.ScriptsDir)
+    FileUtils.mkdir_p("#{basedir}#{SystemConfig.ScriptsDir}")
     create_start_script
     create_first_run_script
     create_stop_script
@@ -17,7 +17,7 @@ module EngineScriptsBuilder
   def write_software_script_file(scripts_path, content)
     unless content.nil?
       write_software_file(scripts_path, content)
-      File.chmod(0755, basedir + scripts_path)
+      File.chmod(0755, "#{basedir}#{SystemConfig.ScriptsDir}")
     end
   end
 
@@ -29,16 +29,16 @@ module EngineScriptsBuilder
         content = "#!/bin/sh\n"
         content += "cd /home/app\n"
         @blueprint_reader.worker_commands.each do |command|
-          content += command + "\n"
+          content += "#{command} \n"
         end
-        write_software_script_file(scripts_path + 'pre-running.sh', content)
+        write_software_script_file("#{scripts_path}pre-running.sh", content)
       end
       unless @blueprint_reader.blocking_worker.nil?
         content = "#!/bin/sh\n"
         content += "cd /home/app\n"
         content += @blueprint_reader.blocking_worker.to_s
         content += "\n"
-        write_software_script_file(scripts_path + 'blocking.sh', content)
+      write_software_script_file("#{scripts_path}blocking.sh", content)
       end
     end
   end
@@ -86,7 +86,7 @@ module EngineScriptsBuilder
       @blueprint_reader.actionators.keys.each do | key|
         actionator = @blueprint_reader.actionators[key]
         #   SystemDebug.debug(SystemDebug.builder| SystemDebug.actions, 'create actionator', actionator)
-        filename = SystemConfig.ActionatorDir + '/' + actionator[:name] + '.sh'
+        filename = "#{SystemConfig.ActionatorDir}/#{actionator[:name]}.sh"
         #    SystemDebug.debug(SystemDebug.builder| SystemDebug.actions,"creating actionator ", actionator[:name], filename)
         next if actionator[:script].nil?
         if @blueprint_reader.schema == 0

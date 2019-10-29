@@ -7,8 +7,8 @@ module Archives
         next if archive_details[:download_type] == 'docker'
         check_args(archive_details)
         args = extract_args(archive_details)
-        log_build_output('/build_scripts/package_installer.sh ' + args)
-        write_run_line('/build_scripts/package_installer.sh ' + args)
+        log_build_output("/build_scripts/package_installer.sh #{args}")
+        write_run_line("/build_scripts/package_installer.sh #{args}")
       end
     end
   end
@@ -17,14 +17,14 @@ module Archives
 
   def extract_args(ad)
     ad[:extraction_command] = 'false' if ad[:extraction_command].nil?
-    args = ' \'' + ad[:download_type] + '\' '
-    pn = ad[:package_name].to_s
-    args += ' \'' + source_url(ad[:source_url], pn) + '\' '
-    args += ' \'' + pn + '\' '
-    args += ' \'' + ad[:extraction_command].to_s + '\' '
-    args += ' \'' + archive_destination(ad[:destination]) + '\' '
-    args += ' \'' + path_to_extraced(ad) + '\' '
-    args += ' \'' + ad[:command_options].to_s + '\' '
+    args = " '#{ad[:download_type]}' "
+    pn = "#{ad[:package_name]}"
+    args += " ' #{source_url(ad[:source_url], pn)}' "
+    args += " '#{pn}'"
+    args += " '#{ad[:extraction_command]}' "
+    args += " '#{archive_destination(ad[:destination])}' "
+    args += " '#{path_to_extraced(ad)}' "
+    args += " '#{ad[:command_options]}' "
   end
 
   def path_to_extraced(ad)
@@ -44,7 +44,7 @@ module Archives
     end
     # Destination can be /opt/ /home/app /home/fs/ /home/local/
     # If none of teh above then it is prefixed with /home/app
-    dest = '/home/app/' + dest.to_s unless dest.start_with?('/opt') || dest.start_with?('/home/fs') || dest.start_with?('/home/app') || dest.start_with?('/home/local')
+    dest = "/home/app/#{dest}" unless dest.start_with?('/opt') || dest.start_with?('/home/fs') || dest.start_with?('/home/app') || dest.start_with?('/home/local')
     dest = '/home/app' if dest.to_s == '/home/app/' || dest == '/'  || dest == './'  || dest == ''
     dest
   end

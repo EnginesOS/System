@@ -92,7 +92,6 @@ module EnginesCoreSystem
   end
 
   def shutdown(reason)
-    # FIXME: @registry_handler.api_dissconnect
     system_api.api_shutdown(reason)
   end
 end

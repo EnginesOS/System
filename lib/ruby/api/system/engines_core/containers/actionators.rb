@@ -47,7 +47,6 @@ module Actionators
     actionator = get_service_actionator(service, actionator_name)
     if service.is_running?
       do_action(service, actionator, params)
-      # service.perform_action(actionator, params)
     else
       raise EnginesException.new(warning_hash('Service not running', service.container_name))
     end

@@ -55,7 +55,6 @@ class RegistryHandler < ErrorsApi
         raise EnginesException.new('Fatal Unable to Start Registry Service: ', registry_service.last_error)
       end
     end
-    #  wait_for_startup(40)
   #  SystemDebug.debug(SystemDebug.registry, :registry_is_up)
     true
   rescue Exception

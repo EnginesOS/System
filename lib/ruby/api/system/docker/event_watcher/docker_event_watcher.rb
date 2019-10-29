@@ -29,8 +29,7 @@ class DockerEventWatcher < ErrorsApi
           begin
               STDERR.puts('firing ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
             thr = Thread.new {@object.method(@method).call(hash)}
-            thr.name = @object.to_s + ':' + @method.to_s
-            # @object.method(@method).call(hash)
+            thr.name = "#{@object}:#{@method}"
             r = true
           rescue EnginesException => e
             SystemDebug.debug(SystemDebug.container_events, e.to_s + ':' + e.backtrace.to_s)
@@ -76,7 +75,6 @@ class DockerEventWatcher < ErrorsApi
     # FIXMe add conntection watcher that re establishes connection asap and continues trying after warngin ....
     event_listeners = {} if event_listeners.nil?
     @event_listeners = event_listeners
-    # add_event_listener([system, :container_event])
     @events_mutex =  Mutex.new
     #  SystemDebug.debug(SystemDebug.container_events, 'EVENT LISTENER')
   end
@@ -89,7 +87,7 @@ class DockerEventWatcher < ErrorsApi
     # SystemDebug.debug(SystemDebug.container_events, 'EVENT LISTENER ' + @event_listeners.to_s)
     STDERR.puts('start with EVENT LISTENERS ' + @event_listeners.count.to_s)
     get_client
-    parser = yparser # ||= Yajl::Parser.new({:symbolize_keys => true})
+    parser = yparser 
     parser.on_parse_complete = method(:handle_event)
     @client.request(Net::HTTP::Get.new('/events')) do |resp|
       json_part = nil
@@ -112,14 +110,12 @@ class DockerEventWatcher < ErrorsApi
     log_error_mesg('Restarting docker Event Stream ')
     STDERR.puts('CLOSED docker Event Stream as close')
     @client.finish if @client.started?
-    @client = nil
-    # @system.start_docker_event_listener(@event_listeners)
+    @client = nil    
     STDERR.puts('client closes')
   rescue Net::ReadTimeout
     log_error_mesg('Restarting docker Event Stream Read Timeout as timeout')
     d = Time.now
     STDERR.puts(d.to_i.to_s + ':TIMEOUT docker Event Stream as close')
-    # @system.start_docker_event_listener(@event_listeners)
     @client.finish if @client.started?
     @client = nil
   rescue StandardError => e
@@ -138,7 +134,6 @@ class DockerEventWatcher < ErrorsApi
       { listener: event_listener ,
         priority: event_listener.priority}
     }
-   # @event_listeners = @event_listeners.sort_by { |k, v| v[:priority] }
   end
 
   def rm_event_listener(listener)
@@ -214,7 +209,6 @@ class DockerEventWatcher < ErrorsApi
       rescue StandardError => e
         SystemDebug.debug(SystemDebug.container_events, hash.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)
         STDERR.puts(hash.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)
-        #rm_event_listener(listener)
       end
     end
   rescue StandardError => e

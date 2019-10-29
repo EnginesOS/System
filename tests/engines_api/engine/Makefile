@@ -21,7 +21,7 @@ cron:
 prepare:
 	cat build_test_engine_minimum_args.json  | engines engines build  |engines_test_expects bool true
 	engines engine_builder follow_stream >/tmp/test_bld.out
-	engines engine enginetest wait_for_startup 180
+	engines engine enginetest wait_for start 180
 
 state:
 	engines engine enginetest state |engines_test_expects text is running
@@ -133,7 +133,7 @@ reinstall:
 	engines engine enginetest destroy | engines_test_expects bool true
 	engines engine enginetest wait_for destroy 30 | engines_test_expects bool true
 	engines engine enginetest reinstall | engines_test_expects bool true
-	engines engine enginetest wait_for start 235 | engines_test_expects bool true	
+	engines engine enginetest wait_for start 535 | engines_test_expects bool true	
 	echo -n " Checking:"
 	engines engine enginetest state | engines_test_expects text is running
 	

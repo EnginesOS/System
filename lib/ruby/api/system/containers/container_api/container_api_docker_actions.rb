@@ -2,7 +2,6 @@ module ContainerApiDockerActions
   def destroy_container(container)
     clear_error
     docker_api.destroy_container(container.container_id)
-    # !container.has_container?
   end
 
   def unpause_container(cid)
@@ -27,11 +26,7 @@ module ContainerApiDockerActions
 
   def inspect_container(cid)
     clear_error
-#    if container.container_id == -1
-#      docker_api.inspect_container_by_name(container.container_name)
-#    else
      docker_api.inspect_container(cid)
-#    end
   end
 
   def stop_container(cid, to)

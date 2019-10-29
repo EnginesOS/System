@@ -11,20 +11,20 @@ module EngineApiExportImport
     STDERR.puts('EXPORT ' + service_hash.to_s)
 
     # SystemDebug.debug(SystemDebug.export_import, :export_service, service_hash)
-    cmd_dir = SystemConfig.BackupScriptsRoot + '/' + service_hash[:publisher_namespace] + '/' + service_hash[:type_path] + '/' + service_hash[:service_handle] + '/'
+    cmd_dir = "#{SystemConfig.BackupScriptsRoot}/#{service_hash[:publisher_namespace]}/#{service_hash[:type_path]}/#{service_hash[:service_handle]}/"
     service_hash = core.retrieve_service_hash(service_hash)
-    cmd = cmd_dir + '/backup.sh'
+    cmd = "#{cmd_dir}/backup.sh"
     #  SystemDebug.debug(SystemDebug.export_import, :export_service, cmd)
     result = {result: 0}
     params = {
       container: container,
       command_line: [cmd],
       log_error: true,
-      service_variables: service_hash } #data: service_hash.to_json}
+      service_variables: service_hash } 
     params[:stdout_stream] = stream unless stream.nil?
 
     thr = Thread.new { result = core.exec_in_container(params) }
-    thr[:name] = 'export:' + params.to_s
+    thr[:name] = "export:#{params}"
     begin
       Timeout.timeout(@@export_timeout) do
         thr.join
@@ -36,7 +36,7 @@ module EngineApiExportImport
       eresult = {}
       #  raise EnginesException.new(error_hash('Export Timeout on Running Action ', service_hash))
       eresult[:result] = -1;
-      eresult[:stderr] = 'Export Timeout on Running Action:' + cmd.to_s + ':' + result[:stderr].to_s
+      eresult[:stderr] = "Export Timeout on Running Action:#{cmd}:#{result[:stderr]}"
       eresult
     rescue StandardError => e
       SystemUtils.log_exception(e , 'export_service_data:' + service_hash.to_s)
@@ -53,11 +53,11 @@ module EngineApiExportImport
     end
     service_hash = core.retrieve_service_hash(service_hash)
     #  SystemDebug.debug(SystemDebug.export_import, :import_service, service_params,service_params[:import_method])
-    cmd_dir = SystemConfig.BackupScriptsRoot + '/' + service_hash[:publisher_namespace] + '/' + service_hash[:type_path] + '/' + service_hash[:service_handle] + '/'
+    cmd_dir = "#{SystemConfig.BackupScriptsRoot}/#{service_hash[:publisher_namespace]}/#{service_hash[:type_path]}/#{service_hash[:service_handle]}/"
     if service_params[:import_method] == :replace
-      cmd = cmd_dir + '/replace.sh'
+      cmd = "#{cmd_dir}/replace.sh"
     else
-      cmd = cmd_dir + '/restore.sh'
+    cmd = "#{cmd_dir}/restore.sh"
     end
     #  env =   service_variables_to_env(service_hash)
     # env = service_hash.merge!(service_hash[:variables])
@@ -74,7 +74,7 @@ module EngineApiExportImport
     begin
       result = {}
       thr = Thread.new { result = core.exec_in_container(params) }
-      thr[:name] = 'import:' + params.to_s
+      thr[:name] = "import:#{params}"
       to = Timeout.timeout(@@export_timeout) do
         thr.join
       end
@@ -89,22 +89,6 @@ module EngineApiExportImport
       SystemUtils.log_exception(e , 'import_service_data:' + params)
       thr.exit unless thr.nil?
     end
-    #  SystemDebug.debug(SystemDebug.export_import, :import_service,'result ' ,result.to_s)
-    result
-    #      if result[:result] == 0
-    #        true
-    #      else
-    #        raise EnginesException.new(error_hash("failed to import ",
-    #        {service_params: service_params,
-    #          result: result}))
-    #      end
-    #
-    #  rescue  StandardError => e
-    #    if e.is_a?(EnginesException)
-    #      raise e
-    #    else
-    #      raise EnginesException.new(error_hash('Import Error on Running Action ', container.container_name, service_params))
-    #    end
   end
 
 end

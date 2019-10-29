@@ -2,7 +2,7 @@ module Services
   # Services Methods
   def all_engines_registered_to(service_type)
  #   SystemDebug.debug(SystemDebug.registry,'  All registered to  ', service_type.to_s)
-    rest_get('service/registered/engines/' + service_type )
+    rest_get("service/registered/engines/#{service_type}")
   end
 
   def find_service_consumers(service_query_hash)
@@ -31,7 +31,7 @@ module Services
   end
 
   def service_is_registered?(service_hash)
-    r = 'service/is_registered' + address_params(service_hash, [:parent_engine, :service_handle, :publisher_namespace, :type_path])
+    r = "service/is_registered#{address_params(service_hash, [:parent_engine, :service_handle, :publisher_namespace, :type_path])}"
     begin
       rest_get(r)
     rescue Exception=>e
@@ -40,12 +40,12 @@ module Services
   end
 
   def registered_with_service(params)
-    r = 'service/registered' + address_params(params, [:publisher_namespace, :type_path])
+    r = "service/registered#{address_params(params, [:publisher_namespace, :type_path])}"
     rest_get(r)
   end
 
   def get_service_entry(service_hash)
-    r = 'service' + address_params(service_hash, [:parent_engine, :service_handle, :publisher_namespace, :type_path])
+  r = "service#{address_params(service_hash, [:parent_engine, :service_handle, :publisher_namespace, :type_path])}"
     rest_get(r)
   end
 

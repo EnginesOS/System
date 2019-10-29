@@ -96,7 +96,7 @@ class EngineBuilder < ErrorsApi
   end
 
   def setup_engine_dirs
-    SystemUtils.run_system('/opt/engines/system/scripts/system/create_container_dir.sh ' + @build_params[:engine_name])
+    SystemUtils.run_system("/opt/engines/system/scripts/system/create_container_dir.sh #{@build_params[:engine_name]}")
   end
 
   def set_locale
@@ -107,8 +107,7 @@ class EngineBuilder < ErrorsApi
     lang = prefs.langauge_code if lang.nil?
     country = @build_params[:country_code]
     country = prefs.country_code if country.nil?
-    ##  STDERR.puts("LANGUAGE " + lang.to_s)
-    #  STDERR.puts("country_code " + country.to_s)
+
     @blueprint_reader.environments.push(EnvironmentVariable.new({name: 'LANGUAGE',
                                                                 value: lang.to_s + '_' + country.to_s + ':' + lang.to_s,
                                                                 own_type: 'application'}))
@@ -139,14 +138,13 @@ class EngineBuilder < ErrorsApi
     FileUtils.chown(nil, 'containers', restart_flag_file)
   end
 
-  #      throw BuildStandardError.new(e,'setting web port')
   def log_error_mesg(m, o = nil)
     log_build_errors(m.to_s + o.to_s)
     super
   end
 
   def basedir    
-    @basedir ||= SystemConfig.DeploymentDir + '/' + @build_name.to_s
+    @basedir ||= "#{SystemConfig.DeploymentDir}/#{@build_name}"
   end
 
   def log_exception(e)
