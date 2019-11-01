@@ -15,9 +15,10 @@ module EngineApiEvents
       end
       true
     rescue StandardError => e
-      p e.to_s
-      p e.backtrace.to_s
+      STDERR.puts "Exception #{e}"
+      STDERR.puts "Exception BT #{e.backtrace}"
       STDERR.puts('SHOULD I  CLOSE THIS HERE? TELL ME OH LOG')
+      stop
     end
 
     def start

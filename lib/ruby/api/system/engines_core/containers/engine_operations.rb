@@ -48,16 +48,10 @@ module EnginesOperations
         system_api.trigger_engine_event(engine, 'failed', 'uninstall')
         raise EnginesException.new(error_hash('Container Exists Please Destroy engine first' , params)) unless params[:reinstall] .is_a?(TrueClass)
       end
-        STDERR.puts('bouBOSDRFSDAFt to remove_engine_services')
       remove_engine_services(params) #engine_name, reinstall, params[:remove_all_data]) 
-      STDERR.puts('bouBOSDRFSDAFt to image')
       engine.delete_image if engine.has_image? == true
-      #   SystemDebug.debug(SystemDebug.containers, :engine_image_deleted, engine)
-      STDERR.puts('bouBOSDRFSDAFt to delete_engine')
-
       system_api.trigger_engine_event(engine, 'success', 'uninstall') unless params[:reinstall] == true
       engine.delete_engine unless params[:reinstall] == true
-      STDERR.puts('bouBOSDRFSDAFt to  trudde')
     end
   rescue Exception => e
     system_api.trigger_engine_event(engine, 'failed', 'uninstall') unless engine.nil?

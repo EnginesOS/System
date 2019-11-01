@@ -47,10 +47,6 @@ module ServiceManagerOperations
   def load_and_attach_static_services(dirname, container)
     service_manager.load_and_attach_static_services(dirname, container)
   end
-  #
-  #  def retrieve_service_configuration(service_param)
-  #    service_manager.retrieve_service_configuration(service_param)
-  #  end
 
   def is_service_running?(service_name)
     service_manager.is_service_running?(service_name)
@@ -80,11 +76,8 @@ module ServiceManagerOperations
   def taken_hostnames
     hashes = service_manager.all_engines_registered_to('wap')
     sites = []
-
-    # STDERR.puts(' All Wap ' + hashes.to_s)
     if hashes.is_a?(Array)
       hashes.each do |service_hash|
-        #   SystemDebug.debug(SystemDebug.services, 'service_hash is a' + service_hash.class.name)
         next unless service_hash.is_a?(Hash)
         next unless service_hash[:variables].is_a?(Hash)
         sites.push(service_hash[:variables][:fqdn])

@@ -161,7 +161,8 @@ delete '/v0/containers/engine/:engine_name/delete/*' do
     else
       rparams[:remove_all_data] = params['splat'][0]        
     end
-    return_text(engines_api.delete_engine(rparams))
+     engines_api.delete_engine(rparams)
+    return_boolean(true) #raises exception if fails  
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
