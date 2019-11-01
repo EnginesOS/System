@@ -4,6 +4,12 @@ require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 require '/opt/engines/lib/ruby/exceptions/engine_builder_exception.rb'
 
 class EngineBuilder < ErrorsApi
+  class << self
+    def instance(build_params)
+      @@instance ||= self.new(build_params)
+    end
+  end
+  
   require '/opt/engines/lib/ruby/api/system/container_state_files.rb'
 
   require_relative 'builder/setup_build_dir.rb'
@@ -84,7 +90,7 @@ class EngineBuilder < ErrorsApi
     @container = nil
     @build_params = params
     @blueprint = nil
-    STDERR.puts('Build Params ' + params.to_s)
+    STDERR.puts("Build Params #{params}")
   end
 
   def service_resource(service_name, what)

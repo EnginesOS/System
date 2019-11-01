@@ -81,6 +81,7 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream;charset=asc
       while has_data == true
         begin
           bytes = build_log_file.read_nonblock(1000)
+          STDERR.puts("#Read #{bytes}")
           bytes.encode(Encoding::ASCII_8BIT) unless bytes.nil?
           out << bytes
           bytes = ''
@@ -107,7 +108,7 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream;charset=asc
           has_data = false
         rescue IOError
           has_data = false
-          out << bytes  unless out.closed?
+          out << bytes unless out.closed?
           build_log_file.close
           out.close unless out.closed?
         rescue StandardError => e

@@ -22,10 +22,9 @@ class BuildController
     @build_params = params
     SystemStatus.build_starting(@build_params)
     @engine_builder = get_engine_builder(@build_params)
-
   end
 
-  def build_engine()
+  def build_engine
     @engine = @engine_builder.build_from_blue_print
     #SystemDebug.debug(SystemDebug.builder, :build_error, @engine_builder.build_error.to_s) unless  @engine_builder.build_error.nil?
     build_complete(@build_params)
@@ -94,10 +93,11 @@ class BuildController
       end
     end
 
-  private
+  protected
+  
 
   def get_engine_builder(params)
-    @engine_builder = EngineBuilder.new(params)
+    @engine_builder ||= EngineBuilder.instance(params)
     @engine_builder.setup_build
   end
 

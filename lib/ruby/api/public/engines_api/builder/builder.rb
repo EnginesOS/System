@@ -25,20 +25,17 @@ module PublicApiBuilder
     build_log_file = File.new(SystemConfig.BuildOutputFile, 'r')
     begin
       while
-        begin  
-        #  STDERR.puts('read_nonblock follow_build ')
+        begin
           bytes = build_log_file.read_nonblock(1000)
-          bytes.gsub!(/[\x80-\xFF]/n,'')
         rescue IO::WaitReadable
           retry
         rescue EOFError
-          out.write(bytes.force_encoding(Encoding::UTF_8))
-        # 'OK.' 
+          out.write(bytes.force_encoding(Encoding::ASCII_8BIT)) # was UTF_8
         rescue => e
           out.write(bytes)
           'Maybe ' + e.to_s
         end
-        out.write(bytes.force_encoding(Encoding::UTF_8))
+        out.write(bytes.force_encoding(Encoding::ASCII_8BIT)) # was UTF_8
       end
     ensure
       build_log_file.close

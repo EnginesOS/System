@@ -29,8 +29,7 @@ module Builders
       @build_params[:permission_as] = @build_params[:engine_name]
     end
     set_container_guids
-    process_supplied_envs(@build_params[:variables])
-    @service_builder ||= ServiceBuilder.new(templater, @build_params[:engine_name], @attached_services, basedir)
+    process_supplied_envs(@build_params[:variables])   
     self
   rescue StandardError => e
     #log_exception(e)
@@ -106,7 +105,7 @@ module Builders
   protected
 
  def service_builder 
-    @service_builder ||= ServiceBuilder.new(templater, @build_params[:engine_name], @attached_services, basedir)
+    @service_builder ||= ServiceBuilder.instance(templater, @build_params[:engine_name], @attached_services, basedir)
  end
     
   def wait_for_start_up(d=25)
@@ -177,5 +176,5 @@ module Builders
       f.close
     end
   end
-
+  
 end

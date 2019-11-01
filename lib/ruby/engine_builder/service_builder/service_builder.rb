@@ -1,5 +1,9 @@
 class ServiceBuilder < ErrorsApi
-
+  class << self
+    def instance(templater, engine_name, attached_services, basedir)
+      @@instance ||= self.new(templater, engine_name, attached_services, basedir)
+    end
+  end
   attr_reader :volumes, :app_is_persistent, :attached_services, :default_vol, :templater
 
   require_relative 'orphan_service_builder.rb'
