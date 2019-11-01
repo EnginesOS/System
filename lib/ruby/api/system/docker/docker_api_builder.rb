@@ -1,6 +1,6 @@
 module DockerApiBuilder
   def build_options(engine_name)
-  ret_val = "t=#{engine_name}"
+    ret_val = "t=#{engine_name}"
     ret_val += '&buildargs={}'
     #  ret_val += '&cgroupparent='
     ret_val += '&forcerm=1'
@@ -21,7 +21,10 @@ module DockerApiBuilder
     def initialize(stream, builder)
       @io_stream = stream
       @builder = builder
-      @parser = FFI_Yajl::Parser.new({:symbolize_keys => true})
+    end
+
+    def parser
+      @parser ||= FFI_Yajl::Parser.new({symbolize_keys: true, sym_check_utf8: false})
     end
 
     def close
@@ -44,15 +47,22 @@ module DockerApiBuilder
       lambda do |chunk , c , t|
         begin
           #FIXME stuff chunck in stringio and use streaming parser on the stringio
-          chunk.sub!(/}[ \n\r]*$/,'}')
-          chunk.sub!(/^[ \n\r]*{/,'{')
-          hash = @parser.parse(chunk)  #do |hash|
-          @builder.log_build_output(hash[:stream].force_encoding(Encoding::UTF_8)) if hash.key?(:stream)
-          if hash.key?(:errorDetail)
-            @builder.log_build_errors(hash[:errorDetail][:message])
-            if hash[:errorDetail].key?(:error)
-              log_build_errors('Engine Build Aborted Due to:' + hash[:errorDetail][:error].to_s)
-              @builder.post_failed_build_clean_up
+          STDERR.puts("Chunk::#{chunk}")
+          if chunk.include?('{"stream":"')
+            then
+            chunk.gsub!(/{"stream":"/,'')
+            STDERR.puts("Chunk::#{chunk.gsub(/"}/,'')}")
+            @builder.log_build_output(chunk.gsub(/"}/,''))
+          else
+            hash = parser.parse(chunk)  #do |hash|
+            #@builder.log_build_output(c.force_encoding(Encoding::ASCII_8BIT))
+            @builder.log_build_output(hash[:stream]) if hash.key?(:stream)
+            if hash.key?(:errorDetail)
+              @builder.log_build_errors(hash[:errorDetail][:message])
+              if hash[:errorDetail].key?(:error)
+                log_build_errors('Engine Build Aborted Due to:' + hash[:errorDetail][:error].to_s)
+                @builder.post_failed_build_clean_up
+              end
             end
           end
         rescue StandardError =>e
@@ -64,7 +74,7 @@ module DockerApiBuilder
     end
 
     def process_request(*args)
-      @io_stream.read(Excon.defaults[:chunk_size]).to_s
+      @io_stream.read(Excon.defaults[:chunk_size])
     rescue StandardError
       STDERR.puts('PROCESS REQUEST got nilling')
       nil
