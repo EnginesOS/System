@@ -1,4 +1,5 @@
 module DockerApiBuilder
+  
   def build_options(engine_name)
     ret_val = "t=#{engine_name}"
     ret_val += '&buildargs={}'
@@ -18,9 +19,8 @@ module DockerApiBuilder
   end
 
   class DockerStreamHandler
-    def initialize(stream, builder)
+    def initialize(stream)
       @io_stream = stream
-      @builder = builder
     end
 
     def parser
@@ -52,16 +52,16 @@ module DockerApiBuilder
             then
             chunk.gsub!(/{"stream":"/,'')
             STDERR.puts("Chunk::#{chunk.gsub(/"}/,'')}")
-            @builder.log_build_output(chunk.gsub(/"}/,''))
+            builder.log_build_output(chunk.gsub(/"}/,''))
           else
             hash = parser.parse(chunk)  #do |hash|
-            #@builder.log_build_output(c.force_encoding(Encoding::ASCII_8BIT))
-            @builder.log_build_output(hash[:stream]) if hash.key?(:stream)
+            #builder.log_build_output(c.force_encoding(Encoding::ASCII_8BIT))
+            builder.log_build_output(hash[:stream]) if hash.key?(:stream)
             if hash.key?(:errorDetail)
-              @builder.log_build_errors(hash[:errorDetail][:message])
+              builder.log_build_errors(hash[:errorDetail][:message])
               if hash[:errorDetail].key?(:error)
                 log_build_errors('Engine Build Aborted Due to:' + hash[:errorDetail][:error].to_s)
-                @builder.post_failed_build_clean_up
+                builder.post_failed_build_clean_up
               end
             end
           end
@@ -79,9 +79,13 @@ module DockerApiBuilder
       STDERR.puts('PROCESS REQUEST got nilling')
       nil
     end
+    
+    def builder
+      @builder ||= EngineBuilder.instance
+    end
   end
 
-  def build_engine(engine_name, build_archive_filename, builder)
+  def build_engine(engine_name, build_archive_filename)
     stream_handler = nil
     options =  build_options(engine_name)
     header = {
@@ -91,9 +95,8 @@ module DockerApiBuilder
       'Accept' => '*/*',
       'Content-Length' => File.size(build_archive_filename).to_s
     }
-    stream_handler = DockerStreamHandler.new(nil, builder) #File.new(build_archive_filename,'r'))
+    stream_handler = DockerStreamHandler.new(nil)
     post_stream_request({ timeout: 300, uri: '/build' , options: options, stream_handler: stream_handler, headers: header, content: File.read(build_archive_filename) } )
-
   ensure
     stream_handler.close unless stream_handler.nil?
   end

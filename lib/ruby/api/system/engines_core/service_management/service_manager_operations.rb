@@ -10,7 +10,7 @@ module ServiceManagerOperations
 
   def orphan_lost_services
     if SystemStatus.is_building?
-      []
+      ['building']
     else
       service_manager.orphan_lost_services
     end

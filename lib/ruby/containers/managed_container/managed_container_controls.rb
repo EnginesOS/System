@@ -1,6 +1,16 @@
 module ManagedContainerControls
-  def reinstall_engine(builder)
-    builder.reinstall_engine(self) if prep_task(:build)
+  def reinstall_engine
+    build_controller.reinstall_engine( {
+      engine_name: container_name,
+      domain_name: domain_name,
+      host_name: hostname,
+      software_environment_variables: environments,
+      http_protocol: protocol,
+      memory: memory,
+      repository_url: container_name,
+      variables: environments,
+      reinstall: true
+    }) if prep_task(:build)
   rescue StandardError =>e
     SystemUtils.log_exception(e , 'Reinstall:' + container_name)
   end
@@ -218,8 +228,19 @@ module ManagedContainerControls
     thr.exit unless thr.nil?
   end
 
-  def restore_engine(builder)
-    builder.restore_engine(self) if prep_task(:build)
+  def restore_engine
+    build_controller.restore_engine({
+      engine_name: container_name,
+      domain_name: domain_name,
+      host_name: hostname,
+      software_environment_variables: environments,
+      http_protocol: protocol,
+      memory: memory,
+      repository_url: container_name,
+      variables: environments,
+      reinstall: true,
+      restore: true
+    }) if prep_task(:build)
   end
 
   def rebuild_container
@@ -265,6 +286,12 @@ module ManagedContainerControls
     end
   end
 
+  protected
+
+  def build_controller
+    @builder ||= BuildController.instance
+  end
+
   private
 
   def prep_task(action_sym)
@@ -273,7 +300,7 @@ module ManagedContainerControls
     r = in_progress(action_sym)
     STDERR.puts('in_progress ' + r.to_s)
     if in_progress(action_sym) #.is_a?(TrueClass)
-        STDERR.puts('SAVE STATE :inprogress_run  ')
+      STDERR.puts('SAVE STATE :inprogress_run  ')
       save_state
     end
     true

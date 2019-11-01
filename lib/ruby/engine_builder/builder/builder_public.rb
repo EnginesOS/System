@@ -1,48 +1,50 @@
 require 'securerandom'
 
 class BuilderPublic
-  def initialize(builder)
-    @builder = builder
+  class << self
+    def instance
+      @@instance ||= self.new
+    end
   end
-
+  
   def ctype
     'app'
   end
 
   def cont_user_id
-    @builder.cont_user_id
+    builder.cont_user_id
   end
 
   def engine_name
-    @builder.build_params[:engine_name]
+    builder.build_params[:engine_name]
   end
 
   def environments
-    @builder.environments
+    builder.environments
   end
 
   def memory
-    @builder.build_params[:memory]
+    builder.build_params[:memory]
   end
 
   def hostname
-    @builder.build_params[:host_name]
+    builder.build_params[:host_name]
   end
 
   def domain_name
-    @builder.build_params[:domain_name]
+    builder.build_params[:domain_name]
   end
 
   def repository
-    @builder.build_params[:repository_url]
+    builder.build_params[:repository_url]
   end
 
   def http_protocol
-    if @builder.build_params.key?(:http_protocol)
-      if @builder.build_params[:http_protocol].include?('_')
-        @builder.build_params[:http_protocol].gsub!(/_.*/, '')
+    if builder.build_params.key?(:http_protocol)
+      if builder.build_params[:http_protocol].include?('_')
+        builder.build_params[:http_protocol].gsub!(/_.*/, '')
       else
-        @builder.build_params[:http_protocol]
+        builder.build_params[:http_protocol]
       end
     else
       nil
@@ -58,47 +60,47 @@ class BuilderPublic
   end
 
   def web_port
-    @builder.web_port
+    builder.web_port
   end
 
   def build_name
-    @builder.build_name
+    builder.build_name
   end
 
   def runtime
-    @builder.runtime
+    builder.runtime
   end
 
   def set_environments
-    @builder.set_environments
+    builder.set_environments
   end
 
   def engine_environment
-    @builder.engine_environment
+    builder.engine_environment
   end
 
   def blueprint
-    @builder.blueprint
+    builder.blueprint
   end
 
   def logs_container
-    @builder.running_logs
+    builder.running_logs
   end
 
   def data_gid
-    @builder.data_gid
+    builder.data_gid
   end
 
   def group_uid
-    @builder.data_gid
+    builder.data_gid
   end
 
   def data_uid
-    @builder.data_uid
+    builder.data_uid
   end
 
   def memory
-    @builder.build_params[:memory]
+    builder.build_params[:memory]
   end
 
   def service_account(suffix=nil)
@@ -110,8 +112,10 @@ class BuilderPublic
   end
   
   def fw_user
-    @builder.cont_user_id
+    builder.cont_user_id
   end
 
-
+  def builder
+     @builder ||= EngineBuilder.instance
+   end
 end

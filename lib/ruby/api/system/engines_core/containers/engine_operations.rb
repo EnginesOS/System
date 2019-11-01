@@ -48,7 +48,7 @@ module EnginesOperations
         system_api.trigger_engine_event(engine, 'failed', 'uninstall')
         raise EnginesException.new(error_hash('Container Exists Please Destroy engine first' , params)) unless params[:reinstall] .is_a?(TrueClass)
       end
-      remove_engine_services(params) #engine_name, reinstall, params[:remove_all_data]) 
+      remove_engine_services(params) #engine_name, reinstall, params[:remove_all_data])
       engine.delete_image if engine.has_image? == true
       system_api.trigger_engine_event(engine, 'success', 'uninstall') unless params[:reinstall] == true
       engine.delete_engine unless params[:reinstall] == true
@@ -71,8 +71,7 @@ module EnginesOperations
       engine_name: engine.container_name,
       reinstall: true
     }
-    builder = BuildController.new
-    @build_thread = Thread.new { engine.reinstall_engine(builder) }
+    @build_thread = Thread.new { engine.reinstall_engine }
     @build_thread[:name] = 'reinstall engine'
     unless @build_thread.alive?
       system_api.trigger_engine_event(engine, 'fail', 'reinstall')
@@ -96,9 +95,7 @@ module EnginesOperations
       restore: true
     }
     delete_engine_and_services(params)
-    builder = BuildController.new
-    engine.restore_engine(builder)
-    @build_thread = Thread.new { engine.restore_engine(builder) }
+    @build_thread = Thread.new { engine.restore_engine }
     #  STDERR.puts('Restore started on '  + engine.container_name.to_s)
     @build_thread[:name] = 'restore engine'
     unless @build_thread.alive?
@@ -131,8 +128,8 @@ module EnginesOperations
     system_api.set_engine_network_properties(container, params)
   end
 
-  def docker_build_engine(engine_name, build_archive_filename, builder)
-    docker_api.build_engine(engine_name, build_archive_filename, builder)
+  def docker_build_engine(engine_name, build_archive_filename)
+    docker_api.build_engine(engine_name, build_archive_filename)
   end
 
   def clear_lost_engines
@@ -180,15 +177,15 @@ module EnginesOperations
       r
     end
   end
+
+
   private
 
   def remove_engine_services(params)
     #SystemDebug.debug(SystemDebug.containers, :delete_engines, params)
     params[:container_type] = 'app'
     params[:no_exceptions] = true
-    #  service_manager.remove_managed_services(params)#remove_engine_from_managed_engines_registry(params)
     begin
-      #    STDERR.puts('RE ENINGE SERVICES  ' + params.to_s)
       service_manager.remove_managed_persistent_services(params)
     rescue EnginesException => e
       STDERR.puts('Except  ' + e.to_s)

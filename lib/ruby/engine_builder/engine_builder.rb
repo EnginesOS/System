@@ -5,8 +5,8 @@ require '/opt/engines/lib/ruby/exceptions/engine_builder_exception.rb'
 
 class EngineBuilder < ErrorsApi
   class << self
-    def instance(build_params)
-      @@instance ||= self.new(build_params)
+    def instance
+      @@instance ||= self.new
     end
   end
   
@@ -86,13 +86,12 @@ class EngineBuilder < ErrorsApi
     }
   end
 
-  def initialize(params)
-    @container = nil
-    @build_params = params
-    @blueprint = nil
-    STDERR.puts("Build Params #{params}")
+  def build_params=(bp)
+    @build_params = bp
+    STDERR.puts("Build Params #{bp}")
+    setup_build
   end
-
+  
   def service_resource(service_name, what)
     service_builder.service_resource(service_name, what)
   end
@@ -106,8 +105,6 @@ class EngineBuilder < ErrorsApi
   end
 
   def set_locale
-    ## STDERR.puts("LANGUAGE " + @build_params[:lang_code].to_s)
-    # STDERR.puts("country_code " + @build_params[:country_code].to_s)
     prefs = SystemPreferences.new
     lang =  @build_params[:lang_code]
     lang = prefs.langauge_code if lang.nil?

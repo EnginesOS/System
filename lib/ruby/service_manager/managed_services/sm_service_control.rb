@@ -73,7 +73,7 @@ module SmServiceControl
     begin
     system_registry_client.remove_from_managed_engine(service_hash)
     rescue StandardError => e
-      STDERR.puts('FAiled to remove from managed engines registry')
+      STDERR.puts("FAiled to remove from managed engines registry #{service_hash} \n#{e}")
     end
   end
 

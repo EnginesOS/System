@@ -29,7 +29,7 @@ module Builders
       @build_params[:permission_as] = @build_params[:engine_name]
     end
     set_container_guids
-    process_supplied_envs(@build_params[:variables])   
+    process_supplied_envs(@build_params[:variables])
     self
   rescue StandardError => e
     #log_exception(e)
@@ -99,15 +99,19 @@ module Builders
   end
 
   def templater
-    @templater ||= Templater.new(BuilderPublic.new(self))
+    @templater ||= Templater.new(builder_public)
   end
 
   protected
 
- def service_builder 
+  def builder_public
+    @builder_public ||= BuilderPublic.instance
+  end
+
+  def service_builder
     @service_builder ||= ServiceBuilder.instance(templater, @build_params[:engine_name], @attached_services, basedir)
- end
-    
+  end
+
   def wait_for_start_up(d=25)
     log_build_output('Waiting for start')
     @container.wait_for('start', d)
@@ -131,7 +135,7 @@ module Builders
       #dont panic if no container
     end
     @result_mesg = "#{@result_mesg} Roll Back Complete"
-  #  SystemDebug.debug(SystemDebug.builder,'Roll Back Complete')
+    #  SystemDebug.debug(SystemDebug.builder,'Roll Back Complete')
     close_all
   end
 
@@ -163,7 +167,6 @@ module Builders
     true
   end
 
-
   def setup_rebuild
     log_build_output('Setting up rebuild')
     create_build_dir
@@ -176,5 +179,5 @@ module Builders
       f.close
     end
   end
-  
+
 end
