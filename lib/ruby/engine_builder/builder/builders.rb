@@ -56,10 +56,10 @@ module Builders
     File.delete('/opt/engines/run/system/flags/building_params') if File.exist?('/opt/engines/run/system/flags/building_params')
   end
 
-  def rebuild_managed_container(engine)
-    @engine = engine
+  def rebuild_managed_container(p)
+    @build_params  = p
+    #@engine = engine
     @rebuild = true
-    @build_params[:permission_as] = engine.container_name
     log_build_output('Starting Rebuild')
     setup_rebuild
     build_container
@@ -67,8 +67,8 @@ module Builders
     save_build_result
     close_all
   rescue StandardError => e
+    log_exception(e)
     post_failed_build_clean_up
-    #log_exception(e)
   ensure
     File.delete('/opt/engines/run/system/flags/building_params') if File.exist?('/opt/engines/run/system/flags/building_params')
   end
@@ -81,8 +81,9 @@ module Builders
     save_build_result
     close_all
   rescue StandardError => e
+    log_exception(e)
     post_failed_build_clean_up
-    #log_exception(e)
+    log_exception(e)
   ensure
     File.delete('/opt/engines/run/system/flags/building_params') if File.exist?('/opt/engines/run/system/flags/building_params')
   end
@@ -159,7 +160,7 @@ module Builders
   def save_build_result
     log_build_output('Generating Build Report')
     build_report = generate_build_report(templater, @blueprint)
-    core.save_build_report(@container, build_report)
+    ContainerStateFiles.save_build_report(@container.store_address, build_report)
     @result_mesg = 'Build Successful'
     log_build_output('Build Successful')
     FileUtils.copy_file("#{SystemConfig.DeploymentDir}/build.out", "#{ContainerStateFiles.container_state_dir(@container.store_address)}/build.log")
@@ -170,9 +171,9 @@ module Builders
   def setup_rebuild
     log_build_output('Setting up rebuild')
     create_build_dir
-    blue_print = @engine.load_blueprint
-    statefile = "#{basedir}/blueprint.json"
-    f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0644)
+     blue_print = load_existing_blueprint(@build_params[:engine_name])
+    bpfile = "#{basedir}/blueprint.json"
+    f = File.new(bpfile, File::CREAT | File::TRUNC | File::RDWR, 0640)
     begin
       f.write(blue_print.to_json)
     ensure
@@ -180,4 +181,10 @@ module Builders
     end
   end
 
+  def load_existing_blueprint(bn)
+    blueprint_r = BlueprintApi.new
+    blueprint = blueprint_r.load_blueprint({c_name: bn, c_type: 'app'})
+    raise EnginesException.new(error_hash('failed to load blueprint', blueprint_r.last_error)) unless blueprint.is_a?(Hash)
+    blueprint
+  end
 end

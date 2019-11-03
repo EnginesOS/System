@@ -92,7 +92,6 @@ module UserAuth
   end
 
   def system_user_settings
-
     if File.exist?(SystemConfig.SystemUserSettingsFile)
       data = File.read(SystemConfig.SystemUserSettingsFile)
       YAML::load(data)

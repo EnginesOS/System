@@ -44,18 +44,21 @@ module Container
     require_relative 'managed_container/managed_container_services.rb'
     include ManagedContainerServices
 
-    @conf_self_start = false
-    @conf_zero_conf=false
-    @restart_required = false
-    @rebuild_required = false
-    @large_temp = false
+#    @conf_self_start = false
+#    @conf_zero_conf=false
+#    @restart_required = false
+#    @rebuild_required = false
+#    @large_temp = false
 
     attr_accessor  :restart_policy, :volumes_from, :command, :restart_required, :rebuild_required, :environments, :volumes, :image_repo, :capabilities, :conf_register_dns
     def initialize
       super
-      @container_mutex = Mutex.new
       @status = {}
       init_task_at_hand
+    end
+
+    def info_fs
+      @info_fs ||= store_address.merge({uid: cont_user_id})
     end
 
     def kerberos
@@ -77,7 +80,7 @@ module Container
     end
 
     def store_address
-      @store_address ||= { c_name: @container_name.to_s, c_type: @ctype.to_s }      
+      @store_address ||= { c_name: @container_name.to_s, c_type: @ctype.to_s }
     end
 
     def status
@@ -98,7 +101,7 @@ module Container
     end
 
     def post_load
-      @container_mutex = Mutex.new
+      container_mutex = Mutex.new
       i = @id
       super
       status
@@ -137,7 +140,6 @@ module Container
       @environments
     end
 
-
     def to_h
       s = self.dup
       envs = []
@@ -166,7 +168,6 @@ module Container
       @image.freeze
       @repository = '' if @repository.nil?
       @repository.freeze
-
     end
 
     def error_type_hash(mesg, params = nil)
@@ -174,5 +175,9 @@ module Container
         system: :managed_container,
         params: params }
     end
+  end
+
+  def container_mutex
+    @container_mutex ||= Mutex.new
   end
 end

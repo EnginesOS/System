@@ -4,7 +4,6 @@ class ConfigFileWriter
     file_list.each do |file|
       process_dockerfile_tmpl(templater, file)
     end
-
   end
 
   def self.create_sudoers_file(sudo_list, user, basedir)

@@ -47,36 +47,33 @@ module DockerApiBuilder
       lambda do |chunk , c , t|
         begin
           #FIXME stuff chunck in stringio and use streaming parser on the stringio
-          STDERR.puts("Chunk::#{chunk}")
           if chunk.include?('{"stream":"')
             then
             chunk.gsub!(/{"stream":"/,'')
-            STDERR.puts("Chunk::#{chunk.gsub(/"}/,'')}")
             builder.log_build_output(chunk.gsub(/"}/,''))
           else
-            hash = parser.parse(chunk)  #do |hash|
-            #builder.log_build_output(c.force_encoding(Encoding::ASCII_8BIT))
+            hash = parser.parse(chunk)
             builder.log_build_output(hash[:stream]) if hash.key?(:stream)
             if hash.key?(:errorDetail)
               builder.log_build_errors(hash[:errorDetail][:message])
               if hash[:errorDetail].key?(:error)
-                log_build_errors('Engine Build Aborted Due to:' + hash[:errorDetail][:error].to_s)
+                log_build_errors("Engine Build Aborted Due to:#{hash[:errorDetail][:error]}")
                 builder.post_failed_build_clean_up
               end
             end
           end
         rescue StandardError =>e
-          STDERR.puts( ' parse build res EOROROROROR |' + chunk.to_s + '| ' +  e.to_s)
+          STDERR.puts("Parse build res EOROROROROR #{chunk}\n#{e}")
         end
       end
     rescue StandardError =>e
-      STDERR.puts( ' parse build res EOROROROROR ||' + chunk.to_s + '|| ' +  e.to_s)
+      STDERR.puts("Parse build res EOROROROROR #{chunk}\n#{e}")
     end
 
     def process_request(*args)
       @io_stream.read(Excon.defaults[:chunk_size])
-    rescue StandardError
-      STDERR.puts('PROCESS REQUEST got nilling')
+    rescue StandardError => e
+    STDERR.puts("PROCESS REQUEST got #{e}")
       nil
     end
     
@@ -93,7 +90,7 @@ module DockerApiBuilder
       'Content-Type' => 'application/tar',
       'Accept-Encoding' => 'gzip',
       'Accept' => '*/*',
-      'Content-Length' => File.size(build_archive_filename).to_s
+      'Content-Length' => "#{File.size(build_archive_filename)}"
     }
     stream_handler = DockerStreamHandler.new(nil)
     post_stream_request({ timeout: 300, uri: '/build' , options: options, stream_handler: stream_handler, headers: header, content: File.read(build_archive_filename) } )

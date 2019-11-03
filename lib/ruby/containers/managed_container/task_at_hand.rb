@@ -111,7 +111,6 @@ module TaskAtHand
     when 'die'
       status
       begin
-        # STDERR.puts('IT DIED WITH ' + event_hash[:Actor][:Attributes][:exitCode].to_s)
         ec = event_hash[:Actor][:Attributes][:exitCode]
       rescue
         ec = 0
@@ -119,12 +118,10 @@ module TaskAtHand
       on_stop('die', ec)
     when 'kill'
       status
-      #  STDERR.puts('IT KILL')
       on_stop('kill')
     when 'stop'
       status
       on_stop('stop')
-      #  STDERR.puts('IT STOP')
     when 'pause'
       status
       on_stop('pause')
@@ -133,6 +130,7 @@ module TaskAtHand
       out_of_mem('oom')
     when 'destroy'
       status
+      on_destroy(event_hash)
     end
     true
   rescue StandardError => e
@@ -140,10 +138,8 @@ module TaskAtHand
   end
 
   def task_complete(action)
-
     @steps_to_go = 0 if @steps_to_go.nil?
     #  SystemDebug.debug(SystemDebug.engine_tasks, :task_complete, ' ', action.to_s + ' as action for task ' +  task_at_hand.to_s + " " + @steps_to_go.to_s + '-1 stesp remaining step completed ',@steps)
-
     clear_task_at_hand
     # SystemDebug.debug(SystemDebug.builder, :last_task,  @last_task, :steps_to, @steps_to_go)
     return save_state unless @last_task == :delete_image && @steps_to_go <= 0

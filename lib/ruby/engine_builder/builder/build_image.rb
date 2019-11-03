@@ -17,6 +17,6 @@ private
 
 def create_build_tar
   dest_file = "#{SystemConfig.DeploymentDir}/#{@build_name}.tgz"
-cmd = " cd ' + #{basedir}  ; tar -czf #{dest_file} ."
+cmd = "cd #{basedir}; tar -czf #{dest_file} ."
   SystemUtils.run_system(cmd)
 end

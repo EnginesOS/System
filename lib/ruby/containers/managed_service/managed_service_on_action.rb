@@ -2,7 +2,7 @@ module ManagedServiceOnAction
   def on_start(event_hash)
     @stop_reason = nil
  #   SystemDebug.debug(SystemDebug.container_events, :ON_start_MS, event_hash)
-    @container_mutex.synchronize {
+    container_mutex.synchronize {
       set_running_user
       @stop_reason = nil
       @exit_code = 0

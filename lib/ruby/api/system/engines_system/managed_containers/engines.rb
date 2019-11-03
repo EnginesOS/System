@@ -1,13 +1,13 @@
 require_relative 'cache'
 
 module Engines
-  class FakeContainer
-    attr_reader :container_name, :ctype
-    def initialize(name, type = 'app')
-      @container_name = name
-      @ctype = type
-    end
-  end
+#  class FakeContainer
+#    attr_reader :container_name, :ctype
+#    def initialize(name, type = 'app')
+#      @container_name = name
+#      @ctype = type
+#    end
+#  end
 
   def list_managed_engines
     ret_val = []
@@ -19,14 +19,6 @@ module Engines
     rescue
     end
     ret_val
-  end
-
-  def init_engine_dirs(engine_name)
-    c = FakeContainer.new(engine_name)
-    FileUtils.mkdir_p(container_state_dir(c) + '/run') unless Dir.exist?(container_state_dir(c)+ '/run')
-    FileUtils.mkdir_p(container_state_dir(c) + '/run/flags') unless Dir.exist?(container_state_dir(c)+ '/run/flags')
-    FileUtils.mkdir_p(container_log_dir(c)) unless Dir.exist?(container_log_dir(c))
-    FileUtils.mkdir_p(container_ssh_keydir(c)) unless Dir.exist?(container_ssh_keydir(c))
   end
 
   def set_engine_network_properties(engine, params)
@@ -65,7 +57,6 @@ module Engines
     end
     domain_name = params[:domain_name]
 #    SystemDebug.debug(SystemDebug.services,'Changing Domainame to ', domain_name)
-
     container.remove_wap_service
     container.set_hostname_details(hostname, domain_name)
     container.save_state

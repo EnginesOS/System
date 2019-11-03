@@ -26,10 +26,6 @@ module CoreBuildController
     system_api.get_build_report(engine_name)
   end
 
-  def save_build_report(container, build_report)
-    system_api.save_build_report(container, build_report)
-  end
-
   def trigger_install_event(engine_name, state = nil)
     system_api.trigger_install_event(engine_name, state)
   end

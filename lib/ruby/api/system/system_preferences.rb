@@ -52,34 +52,6 @@ class SystemPreferences
     end
   end
 
-  def SystemPreferences.set_container_icon_url(ca, url)
-    url_f = File.new("#{ContainerStateFiles.container_state_dir(ca)}/icon.url", 'w+')
-    begin
-      url_f.puts(url)
-    ensure
-      url_f.close
-    end
-  rescue StandardError => e
-    url_f.close unless url_f.nil?
-    raise e
-  end
-
-  def SystemPreferences.container_icon_url(ca)
-    if File.exists?("#{ContainerStateFiles.container_state_dir(ca)}/icon.url")
-      url_f = File.new("#{ContainerStateFiles.container_state_dir(ca)}/icon.url", 'r')
-      begin
-        url = url_f.gets(url)
-      ensure
-        url_f.close
-      end
-      url.strip
-    else
-      nil
-    end
-  rescue StandardError => e
-    url_f.close unless url_f.nil?
-    raise e
-  end
   private
   def save_preferences
     if File.exist?(SystemConfig.SystemPreferencesFile)

@@ -21,11 +21,10 @@ module BuilderSettings
   @@DefaultCountry = 'US'
   @@StopScript = '/home/engines/scripts/engine/custom_stop.sh'
   @@htaccessSourceDir = '/home/engines/htaccess_files/'
-
   def SystemConfig.FirstRunScript
     @@FirstRunScript
-  end 
-  
+  end
+
   def SystemConfig.htaccessSourceDir
     @@htaccessSourceDir
   end
@@ -118,5 +117,13 @@ module BuilderSettings
 
   def SystemConfig.DefaultBuildReportTemplateFile
     @@DefaultBuildReportTemplateFile
+  end
+
+  def SystemConfig.last_build_log
+    if File.exists?(self.BuildOutputFile)
+      File.read(self.BuildOutputFile)
+    else
+      'none'
+    end
   end
 end

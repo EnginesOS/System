@@ -9,7 +9,7 @@ class BlueprintApi < ErrorsApi
     state_dir = ContainerStateFiles.container_state_dir(ca)
     Dir.mkdir(state_dir) if File.directory?(state_dir) == false
     statefile = "#{state_dir}/blueprint.json"
-    f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0644)
+    f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0640)
     begin
       f.write(blueprint.to_json)
     ensure

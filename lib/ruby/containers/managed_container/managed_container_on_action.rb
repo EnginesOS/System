@@ -1,7 +1,7 @@
 module ManagedContainerOnAction
   def on_start(what)
     
-    @container_mutex.synchronize {
+    container_mutex.synchronize {
       @stop_reason = nil
       @exit_code = 0
       set_running_user
@@ -15,9 +15,7 @@ module ManagedContainerOnAction
         STDERR.puts('CONSUMER LESS TIN')
       else       
         if @has_run == false
-     #     STDERR.puts('FIRST TIME')
           add_wap_service if @deployment_type == 'web'
-     #     STDERR.puts('HAS TUN TIME')
         end
         @has_run = true
         begin
@@ -32,13 +30,21 @@ module ManagedContainerOnAction
   end
   
   def user_clear_error
-    @container_mutex.synchronize {
+    container_mutex.synchronize {
       clear_error
     }
   end
 
+  def on_destroy(event_hash)
+    container_mutex.synchronize {
+      container_api.remove_schedules(self)    
+      #   SystemDebug.debug(SystemDebug.container_events, :ON_destroy_CALLED, event_hash)
+      clear_error
+    }
+  end
+  
   def on_create(event_hash)
-    @container_mutex.synchronize {
+    container_mutex.synchronize {
    #   SystemDebug.debug(SystemDebug.container_events, :ON_Create_CALLED, event_hash)
       @id = event_hash[:id]
       clear_error
@@ -50,7 +56,6 @@ module ManagedContainerOnAction
       save_state
     #  SystemDebug.debug(SystemDebug.container_events, :ON_Create_Finised, event_hash)
     }
-    container_api.init_container_info_dir(self)
     start_container
   end
 

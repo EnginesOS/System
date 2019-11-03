@@ -9,8 +9,8 @@ module ServiceApiSystem
   SystemUtils.execute_command("/opt/engines/system/scripts/system/setup_service_dir.sh #{container.container_name}")
   end
 
-  def container_services_dir(container)
-    "#{system_api.container_state_dir(container)}/services/"
+  def container_services_dir(ca)
+    "#{ContainerStateFiles.container_state_dir(ca)}/services/"
   end
 
 end

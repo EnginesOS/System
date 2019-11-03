@@ -4,11 +4,7 @@ module PublicApiBuilder
   end
 
   def last_build_log
-    if File.exists?(SystemConfig.BuildOutputFile)
-      File.read(SystemConfig.BuildOutputFile)
-    else
-      'none'
-    end
+    SystemConfig.last_build_log
   end
 
   def build_status
@@ -22,24 +18,7 @@ module PublicApiBuilder
   #writes stream from build.out to out
   #returns 'OK' of FalseClass (latter BuilderApiError
   def follow_build(out)
-    build_log_file = File.new(SystemConfig.BuildOutputFile, 'r')
-    begin
-      while
-        begin
-          bytes = build_log_file.read_nonblock(1000)
-        rescue IO::WaitReadable
-          retry
-        rescue EOFError
-          out.write(bytes.force_encoding(Encoding::ASCII_8BIT)) # was UTF_8
-        rescue => e
-          out.write(bytes)
-          'Maybe ' + e.to_s
-        end
-        out.write(bytes.force_encoding(Encoding::ASCII_8BIT)) # was UTF_8
-      end
-    ensure
-      build_log_file.close
-    end
+    SystemConfig.follow_build(out)    
   end
 
   def resolve_blueprint(blueprint_url)

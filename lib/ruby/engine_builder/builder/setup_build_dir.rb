@@ -24,8 +24,10 @@ module BuildDirSetup
     @build_params[:mapped_ports] = @blueprint_reader.mapped_ports
     #  SystemDebug.debug(SystemDebug.builder, :ports, @build_params[:mapped_ports])
     #  SystemDebug.debug(SystemDebug.builder, :attached_services, @build_params[:attached_services])
-    service_builder.required_services_are_running?
-    service_builder.create_persistent_services(@blueprint_reader.services, @blueprint_reader.environments, @build_params[:attached_services])
+    unless   @build_params[:reinstall] == true
+      service_builder.required_services_are_running?
+      service_builder.create_persistent_services(@blueprint_reader.services, @blueprint_reader.environments, @build_params[:attached_services])
+    end
     #   SystemDebug.debug(SystemDebug.builder, 'Services Attached')
     apply_templates_to_environments
     #  SystemDebug.debug(SystemDebug.builder, 'Templates Applied')
@@ -250,9 +252,9 @@ module BuildDirSetup
   end
 
   def init_container_info_dir
-    core.init_container_info_dir(
-    {ctype: 'app',
-      name: @build_params[:engine_name],
+    ContainerStateFiles.init_container_info_dir(
+    {c_type: 'app',
+      c_name: @build_params[:engine_name],
       keys: {
       uid: @cont_user_id,
       frame_work: @blueprint_reader.framework

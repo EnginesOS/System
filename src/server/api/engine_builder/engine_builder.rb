@@ -81,7 +81,6 @@ get '/v0/engine_builder/follow_stream', provides: 'text/event-stream;charset=asc
       while has_data == true
         begin
           bytes = build_log_file.read_nonblock(1000)
-          STDERR.puts("#Read #{bytes}")
           bytes.encode(Encoding::ASCII_8BIT) unless bytes.nil?
           out << bytes
           bytes = ''

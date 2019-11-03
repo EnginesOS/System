@@ -33,7 +33,7 @@ module DockerInfoCollector
   end
 
   def set_cont_id
-    if @id.to_s == '-1'  || @id.to_s == '' || @id.is_a?(FalseClass)|| @id.is_a?(TrueClass)
+    if @id.to_s == '-1'  || @id.to_s == '' || @id.is_a?(FalseClass) || @id.is_a?(TrueClass)
       @id = read_container_id
       save_state unless @id.to_s == '-1'
     end

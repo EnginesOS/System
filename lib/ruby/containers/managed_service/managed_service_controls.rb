@@ -21,9 +21,8 @@ module ManagedServiceControls
         @environments =  EnvironmentVariable.merge_envs(envs, @environments)
       end
     end
-
     create_container
-    save_state()
+    save_state
   rescue EnginesException =>e
     save_state
     raise e

@@ -5,11 +5,12 @@ module Containers
     run_server_script('rotate_container_log', "#{container_id} #{retention}")
   end
 
-  def save_container(container)
-    serialized_object = YAML.dump(container)
-    statefile = state_file(container, true)
-    statedir = container_state_dir(container)
-    log_error_mesg('container locked', container.container_name) unless lock_container_conf_file(statefile)
+  def save_container(c)
+    c.clear_to_save
+    serialized_object = YAML.dump(c)
+    statefile = state_file(c, true)
+    statedir = ContainerStateFiles.container_state_dir(c.store_address)
+    log_error_mesg('container locked', c.container_name) unless lock_container_conf_file(statefile)
     backup_state_file(statefile)
     f = File.new("#{statefile}_tmp", File::CREAT | File::TRUNC | File::RDWR, 0600) # was statefile + '_tmp
     begin
@@ -34,18 +35,14 @@ module Containers
       ts = Time.now
     end
     unlock_container_conf_file(statedir)
-    cache.add(container, ts) unless cache.update(container, ts)
+    cache.add(c, ts) unless cache.update(c, ts)
     #STDERR.puts('saved ' + container.container_name + ':' + caller[1].to_s + ':' + caller[2].to_s)
     true
   rescue StandardError => e
-    container.last_error = last_error unless container.nil?
+    c.last_error = last_error unless c.nil?
     SystemUtils.log_exception(e)
   ensure
     unlock_container_conf_file(statedir)
-  end
-
-  def is_startup_complete?(container)
-    File.exist?("#{container_state_dir(container)}/run/flags/startup_complete")
   end
 
   private
@@ -57,7 +54,6 @@ module Containers
   def backup_state_file(statefile)
     if File.exist?(statefile)
       statefile_bak = "#{statefile}.bak"
-
       begin
         if File.exist?(statefile_bak)
           #double handle in case fs full
@@ -75,7 +71,7 @@ module Containers
   end
 
   def state_file(container, create = true)
-    state_dir = container_state_dir(container)
+    state_dir = ContainerStateFiles.container_state_dir(container.store_address)
     FileUtils.mkdir_p(state_dir) if Dir.exist?(state_dir) == false && create == true
     "#{state_dir}/running.yaml"
   end

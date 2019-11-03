@@ -31,7 +31,7 @@ class EngineBuilder < ErrorsApi
   include CheckBuildParams
 
   require_relative 'builder/container_creation.rb'
-  include  ContainerCreation
+  include ContainerCreation
 
   require_relative 'builder/container_guids.rb'
   include ContainerGuids
@@ -127,18 +127,7 @@ class EngineBuilder < ErrorsApi
   end
 
   def flag_restart_required(mc)
-    restart_reason='Restart to run post install script, as required in blueprint'
-    # FixME this should be elsewhere
-    restart_flag_file = ContainerStateFiles.restart_flag_file(mc.store_address)
-    FileUtils.mkdir_p(ContainerStateFiles.container_flag_dir(mc.store_address)) unless Dir.exist?(ContainerStateFiles.container_flag_dir(mc.store_address))
-    f = File.new(restart_flag_file, 'w+')
-    begin
-      f.puts(restart_reason)
-    ensure
-      f.close
-    end
-    File.chmod(0660, restart_flag_file)
-    FileUtils.chown(nil, 'containers', restart_flag_file)
+    ContainerStateFiles.flag_restart_required(mc.store_address, 'Restart to run post install script, as required in blueprint')
   end
 
   def log_error_mesg(m, o = nil)

@@ -18,6 +18,7 @@ class BuildController
   def prepare_engine_build(params)
     #SystemDebug.debug(SystemDebug.builder, :builder_params, params)
     @build_params = params
+    engine_builder.build_params=(@build_params) unless @build_params.nil?
     SystemStatus.build_starting(build_params)
   end
 
@@ -45,7 +46,7 @@ class BuildController
     @build_params = p
     SystemStatus.build_starting(@build_params)
     # SystemDebug.debug(SystemDebug.builder, 'Starting resinstall with params ', @build_params)
-    @engine = engine_builder.rebuild_managed_container(engine)
+    @engine = engine_builder.rebuild_managed_container(@build_params)
     @build_error = engine_builder.tail_of_build_error_log
     build_complete
   end

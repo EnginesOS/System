@@ -103,7 +103,7 @@ module EngineServiceOperations
   def get_service_pubkey(engine, cmd)
     container = loadManagedService(engine)
     unless container.is_running?
-      service_manager.load_service_pubkey(container, cmd)
+      service_manager.load_service_pubkey(container.store_address, cmd)
     else
       args = ['/home/engines/scripts/system/get_pubkey.sh', cmd]
       result = exec_in_container({:container => container, :command_line => args, :log_error => true, :timeout =>30 , :data=>''})
@@ -111,7 +111,7 @@ module EngineServiceOperations
         result[:stdout]
       else
         log_error_mesg('Get pub key failed',result)
-        service_manager.load_service_pubkey(container, cmd)
+        service_manager.load_service_pubkey(container.store_address, cmd)
       end
     end
   end

@@ -1,9 +1,5 @@
 module ContainerOperations
 
-  def init_engine_dirs(engine_name)
-    system_api.init_engine_dirs(engine_name)
-  end
-
   def image_exist?(container_name)
     docker_api.image_exist?(container_name)
   rescue StandardError

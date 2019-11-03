@@ -28,8 +28,7 @@ class ServiceBuilder < ErrorsApi
     @attached_services =  attached_services
     @volumes = {}
     @orphans = []
-    @app_is_persistent = false
-    STDERR.puts self.inspect.to_s 
+    @app_is_persistent = false   
   end
 
   def service_resource(service_name, what)

@@ -6,7 +6,7 @@ module Container
     include ManagedEngineOnAction
 
     def initialize(build_params, runtime_params)
-      @container_mutex = Mutex.new
+      container_mutex = Mutex.new
       @memory = build_params[:memory]
       @hostname = build_params[:host_name]
       @domain_name = build_params[:domain_name]
@@ -68,6 +68,10 @@ module Container
       false
     end
 
+    def info_fs
+      @info_fs ||= super.merge({ frame_work: @framework })
+    end       
+    
     def add_shared_volume(service_hash)
       volume_name = "#{service_hash[:owner]}_#{service_hash[:service_handle]}"
       @volumes[volume_name] = {

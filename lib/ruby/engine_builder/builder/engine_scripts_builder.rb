@@ -14,10 +14,10 @@ module EngineScriptsBuilder
     configure_services_backup(service_builder.attached_services)
   end
 
-  def write_software_script_file(scripts_path, content)
-    unless content.nil?
-      write_software_file(scripts_path, content)
-      File.chmod(0755, "#{basedir}#{SystemConfig.ScriptsDir}")
+  def write_software_script_file(p, t)
+    unless t.nil?
+      write_software_file(p, t)
+      File.chmod(0755, "#{basedir}/#{p}")
     end
   end
 
@@ -38,7 +38,7 @@ module EngineScriptsBuilder
         content += "cd /home/app\n"
         content += @blueprint_reader.blocking_worker.to_s
         content += "\n"
-      write_software_script_file("#{scripts_path}blocking.sh", content)
+        write_software_script_file("#{scripts_path}blocking.sh", content)
       end
     end
   end
@@ -65,7 +65,7 @@ module EngineScriptsBuilder
 
   def create_install_script
     unless @blueprint_reader.custom_install_script.nil?
-      write_software_script_file(SystemConfig.InstallScript,  @blueprint_reader.custom_install_script)
+      write_software_script_file(SystemConfig.InstallScript, @blueprint_reader.custom_install_script)
     end
   end
 

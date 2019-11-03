@@ -18,7 +18,7 @@ module ContainerCreation
     @container.save_state # no running.yaml throws a no such container so save so others can use
     @container.save_blueprint(@blueprint)
     log_build_output('Launching ' + @container.to_s)
-    core.init_engine_dirs(@build_params[:engine_name])
+    ContainerStateFiles.init_engine_dirs(@build_params[:engine_name])
     flag_restart_required(@container) if @has_post_install == true
     launch_deploy(@container)
     # log_build_output('Applying Volume settings and Log Permissions' + @container.to_s)

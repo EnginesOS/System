@@ -9,9 +9,9 @@ module ManagedContainerStatus
 #
   def save_state
     status
-    super
+    container_api.save_container(self.dup)
   end
-  
+
   def read_state
     state = super
     if state == 'na'
@@ -57,7 +57,7 @@ module ManagedContainerStatus
   end
 
   def is_startup_complete?
-    container_api.is_startup_complete?(self)
+    ContainerStateFiles.is_startup_complete?(store_address)
   end
 
   def is_error?
@@ -71,11 +71,11 @@ module ManagedContainerStatus
   end
   
   def set_debug
-    container_api.set_debug(self)
+    ContainerStateFiles.set_debug(store_address)
   end
 
   def clear_debug
-    container_api.clear_debug(self)
+    ContainerStateFiles.clear_debug(store_address)
   end
     
   def clear_error
@@ -87,19 +87,19 @@ module ManagedContainerStatus
   end
 
   def restart_required?
-    container_api.restart_required?(self)
+    ContainerStateFiles.restart_required?(store_address)
   end
 
   def restart_reason
-    container_api.restart_reason(self)
+    ContainerStateFiles.restart_reason(store_address)
   end
 
   def rebuild_required?
-    container_api.rebuild_required?(self)
+    ContainerStateFiles.rebuild_required?(store_address)
   end
 
   def rebuild_reason
-    container_api.rebuild_reason(self)
+    ContainerStateFiles.rebuild_reason(store_address)
   end
 
   def in_two_step?

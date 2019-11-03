@@ -18,7 +18,7 @@ module Container
       @data_gid.freeze
       @repository = '' if @repository.nil?
       @repository.freeze
-      @container_mutex = Mutex.new
+      container_mutex = Mutex.new
       @commands = symbolize_keys(@commands)
     end
 

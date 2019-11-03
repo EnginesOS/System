@@ -24,7 +24,6 @@ module DockerApiImages
 
   def pull_image(container)
     unless container.is_a?(String) # non app
-
       tag= ''
       cd = container.image.split(':')
       d = cd[0]
@@ -45,9 +44,7 @@ module DockerApiImages
     end
     STDERR.puts(' Pulling ' + request.to_s)
     headers = { 'X-Registry-Config'  => registry_root_auth, 'Content-Type' =>'plain/text', 'Accept-Encoding' => 'gzip'}
-    r = post({uri: request, expect_json: false, headers: headers, time_out: 600})
-    STDERR.puts('Docker pull got' + r.to_s)
-    r
+    post({uri: request, expect_json: false, headers: headers, time_out: 600})
   rescue StandardError =>e
     STDERR.puts('docker image pull got ' + e.to_s)
     false #No new fresh ?

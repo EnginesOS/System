@@ -1,7 +1,7 @@
 module ManagedUtilityOnAction
   def on_create(event_hash)
  #   STDERR.puts('On Create UIL ' + @container_name.to_s)
-    @container_mutex.synchronize {
+    container_mutex.synchronize {
       SystemDebug.debug(SystemDebug.container_events, :ON_Create_CALLED, event_hash)
       @id = event_hash[:id]
       @out_of_memory = false

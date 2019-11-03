@@ -7,6 +7,7 @@ module ManagedContainerControls
       software_environment_variables: environments,
       http_protocol: protocol,
       memory: memory,
+      permission_as: container_name,
       repository_url: container_name,
       variables: environments,
       reinstall: true
@@ -82,7 +83,7 @@ module ManagedContainerControls
   def create_container
     #   SystemDebug.debug(SystemDebug.containers, :teask_preping)
     thr = Thread.new do
-      @container_mutex.synchronize {
+      container_mutex.synchronize {
         if prep_task(:create)
           @domain_name = container_api.default_domain if @domain_name.nil?
           container_api.initialize_container_env(self)
@@ -125,7 +126,7 @@ module ManagedContainerControls
 
   def unpause_container
     thr = Thread.new do
-      @container_mutex.synchronize {
+      container_mutex.synchronize {
         if prep_task(:unpause)
           if super
             true
@@ -145,7 +146,7 @@ module ManagedContainerControls
 
   def pause_container
     thr = Thread.new do
-      @container_mutex.synchronize {
+      container_mutex.synchronize {
         if prep_task(:pause)
           if super
             true
@@ -164,7 +165,7 @@ module ManagedContainerControls
 
   def stop_container
     thr = Thread.new do
-      @container_mutex.synchronize {
+      container_mutex.synchronize {
         if prep_task(:stop)
           if super
             true
@@ -183,7 +184,7 @@ module ManagedContainerControls
 
   def halt_container
     thr = Thread.new do
-      @container_mutex.synchronize {
+      container_mutex.synchronize {
         super if prep_task(:halt)
       }
     end
@@ -196,7 +197,7 @@ module ManagedContainerControls
 
   def start_container
     thr = Thread.new do
-      @container_mutex.synchronize {
+      container_mutex.synchronize {
         if prep_task(:start)
           if super
             @restart_required = false
@@ -245,7 +246,7 @@ module ManagedContainerControls
 
   def rebuild_container
     thr = Thread.new do
-      @container_mutex.synchronize {
+      container_mutex.synchronize {
         if prep_task(:reinstall)
           ret_val = container_api.rebuild_image(self)
           expire_engine_info
@@ -292,8 +293,12 @@ module ManagedContainerControls
     @builder ||= BuildController.instance
   end
 
-  private
-
+  protected
+  
+  def container_mutex
+     @container_mutex ||= Mutex.new
+   end
+   
   def prep_task(action_sym)
     tah = task_at_hand
     STDERR.puts("TAH   #{tah} action #{action_sym}")

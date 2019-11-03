@@ -45,9 +45,9 @@ rescue StandardError => e
 end
 
 def cert_mounts(ca)
-    store = "#{ca[:c_type]}s/#{ca[:c_name]}/"
-    ["#{SystemConfig.CertAuthTop}#{store}certs:#{SystemConfig.CertificatesDestination}:ro",
-      "#{SystemConfig.CertAuthTop}#{store}keys:#{SystemConfig.KeysDestination}:ro"]
+  store = "#{ca[:c_type]}s/#{ca[:c_name]}/"
+  ["#{SystemConfig.CertAuthTop}#{store}certs:#{SystemConfig.CertificatesDestination}:ro",
+    "#{SystemConfig.CertAuthTop}#{store}keys:#{SystemConfig.KeysDestination}:ro"]
 end
 
 def get_local_prefix(vol)
@@ -230,7 +230,7 @@ def ssh_keydir_mount(ca)
 end
 
 def secrets_mount(ca)
-  "#{ContainerStateFiles.secretsdir(ca)}:/home/.secrets:ro"
+  "#{ContainerStateFiles.secrets_dir(ca)}:/home/.secrets:ro"
 end
 
 def kerberos_mount(ca)
@@ -246,11 +246,7 @@ def logdir_mount(c)
 end
 
 def state_mount(ca)
-  "#{container_state_dir(ca)}/run:/home/engines/run:rw"
-end
-
-def container_state_dir(ca)
-  ContainerStateFiles.container_state_dir(ca)
+  "#{ContainerStateFiles.container_state_dir(ca)}/run:/home/engines/run:rw"
 end
 
 def container_local_log_dir(ca)
