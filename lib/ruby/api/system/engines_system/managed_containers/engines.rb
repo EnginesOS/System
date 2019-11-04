@@ -1,24 +1,17 @@
 require '/opt/engines/lib/ruby/containers/store/store'
 
 module Engines
-#  class FakeContainer
-#    attr_reader :container_name, :ctype
-#    def initialize(name, type = 'app')
-#      @container_name = name
-#      @ctype = type
-#    end
-#  end
+  
+  def getManagedEngines
+    store.all
+  end
 
   def list_managed_engines
-    ret_val = []
-    begin
-      Dir.entries(SystemConfig.RunDir + '/apps/').each do |contdir|
-        yfn = SystemConfig.RunDir + '/apps/' + contdir + '/running.yaml'
-        ret_val.push(contdir) if File.exist?(yfn)
-      end
-    rescue
-    end
-    ret_val
+    store.all_names
+  end
+
+  def loadManagedEngine(engine_name)
+    store.model(engine_name)
   end
 
   def set_engine_network_properties(engine, params)
@@ -62,25 +55,6 @@ module Engines
     container.save_state
     container.add_wap_service
     true
-  end
-
-  def getManagedEngines
-    ret_val = []
-    Dir.entries(SystemConfig.RunDir + '/apps/').each do |contdir|
-      yfn = SystemConfig.RunDir + '/apps/' + contdir + '/running.yaml'
-      if File.exist?(yfn)
-        begin
-          managed_engine = loadManagedEngine(contdir)
-          ret_val.push(managed_engine)
-        rescue
-        end
-      end
-    end
-    ret_val
-  end
-
-  def loadManagedEngine(engine_name)
-    store.model(engine_name)
   end
 
   protected

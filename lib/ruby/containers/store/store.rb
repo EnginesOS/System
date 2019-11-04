@@ -13,6 +13,21 @@ module Container
       cache.container(name) || load(name)
     end
 
+    def all
+      all_names.map do |n|
+        #begin
+          model(n)
+        #rescue EnginesException
+        #end
+      end.compact
+    end
+
+    def all_names
+      Dir.entries(SystemConfig.RunDir + '/apps/').map do |d|
+        d if File.exist?(file_name(d))
+      end.compact
+    end
+
     protected
 
     def cache
@@ -26,12 +41,12 @@ module Container
         f = file(name)
         c = ManagedEngine.from_yaml(f.read)
         cache.add(c, File.mtime(n))
+        c
       rescue Errno::ENOENT => e
         raise EnginesException.new(error_hash("No Container file:#{n}", name))
       ensure
         f.close unless f.nil?
         unlock(n)
-        c
       end
     end
 
