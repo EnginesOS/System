@@ -1,8 +1,9 @@
+require '/opt/engines/lib/ruby/api/system/errors_api'
+
 module Container
   class Store
-
     protected
-    
+
     @@lock_timeout = 5
 
     def unlock(lock_key)
@@ -20,7 +21,7 @@ module Container
         true
       end
     rescue StandardError => e
-      log_error_mesg('LOCKING locking exception', e)
+      errors_api.log_error_mesg('LOCKING locking exception', e)
       true
     end
 
@@ -70,4 +71,8 @@ module Container
       end
     end
 
+    def errors_api
+      @errors_api ||= ErrorsApi.new
+    end
   end
+end

@@ -29,4 +29,3 @@ class EnginesError # < FalseClass
     self.to_h.to_json(opt)
   end
 end
-

@@ -1,4 +1,4 @@
-require_relative 'cache'
+require '/opt/engines/lib/ruby/containers/store/store'
 
 module Engines
 #  class FakeContainer
@@ -80,31 +80,13 @@ module Engines
   end
 
   def loadManagedEngine(engine_name)
-    raise EnginesException.new(error_hash('No Engine name', engine_name)) unless engine_name.is_a?(String) || engine_name.length == 0
-    engine = cache.container(engine_name)
-    unless engine.is_a?(Container::ManagedEngine)
-      yaml_file_name = SystemConfig.RunDir + '/apps/' + engine_name + '/running.yaml'
-        STDERR.puts('Engine file:' + yaml_file_name.to_s)
-      raise EnginesException.new(error_hash('No Engine file:' + engine_name.to_s , engine_name)) unless File.exist?(yaml_file_name)  
-      lock_container_conf_file(SystemConfig.RunDir + '/apps/' + engine_name)
-      yaml_file = File.new(yaml_file_name, 'r')
-      begin
-        ts = File.mtime(yaml_file_name)
-        engine = Container::ManagedEngine.from_yaml(yaml_file.read)
-        unlock_container_conf_file(SystemConfig.RunDir + '/apps/' + engine_name)
-        yaml_file.close
-        cache.add(engine, ts)
-      ensure
-        yaml_file.close unless yaml_file.nil?
-      end
-    end
-    engine
+    store.model(engine_name)
   end
 
-  private
+  protected
 
-  def cache
-    Container::Cache.instance
+  def store
+    Container::Store.instance
   end
 
 end

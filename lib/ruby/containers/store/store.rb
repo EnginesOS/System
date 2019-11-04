@@ -1,7 +1,14 @@
 require_relative 'cache'
+require_relative 'store_locking'
 
 module Container
   class Store
+    class << self
+      def instance
+        @@instance ||= self.new
+      end
+    end
+
     def model(name)
       cache.container(name) || load(name)
     end
@@ -24,6 +31,7 @@ module Container
       ensure
         f.close unless f.nil?
         unlock(n)
+        c
       end
     end
 
