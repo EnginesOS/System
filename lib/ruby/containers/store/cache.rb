@@ -28,12 +28,14 @@ module Container
     end
 
     def add(engine, ts)
-      ident = ident(engine)
-      cache[ident.to_sym] = {
-        engine: engine,
-        ts: ts
-      }
-      cache[engine.container_id] = ident
+      engine.tap do
+        ident = ident(engine)
+        cache[ident.to_sym] = {
+          engine: engine,
+          ts: ts
+        }
+        cache[engine.container_id] = ident
+      end
     end
 
     def update(container, ts)

@@ -1,12 +1,18 @@
 module Container
   class ManagedEngine < ManagedContainer
+
+    class << self
+      def store
+        @@store ||= ManagedEngineStore.new
+      end
+    end
+
     require '/opt/engines/lib/ruby/containers/managed_container.rb'
     @conf_register_dns = true
     require_relative 'managed_engine/managed_engine_on_action.rb'
     include ManagedEngineOnAction
 
     def initialize(build_params, runtime_params)
-      container_mutex = Mutex.new
       @memory = build_params[:memory]
       @hostname = build_params[:host_name]
       @domain_name = build_params[:domain_name]
@@ -70,8 +76,8 @@ module Container
 
     def info_fs
       @info_fs ||= super.merge({ frame_work: @framework })
-    end       
-    
+    end
+
     def add_shared_volume(service_hash)
       volume_name = "#{service_hash[:owner]}_#{service_hash[:service_handle]}"
       @volumes[volume_name] = {
