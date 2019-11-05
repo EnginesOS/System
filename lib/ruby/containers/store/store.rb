@@ -23,8 +23,8 @@ module Container
     end
 
     def all_names
-      Dir.entries(SystemConfig.RunDir + '/apps/').map do |d|
-        d if File.exist?(file_name(d))
+      Dir.entries(store_directory).map do |d|
+        d if file_exists?(d)
       end.compact
     end
 
@@ -41,7 +41,7 @@ module Container
         f = file(name)
         c = model_class.from_yaml(f.read)
         cache.add(c, File.mtime(n))
-        c
+        c   #WTF why is cache.add not returning container?
       rescue Errno::ENOENT => e
         raise EnginesException.new(error_hash("No Container file:#{n}", name))
       ensure
@@ -54,8 +54,17 @@ module Container
       File.new(file_name(name), 'r')
     end
 
+    def file_exists?(name)
+      File.exist?(file_name(name))
+    end
+
     def file_name(name)
-      "#{SystemConfig.RunDir}/#{container_type}s/#{name}/running.yaml"
+      "#{store_directory}/#{name}/running.yaml"
+    end
+
+    def store_directory
+      "#{SystemConfig.RunDir}/#{container_type}s"
+    end
 
     def model_class
       ManagedEngine
