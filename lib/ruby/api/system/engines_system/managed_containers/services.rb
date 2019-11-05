@@ -1,94 +1,42 @@
-require_relative 'cache'
+require '/opt/engines/lib/ruby/containers/store/service_store'
+require '/opt/engines/lib/ruby/containers/store/system_service_store'
 
 module Services
   def getManagedServices
-    get_services_by_type('service')
+    service_store.all
   end
 
   def getSystemServices
-    get_services_by_type('system_service')
+    system_service_store.all
   end
 
   def list_managed_services
-    _list_services
+    service_store.all_names
   end
 
   def list_system_services
-    _list_services('system_service')
+    system_service_store.all_names
   end
 
-  def loadSystemService(service_name)
-    _loadManagedService(service_name, '/system_services/')
+  def loadSystemService(name)
+    system_service_store.model(name)
   end
 
-  def loadManagedService(service_name)
-    s = cache.container('services/' + service_name)
-    unless s.is_a?(Container::ManagedService)
-      if service_name == 'system'
-        s = loadSystemService(service_name)
-      else
-        s = _loadManagedService(service_name, '/services/')
-        ts = File.mtime("#{SystemConfig.RunDir}/services/#{service_name}/running.yaml")
-        cache.add(s, ts)
-      end
-    end
-    s
+  def loadManagedService(name)
+    service_store.model(name)
   end
 
+  protected
+
+  def service_store
+    Container::ServiceStore.instance
+  end
+
+  def system_service_store
+    Container::SystemServiceStore.instance
+  end
 
   private
-
-  def cache
-    Container::Cache.instance
-  end
-
-  def get_services_by_type(type = 'service')
-    services = _list_services(type)
-    ret_val = []
-    if services.is_a?(Array)
-      services.each do |service_name|
-        begin
-          service = loadManagedService(service_name) if type == 'service'
-          service = loadSystemService(service_name) if type == 'system_service'
-          ret_val.push(service) if service.is_a?(Container::ManagedService)
-        rescue # skip bad loads
-        end
-      end
-    end
-    ret_val
-  end
-
-  def _list_services(type='service')
-    ret_val = []
-    Dir.foreach(SystemConfig.RunDir + '/' + type + 's/') do |contdir|
-      begin
-        yfn = SystemConfig.RunDir + '/' + type + 's/' + contdir + '/config.yaml'
-        ret_val.push(contdir) if File.exist?(yfn)
-      rescue # skip bad loads
-      end
-    end
-    ret_val
-  end
-
-  def _loadManagedService(service_name, service_type_dir)
-    raise EnginesException.new(error_hash('No Service Name', service_type_dir)) if service_name.nil? || service_name.length == 0
-
-    yam1_file_name = SystemConfig.RunDir + service_type_dir + service_name + '/running.yaml'   
-    unless File.exist?(yam1_file_name)
-      raise EnginesException.new(error_hash('failed to create service file ', SystemConfig.RunDir + service_type_dir + '/' + service_name.to_s)) unless ContainerStateFiles.build_running_service(service_name, SystemConfig.RunDir + service_type_dir) 
-    end
-    lock_container_conf_file(SystemConfig.RunDir + service_type_dir + service_name)
-    yaml_file = File.read(yam1_file_name)
-    unlock_container_conf_file(SystemConfig.RunDir + service_type_dir + service_name)
-    STDERR.puts('Panic nill  engine_api') if core.nil?
-    managed_service = if service_type_dir ==  '/system_services/'
-      Container::SystemService.from_yaml(yaml_file)
-    else
-      Container::ManagedService.from_yaml(yaml_file)
-    end
-    raise EnginesException.new(error_hash('Failed to load ' + yam1_file_name.to_s , yaml_file)) if managed_service.nil?
-    managed_service
-  end
 
   def setup_service_dirs(container)
     run_server_script('setup_service_dir', container.container_name)
