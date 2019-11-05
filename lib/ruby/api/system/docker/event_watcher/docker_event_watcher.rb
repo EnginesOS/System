@@ -1,104 +1,35 @@
+require 'yajl'
+require 'net_x/http_unix'
+require 'socket'
+require_relative 'event_listener'
+require_relative 'event_mask'
+
 class DockerEventWatcher < ErrorsApi
   attr_accessor :event_listeners
-  class EventListener
-    require 'yajl'
-    attr_accessor :container_name, :event_mask, :priority
 
-    def initialize(listener, event_mask, container_name = nil, priority = 200)
-      @object = listener[0]
-      @method = listener[1]
-      @event_mask = event_mask
-      @container_name = container_name
-      @priority = priority
-    end
-
-    def hash_name
-      @object.object_id.to_s
-    end
-
-    def trigger(hash)
-      r = true
-      mask = EventMask.event_mask(hash)
-      #  SystemDebug.debug(SystemDebug.container_events, 'trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask:' + @event_mask.to_s + ' result ' )#+ (@event_mask & mask).to_s)
-      unless @event_mask & mask == 0
-        # skip top
-        if mask & 32768 == 0 # @@container_top == 0
-          hash[:state] = state_from_status(hash[:status])
-          # SystemDebug.debug(SystemDebug.container_events, 'fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
-          begin
-            STDERR.puts('firing ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
-            thr = Thread.new {@object.method(@method).call(hash)}
-            thr.name = "#{@object}:#{@method}"
-            r = true
-          rescue EnginesException => e
-            SystemDebug.debug(SystemDebug.container_events, e.to_s + ':' + e.backtrace.to_s)
-            STDERR.puts(e.to_s + ":\n" + e.backtrace.to_s) if e.level == :error
-            thr.exit()
-            false
-          rescue StandardError => e
-            STDERR.puts('EXCPETION:' + e.to_s + ":\n" + e.backtrace.to_s)
-          end
-        end
-      end
-      r
-    rescue StandardError => e
-      STDERR.puts(e.to_s + ":\n" + e.backtrace.to_s)
-      SystemDebug.debug(SystemDebug.container_events, e.to_s + ':' + e.backtrace.to_s)
-      # raise e
-      false
-    end
-
-    def state_from_status(status)
-      case status
-      when 'die', 'stop', 'exec'
-        status = 'stopped'
-      when 'run','start'
-        status = 'running'
-      when 'pause'
-        status = 'paused'
-      when 'unpause'
-        status = 'running'
-      when 'delete','destroy'
-        status = 'nocontainer'
-      end
-      status
-    end
-  end
-
-  require 'net_x/http_unix'
-  require 'socket'
-  require_relative 'event_mask.rb'
-
-  def initialize(system, event_listeners = nil )
-    @system = system
-    # FIXMe add conntection watcher that re establishes connection asap and continues trying after warngin ....
-    event_listeners = {} if event_listeners.nil?
-    @event_listeners = event_listeners
-    @events_mutex =  Mutex.new
-    #  SystemDebug.debug(SystemDebug.container_events, 'EVENT LISTENER')
+  def initialize(event_listeners = {} )
+    self.event_listeners = event_listeners
   end
 
   def restart
+    finish
     start
   end
 
+  def finish
+    client.finish if client.started?
+    @client = nil
+  end
+
   def start
-    # SystemDebug.debug(SystemDebug.container_events, 'EVENT LISTENER ' + @event_listeners.to_s)
-    get_client
-    parser.on_parse_complete = method(:handle_event)
-    @client.request(Net::HTTP::Get.new('/events')) do |resp|
-      json_part = nil
-      resp.read_body do |chunk|
+    client.request(Net::HTTP::Get.new('/events')) do |r|
+      r.read_body do |chunk|
         begin
-          chunk.gsub!(/}[ \n\r]*$/, '}')
-          chunk.gsub!(/^[ \n\r]*{/,'{')
-          #        STDERR.puts(' Chunk |' + chunk.to_s + '|')
           parser << chunk
-        rescue StandardError => e
+        rescue Yajl::ParseError => e
           STDERR.puts("EXCEPTION Chunk error on docker Event Stream _#{chunk}_")
           log_error_mesg("EXCEPTION Chunk error on docker Event Stream _#{chunk}_")
           log_exception(e, chunk)
-          json_part = ''
           next
         end
       end
@@ -106,38 +37,31 @@ class DockerEventWatcher < ErrorsApi
     end
     log_error_mesg('Restarting docker Event Stream ')
     STDERR.puts('CLOSED docker Event Stream as close')
-    @client.finish if @client.started?
-    @client = nil
     STDERR.puts('client closes')
   rescue Net::ReadTimeout
     log_error_mesg('Restarting docker Event Stream Read Timeout as timeout')
-    d = Time.now
-    STDERR.puts("#{d} :TIMEOUT docker Event Stream as close")
-    @client.finish if @client.started?
-    @client = nil
+    STDERR.puts("#{Time.now} :TIMEOUT docker Event Stream as close")
   rescue StandardError => e
     STDERR.puts("EXCEPTION docker Event Stream post exception due to #{e} #{e.class.name}")
     log_exception(e)
     log_error_mesg('Restarting docker Event Stream post exception ')
-    @client.finish if @client.started?
-    @client = nil
+  ensure
+    finish
   end
 
-  def add_event_listener(listener, event_mask = nil, container_name = nil, priority=200)
+  def add_event_listener(object, method, event_mask = nil, container_name = nil, priority = 200)
     STDERR.puts('DEW ADD EVENT LISTENER')
-    event_listener = EventListener.new(listener, event_mask, container_name, priority)
-    @events_mutex.synchronize {
-      @event_listeners[event_listener.hash_name] =
-      { listener: event_listener ,
-        priority: event_listener.priority}
-    }
+    l = EventListener.new(object, method, event_mask, container_name, priority)
+    mutex.synchronize do
+      event_listeners[l.hash_name] = { listener: l , priority: l.priority }
+    end
   end
 
   def rm_event_listener(listener)
     #   SystemDebug.debug(SystemDebug.container_events, 'REMOVED listenter ' + listener.class.name + ':' + listener.object_id.to_s)
-    @events_mutex.synchronize {
-      @event_listeners.delete(listener.object_id.to_s) if @event_listeners.key?(listener.object_id.to_s)
-    }
+    mutex.synchronize do
+      event_listeners.delete(listener.object_id.to_s) if @event_listeners.key?(listener.object_id.to_s)
+    end
   end
 
   def fill_in_event_system_values(event_hash)
@@ -146,14 +70,6 @@ class DockerEventWatcher < ErrorsApi
       event_hash[:container_type] = event_hash[:Actor][:Attributes][:container_type]
     end
     event_hash
-  end
-
-  def get_client
-    if @client.nil?
-      @client = NetX::HTTPUnix.new('unix:///var/run/docker.sock')
-      @client.continue_timeout = 3600
-      @client.read_timeout = 3600
-    end
   end
 
   def match_container(hash, container_name)
@@ -179,13 +95,9 @@ class DockerEventWatcher < ErrorsApi
     r
   end
 
-  def parser
-    @parser ||= Yajl::Parser.new({:symbolize_keys => true})
-  end
-
   def trigger(hash)
     fill_in_event_system_values(hash)
-    l = @event_listeners.sort_by { |k, v| v[:priority] }
+    l = event_listeners.sort_by { |k, v| v[:priority] }
     l.each do |m|
       listener = m[1][:listener]
       unless listener.container_name.nil?
@@ -205,6 +117,25 @@ class DockerEventWatcher < ErrorsApi
 
   def handle_event(event_hash)
     # SystemDebug.debug(SystemDebug.container_events, 'got ' + event_hash.to_s)
-    @events_mutex.synchronize { trigger(event_hash) } if is_valid_docker_event?(event_hash)
+    mutex.synchronize { trigger(event_hash) } if is_valid_docker_event?(event_hash)
+  end
+
+  private
+
+  def client
+    @client ||= NetX::HTTPUnix.new('unix:///var/run/docker.sock').tap do |c|
+      c.continue_timeout = 3600
+      c.read_timeout = 3600
+    end
+  end
+
+  def parser
+    @parser ||= Yajl::Parser.new({:symbolize_keys => true}).tap do |p|
+      p.on_parse_complete = method(:handle_event)
+    end
+  end
+
+  def mutex
+    @mutex ||= Mutex.new
   end
 end

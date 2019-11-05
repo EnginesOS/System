@@ -43,7 +43,7 @@ module EngineApiEvents
   def container_events_stream
     stream = EventsStreamWriter.new
     STDERR.puts('new Event StreamWriter')
-    system_api.add_event_listener([stream, 'write_event'.to_sym], 16) # was 16
+    system_api.add_event_listener(stream, :write_event, 16) # was 16
     stream.start
     stream
   end
