@@ -9,7 +9,7 @@ module EngineApiStatusFlags
     state_file_name = "#{sfd}/state"
     sfn = "#{sfd}/startup_complete"
     if c.is_running?
-      if is_startup_complete?(c.store_address)
+      if ContainerStateFiles.is_startup_complete?(c.store_address)
         r = true
       else
         begin
