@@ -1,17 +1,17 @@
 require '/opt/engines/lib/ruby/containers/store/store'
 
 module Engines
-  
+
   def getManagedEngines
-    store.all
+    container_store.all
   end
 
   def list_managed_engines
-    store.all_names
+    container_store.all_names
   end
 
   def loadManagedEngine(engine_name)
-    store.model(engine_name)
+    container_store.model(engine_name)
   end
 
   def set_engine_network_properties(engine, params)
@@ -59,8 +59,7 @@ module Engines
 
   protected
 
-  def store
+  def container_store
     Container::Store.instance
   end
-
 end
