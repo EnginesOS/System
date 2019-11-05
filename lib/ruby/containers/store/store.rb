@@ -39,7 +39,7 @@ module Container
         n = file_name(name)
         lock(n)
         f = file(name)
-        c = ManagedEngine.from_yaml(f.read)
+        c = model_class.from_yaml(f.read)
         cache.add(c, File.mtime(n))
         c
       rescue Errno::ENOENT => e
@@ -56,6 +56,9 @@ module Container
 
     def file_name(name)
       "#{SystemConfig.RunDir}/#{container_type}s/#{name}/running.yaml"
+
+    def model_class
+      ManagedEngine
     end
 
     def container_type
