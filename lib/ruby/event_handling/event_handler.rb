@@ -1,32 +1,21 @@
 require '/opt/engines/lib/ruby/containers/store/cache'
+require '/opt/engines/lib/ruby/api/system/docker/event_watcher/docker_event_watcher.rb'
+require '/opt/engines/lib/ruby/system/system_config.rb'
+require_relative 'events_trigger'
+require_relative 'waiting_listener'
 
-module DockerEvents
-  require '/opt/engines/lib/ruby/api/system/docker/event_watcher/docker_event_watcher.rb'
-  require '/opt/engines/lib/ruby/system/system_config.rb'
+class EventHandler
 
-
-
-  class WaitForContainerListener
-    def initialize(what, pipe, emask = 16)
-      @what = what
-      @pipe = pipe
-      @mask = emask
+  class << self
+    def instance
+      @@instance ||=  self.new
     end
+  end
 
-    def mask
-      @mask
-    end
-
-    def read_event(event_hash)
-      unless @pipe.closed? || @pipe.nil?
-        if event_hash[:status] == @what
-          @pipe << 'ok'
-          @pipe.close
-        end
-      else
-        raise DockerException.new({:level => :warning, :error_mesg => 'pipe closed'} )
-      end
-    end
+  def initialize
+    @event_listener_lock = true
+    start_docker_event_listener
+    @docker_event_listener.add_event_listener(self, :container_event, 16, nil, 0) unless $PROGRAM_NAME.end_with?('system_service.rb')
   end
 
   def wait_for(container, what, timeout)
@@ -34,7 +23,7 @@ module DockerEvents
     unless is_aready?(what, container.read_state)
       mask = container_type_mask(container.ctype)
       pipe_in, pipe_out = IO.pipe
-      event_listener = WaitForContainerListener.new(what, pipe_out, mask)
+      event_listener = WaitingListener.new(what, pipe_out, mask)
       add_event_listener(event_listener, :read_event, event_listener.mask, container.container_name, 100)
       Timeout::timeout(timeout) do
         unless is_aready?(what, container.read_state)
@@ -94,7 +83,7 @@ module DockerEvents
     @docker_event_listener.rm_event_listener(listener)
   end
 
-  protected
+  private
 
   def is_aready?(what, statein)
     r = false
@@ -227,10 +216,8 @@ module DockerEvents
     mask
   end
 
-  def create_event_listener
-    @event_listener_lock = true
-    start_docker_event_listener
-    @docker_event_listener.add_event_listener(self, :container_event, 16, nil, 0) unless $PROGRAM_NAME.end_with?('system_service.rb')
+  def system_api
+    @system_api ||= SystemApi.instance
   end
 
   def cache

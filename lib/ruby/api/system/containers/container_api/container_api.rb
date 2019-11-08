@@ -1,6 +1,6 @@
 require_relative '../../engines_system/engines_system'
 require_relative '../../engines_core/engines_core'
-
+require '/opt/engines/lib/ruby/event_handling/event_handler'
 
 class ContainerApi < ErrorsApi
   class << self
@@ -58,6 +58,10 @@ class ContainerApi < ErrorsApi
   include ContainerApiServices
 
   protected
+
+  def event_handler
+     @event_handler ||= EventHandler.instance
+  end
 
   def system_api
     @system_api ||= SystemApi.instance

@@ -29,7 +29,7 @@ module EngineApiEvents
     end
 
     def stop
-      system_api.rm_event_listener(self)
+      event_handler.rm_event_listener(self)
     rescue StandardError => e
       p e.to_s
       p e.backtrace.to_s
@@ -43,12 +43,16 @@ module EngineApiEvents
   def container_events_stream
     stream = EventsStreamWriter.new
     STDERR.puts('new Event StreamWriter')
-    system_api.add_event_listener(stream, :write_event, 16) # was 16
+    event_handler.add_event_listener(stream, :write_event, 16) # was 16
     stream.start
     stream
   end
 
   protected
+
+  def event_handler
+     @event_handler ||= EventHandler.instance
+  end
 
   def system_api
     @system_api ||= SystemApi.instance
