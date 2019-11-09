@@ -1,4 +1,5 @@
 require '/opt/engines/lib/ruby/api/system/container_state_files'
+
 require_relative 'cache'
 require_relative 'store_locking'
 
@@ -17,7 +18,7 @@ module Container
     def all
       all_names.map do |n|
         #begin
-          model(n)
+        model(n)
         #rescue EnginesException
         #end
       end.compact
@@ -29,22 +30,31 @@ module Container
       end.compact
     end
 
-    def save(c)
+    #looking waits on this thread to complete
+    def save(c) 
+      t = Thread.new  { _save(c) }
+      t.join
+    end
+
+    def _save(c)
+      STDERR.puts "Save #{c.container_name} #{container_conf_locks}"
       c.clear_to_save
-      serialized_object = YAML.dump(c)
       statefile = state_file(c, true)
       statedir = ContainerStateFiles.container_state_dir(c.store_address)
-      log_error_mesg('container locked', c.container_name) unless lock(statefile)
+      errors_api.log_error_mesg('container locked', c.container_name) unless lock(statefile)
       backup_state_file(statefile)
+      serialized_object = YAML.dump(c)
       f = File.new("#{statefile}_tmp", File::CREAT | File::TRUNC | File::RDWR, 0600) # was statefile + '_tmp
       begin
         f.puts(serialized_object)
         f.flush()
         #Do it this way so a failure to write doesn't trash a working file
         if File.exist?("#{statefile}_tmp")
+          STDERR.puts("#{statefile}_tmp is not Missing")
           #FixMe check valid yaml
-         FileUtils.mv("#{statefile}_tmp", statefile)
+          FileUtils.mv("#{statefile}_tmp", statefile)
         else
+          STDERR.puts("#{statefile}_tmp is Missing")
           roll_back(statefile)
         end
       rescue StandardError => e
@@ -53,20 +63,13 @@ module Container
       ensure
         f.close unless f.nil?
       end
-      begin
-        ts =  File.mtime(statefile)
-      rescue StandardError => e
-        ts = Time.now
-      end
-      unlock(statedir)
-      cache.add(c, ts) unless cache.update(c, ts)
-      #STDERR.puts('saved ' + container.container_name + ':' + caller[1].to_s + ':' + caller[2].to_s)
-      true
+        ts = File.mtime(statefile) 
+        cache.add(c, ts) unless cache.update(c, ts)
     rescue StandardError => e
-      c.last_error = last_error unless c.nil?
+      c.last_error = e.to_s unless c.nil?
       SystemUtils.log_exception(e)
     ensure
-      unlock(statedir)
+      unlock(statefile)
     end
 
     protected
@@ -124,7 +127,11 @@ module Container
           if File.exist?(statefile_bak)
             #double handle in case fs full
             #if fs full mv fails and delete doesn't happen
-            FileUtils.mv(statefile_bak, "#{statefile_bak}.bak")
+            begin
+              File.delete("#{statefile_bak}.bak") if File.exist?("#{statefile_bak}.bak")
+              FileUtils.mv(statefile_bak, "#{statefile_bak}.bak")
+            rescue
+            end
             #Fixme check statefile is valid before over writing a good backup
             File.rename(statefile, statefile_bak)
             File.delete("#{statefile_bak}.bak")
@@ -132,6 +139,7 @@ module Container
             File.rename(statefile, statefile_bak)
           end
         rescue StandardError => e
+          SystemUtils.log_exception(e)
         end
       end
     end
@@ -144,6 +152,10 @@ module Container
 
     def roll_back(statefile)
       FileUtils.mv("#{statefile}.bak", statefile)
+    end
+
+    def container_conf_locks
+      @container_conf_locks ||= {}
     end
   end
 end
