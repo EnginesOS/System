@@ -7,7 +7,7 @@ module ContainerSystemStateFiles
     volbuilder.wait_for('destroy', 30)
     ContainerStateFiles.remove_info_tree(c.store_address)
     SystemUtils.run_system("/opt/engines/system/scripts/system/clear_container_dir.sh #{c.container_name}")
-    trigger_engine_event(c, 'uninstalled', 'uninstalled')
+    event_handler.trigger_engine_event(c, 'uninstalled', 'uninstalled')
     true
   end
 
