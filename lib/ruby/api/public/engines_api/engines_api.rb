@@ -250,4 +250,8 @@ class PublicApi < ErrorsApi
   def core
     @core ||= EnginesCore.instance
   end
+  
+  def initialize
+    core
+  end
 end
