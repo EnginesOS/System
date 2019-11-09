@@ -26,18 +26,15 @@ module CoreBuildController
     system_api.get_build_report(engine_name)
   end
 
-  def trigger_install_event(engine_name, state = nil)
-    system_api.trigger_install_event(engine_name, state)
-  end
 
   def build_engine(params)
     @build_thread.exit unless @build_thread.nil?
     build_controller.prepare_engine_build(params)
     @build_thread = Thread.new { build_controller.build_engine }
     @build_thread[:name]  = 'build engine'
-    trigger_install_event(params[:engine_name], 'installing')
+    event_handler.trigger_install_event(params[:engine_name], 'installing')
     unless @build_thread.alive?
-      trigger_install_event(params[:engine_name], 'failed')
+      event_handler.trigger_install_event(params[:engine_name], 'failed')
       raise EnginesException.new(error_hash(params[:engine_name], 'Build Failed to start'))
     end
     true

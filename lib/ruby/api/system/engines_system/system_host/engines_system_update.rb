@@ -4,7 +4,7 @@ module EnginesSystemUpdate
   end
 
   def update_engines_system_software
-    trigger_engines_update_event('updating')
+    event_handler.trigger_engines_update_event('updating')
     result = run_server_script('check_engines_system_update_status')
   #  SystemDebug.debug(SystemDebug.update, 'update_engines_system_software ', result[:stdout], result[:stderr])
     if result[:result] == -1

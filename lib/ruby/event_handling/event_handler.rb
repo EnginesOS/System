@@ -1,32 +1,32 @@
 require '/opt/engines/lib/ruby/containers/store/cache'
 require '/opt/engines/lib/ruby/api/system/docker/event_watcher/docker_event_watcher.rb'
 require '/opt/engines/lib/ruby/system/system_config.rb'
+
 require_relative 'events_trigger'
 require_relative 'waiting_listener'
 
 class EventHandler
-
   class << self
     def instance
-      @@instance ||=  self.new
+      @@instance ||= self.new
     end
   end
 
-  def initialize
+  def start
     @event_listener_lock = true
     start_docker_event_listener
     @docker_event_listener.add_event_listener(self, :container_event, 16, nil, 0) unless $PROGRAM_NAME.end_with?('system_service.rb')
   end
 
-  def wait_for(container, what, timeout)
+  def wait_for(c, what, timeout)
     r = false
-    unless is_aready?(what, container.read_state)
-      mask = container_type_mask(container.ctype)
+    unless is_aready?(what, c.read_state)
+      mask = container_type_mask(c.ctype)
       pipe_in, pipe_out = IO.pipe
       event_listener = WaitingListener.new(what, pipe_out, mask)
-      add_event_listener(event_listener, :read_event, event_listener.mask, container.container_name, 100)
+      add_event_listener(event_listener, :read_event, event_listener.mask, c.container_name, 100)
       Timeout::timeout(timeout) do
-        unless is_aready?(what, container.read_state)
+        unless is_aready?(what, c.read_state)
           begin
             d = pipe_in.read
           rescue
@@ -38,7 +38,7 @@ class EventHandler
     end
     r = true
   rescue Timeout::Error
-    STDERR.puts(' Wait for timeout on ' + container.container_name.to_s + ' for ' + what)
+    STDERR.puts(' Wait for timeout on ' + c.container_name.to_s + ' for ' + what)
     rm_event_listener(event_listener) unless event_listener.nil?
     event_listener = nil
   rescue StandardError => e
@@ -52,17 +52,17 @@ class EventHandler
     unless pipe_out.nil?
       pipe_out.close unless pipe_out.closed?
     end
-    if r.is_a?(TrueClass)
+    if r == true
       true
     else
-      is_aready?(what, container.read_state)
+      is_aready?(what, c.read_state)
     end
   end
 
   def trigger_event_notification(hash)
     @listeners.each do |m|
       listener = m[1][:listener]
-    #listener = m
+      #listener = m
       unless listener.container_name.nil?
         #WTF just added @docker_event_listener. to match_container
         next unless @docker_event_listener.match_container(hash, listener.container_name)
@@ -123,39 +123,32 @@ class EventHandler
       false
     end
   rescue StandardError => e
-    log_exception(e, event_hash)
+    SystemUtils.log_exception(e, event_hash)
   end
 
   def inform_container_tracking(container_name, ctype, event_name)
     c = get_event_container(container_name, ctype)
     c.task_complete(event_name) if c.is_a?(Container::ManagedContainer)
   rescue StandardError =>e
-    log_exception(e)
+    SystemUtils.log_exception(e, container_name, ctype, event_name)
   end
 
   def get_event_container(container_name, ctype)
-    c = cache.container(container_name)
-    if c.nil?
-      case ctype
-      when 'app'
-        c = loadManagedEngine(container_name)
-      when 'service'
-        c = loadManagedService(container_name)
-      when  'utility'
-        c = loadManagedUtility(container_name)
-      else
-        log_error_mesg('Failed to find ' + container_name.to_s +  ctype.to_s)
-      end
-    end
-    if c.nil?
-      false
+    case ctype
+    when 'app'
+      container_store.model(container_name)
+    when 'service'
+      service_store.model(container_name)
+    when  'utility'
+      utility_store.model(container_name)
+    when  'system_service'
+      system_service_store.model(container_name)
     else
-      c
+      log_error_mesg('Failed to find ' + container_name.to_s +  ctype.to_s)
     end
   rescue StandardError =>e
-
     STDERR.puts('FAiled to find ' + container_name.to_s + ' of type ' + ctype.to_s)
-    log_exception(e)
+    SystemUtils.log_exception(e, container_name, ctype)
   end
 
   def inform_container(event_hash)
@@ -167,7 +160,7 @@ class EventHandler
       false
     end
   rescue StandardError => e
-    log_exception(e)
+    SystemUtils.log_exception(e, event_hash)
   end
 
   def start_docker_event_listener(listeners = {})
@@ -191,13 +184,12 @@ class EventHandler
       STDERR.puts('Thread ' +  @event_listener_thread.inspect)
     end
   rescue StandardError =>e
-    STDERR.puts(e.class.name)
-    log_exception(e)
+    SystemUtils.log_exception(e)
   end
 
   def is_engines_container_event?(event_hash)
     unless event_hash[:container_type].nil? || event_hash[:container_name].nil?
-        ContainerStateFiles.has_config?({c_name: event_hash[:container_name], c_type: event_hash[:container_type]})
+      ContainerStateFiles.has_config?({c_name: event_hash[:container_name], c_type: event_hash[:container_type]})
     else
       false
     end
@@ -216,11 +208,24 @@ class EventHandler
     mask
   end
 
+  def system_service_store
+    Container::SystemServiceStore.instance
+  end
+
   def system_api
     @system_api ||= SystemApi.instance
   end
 
-  def cache
-    Container::Cache.instance
+  def service_store
+    Container::ServiceStore.instance
   end
+
+  def container_store
+    Container::Store.instance
+  end
+
+  def utility_store
+    Container::UtilityStore.instance
+  end
+
 end

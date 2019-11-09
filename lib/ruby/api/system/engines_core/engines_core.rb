@@ -99,7 +99,6 @@ class EnginesCore < ErrorsApi
   require_relative 'fixes/cont_id_fix.rb'
   include ContFsIdFix
 
-
   require_relative '../containers/container_api/container_api.rb'
   require_relative '../containers/service_api/service_api.rb'
   require_relative '../docker/docker_api.rb'
@@ -113,9 +112,15 @@ class EnginesCore < ErrorsApi
     Signal.trap('TERM', proc { api_shutdown })
     @registry_handler = RegistryHandler.new
     $user_tokens = {}
+    event_handler.start
   end
 
   protected
+
+  def event_handler
+     @event_handler ||= EventHandler.instance
+  end
+  
   def service_manager
     @service_manager ||= ServiceManager.instance
   end

@@ -26,11 +26,11 @@ module EnginesOperations
     params[:parent_engine] = params[:engine_name]
     begin
       engine = loadManagedEngine(params[:engine_name])
-      system_api.trigger_engine_event(engine, 'uninstalling', 'uninstall')
+      event_handler.trigger_engine_event(engine, 'uninstalling', 'uninstall')
       #Following is for the roll back of a failed build
     rescue StandardError => e
       unless params[:rollback] == true
-        system_api.trigger_engine_event(engine, 'failed', 'uninstall')
+        event_handler.trigger_engine_event(engine, 'failed', 'uninstall')
         raise e
       end
     end
@@ -38,30 +38,30 @@ module EnginesOperations
       # STDERR.puts(' Roll back called' + params.to_s )
       begin
         unless remove_engine_services(params)
-          system_api.trigger_engine_event(engine, 'failed', 'uninstall')
+          event_handler.trigger_engine_event(engine, 'failed', 'uninstall')
           raise EnginesException.new(error_hash('Failed to remove engine services', params))
         end
         true
       end
     else
       if engine.has_container?
-        system_api.trigger_engine_event(engine, 'failed', 'uninstall')
+        event_handler.trigger_engine_event(engine, 'failed', 'uninstall')
         raise EnginesException.new(error_hash('Container Exists Please Destroy engine first' , params)) unless params[:reinstall] .is_a?(TrueClass)
       end
       remove_engine_services(params) #engine_name, reinstall, params[:remove_all_data])
       engine.delete_image if engine.has_image? == true
-      system_api.trigger_engine_event(engine, 'success', 'uninstall') unless params[:reinstall] == true
+      event_handler.trigger_engine_event(engine, 'success', 'uninstall') unless params[:reinstall] == true
       engine.delete_engine unless params[:reinstall] == true
     end
   rescue Exception => e
-    system_api.trigger_engine_event(engine, 'failed', 'uninstall') unless engine.nil?
+    event_handler.trigger_engine_event(engine, 'failed', 'uninstall') unless engine.nil?
     raise e
   end
 
   #install from fresh copy of blueprint in repository
   def reinstall_engine(engine)
     r = false
-    system_api.trigger_engine_event(engine, 'reinstalling', 'reinstall')
+    event_handler.trigger_engine_event(engine, 'reinstalling', 'reinstall')
     if engine.has_container?
       engine.destroy_container(true)
       engine.wait_for('destroy', 30)
@@ -74,14 +74,14 @@ module EnginesOperations
     @build_thread = Thread.new { engine.reinstall_engine }
     @build_thread[:name] = 'reinstall engine'
     unless @build_thread.alive?
-      system_api.trigger_engine_event(engine, 'fail', 'reinstall')
+      event_handler.trigger_engine_event(engine, 'fail', 'reinstall')
       raise EnginesException.new(error_hash(params[:engine_name], 'Build Failed to start'))
     else
       r = true
     end
     r
   rescue StandardError => e
-    system_api.trigger_engine_event(engine, 'fail', 'reinstall')
+    event_handler.trigger_engine_event(engine, 'fail', 'reinstall')
     SystemUtils.log_exception(e, 'reinstall_engine:' + params)
     thr.exit unless thr.nil?
   end
@@ -177,7 +177,6 @@ module EnginesOperations
       r
     end
   end
-
 
   private
 

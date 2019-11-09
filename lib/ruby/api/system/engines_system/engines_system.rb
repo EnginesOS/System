@@ -108,6 +108,10 @@ class SystemApi < ErrorsApi
 
   protected
 
+  def event_handler
+     @event_handler ||= EventHandler.instance
+  end
+
   def core
     @core ||= EnginesCore.instance
   end

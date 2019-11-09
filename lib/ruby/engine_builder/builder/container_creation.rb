@@ -3,7 +3,7 @@ module ContainerCreation
     log_build_output('Creating Deploy Image')
     @container = create_managed_container
     raise EngineBuilderException.new(error_hash('Failed to create Managed Container')) unless @container.is_a?(Container::ManagedEngine)
-    core.trigger_install_event(@build_params[:engine_name], 'installed')
+    event_handler.trigger_install_event(@build_params[:engine_name], 'installed')
     service_builder.create_non_persistent_services(@blueprint_reader.services)
     @container
   end
@@ -26,8 +26,12 @@ module ContainerCreation
     @container
   end
 
-  private
+  protected
 
+  def event_handler
+     @event_handler ||= EventHandler.instance
+  end
+  
   def launch_deploy(managed_container)
     log_build_output('Launching Engine')
     save_engine_built_configuration(managed_container)
