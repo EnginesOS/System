@@ -1,16 +1,16 @@
 module EnginesSystemDirs
 
-  @@RunDir = '/opt/engines/run/'
-  @@CidDir = '/opt/engines/run/cid/'
-  @@ContainersDir = '/opt/engines/run/apps/'
+  @@RunDir = '/opt/engines/run'
+  @@CidDir = '/opt/engines/run/cid'
+  @@ContainersDir = '/opt/engines/run/apps'
   @@DeploymentDir = '/home/engines/deployment/deployed'
   @@DeploymentTemplates = '/opt/engines/system/templates/deployment'
   @@CONTFSVolHome = '/home/app/fs'
   @@LocalFSVolHome = '/var/lib/engines/apps'
   @@galleriesDir = '/opt/engines/etc/galleries'
   @@SystemLogRoot = '/var/log/engines/'
-  @@ServiceMapTemplateDir = '/opt/engines/etc/services/mapping/'
-  @@ServiceTemplateDir = '/opt/engines/etc/services/providers/'
+  @@ServiceMapTemplateDir = '/opt/engines/etc/services/mapping'
+  @@ServiceTemplateDir = '/opt/engines/etc/services/providers'
   @@EnginesTemp = '/opt/engines/tmp'
   @@InfoTreeDir = '/opt/engines/run/public/services'
 
@@ -19,17 +19,17 @@ module EnginesSystemDirs
   @@NoRemoteExceptionLoggingFlagFile = '/opt/engines/run/system/flags/no_remote_exception_log'
   @@SSHStore = '/opt/engines/etc/ssh/keys'
 
-  @@KeysDestination = '/home/engines/etc/ssl/keys/'
-  @@CertAuthTop = '/var/lib/engines/services/certs/store/live/'
-  @@CertificatesDestination = '/home/engines/etc/ssl/certs/'
-  @@ServiceBackupScriptsRoot = '/home/engines/scripts/backup/'
-  @@EngineServiceBackupScriptsRoot = '/home/engines/scripts/backup/engine/'
+  @@KeysDestination = '/home/engines/etc/ssl/keys'
+  @@CertAuthTop = '/var/lib/engines/services/certs/store/live'
+  @@CertificatesDestination = '/home/engines/etc/ssl/certs'
+  @@ServiceBackupScriptsRoot = '/home/engines/scripts/backup'
+  @@EngineServiceBackupScriptsRoot = '/home/engines/scripts/backup/engine'
   
   #Container UID historical store
   @@ContainerUIDdir = '/opt/engines/etc/containers/uids'
   @@ContainerNextUIDFile = '/opt/engines/etc/containers/uids/next'
   
-  @@BackupTmpDir = '/tmp/backup_bundles/'
+  @@BackupTmpDir = '/tmp/backup_bundles'
    
    def SystemConfig.BackupTmpDir
      @@BackupTmpDir
