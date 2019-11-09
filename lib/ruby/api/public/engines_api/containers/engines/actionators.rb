@@ -3,8 +3,8 @@ module PublicApiEngineActionators
     system_api.load_engine_actionators(ca)
   end
 
-  def get_engine_actionator(engine, action)
-    system_api.get_engine_actionator(engine, action)
+  def get_engine_actionator(ca, action)
+    system_api.get_engine_actionator(ca, action)
   end
 
   def perform_engine_action(engine, actionator, params)

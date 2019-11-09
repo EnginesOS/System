@@ -22,7 +22,7 @@ end
 get '/v0/containers/engine/:engine_name/action/:action_name' do
   begin
     engine = get_engine(params[:engine_name])
-    return_json(engines_api.get_engine_actionator(engine, params[:action_name]))
+    return_json(engines_api.get_engine_actionator(engine.store_address, params[:action_name]))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -42,7 +42,7 @@ post '/v0/containers/engine/:engine_name/action/:action_name' do
     p_params[:action_name] = params[:action_name]
     engine = get_engine(params[:engine_name])
     cparams = assemble_params(p_params, [:engine_name], :all)
-    action = engines_api.get_engine_actionator(engine, params[:action_name])
+    action = engines_api.get_engine_actionator(engine.store_address, params[:action_name])
     r = engines_api.perform_engine_action(engine, params[:action_name], cparams)
     # STDERR.puts('action ret type '+ action[:return_type])
     # STDERR.puts('action ret ' + r.to_s )
