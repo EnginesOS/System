@@ -1,4 +1,4 @@
-#require '/opt/engines/lib/ruby/containers/ManagedContainer.rb'
+
 require 'thread'
 require '/opt/engines/lib/ruby/containers/managed_service.rb'
 
