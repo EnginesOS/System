@@ -1,4 +1,4 @@
-module ServiceApiSystem
+module ServiceDockSystem
   def create_container(container)
     setup_service_dirs(container)
     super(container)

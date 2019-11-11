@@ -99,8 +99,8 @@ class EnginesCore < ErrorsApi
   require_relative 'fixes/cont_id_fix.rb'
   include ContFsIdFix
 
-  require_relative '../containers/container_api/container_api.rb'
-  require_relative '../containers/service_api/service_api.rb'
+  require_relative '../containers/container_dock/container_dock.rb'
+  require_relative '../containers/service_dock/service_dock.rb'
   require_relative '../docker/docker_api.rb'
   require_relative '../engines_system/engines_system.rb'
   require '/opt/engines/lib/ruby/service_manager/service_manager.rb'

@@ -5,10 +5,10 @@ module ManagedServiceControls
 
   def create_service()
     setup_service_keys if @system_keys.is_a?(Array)
-    container_api.setup_service_dirs(self)
+    container_dock.setup_service_dirs(self)
     #SystemDebug.debug(SystemDebug.containers, :keys_set, @system_keys )
-    envs = container_api.load_and_attach_pre_services(self)
-    shared_envs = container_api.load_and_attach_shared_services(self)
+    envs = container_dock.load_and_attach_pre_services(self)
+    shared_envs = container_dock.load_and_attach_shared_services(self)
     if shared_envs.is_a?(Array)
       if envs.is_a?(Array) == false
         envs = shared_envs
@@ -43,7 +43,7 @@ module ManagedServiceControls
 
 
   def service_restore(stream, params)
-    container_api.service_restore(self, stream, params)
+    container_dock.service_restore(self, stream, params)
   end
 
   private

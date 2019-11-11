@@ -1,4 +1,4 @@
-module ServiceApiRestore
+module ServiceDockRestore
   @@import_timeout = 300
   @@export_timeout = 300
   def service_restore(service, stream, params)

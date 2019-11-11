@@ -1,4 +1,4 @@
-module  ServiceApiDockerActions
+module  ServiceDockDockerActions
   def destroy_container(container)
     super
     core.clear_service_from_registry(container, :non_persistent) unless $PROGRAM_NAME.end_with?('system_service.rb')

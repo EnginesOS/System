@@ -1,4 +1,4 @@
-module ContainerApiLocale
+module ContainerDockLocale
   def set_locale_env(container)
     container.environments.each do |env|
        if env.name == 'LANG'

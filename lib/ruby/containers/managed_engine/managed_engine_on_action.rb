@@ -6,7 +6,7 @@ module ManagedEngineOnAction
   #      STDERR.puts('ONS ME TART @service_builder.run_volume_builder  is a' +  @volume_service_builder.to_s )    
     if @volume_service_builder == true
     STDERR.puts('RuN VOLBUILER ' + @cont_user_id.to_s + ':' + container_name)        
-    container_api.run_volume_builder(self, @cont_user_id, 'all')
+    container_dock.run_volume_builder(self, @cont_user_id, 'all')
     #  end
       @volume_service_builder = false
       @save_container = false

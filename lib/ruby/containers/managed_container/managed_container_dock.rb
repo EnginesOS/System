@@ -1,7 +1,7 @@
-module ManagedContainerApi
+module ManagedContainerDock
 
   def clear_to_save    
-    @container_api = nil
+    @container_dock = nil
     @last_result = nil
     @container_mutex = nil
     @builder = nil
@@ -9,7 +9,7 @@ module ManagedContainerApi
   end
 
   def save_blueprint blueprint
-    container_api.save_blueprint(blueprint, store_address)
+    container_dock.save_blueprint(blueprint, store_address)
   end
 
   def accepts_stream?
@@ -21,6 +21,6 @@ module ManagedContainerApi
   end
 
   def run_cronjob(cronjob)
-    container_api.run_cronjob(cronjob, self)
+    container_dock.run_cronjob(cronjob, self)
   end
 end

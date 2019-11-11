@@ -20,8 +20,8 @@ module Container
     include  ManagedContainerVolumes
     require_relative 'managed_container/managed_container_web_sites.rb'
     include ManagedContainerWebSites
-    require_relative 'managed_container/managed_container_api.rb'
-    include ManagedContainerApi
+    require_relative 'managed_container/managed_container_dock.rb'
+    include ManagedContainerDock
     require_relative 'managed_container/persistent_services.rb'
     include PersistantServices
     require_relative 'managed_container/managed_container_actionators.rb'
@@ -155,7 +155,7 @@ module Container
         end
       end
       s.instance_variables.each_with_object({}) do |var, hash|
-        next if var.to_s.delete("@") == 'container_api'
+        next if var.to_s.delete("@") == 'container_dock'
         hash[var.to_s.delete("@")] = s.instance_variable_get(var)
       end
     end

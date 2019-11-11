@@ -29,7 +29,7 @@ module EngineApiErrors
  
    def error_type_hash(mesg, params = nil)
      {error_mesg: mesg,
-       system: :container_api,
+       system: :container_dock,
        params: params }
    end
 

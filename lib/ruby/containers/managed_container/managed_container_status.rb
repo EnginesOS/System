@@ -9,7 +9,7 @@ module ManagedContainerStatus
 #
   def save_state
     status
-    container_api.save_container(self.dup)
+    container_dock.save_container(self.dup)
   end
 
   def read_state

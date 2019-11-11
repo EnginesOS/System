@@ -1,4 +1,4 @@
-module ServiceApiConsumers
+module ServiceDockConsumers
   @@consumer_timeout=8
   def get_registered_consumer(params)
     core.registered_with_service(params)

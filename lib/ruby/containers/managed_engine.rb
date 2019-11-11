@@ -63,7 +63,7 @@ module Container
     end
 
     def load_blueprint
-      container_api.load_blueprint(store_address)
+      container_dock.load_blueprint(store_address)
     end
 
     def plugins_path
@@ -92,7 +92,7 @@ module Container
     end
 
     def engine_attached_services
-      container_api.engine_attached_services(self)
+      container_dock.engine_attached_services(self)
     end
 
     def error_type_hash(mesg, params = nil)

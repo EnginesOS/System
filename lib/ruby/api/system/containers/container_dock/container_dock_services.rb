@@ -1,4 +1,4 @@
-module ContainerApiServices
+module ContainerDockServices
   #
   # @param match [Hash]
   # @param container [ManagedContainer]

@@ -1,4 +1,4 @@
-module ServiceApiConfigurations
+module ServiceDockConfigurations
   @@configurator_timeout = 10
   def retrieve_configurator(c, params)
     cmd = "/home/engines/scripts/configurators/read_#{params[:configurator_name]}.sh"

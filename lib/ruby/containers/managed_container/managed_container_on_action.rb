@@ -19,13 +19,13 @@ module ManagedContainerOnAction
         end
         @has_run = true
         begin
-          container_api.register_non_persistent_services(self)
+          container_dock.register_non_persistent_services(self)
         rescue
           return on_stop(nil) unless is_running?
         end
       end
       save_state
-      container_api.register_ports(@container_name, @mapped_ports) if @mapped_ports.is_a?(Hash)
+      container_dock.register_ports(@container_name, @mapped_ports) if @mapped_ports.is_a?(Hash)
     }
   end
   
@@ -37,7 +37,7 @@ module ManagedContainerOnAction
 
   def on_destroy(event_hash)
     container_mutex.synchronize {
-      container_api.remove_schedules(self)    
+      container_dock.remove_schedules(self)    
       #   SystemDebug.debug(SystemDebug.container_events, :ON_destroy_CALLED, event_hash)
       clear_error
     }
@@ -51,7 +51,7 @@ module ManagedContainerOnAction
       @has_run = false
       @out_of_memory = false
       @had_out_memory = false
-      container_api.apply_schedules(self)
+      container_dock.apply_schedules(self)
       @created = true
       save_state
     #  SystemDebug.debug(SystemDebug.container_events, :ON_Create_Finised, event_hash)
@@ -68,8 +68,8 @@ module ManagedContainerOnAction
       @had_out_memory = @out_of_memory
       @out_of_memory = false
       save_state
-      container_api.deregister_non_persistent_services(self)
-      container_api.deregister_ports(@container_name, @mapped_ports) if @mapped_ports.is_a?(Hash)
+      container_dock.deregister_non_persistent_services(self)
+      container_dock.deregister_ports(@container_name, @mapped_ports) if @mapped_ports.is_a?(Hash)
     end
   end
 

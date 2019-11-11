@@ -1,4 +1,4 @@
-module ServiceApiLoadServices
+module ServiceDockLoadServices
   def load_and_attach_pre_services(c)
     dirname = "#{container_services_dir(c.store_address)}/pre/"
     core.load_and_attach_static_services(dirname, c)

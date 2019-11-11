@@ -2,7 +2,7 @@ require_relative '../../engines_system/engines_system'
 require_relative '../../engines_core/engines_core'
 require '/opt/engines/lib/ruby/event_handling/event_handler'
 
-class ContainerApi < ErrorsApi
+class ContainerDock < ErrorsApi
   class << self
     def instance
       @@container_instance ||= self.new
@@ -15,14 +15,14 @@ class ContainerApi < ErrorsApi
   require_relative 'engine_api_errors.rb'
   include EngineApiErrors
 
-  require_relative 'container_api_events.rb'
-  include ContainerApiEvents
+  require_relative 'container_dock_events.rb'
+  include ContainerDockEvents
 
   require_relative 'engines_api_system.rb'
   include EnginesApiSystem
 
-  require_relative 'container_api_docker_actions.rb'
-  include ContainerApiDockerActions
+  require_relative 'container_dock_docker_actions.rb'
+  include ContainerDockDockerActions
 
   require_relative 'engine_api_blueprint.rb'
   include EngineApiBlueprint
@@ -39,8 +39,8 @@ class ContainerApi < ErrorsApi
   require_relative 'engine_api_image_actions.rb'
   include EngineApiImageActions
 
-  require_relative 'container_api_locale.rb'
-  include ContainerApiLocale
+  require_relative 'container_dock_locale.rb'
+  include ContainerDockLocale
 
   require_relative 'api_actionators.rb'
   include ApiActionators
@@ -48,14 +48,14 @@ class ContainerApi < ErrorsApi
   require_relative 'engine_api_export_import.rb'
   include EngineApiExportImport
 
-  require_relative  'container_api_schedules.rb'
-  include ContainerApiSchedules
+  require_relative  'container_dock_schedules.rb'
+  include ContainerDockSchedules
 
   require_relative 'volume_builder.rb'
-  include ContainerApiVolumeBuilder
+  include ContainerDockVolumeBuilder
 
-  require_relative 'container_api_services.rb'
-  include ContainerApiServices
+  require_relative 'container_dock_services.rb'
+  include ContainerDockServices
 
   protected
 

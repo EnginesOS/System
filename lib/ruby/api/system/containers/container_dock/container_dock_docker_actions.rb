@@ -1,4 +1,4 @@
-module ContainerApiDockerActions
+module ContainerDockDockerActions
   def destroy_container(container)
     clear_error
     docker_api.destroy_container(container.container_id)

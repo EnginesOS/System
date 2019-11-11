@@ -1,4 +1,4 @@
-module ContainerApiVolumeBuilder
+module ContainerDockVolumeBuilder
   def run_volume_builder(container, username, volume)
     volbuilder = core.loadManagedUtility('fsconfigurator')
 

@@ -4,7 +4,7 @@ require '/opt/engines/lib/ruby/containers/managed_container.rb'
 module Container
   class ManagedService < ManagedContainer
     require_relative 'managed_service/managed_service_api.rb'
-    include ManagedServiceApi
+    include ManagedServiceDock
     require_relative 'managed_service/managed_service_configurations.rb'
     include ManagedServiceConfigurations
     require_relative 'managed_service/managed_service_consumers.rb'
@@ -71,8 +71,8 @@ module Container
 
     protected
 
-    def container_api
-      @container_api ||= ServiceApi.instance
+    def container_dock
+      @container_dock ||= ServiceDock.instance
     end
   end
 end

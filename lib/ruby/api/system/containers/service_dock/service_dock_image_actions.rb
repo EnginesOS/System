@@ -1,4 +1,4 @@
-module ServiceApiImageActions
+module ServiceDockImageActions
   # @returns [Boolean]
   # whether pulled or no false if no new image
   def pull_image(image_name)
