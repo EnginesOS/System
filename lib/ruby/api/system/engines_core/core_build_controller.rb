@@ -22,11 +22,6 @@ module CoreBuildController
   rescue
   end
 
-  def get_build_report(engine_name)
-    system_api.get_build_report(engine_name)
-  end
-
-
   def build_engine(params)
     @build_thread.exit unless @build_thread.nil?
     build_controller.prepare_engine_build(params)

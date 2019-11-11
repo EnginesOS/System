@@ -14,7 +14,7 @@ module ManagedServiceConfigurations
       retrieve_service_configuration(configurator_params)
     else
       raise EnginesException.new(error_hash('service missing cont_user_id ', configurator_params)) if check_cont_uid == false
-      container_api.retrieve_configurator(self, configurator_params)
+      container_dock.retrieve_configurator(self, configurator_params)
     end
   end
 

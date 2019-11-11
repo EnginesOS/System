@@ -45,7 +45,7 @@ module ContainerGuids
           @cont_user_id = service_hash[:variables][:fw_user]
           r = true
         else
-          service[:variables][:fw_user] = core.volume_ownership({container_type: service[:container_type],
+          service[:variables][:fw_user] = system_api.volume_ownership({container_type: service[:container_type],
             container_name: service[:container_name],
             volume_name: service[:service_handle]
           })

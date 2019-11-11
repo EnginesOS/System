@@ -9,7 +9,7 @@ module ServiceDockConsumers
   end
 
   def add_consumer_to_service(c, service_hash)
-    result = core.exec_in_container(
+    result = dock_face.docker_exec(
     {:container => c,
       :command_line =>  ['/home/engines/scripts/services/add_service.sh'],
       :log_error => true,
@@ -24,7 +24,7 @@ module ServiceDockConsumers
       rm_consumer_from_service(c, service_hash)
       add_consumer_to_service(c, service_hash)
     else
-      result = core.exec_in_container(
+      result = dock_face.docker_exec(
       {container: c,
         command_line: ['/home/engines/scripts/services/update_service.sh'],
         log_error: true,
@@ -36,7 +36,7 @@ module ServiceDockConsumers
   end
 
   def rm_consumer_from_service(c, service_hash)
-    result = core.exec_in_container(
+    result = dock_face.docker_exec(
     {container: c,
       command_line: ['/home/engines/scripts/services/rm_service.sh'],
       log_error: true,

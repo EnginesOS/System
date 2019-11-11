@@ -60,7 +60,7 @@ module ManagedContainerControls
   def delete_engine
     thr = Thread.new do
       container_mutex.synchronize {
-        container_api.delete_engine(self)
+        container_dock.delete_engine(self)
       }
     end
     thr.name = "Delete:#{container_name}"
@@ -69,24 +69,6 @@ module ManagedContainerControls
     SystemUtils.log_exception(e , 'Delete Engine:' + container_name)
     thr.exit unless thr.nil?
   end
-
-  #
-  #  def setup_container
-  #    if prep_task(:create)
-  #      ret_val = false
-  #      unless has_container?
-  #        ret_val = container_api.setup_container(self)
-  #        expire_engine_info
-  #      else
-  #        task_failed('setup')
-  #        raise EnginesException.new(warning_hash('Cannot create container as container exists ', state))
-  #      end
-  #      retval = task_failed('setup') unless ret_val
-  #    else
-  #      retval = false
-  #    end
-  #    retval
-  #  end
 
   def create_container
     #   SystemDebug.debug(SystemDebug.containers, :teask_preping)

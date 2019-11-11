@@ -83,15 +83,4 @@ module EnginesCoreSystem
     MemoryStatistics.container_memory_stats(engine)
   end
 
-  def get_timezone
-    system_api.get_timezone
-  end
-
-  def set_timezone(tz)
-    system_api.set_timezone(tz)
-  end
-
-  def shutdown(reason)
-    system_api.api_shutdown(reason)
-  end
 end

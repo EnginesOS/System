@@ -9,7 +9,7 @@ class EngineBuilder < ErrorsApi
       @@instance ||= self.new
     end
   end
-  
+
   require '/opt/engines/lib/ruby/api/system/container_state_files.rb'
 
   require_relative 'builder/setup_build_dir.rb'
@@ -91,7 +91,7 @@ class EngineBuilder < ErrorsApi
     STDERR.puts("Build Params #{bp}")
     setup_build
   end
-  
+
   def service_resource(service_name, what)
     service_builder.service_resource(service_name, what)
   end
@@ -112,14 +112,14 @@ class EngineBuilder < ErrorsApi
     country = prefs.country_code if country.nil?
 
     @blueprint_reader.environments.push(EnvironmentVariable.new({name: 'LANGUAGE',
-                                                                value: lang.to_s + '_' + country.to_s + ':' + lang.to_s,
-                                                                own_type: 'application'}))
+      value: lang.to_s + '_' + country.to_s + ':' + lang.to_s,
+      own_type: 'application'}))
     @blueprint_reader.environments.push(EnvironmentVariable.new({name: 'LANG',
-                                                                value: lang.to_s + '_' + country.to_s + '.UTF8',
-                                                                own_type: 'application'}))
+      value: lang.to_s + '_' + country.to_s + '.UTF8',
+      own_type: 'application'}))
     @blueprint_reader.environments.push(EnvironmentVariable.new({name: 'LC_ALL',
-                                                                value: lang.to_s + '_' + country.to_s + '.UTF8',
-                                                                own_type: 'application'}))
+      value: lang.to_s + '_' + country.to_s + '.UTF8',
+      own_type: 'application'}))
   end
 
   def engine_environment
@@ -135,7 +135,7 @@ class EngineBuilder < ErrorsApi
     super
   end
 
-  def basedir    
+  def basedir
     @basedir ||= "#{SystemConfig.DeploymentDir}/#{@build_name}"
   end
 
@@ -153,8 +153,12 @@ class EngineBuilder < ErrorsApi
     @core ||= EnginesCore.instance
   end
 
+  def system_api
+    @system_api ||= SystemApi.instance
+  end
+
   def process_supplied_envs(custom_env)
-   # SystemDebug.debug(SystemDebug.builder, custom_env, custom_env)
+    # SystemDebug.debug(SystemDebug.builder, custom_env, custom_env)
     if custom_env.nil?
       @set_environments = {}
       @environments = []
@@ -164,7 +168,7 @@ class EngineBuilder < ErrorsApi
       @set_environments = {}
     else
       custom_env_hash = custom_env
-    #  SystemDebug.debug(SystemDebug.builder, :Merged_custom_env, custom_env_hash)
+      #  SystemDebug.debug(SystemDebug.builder, :Merged_custom_env, custom_env_hash)
       @set_environments = custom_env_hash
       @environments = []
     end

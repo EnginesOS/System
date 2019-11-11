@@ -16,10 +16,6 @@ module ContainerOperations
     end
   end
 
-  def get_changed_containers
-    system_api.get_changed_containers
-  end
-
   def web_sites_for(container)
     urls = []
     sites = find_engine_services({
@@ -49,9 +45,9 @@ module ContainerOperations
   end
 
   def get_container_network_metrics(engine_name)
-    engine = system_api.loadManagedEngine(engine_name)
+    engine = loadManagedEngine(engine_name)
     unless engine.is_a?(Container::ManagedEngine)
-      engine = system_api.loadManagedService(engine_name)
+      engine = loadManagedService(engine_name)
       unless engine.is_a?(Container::ManagedService)
         raise EnginesException.new(error_hash("Failed to load network stats", engine_name))
       end

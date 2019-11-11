@@ -139,7 +139,7 @@ module EnginesApiSystem
       cron_entry = core.retreive_cron_entry(cronjob, container)
       # STDERR.puts(' retreive cron entry from engine registry ' + cron_entry.to_s + ' from ' + cronjob.to_s )
       raise EnginesException.new(error_hash('nil cron line ' + cronjob.to_s )) if cron_entry.nil?
-      r = core.exec_in_container({container: container,
+      r = dock_face.docker_exec({container: container,
         command_line: cron_entry.split(" "),
         log_error: true,
         data: nil,

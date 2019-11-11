@@ -2,7 +2,7 @@ module ServiceDockConfigurations
   @@configurator_timeout = 10
   def retrieve_configurator(c, params)
     cmd = "/home/engines/scripts/configurators/read_#{params[:configurator_name]}.sh"
-    result =  core.exec_in_container(
+    result =  dock_face.docker_exec(
     {container: c,
       command_line: [cmd],
       log_error: true,
@@ -21,7 +21,7 @@ module ServiceDockConfigurations
   def run_configurator(c, configurator_params)
     if c.is_running?
       cmd = ["/home/engines/scripts/configurators/set_#{configurator_params[:configurator_name]}.sh"]
-      core.exec_in_container(
+      dock_face.docker_exec(
       {container: c,
         command_line: cmd,
         log_error: true,
@@ -57,7 +57,7 @@ module ServiceDockConfigurations
   cmd = "/home/engines/scripts/services/resources/#{what}.sh"
     # STDERR.puts('SERVICE RESOURCE' + cmd.to_s)
     #  STDERR.puts('SERVICE RESOURCE' + c.container_name)
-    core.exec_in_container(
+    dock_face.docker_exec(
     {container: c,
       command_line: cmd,
       log_error: true,

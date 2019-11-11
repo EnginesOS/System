@@ -17,8 +17,8 @@ def assemble_params(ps, address_params, required_params = nil, accept_params = n
   #STDERR.puts('pfs' + ps.to_s, + caller[0].to_s + "\n" +  caller[1].to_s + "\n" +  caller[2].to_s  + "\n" +  caller[3].to_s )
   raise EnginesException.new(error_hash('No Params Supplied:' + ps.to_s)) if ps.nil?
   STDERR.puts(' PS IS ' + ps.to_s )
-#  ps = deal_with_json(ps) # actually just symbolize
- STDERR.puts('AND became ' + ps.to_s )
+  ps = symbolise_hash(ps) # actually just symbolize
+  STDERR.puts('AND became ' + ps.to_s )
   if address_params.nil?
     a_params = {}
   else
@@ -125,4 +125,92 @@ def service_service_hash_from_params(params, search = false)
   hash[:parent_engine] = params['service_name']
   hash[:container_type] = 'service'
   hash
+end
+
+def symbolise_hash(r)
+  STDERR.puts("Symbolising " + r.class.name)
+  #  STDERR.puts('Debug:' + caller[1].to_s + ':'+ caller[2].to_s )
+  if r.is_a?(Hash)
+    symbolize_keys(r)
+  elsif r.is_a?(Array)
+    symbolize_keys_array_members(r)
+  elsif r.is_a?(Tree::TreeNode)
+    symbolize_tree(r)
+  elsif r.is_a?(String)
+    boolean_if_true_false_str(r)
+  else
+    r
+  end
+end
+
+def symbolize_keys_array_members(a)
+  unless a.count == 0
+    if a[0].is_a?(Hash)
+      r = []
+      i = 0
+      a.each do |h|
+        r[i] = a[i]
+        next if h.nil?
+        next unless h.is_a?(Hash)
+        r[i] = symbolize_keys(h)
+        i += 1
+      end
+      r
+    else
+      a
+    end
+  else
+    a
+  end
+end
+
+def symbolize_keys(h)
+  if !h.is_a?(Hash)
+    h
+    # elsif  h.is_a?(Sinatra::IndifferentHash)
+    #    h
+  else
+    h.inject({}){|r, (key, v)|
+      nk = case key
+      when String then key.to_sym
+      else key
+      end
+      #    STDERR.puts('key ' + nk.to_s + ':' +nk.class.name)
+      nv = case v
+      when Hash then symbolize_keys(v)
+      when Array   then
+        newval = []
+        v.each do |av|
+          if av.is_a?(Hash)
+            av = symbolize_keys(av)
+          end
+          newval.push(av)
+        end
+        newval
+      else v
+      end
+      r[nk] = nv
+      r
+    }
+  end
+end
+
+def boolean_if_true_false_str(r)
+  if  r == 'true'
+    true
+  elsif r == 'false'
+    false
+  else
+    r
+  end
+end
+
+def symbolize_tree(t)
+  STDERR.puts("Symbolising " + t.class.name)
+  ns = t.children
+  ns.each do |n|
+    n.content = symbolize_keys(n.content) if n.content.is_a?(Hash)
+    symbolize_tree(n)
+  end
+  t
 end

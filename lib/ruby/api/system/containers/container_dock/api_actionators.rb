@@ -18,13 +18,13 @@ module ApiActionators
       log_error:  true }
     req[:stdin_stream] = stream unless stream.nil?
 
-    if  params.is_a?(Hash)
+    if params.is_a?(Hash)
       req[:action_params] = params
     elsif data.nil?
       data = params
     end
 
-    result = core.exec_in_container(req)
+    result = dock_face.docker_exec(req)
 
     if result[:result] == 0
       if result[:stdout].start_with?('{') || result[:stdout].start_with?('"{')

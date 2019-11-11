@@ -20,7 +20,7 @@ module PublicApiEngine
   end
 
   def get_build_report(engine_name)
-    core.get_build_report(engine_name)
+    system_api.get_build_report(engine_name)
   end
 
   def reinstall_engine(engine)

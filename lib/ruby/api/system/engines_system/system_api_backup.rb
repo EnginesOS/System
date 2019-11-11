@@ -71,7 +71,7 @@ module SystemApiBackup
       stdout_stream: out,
       command_line: ['/home/engines/scripts/backup/backup.sh'],
       log_error: true }
-    result = core.exec_in_container(params)
+    result = dock_face.docker_exec(params)
     if result[:result] != 0
       result
     else
@@ -86,7 +86,7 @@ module SystemApiBackup
       stdin_stream: out,
       command_line: ['/home/engines/scripts/backup/restore.sh'],
       log_error: true}
-    result = core.exec_in_container(params)
+    result = dock_face.docker_exec(params)
     if result[:result] != 0
       result
     else
@@ -121,7 +121,7 @@ module SystemApiBackup
         stdout_stream: out,
         command_line: ['/home/engines/scripts/backup/backup.sh'],
         log_error: true}
-      result = core.exec_in_container(params)
+      result = dock_face.docker_exec(params)
       if result[:result] != 0
         result
         #    STDERR.puts(' BACKUP SERVICE ' + result.to_s)

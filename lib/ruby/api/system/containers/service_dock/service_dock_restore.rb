@@ -7,7 +7,7 @@ module ServiceDockRestore
     params = {container: service, command_line: cmd, log_error: true, stdin_stream: stream}
     result = {}
 
-    thr = Thread.new { result = core.exec_in_container(params) }
+    thr = Thread.new { result = dock_face.docker_exec(params) }
     thr[:name] = "restore:#{service.container_name}"
     begin
       Timeout.timeout(@@import_timeout) do
@@ -53,7 +53,7 @@ module ServiceDockRestore
   def export(container, params)
     begin
       result = {result:  0}
-      thr = Thread.new { result = core.exec_in_container(params) }
+      thr = Thread.new { result = dock_face.docker_exec(params) }
   thr[:name] = "export:#{params}"
       Timeout.timeout(@@export_timeout) do
         thr.join

@@ -47,8 +47,7 @@ class EnginesCore < ErrorsApi
   include EnginesOperations
   require_relative 'containers/container_operations.rb'
   include ContainerOperations
-  require_relative 'containers/docker_operations.rb'
-  include DockerOperations
+
   require_relative 'containers/container_guids.rb'
   include ContainerGuids
 

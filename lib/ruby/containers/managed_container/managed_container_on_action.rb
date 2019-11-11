@@ -67,8 +67,8 @@ module ManagedContainerOnAction
         @had_out_memory = @out_of_memory
         @out_of_memory = false
         save_state
-        container_api.deregister_non_persistent_services(self)
-        container_api.deregister_ports(@container_name, @mapped_ports) if @mapped_ports.is_a?(Hash)
+        container_dock.deregister_non_persistent_services(self)
+        container_dock.deregister_ports(@container_name, @mapped_ports) if @mapped_ports.is_a?(Hash)
       end
     }
   end

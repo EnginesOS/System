@@ -1,4 +1,12 @@
 module SshKeys
+
+  def set_engines_ssh_pw(params)
+    pass = params[:ssh_password]
+    cmd = "echo -e #{pass}\n#{pass}| passwd engines"
+#    SystemDebug.debug(SystemDebug.system,'ssh_pw', cmd)
+    SystemUtils.run_system(cmd)
+  end
+
   def generate_engines_user_ssh_key
     newkey = regen_system_ssh_key 
     raise EnginesException.new(error_hash('Not an RSA key', newkey)) unless newkey.include?('-----BEGIN RSA PRIVATE KEY-----')

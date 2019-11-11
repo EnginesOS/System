@@ -23,7 +23,7 @@ module EngineApiExportImport
       service_variables: service_hash } 
     params[:stdout_stream] = stream unless stream.nil?
 
-    thr = Thread.new { result = core.exec_in_container(params) }
+    thr = Thread.new { result = dock_face.docker_exec(params) }
     thr[:name] = "export:#{params}"
     begin
       Timeout.timeout(@@export_timeout) do
@@ -73,7 +73,7 @@ module EngineApiExportImport
     #  SystemDebug.debug(SystemDebug.export_import, :import_service,  service_params)
     begin
       result = {}
-      thr = Thread.new { result = core.exec_in_container(params) }
+      thr = Thread.new { result = dock_face.docker_exec(params) }
       thr[:name] = "import:#{params}"
       to = Timeout.timeout(@@export_timeout) do
         thr.join

@@ -54,12 +54,12 @@ module PublicApiConfig
 
   # FIXME should use System
   def enable_remote_exception_logging
-    core.enable_remote_exception_logging
+    system_api.enable_remote_exception_logging
   end
 
   # FIXME should use System
   def disable_remote_exception_logging
-    core.disable_remote_exception_logging
+    system_api.disable_remote_exception_logging
   end
 
   # FIXME should use System

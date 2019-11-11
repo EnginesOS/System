@@ -1,14 +1,14 @@
 module PublicApiSystemControlEnginesSystem
   def update_engines_system_software
-    core.update_engines_system_software
+    system_api.update_engines_system_software
   end
 
   def recreate_engines_system_service
-    core.recreate_engines_system_service
+    system_api.recreate_engines_system_service
   end
 
   def restart_engines_system_service
-    core.restart_engines_system_service
+    system_api.restart_engines_system_service
   end
 
   def dump_heap_stats
@@ -25,7 +25,7 @@ module PublicApiSystemControlEnginesSystem
       r += "#{thread} #{thread.status}"
       r += "#{thread[:name]}" if thread.key?(:name)
       r += "\n"
-  end
-  r
+    end
+    r
   end
 end

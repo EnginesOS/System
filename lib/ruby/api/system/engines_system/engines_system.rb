@@ -15,12 +15,6 @@ class SystemApi < ErrorsApi
     end
   end
 
-  #require_relative 'events/docker_events.rb'
-  #include DockerEvents
-
-  #require_relative 'events/events_trigger.rb'
-  #include EventsTrigger
-
   require_relative 'system_host/base_os_system.rb'
   include BaseOsSystem
 
@@ -53,9 +47,6 @@ class SystemApi < ErrorsApi
 
   require_relative 'managed_containers/services.rb'
   include Services
-
-  require_relative 'managed_containers/container_locking.rb'
-  include ContainerLocking
 
   require_relative 'managed_containers/container_network_metrics.rb'
   include  ContainerNetworkMetrics

@@ -1,42 +1,59 @@
 module ContainerConfigLoader
   def getManagedEngines
-    system_api.getManagedEngines
-  end
-
-  def loadManagedEngine(engine_name)
-    system_api.loadManagedEngine(engine_name)
-  end
-
-  def loadManagedService(service_name)
-    system_api.loadManagedService(service_name)
-  end
-
-  def loadManagedUtility(utility_name)
-    system_api.loadManagedUtility(utility_name)
-  end
-
-  def loadSystemService(service_name)
-    system_api.loadSystemService(service_name)
-  end
-
-  def getManagedServices
-    system_api.getManagedServices
-  end
-
-  def getSystemServices
-    system_api.getSystemServices
+    container_store.all
   end
 
   def list_managed_engines
-    system_api.list_managed_engines
+    container_store.all_names
+  end
+
+  def loadManagedEngine(engine_name)
+    container_store.model(engine_name)
+  end
+
+  def getManagedServices
+    service_store.all
+  end
+
+  def getSystemServices
+    system_service_store.all
   end
 
   def list_managed_services
-    system_api.list_managed_services
+    service_store.all_names
   end
 
   def list_system_services
-    system_api.list_system_services
+    system_service_store.all_names
   end
 
+  def loadSystemService(name)
+    system_service_store.model(name)
+  end
+
+  def loadManagedService(name)
+    service_store.model(name)
+  end
+
+  def loadManagedUtility(name)
+    utility_store.model(name)
+  end
+
+  protected
+
+  def container_store
+    Container::ManagedEngine.store
+  end
+
+  def utility_store
+    Container::ManagedUtility.store
+  end
+
+  def service_store
+    Container::ManagedService.store
+  end
+
+  def system_service_store
+    Container::SystemService.store
+  end
 end
