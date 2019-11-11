@@ -10,6 +10,14 @@ module Container
       end
     end
 
+    def container_service_dir(sn)
+      "#{SystemConfig.RunDir}/services/#{sn}"
+    end
+
+    def container_disabled_service_dir(sn)
+      "#{SystemConfig.RunDir}/services-disabled/#{sn}"
+    end
+
     protected
 
     def model_class

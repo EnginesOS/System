@@ -57,6 +57,10 @@ module Container
       init_task_at_hand
     end
 
+    def store
+      self.class.store
+    end
+
     def info_fs
       @info_fs ||= store_address.merge({uid: cont_user_id})
     end

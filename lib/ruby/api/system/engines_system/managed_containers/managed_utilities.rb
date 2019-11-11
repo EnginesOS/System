@@ -8,6 +8,6 @@ module ManagedUtilities
   protected
 
   def utility_store
-    Container::UtilityStore.instance
+    Container::ManagedUtility.store
   end
 end

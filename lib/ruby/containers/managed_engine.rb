@@ -3,7 +3,7 @@ module Container
 
     class << self
       def store
-        @@store ||= ManagedEngineStore.new
+        @@store ||= Store.new
       end
     end
 

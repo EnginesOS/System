@@ -2,6 +2,13 @@ module Container
   class ManagedUtility< ManagedContainer
     require_relative 'managed_utility_on_action.rb'
     include ManagedUtilityOnAction
+
+   class << self
+      def store
+        @@utility_store ||= UtilityStore.new
+      end
+    end
+
     def post_load
       # Basically parent super but no lock on image
       expire_engine_info

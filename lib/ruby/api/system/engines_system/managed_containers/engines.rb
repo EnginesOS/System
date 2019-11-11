@@ -60,6 +60,6 @@ module Engines
   protected
 
   def container_store
-    Container::Store.instance
+    Container::ManagedEngine.store
   end
 end

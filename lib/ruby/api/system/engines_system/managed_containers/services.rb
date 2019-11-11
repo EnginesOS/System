@@ -29,11 +29,11 @@ module Services
   protected
 
   def service_store
-    Container::ServiceStore.instance
+    Container::ManagedService.store
   end
 
   def system_service_store
-    Container::SystemServiceStore.instance
+    Container::SystemService.store
   end
 
   private

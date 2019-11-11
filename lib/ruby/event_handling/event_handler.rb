@@ -208,24 +208,24 @@ class EventHandler
     mask
   end
 
-  def system_service_store
-    Container::SystemServiceStore.instance
-  end
-
   def system_api
     @system_api ||= SystemApi.instance
   end
 
   def service_store
-    Container::ServiceStore.instance
+    Container::ManagedService.store
+  end
+
+  def system_service_store
+    Container::SystemService.store
   end
 
   def container_store
-    Container::Store.instance
+    Container::ManagedEngine.store
   end
 
   def utility_store
-    Container::UtilityStore.instance
+    Container::ManagedUtility.store
   end
 
 end

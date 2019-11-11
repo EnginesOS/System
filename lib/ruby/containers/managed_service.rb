@@ -3,7 +3,7 @@ require '/opt/engines/lib/ruby/containers/managed_container.rb'
 
 module Container
   class ManagedService < ManagedContainer
-    require_relative 'managed_service/managed_service_api.rb'
+    require_relative 'managed_service/managed_service_dock.rb'
     include ManagedServiceDock
     require_relative 'managed_service/managed_service_configurations.rb'
     include ManagedServiceConfigurations
@@ -21,6 +21,12 @@ module Container
     include ManagedServiceOnAction
     require_relative 'managed_service/managed_service_import_export.rb'
     include ManagedServiceImportExport
+
+    class << self
+      def store
+        @@service_store ||= ServiceStore.new
+      end
+    end
 
     @ctype='service'
     @soft_service = false

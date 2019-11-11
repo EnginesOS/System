@@ -4,8 +4,16 @@ require '/opt/engines/lib/ruby/containers/managed_service.rb'
 
 module Container
   class SystemService < ManagedService
+
     require_relative 'system_service_on_action.rb'
     include SystemSystemOnAction
+
+    class << self
+       def store
+         @@system_service_store ||= SystemServiceStore.new
+       end
+     end
+
     @ctype = 'system_service'
     def lock_values
       @ctype = 'system_service' if @ctype.nil?
@@ -31,7 +39,7 @@ module Container
     end
 
     def stop_container
-      container_dock.stop_container(self)
+      container_dock.stop_container(container_id)
     end
 
     def destroy_container
@@ -39,7 +47,7 @@ module Container
     end
 
     def start_container
-      container_dock.start_container(self)
+      container_dock.start_container(container_id)
     end
 
     def forced_recreate

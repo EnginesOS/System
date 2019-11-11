@@ -61,6 +61,7 @@ module Container
 
     def engine_ts(engine)
       raise EnginesException.new(error_hash('Get ts passed nil Engine ', engine)) if engine.nil?
+      #FIX ME use container_state sudke ewdssdf
       yam_file_name = SystemConfig.RunDir + '/' + engine.ctype + 's/' + engine.engine_name + '/running.yaml'
       if File.exist?(yam_file_name)
         begin
