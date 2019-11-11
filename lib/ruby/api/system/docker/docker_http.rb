@@ -7,7 +7,7 @@ module DockerHttp
     fillin_params(p)
     p[:params] = p[:params].to_json if p[:headers]['Content-Type'] == 'application/json' && ! p[:params].nil?
     STDERR.puts('docker uri ' + p[:uri].to_s)
-    @docker_api_mutex.synchronize {
+    @dock_face_mutex.synchronize {
       handle_resp(
       connection.request(
       method: :post,
@@ -63,7 +63,7 @@ module DockerHttp
   def get_request(p)
     fillin_params(p)
 
-    @docker_api_mutex.synchronize {
+    @dock_face_mutex.synchronize {
       handle_resp(
       connection.request(
       request_params(
@@ -83,7 +83,7 @@ module DockerHttp
   end
 
   def delete_request(p)
-    @docker_api_mutex.synchronize {
+    @dock_face_mutex.synchronize {
       handle_resp(connection.request( {
         method: :delete,
         path: p[:uri],

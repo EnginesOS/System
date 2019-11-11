@@ -67,8 +67,8 @@ class ContainerDock < ErrorsApi
     @system_api ||= SystemApi.instance
   end
 
-  def docker_api
-    @docker_api ||= DockerApi.instance
+  def dock_face
+    @dock_face ||= DockFace.instance
   end
 
   def core

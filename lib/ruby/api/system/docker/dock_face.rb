@@ -4,7 +4,7 @@ require 'yajl'
 require 'rubygems'
 require 'excon'
 
-class DockerApi < ErrorsApi
+class DockFace < ErrorsApi
   class << self
     def instance
       @@instance ||= self.new
@@ -16,24 +16,24 @@ class DockerApi < ErrorsApi
   require_relative 'excon_hijack.rb'
   Excon.defaults[:middlewares].unshift Excon::Middleware::Hijack
 
-  require_relative 'docker_api_errors.rb'
-  include EnginesDockerApiErrors
-  require_relative 'docker_api_exec.rb'
-  include DockerApiExec
+  require_relative 'dock_face_errors.rb'
+  include EnginesDockFaceErrors
+  require_relative 'dock_face_exec.rb'
+  include DockFaceExec
 
-  require_relative 'docker_api_container_actions.rb'
-  include DockerApiContainerActions
-  require_relative 'docker_api_container_status.rb'
-  include DockerApiContainerStatus
+  require_relative 'dock_face_container_actions.rb'
+  include DockFaceContainerActions
+  require_relative 'dock_face_container_status.rb'
+  include DockFaceContainerStatus
 
-  require_relative 'docker_api_images.rb'
-  include DockerApiImages
+  require_relative 'dock_face_images.rb'
+  include DockFaceImages
 
-  require_relative 'docker_api_container_ops.rb'
-  include DockerApiContainerOps
+  require_relative 'dock_face_container_ops.rb'
+  include DockFaceContainerOps
 
-  require_relative 'docker_api_builder.rb'
-  include DockerApiBuilder
+  require_relative 'dock_face_builder.rb'
+  include DockFaceBuilder
 
   require_relative 'docker_net.rb'
   include DockerNet
@@ -47,7 +47,7 @@ class DockerApi < ErrorsApi
 
   def initialize
     @connection = nil
-    @docker_api_mutex = Mutex.new
+    @dock_face_mutex = Mutex.new
   end
 
   require "base64"

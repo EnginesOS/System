@@ -1,4 +1,4 @@
-module DockerApiCreateOptions
+module DockFaceCreateOptions
   def initialize
     @top_level = nil
   end

@@ -1,18 +1,18 @@
-require_relative 'engines_docker_api_error.rb'
+require_relative 'engines_dock_face_error.rb'
 
-module EnginesDockerApiErrors
+module EnginesDockFaceErrors
   def log_warn_mesg(mesg, *objs)
-    EnginesDockerApiError.new(mesg.to_s, :warning)
+    EnginesDockFaceError.new(mesg.to_s, :warning)
   end
 
   def log_error_mesg(mesg, *objs)
     super
-    EnginesDockerApiError.new(mesg.to_s, :failure)
+    EnginesDockFaceError.new(mesg.to_s, :failure)
   end
 
   def log_exception(e, *objs)
     super
-    EnginesDockerApiError.new(e.to_s,:exception)
+    EnginesDockFaceError.new(e.to_s,:exception)
   end
 
   def error_hash(res, params, status)
@@ -51,7 +51,7 @@ module EnginesDockerApiErrors
 
   def error_type_hash(mesg, params = nil)
     {error_mesg: mesg,
-      system: :docker_api,
+      system: :dock_face,
       params: params }
   end
 end

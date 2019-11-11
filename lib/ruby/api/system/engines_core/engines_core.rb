@@ -101,7 +101,7 @@ class EnginesCore < ErrorsApi
 
   require_relative '../containers/container_dock/container_dock.rb'
   require_relative '../containers/service_dock/service_dock.rb'
-  require_relative '../docker/docker_api.rb'
+  require_relative '../docker/dock_face.rb'
   require_relative '../engines_system/engines_system.rb'
   require '/opt/engines/lib/ruby/service_manager/service_manager.rb'
   require_relative '../registry_handler.rb'
@@ -129,7 +129,7 @@ class EnginesCore < ErrorsApi
     @system_api ||= SystemApi.instance
   end
 
-  def docker_api
-    @docker_api ||= DockerApi.instance
+  def dock_face
+    @dock_face ||= DockFace.instance
   end
 end

@@ -129,7 +129,7 @@ module EnginesOperations
   end
 
   def docker_build_engine(engine_name, build_archive_filename)
-    docker_api.build_engine(engine_name, build_archive_filename)
+    dock_face.build_engine(engine_name, build_archive_filename)
   end
 
   def clear_lost_engines

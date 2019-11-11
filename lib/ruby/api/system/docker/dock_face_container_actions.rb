@@ -1,7 +1,7 @@
-module DockerApiContainerActions
+module DockFaceContainerActions
   def start_container(cid)
     if cid.to_s == '-1' || cid.to_s  == ''
-      EnginesDockerApiError.new('Missing Container id', :warning)
+      EnginesDockFaceError.new('Missing Container id', :warning)
     else
       post({uri: "/containers/#{cid}/start"})
     end
@@ -9,7 +9,7 @@ module DockerApiContainerActions
 
   def pause_container(cid)
     if cid.to_s == '-1' || cid.to_s  == ''
-      EnginesDockerApiError.new('Missing Container id', :warning)
+      EnginesDockFaceError.new('Missing Container id', :warning)
     else
       post({uri: "/containers/#{cid}/pause"})
     end
@@ -17,7 +17,7 @@ module DockerApiContainerActions
 
   def unpause_container(cid)
     if cid.to_s == '-1' || cid.to_s  == ''
-      EnginesDockerApiError.new('Missing Container id', :warning)
+      EnginesDockFaceError.new('Missing Container id', :warning)
     else
       post({uri: "/containers/#{cid}/unpause"})
     end

@@ -1,7 +1,7 @@
 module ServiceOperations
   def signal_service_process(pid, sig, name)
     container = loadManagedService(name)
-    docker_api.signal_container_process(pid, sig, container)
+    dock_face.signal_container_process(pid, sig, container)
   end
 
   def force_reregister_non_persistent_service(service_query)
