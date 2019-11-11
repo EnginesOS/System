@@ -18,7 +18,7 @@ module ManagedContainerControls
   end
 
   def wait_for_startup(timeout = 60)
-    container_api.wait_for_startup(self, timeout)
+    container_dock.wait_for_startup(self, timeout)
   end
 
   def update_memory(new_memory)
@@ -69,6 +69,7 @@ module ManagedContainerControls
     SystemUtils.log_exception(e , 'Delete Engine:' + container_name)
     thr.exit unless thr.nil?
   end
+
   #
   #  def setup_container
   #    if prep_task(:create)
@@ -92,8 +93,8 @@ module ManagedContainerControls
     thr = Thread.new do
       container_mutex.synchronize {
         if prep_task(:create)
-          @domain_name = container_api.default_domain if @domain_name.nil?
-          container_api.initialize_container_env(self)
+          @domain_name = container_dock.default_domain if @domain_name.nil?
+          container_dock.initialize_container_env(self)
           #  SystemDebug.debug(SystemDebug.containers, :teask_preped)
           expire_engine_info
           @id = -1
@@ -252,27 +253,26 @@ module ManagedContainerControls
     }) if prep_task(:build)}
   end
 
-  #  def rebuild_container
-  #    thr = Thread.new do
-  #      container_mutex.synchronize {
-  #        if prep_task(:reinstall)
-  #          #FIX ME need to write the following
-  #          ret_val = container_api.rebuild_image(self)
-  #          expire_engine_info
-  #          if ret_val
-  #            true
-  #          else
-  #            task_failed('rebuild')
-  #          end
-  #        end
-  #      }
-  #    end
-  #    thr.name = "Rebuild:#{container_name}"
-  #    thr
-  #  rescue StandardError =>e
-  #    SystemUtils.log_exception(e , 'Restore:' + container_name)
-  #    thr.exit unless thr.nil?
-  #  end
+  def rebuild_container
+    thr = Thread.new do
+      container_mutex.synchronize {
+        if prep_task(:reinstall)
+          ret_val = container_dock.rebuild_image(self)
+          expire_engine_info
+          if ret_val
+            true
+          else
+            task_failed('rebuild')
+          end
+        end
+      }
+    end
+    thr.name = "Rebuild:#{container_name}"
+    thr
+  rescue StandardError =>e
+    SystemUtils.log_exception(e , 'Restore:' + container_name)
+    thr.exit unless thr.nil?
+  end
 
   def correct_current_state
     case @setState

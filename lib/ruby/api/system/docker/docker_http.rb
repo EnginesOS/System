@@ -6,7 +6,7 @@ module DockerHttp
   def post(p)
     fillin_params(p)
     p[:params] = p[:params].to_json if p[:headers]['Content-Type'] == 'application/json' && ! p[:params].nil?
- #   STDERR.puts('docker uri ' + p[:uri].to_s)
+    STDERR.puts('docker uri ' + p[:uri].to_s)
     @dock_face_mutex.synchronize {
       handle_resp(
       connection.request(
@@ -18,7 +18,6 @@ module DockerHttp
       p[:expect_json])}
   end
 
-  
   def post_stream_request(p)
     fillin_params(p)
 

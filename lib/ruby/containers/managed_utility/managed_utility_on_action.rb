@@ -23,7 +23,6 @@ module ManagedUtilityOnAction
       container_api.save_container_log(self, {max_size: 2048, over_write: true})
       save_state
     }
-    # STDERR.puts('MANAGE UTIL Self Destruct')
     destroy_container
   end
 
