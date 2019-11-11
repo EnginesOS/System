@@ -8,16 +8,15 @@ module EngineApiEvents
 
     def write_event(hash)
       unless hash.nil?
-        STDERR.puts('write_event ' + hash.to_s)
         @wr.write(hash.to_json)
         @wr.write("\n")
         @wr.flush
       end
       true
     rescue StandardError => e
-      STDERR.puts "Exception #{e}"
-      STDERR.puts "Exception BT #{e.backtrace}"
-      STDERR.puts('SHOULD I  CLOSE THIS HERE? TELL ME OH LOG')
+#      STDERR.puts "Exception #{e}"
+#      STDERR.puts "Exception BT #{e.backtrace}"
+#      STDERR.puts('SHOULD I  CLOSE THIS HERE? TELL ME OH LOG')
       stop
     end
 

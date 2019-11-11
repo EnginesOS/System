@@ -1,5 +1,6 @@
 module ManagedServiceOnAction
   def on_start(event_hash)
+    container_mutex.synchronize {
     @stop_reason = nil
  #   SystemDebug.debug(SystemDebug.container_events, :ON_start_MS, event_hash)
     container_mutex.synchronize {
@@ -14,28 +15,28 @@ module ManagedServiceOnAction
       if @consumer_less
         @has_run = true
       else
-        if  @has_run == false
+        if @has_run == false
           add_wap_service if @deployment_type == 'web'
         end
         @has_run = true
         save_state
         begin
-          container_api.register_non_persistent_services(self)
+          container_dock.register_non_persistent_services(self)
         rescue
           return on_stop(nil) unless is_running?
         end
       end
       save_state
-      container_api.register_ports(@container_name, @mapped_ports) if @mapped_ports.is_a?(Hash)
+      container_dock.register_ports(@container_name, @mapped_ports) if @mapped_ports.is_a?(Hash)
     }
-    service_configurations = container_api.pending_service_configurations_hashes({service_name: @container_name, publisher_namespace: @publisher_namespace, type_path: @type_path })
+    service_configurations = container_dock.pending_service_configurations_hashes({service_name: @container_name, publisher_namespace: @publisher_namespace, type_path: @type_path })
     if service_configurations.is_a?(Array) || registered_consumers.is_a?(Array)
       if wait_for_startup(30)
         if service_configurations.is_a?(Array) && ! service_configurations.empty?
           service_configurations.each do |configuration|
             begin
         #      STDERR.puts('SERVICE CONFIGURATION' + configuration.to_s)
-              container_api.update_service_configuration(configuration)
+              container_dock.update_service_configuration(configuration)
             rescue
               return on_stop(nil) unless is_running?
             end
@@ -48,12 +49,13 @@ module ManagedServiceOnAction
       end
     end
     created_and_started if @created == true
+  }
    # SystemDebug.debug(SystemDebug.container_events, :ON_start_complete_MS, event_hash)
   end
 
   def created_and_started
-    container_api.load_and_attach_post_services(self)
-    service_configurations = container_api.retrieve_service_configurations({service_name: @container_name, publisher_namespace: @publisher_namespace, type_path: @type_path})
+    container_dock.load_and_attach_post_services(self)
+    service_configurations = container_dock.retrieve_service_configurations({service_name: @container_name, publisher_namespace: @publisher_namespace, type_path: @type_path})
     if service_configurations.is_a?(Array)
       service_configurations.each do |configuration|
         next if configuration[:no_save] == true
@@ -65,6 +67,7 @@ module ManagedServiceOnAction
   end
 
   def on_stop(what, exit_code = 0)
+    container_mutex.synchronize {
     @exit_code = exit_code
    # SystemDebug.debug(SystemDebug.container_events, :ONStop_CALLED, what)
     @stop_reason = what if @stop_reason.nil?
@@ -74,16 +77,19 @@ module ManagedServiceOnAction
       save_state
       #return true if @consumer_less
       # deregister_with_dns # Really its in the following nowMUst register each time as IP Changes
-      container_api.deregister_non_persistent_services(self)
-      container_api.deregister_ports(@container_name, @mapped_ports) if @mapped_ports.is_a?(Hash)
+      container_dock.deregister_non_persistent_services(self)
+      container_dock.deregister_ports(@container_name, @mapped_ports) if @mapped_ports.is_a?(Hash)
     end
+    }
   end
 
   def out_of_mem(what)
+    container_mutex.synchronize {
  #   SystemDebug.debug(SystemDebug.container_events, :OUTOF_MEM_CALLED, what)
     @out_of_memory = true
     @had_out_memory = true
     save_state
+    }
   end
 
 end

@@ -1,6 +1,12 @@
-#!/bin/bash
+#!/bin/sh
 echo Starting Engines System
-
+test_exit()
+{
+if test $? -ne 0
+  then
+    exit $?
+ fi
+}
 . ~/.bashrc
 
 if test -f /opt/engines/run/system/flags/run_post_system_update
@@ -104,6 +110,8 @@ if  test `/opt/engines/bin/engines service dns state` = running
   /opt/engines/bin/engines service dns start
 fi
    
+ 
+      
 /opt/engines/bin/engines service dns wait_for start 90
 
 /opt/engines/bin/engines service syslog start

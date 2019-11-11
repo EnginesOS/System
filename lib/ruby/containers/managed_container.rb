@@ -20,8 +20,8 @@ module Container
     include  ManagedContainerVolumes
     require_relative 'managed_container/managed_container_web_sites.rb'
     include ManagedContainerWebSites
-    require_relative 'managed_container/managed_container_api.rb'
-    include ManagedContainerApi
+    require_relative 'managed_container/managed_container_dock.rb'
+    include ManagedContainerDock
     require_relative 'managed_container/persistent_services.rb'
     include PersistantServices
     require_relative 'managed_container/managed_container_actionators.rb'
@@ -44,17 +44,21 @@ module Container
     require_relative 'managed_container/managed_container_services.rb'
     include ManagedContainerServices
 
-#    @conf_self_start = false
-#    @conf_zero_conf=false
-#    @restart_required = false
-#    @rebuild_required = false
-#    @large_temp = false
+    #    @conf_self_start = false
+    #    @conf_zero_conf=false
+    #    @restart_required = false
+    #    @rebuild_required = false
+    #    @large_temp = false
 
     attr_accessor  :restart_policy, :volumes_from, :command, :restart_required, :rebuild_required, :environments, :volumes, :image_repo, :capabilities, :conf_register_dns
     def initialize
       super
       @status = {}
       init_task_at_hand
+    end
+
+    def store
+      self.class.store
     end
 
     def info_fs
@@ -101,11 +105,11 @@ module Container
     end
 
     def post_load
-      container_mutex = Mutex.new
       i = @id
-      super
-      status
-      save_state if @id != -1 && @id != i
+      container_mutex.synchronize {
+        super
+        status
+      }
     end
 
     def repo
@@ -155,7 +159,7 @@ module Container
         end
       end
       s.instance_variables.each_with_object({}) do |var, hash|
-        next if var.to_s.delete("@") == 'container_api'
+        next if var.to_s.delete("@") == 'container_dock'
         hash[var.to_s.delete("@")] = s.instance_variable_get(var)
       end
     end
@@ -175,6 +179,10 @@ module Container
         system: :managed_container,
         params: params }
     end
+  end
+
+  def container_save
+    @container_save ||= Mutex.new
   end
 
   def container_mutex

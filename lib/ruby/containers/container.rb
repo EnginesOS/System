@@ -72,7 +72,7 @@ module Container
 
     def encode_with(coder)
       vars = instance_variables.map{|x| x.to_s}
-      vars = vars - ['@docker_info_cache', '@last_result','@container_api','container_mutex']
+      vars = vars - ['@docker_info_cache', '@last_result','@container_dock','container_mutex']
 
       vars.each do |var|
         var_val = eval(var)
@@ -100,8 +100,8 @@ module Container
 
     protected
 
-    def container_api
-      @container_api ||= ContainerApi.instance
+    def container_dock
+      @container_dock ||= ContainerDock.instance
     end
   end
 end

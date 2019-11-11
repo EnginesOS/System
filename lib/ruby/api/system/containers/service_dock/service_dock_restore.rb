@@ -1,0 +1,78 @@
+module ServiceDockRestore
+  @@import_timeout = 300
+  @@export_timeout = 300
+  def service_restore(service, stream, params)
+    raise EnginesException.new(error_hash("failed to import service not running " + service.container_name.to_s)) unless service.is_running?
+    cmd = ["#{SystemConfig.ServiceBackupScriptsRoot}/restore.sh", params[:replace].to_s, params[:section].to_s, params[:parent_engine].to_s] #, params[:section].to_s]
+    params = {container: service, command_line: cmd, log_error: true, stdin_stream: stream}
+    result = {}
+
+    thr = Thread.new { result = core.exec_in_container(params) }
+    thr[:name] = "restore:#{service.container_name}"
+    begin
+      Timeout.timeout(@@import_timeout) do
+        thr.join
+      end
+   #   SystemDebug.debug(SystemDebug.export_import, :import_service,'result ', result.to_s)
+    rescue Timeout::Error
+      thr.kill
+      raise EnginesException.new(error_hash('Import Timeout on Running Action ', params))
+      rescue StandardError => e
+          SystemUtils.log_exception(e , 'service_restore:' + params)
+          thr.exit unless thr.nil?
+    end
+    if result[:result] == 0
+      true
+    else
+      raise EnginesException.new(error_hash("failed to import " + service.container_name.to_s, result))
+    end
+    result
+  end
+
+  def export_service_data(container, service_hash, stream)
+    cmd_dir = "#{SystemConfig.EngineServiceBackupScriptsRoot}/"
+    cmd = "#{cmd_dir}/backup.sh"
+    raise EnginesException.new(error_hash("failed to export service not running " + container.container_name.to_s)) unless container.is_running?
+    params = {container: container, command_line: [cmd], log_error: true, service_variables: service_hash} 
+    params[:stdout_stream] = stream unless stream.nil?
+    export(container, params)
+  end
+
+  def export_data(container, stream)
+
+  #  SystemDebug.debug(SystemDebug.export_import, :export_service, container.container_name)
+    cmd_dir = "#{SystemConfig.ServiceBackupScriptsRoot}/"
+    raise EnginesException.new(error_hash("failed to export service not running " + container.container_name.to_s)) unless container.is_running?
+    cmd = "#{cmd_dir}/backup.sh"
+    params = {container: container, command_line: [cmd], log_error: true}
+    params[:stdout_stream] = stream unless stream.nil?
+ #   SystemDebug.debug(SystemDebug.export_import, :export_service, cmd)
+    export(container, params)
+  end
+
+  def export(container, params)
+    begin
+      result = {result:  0}
+      thr = Thread.new { result = core.exec_in_container(params) }
+  thr[:name] = "export:#{params}"
+      Timeout.timeout(@@export_timeout) do
+        thr.join
+    #    SystemDebug.debug(SystemDebug.export_import, :export_service, container.container_name, 'result code =', result[:result])
+        result
+      end
+    rescue Timeout::Error
+      thr.kill unless thr.nil?
+      result[:result] = -1;
+      result[:stderr] = "Export Timeout on Running Action:#{cmd}:#{result[:stderr]}"
+      #raise EnginesException.new(error_hash('Export Timeout on Running Action ', cmd))
+    rescue StandardError => e
+        SystemUtils.log_exception(e , 'export:' + params)
+        thr.exit unless thr.nil?
+    end
+    if result[:result] == 0
+      result #[stdout]
+    else
+      raise EnginesException.new(error_hash("failed to export " + @result.to_s, container.container_name))
+    end
+  end
+end

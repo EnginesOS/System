@@ -138,15 +138,17 @@ module TaskAtHand
   end
 
   def task_complete(action)
-    @steps_to_go = 0 if @steps_to_go.nil?
-    #  SystemDebug.debug(SystemDebug.engine_tasks, :task_complete, ' ', action.to_s + ' as action for task ' +  task_at_hand.to_s + " " + @steps_to_go.to_s + '-1 stesp remaining step completed ',@steps)
-    clear_task_at_hand
-    # SystemDebug.debug(SystemDebug.builder, :last_task,  @last_task, :steps_to, @steps_to_go)
-    return save_state unless @last_task == :delete_image && @steps_to_go <= 0
-    # FixMe Kludge unless docker event listener
-    #   SystemDebug.debug(SystemDebug.builder, :delete_engine,  @last_task, :steps_to, @steps_to_go)
-    delete_engine
-    true
+    container_mutex.synchronize {
+      @steps_to_go = 0 if @steps_to_go.nil?
+      #  SystemDebug.debug(SystemDebug.engine_tasks, :task_complete, ' ', action.to_s + ' as action for task ' +  task_at_hand.to_s + " " + @steps_to_go.to_s + '-1 stesp remaining step completed ',@steps)
+      clear_task_at_hand
+      # SystemDebug.debug(SystemDebug.builder, :last_task,  @last_task, :steps_to, @steps_to_go)
+      return save_state unless @last_task == :delete_image && @steps_to_go <= 0
+      # FixMe Kludge unless docker event listener
+      #   SystemDebug.debug(SystemDebug.builder, :delete_engine,  @last_task, :steps_to, @steps_to_go)
+      delete_engine
+      true
+    }
   end
 
   def task_at_hand
@@ -221,7 +223,7 @@ module TaskAtHand
   def task_failed(msg)
     clear_task_at_hand
     #   SystemDebug.debug(SystemDebug.engine_tasks, :TASK_FAILES______Doing, @task_at_hand)
-    @last_error = container_api.last_error unless container_api.nil?
+    @last_error = container_dock.last_error unless container_dock.nil?
     #  SystemDebug.debug(SystemDebug.engine_tasks, :WITH, @last_error.to_s, msg.to_s)
     task_complete(:failed)
     false

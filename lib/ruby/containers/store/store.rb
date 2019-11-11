@@ -1,5 +1,5 @@
 require '/opt/engines/lib/ruby/api/system/container_state_files'
-
+require_relative 'files'
 require_relative 'cache'
 require_relative 'store_locking'
 
@@ -31,7 +31,7 @@ module Container
     end
 
     #looking waits on this thread to complete
-    def save(c) 
+    def save(c)
       t = Thread.new  { _save(c) }
       t.join
     end
@@ -40,7 +40,7 @@ module Container
       STDERR.puts "Save #{c.container_name} #{container_conf_locks}"
       c.clear_to_save
       statefile = state_file(c, true)
-      statedir = ContainerStateFiles.container_state_dir(c.store_address)
+      statedir = container_state_dir(c.store_address)
       errors_api.log_error_mesg('container locked', c.container_name) unless lock(statefile)
       backup_state_file(statefile)
       serialized_object = YAML.dump(c)
@@ -63,7 +63,7 @@ module Container
       ensure
         f.close unless f.nil?
       end
-        ts = File.mtime(statefile) 
+        ts = File.mtime(statefile)
         cache.add(c, ts) unless cache.update(c, ts)
     rescue StandardError => e
       c.last_error = e.to_s unless c.nil?
@@ -92,22 +92,6 @@ module Container
         f.close unless f.nil?
         unlock(n)
       end
-    end
-
-    def file(name)
-      File.new(file_name(name), 'r')
-    end
-
-    def file_exists?(name)
-      File.exist?(file_name(name))
-    end
-
-    def file_name(name)
-      "#{store_directory}/#{name}/running.yaml"
-    end
-
-    def store_directory
-      "#{SystemConfig.RunDir}/#{container_type}s"
     end
 
     def model_class
@@ -145,7 +129,7 @@ module Container
     end
 
     def state_file(container, create = true)
-      state_dir = ContainerStateFiles.container_state_dir(container.store_address)
+      state_dir = container_state_dir(container.store_address)
       FileUtils.mkdir_p(state_dir) if Dir.exist?(state_dir) == false && create == true
       "#{state_dir}/running.yaml"
     end

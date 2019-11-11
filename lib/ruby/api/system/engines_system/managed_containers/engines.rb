@@ -52,7 +52,6 @@ module Engines
 #    SystemDebug.debug(SystemDebug.services,'Changing Domainame to ', domain_name)
     container.remove_wap_service
     container.set_hostname_details(hostname, domain_name)
-    container.save_state
     container.add_wap_service
     true
   end
@@ -60,6 +59,6 @@ module Engines
   protected
 
   def container_store
-    Container::Store.instance
+    Container::ManagedEngine.store
   end
 end

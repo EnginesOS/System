@@ -2,11 +2,18 @@ module Container
   class ManagedUtility< ManagedContainer
     require_relative 'managed_utility_on_action.rb'
     include ManagedUtilityOnAction
+
+   class << self
+      def store
+        @@utility_store ||= UtilityStore.new
+      end
+    end
+
     def post_load
       # Basically parent super but no lock on image
       expire_engine_info
       begin
-        info = container_api.inspect_container_by_name(@container_name)
+        info = container_dock.inspect_container_by_name(@container_name)
         @id = info[:Id] if info.is_a?(Hash)
       rescue
       end
@@ -59,7 +66,7 @@ module Container
       end
       wait_for('nocontainer') if has_container?
       begin
-        container_api.destroy_container(self) if has_container?
+        container_dock.destroy_container(self) if has_container?
         wait_for('nocontainer')
       rescue
       end

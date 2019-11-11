@@ -19,18 +19,18 @@ module ManagedServiceConsumers
           @aliases.each do |type_path|
             alias_services ||= []
             params[:type_path] = type_path
-            reg = container_api.get_registered_consumer(params)
+            reg = container_dock.get_registered_consumer(params)
             alias_services += reg if reg.is_a?(Array)
           end
         end
       end
       unless alias_services.nil?
         params[:type_path] = @type_path
-        reg_services =   container_api.registered_with_service(params)
+        reg_services =   container_dock.registered_with_service(params)
         alias_services += reg_services if reg_services.is_a?(Array)
         return alias_services
       end
-      container_api.registered_with_service(params)
+      container_dock.registered_with_service(params)
     else
       registered_consumer(params)
     end
@@ -44,7 +44,7 @@ module ManagedServiceConsumers
     }
     service_params[:service_handle] = params[:service_handle] if params.key?(:service_handle)
 
-    container_api.get_registered_consumer(service_params)
+    container_dock.get_registered_consumer(service_params)
   end
 
   def reregister_consumers
@@ -88,17 +88,13 @@ module ManagedServiceConsumers
         result = add_consumer_to_service(service_hash)
       end
     end
-
-    #note we add to service regardless of whether the consumer is already registered
-    #for a reason
-    save_state if result
     result
   end
 
   def update_consumer(service_hash)
     raise EnginesException.new(error_hash('service missing cont_user_id '+ container_name, service_hash)) unless check_cont_uid
     raise EnginesException.new(error_hash('service startup not complete ' + container_name, service_hash)) unless is_startup_complete?
-    container_api.update_consumer_on_service(self, service_hash)
+    container_dock.update_consumer_on_service(self, service_hash)
   end
 
   private
@@ -112,12 +108,12 @@ module ManagedServiceConsumers
         raise EnginesException.new(error_hash('service startup not complete ' + container_name, service_hash))
       end
     end
-    container_api.add_consumer_to_service(self, service_hash)
+    container_dock.add_consumer_to_service(self, service_hash)
   end
 
   def rm_consumer_from_service(service_hash)
     raise EnginesException.new(error_hash('service startup not complete ' + container_name,service_hash)) unless is_startup_complete?
-    container_api.rm_consumer_from_service(self, service_hash)
+    container_dock.rm_consumer_from_service(self, service_hash)
   end
 
 end

@@ -23,8 +23,7 @@ class EventListener
       if mask & 32768 == 0 # @@container_top == 0
         hash[:state] = state_from_status(hash[:status])
         # SystemDebug.debug(SystemDebug.container_events, 'fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
-        begin
-          STDERR.puts('firing ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
+        begin        
           thr = Thread.new {@object.method(@method).call(hash)}
           thr.name = "#{@object}:#{@method}"
           r = true

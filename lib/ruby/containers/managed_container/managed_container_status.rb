@@ -6,17 +6,12 @@ module ManagedContainerStatus
       false
     end
   end
-#
-  def save_state
-    status
-    container_api.save_container(self.dup)
-  end
 
   def read_state
     state = super
     if state == 'na'
       expire_engine_info
-    #  SystemDebug.debug(SystemDebug.containers, container_name, 'in na',  :info)
+      #  SystemDebug.debug(SystemDebug.containers, container_name, 'in na',  :info)
       'nocontainer'
     else
       state
@@ -52,7 +47,7 @@ module ManagedContainerStatus
   rescue EnginesException =>e
     expire_engine_info
     'nocontainer'
-    clear_cid 
+    clear_cid
     raise e
   end
 
@@ -69,7 +64,7 @@ module ManagedContainerStatus
     end
     r
   end
-  
+
   def set_debug
     ContainerStateFiles.set_debug(store_address)
   end
@@ -77,7 +72,7 @@ module ManagedContainerStatus
   def clear_debug
     ContainerStateFiles.clear_debug(store_address)
   end
-    
+
   def clear_error
     #Sychronise somewhere
     @out_of_memory = false
@@ -105,12 +100,19 @@ module ManagedContainerStatus
   def in_two_step?
     File.exist?("#{ContainerStateFiles.container_state_dir(store_address)}/in_progress")
   end
-  
+
   def container_id
-    if @id == -1 || @id.nil?   
-     @id = read_container_id
-    end 
-     @id 
+    if @id == -1 || @id.nil?
+      @id = read_container_id
+    end
+    @id
+  end
+
+  protected
+
+  def save_state
+    status
+    container_api.save_container(self.dup)
   end
 
 end

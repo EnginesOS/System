@@ -35,7 +35,6 @@ module DockerInfoCollector
   def set_cont_id
     if @id.to_s == '-1'  || @id.to_s == '' || @id.is_a?(FalseClass) || @id.is_a?(TrueClass)
       @id = read_container_id
-      save_state unless @id.to_s == '-1'
     end
   end
 
@@ -53,7 +52,7 @@ module DockerInfoCollector
     cid = @id
     #  SystemDebug.debug(SystemDebug.containers, 'read container from file ', @container_id)
     if @id == -1 || @id.nil? # && setState != 'nocontainer'
-      info = container_api.inspect_container_by_name(@container_name) # docker_info
+      info = container_dock.inspect_container_by_name(@container_name) # docker_info
       info = info[0] if info.is_a?(Array)
       if info.key?(:RepoTags)
         #No container by that name and it will return images by that name WTF
@@ -88,7 +87,7 @@ module DockerInfoCollector
     if @docker_info_cache == false && @setState == 'nocontainer'
       false
     else
-      @docker_info_cache = container_api.inspect_container(container_id) if @docker_info_cache.nil?
+      @docker_info_cache = container_dock.inspect_container(container_id) if @docker_info_cache.nil?
       @docker_info_cache = @docker_info_cache[0] if @docker_info_cache.is_a?(Array)
       @docker_info_cache
     end

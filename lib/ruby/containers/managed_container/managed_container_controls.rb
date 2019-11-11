@@ -1,5 +1,6 @@
 module ManagedContainerControls
   def reinstall_engine
+    container_mutex.synchronize {
     build_controller.reinstall_engine( {
       engine_name: container_name,
       domain_name: domain_name,
@@ -11,7 +12,7 @@ module ManagedContainerControls
       repository_url: container_name,
       variables: environments,
       reinstall: true
-    }) if prep_task(:build)
+    }) if prep_task(:build) }
   rescue StandardError =>e
     SystemUtils.log_exception(e , 'Reinstall:' + container_name)
   end
@@ -21,29 +22,33 @@ module ManagedContainerControls
   end
 
   def update_memory(new_memory)
-    super
-    @memory = new_memory
-    save_state
-    update_environment('Memory', new_memory, true)
+    container_mutex.synchronize {
+      super
+      @memory = new_memory
+      update_environment('Memory', new_memory, true)
+      save_state
+    }
   end
 
   def destroy_container(reinstall = false)
     thr = Thread.new do
-      if reinstall == true
-        task = prep_task(:reinstall)
-      else
-        task = prep_task(:destroy)
-      end
-      if task
-        if super()  # need () to avoid passing as super(reinstall)
-          clear_cid
-          true
+      container_mutex.synchronize {
+        if reinstall == true
+          task = prep_task(:reinstall)
         else
-          task_failed('destroy') # need () to avoid passing as super(reinstall)
+          task = prep_task(:destroy)
         end
-      else
-        false
-      end
+        if task
+          if super()  # need () to avoid passing as super(reinstall)
+            clear_cid
+            true
+          else
+            task_failed('destroy') # need () to avoid passing as super(reinstall)
+          end
+        else
+          false
+        end
+      }
     end
     thr.name = "Destroy:#{container_name}"
     thr
@@ -54,7 +59,9 @@ module ManagedContainerControls
 
   def delete_engine
     thr = Thread.new do
-      container_api.delete_engine(self)
+      container_mutex.synchronize {
+        container_api.delete_engine(self)
+      }
     end
     thr.name = "Delete:#{container_name}"
     thr
@@ -62,23 +69,23 @@ module ManagedContainerControls
     SystemUtils.log_exception(e , 'Delete Engine:' + container_name)
     thr.exit unless thr.nil?
   end
-
-  def setup_container
-    if prep_task(:create)
-      ret_val = false
-      unless has_container?
-        ret_val = container_api.setup_container(self)
-        expire_engine_info
-      else
-        task_failed('setup')
-        raise EnginesException.new(warning_hash('Cannot create container as container exists ', state))
-      end
-      retval = task_failed('setup') unless ret_val
-    else
-      retval = false
-    end
-    retval
-  end
+  #
+  #  def setup_container
+  #    if prep_task(:create)
+  #      ret_val = false
+  #      unless has_container?
+  #        ret_val = container_api.setup_container(self)
+  #        expire_engine_info
+  #      else
+  #        task_failed('setup')
+  #        raise EnginesException.new(warning_hash('Cannot create container as container exists ', state))
+  #      end
+  #      retval = task_failed('setup') unless ret_val
+  #    else
+  #      retval = false
+  #    end
+  #    retval
+  #  end
 
   def create_container
     #   SystemDebug.debug(SystemDebug.containers, :teask_preping)
@@ -230,6 +237,7 @@ module ManagedContainerControls
   end
 
   def restore_engine
+    container_mutex.synchronize {
     build_controller.restore_engine({
       engine_name: container_name,
       domain_name: domain_name,
@@ -241,29 +249,30 @@ module ManagedContainerControls
       variables: environments,
       reinstall: true,
       restore: true
-    }) if prep_task(:build)
+    }) if prep_task(:build)}
   end
 
-  def rebuild_container
-    thr = Thread.new do
-      container_mutex.synchronize {
-        if prep_task(:reinstall)
-          ret_val = container_api.rebuild_image(self)
-          expire_engine_info
-          if ret_val
-            true
-          else
-            task_failed('rebuild')
-          end
-        end
-      }
-    end
-    thr.name = "Rebuild:#{container_name}"
-    thr
-  rescue StandardError =>e
-    SystemUtils.log_exception(e , 'Restore:' + container_name)
-    thr.exit unless thr.nil?
-  end
+  #  def rebuild_container
+  #    thr = Thread.new do
+  #      container_mutex.synchronize {
+  #        if prep_task(:reinstall)
+  #          #FIX ME need to write the following
+  #          ret_val = container_api.rebuild_image(self)
+  #          expire_engine_info
+  #          if ret_val
+  #            true
+  #          else
+  #            task_failed('rebuild')
+  #          end
+  #        end
+  #      }
+  #    end
+  #    thr.name = "Rebuild:#{container_name}"
+  #    thr
+  #  rescue StandardError =>e
+  #    SystemUtils.log_exception(e , 'Restore:' + container_name)
+  #    thr.exit unless thr.nil?
+  #  end
 
   def correct_current_state
     case @setState
@@ -294,11 +303,11 @@ module ManagedContainerControls
   end
 
   protected
-  
+
   def container_mutex
-     @container_mutex ||= Mutex.new
-   end
-   
+    @container_mutex ||= Mutex.new
+  end
+
   def prep_task(action_sym)
     tah = task_at_hand
     STDERR.puts("TAH   #{tah} action #{action_sym}")
