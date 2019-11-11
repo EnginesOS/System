@@ -5,14 +5,14 @@ module EnginesApiSystem
     core.web_sites_for(container)
   end
 
-  def initialize_container_env(container)
-    container.environments = [] unless container.environments.is_a?(Array)
-    set_locale_env(container)
-    replace_or_add_if_new(container.environments, {
+  def initialize_container_env(c)
+    c.environments = [] unless c.environments.is_a?(Array)
+    set_locale_env(c)
+    replace_or_add_if_new(c.environments, {
       name: 'external_domain_name',
       value: default_domain,
       immutable: false})
-    replace_or_add_if_new(container.environments, {
+    replace_or_add_if_new(c.environments, {
       name: 'Engines_Debug_Run',
       value: false ,
       immutable: false}
@@ -31,40 +31,40 @@ module EnginesApiSystem
     environments.push(EnvironmentVariable.new(env_hash)) unless d_set.is_a?(TrueClass)
   end
 
-  def get_container_memory_stats(container)
-    MemoryStatistics.get_container_memory_stats(container)
+  def get_container_memory_stats(c)
+    MemoryStatistics.get_container_memory_stats(c)
   end
 
-  def delete_engine(container)
+  def delete_engine(c)
     #   SystemDebug.debug(SystemDebug.containers,  :container_dock_delete_engine, container)
-    Container::Cache.instance.remove(container.container_name)
+    Container::Cache.instance.remove(c.container_name)
     volbuilder = core.loadManagedUtility('fsconfigurator')
-    system_api.delete_container_configs(volbuilder, container)
+    system_api.delete_container_configs(volbuilder, c)
   end
 
-  def get_container_network_metrics(container)
-    system_api.get_container_network_metrics(container)
+  def get_container_network_metrics(c)
+    system_api.get_container_network_metrics(c)
   end
 
-  def save_container(container)
-    system_api.save_container(container)
+  def save_container(c)
+    system_api.save_container(c)
   end
 
-  def save_container_log(container, options)
-    system_api.save_container_log(container, options)
+  def save_container_log(c, options)
+    system_api.save_container_log(c, options)
   end
 
   def default_domain
     core.default_domain
   end
 
-  def pre_start_checks(container)
+  def pre_start_checks(c)
     r = true
-    unless have_enough_ram?(container)
-      r = "Free memory#{system_api.available_ram} Required:#{memory_required(container)}\n"
+    unless have_enough_ram?(c)
+      r = "Free memory#{system_api.available_ram} Required:#{memory_required(c)}\n"
     end
-    if (c = port_clash?(container.mapped_ports))
-      r = c
+    if (p = port_clash?(c.mapped_ports))
+      r = p
     end
     r
   end
@@ -106,12 +106,12 @@ module EnginesApiSystem
     end
   end
 
-  def memory_required(container)
-    SystemConfig.MinimumFreeRam.to_i + container.memory.to_i * 0.7
+  def memory_required(c)
+    SystemConfig.MinimumFreeRam.to_i + c.memory.to_i * 0.7
   end
 
-  def have_enough_ram?(container)
-    if system_api.available_ram > memory_required(container)
+  def have_enough_ram?(c)
+    if system_api.available_ram > memory_required(c)
       true
     else
       false
@@ -134,12 +134,12 @@ module EnginesApiSystem
 #    system_api.container_cid_file(ca)
 #  end
 
-  def run_cronjob(cronjob, container)
+  def run_cronjob(cronjob, c)
     if container.is_running?
-      cron_entry = core.retreive_cron_entry(cronjob, container)
+      cron_entry = core.retreive_cron_entry(cronjob, c)
       # STDERR.puts(' retreive cron entry from engine registry ' + cron_entry.to_s + ' from ' + cronjob.to_s )
       raise EnginesException.new(error_hash('nil cron line ' + cronjob.to_s )) if cron_entry.nil?
-      r = dock_face.docker_exec({container: container,
+      r = dock_face.docker_exec({container: c,
         command_line: cron_entry.split(" "),
         log_error: true,
         data: nil,
@@ -151,8 +151,8 @@ module EnginesApiSystem
     end
   end
 
-  def certificates(container)
-    core.containers_certificates(container)
+  def certificates(c)
+    core.containers_certificates(c)
   rescue
     nil
   end

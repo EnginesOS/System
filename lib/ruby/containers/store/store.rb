@@ -40,7 +40,7 @@ module Container
       STDERR.puts "Save #{c.container_name} #{container_conf_locks}"
       c.clear_to_save
       statefile = state_file(c, true)
-      statedir = container_state_dir(c.store_address)
+      statedir = container_state_dir(c.container_name)
       errors_api.log_error_mesg('container locked', c.container_name) unless lock(statefile)
       backup_state_file(statefile)
       serialized_object = YAML.dump(c)
@@ -128,8 +128,8 @@ module Container
       end
     end
 
-    def state_file(container, create = true)
-      state_dir = container_state_dir(container.store_address)
+    def state_file(c, create = true)
+      state_dir = container_state_dir(c.container_name)
       FileUtils.mkdir_p(state_dir) if Dir.exist?(state_dir) == false && create == true
       "#{state_dir}/running.yaml"
     end

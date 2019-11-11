@@ -17,52 +17,52 @@ module Container
       "#{SystemConfig.RunDir}/#{container_type}s"
     end
 
-    def secrets_dir(ca)
-      "/var/lib/engines/secrets/#{container_ns(ca)}"
+    def secrets_dir(cn)
+      "/var/lib/engines/secrets/#{container_ns(cn)}"
     end
 
-    def kerberos_dir(ca)
-      "/var/lib/engines/services/auth/etc/krb5kdc/#{container_ns(ca)}"
+    def kerberos_dir(cn)
+      "/var/lib/engines/services/auth/etc/krb5kdc/#{container_ns(cn)}"
     end
 
-    def schedules_dir(ca)
-      "#{container_state_dir(ca)}/schedules/"
+    def schedules_dir(cn)
+      "#{container_state_dir(cn)}/schedules/"
     end
 
-    def schedules_file(ca)
-      "#{schedules_dir(ca)}/schedules.yaml"
+    def schedules_file(cn)
+      "#{schedules_dir(cn)}/schedules.yaml"
     end
 
-    def actionator_dir(ca)
-      "#{container_state_dir(ca)}/actionators/"
+    def actionator_dir(cn)
+      "#{container_state_dir(cn)}/actionators/"
     end
 
-    def key_dir(ca)
-      "#{SystemConfig.SSHStore}/#{container_ns(ca)}"
+    def key_dir(cn)
+      "#{SystemConfig.SSHStore}/#{container_ns(cn)}"
     end
 
-    def container_cid_file(ca)
-      "#{SystemConfig.CidDir}/#{ca[:c_name]}.cid"
+    def container_cid_file(cn)
+      "#{SystemConfig.CidDir}/#{cn}.cid"
     end
 
-    def container_log_dir(ca)
-      "#{SystemConfig.SystemLogRoot}/#{container_ns(ca)}"
+    def container_log_dir(cn)
+      "#{SystemConfig.SystemLogRoot}/#{container_ns(cn)}"
     end
 
-    def container_ssh_keydir(ca)
-      "#{SystemConfig.SSHStore}/#{container_ns(ca)}"
+    def container_ssh_keydir(cn)
+      "#{SystemConfig.SSHStore}/#{container_ns(cn)}"
     end
 
-    def container_state_dir(ca)
-      "#{SystemConfig.RunDir}/#{container_ns(ca)}"
+    def container_state_dir(cn)
+      "#{store_directory}/#{cn}"
     end
 
-    def container_rflag_dir(ca)
-      "#{container_state_dir(ca)}/run/flags"
+    def container_rflag_dir(cn)
+      "#{container_state_dir(cn)}/run/flags"
     end
 
-    def container_ns(ca)
-      "#{ca[:c_type]}s/#{ca[:c_name]}"
+    def container_ns(cn)
+      "#{container_type}s/#{cn}"
     end
   end
 end

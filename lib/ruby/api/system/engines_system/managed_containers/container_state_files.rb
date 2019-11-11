@@ -1,7 +1,7 @@
 module ContainerSystemStateFiles
- 
+  
   def delete_container_configs(volbuilder, c)
-    cidfile = "#{SystemConfig.CidDir}/#{c.container_name}.cid"
+    cidfile = ContainerStateFiles.container_cid_file(c.store_address)
     File.delete(cidfile) if File.exist?(cidfile)
     result = volbuilder.execute_command(:remove, {target: c.container_name})
     volbuilder.wait_for('destroy', 30)

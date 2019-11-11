@@ -1,5 +1,4 @@
 class ContainerStateFiles
-
   class << self
     def build_running_service(service_name, service_type_dir)
       config_template_file_name = "#{service_type_dir}/#{service_name}/config.yaml"
@@ -23,56 +22,80 @@ class ContainerStateFiles
 
   class << self # container store directories & files
     def secrets_dir(ca)
-      "/var/lib/engines/secrets/#{container_ns(ca)}"
+      which_store(ca[:c_type]).secrets_dir(ca[:c_name])
     end
 
     def kerberos_dir(ca)
-      "/var/lib/engines/services/auth/etc/krb5kdc/#{container_ns(ca)}"
+      which_store(ca[:c_type]).kerberos_dir(ca[:c_name])
     end
 
     def schedules_dir(ca)
-      "#{container_state_dir(ca)}/schedules/"
+      which_store(ca[:c_type]).schedules_dir(ca[:c_name])
     end
 
     def schedules_file(ca)
-      "#{schedules_dir(ca)}/schedules.yaml"
+      which_store(ca[:c_type]).schedules_file(ca[:c_name])
     end
 
     def actionator_dir(ca)
-      "#{container_state_dir(ca)}/actionators/"
+      which_store(ca[:c_type]).actionator_dir(ca[:c_name])
     end
 
     def key_dir(ca)
-      "#{SystemConfig.SSHStore}/#{container_ns(ca)}"
+      which_store(ca[:c_type]).key_dir(ca[:c_name])
     end
 
     def container_cid_file(ca)
-      "#{SystemConfig.CidDir}/#{ca[:c_name]}.cid"
+      which_store(ca[:c_type]).container_cid_file(ca[:c_name])
     end
 
     def container_log_dir(ca)
-      "#{SystemConfig.SystemLogRoot}/#{container_ns(ca)}"
+      which_store(ca[:c_type]).container_log_dir(ca[:c_name])
     end
 
     def container_ssh_keydir(ca)
-      "#{SystemConfig.SSHStore}/#{container_ns(ca)}"
-    end
-
-    def container_service_dir(sn)
-      "#{SystemConfig.RunDir}/services/#{sn}"
-    end
-
-    def container_disabled_service_dir(sn)
-      "#{SystemConfig.RunDir}/services-disabled/#{sn}"
+      which_store(ca[:c_type]).container_ssh_keydir(ca[:c_name])
     end
 
     def container_state_dir(ca)
-      "#{SystemConfig.RunDir}/#{container_ns(ca)}"
+      which_store(ca[:c_type]).container_state_dir(ca[:c_name])
     end
 
     def container_rflag_dir(ca)
-      "#{container_state_dir(ca)}/run/flags"
+      which_store(ca[:c_type]).container_rflag_dir(ca[:c_name])
     end
+
+    protected
+
+    def container_store
+      Container::ManagedEngine.store
+    end
+
+    def utility_store
+      Container::ManagedUtility.store
+    end
+
+    def service_store
+      Container::ManagedService.store
+    end
+
+    def system_service_store
+      Container::SystemService.store
+    end
+
+    def which_store(ctype)
+      case ctype
+      when 'service'
+        service_store
+      when 'app'
+        container_store
+      when 'system_service'
+        system_service_store
+      when 'utility'
+        utility_store
+      end
+    end
+
   end
 
   class << self
