@@ -207,8 +207,7 @@ end
 
 def symbolize_tree(t)
   STDERR.puts("Symbolising " + t.class.name)
-  ns = t.children
-  ns.each do |n|
+  t.children.each do |n|
     n.content = symbolize_keys(n.content) if n.content.is_a?(Hash)
     symbolize_tree(n)
   end
