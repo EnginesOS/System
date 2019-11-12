@@ -1,10 +1,11 @@
 module ManagedContainerDock
 
-  def clear_to_save    
+  def clear_to_save
     @container_dock = nil
     @last_result = nil
     @container_mutex = nil
     @builder = nil
+    @store = nil
     expire_engine_info
   end
 

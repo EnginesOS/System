@@ -112,7 +112,7 @@ module ManagedContainerStatus
 
   def save_state
     status
-    container_dock.save_container(self.dup)
+    container_dock.save_container(self)
   end
 
 end

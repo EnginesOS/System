@@ -2,7 +2,6 @@ require '/opt/engines/lib/ruby/api/system/errors_api'
 
 module Container
   class Store
-    protected
 
     @@lock_timeout = 5
     def unlock(lock_key)

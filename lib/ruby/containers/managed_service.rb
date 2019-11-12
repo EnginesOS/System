@@ -28,6 +28,11 @@ module Container
       end
     end
 
+    def_delegators :memento,
+      :persistent,
+      :type_path,
+      :publisher_namespace
+
     @ctype='service'
     @soft_service = false
 
@@ -48,8 +53,6 @@ module Container
         false
       end
     end
-
-    attr_reader :persistent, :type_path, :publisher_namespace
 
     def to_service_hash()
       { :publisher_namespace => @publisher_namespace,

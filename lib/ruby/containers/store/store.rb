@@ -1,7 +1,8 @@
 require '/opt/engines/lib/ruby/api/system/container_state_files'
 require_relative 'files'
 require_relative 'cache'
-require_relative 'store_locking'
+require_relative 'locking'
+require_relative 'memento'
 
 module Container
   class Store
@@ -43,7 +44,7 @@ module Container
       statedir = container_state_dir(c.container_name)
       errors_api.log_error_mesg('container locked', c.container_name) unless lock(statefile)
       backup_state_file(statefile)
-      serialized_object = YAML.dump(c)
+      serialized_object = YAML.dump(c.memento)
       f = File.new("#{statefile}_tmp", File::CREAT | File::TRUNC | File::RDWR, 0600) # was statefile + '_tmp
       begin
         f.puts(serialized_object)

@@ -12,40 +12,57 @@ module Container
     require_relative 'managed_engine/managed_engine_on_action.rb'
     include ManagedEngineOnAction
 
+    def_delegators :memento,
+      :plugins_path,
+      :extract_plugins,
+      :web_root
+
     def initialize(build_params, runtime_params)
+      @ctype = 'app'
       @memory = build_params[:memory]
-      @hostname = build_params[:host_name]
-      @domain_name = build_params[:domain_name]
       @container_name = build_params[:engine_name]
-      @repository  = build_params[:repository_url]
-      @image  = build_params[:image]
+      @image = build_params[:image]
+      @web_port = build_params[:web_port]
+      @mapped_ports = build_params[:mapped_ports]
+      @setState = 'running'
+
       @last_error = 'None'
-      @protocol = build_params[:http_protocol]
-      @volumes = build_params[:volumes]
-      @environments = runtime_params.environments
+      @last_result = ''
+
       @framework = runtime_params.framework
       @runtime = runtime_params.runtime
-      @mapped_ports = build_params[:mapped_ports]
+      @repository  = build_params[:repository_url]
       @data_uid = build_params[:data_uid]
       @data_gid = build_params[:data_gid]
       @cont_user_id = build_params[:cont_user_id]
-      @conf_register_dns = true
-      @conf_zero_conf = true
+      @protocol = build_params[:http_protocol]
+      # what about preferred protocol?
       @deployment_type = runtime_params.deployment_type
-      @host_network = false
-      @web_port = build_params[:web_port]
-      @web_root = runtime_params.web_root
-      @last_result = ''
-      @setState = 'running'
-      @ctype = 'app'
+      # what about dependent on?
+      @hostname = build_params[:host_name]
+      @domain_name = build_params[:domain_name]
       @conf_self_start = true
+      # what about large_temp?
+
+      # what about restart_policy ?
+      # what about restart_required?
+      # what about rebuild_required?
+      @volumes = build_params[:volumes]
+      # what about volumes_from?
+      # what about command?
+      @environments = runtime_params.environments
+      # what about image_repo?
       @capabilities = runtime_params.capabilities
+      @conf_register_dns = true
+
+      @conf_zero_conf = true
+      @host_network = false
+      @web_root = runtime_params.web_root
       @volume_service_builder = build_params[:service_builder]
+
       expire_engine_info
       save_state # no running.yaml throws a no such container so save so others can use
     end
-
-    attr_reader :plugins_path, :extract_plugins, :web_root, :cont_user_id, :data_uid, :data_gid
 
     def lock_values
       @ctype = 'app' if @ctype.nil?

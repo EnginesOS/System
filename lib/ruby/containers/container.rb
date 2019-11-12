@@ -1,8 +1,12 @@
+require 'forwardable'
+
 require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 require '/opt/engines/lib/ruby/api/system/container_state_files.rb'
 
 module Container
   class Container < ErrorsApi
+    extend Forwardable
+
     require_relative 'container/container_setup.rb'
     include ContainerSetup
     require_relative 'container/container_controls.rb'
@@ -17,30 +21,33 @@ module Container
     include RunningContainerStatistics
     require_relative 'container/engines_api_access.rb'
     include EnginesApiAccess
-    def self.from_yaml(yaml)
-      container = YAML::load(yaml)
-      raise EnginesException.new(error_hash('Failed to Load yaml_' + @container_name.to_s + '_ nil', yaml[0..256])) if container.nil?
-      raise EnginesException.new(error_hash('Failed to Load yaml_' + @container_name.to_s + '_ false', yaml[0..256])) if container.is_a?(FalseClass)
-      container.post_load
-      container
+
+    def self.from_yaml(yaml) # FIX ME: should be in the store for symetry with save
+      Memento.from_yaml(yaml).container { |c| c.post_load }
+
+      # c = Memento.from_yaml(yaml).container
+      # c.post_load
+      # c
     rescue StandardError => e
       STDERR.puts('Problem ' + e.to_s)
       STDERR.puts('With: ' + yaml.to_s)
       raise e
     end
 
-    attr_reader   :memory,
-    :container_name,
-    :image,
-    :web_port,
-    :volumes,
-    :mapped_ports,
-    :environments,
-    :setState
-
-    attr_accessor :last_error,
-    :last_result,
-    :arguments
+    attr_reader: :memento
+ 
+    def_delegators :memento,
+      :ctype,
+      :container_name,
+      :image,
+      :web_port,
+      :volumes,
+      :mapped_ports,
+      :environments,
+      :setState,
+      :last_error,
+      :last_result,
+      :arguments
 
     def update_memory(new_memory)
       @memory = new_memory

@@ -50,7 +50,33 @@ module Container
     #    @rebuild_required = false
     #    @large_temp = false
 
-    attr_accessor  :restart_policy, :volumes_from, :command, :restart_required, :rebuild_required, :environments, :volumes, :image_repo, :capabilities, :conf_register_dns
+    def_delegators :memento,
+      :restart_policy,
+      :volumes_from,
+      :command,
+      :restart_required,
+      :rebuild_required,
+      :environments,
+      :volumes,
+      :image_repo,
+      :capabilities,
+      :conf_register_dns
+      :framework,
+      :runtime,
+      :repository,
+      :data_uid,
+      :data_gid,
+      :cont_user_id,
+      :protocol,
+      :preffered_protocol,
+      :deployment_type,
+      :dependant_on,
+      :hostname,
+      :domain_name,
+      :ctype,
+      :conf_self_start,
+      :large_temp
+
     def initialize
       super
       @status = {}
@@ -119,22 +145,6 @@ module Container
     def is_stopped_ok?
       @stopped_ok |= false
     end
-
-    attr_reader :framework,\
-    :runtime,\
-    :repository,\
-    :data_uid,\
-    :data_gid,\
-    :cont_user_id,\
-    :protocol,\
-    :preffered_protocol,\
-    :deployment_type,\
-    :dependant_on,\
-    :hostname,\
-    :domain_name,\
-    :ctype,
-    :conf_self_start,
-    :large_temp
 
     def engine_name
       @container_name
