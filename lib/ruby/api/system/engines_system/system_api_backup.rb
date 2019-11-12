@@ -192,7 +192,7 @@ module SystemApiBackup
     serialized_object = YAML::dump(core.engine_attached_services(engine_name))
     if f.nil?
       engine = loadManagedEngine(engine_name)
-      f = File.open("#{ContainerStateFiles.container_state_dir(engine.store_address)}/registry.dump", 'w+')
+      f = File.open("#{engine.store.container_state_dir(engine.container_name)}/registry.dump", 'w+')
     end
     f.puts(serialized_object)
   ensure

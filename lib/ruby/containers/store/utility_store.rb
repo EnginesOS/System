@@ -10,11 +10,20 @@ module Container
       end
     end
 
+    def file_name(name)
+      File.exist?(super) ? super : config_file_name(name)
+    end
+    
     protected
 
-    def file_name(name)
+    def file_exists?(name)
+      super || File.exist?(config_file_name(name))
+    end
+
+    def config_file_name(name)
       "#{store_directory}/#{name}/config.yaml"
     end
+
 
     def model_class
       ManagedUtility

@@ -15,9 +15,9 @@ module ContainerCreation
     @build_params[:service_builder] = true
     @build_params[:cont_user_id] = @cont_user_id
     @container = Container::ManagedEngine.new(@build_params, @blueprint_reader)
+    @container.store.init_engine_dirs(@build_params[:engine_name])
     @container.save_blueprint(@blueprint)
     log_build_output('Launching ' + @container.to_s)
-    ContainerStateFiles.init_engine_dirs(@build_params[:engine_name])
     flag_restart_required(@container) if @has_post_install == true
     launch_deploy(@container)
     @container

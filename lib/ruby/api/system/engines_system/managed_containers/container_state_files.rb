@@ -1,8 +1,7 @@
 module ContainerSystemStateFiles
   
   def delete_container_configs(volbuilder, c)
-    cidfile = ContainerStateFiles.container_cid_file(c.store_address)
-    File.delete(cidfile) if File.exist?(cidfile)
+    c.store.clear_cid_file(c.container_name)
     result = volbuilder.execute_command(:remove, {target: c.container_name})
     volbuilder.wait_for('destroy', 30)
     ContainerStateFiles.remove_info_tree(c.store_address)
@@ -11,14 +10,14 @@ module ContainerSystemStateFiles
     true
   end
 
-  def save_container_log(c, options = {} )
+  def save_container_log(c, options = {})
     if c.has_container?
       unless options[:over_write] == true
         log_name = "#{Time.now.strftime('%Y-%m-%d_%H-%M-%S')}.log"
       else
         log_name = 'last.log'
       end
-      log_file = File.new("#{ContainerStateFiles.container_log_dir(c.store_address)}/#{log_name}", 'w+')
+      log_file = File.new("#{c.store.container_log_dir(c.container_name)}/#{log_name}", 'w+')
       begin
         unless options.key?(:max_length)
           options[:max_length] = 4096

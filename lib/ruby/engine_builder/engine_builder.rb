@@ -127,7 +127,7 @@ class EngineBuilder < ErrorsApi
   end
 
   def flag_restart_required(mc)
-    ContainerStateFiles.flag_restart_required(mc.store_address, 'Restart to run post install script, as required in blueprint')
+    mc.store.mark_restart_required(mc.container_name, 'Restart to run post install script, as required in blueprint')
   end
 
   def log_error_mesg(m, o = nil)

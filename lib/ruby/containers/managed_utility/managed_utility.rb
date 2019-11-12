@@ -137,8 +137,8 @@ module Container
     end
 
     def clear_configs
-      FileUtils.rm(ContainerStateFiles.container_state_dir(store_address) + '/running.yaml') if File.exist?(ContainerStateFiles.container_state_dir(store_address) + '/running.yaml')
-      FileUtils.rm(ContainerStateFiles.container_state_dir(store_address) + '/running.yaml.bak') if File.exist?(ContainerStateFiles.container_state_dir(store_address) + '/running.yaml.bak')
+      FileUtils.rm(store.file_name(container_name)) if File.exist?(store.file_name(container_name))
+      FileUtils.rm("#{store.file_name(container_name)}.bak") if File.exist?("#{store.file_name(container_name)}.bak")
     end
 
     def error_type_hash(mesg, params = nil)

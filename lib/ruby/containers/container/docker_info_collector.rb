@@ -33,30 +33,33 @@ module DockerInfoCollector
   end
 
   def set_cont_id
-    if @id.to_s == '-1'  || @id.to_s == '' || @id.is_a?(FalseClass) || @id.is_a?(TrueClass)
+    if @id.nil?
       @id = read_container_id
     end
   end
 
   def clear_cid
     # STDERR.puts caller.join("\n")  
-    @id =  -1
-    ContainerStateFiles.clear_cid_file(store_address)
+    @id = nil
+    store.clear_cid_file(container_name)
     # SystemDebug.debug(SystemDebug.containers, 'clear cid')
     save_state
   end
 
   # Kludge until using docker socker to create (thne get id back on build completion)
   def read_container_id    
-    @id = ContainerStateFiles.read_container_id(store_address)
+  #  @id = store.read_container_id(container_name)
     cid = @id
+    
+    #kludge to update any old 
+    @id = nil if @id.to_s == '-1'
     #  SystemDebug.debug(SystemDebug.containers, 'read container from file ', @container_id)
-    if @id == -1 || @id.nil? # && setState != 'nocontainer'
-      info = container_dock.inspect_container_by_name(@container_name) # docker_info
+    if @id.nil? # && setState != 'nocontainer'
+      info = container_dock.inspect_container_by_name(container_name) # docker_info
       info = info[0] if info.is_a?(Array)
       if info.key?(:RepoTags)
         #No container by that name and it will return images by that name WTF
-        @id = -1
+        @id = nil
       else
         @id = info[:Id] if info.key?(:Id)
       end
@@ -64,8 +67,8 @@ module DockerInfoCollector
     save_state unless cid == @id
     @id
   rescue EnginesException
-    clear_cid unless  cid == -1
-    @id = -1
+    clear_cid unless  cid == nil
+    @id = nil
   end
 
   def running_user

@@ -160,11 +160,11 @@ module Builders
   def save_build_result
     log_build_output('Generating Build Report')
     build_report = generate_build_report(templater, @blueprint)
-    ContainerStateFiles.save_build_report(@container.store_address, build_report)
+    @container.store.save_build_report(@container.container_name, build_report)
     @result_mesg = 'Build Successful'
     log_build_output('Build Successful')
-    FileUtils.copy_file("#{SystemConfig.DeploymentDir}/build.out", "#{ContainerStateFiles.container_state_dir(@container.store_address)}/build.log")
-    FileUtils.copy_file("#{SystemConfig.DeploymentDir}/build.err", "#{ContainerStateFiles.container_state_dir(@container.store_address)}/build.err")
+    FileUtils.copy_file("#{SystemConfig.DeploymentDir}/build.out", "#{@container.store.container_state_dir(@container.container_name)}/build.log")
+    FileUtils.copy_file("#{SystemConfig.DeploymentDir}/build.err", "#{@container.store.container_state_dir(@container.container_name)}/build.err")
     true
   end
 
@@ -183,7 +183,7 @@ module Builders
 
   def load_existing_blueprint(bn)
     blueprint_r = BlueprintApi.new
-    blueprint = blueprint_r.load_blueprint({c_name: bn, c_type: 'app'})
+    blueprint = blueprint_r.load_blueprint(bn)
     raise EnginesException.new(error_hash('failed to load blueprint', blueprint_r.last_error)) unless blueprint.is_a?(Hash)
     blueprint
   end

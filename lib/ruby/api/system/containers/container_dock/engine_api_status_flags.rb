@@ -2,14 +2,14 @@ module EngineApiStatusFlags
 
   def wait_for_startup(c, timeout = 5)
     r = false
-    sfd = ContainerStateFiles.container_rflag_dir(c.store_address)
+    sfd = c.store.container_flag_dir(c.container_name)
     unless Dir.exist?(sfd)
       FileUtils.mkdir_p(sfd)
     end
     state_file_name = "#{sfd}/state"
     sfn = "#{sfd}/startup_complete"
     if c.is_running?
-      if ContainerStateFiles.is_startup_complete?(c.store_address)
+      if c.store.is_startup_complete?(c.container_name)
         r = true
       else
         begin

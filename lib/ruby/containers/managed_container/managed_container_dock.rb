@@ -9,8 +9,8 @@ module ManagedContainerDock
     expire_engine_info
   end
 
-  def save_blueprint blueprint
-    container_dock.save_blueprint(blueprint, store_address)
+  def save_blueprint(blueprint)
+    container_dock.save_blueprint(blueprint, self)
   end
 
   def accepts_stream?

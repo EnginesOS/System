@@ -80,7 +80,7 @@ module Container
     end
 
     def load_blueprint
-      container_dock.load_blueprint(store_address)
+      container_dock.load_blueprint(container_name)
     end
 
     def plugins_path

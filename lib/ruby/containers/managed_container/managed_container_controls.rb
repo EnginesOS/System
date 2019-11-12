@@ -79,7 +79,7 @@ module ManagedContainerControls
           container_dock.initialize_container_env(self)
           #  SystemDebug.debug(SystemDebug.containers, :teask_preped)
           expire_engine_info
-          @id = -1
+          @id = nil
           save_state
           unless super
             task_failed('create')
@@ -295,10 +295,11 @@ module ManagedContainerControls
     STDERR.puts("TAH   #{tah} action #{action_sym}")
     r = in_progress(action_sym)
     STDERR.puts('in_progress ' + r.to_s)
-    if in_progress(action_sym) #.is_a?(TrueClass)
-      STDERR.puts('SAVE STATE :inprogress_run  ')
-      save_state
-    end
-    true
+#    if in_progress(action_sym) 
+#      STDERR.puts('SAVE STATE :inprogress_run  ')
+#      save_state
+#    end
+    #will return false if task in progress
+   true
   end
 end

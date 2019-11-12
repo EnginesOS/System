@@ -52,7 +52,7 @@ module ManagedContainerStatus
   end
 
   def is_startup_complete?
-    ContainerStateFiles.is_startup_complete?(store_address)
+    store.is_startup_complete?(container_name)
   end
 
   def is_error?
@@ -66,11 +66,11 @@ module ManagedContainerStatus
   end
 
   def set_debug
-    ContainerStateFiles.set_debug(store_address)
+    store.set_debug(store_address)
   end
 
   def clear_debug
-    ContainerStateFiles.clear_debug(store_address)
+    store.clear_debug(store_address)
   end
 
   def clear_error
@@ -82,27 +82,27 @@ module ManagedContainerStatus
   end
 
   def restart_required?
-    ContainerStateFiles.restart_required?(store_address)
+    store.restart_required?(store_address)
   end
 
   def restart_reason
-    ContainerStateFiles.restart_reason(store_address)
+    store.restart_reason(store_address)
   end
 
   def rebuild_required?
-    ContainerStateFiles.rebuild_required?(store_address)
+    store.rebuild_required?(store_address)
   end
 
   def rebuild_reason
-    ContainerStateFiles.rebuild_reason(store_address)
+    store.rebuild_reason(store_address)
   end
 
   def in_two_step?
-    File.exist?("#{ContainerStateFiles.container_state_dir(store_address)}/in_progress")
+    File.exist?("#{store.container_state_dir(container_name)}/in_progress")
   end
 
   def container_id
-    if @id == -1 || @id.nil?
+    if @id.nil?
       @id = read_container_id
     end
     @id
