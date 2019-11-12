@@ -3,10 +3,10 @@ class BlueprintApi < ErrorsApi
   require '/opt/engines/lib/ruby/api/system/container_state_files.rb'
   require 'git'
 
-  def save_blueprint(blueprint, ca)
+  def save_blueprint(blueprint, cn)
     # return log_error_mesg('Cannot save incorrect format',blueprint) unless blueprint.is_a?(Hash)
     #  SystemDebug.debug(SystemDebug.builder, blueprint.class.name)
-    state_dir = ContainerStateFiles.container_state_dir(ca)
+    state_dir = container_store.container_state_dir(cn)
     Dir.mkdir(state_dir) if File.directory?(state_dir) == false
     statefile = "#{state_dir}/blueprint.json"
     f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0640)
@@ -28,8 +28,8 @@ class BlueprintApi < ErrorsApi
     json_hash
   end
 
-  def load_blueprint(ca)
-    state_dir = ContainerStateFiles.container_state_dir(ca)
+  def load_blueprint(cn)
+    state_dir = container_store.container_state_dir(cn)
     raise EnginesException.new(error_hash('No Statedir', ca[:c_name])) unless File.directory?(state_dir)
     statefile = "#{state_dir}/blueprint.json"
     raise EnginesException.new(error_hash('No Blueprint File Found', statefile)) unless File.exist?(statefile)

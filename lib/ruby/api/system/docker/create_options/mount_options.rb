@@ -44,10 +44,10 @@ rescue StandardError => e
   raise e
 end
 
-def cert_mounts(ca)
-  store = "#{ca[:c_type]}s/#{ca[:c_name]}/"
-  ["#{SystemConfig.CertAuthTop}#{store}certs:#{SystemConfig.CertificatesDestination}:ro",
-    "#{SystemConfig.CertAuthTop}#{store}keys:#{SystemConfig.KeysDestination}:ro"]
+def cert_mounts(c)
+  cert_store = "#{c.ctype}s/#{c.container_name}/"
+  ["#{SystemConfig.CertAuthTop}#{cert_store}certs:#{SystemConfig.CertificatesDestination}:ro",
+    "#{SystemConfig.CertAuthTop}#{cert_store}keys:#{SystemConfig.KeysDestination}:ro"]
 end
 
 def get_local_prefix(vol)
@@ -214,43 +214,43 @@ def system_mounts(container)
   volumes.each_value do |volume|
     mounts.push(mount_string(volume))
   end
-  mounts.push(state_mount(container.store_address))
+  mounts.push(state_mount(container))
   mounts.push(logdir_mount(container))
-  mounts.push(vlogdir_mount(container.store_address)) unless in_container_log_dir(container) == '/var/log' || in_container_log_dir(container) == '/var/log/'
-  mounts.push(ssh_keydir_mount(container.store_address))
+  mounts.push(vlogdir_mount(container)) unless in_container_log_dir(container) == '/var/log' || in_container_log_dir(container) == '/var/log/'
+  mounts.push(ssh_keydir_mount(container))
   cm = nil
-  cm = cert_mounts(container.store_address) unless container.no_cert_map == true
-  mounts.push(kerberos_mount(container.store_address)) if container.kerberos == true
+  cm = cert_mounts(container) unless container.no_cert_map == true
+  mounts.push(kerberos_mount(container)) if container.kerberos == true
   mounts.concat(cm) unless cm.nil?
   mounts
 end
 
-def ssh_keydir_mount(ca)
-  "#{ContainerStateFiles.container_ssh_keydir(ca)}:/home/home_dir/.ssh:rw"
+def ssh_keydir_mount(c)
+  "#{c.store.container_ssh_keydir(c.container_name)}:/home/home_dir/.ssh:rw"
 end
 
-def secrets_mount(ca)
-  "#{ContainerStateFiles.secrets_dir(ca)}:/home/.secrets:ro"
+def secrets_mount(c)
+  "#{c.store.secrets_dir(c.container_name)}:/home/.secrets:ro"
 end
 
-def kerberos_mount(ca)
-  "#{ContainerStateFiles.kerberos_dir(ca)}:/etc/krb5kdc/keys/:ro"
+def kerberos_mount(c)
+  "#{c.store.kerberos_dir(c.container_name)}:/etc/krb5kdc/keys/:ro"
 end
 
-def vlogdir_mount(ca)
-  "#{container_local_log_dir(ca)}':/var/log/:rw"
+def vlogdir_mount(c)
+  "#{container_local_log_dir(c)}':/var/log/:rw"
 end
 
 def logdir_mount(c)
-  "#{container_local_log_dir(c.store_address)}:#{in_container_log_dir(c)}:rw"
+  "#{container_local_log_dir(c)}:#{in_container_log_dir(c)}:rw"
 end
 
-def state_mount(ca)
-  "#{ContainerStateFiles.container_state_dir(ca)}/run:/home/engines/run:rw"
+def state_mount(c)
+  "#{c.store.container_state_dir(c.container_name)}/run:/home/engines/run:rw"
 end
 
-def container_local_log_dir(ca)
-  ContainerStateFiles.container_log_dir(ca)
+def container_local_log_dir(c)
+  c.store.container_log_dir(c.container_name)
 end
 
 def service_sshkey_local_dir(ca)

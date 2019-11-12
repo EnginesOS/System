@@ -93,6 +93,8 @@ class ContainerStateFiles
         system_service_store
       when 'utility'
         utility_store
+      else
+        nil
       end
     end
 
@@ -111,17 +113,17 @@ class ContainerStateFiles
       "#{container_flag_dir(ca)}/rebuild_required"
     end
 
-    def read_container_id(ca)
-      cidfile = container_cid_file(ca)
+    def read_container_id(cn)
+      cidfile = container_cid_file(cn)
       unless File.exist?(cidfile)
-        -1
+        nil
       else
         r = File.read(cidfile)
         r.gsub(/\s+/, '').strip
       end
     rescue StandardError => e
       SystemUtils.log_exception(e)
-      '-1'
+      nil
     end
 
     def container_info_tree_dir(ca)
@@ -227,11 +229,6 @@ class ContainerStateFiles
     def clear_container_var_run(ca)
       File.unlink("#{container_state_dir(ca)}/startup_complete") if File.exist?(container_state_dir(ca) + '/startup_complete')
       true
-    end
-
-    def clear_cid_file(ca)
-      cidfile = container_cid_file(ca)
-      File.delete(cidfile) if File.exist?(cidfile)
     end
 
     def init_container_info_dir(p)

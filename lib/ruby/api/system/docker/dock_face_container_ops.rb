@@ -5,11 +5,11 @@ module DockFaceContainerOps
   end
 
   require_relative 'dock_face_create_options.rb'
-  include DockFaceCreateOptions
+  #include DockFaceCreateOptions
 
-  def create_container(container)
+  def create_container(c)    
     post(
-    {uri: "/containers/create?name=#{container.container_name}",
-      params: create_options(container)})
+    {uri: "/containers/create?name=#{c.container_name}",
+      params: DockFaceCreateOptions.create_options(c)})
   end
 end

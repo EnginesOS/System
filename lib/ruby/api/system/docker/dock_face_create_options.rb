@@ -1,15 +1,17 @@
-module DockFaceCreateOptions
-  def initialize
-    @top_level = nil
-  end
-  require '/opt/engines/lib/ruby/api/system/container_state_files.rb'
+class DockFaceCreateOptions
+#  def initialize
+#    @top_level = nil
+#  end
+  class << self
+#  require '/opt/engines/lib/ruby/api/system/container_state_files.rb'
 
   require_relative 'create_options/mount_options.rb'
   require_relative 'create_options/ports.rb'
   require_relative 'create_options/dns.rb'
 
-  def create_options(container)
-    @top_level = build_top_level(container)
+  def create_options(c)
+  #  @top_level = build_top_level(c)
+    build_top_level(c)
   end
 
   def get_protocol_str(port)
@@ -20,43 +22,43 @@ module DockFaceCreateOptions
     end
   end
 
-  def container_memory(container)
-    container.memory.to_i * 1024 * 1024
+  def container_memory(c)
+    c.memory.to_i * 1024 * 1024
   end
 
-  def container_capabilities(container)
-    unless container.capabilities.nil?
-      add_capabilities(container.capabilities)
+  def container_capabilities(c)
+    unless c.capabilities.nil?
+      add_capabilities(c.capabilities)
     else
       []
     end
   end
 
-  def host_config_options(container)
+  def host_config_options(c)
     {
-      'Binds' => volumes_mounts(container),
-      'Memory' => container_memory(container),
-      'MemorySwap' => container_memory(container) * 2,
-      'VolumesFrom' => container_volumes(container),
-      'CapAdd' => container_capabilities(container),
+      'Binds' => volumes_mounts(c),
+      'Memory' => container_memory(c),
+      'MemorySwap' => container_memory(c) * 2,
+      'VolumesFrom' => container_volumes(c),
+      'CapAdd' => container_capabilities(c),
       'OomKillDisable' => false,
-      'LogConfig' => log_config(container),
+      'LogConfig' => log_config(c),
       'PublishAllPorts' => false,
-      'Privileged' => container.is_privileged?,
+      'Privileged' => c.is_privileged?,
       'ReadonlyRootfs' => false,
-      'Dns' => container_get_dns_servers(container),
-      'DnsSearch' => container_dns_search(container),
-      'NetworkMode' => container_network_mode(container),
-      'RestartPolicy' => restart_policy(container)
+      'Dns' => container_get_dns_servers(c),
+      'DnsSearch' => container_dns_search(c),
+      'NetworkMode' => container_network_mode(c),
+      'RestartPolicy' => restart_policy(c)
     }
   end
 
-  def restart_policy(container)
-    if ! container.restart_policy.nil?
-      container.restart_policy
-    elsif container.ctype == 'system_service'
+  def restart_policy(c)
+    if ! c.restart_policy.nil?
+      c.restart_policy
+    elsif c.ctype == 'system_service'
       {'Name' => 'unless-stopped'}
-    elsif container.ctype == 'service'
+    elsif c.ctype == 'service'
       #{'Name' => 'on-failure', 'MaximumRetryCount' => 4}
       {'Name' => 'no'}
     else
@@ -64,10 +66,11 @@ module DockFaceCreateOptions
     end
   end
 
-  def log_config(container)
-    if container.ctype == 'service'
+  def log_config(c)
+    case c.ctype
+    when 'service'
       { "Type" => 'json-file', "Config" => { "max-size" =>"5m", "max-file" => '10' } }
-    elsif container.ctype == 'system_service'
+    when 'system_service'
       { "Type" => 'json-file', "Config" => { "max-size" =>"1m", "max-file" => '20' } }
     else
       { "Type" => 'json-file', "Config" => { "max-size" =>"1m", "max-file" => '5' } }
@@ -81,22 +84,21 @@ module DockFaceCreateOptions
     capabilities
   end
 
-  def container_network_mode(container)
-    if container.on_host_net? == false
+  def container_network_mode(c)
+    if c.on_host_net? == false
       'bridge'
     else
       'host'
     end
   end
 
-  def io_attachments(container, top)
-
-    unless container.accepts_stream?
+  def io_attachments(c, top)
+    unless c.accepts_stream?
       top['AttachStdin'] = false
     else
       top['AttachStdin'] = true
     end
-    unless container.provides_stream?
+    unless c.provides_stream?
       top['AttachStdout'] = false
       top['AttachStderr'] = false
     else
@@ -108,48 +110,48 @@ module DockFaceCreateOptions
     top['StdinOnce'] = false
   end
 
-  def build_top_level(container)
+  def build_top_level(c)
     top_level = {
       'User' => '',
       'Tty' => false,
-      'Env' => envs(container),
-      'Image' => container.image,
-      'Labels' => get_labels(container),
+      'Env' => envs(c),
+      'Image' => c.image,
+      'Labels' => get_labels(c),
       'Volumes' => {},
       'WorkingDir' => '',
       'NetworkDisabled' => false,
       'StopSignal' => 'SIGTERM',
       #       "StopTimeout": 10,
-      'Hostname' => hostname(container),
-      'Domainname' => container_domain_name(container),
-      'HostConfig' => host_config_options(container)
+      'Hostname' => hostname(c),
+      'Domainname' => container_domain_name(c),
+      'HostConfig' => host_config_options(c)
     }
-    io_attachments(container, top_level)
-    top_level['ExposedPorts'] = exposed_ports(container) unless container.on_host_net?
-    top_level['HostConfig']['PortBindings'] = port_bindings(container) unless container.on_host_net?
-    set_entry_point(container, top_level)
+    io_attachments(c, top_level)
+    top_level['ExposedPorts'] = exposed_ports(c) unless c.on_host_net?
+    top_level['HostConfig']['PortBindings'] = port_bindings(c) unless c.on_host_net?
+    set_entry_point(c, top_level)
     STDERR.puts('Options:' + top_level.to_s)
     top_level
   end
 
-  def set_entry_point(container, top_level)
-    command =  container.command
-    unless container.conf_self_start
-      command = ['/bin/bash' ,'/home/engines/scripts/startup/start.sh'] if container.command.nil?
+  def set_entry_point(c, top_level)
+    command =  c.command
+    unless c.conf_self_start
+      command = ['/bin/bash' ,'/home/engines/scripts/startup/start.sh'] if c.command.nil?
       top_level['Entrypoint'] = command
     end
   end
 
-  def get_labels(container)
+  def get_labels(c)
     {
-      'container_name'  => container.container_name,
-      'container_type' => container.ctype
+      'container_name'  => c.container_name,
+      'container_type' => c.ctype
     }
   end
 
-  def envs(container)
-    envs = system_envs(container)
-    container.environments.each do |env|
+  def envs(c)
+    envs = system_envs(c)
+    c.environments.each do |env|
       next if env.build_time_only
       env.value ='NULL!' if env.value.nil?
       env.name = 'NULL' if env.name.nil?
@@ -158,11 +160,12 @@ module DockFaceCreateOptions
     envs
   end
 
-  def system_envs(container)
+  def system_envs(c)
     envs = []
-    envs[0] = "CONTAINER_NAME=#{container.container_name}"
-    envs[1] = "KRB5_KTNAME=/etc/krb5kdc/keys/#{container.container_name}.keytab" if container.kerberos == true
+    envs[0] = "CONTAINER_NAME=#{c.container_name}"
+    envs[1] = "KRB5_KTNAME=/etc/krb5kdc/keys/#{c.container_name}.keytab" if c.kerberos == true
     envs
+  end
   end
 
 end

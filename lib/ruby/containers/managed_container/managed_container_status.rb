@@ -52,7 +52,7 @@ module ManagedContainerStatus
   end
 
   def is_startup_complete?
-    ContainerStateFiles.is_startup_complete?(store_address)
+    store.is_startup_complete?(container_name)
   end
 
   def is_error?
@@ -98,11 +98,11 @@ module ManagedContainerStatus
   end
 
   def in_two_step?
-    File.exist?("#{ContainerStateFiles.container_state_dir(store_address)}/in_progress")
+    File.exist?("#{store.container_state_dir(container_name)}/in_progress")
   end
 
   def container_id
-    if @id == -1 || @id.nil?
+    if @id.nil?
       @id = read_container_id
     end
     @id

@@ -118,21 +118,17 @@ module EnginesApiSystem
     end
   end
 
-  def create_container(container)
+  def create_container(c)
     clear_error
-    container.expire_engine_info
-    raise EnginesException.new(warning_hash('Failed To create container exists by the same name', container.store_address)) if container.ctype != 'system_service' && container.has_container?
-    raise EnginesException.new(error_hash('Failed to create state files', container.store_address)) unless ContainerStateFiles.create_container_dirs(container.store_address)
-    ContainerStateFiles.clear_cid_file(container.store_address)
-    ContainerStateFiles.clear_container_var_run(container.store_address)
-    start_dependancies(container) if container.dependant_on.is_a?(Hash)
-    container.pull_image if container.ctype != 'app'
-    dock_face.create_container(container)    
+    c.expire_engine_info
+    raise EnginesException.new(warning_hash('Failed To create container exists by the same name', c.store_address)) if c.ctype != 'system_service' && c.has_container?
+    raise EnginesException.new(error_hash('Failed to create state files', c.store_address)) unless ContainerStateFiles.create_container_dirs(c.store_address)
+    c.store.clear_cid_file(c.container_name)
+    ContainerStateFiles.clear_container_var_run(c.store_address)
+    start_dependancies(c) if c.dependant_on.is_a?(Hash)
+    c.pull_image if c.ctype != 'app'
+    dock_face.create_container(c)    
   end
-
-#  def container_cid_file(ca)
-#    system_api.container_cid_file(ca)
-#  end
 
   def run_cronjob(cronjob, c)
     if container.is_running?

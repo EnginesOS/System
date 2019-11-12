@@ -40,7 +40,7 @@ module Container
       STDERR.puts "Save #{c.container_name} #{container_conf_locks}"
       c.clear_to_save
       statefile = state_file(c, true)
-      statedir = container_state_dir(c.container_name)
+      statedir = c.store.container_state_dir(c.container_name)
       errors_api.log_error_mesg('container locked', c.container_name) unless lock(statefile)
       backup_state_file(statefile)
       serialized_object = YAML.dump(c)
@@ -50,7 +50,6 @@ module Container
         f.flush()
         #Do it this way so a failure to write doesn't trash a working file
         if File.exist?("#{statefile}_tmp")
-          STDERR.puts("#{statefile}_tmp is not Missing")
           #FixMe check valid yaml
           FileUtils.mv("#{statefile}_tmp", statefile)
         else
@@ -129,7 +128,7 @@ module Container
     end
 
     def state_file(c, create = true)
-      state_dir = container_state_dir(c.container_name)
+      state_dir = c.store.container_state_dir(c.container_name)
       FileUtils.mkdir_p(state_dir) if Dir.exist?(state_dir) == false && create == true
       "#{state_dir}/running.yaml"
     end
