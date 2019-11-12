@@ -1,6 +1,5 @@
 module ManagedServiceOnAction
   def on_start(event_hash)
-    container_mutex.synchronize {
     @stop_reason = nil
  #   SystemDebug.debug(SystemDebug.container_events, :ON_start_MS, event_hash)
     container_mutex.synchronize {
@@ -28,7 +27,7 @@ module ManagedServiceOnAction
       end
       save_state
       container_dock.register_ports(@container_name, @mapped_ports) if @mapped_ports.is_a?(Hash)
-    }
+    #}
     service_configurations = container_dock.pending_service_configurations_hashes({service_name: @container_name, publisher_namespace: @publisher_namespace, type_path: @type_path })
     if service_configurations.is_a?(Array) || registered_consumers.is_a?(Array)
       if wait_for_startup(30)
@@ -49,7 +48,7 @@ module ManagedServiceOnAction
       end
     end
     created_and_started if @created == true
-  }
+}
    # SystemDebug.debug(SystemDebug.container_events, :ON_start_complete_MS, event_hash)
   end
 
