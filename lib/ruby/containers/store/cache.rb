@@ -12,7 +12,7 @@ module Container
         if cache.key?(ident.to_sym) && cache[ident.to_sym].is_a?(Hash)
           unless cache[ident.to_sym][:engine].nil?
             ts = engine_ts(cache[ident.to_sym][:engine])
-            if ts == -1
+            if ts.nil?
               remove(ident)
             else
               if cache[ident.to_sym][:ts] == ts
@@ -62,16 +62,16 @@ module Container
     def engine_ts(engine)
       raise EnginesException.new(error_hash('Get ts passed nil Engine ', engine)) if engine.nil?
       #FIX ME use container_state sudke ewdssdf
-      yam_file_name = SystemConfig.RunDir + '/' + engine.ctype + 's/' + engine.engine_name + '/running.yaml'
-      if File.exist?(yam_file_name)
+      file_name = engine.store.file_name(engine.container_name)
+      if File.exist?(file_name)
         begin
-          File.mtime(yam_file_name)
+          File.mtime(file_name)
         rescue StandardError => e
-          STDERR.puts( yam_file_name + 'not found')
-          -1
+          STDERR.puts(file_name + 'not found')
+          nil
         end
       else
-        -1
+        nil
       end
     end
 
