@@ -160,7 +160,7 @@ module Builders
   def save_build_result
     log_build_output('Generating Build Report')
     build_report = generate_build_report(templater, @blueprint)
-    ContainerStateFiles.save_build_report(@container.store_address, build_report)
+    @container.store.save_build_report(@container.container_name, build_report)
     @result_mesg = 'Build Successful'
     log_build_output('Build Successful')
     FileUtils.copy_file("#{SystemConfig.DeploymentDir}/build.out", "#{@container.store.container_state_dir(@container.container_name)}/build.log")

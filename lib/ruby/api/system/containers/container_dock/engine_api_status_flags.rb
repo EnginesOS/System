@@ -2,7 +2,7 @@ module EngineApiStatusFlags
 
   def wait_for_startup(c, timeout = 5)
     r = false
-    sfd = c.store.container_rflag_dir(c.container_name)
+    sfd = c.store.container_flag_dir(c.container_name)
     unless Dir.exist?(sfd)
       FileUtils.mkdir_p(sfd)
     end

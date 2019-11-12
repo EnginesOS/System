@@ -130,7 +130,7 @@ module Container
     def state_file(c, create = true)
       state_dir = c.store.container_state_dir(c.container_name)
       FileUtils.mkdir_p(state_dir) if Dir.exist?(state_dir) == false && create == true
-      "#{state_dir}/running.yaml"
+      c.store.file_name(c.container_name)
     end
 
     def roll_back(statefile)

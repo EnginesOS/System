@@ -9,15 +9,15 @@ module Container
         @@system_service_instance ||= self.new
       end
     end
-
+    
+    def file_name(name)
+      File.exist?(super) ? super : config_file_name(name)
+    end
+    
     protected
 
     def file_exists?(name)
       super || File.exist?(config_file_name(name))
-    end
-
-    def file_name(name)
-      File.exist?(super) ? super : config_file_name(name)
     end
 
     def config_file_name(name)

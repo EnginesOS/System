@@ -9,7 +9,7 @@ module ManagedContainerDock
   end
 
   def save_blueprint(blueprint)
-    container_dock.save_blueprint(blueprint, container_name)
+    container_dock.save_blueprint(blueprint, self)
   end
 
   def accepts_stream?

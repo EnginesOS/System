@@ -76,13 +76,76 @@ module Container
     end
 
     #ContainerApi:EngineApiStatusFlags:wait_for_startup
-    def container_rflag_dir(cn)
+    def container_flag_dir(cn)
       "#{container_state_dir(cn)}/run/flags"
     end
 
     #ContainerApi:EngineApiStatusFlags:wait_for_startup
-    def is_startup_complete?(ca)
-      File.exist?("#{container_rflag_dir(ca)}/startup_complete")
+    def is_startup_complete?(cn)
+      File.exist?("#{container_flag_dir(cn)}/startup_complete")
+    end
+
+    ####
+    #ManagedContainerStatus
+    def clear_debug(cn)
+      df = "#{container_state_dir(cn)}/wait_before_shutdown"
+      FileUtils.rm(fd) if File.exist?(fd)
+    end
+
+    def set_debug(cn)
+      FileUtils.touch("#{container_state_dir(cn)}/wait_before_shutdown")
+    end
+
+    def restart_flag_file(cn)
+      "#{container_flag_dir(cn)}/restart_required"
+    end
+
+    def restart_required?(cn)
+      File.exist?(restart_flag_file(cn))
+    end
+
+    def restart_reason(cn)
+      if File.exist?(restart_flag_file(cn))
+        File.read(restart_flag_file(cn))
+      else
+        nil
+      end
+    rescue StandardError
+      nil
+    end
+
+    def rebuild_flag_file(cn)
+      "#{container_flag_dir(cn)}/rebuild_required"
+    end
+
+    def rebuild_required(cn)
+      File.exist?(rebuild_flag_file(cn))
+    end
+
+    def rebuild_reason(cn)
+      if File.exist?(rebuild_flag_file(cn))
+        File.read(restart_flag_file(cn))
+      else
+        nil
+      end
+    rescue StandardError
+      nil
+    end
+    #########
+
+    ####builder
+
+    def mark_restart_required(cn, reason)
+      flag_file = restart_flag_file(cn)
+      # Should not need once upon a time restart flag file might have been early  FileUtils.mkdir_p(container_flag_dir(cn)) unless Dir.exist?(container_flag_dir(cn))
+      f = File.new(flag_file, 'w+')
+      begin
+        f.puts(reason)
+      ensure
+        f.close
+      end
+      File.chmod(0660, restart_flag_file)
+      FileUtils.chown(nil, 'containers', restart_flag_file)
     end
 
     def schedules_dir(cn)
@@ -96,6 +159,35 @@ module Container
     def actionator_dir(cn)
       "#{container_state_dir(cn)}/actionators/"
     end
+    
+    def init_engine_dirs(en)      
+      FileUtils.mkdir_p("#{container_state_dir(en)}/run") unless Dir.exist?("#{container_state_dir(en)}/run")
+      FileUtils.mkdir_p(container_log_dir(en)) unless Dir.exist?(container_log_dir(en))
+      FileUtils.mkdir_p(container_ssh_keydir(en)) unless Dir.exist?(container_ssh_keydir(en))
+    end
+    
+    def save_build_report(cn, build_report)
+      f = File.new("#{container_state_dir(cn)}/buildreport.txt", File::CREAT | File::TRUNC | File::RDWR, 0644)
+      begin
+        f.puts(build_report)
+      ensure
+        f.close
+      end
+    end
+    
+    #also used bu publicapi gui prefs
+    def set_container_icon_url(cn, url)
+         url_f = File.new("#{container_state_dir(cn)}/icon.url", 'w+')
+         begin
+           url_f.puts(url)
+         ensure
+           url_f.close
+         end
+       rescue StandardError => e
+         url_f.close unless url_f.nil?
+         raise e
+       end 
+###   
 
     #from docker_info_collector
     # from container_dock:engines_api_system
