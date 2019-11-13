@@ -53,14 +53,9 @@ module Container
     def_delegators :memento,
       :restart_policy,
       :volumes_from,
-      :command,
-      :restart_required,
-      :rebuild_required,
-      :environments,
-      :volumes,
       :image_repo,
       :capabilities,
-      :conf_register_dns
+      :conf_register_dns,
       :framework,
       :runtime,
       :repository,
@@ -73,7 +68,6 @@ module Container
       :dependant_on,
       :hostname,
       :domain_name,
-      :ctype,
       :conf_self_start,
       :large_temp
 

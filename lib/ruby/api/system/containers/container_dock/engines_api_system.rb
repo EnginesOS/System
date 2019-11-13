@@ -127,7 +127,7 @@ module EnginesApiSystem
     ContainerStateFiles.clear_container_var_run(c.store_address)
     start_dependancies(c) if c.dependant_on.is_a?(Hash)
     c.pull_image if c.ctype != 'app'
-    dock_face.create_container(c)    
+    dock_face.create_container(c)
   end
 
   def run_cronjob(cronjob, c)

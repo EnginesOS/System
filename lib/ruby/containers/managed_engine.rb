@@ -17,7 +17,7 @@ module Container
       :extract_plugins,
       :web_root
 
-    def initialize(build_params, runtime_params)
+    def build_params(build_params, runtime_params)
       @ctype = 'app'
       @memory = build_params[:memory]
       @container_name = build_params[:engine_name]

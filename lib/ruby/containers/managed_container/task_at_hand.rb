@@ -34,7 +34,7 @@ module TaskAtHand
     # FIX ME Finx the source 0 :->:
     curr_state.sub!(/\:->\:/,'')
     @last_task = action
-    r = log_error_mesg(@container_name + ' not in matching state want _' + tasks_final_state(action).to_s + '_but in ' + curr_state.class.name + ' ', curr_state )
+    r = log_error_mesg(@container_name.to_s + ' not in matching state want _' + tasks_final_state(action).to_s + '_but in ' + curr_state.class.name + ' ', curr_state )
     case action
     when :create
       @steps = [:create, :start]

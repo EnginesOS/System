@@ -38,13 +38,12 @@ module Container
     end
 
     def _save(c)
-      STDERR.puts "Save #{c.container_name} #{container_conf_locks}"
-      c.clear_to_save
+      STDERR.puts "Save #{c.container_name} #{container_conf_locks} #{self.class.name} <=> #{c.ctype}"
       statefile = state_file(c, true)
       statedir = c.store.container_state_dir(c.container_name)
       errors_api.log_error_mesg('container locked', c.container_name) unless lock(statefile)
       backup_state_file(statefile)
-      serialized_object = YAML.dump(c.memento)
+      serialized_object = c.memento.savable
       f = File.new("#{statefile}_tmp", File::CREAT | File::TRUNC | File::RDWR, 0600) # was statefile + '_tmp
       begin
         f.puts(serialized_object)

@@ -14,7 +14,7 @@ module Container
     end
 
     # for Container
-    attr_reader :ctype,
+    attr_accessor :ctype,
       :memory,
       :container_name,
       :image,
@@ -22,14 +22,13 @@ module Container
       :volumes,
       :mapped_ports,
       :environments,
-      :setState
-
-    attr_accessor :last_error,
+      :setState,
+      :last_error,
       :last_result,
       :arguments
 
     # for ManagedContainer
-    attr_reader :framework,
+    attr_accessor :framework,
       :runtime,
       :repository,
       :data_uid,
@@ -42,12 +41,10 @@ module Container
       :hostname,
       :domain_name,
       :conf_self_start,
-      :large_temp
-
-    attr_accessor :restart_policy,
+      :large_temp,
+      :restart_policy,
       :volumes,
       :volumes_from,
-      :command,
       :restart_required,
       :rebuild_required,
       :environments,
@@ -57,18 +54,34 @@ module Container
 
 
     # for ManagedEngine
-    attr_reader  :plugins_path,
+    attr_accessor  :plugins_path,
       :extract_plugins,
       :web_root
 
     # for ManagedService
-    attr_reader :persistent,
+    attr_accessor :persistent,
       :type_path,
       :publisher_namespace
+
+    # for ManagedUtility
+    attr_accessor :commands,
+      :command
+
+    def savable
+      YAML.dump(unsavable_cleared)
+    end
+
+    def unsavable_cleared
+      dup.tap do |d|
+        d.instance_variable_set(:container, nil)
+      end
+    end
 
     def container
       @container ||= _container
     end
+
+
 
     private
 
@@ -87,6 +100,11 @@ module Container
       end
       c.memento = self
       c
+    end
+
+    def unsavable_cleared
+      @container = nil
+      self
     end
   end
 end

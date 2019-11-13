@@ -65,12 +65,12 @@ module ContainerControls
   def destroy_container()
     expire_engine_info
     unless has_container?
-      @id = '-1'
+      @id = nil
       r = true
     else
       raise EnginesException.new(warning_hash('Cannot Destroy ' +  container_name + ' as is not stopped Please stop first', container_name)) if is_active?
       r = container_dock.destroy_container(self)
-      @id = '-1'
+      @id = nil
       expire_engine_info
     end
     r
@@ -80,8 +80,8 @@ module ContainerControls
     expire_engine_info
     #  SystemDebug.debug(SystemDebug.containers, :create_container, :containerid)
     raise EnginesException.new(warning_hash('Cannot create container as container exists ' + container_name.to_s, container_name)) if has_container?
-    @id = -1
+    @id = nil
     container_dock.create_container(self)
   end
-  
+
 end

@@ -34,20 +34,21 @@ module Container
       raise e
     end
 
-    attr_reader: :memento
- 
+    attr_accessor :memento
+
     def_delegators :memento,
       :ctype,
       :container_name,
+      :memory,
       :image,
       :web_port,
       :volumes,
       :mapped_ports,
       :environments,
+      :environments=,
       :setState,
       :last_error,
-      :last_result,
-      :arguments
+      :last_error=
 
     def update_memory(new_memory)
       @memory = new_memory

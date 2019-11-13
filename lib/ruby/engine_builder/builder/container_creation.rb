@@ -14,7 +14,8 @@ module ContainerCreation
     @build_params[:volumes] = service_builder.volumes
     @build_params[:service_builder] = true
     @build_params[:cont_user_id] = @cont_user_id
-    @container = Container::ManagedEngine.new(@build_params, @blueprint_reader)
+    @container = Container::ManagedEngine.new
+    @container.build_params(@build_params, @blueprint_reader)
     @container.store.init_engine_dirs(@build_params[:engine_name])
     @container.save_blueprint(@blueprint)
     log_build_output('Launching ' + @container.to_s)
@@ -28,7 +29,7 @@ module ContainerCreation
   def event_handler
      @event_handler ||= EventHandler.instance
   end
-  
+
   def launch_deploy(managed_container)
     log_build_output('Launching Engine')
     save_engine_built_configuration(managed_container)
