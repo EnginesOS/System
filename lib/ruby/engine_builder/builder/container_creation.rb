@@ -15,7 +15,7 @@ module ContainerCreation
     @build_params[:service_builder] = true
     @build_params[:cont_user_id] = @cont_user_id
     @container = Container::ManagedEngine.new
-    @container.build_params(@build_params, @blueprint_reader)
+    @container.apply_build_params(@build_params, @blueprint_reader)
     @container.store.init_engine_dirs(@build_params[:engine_name])
     @container.save_blueprint(@blueprint)
     log_build_output('Launching ' + @container.to_s)

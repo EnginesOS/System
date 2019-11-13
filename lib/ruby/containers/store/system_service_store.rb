@@ -21,7 +21,7 @@ module Container
 
     def resolve_running_config(name)
       #should not build dir from parts but use appropriate method but which store issue needs to be fixed
-      service_type_dir = "#{SystemConfig.RunDir}/#{container_type}s")
+      service_type_dir = "#{SystemConfig.RunDir}/#{container_type}s"
       config_template_file_name = "#{service_type_dir}/#{name}/config.yaml"
       if File.exist?(config_template_file_name)
         config_template = File.read(config_template_file_name)
