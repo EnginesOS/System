@@ -48,7 +48,7 @@ class EngineBuilder < ErrorsApi
   :first_build,
   :memory,
   :result_mesg,
-  :build_params,
+  :memento,
   :data_uid,
   :data_gid,
   :build_error,
@@ -86,9 +86,10 @@ class EngineBuilder < ErrorsApi
     }
   end
 
-  def build_params=(bp)
-    @build_params = bp
-    STDERR.puts("Build Params #{bp}")
+  def build_params(memento, user_params)
+    @memento = memento
+    @user_params = user_params
+    STDERR.puts("Build Params #{memento} #{user_params}")
     setup_build
   end
 
@@ -106,9 +107,9 @@ class EngineBuilder < ErrorsApi
 
   def set_locale
     prefs = SystemPreferences.new
-    lang =  @build_params[:lang_code]
+    lang =  @memento[:lang_code]
     lang = prefs.langauge_code if lang.nil?
-    country = @build_params[:country_code]
+    country = @memento[:country_code]
     country = prefs.country_code if country.nil?
 
     @blueprint_reader.environments.push(EnvironmentVariable.new({name: 'LANGUAGE',

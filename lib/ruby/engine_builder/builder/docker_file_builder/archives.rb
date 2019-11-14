@@ -51,11 +51,11 @@ module Archives
 
   def source_url(surl, pn)
     s = nil
-    unless @build_params[:installed_packages].nil?
-      if @build_params[:installed_packages].key?(pn.to_sym)
+    unless @user_params[:installed_packages].nil?
+      if @user_params[:installed_packages].key?(pn.to_sym)
         s = authenticated_source(
         surl,
-        @build_params[:installed_packages][pn.to_sym])
+        @user_params[:installed_packages][pn.to_sym])
       end
     end
     s = surl.to_s if s.nil?

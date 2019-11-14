@@ -19,8 +19,8 @@ module PublicApiEngines
     system_api.get_engines_status
   end
 
-  def build_engine(params)
-    core.build_engine(params)
+  def build_engine(memento, custom_params)
+    core.build_engine(memento, custom_params)
   end
 
   def delete_engine(params)

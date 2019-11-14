@@ -1,29 +1,29 @@
 module ContainerGuids
   def set_container_guids
     unless set_guids_from_orphan.is_a?(TrueClass)
-      unless @build_params[:permission_as].nil?
-        @cont_user_id = core.lookup_app_uid(@build_params[:permission_as])
-        @data_uid = core.lookup_app_duid(@build_params[:permission_as])
-        @data_gid = core.lookup_app_dgid(@build_params[:permission_as])
+      unless @memento[:permission_as].nil?
+        @cont_user_id = core.lookup_app_uid(@memento[:permission_as])
+        @data_uid = core.lookup_app_duid(@memento[:permission_as])
+        @data_gid = core.lookup_app_dgid(@memento[:permission_as])
         STDERR.puts('PERMISSION AS ' + @cont_user_id.to_s + ' ' + @data_uid .to_s)
       else
         STDERR.puts('NEW CONT ID')
-        @cont_user_id = core.new_container_uid(@build_params[:engine_name]) #new_container_uid
-        @data_uid = new_data_uid(@build_params[:engine_name])
-        @data_gid = core.new_data_gid(@build_params[:engine_name])
+        @cont_user_id = core.new_container_uid(@memento[:engine_name]) #new_container_uid
+        @data_uid = new_data_uid(@memento[:engine_name])
+        @data_gid = core.new_data_gid(@memento[:engine_name])
       end
     end
-    @build_params[:data_uid] = @data_uid
-    @build_params[:data_gid] = @data_gid
-    @build_params[:cont_user_id] = @cont_user_id
+    @memento[:data_uid] = @data_uid
+    @memento[:data_gid] = @data_gid
+    @memento[:cont_user_id] = @cont_user_id
   end
 
   private
 
   def set_guids_from_orphan
     r = false
-    if  build_params[:attached_services].is_a?(Array)
-      @build_params[:attached_services].each do |service|
+    if @user_params[:attached_services].is_a?(Array)
+      @user_params[:attached_services].each do |service|
         next if service[:create_type] == 'share'
         r = lookup_ids(service) if service[:type_path] == 'filesystem/local/filesystem'
         if r == true

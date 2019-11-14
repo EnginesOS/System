@@ -4,7 +4,7 @@ module SaveEngineConfiguration
     write_schedules(mc, @blueprint_reader.schedules) if @blueprint_reader.respond_to?(:schedules)
     write_services(mc.store_address, service_builder.attached_services)
     write_variables(mc.store_address, @blueprint_reader.environments)
-    mc.store.set_container_icon_url(mc.container_name , @build_params[:icon_url]) unless @build_params[:icon_url].nil?
+    mc.store.set_container_icon_url(mc.container_name , @user_params[:icon_url]) unless @user_params[:icon_url].nil?
   end
 
   private

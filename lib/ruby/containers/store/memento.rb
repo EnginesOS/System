@@ -11,61 +11,86 @@ module Container
         STDERR.puts('With: ' + yaml.to_s)
         raise e
       end
+
+      def from_hash(params)
+        m = self.new
+        all_attrs.each { |a| m.instance_variable_set("@#{a}", params[a]) }
+      end
+
+      def all_attrs
+        container_attrs + managed_container_attrs + managed_engine_attrs + managed_service_attrs + managed_utility_attrs
+      end
+
+      def container_attrs
+        @container_attrs ||= [
+          :ctype,
+          :memory,
+          :container_name,
+          :image,
+          :web_port,
+          :volumes,
+          :mapped_ports,
+          :environments,
+          :setState,
+          :last_error,
+          :last_result,
+          :arguments
+        ]
+      end
+
+      def managed_container_attrs
+        @managed_container_attrs ||= [
+          :framework,
+          :runtime,
+          :repository,
+          :data_uid,
+          :data_gid,
+          :cont_user_id,
+          :protocol,
+          :preffered_protocol,
+          :deployment_type,
+          :dependant_on,
+          :hostname,
+          :domain_name,
+          :conf_self_start,
+          :large_temp,
+          :restart_policy,
+          :volumes,
+          :volumes_from,
+          :restart_required,
+          :rebuild_required,
+          :environments,
+          :image_repo,
+          :capabilities,
+          :conf_register_dns
+        ]
+      end
+
+      def managed_engine_attrs
+        @managed_engine_attrs ||= [
+          :plugins_path,
+          :extract_plugins,
+          :web_root
+        ]
+      end
+
+      def managed_service_attrs
+        @managed_service_attrs ||= [
+          :persistent,
+          :type_path,
+          :publisher_namespace
+        ]
+      end
+
+      def managed_utility_attrs
+        @managed_utility_attrs ||= [
+          :commands,
+          :command
+        ]
+      end
     end
 
-    # for Container
-    attr_accessor :ctype,
-      :memory,
-      :container_name,
-      :image,
-      :web_port,
-      :volumes,
-      :mapped_ports,
-      :environments,
-      :setState,
-      :last_error,
-      :last_result,
-      :arguments
-
-    # for ManagedContainer
-    attr_accessor :framework,
-      :runtime,
-      :repository,
-      :data_uid,
-      :data_gid,
-      :cont_user_id,
-      :protocol,
-      :preffered_protocol,
-      :deployment_type,
-      :dependant_on,
-      :hostname,
-      :domain_name,
-      :conf_self_start,
-      :large_temp,
-      :restart_policy,
-      :volumes,
-      :volumes_from,
-      :restart_required,
-      :rebuild_required,
-      :environments,
-      :image_repo,
-      :capabilities,
-      :conf_register_dns
-
-
-    # for ManagedEngine
-    attr_accessor  :plugins_path,
-      :extract_plugins,
-      :web_root
-
-    # for ManagedService
-    attr_accessor :persistent,
-      :type_path,
-      :publisher_namespace
-
-    # for ManagedUtility
-    attr_accessor :commands,
-      :command
+    attr_accessor all_attrs
 
     def savable
       YAML.dump(unsavable_cleared)
@@ -73,15 +98,13 @@ module Container
 
     def unsavable_cleared
       dup.tap do |d|
-        d.instance_variable_set(:container, nil)
+        d.instance_variable_set(:@container, nil)
       end
     end
 
     def container
       @container ||= _container
     end
-
-
 
     private
 

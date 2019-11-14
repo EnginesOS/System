@@ -22,9 +22,9 @@ module CoreBuildController
   rescue
   end
 
-  def build_engine(params)
+  def build_engine(memento, custom_params)
     @build_thread.exit unless @build_thread.nil?
-    build_controller.prepare_engine_build(params)
+    build_controller.prepare_engine_build(memento, custom_params)
     @build_thread = Thread.new { build_controller.build_engine }
     @build_thread[:name]  = 'build engine'
     event_handler.trigger_install_event(params[:engine_name], 'installing')

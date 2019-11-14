@@ -36,22 +36,22 @@ module Container
       @data_gid = build_params[:data_gid]
       @cont_user_id = build_params[:cont_user_id]
       @protocol = build_params[:http_protocol]
-      # what about preferred protocol?
+      # what about preferred protocol? Missing
       @deployment_type = runtime_params.deployment_type
-      # what about dependent on?
+      # what about dependent on? Only relevant for services
       @hostname = build_params[:host_name]
       @domain_name = build_params[:domain_name]
       @conf_self_start = true
-      # what about large_temp?
+      # what about large_temp? currently only servics
 
-      # what about restart_policy ?
-      # what about restart_required?
-      # what about rebuild_required?
+      # what about restart_policy ?   flag file is the store
+      # what about restart_required?   ""
+      # what about rebuild_required?   ""
       @volumes = build_params[:volumes]
-      # what about volumes_from?
-      # what about command?
+      # what about volumes_from?  Managedutiliy
+      # what about command?  #fixed in apps/services/systemservices used Managedutiliy
       @environments = runtime_params.environments
-      # what about image_repo?
+      # what about image_repo? inferred in apps from name but ..
       @capabilities = runtime_params.capabilities
       @conf_register_dns = true
 

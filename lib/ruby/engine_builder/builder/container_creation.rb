@@ -3,20 +3,20 @@ module ContainerCreation
     log_build_output('Creating Deploy Image')
     @container = create_managed_container
     raise EngineBuilderException.new(error_hash('Failed to create Managed Container')) unless @container.is_a?(Container::ManagedEngine)
-    event_handler.trigger_install_event(@build_params[:engine_name], 'installed')
+    event_handler.trigger_install_event(@memento[:engine_name], 'installed')
     service_builder.create_non_persistent_services(@blueprint_reader.services)
     @container
   end
 
   def create_managed_container
     log_build_output('Creating ManagedEngine')
-    @build_params[:web_port] = @web_port
-    @build_params[:volumes] = service_builder.volumes
-    @build_params[:service_builder] = true
-    @build_params[:cont_user_id] = @cont_user_id
+    @memento[:web_port] = @web_port
+    @memento[:volumes] = service_builder.volumes
+    @memento[:service_builder] = true
+    @memento[:cont_user_id] = @cont_user_id
     @container = Container::ManagedEngine.new
-    @container.apply_build_params(@build_params, @blueprint_reader)
-    @container.store.init_engine_dirs(@build_params[:engine_name])
+    @container.apply_build_params(@memento, @blueprint_reader)
+    @container.store.init_engine_dirs(@memento[:engine_name])
     @container.save_blueprint(@blueprint)
     log_build_output('Launching ' + @container.to_s)
     flag_restart_required(@container) if @has_post_install == true

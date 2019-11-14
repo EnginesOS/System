@@ -15,10 +15,10 @@ end
 
 def check_avail_memory
   free_ram = system_api.available_ram
-  if @build_params[:memory].to_i < SystemConfig.MinimumBuildRam
+  if @memento[:memory].to_i < SystemConfig.MinimumBuildRam
     ram_needed = SystemConfig.MinimumBuildRam
   else
-    ram_needed = @build_params[:memory].to_i
+    ram_needed = @memento[:memory].to_i
   end
   raise EngineBuilderException.new(warning_hash('Not enough free only ' + free_ram.to_s + "MB free " + ram_needed.to_s + 'MB required')) if free_ram < ram_needed
   log_build_output(free_ram.to_s + 'MB free > ' + ram_needed.to_s + 'MB required')

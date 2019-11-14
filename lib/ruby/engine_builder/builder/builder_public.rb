@@ -6,7 +6,7 @@ class BuilderPublic
       @@instance ||= self.new
     end
   end
-  
+
   def ctype
     'app'
   end
@@ -16,7 +16,7 @@ class BuilderPublic
   end
 
   def engine_name
-    builder.build_params[:engine_name]
+    builder.memento[:engine_name]
   end
 
   def environments
@@ -24,27 +24,27 @@ class BuilderPublic
   end
 
   def memory
-    builder.build_params[:memory]
+    builder.memento[:memory]
   end
 
   def hostname
-    builder.build_params[:host_name]
+    builder.memento[:host_name]
   end
 
   def domain_name
-    builder.build_params[:domain_name]
+    builder.memento[:domain_name]
   end
 
   def repository
-    builder.build_params[:repository_url]
+    builder.memento[:repository_url]
   end
 
   def http_protocol
-    if builder.build_params.key?(:http_protocol)
-      if builder.build_params[:http_protocol].include?('_')
-        builder.build_params[:http_protocol].gsub!(/_.*/, '')
+    if builder.memento.key?(:http_protocol)
+      if builder.memento[:http_protocol].include?('_')
+        builder.memento[:http_protocol].gsub!(/_.*/, '')
       else
-        builder.build_params[:http_protocol]
+        builder.memento[:http_protocol]
       end
     else
       nil
@@ -100,7 +100,7 @@ class BuilderPublic
   end
 
   def memory
-    builder.build_params[:memory]
+    builder.memento[:memory]
   end
 
   def service_account(suffix=nil)
@@ -110,7 +110,7 @@ class BuilderPublic
   def service_password(cnt=8)
 
   end
-  
+
   def fw_user
     builder.cont_user_id
   end

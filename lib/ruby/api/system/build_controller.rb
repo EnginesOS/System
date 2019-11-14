@@ -15,10 +15,10 @@ class BuildController
     core.abort_build
   end
 
-  def prepare_engine_build(params)
+  def prepare_engine_build(memento, custom_params)
     #SystemDebug.debug(SystemDebug.builder, :builder_params, params)
-    @build_params = params
-    engine_builder.build_params=(@build_params) unless @build_params.nil?
+    build_params = memento.merge(custom_params)
+    engine_builder.build_params(memento, custom_params) unless memento.nil?
     SystemStatus.build_starting(build_params)
   end
 
@@ -29,13 +29,13 @@ class BuildController
   end
 
   def buildEngine(repository, host, domain_name, environment)
-    SystemStatus.build_starting(build_params)
     @build_params = {
       repository: repository,
       host_name: host,
       omain_name: domain_name,
       environment: environment
     }
+    SystemStatus.build_starting(@build_params)
     @engine = engine_builder.build_from_blue_print
     @engine.save_state
     build_complete

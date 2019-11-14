@@ -4,10 +4,10 @@ class DockerFileBuilder
   include Archives
 
   require_relative 'persistence.rb'
-  def initialize(reader, build_params, webport, builder)
-    @build_params = build_params
-    @hostname = @build_params[:host_name]
-    @domain_name = @build_params[:domain_name]
+  def initialize(reader, memento, webport, builder)
+    @memento = memento
+    @hostname = @memento[:host_name]
+    @domain_name = @memento[:domain_name]
     @web_port = webport
     @blueprint_reader = reader
     @builder = builder
@@ -53,7 +53,7 @@ class DockerFileBuilder
     set_user('$ContUser') unless @blueprint_reader.framework == 'docker'
     write_run_install_script
     set_user('0')
-    setup_persitant_app if @build_params[:app_is_persistent]
+    setup_persitant_app if @user_params[:app_is_persistent]
     prepare_persitant_source
     write_data_permissions
     finalise_files
