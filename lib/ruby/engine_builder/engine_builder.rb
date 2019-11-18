@@ -102,14 +102,14 @@ class EngineBuilder < ErrorsApi
   end
 
   def setup_engine_dirs
-    SystemUtils.run_system("/opt/engines/system/scripts/system/create_container_dir.sh #{@build_params[:engine_name]}")
+    SystemUtils.run_system("/opt/engines/system/scripts/system/create_container_dir.sh #{memento.container_name}")
   end
 
   def set_locale
     prefs = SystemPreferences.new
-    lang =  @memento[:lang_code]
+    lang =  memento.lang_code
     lang = prefs.langauge_code if lang.nil?
-    country = @memento[:country_code]
+    country = memento.country_code
     country = prefs.country_code if country.nil?
 
     @blueprint_reader.environments.push(EnvironmentVariable.new({name: 'LANGUAGE',

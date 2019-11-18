@@ -1,18 +1,18 @@
 module ManagedContainerControls
   def reinstall_engine
     container_mutex.synchronize {
-    build_controller.reinstall_engine( {
-      engine_name: container_name,
-      domain_name: domain_name,
-      host_name: hostname,
-      software_environment_variables: environments,
-      http_protocol: protocol,
-      memory: memory,
-      permission_as: container_name,
-      repository_url: container_name,
-      variables: environments,
-      reinstall: true
-    }) if prep_task(:build) }
+      build_controller.reinstall_engine( {
+        engine_name: container_name,
+        domain_name: domain_name,
+        host_name: hostname,
+        software_environment_variables: environments,
+        http_protocol: protocol,
+        memory: memory,
+        permission_as: container_name,
+        repository_url: container_name,
+        variables: environments,
+        reinstall: true
+      }) if prep_task(:build) }
   rescue StandardError =>e
     SystemUtils.log_exception(e , 'Reinstall:' + container_name)
   end
@@ -24,7 +24,7 @@ module ManagedContainerControls
   def update_memory(new_memory)
     container_mutex.synchronize {
       super
-      @memory = new_memory
+      memory = new_memory
       update_environment('Memory', new_memory, true)
       save_state
     }
@@ -75,20 +75,20 @@ module ManagedContainerControls
     thr = Thread.new do
       container_mutex.synchronize {
         if prep_task(:create)
-          @domain_name = container_dock.default_domain if @domain_name.nil?
+          domain_name = container_dock.default_domain if domain_name.nil?
           container_dock.initialize_container_env(self)
           #  SystemDebug.debug(SystemDebug.containers, :teask_preped)
           expire_engine_info
-          @id = nil
+          id = nil
           save_state
           unless super
             task_failed('create')
           else
             save_state #save new containerid)
             #    SystemDebug.debug(SystemDebug.containers, :create_super_ran)
-            #   SystemDebug.debug(SystemDebug.containers, @setState, @docker_info_cache.class.name)
+            #   SystemDebug.debug(SystemDebug.containers, set_state, @docker_info_cache.class.name)
             expire_engine_info
-            #   SystemDebug.debug(SystemDebug.containers, @setState, @docker_info_cache.class.name)
+            #   SystemDebug.debug(SystemDebug.containers, set_state, @docker_info_cache.class.name)
             true
           end
         end
@@ -190,7 +190,7 @@ module ManagedContainerControls
       container_mutex.synchronize {
         if prep_task(:start)
           if super
-            @restart_required = false
+            restart_required = false
             true
           else
             task_failed('start')
@@ -221,18 +221,18 @@ module ManagedContainerControls
 
   def restore_engine
     container_mutex.synchronize {
-    build_controller.restore_engine({
-      engine_name: container_name,
-      domain_name: domain_name,
-      host_name: hostname,
-      software_environment_variables: environments,
-      http_protocol: protocol,
-      memory: memory,
-      repository_url: container_name,
-      variables: environments,
-      reinstall: true,
-      restore: true
-    }) if prep_task(:build)}
+      build_controller.restore_engine({
+        engine_name: container_name,
+        domain_name: domain_name,
+        host_name: hostname,
+        software_environment_variables: environments,
+        http_protocol: protocol,
+        memory: memory,
+        repository_url: container_name,
+        variables: environments,
+        reinstall: true,
+        restore: true
+      }) if prep_task(:build)}
   end
 
   def rebuild_container
@@ -257,7 +257,7 @@ module ManagedContainerControls
   end
 
   def correct_current_state
-    case @setState
+    case set_state
     when 'stopped'
       stop_container if is_running?
     when 'running'
@@ -291,15 +291,17 @@ module ManagedContainerControls
   end
 
   def prep_task(action_sym)
-    tah = task_at_hand
-    STDERR.puts("TAH   #{tah} action #{action_sym}")
-    r = in_progress(action_sym)
-    STDERR.puts('in_progress ' + r.to_s)
-#    if in_progress(action_sym) 
-#      STDERR.puts('SAVE STATE :inprogress_run  ')
-#      save_state
-#    end
-    #will return false if task in progress
-   true
+    STDERR.puts('Taks in progress') unless task_at_hand.nil? #FIX ME if task at hand return !nil? already in progress to
+    fs = tasks_final_state(action_sym)
+    create_steps
+    set_state = fs
+    save_state
+    if read_state == fs
+      expire_engine_info
+      status
+      save_state
+      'Already' 
+    end
+    
   end
 end

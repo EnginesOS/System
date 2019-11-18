@@ -1,4 +1,5 @@
-require '/opt/engines/lib/ruby/api/system/container_state_files'
+#require '/opt/engines/lib/ruby/api/system/container_state_files'
+require '/opt/engines/lib/ruby/exceptions/engines_exception.rb'
 require_relative 'files'
 require_relative 'cache'
 require_relative 'locking'
@@ -34,16 +35,21 @@ module Container
     #looking waits on this thread to complete
     def save(c)
       t = Thread.new  { _save(c) }
+      t.name = "Save #{c.container_name} #{Thread.current.name}"
       t.join
+    ensure
+      t.exit unless t.nil?
     end
 
     def _save(c)
-      STDERR.puts "Save #{c.container_name} #{container_conf_locks} #{self.class.name} <=> #{c.ctype}"
+      STDERR.puts "Save #{c.container_name}  #{self.class.name} <=> #{c.ctype}"
       statefile = state_file(c, true)
       statedir = c.store.container_state_dir(c.container_name)
       errors_api.log_error_mesg('container locked', c.container_name) unless lock(statefile)
       backup_state_file(statefile)
-      serialized_object = c.memento.savable
+      serialized_object = c.memento.savable_objs
+      STDERR.puts("SERO #{serialized_object} #{c.memento}")
+    raise EnginesException.new({error_type: :error, status: "Failed to save #{c.container_name}"}) if serialized_object.nil?
       f = File.new("#{statefile}_tmp", File::CREAT | File::TRUNC | File::RDWR, 0600) # was statefile + '_tmp
       begin
         f.puts(serialized_object)
@@ -62,8 +68,8 @@ module Container
       ensure
         f.close unless f.nil?
       end
-        ts = File.mtime(statefile)
-        cache.add(c, ts) unless cache.update(c, ts)
+      ts = File.mtime(statefile)
+      cache.add(c, ts) unless cache.update(c, ts)
     rescue StandardError => e
       c.last_error = e.to_s unless c.nil?
       SystemUtils.log_exception(e)
@@ -78,19 +84,33 @@ module Container
     end
 
     def load(name)
-      begin
-        n = file_name(name)
-        lock(n)
-        f = file(name)
-        c = model_class.from_yaml(f.read)
-        cache.add(c, File.mtime(n))
-        c   #WTF why is cache.add not returning container?
-      rescue Errno::ENOENT => e
-        raise EnginesException.new(error_hash("No Container file:#{n}", name))
-      ensure
-        f.close unless f.nil?
-        unlock(n)
-      end
+      n = file_name(name)
+      load_model(n)
+    rescue Errno::ENOENT => e
+      raise EnginesException.new(error_hash("No Container file:#{n}", name))
+    rescue NoMethodError
+      STDERR.puts("Recovery backup file {#n}.bak" )      
+      load_recovery_model(name)
+    end
+  
+   def recovery_file_name(name)
+       "#{file_name(name)}.bak"
+   end
+
+    def load_recovery_model(n)
+      fn = recovery_file_name(n)
+      load_model(fn)
+    end
+        
+    def load_model(n)
+      lock(n)
+      f = file(n)
+      c = model_class.from_yaml(f.read)
+      cache.add(c, File.mtime(n))
+      c   #FIX ME WTF why is cache.add no
+    ensure
+      f.close unless f.nil?
+      unlock(n)
     end
 
     def model_class

@@ -20,7 +20,7 @@ module ContainerStatus
    #     SystemDebug.debug(SystemDebug.containers, :no_matched_info, info)
       end
     end
-#    SystemDebug.debug(SystemDebug.containers, 'in State', state.to_s)
+    SystemDebug.debug(SystemDebug.containers, 'in State', state)
     state
   end
 
@@ -83,7 +83,7 @@ module ContainerStatus
   end
   
   def to_s
-    "#{@container_name}:#{@ctype}"
+    "#{container_name}:#{ctype}"
   end
   
 end

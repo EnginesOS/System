@@ -17,7 +17,7 @@ class EventListener
   def trigger(hash)
     r = true
     mask = EventMask.event_mask(hash)
-    #  SystemDebug.debug(SystemDebug.container_events, 'trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask:' + @event_mask.to_s + ' result ' )#+ (@event_mask & mask).to_s)
+      SystemDebug.debug(SystemDebug.container_events, 'trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask:' + @event_mask.to_s + ' result ' )#+ (@event_mask & mask).to_s)
     unless @event_mask & mask == 0
       # skip top
       if mask & 32768 == 0 # @@container_top == 0
@@ -25,6 +25,7 @@ class EventListener
         # SystemDebug.debug(SystemDebug.container_events, 'fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
         begin        
           thr = Thread.new {@object.method(@method).call(hash)}
+          SystemDebug.debug(SystemDebug.container_events, 'fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
           thr.name = "#{@object}:#{@method}"
           r = true
         rescue EnginesException => e

@@ -16,7 +16,7 @@ module ContainerControls
     expire_engine_info
     unless is_stopped?
       raise EnginesException.new(warning_hash("Can\'t Stop " + container_name + ' as is ' + read_state.to_s, container_name)) unless read_state == 'running'
-      container_dock.stop_container(container_id)
+      container_dock.stop_container(id)
     else
       true
     end
@@ -30,7 +30,7 @@ module ContainerControls
     r = true
     unless is_stopped?
       raise EnginesException.new(warning_hash("Can\'t Stop " + container_name + ' as is ' + read_state.to_s, container_name)) unless read_state == 'running'
-      r = container_dock.stop_container(container_id, stop_timeout)
+      r = container_dock.stop_container(id, stop_timeout)
       expire_engine_info
     end
     r
@@ -45,7 +45,7 @@ module ContainerControls
     r = true
     unless is_paused?
       raise EnginesException.new(warning_hash("Can\'t Pause " + container_name + ' as is ' + read_state.to_s, container_name)) unless is_running?
-      r = container_dock.pause_container(container_id)
+      r = container_dock.pause_container(id)
       expire_engine_info
     end
     r
@@ -56,7 +56,7 @@ module ContainerControls
     r = true
     unless is_running?
       raise EnginesException.new(warning_hash("Can\'t unpause " + container_name + ' as is ' + read_state.to_s, container_name)) unless is_paused?
-      r = container_dock.unpause_container(container_id)
+      r = container_dock.unpause_container(id)
       expire_engine_info
     end
     r
@@ -65,12 +65,12 @@ module ContainerControls
   def destroy_container()
     expire_engine_info
     unless has_container?
-      @id = nil
+      id = nil
       r = true
     else
       raise EnginesException.new(warning_hash('Cannot Destroy ' +  container_name + ' as is not stopped Please stop first', container_name)) if is_active?
       r = container_dock.destroy_container(self)
-      @id = nil
+      id = nil
       expire_engine_info
     end
     r
@@ -80,7 +80,7 @@ module ContainerControls
     expire_engine_info
     #  SystemDebug.debug(SystemDebug.containers, :create_container, :containerid)
     raise EnginesException.new(warning_hash('Cannot create container as container exists ' + container_name.to_s, container_name)) if has_container?
-    @id = nil
+    id = nil
     container_dock.create_container(self)
   end
 

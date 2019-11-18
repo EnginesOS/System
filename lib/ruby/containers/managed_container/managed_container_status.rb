@@ -1,6 +1,6 @@
 module ManagedContainerStatus
   def is_service?
-    if @ctype == 'service'
+    if ctype == 'service'
       true
     else
       false
@@ -33,14 +33,14 @@ module ManagedContainerStatus
       state = super()
       if state.nil? #Kludge
         state = 'nocontainer'
-        @last_error = 'mc got nil from super in read_state'
+        last_error = 'mc got nil from super in read_state'
       end
     end
     unless raw == true
-      if state != @setState && task_at_hand.nil?
-        @last_error =  "Warning State Mismatch set to #{@setState} but in #{state} state"
+      if state != set_state && task_at_hand.nil?
+        last_error =  "Warning State Mismatch set to #{set_state} but in #{state} state"
       else
-        @last_error = ''
+        last_error = ''
       end
     end
     state
@@ -59,7 +59,7 @@ module ManagedContainerStatus
     r = false
     if task_at_hand.nil?
       if in_two_step?
-        r = true if @setState == read_state
+        r = true if set_state == read_state
       end
     end
     r
@@ -75,8 +75,8 @@ module ManagedContainerStatus
 
   def clear_error
     #Sychronise somewhere
-    @out_of_memory = false
-    @had_out_memory = false
+    out_of_memory = false
+    had_out_memory = false
     save_state
     true
   end
@@ -101,11 +101,11 @@ module ManagedContainerStatus
     File.exist?("#{store.container_state_dir(container_name)}/in_progress")
   end
 
-  def container_id
-    if @id.nil?
-      @id = read_container_id
-    end
-    @id
+  def container_id   
+     unless set_state == 'nocontainer'
+      id = read_container_id if id.nil?
+     end  
+    id
   end
 
   protected

@@ -1,8 +1,8 @@
 module ManagedContainerWebSites
   def set_deployment_type(deployment_type)
-    @deployment_type = deployment_type
-    remove_wap_service if @deployment_type && @deployment_type != 'web'
-    add_wap_service if @deployment_type == 'web'
+    deployment_type = deployment_type
+    remove_wap_service if deployment_type && deployment_type != 'web'
+    add_wap_service if deployment_type == 'web'
   end
 
   def web_sites
@@ -10,10 +10,10 @@ module ManagedContainerWebSites
   end
 
   def http_protocol
-    if @protocol.include?('_')
-      @protocol.gsub(/_.*/,'')
+    if protocol.include?('_')
+      protocol.gsub(/_.*/,'')
     else
-      @protocol.to_s
+      protocol.to_s
     end
   end
 
@@ -28,24 +28,24 @@ module ManagedContainerWebSites
      when 'https and http'
       enable_https_and_http
     else
-      @protocol = proto.downcase.to_sym
+      protocol = proto.downcase.to_sym
     end
   end
 
   def enable_https_and_http
-    @protocol = :https_and_http
+    protocol = :https_and_http
   end
   
   def enable_http_and_https
-    @protocol = :http_and_https
+    protocol = :http_and_https
   end
 
   def enable_https_only
-    @protocol = :https_only
+    protocol = :https_only
   end
 
   def enable_http_only
-    @protocol = :http_only
+    protocol = :http_only
   end
 
   # create wap service_hash for container and register with wap

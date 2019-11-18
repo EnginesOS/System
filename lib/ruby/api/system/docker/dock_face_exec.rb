@@ -198,8 +198,8 @@ module DockFaceExec
     else
       request_params['AttachStdin'] = false
     end
-    STDERR.puts({uri: '/containers/' + params[:container].container_id.to_s + '/exec' , params: request_params}.to_s)
-    post({uri: "/containers/#{params[:container].container_id}/exec" , params: request_params})
+    STDERR.puts({uri: '/containers/' + params[:container].id.to_s + '/exec' , params: request_params}.to_s)
+    post({uri: "/containers/#{params[:container].id}/exec" , params: request_params})
   end
 
   def format_commands(commands)

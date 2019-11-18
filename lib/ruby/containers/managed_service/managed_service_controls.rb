@@ -4,9 +4,9 @@ module ManagedServiceControls
   end
 
   def create_service()
-    setup_service_keys if @system_keys.is_a?(Array)
+    setup_service_keys if system_keys.is_a?(Array)
     container_dock.setup_service_dirs(self)
-    #SystemDebug.debug(SystemDebug.containers, :keys_set, @system_keys )
+    #SystemDebug.debug(SystemDebug.containers, :keys_set, system_keys )
     envs = container_dock.load_and_attach_pre_services(self)
     shared_envs = container_dock.load_and_attach_shared_services(self)
     if shared_envs.is_a?(Array)
@@ -17,8 +17,8 @@ module ManagedServiceControls
       end
     end
     if envs.is_a?(Array)
-      if@environments.is_a?(Array)
-        @environments =  EnvironmentVariable.merge_envs(envs, @environments)
+      if environments.is_a?(Array)
+        environments =  EnvironmentVariable.merge_envs(envs, environments)
       end
     end
     create_container
@@ -48,7 +48,7 @@ module ManagedServiceControls
 
   def setup_service_keys
     keys = ''
-    @system_keys.each do |key|
+    system_keys.each do |key|
       keys += " #{key}"
     end
    # SystemDebug.debug(SystemDebug.containers, :keys, keys)

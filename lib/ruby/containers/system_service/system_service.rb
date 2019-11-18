@@ -14,12 +14,10 @@ module Container
        end
      end
 
-    @ctype = 'system_service'
-    def lock_values
-      @ctype = 'system_service' if @ctype.nil?
-      super
+    def ctype      
+      @ctype ||= 'system_service'
     end
-
+    
     def certificates
       nil
     end
@@ -35,11 +33,11 @@ module Container
     end
 
     def unpause_container
-      container_dock.unpause_container(container_id)
+      container_dock.unpause_container(id)
     end
 
     def stop_container
-      container_dock.stop_container(container_id)
+      container_dock.stop_container(id)
     end
 
     def destroy_container
@@ -47,7 +45,7 @@ module Container
     end
 
     def start_container
-      container_dock.start_container(container_id)
+      container_dock.start_container(id)
     end
 
     def forced_recreate
@@ -70,7 +68,7 @@ module Container
     def inspect_container
     #  SystemDebug.debug(SystemDebug.system, :system_service_inspect_container)
       if @docker_info.nil? || @docker_info.is_a?(FalseClass)
-        @docker_info =  container_dock.inspect_container(container_id)
+        @docker_info =  container_dock.inspect_container(id)
         if @docker_info.is_a?(FalseClass)
           unless has_image?
             SystemUtils.log_output('pulling system service' + container_name.to_s, 10)

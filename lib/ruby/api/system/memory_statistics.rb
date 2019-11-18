@@ -36,7 +36,7 @@ module MemoryStatistics
       }
     }
     containers.each do | container|
-      next if container.setState != "running"
+      next if container.set_state != "running"
       container_sym = container.container_name.to_sym
       mem_stats[container_sym] = self.container_memory_stats(container)
       next unless container.is_running?
@@ -51,8 +51,8 @@ module MemoryStatistics
     unless container.is_active?
       self.empty_container_result(container)
     else
-      if container && container.container_id.nil? == false && container.container_id != '-1'
-        path = SystemUtils.cgroup_mem_dir(container.container_id.to_s)
+      unless container.id.nil?
+        path = SystemUtils.cgroup_mem_dir(container.id.to_s)
         if Dir.exist?(path)
           ret_val = {
             maximum: File.read(path + '/memory.max_usage_in_bytes').to_i,

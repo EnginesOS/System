@@ -64,7 +64,7 @@ class DockerEventWatcher < ErrorsApi
     end
   end
 
-  def fill_in_event_system_values(event_hash)
+  def format(event_hash)
     if event_hash.key?(:Actor) && event_hash[:Actor][:Attributes].is_a?(Hash)
       event_hash[:container_name] = event_hash[:Actor][:Attributes][:container_name]
       event_hash[:container_type] = event_hash[:Actor][:Attributes][:container_type]
@@ -72,14 +72,10 @@ class DockerEventWatcher < ErrorsApi
     event_hash
   end
 
-  def match_container(hash, container_name)
+  def match_container(hash, cn)
     r = false
-    if hash.key?(:Actor)
-      if hash[:Actor].key?(:Attributes)
-        if hash[:Actor][:Attributes].key?(:container_name)
-          r = true if hash[:Actor][:Attributes][:container_name] == container_name
-        end
-      end
+    unless  event_hash[:container_name].nil?
+      r = true if event_hash[:container_name] == cn    
     end
     r
   end
@@ -87,31 +83,30 @@ class DockerEventWatcher < ErrorsApi
   protected
 
   def is_valid_docker_event?(hash)
-    r = false
-    STDERR.puts("DOCKER SENT ARRAY #{hash}") if hash.is_a?(Array) && ! hash.is_a?(Hash)
+    r = false  
     STDERR.puts("DOCKER SENT UNKNOWN #{hash}") unless hash.is_a?(Hash)
     r = true if hash.is_a?(Hash)
     r = false if hash.key?(:from) && hash[:from].length >= 64
     r
   end
 
-  def trigger(hash)
-    fill_in_event_system_values(hash)
+  def trigger(event)
+    format(event)
     l = event_listeners.sort_by { |k, v| v[:priority] }
     l.each do |m|
       listener = m[1][:listener]
       unless listener.container_name.nil?
-        next unless match_container(hash, listener.container_name)
+        next unless match_container(event, listener.container_name)
       end
       begin
-        listener.trigger(hash)
-      rescue StandardError => e
-        SystemDebug.debug(SystemDebug.container_events, hash.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)
-        STDERR.puts(hash.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)
+        listener.trigger(event)
+      rescue StandardErrorevent=> e
+        SystemDebug.debug(SystemDebug.container_events, event.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)
+        STDERR.puts(event.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)
       end
     end
   rescue StandardError => e
-    SystemDebug.debug(SystemDebug.container_events, hash.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)
+    SystemDebug.debug(SystemDebug.container_events, event.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)
     log_exception(e)
   end
 

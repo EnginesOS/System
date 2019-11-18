@@ -1,8 +1,8 @@
 module Container
   class Store
     #self
-    def file(name)
-      File.new(file_name(name), 'r')
+    def file(n)
+      File.new(n, 'r')
     end
 
     #self
@@ -159,13 +159,13 @@ module Container
     def actionator_dir(cn)
       "#{container_state_dir(cn)}/actionators/"
     end
-    
-    def init_engine_dirs(en)      
+
+    def init_engine_dirs(en)
       FileUtils.mkdir_p("#{container_state_dir(en)}/run") unless Dir.exist?("#{container_state_dir(en)}/run")
       FileUtils.mkdir_p(container_log_dir(en)) unless Dir.exist?(container_log_dir(en))
       FileUtils.mkdir_p(container_ssh_keydir(en)) unless Dir.exist?(container_ssh_keydir(en))
     end
-    
+
     def save_build_report(cn, build_report)
       f = File.new("#{container_state_dir(cn)}/buildreport.txt", File::CREAT | File::TRUNC | File::RDWR, 0644)
       begin
@@ -174,20 +174,20 @@ module Container
         f.close
       end
     end
-    
+
     #also used bu publicapi gui prefs
     def set_container_icon_url(cn, url)
-         url_f = File.new("#{container_state_dir(cn)}/icon.url", 'w+')
-         begin
-           url_f.puts(url)
-         ensure
-           url_f.close
-         end
-       rescue StandardError => e
-         url_f.close unless url_f.nil?
-         raise e
-       end 
-###   
+      url_f = File.new("#{container_state_dir(cn)}/icon.url", 'w+')
+      begin
+        url_f.puts(url)
+      ensure
+        url_f.close
+      end
+    rescue StandardError => e
+      url_f.close unless url_f.nil?
+      raise e
+    end
+    ###
 
     #from docker_info_collector
     # from container_dock:engines_api_system
@@ -195,6 +195,44 @@ module Container
     def clear_cid_file(cn)
       cidfile = container_cid_file(cn)
       File.delete(cidfile) if File.exist?(cidfile)
+    end
+
+    #Container_Dock:EnginesApiSystem:create_container
+    def clear_container_var_run(ca)
+      File.unlink("#{container_state_dir(ca)}/startup_complete") if File.exist?(container_state_dir(ca) + '/startup_complete')
+      true
+    end
+
+    def create_container_dirs(cn)
+      state_dir = container_state_dir(cn)
+      unless File.directory?(state_dir)
+        Dir.mkdir(state_dir)
+        Dir.mkdir("#{state_dir}/run") unless Dir.exist?("#{state_dir}/run")
+        Dir.mkdir("#{state_dir}/run/flags") unless Dir.exist?("#{state_dir}/run/flags")
+        FileUtils.chown_R(nil, 'containers', "#{state_dir}/run")
+        FileUtils.chmod_R('u+r', "#{state_dir}run")
+        FileUtils.chmod_R('g+w', "#{state_dir}/run")
+      end
+      log_dir = container_log_dir(cn)
+      Dir.mkdir(log_dir) unless File.directory?(log_dir)
+      Dir.mkdir("#{state_dir}/configurations/") unless File.directory?("#{state_dir}/configurations")
+      Dir.mkdir("#{state_dir}/configurations/default") unless File.directory?("#{state_dir}/configurations/default")
+      key_dir = key_dir(cn)
+      unless Dir.exist?(key_dir)
+        Dir.mkdir(key_dir)  unless File.directory?(key_dir)
+        FileUtils.chown(nil, 'containers',key_dir)
+        FileUtils.chmod('g+w', key_dir)
+      end
+      true
+    end
+
+    #EventHandler:is_engines_container_event
+    def has_config?(cn)
+      unless container_type == 'app'
+        File.exist?("#{container_state_dir(cn)}/config.yaml") | File.exist?("#{container_state_dir(cn)}/running.yaml")
+      else
+        File.exist?("#{container_state_dir(cn)}/running.yaml")
+      end
     end
 
   end

@@ -40,7 +40,7 @@ module BuilderBluePrint
 
     log_build_output("Using Blueprint Schema #{version} Inheriting from arent #{@blueprint[:origin]}")
 
-    @blueprint_reader = VersionedBlueprintReader.new(@memento[:engine_name], @blueprint, self)
+    @blueprint_reader = VersionedBlueprintReader.new(memento.container_name, @blueprint, self)
     @blueprint_reader.process_blueprint
     ev = EnvironmentVariable.new({name: 'Memory',
       value: @memory,
@@ -51,12 +51,12 @@ module BuilderBluePrint
   end
 
 def clone_repo
-  if @memento[:repository_url].end_with?('.json')
-    BlueprintApi.download_and_save_blueprint(basedir, @memento[:repository_url])
+  if memento.repository_url.end_with?('.json')
+    BlueprintApi.download_and_save_blueprint(basedir, memento.repository_url)
   else
-    log_build_output('Clone Blueprint Repository ' + @memento[:repository_url])
-    #SystemDebug.debug(SystemDebug.builder, "get_blueprint_from_repo",@memento[:repository_url], @build_name, SystemConfig.DeploymentDir)
-    BlueprintApi.clone_repo(@memento[:repository_url], @build_name, :path => SystemConfig.DeploymentDir)
+    log_build_output('Clone Blueprint Repository ' + memento.repository_url)
+    #SystemDebug.debug(SystemDebug.builder, "get_blueprint_from_repo",memento.repository_url, @build_name, SystemConfig.DeploymentDir)
+    BlueprintApi.clone_repo(memento.repository_url, @build_name, :path => SystemConfig.DeploymentDir)
     #    SystemDebug.debug(SystemDebug.builder, 'GIT GOT ' + g.to_s)
   end
 end

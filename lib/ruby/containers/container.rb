@@ -24,10 +24,6 @@ module Container
 
     def self.from_yaml(yaml) # FIX ME: should be in the store for symetry with save
       Memento.from_yaml(yaml).container { |c| c.post_load }
-
-      # c = Memento.from_yaml(yaml).container
-      # c.post_load
-      # c
     rescue StandardError => e
       STDERR.puts('Problem ' + e.to_s)
       STDERR.puts('With: ' + yaml.to_s)
@@ -40,22 +36,32 @@ module Container
       :ctype,
       :container_name,
       :memory,
+      :memory=,
       :image,
       :web_port,
       :volumes,
       :mapped_ports,
       :environments,
       :environments=,
-      :setState,
       :last_error,
-      :last_error=
-
+      :last_error=,
+      :id,
+      :id=,
+      :stop_reason,
+      :stop_reason=,
+      :exit_code,
+      :exit_code=,
+      :has_run,
+      :has_run=,
+      :state,
+      :tstate=
+      
     def update_memory(new_memory)
-      @memory = new_memory
+      memory = new_memory
     end
 
     def on_host_net?
-      if @host_network.is_a?(TrueClass)
+      if host_network.is_a?(TrueClass)
         true
       else
         false

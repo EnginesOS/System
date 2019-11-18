@@ -44,37 +44,57 @@ module Container
     require_relative 'managed_container/managed_container_services.rb'
     include ManagedContainerServices
 
-    #    @conf_self_start = false
-    #    @conf_zero_conf=false
-    #    @restart_required = false
-    #    @rebuild_required = false
-    #    @large_temp = false
-
     def_delegators :memento,
-      :restart_policy,
-      :volumes_from,
-      :image_repo,
-      :capabilities,
-      :conf_register_dns,
-      :framework,
-      :runtime,
-      :repository,
-      :data_uid,
-      :data_gid,
-      :cont_user_id,
-      :protocol,
-      :preffered_protocol,
-      :deployment_type,
-      :dependant_on,
-      :hostname,
-      :domain_name,
-      :conf_self_start,
-      :large_temp
-
+    :restart_policy,
+    :volumes_from,
+    :image_repo,
+    :capabilities,
+    :conf_register_dns,
+    :framework,
+    :runtime,
+    :repository,
+    :data_uid,
+    :data_gid,
+    :cont_user_id,
+    :cont_user_id=,
+    :protocol,
+    :protocol=,
+    :preffered_protocol,
+    :deployment_type,
+    :dependant_on,
+    :hostname,
+    :hostname=,    
+    :domain_name,
+    :domain_name=,
+    :conf_self_start,
+    :large_temp,
+    :set_state,
+    :set_state=,
+    :restart_required,
+    :restart_required=,
+    :conf_zero_conf,
+    :consumer_less,
+    :deployment_type,
+    :out_of_memory,
+    :out_of_memory=,
+    :had_out_memory,
+    :had_out_memory=,
+    :created,
+    :created=,
+    :last_task,
+    :last_task=,
+    :task_queue,
+    :task_queue=,
+    :steps=,
+    :steps,
+    :kerberos=,
+    :stopped_ok,
+    :no_cert_map,
+    :privileged
+    
     def initialize
       super
       @status = {}
-      init_task_at_hand
     end
 
     def store
@@ -86,37 +106,28 @@ module Container
     end
 
     def kerberos
-      @kerberos = true if @kerberos.nil?
-      @kerberos
-    end
-
-    def no_cert_map
-      false unless @no_cert_map == true
-      true if @no_cert_map == true
-    end
-
-    def set_state
-      @setState
+      kerberos = true if kerberos.nil?
+      kerberos
     end
 
     def to_s
-      "#{@container_name}-set to:#{@setState}:#{status}:#{@ctype}"
+      "#{container_name}-set to:#{set_state}:#{status}:#{ctype}"
     end
 
     def store_address
-      @store_address ||= { c_name: @container_name.to_s, c_type: @ctype.to_s }
+      @store_address ||= { c_name: container_name.to_s, c_type: ctype.to_s }
     end
 
     def status
       @status = {} if @status.nil?
       @status[:state] = read_state
       # STDERR.puts(' STATE GOT ' + container_name.to_s + ':' + @status[:state].to_s)
-      @status[:set_state] = @setState
+      @status[:set_state] = set_state
       @status[:progress_to] = task_at_hand
       @status[:error] = false
-      @status[:oom] = @out_of_memory
-      @status[:why_stop] = @stop_reason
-      @status[:had_oom] = @had_out_memory
+      @status[:oom] = out_of_memory
+      @status[:why_stop] = stop_reason
+      @status[:had_oom] = had_out_memory
       @status[:restart_required] = restart_required?
       @status[:error] = true if @status[:state] != @status[:set_state] && @status[:progress_to].nil?
       @status[:error] = false if @status[:state] == 'stopped' && is_stopped_ok?
@@ -125,7 +136,6 @@ module Container
     end
 
     def post_load
-      i = @id
       container_mutex.synchronize {
         super
         status
@@ -133,19 +143,19 @@ module Container
     end
 
     def repo
-      @repository
+      repository
     end
 
     def is_stopped_ok?
-      @stopped_ok |= false
+      stopped_ok |= false
     end
 
     def engine_name
-      @container_name
+      container_name
     end
 
     def engine_environment
-      @environments
+      environments
     end
 
     def to_h
@@ -169,13 +179,7 @@ module Container
     end
 
     def lock_values
-      @conf_self_start.freeze
-      @container_name.freeze
-      @data_uid.freeze
-      @data_gid.freeze
-      @image.freeze
-      @repository = '' if @repository.nil?
-      @repository.freeze
+
     end
 
     def error_type_hash(mesg, params = nil)
@@ -184,6 +188,10 @@ module Container
         params: params }
     end
   end
+  
+   def steps
+     @steps ||= []
+   end
 
   def container_save
     @container_save ||= Mutex.new

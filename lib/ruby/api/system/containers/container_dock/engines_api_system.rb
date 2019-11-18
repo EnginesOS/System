@@ -122,9 +122,9 @@ module EnginesApiSystem
     clear_error
     c.expire_engine_info
     raise EnginesException.new(warning_hash('Failed To create container exists by the same name', c.store_address)) if c.ctype != 'system_service' && c.has_container?
-    raise EnginesException.new(error_hash('Failed to create state files', c.store_address)) unless ContainerStateFiles.create_container_dirs(c.store_address)
+    raise EnginesException.new(error_hash('Failed to create state files', c.store_address)) unless c.store.create_container_dirs(c.container_name)
     c.store.clear_cid_file(c.container_name)
-    ContainerStateFiles.clear_container_var_run(c.store_address)
+    c.store.clear_container_var_run(c.container_name)
     start_dependancies(c) if c.dependant_on.is_a?(Hash)
     c.pull_image if c.ctype != 'app'
     dock_face.create_container(c)

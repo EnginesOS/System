@@ -11,11 +11,11 @@ module Builders
   require_relative 'build_image.rb'
   require_relative 'physical_checks.rb'
   def setup_build
-    check_build_params(@memento)
-    @memento[:image] = @memento[:engine_name]
-    @build_name =  @memento[:engine_name]
+    check_build_params(memento)
+    memento.image = memento.container_name
+    @build_name =  memento.container_name
     @web_port = SystemConfig.default_webport
-    @memory = @memento[:memory]
+    @memory = memento.memory
     @app_is_persistent = false
     @result_mesg = 'Incomplete'
     @first_build = true
@@ -25,10 +25,10 @@ module Builders
     setup_log_output
     if @user_params[:reinstall]
       @rebuild = true
-      @memento[:permission_as] = @memento[:engine_name]
+      memento.permission_as = memento.container_name
     end
     set_container_guids
-    process_supplied_envs(@memento[:variables])
+    process_supplied_envs(memento.variables)
     self
   rescue StandardError => e
     #log_exception(e)
@@ -41,7 +41,7 @@ module Builders
   def restore_managed_container(engine)
     @engine = engine
     @rebuild = true
-    @memento[:permission_as] = engine.container_name
+    memento.permission_as = engine.container_name
     log_build_output('Starting Restore')
     setup_rebuild
     build_container
@@ -109,7 +109,7 @@ module Builders
   end
 
   def service_builder
-    @service_builder ||= ServiceBuilder.instance(templater, @memento[:engine_name], @attached_services, basedir)
+    @service_builder ||= ServiceBuilder.instance(templater, memento.container_name, @attached_services, basedir)
   end
 
   def wait_for_start_up(d=25)
@@ -120,7 +120,7 @@ module Builders
   end
 
   def post_failed_build_clean_up
-    SystemStatus.build_failed(@memento)
+    SystemStatus.build_failed(memento.merge(user_params))
     begin
       if @container.is_a?(Container::ManagedContainer)
         @container.stop_container if @container.is_running?
@@ -131,8 +131,8 @@ module Builders
       #FIX ME How Deal withthis
       ###@build_params[:rollback]
       
-      core.delete_engine_and_services(@memento)
-      event_handler.trigger_install_event(@memento[:engine_name], 'failed')
+      core.delete_engine_and_services(user_params)
+      event_handler.trigger_install_event(memento.container_name, 'failed')
     rescue
       #dont panic if no container
     end
@@ -142,7 +142,7 @@ module Builders
   end
 
   def build_container
-    SystemDebug.debug(SystemDebug.builder, 'Starting build with params ', @memento)
+    SystemDebug.debug(SystemDebug.builder, 'Starting build with params ', memento)
     process_blueprint
     meets_physical_requirements
     set_locale
@@ -172,7 +172,7 @@ module Builders
   def setup_rebuild
     log_build_output('Setting up rebuild')
     create_build_dir
-     blue_print = load_existing_blueprint(@memento[:engine_name])
+     blue_print = load_existing_blueprint(memento.container_name)
     bpfile = "#{basedir}/blueprint.json"
     f = File.new(bpfile, File::CREAT | File::TRUNC | File::RDWR, 0640)
     begin

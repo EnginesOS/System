@@ -12,7 +12,7 @@ module ImageControls
   end
 
   def has_image?
-    container_dock.image_exist?(@image)
+    container_dock.image_exist?(image)
   end
 
 end

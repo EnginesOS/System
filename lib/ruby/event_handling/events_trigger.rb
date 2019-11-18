@@ -3,7 +3,7 @@ class EventHandler
   def trigger_engine_event(engine, status, action)
     trigger_event_notification( {
       status: status,
-      id: engine.container_id,
+      id: engine.id,
       from: engine.container_name,
       Type: "container",
       Action: action,

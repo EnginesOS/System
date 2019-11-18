@@ -21,7 +21,6 @@ module Container
     include ManagedServiceOnAction
     require_relative 'managed_service/managed_service_import_export.rb'
     include ManagedServiceImportExport
-
     class << self
       def store
         @@service_store ||= ServiceStore.new
@@ -29,34 +28,27 @@ module Container
     end
 
     def_delegators :memento,
-      :persistent,
-      :type_path,
-      :publisher_namespace
-
-    @ctype='service'
-    @soft_service = false
-
-    def lock_values
-      super
-      @ctype = 'service' if @ctype.nil?
-      @ctype.freeze
-    end
+    :persistent,
+    :type_path,
+    :publisher_namespace,
+    :aliases,
+    :soft_service,
+    :privileged,
+    :system_keys,
+    :host_network,
+    :privileged
 
     def ctype
-      @ctype
+      @ctype ||= 'service'
     end
 
     def is_soft_service?
-      if @soft_service.is_a?(TrueClass)
-        true
-      else
-        false
-      end
+      soft_service
     end
 
     def to_service_hash()
-      { :publisher_namespace => @publisher_namespace,
-        :type_path => @type_path
+      { :publisher_namespace => publisher_namespace,
+        :type_path => type_path
       }
     end
 

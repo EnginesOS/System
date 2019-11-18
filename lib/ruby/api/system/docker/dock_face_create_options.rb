@@ -134,11 +134,10 @@ class DockFaceCreateOptions
     top_level
   end
 
-  def set_entry_point(c, top_level)
-    command =  c.command
+  def set_entry_point(c, top_level)  
     unless c.conf_self_start
       command = ['/bin/bash' ,'/home/engines/scripts/startup/start.sh'] if c.command.nil?
-      top_level['Entrypoint'] = command
+      top_level['Entrypoint'] = c.command
     end
   end
 

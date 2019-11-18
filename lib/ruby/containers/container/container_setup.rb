@@ -1,11 +1,11 @@
 module ContainerSetup
   def set_running_user
-    @cont_user_id = running_user if @cont_user_id.nil? || @cont_user_id == -1
+    cont_user_id = running_user if cont_user_id.nil? || cont_user_id == -1
   end
 
   def post_load
     expire_engine_info
-    set_cont_id
+    id = read_container_id if id.nil? || id == -1
     set_running_user
     self
   ensure

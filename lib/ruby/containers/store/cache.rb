@@ -30,7 +30,7 @@ module Container
     def add(container, ts)
       i = ident(container)
       cache[i.to_sym] = { engine: container, ts: ts }
-      cache[container.container_id] = i
+      cache[container.id] = i
       container
     end
 

@@ -6,8 +6,8 @@ class DockerFileBuilder
   require_relative 'persistence.rb'
   def initialize(reader, memento, webport, builder)
     @memento = memento
-    @hostname = @memento[:host_name]
-    @domain_name = @memento[:domain_name]
+    @hostname = memento.host_name
+    @domain_name = memento.domain_name
     @web_port = webport
     @blueprint_reader = reader
     @builder = builder

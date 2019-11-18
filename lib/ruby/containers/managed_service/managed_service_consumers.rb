@@ -1,7 +1,7 @@
 module ManagedServiceConsumers
   def remove_consumer(service_hash)
     raise EnginesException.new(error_hash('Invalid service hash ', service_hash)) unless service_hash.is_a?(Hash)
-    return true if !is_running? && @soft_service
+    return true if !is_running? && soft_service
     raise EnginesException.new(error_hash('Cannot remove consumer if Service is not running ', service_hash)) unless is_running?
     raise EnginesException.new(error_hash('service missing cont_user_id ', service_hash)) if check_cont_uid == false
     rm_consumer_from_service(service_hash)
@@ -10,13 +10,13 @@ module ManagedServiceConsumers
   def registered_consumers(params = nil)
     if params.nil?
       params = {
-        publisher_namespace: @publisher_namespace,
-        type_path: @type_path
+        publisher_namespace: publisher_namespace,
+        type_path: type_path
       }
       alias_services = nil
-      unless @aliases.nil?
-        if @aliases.is_a?(Array)
-          @aliases.each do |type_path|
+      unless aliases.nil?
+        if aliases.is_a?(Array)
+          aliases.each do |type_path|
             alias_services ||= []
             params[:type_path] = type_path
             reg = container_dock.get_registered_consumer(params)
@@ -25,7 +25,7 @@ module ManagedServiceConsumers
         end
       end
       unless alias_services.nil?
-        params[:type_path] = @type_path
+        params[:type_path] = type_path
         reg_services =   container_dock.registered_with_service(params)
         alias_services += reg_services if reg_services.is_a?(Array)
         return alias_services
@@ -38,8 +38,8 @@ module ManagedServiceConsumers
 
   def registered_consumer(params)
     service_params = {
-      publisher_namespace: @publisher_namespace,
-      type_path: @type_path,
+      publisher_namespace: publisher_namespace,
+      type_path: type_path,
       parent_engine: params[:parent_engine]
     }
     service_params[:service_handle] = params[:service_handle] if params.key?(:service_handle)
@@ -48,7 +48,7 @@ module ManagedServiceConsumers
   end
 
   def reregister_consumers
-    if @persistent == true && @soft_service == false
+    if persistent == true && soft_service == false
       true
     else
       if is_running? == true
@@ -73,11 +73,11 @@ module ManagedServiceConsumers
 
   def add_consumer(service_hash)
     raise EnginesException.new(error_hash('Invalid service_hash ', service_hash)) unless service_hash.is_a?(Hash)
-    service_hash[:persistent] = @persistent unless service_hash.key?(:persistent)
+    service_hash[:persistent] = persistent unless service_hash.key?(:persistent)
     result = false
     # add/create persistent if fresh == true on not at all or if running create for no persistent
-    return true if !is_running? && @soft_service
-    raise EnginesException.new(error_hash('service not running', @container_name)) unless is_running?
+    return true if !is_running? && soft_service
+    raise EnginesException.new(error_hash('service not running', container_name)) unless is_running?
     unless service_hash[:persistent]
       result = add_consumer_to_service(service_hash)
     else
@@ -103,8 +103,8 @@ module ManagedServiceConsumers
     raise EnginesException.new(error_hash('service missing cont_user_id '+ container_name, service_hash)) unless check_cont_uid
     unless is_startup_complete?
      # STDERR.puts('START UP BOT CPMPLEYE ' )
-    #  STDERR.puts('soft_service' + @soft_service.to_s)
-      unless @soft_service == true
+    #  STDERR.puts('soft_service' + soft_service.to_s)
+      unless soft_service == true
         raise EnginesException.new(error_hash('service startup not complete ' + container_name, service_hash))
       end
     end

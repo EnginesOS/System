@@ -1,7 +1,7 @@
 module ContainerDockDockerActions
   def destroy_container(container)
     clear_error
-    dock_face.destroy_container(container.container_id)
+    dock_face.destroy_container(container.id)
   end
 
   def unpause_container(cid)
@@ -29,7 +29,7 @@ module ContainerDockDockerActions
      dock_face.inspect_container(cid)
   end
 
-  def stop_container(cid, to)
+  def stop_container(cid, to=30)
     clear_error
     dock_face.stop_container(cid, to)
     #rotate_log(container)
@@ -55,7 +55,7 @@ module ContainerDockDockerActions
     raise EnginesException.new(warning_hash('Failed pre start checks:' + passed_checks.to_s , container.container_name)) unless passed_checks.is_a?(TrueClass)
     start_dependancies(container) if container.dependant_on.is_a?(Array)
     wait_for_dependacies_startup(container)
-    dock_face.start_container(container.container_id)
+    dock_face.start_container(container.id)
   end
 
   def image_exist?(iname)

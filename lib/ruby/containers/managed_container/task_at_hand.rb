@@ -1,103 +1,45 @@
 module TaskAtHand
 
   @task_queue = []
-  def init_task_at_hand
-    @steps = []
-  end
 
-  def desired_state(step, state, curr_state)
-    current_set_state = @setState
-    @setState = state.to_s
-    set_task_at_hand(step)
-    save_state
-    STDERR.puts( 'Task at Hand:' + state.to_s + ' Current set state:' + current_set_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s + ' in ' + curr_state)
-  end
 
-  def in_progress(action)
+  def create_steps
     curr_state = read_state
-    final_state = tasks_final_state(action)
-    #   SystemDebug.debug(SystemDebug.engine_tasks, :final_state, final_state)
-    if final_state == curr_state && action != 'restart'
-      @setState = curr_state
-      @id == nil if curr_state == 'nocontainer'
-      #  SystemDebug.debug(SystemDebug.engine_tasks, :curr_state, curr_state)
-      return save_state
-    end
-    if @steps_to_go.nil? || @steps_to_go <= 0
-      @steps_to_go = 1
-      @steps = []
-      @steps[0] = action
-    end
-    step = @steps[0]
-
-    #  SystemDebug.debug(SystemDebug.engine_tasks, :read_state, curr_state)
-    # FIX ME Finx the source 0 :->:
     curr_state.sub!(/\:->\:/,'')
-    @last_task = action
-    r = log_error_mesg(@container_name.to_s + ' not in matching state want _' + tasks_final_state(action).to_s + '_but in ' + curr_state.class.name + ' ', curr_state )
-    case action
+     steps = [] if steps.nil?
+       
+    case set_state
     when :create
-      @steps = [:create, :start]
-      @steps_to_go = 2
-      r = desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
-    when :stop
-      #    STDERR.puts(' stop  steps' + @steps.to_s + ' count ' + @steps_to_go.to_s)
-      r = desired_state(step, final_state, curr_state) if curr_state== 'running'
-    when :start
-      #    STDERR.puts(' start  steps' + @steps.to_s + ' count ' + @steps_to_go.to_s)
-      r = desired_state(step, final_state, curr_state) if curr_state== 'stopped'
-    when :pause
-      #   STDERR.puts(' pause  steps' + @steps.to_s + ' count ' + @steps_to_go.to_s)
-      r = desired_state(step, final_state, curr_state) if curr_state== 'running'
-    when :halt
-      r = true
+      steps = [:create, :start]
+    when :stop, :start, :pause, :halt, :unpause, :delete, :destroy, 
+      steps[0] = set_state      
     when :restart
       if curr_state == 'running'
-        @steps = [:stop, :start]
-        @steps_to_go = 2
-        r = desired_state(step, final_state, curr_state)
-      else
-        r = desired_state(step, final_state, curr_state)
+        steps = [:stop, :start]
       end
-    when :unpause
-      r = desired_state(step, final_state, curr_state) if curr_state== 'paused'
     when :recreate
       if curr_state== 'stopped'
-        @steps = [:destroy, :create]
-        @steps_to_go = 2
-        r = desired_state(step, final_state, curr_state)
+        steps = [:destroy, :create]
       else
-        r = desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
       end
     when :build
       if curr_state == 'noncontainer'
-        @steps = [:build]
-        @steps_to_go = 1
-        r = desired_state(step, final_state, curr_state)
-      else
-        r = desired_state(step, final_state, curr_state) if curr_state == 'nocontainer'
+        steps = [:build, :create, :start]
       end
     when :reinstall
       if curr_state == 'stopped'
-        @steps = [:destroy, :build]
-        @steps_to_go = 2
-        r = desired_state(step, final_state, curr_state)
+        steps = [:destroy, :build, :create, :start]
       else
-        r = desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
-      end
-    when :build
-      r = desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
-    when :delete
-      r = desired_state(step, final_state, curr_state) if curr_state== 'stopped'
-    when :destroy
-      r = desired_state(step, final_state, curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
+        steps[0] = set_state
+      end    
     end
-    r
+    STDERR.puts(" sterps #{steps} #{@last_task}")
+    @last_task = steps[0]
   end
 
   def process_container_event(event_hash)
     expire_engine_info
-    #  SystemDebug.debug(SystemDebug.container_events, :PROCESS_CONTAINER_vents, @container_name,  event_hash)
+    SystemDebug.debug(SystemDebug.container_events, :PROCESS_CONTAINER_vents, @container_name,  event_hash)
     case event_hash[:status]
     when 'create'
       status
@@ -139,11 +81,11 @@ module TaskAtHand
 
   def task_complete(action)
     container_mutex.synchronize {
-      @steps_to_go = 0 if @steps_to_go.nil?
+      steps_to_go = 0 if steps_to_go.nil?
       #  SystemDebug.debug(SystemDebug.engine_tasks, :task_complete, ' ', action.to_s + ' as action for task ' +  task_at_hand.to_s + " " + @steps_to_go.to_s + '-1 stesp remaining step completed ',@steps)
       clear_task_at_hand
       # SystemDebug.debug(SystemDebug.builder, :last_task,  @last_task, :steps_to, @steps_to_go)
-      return save_state unless @last_task == :delete_image && @steps_to_go <= 0
+      return save_state unless last_task == :delete_image && steps_to_go <= 0
       # FixMe Kludge unless docker event listener
       #   SystemDebug.debug(SystemDebug.builder, :delete_engine,  @last_task, :steps_to, @steps_to_go)
       delete_engine
@@ -187,16 +129,13 @@ module TaskAtHand
   end
 
   def clear_task_at_hand
-    if @steps_to_go.nil?
-      @steps_to_go = 0
-    else
-      @steps_to_go -= 1
-    end
-    if  @steps_to_go > 0
+    steps_to_go = 0 if steps_to_go.nil?
+    steps_to_go -= 1 unless steps_to_go == 0
+    if steps_to_go > 0
       #    SystemDebug.debug(SystemDebug.engine_tasks, 'Multistep Task ' + @task_at_hand.to_s )
-      if @steps.is_a?(Array)
-        @steps.pop(0)
-        @task_at_hand = @steps[0]
+      if steps.is_a?(Array)
+        steps.pop(0)
+        @task_at_hand = steps[0]
       end
       #  SystemDebug.debug(SystemDebug.engine_tasks, 'next Multistep Task ' + @task_at_hand.to_s)
       f = File.new("#{store.container_state_dir(container_name)}/task_at_hand",'w+')
@@ -222,7 +161,7 @@ module TaskAtHand
   def task_failed(msg)
     clear_task_at_hand
     #   SystemDebug.debug(SystemDebug.engine_tasks, :TASK_FAILES______Doing, @task_at_hand)
-    @last_error = container_dock.last_error unless container_dock.nil?
+    last_error = container_dock.last_error unless container_dock.nil?
     #  SystemDebug.debug(SystemDebug.engine_tasks, :WITH, @last_error.to_s, msg.to_s)
     task_complete(:failed)
     false

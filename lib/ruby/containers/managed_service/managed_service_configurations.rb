@@ -1,6 +1,6 @@
 module ManagedServiceConfigurations
   def run_configurator(configurator_params)
-    configurator_params[:service_name] = @container_name
+    configurator_params[:service_name] = container_name
     raise EnginesException.new({error_mesg: 'No service variables', error_type: :error , params: configurator_params}) unless configurator_params.key?(:variables)
     raise EnginesException.new({error_mesg: 'service variables not a hash', error_type: :error , params: configurator_params}) unless configurator_params[:variables].is_a?(Hash)
     raise EnginesException.new(warning_hash('service not running ', configurator_params)) unless is_running?
@@ -9,7 +9,7 @@ module ManagedServiceConfigurations
   end
 
   def retrieve_configurator(configurator_params)
-    configurator_params[:service_name] = @container_name
+    configurator_params[:service_name] = container_name
     if is_running? == false
       retrieve_service_configuration(configurator_params)
     else
@@ -20,18 +20,18 @@ module ManagedServiceConfigurations
 
   def retrieve_service_configuration(configurator_params)
     container_dock.retrieve_service_configuration(
-    {service_name: @container_name,
-      type_path: @type_path,
-      publisher_namespace: @publisher_namespace,
+    {service_name: container_name,
+      type_path: type_path,
+      publisher_namespace: publisher_namespace,
       configurator_name: configurator_params[:configurator_name]
     })
   end
 
   def retrieve_service_configurations
     container_dock.retrieve_service_configurations(
-    {service_name: @container_name,
-      type_path: @type_path,
-      publisher_namespace: @publisher_namespace })
+    {service_name: container_name,
+      type_path: type_path,
+      publisher_namespace: publisher_namespace })
   end
 
   def service_resource(what)

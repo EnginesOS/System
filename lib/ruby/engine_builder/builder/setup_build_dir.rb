@@ -21,8 +21,8 @@ module BuildDirSetup
     read_framework_user
     init_container_info_dir
     save_params
-    @memento[:mapped_ports] = @blueprint_reader.mapped_ports
-    #  SystemDebug.debug(SystemDebug.builder, :ports, @memento[:mapped_ports])
+    memento.mapped_ports = @blueprint_reader.mapped_ports
+    #  SystemDebug.debug(SystemDebug.builder, :ports, memento.mapped_ports)
     #  SystemDebug.debug(SystemDebug.builder, :attached_services, @user_params[:attached_services])
     unless   @usre_params[:reinstall] == true
       service_builder.required_services_are_running?
@@ -42,7 +42,7 @@ module BuildDirSetup
       end
     end
     @user_params[:app_is_persistent] = service_builder.app_is_persistent
-    dockerfile_builder = DockerFileBuilder.new(@blueprint_reader, @memento, @web_port, self)
+    dockerfile_builder = DockerFileBuilder.new(@blueprint_reader, memento, @web_port, self)
     dockerfile_builder.write_files_for_docker
     #  SystemDebug.debug(SystemDebug.builder, 'Docker file  written')
     write_env_file
@@ -237,15 +237,15 @@ module BuildDirSetup
     else
       rmt_log_dir = '/var/log'
     end
-    local_log_dir = SystemConfig.SystemLogRoot + '/apps/' + @memento[:engine_name]
+    local_log_dir = SystemConfig.SystemLogRoot + '/apps/' + memento.container_name
     Dir.mkdir(local_log_dir) unless Dir.exist?(local_log_dir)
     ' -v ' + local_log_dir + ':' + rmt_log_dir + ':rw '
   end
 
   def save_params()
-    p_file = File.open( basedir + '/build_params','w')
+    p_file = File.open("#{basedir}/build_params",'w')
     begin
-      p_file.write(@memento.merge(user_params).to_s)
+    p_file.write({memento: memento, user_params: user_params}.to_s)
     ensure
       p_file.close
     end
@@ -255,7 +255,7 @@ module BuildDirSetup
     #Fix ME
     ContainerStateFiles.init_container_info_dir(
     {c_type: 'app',
-      c_name: @memento[:engine_name],
+      c_name: memento.container_name,
       keys: {
       uid: @cont_user_id,
       frame_work: @blueprint_reader.framework

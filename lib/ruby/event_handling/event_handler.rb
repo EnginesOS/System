@@ -75,8 +75,8 @@ class EventHandler
     end
   end
 
-  def add_event_listener(object, method, mask, container_id = nil, priority = 200)
-    @docker_event_listener.add_event_listener(object, method, mask, container_id, priority)
+  def add_event_listener(object, method, mask, cid = nil, priority = 200)
+    @docker_event_listener.add_event_listener(object, method, mask, cid, priority)
   end
 
   def rm_event_listener(listener)
@@ -107,30 +107,36 @@ class EventHandler
   end
 
   def container_event(event_hash)
-    unless event_hash.nil? # log_error_mesg('Nil event hash passed to container event','')
+    STDERR.puts("Container Event " * 10)
+        STDERR.puts("CEVE #{event_hash} Ocurred")
+    unless event_hash.nil?  
+      STDERR.puts("CEVE #{event_hash} Ocurred")
       unless event_hash[:id] == 'system'
-        if is_engines_container_event?(event_hash)
+        if is_mc_event?(event_hash)
           inform_container(event_hash)
           case event_hash[:status]
           when 'start', 'oom', 'stop', 'pause', 'unpause', 'create', 'destroy', 'kill', 'die'
-            inform_container_tracking(event_hash[:container_name], event_hash[:container_type], event_hash[:status])
+            process_event(event_hash)
           end
         end
       else
-        false
+        log_error_mesg('system container event hash passed to container event','')
+        process_event(event_hash) if event_hash[:status] == 'oom'
       end
     else
-      false
+      log_error_mesg('Nil event hash passed to container event','')
     end
   rescue StandardError => e
     SystemUtils.log_exception(e, event_hash)
   end
 
-  def inform_container_tracking(container_name, ctype, event_name)
-    c = get_event_container(container_name, ctype)
-    c.task_complete(event_name) if c.is_a?(Container::ManagedContainer)
+  def process_event(event_hash)
+    STDERR.puts("Pro" * 10)
+    STDERR.puts("Process #{event_hash[:container_name]} of #{event_hash[:container_type]} that event_hash[:status] Ocurred")
+    c = get_event_container(event_hash[:container_name], event_hash[:container_type])
+    c.task_complete(event_hash[:status]) if c.respond_to?(:ctype) # is_a?(Container::ManagedContainer)
   rescue StandardError =>e
-    SystemUtils.log_exception(e, container_name, ctype, event_name)
+    SystemUtils.log_exception(e, event_hash[:container_name], event_hash[:container_type], event_hash[:status])
   end
 
   def get_event_container(container_name, ctype)
@@ -147,17 +153,16 @@ class EventHandler
       log_error_mesg('Failed to find ' + container_name.to_s +  ctype.to_s)
     end
   rescue StandardError =>e
-    STDERR.puts('FAiled to find ' + container_name.to_s + ' of type ' + ctype.to_s)
+    STDERR.puts('Failed to load ' + container_name.to_s + ' of type ' + ctype.to_s)
     SystemUtils.log_exception(e, container_name, ctype)
   end
 
   def inform_container(event_hash)
     c = get_event_container(event_hash[:container_name], event_hash[:container_type])
-    if c.is_a?(Container::ManagedContainer)
+    if c.respond_to?(:process_container_event)
       c.process_container_event(event_hash)
-      true
     else
-      false
+      SystemUtils.log_error("Informing non container obejct #{c.class.name}")
     end
   rescue StandardError => e
     SystemUtils.log_exception(e, event_hash)
@@ -187,9 +192,10 @@ class EventHandler
     SystemUtils.log_exception(e)
   end
 
-  def is_engines_container_event?(event_hash)
+  def is_mc_event?(event_hash)
+    STDERR.puts("CEVE #{event_hash} Ocurred")
     unless event_hash[:container_type].nil? || event_hash[:container_name].nil?
-      ContainerStateFiles.has_config?({c_name: event_hash[:container_name], c_type: event_hash[:container_type]})
+      has_config?({c_name: event_hash[:container_name], c_type: event_hash[:container_type]})
     else
       false
     end
@@ -208,6 +214,30 @@ class EventHandler
     mask
   end
 
+  def has_config?(ca)    
+    STDERR.puts("L>OPOKING UP #{ca} ")
+    which_store(ca[:c_type]).has_config?(ca[:c_name])
+  rescue StandardError => e
+    STDERR.puts("Has config #{ca} : #{e} \n #{e.backtrace}")
+    false
+  end
+  
+  def which_store(ctype)
+    case ctype
+         when 'service'
+           service_store
+         when 'app'
+           container_store
+         when 'system_service'
+           system_service_store
+         when 'utility'
+           utility_store
+         else
+           STDERR.puts("Event cant find #{ctype}")
+           nil
+         end
+  end
+    
   def system_api
     @system_api ||= SystemApi.instance
   end
