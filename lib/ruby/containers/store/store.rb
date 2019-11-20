@@ -48,7 +48,7 @@ module Container
       errors_api.log_error_mesg('container locked', c.container_name) unless lock(statefile)
       backup_state_file(statefile)
       serialized_object = c.memento.savable_objs
-      STDERR.puts("SERO #{serialized_object} #{c.memento}")
+      STDERR.puts("SERO #{c.set_state} #{c.id} ")
     raise EnginesException.new({error_type: :error, status: "Failed to save #{c.container_name}"}) if serialized_object.nil?
       f = File.new("#{statefile}_tmp", File::CREAT | File::TRUNC | File::RDWR, 0600) # was statefile + '_tmp
       begin
@@ -89,10 +89,10 @@ module Container
     rescue Errno::ENOENT => e
       raise EnginesException.new(error_hash("No Container file:#{n}", name))
     rescue NoMethodError
-      STDERR.puts("Recovery backup file {#n}.bak" )      
+      STDERR.puts("Recovery backup file {#n}.bak" )
       load_recovery_model(name)
     end
-  
+
    def recovery_file_name(name)
        "#{file_name(name)}.bak"
    end
@@ -101,7 +101,7 @@ module Container
       fn = recovery_file_name(n)
       load_model(fn)
     end
-        
+
     def load_model(n)
       lock(n)
       f = file(n)

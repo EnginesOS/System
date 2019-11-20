@@ -44,7 +44,7 @@ module Container
     require_relative 'managed_container/managed_container_services.rb'
     include ManagedContainerServices
 
-    def_delegators :memento,
+    def_delegators :@memento,
     :restart_policy,
     :volumes_from,
     :image_repo,
@@ -63,7 +63,7 @@ module Container
     :deployment_type,
     :dependant_on,
     :hostname,
-    :hostname=,    
+    :hostname=,
     :domain_name,
     :domain_name=,
     :conf_self_start,
@@ -91,7 +91,7 @@ module Container
     :stopped_ok,
     :no_cert_map,
     :privileged
-    
+
     def initialize
       super
       @status = {}
@@ -187,17 +187,18 @@ module Container
         system: :managed_container,
         params: params }
     end
-  end
-  
-   def steps
-     @steps ||= []
-   end
 
-  def container_save
-    @container_save ||= Mutex.new
-  end
+    #WTF this works if end
+    def steps
+      @steps ||= []
+    end
 
-  def container_mutex
-    @container_mutex ||= Mutex.new
+    def container_save
+      @container_save ||= Mutex.new
+    end
+
+    def container_mutex
+      @container_mutex ||= Mutex.new
+    end
   end
 end

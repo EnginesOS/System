@@ -8,11 +8,11 @@ module Container
       end
     end
 
-    def ctype      
+    def ctype
       @ctype ||= 'utility'
     end
 
-    def_delegators :memento,
+    def_delegators :@memento,
     :commands,
     :command,
     :command=
@@ -28,7 +28,7 @@ module Container
       set_running_user
       domain_name = SystemConfig.internal_domain
       repository = '' if repository.nil?
-      container_mutex = Mutex.new      
+      container_mutex = Mutex.new
     end
 
     def drop_log_dir

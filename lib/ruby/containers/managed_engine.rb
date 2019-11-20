@@ -10,12 +10,12 @@ module Container
     require_relative 'managed_engine/managed_engine_on_action.rb'
     include ManagedEngineOnAction
 
-    def_delegators :memento,
+    def_delegators :@memento,
     :plugins_path,
     :extract_plugins,
     :web_root
 
-    def ctype      
+    def ctype
         @ctype ||= 'app'
       end
 

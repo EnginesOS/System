@@ -27,7 +27,7 @@ module Container
       end
     end
 
-    def_delegators :memento,
+    def_delegators :@memento,
     :persistent,
     :type_path,
     :publisher_namespace,

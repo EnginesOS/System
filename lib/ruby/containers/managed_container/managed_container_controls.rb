@@ -154,6 +154,7 @@ module ManagedContainerControls
   end
 
   def stop_container
+    STDERR.puts "STOP" * 20
     thr = Thread.new do
       container_mutex.synchronize {
         if prep_task(:stop)
@@ -294,14 +295,13 @@ module ManagedContainerControls
     STDERR.puts('Taks in progress') unless task_at_hand.nil? #FIX ME if task at hand return !nil? already in progress to
     fs = tasks_final_state(action_sym)
     create_steps
-    set_state = fs
+    self.set_state = fs
     save_state
     if read_state == fs
       expire_engine_info
       status
       save_state
-      'Already' 
+      'Already'
     end
-    
   end
 end

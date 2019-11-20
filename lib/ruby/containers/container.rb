@@ -32,7 +32,7 @@ module Container
 
     attr_accessor :memento
 
-    def_delegators :memento,
+    def_delegators :@memento,
       :ctype,
       :container_name,
       :memory,
@@ -54,8 +54,8 @@ module Container
       :has_run,
       :has_run=,
       :state,
-      :tstate=
-      
+      :state=
+
     def update_memory(new_memory)
       memory = new_memory
     end

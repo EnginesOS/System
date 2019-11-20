@@ -117,68 +117,9 @@ module Container
       end
     end
 
-    #attr_accessor all_attrs
-    attr_accessor    :framework, # used in build also in env
-    :runtime, #from BP used in env
-    :repository, #BP location
-    :deployment_type, #from BP web or not
-    :data_uid,  #set at engine install
-    :data_gid, #set at engine install
-    :cont_user_id, #set at engine install
-    :hostname, # web site url prefs for sw not limited to only web sites
-    :domain_name, # web site url prefs for sw not limited to only web sites
-    :conf_zero_conf, #editable start time
-    :conf_register_dns, #editable start time option
-    :protocol, # web site url prefs for sw start time
-    :preffered_protocol, # web site url prefs for sw start time
-    :web_port, #web site url set in bp can be modified (only change for debug)   start time
-    :web_root,# web site start time
-    :restart_required, #triggered by the install script actual store is a dir common to engines and engines system
-    :rebuild_required, # Tech speak for needs update
-    :plugins_path, #app set in bp to be used in runtim
-    :extract_plugins,#app set in bp to be used in runtim
-    :conf_self_start, #um #create time
-    :privileged, #set in BP fixed   fined in BP
-    :kerberos, #set in BP Fix
-    :capabilities, # create time option defined in BP
-    :kerberos, #set in BP Fix create time
-    :system_keys, #set in BP create time
-    :no_cert_map, #set in BP create time
-    :image_repo, # where the image is, inferred in engines docker hub repo for services
-    :large_temp, #engine create time option
-    :restart_policy, #runtime currently fixed create time option
-    :image, # name of in image repo create time option
-    :mapped_ports, #create time option for engines
-    :ctype, #service or app or .. Fixed in BP
-    :container_name, #fixed at install for apps, fixed for services
-    :memory, # runtime
-    :id, #runtime create time will change over life of engine
-    :out_of_memory, #runtime Currently has oom error
-    :had_out_memory, #runtime has recovered (or restarted) from oom can be cleared and is cleared on recreate
-    :created, #runtime set on first stop
-    :state, #runtime
-    :stopped_ok, #runtime Dont start if stopped
-    :stop_reason, #runtime died|killed|OOM|..
-    :set_state, #run time option what it is set to
-    :last_error, #run time place for last error
-    :last_result, #run time place for last result
-    :environments, #array mixture of system/ frawework and bp defined
-    :persistent, #servics only fixed
-    :type_path, #servics only fixed
-    :host_network, #servics only fixed
-    :soft_service,#servics only fixed
-    :aliases,#servics only fixed
-    :publisher_namespace, #servics only fixed
-    :consumer_less, #services only
-    :dependant_on, #services only
-    :volumes, #Services only set at install time used at create time (will move most to registry)
-    :commands, #utilities fixed in BP
-    :command, #utilies set and used at create time
-    :volumes_from, #Utilities set and used at create time
-    :arguments, #utilties use for args to startup command may not just be limited to utilites
-    :task_queue, #runtime
-    :steps, #runtime
-    :last_task #runtime
+    attr_accessor *all_attrs
+
+    attr_accessor :set_state
 
     def savable_objs
       YAML.dump(unsavable_cleared)

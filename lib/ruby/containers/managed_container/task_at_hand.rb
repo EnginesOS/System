@@ -4,21 +4,25 @@ module TaskAtHand
 
 
   def create_steps
+    STDERR.puts("Set state #{self.set_state} #{set_state}")
+
     curr_state = read_state
     curr_state.sub!(/\:->\:/,'')
      steps = [] if steps.nil?
-       
+
+
+
     case set_state
     when :create
       steps = [:create, :start]
-    when :stop, :start, :pause, :halt, :unpause, :delete, :destroy, 
-      steps[0] = set_state      
+    when :stop, :start, :pause, :halt, :unpause, :delete, :destroy,
+      steps[0] = set_state
     when :restart
       if curr_state == 'running'
         steps = [:stop, :start]
       end
     when :recreate
-      if curr_state== 'stopped'
+      if curr_state == 'stopped'
         steps = [:destroy, :create]
       else
       end
@@ -31,7 +35,7 @@ module TaskAtHand
         steps = [:destroy, :build, :create, :start]
       else
         steps[0] = set_state
-      end    
+      end
     end
     STDERR.puts(" sterps #{steps} #{@last_task}")
     @last_task = steps[0]
@@ -172,18 +176,17 @@ module TaskAtHand
   def tasks_final_state(task)
     case task.to_sym
     when :create,:start,:recreate,:unpause,:restart,:rebuild,:build,:reinstall
-      s = 'running'
+        :running
     when :stop
-      s = 'stopped'
+        :stopped
     when :pause
-      s =  'paused'
+         :paused
     when :delete,:destroy
-      s = 'nocontainer'
+     :nocontainer
     else
       STDERR.puts('UNKNOWN TASK ' + task.to_s)
-      s = ''
+      ''
     end
-    s
   end
 
   def task_has_expired?(task)
