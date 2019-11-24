@@ -4,7 +4,7 @@ module ImageControls
     r = true
     raise EnginesException.new(warning_hash('Cannot Delete the Image while container exists. Please stop/destroy first', self)) if has_container?
     begin
-      r =  container_dock.delete_image(self)
+      r = container_dock.delete_image(self)
     ensure
       expire_engine_info
     end

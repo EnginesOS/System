@@ -45,7 +45,7 @@ module Container
     end
 
     def start_container
-      container_dock.start_container(id)
+      container_dock.start_container(self)
     end
 
     def forced_recreate

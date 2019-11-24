@@ -1,44 +1,38 @@
 module TaskAtHand
 
   @task_queue = []
-
-
   def create_steps
     STDERR.puts("Set state #{self.set_state} #{set_state}")
-
-    curr_state = read_state
-    curr_state.sub!(/\:->\:/,'')
-     steps = [] if steps.nil?
-
-
-
+    cs = read_state
+    STDERR.puts("Read state #{read_state} - #{cs} - #{state} - #{self.state}")
+    self.state.sub!(/\:->\:/,'')
     case set_state
     when :create
-      steps = [:create, :start]
+      self.steps = [:create, :start]
     when :stop, :start, :pause, :halt, :unpause, :delete, :destroy,
-      steps[0] = set_state
+    self.steps[0] = set_state
     when :restart
-      if curr_state == 'running'
-        steps = [:stop, :start]
+      if self.state == 'running'
+        self.steps = [:stop, :start]
       end
     when :recreate
-      if curr_state == 'stopped'
-        steps = [:destroy, :create]
+      if self.state == 'stopped'
+        self.steps = [:destroy, :create]
       else
       end
     when :build
-      if curr_state == 'noncontainer'
-        steps = [:build, :create, :start]
+      if self.state == 'noncontainer'
+        self.steps = [:build, :create, :start]
       end
     when :reinstall
-      if curr_state == 'stopped'
-        steps = [:destroy, :build, :create, :start]
+      if self.state == 'stopped'
+        self.steps = [:destroy, :build, :create, :start]
       else
-        steps[0] = set_state
+        self.steps[0] = set_state
       end
     end
     STDERR.puts(" sterps #{steps} #{@last_task}")
-    @last_task = steps[0]
+    self.last_task = steps[0]
   end
 
   def process_container_event(event_hash)
@@ -84,17 +78,20 @@ module TaskAtHand
   end
 
   def task_complete(action)
-    container_mutex.synchronize {
-      steps_to_go = 0 if steps_to_go.nil?
-      #  SystemDebug.debug(SystemDebug.engine_tasks, :task_complete, ' ', action.to_s + ' as action for task ' +  task_at_hand.to_s + " " + @steps_to_go.to_s + '-1 stesp remaining step completed ',@steps)
+  #  container_mutex.synchronize {
+
+      #  SystemDebug.debug(SystemDebug.engine_tasks, :task_complete, ' ', action.to_s + ' as action for task ' +  task_at_hand.to_s + " " + steps.count.to_s + '-1 stesp remaining step completed ',@steps)
       clear_task_at_hand
-      # SystemDebug.debug(SystemDebug.builder, :last_task,  @last_task, :steps_to, @steps_to_go)
-      return save_state unless last_task == :delete_image && steps_to_go <= 0
-      # FixMe Kludge unless docker event listener
-      #   SystemDebug.debug(SystemDebug.builder, :delete_engine,  @last_task, :steps_to, @steps_to_go)
-      delete_engine
-      true
-    }
+      # SystemDebug.debug(SystemDebug.builder, :last_task,  @last_task, :steps_to, steps.count)
+      if last_task == :delete_image && steps.count == 0
+        # FixMe Kludge unless docker event listener
+        #   SystemDebug.debug(SystemDebug.builder, :delete_engine,  @last_task, :steps_to, steps.count)
+        delete_engine
+        true
+      else
+        save_state
+      end
+    #}
   end
 
   def task_at_hand
@@ -133,14 +130,10 @@ module TaskAtHand
   end
 
   def clear_task_at_hand
-    steps_to_go = 0 if steps_to_go.nil?
-    steps_to_go -= 1 unless steps_to_go == 0
-    if steps_to_go > 0
+    if steps.count > 0
       #    SystemDebug.debug(SystemDebug.engine_tasks, 'Multistep Task ' + @task_at_hand.to_s )
-      if steps.is_a?(Array)
-        steps.pop(0)
-        @task_at_hand = steps[0]
-      end
+      steps.pop(0)
+      @task_at_hand = steps[0]
       #  SystemDebug.debug(SystemDebug.engine_tasks, 'next Multistep Task ' + @task_at_hand.to_s)
       f = File.new("#{store.container_state_dir(container_name)}/task_at_hand",'w+')
       begin
@@ -176,13 +169,13 @@ module TaskAtHand
   def tasks_final_state(task)
     case task.to_sym
     when :create,:start,:recreate,:unpause,:restart,:rebuild,:build,:reinstall
-        :running
+      :running
     when :stop
-        :stopped
+      :stopped
     when :pause
-         :paused
+      :paused
     when :delete,:destroy
-     :nocontainer
+      :nocontainer
     else
       STDERR.puts('UNKNOWN TASK ' + task.to_s)
       ''

@@ -23,14 +23,14 @@ module ManagedContainerDns
 
   def set_hostname_details(host_name, dn)
     container_mutex.synchronize {
-      hostname = host_name
-      domain_name = dn
+      self.hostname = host_name
+      self.domain_name = dn
       save_state
     }
   end
 
   def ini_domain_name
-    domain_name = SystemConfig.internal_domain if domain_name.nil?
+    self.domain_name = SystemConfig.internal_domain if domain_name.nil?
   end
 
 end

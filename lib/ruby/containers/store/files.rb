@@ -7,7 +7,12 @@ module Container
 
     #self
     def file_exists?(name)
-      File.exist?(file_name(name))
+      n = file_name(name)
+      if n.nil?
+        false
+      else
+        File.exist?(n)
+      end
     end
 
     #self

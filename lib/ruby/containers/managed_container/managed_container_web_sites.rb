@@ -28,24 +28,24 @@ module ManagedContainerWebSites
      when 'https and http'
       enable_https_and_http
     else
-      protocol = proto.downcase.to_sym
+      self.protocol = proto.downcase.to_sym
     end
   end
 
   def enable_https_and_http
-    protocol = :https_and_http
+    self.protocol = :https_and_http
   end
   
   def enable_http_and_https
-    protocol = :http_and_https
+    self.protocol = :http_and_https
   end
 
   def enable_https_only
-    protocol = :https_only
+    self.protocol = :https_only
   end
 
   def enable_http_only
-    protocol = :http_only
+    self.protocol = :http_only
   end
 
   # create wap service_hash for container and register with wap

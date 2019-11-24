@@ -26,8 +26,8 @@ module Container
       rescue
       end
       set_running_user
-      domain_name = SystemConfig.internal_domain
-      repository = '' if repository.nil?
+      self.domain_name = SystemConfig.internal_domain
+      self.repository = '' if repository.nil?
       container_mutex = Mutex.new
     end
 
@@ -87,7 +87,7 @@ module Container
 
     def apply_templates(command, command_params)
       templater = Templater.new(nil)
-      image = templater.process_templated_string(image)
+      self.image = templater.process_templated_string(image)
       construct_cmdline(command, command_params, templater)
       apply_env_templates(command_params, templater) unless environments.nil?
       apply_volume_templates(command_params, templater) unless volumes.nil?

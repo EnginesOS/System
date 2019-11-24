@@ -1,6 +1,6 @@
 class ContainerStatistics
-  def initialize(state,pcnt,started,stopped,rss,vss,cpu)
-    @state = state #string
+  def initialize(s,pcnt,started,stopped,rss,vss,cpu)
+    @state = s #string
     @proc_cnt = pcnt
     @started_ts = started # formated as
     @stopped_ts = stopped

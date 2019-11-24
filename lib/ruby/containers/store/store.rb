@@ -100,6 +100,8 @@ module Container
     def load_recovery_model(n)
       fn = recovery_file_name(n)
       load_model(fn)
+    rescue NoMethodError
+      STDERR.puts("No Recovery backup file {#n}.bak" )
     end
 
     def load_model(n)
@@ -111,6 +113,7 @@ module Container
     ensure
       f.close unless f.nil?
       unlock(n)
+ 
     end
 
     def model_class

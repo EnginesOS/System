@@ -87,6 +87,7 @@ module Container
     :task_queue=,
     :steps=,
     :steps,
+    :kerberos,
     :kerberos=,
     :stopped_ok,
     :no_cert_map,
@@ -94,7 +95,7 @@ module Container
 
     def initialize
       super
-      @status = {}
+      status = {}
     end
 
     def store
@@ -103,11 +104,6 @@ module Container
 
     def info_fs
       @info_fs ||= store_address.merge({uid: cont_user_id})
-    end
-
-    def kerberos
-      kerberos = true if kerberos.nil?
-      kerberos
     end
 
     def to_s
@@ -159,23 +155,7 @@ module Container
     end
 
     def to_h
-      s = self.dup
-      envs = []
-      unless environments.nil?
-        s.environments.each do |env|
-          envs.push(env.to_h)
-        end
-      end
-      s.environments = envs
-      unless volumes.nil?
-        s.volumes.each_key do | key|
-          s.volumes[key] = s.volumes[key].to_h
-        end
-      end
-      s.instance_variables.each_with_object({}) do |var, hash|
-        next if var.to_s.delete("@") == 'container_dock'
-        hash[var.to_s.delete("@")] = s.instance_variable_get(var)
-      end
+      memento.to_h
     end
 
     def lock_values

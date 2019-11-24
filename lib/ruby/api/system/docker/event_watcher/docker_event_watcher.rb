@@ -72,10 +72,10 @@ class DockerEventWatcher < ErrorsApi
     event_hash
   end
 
-  def match_container(hash, cn)
+  def match_container(event, cn)
     r = false
-    unless  event_hash[:container_name].nil?
-      r = true if event_hash[:container_name] == cn    
+    unless event[:container_name].nil?
+      r = true if event[:container_name] == cn    
     end
     r
   end

@@ -20,45 +20,45 @@ module Container
       end
 
     def apply_build_params(build_params, runtime_params)
-      memory = build_params[:memory]
-      container_name = build_params[:engine_name]
-      image = build_params[:image]
-      web_port = build_params[:web_port]
-      mapped_ports = build_params[:mapped_ports]
-      set_state = 'running'
+      self.memory = build_params[:memory]
+      self.container_name = build_params[:engine_name]
+      self.image = build_params[:image]
+      self.web_port = build_params[:web_port]
+      self.mapped_ports = build_params[:mapped_ports]
+      self.set_state = 'running'
 
-      last_error = 'None'
-      last_result = ''
+      self.last_error = ''
+      self.last_result = ''
 
-     framework = runtime_params.framework
-      runtime = runtime_params.runtime
-      repository  = build_params[:repository_url]
-      data_uid = build_params[:data_uid]
-      data_gid = build_params[:data_gid]
-      cont_user_id = build_params[:cont_user_id]
-      protocol = build_params[:http_protocol]
+      self.framework = runtime_params.framework
+      self.runtime = runtime_params.runtime
+      self.repository  = build_params[:repository_url]
+      self.data_uid = build_params[:data_uid]
+      self.data_gid = build_params[:data_gid]
+      self.cont_user_id = build_params[:cont_user_id]
+      self.protocol = build_params[:http_protocol]
       # what about preferred protocol? Missing
       deployment_type = runtime_params.deployment_type
       # what about dependent on? Only relevant for services
-      hostname = build_params[:host_name]
-      domain_name = build_params[:domain_name]
-      conf_self_start = true
+      self.hostname = build_params[:host_name]
+      self.domain_name = build_params[:domain_name]
+      self.conf_self_start = true
       # what about large_temp? currently only servics
 
       # what about restart_policy ?   flag file is the store
       # what about restart_required?   ""
       # what about rebuild_required?   ""
-      volumes = build_params[:volumes]
+      self.volumes = build_params[:volumes]
       # what about volumes_from?  Managedutiliy
       # what about command?  #fixed in apps/services/systemservices used Managedutiliy
-      environments = runtime_params.environments
+      self.environments = runtime_params.environments
       # what about image_repo? inferred in apps from name but ..
-      capabilities = runtime_params.capabilities
-      conf_register_dns = true
+      self.capabilities = runtime_params.capabilities
+      self.conf_register_dns = true
 
-      conf_zero_conf = true
-      host_network = false
-      web_root = runtime_params.web_root
+      self.conf_zero_conf = true
+      self.host_network = false
+      self.web_root = runtime_params.web_root
       @volume_service_builder = build_params[:service_builder]
 
       expire_engine_info

@@ -34,7 +34,7 @@ module DockerInfoCollector
 
   def clear_cid
     # STDERR.puts caller.join("\n")
-    id = nil
+    self.id = nil
     store.clear_cid_file(container_name)
     # SystemDebug.debug(SystemDebug.containers, 'clear cid')
     save_state
@@ -44,7 +44,7 @@ module DockerInfoCollector
   def read_container_id
     #kludge to update any old
     cid = id
-    id = nil if id.to_s == '-1'
+    self.id = nil if id.to_s == '-1'
     #  SystemDebug.debug(SystemDebug.containers, 'read container from file ', @id)
     if id.nil?
       info = container_dock.inspect_container_by_name(container_name) # docker_info
@@ -58,12 +58,12 @@ module DockerInfoCollector
         if info.key?(:RepoTags)
           #No container by that name and it will return images by that name WTF
           SystemDebug.debug(SystemDebug.containers, 'read container id by name got image')
-          id = nil
+          self.id = nil
         else
-          id = info[:Id] if info.key?(:Id)
+          self.id = info[:Id] if info.key?(:Id)
         end
       rescue NoMethodError => e # docker did not return valid json so no such container
-        id = nil
+        self.id = nil
       end
       #save_state
     end
@@ -71,7 +71,7 @@ module DockerInfoCollector
     id
   rescue EnginesException
     clear_cid unless cid == nil
-    id = nil
+    self.id = nil
   end
 
   def running_user
@@ -89,7 +89,7 @@ module DockerInfoCollector
   protected
 
   def collect_docker_info
-    if @docker_info_cache == false && set_state == 'nocontainer'
+    if @docker_info_cache == nil && set_state == 'nocontainer'
       SystemDebug.debug(SystemDebug.containers,  :dont_collect_docker_info )
       false
     else

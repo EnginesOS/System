@@ -37,7 +37,11 @@ module Container
           :last_error,
           :last_result,
           :arguments,
-          :stop_reason
+          :stop_reason,
+          :exit_code,
+          :has_run,
+          :id,
+          :state,
         ]
       end
 
@@ -58,7 +62,6 @@ module Container
           :conf_self_start,
           :large_temp,
           :restart_policy,
-          :volumes,
           :volumes_from,
           :restart_required,
           :rebuild_required,
@@ -74,7 +77,6 @@ module Container
           :publisher_namespace,
           :commands,
           :command,
-          :id,
           :out_of_memory,
           :restart_required,
           :conf_zero_conf,
@@ -88,7 +90,8 @@ module Container
           :steps,
           :kerberos,
           :stopped_ok,
-          :set_state
+          :set_state,
+          :no_cert_map
         ]
       end
 
@@ -105,7 +108,11 @@ module Container
           :persistent,
           :type_path,
           :publisher_namespace,
-          :system_keys
+          :system_keys,
+          :soft_service,
+          :aliases,
+          :privileged,
+          :host_network
         ]
       end
 
@@ -133,6 +140,15 @@ module Container
 
     def container
       @container ||= _container
+    end
+
+    def to_h
+      {}.tap do |r|
+        self.class.all_attrs.each do |a|
+          r[a] = method(a).call
+        end        
+        r[:docker_info] = container.docker_info
+      end
     end
 
     private

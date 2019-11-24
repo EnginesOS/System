@@ -85,8 +85,8 @@ class BluePrintReader
     read_deployment_type
     read_sed_strings
     read_mapped_ports
-    read_os_packages
-    read_app_packages
+    #read_os_packages
+   # read_app_packages
     read_rake_list
     read_persistent_files
     read_persistent_dirs

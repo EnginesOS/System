@@ -3,13 +3,11 @@ module ContainerControls
     expire_engine_info
     unless is_running?
       raise EnginesException.new(warning_hash("Can\'t Start " + container_name + ' as is ' + read_state.to_s, container_name)) unless read_state == 'stopped'
-      container_dock.start_container(self)
-    else
-      true
+      container_dock.pre_start_checks(self)
+     container_dock.start_container(self)
     end
   ensure
     expire_engine_info
-    false
   end
 
   def halt_container
@@ -22,7 +20,6 @@ module ContainerControls
     end
   ensure
     expire_engine_info
-    false
   end
 
   def stop_container
@@ -65,12 +62,12 @@ module ContainerControls
   def destroy_container()
     expire_engine_info
     unless has_container?
-      id = nil
+      self.id = nil
       r = true
     else
       raise EnginesException.new(warning_hash('Cannot Destroy ' +  container_name + ' as is not stopped Please stop first', container_name)) if is_active?
       r = container_dock.destroy_container(self)
-      id = nil
+      self.id = nil
       expire_engine_info
     end
     r
@@ -80,7 +77,7 @@ module ContainerControls
     expire_engine_info
     #  SystemDebug.debug(SystemDebug.containers, :create_container, :containerid)
     raise EnginesException.new(warning_hash('Cannot create container as container exists ' + container_name.to_s, container_name)) if has_container?
-    id = nil
+    self.id = nil
     container_dock.create_container(self)
   end
 

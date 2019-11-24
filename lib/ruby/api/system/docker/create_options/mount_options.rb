@@ -46,8 +46,8 @@ end
 
 def cert_mounts(c)
   cert_store = "#{c.ctype}s/#{c.container_name}/"
-  ["#{SystemConfig.CertAuthTop}#{cert_store}certs:#{SystemConfig.CertificatesDestination}:ro",
-    "#{SystemConfig.CertAuthTop}#{cert_store}keys:#{SystemConfig.KeysDestination}:ro"]
+  ["#{SystemConfig.CertAuthTop}/#{cert_store}certs:#{SystemConfig.CertificatesDestination}:ro",
+    "#{SystemConfig.CertAuthTop}/#{cert_store}keys:#{SystemConfig.KeysDestination}:ro"]
 end
 
 def get_local_prefix(vol)

@@ -9,9 +9,10 @@ module ManagedContainerStatus
 
   def read_state
     state = super
+    SystemDebug.debug(SystemDebug.containers, container_name, "Super state #{state}")
     if state == 'na'
       expire_engine_info
-      #  SystemDebug.debug(SystemDebug.containers, container_name, 'in na',  :info)
+        SystemDebug.debug(SystemDebug.containers, container_name, 'in na',  :info)
       'nocontainer'
     else
       state
@@ -27,23 +28,23 @@ module ManagedContainerStatus
 
   # raw=true means dont check state for error
   def read_state(raw = false)
-    if docker_info.is_a?(FalseClass)
-      state = 'nocontainer'
+    if docker_info.nil?
+      self.state = 'nocontainer'
     else
-      state = super()
+      self.state = super()
       if state.nil? #Kludge
-        state = 'nocontainer'
-        last_error = 'mc got nil from super in read_state'
+        self.state = 'nocontainer'
+        self.last_error = 'mc got nil from super in read_state'
       end
     end
     unless raw == true
-      if state != set_state && task_at_hand.nil?
-        last_error =  "Warning State Mismatch set to #{set_state} but in #{state} state"
+      if self.state != set_state && task_at_hand.nil?
+        self.last_error =  "Warning State Mismatch set to #{set_state} but in #{state} state"
       else
-        last_error = ''
+        self.last_error = ''
       end
     end
-    state
+    self.state
   rescue EnginesException =>e
     expire_engine_info
     'nocontainer'
@@ -75,8 +76,8 @@ module ManagedContainerStatus
 
   def clear_error
     #Sychronise somewhere
-    out_of_memory = false
-    had_out_memory = false
+    self.out_of_memory = false
+    self.had_out_memory = false
     save_state
     true
   end
@@ -103,7 +104,7 @@ module ManagedContainerStatus
 
   def container_id   
      unless set_state == 'nocontainer'
-      id = read_container_id if id.nil?
+       self.id = read_container_id if id.nil?
      end  
     id
   end

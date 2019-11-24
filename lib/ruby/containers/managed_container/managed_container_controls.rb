@@ -24,7 +24,7 @@ module ManagedContainerControls
   def update_memory(new_memory)
     container_mutex.synchronize {
       super
-      memory = new_memory
+      self.memory = new_memory
       update_environment('Memory', new_memory, true)
       save_state
     }
@@ -75,11 +75,11 @@ module ManagedContainerControls
     thr = Thread.new do
       container_mutex.synchronize {
         if prep_task(:create)
-          domain_name = container_dock.default_domain if domain_name.nil?
+          self.domain_name = container_dock.default_domain if domain_name.nil?
           container_dock.initialize_container_env(self)
           #  SystemDebug.debug(SystemDebug.containers, :teask_preped)
           expire_engine_info
-          id = nil
+          self.id = nil
           save_state
           unless super
             task_failed('create')
@@ -293,15 +293,15 @@ module ManagedContainerControls
 
   def prep_task(action_sym)
     STDERR.puts('Taks in progress') unless task_at_hand.nil? #FIX ME if task at hand return !nil? already in progress to
-    fs = tasks_final_state(action_sym)
-    create_steps
-    self.set_state = fs
-    save_state
-    if read_state == fs
+    self.set_state = tasks_final_state(action_sym)
+    if read_state == set_state
       expire_engine_info
       status
       save_state
       'Already'
+    else  
+      create_steps
+      save_state
     end
   end
 end

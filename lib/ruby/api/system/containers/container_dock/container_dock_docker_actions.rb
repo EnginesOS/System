@@ -51,8 +51,7 @@ module ContainerDockDockerActions
 
   def start_container(container)
     clear_error
-    passed_checks = pre_start_checks(container)
-    raise EnginesException.new(warning_hash('Failed pre start checks:' + passed_checks.to_s , container.container_name)) unless passed_checks.is_a?(TrueClass)
+  #  raise EnginesException.new(warning_hash('Failed pre start checks:' + passed_checks.to_s , container.container_name)) unless passed_checks.is_a?(TrueClass)
     start_dependancies(container) if container.dependant_on.is_a?(Array)
     wait_for_dependacies_startup(container)
     dock_face.start_container(container.id)

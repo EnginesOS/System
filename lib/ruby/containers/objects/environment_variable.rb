@@ -24,30 +24,30 @@ class EnvironmentVariable
     @name = env_hash[:name]
     @value = env_hash[:value]
     if env_hash.key?(:ask_at_build_time)
-     @ask_at_build_time = env_hash[:ask_at_build_time]
+      @ask_at_build_time = env_hash[:ask_at_build_time]
     else
       @ask_at_build_time = false
     end
     if env_hash.key?(:build_time_only)
-     @build_time_only = env_hash[:build_time_only]
+      @build_time_only = env_hash[:build_time_only]
     else
       @build_time_only = false
-    end   
+    end
     if env_hash.key?(:mandatory)
-    @mandatory = env_hash[:mandatory]
+      @mandatory = env_hash[:mandatory]
     else
       @mandatory = false
-    end  
+    end
     @label = env_hash[:label] if env_hash.key?(:label)
     if env_hash.key?(:owner_type)
-      @owner_type = env_hash[:owner_type] 
+      @owner_type = env_hash[:owner_type]
       @owner_path = env_hash[:owner_path] if env_hash.key?(:owner_path)
     else
       @owner_path = ''
       @owner_type = 'application'# |service_consumer |system
     end
     if env_hash.key?(:immutable)
-    @immutable = env_hash[:immutable]
+      @immutable = env_hash[:immutable]
     else
       @immutable = false
     end
@@ -59,7 +59,6 @@ class EnvironmentVariable
   end
 
   attr_reader :ask_at_build_time,
-  :name,
   :build_time_only,
   :mandatory,
   :label,
@@ -67,10 +66,11 @@ class EnvironmentVariable
   :owner_path,
   :immutable,
   :has_changed
+  
   attr_accessor :value, :name
 
-  def attributes
-    {
+  def to_h
+    @as_hash ||= {
       name: @name,
       label: @label,
       value: @value,
@@ -95,9 +95,14 @@ class EnvironmentVariable
     dest
   end
 
-  def to_h
-    self.attributes
-  end
+#  def to_h
+#    attributes
+##    {}.tap do |r|
+##      self.attributes.key.each do |a|
+##        r[a] = self.method(a).call
+##      end
+##    end
+#  end
 
   def self.find_env_in(new_env, dest)
     r = nil
