@@ -1,4 +1,4 @@
---- !ruby/object:Container::ManagedService
+--- !ruby/object:Container::Memento
 cont_user_id: 22038
 container_name: wauth
 publisher_namespace: EnginesSystem

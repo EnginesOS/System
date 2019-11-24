@@ -1,4 +1,4 @@
---- !ruby/object:Container::ManagedService
+--- !ruby/object:Container::Memento
 cont_user_id: 22012
 container_name: syslog
 publisher_namespace: EnginesSystem

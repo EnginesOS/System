@@ -1,4 +1,4 @@
---- !ruby/object:Container::ManagedService
+--- !ruby/object:Container::Memento
 cont_user_id: 22050
 container_name: control
 ctype: service
