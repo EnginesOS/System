@@ -19,8 +19,7 @@ post '/v0/containers/engines/build' do
   begin
     p_params = post_params(request)
     cparams = assemble_params(p_params, [], :all)
-    m = Container::Memento.from_hash(cparams)
-    return_text(engines_api.build_engine(m, cparams.except(Container::Memento.all_attrs)))
+    return_text(engines_api.build_engine(cparams))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

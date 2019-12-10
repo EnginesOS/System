@@ -6,7 +6,7 @@ module ManagedServiceOnAction
       set_running_user
       self.stop_reason = nil
       self.exit_code = 0
-      #STDERR.puts('ONSTART_CALLED' + container_name.to_s + ';' + event_hash.to_s)
+      STDERR.puts('ONSTART_CALLED' + container_name.to_s + ';' + event_hash.to_s)
       # SystemDebug.debug(SystemDebug.container_events, :ONSTART_CALLED, event_hash)
       self.out_of_memory = false
       # MUst register post each start as IP Changes (different post reboot)

@@ -1,7 +1,6 @@
 module DockerNet
   require_relative 'docker_hijack.rb'
   def connection
-    #  @connection =
     Excon.new('unix:///',
     :socket => '/var/run/docker.sock',
     debug_request: true,
@@ -16,7 +15,7 @@ module DockerNet
     @connection = Excon.new('unix:///',
     :socket => '/var/run/docker.sock',
     debug_request: true,
-    debug_response: true) 
+    debug_response: true)
     @connection
   end
 

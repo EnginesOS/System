@@ -2,9 +2,9 @@ module ContainerControls
   def start_container
     expire_engine_info
     unless is_running?
-      raise EnginesException.new(warning_hash("Can\'t Start " + container_name + ' as is ' + read_state.to_s, container_name)) unless read_state == 'stopped'
+      raise EnginesException.new(warning_hash("Can\'t Start " + container_name + ' as is ' + read_state.to_s, container_name)) unless read_state == :stopped
       container_dock.pre_start_checks(self)
-     container_dock.start_container(self)
+      container_dock.start_container(self)
     end
   ensure
     expire_engine_info
@@ -13,7 +13,7 @@ module ContainerControls
   def halt_container
     expire_engine_info
     unless is_stopped?
-      raise EnginesException.new(warning_hash("Can\'t Stop " + container_name + ' as is ' + read_state.to_s, container_name)) unless read_state == 'running'
+      raise EnginesException.new(warning_hash("Can\'t Stop " + container_name + ' as is ' + read_state.to_s, container_name)) unless read_state == :running
       container_dock.stop_container(id)
     else
       true
@@ -24,13 +24,12 @@ module ContainerControls
 
   def stop_container
     expire_engine_info
-    r = true
     unless is_stopped?
-      raise EnginesException.new(warning_hash("Can\'t Stop " + container_name + ' as is ' + read_state.to_s, container_name)) unless read_state == 'running'
-      r = container_dock.stop_container(id, stop_timeout)
+      raise EnginesException.new(warning_hash("Can\'t Stop " + container_name + ' as is ' + read_state.to_s, container_name)) unless read_state == :running
+      container_dock.stop_container(id, stop_timeout)
       expire_engine_info
     end
-    r
+    truer
   end
 
   def wait_for(what, timeout = 10)
@@ -39,38 +38,38 @@ module ContainerControls
 
   def pause_container
     expire_engine_info
-    r = true
     unless is_paused?
       raise EnginesException.new(warning_hash("Can\'t Pause " + container_name + ' as is ' + read_state.to_s, container_name)) unless is_running?
-      r = container_dock.pause_container(id)
+      container_dock.pause_container(id)
       expire_engine_info
     end
-    r
+    true
   end
 
   def unpause_container
     expire_engine_info
-    r = true
     unless is_running?
       raise EnginesException.new(warning_hash("Can\'t unpause " + container_name + ' as is ' + read_state.to_s, container_name)) unless is_paused?
-      r = container_dock.unpause_container(id)
+      container_dock.unpause_container(id)
       expire_engine_info
     end
-    r
+    true
   end
 
   def destroy_container()
+    STDERR.puts('Destroy  CONTAINER')
     expire_engine_info
     unless has_container?
+      STDERR.puts('HAS NO CONTAINER')
       self.id = nil
-      r = true
     else
       raise EnginesException.new(warning_hash('Cannot Destroy ' +  container_name + ' as is not stopped Please stop first', container_name)) if is_active?
-      r = container_dock.destroy_container(self)
+      container_dock.destroy_container(self)
+      STDERR.puts('Docker Destroryed CONTAINER')
       self.id = nil
       expire_engine_info
     end
-    r
+    true
   end
 
   def create_container

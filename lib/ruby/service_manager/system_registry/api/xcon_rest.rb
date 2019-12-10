@@ -1,7 +1,8 @@
 module XconRest
 require '/opt/engines/lib/ruby/exceptions/registry_exception.rb'
 require 'ffi_yajl'
-
+require 'yajl/json_gem'
+  
 def json_parser
   @json_parser ||= FFI_Yajl::Parser.new({:symbolize_keys => true})
 end

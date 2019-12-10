@@ -1,6 +1,6 @@
 module DockFaceImages
   def image_exist_by_name?(image_name)
-    r =  get_request({uri: "/images/json?filter=#{image_name}"})
+    r =  get({uri: "/images/json?filter=#{image_name}"})
     if r.is_a?(Array)
       r = r[0]
       if r.is_a?(Hash) && r.key?(:Id)
@@ -14,7 +14,7 @@ module DockFaceImages
   end
 
   def find_images(search)
-    r =  get_request({uri: "/images/json?filter=#{search}"})
+    r =  get({uri: "/images/json?filter=#{search}"})
     if r.is_a?(Array)
       r
     else

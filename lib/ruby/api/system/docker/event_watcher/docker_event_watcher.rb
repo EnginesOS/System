@@ -1,12 +1,12 @@
 require 'yajl'
 require 'net_x/http_unix'
 require 'socket'
+
 require_relative 'event_listener'
 require_relative 'event_mask'
 
 class DockerEventWatcher < ErrorsApi
   attr_accessor :event_listeners
-
   def initialize(event_listeners = {} )
     self.event_listeners = event_listeners
   end
@@ -64,18 +64,10 @@ class DockerEventWatcher < ErrorsApi
     end
   end
 
-  def format(event_hash)
-    if event_hash.key?(:Actor) && event_hash[:Actor][:Attributes].is_a?(Hash)
-      event_hash[:container_name] = event_hash[:Actor][:Attributes][:container_name]
-      event_hash[:container_type] = event_hash[:Actor][:Attributes][:container_type]
-    end
-    event_hash
-  end
-
   def match_container(event, cn)
     r = false
     unless event[:container_name].nil?
-      r = true if event[:container_name] == cn    
+      r = true if event[:container_name] == cn
     end
     r
   end
@@ -83,15 +75,18 @@ class DockerEventWatcher < ErrorsApi
   protected
 
   def is_valid_docker_event?(hash)
-    r = false  
-    STDERR.puts("DOCKER SENT UNKNOWN #{hash}") unless hash.is_a?(Hash)
-    r = true if hash.is_a?(Hash)
-    r = false if hash.key?(:from) && hash[:from].length >= 64
-    r
+    if hash.key?(:from) && hash[:from].length >= 64
+      false
+    else
+      true
+    end
+  rescue NoMethodError
+    STDERR.puts("DOCKER SENT UNKNOWN #{hash}")
+    false
   end
 
   def trigger(event)
-    format(event)
+    set_engines_keys(event).nil?
     l = event_listeners.sort_by { |k, v| v[:priority] }
     l.each do |m|
       listener = m[1][:listener]
@@ -105,6 +100,8 @@ class DockerEventWatcher < ErrorsApi
         STDERR.puts(event.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)
       end
     end
+  rescue NoMethodError => e
+    SystemDebug.debug(SystemDebug.container_events, 'No actor', event)
   rescue StandardError => e
     SystemDebug.debug(SystemDebug.container_events, event.to_s + ':' + e.to_s + ':' + e.backtrace.to_s)
     log_exception(e)
@@ -116,6 +113,13 @@ class DockerEventWatcher < ErrorsApi
   end
 
   private
+
+  def set_engines_keys(event_hash)
+    if event_hash.key?(:Actor)
+      event_hash[:container_name] = event_hash[:Actor][:Attributes][:container_name]
+      event_hash[:container_type] = event_hash[:Actor][:Attributes][:container_type]
+    end
+  end
 
   def client
     @client ||= NetX::HTTPUnix.new('unix:///var/run/docker.sock').tap do |c|

@@ -13,13 +13,13 @@ module ManagedContainerStatus
     if state == 'na'
       expire_engine_info
         SystemDebug.debug(SystemDebug.containers, container_name, 'in na',  :info)
-      'nocontainer'
+      :nocontainer
     else
       state
     end
   rescue EnginesException =>e
     expire_engine_info
-    'nocontainer'
+    :nocontainer
   end
 
   def is_privileged?
@@ -29,11 +29,11 @@ module ManagedContainerStatus
   # raw=true means dont check state for error
   def read_state(raw = false)
     if docker_info.nil?
-      self.state = 'nocontainer'
+      self.state = :nocontainer
     else
       self.state = super()
       if state.nil? #Kludge
-        self.state = 'nocontainer'
+        self.state = :nocontainer
         self.last_error = 'mc got nil from super in read_state'
       end
     end
@@ -47,7 +47,7 @@ module ManagedContainerStatus
     self.state
   rescue EnginesException =>e
     expire_engine_info
-    'nocontainer'
+    :nocontainer
     clear_cid
     raise e
   end
@@ -101,13 +101,13 @@ module ManagedContainerStatus
   def in_two_step?
     File.exist?("#{store.container_state_dir(container_name)}/in_progress")
   end
-
-  def container_id   
-     unless set_state == 'nocontainer'
-       self.id = read_container_id if id.nil?
-     end  
-    id
-  end
+#
+#  def container_id   
+#     unless set_state == :nocontainer
+#       self.id = read_container_id if id.nil?
+#     end  
+#    id
+#  end
 
   protected
 

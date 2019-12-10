@@ -39,9 +39,9 @@ module EngineServiceOperations
     })
   end
 
-  def service_is_registered?(service_hash)
+  def is_service_registered?(service_hash)
     check_service_hash(service_hash)
-    service_manager.service_is_registered?(service_hash)
+    service_manager.is_service_registered?(service_hash)
   end
 
   def get_engine_persistent_services(service_hash)

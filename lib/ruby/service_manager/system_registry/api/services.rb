@@ -30,10 +30,12 @@ module Services
     delete(r)
   end
 
-  def service_is_registered?(service_hash)
+  def is_service_registered?(service_hash)
     r = "service/is_registered#{address_params(service_hash, [:parent_engine, :service_handle, :publisher_namespace, :type_path])}"
     begin
-      rest_get(r)
+      s = rest_get(r)
+      STDERR.puts("Got #{s} from \n #{r}")
+      s
     rescue Exception=>e
       false
     end

@@ -12,7 +12,7 @@ module EnginesPublicApiErrors
 
   def log_exception(e, *objs)
     super
-    STDERR.puts("#{e.backtrace}")
+    STDERR.puts("EXCEPTION! #{e}\n #{e.backtrace}")
     EnginesPublicApiError.new(e.to_s,:exception)
   end
   

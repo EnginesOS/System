@@ -6,7 +6,7 @@ Warden::Strategies.add(:api_access_token) do
   end
 
   def is_admin_token_valid?(token, ip = nil)
-    $engines_api.is_admin_token_valid?(token, ip)
+    engines_api.is_admin_token_valid?(token, ip)
   end
 
   def unauthenticated
@@ -14,7 +14,7 @@ Warden::Strategies.add(:api_access_token) do
   end
 
   def is_user_token_valid?(token, ip = nil)
-    $engines_api.is_user_token_valid?(token, ip)
+    engines_api.is_user_token_valid?(token, ip)
   end
 
   def authenticate!
@@ -31,7 +31,7 @@ Warden::Strategies.add(:admin_user_access_token) do
   end
 
   def is_admin_token_valid?(token, ip = nil)
-    $engines_api.is_admin_token_valid?(token, ip)
+    engines_api.is_admin_token_valid?(token, ip)
   end
 
   def unauthenticated
@@ -39,10 +39,10 @@ Warden::Strategies.add(:admin_user_access_token) do
   end
 
   def is_user_token_valid_admin?(token, ip = nil)
-    if $engines_api.is_admin_token_valid?(token, ip)
+    if engines_api.is_admin_token_valid?(token, ip)
       true
-    elsif $engines_api.is_user_token_valid?(token, ip)
-      if $engines_api.get_token_user(token) == 'admin' ||  $engines_api.get_token_user(token) == 'cn=Administrator,ou=People,dc=engines,dc=internal'
+    elsif engines_api.is_user_token_valid?(token, ip)
+      if engines_api.get_token_user(token) == 'admin' || engines_api.get_token_user(token) == 'cn=Administrator,ou=People,dc=engines,dc=internal'
         true
       else
         false
@@ -71,7 +71,7 @@ Warden::Strategies.add(:user_access_token) do
   end
 
   def is_user_token_valid?(token, ip = nil)
-    $engines_api.is_user_token_valid?(token, ip)
+    engines_api.is_user_token_valid?(token, ip)
   end
 
   def authenticate!

@@ -1,4 +1,5 @@
 module Container
+  require '/opt/engines/lib/ruby/exceptions/engines_exception.rb'
   class Store
     #self
     def file(n)

@@ -41,18 +41,24 @@ def write_build_script(cmd)
 end
 
 def write_line(line)
+  SystemDebug.debug(SystemDebug.builder, :write_line, line)
   @docker_file.puts(line)
+  SystemDebug.debug(SystemDebug.builder, :wrote_line, line)
+rescue Exception => e
+  SystemUtils.log_exception(e)
+  raise e
 end
 
 def insert_framework_frag_in_dockerfile(frag_name)
   log_build_output(frag_name)
   write_run_end if @in_run == true
   write_comment('#Framework Frag')
+  SystemDebug.debug(SystemDebug.builder, :insert_framework_frag_in_dockerfile, "#{build_dir}/Dockerfile.#{frag_name}")
   frame_build_docker_frag = File.open("#{build_dir}/Dockerfile.#{frag_name}")
   begin
     builder_frag = frame_build_docker_frag.read
     @docker_file.write("\n")
-  write_comment("#Docker Fragment #{frag_name}")
+    write_comment("#Docker Fragment #{frag_name}")
     @docker_file.write(builder_frag)
     @docker_file.write("\n")
   ensure

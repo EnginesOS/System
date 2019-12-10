@@ -23,3 +23,13 @@ for file in `find /opt/engines/run/services -name running.yaml`
    cat $file |  sed "s/SystemService/Memento/" | sed "s/setState/set_state/"> /tmp/running.yaml
    cp /tmp/running.yaml $file 
  done 
+
+
+   for ftype in services apps utilitys system_services
+   do
+     for file in `find /opt/engines/run/$ftype  -name running.yaml`
+     do     
+        cat $file |  sed "s/set_state: /set_state: :/" |sed "s/set_state: ::/set_state: :/" > /tmp/running.yaml
+        cp /tmp/running.yaml $file                 
+     done
+  done

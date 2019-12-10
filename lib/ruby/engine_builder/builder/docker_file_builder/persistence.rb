@@ -10,11 +10,11 @@ def write_persistent_files
         path = p_file[:path]
         dir = File.dirname(path)
         file = File.basename(path)
-        SystemDebug.debug(SystemDebug.builder, :dir, dir)
+        SystemDebug.debug(SystemDebug.builder, :dir, dir, file, p_file)
         if dir.is_a?(String) == false || dir.length == 0 || dir == '.' || dir == '..'
         path = "app/#{file}"
         end
-        paths +=  "#{p_file[:volume_name]}:#{path} "
+        paths += "#{p_file[:volume_name]}:#{path} "
       end
     write_build_script("persistent_files.sh #{paths}")
     end

@@ -3,6 +3,7 @@ require 'socket'
 require 'yajl'
 require 'rubygems'
 require 'excon'
+require 'yajl/json_gem'
 
 class DockFace < ErrorsApi
   class << self

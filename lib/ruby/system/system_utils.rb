@@ -62,7 +62,6 @@ class SystemUtils
     end
   end
 
-
   #Execute @param cmd [String]
   # @return hash
   #:result_code = command exit/result code
@@ -71,7 +70,7 @@ class SystemUtils
   def SystemUtils.execute_command(cmd, binary=false, data = false, out = nil)
     @@last_error = ''
     require 'open3'
-      SystemDebug.debug(SystemDebug.execute,'exec command ', cmd)
+    SystemDebug.debug(SystemDebug.execute,'exec command ', cmd)
 
     retval = {}
 
@@ -111,7 +110,7 @@ class SystemUtils
             # STDERR.puts(' TO out:' + line.to_s)
             out << line
           end
-      #    STDERR.puts('read_nonblock stderr.SystemUtils.execute_command ')
+          #    STDERR.puts('read_nonblock stderr.SystemUtils.execute_command ')
           retval[:stderr] += stderr.read_nonblock(2048) if stderr_is_open
         end
         retval[:result] = th.value.exitstatus
@@ -121,10 +120,10 @@ class SystemUtils
         else
           out << line
         end
-      #  STDERR.puts('read_nonblock stdout.SystemUtils.execute_command ')
+        #  STDERR.puts('read_nonblock stdout.SystemUtils.execute_command ')
         retval[:stdout] += stdout.read_nonblock(2048)
         #    SystemDebug.debug(SystemDebug.execute,'read stderr', oline)
-      #  STDERR.puts('read_nonblock stderr.SystemUtils.execute_command ')
+        #  STDERR.puts('read_nonblock stderr.SystemUtils.execute_command ')
         retval[:stderr] += stderr.read_nonblock(2048)
       rescue IO::WaitReadable
         retry #unless th.status == false
@@ -137,14 +136,14 @@ class SystemUtils
         retval[:result] = th.value.exitstatus
         break
         resuce StandardError => e
-      #  STDERR.puts('read_nonblock stderr.SystemUtils.execute_command ')
+        #  STDERR.puts('read_nonblock stderr.SystemUtils.execute_command ')
         retval[:stderr] += stderr.read_nonblock(1000)
         retval[:result] = th.value.exitstatus
         break
-        ensure
-          _stdin.close unless _stdin.closed?
-          stdout.close unless stdout.closed?
-          stderr.close unless stderr.closed?
+      ensure
+        _stdin.close unless _stdin.closed?
+        stdout.close unless stdout.closed?
+        stderr.close unless stderr.closed?
       end
     end
     retval
@@ -197,12 +196,11 @@ class SystemUtils
   end
 
   def SystemUtils.cgroup_mem_dir(container_id_str)
-    if SystemUtils.get_os_release_data['Major Version'] == '14'
-      "/sys/fs/cgroup/memory/docker/#{container_id_str}/"
-    elsif Dir.exist?("/sys/fs/cgroup/memory/docker/${container_id_str}/")
-    "/sys/fs/cgroup/memory/docker/#{container_id_str}/"
+    STDERR.puts("DOCKER /host/sys/fs/cgroup/memory/docker/#{container_id_str}/")
+    if Dir.exist?("/host/sys/fs/cgroup/memory/docker/#{container_id_str}/")
+      "/host/sys/fs/cgroup/memory/docker/#{container_id_str}/"
     else
-      "/sys/fs/cgroup/memory/system.slice/docker-#{container_id_str}.scope"
+      "/host/sys/fs/cgroup/memory/system.slice/docker-#{container_id_str}.scope"
     end
     # old pre docker 1.9. return '/sys/fs/cgroup/memory/system.slice/docker-' + container_id_str + '.scope'
   end

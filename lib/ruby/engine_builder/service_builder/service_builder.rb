@@ -25,7 +25,7 @@ class ServiceBuilder < ErrorsApi
     @engine_name = engine_name
     @basedir = basedir
     @templater = templater
-    @attached_services =  attached_services
+    @attached_services = attached_services
     @volumes = {}
     @orphans = []
     @app_is_persistent = false   

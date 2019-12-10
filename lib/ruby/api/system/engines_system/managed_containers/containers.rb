@@ -6,6 +6,7 @@ module Containers
   end
 
   def save_container(c)
+    STDERR.puts "Save #{c.container_name}  #{c.class.name} <=> #{c.ctype} #{c.id} "
     container_store.save(c)
   end
 end

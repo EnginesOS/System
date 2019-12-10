@@ -17,7 +17,7 @@ end
 def send_encoded_exception(api_exception)#request, error_object, *args)
   api_exception[:exception] = fake_exception(api_exception) unless api_exception[:exception].is_a?(Exception)
   if api_exception[:exception].is_a?(EnginesException)
-    unless  api_exception[:exception].status.nil?
+    unless api_exception[:exception].status.nil?
       status_code = api_exception[:exception].status
     else
       if api_exception[:exception].level == :warning
@@ -28,6 +28,7 @@ def send_encoded_exception(api_exception)#request, error_object, *args)
     end
   end
   status_code = api_exception[:status] if api_exception.key?(:status)
+    #FIX me and turn inbto a Engines Error Code
   status_code = 500 if status_code.nil?
   if request.is_a?(String)
     error_mesg = {

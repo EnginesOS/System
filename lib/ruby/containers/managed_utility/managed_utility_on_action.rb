@@ -2,6 +2,7 @@ module ManagedUtilityOnAction
   def on_create(event_hash)
     #   STDERR.puts('On Create UIL ' + container_name.to_s)
     container_mutex.synchronize {
+      self.state = :stopped
       SystemDebug.debug(SystemDebug.container_events, :ON_Create_CALLED, event_hash)
       self.id = event_hash[:id]
       self.out_of_memory = false
@@ -12,11 +13,13 @@ module ManagedUtilityOnAction
   end
 
   def on_start(event_hash)
+    self.state = :running
     STDERR.puts('MANAGE UTIL Started')
   end
 
   def on_stop(what, exit_code = 0)
     container_mutex.synchronize {
+      self.state = :stopped
       self.exit_code = exit_code
       self.had_out_memory = out_of_memory
       self.out_of_memory = false

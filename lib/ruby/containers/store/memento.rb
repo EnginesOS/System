@@ -17,6 +17,7 @@ module Container
         STDERR.puts("Momento from Hash #{params}")
         m = self.new
         all_attrs.each { |a| m.instance_variable_set("@#{a}", params[a]) }
+        m
       end
 
       def all_attrs
@@ -91,7 +92,9 @@ module Container
           :kerberos,
           :stopped_ok,
           :set_state,
-          :no_cert_map
+          :no_cert_map,
+          :permission_as
+
         ]
       end
 
@@ -144,9 +147,15 @@ module Container
 
     def to_h
       {}.tap do |r|
-        self.class.all_attrs.each do |a|
+        self.class.all_attrs.map do |a|
           r[a] = method(a).call
-        end        
+        end
+        STDERR.puts("ENVIONMENTS #{environments}")
+        unless environments.nil?
+          unless r.is_a?(Hash)
+            r[:environments] = environments.map { | v| v.to_h }
+          end
+        end
         r[:docker_info] = container.docker_info
       end
     end

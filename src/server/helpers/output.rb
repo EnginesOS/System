@@ -20,7 +20,7 @@ def return_json_array(r, s = 202)
     content_type 'application/json'
     headers['Access-Control-Allow-Origin'] ='*'
     status(s)
-    if r.nil? || r == '' || r.is_a?(FalseClass)
+    if r.nil? || r == ''
       empty_array
     else
       r.to_json

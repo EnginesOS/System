@@ -117,7 +117,7 @@ class Templater
   end
 
   def process_templated_string(template)
-      template = apply_system_variables(template)
+    template = apply_system_variables(template)
     unless @builder_public.nil? || @builder_public == false
       template = apply_build_variables(template)
       if @builder_public.respond_to?('blueprint')\
@@ -173,19 +173,18 @@ class Templater
     template
   end
 
-  def fill_in_dynamic_vars(service_hash)
-    # SystemDebug.debug(SystemDebug.templater, 'FILLING_+@+#+@+@+@+@+@+')
-    service_hash[:variables] = {} if service_hash.key?(:variables) == false || service_hash[:variables].nil? == true
-    service_hash[:variables].each do |variable|
-      # SystemDebug.debug(SystemDebug.templater, :variable, variable)
+  def fill_in_dynamic_vars(sh)
+    SystemDebug.debug(SystemDebug.templater, "FILLING_+@+#+@+@+@+@+@+\n #{sh}")
+    sh[:variables] = {} if sh.key?(:variables) == false || sh[:variables].nil? == true
+    sh[:variables].each do |variable|
+      SystemDebug.debug(SystemDebug.templater, :variable, variable)
       if variable[1].nil? == false && variable[1].is_a?(String) && variable[1].include?('_Engines')
-        # SystemDebug.debug(SystemDebug.templater, :processing, variable[1])
-        result = process_templated_string(variable[1])
-        service_hash[:variables][variable[0]] = result
+        SystemDebug.debug(SystemDebug.templater, :processing, variable[1])
+        sh[:variables][variable[0]] = process_templated_string(variable[1])
+        SystemDebug.debug(SystemDebug.templater, :processed, sh[:variables][variable[0]])
       end
     end
-    service_hash[:service_handle] = process_templated_string(service_hash[:service_handle])
-    true
+    sh[:service_handle] = process_templated_string(sh[:service_handle])
   end
 
   def fill_in_service_def_values(service_def)
@@ -203,7 +202,7 @@ class Templater
   def proccess_templated_service_hash(service_hash)
     fill_in_dynamic_vars(service_hash)
   end
-  
+
   protected
 
   def system_access

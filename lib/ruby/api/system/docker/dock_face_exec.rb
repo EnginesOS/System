@@ -1,4 +1,6 @@
 module DockFaceExec
+
+  require 'yajl/json_gem'
   require_relative 'decoder/docker_decoder.rb'
   class DockerHijackStreamHandler
     attr_accessor :result, :data, :i_stream, :out_stream, :stream
@@ -123,7 +125,7 @@ module DockFaceExec
       stream_handler: stream_handler,
       headers: headers,
       content: request_params.to_json}.to_s)
-    post_stream_request({uri: params[:request],
+    stream_request({uri: params[:request],
       stream_handler: stream_handler,
       headers: headers,
       content: request_params.to_json})
@@ -170,7 +172,7 @@ module DockFaceExec
   end
 
   def get_exec_details(exec_id)
-    get_request({uri: "/exec/#{exec_id}/json"})
+    get({uri: "/exec/#{exec_id}/json"})
   end
 
   def get_exec_result(exec_id)

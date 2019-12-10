@@ -13,13 +13,13 @@ module SystemSystemOnAction
   def on_create(event_hash)
     #    STDERR.puts('CREATE EVent on ' + container_name)
     container_mutex.synchronize {
-      #     SystemDebug.debug(SystemDebug.container_events, :ON_Create_CALLED, event_hash)
+          SystemDebug.debug(SystemDebug.container_events, :ON_Create_CALLED, event_hash)
       id = event_hash[:id]
       out_of_memory = false
       had_out_memory = false
       has_run = false
       save_state
-      #   SystemDebug.debug(SystemDebug.container_events, :ON_Create_Finised, event_hash)
+         SystemDebug.debug(SystemDebug.container_events, :ON_Create_Finised, event_hash)
     }
     start_container
   end

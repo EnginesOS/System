@@ -25,7 +25,7 @@ module Container
       self.image = build_params[:image]
       self.web_port = build_params[:web_port]
       self.mapped_ports = build_params[:mapped_ports]
-      self.set_state = 'running'
+      self.set_state = :running
 
       self.last_error = ''
       self.last_result = ''

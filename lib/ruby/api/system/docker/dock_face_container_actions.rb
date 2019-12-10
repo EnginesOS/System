@@ -1,6 +1,6 @@
 module DockFaceContainerActions
   def start_container(cid)
-    if cid.to_s == '-1' || cid.to_s  == ''
+    if cid.nil?
       EnginesDockFaceError.new('Missing Container id', :warning)
     else
       post({uri: "/containers/#{cid}/start"})
@@ -8,7 +8,7 @@ module DockFaceContainerActions
   end
 
   def pause_container(cid)
-    if cid.to_s == '-1' || cid.to_s  == ''
+    if cid.nil?
       EnginesDockFaceError.new('Missing Container id', :warning)
     else
       post({uri: "/containers/#{cid}/pause"})
@@ -16,7 +16,7 @@ module DockFaceContainerActions
   end
 
   def unpause_container(cid)
-    if cid.to_s == '-1' || cid.to_s  == ''
+    if cid.nil?
       EnginesDockFaceError.new('Missing Container id', :warning)
     else
       post({uri: "/containers/#{cid}/unpause"})

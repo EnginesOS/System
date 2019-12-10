@@ -1,4 +1,5 @@
 require '/opt/engines/lib/ruby/system/engines_error.rb'
+require 'yajl/json_gem'
 
 # @All class that report errors children of this
 class ErrorsApi

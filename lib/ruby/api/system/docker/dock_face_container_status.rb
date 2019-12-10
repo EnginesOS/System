@@ -2,20 +2,20 @@ module DockFaceContainerStatus
 
   require_relative 'decoder/docker_decoder.rb'
   def inspect_container_by_name(cn)
-    get_request({uri: "/containers/#{cn}/json"})
+    get({uri: "/containers/#{cn}/json"})
   end
 
   def inspect_container(cid)
-    get_request({uri: "/containers/#{cid}/json"})
+    get({uri: "/containers/#{cid}/json"})
   end
 
   def ps_container(cid)
-    get_request({uri: "/containers/#{cid}/top?ps_args=aux"})
+    get({uri: "/containers/#{cid}/top?ps_args=aux"})
   end
 
   def container_name_and_type_from_id(id)
     begin
-      r = get_request({uri: "/containers/#{cid}/json"})
+      r = get({uri: "/containers/#{cid}/json"})
     rescue DockerException => e
       raise DockerException.new(warning_hash('Not ready', id, 409))  if e.status == 409
       raise e
@@ -30,24 +30,17 @@ module DockFaceContainerStatus
   end
 
   def container_id_from_name(cn)
-    id = -1
-    containers_info = get_request({uri: "/containers/#{cn}/json"})
-    if containers_info.is_a?(Array)
-      containers_info.each do |info|
-        if info[:Names][0] == "/#{container.container_name}"
-          id = info[:Id]
-          break
-        end
-      end
-    end
-    id
+    STDERR.puts("/containers/#{cn}/json")
+    info = get({uri: "/containers/#{cn}/json"})
+    STDERR.puts(" Got #{info}")
+    info[:Id]
   rescue
-    -1
+    nil
   end
 
   def logs_container(cid, count)
     request = "/containers/#{cid}/logs?stderr=1&stdout=1&timestamps=1&follow=0&tail=#{count}"
-    r = get_request({uri: request ,expect_json: false})
+    r = get({uri: request ,expect_json: false})
     decoder = DockerDecoder.new({chunk: r, result:  {}})
     result = {}
     decoder.decode_from_docker_chunk({chunk: r, result:  result})

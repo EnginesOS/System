@@ -3,7 +3,12 @@ module ContainerDockDockerActions
     clear_error
     dock_face.destroy_container(container.id)
   end
-
+  
+  def container_id_from_name(cn)
+    clear_error
+    dock_face.container_id_from_name(cn)
+  end
+  
   def unpause_container(cid)
     clear_error
     dock_face.unpause_container(cid)

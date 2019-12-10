@@ -5,18 +5,17 @@ module TaskAtHand
     STDERR.puts("Set state #{self.set_state} #{set_state}")
     cs = read_state
     STDERR.puts("Read state #{read_state} - #{cs} - #{state} - #{self.state}")
-    self.state.sub!(/\:->\:/,'')
     case set_state
     when :create
       self.steps = [:create, :start]
     when :stop, :start, :pause, :halt, :unpause, :delete, :destroy,
     self.steps[0] = set_state
     when :restart
-      if self.state == 'running'
+      if self.state == :running
         self.steps = [:stop, :start]
       end
     when :recreate
-      if self.state == 'stopped'
+      if self.state == :stopped
         self.steps = [:destroy, :create]
       else
       end
@@ -25,7 +24,7 @@ module TaskAtHand
         self.steps = [:build, :create, :start]
       end
     when :reinstall
-      if self.state == 'stopped'
+      if self.state == :stopped
         self.steps = [:destroy, :build, :create, :start]
       else
         self.steps[0] = set_state
@@ -79,17 +78,15 @@ module TaskAtHand
 
   def task_complete(action)
   #  container_mutex.synchronize {
-
-      #  SystemDebug.debug(SystemDebug.engine_tasks, :task_complete, ' ', action.to_s + ' as action for task ' +  task_at_hand.to_s + " " + steps.count.to_s + '-1 stesp remaining step completed ',@steps)
+        SystemDebug.debug(SystemDebug.engine_tasks, :task_complete, ' ', action.to_s + ' as action for task ' +  task_at_hand.to_s + " " + steps.count.to_s + '-1 stesp remaining step completed ',@steps)
       clear_task_at_hand
       # SystemDebug.debug(SystemDebug.builder, :last_task,  @last_task, :steps_to, steps.count)
       if last_task == :delete_image && steps.count == 0
         # FixMe Kludge unless docker event listener
         #   SystemDebug.debug(SystemDebug.builder, :delete_engine,  @last_task, :steps_to, steps.count)
         delete_engine
-        true
-      else
-        save_state
+   #   else
+   #     save_state
       end
     #}
   end
@@ -155,13 +152,13 @@ module TaskAtHand
     @task_at_hand
   end
 
-  def task_failed(msg)
+  def task_failed(action, e)
     clear_task_at_hand
     #   SystemDebug.debug(SystemDebug.engine_tasks, :TASK_FAILES______Doing, @task_at_hand)
     last_error = container_dock.last_error unless container_dock.nil?
-    #  SystemDebug.debug(SystemDebug.engine_tasks, :WITH, @last_error.to_s, msg.to_s)
+    SystemDebug.debug(SystemDebug.engine_tasks, :WITH, @last_error, msg)
     task_complete(:failed)
-    false
+    raise e
   end
 
   private
@@ -177,7 +174,7 @@ module TaskAtHand
     when :delete,:destroy
       :nocontainer
     else
-      STDERR.puts('UNKNOWN TASK ' + task.to_s)
+      STDERR.puts("UNKNOWN TASK sym #{task}")
       ''
     end
   end

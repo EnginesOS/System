@@ -1,8 +1,9 @@
 class BlueprintApi < ErrorsApi
   require 'yajl'
-  require '/opt/engines/lib/ruby/api/system/container_state_files.rb'
+  require 'yajl/json_gem'
   require 'git'
-
+  require 'resolv' #for Resolv::ResolvError
+  
   def save_blueprint(blueprint, c)
     # return log_error_mesg('Cannot save incorrect format',blueprint) unless blueprint.is_a?(Hash)
     #  SystemDebug.debug(SystemDebug.builder, blueprint.class.name)
@@ -21,19 +22,21 @@ class BlueprintApi < ErrorsApi
     blueprint_file = File.open(blueprint_file_name, 'r')
     begin
       parser = Yajl::Parser.new(:symbolize_keys => true)
-      json_hash = parser.parse(blueprint_file.read)
+      json_hash = parser.parse(blueprint_file.read)      
+    rescue JSON::JSONError
+      EnginesException.new(warning_hash("Error parsing #{blueprint_file_name}", e))
     ensure
       blueprint_file.close
     end
     json_hash
+    rescue Errno::ENOENT  => e
+       EnginesException.new(warning_hash("No Such File. #{blueprint_file_name}", e))
   end
 
   def load_blueprint(cn)
     state_dir = container_store.container_state_dir(cn)
-    raise EnginesException.new(error_hash('No Statedir', ca[:c_name])) unless File.directory?(state_dir)
-    statefile = "#{state_dir}/blueprint.json"
-    raise EnginesException.new(error_hash('No Blueprint File Found', statefile)) unless File.exist?(statefile)
-    BlueprintApi.load_blueprint_file(statefile)
+    raise EnginesException.new(error_hash('No Statedir', state_dir)) unless File.directory?(state_dir)
+    BlueprintApi.load_blueprint_file("#{state_dir}/blueprint.json")
   end
 
   def  self.perform_inheritance_f(blueprint_url)
@@ -148,8 +151,7 @@ class BlueprintApi < ErrorsApi
   def self.download_and_save_blueprint(basedir, repository_url)
     FileUtils.mkdir_p(basedir)
     d = "#{basedir}/#{File.basename(repository_url)}"
-    self.get_http_file(repository_url, d)
-    STDERR.puts("\n\n Downloaded BP \n\n\n from " + repository_url.to_s + ' to ' + basedir.to_s + '/' + basedir.to_s)
+    self.get_http_file(repository_url, d)    
   end
 
   def self.get_http_file(url, d)
@@ -160,6 +162,10 @@ class BlueprintApi < ErrorsApi
       download = open(url)
     end
     IO.copy_stream(download, d)
+  rescue Resolv::ResolvError => e
+    EnginesException.new(warning_hash('DNS error while retriving blueprint.', e))
+  rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError,Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
+    EnginesException.new(warning_hash('Error while retriving blueprint.', e))
   ensure
     download.close unless download.nil?
   end

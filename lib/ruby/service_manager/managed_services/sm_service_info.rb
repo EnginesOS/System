@@ -12,8 +12,8 @@ module SmServiceInfo
 
   #Test whether a service hash is registered
 
-  def service_is_registered?(service_hash)
-    system_registry_client.service_is_registered?(service_hash)
+  def is_service_registered?(sh)
+    system_registry_client.is_service_registered?(sh)
   end
 
   def all_engines_registered_to(service_type)

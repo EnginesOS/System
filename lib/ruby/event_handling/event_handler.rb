@@ -91,17 +91,17 @@ class EventHandler
     when statein
       r = true
     when 'stop'
-      r = true if statein == 'stopped'
+      r = true if statein == :stopped
     when 'start'
-      r = true if statein == 'running'
+      r = true if statein == :running
     when 'unpause'
-      r = true if statein == 'running'
+      r = true if statein == :running
     when 'pause'
-      r = true if statein == 'paused'
+      r = true if statein == :paused
     when 'create'
-      r = true if statein != 'nocontainer'
+      r = true if statein != :nocontainer
     when 'destroy'
-      r = true if statein == 'nocontainer'
+      r = true if statein == :nocontainer
     end
     r
   end
@@ -120,11 +120,11 @@ class EventHandler
           end
         end
       else
-        log_error_mesg('system container event hash passed to container event','')
+        SystemUtils.log_error("System container event hash passed to container event #{event_hash}")
         process_event(event_hash) if event_hash[:status] == 'oom'
       end
     else
-      log_error_mesg('Nil event hash passed to container event','')
+      SystemUtils.log_error('Nil event hash passed to container event')
     end
   rescue StandardError => e
     SystemUtils.log_exception(e, event_hash)

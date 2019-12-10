@@ -1,27 +1,25 @@
 module CheckBuildParams
-  def check_build_params(params)
-    raise EngineBuilderException.new(error_hash('empty container name', params)) if params[:engine_name].nil? || params[:engine_name] == ''
-    check_name(params)
-    check_host(params)
+  def check_build_params(memento)
+    raise EngineBuilderException.new(error_hash('empty container name', memento.container_name)) if memento.container_name.nil? 
+    check_name(memento.container_name)
+    check_host(memento.hostname)
     true
   end
 
   private
 
-  def check_host(params)
-    bad_param('Missing: Hostname', params) unless params.key?(:host_name)
-    bad_param('Invalid: Hostname', params) unless acceptable_host_chars(params[:host_name])
+  def check_host(name)
+    bad_param('Invalid: hostname.', params) unless acceptable_host_chars(name)
   end
 
-  def check_name(params)
-    bad_param('Missing: Engine Name', params) unless params.key?(:engine_name)
-    bad_param('Invalid characters in Engine Name a-z only', params) unless acceptable_name_chars(params[:engine_name], true)
+  def check_name(name)
+    bad_param('Invalid characters in engine name a-z only.', params) unless acceptable_name_chars(name, true)
   end
 
   def bad_param(message, params)
     # FIXMe use a builderror
     SystemStatus.build_failed(params)
-    raise EngineBuilderException.new(error_hash(message, params))
+    raise EngineBuilderException.new(warning_hash(message, params))
   end
 
   def acceptable_name_chars(str, lower = false)

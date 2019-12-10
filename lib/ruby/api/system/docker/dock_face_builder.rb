@@ -82,6 +82,9 @@ module DockFaceBuilder
     end
   end
 
+  #Look here to see build being sent to docker
+  #build_archive_filename is a tar file of the build dir
+  # see /home/engines/deployment/deployed
   def build_engine(engine_name, build_archive_filename)
     stream_handler = nil
     options =  build_options(engine_name)
@@ -93,7 +96,7 @@ module DockFaceBuilder
       'Content-Length' => "#{File.size(build_archive_filename)}"
     }
     stream_handler = DockerStreamHandler.new(nil)
-    post_stream_request({ timeout: 300, uri: '/build' , options: options, stream_handler: stream_handler, headers: header, content: File.read(build_archive_filename) } )
+    stream_request({ timeout: 300, uri: '/build' , options: options, stream_handler: stream_handler, headers: header, content: File.read(build_archive_filename) } )
   ensure
     stream_handler.close unless stream_handler.nil?
   end

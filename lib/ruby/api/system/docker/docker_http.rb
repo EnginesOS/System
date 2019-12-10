@@ -1,4 +1,6 @@
 module DockerHttp
+  require 'yajl/json_gem'
+
   def default_headers
     @default_headers ||= {'Content-Type' =>'application/json', 'Accept' => '*/*'}
   end
@@ -18,7 +20,7 @@ module DockerHttp
       p[:expect_json])}
   end
 
-  def post_stream_request(p)
+  def stream_request(p)
     fillin_params(p)
 
     p[:content] = '' if p[:content].nil?
@@ -59,9 +61,9 @@ module DockerHttp
     @request_params = params
   end
 
-  def get_request(p)
+  def get(p)
     fillin_params(p)
-
+    SystemDebug.debug(SystemDebug.docker, 'Docker get', p)
     @dock_face_mutex.synchronize {
       handle_resp(
       connection.request(
@@ -74,9 +76,9 @@ module DockerHttp
       } )
       ), p[:expect_json])
     }
-  rescue  Excon::Error::Socket =>e
+  rescue Excon::Error::Socket =>e
     STDERR.puts(' docker get socket close ' + e.to_s)
-  rescue  Excon::Error::Timeout =>e
+  rescue Excon::Error::Timeout =>e
     STDERR.puts(' docker get socket timeout ' + e.to_s)
     nil
   end
@@ -108,8 +110,15 @@ module DockerHttp
       SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE Body' + resp.body.to_s )
       SystemDebug.debug(SystemDebug.docker, 'Docker RESPOSE' + resp.to_s ) unless resp.status == 404
     end
-    raise DockerException.new({params: @request_params, status: resp.status, body: resp.body}) if resp.status >= 400
-    if resp.status == 204 # nodata but all good happens on del
+
+    if resp.status >= 400
+      if expect_json == true
+        b = response_parser.parse(resp.body)
+      else
+        b = resp.body
+      end
+      raise DockerException.new({params: @request_params, status: resp.status, body: b })
+    elsif resp.status == 204 # nodata but all good happens on del
       true
     else
       log_error_mesg("Un expected response from docker", resp, resp.body, resp.headers.to_s) unless resp.status == 200 || resp.status == 201

@@ -105,7 +105,7 @@ module SystemApiBackup
     # STDERR.puts('RESTORE engines' )
     getManagedEngines.each do |engine |
       #  STDERR.puts('engine' + engine.container_name.to_s)
-      if engine.read_state == 'nocontainer'
+      if engine.read_state == :nocontainer
         #  STDERR.puts('RESTORE engine' + engine.container_name.to_s)
         build_thr = core.restore_engine(engine)
         build_thr.join

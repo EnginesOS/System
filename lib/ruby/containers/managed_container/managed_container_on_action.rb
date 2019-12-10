@@ -1,10 +1,11 @@
 module ManagedContainerOnAction
   def on_start(what)
     container_mutex.synchronize {
+      self.state = :running
       self.stop_reason = nil
       self.exit_code = 0
       set_running_user
-      #   STDERR.puts('ONSTART_CALLED' + container_name.to_s + ';' + what.to_s)
+         STDERR.puts('ONSTART_CALLED' + container_name.to_s + ';' + what.to_s)
       #  SystemDebug.debug(SystemDebug.container_events, :ONSTART_CALLED, what)
       # MUst register post each start as IP Changes (different post reboot)
       register_with_dns
@@ -34,7 +35,9 @@ module ManagedContainerOnAction
   end
 
   def on_destroy(event_hash)
-    container_mutex.synchronize {
+    container_mutex.synchronize {      
+      self.state = :nocontainer
+      save_state
       container_dock.remove_schedules(self)
       clear_error
     }
@@ -42,6 +45,7 @@ module ManagedContainerOnAction
 
   def on_create(event_hash)
     container_mutex.synchronize {
+      self.state = :stopped
          SystemDebug.debug(SystemDebug.container_events, :ON_Create_CALLED, event_hash)
       self.id = event_hash[:id]
       clear_error
@@ -51,13 +55,14 @@ module ManagedContainerOnAction
       container_dock.apply_schedules(self)
       self.created = true
       save_state
-       SystemDebug.debug(SystemDebug.container_events, :ON_Create_Finised, event_hash, set_state)
+       SystemDebug.debug(SystemDebug.container_events, :ON_Create_Finised, event_hash, set_state, set_state.class.name)
     }
-    start_container if set_state == 'running'
+    start_container if set_state == :running
   end
 
   def on_stop(what, ec = 0)
     container_mutex.synchronize {
+      self.state = :stopped
       self.exit_code = ec
       STDERR.puts("ONStop_CALLED, #{what}")
       #  SystemDebug.debug(SystemDebug.container_events, :ONStop_CALLED, what)

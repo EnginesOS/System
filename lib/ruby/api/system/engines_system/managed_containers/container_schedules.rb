@@ -1,4 +1,6 @@
 module ContainerSchedules
+  require 'yajl/json_gem'
+
   def load_schedules(ca)
     ContainerStateFiles.load_schedules(ca)
   end

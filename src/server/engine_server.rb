@@ -1,4 +1,3 @@
-
 require '/opt/engines/lib/ruby/system/engines_error.rb'
 
 begin
@@ -19,7 +18,7 @@ begin
   ObjectSpace.trace_object_allocations_start
 
   @events_stream = nil
-  $engines_api = PublicApi.new
+
   STDERR.puts('++++++')
   require 'timers'
   @timers = Timers::Group.new
@@ -71,13 +70,13 @@ begin
 
   class Application < Sinatra::Base
     @events_s = nil
-  #  set :sessions, true
+    #  set :sessions, true
     set :logging, true
     set :run, true
     set :timeout, 260
-     configure do
-    enable :cross_origin
-  end
+    configure do
+      enable :cross_origin
+    end
 
     require_relative 'helpers/helpers.rb'
     require_relative 'api/routes.rb'
@@ -100,4 +99,7 @@ begin
     false
   end
 
+  def engines_api
+    @engines_api ||= PublicApi.instance
+  end
 end

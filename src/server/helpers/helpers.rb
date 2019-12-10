@@ -2,11 +2,8 @@ helpers do
   require_relative 'params.rb'
   require_relative 'output.rb'
   require_relative 'errors.rb'
-
-  def engines_api
-    $engines_api ||= PublicApi.new(EnginesCore.new)
-  end
-
+  require 'yajl/json_gem'
+  
   def json_parser
     @json_parser ||= FFI_Yajl::Parser.new(symbolize_keys: true)
   end
@@ -32,20 +29,25 @@ helpers do
   end
 
   def managed_containers_to_json(containers)
-    return_json_array(containers, 404) if containers.nil?
-    if containers.is_a?(Array)
-      res = []
-      containers.each do |c|
-        res.push(c.to_h)
-      end
-      return_json_array(res)
+    if containers.nil?
+     return_json_array(containers, 404)
     else
-      return_json(c.to_h)
-    end
+      return_json(containers)
+    end   
+    
+#    if containers.is_a?(Array)
+#      res = []
+#      containers.each do |c|
+#        res.push(c)
+#      end
+#      return_json_array(res)
+#    else
+#      return_json(c)
+#    end
   end
 
   def managed_container_as_json(c)
-    return_json(c.to_h)
+    return_json(c.memento.to_h.to_json)
   end
 
 end

@@ -53,7 +53,8 @@ class EngineBuilder < ErrorsApi
   :data_gid,
   :build_error,
   :container,
-  :cont_user_id
+  :cont_user_id,
+  :user_params
 
   attr_accessor :app_is_persistent
 
@@ -89,6 +90,7 @@ class EngineBuilder < ErrorsApi
   def build_params(memento, user_params)
     @memento = memento
     @user_params = user_params
+    @user_params = {} if @user_params.nil?
     STDERR.puts("Build Params #{memento} #{user_params}")
     setup_build
   end
@@ -107,20 +109,21 @@ class EngineBuilder < ErrorsApi
 
   def set_locale
     prefs = SystemPreferences.new
-    lang =  memento.lang_code
+    lang =  @user_params[:lang_code]
     lang = prefs.langauge_code if lang.nil?
-    country = memento.country_code
+    country = @user_params[:country_code]
     country = prefs.country_code if country.nil?
 
-    @blueprint_reader.environments.push(EnvironmentVariable.new({name: 'LANGUAGE',
+    engine_environment.push(EnvironmentVariable.new({name: 'LANGUAGE',
       value: lang.to_s + '_' + country.to_s + ':' + lang.to_s,
       own_type: 'application'}))
-    @blueprint_reader.environments.push(EnvironmentVariable.new({name: 'LANG',
+    engine_environment.push(EnvironmentVariable.new({name: 'LANG',
       value: lang.to_s + '_' + country.to_s + '.UTF8',
       own_type: 'application'}))
-    @blueprint_reader.environments.push(EnvironmentVariable.new({name: 'LC_ALL',
+    engine_environment.push(EnvironmentVariable.new({name: 'LC_ALL',
       value: lang.to_s + '_' + country.to_s + '.UTF8',
       own_type: 'application'}))
+    SystemDebug.debug(SystemDebug.builder, engine_environment, prefs)
   end
 
   def engine_environment
@@ -159,7 +162,7 @@ class EngineBuilder < ErrorsApi
   end
 
   def process_supplied_envs(custom_env)
-    # SystemDebug.debug(SystemDebug.builder, custom_env, custom_env)
+    SystemDebug.debug(SystemDebug.builder, custom_env, custom_env)
     if custom_env.nil?
       @set_environments = {}
       @environments = []
@@ -169,7 +172,7 @@ class EngineBuilder < ErrorsApi
       @set_environments = {}
     else
       custom_env_hash = custom_env
-      #  SystemDebug.debug(SystemDebug.builder, :Merged_custom_env, custom_env_hash)
+      SystemDebug.debug(SystemDebug.builder, :Merged_custom_env, custom_env_hash)
       @set_environments = custom_env_hash
       @environments = []
     end

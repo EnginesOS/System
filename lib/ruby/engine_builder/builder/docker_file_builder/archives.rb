@@ -36,6 +36,7 @@ module Archives
   end
 
   def archive_destination(dest)
+    dest = './' if dest.nil?
     d = dest.to_s
     if dest == './' || dest == '/'
       dest = ''
@@ -51,11 +52,11 @@ module Archives
 
   def source_url(surl, pn)
     s = nil
-    unless @user_params[:installed_packages].nil?
-      if @user_params[:installed_packages].key?(pn.to_sym)
+    unless @builder.user_params[:installed_packages].nil?
+      if @builder.user_params[:installed_packages].key?(pn.to_sym)
         s = authenticated_source(
         surl,
-        @user_params[:installed_packages][pn.to_sym])
+        @builder.user_params[:installed_packages][pn.to_sym])
       end
     end
     s = surl.to_s if s.nil?

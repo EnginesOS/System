@@ -1,4 +1,6 @@
 module PersistantServices
+  require 'yajl/json_gem'
+  
   def engine_persistent_services
     services = container_dock.engine_persistent_services(self)
     service_details = []

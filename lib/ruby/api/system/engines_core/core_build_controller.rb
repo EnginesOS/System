@@ -22,21 +22,27 @@ module CoreBuildController
   rescue
   end
 
-  def build_engine(memento, custom_params)
+  def build_engine(params)
+    params[:ctype] = 'app'
+    params[:container_name] = params[:engine_name]
+    params[:hostname] = params[:host_name]
+    params[:environments] = params[:variables]
+    params[:repository] = params[:repository_url]
+    memento = Container::Memento.from_hash(params)    
     @build_thread.exit unless @build_thread.nil?
-    build_controller.prepare_engine_build(memento, custom_params)
+    build_controller.prepare_engine_build(memento, params)
     @build_thread = Thread.new { build_controller.build_engine }
     @build_thread[:name]  = 'build engine'
-    event_handler.trigger_install_event(params[:engine_name], 'installing')
+    event_handler.trigger_install_event(memento.container_name, 'installing')
     unless @build_thread.alive?
-      event_handler.trigger_install_event(params[:engine_name], 'failed')
-      raise EnginesException.new(error_hash(params[:engine_name], 'Build Failed to start'))
+      event_handler.trigger_install_event(memento.container_name, 'failed')
+      raise EnginesException.new(error_hash(memento.container_name, 'Build Failed to start'))
     end
     true
   rescue StandardError => e
-    SystemUtils.log_exception(e , 'reinstall_engine:' + params.to_s)
+    SystemUtils.log_exception(e , "Reinstall_engine: #{memento} with #{params}" )
     @build_thread.exit unless @build_thread.nil?
-    false
+    raise e
   end
 
   protected

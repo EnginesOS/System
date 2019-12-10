@@ -15,7 +15,6 @@ class EventListener
   end
 
   def trigger(hash)
-    r = true
     mask = EventMask.event_mask(hash)
       SystemDebug.debug(SystemDebug.container_events, 'trigger  mask ' + mask.to_s + ' hash ' + hash.to_s + ' listeners mask:' + @event_mask.to_s + ' result ' )#+ (@event_mask & mask).to_s)
     unless @event_mask & mask == 0
@@ -27,37 +26,33 @@ class EventListener
           thr = Thread.new {@object.method(@method).call(hash)}
           SystemDebug.debug(SystemDebug.container_events, 'fired ' + @object.to_s + ' ' + @method.to_s + ' with ' + hash.to_s)
           thr.name = "#{@object}:#{@method}"
-          r = true
         rescue EnginesException => e
           SystemDebug.debug(SystemDebug.container_events, e.to_s + ':' + e.backtrace.to_s)
           STDERR.puts(e.to_s + ":\n" + e.backtrace.to_s) if e.level == :error
           thr.exit()
-          false
         rescue StandardError => e
           STDERR.puts('EXCPETION:' + e.to_s + ":\n" + e.backtrace.to_s)
         end
       end
     end
-    r
   rescue StandardError => e
     STDERR.puts(e.to_s + ":\n" + e.backtrace.to_s)
     SystemDebug.debug(SystemDebug.container_events, e.to_s + ':' + e.backtrace.to_s)
-    # raise e
-    false
+    # raise e Must catch or listener dies ?
   end
 
   def state_from_status(status)
     case status
     when 'die', 'stop', 'exec'
-      status = 'stopped'
+      status = :stopped
     when 'run','start'
-      status = 'running'
+      status = :running
     when 'pause'
-      status = 'paused'
+      status = :paused
     when 'unpause'
-      status = 'running'
+      status = :running
     when 'delete','destroy'
-      status = 'nocontainer'
+      status = :nocontainer
     end
     status
   end

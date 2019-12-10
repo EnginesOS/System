@@ -1,5 +1,7 @@
 class EnginesError # < FalseClass
   require '/opt/engines/lib/ruby/exceptions/engines_exception.rb'
+  require 'yajl/json_gem'
+  
   attr_accessor :source, :error_type, :error_mesg, :sub_system
 
   def initialize(message, type, system = 'global')

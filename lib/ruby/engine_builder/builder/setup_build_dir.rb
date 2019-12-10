@@ -24,7 +24,7 @@ module BuildDirSetup
     memento.mapped_ports = @blueprint_reader.mapped_ports
     #  SystemDebug.debug(SystemDebug.builder, :ports, memento.mapped_ports)
     #  SystemDebug.debug(SystemDebug.builder, :attached_services, @user_params[:attached_services])
-    unless   @usre_params[:reinstall] == true
+    unless @user_params[:reinstall] == true
       service_builder.required_services_are_running?
       service_builder.create_persistent_services(@blueprint_reader.services, @blueprint_reader.environments, @user_params[:attached_services])
     end
@@ -44,11 +44,11 @@ module BuildDirSetup
     @user_params[:app_is_persistent] = service_builder.app_is_persistent
     dockerfile_builder = DockerFileBuilder.new(@blueprint_reader, memento, @web_port, self)
     dockerfile_builder.write_files_for_docker
-    #  SystemDebug.debug(SystemDebug.builder, 'Docker file  written')
+      SystemDebug.debug(SystemDebug.builder, 'Docker file  written')
     write_env_file
-    #  SystemDebug.debug(SystemDebug.builder, 'Eviron file  written')
+      SystemDebug.debug(SystemDebug.builder, 'Eviron file  written')
     setup_framework_logging
-    #   SystemDebug.debug(SystemDebug.builder, 'Logging setup')
+       SystemDebug.debug(SystemDebug.builder, 'Logging setup')
     write_persistent_vol_maps
   end
 
@@ -245,7 +245,7 @@ module BuildDirSetup
   def save_params()
     p_file = File.open("#{basedir}/build_params",'w')
     begin
-    p_file.write({memento: memento, user_params: user_params}.to_s)
+    p_file.write({memento: memento, user_params: @user_params}.to_s)
     ensure
       p_file.close
     end

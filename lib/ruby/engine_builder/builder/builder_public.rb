@@ -16,7 +16,7 @@ class BuilderPublic
   end
 
   def engine_name
-    builder.memento[:engine_name]
+    builder.memento.container_name
   end
 
   def environments
@@ -24,27 +24,27 @@ class BuilderPublic
   end
 
   def memory
-    builder.memento[:memory]
+    builder.memento.memory
   end
 
   def hostname
-    builder.memento[:host_name]
+    builder.memento.hostname
   end
 
   def domain_name
-    builder.memento[:domain_name]
+    builder.memento.domain_name
   end
 
   def repository
-    builder.memento[:repository_url]
+    builder.memento.repository
   end
 
   def http_protocol
-    if builder.memento.key?(:http_protocol)
-      if builder.memento[:http_protocol].include?('_')
-        builder.memento[:http_protocol].gsub!(/_.*/, '')
+    unless builder.memento.http_protocol.nil?
+      if builder.memento.http_protocol.include?('_')
+        builder.memento.http_protocol.gsub!(/_.*/, '')
       else
-        builder.memento[:http_protocol]
+        builder.memento.http_protocol
       end
     else
       nil
@@ -100,7 +100,7 @@ class BuilderPublic
   end
 
   def memory
-    builder.memento[:memory]
+    builder.memento.memory
   end
 
   def service_account(suffix=nil)

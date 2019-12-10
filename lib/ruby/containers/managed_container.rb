@@ -91,7 +91,9 @@ module Container
     :kerberos=,
     :stopped_ok,
     :no_cert_map,
-    :privileged
+    :privileged,
+    :permission_as,
+    :permission_as=
 
     def initialize
       super
@@ -126,7 +128,7 @@ module Container
       @status[:had_oom] = had_out_memory
       @status[:restart_required] = restart_required?
       @status[:error] = true if @status[:state] != @status[:set_state] && @status[:progress_to].nil?
-      @status[:error] = false if @status[:state] == 'stopped' && is_stopped_ok?
+      @status[:error] = false if @status[:state] == :stopped && is_stopped_ok?
       # STDERR.puts(' STATUS ' + @status.to_s)
       @status
     end

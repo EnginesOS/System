@@ -11,14 +11,14 @@ class BuildController
   :build_params
 
   def abort_build
-    # SystemDebug.debug(SystemDebug.builder, :abort_build)
+    SystemDebug.debug(SystemDebug.builder, :abort_build)
     core.abort_build
   end
 
-  def prepare_engine_build(memento, custom_params)
-    #SystemDebug.debug(SystemDebug.builder, :builder_params, params)
-    build_params = memento.merge(custom_params)
-    engine_builder.build_params(memento, custom_params) unless memento.nil?
+  def prepare_engine_build(memento, build_params)
+    SystemDebug.debug(SystemDebug.builder, :builder_params, memento, build_params)
+    #build_params = memento.to_h.merge(custom_params)
+    engine_builder.build_params(memento, build_params) unless memento.nil?
     SystemStatus.build_starting(build_params)
   end
 

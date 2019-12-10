@@ -1,20 +1,22 @@
 class DockerFileBuilder
   require_relative 'archives.rb'
-
+  require_relative 'persistence.rb'
+  
   include Archives
 
-  require_relative 'persistence.rb'
+
+  
   def initialize(reader, memento, webport, builder)
     @memento = memento
-    @hostname = memento.host_name
+    @hostname = memento.hostname
     @domain_name = memento.domain_name
     @web_port = webport
     @blueprint_reader = reader
-    @builder = builder
-    @docker_file = File.open("#{@builder.basedir}/Dockerfile", 'a')
+    @builder = builder    
     @layer_count = 0
+    @docker_file = File.open("#{@builder.basedir}/Dockerfile", 'a')
     #FIXME
-    @env_file = File.new("#{@builder.basedir}/build.env", 'w+')
+    @env_file ||= File.new("#{@builder.basedir}/build.env", 'w+')
     # this should be read as it is framework dep
     @max_layers = 75
   end
@@ -53,7 +55,7 @@ class DockerFileBuilder
     set_user('$ContUser') unless @blueprint_reader.framework == 'docker'
     write_run_install_script
     set_user('0')
-    setup_persitant_app if @user_params[:app_is_persistent]
+    setup_persitant_app if @builder.app_is_persistent
     prepare_persitant_source
     write_data_permissions
     finalise_files
@@ -152,7 +154,8 @@ class DockerFileBuilder
     unless @blueprint_reader.environments.nil?
       write_comment('#Environment Variables')
       @blueprint_reader.environments.each do |env|
-        write_env(env.name,env.value.to_s) if env.value.nil? == false && env.value.to_s.length > 0 # env statement must have two arguments
+        SystemDebug.debug(SystemDebug.builder, 'Environment var', env)
+        write_env(env.name, env.value.to_s) if env.value.nil? == false && env.value.to_s.length > 0 # env statement must have two arguments
       end
       write_env('WWW_DIR', @blueprint_reader.web_root.to_s) unless @blueprint_reader.web_root.nil?
     end

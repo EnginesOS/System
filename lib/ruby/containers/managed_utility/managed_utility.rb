@@ -66,10 +66,10 @@ module Container
         destroy_container
       rescue
       end
-      wait_for('nocontainer') if has_container?
+      wait_for(:nocontainer) if has_container?
       begin
         container_dock.destroy_container(self) if has_container?
-        wait_for('nocontainer')
+        wait_for(:nocontainer)
       rescue
       end
       raise EnginesException.new(error_hash('cant nocontainer Utility ' + command.to_s, command_params.to_s)) if has_container?

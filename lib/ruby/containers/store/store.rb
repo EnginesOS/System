@@ -1,5 +1,6 @@
 #require '/opt/engines/lib/ruby/api/system/container_state_files'
 require '/opt/engines/lib/ruby/exceptions/engines_exception.rb'
+
 require_relative 'files'
 require_relative 'cache'
 require_relative 'locking'
@@ -34,6 +35,7 @@ module Container
 
     #looking waits on this thread to complete
     def save(c)
+      STDERR.puts "Save #{c.container_name}  #{self.class.name} <=> #{c.ctype} #{c.id} #{caller[0..10]} "
       t = Thread.new  { _save(c) }
       t.name = "Save #{c.container_name} #{Thread.current.name}"
       t.join
@@ -42,14 +44,13 @@ module Container
     end
 
     def _save(c)
-      STDERR.puts "Save #{c.container_name}  #{self.class.name} <=> #{c.ctype}"
       statefile = state_file(c, true)
       statedir = c.store.container_state_dir(c.container_name)
       errors_api.log_error_mesg('container locked', c.container_name) unless lock(statefile)
       backup_state_file(statefile)
       serialized_object = c.memento.savable_objs
       STDERR.puts("SERO #{c.set_state} #{c.id} ")
-    raise EnginesException.new({error_type: :error, status: "Failed to save #{c.container_name}"}) if serialized_object.nil?
+      raise EnginesException.new({error_type: :error, status: "Failed to save #{c.container_name}"}) if serialized_object.nil?
       f = File.new("#{statefile}_tmp", File::CREAT | File::TRUNC | File::RDWR, 0600) # was statefile + '_tmp
       begin
         f.puts(serialized_object)
@@ -91,11 +92,13 @@ module Container
     rescue NoMethodError
       STDERR.puts("Recovery backup file {#n}.bak" )
       load_recovery_model(name)
+    rescue TypeError
+      raise EnginesException.new({error_mesg: "No Such Container #{name}" ,error_type: :error })
     end
 
-   def recovery_file_name(name)
-       "#{file_name(name)}.bak"
-   end
+    def recovery_file_name(name)
+      "#{file_name(name)}.bak"
+    end
 
     def load_recovery_model(n)
       fn = recovery_file_name(n)
@@ -107,13 +110,13 @@ module Container
     def load_model(n)
       lock(n)
       f = file(n)
-      c = model_class.from_yaml(f.read)
+      c = model_class.from_yaml(f.read)     
       cache.add(c, File.mtime(n))
       c   #FIX ME WTF why is cache.add no
     ensure
       f.close unless f.nil?
       unlock(n)
- 
+
     end
 
     def model_class

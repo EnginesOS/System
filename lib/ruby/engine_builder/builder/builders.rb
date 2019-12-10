@@ -3,6 +3,7 @@ module Builders
   require_relative 'builder_public.rb'
   require_relative 'builder_blueprint.rb'
   include BuilderBluePrint
+  require 'yajl/json_gem'
 
   require_relative 'engine_scripts_builder.rb'
   include EngineScriptsBuilder
@@ -10,6 +11,7 @@ module Builders
   require_relative 'base_image.rb'
   require_relative 'build_image.rb'
   require_relative 'physical_checks.rb'
+
   def setup_build
     check_build_params(memento)
     memento.image = memento.container_name
@@ -28,7 +30,7 @@ module Builders
       memento.permission_as = memento.container_name
     end
     set_container_guids
-    process_supplied_envs(memento.variables)
+    process_supplied_envs(memento.environments)
     self
   rescue StandardError => e
     #log_exception(e)
@@ -80,7 +82,6 @@ module Builders
     save_build_result
     close_all
   rescue StandardError => e
-    log_exception(e)
     post_failed_build_clean_up
     log_exception(e)
   ensure
@@ -117,32 +118,32 @@ module Builders
     @container.wait_for('start', d)
     log_build_output('Waiting for startup completion')
     @container.wait_for_startup(d)
+  rescue NoMethodError
+    post_failed_build_clean_up
   end
 
   def post_failed_build_clean_up
-    SystemStatus.build_failed(memento.merge(user_params))
+    SystemStatus.build_failed(@user_params)
     begin
       if @container.is_a?(Container::ManagedContainer)
         @container.stop_container if @container.is_running?
         @container.destroy_container if @container.has_container?
         @container.delete_image if @container.has_image?
       end
-      service_builder.service_roll_back unless @rebuild.is_a?(TrueClass)
-      #FIX ME How Deal withthis
-      ###@build_params[:rollback]
-      
-      core.delete_engine_and_services(user_params)
-      event_handler.trigger_install_event(memento.container_name, 'failed')
-    rescue
-      #dont panic if no container
+    rescue NoMethodError
     end
+    service_builder.service_roll_back unless @rebuild.is_a?(TrueClass)
+    #FIX ME How Deal withthis
+    ###@build_params[:rollback]
+    core.delete_engine_and_services(@user_params)
     @result_mesg = "#{@result_mesg} Roll Back Complete"
-    #  SystemDebug.debug(SystemDebug.builder,'Roll Back Complete')
+  ensure
     close_all
+    event_handler.trigger_install_event(memento.container_name, 'failed')
   end
 
   def build_container
-    SystemDebug.debug(SystemDebug.builder, 'Starting build with params ', memento)
+    SystemDebug.debug(SystemDebug.builder, 'Starting build with params ', memento, @user_params)
     process_blueprint
     meets_physical_requirements
     set_locale
@@ -155,7 +156,8 @@ module Builders
     @container
   rescue StandardError => e
     log_build_errors("Engine Build Aborted Due to:#{e}")
-    STDERR.puts(e.backtrace.to_s)
+    log_exception(e)
+    post_failed_build_clean_up
   end
 
   def save_build_result
@@ -172,7 +174,7 @@ module Builders
   def setup_rebuild
     log_build_output('Setting up rebuild')
     create_build_dir
-     blue_print = load_existing_blueprint(memento.container_name)
+    blue_print = load_existing_blueprint(memento.container_name)
     bpfile = "#{basedir}/blueprint.json"
     f = File.new(bpfile, File::CREAT | File::TRUNC | File::RDWR, 0640)
     begin

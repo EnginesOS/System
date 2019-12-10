@@ -1,11 +1,12 @@
 module PersistantServiceBuilder
   def create_persistent_services(services, environ, use_existing)
-    services.each do | service_hash |
-      service_def = software_service_definition(service_hash)
-      raise EngineBuilderException.new(error_hash('no matching service definition for ' + service_hash.to_s, self)) if service_def.nil?
-      if service_def[:persistent]
-        service_hash[:persistent] = true
-        process_persistent_service(service_hash, environ, use_existing)
+    SystemDebug.debug(SystemDebug.builder, services, environ, use_existing)
+    services.each do | sh |
+      sdef = SoftwareServiceDefinition.software_service_definition(sh)
+      raise EngineBuilderException.new(error_hash('no matching service definition for ' + sh, self)) if sdef.nil?
+      if sdef[:persistent]
+        sh[:persistent] = true
+        process_persistent_service(sh, environ, use_existing)
       end
     end
   end
@@ -37,14 +38,14 @@ module PersistantServiceBuilder
         && existing_service[:type_path] == service_hash[:type_path]
           SystemDebug.debug(SystemDebug.builder, :comparing_services)
           # FIX ME run a check here on service hash
-          if @rebuild.is_a?(TrueClass)
+          if @rebuild  == true
            use_active_service(service_hash, existing_service)
           elsif existing_service[:create_type] == 'existing'
            use_active_service(service_hash, existing_service) 
           elsif existing_service[:create_type] == 'orphan' 
             use_orphan(existing_service)
           else
-            false
+            nil
           end 
         end
       end
@@ -77,7 +78,7 @@ module PersistantServiceBuilder
   def process_persistent_service(service_hash, environ, use_existing)
     service_hash = set_top_level_service_params(service_hash, @engine_name)
     sh = process_existing(service_hash, use_existing)
-    if sh.is_a?(FalseClass)
+    if sh.nil?
       service_hash = orphan_or_fresh(service_hash)
     else
       service_hash = sh
@@ -103,31 +104,36 @@ module PersistantServiceBuilder
 
   def process_existing(service_hash, use_existing)
     existing = match_service_to_existing(service_hash, use_existing)
+    SystemDebug.debug(SystemDebug.builder, :existing, existing)
     if existing.is_a?(Hash)
-      fresh_build(service_hash, false)
+      mark_fresh_build(service_hash, false)
       share_service_to_engine(service_hash, existing) if existing[:shared] == true
       existing
     elsif use_existing.is_a?(TrueClass)
-      fresh_build(service_hash, false)
+      mark_fresh_build(service_hash, false)
       core.get_service_entry(service_hash)
     else
-      false
+      nil
     end
   end
 
-  def orphan_or_fresh(service_hash)
-    if core.match_orphan_service(service_hash) == true
-      fresh_build(service_hash, false)
-      use_orphan(service_hash)
-    elsif core.service_is_registered?(service_hash) == false
-      fresh_build(service_hash, true)
-      service_hash
+  def orphan_or_fresh(sh)
+    SystemDebug.debug(SystemDebug.builder, :orphan_or_fresh, sh)
+    if core.match_orphan_service(sh) == true
+      mark_fresh_build(sh, false)
+      SystemDebug.debug(SystemDebug.builder, :orphan_, sh)
+      use_orphan(sh)
+    elsif core.is_service_registered?(sh) == false
+      mark_fresh_build(sh, true)
+      SystemDebug.debug(SystemDebug.builder, :fresh, sh)
+      sh
     else
-      raise EngineBuilderException.new(error_hash('Failed to build cannot over write ' + service_hash[:service_handle].to_s + ' Service Found', self))
+      SystemDebug.debug(SystemDebug.builder, :service_Exists, sh)
+      raise EngineBuilderException.new(error_hash("Failed to build cannot over write  #{sh[:service_handle]} Service exists", sh))
     end
   end
 
-  def fresh_build(service_hash, is_fresh)
+  def mark_fresh_build(service_hash, is_fresh)
     service_hash[:fresh] = is_fresh
     @first_build = is_fresh
   end
