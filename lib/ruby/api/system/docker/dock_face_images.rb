@@ -28,7 +28,6 @@ module DockFaceImages
       cd = container.image.split(':')
       d = cd[0]
       tag = cd[1] if cd.length > 1
-
       d = "#{container.image_repo}/#{d}" unless container.image_repo.nil?
       request = "/images/create?fromImage=#{d}"
       request = "#{request}&tag=#{tag}" unless tag.nil?

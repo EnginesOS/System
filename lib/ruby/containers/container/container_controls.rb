@@ -29,7 +29,7 @@ module ContainerControls
       container_dock.stop_container(id, stop_timeout)
       expire_engine_info
     end
-    truer
+    true
   end
 
   def wait_for(what, timeout = 10)

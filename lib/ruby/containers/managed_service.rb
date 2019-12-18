@@ -35,7 +35,6 @@ module Container
     :soft_service,
     :privileged,
     :system_keys,
-    :host_network,
     :privileged
 
     def ctype

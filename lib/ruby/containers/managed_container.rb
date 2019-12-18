@@ -63,6 +63,7 @@ module Container
     :deployment_type,
     :dependant_on,
     :hostname,
+    :host_network,
     :hostname=,
     :domain_name,
     :domain_name=,
@@ -93,11 +94,12 @@ module Container
     :no_cert_map,
     :privileged,
     :permission_as,
-    :permission_as=
+    :permission_as=,
+    :command
 
     def initialize
       super
-      status = {}
+      status = {}    
     end
 
     def store

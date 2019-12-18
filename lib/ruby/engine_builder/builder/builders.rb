@@ -35,6 +35,8 @@ module Builders
   rescue StandardError => e
     #log_exception(e)
     log_build_errors("Engine Build Aborted Due to:#{e}")
+    STDERR.puts "Exception" * 10
+    STDERR.puts("#{e} \n #{e.backtrace}")
     post_failed_build_clean_up
     log_exception(e)
     raise e
@@ -49,6 +51,7 @@ module Builders
     build_container
     wait_for_start_up
     save_build_result
+    event_handler.trigger_install_event(memento.container_name, 'installed')
     close_all
   rescue StandardError => e
     post_failed_build_clean_up
@@ -66,6 +69,7 @@ module Builders
     build_container
     wait_for_start_up
     save_build_result
+    event_handler.trigger_install_event(memento.container_name, 'installed')
     close_all
   rescue StandardError => e
     log_exception(e)
@@ -80,6 +84,7 @@ module Builders
     build_container
     wait_for_start_up
     save_build_result
+    event_handler.trigger_install_event(memento.container_name, 'installed')
     close_all
   rescue StandardError => e
     post_failed_build_clean_up
@@ -151,11 +156,12 @@ module Builders
     get_base_image
     setup_engine_dirs
     create_engine_image
-    @container = create_engine_container
-    service_builder.release_orphans
-    @container
+    create_engine_container 
+    service_builder.release_orphans    
   rescue StandardError => e
     log_build_errors("Engine Build Aborted Due to:#{e}")
+    STDERR.puts "Exception" * 10
+    STDERR.puts("#{e} \n #{e.backtrace}")
     log_exception(e)
     post_failed_build_clean_up
   end

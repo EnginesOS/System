@@ -15,8 +15,9 @@ module Container
     def_delegators :@memento,
     :commands,
     :command,
-    :command=
-
+    :command=,
+    :image=
+    
     def post_load
       # Basically parent super but no lock on image
       expire_engine_info

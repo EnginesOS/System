@@ -3,7 +3,7 @@ module ManagedContainerImageControls
     ret_val = false
     container_mutex.synchronize {
       clear_error
-      in_progress(:delete)
+      #in_progress(:delete)
     }
     super
   end

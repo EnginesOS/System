@@ -1,6 +1,6 @@
 def create_engine_image
   build_init
-  if core.image_exist?(memento.container_name) == false
+  if dock_face.image_exist?(memento.container_name) == false
     raise EngineBuilderException.new(error_hash('Built Image not found'))
   end
 end
@@ -9,7 +9,8 @@ def build_init
   log_build_output('Building Image')
   create_build_tar
   log_build_output('Cancelable:true')
-  core.docker_build_engine(memento.container_name, "#{SystemConfig.DeploymentDir}/#{@build_name}.tgz")
+  log_build_output("Building #{memento.container_name} from #{SystemConfig.DeploymentDir}/#{@build_name}.tgz")
+  dock_face.build_engine(memento.container_name, "#{SystemConfig.DeploymentDir}/#{@build_name}.tgz")
   log_build_output('Cancelable:false')
 end
 

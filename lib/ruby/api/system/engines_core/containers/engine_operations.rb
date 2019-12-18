@@ -128,10 +128,6 @@ module EnginesOperations
     system_api.set_engine_network_properties(container, params)
   end
 
-  def docker_build_engine(engine_name, build_archive_filename)
-    dock_face.build_engine(engine_name, build_archive_filename)
-  end
-
   def clear_lost_engines
     if SystemStatus.is_building?
       []

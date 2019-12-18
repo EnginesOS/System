@@ -153,6 +153,10 @@ class EngineBuilder < ErrorsApi
 
   protected
 
+  def dock_face
+    @dock_face ||= DockFace.instance
+  end
+
   def core
     @core ||= EnginesCore.instance
   end

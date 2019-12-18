@@ -4,7 +4,7 @@
 # @overload get '/v0/containers/service/:service_name/actions/'
 # return an of the registered action Hashes
 # @return [Array] Hash
-get '/v0/containers/service/:service_name/actions/' do
+get '/v0/containers/service/:service_name/actions' do
   begin
     service = get_service(params[:service_name])
     return_json_array(engines_api.list_service_actionators(service))

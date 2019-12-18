@@ -41,9 +41,9 @@ def write_build_script(cmd)
 end
 
 def write_line(line)
-  SystemDebug.debug(SystemDebug.builder, :write_line, line)
+  #SystemDebug.debug(SystemDebug.builder, :write_line, line)
   @docker_file.puts(line)
-  SystemDebug.debug(SystemDebug.builder, :wrote_line, line)
+#  SystemDebug.debug(SystemDebug.builder, :wrote_line, line)
 rescue Exception => e
   SystemUtils.log_exception(e)
   raise e
