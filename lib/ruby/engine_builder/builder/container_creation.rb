@@ -2,8 +2,8 @@ module ContainerCreation
   def create_engine_container
     log_build_output('Creating Deploy Image')
     @container = create_managed_container
-    raise EngineBuilderException.new(error_hash('Failed to create Managed Container')) unless @container.is_a?(Container::ManagedEngine)
-    raise EngineBuilderException.new(error_hash('Failed to create Engine container from Image')) unless @container.has_container?
+    raise EngineBuilderException.new(error_hash('Failed to create managed container')) unless @container.is_a?(Container::ManagedEngine)
+    raise EngineBuilderException.new(error_hash('Failed to create container from image')) unless @container.has_container?
       STDERR.puts('ADDing NON PERSIST')
     service_builder.create_non_persistent_services(@blueprint_reader.services)
   end
@@ -13,6 +13,8 @@ module ContainerCreation
     memento.web_port = @web_port
     memento.volumes = service_builder.volumes
     memento.cont_user_id = @cont_user_id
+    memento.deployment_type = @blueprint_reader.deployment_type
+    memento.conf_register_dns = true
     STDERR.puts(" Memento #{memento.to_h}")
     @container = memento.container
     @container.volume_service_builder = true

@@ -35,7 +35,7 @@ module Container
 
     #looking waits on this thread to complete
     def save(c)
-      STDERR.puts "Save #{c.container_name}  #{self.class.name} <=> #{c.ctype} #{c.id} #{caller[0..10]} "
+      #STDERR.puts "Save #{c.container_name}  #{self.class.name} <=> #{c.ctype} #{c.id} #{caller[0..10]} "
       t = Thread.new  { _save(c) }
       t.name = "Save #{c.container_name} #{Thread.current.name}"
       t.join
