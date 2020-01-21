@@ -14,9 +14,13 @@ module Container
 
     def_delegators :@memento,
     :commands,
+    :commands=,
     :command,
     :command=,
-    :image=
+    :image=,
+    :timeout, 
+    :timeout=,    
+    :conf_self_start=
     
     def post_load
       # Basically parent super but no lock on image
@@ -50,34 +54,46 @@ module Container
     end
 
     def execute_command(command_name, command_params)
-
-      # STDERR.puts("\n EXECutre Cmd " + command.to_s + ':' + command_params.to_s)
+      
+       STDERR.puts("\n EXECutre Cmd " + command.to_s + ':' + command_params.to_s)
       if is_active?
+        begin
+        STDERR.puts('FS is active')
         expire_engine_info
         wait_for('stop', 120)
         raise EnginesException.new(error_hash('Utility Still active ' + container_name + ' in use ', command_name)) if is_active?
         destroy_container
+      rescue
+        end
       end
 
-      r =  ''
-      raise EnginesException.new(error_hash('No such command: ' + command_name.to_s + ' in ' + commands.to_s,  command_params)) unless commands.key?(command_name)
+      r = ''
+      STDERR.puts(" Command #{commands[command_name]} ")
+      raise EnginesException.new(error_hash("No such command: #{command_name} (#{command_name.class.name} in #{commands}" ,  command_params)) unless commands.key?(command_name)
       command = command_details(command_name)
       raise EnginesException.new(error_hash('Missing params in Exe' + command_params.to_s + ' for ' + command_name.to_s, r)) unless (r = check_params(command, command_params)) == true
       begin
         destroy_container
       rescue
       end
+      STDERR.puts('Wait for utili nocontainer')
       wait_for(:nocontainer) if has_container?
       begin
         container_dock.destroy_container(self) if has_container?
         wait_for(:nocontainer)
-      rescue
+      rescue StandardError =>e
+        STDERR.puts("E  #{e}")
       end
       raise EnginesException.new(error_hash('cant nocontainer Utility ' + command.to_s, command_params.to_s)) if has_container?
+      STDERR.puts(' utili is nocontainer') 
       clear_configs
+      STDERR.puts('cleared _configs')
       apply_templates(command, command_params)
+      STDERR.puts('applied_templates')
       save_state
-      create_container()
+      STDERR.puts('saved_state')
+      create_container
+      STDERR.puts('created container')
     end
 
     def construct_cmdline(command, command_params, templater)
@@ -92,6 +108,8 @@ module Container
       construct_cmdline(command, command_params, templater)
       apply_env_templates(command_params, templater) unless environments.nil?
       apply_volume_templates(command_params, templater) unless volumes.nil?
+      STDERR.puts("VOLUMES" * 10)
+      STDERR.puts("#{volumes_from}")
       apply_volume_from_templates(command_params, templater) unless volumes_from.nil?
     end
 
@@ -140,8 +158,12 @@ module Container
     end
 
     def clear_configs
+      expire_engine_info
       FileUtils.rm(store.file_name(container_name)) if File.exist?(store.file_name(container_name))
       FileUtils.rm("#{store.file_name(container_name)}.bak") if File.exist?("#{store.file_name(container_name)}.bak")
+      STDERR.puts "DIR_" * 30
+      STDERR.puts( "DR #{Dir.entries('/opt/engines/run/utilitys/fsconfigurator')}")
+      expire_engine_info
     end
 
     def error_type_hash(mesg, params = nil)

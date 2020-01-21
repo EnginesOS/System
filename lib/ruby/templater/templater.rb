@@ -5,6 +5,8 @@ class Templater
   end
 
   def apply_hash_variables(text, values_hash)
+    STDERR.puts "Apply Template " * 10
+    STDERR.puts "Values Hash #{values_hash}"
     if text.is_a?(String)
       text.gsub!(/_Engines_Template\([(0-9a-z_A-Z]*\)/) { |match|
         resolve_hash_value(match, values_hash)

@@ -41,6 +41,7 @@ module Container
       :web_port,
       :volumes,
       :mapped_ports,
+      :mapped_ports=,
       :environments,
       :environments=,
       :last_error,
@@ -54,8 +55,9 @@ module Container
       :has_run,
       :has_run=,
       :state,
-      :state=
-
+      :state=,
+      :conf_self_start
+      
     def update_memory(new_memory)
       memory = new_memory
     end

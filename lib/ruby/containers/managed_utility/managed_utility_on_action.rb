@@ -1,6 +1,6 @@
 module ManagedUtilityOnAction
   def on_create(event_hash)
-    #   STDERR.puts('On Create UIL ' + container_name.to_s)
+       STDERR.puts('On Create MANAGE UTIL ' + container_name.to_s)
     container_mutex.synchronize {
       self.state = :stopped
       SystemDebug.debug(SystemDebug.container_events, :ON_Create_CALLED, event_hash)
@@ -26,6 +26,7 @@ module ManagedUtilityOnAction
       container_dock.save_container_log(self, {max_size: 2048, over_write: true})
       save_state
     }
+  STDERR.puts('MANAGE UTIL Stopped')
     destroy_container
   end
 

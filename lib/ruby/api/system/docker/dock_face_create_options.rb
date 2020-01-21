@@ -11,7 +11,9 @@ class DockFaceCreateOptions
 
   def create_options(c)
   #  @top_level = build_top_level(c)
-    build_top_level(c)
+   t =  build_top_level(c)
+   STDERR.puts("Creat container options #{t}")
+   t
   end
 
   def get_protocol_str(port)
@@ -135,6 +137,8 @@ class DockFaceCreateOptions
   end
 
   def set_entry_point(c, top_level)  
+    STDERR.puts("Cont #{c.container_name} is self start = #{c.conf_self_start} and has command #{c.command}")
+  
     unless c.conf_self_start
       command = ['/bin/bash' ,'/home/engines/scripts/startup/start.sh'] if c.command.nil?
       top_level['Entrypoint'] = c.command

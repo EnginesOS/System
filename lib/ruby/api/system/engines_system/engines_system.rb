@@ -98,7 +98,11 @@ class SystemApi < ErrorsApi
   end
 
   protected
-
+  
+  def dock_face
+    @dock_face ||= DockFace.instance
+  end
+  
   def event_handler
      @event_handler ||= EventHandler.instance
   end

@@ -35,7 +35,7 @@ module Container
 
     #looking waits on this thread to complete
     def save(c)
-      STDERR.puts "Save #{c.container_name}  #{self.class.name} <=> #{c.ctype} #{c.id} #{caller[0..10]} "
+      #STDERR.puts "Save #{c.container_name}  #{self.class.name} <=> #{c.ctype} #{c.id} #{caller[0..10]} "
       t = Thread.new  { _save(c) }
       t.name = "Save #{c.container_name} #{Thread.current.name}"
       t.join
@@ -103,7 +103,8 @@ module Container
     def load_recovery_model(n)
       fn = recovery_file_name(n)
       load_model(fn)
-    rescue NoMethodError
+    rescue NoMethodError => e
+      STDERR.puts("#{e} \n #{e.backtrace}")
       STDERR.puts("No Recovery backup file {#n}.bak" )
     end
 

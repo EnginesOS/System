@@ -3,9 +3,13 @@ module EngineApiStatusFlags
   def wait_for_startup(c, timeout = 5)
     r = false
     sfd = c.store.container_flag_dir(c.container_name)
-    unless Dir.exist?(sfd)
-      FileUtils.mkdir_p(sfd)
-    end
+    
+    #Fix me need to wait  here for flag dir to appear (by fsconfigurator)
+#    unless Dir.exist?(sfd)
+#      notifier = INotify::Notifier.new
+#      FileUtils.mkdir_p(sfd)
+#    end
+#    
     state_file_name = "#{sfd}/state"
     sfn = "#{sfd}/startup_complete"
     if c.is_running?
@@ -18,7 +22,7 @@ module EngineApiStatusFlags
               require 'rb-inotify'
               notifier = INotify::Notifier.new
               while ! File.exist?(sfn)
-                if  File.exist?(state_file_name)
+                if File.exist?(state_file_name)
                   notifier.watch(state_file_name, :modify) { next }
                 else
                   notifier.watch(sfd, :modify) { next }

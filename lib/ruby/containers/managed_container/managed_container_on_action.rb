@@ -9,11 +9,15 @@ module ManagedContainerOnAction
       #  SystemDebug.debug(SystemDebug.container_events, :ONSTART_CALLED, what)
       # MUst register post each start as IP Changes (different post reboot)
       register_with_dns
+      STDERR.puts('Reged DNS')
+      STDERR.puts("Has consumer_less #{consumer_less}")
+      STDERR.puts("Has deployment_type #{deployment_type}")
       if consumer_less == true
         self.has_run = true
         STDERR.puts('CONSUMER LESS TIN')
       else
         if has_run == false
+          STDERR.puts("Has Run #{has_run}")
           add_wap_service if deployment_type == 'web'
         end
         self.has_run = true

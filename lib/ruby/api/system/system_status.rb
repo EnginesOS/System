@@ -75,6 +75,7 @@ class SystemStatus
   end
 
   def self.build_starting(params)
+  STDERR.puts "Build Params #{params}"
     param_file = File.new(SystemConfig.BuildRunningParamsFile, 'w+')
     begin
       param_file.puts(params.to_yaml)

@@ -1,4 +1,4 @@
---- !ruby/object:Container::ManagedUtility
+--- !ruby/object:Container::Memento
 container_name: fsconfigurator
 publisher_namespace: EnginesSystem
 type_path: fsconfigurator
@@ -90,6 +90,6 @@ volumes_from:
 mapped_ports:
 repo: na
 last_result:
-setState: nocontainer
+set_state: nocontainer
 conf_register_site: false
 conf_register_dns: false

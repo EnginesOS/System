@@ -45,11 +45,10 @@ class DockerFileBuilder
     chown_home_app
     set_user('$ContUser')
     write_database_seed
-    write_sed_strings
-    write_persistent_dirs
-    write_persistent_files
     insert_framework_frag_in_dockerfile('builder.mid.tmpl')
     write_rake_list
+    write_persistent_dirs
+    write_persistent_files
     set_user('0')
     write_run_line('mkdir -p /home/fs/local/')
     set_user('$ContUser') unless @blueprint_reader.framework == 'docker'
@@ -81,11 +80,9 @@ class DockerFileBuilder
   end
 
   def setup_user_local
-    #  write_run_start()
     write_build_script('set_cont_user.sh')
     write_run_line('ln -s /usr/local/ /home/local')
     write_run_line('chown -R $ContUser /usr/local/ ')
-
   end
 
   def finalise_docker_file

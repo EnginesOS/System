@@ -16,6 +16,9 @@ class BuildController
   end
 
   def prepare_engine_build(memento, build_params)
+    @build_params = build_params
+    STDERR.puts "Build" * 10
+    STDERR.puts "#{memento}\n #{build_params}"
     SystemDebug.debug(SystemDebug.builder, :builder_params, memento, build_params)
     #build_params = memento.to_h.merge(custom_params)
     engine_builder.build_params(memento, build_params) unless memento.nil?

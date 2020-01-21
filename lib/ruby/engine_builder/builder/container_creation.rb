@@ -11,8 +11,11 @@ module ContainerCreation
   def create_managed_container
     log_build_output('Creating ManagedEngine')
     memento.web_port = @web_port
+    memento.ctype = 'app'
     memento.volumes = service_builder.volumes
     memento.cont_user_id = @cont_user_id
+    memento.deployment_type = @blueprint_reader.deployment_type
+    memento.conf_register_dns = true
     STDERR.puts(" Memento #{memento.to_h}")
     @container = memento.container
     @container.volume_service_builder = true

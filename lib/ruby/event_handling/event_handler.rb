@@ -38,7 +38,7 @@ class EventHandler
     end
     r = true
   rescue Timeout::Error
-    STDERR.puts(' Wait for timeout on ' + c.container_name.to_s + ' for ' + what)
+    STDERR.puts("Wait for timeout on #{c.container_name} for #{what}")
     rm_event_listener(event_listener) unless event_listener.nil?
     event_listener = nil
   rescue StandardError => e

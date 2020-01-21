@@ -56,7 +56,7 @@ class EngineBuilder < ErrorsApi
   :cont_user_id,
   :user_params
 
-  attr_accessor :app_is_persistent
+  attr_accessor :app_is_persistent,:build_params
 
   class BuildError < StandardError
     attr_reader :parent_exception, :method_name

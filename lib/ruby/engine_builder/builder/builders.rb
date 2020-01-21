@@ -128,6 +128,7 @@ module Builders
   end
 
   def post_failed_build_clean_up
+    return
     SystemStatus.build_failed(@user_params)
     begin
       if @container.is_a?(Container::ManagedContainer)

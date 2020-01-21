@@ -174,8 +174,8 @@ module TaskAtHand
     when :delete,:destroy
       :nocontainer
     else
-      STDERR.puts("UNKNOWN TASK sym #{task}")
-      ''
+      STDERR.puts("UNKNOWN TASK sym #{task} #{task.class.name}")
+      task.to_sym
     end
   end
 

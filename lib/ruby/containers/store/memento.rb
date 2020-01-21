@@ -102,7 +102,8 @@ module Container
         @managed_engine_attrs ||= [
           :plugins_path,
           :extract_plugins,
-          :web_root
+          :web_root,
+          :volume_service_builder
         ]
       end
 
@@ -175,12 +176,21 @@ module Container
       else
         STDERR.puts("Invalid ctype #{ctype}")
         #FIX ME! RAISE SOMETHING
-      end
+      end 
       c.memento = self
+      
       STDERR.puts("Loaded #{c.container_name} of Type #{c.ctype} via #{ctype}")
-      STDERR.puts("Momeneto commands #{commands} \n Container Commands #{c.commands}") if ctype == 'utility'
+      if ctype == 'utility'
+        c.commands = Hash[c.commands.map{|(k,v)| [k.to_sym,v]}]
+        unless c.commands == nil
+          c.commands.keys.each do |key|
+            c.commands[key] = Hash[c.commands[key].map{|(k,v)| [k.to_sym,v]}] if c.commands[key].is_a?(Hash)
+            STDERR.puts(" command #{key} #{ c.commands[key] }")
+          end
+        end
+        STDERR.puts("Momeneto commands #{commands} \n Container Commands #{c.commands}")
+      end      
       c
     end
-
   end
 end
