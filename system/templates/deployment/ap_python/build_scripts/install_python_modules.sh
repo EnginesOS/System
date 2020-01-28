@@ -1,5 +1,5 @@
 #!/bin/sh
-
+#could be dynamic
 virtualenv --system-site-packages --python=python3.7 /home/app/venv
 . /home/app/venv/bin/activate
 

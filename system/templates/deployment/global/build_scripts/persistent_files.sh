@@ -1,4 +1,7 @@
 #!/bin/sh
+
+#could be dynamic
+
 #cat /home/fs/vol_file_maps
 #echo ls -l fs
 #ls -l /home/fs

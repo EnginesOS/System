@@ -1,5 +1,6 @@
 #!/bin/sh
 
+#could be dynamic
 
 for directory in $*
  do

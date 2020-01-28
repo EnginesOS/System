@@ -1,4 +1,5 @@
 #!/bin/sh
+#could be dynamic
 
 cd /home
 					

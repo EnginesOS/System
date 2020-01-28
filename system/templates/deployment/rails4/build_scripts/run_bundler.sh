@@ -1,5 +1,5 @@
-#!/bin/bash
-
+#!/bin/sh
+#could be dynamic
 echo "Rails.application.routes.default_url_options[:host] = '$fqdn'" >> config/environment.rb
 
 if ! test -f /tmp/.bundled

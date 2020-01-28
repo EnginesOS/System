@@ -1,5 +1,7 @@
 #!/bin/sh
 
+#could be dynamic
+
  for path in $*
   do
    path=`echo $path | sed "/[.][.]/s///g"` 

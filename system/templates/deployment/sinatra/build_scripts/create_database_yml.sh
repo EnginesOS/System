@@ -1,5 +1,5 @@
 #!/bin/sh
-
+#could be dynamic
 if test -d config 
  then 
    config_dir=config 

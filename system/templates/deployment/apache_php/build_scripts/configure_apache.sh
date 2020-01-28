@@ -1,4 +1,6 @@
 #!/bin/sh
+#could be dynamic
+
  if test -f /home/engines/templates/site_config.conf
   then
       cp /home/engines/templates/site_config.conf /home/engines/setup/000-default.conf

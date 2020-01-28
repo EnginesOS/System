@@ -1,5 +1,6 @@
 #!/bin/sh
-
+#not used any mire ?
+#could be dynamic
 dl_type=$1
 shift
 source_url=$1

@@ -1,4 +1,5 @@
 #!/bin/sh
+#could be dynamic
 
 download_type=$1
 shift
