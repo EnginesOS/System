@@ -11,16 +11,6 @@ module Container
     def ctype
       @ctype ||= 'utility'
     end
-
-    def_delegators :@memento,
-    :commands,
-    :commands=,
-    :command,
-    :command=,
-    :image=,
-    :timeout, 
-    :timeout=,    
-    :conf_self_start=
     
     def post_load
       # Basically parent super but no lock on image

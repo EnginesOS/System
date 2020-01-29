@@ -4,7 +4,6 @@ require '/opt/engines/lib/ruby/exceptions/engines_exception.rb'
 require_relative 'files'
 require_relative 'cache'
 require_relative 'locking'
-require_relative 'memento'
 
 module Container
   class Store
@@ -35,7 +34,7 @@ module Container
 
     #looking waits on this thread to complete
     def save(c)
-      #STDERR.puts "Save #{c.container_name}  #{self.class.name} <=> #{c.ctype} #{c.id} #{caller[0..10]} "
+      STDERR.puts "Save #{c.container_name}  #{self.class.name} <=> #{c.ctype} #{c.id} #{caller[0..10]} "
       t = Thread.new  { _save(c) }
       t.name = "Save #{c.container_name} #{Thread.current.name}"
       t.join
@@ -86,6 +85,7 @@ module Container
 
     def load(name)
       n = file_name(name)
+      STDERR.puts("Load Model #{name} fielname #{n}")
       load_model(n)
     rescue Errno::ENOENT => e
       raise EnginesException.new(error_hash("No Container file:#{n}", name))

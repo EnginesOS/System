@@ -7,7 +7,7 @@ directories:
  - /opt/engines/lib/ruby/api/public/engines_osapi
  - /opt/engines/lib/ruby/api/system
  - /opt/engines/lib/ruby/api/system/containers
- - /opt/engines/lib/ruby/api/system/containers/container_api
+ - /opt/engines/lib/ruby/api/system/containers/container_dock
  - /opt/engines/lib/ruby/api/system/containers/service_api
  - /opt/engines/lib/ruby/api/system/docker
  - /opt/engines/lib/ruby/api/system/docker/docker_api

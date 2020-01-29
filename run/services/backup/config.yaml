@@ -62,7 +62,7 @@ volumes:
 port: 
 mapped_ports: 
 last_result:
-setState: running
+set_state: running
 large_temp: true
 conf_register_site: false
 conf_register_dns: true

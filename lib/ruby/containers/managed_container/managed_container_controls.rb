@@ -272,7 +272,7 @@ module ManagedContainerControls
 
   def prep_task(action_sym)
     STDERR.puts('Taks in progress') unless task_at_hand.nil? #FIX ME if task at hand return !nil? already in progress to
-    self.set_state = tasks_final_state(action_sym)
+    @set_state = tasks_final_state(action_sym)
     if read_state == set_state
       expire_engine_info
       status

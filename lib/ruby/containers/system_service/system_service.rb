@@ -8,12 +8,13 @@ module Container
     require_relative 'system_service_on_action.rb'
     include SystemSystemOnAction
 
-    class << self
+  #  class << self
        def store
          @@system_service_store ||= SystemServiceStore.new
        end
-     end
+ #    end
 
+    
     def ctype      
       @ctype ||= 'system_service'
     end

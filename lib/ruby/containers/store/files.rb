@@ -18,6 +18,9 @@ module Container
 
     #self
     def file_name(name)
+      STDERR.puts("File NMA " * 10)
+      STDERR.puts "#{container_type}"
+      STDERR.puts "#{store_directory}/#{name}/running.yaml"
       "#{store_directory}/#{name}/running.yaml"
     end
 

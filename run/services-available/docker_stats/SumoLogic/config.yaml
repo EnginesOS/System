@@ -21,7 +21,7 @@ volumes:
   permissions: ro
 repo: na
 last_result: 
-setState: running
+set_state: running
 conf_register_site: false
 conf_register_dns: true
 conf_self_start: true

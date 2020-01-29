@@ -92,7 +92,10 @@ module TaskAtHand
   end
 
   def task_at_hand
+    STDERR.puts("task at hand STORE  is #{store}")
+    STDERR.puts("task at hand STORE DIR is #{store.container_state_dir(container_name)}/task_at_hand")
     fn = "#{store.container_state_dir(container_name)}/task_at_hand"
+    STDERR.puts("task at hand #{fn}")
     if File.exist?(fn)
       thf = File.new(fn, 'r')
       begin
@@ -117,7 +120,7 @@ module TaskAtHand
       nil
     end
   rescue StandardError => e
-    log_exception(e) if File.exist?(fn)
+    log_exception(e) if fn.nil? || File.exist?(fn)
     nil
   end
 

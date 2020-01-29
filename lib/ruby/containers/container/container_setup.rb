@@ -4,9 +4,13 @@ module ContainerSetup
   end
 
   def post_load
+    STDERR.puts " WETREW WEREWRE" * 5
     expire_engine_info
-    self.id = read_container_id if id.nil? 
+    STDERR.puts " WETREW WEREWRE" * 10
+    self.id = read_container_id if id.nil?
+    STDERR.puts " WETREW WEREWRE" * 20
     set_running_user
+    STDERR.puts " WETREW WEREWRE" * 30
     self
   ensure
     self.domain_name = SystemConfig.internal_domain

@@ -33,7 +33,7 @@ volumes:
 environments: 
 repo: na
 last_result: 
-setState: running
+set_state: running
 conf_register_site: false
 conf_register_dns: true
 dependant_on:

@@ -20,6 +20,8 @@ module ContainerStatus
     self.state
   rescue NoMethodError => e
     :nocontainer 
+  rescue StandardError => e
+    STDERR.puts "Exception #{e} \n #{e.backtrace}"
   end
 
   def is_paused?
