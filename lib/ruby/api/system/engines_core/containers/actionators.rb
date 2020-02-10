@@ -7,8 +7,8 @@ module Actionators
     system_api.get_service_actionator(service, action)
   end
 
-  def list_engine_actionators(ca)
-    system_api.load_engine_actionators(ca)
+  def list_engine_actionators(engine)
+    system_api.load_engine_actionators(engine)
   end
 
   def perform_engine_action(engine, actionator_name, params)

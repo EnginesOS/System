@@ -21,6 +21,8 @@ module Builders
     @result_mesg = 'Incomplete'
     @first_build = true
     @attached_services = []
+    create_templater
+    
     @runtime =  ''
     backup_lastbuild
     setup_log_output
@@ -30,6 +32,12 @@ module Builders
     end
     set_container_guids
     process_supplied_envs(@build_params[:variables])
+      
+    
+
+  #  SystemDebug.debug(SystemDebug.builder, :builder_init, @build_params)
+    @service_builder = ServiceBuilder.new(@templater, @build_params[:engine_name], @attached_services, basedir)
+   # SystemDebug.debug(SystemDebug.builder, :builder_init__service_builder, @build_params)
     self
   rescue StandardError => e
     #log_exception(e)
@@ -56,10 +64,10 @@ module Builders
     File.delete('/opt/engines/run/system/flags/building_params') if File.exist?('/opt/engines/run/system/flags/building_params')
   end
 
-  def rebuild_managed_container(p)
-    @build_params  = p
-    #@engine = engine
+  def rebuild_managed_container(engine)
+    @engine = engine
     @rebuild = true
+    @build_params[:permission_as] = engine.container_name
     log_build_output('Starting Rebuild')
     setup_rebuild
     build_container
@@ -105,9 +113,12 @@ module Builders
 
   protected
 
-  def builder_public
-    @builder_public ||= BuilderPublic.instance
-  end
+#  def builder_public
+#    @builder_public ||= BuilderPublic.instance
+#    BuilderPublic.builder = self
+#    rescue StandardError =>e
+#      STDERR.puts ("Got #{e} \n #{e.backtrace}")   
+#  end
 
   def service_builder
     @service_builder ||= ServiceBuilder.instance(templater, @build_params[:engine_name], @attached_services, basedir)
@@ -166,6 +177,10 @@ module Builders
     FileUtils.copy_file("#{SystemConfig.DeploymentDir}/build.out", "#{ContainerStateFiles.container_state_dir(@container.store_address)}/build.log")
     FileUtils.copy_file("#{SystemConfig.DeploymentDir}/build.err", "#{ContainerStateFiles.container_state_dir(@container.store_address)}/build.err")
     true
+  end
+
+  def create_templater
+    @templater = Templater.new(BuilderPublic.new(self))
   end
 
   def setup_rebuild

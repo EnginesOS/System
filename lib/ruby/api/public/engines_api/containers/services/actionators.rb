@@ -1,6 +1,6 @@
 module PublicApiServiceActionators
-  def list_service_actionators(service)
-    system_api.load_service_actionators(service)
+  def list_service_actionators(ca)
+    system_api.load_service_actionators(ca)
   end
 
   def get_service_actionator(service, action)

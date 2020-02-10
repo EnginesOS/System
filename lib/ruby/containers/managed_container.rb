@@ -72,11 +72,11 @@ module Container
     end
 
     def set_state
-      @setState
+      @set_state
     end
 
     def to_s
-      "#{@container_name}-set to:#{@setState}:#{status}:#{@ctype}"
+      "#{@container_name}-set to:#{@set_state}:#{status}:#{@ctype}"
     end
 
     def store_address
@@ -87,7 +87,7 @@ module Container
       @status = {} if @status.nil?
       @status[:state] = read_state
       # STDERR.puts(' STATE GOT ' + container_name.to_s + ':' + @status[:state].to_s)
-      @status[:set_state] = @setState
+      @status[:set_state] = @set_state
       @status[:progress_to] = task_at_hand
       @status[:error] = false
       @status[:oom] = @out_of_memory

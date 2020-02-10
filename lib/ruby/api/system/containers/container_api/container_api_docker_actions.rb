@@ -29,11 +29,9 @@ module ContainerApiDockerActions
      docker_api.inspect_container(cid)
   end
 
-  def stop_container(cid, to)
+  def stop_container(cid, to=25)
     clear_error
     docker_api.stop_container(cid, to)
-    #rotate_log(container)
-    true
   end
 
   def rotate_log(cid)

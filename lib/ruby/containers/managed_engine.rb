@@ -36,7 +36,7 @@ module Container
       @web_port = build_params[:web_port]
       @web_root = runtime_params.web_root
       @last_result = ''
-      @setState = 'running'
+      @set_state = 'running'
       @ctype = 'app'
       @conf_self_start = true
       @capabilities = runtime_params.capabilities

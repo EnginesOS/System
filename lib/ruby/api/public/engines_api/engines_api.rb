@@ -3,7 +3,11 @@ require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 require_relative 'engines_public_api_error.rb'
 
 class PublicApi < ErrorsApi
-
+  class << self
+    def instance
+      @@instance ||= self.new
+    end
+  end
   #methods called by api sinatra server routes
   require_relative 'containers/containers.rb'
   #containers/

@@ -96,9 +96,9 @@ module ManagedContainerControls
           else
             save_state #save new containerid)
             #    SystemDebug.debug(SystemDebug.containers, :create_super_ran)
-            #   SystemDebug.debug(SystemDebug.containers, @setState, @docker_info_cache.class.name)
+            #   SystemDebug.debug(SystemDebug.containers, @set_state, @docker_info_cache.class.name)
             expire_engine_info
-            #   SystemDebug.debug(SystemDebug.containers, @setState, @docker_info_cache.class.name)
+            #   SystemDebug.debug(SystemDebug.containers, @set_state, @docker_info_cache.class.name)
             true
           end
         end
@@ -266,7 +266,7 @@ module ManagedContainerControls
   end
 
   def correct_current_state
-    case @setState
+    case @set_state
     when 'stopped'
       stop_container if is_running?
     when 'running'

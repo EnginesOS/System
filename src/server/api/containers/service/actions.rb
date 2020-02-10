@@ -7,7 +7,7 @@
 get '/v0/containers/service/:service_name/actions/' do
   begin
     service = get_service(params[:service_name])
-    return_json_array(engines_api.list_service_actionators(service))
+    return_json_array(engines_api.list_service_actionators(store_address))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

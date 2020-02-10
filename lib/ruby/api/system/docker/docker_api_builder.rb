@@ -19,8 +19,9 @@ module DockerApiBuilder
   end
 
   class DockerStreamHandler
-    def initialize(stream)
+    def initialize(stream, builder)
       @io_stream = stream
+      @builder = builder
     end
 
     def parser
@@ -63,11 +64,11 @@ module DockerApiBuilder
             end
           end
         rescue StandardError =>e
-          STDERR.puts("Parse build res EOROROROROR #{chunk}\n#{e}")
+          STDERR.puts("Parse build res EOROROROROR #{chunk}\n#{e} \n #{e.backtrace}")
         end
       end
     rescue StandardError =>e
-      STDERR.puts("Parse build res EOROROROROR #{chunk}\n#{e}")
+      STDERR.puts("Parse build res EOROROROROR #{chunk}\n#{e}\n #{e.backtrace}")
     end
 
     def process_request(*args)
@@ -78,11 +79,11 @@ module DockerApiBuilder
     end
     
     def builder
-      @builder ||= EngineBuilder.instance
+      @builder
     end
   end
 
-  def build_engine(engine_name, build_archive_filename)
+  def build_engine(engine_name, build_archive_filename, builder)
     stream_handler = nil
     options =  build_options(engine_name)
     header = {
@@ -92,7 +93,7 @@ module DockerApiBuilder
       'Accept' => '*/*',
       'Content-Length' => "#{File.size(build_archive_filename)}"
     }
-    stream_handler = DockerStreamHandler.new(nil)
+    stream_handler = DockerStreamHandler.new(nil, builder)
     post_stream_request({ timeout: 300, uri: '/build' , options: options, stream_handler: stream_handler, headers: header, content: File.read(build_archive_filename) } )
   ensure
     stream_handler.close unless stream_handler.nil?

@@ -4,11 +4,11 @@ require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 require '/opt/engines/lib/ruby/exceptions/engine_builder_exception.rb'
 
 class EngineBuilder < ErrorsApi
-  class << self
-    def instance
-      @@instance ||= self.new
-    end
-  end
+#  class << self
+#    def instance
+#      @@instance ||= self.new
+#    end
+#  end
   
   require '/opt/engines/lib/ruby/api/system/container_state_files.rb'
 
@@ -86,10 +86,12 @@ class EngineBuilder < ErrorsApi
     }
   end
 
-  def build_params=(bp)
-    @build_params = bp
-    STDERR.puts("Build Params #{bp}")
-    setup_build
+  def initialize(params, core_api)
+    @core_api = core_api
+    @container = nil
+    @build_params = params
+    @blueprint = nil
+    STDERR.puts('Build Params ' + params.to_s)
   end
   
   def service_resource(service_name, what)
@@ -99,7 +101,7 @@ class EngineBuilder < ErrorsApi
   def volumes
     service_builder.volumes
   end
-
+  
   def setup_engine_dirs
     SystemUtils.run_system("/opt/engines/system/scripts/system/create_container_dir.sh #{@build_params[:engine_name]}")
   end
@@ -127,7 +129,20 @@ class EngineBuilder < ErrorsApi
   end
 
   def flag_restart_required(mc)
-    ContainerStateFiles.flag_restart_required(mc.store_address, 'Restart to run post install script, as required in blueprint')
+    restart_reason='Restart to run post install script, as required in blueprint'
+    # FixME this should be elsewhere has to occur past fs configurator as not rights to runtime prior
+    return 
+   restart_flag_file = ContainerStateFiles.restart_flag_file(mc)
+    FileUtils.mkdir_p(ContainerStateFiles.container_flag_dir(mc)) unless Dir.exist?(ContainerStateFiles.container_flag_dir(mc))
+    f = File.new(restart_flag_file, 'w+')
+    
+    begin
+      f.puts(restart_reason)
+    ensure
+      f.close
+    end
+    File.chmod(0660, restart_flag_file)
+    FileUtils.chown(nil, 'containers', restart_flag_file)
   end
 
   def log_error_mesg(m, o = nil)

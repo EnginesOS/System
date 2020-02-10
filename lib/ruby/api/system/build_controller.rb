@@ -18,12 +18,13 @@ class BuildController
   def prepare_engine_build(params)
     #SystemDebug.debug(SystemDebug.builder, :builder_params, params)
     @build_params = params
-    engine_builder.build_params=(@build_params) unless @build_params.nil?
-    SystemStatus.build_starting(build_params)
+    SystemStatus.build_starting(@build_params)
+    @engine_builder = get_engine_builder(@build_params)
+    
   end
 
   def build_engine
-    @engine = engine_builder.build_from_blue_print
+    @engine = @engine_builder.build_from_blue_print
     #SystemDebug.debug(SystemDebug.builder, :build_error, @engine_builder.build_error.to_s) unless  @engine_builder.build_error.nil?
     build_complete
   end
@@ -36,39 +37,83 @@ class BuildController
       omain_name: domain_name,
       environment: environment
     }
-    @engine = engine_builder.build_from_blue_print
+    SystemStatus.build_starting(@build_params)
+    @engine_builder= get_engine_builder_bfr(repository, host, domain_name, environment)
+    @engine = @engine_builder.build_from_blue_print
     @engine.save_state
-    build_complete
+    build_complete(@build_params)
     @engine
+  rescue StandardError =>e
+    STDERR.puts ("Got #{e} \n #{e.backtrace}")
   end
 
-  def reinstall_engine(p)
-    @build_params = p
+  def reinstall_engine(engine)
+    @build_params = {
+      engine_name: engine.container_name,
+      domain_name: engine.domain_name,
+      host_name: engine.hostname,
+      software_environment_variables: engine.environments,
+      http_protocol: engine.protocol,
+      memory: engine.memory,
+      repository_url: engine.container_name,
+      variables: engine.environments,
+      reinstall: true
+    }
     SystemStatus.build_starting(@build_params)
-    # SystemDebug.debug(SystemDebug.builder, 'Starting resinstall with params ', @build_params)
-    @engine = engine_builder.rebuild_managed_container(@build_params)
-    @build_error = engine_builder.tail_of_build_error_log
-    build_complete
-  end
-
-  def restore_engine(p)
-    @build_params = p
-    SystemStatus.build_starting(@build_params)
-    #  SystemDebug.debug(SystemDebug.builder, 'Starting restore with params ', @build_params)
-    @engine = engine_builder.restore_managed_container(engine)
-    @build_error = engine_builder.tail_of_build_error_log
-    build_complete
-  end
-
-  def engine_builder
-    if @engine_builder.nil?
-      @engine_builder = EngineBuilder.instance
-      @engine_builder.build_params=(@build_params) unless @build_params.nil?
+   # SystemDebug.debug(SystemDebug.builder, 'Starting resinstall with params ', @build_params)
+    @engine_builder = get_engine_builder(@build_params)
+    if @engine_builder.is_a?(EngineBuilder)
+      @engine = @engine_builder.rebuild_managed_container(engine)
+      @build_error = @engine_builder.tail_of_build_error_log
+      build_complete(@build_params)        
+    else
+      build_failed(params, 'No Builder')
     end
-    @engine_builder
+  end
+  
+  def restore_engine(engine)
+      @build_params = {
+        engine_name: engine.container_name,
+        domain_name: engine.domain_name,
+        host_name: engine.hostname,
+        software_environment_variables: engine.environments,
+        http_protocol: engine.protocol,
+        memory: engine.memory,
+        repository_url: engine.container_name,
+        variables: engine.environments,
+        reinstall: true,
+        restore: true#,
+        #attached_services: engine.engine_persistent_services
+      }
+      SystemStatus.build_starting(@build_params)
+    #  SystemDebug.debug(SystemDebug.builder, 'Starting restore with params ', @build_params)
+      @engine_builder = get_engine_builder(@build_params)
+      if @engine_builder.is_a?(EngineBuilder)
+        @engine = @engine_builder.restore_managed_container(engine)
+        @build_error = @engine_builder.tail_of_build_error_log
+        build_complete(@build_params)
+      else
+        build_failed(params, 'No Builder')
+      end
+    end
+
+  private
+
+  def get_engine_builder(params)
+    @engine_builder = EngineBuilder.new(params, core)
+    @engine_builder.setup_build
   end
 
-  protected
+  def get_engine_builder_bfr(repository, host, domain_name, environment)
+    @build_params = {
+      repository: repository,
+      host_name: host,
+      omain_name: domain_name,
+      environment: environment
+    }
+    get_engine_builder(@build_params)
+    #@engine_builder.setup_build
+  end
 
   def build_failed(params, err)
     build_params[:error] = err.to_s

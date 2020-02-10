@@ -36,7 +36,7 @@ module Container
     :volumes,
     :mapped_ports,
     :environments,
-    :setState
+    :set_state
 
     attr_accessor :last_error,
     :last_result,

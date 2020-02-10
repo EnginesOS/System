@@ -16,7 +16,11 @@ class Templater
   end
 
   def resolve_hash_value(match, values_hash)
+    STDERR.puts("Resolved hash mTCH" * 20)
+    STDERR.puts("#{match}")
     name = match.sub!(/_Engines_Template\(/, '')
+    STDERR.puts("Resolved hash value" * 20)
+    STDERR.puts("#{name}")
     name.sub!(/[\)]/, '')
     if values_hash.key?(name.to_sym)
       values_hash[name.to_sym]

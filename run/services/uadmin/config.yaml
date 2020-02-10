@@ -25,7 +25,7 @@ environments:
  label: "RACK_ENV"
 repo: na
 last_result:
-setState: stopped
+set_state: stopped
 conf_register_site: false
 conf_register_dns: true
 conf_self_start: true

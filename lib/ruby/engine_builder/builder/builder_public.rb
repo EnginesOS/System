@@ -1,16 +1,16 @@
 require 'securerandom'
 
 class BuilderPublic
-  class << self
-    def instance
-      @@instance ||= self.new
-    end
+  def initialize(builder)
+    @builder = builder
   end
+
+  attr_reader :builder
   
   def ctype
     'app'
   end
-
+  
   def cont_user_id
     builder.cont_user_id
   end
@@ -110,12 +110,9 @@ class BuilderPublic
   def service_password(cnt=8)
 
   end
-  
+
   def fw_user
     builder.cont_user_id
   end
 
-  def builder
-     @builder ||= EngineBuilder.instance
-   end
 end

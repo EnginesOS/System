@@ -75,6 +75,7 @@ module EnginesOperations
     @build_thread[:name] = 'reinstall engine'
     unless @build_thread.alive?
       system_api.trigger_engine_event(engine, 'fail', 'reinstall')
+  
       raise EnginesException.new(error_hash(params[:engine_name], 'Build Failed to start'))
     else
       r = true
@@ -128,8 +129,8 @@ module EnginesOperations
     system_api.set_engine_network_properties(container, params)
   end
 
-  def docker_build_engine(engine_name, build_archive_filename)
-    docker_api.build_engine(engine_name, build_archive_filename)
+  def docker_build_engine(engine_name, build_archive_filename, builder)
+    docker_api.build_engine(engine_name, build_archive_filename, builder)
   end
 
   def clear_lost_engines

@@ -31,7 +31,7 @@ module Container
     end
 
     def stop_container
-      container_api.stop_container(self)
+      container_api.stop_container(container_id)
     end
 
     def destroy_container

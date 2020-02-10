@@ -63,7 +63,7 @@ module Container
       #STDERR.puts('saved ' + container.container_name + ':' + caller[1].to_s + ':' + caller[2].to_s)
       true
     rescue StandardError => e
-      c.last_error = last_error unless c.nil?
+      #c.last_error = last_error unless c.nil?
       SystemUtils.log_exception(e)
     ensure
       unlock(statedir)

@@ -39,7 +39,7 @@ module SystemOperations
   end
 
   def get_public_key
-    system_api.get_public_key
+    system_api.get_system_public_key
   end
 
   def system_image_free_space

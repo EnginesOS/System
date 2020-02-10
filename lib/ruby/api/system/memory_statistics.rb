@@ -36,7 +36,7 @@ module MemoryStatistics
       }
     }
     containers.each do | container|
-      next if container.setState != "running"
+      next if container.set_state != "running"
       container_sym = container.container_name.to_sym
       mem_stats[container_sym] = self.container_memory_stats(container)
       next unless container.is_running?

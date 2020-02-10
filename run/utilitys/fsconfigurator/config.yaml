@@ -18,7 +18,7 @@ commands:
   - :volume
   - :target_container
  add_volume:
-  command: "/home/add_volume.sh _Engines_Template(volume)"
+  command: "/home/add_volume.sh $volumes"
   timeout: 15
   requires:
   - :target
@@ -32,7 +32,7 @@ commands:
   requires:
   - :target
  remove_volume:
-  command: "/home/remove_container.sh volume _Engines_Template(volume)"
+  command: "/home/remove_container.sh volume $volumes"
   requires:
   - :target
   - :volume
@@ -55,7 +55,11 @@ hostname:
 domain_name:
 host_network: false
 soft_service: false
-environments:
+environments:_Engines_Template(
+- !ruby/object:EnvironmentVariable
+ name: volumes
+ value: _Engines_Template(volume)
+ setatrun: false	
 - !ruby/object:EnvironmentVariable
  name: fw_user
  value: _Engines_Template(fw_user)
@@ -90,6 +94,6 @@ volumes_from:
 mapped_ports:
 repo: na
 last_result:
-setState: nocontainer
+set_state: nocontainer
 conf_register_site: false
 conf_register_dns: false

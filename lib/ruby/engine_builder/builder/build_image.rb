@@ -9,7 +9,7 @@ def build_init
   log_build_output('Building Image')
   create_build_tar
   log_build_output('Cancelable:true')
-  core.docker_build_engine(@build_params[:engine_name], "#{SystemConfig.DeploymentDir}/#{@build_name}.tgz")
+  core.docker_build_engine(@build_params[:engine_name], "#{SystemConfig.DeploymentDir}/#{@build_name}.tgz", self)
   log_build_output('Cancelable:false')
 end
 

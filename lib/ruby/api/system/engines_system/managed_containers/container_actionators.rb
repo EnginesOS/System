@@ -9,19 +9,19 @@ module ContainerActionators
       type_path: container.type_path, publisher_namespace: container.publisher_namespace })
   end
 
-  def get_engine_actionator(ca, action)
-    actionators = load_engine_actionators(ca)
+  def get_engine_actionator(engine, action)
+    actionators = load_engine_actionators(engine)
     #    SystemDebug.debug(SystemDebug.actions, container, actionators[action]) #.to_sym])
     actionators[action]
   end
 
-  def load_engine_actionators(ca)
-    ContainerStateFiles.load_engine_actionators(ca)
+  def load_engine_actionators(engine)
+    ContainerStateFiles.load_engine_actionators(engine.store_address)
   end
 
-  def write_actionators(ca, actionators)
+  def write_actionators(engine, actionators)
     unless actionators.nil?
-      ContainerStateFiles.write_actionators(ca, actionators)
+      ContainerStateFiles.write_actionators(engine, actionators)
     end
   end
 end

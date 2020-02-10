@@ -8,7 +8,7 @@
 get '/v0/containers/engine/:engine_name/actions/' do
   begin
     engine = get_engine(params[:engine_name])
-    return_json_array(engines_api.list_engine_actionators(engine.store_address))
+    return_json_array(engines_api.list_engine_actionators(engine))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

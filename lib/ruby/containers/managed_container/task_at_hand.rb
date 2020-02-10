@@ -6,11 +6,11 @@ module TaskAtHand
   end
 
   def desired_state(step, state, curr_state)
-    current_set_state = @setState
-    @setState = state.to_s
+    current_set_state = @set_state
+    @set_state = state.to_s
     set_task_at_hand(step)
     save_state
-    STDERR.puts( 'Task at Hand:' + state.to_s + ' Current set state:' + current_set_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s + ' in ' + curr_state)
+    STDERR.puts( 'Task at Hand:' + state.to_s + ' Current set state:' + current_set_state.to_s + '  going for:' +  @set_state  + ' with ' + @task_at_hand.to_s + ' in ' + curr_state)
   end
 
   def in_progress(action)
@@ -18,7 +18,7 @@ module TaskAtHand
     final_state = tasks_final_state(action)
     #   SystemDebug.debug(SystemDebug.engine_tasks, :final_state, final_state)
     if final_state == curr_state && action != 'restart'
-      @setState = curr_state
+      @set_state = curr_state
       @id ==  -1 if curr_state == 'nocontainer'
       #  SystemDebug.debug(SystemDebug.engine_tasks, :curr_state, curr_state)
       return save_state

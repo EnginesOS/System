@@ -41,7 +41,8 @@ module Container
 
     def execute_command(command_name, command_params)
 
-      # STDERR.puts("\n EXECutre Cmd " + command.to_s + ':' + command_params.to_s)
+      STDERR.puts(" EXECutre Cmd " * 10)
+       STDERR.puts("\n EXECutre Cmd " + command.to_s + ':' + command_params.to_s)
       if is_active?
         expire_engine_info
         wait_for('stop', 120)
@@ -77,10 +78,17 @@ module Container
     end
 
     def apply_templates(command, command_params)
+      STDERR.puts("\n aPPPy_templates " * 10)
+      STDERR.puts("\n APAPA " + command.to_s + ':' + command_params.to_s)
       templater = Templater.new(nil)
       @image = templater.process_templated_string(@image)
       construct_cmdline(command, command_params, templater)
+      STDERR.puts "ENVS " * 20
+      STDERR.puts(" ENVS   is #{@environments}")
       apply_env_templates(command_params, templater) unless @environments.nil?
+      STDERR.puts "VOLS " * 20
+      STDERR.puts(" Volumes is #{@volumes}")
+      
       apply_volume_templates(command_params, templater) unless @volumes.nil?
       apply_volume_from_templates(command_params, templater) unless @volumes_from.nil?
     end
@@ -88,9 +96,12 @@ module Container
     def apply_volume_templates(command_params, templater)
       @volumes.each_value do |volume|
         volume = symbolize_keys(volume)
+        STDERR.puts "VOL " * 20
+             STDERR.puts(" Volume is #{volume}")
         volume[:remotepath] = templater.apply_hash_variables(volume[:remotepath], command_params)
         volume[:localpath] = templater.apply_hash_variables(volume[:localpath], command_params)
         volume[:permissions] = templater.apply_hash_variables(volume[:permissions], command_params)
+        STDERR.puts(" Volume is #{volume}")
       end
     end
 
