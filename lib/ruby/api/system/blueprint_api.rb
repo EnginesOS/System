@@ -90,12 +90,6 @@ class BlueprintApi < ErrorsApi
 
   def self.merge_bp_entry(blueprint, dest, key)
     # STDERR.puts('Parent BP ' + blueprint.to_s + "\n is a " + blueprint.class.name)
-    STDERR.puts("\n\n\n\n")
-    STDERR.puts('key BP ' + key.to_s + " is a " + key.class.name)
-    STDERR.puts('dest BP ' + dest.to_s + "\n is a " + dest.class.name)
-    STDERR.puts("\n\n\n\n")
-    STDERR.puts('key BP ' + key.to_s + " is a " + key.class.name)
-    STDERR.puts('dest software[' + key.to_s + ']' + dest[:software].to_s  + "\nis a " +  dest[:software].class.name)
     unless key.is_a?(Array)
       if blueprint[:software].key?(key)
         if blueprint[:software][key].is_a?(Hash)
@@ -115,7 +109,7 @@ class BlueprintApi < ErrorsApi
       # FIXME Assumes only two keys
       dest.merge!(blueprint[:software][key[0]][key[1]])if blueprint[:software][key[0]].key?(key[1])
     end
-    STDERR.puts('dest software[' + key.to_s + ']' + dest[:software].to_s  + "\nis a " +  dest[:software].class.name)
+    #STDERR.puts('dest software[' + key.to_s + ']' + dest[:software].to_s  + "\nis a " +  dest[:software].class.name)
     dest
   end
 
@@ -149,7 +143,7 @@ class BlueprintApi < ErrorsApi
     FileUtils.mkdir_p(basedir)
     d = "#{basedir}/#{File.basename(repository_url)}"
     self.get_http_file(repository_url, d)
-    STDERR.puts("\n\n Downloaded BP \n\n\n from " + repository_url.to_s + ' to ' + basedir.to_s + '/' + basedir.to_s)
+   # STDERR.puts("\n\n Downloaded BP \n\n\n from " + repository_url.to_s + ' to ' + basedir.to_s + '/' + basedir.to_s)
   end
 
   def self.get_http_file(url, d)

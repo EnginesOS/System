@@ -32,7 +32,7 @@ module EngineServiceOperations
   end
 
   def engine_attached_services(container_name)
-    STDERR.puts("\n\n engine_attached_services " + container_name.to_s)
+  #  STDERR.puts("\n\n engine_attached_services " + container_name.to_s)
     find_engine_services_hashes({
       parent_engine: container_name,
       container_type: 'app'

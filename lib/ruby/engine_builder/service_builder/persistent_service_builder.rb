@@ -25,6 +25,7 @@ module PersistantServiceBuilder
   end
 
   def match_service_to_existing(service_hash, use_existing)
+    s = nil
     SystemDebug.debug(SystemDebug.builder, service_hash, use_existing)
     unless use_existing.nil?
       raise EngineBuilderException.new(error_hash(" Existing Attached services should be an array", use_existing)) unless use_existing.is_a?(Array)
@@ -38,17 +39,18 @@ module PersistantServiceBuilder
           SystemDebug.debug(SystemDebug.builder, :comparing_services)
           # FIX ME run a check here on service hash
           if @rebuild.is_a?(TrueClass)
-           use_active_service(service_hash, existing_service)
+           s = use_active_service(service_hash, existing_service)
           elsif existing_service[:create_type] == 'existing'
-           use_active_service(service_hash, existing_service) 
+            s = use_active_service(service_hash, existing_service) 
           elsif existing_service[:create_type] == 'orphan' 
-            use_orphan(existing_service)
+            s = use_orphan(existing_service)
           else
             false
           end 
         end
       end
     end
+    s
   end
 
   def use_active_service(service_hash, existing_service )
@@ -76,13 +78,14 @@ module PersistantServiceBuilder
 
   def process_persistent_service(service_hash, environ, use_existing)
     service_hash = set_top_level_service_params(service_hash, @engine_name)
+    SystemDebug.debug(SystemDebug.builder, :use_existing, use_existing)
     sh = process_existing(service_hash, use_existing)
-    if sh.is_a?(FalseClass)
+    if sh.nil?
       service_hash = orphan_or_fresh(service_hash)
     else
       service_hash = sh
     end
-    add_file_service(service_hash)  if service_hash[:type_path] == 'filesystem/local/filesystem'
+    add_file_service(service_hash) if service_hash[:type_path] == 'filesystem/local/filesystem'
      SystemDebug.debug(SystemDebug.builder, :builder_attach_service, service_hash)
     match_variables(service_hash)
     templater.fill_in_dynamic_vars(service_hash)
@@ -102,16 +105,19 @@ module PersistantServiceBuilder
   end
 
   def process_existing(service_hash, use_existing)
+    STDERR.puts(" Process Existings " * 10)
+    STDERR.puts("#{service_hash}\n #{use_existing}")
     existing = match_service_to_existing(service_hash, use_existing)
+    STDERR.puts("#{existing}")
     if existing.is_a?(Hash)
       fresh_build(service_hash, false)
       share_service_to_engine(service_hash, existing) if existing[:shared] == true
-      existing
+      existing     
     elsif use_existing.is_a?(TrueClass)
       fresh_build(service_hash, false)
-      core.get_service_entry(service_hash)
+      core.get_service_entry(service_hash)      
     else
-      false
+      nil
     end
   end
 

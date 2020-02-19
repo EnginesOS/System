@@ -267,20 +267,20 @@ module ManagedContainerControls
 
   def correct_current_state
     case @set_state
-    when 'stopped'
+    when :stopped
       stop_container if is_running?
-    when 'running'
+    when :running
       if has_container?
         start_container unless is_active?
         unpause_container if is_paused?
       else
         create_container
       end
-    when 'nocontainer'
+    when :nocontainer
       unpause_container if is_paused?
       stop_container if is_active?
       destroy_container if has_container?
-    when 'paused'
+    when :paused
       pause_container unless is_active?
     else
       false
@@ -301,11 +301,11 @@ module ManagedContainerControls
    
   def prep_task(action_sym)
     tah = task_at_hand
-    STDERR.puts("TAH   #{tah} action #{action_sym}")
+   # STDERR.puts("TAH   #{tah} action #{action_sym}")
     r = in_progress(action_sym)
-    STDERR.puts('in_progress ' + r.to_s)
+  #  STDERR.puts('in_progress ' + r.to_s)
     if in_progress(action_sym) #.is_a?(TrueClass)
-      STDERR.puts('SAVE STATE :inprogress_run  ')
+   #   STDERR.puts('SAVE STATE :inprogress_run  ')
       save_state
     end
     true

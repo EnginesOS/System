@@ -1,7 +1,7 @@
 module DockerInfoCollector
   def docker_info
     if @docker_info_cache.is_a?(FalseClass)
-      return collect_docker_info if @set_state != 'nocontainer'
+      return collect_docker_info if @set_state != :nocontainer
       return false
     else
       collect_docker_info if @docker_info_cache.nil?
@@ -52,7 +52,7 @@ module DockerInfoCollector
     @id = ContainerStateFiles.read_container_id(store_address)
     cid = @id
     #  SystemDebug.debug(SystemDebug.containers, 'read container from file ', @container_id)
-    if @id == -1 || @id.nil? # && set_state != 'nocontainer'
+    if @id == -1 || @id.nil? # && set_state != :nocontainer
       info = container_api.inspect_container_by_name(@container_name) # docker_info
       info = info[0] if info.is_a?(Array)
       if info.key?(:RepoTags)
@@ -85,7 +85,7 @@ module DockerInfoCollector
 
   def collect_docker_info
     # SystemDebug.debug(SystemDebug.containers,  :collect_docker_info )
-    if @docker_info_cache == false && @set_state == 'nocontainer'
+    if @docker_info_cache == false && @set_state == :nocontainer
       false
     else
       @docker_info_cache = container_api.inspect_container(container_id) if @docker_info_cache.nil?

@@ -55,7 +55,7 @@ hostname:
 domain_name:
 host_network: false
 soft_service: false
-environments:_Engines_Template(
+environments:
 - !ruby/object:EnvironmentVariable
  name: volumes
  value: _Engines_Template(volume)

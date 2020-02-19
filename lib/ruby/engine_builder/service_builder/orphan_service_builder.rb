@@ -12,15 +12,15 @@ module OrphansServiceBuilder
   end
 
   def reparent_orphan(service_hash)
-    STDERR.puts('REparent ' + service_hash.to_s)
+  #  STDERR.puts('REparent ' + service_hash.to_s)
     core.reparent_orphan(service_hash, @engine_name)
   end
 
   def release_orphans()
     @orphans.each do |service_hash|
-      STDERR.puts('releasing_orphan ' + service_hash.to_s)
+     # STDERR.puts('releasing_orphan ' + service_hash.to_s)
       core.release_orphan(service_hash)
-      STDERR.puts('released_orphan ' + service_hash.to_s)
+     # STDERR.puts('released_orphan ' + service_hash.to_s)
     end
   end
 end

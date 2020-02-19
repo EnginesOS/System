@@ -10,7 +10,7 @@ module TaskAtHand
     @set_state = state.to_s
     set_task_at_hand(step)
     save_state
-    STDERR.puts( 'Task at Hand:' + state.to_s + ' Current set state:' + current_set_state.to_s + '  going for:' +  @set_state  + ' with ' + @task_at_hand.to_s + ' in ' + curr_state)
+    #STDERR.puts( "Task at Hand: #{state} Current set state: #{current_set_state} going for  #{@set_state}  with #{@task_at_hand} in #{curr_state}")
   end
 
   def in_progress(action)
@@ -19,7 +19,7 @@ module TaskAtHand
     #   SystemDebug.debug(SystemDebug.engine_tasks, :final_state, final_state)
     if final_state == curr_state && action != 'restart'
       @set_state = curr_state
-      @id ==  -1 if curr_state == 'nocontainer'
+      @id ==  -1 if curr_state == :nocontainer
       #  SystemDebug.debug(SystemDebug.engine_tasks, :curr_state, curr_state)
       return save_state
     end
@@ -32,27 +32,27 @@ module TaskAtHand
 
     #  SystemDebug.debug(SystemDebug.engine_tasks, :read_state, curr_state)
     # FIX ME Finx the source 0 :->:
-    curr_state.sub!(/\:->\:/,'')
+# curr_state.sub!(/\:->\:/,'') WTF was THIS
     @last_task = action
     r = log_error_mesg(@container_name + ' not in matching state want _' + tasks_final_state(action).to_s + '_but in ' + curr_state.class.name + ' ', curr_state )
     case action
     when :create
       @steps = [:create, :start]
       @steps_to_go = 2
-      r = desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
+      r = desired_state(step, final_state, curr_state) if curr_state == :nocontainer
     when :stop
       #    STDERR.puts(' stop  steps' + @steps.to_s + ' count ' + @steps_to_go.to_s)
-      r = desired_state(step, final_state, curr_state) if curr_state== 'running'
+      r = desired_state(step, final_state, curr_state) if curr_state == :running
     when :start
       #    STDERR.puts(' start  steps' + @steps.to_s + ' count ' + @steps_to_go.to_s)
-      r = desired_state(step, final_state, curr_state) if curr_state== 'stopped'
+      r = desired_state(step, final_state, curr_state) if curr_state == :stopped
     when :pause
       #   STDERR.puts(' pause  steps' + @steps.to_s + ' count ' + @steps_to_go.to_s)
-      r = desired_state(step, final_state, curr_state) if curr_state== 'running'
+      r = desired_state(step, final_state, curr_state) if curr_state == :running
     when :halt
       r = true
     when :restart
-      if curr_state == 'running'
+      if curr_state == :running
         @steps = [:stop, :start]
         @steps_to_go = 2
         r = desired_state(step, final_state, curr_state)
@@ -60,37 +60,37 @@ module TaskAtHand
         r = desired_state(step, final_state, curr_state)
       end
     when :unpause
-      r = desired_state(step, final_state, curr_state) if curr_state== 'paused'
+      r = desired_state(step, final_state, curr_state) if curr_state== :paused
     when :recreate
-      if curr_state== 'stopped'
+      if curr_state== :stopped
         @steps = [:destroy, :create]
         @steps_to_go = 2
         r = desired_state(step, final_state, curr_state)
       else
-        r = desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
+        r = desired_state(step, final_state, curr_state) if curr_state== :nocontainer
       end
     when :build
-      if curr_state == 'noncontainer'
+      if curr_state == :noncontainer
         @steps = [:build]
         @steps_to_go = 1
         r = desired_state(step, final_state, curr_state)
       else
-        r = desired_state(step, final_state, curr_state) if curr_state == 'nocontainer'
+        r = desired_state(step, final_state, curr_state) if curr_state == :nocontainer
       end
     when :reinstall
-      if curr_state == 'stopped'
+      if curr_state == :stopped
         @steps = [:destroy, :build]
         @steps_to_go = 2
         r = desired_state(step, final_state, curr_state)
       else
-        r = desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
+        r = desired_state(step, final_state, curr_state) if curr_state == :nocontainer
       end
     when :build
-      r = desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
+      r = desired_state(step, final_state, curr_state) if curr_state == :nocontainer
     when :delete
-      r = desired_state(step, final_state, curr_state) if curr_state== 'stopped'
+      r = desired_state(step, final_state, curr_state) if curr_state == :stopped
     when :destroy
-      r = desired_state(step, final_state, curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
+      r = desired_state(step, final_state, curr_state) if curr_state == :stopped || curr_state== :nocontainer
     end
     r
   end
@@ -118,16 +118,16 @@ module TaskAtHand
       on_stop('die', ec)
     when 'kill'
       status
-      on_stop('kill')
+      on_stop(:kill)
     when 'stop'
       status
-      on_stop('stop')
+      on_stop(:stop)
     when 'pause'
       status
-      on_stop('pause')
+      on_stop(:pause)
     when 'oom'
       status
-      out_of_mem('oom')
+      out_of_mem(:oom)
     when 'destroy'
       status
       on_destroy(event_hash)
@@ -232,13 +232,13 @@ module TaskAtHand
   def tasks_final_state(task)
     case task.to_sym
     when :create,:start,:recreate,:unpause,:restart,:rebuild,:build,:reinstall
-      s = 'running'
+      s = :running
     when :stop
-      s = 'stopped'
+      s = :stopped
     when :pause
-      s =  'paused'
+      s =  :paused
     when :delete,:destroy
-      s = 'nocontainer'
+      s = :nocontainer
     else
       STDERR.puts('UNKNOWN TASK ' + task.to_s)
       s = ''

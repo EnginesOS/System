@@ -43,7 +43,7 @@ module Container
         #Do it this way so a failure to write doesn't trash a working file
         if File.exist?("#{statefile}_tmp")
           #FixMe check valid yaml
-         FileUtils.mv("#{statefile}_tmp", statefile)
+         FileUtils.mv("#{statefile}_tmp", statefile) 
         else
           roll_back(statefile)
         end
@@ -132,6 +132,7 @@ module Container
             File.rename(statefile, statefile_bak)
           end
         rescue StandardError => e
+          STDERR.puts("Failed to backup_state_file #{e} \n #{e.backtrace}")
         end
       end
     end
@@ -143,6 +144,7 @@ module Container
     end
 
     def roll_back(statefile)
+      STDERR.puts("Rollback \n #{caller}")
       FileUtils.mv("#{statefile}.bak", statefile)
     end
   end

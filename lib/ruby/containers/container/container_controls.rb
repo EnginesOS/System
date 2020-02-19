@@ -2,7 +2,7 @@ module ContainerControls
   def start_container
     expire_engine_info
     unless is_running?
-      raise EnginesException.new(warning_hash("Can\'t Start " + container_name + ' as is ' + read_state.to_s, container_name)) unless read_state == 'stopped'
+      raise EnginesException.new(warning_hash("Can\'t Start " + container_name + ' as is ' + read_state.to_s, container_name)) unless read_state == :stopped
       container_api.start_container(self)
     else
       true
@@ -15,7 +15,7 @@ module ContainerControls
   def halt_container
     expire_engine_info
     unless is_stopped?
-      raise EnginesException.new(warning_hash("Can\'t Stop " + container_name + ' as is ' + read_state.to_s, container_name)) unless read_state == 'running'
+      raise EnginesException.new(warning_hash("Can\'t Stop " + container_name + ' as is ' + read_state.to_s, container_name)) unless read_state == :running
       container_api.stop_container(container_id)
     else
       true
@@ -29,7 +29,7 @@ module ContainerControls
     expire_engine_info
     r = true
     unless is_stopped?
-      raise EnginesException.new(warning_hash("Can\'t Stop " + container_name + ' as is ' + read_state.to_s, container_name)) unless read_state == 'running'
+      raise EnginesException.new(warning_hash("Can\'t Stop " + container_name + ' as is ' + read_state.to_s, container_name)) unless read_state == :running
       r = container_api.stop_container(container_id, stop_timeout)
       expire_engine_info
     end

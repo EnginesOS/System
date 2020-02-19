@@ -101,24 +101,25 @@ module DockerEvents
   private
 
   def is_aready?(what, statein)
-    r = false
-    case what
+    case what.to_sym
     when statein
-      r = true
-    when 'stop'
-      r = true if statein == 'stopped'
-    when 'start'
-      r = true if statein == 'running'
-    when 'unpause'
-      r = true if statein == 'running'
-    when 'pause'
-      r = true if statein == 'paused'
-    when 'create'
-      r = true if statein != 'nocontainer'
-    when 'destroy'
-      r = true if statein == 'nocontainer'
+      true
+    when :stop
+      true if statein == :stopped
+    when :start
+      true if statein == :running
+    when :unpause
+      true if statein == :running
+    when :pause
+      true if statein == :paused
+    when :create
+      true if statein != :nocontainer
+    when :destroy
+      true if statein == :nocontainer
+    else 
+      false
     end
-    r
+    
   end
 
   def container_event(event_hash)
@@ -194,11 +195,11 @@ module DockerEvents
         while 0 == 0
           @event_listener_thread[:name] = 'docker_event_listener'
           @docker_event_listener.start
-          STDERR.puts( ' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+         # STDERR.puts( ' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
           @listeners = @docker_event_listener.event_listeners
-          STDERR.puts( 'Starting again with EVENT LISTENER S ' + @listeners.count.to_s)
+         # STDERR.puts( 'Starting again with EVENT LISTENER S ' + @listeners.count.to_s)
           @docker_event_listener = DockerEventWatcher.new(@listeners)
-          STDERR.puts(' EVENT Listener started  post timeout ')
+       #   STDERR.puts(' EVENT Listener started  post timeout ')
         end
       rescue StandardError => e
         STDERR.puts(' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!' + e.to_s)

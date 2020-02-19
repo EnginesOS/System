@@ -49,15 +49,15 @@ class EventListener
   def state_from_status(status)
     case status
     when 'die', 'stop', 'exec'
-      status = 'stopped'
+      status = :stopped
     when 'run','start'
-      status = 'running'
-    when 'pause'
-      status = 'paused'
-    when 'unpause'
-      status = 'running'
-    when 'delete','destroy'
-      status = 'nocontainer'
+      status = :running
+    when :pause
+      status = :paused
+    when :unpause
+      status = :running
+      when 'delete','destroy'
+      status = :nocontainer
     end
     status
   end

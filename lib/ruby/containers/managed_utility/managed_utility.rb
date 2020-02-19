@@ -65,7 +65,7 @@ module Container
       rescue
       end
       raise EnginesException.new(error_hash('cant nocontainer Utility ' + command.to_s, command_params.to_s)) if has_container?
-      clear_configs
+        
       apply_templates(command, command_params)
       save_state
       create_container()
@@ -140,10 +140,6 @@ module Container
       r
     end
 
-    def clear_configs
-      FileUtils.rm(ContainerStateFiles.container_state_dir(store_address) + '/running.yaml') if File.exist?(ContainerStateFiles.container_state_dir(store_address) + '/running.yaml')
-      FileUtils.rm(ContainerStateFiles.container_state_dir(store_address) + '/running.yaml.bak') if File.exist?(ContainerStateFiles.container_state_dir(store_address) + '/running.yaml.bak')
-    end
 
     def error_type_hash(mesg, params = nil)
       {error_mesg: mesg,
@@ -158,5 +154,6 @@ module Container
     def provides_stream?
       @provides_stream |= false
     end
+
   end
 end

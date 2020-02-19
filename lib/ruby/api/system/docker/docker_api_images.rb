@@ -42,7 +42,7 @@ module DockerApiImages
         request = "#{request}&tag=#{tag}"
       end
     end
-    STDERR.puts(' Pulling ' + request.to_s)
+   # STDERR.puts(' Pulling ' + request.to_s)
     headers = { 'X-Registry-Config'  => registry_root_auth, 'Content-Type' =>'plain/text', 'Accept-Encoding' => 'gzip'}
     post({uri: request, expect_json: false, headers: headers, time_out: 600})
   rescue StandardError =>e
@@ -74,7 +74,7 @@ module DockerApiImages
   def delete_image(image_name, wait = false)
     thr = Thread.new { delete_request({uri: "/images/#{image_name}"}) }
     thr[:name] = "Docker delete image:#{image_name}"
-    STDERR.puts( 'Docker Delete ' + '/images/' + image_name.to_s + ' Wiar? ' + wait.to_s)
+   # STDERR.puts( 'Docker Delete ' + '/images/' + image_name.to_s + ' Wiar? ' + wait.to_s)
     thr.join if wait == true
   rescue StandardError => e
     SystemUtils.log_exception(e , 'delete_image:' + image_name.to_s)

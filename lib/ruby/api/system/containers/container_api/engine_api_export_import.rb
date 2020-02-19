@@ -8,7 +8,7 @@ module EngineApiExportImport
     #      stream.close unless stream.nil?
     #      raise EnginesException.new(warning_hash("Cannot export as single service", service_hash))
     #    end
-    STDERR.puts('EXPORT ' + service_hash.to_s)
+  #  STDERR.puts('EXPORT ' + service_hash.to_s)
 
     # SystemDebug.debug(SystemDebug.export_import, :export_service, service_hash)
     cmd_dir = "#{SystemConfig.BackupScriptsRoot}/#{service_hash[:publisher_namespace]}/#{service_hash[:type_path]}/#{service_hash[:service_handle]}/"

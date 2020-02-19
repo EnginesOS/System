@@ -19,5 +19,7 @@ action_perform:
  	
 clean_up:
 	engines engine prosody stop 
+	engines engine prosody wait_for stop 39
 	engines engine prosody destroy 
+	engines engine prosody wait_for nocontainer 39
 	engines engine prosody delete all

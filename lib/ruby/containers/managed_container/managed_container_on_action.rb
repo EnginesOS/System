@@ -12,7 +12,7 @@ module ManagedContainerOnAction
       
       if @consumer_less == true
         @has_run = true
-        STDERR.puts('CONSUMER LESS TIN')
+       # STDERR.puts('CONSUMER LESS TIN')
       else       
         if @has_run == false
           add_wap_service if @deployment_type == 'web'
@@ -61,7 +61,7 @@ module ManagedContainerOnAction
 
   def on_stop(what, exit_code = 0)
     @exit_code = exit_code
-    STDERR.puts("ONStop_CALLED, #{what}")
+  #  STDERR.puts("ONStop_CALLED, #{what}")
   #  SystemDebug.debug(SystemDebug.container_events, :ONStop_CALLED, what)
     @stop_reason = what if @stop_reason.nil?
     if what == 'die'

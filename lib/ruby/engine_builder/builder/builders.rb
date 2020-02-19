@@ -132,6 +132,7 @@ module Builders
   end
 
   def post_failed_build_clean_up
+    STDERR.puts("Failed Build Cleanup #{@build_params}")
     SystemStatus.build_failed(@build_params)
     begin
       if @container.is_a?(Container::ManagedContainer)
@@ -166,6 +167,7 @@ module Builders
   rescue StandardError => e
     log_build_errors("Engine Build Aborted Due to:#{e}")
     STDERR.puts(e.backtrace.to_s)
+    post_failed_build_clean_up
   end
 
   def save_build_result

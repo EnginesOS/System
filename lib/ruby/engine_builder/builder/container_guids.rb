@@ -5,9 +5,9 @@ module ContainerGuids
         @cont_user_id = core.lookup_app_uid(@build_params[:permission_as])
         @data_uid = core.lookup_app_duid(@build_params[:permission_as])
         @data_gid = core.lookup_app_dgid(@build_params[:permission_as])
-        STDERR.puts('PERMISSION AS ' + @cont_user_id.to_s + ' ' + @data_uid .to_s)
+     #   STDERR.puts('PERMISSION AS ' + @cont_user_id.to_s + ' ' + @data_uid .to_s)
       else
-        STDERR.puts('NEW CONT ID')
+      #  STDERR.puts('NEW CONT ID')
         @cont_user_id = core.new_container_uid(@build_params[:engine_name]) #new_container_uid
         @data_uid = new_data_uid(@build_params[:engine_name])
         @data_gid = core.new_data_gid(@build_params[:engine_name])
@@ -27,12 +27,12 @@ module ContainerGuids
         next if service[:create_type] == 'share'
         r = lookup_ids(service) if service[:type_path] == 'filesystem/local/filesystem'
         if r == true
-          STDERR.puts('Got ids from orphan ' + service.to_s)
+         # STDERR.puts('Got ids from orphan ' + service.to_s)
           break
         end
       end
     end
-    STDERR.puts('Get ids from orphan status' + r.to_s)
+  #  STDERR.puts('Get ids from orphan status' + r.to_s)
     r
   end
 

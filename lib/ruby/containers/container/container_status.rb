@@ -1,21 +1,21 @@
 module ContainerStatus
   
   def read_state
-    state = 'nocontainer'
+    state = :nocontainer
     info = docker_info
 #    SystemDebug.debug(SystemDebug.containers, :info)
     if info.is_a?(Hash)
       if info.key?(:State)
         if info[:State][:Running] == true
           if info[:State][:Paused] == true
-            state = 'paused'
+            state = :paused
           else
-            state = 'running'
+            state = :running
           end
         elsif info[:State][:Running] == false
-          state = 'stopped'
+          state = :stopped
         elsif info[:State][:Status] == 'exited'
-          state = 'stopped'
+          state = :stopped
         end
    #     SystemDebug.debug(SystemDebug.containers, :no_matched_info, info)
       end
@@ -25,7 +25,7 @@ module ContainerStatus
   end
 
   def is_paused?
-    if read_state == 'paused'
+    if read_state == :paused
       true
     else
       false
@@ -35,7 +35,7 @@ module ContainerStatus
   def is_active?
     state = read_state
     case state
-    when 'running','paused'
+    when :running,:paused
       true
     else
       false
@@ -43,7 +43,7 @@ module ContainerStatus
   end
 
   def is_stopped?
-    if read_state == 'stopped'
+    if read_state == :stopped
       true
     else
       false
@@ -51,7 +51,7 @@ module ContainerStatus
   end
 
   def is_running?
-    if read_state == 'running'
+    if read_state == :running
       true
     else
       false
@@ -60,7 +60,7 @@ module ContainerStatus
 
   def has_container?
     # return false if has_image? == false NO Cached
-    if read_state == 'nocontainer'
+    if read_state == :nocontainer
       false
     else
       true

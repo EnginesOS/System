@@ -161,11 +161,11 @@ module DockerApiExec
 
   def signal_exec(params)
     r = get_exec_details(params[:exec_id])
-    STDERR.puts(' Timeout signal_exec ' + params[:exec_id].to_s + ':' + r.to_s )
+   # STDERR.puts(' Timeout signal_exec ' + params[:exec_id].to_s + ':' + r.to_s )
     pid = resolve_pid_to_container_id(r[:Pid])
     params[:command_line] = "kill -#{params[:signal]} #{pid}"
     params[:timeout] = 1 #note actually 2
-    STDERR.puts('KILL ' + params[:signal].to_s + ' container pi ' + pid.to_s + ':system:' + r[:Pid].to_s)
+    #STDERR.puts('KILL ' + params[:signal].to_s + ' container pi ' + pid.to_s + ':system:' + r[:Pid].to_s)
     docker_exec(params) unless pid == -1
   end
 

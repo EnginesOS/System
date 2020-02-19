@@ -88,8 +88,8 @@ class DockerEventWatcher < ErrorsApi
 
   def is_valid_docker_event?(hash)
     r = false
-    STDERR.puts("DOCKER SENT ARRAY #{hash}") if hash.is_a?(Array) && ! hash.is_a?(Hash)
-    STDERR.puts("DOCKER SENT UNKNOWN #{hash}") unless hash.is_a?(Hash)
+  #  STDERR.puts("DOCKER SENT ARRAY #{hash}") if hash.is_a?(Array) && ! hash.is_a?(Hash)
+  #  STDERR.puts("DOCKER SENT UNKNOWN #{hash}") unless hash.is_a?(Hash)
     r = true if hash.is_a?(Hash)
     r = false if hash.key?(:from) && hash[:from].length >= 64
     r
