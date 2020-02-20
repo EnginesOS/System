@@ -21,7 +21,12 @@ module Container
     end
 
     def config_file_name(name)
-      "#{store_directory}/#{name}/config.yaml"
+      #Kludge
+      STDERR.puts("CAlling Kludge  #{name} in #{store_directory}")
+      ContainerStateFiles.build_running_service(name, store_directory)
+     "{store_directory}/#{name}/running.yaml"
+      #was beloew but that broke templates
+     # "#{store_directory}/#{name}/config.yaml"
     end
 
     def model_class

@@ -79,7 +79,7 @@ module Container
       begin
         n = file_name(name)
         lock(n)
-        f = file(name)
+        f = file(name)        
         c = model_class.from_yaml(f.read)
         cache.add(c, File.mtime(n))
         c   #WTF why is cache.add not returning container?
@@ -91,7 +91,7 @@ module Container
       end
     end
 
-    def file(name)
+    def file(name)      
       File.new(file_name(name), 'r')
     end
 

@@ -12,6 +12,19 @@ module Container
 
     protected
 
+    def file_name(name)
+      File.exist?(super) ? super : config_file_name(name)
+    end
+
+    def config_file_name(name)
+      #Kludge
+      STDERR.puts("CAlling Kludge  #{name} in #{store_directory}")
+      ContainerStateFiles.build_running_service(name, store_directory)
+     "{store_directory}/#{name}/running.yaml"
+      #was beloew but that broke templates
+     # "#{store_directory}/#{name}/config.yaml"
+    end
+    
     def model_class
       ManagedService
     end
