@@ -17,9 +17,10 @@ module Container
       STDERR.puts("LOCKING " + lock_key.to_s)
       if is_locked?(lock_key)
         wait_on_lock(lock_key)
+      else 
         @container_conf_locks[lock_key] = Thread.current
-        true
-      end
+        true      
+      end    
     rescue StandardError => e
       errors_api.log_error_mesg('LOCKING locking exception', e)
       true

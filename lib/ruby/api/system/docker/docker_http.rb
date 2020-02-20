@@ -47,9 +47,9 @@ module DockerHttp
     body: body
     )
 
-  rescue Excon::Error::Socket =>e
+  rescue Excon::Error::Socket => e
     STDERR.puts('Excon docker socket stream close ' + e.to_s)
-  rescue  Excon::Error::Timeout =>e
+  rescue  Excon::Error::Timeout => e
     STDERR.puts('Excon docker socket timeout ' + e.to_s)
   ensure
     p[:stream_handler].close unless p[:stream_handler].nil?
