@@ -28,7 +28,7 @@ module DockerNet
       persistent: false,
       thread_safe_sockets: true
     }
-    excon_params[:read_timeout] = p[:timeout] if p.key?(:timeout)
+    excon_params[:read_timeout] = p[:read_timeout] if p.key?(:read_timeout)
 
       STDERR.puts("\n\EXCON \n \n EXCON PARA #{excon_params}\n\n")
     if p[:stream_handler].method(:is_hijack?).call == true
