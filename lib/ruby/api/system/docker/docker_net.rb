@@ -30,7 +30,7 @@ module DockerNet
     }
     excon_params[:read_timeout] = p[:read_timeout] if p.key?(:read_timeout)
 
-      STDERR.puts("\n\EXCON \n \n EXCON PARA #{excon_params}\n\n")
+      STDERR.puts("\n\EXCON #{p}\n \n EXCON PARA #{excon_params}\n\n")
     if p[:stream_handler].method(:is_hijack?).call == true
       excon_params[:hijack_block] = DockerHijack.process_request(p[:stream_handler])
     else
