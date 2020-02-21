@@ -125,6 +125,7 @@ module DockerHttp
   def fillin_params(p)
     p[:headers] = default_headers if p[:headers].nil?
     p[:expect_json] = true unless p.key?(:expect_json)
-    p[:timeout] = 180 unless p.key?(:read_timeout)
+    p[:read_timeout] = 180 unless p.key?(:read_timeout)
+    p[:read_timeout] = p[:timeout] if p.key?(:timeout)
   end
 end
