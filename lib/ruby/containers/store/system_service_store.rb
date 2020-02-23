@@ -12,7 +12,7 @@ module Container
     
     def all_names
       Dir.entries(store_directory).map do |d|
-        d if file_exists?("#{d}/config.yaml)")          
+        d if file_exists?("#{d}/config.yaml")          
       end.compact
     end
     
@@ -30,7 +30,7 @@ module Container
       #Kludge
       STDERR.puts("CAlling Kludge  #{name} in #{store_directory}")
       ContainerStateFiles.build_running_service(name, store_directory)
-     "#{store_directory}/#{name}/running.yaml"
+     "#{store_directory}/#{name}
       #was beloew but that broke templates
      # "#{store_directory}/#{name}/config.yaml"
     end
