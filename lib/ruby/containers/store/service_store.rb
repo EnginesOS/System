@@ -10,6 +10,12 @@ module Container
       end
     end
 
+    def all_names
+      Dir.entries(store_directory).map do |d|
+        d if file_exists?("#{d}/config.yaml)")          
+      end.compact
+    end
+    
     protected
 
     def file_name(name)

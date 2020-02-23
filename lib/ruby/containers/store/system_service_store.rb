@@ -9,7 +9,13 @@ module Container
         @@system_service_instance ||= self.new
       end
     end
-
+    
+    def all_names
+      Dir.entries(store_directory).map do |d|
+        d if file_exists?("#{d}/config.yaml)")          
+      end.compact
+    end
+    
     protected
 
     def file_exists?(name)
