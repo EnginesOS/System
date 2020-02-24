@@ -25,6 +25,7 @@ module Container
 
     def all_names
       Dir.entries(store_directory).map do |d|
+        STDERR.puts(" loki #{store_directory}#{d}/running.yaml ")
         d if File.exists?("#{store_directory}#{d}/running.yaml")          
       end.compact
     end
