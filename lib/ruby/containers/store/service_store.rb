@@ -12,7 +12,7 @@ module Container
 
     def all_names
       Dir.entries(store_directory).map do |d|
-        d if file_exists?("#{store_directory}/#{d}/config.yaml")          
+        d if File.exists?("#{store_directory}/#{d}/config.yaml")          
       end.compact
     end
     

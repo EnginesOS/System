@@ -19,7 +19,7 @@ module Container
     protected
 
     def file_exists?(name)
-      super || File.exist?(config_file_name(name))
+      super || File.exists?(config_file_name(name))
     end
 
     def file_name(name)
