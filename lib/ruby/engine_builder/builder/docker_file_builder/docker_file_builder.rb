@@ -44,8 +44,6 @@ class DockerFileBuilder
     set_user('$ContUser')
     write_database_seed
     write_sed_strings
-    write_persistent_dirs
-    write_persistent_files
     insert_framework_frag_in_dockerfile('builder.mid.tmpl')
     write_rake_list
     set_user('0')
@@ -53,6 +51,8 @@ class DockerFileBuilder
     set_user('$ContUser') unless @blueprint_reader.framework == 'docker'
     write_run_install_script
     set_user('0')
+    write_persistent_dirs
+    write_persistent_files
     setup_persitant_app if @build_params[:app_is_persistent]
     prepare_persitant_source
     write_data_permissions
