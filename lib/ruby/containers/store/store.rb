@@ -146,7 +146,8 @@ module Container
 
     def roll_back(statefile)
       STDERR.puts("Rollback \n #{caller}")
-      FileUtils.mv("#{statefile}.bak", statefile)
+      # if exists to catch case of fsconfigurator
+      FileUtils.mv("#{statefile}.bak", statefile) if File.exist?("#{statefile}.bak")
     end
   end
 end
