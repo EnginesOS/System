@@ -227,7 +227,7 @@ end
 get '/v0/containers/engine/:engine_name/icon_url' do
   begin
     engine = get_engine(params[:engine_name])
-    return_text(engines_api.container_icon_url(engine))
+    return_text(engines_api.container_icon_url(engine.store_address))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
