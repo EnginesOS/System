@@ -89,14 +89,11 @@ module Container
       # STDERR.puts(' STATE GOT ' + container_name.to_s + ':' + @status[:state].to_s)
       @status[:set_state] = @set_state
       @status[:progress_to] = task_at_hand
-      @status[:error] = false
       @status[:oom] = @out_of_memory
       @status[:why_stop] = @stop_reason
       @status[:had_oom] = @had_out_memory
       @status[:restart_required] = restart_required?
-      @status[:error] = true if @status[:state] != @status[:set_state] && @status[:progress_to].nil?
-      @status[:error] = false if @status[:state] == :stopped && is_stopped_ok?
-      # STDERR.puts(' STATUS ' + @status.to_s)
+      @status[:error] = is_error?
       @status
     end
 

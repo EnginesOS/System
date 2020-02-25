@@ -61,15 +61,13 @@ module ManagedContainerStatus
   end
 
   def is_error?
-    unless @set_state == read_state
-      true
-    else
-      false
-    end
+   r = false
+   r = true if @status[:state] != @status[:set_state] && task_at_hand.nil?
+   r = false if @status[:state] == :stopped && is_stopped_ok?
+   r
 #  Bit of a primative solution
 #  what if doing the delete stag of a recreat? when in_two_step? with more tasks to do
     # how do you time out a crashed multi step
-
   end
   
   def set_debug
