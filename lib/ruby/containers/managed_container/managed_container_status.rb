@@ -63,7 +63,11 @@ module ManagedContainerStatus
 
   def is_error?(cs)
     r = false
-    r = true unless cs == @set_state || !task_at_hand.nil?
+    STDERR.puts("Status is_error  setstate = #{@set_state} in #{cs} => #{r}")
+    if cs != @set_state
+      r = true unless task_at_hand.nil?
+    end
+    STDERR.puts("Status is_error  setstate = #{@set_state} in #{cs} => #{r}")
     r = false if cs == :stopped && is_stopped_ok?
     r
     #  Bit of a primative solution
