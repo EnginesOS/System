@@ -93,7 +93,7 @@ module Container
       @status[:why_stop] = @stop_reason
       @status[:had_oom] = @had_out_memory
       @status[:restart_required] = restart_required?
-      @status[:error] = is_error?
+      @status[:error] = is_error?(@status[:state])
       @status
     end
 

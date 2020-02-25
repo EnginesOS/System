@@ -60,10 +60,11 @@ module ManagedContainerStatus
     ContainerStateFiles.is_startup_complete?(store_address)
   end
 
-  def is_error?
+  def is_error?(cs)
    r = false
-   r = true if @status[:state] != @status[:set_state] && task_at_hand.nil?
-   r = false if @status[:state] == :stopped && is_stopped_ok?
+   STDERR.puts("Status is_error  setstate = #{@set_state} in #{cs}")
+   r = true if cs != @set_state && task_at_hand.nil?
+   r = false if cs == :stopped && is_stopped_ok?
    r
 #  Bit of a primative solution
 #  what if doing the delete stag of a recreat? when in_two_step? with more tasks to do
