@@ -13,11 +13,11 @@ module DockerApiContainerStatus
     get_request({uri: "/containers/#{cid}/top?ps_args=aux"})
   end
 
-  def container_name_and_type_from_id(id)
+  def container_name_and_type_from_id(cid)
     begin
       r = get_request({uri: "/containers/#{cid}/json"})
     rescue DockerException => e
-      raise DockerException.new(warning_hash('Not ready', id, 409))  if e.status == 409
+      raise DockerException.new(warning_hash('Not ready', cid, 409)) if e.status == 409
       raise e
     end
 
