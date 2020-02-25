@@ -80,7 +80,7 @@ module DockerApiExec
 
   def docker_exec(p)
     params = p.dup
-    params[:timeout] = 5 if params[:timeout].nil?
+    params[:timeout] = 30 if params[:timeout].nil?
 
     r = create_docker_exec(params)
     if r.is_a?(Hash)
