@@ -61,13 +61,15 @@ module ManagedContainerStatus
   end
 
   def is_error?
-    r = false
-    if task_at_hand.nil?
-      if in_two_step?
-        r = true if @set_state == read_state
-      end
+    unless @set_state == read_state
+      true
+    else
+      false
     end
-    r
+#  Bit of a primative solution
+#  what if doing the delete stag of a recreat? when in_two_step? with more tasks to do
+    # how do you time out a crashed multi step
+
   end
   
   def set_debug
