@@ -39,7 +39,8 @@ module Container
       f = File.new("#{statefile}_tmp", File::CREAT | File::TRUNC | File::RDWR, 0600) # was statefile + '_tmp
       begin
         f.puts(serialized_object)
-        f.flush()
+        f.flush
+        f.close
         #Do it this way so a failure to write doesn't trash a working file
         if File.exist?("#{statefile}_tmp")
           #FixMe check valid yaml
@@ -48,7 +49,7 @@ module Container
           roll_back(statefile)
         end
       rescue StandardError => e
-        STDERR.puts('Exception in writing Rolling back ' + e.to_s)
+        STDERR.puts("Exception in writing running #{e} \n #{e.backtrace}")
         roll_back(statefile)
       ensure
         f.close unless f.nil?
