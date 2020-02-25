@@ -51,8 +51,9 @@ module DockerApiContainerStatus
     decoder = DockerDecoder.new({chunk: r, result:  {}})
     result = {}
     decoder.decode_from_docker_chunk({chunk: r, result:  result})
-    result[:stdout].gsub!(/[\x80-\xFF]/n,'')
-    result[:stderr].gsub!(/[\x80-\xFF]/n,'')
+    # WHY please response in Comment before before uncommently following lines
+    #result[:stdout].gsub!(/[\x80-\xFF]/n,'')
+    #result[:stderr].gsub!(/[\x80-\xFF]/n,'')
     result
   end
 
