@@ -6,7 +6,8 @@ module ManagedContainerStatus
       false
     end
   end
-#
+
+  #
   def save_state
     status
     container_api.save_container(self.dup)
@@ -16,7 +17,7 @@ module ManagedContainerStatus
     state = super
     if state == 'na'
       expire_engine_info
-    #  SystemDebug.debug(SystemDebug.containers, container_name, 'in na',  :info)
+      #  SystemDebug.debug(SystemDebug.containers, container_name, 'in na',  :info)
       :nocontainer
     else
       state
@@ -52,7 +53,7 @@ module ManagedContainerStatus
   rescue EnginesException =>e
     expire_engine_info
     :nocontainer
-    clear_cid 
+    clear_cid
     raise e
   end
 
@@ -61,16 +62,20 @@ module ManagedContainerStatus
   end
 
   def is_error?(cs)
-   r = false
-   STDERR.puts("Status is_error  setstate = #{@set_state} in #{cs}")
-   r = true if cs != @set_state && task_at_hand.nil?
-   r = false if cs == :stopped && is_stopped_ok?
-   r
-#  Bit of a primative solution
-#  what if doing the delete stag of a recreat? when in_two_step? with more tasks to do
+    r = false
+    STDERR.puts("Status is_error  setstate = #{@set_state} in #{cs} => #{r}")
+    if cs != @set_state
+      r = true unless task_at_hand.nil?
+    end
+    STDERR.puts("Status is_error  setstate = #{@set_state} in #{cs} => #{r}")
+    r = false if cs == :stopped && is_stopped_ok?
+    STDERR.puts("Status is_error  setstate = #{@set_state} in #{cs} => #{r}")
+    r
+    #  Bit of a primative solution
+    #  what if doing the delete stag of a recreat? when in_two_step? with more tasks to do
     # how do you time out a crashed multi step
   end
-  
+
   def set_debug
     ContainerStateFiles.set_debug(store_address)
   end
@@ -78,7 +83,7 @@ module ManagedContainerStatus
   def clear_debug
     ContainerStateFiles.clear_debug(store_address)
   end
-    
+
   def clear_error
     #Sychronise somewhere
     @out_of_memory = false
@@ -106,12 +111,12 @@ module ManagedContainerStatus
   def in_two_step?
     File.exist?("#{ContainerStateFiles.container_state_dir(store_address)}/in_progress")
   end
-  
+
   def container_id
-    if @id == -1 || @id.nil?   
-     @id = read_container_id
-    end 
-     @id 
+    if @id == -1 || @id.nil?
+      @id = read_container_id
+    end
+    @id
   end
 
 end
