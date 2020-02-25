@@ -63,13 +63,8 @@ module ManagedContainerStatus
 
   def is_error?(cs)
     r = false
-    STDERR.puts("Status is_error  setstate = #{@set_state} in #{cs} => #{r}")
-    if cs != @set_state
-      r = true unless task_at_hand.nil?
-    end
-    STDERR.puts("Status is_error  setstate = #{@set_state} in #{cs} => #{r}")
+    r = true unless cs == @set_state || !task_at_hand.nil?
     r = false if cs == :stopped && is_stopped_ok?
-    STDERR.puts("Status is_error  setstate = #{@set_state} in #{cs} => #{r}")
     r
     #  Bit of a primative solution
     #  what if doing the delete stag of a recreat? when in_two_step? with more tasks to do
