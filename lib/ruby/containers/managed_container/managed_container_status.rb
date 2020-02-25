@@ -70,6 +70,9 @@ module ManagedContainerStatus
     STDERR.puts("Status is_error  setstate = #{@set_state} in #{cs} => #{r}")
     r = false if cs == :stopped && is_stopped_ok?
     r
+  rescue StandardError => e
+    log_exception(e)
+    true
     #  Bit of a primative solution
     #  what if doing the delete stag of a recreat? when in_two_step? with more tasks to do
     # how do you time out a crashed multi step
