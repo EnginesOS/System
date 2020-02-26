@@ -10,7 +10,7 @@ require_relative 'streamer.rb'
 def connection(content_type = 'application/json_parser')
   @retries = 0
   headers = {
-    'content_type' => content_type,
+    'content_type' => "#{content_type}; charset=UTF-8",
     'ACCESS_TOKEN' => load_token
   }
   headers.delete['ACCESS_TOKEN'] if headers['ACCESS_TOKEN'].nil?
