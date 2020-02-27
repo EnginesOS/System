@@ -1,6 +1,6 @@
 
 require '/opt/engines/lib/ruby/system/engines_error.rb'
-
+require 'yajl/json_gem'
 begin
   require 'sinatra'
   require 'sinatra/cross_origin'

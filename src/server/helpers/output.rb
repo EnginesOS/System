@@ -2,7 +2,7 @@ def return_json(r, s = 202)
   if r.is_a?(EnginesError)
     return_error(r)
   else
-    content_type 'application/json'
+    content_type 'application/json; charset=UTF-8'
     headers['Access-Control-Allow-Origin'] ='*'
     status(s)
     if r.nil?
@@ -17,7 +17,7 @@ def return_json_array(r, s = 202)
   if r.is_a?(EnginesError)
     return_error_array(r)
   else
-    content_type 'application/json'
+    content_type 'application/json; charset=UTF-8'
     headers['Access-Control-Allow-Origin'] ='*'
     status(s)
     if r.nil? || r == '' || r.is_a?(FalseClass)
@@ -75,7 +75,7 @@ end
 
 def return_error(error, nil_result = nil)
   # STDERR.puts(' RETURN ERROR!!!!!!!!' )
-  content_type 'application/json'
+  content_type 'application/json; charset=UTF-8'
   headers['Access-Control-Allow-Origin'] ='*'
   # FIXME: take this from the error if avail
   status(403)
