@@ -52,18 +52,21 @@ module MemoryStatistics
       self.empty_container_result(container)
     else
       if container.container_id.nil? == false && container.container_id != '-1'
+        #FIX ME
         path = SystemUtils.cgroup_mem_dir(container.container_id)
-        if Dir.exist?(path)
+       # if Dir.exist?(path) 
+        begin
           ret_val = {
             maximum: File.read(path + '/memory.max_usage_in_bytes').to_i,
             current: File.read(path + '/memory.usage_in_bytes').to_i,
             limit: File.read(path + '/memory.limit_in_bytes').to_i
           }
-        else
-          STDERR.puts('no_cgroup_file for ' + container.container_name + ':' + path.to_s)
-          SystemUtils.log_error_mesg('no_cgroup_file for ' + container.container_name + ':' + path.to_s, path)
+        #else
+        #  STDERR.puts('no_cgroup_file for ' + container.container_name + ':' + path.to_s)
+      rescue #   SystemUtils.log_error_mesg('no_cgroup_file for ' + container.container_name + ':' + path.to_s, path)        
           ret_val = self.empty_container_result(container)
-        end
+      end
+      #  end
       end
       ret_val
     end
