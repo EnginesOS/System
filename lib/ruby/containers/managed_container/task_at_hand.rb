@@ -32,7 +32,7 @@ module TaskAtHand
 
     #  SystemDebug.debug(SystemDebug.engine_tasks, :read_state, curr_state)
     # FIX ME Finx the source 0 :->:
-# curr_state.sub!(/\:->\:/,'') WTF was THIS
+    # curr_state.sub!(/\:->\:/,'') WTF was THIS
     @last_task = action
     r = log_error_mesg(@container_name + ' not in matching state want _' + tasks_final_state(action).to_s + '_but in ' + curr_state.class.name + ' ', curr_state )
     case action
@@ -142,11 +142,14 @@ module TaskAtHand
     #  SystemDebug.debug(SystemDebug.engine_tasks, :task_complete, ' ', action.to_s + ' as action for task ' +  task_at_hand.to_s + " " + @steps_to_go.to_s + '-1 stesp remaining step completed ',@steps)
     clear_task_at_hand
     # SystemDebug.debug(SystemDebug.builder, :last_task,  @last_task, :steps_to, @steps_to_go)
-    return save_state unless @last_task == :delete_image && @steps_to_go <= 0
-    # FixMe Kludge unless docker event listener
-    #   SystemDebug.debug(SystemDebug.builder, :delete_engine,  @last_task, :steps_to, @steps_to_go)
-    delete_engine
-    true
+    if @last_task == :delete_image && @steps_to_go <= 0
+      # FixMe Kludge unless docker event listener
+      #   SystemDebug.debug(SystemDebug.builder, :delete_engine,  @last_task, :steps_to, @steps_to_go)
+      delete_engine
+      true
+    else
+      save_state
+    end
   end
 
   def task_at_hand
