@@ -76,7 +76,7 @@ module EventsTrigger
       Actor:
       {ID: "system",
       Actor: { Attributes:
-      {container_name: engine_name,
+      {container_name: 'system',
       container_type: 'app',
     } }
       },})
