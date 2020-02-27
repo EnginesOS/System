@@ -8,7 +8,8 @@ def return_json(r, s = 202)
     if r.nil?
       empty_json
     else
-      r.force_encoding(Encoding::UTF_8)
+      r[:stdout].force_encoding(Encoding::UTF_8) unless r[:stdout].nil?
+      r[:stderr].force_encoding(Encoding::UTF_8) unless r[:stderr].nil?
       r.to_json
     end
   end
