@@ -65,7 +65,7 @@ module MemoryStatistics
         #else
         #  STDERR.puts('no_cgroup_file for ' + container.container_name + ':' + path.to_s)
       rescue StandardError =>e #   SystemUtils.log_error_mesg('no_cgroup_file for ' + container.container_name + ':' + path.to_s, path)        
-        log_exception(e)
+       STDERR.puts("EXCEPTIO #{e}\n #{e.backtrace}")
           ret_val = self.empty_container_result(container)
       end
       #  end
