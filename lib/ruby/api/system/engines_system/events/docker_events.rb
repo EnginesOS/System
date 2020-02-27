@@ -75,6 +75,7 @@ module DockerEvents
   end
 
   def trigger_event_notification(hash)
+    STDERR.puts(" TRIGGER EVENT NOT #{hash}")
     @listeners.each do |m|
       listener = m[1][:listener]
    # listener = m
