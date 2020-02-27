@@ -13,6 +13,7 @@ module FirstRunComplete
         end
       end
     end
+    mark_complete
     true
   end
 

@@ -40,7 +40,7 @@ class FirstRunWizard <ErrorsApi
   end
 
   def FirstRunWizard.required?
-    if File.exist?(SystemConfig.FirstRunRan) == false
+    unless File.exist?(SystemConfig.FirstRunRan) 
       true
     else
       false
