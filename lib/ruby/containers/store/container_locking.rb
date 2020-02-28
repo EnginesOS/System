@@ -1,15 +1,16 @@
-class ContainerLocking
-  require '/opt/engines/lib/ruby/api/system/errors_api'
-  
-  def instance
-    @@instance ||= self.new
-  end
- 
-  def lock_register
-    @lock_register ||= {}
-  end
-  
-  @@lock_timeout = 5
+module Container
+  class ContainerLocking
+    require '/opt/engines/lib/ruby/api/system/errors_api'
+
+    def instance
+      @@instance ||= self.new
+    end
+
+    def lock_register
+      @lock_register ||= {}
+    end
+
+    @@lock_timeout = 5
 
     def unlock(lock_key)
       lock_register.delete(lock_key) if lock_register.key?(lock_key)
@@ -22,10 +23,10 @@ class ContainerLocking
       STDERR.puts("LOCKING " + lock_key.to_s)
       if is_locked?(lock_key)
         wait_on_lock(lock_key)
-      else 
+      else
         lock_register[lock_key] = Thread.current
-        true      
-      end    
+        true
+      end
     rescue StandardError => e
       errors_api.log_error_mesg('LOCKING locking exception', e)
       true
@@ -39,11 +40,11 @@ class ContainerLocking
           if lock_register[lock_key].active?
             true
           else
-        lock_register.delete(lock_key)
+            lock_register.delete(lock_key)
             false
           end
         else
-      lock_register.delete(lock_key)
+          lock_register.delete(lock_key)
           false
         end
       else
@@ -80,4 +81,5 @@ class ContainerLocking
     def errors_api
       @errors_api ||= ErrorsApi.new
     end
+  end
 end
