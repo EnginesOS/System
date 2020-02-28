@@ -198,11 +198,11 @@ class SystemUtils
 
   def SystemUtils.cgroup_mem_dir(container_id_str)
     if SystemUtils.get_os_release_data['Major Version'] == '14' ||  SystemUtils.get_os_release_data['Major Version'] == '18'
-        "/sys/fs/cgroup/memory/docker/#{container_id_str}"
+        "/host/sys/fs/cgroup/memory/docker/#{container_id_str}"
     elsif Dir.exist?("/sys/fs/cgroup/memory/docker/${container_id_str}/")
-    "/sys/fs/cgroup/memory/docker/#{container_id_str}/"
+    "/host//sys/fs/cgroup/memory/docker/#{container_id_str}/"
     else
-      "/sys/fs/cgroup/memory/system.slice/docker-#{container_id_str}.scope"
+      "/host//sys/fs/cgroup/memory/system.slice/docker-#{container_id_str}.scope"
     end
     # old pre docker 1.9. return '/sys/fs/cgroup/memory/system.slice/docker-' + container_id_str + '.scope'
   end
