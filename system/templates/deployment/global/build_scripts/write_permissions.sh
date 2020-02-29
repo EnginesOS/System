@@ -18,8 +18,9 @@
    		chmod  775 /home/app/$path   
      elif test ! -f /home/app/$path 
   	  then
-  		echo mkdir -p  $path
+  		echo mkdir -p  `dirname /home/app/$path`
    		mkdir -p  `dirname /home/app/$path`
+   		ls  -la /home/app/$path 
    		touch  /home/app/$path 
  	 fi
    chown $ContUser /home/app/$path
