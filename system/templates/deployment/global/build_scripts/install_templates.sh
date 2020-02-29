@@ -7,9 +7,11 @@ if test -d /home/engines/templates/
 templates=`find /home/engines/templates/ -type f |grep -v keep_me`
  for file in $templates
    do     
+     echo Install template $file
      dest_file=`echo $file | sed "/^.*templates\//s///"`
       dest_dir=`dirname $dest_file`
-       mkdir -p $dest_dir
+        echo $dest_file in $dest_dir      
+      mkdir -p $dest_dir
        # If soft link copy to destination  
         if test -h $dest_file
          then

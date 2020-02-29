@@ -39,7 +39,6 @@ class DockerFileBuilder
     write_app_archives
     write_app_templates
     write_permissions
-    set_user('0')
     chown_home_app
     set_user('$ContUser')
     write_database_seed
