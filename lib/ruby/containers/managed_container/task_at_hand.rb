@@ -233,20 +233,22 @@ module TaskAtHand
   private
 
   def tasks_final_state(task)
-    case task.to_sym
-    when :create,:start,:recreate,:unpause,:restart,:rebuild,:build,:reinstall
-      s = :running
-    when :stop
-      s = :stopped
-    when :pause
-      s =  :paused
-    when :delete,:destroy
-      s = :nocontainer
-    else
-      STDERR.puts('UNKNOWN TASK ' + task.to_s)
-      s = ''
+    unless task.nil?
+      case task.to_sym
+      when :create,:start,:recreate,:unpause,:restart,:rebuild,:build,:reinstall
+        s = :running
+      when :stop
+        s = :stopped
+      when :pause
+        s =  :paused
+      when :delete,:destroy
+        s = :nocontainer
+      else
+        STDERR.puts('UNKNOWN TASK ' + task.to_s)
+        s = ''
+      end
+      s
     end
-    s
   end
 
   def task_has_expired?(task)
