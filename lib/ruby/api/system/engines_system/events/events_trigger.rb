@@ -45,7 +45,7 @@ module EventsTrigger
       {ID: 'system',
       Actor: { Attributes:
       {container_name: 'system',
-      container_type: 'app',
+      container_type: 'system',
     } }
       },})
   end
@@ -60,8 +60,8 @@ module EventsTrigger
       Actor:
       {ID: 'system',
       Actor: { Attributes:
-      {container_name: engine_name,
-      container_type: 'app',
+      {container_name: 'system',
+      container_type: 'system',
     } }
       },})
   end
@@ -77,7 +77,7 @@ module EventsTrigger
       {ID: "system",
       Actor: { Attributes:
       {container_name: 'system',
-      container_type: 'app',
+      container_type: 'system',
     } }
       },})
   end
