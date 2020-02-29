@@ -66,6 +66,7 @@ class DockerFileBuilder
   require_relative 'file_writer.rb'
 
   def add_sudoers
+    write_comment('#Adding Sudoers')
     if @blueprint_reader.respond_to?('sudo_list')
       if @blueprint_reader.sudo_list.is_a?(Array)
         copyin_sudoer_file if @blueprint_reader.sudo_list.length > 0
@@ -79,10 +80,10 @@ class DockerFileBuilder
 
   def setup_user_local
     #  write_run_start()
+    write_comment('#Setup /usr/local')
     write_build_script('set_cont_user.sh')
     write_run_line('ln -s /usr/local/ /home/local')
     write_run_line('chown -R $ContUser /usr/local/ ')
-
   end
 
   def finalise_docker_file
@@ -104,21 +105,25 @@ class DockerFileBuilder
   end
 
   def write_cd
+    write_comment('#write cd')
     write_run_line('chown -R $ContUser /home/app')
     write_run_line('chmod g+w -R /home/app')
   end
 
   def finalise_files
+    write_comment('#Finalise Docker File')
     finalise_docker_file
     @env_file.close
   end
 
   def prepare_persitant_source
+    write_comment('#Prepare Persistent Source')
     write_build_script('prepare_persitent_source.sh')
     write_volume('/home/fs_src/')
   end
 
   def setup_persitant_app
+    write_comment('#Setup Persistent App')
     write_run_line('cp -rp /home/app /home/app_src')
     write_volume('/home/app_src/')
   end
@@ -176,11 +181,14 @@ class DockerFileBuilder
   end
 
   def write_file_service
+    write_comment('#Setue File service')
     unless @builder.volumes.empty?
       write_comment('#File Service')
+      n = 0
       @builder.volumes.each_value do |vol|
         dest = File.basename(vol[:remotepath])
-        write_comment('#FS Env')
+        write_env("VOLUME#{n}", "#{dest}")
+        n += 1
       end
     end
   end
@@ -212,7 +220,7 @@ class DockerFileBuilder
               write_run_line("wget -qO - #{repo[:key]} | apt-key add -")
             end
           end
-        write_run_line("add-apt-repository  -y #{repo[:source]}")
+          write_run_line("add-apt-repository  -y #{repo[:source]}")
         end
         write_run_line('apt-get -y update ')
       end
@@ -262,7 +270,7 @@ class DockerFileBuilder
 
   def write_write_permissions_recursive
     unless @blueprint_reader.recursive_chmods.nil?
-      write_comment('#Write Permissions  Recursive')
+      write_comment('#Write Permissions Recursive')
       log_build_output('Dockerfile:Write Permissions Recursive')
       dirs = ''
       @blueprint_reader.recursive_chmods.each do |directory|
