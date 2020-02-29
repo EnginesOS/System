@@ -37,23 +37,24 @@ fi
 
 
 group=`cat /home/engines/etc/group/name`
-
+echo cat /home/engines/etc/group/name $group
 if test -f /home/engines/etc/group/files_post_install
  then
   for file in  `cat /home/engines/etc/group/files_post_install`
    do
+   echo touch $file
     if ! test -f $file
     then
      touch $file
     fi
-     
-    chown $group $file
+      chown $group $file
    done
 fi
 if test -f /home/engines/etc/group/dirs_post_install
  then
   for dir in  `cat /home/engines/etc/group/dirs_post_install`
    do
+   echo mkdir $dir
    mkdir -p $dir
     chown -R $group $dir
    done
