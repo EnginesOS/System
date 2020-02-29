@@ -5,15 +5,19 @@
    path=`echo $path | sed "/[.][.]/s///g"` 
    path=`echo $path | sed "/\/$/s///"`
    path=`echo $path | sed "/^\/home\/app/s///"`
+   echo Path $path
      if [ -h  /home/app/$path ] 
       then
   		dest=`ls -la /home/app/$path |cut -f2 -d'>'`
-        chmod -R gu+rw $dest
+  		echo dest = $dest
+  		chmod -R gu+rw $dest
      elif test -d  /home/app/$path 
   	  then
+  		echo chmod  775 /home/app/$path $path
    		chmod  775 /home/app/$path   
      elif test ! -f /home/app/$path 
   	  then
+  		echo mkdir -p  $path
    		mkdir -p  `dirname /home/app/$path`
    		touch  /home/app/$path 
  	 fi
