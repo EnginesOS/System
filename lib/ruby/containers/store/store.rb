@@ -130,7 +130,7 @@ module Container
             File.rename(statefile, statefile_bak)
             File.delete("#{statefile_bak}.bak")
           else
-            File.rename(statefile, statefile_bak)
+            File.rename(statefile, statefile_bak) if File.exist?(statefile)
           end
         rescue StandardError => e
           STDERR.puts("Failed to backup_state_file #{e} \n #{e.backtrace}")
