@@ -37,8 +37,8 @@ class DockerFileBuilder
     write_os_packages
     write_modules
     write_app_archives
-    write_permissions
     write_app_templates
+    write_permissions
     set_user('0')
     chown_home_app
     set_user('$ContUser')
