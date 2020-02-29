@@ -6,7 +6,9 @@
    path=`echo $path | sed "/\/$/s///"`
    path=`echo $path | sed "/^\/home\/app/s///"`
    echo Path $path
-   ls /home/app/`dirname $path`
+   ls -la /home/app/`dirname $path`
+   ls -la /home/
+    ls -la /home/app/
      if [ -h  /home/app/$path ] 
       then
   		dest=`ls -la /home/app/$path |cut -f2 -d'>'`
