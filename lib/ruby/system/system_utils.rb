@@ -36,7 +36,7 @@ class SystemUtils
   end
 
   def SystemUtils.version
-    "#{SystemUtils.system_release}-#{SystemConfig.api_version}'-'#{SystemConfig.engines_system_version}"
+    "#{SystemUtils.system_release}-#{SystemConfig.api_version}-#{SystemConfig.engines_system_version}"
   end
 
   #Execute @param cmd [String]
