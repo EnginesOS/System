@@ -56,7 +56,7 @@ module DomainOperations
       else
         service_hash[:variables][:wan_or_lan] = 'wan'
       end
-      #  STDERR.puts(' ADD DOMAIN VARIABLES' + service_hash.to_s)
+        STDERR.puts(' ADD DOMAIN VARIABLES' + service_hash.to_s)
       create_and_register_service(service_hash)
     else
       true
