@@ -51,7 +51,7 @@ module DomainOperations
         STDERR.puts("Servie Hash #{sh}")
       end
       STDERR.puts("Servie Hash #{sh}")
-      raise EnginesException(warning_hash('Domain exists', service_hash)) unless exists.nil?
+      raise EnginesException.new(warning_hash('Domain exists', service_hash)) unless exists.nil?
       
       if params[:internal_only]
         service_hash[:variables][:wan_or_lan] = 'lan'
