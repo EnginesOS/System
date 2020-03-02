@@ -50,6 +50,7 @@ module DockerApiBuilder
           #FIXME stuff chunck in stringio and use streaming parser on the stringio
           if chunk.include?('{"stream":"')
             then
+            STDERR.puts("CHEcUK has Stream tage" * 10)
             chunk.gsub!(/{"stream":"/,'')
             builder.log_build_output(chunk.gsub(/"}/,''))
           else

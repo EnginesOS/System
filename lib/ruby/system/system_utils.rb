@@ -58,7 +58,7 @@ class SystemUtils
     rescue Exception=>e
       SystemUtils.log_exception(e)
       SystemUtils.log_error_mesg('Exception Error in SystemUtils.run_system(cmd): ',cmd)
-      'Exception Error in SystemUtils.run_system(cmd): ' +e.to_s
+      'Exception Error in SystemUtils.run_system(cmd): ' + e.to_s
     end
   end
 
