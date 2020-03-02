@@ -43,11 +43,11 @@ module DomainOperations
         publisher_namespace: 'EnginesSystem',
         type_path: 'domains'
       }
-      exists = true
+
       begin
-       sh =  retrieve_engine_service_hash(service_hash)
+        exists = retrieve_engine_service_hash(service_hash)
       rescue
-        exists = false
+        exists = nil
       end
       raise EnginesException.new(warning_hash('Domain exists', service_hash)) unless exists.nil?
       
