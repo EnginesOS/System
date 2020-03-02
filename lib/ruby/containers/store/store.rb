@@ -46,7 +46,9 @@ module Container
           #FixMe check valid yaml
          FileUtils.mv("#{statefile}_tmp", statefile) 
         else
-          roll_back(statefile)
+          #roll_back(statefile)
+          STDERR.puts("#{statefile}_tmp Vanished\n" * 5)
+          STDERR.puts("#{caller}")
         end
       rescue StandardError => e
         STDERR.puts("Exception in writing running #{e} \n #{e.backtrace}")
