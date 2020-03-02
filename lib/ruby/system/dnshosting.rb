@@ -35,10 +35,10 @@ module DNSHosting
     else
       domains_file = File.open(SystemConfig.DomainsFile, 'r')
       begin
-      domains = YAML::load(domains_file)
-    ensure
-      domains_file.close
-    end
+        domains = YAML::load(domains_file)
+      ensure
+        domains_file.close
+      end
       SystemDebug.debug(SystemDebug.system,:loading_domain_list, domains.to_s)
       domains
     end
@@ -50,9 +50,11 @@ module DNSHosting
   end
 
   def self.add_domain(params)
-    domains = load_domains
-    domains[params[:domain_name]] = params
-    save_domains(domains)
+    unless params[:domain_name].nil?
+      domains = load_domains
+      domains[params[:domain_name]] = params
+      save_domains(domains)
+    end
   end
 
   def self.rm_domain(domain)
