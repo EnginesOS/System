@@ -52,6 +52,7 @@ module DNSHosting
   def self.add_domain(params)
     unless params[:domain_name].nil?
       domains = load_domains
+      STDERR.puts("Domaines #{domains}")
       EnginesException.new(warning_hash('Domain exists', params)) unless domains[params[:domain_name]].nil?
       domains[params[:domain_name]] = params
       save_domains(domains)
