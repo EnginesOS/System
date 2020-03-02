@@ -43,14 +43,12 @@ module DomainOperations
         publisher_namespace: 'EnginesSystem',
         type_path: 'domains'
       }
-      exists = nil
+      exists = true
       begin
        sh =  retrieve_engine_service_hash(service_hash)
       rescue
         exists = false
-        STDERR.puts("Servie Hash #{sh}")
       end
-      STDERR.puts("Servie Hash #{sh}")
       raise EnginesException.new(warning_hash('Domain exists', service_hash)) unless exists.nil?
       
       if params[:internal_only]
