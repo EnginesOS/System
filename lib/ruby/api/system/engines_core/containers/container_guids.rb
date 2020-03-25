@@ -19,7 +19,7 @@ module ContainerGuids
     if File.exist?("#{SystemConfig.ContainerUIDdir}/#{container_name}")
       id_file = File.new("#{SystemConfig.ContainerUIDdir}/#{container_name}",'r')
       begin
-        uid_s =  id_file.read
+        uid_s = id_file.read
       ensure
         id_file.close
       end
