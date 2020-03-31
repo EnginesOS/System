@@ -1,4 +1,4 @@
---- !ruby/object:ManagedService
+--- !ruby/object:Container::ManagedService
 cont_user_id: 22025
 container_name: dhcpd
 publisher_namespace: EnginesSystem
@@ -23,6 +23,6 @@ mapped_ports:
   external: 67
 repo: na
 last_result: 
-setState: nocontainer
+set_state: nocontainer
 conf_register_site: false
 conf_register_dns: true

@@ -1,4 +1,4 @@
---- !ruby/object:ManagedService
+--- !ruby/object:Container::ManagedService
 container_name: mgmt
 ctype: service
 persistent: true
@@ -68,7 +68,7 @@ environments:
 image: _Engines_System(flavor)/mgmt:_Engines_System(release)
 repo: na
 last_result: 
-setState: nocontainer
+set_state: nocontainer
 nginxored: false
 conf_register_site: true
 conf_register_dns: true

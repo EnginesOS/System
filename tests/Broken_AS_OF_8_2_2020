@@ -1,0 +1,37 @@
+system/certs
+system/keys public,upload
+system config set default_site
+system domains remove
+engines restart when it has ports becuase start is called before ports have been deregisterd
+ 
+destroy recreate have issues with schedules
+ 
+ schedules and cron tests not done
+ engine services not done
+
+ ports not release before a container is restarted 
+ 
+ first run is not https
+ 
+ 
+ mysqld is stopped post install
+ 
+ 
+ external hosted dns - > recusion not permitted
+ 
+ not setting perms on configured log /var/log with gitea
+ 
+ Persistent FileSystem ownership not being set
+ 
+ 
+on occasions wap not added 
+
+##list #services returns a pile of crap . .. etc  short cut taken by mark on list services
+
+#imap /var/mail needs to have chgrp vmail /var/mail and chmode g+w /var/mail
+
+Post install script pressence is not triggering a restart required flag and nor is it running post install
+
+many services missing log rotation service entries ftp.log sftp.log xfer.log ldap.log
+
+

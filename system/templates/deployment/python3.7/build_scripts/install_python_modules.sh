@@ -1,4 +1,6 @@
 #!/bin/sh
+. /home/app/venv/bin/activate
+
     for mod in $*
      do
      mod=`echo $mod | sed "/[;&]/s///g"`

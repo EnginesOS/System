@@ -1,6 +1,6 @@
 module SystemSystemOnAction
   def on_start(what)
-    @container_mutex.synchronize {
+    container_mutex.synchronize {
       @stop_reason = nil
       set_running_user
  #     SystemDebug.debug(SystemDebug.container_events,:ONSTART_CALLED, what)
@@ -12,9 +12,9 @@ module SystemSystemOnAction
 
   def on_create(event_hash)
     #    STDERR.puts('CREATE EVent on ' + container_name)
-    @container_mutex.synchronize {
+    container_mutex.synchronize {
  #     SystemDebug.debug(SystemDebug.container_events, :ON_Create_CALLED, event_hash)
-      @container_id = event_hash[:id]
+      @id = event_hash[:id]
       @out_of_memory = false
       @had_out_memory = false
       @has_run = false
@@ -33,8 +33,6 @@ module SystemSystemOnAction
       @out_of_memory = false
       save_state
     end
-    #return true if @consumer_less
-    # deregister_with_dns # Really its in the following nowMUst register each time as IP Changes
   end
 
   def out_of_mem(what)

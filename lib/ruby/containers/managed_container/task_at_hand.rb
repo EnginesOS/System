@@ -6,13 +6,11 @@ module TaskAtHand
   end
 
   def desired_state(step, state, curr_state)
-    current_set_state = @setState
-    @setState = state.to_s
+    current_set_state = @set_state
+    @set_state = state.to_s
     set_task_at_hand(step)
     save_state
-    STDERR.puts( 'Task at Hand:' + state.to_s + ' Current set state:' + current_set_state.to_s + '  going for:' +  @setState  + ' with ' + @task_at_hand.to_s + ' in ' + curr_state)
-    # rescue StandardError => e
-    #   log_exception(e)
+    #STDERR.puts( "Task at Hand: #{state} Current set state: #{current_set_state} going for  #{@set_state}  with #{@task_at_hand} in #{curr_state}")
   end
 
   def in_progress(action)
@@ -20,8 +18,8 @@ module TaskAtHand
     final_state = tasks_final_state(action)
     #   SystemDebug.debug(SystemDebug.engine_tasks, :final_state, final_state)
     if final_state == curr_state && action != 'restart'
-      @setState = curr_state
-      @container_id ==  -1 if curr_state == 'nocontainer'
+      @set_state = curr_state
+      @id ==  -1 if curr_state == :nocontainer
       #  SystemDebug.debug(SystemDebug.engine_tasks, :curr_state, curr_state)
       return save_state
     end
@@ -34,27 +32,27 @@ module TaskAtHand
 
     #  SystemDebug.debug(SystemDebug.engine_tasks, :read_state, curr_state)
     # FIX ME Finx the source 0 :->:
-    curr_state.sub!(/\:->\:/,'')
+    # curr_state.sub!(/\:->\:/,'') WTF was THIS
     @last_task = action
     r = log_error_mesg(@container_name + ' not in matching state want _' + tasks_final_state(action).to_s + '_but in ' + curr_state.class.name + ' ', curr_state )
     case action
     when :create
       @steps = [:create, :start]
       @steps_to_go = 2
-      r = desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
+      r = desired_state(step, final_state, curr_state) if curr_state == :nocontainer
     when :stop
       #    STDERR.puts(' stop  steps' + @steps.to_s + ' count ' + @steps_to_go.to_s)
-      r = desired_state(step, final_state, curr_state) if curr_state== 'running'
+      r = desired_state(step, final_state, curr_state) if curr_state == :running
     when :start
       #    STDERR.puts(' start  steps' + @steps.to_s + ' count ' + @steps_to_go.to_s)
-      r = desired_state(step, final_state, curr_state) if curr_state== 'stopped'
+      r = desired_state(step, final_state, curr_state) if curr_state == :stopped
     when :pause
       #   STDERR.puts(' pause  steps' + @steps.to_s + ' count ' + @steps_to_go.to_s)
-      r = desired_state(step, final_state, curr_state) if curr_state== 'running'
+      r = desired_state(step, final_state, curr_state) if curr_state == :running
     when :halt
       r = true
     when :restart
-      if curr_state == 'running'
+      if curr_state == :running
         @steps = [:stop, :start]
         @steps_to_go = 2
         r = desired_state(step, final_state, curr_state)
@@ -62,38 +60,37 @@ module TaskAtHand
         r = desired_state(step, final_state, curr_state)
       end
     when :unpause
-      r = desired_state(step, final_state, curr_state) if curr_state== 'paused'
+      r = desired_state(step, final_state, curr_state) if curr_state== :paused
     when :recreate
-      if curr_state== 'stopped'
+      if curr_state== :stopped
         @steps = [:destroy, :create]
         @steps_to_go = 2
         r = desired_state(step, final_state, curr_state)
       else
-        r = desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
+        r = desired_state(step, final_state, curr_state) if curr_state== :nocontainer
       end
     when :build
-      if curr_state == 'noncontainer'
+      if curr_state == :noncontainer
         @steps = [:build]
         @steps_to_go = 1
         r = desired_state(step, final_state, curr_state)
       else
-        r = desired_state(step, final_state, curr_state) if curr_state == 'nocontainer'
+        r = desired_state(step, final_state, curr_state) if curr_state == :nocontainer
       end
     when :reinstall
-      if curr_state == 'stopped'
+      if curr_state == :stopped
         @steps = [:destroy, :build]
         @steps_to_go = 2
         r = desired_state(step, final_state, curr_state)
       else
-        r = desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
+        r = desired_state(step, final_state, curr_state) if curr_state == :nocontainer
       end
     when :build
-      r = desired_state(step, final_state, curr_state) if curr_state== 'nocontainer'
+      r = desired_state(step, final_state, curr_state) if curr_state == :nocontainer
     when :delete
-      r = desired_state(step, final_state, curr_state) if curr_state== 'stopped'
-      #  desired_state(@steps, 'noimage')
+      r = desired_state(step, final_state, curr_state) if curr_state == :stopped
     when :destroy
-      r = desired_state(step, final_state, curr_state) if curr_state== 'stopped' || curr_state== 'nocontainer'
+      r = desired_state(step, final_state, curr_state) if curr_state == :stopped || curr_state== :nocontainer
     end
     r
   end
@@ -114,7 +111,6 @@ module TaskAtHand
     when 'die'
       status
       begin
-        # STDERR.puts('IT DIED WITH ' + event_hash[:Actor][:Attributes][:exitCode].to_s)
         ec = event_hash[:Actor][:Attributes][:exitCode]
       rescue
         ec = 0
@@ -122,20 +118,19 @@ module TaskAtHand
       on_stop('die', ec)
     when 'kill'
       status
-      #  STDERR.puts('IT KILL')
-      on_stop('kill')
+      on_stop(:kill)
     when 'stop'
       status
-      on_stop('stop')
-      #  STDERR.puts('IT STOP')
+      on_stop(:stop)
     when 'pause'
       status
-      on_stop('pause')
+      on_stop(:pause)
     when 'oom'
       status
-      out_of_mem('oom')
+      out_of_mem(:oom)
     when 'destroy'
       status
+      on_destroy(event_hash)
     end
     true
   rescue StandardError => e
@@ -143,24 +138,23 @@ module TaskAtHand
   end
 
   def task_complete(action)
-
     @steps_to_go = 0 if @steps_to_go.nil?
     #  SystemDebug.debug(SystemDebug.engine_tasks, :task_complete, ' ', action.to_s + ' as action for task ' +  task_at_hand.to_s + " " + @steps_to_go.to_s + '-1 stesp remaining step completed ',@steps)
-
     clear_task_at_hand
     # SystemDebug.debug(SystemDebug.builder, :last_task,  @last_task, :steps_to, @steps_to_go)
-    return save_state unless @last_task == :delete_image && @steps_to_go <= 0
-    # FixMe Kludge unless docker event listener
-    #   SystemDebug.debug(SystemDebug.builder, :delete_engine,  @last_task, :steps_to, @steps_to_go)
-    delete_engine
-    true
-    # rescue StandardError => e
-    #   log_exception(e)
+    if @last_task == :delete_image && @steps_to_go <= 0
+      # FixMe Kludge unless docker event listener
+      #   SystemDebug.debug(SystemDebug.builder, :delete_engine,  @last_task, :steps_to, @steps_to_go)
+      delete_engine
+      true
+    else
+      save_state
+    end
   end
 
   def task_at_hand
-    fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
-    #   SystemDebug.debug(SystemDebug.containers, :task_at_handfile, + ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
+    fn = "#{ContainerStateFiles.container_state_dir(store_address)}/task_at_hand"
+    #   SystemDebug.debug(SystemDebug.containers, :task_at_handfile, + ContainerStateFiles.container_state_dir(store_address) + '/task_at_hand')
     if File.exist?(fn)
       thf = File.new(fn, 'r')
       begin
@@ -186,9 +180,7 @@ module TaskAtHand
     end
   rescue StandardError => e
     log_exception(e) if File.exist?(fn)
-
     nil
-    # @task_at_hand
   end
 
   def expire_task_at_hand
@@ -209,7 +201,7 @@ module TaskAtHand
         @task_at_hand = @steps[0]
       end
       #  SystemDebug.debug(SystemDebug.engine_tasks, 'next Multistep Task ' + @task_at_hand.to_s)
-      f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand','w+')
+      f = File.new("#{ContainerStateFiles.container_state_dir(store_address)}/task_at_hand",'w+')
       begin
         f.write(@task_at_hand.to_s)
       ensure
@@ -218,13 +210,12 @@ module TaskAtHand
     else
       #   SystemDebug.debug(SystemDebug.engine_tasks, 'cleared Task ' + @task_at_hand.to_s)
       @task_at_hand = nil
-      fn = ContainerStateFiles.container_state_dir(self) + '/task_at_hand'
+      fn = "#{ContainerStateFiles.container_state_dir(store_address)}/task_at_hand"
       File.delete(fn) if File.exist?(fn)
     end
     @task_at_hand
   rescue StandardError => e
     STDERR.puts( ' clear task at hand ' + e.to_s + "\n" + e.backtrace.to_s)
-    # log_exception(e) Dont log exception
     # well perhaps a perms or disk error but definitly not no such file
     #possbile exception such file (another process alsop got the eot mesg and removed)
     @task_at_hand
@@ -233,7 +224,7 @@ module TaskAtHand
   def task_failed(msg)
     clear_task_at_hand
     #   SystemDebug.debug(SystemDebug.engine_tasks, :TASK_FAILES______Doing, @task_at_hand)
-    @last_error = @container_api.last_error unless @container_api.nil?
+    @last_error = container_api.last_error unless container_api.nil?
     #  SystemDebug.debug(SystemDebug.engine_tasks, :WITH, @last_error.to_s, msg.to_s)
     task_complete(:failed)
     false
@@ -242,28 +233,30 @@ module TaskAtHand
   private
 
   def tasks_final_state(task)
-    case task.to_sym
-    when :create,:start,:recreate,:unpause,:restart,:rebuild,:build,:reinstall
-      s = 'running'
-    when :stop
-      s = 'stopped'
-    when :pause
-      s =  'paused'
-    when :delete,:destroy
-      s = 'nocontainer'
-    else
-      STDERR.puts('UNKNOWN TASK ' + task.to_s)
-      s = ''
+    unless task.nil?
+      case task.to_sym
+      when :create,:start,:recreate,:unpause,:restart,:rebuild,:build,:reinstall
+        s = :running
+      when :stop
+        s = :stopped
+      when :pause
+        s =  :paused
+      when :delete,:destroy
+        s = :nocontainer
+      else
+        STDERR.puts('UNKNOWN TASK ' + task.to_s)
+        s = ''
+      end
+      s
     end
-    s
   end
 
   def task_has_expired?(task)
-    fmtime = File.mtime(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
+    fmtime = File.mtime("#{ContainerStateFiles.container_state_dir(store_address)}/task_at_hand")
     mtime = fmtime  + task_set_timeout(task)
     #  SystemDebug.debug(SystemDebug.container, mtime, fmtime, task, task_set_timeout(task))
     if mtime < Time.now
-      File.delete(ContainerStateFiles.container_state_dir(self) + '/task_at_hand')
+      File.delete("#{ContainerStateFiles.container_state_dir(store_address)}/task_at_hand")
       #   SystemDebug.debug(SystemDebug.engine_tasks, :expired_task, task, ' after ', task_set_timeout(task))
       true
     else
@@ -283,8 +276,8 @@ module TaskAtHand
 
   def set_task_at_hand(state)
     @task_at_hand = state
-    if Dir.exist?(ContainerStateFiles.container_state_dir(self)) # happens on reinstall
-      f = File.new(ContainerStateFiles.container_state_dir(self) + '/task_at_hand', 'w+')
+    if Dir.exist?(ContainerStateFiles.container_state_dir(store_address)) # happens on reinstall
+      f = File.new("#{ContainerStateFiles.container_state_dir(store_address)}/task_at_hand", 'w+')
       begin
         f.write(state)
       ensure

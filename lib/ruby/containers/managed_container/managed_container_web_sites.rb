@@ -6,7 +6,7 @@ module ManagedContainerWebSites
   end
 
   def web_sites
-    @container_api.web_sites_for(self)
+    container_api.web_sites_for(self)
   end
 
   def http_protocol
@@ -52,12 +52,12 @@ module ManagedContainerWebSites
   # create wap service_hash for container and register with wap
   # @return boolean indicating sucess
   def add_wap_service
-    @container_api.add_wap_service(self)
+    container_api.add_wap_service(self)
   end
 
   # create wap service_hash for container deregister with wap
   # @return boolean indicating sucess
   def remove_wap_service
-    @container_api.remove_wap_service(self)
+    container_api.remove_wap_service(self)
   end
 end

@@ -20,7 +20,6 @@ module FileSystemContid
     STDERR.puts(' fs_hashes ' + fs_hashs.class.name)
     if fs_hashs.is_a?(Array)
       fs_hashs.each do | service_hash |
-        #  next if service_hash[:variables].key?(:fw_user)
         service_hash[:variables][:fw_user] = engine.cont_user_id
         STDERR.puts('H:' + engine.cont_user_id.to_s)
         begin

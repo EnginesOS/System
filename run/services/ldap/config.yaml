@@ -1,4 +1,4 @@
---- !ruby/object:ManagedService
+--- !ruby/object:Container::ManagedService
 cont_user_id: 22030
 container_name: ldap
 publisher_namespace: EnginesSystem
@@ -36,7 +36,7 @@ volumes:
 environments: []
 repo: na
 last_result: 
-setState: running
+set_state: running
 conf_register_site: false
 conf_register_dns: true
 dependant_on:

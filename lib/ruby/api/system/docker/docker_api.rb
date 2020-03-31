@@ -1,13 +1,18 @@
-class DockerApi < ErrorsApi
+require 'net_x/http_unix'
+require 'socket'
+require 'yajl'
+require 'rubygems'
+require 'excon'
 
-  require 'net_x/http_unix'
-  require 'socket'
-  require 'yajl'
-  require 'rubygems'
-  require 'excon'
-  
+class DockerApi < ErrorsApi
+  class << self
+    def instance
+      @@instance ||= self.new
+    end
+  end
+
   require '/opt/engines/lib/ruby/exceptions/docker_exception.rb'
-  
+
   require_relative 'excon_hijack.rb'
   Excon.defaults[:middlewares].unshift Excon::Middleware::Hijack
 
@@ -29,13 +34,13 @@ class DockerApi < ErrorsApi
 
   require_relative 'docker_api_builder.rb'
   include DockerApiBuilder
-  
+
   require_relative 'docker_net.rb'
   include DockerNet
-  
+
   require_relative 'docker_http.rb'
   include DockerHttp
-  
+
   def response_parser
     @parser ||= FFI_Yajl::Parser.new({:symbolize_keys => true})
   end

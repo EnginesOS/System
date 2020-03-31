@@ -30,9 +30,9 @@ module BaseOsSystem
     ENV['LANG'] = locale[:lang_code].to_s + '_' + locale[:country_code].to_s  + '.UTF-8'
     ENV['LC_ALL'] = locale[:lang_code].to_s + '_' + locale[:country_code].to_s  + '.UTF-8'
     ENV['LANGUAGE'] = locale[:country_code].to_s  + ':' + locale[:lang_code].to_s
-    run_server_script('set_locale',  ENV['LANG'].to_s + ' ' + ENV['LANGUAGE'].to_s)
-    SystemUtils.execute_command('/opt/engines/system/scripts/ssh/set_locale.sh ' + ENV['LANG'].to_s + ' ' + ENV['LANGUAGE'].to_s, false,  false, nil)
-    r = run_server_script('set_locale',  ENV['LANG'].to_s + ' ' + ENV['LANGUAGE'].to_s)
+    run_server_script('set_locale',  "#{ENV['LANG']} #{ENV['LANGUAGE']}")
+    SystemUtils.execute_command("/opt/engines/system/scripts/ssh/set_locale.sh  #{ENV['LANG']} #{ENV['LANGUAGE']}", false,  false, nil)
+    r = run_server_script('set_locale',   "#{ENV['LANG']} #{ENV['LANGUAGE']}")
     if r[:result] == 0
       true
     else

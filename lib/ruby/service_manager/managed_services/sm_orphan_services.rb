@@ -41,14 +41,13 @@ module SmOrphanServices
     service_hash[:parent_engine] = engine_name
     service_hash[:fresh] = false
     service_hash[:freed_orphan] = true
-    #resuse_service_hash = @service_manager.reparent_orphan(service_hash)
     service_hash
   end
 
   def match_orphan_service(service_hash)
     res = retrieve_orphan(service_hash)
-    STDERR.puts(" MATCHED  rphan" + res.to_s + ' to ' + service_hash.to_s)
     if res.is_a?(Hash)
+      STDERR.puts(" MATCHED  rphan" + res.to_s + ' to ' + service_hash.to_s)
       if res[:publisher_namespace] == service_hash[:publisher_namespace]
         true
       else

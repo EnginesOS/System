@@ -1,9 +1,7 @@
 module ServiceOperations
-
-  require_relative 'service_manager_access.rb'
   def signal_service_process(pid, sig, name)
     container = loadManagedService(name)
-    @docker_api.signal_container_process(pid, sig, container)
+    docker_api.signal_container_process(pid, sig, container)
   end
 
   def force_reregister_non_persistent_service(service_query)
@@ -45,11 +43,6 @@ module ServiceOperations
     service_manager.delete_and_remove_service(service_hash)
 #    check_service_hash(service_hash)
 #    SystemDebug.debug(SystemDebug.services, :dettach_service, service_hash)
-#    if service_hash[:shared] == true
-#      service_manager.remove_shared_service_from_engine(service_hash)
-#    else
-#      service_manager.delete_and_remove_service(service_hash)
-#    end
   end
 
   # @ returns  complete service hash matching PNS,SP,PE,SH
@@ -84,13 +77,13 @@ module ServiceOperations
   def clear_service_from_registry(service, persistence=:non_persistent)
     service_manager.clear_service_from_registry({:parent_engine => service.container_name, :container_type => 'service', :persistence => persistence})
   end
-  
+
   protected
 
   def create_and_register_managed_service(service_hash)
     raise EnginesException.new(error_hash('Attached Service passed no variables ' +  service_hash.to_s, service_hash)) unless service_hash.key?(:variables)
   #  SystemDebug.debug(SystemDebug.services, "osapicreate_and_register_managed_service", service_hash)
-    service_hash[:variables][:parent_engine] = service_hash[:parent_engine] unless service_hash[:variables].has_key?(:parent_engine)   
+    service_hash[:variables][:parent_engine] = service_hash[:parent_engine] unless service_hash[:variables].has_key?(:parent_engine)
     check_engine_service_hash(service_hash)
   #  SystemDebug.debug(SystemDebug.services,"calling service ", service_hash)
     service_manager.create_and_register_service(service_hash)

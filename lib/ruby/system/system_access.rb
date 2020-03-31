@@ -1,10 +1,10 @@
 class SystemAccess
-  def initialize(system)
-    @engines_api = system
+  class << self
+    def instance
+      @@instance ||= self.new
+    end
   end
 
-  #This Class is the public face of the system
-  #release etc
   def release
     SystemUtils.system_release
   end
@@ -34,18 +34,7 @@ class SystemAccess
   end
 
   def timezone_country_city
-    @engines_api.get_timezone
-    #  olsontz = File.read('/etc/timezone')
-    #    olsontz = `if [ -f /etc/timezone ]; then
-    #      cat /etc/timezone
-    #    elif [ -h /etc/localtime ]; then
-    #      readlink /etc/localtime | sed "s/\\/usr\\/share\\/zoneinfo\\///"
-    #    else
-    #      checksum=\`md5sum /etc/localtime | cut -d' ' -f1\`
-    #      find /usr/share/zoneinfo/ -type f -exec md5sum {} \\; | grep "^$checksum" | sed "s/.*\\/usr\\/share\\/zoneinfo\\///" | head -n 1
-    #    fi`.chomp
-    #    return "  " if olsontz.nil?
-    #     olsontz
+    core.get_timezone
   end
 
   def timezone
@@ -71,7 +60,7 @@ class SystemAccess
   end
 
   def publickey
-    @engines_api.get_public_key()
+    core.get_public_key()
   end
 
   def pubkey(type)
@@ -79,7 +68,7 @@ class SystemAccess
     engine = args[0]
     cmd = args[1]
     cmd.gsub!(/\)/, '')
-    @engines_api.get_service_pubkey(engine, cmd)
+    core.get_service_pubkey(engine, cmd)
   end
 
   def random(cnt)
@@ -90,7 +79,7 @@ class SystemAccess
 
   def service_resource(service_name, what)
     #  STDERR.puts('SERVICE RESOURCE ')
-    @engines_api.service_resource(service_name, what)
+    core.service_resource(service_name, what)
   end
 
   # where ssh goes
@@ -109,13 +98,15 @@ class SystemAccess
   def docker_ip
     # FixME read docker0 ip or cmd line option
     '172.17.0.1'
-    #    require 'socket'
-    #
-    #    addr_infos = Socket.ip_address_list
   end
 
   def system_hostname
-    @engines_api.system_hostname
+    core.system_hostname
   end
 
+  protected
+
+  def core
+    @core ||= EnginesCore.instance
+  end
 end

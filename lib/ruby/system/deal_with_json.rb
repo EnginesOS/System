@@ -1,11 +1,7 @@
 def deal_with_json(r)
   unless r.nil?
     r = parse_as_json(r) unless r.is_a?(Hash)
-  #  unless r.is_a?(Sinatra::IndifferentHash)
       symbolise_json(r)
-  #  else
- #     r
- #   end
   end
 rescue StandardError => e
   #log_error_mesg(' parse problem with ' + r.to_s)
@@ -59,8 +55,6 @@ end
 def symbolize_keys(h)
   if !h.is_a?(Hash)
     h
- # elsif  h.is_a?(Sinatra::IndifferentHash)
-#    h
   else
     h.inject({}){|r, (key, v)|
       nk = case key

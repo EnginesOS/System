@@ -13,7 +13,6 @@ module EnginesSystemDirs
   @@ServiceTemplateDir = '/opt/engines/etc/services/providers/'
   @@EnginesTemp = '/opt/engines/tmp'
   @@InfoTreeDir = '/opt/engines/run/public/services'
-  # @@CertificatesDir = '/var/lib/engines/services/certs/public/certs/'
 
   @@DomainsFile = '/opt/engines/etc/domains/domains'
   @@timeZone_fileMapping = ' -v /etc/localtime:/etc/localtime:ro '
@@ -22,7 +21,6 @@ module EnginesSystemDirs
 
   @@KeysDestination = '/home/engines/etc/ssl/keys/'
   @@CertAuthTop = '/var/lib/engines/services/certs/store/live/'
-  # @@KeysDir ='/var/lib/engines/services/certs/public/keys/'
   @@CertificatesDestination = '/home/engines/etc/ssl/certs/'
   @@ServiceBackupScriptsRoot = '/home/engines/scripts/backup/'
   @@EngineServiceBackupScriptsRoot = '/home/engines/scripts/backup/engine/'
@@ -67,17 +65,10 @@ module EnginesSystemDirs
     @@CertificatesDestination
   end
 
-  #  def SystemConfig.KeysDir
-  #  @@KeysDir
-  # end
 
   def SystemConfig.KeysDestination
     @@KeysDestination
   end
-
-  # def SystemConfig.CertificatesDir
-  #   @@CertificatesDir
-  # end
 
   def SystemConfig.ServiceMapTemplateDir
     @@ServiceMapTemplateDir

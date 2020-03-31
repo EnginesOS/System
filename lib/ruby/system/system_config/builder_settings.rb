@@ -13,7 +13,6 @@ module BuilderSettings
   @@ScriptsDir = '/home/engines/scripts/engine/'
   @@CustomPHPiniFile = '/home/engines/configs/php/01-custom.ini'
   @@CustomApacheConfFile = '/home/engines/configs/apache2/extra.conf'
-#  @@SetupParamsScript = '/bin/bash /home/setup_params.sh'
   @@ActionatorDir = '/home/engines/scripts/actionators/'
   @@BackupScriptsRoot = '/home/engines/services/'
   @@BackupScriptsSrcRoot = '/opt/engines/system/templates/services/backup/'
@@ -22,11 +21,10 @@ module BuilderSettings
   @@DefaultCountry = 'US'
   @@StopScript = '/home/engines/scripts/engine/custom_stop.sh'
   @@htaccessSourceDir = '/home/engines/htaccess_files/'
-
   def SystemConfig.FirstRunScript
     @@FirstRunScript
-  end 
-  
+  end
+
   def SystemConfig.htaccessSourceDir
     @@htaccessSourceDir
   end
@@ -119,5 +117,13 @@ module BuilderSettings
 
   def SystemConfig.DefaultBuildReportTemplateFile
     @@DefaultBuildReportTemplateFile
+  end
+
+  def SystemConfig.last_build_log
+    if File.exists?(self.BuildOutputFile)
+      File.read(self.BuildOutputFile)
+    else
+      'none'
+    end
   end
 end

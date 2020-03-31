@@ -10,8 +10,9 @@ module EnginesPublicApiErrors
     EnginesPublicApiError.new(mesg.to_s,:failure)
   end
 
-  def log_exception(e,*objs)
+  def log_exception(e, *objs)
     super
+    STDERR.puts("#{e.backtrace}")
     EnginesPublicApiError.new(e.to_s,:exception)
   end
   

@@ -1,4 +1,4 @@
---- !ruby/object:ManagedService
+--- !ruby/object:Container::ManagedService
 cont_user_id: 22012
 container_name: syslog
 publisher_namespace: SumoLogic
@@ -28,7 +28,7 @@ mapped_ports:
   external: 514
 repo: na
 last_result: 
-setState: running
+set_state: running
 conf_register_site: false
 conf_register_dns: true
 conf_self_start: true

@@ -6,7 +6,7 @@ module FrameworkModules
       @blueprint_reader.rake_actions.each do |rake_action|
         rake_cmd = rake_action[:action]
         next if @builder.first_build == false && ! rake_action[:always_run]
-        write_build_script('run_rake_task.sh ' + rake_cmd ) unless rake_cmd.nil?
+        write_build_script("run_rake_task.sh #{rake_cmd}" ) unless rake_cmd.nil?
       end
     end
   end
@@ -18,9 +18,9 @@ module FrameworkModules
       unless @blueprint_reader.pear_modules.nil?
         if @blueprint_reader.pear_modules.count > 0
           @blueprint_reader.pear_modules.each do |pear_mod|
-            pear_mods += pear_mod + ' ' unless pear_mod.nil
+            pear_mods += "#{pear_mod} " unless pear_mod.nil
           end
-          write_build_script('install_pear_mods.sh  ' + pear_mods)
+          write_build_script("install_pear_mods.sh  #{pear_mods}")
         end
       end
     end
@@ -35,7 +35,7 @@ module FrameworkModules
         @blueprint_reader.pecl_modules.each do |pecl_mod|
           pecl_mods += pecl_mod + ' ' unless pecl_mod.nil?
         end
-        write_build_script('install_pecl_mods.sh  ' + pecl_mods)
+        write_build_script("install_pecl_mods.sh  #{pecl_mods}")
       end
     end
   end
@@ -45,7 +45,7 @@ module FrameworkModules
       write_comment('#Apache Modules')
       ap_modules_str = ''
       @blueprint_reader.apache_modules.each do |ap_module|
-        ap_modules_str += ap_module + ' ' unless ap_module.nil?
+        ap_modules_str += "#{ap_module} " unless ap_module.nil?
       end
       write_run_line('a2enmod ' + ap_modules_str)
     end
@@ -56,9 +56,9 @@ module FrameworkModules
       write_comment('#NPM Modules')
       npm_modules_str = ''
       @blueprint_reader.npm_modules.each do |npm_module|
-        npm_modules_str += npm_module + ' ' unless npm_module.nil?
+      npm_modules_str += "#{npm_module} " unless npm_module.nil?
       end
-      write_build_script('install_npm_modules.sh ' + npm_modules_str)
+      write_build_script("install_npm_modules.sh #{npm_modules_str}")
     end
   end
 
@@ -67,9 +67,9 @@ module FrameworkModules
       write_comment('#Lua Modules')
       lua_modules_str = ''
       @blueprint_reader.lua_modules.each do |lua_module|
-        lua_modules_str += lua_module + ' ' unless lua_module.nil?
+        lua_modules_str += "#{lua_module} " unless lua_module.nil?
       end
-      write_build_script('install_lua_modules.sh ' + lua_modules_str)
+      write_build_script("install_lua_modules.sh #{lua_modules_str}")
     end
   end
 
@@ -78,9 +78,9 @@ module FrameworkModules
       write_comment('#PHP Modules')
       php_modules_str = ''
       @blueprint_reader.php_modules.each do |php_module|
-        php_modules_str += php_module + ' ' unless php_module.nil?
+        php_modules_str += "#{php_module} " unless php_module.nil?
       end
-      write_build_script('install_php_modules.sh ' + php_modules_str)
+      write_build_script("install_php_modules.sh #{php_modules_str}")
     end
   end
   def write_python_modules
@@ -88,9 +88,9 @@ module FrameworkModules
       write_comment('#PythonModules')
       python_modules_str = ''
       @blueprint_reader.python_modules.each do |python_module|
-        python_modules_str += python_module + ' ' unless python_module.nil?
+      python_modules_str += "#{python_module} " unless python_module.nil?
       end
-      write_build_script('install_python_modules.sh ' + python_modules_str)
+      write_build_script("install_python_modules.sh #{python_modules_str}")
     end
   end
 end

@@ -1,55 +1,16 @@
 module EngineApiStatusFlags
-  def restart_required?(container)
-    File.exist?(@system_api.restart_flag_file(container))
-  end
-
-  def rebuild_required?(container)
-    File.exist?(@system_api.rebuild_flag_file(container))
-  end
-
-  def restart_reason(container)
-    if File.exist?(@system_api.restart_flag_file(container))
-      File.read(@system_api.restart_flag_file(container))
-    else
-      false
-    end
-  end
-
-  def set_debug(container)
-    @system_api.set_debug(container)
-  end
-
-  def clear_debug(container)
-    @system_api.clear_debug(container)
-  end
-
-  def rebuild_reason(container)
-    if File.exist?(@system_api.rebuild_flag_file(container))
-      File.read(@system_api.restart_flag_file(container))
-    else
-      false
-    end
-  end
-
-  def is_startup_complete?(container)
-    clear_error
-    @system_api.is_startup_complete?(container)
-  end
-
-  def wait_for_startup(c, timeout = 5)
+  def wait_for_startup(c, to = 5)
     r = false
-    sfd = @system_api.container_state_dir(c) +'/run/flags'
-    unless Dir.exist?(sfd)
-      FileUtils.mkdir_p(sfd)
-    end
-    state_file_name = sfd + '/state'
-    sfn = sfd + '/startup_complete'
+    sfd = ContainerStateFiles.container_rflag_dir(c.store_address)
+    wait_for_flag_dir(sfd) unless Dir.exist?(sfd)      
+    state_file_name = "#{sfd}/state"
+    sfn = "#{sfd}/startup_complete"
     if c.is_running?
-      if is_startup_complete?(c)
+      if ContainerStateFiles.is_startup_complete?(c.store_address)
         r = true
       else
         begin
-          Timeout::timeout(timeout) do
+          Timeout::timeout(to) do
             begin
               require 'rb-inotify'
               notifier = INotify::Notifier.new
@@ -57,7 +18,7 @@ module EngineApiStatusFlags
                 if  File.exist?(state_file_name)
                   notifier.watch(state_file_name, :modify) { next }
                 else
-                  notifier.watch(sfd, :modify) {  next }
+                  notifier.watch(sfd, :modify) { next }
                 end
                 notifier.process
               end
@@ -76,7 +37,20 @@ module EngineApiStatusFlags
     r
   end
 
-  def init_container_info_dir(c)
-    @system_api.init_container_info_dir(c)
+  def wait_for_flag_dir(sd, to = 5)
+    dir = File.dirname(sd)
+    require 'rb-inotify' 
+    begin
+    Timeout::timeout(to) do
+    while ! Dir.exist?(sd)
+      notifier = INotify::Notifier.new
+      notifier.watch(dir, :modify) { next }
+      notifier.process
+    end
+    end
+      rescue Timeout::Error
+        STDERR.puts('Timeout on wait for ' + sd)
+      Dir.exist?(sd)
+      end
   end
 end

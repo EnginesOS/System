@@ -1,7 +1,7 @@
 module FirstRunDNS
   def apply_hostname(params)
  #   SystemDebug.debug(SystemDebug.first_run, 'setting hostname')
-    @api.update_service_configuration({
+    core.update_service_configuration({
       service_name: 'system',
       configurator_name: 'hostname',
       variables: {
@@ -36,7 +36,7 @@ module FirstRunDNS
   end
 
   def configure_dyndns_service(params)
-    @api.update_service_configuration( {
+    core.update_service_configuration( {
       service_name: 'dyndns',
       configurator_name: 'dyndns_settings',
       variables: {
@@ -46,14 +46,14 @@ module FirstRunDNS
       password: params[:dynamic_dns_password]
       }
     })
-    dyndns_service = @api.loadManagedService('dyndns')
+    dyndns_service = core.loadManagedService('dyndns')
     dyndns_service.create_service
     return true if dyndns_service.is_running?
     dyndns_service.start_container
   end
 
   def set_default_email_domain(domain_name)
-    @api.update_service_configuration({
+    core.update_service_configuration({
       service_name: 'smtp',
       configurator_name: 'default_domain',
       variables: {
@@ -66,10 +66,10 @@ module FirstRunDNS
   def setup_dns
     domain_hash = get_domain_params(@first_run_params)
     return log_error_mesg('Fail to add nill domain ', domain_hash) if domain_hash[:domain_name].nil?
-    @api.add_domain_service(domain_hash)
+    core.add_domain_service(domain_hash)
    # SystemDebug.debug(SystemDebug.first_run, 'added Domain')
     apply_hostname(@first_run_params)
-    @api.set_default_domain(domain_hash)
+    core.set_default_domain(domain_hash)
    # SystemDebug.debug(SystemDebug.first_run, 'set_default_domain Domain')
     set_default_email_domain(domain_hash[:default_domain])
   #  SystemDebug.debug(SystemDebug.first_run, 'set_default_email_domain Domain')

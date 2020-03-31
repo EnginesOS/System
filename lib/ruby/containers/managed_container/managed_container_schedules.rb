@@ -1,11 +1,11 @@
 module ManagedContainerSchedules
   
   def schedules
-    @container_api.schedules(self)       
+    container_api.schedules(store_address)       
   end
   
-  def cron_jobs
-    @container_api.cron_jobs(self)
-  end
-  
+#  def cron_jobs
+#    container_api.cron_jobs(store_address)
+#  end
+#  
 end

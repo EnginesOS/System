@@ -9,10 +9,10 @@ module SystemExceptions
     if loggable.is_a?(FalseClass)
       e_str = '  BT'
       e.backtrace.each do |bt|
-        e_str += bt + " \n"
+        e_str += "#{bt}\n"
       end
       args.each do |arg|
-        e_str += arg.to_s + ' '
+        e_str += "#{arg} "
       end
       @@last_error = e_str
       SystemUtils.log_output(e_str, 10)
@@ -39,10 +39,9 @@ module SystemExceptions
     error_log_hash[:message] = e.to_s
     e_str = e.to_s
     e.backtrace.each do |bt|
-      e_str += bt + " \n"
+    e_str += "#{bt} \n"
     end
     error_log_hash[:backtrace] = e_str
-    # error_log_hash[:request_params] = hostname
     error_log_hash[:return_url] = 'system'
     error_log_hash[:user_comment] = ''
     error_log_hash[:user_email] = 'backend@engines.onl'
@@ -51,7 +50,6 @@ module SystemExceptions
     uri = URI.parse(url_s)
     conn = nil
     req = Net::HTTP.post_form(uri, error_log_hash )
-    #  req.set_form_data(error_log_hash)
     Net::HTTP.start(uri.host, uri.port, {
       :use_ssl => uri.scheme == 'https',
       :verify_mode => OpenSSL::SSL::VERIFY_NONE}) do |http| #

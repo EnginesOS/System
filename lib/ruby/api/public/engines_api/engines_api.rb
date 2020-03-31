@@ -3,12 +3,11 @@ require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 require_relative 'engines_public_api_error.rb'
 
 class PublicApi < ErrorsApi
-  def initialize(core_api )
-    @core_api = core_api
-    @system_api = @core_api.system_api
-    # @service_manager = core_api.service_manager
+  class << self
+    def instance
+      @@instance ||= self.new
+    end
   end
-
   #methods called by api sinatra server routes
   require_relative 'containers/containers.rb'
   #containers/
@@ -240,9 +239,19 @@ class PublicApi < ErrorsApi
   require_relative 'system/user_auth.rb'
   include UserAuth
   require_relative 'system/system_user.rb'
-  include SystemUser 
+  include SystemUser
   require_relative 'system/gui_prefs.rb'
   include GuiPrefs
   require_relative 'system/fixes/public_api_fixes.rb'
   include PublicApiFixes
+
+  protected
+
+  def system_api
+    @system_api ||= SystemApi.instance
+  end
+
+  def core
+    @core ||= EnginesCore.instance
+  end
 end

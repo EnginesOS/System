@@ -1,4 +1,4 @@
---- !ruby/object:ManagedService
+--- !ruby/object:Container::ManagedService
 container_name: docker_stats
 publisher_namespace: SumoLogic
 type_path: dockerstats
@@ -21,7 +21,7 @@ volumes:
   permissions: ro
 repo: na
 last_result: 
-setState: running
+set_state: running
 conf_register_site: false
 conf_register_dns: true
 conf_self_start: true

@@ -7,7 +7,7 @@ module PublicApiSystemReserved
   end
 
   def taken_hostnames
-    @core_api.taken_hostnames
+    core.taken_hostnames
   end
 
   def list_system_services

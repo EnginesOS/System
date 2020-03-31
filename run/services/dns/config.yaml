@@ -1,4 +1,4 @@
---- !ruby/object:ManagedService
+--- !ruby/object:Container::ManagedService
 cont_user_id: 22009
 container_name: dns
 publisher_namespace: EnginesSystem
@@ -23,6 +23,6 @@ mapped_ports:
   external: 53
 repo: na
 last_result: 
-setState: running
+set_state: running
 conf_register_site: false
 conf_register_dns: false

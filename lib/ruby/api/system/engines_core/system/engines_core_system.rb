@@ -1,7 +1,7 @@
 module EnginesCoreSystem
   def api_shutdown
    # SystemDebug.debug(SystemDebug.system,  :BEING_SHUTDOWN)
-    @registry_handler.api_shutdown
+    service_manager.api_shutdown
   end
 
   def dump_heap_stats
@@ -20,7 +20,7 @@ module EnginesCoreSystem
     params = params_from_gui.dup
     #SystemDebug.debug(SystemDebug.first_run,params)
     first_run = FirstRunWizard.new(params)
-    first_run.apply(self)
+    first_run.apply
     first_run.sucess
   end
 
@@ -66,7 +66,8 @@ module EnginesCoreSystem
   end
 
   def deregister_port(container_name, port)
-    # STDERR.puts('de reg port ' + container_name.to_s + ':' + port.to_s)
+   # STDERR.puts ("DEREG PORT " * 10)
+   #  STDERR.puts('de reg port ' + container_name.to_s + ':' + port.to_s)
     registered_ports.delete(container_name)
   end
 
@@ -84,15 +85,14 @@ module EnginesCoreSystem
   end
 
   def get_timezone
-    @system_api.get_timezone
+    system_api.get_timezone
   end
 
   def set_timezone(tz)
-    @system_api.set_timezone(tz)
+    system_api.set_timezone(tz)
   end
 
   def shutdown(reason)
-    # FIXME: @registry_handler.api_dissconnect
-    @system_api.api_shutdown(reason)
+    system_api.api_shutdown(reason)
   end
 end

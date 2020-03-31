@@ -20,7 +20,7 @@ end
 get '/v0/containers/service/:service_name/status' do
   begin
     service = get_service(params[:service_name])
-     STDERR.puts('Status' + service.status.to_s )
+    STDERR.puts('Status' + service.status.to_s )
     return_json(service.status)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
@@ -47,9 +47,9 @@ end
 get '/v0/containers/service/:service_name/uptime' do
   begin
     service = get_service(params[:service_name])
-    { 'uptime' => service.uptime }
+    return_json({ 'uptime' => service.uptime })
   rescue StandardError => e
-     send_encoded_exception(request: request, exception: e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -171,11 +171,11 @@ end
 #
 # @return true|false
 get '/v0/containers/service/:service_name/clear_error' do
- begin
-   service = get_service(params[:service_name])
-   return_boolean(service.clear_error)
- rescue StandardError => e
-   send_encoded_exception(request: request, exception: e)
- end
+  begin
+    service = get_service(params[:service_name])
+    return_boolean(service.clear_error)
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
 end
 # @!endgroup

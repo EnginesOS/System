@@ -1,21 +1,18 @@
 class BuildController
+  class << self
+    def instance
+      @@instance ||= self.new
+    end
+  end
+
   require '/opt/engines/lib/ruby/engine_builder/engine_builder.rb'
   attr_reader :engine,
   :build_error,
-  :build_params,
-  :engine,
-  :engine_builder
-
-  def initialize(api)
-    @core_api = api
-    @engine = nil
-    @build_error = 'none'
-    @engine_builder = nil
-  end
+  :build_params
 
   def abort_build
-   # SystemDebug.debug(SystemDebug.builder, :abort_build)
-    @core_api.abort_build
+    # SystemDebug.debug(SystemDebug.builder, :abort_build)
+    core.abort_build
   end
 
   def prepare_engine_build(params)
@@ -26,17 +23,19 @@ class BuildController
     
   end
 
-  def build_engine()
+  def build_engine
     @engine = @engine_builder.build_from_blue_print
     #SystemDebug.debug(SystemDebug.builder, :build_error, @engine_builder.build_error.to_s) unless  @engine_builder.build_error.nil?
-    build_complete(@build_params)
+    build_complete
   end
 
   def buildEngine(repository, host, domain_name, environment)
+    SystemStatus.build_starting(build_params)
     @build_params = {
       repository: repository,
-      host: host,
-      domain_name: domain_name
+      host_name: host,
+      omain_name: domain_name,
+      environment: environment
     }
     SystemStatus.build_starting(@build_params)
     @engine_builder= get_engine_builder_bfr(repository, host, domain_name, environment)
@@ -44,6 +43,8 @@ class BuildController
     @engine.save_state
     build_complete(@build_params)
     @engine
+  rescue StandardError =>e
+    STDERR.puts ("Got #{e} \n #{e.backtrace}")
   end
 
   def reinstall_engine(engine)
@@ -99,7 +100,7 @@ class BuildController
   private
 
   def get_engine_builder(params)
-    @engine_builder = EngineBuilder.new(params, @core_api)
+    @engine_builder = EngineBuilder.new(params, core)
     @engine_builder.setup_build
   end
 
@@ -115,19 +116,23 @@ class BuildController
   end
 
   def build_failed(params, err)
-    params[:error] = err.to_s
+    build_params[:error] = err.to_s
     @build_error = err
-    @core_api.build_stopped()
-    SystemUtils.log_error_mesg(err.to_s, params)
+    core.build_stopped()
+    SystemUtils.log_error_mesg(build_params.to_s, params)
     SystemStatus.build_failed(params)
-    raise EngnesException.new(error_hash(params[:engine_name] + err.to_s + params.to_s, :build_error))
+    raise EnginesException.new(error_hash(params[:engine_name] + build_params.to_s + params.to_s, :build_error))
   end
 
-  def build_complete(build_params)
+  def build_complete
     bp = build_params.dup
     bp.delete(:service_builder)
     SystemStatus.build_complete(bp)
-    @core_api.build_stopped()
+    core.build_stopped()
     true
+  end
+
+  def core
+    @core ||= EnginesCore.instance
   end
 end

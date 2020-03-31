@@ -6,9 +6,9 @@ def resolve_pid_to_container_id(pid)
 end
 
 def get_pid_status(pid)
-  if File.exists?('/host/sys/' + pid.to_s + '/status')
+  if File.exists?("/host/sys/#{pid}/status")
     begin
-      f = File.open('/host/sys/' + pid.to_s + '/status')
+    f = File.open("/host/sys/#{pid}/status")
       f.read
     ensure
       f.close

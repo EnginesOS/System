@@ -1,6 +1,6 @@
 TESTS=prepare state stop start pause unpause engine status blueprint websites logs ps template mem_stat net_stat\
-	blueprint build_report properties_net \
-	start create recreate reinstall delete 
+	 build_report properties_net actions \
+	 create recreate reinstall delete  
  #halt restart properties_run 
 #	actions cron services \
 	
@@ -21,7 +21,7 @@ cron:
 prepare:
 	cat build_test_engine_minimum_args.json  | engines engines build  |engines_test_expects bool true
 	engines engine_builder follow_stream >/tmp/test_bld.out
-	engines engine enginetest wait_for_startup 180
+	engines engine enginetest wait_for start 180
 
 state:
 	engines engine enginetest state |engines_test_expects text is running
@@ -98,10 +98,10 @@ properties_env:
 	engines engine enginetest   | engines_test_expects text valuewer32342342
 
 destroy:
-	engines engine enginetest stop  | engines_test_expects bool true
+	engines engine enginetest stop | engines_test_expects bool true
 	engines engine enginetest wait_for stop 35 | engines_test_expects bool true
 	sleep 8
-	engines engine enginetest destroy  | engines_test_expects bool true
+	engines engine enginetest destroy | engines_test_expects bool true
 	engines engine enginetest wait_for destroy 35 | engines_test_expects bool true
 	echo -n " Checking:"
 	engines engine enginetest state | engines_test_expects text is nocontainer
@@ -133,7 +133,7 @@ reinstall:
 	engines engine enginetest destroy | engines_test_expects bool true
 	engines engine enginetest wait_for destroy 30 | engines_test_expects bool true
 	engines engine enginetest reinstall | engines_test_expects bool true
-	engines engine enginetest wait_for start 235 | engines_test_expects bool true	
+	engines engine enginetest wait_for start 535 | engines_test_expects bool true	
 	echo -n " Checking:"
 	engines engine enginetest state | engines_test_expects text is running
 	

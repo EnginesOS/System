@@ -26,14 +26,14 @@ module SharedServices
     SystemDebug.debug(SystemDebug.builder, 'sm using existing service', existing_service_hash)
     merge_variables(shared_service, existing_service_hash)
     shared_service[:shared] = true
-    shared_service[:service_handle] = shared_service[:parent_engine] + ':' + existing_service[:service_handle]
+    shared_service[:service_handle] = "#{shared_service[:parent_engine]}:#{existing_service[:service_handle]}"
     shared_service[:container_type] = existing_service[:container_type]
     shared_service[:container_type] = existing_service[:container_type]
     shared_service[:service_container_name] = existing_service[:service_container_name]
 
     SystemDebug.debug(SystemDebug.builder, 'sm regsitring ', shared_service)
     if shared_service[:type_path] == 'filesystem/local/filesystem'
-      shared_service[:variables][:volume_src] = existing_service[:variables][:volume_src] + '/' +  shared_service[:variables][:volume_src]   
+    shared_service[:variables][:volume_src] = "#{existing_service[:variables][:volume_src]}/#{shared_service[:variables][:volume_src]}"   
     end
     shared_service.delete(:existing)
     system_registry_client.add_share_to_managed_engines_registry(shared_service)
@@ -44,7 +44,6 @@ module SharedServices
     ahash = retrieve_engine_service_hash(service_query)
     raise EnginesException.new(error_hash('Not matching Shared service to remove' + service_query)) unless ahash.is_a?(Hash)
     raise EnginesException.new(error_hash('Not a Shared Service', service_query)) unless ahash[:shared] == true
-    # return dettach_shared_volume(ahash) if ahash[:type_path] == 'filesystem/local/filesystem'
    # SystemDebug.debug(SystemDebug.services, :remove_shared_service_from_engine, ahash)
     system_registry_client.remove_from_managed_engine(ahash)
    # SystemDebug.debug(SystemDebug.services, :remove_shared_service_from_share_reg, ahash)

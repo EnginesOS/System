@@ -9,7 +9,6 @@ module ServiceRollBack
         roll_back_new_service(service_hash)
       end
     end
-    true
   end
 
   private
@@ -17,17 +16,17 @@ module ServiceRollBack
   def roll_back_new_service(service_hash)
     service_hash[:remove_all_data] = 'all'
     service_hash[:force] = true
-    #STDERR.puts('ROLL BACK ' + service_hash.to_s)
-    @core_api.dettach_service(service_hash)
+   # STDERR.puts('ROLL BACK ' + service_hash.to_s)
+    core.dettach_service(service_hash)
   end
 
   def roll_back_orphan(service_hash)
-    STDERR.puts('Orphan ROLL BACK ' + service_hash.to_s)
-    @core_api.rollback_orphaned_service(service_hash)
+    #STDERR.puts('Orphan ROLL BACK ' + service_hash.to_s)
+    core.rollback_orphaned_service(service_hash)
   end
 
   def roll_back_shared(service_hash)
-    STDERR.puts('Shared ROLL BACK ' + service_hash.to_s)
-    @core_api.roll_back_shared(service_hash)
+   # STDERR.puts('Shared ROLL BACK ' + service_hash.to_s)
+    core.roll_back_shared(service_hash)
   end
 end

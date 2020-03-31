@@ -27,6 +27,7 @@ when 'services'
   require_relative 'services.rb'
 when 'actions'
   @route += '/'
+  perform_get
 when 'action'
   require_relative 'action.rb'
 when 'properties'

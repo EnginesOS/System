@@ -9,10 +9,10 @@ module EventsTrigger
       Action: action,
       Actor:
       {ID: "system",
-      Attributes:
+      Actor: {Attributes:
       {container_name: engine.container_name,
       container_type: engine.ctype,
-      }
+    } }
       },
     })
   end
@@ -26,10 +26,10 @@ module EventsTrigger
       Action: 'install',
       Actor:
       {ID: "system",
-      Attributes:
+      Actor: { Attributes:
       {container_name: engine_name,
       container_type: 'app',
-      }
+    } }
       },
     })
   end
@@ -43,10 +43,10 @@ module EventsTrigger
       Action: 'update',
       Actor:
       {ID: 'system',
-      Attributes:
+      Actor: { Attributes:
       {container_name: 'system',
       container_type: 'system',
-      }
+    } }
       },})
   end
 
@@ -59,10 +59,10 @@ module EventsTrigger
       Action: 'restart',
       Actor:
       {ID: 'system',
-      Attributes:
+      Actor: { Attributes:
       {container_name: 'system',
       container_type: 'system',
-      }
+    } }
       },})
   end
 
@@ -75,10 +75,10 @@ module EventsTrigger
       Action: 'system update',
       Actor:
       {ID: "system",
-      Attributes:
+      Actor: { Attributes:
       {container_name: 'system',
       container_type: 'system',
-      }
+    } }
       },})
   end
 end

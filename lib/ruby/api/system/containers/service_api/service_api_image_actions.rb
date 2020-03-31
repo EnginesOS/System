@@ -2,7 +2,7 @@ module ServiceApiImageActions
   # @returns [Boolean]
   # whether pulled or no false if no new image
   def pull_image(image_name)
-    engines_core.pull_image(image_name)
+    core.pull_image(image_name)
     begin
       remove_old(image_name)
     rescue #might be in use for another container or image

@@ -1,4 +1,13 @@
+require_relative '../../engines_system/engines_system'
+require_relative '../../engines_core/engines_core'
+
+
 class ContainerApi < ErrorsApi
+  class << self
+    def instance
+      @@container_instance ||= self.new
+    end
+  end
 
   require_relative '../service_hash_builders.rb'
   require '/opt/engines/lib/ruby/system/deal_with_json.rb'
@@ -33,9 +42,6 @@ class ContainerApi < ErrorsApi
   require_relative 'container_api_locale.rb'
   include ContainerApiLocale
 
-  require_relative 'core_api_access.rb'
-  include CoreApiAccess
-
   require_relative 'api_actionators.rb'
   include ApiActionators
 
@@ -50,16 +56,18 @@ class ContainerApi < ErrorsApi
 
   require_relative 'container_api_services.rb'
   include ContainerApiServices
-  
-  
-  def initialize(_docker_api, _system_api, _engines_core)
-    @docker_api = _docker_api
-    @system_api = _system_api
-    @engines_core = _engines_core
+
+  protected
+
+  def system_api
+    @system_api ||= SystemApi.instance
   end
 
-  def system_value_access
-    @engines_core.system_value_access
+  def docker_api
+    @docker_api ||= DockerApi.instance
   end
 
+  def core
+    @core ||= EnginesCore.instance
+  end
 end

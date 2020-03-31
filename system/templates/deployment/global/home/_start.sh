@@ -4,12 +4,12 @@ PID_FILE=/home/engines/run/engines.pid
 
 export PID_FILE
 
-if test -f /home/engines/functions/trap.sh 
- then
+#if test -f /home/engines/functions/trap.sh 
+# then
  . /home/engines/functions/trap.sh
- else
-. /home/trap.sh
-fi
+# else
+#. /home/trap.sh
+#fi
 
 . /home/engines/functions/start_functions.sh
 
@@ -30,7 +30,7 @@ pre_running
 custom_start
 
 
-touch home/engines/run/flags/started_once
+touch /home/engines/run/flags/started_once
 
 if ! test -z $exit_start
  then
