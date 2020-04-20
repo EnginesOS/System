@@ -13,7 +13,7 @@ eports: []
 repo: na
 last_result: |
   monit
-setState: running
+set_state: running
 databases: []
 registerSite: true
 monitored: false

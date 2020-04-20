@@ -5,5 +5,5 @@
  export APACHE_RUN_GROUP=python
  . /etc/apache2/envvars
  echo Start Calling /home/_start.sh
- /home/_start.sh
+exec /home/_start.sh
  

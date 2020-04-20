@@ -4,13 +4,13 @@ module Certificates
   #  STDERR.puts(' Cert  ' +  params[:certificate] )
   #  STDERR.puts(' KEY  ' +  params[:private_key] )
     actionator = get_service_actionator(certs_service, 'import_cert')
-    certs_service.perform_action(actionator, params) #[:domain_name], params[:certificate] + params[:private_key])
+    certs_service.perform_action(actionator, params)
   end
 
   def remove_cert(params)
     certs_service = loadManagedService('certs')
     actionator = get_service_actionator(certs_service, 'remove_cert')
-   
+
     unless params[:store].nil? || params[:store].start_with?('imported')
       service = { container_type: container_type(params[:store]),
         parent_engine: engine_name(params[:store]),
@@ -19,15 +19,10 @@ module Certificates
         service_handle: params[:cert_name]
       }
      # STDERR.puts('CERT SERVICe IS:' + service.to_s)
-    # begin
-       s = @engines_api.retrieve_engine_service_hash(service)
+       s = core.retrieve_engine_service_hash(service)
      #   STDERR.puts('CERT SERVICe R:' + s.to_s)
-     # rescue StandardError => e
-      #  STDERR.puts('CERT SERVICE E is:' + e.to_s + "\n" + e.backtrace.to_s)
-     #   s = nil
-     # end
       unless s.nil?
-      @engines_api.dettach_service(service) 
+      core.dettach_service(service)
       else
         raise EnginesException.new(error_hash('Cert service entry  not found' + service.to_s))
       end
@@ -83,7 +78,7 @@ module Certificates
 
     begin
       actionator = get_service_actionator(certs_service, 'fetch_cert')
-      c = certs_service.perform_action(actionator, {cert_name: params[:container_type] +'_' + params[:parent_engine]  + '_' + params[:domain_name]})
+      c = certs_service.perform_action(actionator, {cert_name: "#{params[:container_type]}_#{params[:parent_engine]}_#{params[:domain_name]}" })
 
       #  STDERR.puts('GTO c ' + c.to_s)
       if c.include?('BEGIN CERTIFICATE')
@@ -91,12 +86,12 @@ module Certificates
       end
       # FixME
       #return raise EnginesException(....) instead of return false
-      @engines_api.dettach_service(params)
+      core.dettach_service(params)
     rescue
       #no cert exception is what we want
     end
 
-    @engines_api.create_and_register_service({
+    core.create_and_register_service({
       parent_engine: params[:parent_engine],
       type_path: 'certs',
       service_container_name: 'certs',

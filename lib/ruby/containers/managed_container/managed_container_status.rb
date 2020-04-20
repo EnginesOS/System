@@ -6,24 +6,25 @@ module ManagedContainerStatus
       false
     end
   end
-#
+
+  #
   def save_state
     status
-    super
+    container_api.save_container(self.dup)
   end
-  
+
   def read_state
     state = super
     if state == 'na'
       expire_engine_info
-    #  SystemDebug.debug(SystemDebug.containers, container_name, 'in na',  :info)
-      'nocontainer'
+      #  SystemDebug.debug(SystemDebug.containers, container_name, 'in na',  :info)
+      :nocontainer
     else
       state
     end
   rescue EnginesException =>e
     expire_engine_info
-    'nocontainer'
+    :nocontainer
   end
 
   def is_privileged?
@@ -33,17 +34,17 @@ module ManagedContainerStatus
   # raw=true means dont check state for error
   def read_state(raw = false)
     if docker_info.is_a?(FalseClass)
-      state = 'nocontainer'
+      state = :nocontainer
     else
       state = super()
       if state.nil? #Kludge
-        state = 'nocontainer'
+        state = :nocontainer
         @last_error = 'mc got nil from super in read_state'
       end
     end
     unless raw == true
-      if state != @setState && task_at_hand.nil?
-        @last_error =  ' Warning State Mismatch set to ' + @setState.to_s + ' but in ' + state.to_s + ' state'
+      if state != @set_state && task_at_hand.nil?
+        @last_error =  "Warning State Mismatch set to #{@set_state} but in #{state} state"
       else
         @last_error = ''
       end
@@ -51,33 +52,38 @@ module ManagedContainerStatus
     state
   rescue EnginesException =>e
     expire_engine_info
-    'nocontainer'
-    clear_cid #unless @container_id ==  -1 
+    :nocontainer
+    clear_cid
     raise e
   end
 
   def is_startup_complete?
-    @container_api.is_startup_complete?(self)
+    ContainerStateFiles.is_startup_complete?(store_address)
   end
 
-  def is_error?
+  def is_error?(cs)
     r = false
-    if task_at_hand.nil?
-      if in_two_step?
-        r = true if @setState == read_state
-      end
+    if cs != @set_state
+      r = true unless task_at_hand.nil?
     end
+    r = false if cs == :stopped && is_stopped_ok?
     r
+  rescue StandardError => e
+    log_exception(e)
+    true
+    #  Bit of a primative solution
+    #  what if doing the delete stag of a recreat? when in_two_step? with more tasks to do
+    # how do you time out a crashed multi step
   end
-  
+
   def set_debug
-    @container_api.set_debug(self)
+    ContainerStateFiles.set_debug(store_address)
   end
 
   def clear_debug
-    @container_api.clear_debug(self)
+    ContainerStateFiles.clear_debug(store_address)
   end
-    
+
   def clear_error
     #Sychronise somewhere
     @out_of_memory = false
@@ -87,23 +93,30 @@ module ManagedContainerStatus
   end
 
   def restart_required?
-    @container_api.restart_required?(self)
+    ContainerStateFiles.restart_required?(store_address)
   end
 
   def restart_reason
-    @container_api.restart_reason(self)
+    ContainerStateFiles.restart_reason(store_address)
   end
 
   def rebuild_required?
-    @container_api.rebuild_required?(self)
+    ContainerStateFiles.rebuild_required?(store_address)
   end
 
   def rebuild_reason
-    @container_api.rebuild_reason(self)
+    ContainerStateFiles.rebuild_reason(store_address)
   end
 
   def in_two_step?
-    File.exist?(ContainerStateFiles.container_state_dir(self) + '/in_progress')
+    File.exist?("#{ContainerStateFiles.container_state_dir(store_address)}/in_progress")
+  end
+
+  def container_id
+    if @id == -1 || @id.nil?
+      @id = read_container_id
+    end
+    @id
   end
 
 end

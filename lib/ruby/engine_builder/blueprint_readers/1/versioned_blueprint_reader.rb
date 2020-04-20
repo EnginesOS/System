@@ -50,20 +50,20 @@ class VersionedBlueprintReader < BluePrintReader
     if seds.is_a?(Array) # not an error just nada
       n = 0
       seds.each do |sed|
-        file = clean_path(sed[:source_file])
-        dest = clean_path(sed[:destination_file])
-        tmp_file = '/tmp/' + File.basename(file) + '.' + n.to_s
-        if file.match(/^_TEMPLATES.*/).nil? == false
-          template_file = file.gsub(/^_TEMPLATES/, '')
+        src_file = clean_path(sed[:source_file])
+        dest_file = clean_path(sed[:destination_file])
+        tmp_file = "/tmp/#{File.basename(src_file)}.#{n}"
+        if src_file.match(/^_TEMPLATES.*/).nil? == false
+          template_file = src_file.gsub(/^_TEMPLATES/, '')
         else
           template_file = nil
         end
         if template_file.nil? == false
-          src_file = '/home/engines/templates/' + template_file
+          src_file = "/home/engines/templates/#{template_file}"
         else
-          src_file = '/home/app/' + file
+          src_file = "/home/app/#{src_file}" unless src_file.start_with?('/home/app/')
         end
-        dest_file = '/home/app/' + dest
+        dest_file = "/home/app/#{dest_file}" unless dest_file.start_with?('/home/app/')
         sedstr = sed[:string]
         @sed_strings[:src_file].push(src_file)
         @sed_strings[:dest_file].push(dest_file)

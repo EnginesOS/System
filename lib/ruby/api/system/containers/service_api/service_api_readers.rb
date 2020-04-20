@@ -1,11 +1,11 @@
 module ServiceApiReaders
   def retrieve_reader(c, reader_name)
-    cmd = '/home/readers/' + reader_name + '.sh'
+    cmd = "/home/readers/#{reader_name}.sh"
     result = ''
     begin
 
-      thr = Thread.new { result =  @engines_core.exec_in_container({:container => c, :command_line => [cmd], :log_error => true}) }
-      thr[:name] = 'action reader ' + c.container_name
+      thr = Thread.new { result =  core.exec_in_container({:container => c, :command_line => [cmd], :log_error => true}) }
+      thr[:name] = "action reader #{c.container_name}"
       #  STDERR.puts('Thread ' +  thr.inspect)
       Timeout.timeout(@@configurator_timeout) do
         thr.join

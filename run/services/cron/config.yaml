@@ -1,4 +1,4 @@
---- !ruby/object:ManagedService
+--- !ruby/object:Container::ManagedService
 cont_user_id: 22016
 container_name: cron
 ctype: service
@@ -21,7 +21,7 @@ port:
 mapped_ports:
 repo: na
 last_result: 
-setState: running
+set_state: running
 conf_register_site: false
 conf_register_dns: true
 dependant_on:

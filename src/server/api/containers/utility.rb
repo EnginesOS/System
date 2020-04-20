@@ -35,7 +35,4 @@ get '/v0/containers/utility/:utility_name/wait_for/:what/:delay' do
   end
 end
 
-# @method clear_engine_error
-# @overload get '/v0/containers/engine/:engine_name/clear
-#
-# @return true|false
+# @!endgroup

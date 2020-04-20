@@ -1,9 +1,6 @@
 class Templater
   require_relative '../system/system_access.rb'
-  # @sections = ["Blueprint","System","Builder","Engines","Engine"]
-  #
-  def initialize(system_access, builder_public)
-    @system_access = system_access
+  def initialize(builder_public)
     @builder_public = builder_public
   end
 
@@ -19,7 +16,11 @@ class Templater
   end
 
   def resolve_hash_value(match, values_hash)
+    STDERR.puts("Resolved hash mTCH" * 20)
+    STDERR.puts("#{match}")
     name = match.sub!(/_Engines_Template\(/, '')
+    STDERR.puts("Resolved hash value" * 20)
+    STDERR.puts("#{name}")
     name.sub!(/[\)]/, '')
     if values_hash.key?(name.to_sym)
       values_hash[name.to_sym]
@@ -34,7 +35,7 @@ class Templater
     name = match.sub!(/_Engines_System\(/, '')
     name.sub!(/[\)]/, '')
     begin
-      var_method = @system_access.method(name.to_sym)
+      var_method = system_access.method(name.to_sym)
     rescue
       return ''
     end
@@ -81,7 +82,7 @@ class Templater
         args = cmd[1]
       end
     end
-    var_method = @system_access.method(name.to_sym)
+    var_method = system_access.method(name.to_sym)
     if args.is_a?(Array)
       var_method.call(args[0], args[1])
     else
@@ -119,16 +120,8 @@ class Templater
     v
   end
 
-  def set_system_access(system)
-    @system_access = system
-  end
-
   def process_templated_string(template)
-    if @system_access.nil? == false
       template = apply_system_variables(template)
-    else
-      SystemUtils.log_error_mesg('nil system access', template)
-    end
     unless @builder_public.nil? || @builder_public == false
       template = apply_build_variables(template)
       if @builder_public.respond_to?('blueprint')\
@@ -185,12 +178,12 @@ class Templater
   end
 
   def fill_in_dynamic_vars(service_hash)
-   # SystemDebug.debug(SystemDebug.templater, 'FILLING_+@+#+@+@+@+@+@+')
+    # SystemDebug.debug(SystemDebug.templater, 'FILLING_+@+#+@+@+@+@+@+')
     service_hash[:variables] = {} if service_hash.key?(:variables) == false || service_hash[:variables].nil? == true
     service_hash[:variables].each do |variable|
-     # SystemDebug.debug(SystemDebug.templater, :variable, variable)
+      # SystemDebug.debug(SystemDebug.templater, :variable, variable)
       if variable[1].nil? == false && variable[1].is_a?(String) && variable[1].include?('_Engines')
-       # SystemDebug.debug(SystemDebug.templater, :processing, variable[1])
+        # SystemDebug.debug(SystemDebug.templater, :processing, variable[1])
         result = process_templated_string(variable[1])
         service_hash[:variables][variable[0]] = result
       end
@@ -202,10 +195,7 @@ class Templater
   def fill_in_service_def_values(service_def)
     #  p :fill_in_service_def_values
     if service_def.key?(:consumer_params) && service_def[:consumer_params].is_a?(Hash)
-      #    p service_def[:consumer_params]
-      #      p service_def[:consumer_params].values
       service_def[:consumer_params].values.each do |field|
-
         if field.key?(:value)
           field[:value] = process_templated_string(field[:value])
         end
@@ -217,4 +207,11 @@ class Templater
   def proccess_templated_service_hash(service_hash)
     fill_in_dynamic_vars(service_hash)
   end
+  
+  protected
+
+  def system_access
+    @system_access ||= SystemAccess.instance
+  end
+
 end

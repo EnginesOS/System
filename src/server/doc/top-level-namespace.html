@@ -18933,7 +18933,7 @@ service</p>
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/v0/containers/service/:service_name/recreate</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='kw'>begin</span>
     <span class='id identifier rubyid_service'>service</span> <span class='op'>=</span> <span class='id identifier rubyid_get_service'>get_service</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:service_name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-    <span class='comment'># unless service.is_a?(ManagedService)
+    <span class='comment'># unless service.is_a?(Container::ManagedService)
 </span>     <span class='comment'>#  send_encoded_exception(request: request, exception: e)
 </span>    <span class='comment'># else
 </span>    <span class='id identifier rubyid_return_text'>return_text</span><span class='lparen'>(</span><span class='id identifier rubyid_service'>service</span><span class='period'>.</span><span class='id identifier rubyid_recreate'>recreate</span><span class='rparen'>)</span>

@@ -2,7 +2,7 @@ module Orphans
   def rollback_orphaned_service(params)
     r =  'services/orphan/'
     r += address_params(params, full_path)
-    rest_post(r, {:api_vars => params})
+    post(r, {:api_vars => params})
   end
 
   def retrieve_orphan(params)
@@ -20,14 +20,14 @@ module Orphans
   def orphanate_service(params)
     r = 'services/orphans/add'
     r += address_params(params, [:parent_engine, :service_handle, :publisher_namespace, :type_path])
-    rest_post(r, {:api_vars => params})
+    post(r, {:api_vars => params})
   end
 
   def release_orphan(params)
     r = 'services/orphans/del'
     r += address_params(params, [:parent_engine, :service_handle, :publisher_namespace, :type_path])
     STDERR.puts(' rel orphan ' + r.to_s + "\nFrom:" + params.to_s)
-    rest_delete(r)
+    delete(r)
   end
 
   def orphaned_services_registry

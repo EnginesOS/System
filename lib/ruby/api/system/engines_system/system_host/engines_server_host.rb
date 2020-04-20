@@ -39,7 +39,7 @@ module EnginesServerHost
   end
 
   def halt_base_os(reason)
-    log_error_mesg("Shutdown Due to:" + reason.to_s)
+    log_error_mesg("Shutdown Due to:#{reason}")
     File.delete(SystemConfig.BuildRunningParamsFile) if File.exist?(SystemConfig.BuildRunningParamsFile)
     pthre = Thread.new { run_server_script('power_off_base_os') }
     pthre[:name] = 'power_off_base_os thread'
@@ -90,9 +90,7 @@ module EnginesServerHost
   end
 
   def get_system_memory_info
-    # r = run_server_script('memory_stats')
     r = SystemUtils.execute_command('/opt/engines/system/scripts/ssh/memory_stats.sh', false, nil)
-    # STDERR.puts( 'get_system_memory_info ' + r.to_s )
     ret_val = {}
     proc_mem_info = r[:stdout]
     proc_mem_info.split("\n").each do |line|
@@ -196,21 +194,18 @@ module EnginesServerHost
     # FIxME
     # use SystemStatus.get_base_host_ip for IP
     unless File.exist?('/var/lib/engines/local_host')
-      cmd = 'ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/system/' + script_name + ' engines@' + ENV['CONTROL_IP'] + '  /opt/engines/system/scripts/ssh/' + script_name + '.sh'
+      cmd = "ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/system/#{script_name} engines@#{ENV['CONTROL_IP']} /opt/engines/system/scripts/ssh/#{script_name}.sh"
     else
-      cmd = '/opt/engines/system/scripts/ssh/' + script_name + '.sh'
+    cmd = "/opt/engines/system/scripts/ssh/#{script_name}.sh"
     end
 
     # STDERR.puts('RUN SERVER SCRIPT cmd'  + cmd.to_s)
     Timeout.timeout(script_timeout) do
       SystemUtils.execute_command(cmd, false, script_data)
-      # STDERR.puts(' Server Script ' + r.to_s)
-      # r
     end
 
   rescue Timeout::Error
     STDERR.puts('Timeout on Running Server Script ' + script_name )
     raise EnginesException.new(error_hash('Timeout on Running Server Script ' + script_name , script_name))
-    #system('ssh  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i /home/engines/.ssh/system/restart_mgmt engines@' + SystemStatus.get_management_ip + '  /opt/engines/bin/restart_mgmt.sh')
   end
 end

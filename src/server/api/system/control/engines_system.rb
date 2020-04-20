@@ -29,19 +29,6 @@ get '/v0/system/control/engines_system/restart' do
   end
 end
 
-# NO LONGER POSSIBLE DUE TO LISTENER ?
-## @method recreate_engines_system
-## @overload get '/v0/system/control/engines_system/recreate'
-##  Recreate the engines system container
-## @return [true]
-## test cd /opt/engines/tests/engines_api/system/control/engines_system; make recreate
-#get '/v0/system/control/engines_system/recreate' do
-#  begin
-#    return_text(engines_api.recreate_engines_system_service)
-#  rescue StandardError => e
-#    send_encoded_exception(request: request, exception: e)
-#  end
-#end
 
 # @method dump_engines_system_heap_stats
 # @overload get '/v0/system/control/engines_system/heap_stats'

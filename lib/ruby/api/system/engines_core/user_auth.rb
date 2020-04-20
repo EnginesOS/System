@@ -7,7 +7,7 @@ module UserAuth
     else
       ldap_user_login(params)
     end
-    #  {tok"api_version" => 0}
+   
   end
 
   def get_system_user_info(user_name)
@@ -30,8 +30,7 @@ module UserAuth
       system: 'user auth',
       error_mesg: 'Missing Password')
     else
-      rws = auth_database.execute("Select authtoken from systemaccess where username = '" + params[:user_name]\
-      + "' and password = '" + params[:current_password] + "';")
+      rws = auth_database.execute("Select authtoken from systemaccess where username = '#{params[:user_name]}' and password = '#{params[:current_password]}';")
       if rws.nil? || rws.count == 0
         raise EnginesException.new(
         level: :warning,
@@ -43,9 +42,7 @@ module UserAuth
       else
         unless params[:new_password].nil?
           authtoken = SecureRandom.hex(64)
-          query = "UPDATE systemaccess SET password = '"\
-          +  params[:new_password] + "', authtoken ='" + authtoken.to_s \
-          + "' where username = '" + params[:user_name] + "' and password = '" + params[:current_password] + "';"
+          query = "UPDATE systemaccess SET password = '#{params[:new_password]}', authtoken ='#{authtoken}' where username = '#{params[:user_name]}' and password = '#{params[:current_password]}';"
           auth_database.execute(query)
           update_local_token(authtoken) if params[:user_name] == 'admin'
         end
@@ -58,10 +55,9 @@ module UserAuth
   def set_system_user_password(password, token, current_password = nil)
     user = 'admin'
     if current_password.nil?
-      rws = auth_database.execute("Select authtoken from systemaccess where username = '" + user.to_s + "';")
+      rws = auth_database.execute("Select authtoken from systemaccess where username = '#{user}';")
     else
-      rws = auth_database.execute("Select authtoken from systemaccess where username = '" + user.to_s\
-      + "' and password = '" + current_password.to_s + "';")
+      rws = auth_database.execute("Select authtoken from systemaccess where username = '#{user}' and password = '#{current_password}';")
     end
     authtoken = SecureRandom.hex(64)
     if rws.nil? || rws.count == 0
@@ -79,10 +75,7 @@ module UserAuth
       status: nil,
       system: 'user auth',
       error_mesg: 'token missmatch') if token != rws[0][0]
-      query = "UPDATE systemaccess SET password = '"\
-      + password.to_s  \
-      + "', authtoken ='" + authtoken.to_s \
-      + "' where username = '" + user + "' and authtoken = '" + token.to_s + "';"
+      query = "UPDATE systemaccess SET password = '#{password}', #{authtoken} ='#{authtoken}' where username = '#{user}' and authtoken = '#{token}';"
       # SystemDebug.debug(SystemDebug.first_run,:applyin, query)
       auth_database.execute(query)
       update_local_token(authtoken) if user == 'admin'
@@ -99,7 +92,6 @@ module UserAuth
   end
 
   def system_user_settings
-
     if File.exist?(SystemConfig.SystemUserSettingsFile)
       data = File.read(SystemConfig.SystemUserSettingsFile)
       YAML::load(data)
@@ -127,13 +119,13 @@ module UserAuth
     ip = nil
     if ip == nil
       rows = auth_database.execute(\
-      'select guid from systemaccess where authtoken=' + "'" + token.to_s + "';" )
+      "select guid from systemaccess where authtoken='#{token}';" )
     else
       rows = auth_database.execute(\
-      'select guid from systemaccess where authtoken=' + "'" + token.to_s + "' and ip_addr ='';")
+      "select guid from systemaccess where authtoken='#{token}' and ip_addr ='';")
       if rows.count == 0
         rows = auth_database.execute(\
-        'select guid from systemaccess where authtoken=' + "'" + token.to_s + "' and ip_addr ='" + ip.to_s + "';" )
+        "select guid from systemaccess where authtoken='#{token}' and ip_addr ='{ip}';" )
       end
     end
     if rows.count > 0
@@ -201,8 +193,6 @@ module UserAuth
     ldap.auth(params[:user_name], params[:password])
     if ldap.bind
       tok =  SecureRandom.hex(48)
-      # pararms[:is_admin] = is_inadmin_group?(ldap,params[:user_name] )
-      #   params.delete(:password)
       $user_tokens[tok] = params
       record_login(params)
       tok
@@ -214,8 +204,7 @@ module UserAuth
   end
 
   def admin_user_login(params)
-    q = 'select authtoken from systemaccess where username=' + "'" + params[:user_name].to_s +
-    "' and password = '" + params[:password].to_s + "';"
+    q = "select authtoken from systemaccess where username='#{params[:user_name]}' and password = '#{params[:password]}';"
     rows = auth_database.execute(q)
     raise EnginesException.new(error_hash("failed to select " + q.to_s, params)) unless rows.count > 0
     record_login(params)

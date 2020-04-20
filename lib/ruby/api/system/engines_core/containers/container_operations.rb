@@ -1,11 +1,7 @@
 module ContainerOperations
 
-  def init_engine_dirs(engine_name)
-    @system_api.init_engine_dirs(engine_name)
-  end
-
   def image_exist?(container_name)
-    @docker_api.image_exist?(container_name)
+    docker_api.image_exist?(container_name)
   rescue StandardError
     false
   end
@@ -21,7 +17,7 @@ module ContainerOperations
   end
 
   def get_changed_containers
-    @system_api.get_changed_containers
+    system_api.get_changed_containers
   end
 
   def web_sites_for(container)
@@ -45,7 +41,7 @@ module ContainerOperations
           protocol = site[:variables][:proto]
           protocol = 'http' if protocol.nil?
         end
-        url = protocol.to_s + '://' + site[:variables][:fqdn].to_s
+        url = "#{protocol}://#{site[:variables][:fqdn]}"
         urls.push(url)
       end
     end
@@ -53,10 +49,10 @@ module ContainerOperations
   end
 
   def get_container_network_metrics(engine_name)
-    engine = @system_api.loadManagedEngine(engine_name)
-    unless engine.is_a?(ManagedEngine)
-      engine = @system_api.loadManagedService(engine_name)
-      unless engine.is_a?(ManagedService)
+    engine = system_api.loadManagedEngine(engine_name)
+    unless engine.is_a?(Container::ManagedEngine)
+      engine = system_api.loadManagedService(engine_name)
+      unless engine.is_a?(Container::ManagedService)
         raise EnginesException.new(error_hash("Failed to load network stats", engine_name))
       end
     end

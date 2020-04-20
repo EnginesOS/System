@@ -2,7 +2,7 @@ module ManagedServiceOnAction
   def on_start(event_hash)
     @stop_reason = nil
  #   SystemDebug.debug(SystemDebug.container_events, :ON_start_MS, event_hash)
-    @container_mutex.synchronize {
+    container_mutex.synchronize {
       set_running_user
       @stop_reason = nil
       @exit_code = 0
@@ -20,22 +20,22 @@ module ManagedServiceOnAction
         @has_run = true
         save_state
         begin
-          @container_api.register_non_persistent_services(self)
+          container_api.register_non_persistent_services(self)
         rescue
           return on_stop(nil) unless is_running?
         end
       end
       save_state
-      @container_api.register_ports(@container_name, @mapped_ports) if @mapped_ports.is_a?(Hash)
+      container_api.register_ports(@container_name, @mapped_ports) if @mapped_ports.is_a?(Hash)
     }
-    service_configurations = @container_api.pending_service_configurations_hashes({service_name: @container_name, publisher_namespace: @publisher_namespace, type_path: @type_path })
+    service_configurations = container_api.pending_service_configurations_hashes({service_name: @container_name, publisher_namespace: @publisher_namespace, type_path: @type_path })
     if service_configurations.is_a?(Array) || registered_consumers.is_a?(Array)
       if wait_for_startup(30)
         if service_configurations.is_a?(Array) && ! service_configurations.empty?
           service_configurations.each do |configuration|
             begin
         #      STDERR.puts('SERVICE CONFIGURATION' + configuration.to_s)
-              @container_api.update_service_configuration(configuration)
+              container_api.update_service_configuration(configuration)
             rescue
               return on_stop(nil) unless is_running?
             end
@@ -52,8 +52,8 @@ module ManagedServiceOnAction
   end
 
   def created_and_started
-    @container_api.load_and_attach_post_services(self)
-    service_configurations = @container_api.retrieve_service_configurations({service_name: @container_name, publisher_namespace: @publisher_namespace, type_path: @type_path})
+    container_api.load_and_attach_post_services(self)
+    service_configurations = container_api.retrieve_service_configurations({service_name: @container_name, publisher_namespace: @publisher_namespace, type_path: @type_path})
     if service_configurations.is_a?(Array)
       service_configurations.each do |configuration|
         next if configuration[:no_save] == true
@@ -74,8 +74,8 @@ module ManagedServiceOnAction
       save_state
       #return true if @consumer_less
       # deregister_with_dns # Really its in the following nowMUst register each time as IP Changes
-      @container_api.deregister_non_persistent_services(self)
-      @container_api.deregister_ports(@container_name, @mapped_ports) if @mapped_ports.is_a?(Hash)
+      container_api.deregister_non_persistent_services(self)
+      container_api.deregister_ports(@container_name, @mapped_ports) if @mapped_ports.is_a?(Hash)
     end
   end
 

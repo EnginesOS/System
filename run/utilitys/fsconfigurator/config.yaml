@@ -1,4 +1,4 @@
---- !ruby/object:ManagedUtility
+--- !ruby/object:Container::ManagedUtility
 container_name: fsconfigurator
 publisher_namespace: EnginesSystem
 type_path: fsconfigurator
@@ -16,26 +16,26 @@ commands:
   - :fw_user
   - :data_gid
   - :volume
-  - :target_container 
+  - :target_container
  add_volume:
-  command: "/home/add_volume.sh _Engines_Template(volume)"
+  command: "/home/add_volume.sh $volumes"
   timeout: 15
   requires:
   - :target
   - :fw_user
   - :data_gid
-  - :volume 
-  - :target_container 
+  - :volume
+  - :target_container
  remove_volumes:
   command: "/home/remove_container.sh fs"
   timeout: 20
   requires:
-  - :target  
+  - :target
  remove_volume:
-  command: "/home/remove_container.sh volume _Engines_Template(volume)"
+  command: "/home/remove_container.sh volume $volumes"
   requires:
   - :target
-  - :volume  
+  - :volume
  remove_logs:
   command: "/home/remove_container.sh logs"
   requires:
@@ -49,13 +49,17 @@ commands:
   timeout: 20
   requires:
   - :target
-last_error: 
+last_error:
 memory: '28'
-hostname: 
-domain_name: 
+hostname:
+domain_name:
 host_network: false
 soft_service: false
 environments:
+- !ruby/object:EnvironmentVariable
+ name: volumes
+ value: _Engines_Template(volume)
+ setatrun: false	
 - !ruby/object:EnvironmentVariable
  name: fw_user
  value: _Engines_Template(fw_user)
@@ -63,13 +67,13 @@ environments:
 - !ruby/object:EnvironmentVariable
  name: data_gid
  value: _Engines_Template(data_gid)
- setatrun: false 
+ setatrun: false
 - !ruby/object:EnvironmentVariable
  name: data_uid
  value: _Engines_Template(data_uid)
- setatrun: false 
+ setatrun: false
 image: _Engines_System(flavor)/fsconfigurator:_Engines_System(release)
-volumes: 
+volumes:
  state_dir:
   name: state_dir
   remotepath: "/client/state/"
@@ -89,8 +93,7 @@ volumes_from:
 - "_Engines_Template(target_container)"
 mapped_ports:
 repo: na
-last_result: 
-setState: nocontainer
+last_result:
+set_state: nocontainer
 conf_register_site: false
 conf_register_dns: false
-

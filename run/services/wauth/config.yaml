@@ -1,4 +1,4 @@
---- !ruby/object:ManagedService
+--- !ruby/object:Container::ManagedService
 cont_user_id: 22038
 container_name: wauth
 publisher_namespace: EnginesSystem
@@ -18,7 +18,7 @@ kerberos: true
 volumes: 
 repo: na
 last_result: 
-setState: running
+set_state: running
 conf_register_site: false
 conf_register_dns: true
 conf_self_start: true

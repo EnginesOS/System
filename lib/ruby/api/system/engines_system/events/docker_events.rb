@@ -1,3 +1,5 @@
+require '/opt/engines/lib/ruby/containers/store/cache'
+
 module DockerEvents
   require '/opt/engines/lib/ruby/api/system/docker/event_watcher/docker_event_watcher.rb'
   require '/opt/engines/lib/ruby/system/system_config.rb'
@@ -5,7 +7,7 @@ module DockerEvents
   def create_event_listener
     @event_listener_lock = true
     start_docker_event_listener
-    @docker_event_listener.add_event_listener([self, 'container_event'.to_sym], 16, nil, 0) unless $PROGRAM_NAME.end_with?('system_service.rb')
+    @docker_event_listener.add_event_listener(self, :container_event, 16, nil, 0) unless $PROGRAM_NAME.end_with?('system_service.rb')
   end
 
   class WaitForContainerListener
@@ -37,7 +39,7 @@ module DockerEvents
       mask = container_type_mask(container.ctype)
       pipe_in, pipe_out = IO.pipe
       event_listener = WaitForContainerListener.new(what, pipe_out, mask)
-      add_event_listener([event_listener, 'read_event'.to_sym], event_listener.mask, container.container_name, 100)
+      add_event_listener(event_listener, :read_event, event_listener.mask, container.container_name, 100)
       Timeout::timeout(timeout) do
         unless is_aready?(what, container.read_state)
           begin
@@ -45,11 +47,8 @@ module DockerEvents
           rescue
           end
         end
-        #     pipe_in.close unless pipe_in.closed?
-        #    pipe_out.close unless pipe_out.closed?
         rm_event_listener(event_listener)
         break
-        # return true
       end
     end
     r = true
@@ -57,16 +56,10 @@ module DockerEvents
     STDERR.puts(' Wait for timeout on ' + container.container_name.to_s + ' for ' + what)
     rm_event_listener(event_listener) unless event_listener.nil?
     event_listener = nil
-    #   pipe_in.close
-    # pipe_out.close
-    #is_aready?(what, container.read_state) #check for last sec call
   rescue StandardError => e
     rm_event_listener(event_listener) unless event_listener.nil?
     STDERR.puts(e.to_s)
     STDERR.puts(e.backtrace.to_s)
-    #pipe_in.close
-    #  pipe_out.close
-    #is_aready?(what, container.read_state)
   ensure
     unless pipe_in.nil?
       pipe_in.close unless pipe_in.closed?
@@ -82,8 +75,10 @@ module DockerEvents
   end
 
   def trigger_event_notification(hash)
+    STDERR.puts(" TRIGGER EVENT NOT #{hash}")
     @listeners.each do |m|
       listener = m[1][:listener]
+   # listener = m
       unless listener.container_name.nil?
         #WTF just added @docker_event_listener. to match_container
         next unless @docker_event_listener.match_container(hash, listener.container_name)
@@ -96,8 +91,8 @@ module DockerEvents
     end
   end
 
-  def add_event_listener(listener, mask, container_id = nil, priority = 200)
-    @docker_event_listener.add_event_listener(listener, mask, container_id, priority)
+  def add_event_listener(object, method, mask, container_id = nil, priority = 200)
+    @docker_event_listener.add_event_listener(object, method, mask, container_id, priority)
   end
 
   def rm_event_listener(listener)
@@ -107,24 +102,25 @@ module DockerEvents
   private
 
   def is_aready?(what, statein)
-    r = false
-    case what
+    case what.to_sym
     when statein
-      r = true
-    when 'stop'
-      r = true if statein == 'stopped'
-    when 'start'
-      r = true if statein == 'running'
-    when 'unpause'
-      r = true if statein == 'running'
-    when 'pause'
-      r = true if statein == 'paused'
-    when 'create'
-      r = true if statein != 'nocontainer'
-    when 'destroy'
-      r = true if statein == 'nocontainer'
+      true
+    when :stop
+      true if statein == :stopped
+    when :start
+      true if statein == :running
+    when :unpause
+      true if statein == :running
+    when :pause
+      true if statein == :paused
+    when :create
+      true if statein != :nocontainer
+    when :destroy
+      true if statein == :nocontainer
+    else 
+      false
     end
-    r
+    
   end
 
   def container_event(event_hash)
@@ -149,13 +145,13 @@ module DockerEvents
 
   def inform_container_tracking(container_name, ctype, event_name)
     c = get_event_container(container_name, ctype)
-    c.task_complete(event_name) if c.is_a?(ManagedContainer)
+    c.task_complete(event_name) if c.is_a?(Container::ManagedContainer)
   rescue StandardError =>e
     log_exception(e)
   end
 
   def get_event_container(container_name, ctype)
-    c = container_from_cache(container_name)
+    c = cache.container(container_name)
     if c.nil?
       case ctype
       when 'app'
@@ -174,13 +170,14 @@ module DockerEvents
       c
     end
   rescue StandardError =>e
-    #log_exception(e)
+
     STDERR.puts('FAiled to find ' + container_name.to_s + ' of type ' + ctype.to_s)
+    log_exception(e)
   end
 
   def inform_container(event_hash)
     c = get_event_container(event_hash[:container_name], event_hash[:container_type])
-    if c.is_a?(ManagedContainer)
+    if c.is_a?(Container::ManagedContainer)
       c.process_container_event(event_hash)
       true
     else
@@ -192,18 +189,18 @@ module DockerEvents
 
   def start_docker_event_listener(listeners = {})
     @listeners = listeners
-    @docker_event_listener = DockerEventWatcher.new(self, listeners)
+    @docker_event_listener = DockerEventWatcher.new(listeners)
     @event_listener_thread.exit unless @event_listener_thread.nil?
     @event_listener_thread = Thread.new do
       begin
         while 0 == 0
           @event_listener_thread[:name] = 'docker_event_listener'
           @docker_event_listener.start
-          STDERR.puts( ' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+         # STDERR.puts( ' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
           @listeners = @docker_event_listener.event_listeners
-          STDERR.puts( 'Starting again with EVENT LISTENER S ' + @listeners.count.to_s)
-          @docker_event_listener = DockerEventWatcher.new(self, @listeners)
-          STDERR.puts(' EVENT Listener started  post timeout ')
+         # STDERR.puts( 'Starting again with EVENT LISTENER S ' + @listeners.count.to_s)
+          @docker_event_listener = DockerEventWatcher.new(@listeners)
+       #   STDERR.puts(' EVENT Listener started  post timeout ')
         end
       rescue StandardError => e
         STDERR.puts(' EVENT LISTENER THREAD RETURNED!!!!!!!!!!!' + e.to_s)
@@ -217,13 +214,7 @@ module DockerEvents
 
   def is_engines_container_event?(event_hash)
     unless event_hash[:container_type].nil? || event_hash[:container_name].nil?
-      if event_hash[:container_type] == 'service' ||  event_hash[:container_type] == 'system_service'||  event_hash[:container_type] == 'utility'
-        # Enable Cold load of service from config.yaml
-        File.exist?(SystemConfig.RunDir + '/' + event_hash[:container_type] + 's/' + event_hash[:container_name] + '/config.yaml')
-      else
-        # engines always have a running.yaml
-        File.exist?(SystemConfig.RunDir + '/' + event_hash[:container_type] + 's/' + event_hash[:container_name] + '/running.yaml')
-      end
+        ContainerStateFiles.has_config?({c_name: event_hash[:container_name], c_type: event_hash[:container_type]})
     else
       false
     end
@@ -240,5 +231,11 @@ module DockerEvents
       mask |= 16384
     end
     mask
+  end
+
+  private
+
+  def cache
+    Container::Cache.instance
   end
 end

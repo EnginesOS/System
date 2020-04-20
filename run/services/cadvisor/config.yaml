@@ -1,4 +1,4 @@
---- !ruby/object:ManagedService
+--- !ruby/object:Container::ManagedService
 cont_user_id: 0
 container_name: cadvisor
 ctype: service
@@ -33,7 +33,7 @@ image: _Engines_System(flavor)/cadvisor:_Engines_System(release)
 port: 
 repo: na
 last_result: 
-setState: running
+set_state: nocontainer
 conf_register_site: false
 conf_register_dns: true
 dependant_on:

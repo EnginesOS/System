@@ -53,7 +53,6 @@ post '/v0/system/control/base_os/timezone' do
   begin
     post_s = post_params(request)
     cparams = assemble_params(post_s, [], [:timezone])
-
     return_text(engines_api.set_timezone(cparams[:timezone]))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)

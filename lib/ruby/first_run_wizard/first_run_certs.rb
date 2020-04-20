@@ -1,6 +1,6 @@
 module FirstRunCerts
   def create_ca(ca_params)
-    true if @api.update_service_configuration({
+    true if core.update_service_configuration({
       service_name: 'certs',
       configurator_name: 'system_ca',
       variables: {
@@ -36,11 +36,11 @@ module FirstRunCerts
       ca_name: 'system'
       },
     }
-    @api.create_and_register_service(service_param)
+    core.create_and_register_service(service_param)
   end
 
   def set_wap_cert(def_domain)
-    @api.perform_service_action('certs', 'set_default', {
+    core.perform_service_action('certs', 'set_default', {
       install_target: 'all',
       cert_src: 'system_services/system/',
       cert_type: 'generated',

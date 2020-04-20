@@ -20,10 +20,9 @@ module BuildOutput
   def log_build_errors(line)
     line = '' if line.nil?
     unless @err_file.nil?
-      #    line.force_encoding(Encoding::ANSI) # UTF_8)
       @err_file.puts(line.to_s) unless @err_file.nil? || @err_file.closed?
-      log_build_output('ERROR:' + line.to_s)
-      @result_mesg = 'Error.' + line.to_s
+      log_build_output("ERROR: #{line}")
+      @result_mesg = "Error.#{line}"
       @build_error = @result_mesg
     end
     false
@@ -39,7 +38,7 @@ module BuildOutput
   def close_all
     unless @log_file.nil?
       unless @log_file.closed?
-        log_build_output('Build Result:' + @result_mesg)
+        log_build_output("Build Result: #{@result_mesg}")
         log_build_output('Build Finished')
         @log_file.close
       end
@@ -50,7 +49,7 @@ module BuildOutput
   # used to fill in erro mesg with last ten lines
   def tail_of_build_log
     retval = ''
-    lines = File.readlines(SystemConfig.DeploymentDir + '/build.out')
+    lines = File.readlines("#{SystemConfig.DeploymentDir}/build.out")
     lines_count = lines.count - 1
     start = lines_count - 10
     for n in start..lines_count
@@ -62,7 +61,7 @@ module BuildOutput
   # used to fill in erro mesg with last ten lines
   def tail_of_build_error_log
     retval = ''
-    lines = File.readlines(SystemConfig.DeploymentDir + '/build.err')
+    lines = File.readlines("#{SystemConfig.DeploymentDir}/build.err")
     lines_count = lines.count - 1
     start = lines_count - 10
     for n in start..lines_count

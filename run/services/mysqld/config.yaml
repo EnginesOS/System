@@ -1,4 +1,4 @@
---- !ruby/object:ManagedService
+--- !ruby/object:Container::ManagedService
 cont_user_id: 22006
 container_name: mysqld
 publisher_namespace: EnginesSystem
@@ -28,7 +28,7 @@ mapped_ports:
   external: 0
 repo: na
 last_result: 
-setState: running
+set_state: running
 conf_register_site: false
 conf_register_dns: true
 conf_self_start: true

@@ -158,6 +158,7 @@ class BluePrintReader
     log_build_output('Read Persistant Dirs')
     @persistent_dirs = []
     pds = @blueprint[:software][:persistent_directories]
+    log_build_output('loading persistent dirs ' + pds.to_s)
     if pds.is_a?(Array) # not an error just nada
       pds.each do |dir|
         dir[:volume_name] = @builder.templater.process_templated_string(dir[:volume_name])
@@ -171,6 +172,7 @@ class BluePrintReader
     log_build_output('Read Persistant Files')
     @persistent_files = []
     pfs = @blueprint[:software][:persistent_files]
+    log_build_output('loading persistent files ' + pfs.to_s)
     if pfs.is_a?(Array) # not an error just nada
       pfs.each do |file|
         file[:volume_name] = @builder.templater.process_templated_string(file[:volume_name])
@@ -178,6 +180,7 @@ class BluePrintReader
         @persistent_files.push(file)
       end      
     end
+    STDERR.puts('loaded persistent files ' + @persistent_files.to_s)
       @persistent_files
   end
 
@@ -342,11 +345,7 @@ class BluePrintReader
       elsif @blueprint[:software][:workers].key?(:commands) # not an error just nada
 
         @blueprint[:software][:workers][:commands].each do |worker|
-          #      if worker[:name] = @blueprint[:software][:blocking_worker_name]
-          #        @blocking_worker = worker[:command]
-          #      else
           @worker_commands.push(worker[:command])
-          #   end
         end
       end
     end
@@ -366,18 +365,18 @@ class BluePrintReader
       seds.each do |sed|
         file = clean_path(sed[:file])
         dest = clean_path(sed[:destination])
-        tmp_file = '/tmp/' + File.basename(file) + '.' + n.to_s
+        tmp_file = "/tmp/#{File.basename(file)}#{n}"
         if file.match(/^_TEMPLATES.*/).nil? == false
           template_file = file.gsub(/^_TEMPLATES/, '')
         else
           template_file = nil
         end
         if template_file.nil? == false
-          src_file = '/home/engines/templates/' + template_file
+          src_file = "/home/engines/templates/#{template_file}"
         else
-          src_file = '/home/app/' + file
+          src_file = "/home/app/#{file}"
         end
-        dest_file = '/home/app/' + dest
+        dest_file = "/home/app/#{dest}"
         sedstr = sed[:replacement_string]
         @sed_strings[:src_file].push(src_file)
         @sed_strings[:dest_file].push(dest_file)
@@ -408,7 +407,6 @@ class BluePrintReader
         type.downcase!
         # FIXME: when public ports supported
        # SystemDebug.debug(SystemDebug.builder, 'Port ' + name + ':' + portnum.to_s + ':' + external.to_s + '/' + type)
-        # @mapped_ports.push(WorkPort.work_port_hash(name, portnum, external, false, type))
         @mapped_ports[name] = WorkPort.work_port_hash(name, portnum, external, true, type)
       end
     end
@@ -432,8 +430,6 @@ class BluePrintReader
         build_time_only = env[:build_time_only]
         label = env[:label]
         immutable = env[:immutable]
-        # lookup_system_values = env[:lookup_system_values]
-
         unless @builder.set_environments.nil?
           log_build_output('Merging supplied Environment Variable:' + name.to_s)
     #      SystemDebug.debug(SystemDebug.builder, :looking_for_, name)

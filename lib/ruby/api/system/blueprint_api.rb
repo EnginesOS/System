@@ -3,13 +3,13 @@ class BlueprintApi < ErrorsApi
   require '/opt/engines/lib/ruby/api/system/container_state_files.rb'
   require 'git'
 
-  def save_blueprint(blueprint, container)
+  def save_blueprint(blueprint, ca)
     # return log_error_mesg('Cannot save incorrect format',blueprint) unless blueprint.is_a?(Hash)
     #  SystemDebug.debug(SystemDebug.builder, blueprint.class.name)
-    state_dir = ContainerStateFiles.container_state_dir(container)
+    state_dir = ContainerStateFiles.container_state_dir(ca)
     Dir.mkdir(state_dir) if File.directory?(state_dir) == false
-    statefile = state_dir + '/blueprint.json'
-    f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0644)
+    statefile = "#{state_dir}/blueprint.json"
+    f = File.new(statefile, File::CREAT | File::TRUNC | File::RDWR, 0640)
     begin
       f.write(blueprint.to_json)
     ensure
@@ -26,14 +26,13 @@ class BlueprintApi < ErrorsApi
       blueprint_file.close
     end
     json_hash
-
   end
 
-  def load_blueprint(container)
-    state_dir = ContainerStateFiles.container_state_dir(container)
-    raise EnginesException.new(error_hash('No Statedir', container.container_name)) unless File.directory?(state_dir)
-    statefile = state_dir + '/blueprint.json'
-    raise EnginesException.new(error_hash("No Blueprint File Found", statefile)) unless File.exist?(statefile)
+  def load_blueprint(ca)
+    state_dir = ContainerStateFiles.container_state_dir(ca)
+    raise EnginesException.new(error_hash('No Statedir', ca[:c_name])) unless File.directory?(state_dir)
+    statefile = "#{state_dir}/blueprint.json"
+    raise EnginesException.new(error_hash('No Blueprint File Found', statefile)) unless File.exist?(statefile)
     BlueprintApi.load_blueprint_file(statefile)
   end
 
@@ -41,7 +40,7 @@ class BlueprintApi < ErrorsApi
     BlueprintApi.perform_inheritance(self.download_blueprint(blueprint_url))
   end
 
-  def  self.perform_inheritance(blueprint)
+  def self.perform_inheritance(blueprint)
     if blueprint.key?(:software) \
     && blueprint[:software].key?(:base) \
     &&  blueprint[:software][:base].key?(:inherit)
@@ -58,10 +57,12 @@ class BlueprintApi < ErrorsApi
       merge_bp_entry(blueprint, parent, :scripts)
       merge_bp_entry(blueprint, parent, :service_configurations)
       merge_bp_entry(blueprint, parent, :template_files)
-      merge_bp_entry(blueprint, parent, :file_write_permissions)    
-      merge_bp_entry(blueprint, parent, :actionators) 
+      merge_bp_entry(blueprint, parent, :file_write_permissions)
+      merge_bp_entry(blueprint, parent, :actionators)
       merge_bp_entry(blueprint, parent, :installed_packages)
       merge_bp_entry(blueprint, parent, :workers)
+      merge_bp_entry(blueprint, parent, :persistent_files)
+      merge_bp_entry(blueprint, parent, :persistent_directories)
       merge_bp_entry(blueprint, parent, :replacement_strings)
       merge_bp_entry(blueprint, parent, :system_packages)
       merge_bp_entry(blueprint, parent, :ports)
@@ -80,21 +81,15 @@ class BlueprintApi < ErrorsApi
 
       blueprint[:orig] = blueprint[:software]
       blueprint[:software] = parent[:software]
-      STDERR.puts('Merged BP ' + parent.to_s)
-    else
-      STDERR.puts('NO blueprint' + blueprint.to_s)
+      #   STDERR.puts('Merged BP ' + parent.to_s)
+      #   else
+      #    STDERR.puts('NO blueprint' + blueprint.to_s)
     end
     blueprint
   end
 
   def self.merge_bp_entry(blueprint, dest, key)
     # STDERR.puts('Parent BP ' + blueprint.to_s + "\n is a " + blueprint.class.name)
-    STDERR.puts("\n\n\n\n")
-    STDERR.puts('key BP ' + key.to_s + " is a " + key.class.name)
-    STDERR.puts('dest BP ' + dest.to_s + "\n is a " + dest.class.name)
-    STDERR.puts("\n\n\n\n")
-    STDERR.puts('key BP ' + key.to_s + " is a " + key.class.name)
-    STDERR.puts('dest software[' + key.to_s + ']' + dest[:software].to_s  + "\nis a " +  dest[:software].class.name)
     unless key.is_a?(Array)
       if blueprint[:software].key?(key)
         if blueprint[:software][key].is_a?(Hash)
@@ -114,7 +109,7 @@ class BlueprintApi < ErrorsApi
       # FIXME Assumes only two keys
       dest.merge!(blueprint[:software][key[0]][key[1]])if blueprint[:software][key[0]].key?(key[1])
     end
-STDERR.puts('dest software[' + key.to_s + ']' + dest[:software].to_s  + "\nis a " +  dest[:software].class.name)
+    #STDERR.puts('dest software[' + key.to_s + ']' + dest[:software].to_s  + "\nis a " +  dest[:software].class.name)
     dest
   end
 
@@ -125,15 +120,13 @@ STDERR.puts('dest software[' + key.to_s + ']' + dest[:software].to_s  + "\nis a 
     else
       name = Dir.basename(url)
       #FixMe no ../ in path ?
-      FileUtils.rm_f('/tmp/' + name) if Dir.exist?('/tmp/' + name)
+      FileUtils.rm_f("/tmp/#{name}") if Dir.exist?("/tmp/#{name}")
       self.clone_repo(url, name, '/tmp/')
-      self.load_blueprint_file('/tmp/' + name + '/blueprint.json')
+      self.load_blueprint_file("/tmp/#{name}/blueprint.json")
     end
   end
 
   def self.download_blueprint_parent(parent_url)
-    #d = '/tmp/parent_blueprint.json'
-    #self.get_http_file(parent_url, d)
     self.download_blueprint(parent_url, '/tmp/parent_blueprint.json')
   end
 
@@ -148,24 +141,20 @@ STDERR.puts('dest software[' + key.to_s + ']' + dest[:software].to_s  + "\nis a 
 
   def self.download_and_save_blueprint(basedir, repository_url)
     FileUtils.mkdir_p(basedir)
-    d = basedir + '/' + File.basename(repository_url)
+    d = "#{basedir}/#{File.basename(repository_url)}"
     self.get_http_file(repository_url, d)
-    STDERR.puts("\n\n Downloaded BP \n\n\n from " + repository_url.to_s + ' to ' + basedir.to_s + '/' + basedir.to_s)
+   # STDERR.puts("\n\n Downloaded BP \n\n\n from " + repository_url.to_s + ' to ' + basedir.to_s + '/' + basedir.to_s)
   end
 
   def self.get_http_file(url, d)
     require 'open-uri'
     if SystemConfig.DontVerifyBlueprintRepoSSL
-     # pa = {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}
       download = open(url,{ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE})
     else
-    download = open(url)
-      #pa = {}
+      download = open(url)
     end
-    #download = open(url, pa)
     IO.copy_stream(download, d)
-   ensure
+  ensure
     download.close unless download.nil?
   end
-
 end

@@ -1,16 +1,9 @@
 module SmPublicKeyAccess
-  def load_service_pubkey(engine, cmd)
+  def load_service_pubkey(ca, cmd)
     load_pubkey(engine, cmd)
   end
 
-  def load_pubkey(engine, cmd)
-    kfn = SystemConfig.container_ssh_keydir(engine) + '/' + cmd.to_s + '_rsa.pub'
-    if File.exists?(kfn)
-      k = File.read(kfn)
-      k.split(' ')[1]
-    else
-      ''
-    end
+  def load_pubkey(ca, cmd)
+    ContainerStateFiles.load_pubkey(ca, cmd)
   end
-
 end

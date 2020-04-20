@@ -11,19 +11,19 @@ module Subservices
   def update_subservice(params)
     r = 'sub_service/consumers'
     r += full_address(params)
-    rest_post(r, {:api_vars => params })
+    post(r, {:api_vars => params })
   end
 
   def attach_subservice(params)
     r = 'sub_services/consumers'
     r += full_address(params)
-    rest_post(r, {:api_vars => params })
+    post(r, {:api_vars => params })
   end
 
   def remove_subservice(params)
     r = 'sub_services/consumers'
     r += full_address(params)
-    rest_delete(r)
+    delete(r)
   end
 
   def attached_subservice(params)

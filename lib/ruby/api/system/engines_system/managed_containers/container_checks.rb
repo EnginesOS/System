@@ -18,6 +18,7 @@ module ContainerChecks
       if containers_status[container_name][:error] == true
         begin
           result[container_name] = act_on(container_name, ctype)
+          # FixME use a fcntl or something to wait
         rescue StandardError
         end
       else
@@ -37,7 +38,10 @@ module ContainerChecks
     else
       container = loadSystemService(container_name)
     end
-    container.correct_current_state
+    if container.correct_current_state == true
     'fixed'
+    else
+      'broken'
+    end  
   end
 end

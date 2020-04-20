@@ -1,4 +1,4 @@
---- !ruby/object:ManagedService
+--- !ruby/object:Container::ManagedService
 cont_user_id: 22010
 container_name: ftp
 ctype: service
@@ -67,7 +67,7 @@ mapped_ports:
   external: "49900-50000"
 repo: na
 last_result: 
-setState: running
+set_state: running
 conf_register_site: false
 conf_register_dns: true
 conf_zero_conf: true

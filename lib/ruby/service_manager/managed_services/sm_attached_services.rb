@@ -12,10 +12,7 @@ module SMAttachedServices
       params[:parent_engine] = identifier
       params[:container_type] = 'app'
      # SystemDebug.debug(SystemDebug.services, :get_engine_service_hashes, 'ManagedEngine')
-      #      hashes = system_registry_client.find_engine_services_hashes(params)
-      #      SystemUtils.debug_output('hashes',hashes)
       return system_registry_client.find_engine_services_hashes(params)
-      #    attached_managed_engine_services(identifier)
     when 'ManagedService'
       params[:parent_engine] = identifier
       params[:container_type] = 'service'

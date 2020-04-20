@@ -1,4 +1,4 @@
---- !ruby/object:ManagedService
+--- !ruby/object:Container::ManagedService
 cont_user_id: 22012
 container_name: logrotate
 publisher_namespace: EnginesSystem
@@ -39,7 +39,7 @@ port:
 mapped_ports:
 repo: na
 last_result: 
-setState: stopped
+set_state: stopped
 conf_register_site: false
 conf_register_dns: false
 conf_self_start: true

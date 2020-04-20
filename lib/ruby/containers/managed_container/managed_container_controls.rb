@@ -1,12 +1,23 @@
 module ManagedContainerControls
-  def reinstall_engine(builder)
-    builder.reinstall_engine(self) if prep_task(:build)
+  def reinstall_engine
+    build_controller.reinstall_engine( {
+      engine_name: container_name,
+      domain_name: domain_name,
+      host_name: hostname,
+      software_environment_variables: environments,
+      http_protocol: protocol,
+      memory: memory,
+      permission_as: container_name,
+      repository_url: container_name,
+      variables: environments,
+      reinstall: true
+    }) if prep_task(:build)
   rescue StandardError =>e
     SystemUtils.log_exception(e , 'Reinstall:' + container_name)
   end
 
   def wait_for_startup(timeout = 60)
-    @container_api.wait_for_startup(self, timeout)
+    container_api.wait_for_startup(self, timeout)
   end
 
   def update_memory(new_memory)
@@ -34,7 +45,7 @@ module ManagedContainerControls
         false
       end
     end
-    thr.name = 'Destroy:' + container_name
+    thr.name = "Destroy:#{container_name}"
     thr
   rescue StandardError =>e
     SystemUtils.log_exception(e , 'Destroy:' + container_name)
@@ -43,9 +54,9 @@ module ManagedContainerControls
 
   def delete_engine
     thr = Thread.new do
-      @container_api.delete_engine(self)
+      container_api.delete_engine(self)
     end
-    thr.name = 'Delete:' + container_name
+    thr.name = "Delete:#{container_name}"
     thr
   rescue StandardError =>e
     SystemUtils.log_exception(e , 'Delete Engine:' + container_name)
@@ -56,7 +67,7 @@ module ManagedContainerControls
     if prep_task(:create)
       ret_val = false
       unless has_container?
-        ret_val = @container_api.setup_container(self)
+        ret_val = container_api.setup_container(self)
         expire_engine_info
       else
         task_failed('setup')
@@ -72,28 +83,28 @@ module ManagedContainerControls
   def create_container
     #   SystemDebug.debug(SystemDebug.containers, :teask_preping)
     thr = Thread.new do
-      @container_mutex.synchronize {
+      container_mutex.synchronize {
         if prep_task(:create)
-          @domain_name = @container_api.default_domain if @domain_name.nil?
-          @container_api.initialize_container_env(self)
+          @domain_name = container_api.default_domain if @domain_name.nil?
+          container_api.initialize_container_env(self)
           #  SystemDebug.debug(SystemDebug.containers, :teask_preped)
           expire_engine_info
-          @container_id = -1
+          @id = -1
           save_state
           unless super
             task_failed('create')
           else
             save_state #save new containerid)
             #    SystemDebug.debug(SystemDebug.containers, :create_super_ran)
-            #   SystemDebug.debug(SystemDebug.containers, @setState, @docker_info_cache.class.name)
+            #   SystemDebug.debug(SystemDebug.containers, @set_state, @docker_info_cache.class.name)
             expire_engine_info
-            #   SystemDebug.debug(SystemDebug.containers, @setState, @docker_info_cache.class.name)
+            #   SystemDebug.debug(SystemDebug.containers, @set_state, @docker_info_cache.class.name)
             true
           end
         end
       }
     end
-    thr.name = 'Create:' + container_name
+    thr.name = "Create:#{container_name}"
     thr
   rescue StandardError =>e
     SystemUtils.log_exception(e , 'Create:' + container_name)
@@ -106,7 +117,7 @@ module ManagedContainerControls
       wait_for('destroy', 30)
       create_container
     end
-    thr.name = 'Recreate:' + container_name
+    thr.name = "Recreate:#{container_name}"
     thr
   rescue StandardError =>e
     SystemUtils.log_exception(e , 'ReCreate:' + container_name)
@@ -115,7 +126,7 @@ module ManagedContainerControls
 
   def unpause_container
     thr = Thread.new do
-      @container_mutex.synchronize {
+      container_mutex.synchronize {
         if prep_task(:unpause)
           if super
             true
@@ -125,7 +136,7 @@ module ManagedContainerControls
         end
       }
     end
-    thr.name = 'Unpause:' + container_name
+    thr.name = "Unpause:#{container_name}"
     thr
   rescue StandardError =>e
     SystemUtils.log_exception(e , 'Unpause :' + container_name)
@@ -135,7 +146,7 @@ module ManagedContainerControls
 
   def pause_container
     thr = Thread.new do
-      @container_mutex.synchronize {
+      container_mutex.synchronize {
         if prep_task(:pause)
           if super
             true
@@ -145,7 +156,7 @@ module ManagedContainerControls
         end
       }
     end
-    thr.name = 'Pause:' + container_name
+    thr.name = "Pause:#{container_name}"
     thr
   rescue StandardError =>e
     SystemUtils.log_exception(e , 'Pause:' + container_name)
@@ -154,7 +165,7 @@ module ManagedContainerControls
 
   def stop_container
     thr = Thread.new do
-      @container_mutex.synchronize {
+      container_mutex.synchronize {
         if prep_task(:stop)
           if super
             true
@@ -164,7 +175,7 @@ module ManagedContainerControls
         end
       }
     end
-    thr.name = 'Stop:' + container_name
+    thr.name = "Stop:#{container_name}"
     thr
   rescue StandardError =>e
     SystemUtils.log_exception(e , 'Stop:' + container_name)
@@ -173,11 +184,11 @@ module ManagedContainerControls
 
   def halt_container
     thr = Thread.new do
-      @container_mutex.synchronize {
+      container_mutex.synchronize {
         super if prep_task(:halt)
       }
     end
-    thr.name = 'Halt:' + container_name
+    thr.name = "Halt:#{container_name}"
     thr
   rescue StandardError =>e
     SystemUtils.log_exception(e , 'Halt:' + container_name)
@@ -186,7 +197,7 @@ module ManagedContainerControls
 
   def start_container
     thr = Thread.new do
-      @container_mutex.synchronize {
+      container_mutex.synchronize {
         if prep_task(:start)
           if super
             @restart_required = false
@@ -197,7 +208,7 @@ module ManagedContainerControls
         end
       }
     end
-    thr.name = 'Start:' + container_name
+    thr.name = "Start:#{container_name}"
     thr
   rescue StandardError =>e
     SystemUtils.log_exception(e , 'Start:' + container_name)
@@ -211,22 +222,33 @@ module ManagedContainerControls
       wait_for('stop')
       start_container
     end
-    thr.name = 'Restart:' + container_name
+    thr.name = "Restart:#{container_name}"
     thr
   rescue StandardError =>e
     SystemUtils.log_exception(e , 'Restart:' + container_name)
     thr.exit unless thr.nil?
   end
 
-  def restore_engine(builder)
-    builder.restore_engine(self) if prep_task(:build)
+  def restore_engine
+    build_controller.restore_engine({
+      engine_name: container_name,
+      domain_name: domain_name,
+      host_name: hostname,
+      software_environment_variables: environments,
+      http_protocol: protocol,
+      memory: memory,
+      repository_url: container_name,
+      variables: environments,
+      reinstall: true,
+      restore: true
+    }) if prep_task(:build)
   end
 
   def rebuild_container
     thr = Thread.new do
-      @container_mutex.synchronize {
+      container_mutex.synchronize {
         if prep_task(:reinstall)
-          ret_val = @container_api.rebuild_image(self)
+          ret_val = container_api.rebuild_image(self)
           expire_engine_info
           if ret_val
             true
@@ -236,7 +258,7 @@ module ManagedContainerControls
         end
       }
     end
-    thr.name = 'Rebuild:' + container_name
+    thr.name = "Rebuild:#{container_name}"
     thr
   rescue StandardError =>e
     SystemUtils.log_exception(e , 'Restore:' + container_name)
@@ -244,40 +266,46 @@ module ManagedContainerControls
   end
 
   def correct_current_state
-    case @setState
-    when 'stopped'
+    case @set_state
+    when :stopped
       stop_container if is_running?
-    when 'running'
+    when :running
       if has_container?
         start_container unless is_active?
         unpause_container if is_paused?
       else
         create_container
       end
-    when 'nocontainer'
+    when :nocontainer
       unpause_container if is_paused?
       stop_container if is_active?
       destroy_container if has_container?
-    when 'paused'
+    when :paused
       pause_container unless is_active?
     else
-      'fail'
+      false
     end
   end
 
-  private
+  protected
 
+  def build_controller
+    @builder ||= BuildController.instance
+  end
+
+  protected
+  
+  def container_mutex
+     @container_mutex ||= Mutex.new
+   end
+   
   def prep_task(action_sym)
     tah = task_at_hand
-    STDERR.puts('TAH ' + tah.to_s)
-    ##  unless tah.nil?
-    #    SystemDebug.debug(SystemDebug.containers, 'saved task at hand', tah, 'next', action_sym)
-    #  end
-    #  SystemDebug.debug(SystemDebug.containers, :current_tah_prep_task, tah)
+   # STDERR.puts("TAH   #{tah} action #{action_sym}")
     r = in_progress(action_sym)
-    STDERR.puts('in_progress ' + r.to_s)
+  #  STDERR.puts('in_progress ' + r.to_s)
     if in_progress(action_sym) #.is_a?(TrueClass)
-        STDERR.puts('SAVE STATE :inprogress_run  ')
+   #   STDERR.puts('SAVE STATE :inprogress_run  ')
       save_state
     end
     true

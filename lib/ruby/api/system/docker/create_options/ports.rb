@@ -49,10 +49,10 @@ def expose_port_range(eports, port)
 end
 
 def add_mapped_port(bindings, port )
-  local_side = port[:port].to_s + '/' + get_protocol_str(port)
+  local_side = "#{port[:port]}/#{get_protocol_str(port)}"
   remote_side = []
   remote_side[0] = {}
-  remote_side[0]['HostPort'] = port[:external].to_s unless port[:external] == 0
+  remote_side[0]['HostPort'] = "#{port[:external]}" unless port[:external] == 0
   bindings[local_side] = remote_side
 end
 

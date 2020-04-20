@@ -65,7 +65,7 @@ def perform_del(time_out = 35)
   exit
 end
 
-def perform_post(params, content_type='application/json')
+def perform_post(params, content_type='application/json; charset=UTF-8')
   post_params = {api_vars: params}
   rest_post(@route,post_params, content_type)
   exit
@@ -76,7 +76,7 @@ def stream_put(data_io)
   exit
 end
 
-def perform_put(params, content_type = 'application/json')
+def perform_put(params, content_type = 'application/json ; charset=UTF-8')
   unless params == nil
     post_params = {api_vars: params}
   else
@@ -105,7 +105,7 @@ def handle_resp(resp, expect_json = true)
       r = 'fail'
     end
   elsif resp.status == 204   # nodata but all good happens on del
-    r = 'OK'
+    r = 'true'
   elsif resp.status >= 200 && resp.status < 300
     resp.body
   else
@@ -115,10 +115,11 @@ def handle_resp(resp, expect_json = true)
   # STDERR.puts('GOT body ' + resp.body + "\nas JSON:" +  expect_json.to_s)
   if expect_json == true && r.nil?
      # STDERR.puts('GOT JSON' + resp.body)
-    o = json_parser.parse(resp.body)
+    resp.body
+   #o = json_parser.parse(resp.body)
     #o = JSON.parse(resp.body)
     # STDERR.puts('O IS' + o.class.name)
-    o.to_s
+    #o.to_s
   else
     if r.nil?
       resp.body
@@ -139,7 +140,7 @@ def write_response(r)
     STDOUT.write(r.body.b) unless r.body.nil?
   else
     expect_json = false
-    expect_json = true if r.headers['Content-Type'] == 'application/json' || r.body.start_with?('{')
+    expect_json = true if r.headers['Content-Type'].include?('application/json') || r.body.start_with?('{')
     puts handle_resp(r, expect_json)
   end
 rescue StandardError => e

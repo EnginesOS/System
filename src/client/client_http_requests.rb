@@ -263,7 +263,7 @@ def rest_put(uri, params, content_type, time_out = 44 )
   @retries = 0
   begin
     unless params.nil?
-      params = params.to_json if content_type == 'application/json_parser'
+      params = params.to_json if content_type.include?('application/json')
       r = connection(content_type).request(read_timeout: time_out,
       method: :put,
       path: uri,

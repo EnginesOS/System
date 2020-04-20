@@ -1,5 +1,4 @@
 module RegistryTrees
-  require_relative 'service_manager_access.rb'
   
   def orphaned_services_registry
     service_manager.orphaned_services_registry

@@ -1,30 +1,17 @@
+require '/opt/engines/lib/ruby/containers/store/store'
+
 module Engines
-  class FakeContainer
-    attr_reader :container_name, :ctype
-    def initialize(name, type = 'app')
-      @container_name = name
-      @ctype = type
-    end
+
+  def getManagedEngines
+    container_store.all
   end
 
   def list_managed_engines
-    ret_val = []
-    begin
-      Dir.entries(SystemConfig.RunDir + '/apps/').each do |contdir|
-        yfn = SystemConfig.RunDir + '/apps/' + contdir + '/running.yaml'
-        ret_val.push(contdir) if File.exist?(yfn)
-      end
-    rescue
-    end
-    ret_val
+    container_store.all_names
   end
 
-  def init_engine_dirs(engine_name)
-    c = FakeContainer.new(engine_name)
-    FileUtils.mkdir_p(container_state_dir(c) + '/run') unless Dir.exist?(container_state_dir(c)+ '/run')
-    FileUtils.mkdir_p(container_state_dir(c) + '/run/flags') unless Dir.exist?(container_state_dir(c)+ '/run/flags')
-    FileUtils.mkdir_p(container_log_dir(c)) unless Dir.exist?(container_log_dir(c))
-    FileUtils.mkdir_p(container_ssh_keydir(c)) unless Dir.exist?(container_ssh_keydir(c))
+  def loadManagedEngine(engine_name)
+    container_store.model(engine_name)
   end
 
   def set_engine_network_properties(engine, params)
@@ -54,7 +41,7 @@ module Engines
         p container.container_name
         p params
     #FIXME change port
-    #FIXME change proto    
+    #FIXME change proto
     #FIXME [:hostname]  silly host_name from gui drop it
     if params.key?(:host_name)
       hostname = params[:host_name]
@@ -63,51 +50,16 @@ module Engines
     end
     domain_name = params[:domain_name]
 #    SystemDebug.debug(SystemDebug.services,'Changing Domainame to ', domain_name)
-
     container.remove_wap_service
     container.set_hostname_details(hostname, domain_name)
     container.save_state
-    # save_container(container)
     container.add_wap_service
     true
   end
 
-  def getManagedEngines
-    ret_val = []
-    Dir.entries(SystemConfig.RunDir + '/apps/').each do |contdir|
-      yfn = SystemConfig.RunDir + '/apps/' + contdir + '/running.yaml'
-      if File.exist?(yfn)
-        begin
-          managed_engine = loadManagedEngine(contdir)
-          ret_val.push(managed_engine)
-        rescue
-        end
-      end
-    end
-    ret_val
-  end
+  protected
 
-  def loadManagedEngine(engine_name)
-    raise EnginesException.new(error_hash('No Engine name', engine_name)) unless engine_name.is_a?(String) || engine_name.length == 0
-    engine = engine_from_cache(engine_name)
-    unless engine.is_a?(ManagedEngine)
-      yaml_file_name = SystemConfig.RunDir + '/apps/' + engine_name + '/running.yaml'
-        STDERR.puts('Engine file:' + yaml_file_name.to_s)
-      raise EnginesException.new(error_hash('No Engine file:' + engine_name.to_s , engine_name)) unless File.exist?(yaml_file_name)
-   #   raise EnginesException.new(error_hash('Engine File Locked', yaml_file_name)) if is_container_conf_file_locked?(SystemConfig.RunDir + '/apps/' + engine_name)
-      lock_container_conf_file(SystemConfig.RunDir + '/apps/' + engine_name)
-      yaml_file = File.new(yaml_file_name, 'r')
-      begin
-        ts = File.mtime(yaml_file_name)
-        engine = ManagedEngine.from_yaml(yaml_file.read, @engines_api.container_api)
-        unlock_container_conf_file(SystemConfig.RunDir + '/apps/' + engine_name)
-        yaml_file.close
-        cache_engine(engine, ts)
-      ensure
-        yaml_file.close unless yaml_file.nil?
-      end
-    end
-    engine
+  def container_store
+    Container::Store.instance
   end
-
 end

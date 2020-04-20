@@ -5,16 +5,20 @@ class SystemStatus
 
   # return [String] representing the address of public host interface (ie ifconfig eth0)
   def SystemStatus.get_base_host_ip
-    ENV['CONTROL_IP'] #'control.engines.internal'
+    ENV['CONTROL_IP']
   end
 
   # return [String] representing the address docker interface
   def SystemStatus.get_docker_ip
-    ENV['DOCKER_IP'] #'control.engines.internal'
+    ENV['DOCKER_IP']
   end
 
   def self.is_rebooting?
     File.exist?(SystemConfig.SystemRebootingFlag)
+  end
+
+  def self.is_halting?
+    SystemConfig.is_system_stopping?
   end
 
   def self.needs_reboot?
@@ -107,7 +111,8 @@ class SystemStatus
       is_engines_system_updating: SystemStatus.is_engines_system_updating?,
       needs_reboot: SystemStatus.needs_reboot?,
       needs_engines_update: !self.is_engines_system_upto_date?,
-      needs_base_update: !self.is_base_system_upto_date?
+      needs_base_update: !self.is_base_system_upto_date?,
+      is_halting: self.is_halting?
     }
   end
 

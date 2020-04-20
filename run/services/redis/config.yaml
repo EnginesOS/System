@@ -1,4 +1,4 @@
---- !ruby/object:ManagedService
+--- !ruby/object:Container::ManagedService
 cont_user_id: 22029
 container_name: redis
 ctype: service
@@ -23,7 +23,7 @@ port:
 mapped_ports:
 repo: na
 last_result: 
-setState: nocontainer
+set_state: nocontainer
 conf_register_site: false
 conf_register_dns: true
 dependant_on:

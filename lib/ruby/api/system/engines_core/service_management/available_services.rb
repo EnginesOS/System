@@ -1,7 +1,4 @@
 module AvailableServices
-
-  require_relative 'service_manager_access.rb'
-  #  require '/opt/engines/lib/ruby/managed_services/system_services/volume_service.rb'
   require '/opt/engines/lib/ruby/managed_services/service_definitions/service_top_level.rb'
 
   def load_avail_services_for_type(typename)
@@ -9,8 +6,7 @@ module AvailableServices
       persistent: [],
       non_persistent: []
     }
-    dir = SystemConfig.ServiceMapTemplateDir + '/' + typename
-    # STDERR.puts('looking at  ' + dir  )
+    dir = "#{SystemConfig.ServiceMapTemplateDir}/#{typename}"
     if Dir.exist?(dir)
       Dir.foreach(dir) do |service_dir_entry|
         begin
@@ -18,8 +14,7 @@ module AvailableServices
             next
           end
           if service_dir_entry.end_with?('.yaml')
-            service = load_service_definition(dir + '/' + service_dir_entry)
-            #    STDERR.puts('looking at  ' + dir + '/' + service_dir_entry )
+            service = load_service_definition("#{dir}/#{service_dir_entry}")
             if service.nil? == false
               if service.is_a?(String)
                 log_error_mesg('service yaml load error', service)

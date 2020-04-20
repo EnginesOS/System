@@ -1,6 +1,7 @@
 require 'json'
 
 def check_length(check, len)
+  must_have_data
   @data.strip!
 
   case check
@@ -14,13 +15,13 @@ def check_length(check, len)
 end
 
 def check_regex(exp)
-
+  must_have_data
   return true unless @data.match(exp).nil?
   false
 end
 
 def check_text(key, value)
-
+  must_have_data
   if key == nil || key == 'is'
     return true if @data == value
   else
@@ -30,15 +31,20 @@ def check_text(key, value)
 end
 
 def check_boolean(value)
+  return true if value.nil?
   if value.nil?
     return true if @data.to_s == 'false' || @data.to_s == 'true'
   else
     return true if @data.to_s == value
   end
-  false
+end
+
+def must_have_data
+  exit -1 if @data.nil?
 end
 
 def check_array(key, value)
+  must_have_data
   hash = JSON.parse(@data)
   unless value.nil?
     return false unless hash.is_a?(Array)
@@ -81,6 +87,7 @@ def hash_key_value(search_key, hash)
 end
 
 def check_json(key, value)
+  must_have_data
   hash = JSON.parse(@data)
   if key.nil?
     key = value
@@ -141,6 +148,7 @@ elsif ARGV.count > 2
 end
 
 @data = read_stdin_data
+#exit -1 if @data.nil?
 
 if @data.include?("Incorrect usage")
   p 'Error with Test entry ' + @data.to_s

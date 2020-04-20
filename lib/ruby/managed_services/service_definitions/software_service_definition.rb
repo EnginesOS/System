@@ -72,13 +72,6 @@ class SoftwareServiceDefinition
     return retval unless constants.is_a?(Hash)
    # SystemDebug.debug(SystemDebug.services, :SERVICE_Constants, constants)
     constants.values.each do |env_variable_pair|
-     # SystemDebug.debug(SystemDebug.services, :env_variable_pair, env_variable_pair)
-     # name = env_variable_pair[:name]
-      #value = env_variable_pair[:value]
-      # initialize(name, value, setatrun, mandatory, build_time_only,label, immutable)
-      #owner = []
-      #owner[0] = 'service_consumer'
-      #owner[1] = service_hash[:publisher_namespace] + '/' + service_hash[:type_path] + ':' + name
   ret_val.push(EnvironmentVariable.new({name: env_variable_pair[:name], 
                                      value: env_variable_pair[:value], 
                                      mandatory: true,                                      
@@ -86,9 +79,6 @@ class SoftwareServiceDefinition
                                      owner_path:  service_hash[:publisher_namespace] + '/' + service_hash[:type_path] + ':' + name,
                                      owner_type: 'service_consumer',
                                      immutable: true}))
-     # env = EnvironmentVariable.new(name, value, false, true, false, service_hash[:type_path] + name, true, owner)
-    #   # SystemDebug.debug(SystemDebug.services, :SERVICE_Constants, :new_env ,env)
-    #  # ret_val.push( env) # env_name , value
     end
     ret_val
   end
@@ -129,9 +119,8 @@ class SoftwareServiceDefinition
                                    build_time_only: build_time_only, 
                                    owner_path: owner,
                                    owner_type: service_hash[:container_type],
-                                   immutable: immutable}))
-          #retval.push( EnvironmentVariable.new(env_name, value, setatrun, mandatory, build_time_only, value_name, immutable, owner)) # env_name , value
-        end                                                      #(name,value,setatrun,mandatory,build_time_only,label,immutable)
+                                   immutable: immutable}))       
+        end                                                     
       end
     else
       raise EnginesException.new(self.error_hash('Failed to load service definition', service_hash))

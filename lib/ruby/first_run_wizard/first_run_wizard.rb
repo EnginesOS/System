@@ -16,21 +16,17 @@ class FirstRunWizard <ErrorsApi
     @first_run_params = params
   end
 
-  def apply(api)
+  def apply()
     if @has_ran == true
       false
     else
-      @api = api
       SystemDebug.debug(SystemDebug.first_run, :applyin, @first_run_params)
       return log_error_mesg('failed to validate first run params') unless validate_params(@first_run_params)
       refs = SystemPreferences
       prefs.set_country_code(@first_run_params[:country_code]) if @first_run_params.key?(:country_code)
       prefs.set_langauge_code(@first_run_params[:lang_code]) if @first_run_params.key?(:lang_code)
-      @api.set_timezone(@first_run_params[:timezone]) if @first_run_params.key?(:timezone)
+      core.set_timezone(@first_run_params[:timezone]) if @first_run_params.key?(:timezone)
       return false unless setup_dns
-      # certs = @api.loadManagedService('certs')
-      # certs.create_service
-
       setup_certs
       setup_system_password(@first_run_params[:admin_password], @first_run_params[:admin_email])
       @sucess = true
@@ -44,12 +40,16 @@ class FirstRunWizard <ErrorsApi
   end
 
   def FirstRunWizard.required?
-    if File.exist?(SystemConfig.FirstRunRan) == false
+    unless File.exist?(SystemConfig.FirstRunRan) 
       true
     else
       false
     end
   end
-  # FIXME: and put in it's own class or even service
 
+  protected
+
+  def core
+    @core ||= EnginesCore.instance
+  end
 end

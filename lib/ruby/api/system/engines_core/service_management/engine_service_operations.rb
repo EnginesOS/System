@@ -1,5 +1,4 @@
 module EngineServiceOperations
-  require_relative 'service_manager_access.rb'
   def engine_persistent_services(container_name)
     params = {
       parent_engine:  container_name,
@@ -33,7 +32,7 @@ module EngineServiceOperations
   end
 
   def engine_attached_services(container_name)
-    STDERR.puts("\n\n engine_attached_services " + container_name.to_s)
+  #  STDERR.puts("\n\n engine_attached_services " + container_name.to_s)
     find_engine_services_hashes({
       parent_engine: container_name,
       container_type: 'app'
@@ -61,10 +60,6 @@ module EngineServiceOperations
     service_manager.share_service_to_engine(params)
   end
 #  
-#  def rollback_shared_service(service_hash)
-#    check_engine_hash(service_hash)
-#    service_manager.rollback_shared_service(service_hash)
-#  end
 
   def connect_share_service(service_hash)
    # STDERR.puts('SHARE '  + service_hash.to_s)
@@ -80,16 +75,11 @@ module EngineServiceOperations
       next unless params[:existing_service][:variables].keys(k)
       params[:variables][k] = params[:existing_service][:variables][k]
     end
-    r = share_service_to_engine(params)
-#    if service_hash[:type_path] == 'filesystem/local/filesystem'
-#      add_file_share(params)
-#    end
-    r
+     share_service_to_engine(params)
   end
 
   def add_file_share(service_hash)
   #  SystemDebug.debug(SystemDebug.services, service_hash[:variables][:name].to_s + ' ' + service_hash.to_s)
-    # service_hash = Volume.complete_service_hash(service_hash)
 
   #  SystemDebug.debug(SystemDebug.services,'complete_VOLUME_FOR SHARE_service_hash', service_hash)
     #  STDERR.puts('Add File Service ' + service_hash.to_s)
@@ -113,7 +103,7 @@ module EngineServiceOperations
   def get_service_pubkey(engine, cmd)
     container = loadManagedService(engine)
     unless container.is_running?
-      service_manager.load_service_pubkey(container, cmd)
+      service_manager.load_service_pubkey(container.store_address, cmd)
     else
       args = ['/home/engines/scripts/system/get_pubkey.sh', cmd]
       result = exec_in_container({:container => container, :command_line => args, :log_error => true, :timeout =>30 , :data=>''})
@@ -121,7 +111,7 @@ module EngineServiceOperations
         result[:stdout]
       else
         log_error_mesg('Get pub key failed',result)
-        service_manager.load_service_pubkey(container, cmd)
+        service_manager.load_service_pubkey(container.store_address, cmd)
       end
     end
   end

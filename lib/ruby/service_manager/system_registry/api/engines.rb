@@ -31,20 +31,20 @@ module Engines
   def add_to_managed_engines_registry(service_hash)
     r = 'engine/services/add'
     r += address_params(service_hash, [:container_type, :parent_engine, :service_handle, :publisher_namespace, :type_path])
-    rest_post(r,{:api_vars => service_hash} )
+    post(r,{:api_vars => service_hash} )
   end
 
   def remove_from_managed_engine(params)
     params[:container_type] = 'app' unless params.key?(:container_type)
     r = 'engine/services/del'
     r += address_params(params, [:container_type, :parent_engine, :service_handle, :publisher_namespace, :type_path])
-    rest_delete(r)
+    delete(r)
   end
 
   def update_registered_managed_engine(params)
     r = 'engine/service/update'
     r += address_params(params, [:container_type, :parent_engine, :service_handle, :publisher_namespace, :type_path])
-    rest_post(r,{:api_vars => params })
+    post(r,{:api_vars => params })
   end
 
   def managed_engines_registry

@@ -1,8 +1,6 @@
 module EnginesVolumes
   def volume_ownership(params)
-    path = SystemConfig.LocalFSVolHome +
-    '/' + params[:container_name] +
-    '/' + params[:volume_name]
+    path = "#{SystemConfig.LocalFSVolHome}/#{params[:container_name]}/#{params[:volume_name]}"
     if Dir.exits?(path)
       File.stat(path).uid
     else

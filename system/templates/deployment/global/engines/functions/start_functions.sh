@@ -71,8 +71,9 @@ if test -f /home/engines/run/flags/restart_required
  then
   if test -f /home/engines/run/flags/started_once
    then
-  	rm -rf /home/engines/run/flags/restart_required
-  
+  	rm -rf /home/engines/run/flags/restart_required  
+  else
+    touch /home/engines/run/flags/started_once
   fi
 fi
 
@@ -88,7 +89,7 @@ if test -f /home/engines/scripts/engine/custom_start.sh
    exit_code=$?
 	 if test "$result" = "exit"
 	  then 
-		wait_for_debug
+		shutdown_complete
 		exit $exit_code
 	  fi
 fi

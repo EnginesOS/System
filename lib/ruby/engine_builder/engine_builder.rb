@@ -4,6 +4,12 @@ require '/opt/engines/lib/ruby/api/system/errors_api.rb'
 require '/opt/engines/lib/ruby/exceptions/engine_builder_exception.rb'
 
 class EngineBuilder < ErrorsApi
+#  class << self
+#    def instance
+#      @@instance ||= self.new
+#    end
+#  end
+  
   require '/opt/engines/lib/ruby/api/system/container_state_files.rb'
 
   require_relative 'builder/setup_build_dir.rb'
@@ -25,15 +31,14 @@ class EngineBuilder < ErrorsApi
   include CheckBuildParams
 
   require_relative 'builder/container_creation.rb'
-  include  ContainerCreation
+  include ContainerCreation
 
   require_relative 'builder/container_guids.rb'
   include ContainerGuids
 
   require_relative '../templater/templater.rb'
 
-  attr_reader   :templater,
-  :repoName,
+  attr_reader     :repoName,
   :build_name,
   :set_environments,
   :environments,
@@ -88,33 +93,30 @@ class EngineBuilder < ErrorsApi
     @blueprint = nil
     STDERR.puts('Build Params ' + params.to_s)
   end
-
+  
   def service_resource(service_name, what)
-    @service_builder.service_resource(service_name, what)
+    service_builder.service_resource(service_name, what)
   end
 
   def volumes
-    @service_builder.volumes
+    service_builder.volumes
   end
-
+  
   def setup_engine_dirs
-    SystemUtils.run_system('/opt/engines/system/scripts/system/create_container_dir.sh ' + @build_params[:engine_name])
+    SystemUtils.run_system("/opt/engines/system/scripts/system/create_container_dir.sh #{@build_params[:engine_name]}")
   end
 
   def set_locale
-    ## STDERR.puts("LANGUAGE " + @build_params[:lang_code].to_s)
-    # STDERR.puts("country_code " + @build_params[:country_code].to_s)
     prefs = SystemPreferences.new
     lang =  @build_params[:lang_code]
     lang = prefs.langauge_code if lang.nil?
     country = @build_params[:country_code]
     country = prefs.country_code if country.nil?
-    ##  STDERR.puts("LANGUAGE " + lang.to_s)
-    #  STDERR.puts("country_code " + country.to_s)
+
     @blueprint_reader.environments.push(EnvironmentVariable.new({name: 'LANGUAGE',
                                                                 value: lang.to_s + '_' + country.to_s + ':' + lang.to_s,
                                                                 own_type: 'application'}))
-    @blueprint_reader.environments.push(EnvironmentVariable.new({name: 'LANG', 
+    @blueprint_reader.environments.push(EnvironmentVariable.new({name: 'LANG',
                                                                 value: lang.to_s + '_' + country.to_s + '.UTF8',
                                                                 own_type: 'application'}))
     @blueprint_reader.environments.push(EnvironmentVariable.new({name: 'LC_ALL',
@@ -128,10 +130,12 @@ class EngineBuilder < ErrorsApi
 
   def flag_restart_required(mc)
     restart_reason='Restart to run post install script, as required in blueprint'
-    # FixME this should be elsewhere
-    restart_flag_file = ContainerStateFiles.restart_flag_file(mc)
+    # FixME this should be elsewhere has to occur past fs configurator as not rights to runtime prior
+    return 
+   restart_flag_file = ContainerStateFiles.restart_flag_file(mc)
     FileUtils.mkdir_p(ContainerStateFiles.container_flag_dir(mc)) unless Dir.exist?(ContainerStateFiles.container_flag_dir(mc))
     f = File.new(restart_flag_file, 'w+')
+    
     begin
       f.puts(restart_reason)
     ensure
@@ -141,14 +145,13 @@ class EngineBuilder < ErrorsApi
     FileUtils.chown(nil, 'containers', restart_flag_file)
   end
 
-  #      throw BuildStandardError.new(e,'setting web port')
   def log_error_mesg(m, o = nil)
     log_build_errors(m.to_s + o.to_s)
     super
   end
 
-  def basedir
-    SystemConfig.DeploymentDir + '/' + @build_name.to_s
+  def basedir    
+    @basedir ||= "#{SystemConfig.DeploymentDir}/#{@build_name}"
   end
 
   def log_exception(e)
@@ -159,7 +162,11 @@ class EngineBuilder < ErrorsApi
     super
   end
 
-  private
+  protected
+
+  def core
+    @core ||= EnginesCore.instance
+  end
 
   def process_supplied_envs(custom_env)
    # SystemDebug.debug(SystemDebug.builder, custom_env, custom_env)

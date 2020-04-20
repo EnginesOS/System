@@ -1,5 +1,9 @@
 class ServiceApi < ContainerApi
-  # Fixme and move timeouts to a static conf
+  class << self
+    def instance
+      @@service_instance ||= self.new
+    end
+  end
 
   require_relative 'service_api_image_actions.rb'
   include ServiceApiImageActions

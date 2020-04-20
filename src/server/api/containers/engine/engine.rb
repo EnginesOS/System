@@ -76,9 +76,9 @@ end
 get '/v0/containers/engine/:engine_name/uptime' do
   begin
     engine = get_engine(params[:engine_name])
-    { 'uptime' => engine.uptime }
+    return_json({ 'uptime' => engine.uptime })
   rescue StandardError => e
-     send_encoded_exception(request: request, exception: e)
+    send_encoded_exception(request: request, exception: e)
   end
 end
 
@@ -156,17 +156,36 @@ end
 # test cd /opt/engines/tests/engines_api/engine ; make engine wait_for
 get '/v0/containers/engine/:engine_name/wait_for/:what' do
   stream do |out|
-  begin
-    engine = get_engine(params[:engine_name])
-   r = engine.wait_for(params[:what], 30)
-    out << r.to_s unless out.closed?
-    return_boolean(r)
-  rescue StandardError => e
-    out << false.to_s unless out.closed?
-    send_encoded_exception(request: request, exception: e)
-  end
+    begin
+      engine = get_engine(params[:engine_name])
+      r = engine.wait_for(params[:what], 30)
+      out << r.to_s unless out.closed?
+      return_boolean(r)
+    rescue StandardError => e
+      out << false.to_s unless out.closed?
+      send_encoded_exception(request: request, exception: e)
+    end
   end
 end
+# @method wait_for_service_statup
+# @overload get '/v0/containers/service/:service/wait_for_statup'
+#
+# @return true|false
+# test cd /opt/engines/tests/engines_api/service ; make service wait_for_startup
+get '/v0/containers/engine/:engine_name/wait_for_startup/:timeout' do
+  stream do |out|
+    begin
+      engine = get_engine(params[:engine_name])
+      r = engine.wait_for_startup(params[:timeout].to_i)
+      out << r.to_s unless out.closed?
+      return_boolean(r)
+    rescue StandardError => e
+      out << false.to_s unless out.closed?
+      send_encoded_exception(request: request, exception: e)
+    end
+  end
+end
+
 # @method wait_for_engine_delat
 # @overload get '/v0/containers/engine/:engine_name/wait_for/:what/:delay'
 #
@@ -177,7 +196,7 @@ get '/v0/containers/engine/:engine_name/wait_for/:what/:delay' do
     begin
       engine = get_engine(params[:engine_name])
       r = engine.wait_for(params[:what], params[:delay].to_i)
-       out << r.to_s unless out.closed?
+      out << r.to_s unless out.closed?
       return_boolean(r)
     rescue StandardError => e
       out << false.to_s unless out.closed?
@@ -203,12 +222,12 @@ end
 # @method get_icon_url
 # @overload get '/v0/containers/engine/:engine_name/icon_url'
 #
-# @return String 
+# @return String
 
 get '/v0/containers/engine/:engine_name/icon_url' do
   begin
     engine = get_engine(params[:engine_name])
-    return_text(engines_api.container_icon_url(engine))
+    return_text(engines_api.container_icon_url(engine.store_address))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -219,18 +238,16 @@ end
 # Set the icon_url for :engine_name
 # @param :icon_url
 
-
 post '/v0/containers/engine/:engine_name/icon_url' do
   begin
     p_params = post_params(request)
     p_params[:engine_name] = params[:engine_name]
     engine = get_engine(p_params[:engine_name])
-    cparams = assemble_params(p_params, [:engine_name], :icon_url) 
-    return_text(engines_api.set_container_icon_url(engine, cparams[:icon_url]))
+    cparams = assemble_params(p_params, [:engine_name], :icon_url)
+    return_text(engines_api.set_container_icon_url(engine.store_address, cparams[:icon_url]))
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
 end
-
 
 # @!endgroup

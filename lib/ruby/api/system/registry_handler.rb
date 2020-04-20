@@ -1,6 +1,5 @@
 class RegistryHandler < ErrorsApi
-  def initialize(system_api)
-    @system_api = system_api
+  def initialize
     @registry_ip = false
   end
 
@@ -8,8 +7,8 @@ class RegistryHandler < ErrorsApi
     # start in thread in case timeout clobbers
     @registry_ip = false
     log_error_mesg("Forcing registry restart", nil)
-    registry_service = @system_api.loadSystemService('registry')
-    raise EnginesException.new("PANIC cannot load resgitry service definition", registry_service) unless registry_service.is_a?(SystemService)
+    registry_service = system_api.loadSystemService('registry')
+    raise EnginesException.new("PANIC cannot load resgitry service definition", registry_service) unless registry_service.is_a?(Container::SystemService)
     #      restart_thread = Thread.new {
     registry_service.stop_container
     registry_service.wait_for('stop', 20)
@@ -22,7 +21,7 @@ class RegistryHandler < ErrorsApi
   def registry_root_ip
 #    STDERR.puts( 'Registry IP ' + @registry_ip.to_s)
     if @registry_ip.is_a?(FalseClass)
-      registry_service = @system_api.loadSystemService('registry') # FIXME: Panic if this fails
+      registry_service = system_api.loadSystemService('registry') # FIXME: Panic if this fails
       unless registry_service.is_running?
         fix_problem(registry_service)
         @registry_ip = registry_service.get_ip_str
@@ -41,7 +40,7 @@ class RegistryHandler < ErrorsApi
 
   def fix_problem(registry_service = nil)
    # STDERR.puts('FIX PROBLEMS ')
-    registry_service = @system_api.loadSystemService('registry') if registry_service.nil?
+    registry_service = system_api.loadSystemService('registry') if registry_service.nil?
     registry_service.create_container unless registry_service.has_container?
     registry_service.upause_container if registry_service.is_paused?
     registry_service.start_container if registry_service.is_stopped?
@@ -56,7 +55,6 @@ class RegistryHandler < ErrorsApi
         raise EnginesException.new('Fatal Unable to Start Registry Service: ', registry_service.last_error)
       end
     end
-    #  wait_for_startup(40)
   #  SystemDebug.debug(SystemDebug.registry, :registry_is_up)
     true
   rescue Exception
@@ -69,7 +67,7 @@ class RegistryHandler < ErrorsApi
   def force_registry_recreate
     log_error_mesg("Forcing registry recreate", nil)
     @registry_ip = false
-    registry_service = @system_api.loadSystemService('registry')
+    registry_service = system_api.loadSystemService('registry')
     if registry_service.forced_recreate
       registry_service.wait_for('start', 90)
       unless registry_service.wait_for_startup(30)
@@ -83,4 +81,9 @@ class RegistryHandler < ErrorsApi
     end
   end
 
+  private
+
+  def system_api
+    @system_api ||= SystemApi.instance
+  end
 end
