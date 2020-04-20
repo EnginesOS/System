@@ -46,6 +46,7 @@ module DockerApiBuilder
 
     def process_response()
       lambda do |chunk , c , t|
+        STDERR.puts("CHEcUK #{c}")
         begin
           #FIXME stuff chunck in stringio and use streaming parser on the stringio
           if chunk.include?('{"stream":"')
