@@ -12,7 +12,7 @@ module DockerApiCreateOptions
     @top_level = build_top_level(container)
     STDERR.puts("#{@top_level}")
     f = File.open("/tmp/#{container.container_name}.options", 'w')
-    f.puts("#{@top_level}")
+    f.puts("#{@top_level.to_json}")
     @top_level
   ensure
     f.close
