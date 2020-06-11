@@ -34,7 +34,7 @@ module DockerApiContainerStatus
     containers_info = get_request({uri: "/containers/#{cn}/json"})
     if containers_info.is_a?(Array)
       containers_info.each do |info|
-        if info[:Names][0] == "/#{container.container_name}"
+        if info[:Names][0] == "/#{cn}"
           id = info[:Id]
           break
         end
