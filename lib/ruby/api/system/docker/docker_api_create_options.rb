@@ -10,8 +10,9 @@ module DockerApiCreateOptions
 
   def create_options(container)
     @top_level = build_top_level(container)
-    f = File.open("/tmp/#{container.container_name}.options", 'w');
+    f = File.open("/tmp/#{container.container_name}.options", 'w')
     f.puts("#{@top_level}")
+    @top_level
   ensure
     f.close
   end
