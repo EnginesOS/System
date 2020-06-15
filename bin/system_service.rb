@@ -17,8 +17,11 @@ end
 case ARGV[1]
 when 'restart'
  service.restart_container
+service.wait_for('stop', 120)
+service.wait_for('start', 120)
 when 'start'
   service.start_container
+service.wait_for('start', 120)
 when 'create_only'
   service.create_container
 when 'create'
@@ -33,6 +36,7 @@ when 'recreate'
   service.wait_for('start', 120)
 when 'stop'
   service.stop_container
+  service.wait_for('stop', 120)
 when 'destroy'
   service.destroy_container
 when 'state'
