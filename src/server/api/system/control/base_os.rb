@@ -8,7 +8,7 @@
 # test cd /opt/engines/tests/engines_api/system/control/base_os; make restart
 get '/v0/system/control/base_os/restart' do
   begin
-    return_text(engines_api.restart_base_os)
+    return_json(engines_api.restart_base_os)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

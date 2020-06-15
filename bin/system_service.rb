@@ -16,12 +16,12 @@ end
 
 case ARGV[1]
 when 'restart'
- service.restart_container
-service.wait_for('stop', 120)
-service.wait_for('start', 120)
+  service.restart_container
+  service.wait_for('stop', 120)
+  service.wait_for('start', 120)
 when 'start'
   service.start_container
-service.wait_for('start', 120)
+  service.wait_for('start', 120)
 when 'create_only'
   service.create_container
 when 'create'
@@ -39,6 +39,7 @@ when 'stop'
   service.wait_for('stop', 120)
 when 'destroy'
   service.destroy_container
+  service.wait_for('nocontainer', 120)
 when 'state'
   STDOUT.puts "#{service.read_state}"
 when 'set_state'
@@ -50,7 +51,7 @@ when 'status'
 when 'mem_stat'
   STDOUT.puts MemoryStatistics.container_memory_stats(service).to_s
 when 'wait_for'
-service.wait_for(ARGV[2],ARGV[3].to_i)
+  service.wait_for(ARGV[2],ARGV[3].to_i)
   STDOUT.puts  "#{service.read_state}"
 when 'wait_for_startup'
   service.wait_for_startup(ARGV[2].to_i)
