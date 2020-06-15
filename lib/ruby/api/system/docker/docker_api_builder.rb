@@ -46,12 +46,12 @@ module DockerApiBuilder
 
     def process_response()
       lambda do |chunk , c , t|
-        STDERR.puts("CHEcUK #{c}")
+       # STDERR.puts("CHEcUK #{c}")
         begin
           #FIXME stuff chunck in stringio and use streaming parser on the stringio
           if chunk.include?('{"stream":"')
             then
-            STDERR.puts("CHEcUK has Stream tage" * 10)
+         #   STDERR.puts("CHEcUK has Stream tage" * 10)
             chunk.gsub!(/{"stream":"/,'')
             builder.log_build_output(chunk.gsub(/"}/,''))
           else
