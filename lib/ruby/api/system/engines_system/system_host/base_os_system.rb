@@ -18,10 +18,8 @@ module BaseOsSystem
 
   def restart_base_os
     trigger_engines_restart_event('OS restarting')
-    STDERR.puts('OS restarting')
-  t = Thread.new { run_server_script('restart_base_os') }
+    t = Thread.new { run_server_script('restart_base_os') }
     if t.alive?
-      STDERR.puts('thread alive')
       true
     else
       false
