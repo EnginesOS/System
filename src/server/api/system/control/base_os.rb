@@ -107,7 +107,7 @@ end
 # @return  [text/event-stream]
 # test cd  /opt/engines/tests/  Belum
 get '/v0/system/control/base_os/follow_update', provides: 'text/event-stream;charset=ascii-8bit' do
-  unless File.new(SystemConfig.BaseOSUpdateRunningLog)
+  unless File.exists?(SystemConfig.BaseOSUpdateRunningLog)
     return_json(false)
   else
   begin
