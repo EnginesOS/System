@@ -105,8 +105,8 @@ end
 # @overload get '/v0/system/control/base_os/follow_update'
 # Follow the run os update
 # @return  [text/event-stream]
-# return json false if no update in progess
-# test cd  /opt/engines/tests/  Belum
+# @return  [false] as json if no update in progess
+#
 get '/v0/system/control/base_os/follow_update', provides: 'text/event-stream;charset=ascii-8bit' do
   unless File.exists?(SystemConfig.BaseOSUpdateRunningLog)
     return_json(false)
