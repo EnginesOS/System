@@ -107,6 +107,9 @@ end
 # @return  [text/event-stream]
 # test cd  /opt/engines/tests/  Belum
 get '/v0/system/control/base_os/follow_update', provides: 'text/event-stream;charset=ascii-8bit' do
+  unless File.new(SystemConfig.BaseOSUpdateRunningLog)
+    return_json(false)
+  else
   begin
     build_log_file = File.new(SystemConfig.BaseOSUpdateRunningLog, 'r')
     has_data = true
@@ -151,8 +154,10 @@ get '/v0/system/control/base_os/follow_update', provides: 'text/event-stream;cha
       end
     end
   end
+  
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
+end
 end
 # @!endgroup
