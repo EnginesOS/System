@@ -100,4 +100,59 @@ get '/v0/system/control/base_os/locale' do
   end
 
 end
+
+# @method follow_build
+# @overload get '/v0/system/control/base_os/follow_update'
+# Follow the run os update
+# @return  [text/event-stream]
+# test cd  /opt/engines/tests/  Belum
+get '/v0/system/control/base_os/follow_update', provides: 'text/event-stream;charset=ascii-8bit' do
+  begin
+    build_log_file = File.new(SystemConfig.BaseOSUpdateRunningLog, 'r')
+    has_data = true
+    build_over = false
+    begin
+    stream :keep_open do |out|
+      while has_data == true
+        begin
+          bytes = build_log_file.read_nonblock(1000)
+          bytes.encode(Encoding::ASCII_8BIT) unless bytes.nil?
+          out << bytes
+          bytes = ''
+        rescue IO::WaitReadable
+          out << bytes
+          bytes = ''
+          IO.select([build_log_file])
+          retry
+        rescue EOFError
+          unless out.closed?
+            bytes.encode(Encoding::ASCII_8BIT) unless bytes.nil? #UTF_8) unless bytes.nil?
+            out << bytes
+            out << '.'
+            bytes = ''
+            sleep 2
+            retry if File.exist?(SystemConfig.BaseOSUpdateRunningLog)
+            if build_over == false
+              build_over = true
+              retry
+            end
+            out.close
+          end
+          build_log_file.close
+          has_data = false
+        rescue IOError
+          has_data = false
+          out << bytes unless out.closed?
+          build_log_file.close
+          out.close unless out.closed?
+        rescue StandardError => e
+          out << bytes unless out.closed?
+        end
+      end
+    end
+  end
+  rescue StandardError => e
+    send_encoded_exception(request: request, exception: e)
+  end
+end
 # @!endgroup
