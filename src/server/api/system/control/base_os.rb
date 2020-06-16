@@ -101,7 +101,7 @@ get '/v0/system/control/base_os/locale' do
 
 end
 
-# @method follow_build
+# @method follow_base_os_update
 # @overload get '/v0/system/control/base_os/follow_update'
 # Follow the run os update
 # @return  [text/event-stream]
