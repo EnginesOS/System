@@ -13,7 +13,11 @@ module EnginesSystemFiles
   @@ManagedServiceMountsFile = '/opt/engines/etc/create_mounts/services.yaml'
   @@SystemAccessDB = '/home/app/db/production.sqlite3'
   @@SystemUserSettingsFile = '/home/engines/deployment/settings.yaml'
+  @@BaseOSUpdateRunningLog = '/var/log/engines/updates/base_os_update.running'
   
+  def SystemConfig.BaseOSUpdateRunningLog
+    @@BaseOSUpdateRunningLog
+  end
  
   def SystemConfig.SystemUserSettingsFile
     @@SystemUserSettingsFile

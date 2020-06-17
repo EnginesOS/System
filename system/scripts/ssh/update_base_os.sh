@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/bin/sh
 touch /opt/engines/run/system/flags/update_running
 tsdate=`date  +%d_%m_%y_%H:%M`
-sudo  -n /opt/engines/system/scripts/ssh/sudo/_update_base_os.sh &> /var/log/engines/updates/base_os_update.current
+sudo  -n /opt/engines/system/scripts/ssh/sudo/_update_base_os.sh > /var/log/engines/updates/base_os_update.running  2>&1
 
-mv /var/log/engines/updates/base_os_update.current /var/log/engines/updates/base_os_update_$tsdate.log
+mv /var/log/engines/updates/base_os_update.running /var/log/engines/updates/base_os_update_$tsdate.log
 rm /opt/engines/run/system/flags/update_running
 touch /opt/engines/run/system/flags/update_run
 service docker status |grep Active |grep running

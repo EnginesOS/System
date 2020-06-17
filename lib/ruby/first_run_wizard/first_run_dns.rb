@@ -14,8 +14,7 @@ module FirstRunDNS
 
   def get_domain_params(params)
     domain_hash = {
-      domain_name: params[:domain_name],
-      default_domain: params[:domain_name]
+      domain_name: params[:domain_name]
     }
     if params[:networking] == 'zeroconf'
       domain_hash[:self_hosted] = true

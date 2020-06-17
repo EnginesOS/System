@@ -18,8 +18,12 @@ module BaseOsSystem
 
   def restart_base_os
     trigger_engines_restart_event('OS restarting')
-    run_server_script('restart_base_os')
-    true
+    t = Thread.new { run_server_script('restart_base_os') }
+    if t.alive?
+      true
+    else
+      false
+    end
   end
 
   # :country_code , :lang_code

@@ -15,7 +15,9 @@ begin
 
   require 'objspace'
   require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
-
+  
+ 
+  
   ObjectSpace.trace_object_allocations_start
 
   @events_stream = nil
@@ -78,7 +80,9 @@ begin
      configure do
     enable :cross_origin
   end
-
+  
+  server.threaded = settings.threaded if server.respond_to? :threaded=    
+    
     require_relative 'helpers/helpers.rb'
     require_relative 'api/routes.rb'
   rescue StandardError => e
