@@ -3,6 +3,8 @@ require '/opt/engines/lib/ruby/api/system/container_state_files.rb'
 
 module Container
   class Container < ErrorsApi
+
+     
     require_relative 'container/container_setup.rb'
     include ContainerSetup
     require_relative 'container/container_controls.rb'
@@ -42,6 +44,13 @@ module Container
     :last_result,
     :arguments
 
+
+def error_hash(mesg, params = nil)
+   r = error_type_hash(mesg, params)
+   r[:error_type] = :error
+   r
+ end
+ 
     def update_memory(new_memory)
       @memory = new_memory
     end
