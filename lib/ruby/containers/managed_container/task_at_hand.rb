@@ -14,6 +14,8 @@ module TaskAtHand
   end
 
   def in_progress(action)
+    STDERR.puts("ACTION IS A STRING #{caller}") if action.is_a?(String)
+    action.to_sym if action.is_a?(String)
     curr_state = read_state
     final_state = tasks_final_state(action)
     #   SystemDebug.debug(SystemDebug.engine_tasks, :final_state, final_state)
