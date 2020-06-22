@@ -63,11 +63,12 @@ module ManagedContainerStatus
 
   def is_error?(cs)
     r = false
-    STDERR.puts("Is container #{@container_name} error cs = #{cs}  set State = #{@set_state}")
+    
     if cs != @set_state
       r = true unless task_at_hand.nil?
     end
     r = false if cs == :stopped && is_stopped_ok?
+    STDERR.puts("Is container #{@container_name} error = #{r}  cs = #{cs}  set State = #{@set_state} and stopped ok #{is_stopped_ok?} tah #{task_at_hand}")
     r
   rescue StandardError => e
     log_exception(e)
