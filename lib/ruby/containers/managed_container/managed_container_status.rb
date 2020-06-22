@@ -66,7 +66,7 @@ module ManagedContainerStatus
     
     if cs != @set_state
       STDERR.puts('set ERRRPR')
-      r = true # if task_at_hand.nil?
+      r = true if task_at_hand.nil?
       STDERR.puts("set ERRRPR #{r}")
     end
     r = false if cs == :stopped && is_stopped_ok?
