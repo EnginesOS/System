@@ -17,6 +17,7 @@ params = []
   params[:data] = read_stdin_data
 perform_post(params)
 when 'imports'
+ @route += '/import'
  stream_put(STDIN)
 when 'replace'
 @route += '/' + ARGV[4]
