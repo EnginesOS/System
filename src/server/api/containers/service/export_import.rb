@@ -42,15 +42,15 @@ options '/v0/containers/service/:service_name/import/chunked' do
 # data is streamed as application/octet-stream
 # @return [true]
 put '/v0/containers/service/:service_name/import' do
-  STDERR.puts('SIN IMPORT:' + request.to_s)
+ STDERR.puts('SIN IMPORT:' + request.to_s)
   begin
     response.headers['Access-Control-Allow-Origin'] = '*' 
     service = get_service(params[:service_name])
-      r = request.env['rack.input']
-    STDERR.puts('SIN IMPORT:' + request.to_s)
-    STDERR.puts('SIN IMPORT params' + params.to_s)
+  #  STDERR.puts('SIN IMPORT:' + request.to_s)
+  #  STDERR.puts('SIN IMPORT params' + params.to_s)
     #   STDERR.puts('SIN IMPORT ' + request.body.read)
-      
+
+      r = request.env['rack.input']
       STDERR.puts('SIN IMPORT ' + r.class.name)
       return_json(service.import_data(request.env['rack.input']))
 
