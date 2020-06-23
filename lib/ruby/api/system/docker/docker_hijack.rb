@@ -94,7 +94,7 @@ module DockerHijack
       end
       write_thread.join unless write_thread.nil?
       read_thread.join unless read_thread.nil?
-      @stream_reader.stdout_stream.close unless @stream_reader.stdout_stream.nil?
+      @stream_reader.out_stream.close unless @stream_reader.out_stream.nil?
       @stream_reader.i_stream.close unless @stream_reader.i_stream.nil?
       #   STDERR.puts("Closed")
     end
