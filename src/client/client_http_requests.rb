@@ -131,8 +131,8 @@ def stream_file(uri_s, src_f, headers = nil)
   #  request = Net::HTTP::Post.new(uri.request_uri, headers)
   #  else
   #  request = Net::HTTP::Post.new(uri.request_uri, headers)
-  request = Net::HTTP::Putt.new(uri.request_uri, headers)
-  # STDERR.puts('request ' + request.to_s)
+  request = Net::HTTP::Put.new(uri.request_uri, headers)
+  STDERR.puts('request ' + request.to_s)
   #  end
   request.body_stream = src_f
   r = conn.request(request)
@@ -166,6 +166,7 @@ end
 #  end
 #
 def rest_stream_put(uri, data_io)
+  STDERR.puts("rest_stream_put #{uri}")
   #stream_handler = Streamer.new(data_io)
   #r = stream_connection(uri, stream_handler)
   r =  stream_file(uri, data_io)
