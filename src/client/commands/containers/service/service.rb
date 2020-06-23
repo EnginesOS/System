@@ -14,6 +14,7 @@ when 'export'
 when 'import'
 @route += '/' + ARGV[4]
 content_type='application/octet-stream'
+STDERR.puts("Route #{@route}")
  stream_put(@route, STDIN)
 #params = []
 #  params[:data] = read_stdin_data
@@ -46,4 +47,5 @@ end
 @route += '/' + cmd unless cmd.nil?
 
 
+STDERR.puts("Route #{@route}")
 perform_get
