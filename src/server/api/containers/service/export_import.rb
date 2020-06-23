@@ -57,6 +57,7 @@ post '/v0/containers/service/:service_name/import' do
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
+end
 # @method engine_import_persistent_service_data
 # @overload put '/v0/containers/service/:service_name/import'
 # import the service data gzip optional
