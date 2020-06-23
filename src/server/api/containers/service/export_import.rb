@@ -41,7 +41,7 @@ end
 # import the service data gzip optional
 # data is streamed as application/octet-stream
 # @return [true]
-post '/v0/containers/service/:service_name/import' do
+put '/v0/containers/service/:service_name/imports' do
   STDERR.puts('SIN IMPORT post:' + request.to_s)
   begin
     response.headers['Access-Control-Allow-Origin'] = '*'
@@ -53,7 +53,7 @@ post '/v0/containers/service/:service_name/import' do
     r = request.env['rack.input']
     STDERR.puts('SIN IMPORT ' + r.class.name)
   #  return_json(service.import_data(request.env['rack.input']))
-    file = File.new('/tmp/inport')
+    file = File.new('/tmp/inport','w+')
     file.binmode
     file.write r.read
     file.close
