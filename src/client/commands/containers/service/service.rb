@@ -18,7 +18,9 @@ params = []
 perform_post(params)
 when 'imports'
  @route += '/import'
- stream_put(STDIN)
+content_type='application/octet-stream'
+ stream_put(@route, STDIN)
+ exit
 when 'replace'
 @route += '/' + ARGV[4]
 params = []
