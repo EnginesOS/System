@@ -13,9 +13,11 @@ when 'export'
  cmd = ARGV[4]
 when 'import'
 @route += '/' + ARGV[4]
-params = []
-  params[:data] = read_stdin_data
-perform_post(params)
+content_type='application/octet-stream'
+ stream_put(@route, STDIN)
+#params = []
+#  params[:data] = read_stdin_data
+#  perform_post(params)
 when 'imports'
  @route += '/import'
 STDERR.puts("Route #{@route}")
