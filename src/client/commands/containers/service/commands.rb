@@ -2,6 +2,12 @@
 perform_get if ARGV.count == 2
 
 case ARGV[2]
+when 'imports'
+ @route += '/import'
+STDERR.puts("Route #{@route}")
+content_type='application/octet-stream'
+ stream_put(@route, STDIN)
+
 when 'import'
   @route += '/import'
 if ARGV.count == 4
