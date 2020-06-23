@@ -52,7 +52,13 @@ post '/v0/containers/service/:service_name/import' do
 
     r = request.env['rack.input']
     STDERR.puts('SIN IMPORT ' + r.class.name)
-    return_json(service.import_data(request.env['rack.input']))
+  #  return_json(service.import_data(request.env['rack.input']))
+    file = File.new('/tmp/inport')
+    file.binmode
+    file.write r.read
+    file.close
+     
+    
 
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
