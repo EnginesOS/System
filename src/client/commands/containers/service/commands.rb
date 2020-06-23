@@ -6,7 +6,7 @@ when 'imports'
  @route += '/import'
 STDERR.puts("Route #{@route}")
 content_type='application/octet-stream'
- stream_put(@route, STDIN)
+ stream_put(@route)
 
 when 'import'
   @route += '/import'
