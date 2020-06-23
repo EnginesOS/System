@@ -1,7 +1,7 @@
 @route += '/' + ARGV[3] + '/'
 
 cmd = nil
-
+STDERR.puts("Route #{@route}")
 case ARGV[4]
 when 'register'
   cmd = ARGV[4]
@@ -18,6 +18,7 @@ params = []
 perform_post(params)
 when 'imports'
  @route += '/import'
+STDERR.puts("Route #{@route}")
 content_type='application/octet-stream'
  stream_put(@route, STDIN)
  exit
