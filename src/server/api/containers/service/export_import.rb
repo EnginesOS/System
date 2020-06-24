@@ -50,12 +50,18 @@ put '/v0/containers/service/:service_name/imports' do
     #  STDERR.puts('SIN IMPORT params' + params.to_s)
     #   STDERR.puts('SIN IMPORT ' + request.body.read)
 
-    r = request.env['data.input']
+    r = request.env['data.input'].body
     STDERR.puts('SIN IMPORT ' + r.class.name)
   #  return_json(service.import_data(request.env['rack.input']))
     file = File.new('/tmp/inport','w+')
     file.binmode
-    file.write r.read
+    begin
+      
+    while (b = r.read) != nil
+      file.write(b)
+    end
+   
+  end
     file.close
      
     
