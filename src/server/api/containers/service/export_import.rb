@@ -56,7 +56,7 @@ post '/v0/containers/service/:service_name/imports' do
     file = File.new('/tmp/inport','w+')
     file.binmode
     begin
-      b = r.read 
+      b = r.read
       STDERR.puts("b is #{b}")
     while b != nil
       file.write(b)
