@@ -41,8 +41,8 @@ end
 # import the service data gzip optional
 # data is streamed as application/octet-stream
 # @return [true]
-post '/v0/containers/service/:service_name/imports' do
-  STDERR.puts('SIN IMPORT post:' + request.to_s)
+put '/v0/containers/service/:service_name/imports' do
+  STDERR.puts('SIN IMPORT put:' + request.to_s)
   begin
     response.headers['Access-Control-Allow-Origin'] = '*'
     service = get_service(params[:service_name])
