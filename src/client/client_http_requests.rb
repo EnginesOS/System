@@ -69,7 +69,7 @@ chunked = Chunked.new(io_h, Excon.defaults[:chunk_size])
     # if  post == true
     #  request = Net::HTTP::Post.new(uri.request_uri, headers)
     #  else
-    request = Net::HTTP::Put.new(uri.request_uri, headers)
+    request = Net::HTTP::Post.new(uri.request_uri, headers)
      STDERR.puts('POST request ' + request.to_s)
   STDERR.puts('request ' +headers.to_s)
     #  end
