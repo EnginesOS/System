@@ -41,17 +41,12 @@ class Chunked
   end
   
   def read(foo, bar)
-    STDERR.puts("FOO: #{foo} Bar #{bar} files #{file}")
+    STDERR.puts("FOO: #{foo} Bar #{bar} file #{file}")
     if @file
       @file.read(foo)
     end
   end
-  def read(foo)
-    STDERR.puts('FOO:' + foo.to_s + ' noBar:' )
-    if @file
-      @file.read(foo)
-    end
-  end
+
   def eof!
     @file.eof!
   end
