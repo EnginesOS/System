@@ -103,11 +103,11 @@ def estream_io(uri_s, io_h)
     'Transfer-Encoding' => 'chunked',
   }
 
-  r = Excon.post(@base_url + uri_s, :request_block => chunker, #, headers: headers,
+  r = Excon.post(@base_url + uri_s, :request_block => chunker, headers: headers,
   debug_request: true,
   debug_response: true,
-  ssl_verify_peer: false,
-  persistent: true)
+  ssl_verify_peer: false )#,
+  #persistent: true)
   STDERR.puts('r')
   io_h.close
   STDERR.puts('r')
