@@ -86,9 +86,9 @@ STDERR.puts("SIN IMPORT: #{request} #{params}")
       STDERR.puts('SIN IMPORT params' + params.to_s)
     #   STDERR.puts('SIN IMPORT ' + request.body.read)
 
-    r = request.env['rack.input']
+    # r = request.env['rack.input']
     STDERR.puts('SIN IMPORT ' + r.class.name)
-    return_json(service.import_data(request.env['rack.input']))
+    return_json(service.import_data(request.body)) #request.env['rack.input']))
 
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
