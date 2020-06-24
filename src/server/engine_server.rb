@@ -19,7 +19,7 @@ begin
   require 'stringio'
   
   use Rack::Config do |env|
-    if env['REQUEST_METHOD'] == 'PUT' and env['PATH_INFO'] == '/v0/containers/service/mysqld/imports' #.match(/\/v0\/containers\/service\/.*\/imports/)
+    if env['REQUEST_METHOD'] == 'POST' and env['PATH_INFO'] == '/v0/containers/service/mysqld/imports' #.match(/\/v0\/containers\/service\/.*\/imports/)
       STDERR.puts("MATCHED")
       env['rack.input'], env['data.input'] = StringIO.new, env['rack.input']
     end
