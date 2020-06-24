@@ -18,6 +18,7 @@ begin
   
   use Rack::Config do |env|
     if env['PATH_INFO'].match(/\/v0\/containers\/service\/.*\/imports/) and env['REQUEST_METHOD'] == 'PUT'
+      STDERR.puts("MATCHED")
       env['rack.input'], env['data.input'] = StringIO.new, env['rack.input']
     end
   end
