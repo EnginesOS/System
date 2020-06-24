@@ -41,18 +41,20 @@ class Chunked
   end
   
   def read(foo, bar)
-    STDERR.puts("FOO: #{foo} Bar #{bar} file #{@file}")
+    STDERR.puts("FOO: #{foo} Bar #{bar} ")
     if @file
       b = @file.read(foo)
       STDERR.puts("FOO: #{b}")
-      b
+      b.to_s
     end
   end
 
   def eof!
+    STDERR.puts("eof!")
     @file.eof!
   end
   def eof?
+    STDERR.puts("eof?")
     @file.eof?
   end
 end
@@ -74,7 +76,7 @@ chunked = Chunked.new(io_h, Excon.defaults[:chunk_size])
     #  else
     request = Net::HTTP::Post.new(uri.request_uri, headers)
      STDERR.puts('POST request ' + request.to_s)
-  STDERR.puts('request ' +headers.to_s)
+  STDERR.puts('request ' + headers.to_s)
     #  end
  #     request.body_stream = io_h
  #     r = conn.request(request)
