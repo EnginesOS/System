@@ -92,8 +92,8 @@ def estream_io(uri_s, io_h)
     # Excon.defaults[:chunk_size] defaults to 1048576, ie 1MB
     # to_s will convert the nil received after everything is read to the final empty chunk
     STDERR.puts("Get Chunk from #{io_h}")
-    c = io_h.read(1024) #Excon.defaults[:chunk_size]).to_s
-     STDERR.puts('Got Chunk ' + c.length.to_s)
+    c = io_h.read(512) #Excon.defaults[:chunk_size]).to_s
+     STDERR.puts('Got Chunk ' + c.length.to_s) unless c.nil?
     c
   end
   uri = URI(@base_url + uri_s)
