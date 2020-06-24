@@ -46,7 +46,7 @@ post '/v0/containers/service/:service_name/imports' do
   begin
     response.headers['Access-Control-Allow-Origin'] = '*'
     service = get_service(params[:service_name])
-    #  STDERR.puts('SIN IMPORT:' + request.to_s)
+      STDERR.puts('SIN IMPORT:' + params.to_s)
     #  STDERR.puts('SIN IMPORT params' + params.to_s)
     #   STDERR.puts('SIN IMPORT ' + request.body.read)
 
