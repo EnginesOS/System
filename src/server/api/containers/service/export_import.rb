@@ -55,7 +55,7 @@ post '/v0/containers/service/:service_name/imports' do
   #  return_json(service.import_data(request.env['rack.input']))
     file = File.new('/tmp/inport','w+')
     file.binmode
-    request.read_body do |b|
+    r.read do |b|
       STDERR.puts("b is #{b}")
       file.write(b)
     end
