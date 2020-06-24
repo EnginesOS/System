@@ -91,7 +91,7 @@ def estream_io(uri_s, io_h)
   chunker = lambda do
     # Excon.defaults[:chunk_size] defaults to 1048576, ie 1MB
     # to_s will convert the nil received after everything is read to the final empty chunk
-    STDERR.puts('Get Chunk')
+    STDERR.puts("Get Chunk from #{io_read}")
     c = io_h.read(Excon.defaults[:chunk_size]).to_s
      STDERR.puts('Got Chunk ' + c.length.to_s)
     c
@@ -103,7 +103,7 @@ def estream_io(uri_s, io_h)
     'Transfer-Encoding' => 'chunked',
   }
 
-  r = Excon.put(@base_url + uri_s, :request_block => chunker, headers: headers,
+  r = Excon.post(@base_url + uri_s, :request_block => chunker, #, headers: headers,
   debug_request: true,
   debug_response: true,
   ssl_verify_peer: false,
