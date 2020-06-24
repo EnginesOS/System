@@ -59,7 +59,7 @@ end
 def stream_io(uri_s, io_h)
 chunked = Chunked.new(io_h, Excon.defaults[:chunk_size])
   headers = {
-    'Content-Type' => 'application/octet-stream',
+    'Content-Type' => 'text/plain', #'application/octet-stream',
     'ACCESS_TOKEN' => load_token,   
     'Transfer-Encoding' => 'chunked',
   }
