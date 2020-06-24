@@ -25,7 +25,6 @@ rescue Excon::Error => e
   STDERR.puts('Failed to open base url ' + @base_url.to_s + ' ' + e.to_s + ' ' + e.class.name)
   if @retries < 5
     @retries += 1
-    sleep 1
     retry
   end
   STDERR.puts('Failed to open base url ' + @base_url.to_s + ' after ' + @retries.to_s = ' attempts')
@@ -59,7 +58,7 @@ chunked = Chunked.new(io_h, Excon.defaults[:chunk_size])
   headers = {
     'Content-Type' => 'application/octet-stream',
     'ACCESS_TOKEN' => load_token,   
-    'Transfer-Encoding' => 'chunked',
+  #  'Transfer-Encoding' => 'chunked',
   }
 #request = Net::HTTP::Put.new parsed.request_uri, {'x-auth-token' => @auth_token, 'Transfer-Encoding' => 'chunked', 'content-type' => 'text/plain'}
   uri = URI(@base_url + uri_s)
@@ -70,14 +69,14 @@ chunked = Chunked.new(io_h, Excon.defaults[:chunk_size])
     # if  post == true
     #  request = Net::HTTP::Post.new(uri.request_uri, headers)
     #  else
-    request = Net::HTTP::Put.new(uri.request_uri, headers)
-     STDERR.puts('request ' + request.to_s)
+    request = Net::HTTP::Post.new(uri.request_uri, headers)
+     STDERR.puts('POST request ' + request.to_s)
   STDERR.puts('request ' +headers.to_s)
     #  end
  #     request.body_stream = io_h
  #     r = conn.request(request)
 #      write_response(r)
-request.body_stream = chunked
+request.body_stream = io_h #chunked
 conn.start do |http| 
  r = http.request(request)
   STDERR.puts('request res ' + r.to_s)
@@ -307,7 +306,6 @@ def rest_delete(uri, params=nil, time_out = 20)
   rescue Excon::Error::Socket
     if @retries < 2
       @retries +=1
-      sleep 1
       retry
     end
     STDERR.puts('Failed to url ' + uri.to_s + ' after ' + @retries.to_s = ' attempts')
