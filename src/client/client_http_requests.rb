@@ -98,7 +98,7 @@ def estream_io(uri_s, io_h)
   end
   uri = URI(@base_url + uri_s)
   headers = {
-    'Content-Type' => 'application/octet-stream',
+    'Content-Type' => 'text/plain',
     'ACCESS_TOKEN' => load_token,   
     'Transfer-Encoding' => 'chunked',
   }
