@@ -17,7 +17,7 @@ begin
   require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
   
   use Rack::Config do |env|
-    if env['PATH_INFO'].match(/\/v0\/containers\/service\/[a-z_]+\/imports/) and env['REQUEST_METHOD'] == 'PUT'
+    if env['PATH_INFO'].match(/\/v0\/containers\/service\/.*\/imports/) and env['REQUEST_METHOD'] == 'PUT'
       env['rack.input'], env['data.input'] = StringIO.new, env['rack.input']
     end
   end
