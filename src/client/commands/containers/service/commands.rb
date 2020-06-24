@@ -16,7 +16,7 @@ if ARGV.count == 4
   stream_file(@route, file)
 else
 STDERR.puts('read stream')
-  stream_io(@route, STDIN)
+estream_io(@route, STDIN)
 end  
   
 when 'mem_stat'
