@@ -82,7 +82,7 @@ end
 # import the service data gzip optional
 # data is streamed as application/octet-stream
 # @return [true]
-post '/v0/containers/service/:service_name/import' do
+put '/v0/containers/service/:service_name/import' do
 STDERR.puts("SIN IMPORT: #{request} #{params}")
   begin
     response.headers['Access-Control-Allow-Origin'] = '*'
@@ -92,10 +92,10 @@ STDERR.puts("SIN IMPORT: #{request} #{params}")
     #   STDERR.puts('SIN IMPORT ' + request.body.read)
 
     # r = request.env['rack.input']
-    STDERR.puts('SIN IMPORT ' + request.body.class.name)
+    #  STDERR.puts('SIN IMPORT ' + request.body.class.name)
    # b = request.body.read 
     #STDERR.puts("b is #{b}")
-    return_json(service.import_data(request.body)) #request.env['rack.input']))
+    return_json(service.import_data(request.env['rack.input'])) #(request.body)) #
 
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
