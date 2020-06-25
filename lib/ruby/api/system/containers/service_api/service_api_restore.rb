@@ -18,7 +18,7 @@ module ServiceApiRestore
       thr.kill
       raise EnginesException.new(error_hash('Import Timeout on Running Action ', params))
       rescue StandardError => e
-          SystemUtils.log_exception(e , 'service_restore:' + params)
+          SystemUtils.log_exception(e , "service_restore:#{params}")
           thr.exit unless thr.nil?
     end
     if result[:result] == 0
