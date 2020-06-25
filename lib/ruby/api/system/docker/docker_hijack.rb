@@ -17,7 +17,7 @@ module DockerHijack
           unless @stream_reader.i_stream.nil?
             unless @stream_reader.i_stream.is_a?(StringIO)
             #  STDERR.puts('COPY STREAMS ')
-              IO.copy_stream(@stream_reader.i_stream, socket) unless @stream_reader.i_stream.eof?
+              IO.copy_stream(@stream_reader.i_stream, socket) unless  @stream_reader.nil? #@stream_reader.i_stream.eof?
             else
             #  STDERR.puts('String IO')
               eof = false
