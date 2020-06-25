@@ -4,7 +4,7 @@ module ServiceApiRestore
   def service_restore(service, stream, params)
     raise EnginesException.new(error_hash("failed to import service not running " + service.container_name.to_s)) unless service.is_running?
     cmd = ["#{SystemConfig.ServiceBackupScriptsRoot}/restore.sh", params[:replace].to_s, params[:section].to_s, params[:parent_engine].to_s] #, params[:section].to_s]
-    params = {container: service, command_line: cmd, log_error: true, stdin_stream: stream}
+  params = {container: service, command_line: cmd, log_error: true, stdin_stream: stream, timeout:  @@import_timeout }
     result = {}
 
     thr = Thread.new { result = core.exec_in_container(params) }
@@ -33,7 +33,7 @@ module ServiceApiRestore
     cmd_dir = "#{SystemConfig.EngineServiceBackupScriptsRoot}/"
     cmd = "#{cmd_dir}/backup.sh"
     raise EnginesException.new(error_hash("failed to export service not running " + container.container_name.to_s)) unless container.is_running?
-    params = {container: container, command_line: [cmd], log_error: true, service_variables: service_hash} 
+    params = {container: container, command_line: [cmd], log_error: true, service_variables: service_hash, timeout:  @@export_timeout} 
     params[:stdout_stream] = stream unless stream.nil?
     export(container, params)
   end
