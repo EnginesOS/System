@@ -49,8 +49,8 @@ module SshKeys
   end
 
   def get_user_public_key
-    if File.exists?('/home/engines/.ssh/system/console_access.pub ')
-      File.read('/home/engines/.ssh/system/console_access.pub ')
+    if File.exists?('/home/engines/.ssh/system/console_access.pub')
+      File.read('/home/engines/.ssh/system/console_access.pub')
     else
       raise EnginesException.new(warning_hash('No access key', 'Generate with system action'))
     end
