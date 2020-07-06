@@ -44,7 +44,7 @@ get '/v0/system/key/mothership' do
     send_encoded_exception(request: request, exception: e)
   end
 end
-# @!endg
+# @!endgroup
 
 # @!group /system/keys/user
 # @method generate_user_key

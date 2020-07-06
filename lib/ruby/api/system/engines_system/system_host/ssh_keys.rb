@@ -15,7 +15,7 @@ module SshKeys
   end
 
   def set_ms_public_key(key_data)
-    keyf = File.new('/home/engines/.ssh/mother_ship.pub','w+')
+    keyf = File.new('/home/engines/.ssh/system/mother_ship.pub','w+')
     begin
       keyf.write(key_data)
     ensure
@@ -24,16 +24,16 @@ module SshKeys
   end
 
   def get_ms_public_key
-    if File.exists?('/home/engines/.ssh/mother_ship.pub')
-      File.read('/home/engines/.ssh/mother_ship.pub')
+    if File.exists?('/home/engines/.ssh/system/mother_ship.pub')
+      File.read('/home/engines/.ssh/system/mother_ship.pub')
     else
       raise EnginesException.new(warning_hash('No mother ship key', 'No mother ship key'))
     end
   end
 
   def get_system_public_key
-    if File.exists?('/home/engines/.ssh/engines_system.pub')
-      File.read('/home/engines/.ssh/engines_system.pub')
+    if File.exists?('/home/engines/.ssh/system/engines_system.pub')
+      File.read('/home/engines/.ssh/system/engines_system.pub')
     else
       run_server_script('system_public_key')[:stdout]
     end
@@ -49,8 +49,8 @@ module SshKeys
   end
 
   def get_user_public_key
-    if File.exists?('/home/engines/.ssh/console_access.pub ')
-      File.read('/home/engines/.ssh/console_access.pub ')
+    if File.exists?('/home/engines/.ssh/system/console_access.pub ')
+      File.read('/home/engines/.ssh/system/console_access.pub ')
     else
       raise EnginesException.new(warning_hash('No access key', 'Generate with system action'))
     end

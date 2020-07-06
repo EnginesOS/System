@@ -8,7 +8,7 @@ module EnginesSystemFiles
   @@EnginesInternalCA = '/var/lib/engines/services/certs/store/public/ca/certs/system_CA.pem'
 
   @@SystemPreferencesFile = '/opt/engines/etc/preferences/settings.yaml'
-  @@engines_ssh_private_keyfile = '/home/engines/.ssh/sshaccess'
+  @@engines_ssh_private_keyfile = '/home/engines/.ssh/system/sshaccess'
   @@ManagedEngineMountsFile = '/opt/engines/etc/create_mounts/engines.yaml'
   @@ManagedServiceMountsFile = '/opt/engines/etc/create_mounts/services.yaml'
   @@SystemAccessDB = '/home/app/db/production.sqlite3'
