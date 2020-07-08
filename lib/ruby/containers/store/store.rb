@@ -1,4 +1,5 @@
 require '/opt/engines/lib/ruby/api/system/container_state_files'
+
 require_relative 'cache'
 require_relative 'store_locking'
 
@@ -10,6 +11,12 @@ module Container
       end
     end
 
+    def error_hash(mesg, params = nil)
+      r = error_type_hash(mesg, params)
+      r[:error_type] = :error
+      r
+    end
+
     def model(name)
       cache.container(name) || load(name)
     end
@@ -17,7 +24,7 @@ module Container
     def all
       all_names.map do |n|
         #begin
-          model(n)
+        model(n)
         #rescue EnginesException
         #end
       end.compact
@@ -25,7 +32,7 @@ module Container
 
     def all_names
       Dir.entries(store_directory).map do |d|
-        d if File.exists?("#{store_directory}/#{d}/running.yaml")          
+        d if File.exists?("#{store_directory}/#{d}/running.yaml")
       end.compact
     end
 
@@ -44,7 +51,7 @@ module Container
         #Do it this way so a failure to write doesn't trash a working file
         if File.exist?("#{statefile}_tmp")
           #FixMe check valid yaml
-         FileUtils.mv("#{statefile}_tmp", statefile) 
+          FileUtils.mv("#{statefile}_tmp", statefile)
         else
           #roll_back(statefile)
           STDERR.puts("#{statefile}_tmp Vanished\n" * 5)
@@ -82,7 +89,7 @@ module Container
       begin
         n = file_name(name)
         lock(n)
-        f = file(name)        
+        f = file(name)
         c = model_class.from_yaml(f.read)
         cache.add(c, File.mtime(n))
         c   #WTF why is cache.add not returning container?
@@ -94,7 +101,7 @@ module Container
       end
     end
 
-    def file(name)      
+    def file(name)
       File.new(file_name(name), 'r')
     end
 

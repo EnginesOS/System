@@ -45,11 +45,6 @@ module Container
     :arguments
 
 
-def error_hash(mesg, params = nil)
-   r = error_type_hash(mesg, params)
-   r[:error_type] = :error
-   r
- end
  
     def update_memory(new_memory)
       @memory = new_memory
