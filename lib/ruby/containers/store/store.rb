@@ -16,7 +16,13 @@ module Container
       r[:error_type] = :error
       r
     end
-
+ 
+    def error_type_hash(mesg, params = nil)
+      {error_mesg: mesg,
+        system: :store,
+        params: params }
+    end
+    
     def model(name)
       cache.container(name) || load(name)
     end
