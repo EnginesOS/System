@@ -7,10 +7,11 @@ module ServiceApiRestore
   params = {container: service, command_line: cmd, log_error: true, stdin_stream: stream, timeout:  @@import_timeout }
     result = {}
 
+    params[:timeout] = @@import_timeout
     thr = Thread.new { result = core.exec_in_container(params) }
     thr[:name] = "restore:#{service.container_name}"
     begin
-      Timeout.timeout(@@import_timeout) do
+      Timeout.timeout(@@import_timeout + 2) do
         thr.join
       end
    #   SystemDebug.debug(SystemDebug.export_import, :import_service,'result ', result.to_s)
@@ -53,9 +54,10 @@ module ServiceApiRestore
   def export(container, params)
     begin
       result = {result:  0}
+      params[:timeout] = @@export_timeout
       thr = Thread.new { result = core.exec_in_container(params) }
   thr[:name] = "export:#{params}"
-      Timeout.timeout(@@export_timeout) do
+      Timeout.timeout(@@export_timeout + 2) do
         thr.join
     #    SystemDebug.debug(SystemDebug.export_import, :export_service, container.container_name, 'result code =', result[:result])
         result
