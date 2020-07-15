@@ -66,7 +66,7 @@ module ServiceApiRestore
       result[:stderr] = "Export Timeout on Running Action:#{cmd}:#{result[:stderr]}"
       #raise EnginesException.new(error_hash('Export Timeout on Running Action ', cmd))
     rescue StandardError => e
-        SystemUtils.log_exception("#{e} export: #{params}")
+        SystemUtils.log_exception(e, "export: #{params}")
         thr.exit unless thr.nil?
     end
     if result[:result] == 0
