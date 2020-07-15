@@ -11,7 +11,7 @@ destroy recreate have issues with schedules
 
  ports not release before a container is restarted 
  
- first run is not https
+ #first run is not https
  
  
  

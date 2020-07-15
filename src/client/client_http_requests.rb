@@ -20,6 +20,7 @@ def connection(content_type = 'application/json_parser')
   ssl_verify_peer: false,
   persistent: true,
   headers: headers) if @connection.nil?
+  STDERR.puts("Requirest #{@connection}")
   @connection
 rescue Excon::Error => e
   STDERR.puts('Failed to open base url ' + @base_url.to_s + ' ' + e.to_s + ' ' + e.class.name)
