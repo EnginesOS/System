@@ -117,7 +117,8 @@ module UserAuth
 
   def is_admin_token_valid?(token, ip = nil)
     ip = nil
-    if ip == nil
+    STDERR.puts("USER TOKEN #{token}")
+    if ip.nil?
       rows = auth_database.execute(\
       "select guid from systemaccess where authtoken='#{token}';" )
     else
