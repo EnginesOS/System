@@ -23,6 +23,6 @@ mapped_ports:
   external: 67
 repo: na
 last_result: 
-set_state: nocontainer
+set_state: :nocontainer
 conf_register_site: false
 conf_register_dns: true

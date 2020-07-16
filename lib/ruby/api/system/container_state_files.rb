@@ -12,6 +12,7 @@ class ContainerStateFiles
         yaml_file = File.new(yam1_file_name, 'w+')
         begin
           yaml_file.write(running_config)
+          STDERR.puts("Built runnings from #{running_config}")
         ensure
           yaml_file.close
         end

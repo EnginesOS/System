@@ -12,6 +12,10 @@ function create_mgmt_script_key {
 
 
 function regenerate_keys {
+ if ! test -d /opt/engines/etc/ssh/keys/services/mgmt
+  then
+   mkdir -p /opt/engines/etc/ssh/keys/services/mgmt
+ fi  
 if test -z $key_names 
  then 
   key_names=`cat /opt/engines/etc/ssh/key_names`

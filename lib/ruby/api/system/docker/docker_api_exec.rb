@@ -15,7 +15,7 @@ module DockerApiExec
 
     def close
       @out_stream.close unless @out_stream.nil?
-      @i_stream.close unless @i_stream.nil?
+    #  @i_stream.close unless @i_stream.nil?
       @stream.reset unless @stream.nil?
     end
 
@@ -24,7 +24,7 @@ module DockerApiExec
     end
 
     def has_data?
-      if (@i_stream.nil? || @i_stream.closed? ) && @data.nil?
+      if (@i_stream.nil?  && @data.nil? ) #|| @i_stream.closed? ) && @data.nil?
         false
       elsif !@data.nil? && @data.length > 0
         true
@@ -100,7 +100,7 @@ module DockerApiExec
     r[:result] = -1;
     r[:stderr] = "Timeout on Docker exec:#{params[:command_line]}:#{params[:container].container_name}"
     STDERR.puts(' Timeout ' + r.to_s)
-    raise EnginesException.new(warning_hash('Timeout on Docker exec', r))
+    raise EnginesException.new(warning_hash("Timeout on Docker exec passed #{params[:timeout]} secs", r))
   end
 
   private

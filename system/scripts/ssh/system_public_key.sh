@@ -1,9 +1,9 @@
 #!/bin/sh
 
-if ! test -f /home/engines/.ssh/engines_system.pub 
+if ! test -f /home/engines/.ssh/system/engines_system.pub 
 	then
-		ssh-keygen  -P "" -f /home/engines/.ssh/engines_system >/dev/null
+		ssh-keygen  -P "" -f /home/engines/.ssh/system/engines_system >/dev/null
 	fi
-cat   /home/engines/.ssh/engines_system.pub 
+cat   /home/engines/.ssh/system/engines_system.pub 
 
 

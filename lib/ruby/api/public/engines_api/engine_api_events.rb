@@ -2,8 +2,9 @@ module EngineApiEvents
   class EventsStreamWriter
     attr_accessor :rd
 
-    def initialize
+    def initialize(system_api)
       @rd, @wr = IO.pipe
+      @system_api = system_api
     end
 
     def write_event(hash)
@@ -29,7 +30,7 @@ module EngineApiEvents
     end
 
     def stop
-      system_api.rm_event_listener(self)
+      @system_api.rm_event_listener(self)
     rescue StandardError => e
       p e.to_s
       p e.backtrace.to_s
@@ -41,7 +42,7 @@ module EngineApiEvents
   end
 
   def container_events_stream
-    stream = EventsStreamWriter.new
+    stream = EventsStreamWriter.new(system_api)
    # STDERR.puts('new Event StreamWriter')
     system_api.add_event_listener(stream, :write_event, 16) # was 16
     stream.start

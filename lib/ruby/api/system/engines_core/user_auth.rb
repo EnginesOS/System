@@ -117,7 +117,8 @@ module UserAuth
 
   def is_admin_token_valid?(token, ip = nil)
     ip = nil
-    if ip == nil
+    STDERR.puts("is_admin_token_valid TOKEN #{token}")
+    if ip.nil?
       rows = auth_database.execute(\
       "select guid from systemaccess where authtoken='#{token}';" )
     else
@@ -142,12 +143,12 @@ module UserAuth
   end
 
   def is_user_token_valid?(token, ip = nil)
-
+ STDERR.puts("Is use token #{token} valid ")
     unless token.nil?
       if is_admin_token_valid?(token, ip)
         access = true
       else
-        #    STDERR.puts('USER TOKENS ' + $user_tokens.to_s)
+        #   STDERR.puts('USER TOKENS ' + $user_tokens.to_s)
         access = $user_tokens.key?(token)
         #   STDERR.puts('USER Access ' + access.to_s)
       end
@@ -204,6 +205,7 @@ module UserAuth
   end
 
   def admin_user_login(params)
+    STDERR.puts("admin_user_login #{params}  ")
     q = "select authtoken from systemaccess where username='#{params[:user_name]}' and password = '#{params[:password]}';"
     rows = auth_database.execute(q)
     raise EnginesException.new(error_hash("failed to select " + q.to_s, params)) unless rows.count > 0

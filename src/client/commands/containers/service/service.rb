@@ -1,7 +1,7 @@
 @route += '/' + ARGV[3] + '/'
 
 cmd = nil
-
+STDERR.puts("Route #{@route}")
 case ARGV[4]
 when 'register'
   cmd = ARGV[4]
@@ -13,9 +13,12 @@ when 'export'
  cmd = ARGV[4]
 when 'import'
 @route += '/' + ARGV[4]
+
+
 params = []
   params[:data] = read_stdin_data
-perform_post(params)
+  perform_post(params)
+
 when 'replace'
 @route += '/' + ARGV[4]
 params = []
@@ -38,4 +41,5 @@ end
 @route += '/' + cmd unless cmd.nil?
 
 
+STDERR.puts("Route #{@route}")
 perform_get

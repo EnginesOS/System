@@ -16,7 +16,15 @@ begin
   require 'objspace'
   require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
   
- 
+  require 'stringio'
+  
+  use Rack::Config do |env|
+    if env['REQUEST_METHOD'] == 'POST' and env['PATH_INFO'] == '/v0/containers/services/mysqld/import' #.match(/\/v0\/containers\/service\/.*\/imports/)
+      STDERR.puts("MATCHED")
+      env['rack.input'], env['data.input'] = StringIO.new, env['rack.input']
+    end
+  end
+  
   
   ObjectSpace.trace_object_allocations_start
 
@@ -81,6 +89,9 @@ begin
     enable :cross_origin
   end
   
+    $stderr.reopen("/var/log/system_error.log", "w")
+    $stderr.sync = true
+    
   server.threaded = settings.threaded if server.respond_to? :threaded=    
     
     require_relative 'helpers/helpers.rb'

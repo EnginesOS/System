@@ -1,7 +1,7 @@
 #!/bin/sh
-
-sleep 2
 touch /opt/engines/run/system/flags/engines_rebooting
+sleep 2
+
 touch /opt/engines/run/system/flags/engines_rebooted
 if ! test -f /opt/engines/etc/engines_reboot_disabled
  then

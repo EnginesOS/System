@@ -20,12 +20,12 @@ def connection(content_type = 'application/json_parser')
   ssl_verify_peer: false,
   persistent: true,
   headers: headers) if @connection.nil?
+  STDERR.puts("Requirest #{headers}")
   @connection
 rescue Excon::Error => e
   STDERR.puts('Failed to open base url ' + @base_url.to_s + ' ' + e.to_s + ' ' + e.class.name)
   if @retries < 5
     @retries += 1
-    sleep 1
     retry
   end
   STDERR.puts('Failed to open base url ' + @base_url.to_s + ' after ' + @retries.to_s = ' attempts')
@@ -42,22 +42,27 @@ class Chunked
   end
   
   def read(foo, bar)
-    STDERR.puts('FOO:' + foo.to_s + ' Bar:' + bar.to_s)
+    STDERR.puts("FOO: #{foo} Bar #{bar} ")
     if @file
-      @file.read(foo)
+      b = @file.read(foo)
+      STDERR.puts("FOO: #{b}")
+      b.to_s
     end
   end
+
   def eof!
+    STDERR.puts("eof!")
     @file.eof!
   end
   def eof?
+    STDERR.puts("eof?")
     @file.eof?
   end
 end
 def stream_io(uri_s, io_h)
 chunked = Chunked.new(io_h, Excon.defaults[:chunk_size])
   headers = {
-    'Content-Type' => 'application/octet-stream',
+    'Content-Type' => 'text/plain', #'application/octet-stream',
     'ACCESS_TOKEN' => load_token,   
     'Transfer-Encoding' => 'chunked',
   }
@@ -71,8 +76,8 @@ chunked = Chunked.new(io_h, Excon.defaults[:chunk_size])
     #  request = Net::HTTP::Post.new(uri.request_uri, headers)
     #  else
     request = Net::HTTP::Post.new(uri.request_uri, headers)
-     STDERR.puts('request ' + request.to_s)
-  STDERR.puts('request ' +headers.to_s)
+     STDERR.puts('POST request ' + request.to_s)
+  STDERR.puts('request ' + headers.to_s)
     #  end
  #     request.body_stream = io_h
  #     r = conn.request(request)
@@ -89,10 +94,11 @@ def estream_io(uri_s, io_h)
   chunker = lambda do
     # Excon.defaults[:chunk_size] defaults to 1048576, ie 1MB
     # to_s will convert the nil received after everything is read to the final empty chunk
-    STDERR.puts('Get Chunk')
-    c = io_h.read(Excon.defaults[:chunk_size]).to_s
-     STDERR.puts('Got Chunk ' + c.length.to_s)
-    c
+    STDERR.puts("Get Chunk from #{io_h}")
+    #Excon.defaults[:chunk_size]
+    c = io_h.read(512 * 1024).to_s
+     STDERR.puts('Got Chunk ' + c.length.to_s) unless c.nil?
+    c.to_s
   end
   uri = URI(@base_url + uri_s)
   headers = {
@@ -104,8 +110,8 @@ def estream_io(uri_s, io_h)
   r = Excon.post(@base_url + uri_s, :request_block => chunker, headers: headers,
   debug_request: true,
   debug_response: true,
-  ssl_verify_peer: false,
-  persistent: true)
+  ssl_verify_peer: false )#,
+  #persistent: true)
   STDERR.puts('r')
   io_h.close
   STDERR.puts('r')
@@ -130,8 +136,9 @@ def stream_file(uri_s, src_f, headers = nil)
   # if  post == true
   #  request = Net::HTTP::Post.new(uri.request_uri, headers)
   #  else
+  #  request = Net::HTTP::Post.new(uri.request_uri, headers)
   request = Net::HTTP::Post.new(uri.request_uri, headers)
-  # STDERR.puts('request ' + request.to_s)
+  STDERR.puts('request ' + request.to_s)
   #  end
   request.body_stream = src_f
   r = conn.request(request)
@@ -165,6 +172,7 @@ end
 #  end
 #
 def rest_stream_put(uri, data_io)
+  STDERR.puts("rest_stream_put #{uri}")
   #stream_handler = Streamer.new(data_io)
   #r = stream_connection(uri, stream_handler)
   r =  stream_file(uri, data_io)
@@ -305,7 +313,6 @@ def rest_delete(uri, params=nil, time_out = 20)
   rescue Excon::Error::Socket
     if @retries < 2
       @retries +=1
-      sleep 1
       retry
     end
     STDERR.puts('Failed to url ' + uri.to_s + ' after ' + @retries.to_s = ' attempts')
