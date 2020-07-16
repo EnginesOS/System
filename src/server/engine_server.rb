@@ -89,7 +89,7 @@ begin
     enable :cross_origin
   end
   
-    $stderr.reopen("/var/logs/system_error.log", "w")
+    $stderr.reopen("/var/log/system_error.log", "w")
     $stderr.sync = true
     
   server.threaded = settings.threaded if server.respond_to? :threaded=    
