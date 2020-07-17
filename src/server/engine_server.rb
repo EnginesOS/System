@@ -18,19 +18,13 @@ begin
   
   require 'stringio'
   
-  use Rack::Config do |env|
-    if env['REQUEST_METHOD'] == 'POST' and env['PATH_INFO'] == '/v0/containers/services/mysqld/import' #.match(/\/v0\/containers\/service\/.*\/imports/)
-      STDERR.puts("MATCHED")
-      env['rack.input'], env['data.input'] = StringIO.new, env['rack.input']
-    end
-  end
-  
-
-  
   ObjectSpace.trace_object_allocations_start
 
   @events_stream = nil
-
+  
+  $stderr.reopen("/var/log/system_error.log", "w")
+  $stderr.sync = true
+  
   STDERR.puts('++++++')
   require 'timers'
   @timers = Timers::Group.new
@@ -85,13 +79,10 @@ begin
   #  set :sessions, true
     set :logging, true
     set :run, true
-    set :timeout, 260
+    set :timeout, 290
      configure do
     enable :cross_origin
   end
-  
-    $stderr.reopen("/var/log/system_error.log", "w")
-    $stderr.sync = true
     
   server.threaded = settings.threaded if server.respond_to? :threaded=    
     
