@@ -29,7 +29,11 @@ begin
   require 'timers'
   @timers = Timers::Group.new
   @@last_error = ''
-
+  
+  def engines_api
+    @engines_api ||= PublicApi.instance
+  end
+  
   require 'warden'
   require_relative 'warden/warden_config.rb'
   require_relative 'warden/warden_strategies.rb'

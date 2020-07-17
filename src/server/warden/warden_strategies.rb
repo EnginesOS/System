@@ -1,5 +1,7 @@
 # Implement Warden stratagey to validate and authorize the access_token.
 Warden::Strategies.add(:api_access_token) do
+  
+  
   def valid?
     STDERR.puts("NO HTTP_ACCESS_TOKEN in header #{request.env}") if request.env['HTTP_ACCESS_TOKEN'].nil?
     request.env['HTTP_ACCESS_TOKEN'].is_a?(String)
