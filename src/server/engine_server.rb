@@ -1,6 +1,6 @@
-
 require '/opt/engines/lib/ruby/system/engines_error.rb'
 require 'yajl/json_gem'
+
 begin
   require 'sinatra'
   require 'sinatra/cross_origin'
@@ -15,25 +15,21 @@ begin
 
   require 'objspace'
   require '/opt/engines/lib/ruby/api/system/engines_core/engines_core.rb'
-  
+
   require 'stringio'
-  
+
   ObjectSpace.trace_object_allocations_start
 
   @events_stream = nil
-  
+
   $stderr.reopen("/var/log/system_error.log", "w")
   $stderr.sync = true
-  
+
   STDERR.puts('++++++')
   require 'timers'
   @timers = Timers::Group.new
   @@last_error = ''
-  
-  def engines_api
-    @engines_api ||= PublicApi.instance
-  end
-  
+
   require 'warden'
   require_relative 'warden/warden_config.rb'
   require_relative 'warden/warden_strategies.rb'
@@ -80,16 +76,16 @@ begin
 
   class Application < Sinatra::Base
     @events_s = nil
-  #  set :sessions, true
+    #  set :sessions, true
     set :logging, true
     set :run, true
     set :timeout, 290
-     configure do
-    enable :cross_origin
-  end
-    
-  server.threaded = settings.threaded if server.respond_to? :threaded=    
-    
+    configure do
+      enable :cross_origin
+    end
+
+    server.threaded = settings.threaded if server.respond_to? :threaded=
+
     require_relative 'helpers/helpers.rb'
     require_relative 'api/routes.rb'
   rescue StandardError => e
@@ -98,6 +94,10 @@ begin
     STDERR.puts('Unhandled Exception' + e.to_s + '\n' + e.backtrace.to_s )
     r.to_json
 
+  end
+
+  def engines_api
+    @engines_api ||= PublicApi.instance
   end
 
   def source_is_service?(request, service_name)
