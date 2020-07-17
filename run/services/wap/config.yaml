@@ -30,7 +30,7 @@ mapped_ports:
   external: 80
 repo: na
 last_result: 
-set_state: running
+set_state: :running
 conf_register_site: false
 conf_register_dns: true
 conf_self_start: true

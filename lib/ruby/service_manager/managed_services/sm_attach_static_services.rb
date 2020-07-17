@@ -22,8 +22,10 @@ module SmAttachStaticServices
         templater.proccess_templated_service_hash(service_hash)
        # SystemDebug.debug(SystemDebug.services, :templated_service_hash, service_hash)
        # SystemDebug.debug(SystemDebug.services, 'is registreed ', system_registry_client.service_is_registered?(service_hash))
-        if service_hash[:persistent] == false ||  system_registry_client.service_is_registered?(service_hash) == false
-         # SystemDebug.debug(SystemDebug.services,  :creating_static, service_hash)
+        if service_hash[:persistent] == false ||  
+                      system_registry_client.service_is_registered?(service_hash) == false ||
+                      service_hash[:recreate] == true 
+          SystemDebug.debug(SystemDebug.services,  :creating_static, service_hash)
           begin
             create_and_register_service(service_hash)
           rescue StandardError => e

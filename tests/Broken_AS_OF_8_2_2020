@@ -1,5 +1,5 @@
 system/certs
-system/keys public,upload
+
 system config set default_site
 system domains remove
 engines restart when it has ports becuase start is called before ports have been deregisterd
@@ -11,10 +11,8 @@ destroy recreate have issues with schedules
 
  ports not release before a container is restarted 
  
- first run is not https
+ #first run is not https
  
- 
- mysqld is stopped post install
  
  
  external hosted dns - > recusion not permitted

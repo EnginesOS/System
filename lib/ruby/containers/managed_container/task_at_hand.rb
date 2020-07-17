@@ -7,13 +7,15 @@ module TaskAtHand
 
   def desired_state(step, state, curr_state)
     current_set_state = @set_state
-    @set_state = state.to_s
+    @set_state = state
     set_task_at_hand(step)
     save_state
     #STDERR.puts( "Task at Hand: #{state} Current set state: #{current_set_state} going for  #{@set_state}  with #{@task_at_hand} in #{curr_state}")
   end
 
   def in_progress(action)
+    STDERR.puts("ACTION IS A STRING #{caller}") if action.is_a?(String)
+    action.to_sym if action.is_a?(String)
     curr_state = read_state
     final_state = tasks_final_state(action)
     #   SystemDebug.debug(SystemDebug.engine_tasks, :final_state, final_state)

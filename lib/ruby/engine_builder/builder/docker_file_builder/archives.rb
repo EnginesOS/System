@@ -37,6 +37,7 @@ module Archives
 
   def archive_destination(dest)
     d = dest.to_s
+    dest = '/home/app' if dest.nil?
     if dest == './' || dest == '/'
       dest = ''
     elsif dest.end_with?('/')

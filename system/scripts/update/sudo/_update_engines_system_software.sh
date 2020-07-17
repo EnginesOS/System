@@ -29,7 +29,8 @@ fi
 cp -rp /opt/engines/system/updates/src/* /
 
  cp /opt/engines/system/updates/src/etc/sudoers.d/* /etc/sudoers.d/ 
- chmod og-rw /etc/sudoers.d/* 
+ chmod og-rw -R /etc/sudoers.d/ /etc/sudoers
+ chown 0.0 -R /etc/sudoers.d/ /etc/sudoers
 
 
 

@@ -30,7 +30,6 @@ fi
 /usr/sbin/usermod -g $group $user
 /usr/sbin/usermod -G containers $user
 
-
 }
 
 set_permissions()
@@ -57,8 +56,6 @@ if test -f /home/engines/etc/user/dirs
 fi
 
 
-
-
 if test -f /home/engines/etc/group/files
  then
   for file in  `cat /home/engines/etc/group/files`
@@ -66,9 +63,9 @@ if test -f /home/engines/etc/group/files
     if ! test -f $file
     then
      touch $file
-    fi
-     
+    fi     
     chown $group $file
+    chmod  g+w $file
    done
 fi
 if test -f /home/engines/etc/group/dirs
@@ -77,6 +74,7 @@ if test -f /home/engines/etc/group/dirs
    do
    mkdir -p $dir
     chown -R $group $dir
+    chmod -R g+w $dir
    done
 fi   
 }

@@ -102,7 +102,7 @@ end
 #test cd /opt/engines/tests/engines_api/system/config ;  make  set_remote_exception_logging
 post '/v0/system/config/remote_exception_logging/enable' do
   begin
-    return_text(engines_api.enable_remote_exception_logging)
+    return_json(engines_api.enable_remote_exception_logging)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -115,7 +115,7 @@ end
 #test cd /opt/engines/tests/engines_api/system/config ;  make  set_remote_exception_logging
 post '/v0/system/config/remote_exception_logging/disable' do
   begin
-    return_text(engines_api.disable_remote_exception_logging)
+    return_json(engines_api.disable_remote_exception_logging)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
@@ -128,7 +128,7 @@ end
 # @return [true|false] remote_exception_logging setting
 get '/v0/system/config/remote_exception_logging' do
   begin
-    return_text(SystemStatus.is_remote_exception_logging?)
+    return_json(SystemStatus.is_remote_exception_logging?)
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end

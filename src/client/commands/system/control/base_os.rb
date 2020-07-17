@@ -26,5 +26,7 @@ when 'set'
     params[:lang_code]  = ARGV[6]
     perform_post(params)
   end
+else
+  @route += '/' + ARGV[3]
 end
 perform_get

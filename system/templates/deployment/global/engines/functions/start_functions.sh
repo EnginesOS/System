@@ -89,7 +89,7 @@ if test -f /home/engines/scripts/engine/custom_start.sh
    exit_code=$?
 	 if test "$result" = "exit"
 	  then 
-		wait_for_debug
+		shutdown_complete
 		exit $exit_code
 	  fi
 fi

@@ -8,12 +8,16 @@ module EnginesSystemFiles
   @@EnginesInternalCA = '/var/lib/engines/services/certs/store/public/ca/certs/system_CA.pem'
 
   @@SystemPreferencesFile = '/opt/engines/etc/preferences/settings.yaml'
-  @@engines_ssh_private_keyfile = '/home/engines/.ssh/sshaccess'
+  @@engines_ssh_private_keyfile = '/home/engines/.ssh/system/sshaccess'
   @@ManagedEngineMountsFile = '/opt/engines/etc/create_mounts/engines.yaml'
   @@ManagedServiceMountsFile = '/opt/engines/etc/create_mounts/services.yaml'
   @@SystemAccessDB = '/home/app/db/production.sqlite3'
   @@SystemUserSettingsFile = '/home/engines/deployment/settings.yaml'
+  @@BaseOSUpdateRunningLog = '/var/log/engines/updates/base_os_update.running'
   
+  def SystemConfig.BaseOSUpdateRunningLog
+    @@BaseOSUpdateRunningLog
+  end
  
   def SystemConfig.SystemUserSettingsFile
     @@SystemUserSettingsFile

@@ -5,7 +5,7 @@ class DockerDecoder
     @dst=:stdout
   end
 
-  def initialize(params)
+def initialize(params = {})
     @ini_params = params
     @missing=0
     @dst=:stdout

@@ -2,6 +2,12 @@
 perform_get if ARGV.count == 2
 
 case ARGV[2]
+when 'imports'
+ @route += '/imports'
+STDERR.puts("Route #{@route}")
+content_type='application/octet-stream'
+ stream_io(@route, STDIN)
+
 when 'import'
   @route += '/import'
 if ARGV.count == 4
@@ -10,7 +16,8 @@ if ARGV.count == 4
   stream_file(@route, file)
 else
 STDERR.puts('read stream')
-  stream_io(@route, STDIN)
+estream_io(@route, STDIN)
+#stream_io(@route, STDIN)
 end  
   
 when 'mem_stat'
