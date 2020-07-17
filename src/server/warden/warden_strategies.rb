@@ -6,6 +6,7 @@ Warden::Strategies.add(:api_access_token) do
   end
 
   def is_admin_token_valid?(token, ip = nil)
+    STDERR.puts("is admin token valid #{token} #{ip}\n #{request.env}")
     $engines_api.is_admin_token_valid?(token, ip)
   end
 
