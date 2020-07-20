@@ -4,9 +4,9 @@ helpers do
   require_relative 'errors.rb'
 
   def engines_api
-    $engines_api ||= PublicApi.new(EnginesCore.new)
+    @engines_api ||= PublicApi.instance
   end
-
+  
   def json_parser
     @json_parser ||= FFI_Yajl::Parser.new(symbolize_keys: true)
   end
