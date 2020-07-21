@@ -9,8 +9,7 @@ NOOP_PERIOD=25
 # test FixME there is none
 get '/v0/containers/events/stream', provides: 'text/event-stream' do
   @lock_timer = false
-  begin
-    def finialise_events_stream(events_stream, timer)
+  def finialise_events_stream(events_stream, timer)
       events_stream.stop unless events_stream.nil?
       timer.cancel unless timer.nil?
       false
@@ -37,6 +36,9 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
       timer
     end
 
+  EventMachine.run do   
+  begin
+  
     timer = nil
 
     begin
@@ -85,6 +87,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
   rescue StandardError => e
     send_encoded_exception(request: request, exception: e)
   end
+end
 end
 
 # @method check_and_act_on_containers
