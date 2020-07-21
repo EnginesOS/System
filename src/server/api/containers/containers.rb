@@ -36,6 +36,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
       timer
     end
 
+    require 'eventmachine'
   EventMachine.run do   
   begin
   
