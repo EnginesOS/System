@@ -5,7 +5,7 @@ module FirstRunPasswords
     service_param[:configurator_name] = 'db_master_pass'
     service_param[:variables] = {}
     service_param[:variables][:db_master_pass] = password
-    return true if core.update_service_configuration(service_param)
+    true if core.update_service_configuration(service_param)
   end
 
   def console_password_configurator(password)
@@ -14,7 +14,7 @@ module FirstRunPasswords
     service_param[:configurator_name] = 'console_pass'
     service_param[:variables] = Hash.new
     service_param[:variables][:console_password] = password
-    return true if core.update_service_configuration(service_param)
+    true if core.update_service_configuration(service_param)
   end
 
   def setup_ssh_key
@@ -35,7 +35,7 @@ module FirstRunPasswords
     service_param[:configurator_name] = 'ssh_master_key'
     service_param[:variables] = {}
     service_param[:variables][:ssh_master_key] = key
-    return true if core.update_service_configuration(service_param)
+     true if core.update_service_configuration(service_param)
   end
 
   def set_passwords()

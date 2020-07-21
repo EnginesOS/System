@@ -63,7 +63,7 @@ module UserAuth
     if rws.nil? || rws.count == 0
       query = 'INSERT INTO systemaccess (username, password,  authtoken, uid)
                   VALUES (?, ?, ?, ?, ?)'
-      #  SystemDebug.debug(SystemDebug.first_run,:applyin,  query, [user, password, authtoken, 0])
+        SystemDebug.debug(SystemDebug.first_run,:applyin,  query, [user, password, authtoken, 0])
       auth_database.execute(query, [user, password, authtoken, 0])
       update_local_token(authtoken) if user == 'admin'
     else
@@ -76,7 +76,7 @@ module UserAuth
       system: 'user auth',
       error_mesg: 'token missmatch') if token != rws[0][0]
       query = "UPDATE systemaccess SET password = '#{password}', #{authtoken} ='#{authtoken}' where username = '#{user}' and authtoken = '#{token}';"
-      # SystemDebug.debug(SystemDebug.first_run,:applyin, query)
+       SystemDebug.debug(SystemDebug.first_run,:applyin, query)
       auth_database.execute(query)
       update_local_token(authtoken) if user == 'admin'
     end
