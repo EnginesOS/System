@@ -54,6 +54,7 @@ module UserAuth
 
   def set_system_user_password(password, token, current_password = nil)
     user = 'admin'
+    SystemDebug.debug(SystemDebug.first_run,:applyin,  query, [user, password, authtoken, 0])
     if current_password.nil?
       rws = auth_database.execute("Select authtoken from systemaccess where username = '#{user}';")
     else
