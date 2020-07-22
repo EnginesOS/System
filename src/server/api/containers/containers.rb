@@ -36,8 +36,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
     timer
   end
 
-  require 'eventmachine'
-  EventMachine.run do
+
     begin
 
       timer = nil
@@ -90,7 +89,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
     rescue StandardError => e
       send_encoded_exception(request: request, exception: e)
     end
-  end
+ # end
 end
 
 # @method check_and_act_on_containers

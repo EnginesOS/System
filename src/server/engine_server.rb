@@ -83,11 +83,13 @@ begin
     configure do
       enable :cross_origin
     end
-
+    require 'eventmachine'
+    EventMachine.run do
     server.threaded = settings.threaded if server.respond_to? :threaded=
 
     require_relative 'helpers/helpers.rb'
     require_relative 'api/routes.rb'
+    end
   rescue StandardError => e
     p e
     r = EnginesError.new('Unhandled Exception' + e.to_s + '\n' + e.backtrace.to_s, :error, 'api')
