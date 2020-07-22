@@ -1,4 +1,12 @@
 # Implement Warden stratagey to validate and authorize the access_token.
+def ip(s)
+  if s.key?('HTTP_X_FORWARDED_FOR')
+    s['HTTP_X_FORWARDED_FOR']
+  else
+    s['REMOTE_ADDR']
+  end
+end
+
 Warden::Strategies.add(:api_access_token) do
   
   
@@ -20,13 +28,7 @@ Warden::Strategies.add(:api_access_token) do
     engines_api.is_user_token_valid?(token, ip)
   end
 
-  def ip(s)
-    if s.key?('HTTP_X_FORWARDED_FOR')
-      s['HTTP_X_FORWARDED_FOR']
-    else
-      s['REMOTE_ADDR']
-    end
-  end
+
   def authenticate!
     STDERR.puts("authenticate #{request.env}") 
     access_granted = is_admin_token_valid?(request.env['HTTP_ACCESS_TOKEN'], ip(request.env))
