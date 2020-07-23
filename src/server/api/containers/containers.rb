@@ -57,10 +57,10 @@ EventMachine.run do
                 next if bytes.nil?
                 if out.closed?
                   has_data = finialise_events_stream(events_stream, timer)
-                  # STDERR.puts('OUT IS CLOSED but have ' + jason_event.to_s)
+                  STDERR.puts('OUT IS CLOSED but have ' + jason_event.to_s)
                   next
                 else
-                  # STDERR.puts(" Stream Bytes #{bytes}")
+                   STDERR.puts(" Stream Bytes #{bytes.length}")
                   out << bytes unless bytes.nil?
                   bytes = ''
                 end
