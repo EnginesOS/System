@@ -12,6 +12,7 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
   def finialise_events_stream(events_stream, timer)
     events_stream.stop unless events_stream.nil?
     timer.cancel unless timer.nil?
+    EventMachine.stop
     false
   end
 
