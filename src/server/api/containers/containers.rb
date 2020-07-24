@@ -46,7 +46,7 @@ EventMachine.run do
       timer = nil
 
       begin
-        stream :keep_open do | out |
+        stream :keep_open, provides: 'text/event-stream' do | out |
           begin
             has_data = true
             timer = no_op_timer(out)
@@ -64,7 +64,7 @@ EventMachine.run do
                   next
                 else
                    STDERR.puts(" Stream Bytes #{bytes.length}")
-                  out << bytes unless bytes.nil?
+                  EM.defer { out << bytes unless bytes.nil? }
                   bytes = ''
                 end
               rescue  Errno::ECONNRESET
