@@ -1,4 +1,4 @@
-module TemplateOperations
+class EnginesCore
   def fillin_template_for_service_def(service_hash)
     check_service_hash(service_hash)
     service_def =  SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:publisher_namespace])

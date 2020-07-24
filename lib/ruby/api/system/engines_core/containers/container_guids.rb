@@ -1,4 +1,4 @@
-module ContainerGuids
+class EnginesCore
   def new_container_uid(container_name)
     uid = read_historical_id(container_name)
     uid = next_id(container_name) if uid == -1

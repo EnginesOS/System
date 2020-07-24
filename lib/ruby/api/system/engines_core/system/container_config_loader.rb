@@ -1,4 +1,4 @@
-module ContainerConfigLoader
+class EnginesCore
   def getManagedEngines
     system_api.getManagedEngines
   end

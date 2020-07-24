@@ -1,4 +1,4 @@
-module SystemOperations
+class EnginesCore
   def restart_system
     system_api.restart_system
   end

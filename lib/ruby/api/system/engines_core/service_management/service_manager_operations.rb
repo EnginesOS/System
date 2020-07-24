@@ -1,4 +1,4 @@
-module ServiceManagerOperations
+class EnginesCore
 
   def register_non_persistent_services(engine)
     service_manager.register_non_persistent_services(engine)

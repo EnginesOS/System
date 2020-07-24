@@ -1,4 +1,4 @@
-module UserAuth
+class EnginesCore
   require "sqlite3"
 
   def user_login(params)

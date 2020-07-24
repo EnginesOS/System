@@ -1,4 +1,4 @@
-module ContainerOperations
+class EnginesCore
 
   def image_exist?(container_name)
     docker_api.image_exist?(container_name)

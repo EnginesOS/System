@@ -1,4 +1,4 @@
-module AvailableServices
+class EnginesCore
   require '/opt/engines/lib/ruby/managed_services/service_definitions/service_top_level.rb'
 
   def load_avail_services_for_type(typename)

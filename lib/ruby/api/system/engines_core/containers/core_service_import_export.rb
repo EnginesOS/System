@@ -1,4 +1,4 @@
-module CoreServiceImportExport
+class EnginesCore
   def export_service(service_hash)
     #SystemDebug.debug(SystemDebug.export_import, :export_service, service_hash)
     raise EnginesException.new(error_hash('missing parent_engine key', service_hash)) unless service_hash.key?(:parent_engine) == true

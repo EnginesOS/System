@@ -1,4 +1,4 @@
-module EnginesOperations
+class EnginesCore
   def lookup_app_uid(container_name)
     engine = loadManagedEngine(container_name)
     engine.cont_user_id

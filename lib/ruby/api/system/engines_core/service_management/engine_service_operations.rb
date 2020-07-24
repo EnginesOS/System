@@ -1,4 +1,4 @@
-module EngineServiceOperations
+class EnginesCore
   def engine_persistent_services(container_name)
     params = {
       parent_engine:  container_name,

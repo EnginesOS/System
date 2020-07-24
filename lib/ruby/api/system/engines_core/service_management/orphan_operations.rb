@@ -1,4 +1,4 @@
-module OrphanOperations
+class EnginesCore
   # @return an [Array] of service_hashs of Orphaned persistent services match @params [Hash]
   #:path_type :publisher_namespace
   def orphaned_services(service_hash)
