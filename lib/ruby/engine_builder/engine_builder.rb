@@ -13,7 +13,7 @@ class EngineBuilder < ErrorsApi
   require '/opt/engines/lib/ruby/api/system/container_state_files.rb'
 
   require_relative 'builder/setup_build_dir.rb'
-  BuildDirSetup
+ #include BuildDirSetup
 
   require_relative 'builder/builders.rb'
   #include Builders
