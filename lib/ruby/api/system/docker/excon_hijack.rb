@@ -20,7 +20,7 @@
 #LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 #THE SOFTWARE.
-class DockerApi < ErrorsApi
+module Excon
   VALID_REQUEST_KEYS << :hijack_block
   module Middleware
     # Hijack is an Excon middleware which parses response headers and then
