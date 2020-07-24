@@ -1,18 +1,18 @@
 class SystemConfig
 
   require_relative 'system_config/engines_system_flags.rb'
-  extend EnginesSystemFlags
+  #extend EnginesSystemFlags
 
   require_relative 'system_config/builder_settings.rb'
-  extend BuilderSettings
+#  extend BuilderSettings
   require_relative 'system_config/engines_system_dirs.rb'
-  extend EnginesSystemDirs
+ # extend EnginesSystemDirs
 
   require_relative 'system_config/engines_system_files.rb'
-  extend EnginesSystemFiles
+ # extend EnginesSystemFiles
 
   require_relative 'system_config/system_version.rb'
-  extend SystemVersion
+ # extend SystemVersion
 
   @@RegistryPort = 21027
   @@default_webport = 8000

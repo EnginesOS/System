@@ -1,4 +1,4 @@
-module FirstRunPasswords
+class FirstRunWizard
   def mysql_password_configurator(password)
     service_param = {}
     service_param[:service_name] = 'mysqld'

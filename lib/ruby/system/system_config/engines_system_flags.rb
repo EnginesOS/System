@@ -1,4 +1,4 @@
-module EnginesSystemFlags
+class SystemConfig
   @@dont_verifyBlueprintRepoSSLFlagFile = '/opt/engines/run/system/flags/dont_verfify_bp_ssl'  
   @@EnginesSystemUpdatedFlag = '/opt/engines/run/system/flags/update_engines_run'
   @@EnginesSystemUpdatingFlag = '/opt/engines/run/system/flags/update_engines_running'

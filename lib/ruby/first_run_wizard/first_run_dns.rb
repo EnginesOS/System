@@ -1,4 +1,4 @@
-module FirstRunDNS
+class FirstRunWizard
   def apply_hostname(params)
  #   SystemDebug.debug(SystemDebug.first_run, 'setting hostname')
     core.update_service_configuration({

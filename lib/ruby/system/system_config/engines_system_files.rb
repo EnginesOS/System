@@ -1,4 +1,4 @@
-module EnginesSystemFiles
+class SystemConfig
   @@ReleaseFile = '/opt/engines/release'
   @@FlavorFile = '/opt/engines/flavor'
   @@DomainsFile = '/opt/engines/etc/domains/domains'
