@@ -5,7 +5,7 @@ class DockerApi < ErrorsApi
   end
 
   require_relative 'docker_api_create_options.rb'
-  include DockerApiCreateOptions
+
 
   def create_container(container)
     post(
