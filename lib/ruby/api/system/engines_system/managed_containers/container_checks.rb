@@ -1,4 +1,4 @@
-module ContainerChecks
+class SystemApi
   def containers_check_and_act
     services_status = get_services_status
     results = check_and_act(services_status, 'service')

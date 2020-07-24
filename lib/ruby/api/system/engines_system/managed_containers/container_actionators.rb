@@ -1,4 +1,4 @@
-module ContainerActionators
+class SystemApi
   def get_service_actionator(container, action)
     actionators = load_service_actionators(container)
     actionators[action.to_sym]

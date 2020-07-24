@@ -1,4 +1,4 @@
-module ContainerChangeMonitor
+class SystemApi
   @change_register = nil
   def inform_container_monitor(container_name, ctype, event_name)
     #SystemDebug.debug(SystemDebug.container_events, :inform_container_monitor, container_name, ctype, event_name)

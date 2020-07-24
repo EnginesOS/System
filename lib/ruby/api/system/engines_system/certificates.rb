@@ -1,4 +1,4 @@
-module Certificates
+class SystemApi
   def upload_ssl_certificate(params)
     certs_service = loadManagedService('certs')
   #  STDERR.puts(' Cert  ' +  params[:certificate] )

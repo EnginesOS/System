@@ -1,4 +1,4 @@
-module FirstRunComplete
+class SystemApi
   def first_run_complete(install_mgmt = true)
     unless File.exist?(SystemConfig.FirstRunRan) == true
       first_run = core.loadManagedService('firstrun')

@@ -1,4 +1,4 @@
-module BaseOsSystem
+class SystemApi
   def update_base_os
     trigger_system_update_event('OS updating')
     res = Thread.new { run_server_script('update_base_os', false, 600) }

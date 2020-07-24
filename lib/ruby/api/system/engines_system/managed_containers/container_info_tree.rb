@@ -1,4 +1,4 @@
-module ContainerInfoTree
+class SystemApi
   def write_info_tree(ca, keys)
     unless File.exists?(ContainerStateFiles.container_info_tree_dir(ca))
       FileUtils.mkdir_p(ContainerStateFiles.container_info_tree_dir(ca))

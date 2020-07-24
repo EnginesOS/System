@@ -1,5 +1,4 @@
-module ContainerLocking
-
+class SystemApi
   @@lock_timeout = 5
   def unlock_container_conf_file(lock_key)
     STDERR.puts("UNLOCKING " + lock_key.to_s)
