@@ -179,7 +179,7 @@ class PublicApi < ErrorsApi
   #  add_domain #nex
   #  remove_domain #nex
   #  list_domains #nex
-  include PublicApiSystemDomains
+  #include PublicApiSystemDomains
 
   #system/metrics
   require_relative 'system/metrics.rb'
