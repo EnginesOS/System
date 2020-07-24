@@ -1,4 +1,4 @@
-module DockerApiImages
+class DockerApi < ErrorsApi
   def image_exist_by_name?(image_name)
     r =  get_request({uri: "/images/json?filter=#{image_name}"})
     if r.is_a?(Array)

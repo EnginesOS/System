@@ -1,4 +1,4 @@
-module DockerApiExec
+class DockerApi < ErrorsApi
   require_relative 'decoder/docker_decoder.rb'
   class DockerHijackStreamHandler
     attr_accessor :result, :data, :i_stream, :out_stream, :stream

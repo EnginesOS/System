@@ -17,29 +17,29 @@ class DockerApi < ErrorsApi
   Excon.defaults[:middlewares].unshift Excon::Middleware::Hijack
 
   require_relative 'docker_api_errors.rb'
-  include EnginesDockerApiErrors
+#  include EnginesDockerApiErrors
   require_relative 'docker_api_exec.rb'
-  include DockerApiExec
+ # include DockerApiExec
 
   require_relative 'docker_api_container_actions.rb'
-  include DockerApiContainerActions
+#  include DockerApiContainerActions
   require_relative 'docker_api_container_status.rb'
-  include DockerApiContainerStatus
+ # include DockerApiContainerStatus
 
   require_relative 'docker_api_images.rb'
-  include DockerApiImages
+ # include DockerApiImages
 
   require_relative 'docker_api_container_ops.rb'
-  include DockerApiContainerOps
+ # include DockerApiContainerOps
 
   require_relative 'docker_api_builder.rb'
-  include DockerApiBuilder
+ # include DockerApiBuilder
 
   require_relative 'docker_net.rb'
-  include DockerNet
+ # include DockerNet
 
   require_relative 'docker_http.rb'
-  include DockerHttp
+ # include DockerHttp
 
   def response_parser
     @parser ||= FFI_Yajl::Parser.new({:symbolize_keys => true})

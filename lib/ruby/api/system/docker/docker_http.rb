@@ -1,4 +1,4 @@
-module DockerHttp
+class DockerApi < ErrorsApi
   def default_headers
     @default_headers ||= {'Content-Type' =>'application/json', 'Accept' => '*/*'}
   end

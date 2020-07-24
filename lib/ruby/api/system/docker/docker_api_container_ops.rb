@@ -1,4 +1,4 @@
-module DockerApiContainerOps
+class DockerApi < ErrorsApi
 
   def destroy_container(cid)
     delete_request({uri: "/containers/#{cid}"})

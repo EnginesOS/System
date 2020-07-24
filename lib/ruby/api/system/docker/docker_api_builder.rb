@@ -1,4 +1,4 @@
-module DockerApiBuilder
+class DockerApi < ErrorsApi
   
   def build_options(engine_name)
     ret_val = "t=#{engine_name}"
