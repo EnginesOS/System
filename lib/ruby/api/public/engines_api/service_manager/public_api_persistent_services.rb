@@ -1,4 +1,4 @@
-module PublicApiPersistentServices
+class PublicApi 
   def registered_with_service(service_hash)
     core.registered_with_service(service_hash)
   end

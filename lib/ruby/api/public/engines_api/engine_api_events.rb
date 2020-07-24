@@ -1,4 +1,4 @@
-module EngineApiEvents
+class PublicApi 
   class EventsStreamWriter
     attr_accessor :rd
 

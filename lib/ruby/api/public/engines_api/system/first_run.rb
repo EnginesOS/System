@@ -1,4 +1,4 @@
-module PublicApiSystemFirstRun
+class PublicApi 
   def set_first_run_parameters(p)
     core.set_first_run_parameters(p)
   end

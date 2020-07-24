@@ -1,4 +1,4 @@
-module UserAuth
+class PublicApi 
 
 def set_user_password(params)
   ldap = bind_as_user(params[:user_name])

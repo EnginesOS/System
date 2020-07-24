@@ -1,4 +1,4 @@
-module PublicApiEngineActionators
+class PublicApi 
   def list_engine_actionators(engine)
     system_api.load_engine_actionators(engine)
   end

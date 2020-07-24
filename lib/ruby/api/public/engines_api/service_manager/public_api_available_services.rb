@@ -1,4 +1,4 @@
-module PublicApiAvailableServices
+class PublicApi 
   def load_avail_services_for_type(typename)
     core.load_avail_services_for_type(typename)
   end

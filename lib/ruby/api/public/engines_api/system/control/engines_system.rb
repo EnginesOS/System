@@ -1,4 +1,4 @@
-module PublicApiSystemControlEnginesSystem
+class PublicApi 
   def update_engines_system_software
     core.update_engines_system_software
   end

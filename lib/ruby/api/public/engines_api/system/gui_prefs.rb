@@ -1,4 +1,4 @@
-module GuiPrefs
+class PublicApi 
   def set_container_icon_url(ca, url)
     ContainerStateFiles.set_container_icon_url(ca, url)
   end
