@@ -1,4 +1,4 @@
-module ApiActionators
+class ContainerApi
   #   @@action_timeout = 20
   def perform_action(c, actionator, params, data = nil)
     #SystemDebug.debug(SystemDebug.actions, actionator, params)

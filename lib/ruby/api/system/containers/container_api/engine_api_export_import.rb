@@ -1,4 +1,4 @@
-module EngineApiExportImport
+class ContainerApi
   require "base64"
   #FixMe shoudl be based on size and guesstimaed connection speed etc
   @@export_timeout = 220

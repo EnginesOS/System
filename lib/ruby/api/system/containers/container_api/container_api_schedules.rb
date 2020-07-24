@@ -1,4 +1,4 @@
-module ContainerApiSchedules
+class ContainerApi
   def schedules(c)
     system_api.schedules(c)
   end

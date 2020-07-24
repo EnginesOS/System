@@ -1,4 +1,4 @@
-module EngineApiServiceRegistration
+class ContainerApi
   def register_with_dns(container)
     if container.conf_register_dns == true
       service_hash = create_dns_service_hash(container)
