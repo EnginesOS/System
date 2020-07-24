@@ -5,12 +5,12 @@ class FirstRunWizard <ErrorsApi
   require_relative 'first_run_dns.rb'
   require_relative 'first_run_passwords.rb'
   require_relative 'first_run_params_validation.rb'
-  include FirstRunCerts
-  include FirstRunDNS
-  include FirstRunPasswords
-  include FirstRunParamsValidation
+#  include FirstRunCerts
+#  include FirstRunDNS
+#  include FirstRunPasswords
+#  include FirstRunParamsValidation
   require_relative 'engines_first_run_errors.rb'
-  include EnginesFirstRunErrors
+ # include EnginesFirstRunErrors
   def initialize(params)
     @sucess = false
     @first_run_params = params
