@@ -30,10 +30,12 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
       if out.closed?
         STDERR.puts('NOOP found OUT IS CLOSED: ' + timer.to_s)
         timer.cancel
-      elsif @lock_timer.is_a?(FalseClass)
-        out << no_op + "\n"
-        elsif @lock_timer == true
-        STDERR.puts('NOOP found timer locked')
+      else  
+        EM.defer { out << "#{no_op}\n" }             
+#      elsif @lock_timer.is_a?(FalseClass)
+#        out << no_op + "\n"
+#        elsif @lock_timer == true
+#        STDERR.puts('NOOP found timer locked')
       end
     end
     timer
@@ -54,9 +56,9 @@ EventMachine.run do
             out.callback{ finialise_events_stream(events_stream, timer) }
             while has_data == true
               begin
-                @lock_timer = false
+                #    @lock_timer = false
                 bytes = events_stream.rd.read_nonblock(8192)
-                @lock_timer = true
+                #      @lock_timer = true
                 next if bytes.nil?
                 if out.closed?
                   has_data = finialise_events_stream(events_stream, timer)
