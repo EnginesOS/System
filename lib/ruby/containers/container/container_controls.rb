@@ -1,4 +1,4 @@
-module ContainerControls
+class Container
   def start_container
     expire_engine_info
     unless is_running?

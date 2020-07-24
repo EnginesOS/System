@@ -1,4 +1,4 @@
-module ContainerSetup
+class Container
   def set_running_user
     @cont_user_id = running_user if @cont_user_id.nil? || @cont_user_id == -1
   end

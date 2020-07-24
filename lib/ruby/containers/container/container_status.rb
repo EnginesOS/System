@@ -1,4 +1,4 @@
-module ContainerStatus
+class Container
   
   def read_state
     state = :nocontainer

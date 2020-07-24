@@ -1,4 +1,4 @@
-module RunningContainerStatistics
+class Container
   def stats
     expire_engine_info
     if docker_info.is_a?(Hash) && docker_info[:State].is_a?(Hash)

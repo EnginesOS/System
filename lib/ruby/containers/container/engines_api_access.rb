@@ -1,4 +1,4 @@
-module EnginesApiAccess
+class Container
   def has_api?
     raise EnginesException.new(error_hash('No connection to Engines OS System', nil)) if container_api.nil?
     true

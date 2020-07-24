@@ -1,4 +1,4 @@
-module DockerInfoCollector
+class Container
   def docker_info
     if @docker_info_cache.is_a?(FalseClass)
       return collect_docker_info if @set_state != :nocontainer

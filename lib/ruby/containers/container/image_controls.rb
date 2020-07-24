@@ -1,4 +1,4 @@
-module ImageControls
+class Container
   def delete_image
     expire_engine_info
     r = true
