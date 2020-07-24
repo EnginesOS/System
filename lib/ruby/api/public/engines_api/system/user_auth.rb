@@ -7,6 +7,9 @@ def set_user_password(params)
     '{"result":"ok"}'
 end 
  
+  def is_admin_token_valid?(token, ip = nil)
+    core.is_admin_token_valid?(token, ip = nil)
+  end
 def bind_as_user(params)
   
 end
