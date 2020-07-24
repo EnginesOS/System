@@ -1,5 +1,5 @@
 # @!group /containers
-NOOP_PERIOD=25
+NOOP_PERIOD=20
 # @method get_container_event_stream
 # @overload get '/v0/containers/events/stream'
 # Add listener to container events and write event-stream of events as json to client
@@ -32,6 +32,8 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
         timer.cancel
       elsif @lock_timer.is_a?(FalseClass)
         out << no_op + "\n"
+        elsif @lock_timer == true
+        STDERR.puts('NOOP found timer locked')
       end
     end
     timer
