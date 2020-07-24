@@ -46,7 +46,7 @@ EventMachine.run do
       timer = nil
 
       begin
-        stream :keep_open, provides: 'text/event-stream' do | out |
+        stream :keep_open do | out |
           begin
             has_data = true
             timer = no_op_timer(out)
