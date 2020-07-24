@@ -1,7 +1,6 @@
 class DockerFileBuilder
   require_relative 'archives.rb'
 
-  include Archives
 
   require_relative 'persistence.rb'
   def initialize(reader, build_params, webport, builder)
@@ -60,7 +59,6 @@ class DockerFileBuilder
 
   private
   require_relative 'framework_modules.rb'
-  include FrameworkModules
 
   require_relative 'docker_commands.rb'
   require_relative 'file_writer.rb'

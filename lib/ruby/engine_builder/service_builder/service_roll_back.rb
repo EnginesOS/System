@@ -1,4 +1,4 @@
-module ServiceRollBack
+class ServiceBuilder < ErrorsApi
   def service_roll_back
     @attached_services.each do |service_hash|
       if service_hash[:shared].is_a?(TrueClass)

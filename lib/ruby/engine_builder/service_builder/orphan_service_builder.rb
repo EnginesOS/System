@@ -1,4 +1,4 @@
-module OrphansServiceBuilder
+class ServiceBuilder < ErrorsApi
   def use_orphan(service_hash)
     build_vars = service_hash.dup
     service_hash = core.retrieve_orphan(service_hash)

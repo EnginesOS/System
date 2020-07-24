@@ -1,4 +1,4 @@
-module FrameworkModules
+class DockerFileBuilder
   def write_rake_list
     unless @blueprint_reader.rake_actions.nil? || @blueprint_reader.rake_actions.empty?
       write_comment('#Rake Actions')

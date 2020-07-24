@@ -1,4 +1,4 @@
-module PersistantServiceBuilder
+class ServiceBuilder < ErrorsApi
   def create_persistent_services(services, environ, use_existing)
     services.each do | service_hash |
       service_def = software_service_definition(service_hash)

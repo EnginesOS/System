@@ -1,4 +1,4 @@
-module Builders
+class EngineBuilder < ErrorsApi
   require_relative '../service_builder/service_builder.rb'
   require_relative 'builder_public.rb'
   require_relative 'builder_blueprint.rb'

@@ -1,4 +1,4 @@
-module ContainerGuids
+class EngineBuilder < ErrorsApi
   def set_container_guids
     unless set_guids_from_orphan.is_a?(TrueClass)
       unless @build_params[:permission_as].nil?

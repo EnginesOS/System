@@ -1,4 +1,4 @@
-class ConfigFileWriter
+class EngineBuilder < ErrorsApi
   def self.compile_base_docker_files(templater, basedir)
     file_list = Dir.glob("#{basedir}/Dockerfile*.tmpl")
     file_list.each do |file|

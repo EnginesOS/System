@@ -1,4 +1,4 @@
-module EngineScriptsBuilder
+class EngineBuilder < ErrorsApi
 
   require_relative 'configure_services_backup.rb'
   include ConfigureServicesBackup
