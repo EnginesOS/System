@@ -1,4 +1,4 @@
-module Subservices
+class SystemRegistryClient
   def subservices_registry
     rest_get('sub_services/tree', nil)
   end

@@ -1,4 +1,4 @@
-module Shares
+class SystemRegistryClient
   def shared_services_registry
     rest_get('shares/tree', nil)
   end

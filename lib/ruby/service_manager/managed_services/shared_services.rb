@@ -1,5 +1,5 @@
 require_relative 'private/service_container_actions.rb'
-module SharedServices
+class ServiceManager  
   
   def rollback_shared_service(service_hash)
     system_registry_client.remove_from_shared_services_registry(service_hash)

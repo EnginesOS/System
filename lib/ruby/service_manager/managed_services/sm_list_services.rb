@@ -1,4 +1,4 @@
-module SMListServices
+class ServiceManager  
   def list_persistent_services(engine)
      get_engine_persistent_services({
        parent_engine: engine.container_name,

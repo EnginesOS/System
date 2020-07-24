@@ -1,4 +1,4 @@
-module SMSubservices
+class ServiceManager  
   #WAS @subservices_registry.
   def services_subservices(params)
     system_registry_client.services_subservices(params)

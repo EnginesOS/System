@@ -1,4 +1,4 @@
-module XconRest
+class SystemRegistryClient
 require '/opt/engines/lib/ruby/exceptions/registry_exception.rb'
 require 'ffi_yajl'
 

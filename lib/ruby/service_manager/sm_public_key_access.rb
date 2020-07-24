@@ -1,4 +1,4 @@
-module SmPublicKeyAccess
+class ServiceManager  
   def load_service_pubkey(ca, cmd)
     load_pubkey(engine, cmd)
   end
