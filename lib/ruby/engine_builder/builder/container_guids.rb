@@ -9,7 +9,7 @@ class EngineBuilder < ErrorsApi
       else
       #  STDERR.puts('NEW CONT ID')
         @cont_user_id = core.new_container_uid(@build_params[:engine_name]) #new_container_uid
-        @data_uid = new_data_uid(@build_params[:engine_name])
+        @data_uid = core.new_data_uid(@build_params[:engine_name])
         @data_gid = core.new_data_gid(@build_params[:engine_name])
       end
     end
