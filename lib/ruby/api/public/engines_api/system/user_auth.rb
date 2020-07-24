@@ -7,7 +7,7 @@ class PublicApi
   end
 
   def is_admin_token_valid?(token, ip = nil)
-    core.is_admin_token_valid?(token, ip = nil)
+    core.is_admin_token_valid?(token, ip)
   end
 
   def is_user_token_valid?(token, ip = nil)
