@@ -2,10 +2,10 @@ class EngineBuilder < ErrorsApi
   require_relative '../service_builder/service_builder.rb'
   require_relative 'builder_public.rb'
   require_relative 'builder_blueprint.rb'
-  include BuilderBluePrint
+  #include BuilderBluePrint
 
   require_relative 'engine_scripts_builder.rb'
-  include EngineScriptsBuilder
+  #include EngineScriptsBuilder
 
   require_relative 'base_image.rb'
   require_relative 'build_image.rb'
