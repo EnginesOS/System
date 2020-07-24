@@ -10,6 +10,10 @@ class PublicApi
     core.is_admin_token_valid?(token, ip = nil)
   end
 
+  def is_user_token_valid?(token, ip = nil)
+    core.is_user_token_valid?(token, ip)
+  end
+
   def bind_as_user(params)
 
   end
