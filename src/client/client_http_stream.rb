@@ -27,6 +27,8 @@ options = { use_ssl: true, uri.scheme => 'https', verify_mode: OpenSSL::SSL::VER
        #   next if chunk == "\0" || chunk == "\n"
        #   chunk.gsub!(/}[ \n]$/, '}')   
           parser << chunk
+          rescue Net::HTTPGatewayTimeout
+          get_json_stream(path)
         rescue StandardError => e
           p e
           #Can be because chunk is not the complete json
