@@ -16,13 +16,6 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
     false
   end
 
-  def no_oploop_timer(out)
-    require '/opt/engines/src/server/keep_alive_nooper.rb'
-    timer = KeepAliveNooper.new
-    timer.run(out)
-    timer
-  end
-
   def no_op_timer(out)
     no_op = {no_op: true}.to_json
     require 'eventmachine'
@@ -34,10 +27,6 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
         EM.defer {
           STDERR.puts('nopping')
           out << "#{no_op}\n" }             
-#      elsif @lock_timer.is_a?(FalseClass)
-#        out << no_op + "\n"
-#        elsif @lock_timer == true
-#        STDERR.puts('NOOP found timer locked')
       end
     end
     timer
