@@ -30,7 +30,7 @@ options = { use_ssl: true, uri.scheme => 'https', verify_mode: OpenSSL::SSL::VER
         rescue StandardError => e
           p e
           #Can be because chunk is not the complete json
-          STDERR.puts('_BAD_CHUNK'+ chunk + '_')
+          STDERR.puts("#{resp} _BAD_CHUNK  #{chunk}")
           next
         end
       end
