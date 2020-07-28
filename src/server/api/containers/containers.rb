@@ -31,7 +31,9 @@ get '/v0/containers/events/stream', provides: 'text/event-stream' do
         STDERR.puts('NOOP found OUT IS CLOSED: ' + timer.to_s)
         timer.cancel
       else  
-        EM.defer { out << "#{no_op}\n" }             
+        EM.defer {
+          STDERR.puts('nopping')
+          out << "#{no_op}\n" }             
 #      elsif @lock_timer.is_a?(FalseClass)
 #        out << no_op + "\n"
 #        elsif @lock_timer == true
