@@ -28,6 +28,7 @@ options = { use_ssl: true, uri.scheme => 'https', verify_mode: OpenSSL::SSL::VER
        #   chunk.gsub!(/}[ \n]$/, '}')   
           parser << chunk
           rescue Net::HTTPGatewayTimeout
+          STDERR.puts("retry")
           get_json_stream(path)
         rescue StandardError => e
           p e
