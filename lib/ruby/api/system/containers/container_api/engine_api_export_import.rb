@@ -8,11 +8,11 @@ class ContainerApi
     #      stream.close unless stream.nil?
     #      raise EnginesException.new(warning_hash("Cannot export as single service", service_hash))
     #    end
-  #  STDERR.puts('EXPORT ' + service_hash.to_s)
-
+   
+    service_hash = core.retrieve_service_hash(service_hash)
     # SystemDebug.debug(SystemDebug.export_import, :export_service, service_hash)
     cmd_dir = "#{SystemConfig.BackupScriptsRoot}/#{service_hash[:publisher_namespace]}/#{service_hash[:type_path]}/#{service_hash[:service_handle]}/"
-    service_hash = core.retrieve_service_hash(service_hash)
+
     cmd = "#{cmd_dir}/backup.sh"
     #  SystemDebug.debug(SystemDebug.export_import, :export_service, cmd)
     result = {result: 0}

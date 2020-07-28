@@ -58,7 +58,6 @@ EventMachine.run do
                 else
                    STDERR.puts(" Stream Bytes #{bytes.length}")
                    out << bytes unless bytes.nil?
-                 # EM.defer { out << bytes unless bytes.nil? }
                   bytes = ''
                 end
               rescue  Errno::ECONNRESET
