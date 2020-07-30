@@ -1,4 +1,6 @@
 require 'json'
+require 'ansi/code'
+
 
 def check_length(check, len)
   must_have_data
@@ -171,17 +173,17 @@ when 'regex'
 when 'array'
   r = check_array(key, value)
 else
-  p 'Unrecognised expect type:' + type.to_s
+  puts ANSI.orange{'Unrecognised expect type:' + type.to_s}
   exit(-1)
 end
 r = !r if @invert
 if r == false
   if type.nil?
-    puts '\033[0;31m Failed:Got ' + @data.to_s + " but expected:" + type.to_s + '\033[0;30m'
+    puts ANSI.red{'Got ' + @data.to_s + " but expected:" + type.to_s }
   else
-    puts '\033[0;31m Failed:Got ' + @data.to_s + " but expected:" + value.to_s + '\033[0;30m'
+    puts ANSI.red{'Failed:Got ' + @data.to_s + " but expected:" + value.to_s}
   end
   exit -1
 else
-  puts '\033[0;33mOK\033[0;30m'
+  puts ANSI.green{'OK'}
   end
