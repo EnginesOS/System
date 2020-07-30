@@ -8,7 +8,7 @@ engines:
 	engines engines |engines_test_expects json
 	
 state:
-	engines engines state|engines_test_expects json
+	engines engines state| engines_test_expects json
 	
 container_name:
 	engines engines container_name |engines_test_expects json

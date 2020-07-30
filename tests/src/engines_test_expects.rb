@@ -56,7 +56,7 @@ def check_array(key, value)
   return true if hash.is_a?(Array)
   false
 rescue
-  STDERR.puts("json problem with " +@data.to_s)
+  STDERR.puts("json problem with " + @data.to_s)
   false
 end
 
@@ -166,7 +166,7 @@ when 'bool'
 when 'text'
   r = check_text(key, value)
 when 'text_len'
-  value =  value.to_i
+  value = value.to_i
   r = check_length(key, value)
 when 'regex'
   r = check_regex(value)
@@ -186,4 +186,5 @@ if r == false
   exit -1
 else
   puts ANSI.green{'OK'}
+    exit 0
   end
