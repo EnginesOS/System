@@ -177,11 +177,11 @@ end
 r = !r if @invert
 if r == false
   if type.nil?
-    puts 'Failed:Got ' + @data.to_s + " but expected:" + type.to_s
+    puts '033[0;31m Failed:Got ' + @data.to_s + " but expected:" + type.to_s + '033[0;30m'
   else
-    puts 'Failed:Got ' + @data.to_s + " but expected:" + value.to_s
+    puts '033[0;31m Failed:Got ' + @data.to_s + " but expected:" + value.to_s + '033[0;30m'
   end
   exit -1
 else
-  puts 'OK'
+  puts '033[0;33mOK033[0;30m'
 end
