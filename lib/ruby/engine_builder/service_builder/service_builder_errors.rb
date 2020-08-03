@@ -1,6 +1,6 @@
 require_relative 'service_builder_error.rb'
 
-module ServiceBuilderErrors
+class ServiceBuilder < ErrorsApi
   def log_warn_mesg(mesg, *objs)
     ServiceBuilderError.new(mesg.to_s, :warning)
   end

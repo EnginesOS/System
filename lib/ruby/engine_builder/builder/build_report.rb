@@ -1,4 +1,4 @@
-module BuildReport
+class EngineBuilder < ErrorsApi
   def get_build_report_template(blueprint)
     if @blueprint_reader.install_report_template.nil?
       get_default_build_report_template

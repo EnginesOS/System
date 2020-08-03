@@ -1,6 +1,6 @@
 require '/opt/engines/lib/ruby/containers/store/store'
 
-module Engines
+class SystemApi
 
   def getManagedEngines
     container_store.all

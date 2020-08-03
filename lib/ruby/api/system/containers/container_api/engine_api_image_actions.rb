@@ -1,6 +1,6 @@
 require '/opt/engines/lib/ruby/containers/store/cache'
 
-module EngineApiImageActions
+class ContainerApi
   def delete_image(container, wait=true)
     clear_error
     Container::Cache.instance.remove(container.container_name)

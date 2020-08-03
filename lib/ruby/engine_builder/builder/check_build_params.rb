@@ -1,4 +1,4 @@
-module CheckBuildParams
+class EngineBuilder < ErrorsApi
   def check_build_params(params)
     raise EngineBuilderException.new(error_hash('empty container name', params)) if params[:engine_name].nil? || params[:engine_name] == ''
     check_name(params)

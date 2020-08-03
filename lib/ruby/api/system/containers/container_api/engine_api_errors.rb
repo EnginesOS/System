@@ -1,4 +1,4 @@
-module EngineApiErrors
+class ContainerApi
   require_relative 'engine_api_error.rb'
   def log_warn_mesg(mesg,*objs)
     EngineApiError.new(mesg.to_s,:warning)

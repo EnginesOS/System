@@ -1,4 +1,4 @@
-module Actionators
+class EnginesCore
   def get_engine_actionator(engine, action)
     system_api.get_engine_actionator(engine, action)
   end

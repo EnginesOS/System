@@ -1,4 +1,4 @@
-module Orphans
+class SystemRegistryClient
   def rollback_orphaned_service(params)
     r =  'services/orphan/'
     r += address_params(params, full_path)

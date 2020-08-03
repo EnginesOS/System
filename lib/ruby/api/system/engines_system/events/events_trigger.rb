@@ -1,4 +1,4 @@
-module EventsTrigger
+class SystemApi
   def trigger_engine_event(engine, status, action)
 
     trigger_event_notification( {

@@ -6,28 +6,28 @@ class ServiceApi < ContainerApi
   end
 
   require_relative 'service_api_image_actions.rb'
-  include ServiceApiImageActions
+ # include ServiceApiImageActions
   require_relative 'service_api_configurations.rb'
-  include ServiceApiConfigurations
+  #include ServiceApiConfigurations
 
   require_relative 'service_api_consumers.rb'
-  include ServiceApiConsumers
+ # include ServiceApiConsumers
 
   require_relative 'service_api_status_flags.rb'
-  include ServiceApiStatusFlags
+ # include ServiceApiStatusFlags
 
   require_relative 'service_api_system.rb'
-  include ServiceApiSystem
+ # include ServiceApiSystem
 
   require_relative 'service_api_readers.rb'
-  include ServiceApiReaders
+  #include ServiceApiReaders
 
   require_relative 'service_api_load_services.rb'
-  include ServiceApiLoadServices
+ # include ServiceApiLoadServices
 
   require_relative 'service_api_docker_actions.rb'
-  include ServiceApiDockerActions
+  #include ServiceApiDockerActions
   
   require_relative 'service_api_restore.rb'
-  include ServiceApiRestore
+ # include ServiceApiRestore
 end

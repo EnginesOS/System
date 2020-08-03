@@ -1,4 +1,4 @@
-module CoreBuildController
+class EnginesCore
   require_relative '../build_controller.rb'
   def build_started(controller)
     @current_builder = controller

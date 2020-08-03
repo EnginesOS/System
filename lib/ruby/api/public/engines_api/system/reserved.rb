@@ -1,4 +1,4 @@
-module PublicApiSystemReserved
+class PublicApi 
   def reserved_engine_names
     names = list_managed_engines
     names.concat(list_managed_services)

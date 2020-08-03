@@ -1,4 +1,4 @@
-module Engines
+class SystemRegistryClient
   # engines Methods
   def retrieve_engine_service_hash(params)
     r = 'engine/service'

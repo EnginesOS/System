@@ -1,4 +1,4 @@
-module PublicApiStatus
+class PublicApi 
   def first_run_required?
     require '/opt/engines/lib/ruby/first_run_wizard/first_run_wizard.rb'
     FirstRunWizard.required?

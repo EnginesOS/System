@@ -1,4 +1,4 @@
-module DockerApiContainerActions
+class DockerApi < ErrorsApi
   def start_container(cid)
     if cid.to_s == '-1' || cid.to_s  == ''
       EnginesDockerApiError.new('Missing Container id', :warning)

@@ -1,4 +1,4 @@
-module PublicApiServiceActionators
+class PublicApi 
   def list_service_actionators(ca)
     system_api.load_service_actionators(ca)
   end

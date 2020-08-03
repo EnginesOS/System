@@ -1,4 +1,4 @@
-module ContainerCreation
+class EngineBuilder < ErrorsApi
   def create_engine_container
     log_build_output('Creating Deploy Image')
     @container = create_managed_container

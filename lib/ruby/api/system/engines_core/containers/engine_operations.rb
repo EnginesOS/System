@@ -1,4 +1,4 @@
-module EnginesOperations
+class EnginesCore
   def lookup_app_uid(container_name)
     engine = loadManagedEngine(container_name)
     engine.cont_user_id
@@ -26,6 +26,7 @@ module EnginesOperations
     params[:parent_engine] = params[:engine_name]
     begin
       engine = loadManagedEngine(params[:engine_name])
+      raise EnginesException.new(error_hash('Failed to load engine', params)) if engine.nil?
       system_api.trigger_engine_event(engine, 'uninstalling', 'uninstall')
       #Following is for the roll back of a failed build
     rescue StandardError => e

@@ -1,4 +1,4 @@
-module DomainOperations
+class EnginesCore
   require '/opt/engines/lib/ruby/system/dnshosting.rb'
 
   def add_domain_service(params)

@@ -1,4 +1,4 @@
-module PublicApiEngine
+class PublicApi 
   def loadManagedEngine(engine_name)   #vc engines system
     system_api.loadManagedEngine(engine_name)
   end

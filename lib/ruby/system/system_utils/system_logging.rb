@@ -1,4 +1,4 @@
-module SystemLogging
+class SystemUtils
   attr_reader :debug, :level, :last_error
   def SystemUtils.log_output(object, level)
     if SystemUtils.level < level

@@ -1,4 +1,4 @@
-module ContainerSystemStateFiles
+class SystemApi
  
   def delete_container_configs(volbuilder, c)
     cidfile = "#{SystemConfig.CidDir}/#{c.container_name}.cid"

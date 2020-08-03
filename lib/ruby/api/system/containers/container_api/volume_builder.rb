@@ -1,4 +1,4 @@
-module ContainerApiVolumeBuilder
+class ContainerApi
   def run_volume_builder(container, username, volume)
     
     clear_configs

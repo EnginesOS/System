@@ -1,4 +1,4 @@
-module EnginesCoreVersion
+class EnginesCore
   def api_version
     SystemConfig.api_version
   end

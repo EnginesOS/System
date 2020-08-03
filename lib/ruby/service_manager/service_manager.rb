@@ -12,37 +12,37 @@ class ServiceManager  < ErrorsApi
   require '/opt/engines/lib/ruby/managed_services/service_definitions/service_top_level.rb'
   
   require_relative 'managed_services/sm_service_control.rb'
-  include SmServiceControl
+  #include SmServiceControl
   require_relative 'managed_services/sm_engine_services.rb'
-  include SmEngineServices
+  #include SmEngineServices
   require_relative 'managed_services/sm_service_forced_methods.rb'
-  include SmServiceForcedMethods
+  #include SmServiceForcedMethods
   require_relative 'sm_registry_tree.rb'
-  include SmRegistryTree
+  #include SmRegistryTree
   require_relative 'managed_services/sm_orphan_services.rb'
-  include SmOrphanServices
+  #include SmOrphanServices
   require_relative 'managed_services/sm_subservices.rb'
-  include SMSubservices
+  #include SMSubservices
   require_relative 'managed_services/sm_service_info.rb'
-  include SmServiceInfo
+  #include SmServiceInfo
   require_relative 'managed_services/sm_attach_static_services.rb'
-  include SmAttachStaticServices
+  #include SmAttachStaticServices
   require_relative 'managed_services/sm_attached_services.rb'
-  include SMAttachedServices
+  #include SMAttachedServices
   require_relative 'managed_services/sm_service_info.rb'
-  include SmServiceInfo
+  #include SmServiceInfo
   require_relative 'managed_services/sm_service_configurations.rb'
-  include SmServiceConfigurations
+  #include SmServiceConfigurations
   require_relative 'managed_services/shared_services.rb'
-  include SharedServices
+  #include SharedServices
   require_relative 'managed_services/sm_engine_cron_service.rb'
-  include SmEngineCronService
+  #include SmEngineCronService
   require_relative 'fixes/filesystem_contid.rb'
-  include FileSystemContid
+  #include FileSystemContid
   require_relative 'errors/engines_service_manager_errors.rb'
-  include EnginesServiceManagerErrors
+  #include EnginesServiceManagerErrors
   require_relative 'managed_services/sm_list_services.rb'
-  include SMListServices
+  #include SMListServices
 
   def api_shutdown
     system_registry_client.api_shutdown

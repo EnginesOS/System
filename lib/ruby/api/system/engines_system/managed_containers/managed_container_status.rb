@@ -1,4 +1,4 @@
-module ManagedContainerStatus
+class SystemApi
   def get_engines_states
     result = {}
     engines = getManagedEngines #list_managed_engines

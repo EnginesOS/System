@@ -1,4 +1,4 @@
-module DockerApiCreateOptions
+class DockerApi < ErrorsApi
   def initialize
     @top_level = nil
   end

@@ -1,6 +1,6 @@
 require '/opt/engines/lib/ruby/containers/store/cache'
 
-module DockerEvents
+class SystemApi
   require '/opt/engines/lib/ruby/api/system/docker/event_watcher/docker_event_watcher.rb'
   require '/opt/engines/lib/ruby/system/system_config.rb'
 

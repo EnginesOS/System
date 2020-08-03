@@ -6,19 +6,19 @@ module Container
 
      
     require_relative 'container/container_setup.rb'
-    include ContainerSetup
+    #include ContainerSetup
     require_relative 'container/container_controls.rb'
-    include ContainerControls
+    #include ContainerControls
     require_relative 'container/docker_info_collector.rb'
-    include DockerInfoCollector
+  #  include DockerInfoCollector
     require_relative 'container/container_status.rb'
-    include ContainerStatus
+  #  include ContainerStatus
     require_relative 'container/image_controls.rb'
-    include ImageControls
+  #  include ImageControls
     require_relative 'container/running_container_statistics.rb'
-    include RunningContainerStatistics
+ #   include RunningContainerStatistics
     require_relative 'container/engines_api_access.rb'
-    include EnginesApiAccess
+  #  include EnginesApiAccess
     def self.from_yaml(yaml)
       container = YAML::load(yaml)
       raise EnginesException.new(error_hash('Failed to Load yaml_' + @container_name.to_s + '_ nil', yaml[0..256])) if container.nil?

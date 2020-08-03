@@ -1,4 +1,4 @@
-module MemoryStatistics
+class MemoryStatistics
   def self.collate_containers_mem(mem_stats)
     {
       allocated: mem_stats[:engines][:totals][:allocated] + mem_stats[:services][:totals][:allocated].to_i,

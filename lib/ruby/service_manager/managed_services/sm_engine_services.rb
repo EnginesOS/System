@@ -1,4 +1,4 @@
-module SmEngineServices
+class ServiceManager  
   #def find_engine_services(params)
   #  system_registry_client.find_engine_services(params)
   #end

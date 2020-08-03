@@ -1,5 +1,5 @@
 # @!group /containers
-NOOP_PERIOD=25
+NOOP_PERIOD=20
 # @method get_container_event_stream
 # @overload get '/v0/containers/events/stream'
 # Add listener to container events and write event-stream of events as json to client
@@ -9,80 +9,83 @@ NOOP_PERIOD=25
 # test FixME there is none
 get '/v0/containers/events/stream', provides: 'text/event-stream' do
   @lock_timer = false
-  begin
-    def finialise_events_stream(events_stream, timer)
-      events_stream.stop unless events_stream.nil?
-      timer.cancel unless timer.nil?
-      false
-    end
+  def finialise_events_stream(events_stream, timer)
+    events_stream.stop unless events_stream.nil?
+    timer.cancel unless timer.nil?
+    EventMachine.stop
+    false
+  end
 
-    def no_oploop_timer(out)
-      require '/opt/engines/src/server/keep_alive_nooper.rb'
-      timer = KeepAliveNooper.new
-      timer.run(out)
-      timer
-    end
-
-    def no_op_timer(out)
-      no_op = {no_op: true}.to_json
-      timer = EventMachine::PeriodicTimer.new(NOOP_PERIOD) do
-        if out.closed?
-          STDERR.puts('NOOP found OUT IS CLOSED: ' + timer.to_s)
-          timer.cancel
-        elsif @lock_timer.is_a?(FalseClass)
-          out << no_op + "\n"
-        end
+  def no_op_timer(out)
+    no_op = {no_op: true}.to_json
+    require 'eventmachine'
+    timer = EventMachine::PeriodicTimer.new(NOOP_PERIOD) do
+      if out.closed?
+        STDERR.puts('NOOP found OUT IS CLOSED: ' + timer.to_s)
+        timer.cancel
+      else  
+        EM.defer {
+          STDERR.puts('nopping')
+          out << "#{no_op}\n" }             
       end
-      timer
     end
-
-    timer = nil
+    timer
+  end
+require 'eventmachine'
+EventMachine.run do
 
     begin
-      stream :keep_open do | out |
-        begin
-          has_data = true          
-          timer = no_op_timer(out)
-          events_stream = engines_api.container_events_stream
-          out.callback{ finialise_events_stream(events_stream, timer) }
-          while has_data == true
-            begin
-              @lock_timer = false
-              bytes = events_stream.rd.read_nonblock(8192)
-              @lock_timer = true
-              next if bytes.nil?
-              if out.closed?
+
+      timer = nil
+
+      begin
+        stream :keep_open do | out |
+          begin
+            has_data = true
+            timer = no_op_timer(out)
+            events_stream = engines_api.container_events_stream
+            out.callback{ finialise_events_stream(events_stream, timer) }
+            while has_data == true
+              begin
+                #    @lock_timer = false
+                bytes = events_stream.rd.read_nonblock(8192)
+                #      @lock_timer = true
+                next if bytes.nil?
+                if out.closed?
+                  has_data = finialise_events_stream(events_stream, timer)
+                  STDERR.puts('OUT IS CLOSED but have ' + jason_event.to_s)
+                  next
+                else
+                   STDERR.puts(" Stream Bytes #{bytes.length}")
+                   out << bytes unless bytes.nil?
+                  bytes = ''
+                end
+              rescue  Errno::ECONNRESET
+                finialise_events_stream(events_stream, timer)
+              rescue IO::WaitReadable
+                STDERR.puts('Waiting on events stream')
+                IO.select([events_stream.rd])
+                retry
+              rescue IOError
                 has_data = finialise_events_stream(events_stream, timer)
-                # STDERR.puts('OUT IS CLOSED but have ' + jason_event.to_s)
+                STDERR.puts('IORError on events stream')
                 next
-              else
-                # STDERR.puts(" Stream Bytes #{bytes}")
-                out << bytes unless bytes.nil?
-                bytes = ''
               end
-            rescue IO::WaitReadable
-              STDERR.puts('Waiting on events stream')
-              IO.select([events_stream.rd])
-              retry
-            rescue IOError
-              has_data = finialise_events_stream(events_stream, timer)
-            STDERR.puts('IORError on events stream')
-              next
             end
+            finialise_events_stream(events_stream, timer)
+          rescue StandardError => e
+            STDERR.puts('EVENTS Exception' + e.to_s + ':' + e.class.name + e.backtrace.to_s)
+            finialise_events_stream(events_stream, timer)
           end
-          finialise_events_stream(events_stream, timer)
-        rescue StandardError => e
-           STDERR.puts('EVENTS Exception' + e.to_s + ':' + e.class.name + e.backtrace.to_s)
-          finialise_events_stream(events_stream, timer)
         end
+        timer.cancel unless timer.nil?
+      rescue StandardError => e
+        STDERR.puts('Stream EVENTS Exception' + e.to_s + e.backtrace.to_s)
+        timer.cancel unless timer.nil?
       end
-      timer.cancel unless timer.nil?
     rescue StandardError => e
-      STDERR.puts('Stream EVENTS Exception' + e.to_s + e.backtrace.to_s)
-      timer.cancel unless timer.nil?
+      send_encoded_exception(request: request, exception: e)
     end
-  rescue StandardError => e
-    send_encoded_exception(request: request, exception: e)
   end
 end
 

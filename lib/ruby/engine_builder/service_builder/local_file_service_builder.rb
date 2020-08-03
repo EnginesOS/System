@@ -1,4 +1,4 @@
-module LocalFileServiceBuilder
+class ServiceBuilder < ErrorsApi
   def add_file_service(service_hash)
     @app_is_persistent = true if service_hash[:variables][:engine_path] == '/home/app/' || service_hash[:variables][:engine_path] == '/home/app'
     service_hash = Volume.complete_service_hash(service_hash)

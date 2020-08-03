@@ -1,6 +1,6 @@
 require '/opt/engines/lib/ruby/containers/store/cache'
 
-module EnginesApiSystem
+class ContainerApi
   def web_sites_for(container)
     core.web_sites_for(container)
   end

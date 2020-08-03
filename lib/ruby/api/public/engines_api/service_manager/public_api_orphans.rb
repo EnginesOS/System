@@ -1,4 +1,4 @@
-module PublicApiOrphans
+class PublicApi 
   def orphaned_services(service_hash)
     core.orphaned_services(service_hash)
   end

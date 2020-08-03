@@ -1,4 +1,4 @@
-module ConfigureServicesBackup
+class EngineBuilder < ErrorsApi
   def configure_services_backup(services)
     log_build_output('Creating Backup Scripts')
     services.each do |service|

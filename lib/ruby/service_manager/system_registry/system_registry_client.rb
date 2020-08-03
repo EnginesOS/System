@@ -13,24 +13,24 @@ class SystemRegistryClient < ErrorsApi
   end
 
   require_relative 'api/xcon_rest.rb'
-  include XconRest
+  #include XconRest
   
   require_relative 'api/configurations.rb'
-  include Configurations
+ # include Configurations
   require_relative 'api/services.rb'
-  include Services
+ # include Services
   require_relative 'api/engines.rb'
-  include Engines
+ # include Engines
   require_relative 'api/registry.rb'
-  include Registry
+ # include Registry
   require_relative 'api/orphans.rb'
-  include Orphans
+ # include Orphans
   require_relative 'api/subservices.rb'
-  include Subservices
+  #include Subservices
   require_relative 'api/shares.rb'
-  include Shares  
+  #include Shares  
   require_relative 'errors/engines_registry_client_errors.rb'
-  include EnginesRegistryClientErrors
+ # include EnginesRegistryClientErrors
 
   require_relative 'errors/engines_registry_error.rb'
   require '/opt/engines/lib/ruby/exceptions/registry_exception.rb'

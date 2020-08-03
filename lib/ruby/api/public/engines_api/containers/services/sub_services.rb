@@ -1,4 +1,4 @@
-module PublicApiSubServices
+class PublicApi 
   def services_subservices(params)
     core.services_subservices(params)
   end

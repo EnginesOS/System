@@ -1,4 +1,4 @@
-module Archives
+class DockerFileBuilder
   def write_app_archives
     unless @blueprint_reader.archives_details.nil?
       write_comment('#App Archives')

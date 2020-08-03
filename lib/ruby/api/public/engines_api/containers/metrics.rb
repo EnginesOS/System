@@ -1,4 +1,4 @@
-module PublicApiContainersMetrics
+class PublicApi 
   def  container_memory_stats(container)
     MemoryStatistics.container_memory_stats(container)
   end

@@ -1,4 +1,4 @@
-module RegistryTrees
+class EnginesCore
   
   def orphaned_services_registry
     service_manager.orphaned_services_registry

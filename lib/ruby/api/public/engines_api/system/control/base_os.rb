@@ -1,4 +1,4 @@
-module PublicApiSystemControlBaseOS
+class PublicApi 
   def update_base_os
     system_api.update_base_os
   end

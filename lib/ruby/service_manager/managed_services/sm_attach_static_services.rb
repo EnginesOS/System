@@ -1,4 +1,4 @@
-module SmAttachStaticServices
+class ServiceManager  
   # @returns boolean
   # load persistent and non persistent service definitions off disk and registers them
   def load_and_attach_static_services(dirname, container)

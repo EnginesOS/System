@@ -1,4 +1,4 @@
-module EnginesCoreSystem
+class EnginesCore
   def api_shutdown
    # SystemDebug.debug(SystemDebug.system,  :BEING_SHUTDOWN)
     service_manager.api_shutdown

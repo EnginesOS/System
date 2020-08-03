@@ -1,4 +1,4 @@
-module ApiResultChecks
+class ContainerApi
   def test_docker_api_result(result)
     @last_error = docker_api.last_error if result == false || result.nil?
      result

@@ -1,4 +1,4 @@
-module SMAttachedServices
+class ServiceManager  
   # @return [Array] of service hash for ObjectName matching the name  identifier
   # @objectName [String]
   # @identifier [String]

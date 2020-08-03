@@ -1,4 +1,4 @@
-module EnginesVolumes
+class SystemApi
   def volume_ownership(params)
     path = "#{SystemConfig.LocalFSVolHome}/#{params[:container_name]}/#{params[:volume_name]}"
     if Dir.exits?(path)

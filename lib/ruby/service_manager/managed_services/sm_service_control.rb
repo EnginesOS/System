@@ -1,6 +1,6 @@
 require_relative 'private/service_container_actions.rb'
 
-module SmServiceControl
+class ServiceManager  
   # @ Attach service called by builder and create service
   #if persisttant it is added to the Service Registry Tree
   # @ All are added to the ManagesEngine/Service Tree

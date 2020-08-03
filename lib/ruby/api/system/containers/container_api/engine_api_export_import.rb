@@ -1,18 +1,18 @@
-module EngineApiExportImport
+class ContainerApi
   require "base64"
   #FixMe shoudl be based on size and guesstimaed connection speed etc
-  @@export_timeout = 220
+  @@export_timeout = 600
 
   def export_service_data(container, service_hash, stream = nil)
     #    unless SoftwareServiceDefinition.is_consumer_exportable?(service_hash)
     #      stream.close unless stream.nil?
     #      raise EnginesException.new(warning_hash("Cannot export as single service", service_hash))
     #    end
-  #  STDERR.puts('EXPORT ' + service_hash.to_s)
-
+   
+    service_hash = core.retrieve_service_hash(service_hash)
     # SystemDebug.debug(SystemDebug.export_import, :export_service, service_hash)
     cmd_dir = "#{SystemConfig.BackupScriptsRoot}/#{service_hash[:publisher_namespace]}/#{service_hash[:type_path]}/#{service_hash[:service_handle]}/"
-    service_hash = core.retrieve_service_hash(service_hash)
+
     cmd = "#{cmd_dir}/backup.sh"
     #  SystemDebug.debug(SystemDebug.export_import, :export_service, cmd)
     result = {result: 0}
@@ -20,13 +20,14 @@ module EngineApiExportImport
       container: container,
       command_line: [cmd],
       log_error: true,
-      service_variables: service_hash } 
+      timeout: @@export_timeout,
+      service_variables: service_hash}
     params[:stdout_stream] = stream unless stream.nil?
 
     thr = Thread.new { result = core.exec_in_container(params) }
     thr[:name] = "export:#{params}"
     begin
-      Timeout.timeout(@@export_timeout) do
+      Timeout.timeout(@@export_timeout + 5) do
         thr.join
       end
       #  SystemDebug.debug(SystemDebug.export_import, :export_service, service_hash,'result code =' ,result[:result])

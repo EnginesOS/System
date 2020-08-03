@@ -1,4 +1,5 @@
-def read_base_image_from_dockerfile
+class EngineBuilder < ErrorsApi
+  def read_base_image_from_dockerfile
   dockerfile = File.open("#{basedir}/Dockerfile", 'r')
   begin
     from_line = dockerfile.gets("\n", 100)
@@ -21,4 +22,5 @@ rescue StandardError => e
   # FIXME:
   # Buggy so ignore when fails
   true
+end
 end

@@ -7,19 +7,19 @@ class ServiceBuilder < ErrorsApi
   attr_reader :volumes, :app_is_persistent, :attached_services, :default_vol, :templater
 
   require_relative 'orphan_service_builder.rb'
-  include OrphansServiceBuilder
+  #include OrphansServiceBuilder
   require_relative 'local_file_service_builder.rb'
-  include LocalFileServiceBuilder
+  #include LocalFileServiceBuilder
   require_relative 'service_roll_back.rb'
-  include ServiceRollBack
+  #include ServiceRollBack
   require_relative 'service_checks.rb'
-  include ServiceChecks
+  #include ServiceChecks
   require_relative 'persistent_service_builder.rb'
-  include PersistantServiceBuilder
+  #include PersistantServiceBuilder
   require_relative 'non_persistent_service_builder.rb'
-  include NonPersistantServiceBuilder
+  #include NonPersistantServiceBuilder
   require_relative 'service_builder_errors.rb'
-  include ServiceBuilderErrors
+  #include ServiceBuilderErrors
   
   def initialize(templater, engine_name, attached_services, basedir)
     @engine_name = engine_name

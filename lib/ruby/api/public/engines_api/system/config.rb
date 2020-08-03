@@ -1,4 +1,4 @@
-module PublicApiConfig
+class PublicApi 
   def set_default_domain(params)
     SystemDebug.debug(SystemDebug.system,  :set_default_domain, params)
     SystemDebug.debug(SystemDebug.first_run, 'set_default_domain Domain')

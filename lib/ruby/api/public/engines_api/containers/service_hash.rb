@@ -1,4 +1,4 @@
-module PublicApiContainersServiceHash
+class PublicApi 
   def retrieve_engine_service_hash(query_hash)
     core.retrieve_engine_service_hash(query_hash)
   end
