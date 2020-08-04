@@ -1,4 +1,4 @@
-module SystemExceptions
+class SystemUtils
   def SystemUtils.log_exception(*args)
     loggable=true
     e = args[0]

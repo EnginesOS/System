@@ -1,4 +1,4 @@
-module Services
+class SystemRegistryClient
   # Services Methods
   def all_engines_registered_to(service_type)
  #   SystemDebug.debug(SystemDebug.registry,'  All registered to  ', service_type.to_s)

@@ -1,4 +1,4 @@
-module ContainerNetworkMetrics
+class SystemApi
   # FIXME: Kludge should read from network namespace /proc ?
   def get_container_network_metrics(container)
     ret_val = {}

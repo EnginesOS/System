@@ -1,4 +1,4 @@
-module EnginesSystemDirs
+class SystemConfig
 
   @@RunDir = '/opt/engines/run/'
   @@CidDir = '/opt/engines/run/cid/'

@@ -1,4 +1,4 @@
-module PublicApiBuilder
+class PublicApi 
   def last_build_params
     SystemStatus.last_build_params
   end

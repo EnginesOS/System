@@ -1,4 +1,4 @@
-module EnginesSystemErrors
+class SystemApi
   require_relative 'engines_system_error.rb'
   def log_warn_mesg(mesg, *objs)
     EnginesSystemError.new(mesg.to_s, :warning)

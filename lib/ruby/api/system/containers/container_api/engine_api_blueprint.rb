@@ -1,4 +1,4 @@
-module EngineApiBlueprint
+class ContainerApi
   def save_blueprint(blueprint, ca)
     blueprint_r = BlueprintApi.new    
     begin

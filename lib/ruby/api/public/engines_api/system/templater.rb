@@ -1,4 +1,4 @@
-module PublicApiSystemTemplater
+class PublicApi 
   require '/opt/engines/lib/ruby/templater/templater.rb'
 
   def get_resolved_string(env_value)

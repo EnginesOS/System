@@ -1,4 +1,4 @@
-module CertificateActions
+class EnginesCore
   def upload_ssl_certificate(params)
     raise EnginesException.new(error_hash('invalid parameter', 'upload Cert ', params.to_s)) unless params.is_a?(Hash)
     unless params.has_key?(:certificate) || params.key?(:domain_name)

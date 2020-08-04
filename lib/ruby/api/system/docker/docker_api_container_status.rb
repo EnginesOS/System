@@ -1,4 +1,4 @@
-module DockerApiContainerStatus
+class DockerApi < ErrorsApi
 
   require_relative 'decoder/docker_decoder.rb'
   def inspect_container_by_name(cn)

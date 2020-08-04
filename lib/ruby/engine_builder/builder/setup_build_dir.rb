@@ -1,4 +1,4 @@
-module BuildDirSetup
+class EngineBuilder < ErrorsApi
 
   require_relative 'config_file_writer.rb'
   require_relative 'docker_file_builder/docker_file_builder.rb'

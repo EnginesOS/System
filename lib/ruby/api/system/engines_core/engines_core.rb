@@ -19,85 +19,85 @@ class EnginesCore < ErrorsApi
   end
 
   require_relative 'errors/engines_core_errors.rb'
-  include EnginesCoreErrors
+  #include EnginesCoreErrors
 
   require_relative '../blueprint_api.rb'
   require_relative '../system_preferences.rb'
 
   require_relative '../memory_statistics.rb'
   require_relative 'service_hash_checks.rb'
-  include ServiceHashChecks
+ # include ServiceHashChecks
 
   require_relative 'system/container_config_loader.rb'
-  include ContainerConfigLoader
+ # include ContainerConfigLoader
   require_relative 'system/system_operations.rb'
-  include SystemOperations
+ # include SystemOperations
   require_relative 'system/engines_core_system.rb'
-  include EnginesCoreSystem
+ # include EnginesCoreSystem
   require_relative 'system/certificate_actions.rb'
-  include CertificateActions
+ # include CertificateActions
 
   require_relative 'containers/core_service_import_export.rb'
-  include CoreServiceImportExport
+ # include CoreServiceImportExport
   require_relative 'containers/container_states.rb'
-  include ContainerStates
+ # include ContainerStates
   require_relative 'containers/actionators.rb'
-  include Actionators
+#  include Actionators
   require_relative 'containers/engine_operations.rb'
-  include EnginesOperations
+ # include EnginesOperations
   require_relative 'containers/container_operations.rb'
-  include ContainerOperations
+ # include ContainerOperations
   require_relative 'containers/docker_operations.rb'
-  include DockerOperations
+ # include DockerOperations
   require_relative 'containers/container_guids.rb'
-  include ContainerGuids
+ # include ContainerGuids
 
   require_relative 'service_management/available_services.rb'
-  include AvailableServices
+ # include AvailableServices
   require_relative 'service_management/service_configurations.rb'
-  include ServiceConfigurations
+ # include ServiceConfigurations
   require_relative 'service_management/engine_service_operations.rb'
-  include EngineServiceOperations
+ # include EngineServiceOperations
   require_relative 'service_management/service_operations.rb'
-  include ServiceOperations
+ # include ServiceOperations
   require_relative 'service_management/domain_operations.rb'
-  include DomainOperations
+#  include DomainOperations
   require_relative 'service_management/subservice_operations.rb'
-  include SubserviceOperations
+#  include SubserviceOperations
   require_relative 'service_management/orphan_operations.rb'
-  include OrphanOperations
+ # include OrphanOperations
   require_relative 'service_management/domain_operations.rb'
-  include DomainOperations
+ # include DomainOperations
   require_relative 'service_management/registry_trees.rb'
-  include RegistryTrees
+#  include RegistryTrees
   require_relative 'service_management/service_manager_operations.rb'
-  include ServiceManagerOperations
+#  include ServiceManagerOperations
 
   require_relative 'engines_core_preferences.rb'
-  include  EnginesCorePreferences
+#  include  EnginesCorePreferences
 
   require_relative 'registry_container_operations.rb'
-  include RegistryContainerOperations
+ # include RegistryContainerOperations
 
   require_relative 'template_operations.rb'
-  include TemplateOperations
+ # include TemplateOperations
 
   require_relative 'core_build_controller.rb'
-  include CoreBuildController
+ # include CoreBuildController
 
   require_relative 'engines_core_version.rb'
-  include EnginesCoreVersion
+ # include EnginesCoreVersion
   def self.command_is_system_service?
     true if $PROGRAM_NAME.end_with?('system_service.rb')
   end
 
   unless $PROGRAM_NAME.end_with?('system_service.rb')
     require_relative 'user_auth.rb'
-    include UserAuth
+   # include UserAuth
   end
 
   require_relative 'fixes/cont_id_fix.rb'
-  include ContFsIdFix
+ # include ContFsIdFix
 
 
   require_relative '../containers/container_api/container_api.rb'

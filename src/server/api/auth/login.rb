@@ -14,7 +14,11 @@ post '/v0/system/login' do
       cparams[:password] = nil
       raise EnginesException.new(error_hash("User name cant be blank", cparams))
     else
-      cparams[:src_ip] = request.env['REMOTE_ADDR']
+      if request.env.key?('HTTP_X_FORWARDED_FOR')
+        cparams[:src_ip] = request.env['HTTP_X_FORWARDED_FOR']
+      else
+        cparams[:src_ip] = request.env['REMOTE_ADDR']
+      end
       engines_api.user_login(cparams)
     end
   rescue StandardError => e
@@ -26,20 +30,20 @@ end
 # @overload  post '/v0/system/login/'
 # @params :user_name, :password
 # @return [String] Authentication token
-post '/v0/system/loginb' do
-  begin
-    content_type 'text/plain'
-    post_s = post_params(request)
-    cparams = assemble_params(post_s, nil, [:user_name, :password])
-    cparams[:src_ip] = request.env['REMOTE_ADDR']
-    cparams[:user_name] = ''
-    cparams[:password] = ''
-
-    engines_api.user_login(cparams)
-  rescue StandardError => e
-    send_encoded_exception(status: 401, request: request, exception: e)
-  end
-end
+#post '/v0/system/loginb' do
+#  begin
+#    content_type 'text/plain'
+#    post_s = post_params(request)
+#    cparams = assemble_params(post_s, nil, [:user_name, :password])
+#    cparams[:src_ip] = request.env['REMOTE_ADDR']
+#    cparams[:user_name] = ''
+#    cparams[:password] = ''
+#
+#    engines_api.user_login(cparams)
+#  rescue StandardError => e
+#    send_encoded_exception(status: 401, request: request, exception: e)
+#  end
+#end
 
 post '/v0/system/logout' do
   begin

@@ -5,7 +5,7 @@ require 'open-uri'
 
 # require '/opt/engines/lib/ruby/system/SystemUtils.rb'
 
-module DNSHosting
+class DNSHosting
   def self.get_local_ip
     if File.exist?('/opt/engines/etc/exported/net/exported/ip')
       File.read('/opt/engines/etc/exported/net/exported/ip').strip

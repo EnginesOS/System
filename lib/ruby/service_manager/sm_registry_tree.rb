@@ -1,6 +1,5 @@
 #require_relative 'registry_client.rb'
-
-module SmRegistryTree
+class ServiceManager  
   # @return [Tree::TreeNode] representing the orphaned services tree as dettached and frozen from the parent Tree
   def orphaned_services_registry
     system_registry_client.orphaned_services_registry

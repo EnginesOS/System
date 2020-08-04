@@ -1,4 +1,4 @@
-module PublicApiEngines
+class PublicApi 
   def list_managed_engines
     system_api.list_managed_engines
   end

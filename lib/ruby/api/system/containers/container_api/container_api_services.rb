@@ -1,4 +1,4 @@
-module ContainerApiServices
+class ContainerApi
   #
   # @param match [Hash]
   # @param container [ManagedContainer]

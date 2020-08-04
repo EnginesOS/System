@@ -1,4 +1,4 @@
-module BuilderSettings
+class SystemConfig
 
   @@BuildBuiltFile = '/opt/engines/run/system/flags/last_build_params'
   @@BuildRunningParamsFile = '/opt/engines/run/system/flags/building_params'

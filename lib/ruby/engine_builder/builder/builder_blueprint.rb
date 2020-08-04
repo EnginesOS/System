@@ -1,6 +1,6 @@
 
 
-module BuilderBluePrint
+class EngineBuilder < ErrorsApi
   def load_blueprint(bp_name = 'blueprint.json')
     log_build_output('Reading Blueprint')
     BlueprintApi.load_blueprint_file("#{basedir}/#{bp_name}")

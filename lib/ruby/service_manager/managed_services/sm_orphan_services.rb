@@ -1,6 +1,4 @@
-
-
-module SmOrphanServices
+class ServiceManager  
   def orphanate_service(params)
     #STDERR.puts('ORPHAN:' + params.to_s)
     set_top_level_service_params(params, params[:parent_engine])

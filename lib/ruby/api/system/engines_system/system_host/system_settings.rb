@@ -1,4 +1,4 @@
-module SystemSettings
+class SystemApi
   def enable_remote_exception_logging
     f = SystemConfig.NoRemoteExceptionLoggingFlagFile
     File.delete(f) if File.exists?(f)    

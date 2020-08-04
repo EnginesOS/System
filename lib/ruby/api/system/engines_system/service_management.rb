@@ -1,4 +1,4 @@
-module ServiceManagement
+class SystemApi
   def disable_service(service_name)
     service =  core.loadManagedService(service_name)
     raise EnginesException.new(error_hash("service container exists", service_name)) if service.has_container?

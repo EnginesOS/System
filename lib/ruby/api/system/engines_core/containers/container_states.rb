@@ -1,4 +1,4 @@
-module ContainerStates
+class EnginesCore
   def get_engines_states
     system_api.get_engines_states
   end

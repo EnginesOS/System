@@ -1,4 +1,4 @@
-module PublicApiSystemKeys
+class PublicApi 
   def get_user_public_key
     system_api.get_user_public_key
   end

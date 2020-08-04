@@ -1,4 +1,4 @@
-module PublicApiSystemCertificates
+class PublicApi 
   def get_system_ca
     system_api.get_system_ca
   end

@@ -118,6 +118,8 @@ module Container
     def file_name(name)
       File.exist?( "#{store_directory}/#{name}/running.yaml") ?  "#{store_directory}/#{name}/running.yaml" : config_file_name(name)
       "#{store_directory}/#{name}/running.yaml"
+    rescue NoMethodError  # if hits config_file_name and not a service
+      raise EnginesException.new(error_hash("No such Engine #{name}")) 
     end
 
     def store_directory

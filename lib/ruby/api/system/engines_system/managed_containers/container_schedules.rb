@@ -1,4 +1,4 @@
-module ContainerSchedules
+class SystemApi
   def load_schedules(ca)
     ContainerStateFiles.load_schedules(ca)
   end

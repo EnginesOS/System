@@ -1,6 +1,6 @@
 require '/opt/engines/lib/ruby/containers/store/utility_store'
 
-module ManagedUtilities
+class SystemApi
   def loadManagedUtility(name)
     utility_store.model(name)
   end

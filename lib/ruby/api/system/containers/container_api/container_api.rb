@@ -13,49 +13,49 @@ class ContainerApi < ErrorsApi
   require '/opt/engines/lib/ruby/system/deal_with_json.rb'
 
   require_relative 'engine_api_errors.rb'
-  include EngineApiErrors
+  #include EngineApiErrors
 
   require_relative 'container_api_events.rb'
-  include ContainerApiEvents
+#  include ContainerApiEvents
 
   require_relative 'engines_api_system.rb'
-  include EnginesApiSystem
+ ## include EnginesApiSystem
 
   require_relative 'container_api_docker_actions.rb'
-  include ContainerApiDockerActions
+#  include ContainerApiDockerActions
 
   require_relative 'engine_api_blueprint.rb'
-  include EngineApiBlueprint
+#  include EngineApiBlueprint
 
   require_relative 'engine_api_dependancies.rb'
-  include EngineApiDependancies
+ # include EngineApiDependancies
 
   require_relative 'engine_api_service_registration.rb'
-  include EngineApiServiceRegistration
+ # include EngineApiServiceRegistration
 
   require_relative 'engine_api_status_flags.rb'
-  include EngineApiStatusFlags
+ # include EngineApiStatusFlags
 
   require_relative 'engine_api_image_actions.rb'
-  include EngineApiImageActions
+ # include EngineApiImageActions
 
   require_relative 'container_api_locale.rb'
-  include ContainerApiLocale
+#  include ContainerApiLocale
 
   require_relative 'api_actionators.rb'
-  include ApiActionators
+ # include ApiActionators
 
   require_relative 'engine_api_export_import.rb'
-  include EngineApiExportImport
+#  include EngineApiExportImport
 
   require_relative  'container_api_schedules.rb'
-  include ContainerApiSchedules
+ # include ContainerApiSchedules
 
   require_relative 'volume_builder.rb'
-  include ContainerApiVolumeBuilder
+ # include ContainerApiVolumeBuilder
 
   require_relative 'container_api_services.rb'
-  include ContainerApiServices
+ # include ContainerApiServices
 
   protected
 

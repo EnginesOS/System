@@ -1,6 +1,5 @@
 require_relative 'engines_docker_api_error.rb'
-
-module EnginesDockerApiErrors
+class DockerApi < ErrorsApi
   def log_warn_mesg(mesg, *objs)
     EnginesDockerApiError.new(mesg.to_s, :warning)
   end

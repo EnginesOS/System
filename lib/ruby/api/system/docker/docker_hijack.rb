@@ -1,4 +1,4 @@
-module DockerHijack
+class DockerApi < ErrorsApi
 
   require_relative 'decoder/docker_decoder.rb'
 

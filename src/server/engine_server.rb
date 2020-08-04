@@ -88,6 +88,7 @@ begin
 
     require_relative 'helpers/helpers.rb'
     require_relative 'api/routes.rb'
+
   rescue StandardError => e
     p e
     r = EnginesError.new('Unhandled Exception' + e.to_s + '\n' + e.backtrace.to_s, :error, 'api')

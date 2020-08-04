@@ -1,4 +1,4 @@
-module EngineApiStatusFlags
+class ContainerApi
   def wait_for_startup(c, to = 5)
     r = false
     sfd = ContainerStateFiles.container_rflag_dir(c.store_address)

@@ -1,4 +1,6 @@
 require 'json'
+require 'ansi/code'
+
 
 def check_length(check, len)
   must_have_data
@@ -54,7 +56,7 @@ def check_array(key, value)
   return true if hash.is_a?(Array)
   false
 rescue
-  STDERR.puts("json problem with " +@data.to_s)
+  STDERR.puts("json problem with " + @data.to_s)
   false
 end
 
@@ -164,24 +166,25 @@ when 'bool'
 when 'text'
   r = check_text(key, value)
 when 'text_len'
-  value =  value.to_i
+  value = value.to_i
   r = check_length(key, value)
 when 'regex'
   r = check_regex(value)
 when 'array'
   r = check_array(key, value)
 else
-  p 'Unrecognised expect type:' + type.to_s
+  puts ANSI.orange{'Unrecognised expect type:' + type.to_s}
   exit(-1)
 end
 r = !r if @invert
 if r == false
   if type.nil?
-    puts 'Failed:Got ' + @data.to_s + " but expected:" + type.to_s
+    puts ANSI.red{'Got ' + @data.to_s + " but expected:" + type.to_s }
   else
-    puts 'Failed:Got ' + @data.to_s + " but expected:" + value.to_s
+    puts ANSI.red{'Failed:Got ' + @data.to_s + " but expected:" + value.to_s}
   end
   exit -1
 else
-  puts 'OK'
-end
+  puts ANSI.green{'OK'}
+    exit 0
+  end

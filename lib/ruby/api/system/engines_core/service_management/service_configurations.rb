@@ -1,4 +1,4 @@
-module ServiceConfigurations
+class EnginesCore
   def retrieve_service_configuration(config)
     retrieve_configuration(config)
   end

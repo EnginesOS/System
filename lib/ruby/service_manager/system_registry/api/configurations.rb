@@ -1,5 +1,5 @@
 # Configurations methods
-module Configurations
+class SystemRegistryClient
   def retrieve_service_configurations(config_hash)
     r = 'service/configurations'
     r += address_params(config_hash, [:service_name])

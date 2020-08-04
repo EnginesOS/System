@@ -1,4 +1,4 @@
-module EnginesRegistryClientErrors
+class SystemRegistryClient
   require_relative 'engines_registry_client_error.rb'
   def log_warn_mesg(mesg, *objs)
     EnginesRegistryClientError.new(mesg.to_s, :warning)

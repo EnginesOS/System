@@ -1,4 +1,4 @@
-module PublicApiServices
+class PublicApi 
   def getManagedServices
     system_api.getManagedServices
   end

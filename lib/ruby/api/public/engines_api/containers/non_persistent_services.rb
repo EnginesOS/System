@@ -1,4 +1,4 @@
-module PublicApiContainersNonPersistentServices
+class PublicApi 
   def force_register_attached_service(service_hash)
    # STDERR.puts('Service hash ' + service_query.to_s)
     core.force_register_non_persistent_service(service_hash)

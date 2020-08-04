@@ -1,4 +1,4 @@
-module PublicApiBackup
+class PublicApi 
   def backup_system_files(out)
     system_api.backup_system_files(out)
   end

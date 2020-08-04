@@ -1,14 +1,14 @@
 TESTS=engines state container_name  builder
 
 tests:
-	echo -n "\033[0;31m Engines tests \033[0;30m\n"
+	echo -n "\033[0;34m Engines tests \033[0;30m\n"
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 	
 engines:
 	engines engines |engines_test_expects json
 	
 state:
-	engines engines state|engines_test_expects json
+	engines engines state| engines_test_expects json
 	
 container_name:
 	engines engines container_name |engines_test_expects json

@@ -1,4 +1,4 @@
-module SaveEngineConfiguration
+class EngineBuilder < ErrorsApi
   def save_engine_built_configuration(mc)
     write_actionators(mc.store_address , @blueprint_reader.actionators)
     write_schedules(mc.store_address, @blueprint_reader.schedules) if @blueprint_reader.respond_to?(:schedules)

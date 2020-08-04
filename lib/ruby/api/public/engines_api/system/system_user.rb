@@ -1,4 +1,4 @@
-module SystemUser
+class PublicApi 
   def user_login(params)
     core.user_login(params)
   end

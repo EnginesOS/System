@@ -1,4 +1,4 @@
-module EnginesFirstRunErrors
+class FirstRunWizard
   require_relative 'engines_first_run_error.rb'
   def log_warn_mesg(mesg, *objs)
     EnginesFirstRunError.new(mesg.to_s, :warning)

@@ -1,3 +1,3 @@
-module ServiceApiStatusFlags
+class ServiceApi 
 
 end

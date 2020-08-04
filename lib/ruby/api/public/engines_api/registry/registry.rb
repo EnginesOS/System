@@ -1,4 +1,4 @@
-module PublicApiRegistry
+class PublicApi 
   def orphaned_services_registry
     core.orphaned_services_registry
   end

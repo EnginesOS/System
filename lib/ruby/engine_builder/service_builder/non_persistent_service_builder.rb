@@ -1,4 +1,4 @@
-module NonPersistantServiceBuilder
+class ServiceBuilder < ErrorsApi
   def create_non_persistent_services(services)
     services.each do |service_hash|
       service_def = SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:publisher_namespace])

@@ -1,4 +1,4 @@
-module SmServiceInfo
+class ServiceManager  
   ###READERS
   #list the Provider namespaces as an Array of Strings
   # @return [Array]

@@ -1,4 +1,4 @@
-module EnginesSystemUpdate
+class SystemApi
   def system_update_status
     run_server_script('deb_update_status')
   end

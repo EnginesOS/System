@@ -1,4 +1,4 @@
-module FirstRunCerts
+class FirstRunWizard
   def create_ca(ca_params)
     true if core.update_service_configuration({
       service_name: 'certs',

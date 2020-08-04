@@ -1,7 +1,7 @@
 require '/opt/engines/lib/ruby/containers/store/service_store'
 require '/opt/engines/lib/ruby/containers/store/system_service_store'
 
-module Services
+class SystemApi
   def getManagedServices
     service_store.all
   end

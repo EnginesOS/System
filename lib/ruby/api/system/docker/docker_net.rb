@@ -1,4 +1,4 @@
-module DockerNet
+class DockerApi < ErrorsApi
   require_relative 'docker_hijack.rb'
   def connection
     #  @connection =

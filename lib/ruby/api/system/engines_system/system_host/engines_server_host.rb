@@ -1,4 +1,4 @@
-module EnginesServerHost
+class SystemApi
 #FixMe seperate metrics into EnginesServerHostMetrics
   @@server_script_timeout = 15
   def system_image_free_space

@@ -1,6 +1,6 @@
 require '/opt/engines/lib/ruby/exceptions/engines_exception.rb'
 
-module ServiceHashChecks
+class EnginesCore
   def check_engine_hash(service_hash)
     check_hash(service_hash)
     # FIXME: Kludge

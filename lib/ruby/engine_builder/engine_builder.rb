@@ -13,28 +13,28 @@ class EngineBuilder < ErrorsApi
   require '/opt/engines/lib/ruby/api/system/container_state_files.rb'
 
   require_relative 'builder/setup_build_dir.rb'
-  include BuildDirSetup
+ #include BuildDirSetup
 
   require_relative 'builder/builders.rb'
-  include Builders
+  #include Builders
 
   require_relative 'builder/save_engine_configuration.rb'
-  include SaveEngineConfiguration
+  #include SaveEngineConfiguration
 
   require_relative 'builder/build_report.rb'
-  include BuildReport
+  #include BuildReport
 
   require_relative 'builder/build_output.rb'
-  include BuildOutput
+  #include BuildOutput
 
   require_relative 'builder/check_build_params.rb'
-  include CheckBuildParams
+  #include CheckBuildParams
 
   require_relative 'builder/container_creation.rb'
-  include ContainerCreation
+  #include ContainerCreation
 
   require_relative 'builder/container_guids.rb'
-  include ContainerGuids
+  #include ContainerGuids
 
   require_relative '../templater/templater.rb'
 

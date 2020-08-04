@@ -1,4 +1,4 @@
-module EngineApiDependancies
+class ContainerApi
   def start_dependancies(container)
     started = 0
     SystemDebug.debug(SystemDebug.containers, :checking_depends,container.dependant_on)

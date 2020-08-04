@@ -1,4 +1,4 @@
-module ServiceChecks
+class ServiceBuilder < ErrorsApi
   def required_services_are_running?
     @attached_services.each do |service_hash|
       service_def = SoftwareServiceDefinition.find(service_hash[:type_path], service_hash[:publisher_namespace])

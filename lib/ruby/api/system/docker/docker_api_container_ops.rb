@@ -1,11 +1,11 @@
-module DockerApiContainerOps
+class DockerApi < ErrorsApi
 
   def destroy_container(cid)
     delete_request({uri: "/containers/#{cid}"})
   end
 
   require_relative 'docker_api_create_options.rb'
-  include DockerApiCreateOptions
+
 
   def create_container(container)
     post(

@@ -1,5 +1,6 @@
-module BaseOsSystem
+class SystemApi
   def update_base_os
+    FileUtils.touch(SystemConfig.BaseOSUpdateRunningLog)
     trigger_system_update_event('OS updating')
     res = Thread.new { run_server_script('update_base_os', false, 600) }
     # FIXME: check a status flag after sudo side post ssh run ie when we know it's definititly happenging

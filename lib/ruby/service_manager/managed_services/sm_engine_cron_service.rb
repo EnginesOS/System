@@ -1,4 +1,4 @@
-module SmEngineCronService
+class ServiceManager  
   def retrieve_cron_jobs(container)
     retrieve_engine_service_hashes({
       parent_engine: container.container_name,

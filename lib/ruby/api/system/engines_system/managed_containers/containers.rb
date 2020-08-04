@@ -1,4 +1,4 @@
-module Containers
+class SystemApi
   # @param container_log file
   # @param retentioncount
   def rotate_container_log(container_id, retention = 10)

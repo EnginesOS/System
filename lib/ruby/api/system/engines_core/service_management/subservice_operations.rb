@@ -1,4 +1,4 @@
-module SubserviceOperations
+class EnginesCore
   def services_subservices(params)
     check_sub_service_hash(params)
     service_manager.services_subservices(params)

@@ -1,4 +1,4 @@
-module FileSystemContid
+class ServiceManager  
   def fix_containers_fsid(engines)
     STDERR.puts('DOING ')  
     engines.each do |engine|

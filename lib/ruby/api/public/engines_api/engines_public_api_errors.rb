@@ -1,6 +1,6 @@
 require_relative 'engines_public_api_error.rb'
 
-module EnginesPublicApiErrors
+class PublicApi 
   def log_warn_mesg(mesg,*objs)
     EnginesPublicApiError.new(mesg.to_s,:warning)
   end
