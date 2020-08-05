@@ -63,7 +63,9 @@ properties_net:
 	echo -n " Checking:"
 	engines service email state  | engines_test_expects text is running
 	
-
+template:
+	engines service dns template '_Engines_Builder(engine_name)' | engines_test_expects text is dns
+	
 properties_run:
 	make properties_memory
 	make properties_env
