@@ -53,7 +53,7 @@ net_stat:
 	engines service dns net_stat | engines_test_expects json in
 	
 dependacies:
-	engines service email state 	|engines_test_expects text is running
+	engines service email state |engines_test_expects text is running
 
 
 properties_net:
@@ -122,3 +122,10 @@ create:
 	echo -n " Checking:"
 	engines service email wait_for start 240 | engines_test_expects bool true
 	engines service imap wait_for start 140 | engines_test_expects bool true
+	
+configurations:
+	cd configurations
+	make tests
+	
+	
+	
