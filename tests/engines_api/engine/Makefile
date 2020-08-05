@@ -3,7 +3,7 @@ TESTS=prepare state stop start pause unpause engine status blueprint websites lo
 	 create recreate reinstall delete  
  #halt restart properties_run 
 #	actions cron services \
-	
+
 tests:
 	echo -n "\033[0;34m Engine tests \033[0;30m\n"
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)

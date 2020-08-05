@@ -137,7 +137,7 @@ def read_stderr_data
   stderr_data = ""
   require 'timeout'
   status = Timeout::timeout(480) do
-    while STDERR.gets
+    while $stderr.gets
       stderr_data += $_
     end
     # stdin_data = STDIN.read
