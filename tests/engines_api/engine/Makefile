@@ -67,7 +67,7 @@ build_report:
 	
 
 properties_net:
-	cat network_properties.json | engines engine enginetest properties network | engines_test_expects bool true
+	cat network_properties.json | engines engine enginetest properties set network | engines_test_expects bool true
 	echo -n " Checking:"
 	engines engine enginetest websites  | engines_test_expects regex '.*newemail.test.com.au.*'
 
@@ -78,20 +78,20 @@ properties_run:
 properties_memory:
 	engines engine enginetest stop | engines_test_expects bool true
 	engines engine enginetest wait_for stop 35 | engines_test_expects bool true
-	cat runtime_properties_memory.json | engines engine enginetest properties runtime | engines_test_expects bool true
+	cat runtime_properties_memory.json | engines engine enginetest properties set runtime | engines_test_expects bool true
 	echo -n " Checking:"
 	engines engine enginetest wait_for start 40  | engines_test_expects bool true
 	echo -n " Checking:"
 	engines engine enginetest   | engines_test_expects json memory 177
 	engines engine enginetest stop | engines_test_expects bool true
 	engines engine enginetest wait_for stop 35 | engines_test_expects bool true
-	cat revert_runtime_properties_memory.json | engines engine enginetest properties runtime | engines_test_expects bool true
+	cat revert_runtime_properties_memory.json | engines engine enginetest properties set runtime | engines_test_expects bool true
 	engines engine enginetest wait_for start 40  | engines_test_expects bool true
 	
 properties_env:
 	engines engine enginetest stop | engines_test_expects bool true
 	engines engine enginetest wait_for stop 35 | engines_test_expects bool true
-	cat runtime_properties_env.json | engines engine enginetest properties runtime | engines_test_expects bool true
+	cat runtime_properties_env.json | engines engine enginetest properties set runtime | engines_test_expects bool true
 	echo -n " Checking:"
 	engines engine enginetest state  | engines_test_expects text is running
 	echo -n " Checking:"

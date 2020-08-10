@@ -59,7 +59,7 @@ dependacies:
 properties_net:
 	engines service email stop | engines_test_expects bool true
 	engines service email wait_for stop 25 | engines_test_expects bool true
-	cat network_properties.json | engines service email properties network | engines_test_expects bool true
+	cat network_properties.json | engines service email properties set network | engines_test_expects bool true
 	echo -n " Checking:"
 	engines service email state  | engines_test_expects text is running
 	
@@ -73,7 +73,7 @@ properties_run:
 properties_memory:
 	engines service email stop | engines_test_expects bool true
 	engines service email wait_for stop 25 | engines_test_expects bool true
-	cat runtime_properties_memory.json | engines service email properties runtime | engines_test_expects bool true
+	cat runtime_properties_memory.json | engines service email properties set runtime | engines_test_expects bool true
 	echo -n " Checking:"
 	engines service email wait_for start 25 | engines_test_expects bool true
 	engines service email state  | engines_test_expects text is running
@@ -81,13 +81,13 @@ properties_memory:
 	engines service email  |  engines_test_expects json memory 128
 	engines service email stop | engines_test_expects bool true
 	engines service email wait_for stop 25 | engines_test_expects bool true
-	cat revert_runtime_properties_memory.json | engines service email properties runtime | engines_test_expects bool true
+	cat revert_runtime_properties_memory.json | engines service email properties set runtime | engines_test_expects bool true
 	engines service email wait_for start 25 | engines_test_expects bool true
 	
 properties_env:
 	engines service email stop | engines_test_expects bool true
 	engines service email wait_for stop 25 | engines_test_expects bool true
-	cat runtime_properties_env.json | engines service email properties runtime | engines_test_expects bool true
+	cat runtime_properties_env.json | engines service email properties set runtime | engines_test_expects bool true
 	echo -n " Checking:"
 	engines service email state  | engines_test_expects text is running
 	echo -n " Checking:"
