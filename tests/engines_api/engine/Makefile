@@ -1,8 +1,6 @@
 TESTS=prepare state stop start pause unpause engine status blueprint websites logs ps template mem_stat net_stat\
 	 build_report properties_net actions \
-	 create recreate reinstall delete  
- #halt restart properties_run 
-#	actions cron services \
+	 create recreate reinstall delete halt restart properties_run actions cron services \
 
 tests:
 	echo -n "\033[0;34m Engine tests \033[0;30m\n"

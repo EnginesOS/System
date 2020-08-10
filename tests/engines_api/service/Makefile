@@ -2,7 +2,7 @@
 	
 TESTS=state stop start pause unpause  template mem_stat net_stat\
 	 create dependacies properties_net properties_run\
-	 services consumers configurations\
+	 _services _consumers _configurations _configurations\
 	 destroy create  recreate \
 	 actions destroy
 
@@ -11,13 +11,13 @@ tests:
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 
 actions:
-	cd actions ; make -s tests ; cd ..
+	cd _actions ; make -s tests ; cd ..
 
 services:	
-	cd services ; make -s tests ; cd ..
+	cd _services ; make -s tests ; cd ..
 	
 consumers:
-	cd consumers ; make -s tests ; cd ..
+	cd _consumers ; make -s tests ; cd ..
 
 state:
 	engines service dns state |engines_test_expects text is running
@@ -123,7 +123,7 @@ create:
 	engines service email wait_for start 240 | engines_test_expects bool true
 	engines service imap wait_for start 140 | engines_test_expects bool true
 	
-configurations:
+_configurations:
 	cd configurations
 	make tests
 	
