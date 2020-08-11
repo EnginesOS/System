@@ -9,7 +9,7 @@ class SystemApi
       ret_val[:out] = 'n/a'
       ret_val
     end
-    cmd = ['netstat','--interfaces', '-e','|','grep', 'bytes', '|','head', '-1', '|', 'awk', '{ print $2 \" \" $6}']
+    cmd = ['cat','/proc/net/dev ', '|','grep', 'eth0', '|', 'awk', '{ print $2 \" \" $3}']
 
     result = core.exec_in_container({:container => container, :command_line => cmd, :log_error => true})
     if result[:result] != 0

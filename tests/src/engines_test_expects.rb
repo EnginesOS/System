@@ -73,7 +73,15 @@ def hash_has_key(search_key, hash)
   return true if hash.key?(search_key)
   false
 end
-
+def is_404?
+  @data = read_stderr_data
+  if @data.contain?('404')
+    true
+  else
+    false
+  end
+end
+  
 def hash_key_value(search_key, hash)
   if search_key.include?(',')
     keys = search_key.split(',')
@@ -125,6 +133,24 @@ rescue Timeout::Error
 rescue StandardError => e
   log_exception(e)
 end
+def read_stderr_data
+  stderr_data = ""
+  require 'timeout'
+  status = Timeout::timeout(480) do
+    while $stderr.gets
+      stderr_data += $_
+    end
+    # stdin_data = STDIN.read
+  end
+  #   puts "Read " + stdin_data.length.to_s + ' bytes ' + stdin_data
+  return nil if stderr_data.nil?
+  stderr_data.strip!
+  stderr_data
+rescue Timeout::Error
+  STDERR.puts "Timeout on data read from stderr"
+rescue StandardError => e
+  log_exception(e)
+end
 
 def log_exception(e)
   STDERR.puts("Exception " + e.to_s + "\n" + e.backtrace.to_s)
@@ -172,6 +198,8 @@ when 'regex'
   r = check_regex(value)
 when 'array'
   r = check_array(key, value)
+when '404'
+  r = is_404?  
 else
   puts ANSI.orange{'Unrecognised expect type:' + type.to_s}
   exit(-1)

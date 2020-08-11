@@ -25,10 +25,10 @@ class ContainerApi
       if env.name == env_hash[:name]
         env.value = env_hash[:value]
         d_set = true
-        next
+        break
       end
     end
-    environments.push(EnvironmentVariable.new(env_hash)) unless d_set.is_a?(TrueClass)
+    environments.push(EnvironmentVariable.new(env_hash)) if d_set.nil?
   end
 
   def get_container_memory_stats(container)

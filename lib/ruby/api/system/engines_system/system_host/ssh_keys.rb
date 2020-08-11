@@ -1,7 +1,7 @@
 class SystemApi
   def generate_engines_user_ssh_key
     newkey = regen_system_ssh_key 
-    raise EnginesException.new(error_hash('Not an RSA key', newkey)) unless newkey.include?('-----BEGIN RSA PRIVATE KEY-----')
+    raise EnginesException.new(error_hash('Not an RSA key', newkey)) unless newkey.include?('PRIVATE KEY-----')
     newkey
   end
 

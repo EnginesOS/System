@@ -136,6 +136,7 @@ class BlueprintApi < ErrorsApi
   end
 
   def self.clone_repo(repository_url, build_name, path )
+    STDERR.puts("git clone args ur:#{repository_url} buildname:#{build_name} path:#{path}")
     Git.clone(repository_url, build_name, :path => path)
   end
 

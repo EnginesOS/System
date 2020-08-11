@@ -2,22 +2,22 @@
 	
 TESTS=state stop start pause unpause  template mem_stat net_stat\
 	 create dependacies properties_net properties_run\
-	 services consumers configurations\
+	 _services _consumers _configurations _configurations\
 	 destroy create  recreate \
-	 actions destroy
+	 _actions destroy
 
 tests:
 	echo -n "\033[0;34m Service tests \033[0;30m\n"
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 
-actions:
-	cd actions ; make -s tests ; cd ..
+_actions:
+	cd _actions ; make -s tests ; cd ..
 
-services:	
-	cd services ; make -s tests ; cd ..
+_services:	
+	cd _services ; make -s tests ; cd ..
 	
 consumers:
-	cd consumers ; make -s tests ; cd ..
+	cd _consumers ; make -s tests ; cd ..
 
 state:
 	engines service dns state |engines_test_expects text is running
@@ -53,17 +53,19 @@ net_stat:
 	engines service dns net_stat | engines_test_expects json in
 	
 dependacies:
-	engines service email state 	|engines_test_expects text is running
+	engines service email state |engines_test_expects text is running
 
 
 properties_net:
 	engines service email stop | engines_test_expects bool true
 	engines service email wait_for stop 25 | engines_test_expects bool true
-	cat network_properties.json | engines service email properties network | engines_test_expects bool true
+	cat network_properties.json | engines service email properties set network | engines_test_expects bool true
 	echo -n " Checking:"
 	engines service email state  | engines_test_expects text is running
 	
-
+template:
+	engines service dns template '_Engines_Builder(engine_name)' | engines_test_expects text is dns
+	
 properties_run:
 	make properties_memory
 	make properties_env
@@ -71,7 +73,7 @@ properties_run:
 properties_memory:
 	engines service email stop | engines_test_expects bool true
 	engines service email wait_for stop 25 | engines_test_expects bool true
-	cat runtime_properties_memory.json | engines service email properties runtime | engines_test_expects bool true
+	cat runtime_properties_memory.json | engines service email properties set runtime | engines_test_expects bool true
 	echo -n " Checking:"
 	engines service email wait_for start 25 | engines_test_expects bool true
 	engines service email state  | engines_test_expects text is running
@@ -79,13 +81,13 @@ properties_memory:
 	engines service email  |  engines_test_expects json memory 128
 	engines service email stop | engines_test_expects bool true
 	engines service email wait_for stop 25 | engines_test_expects bool true
-	cat revert_runtime_properties_memory.json | engines service email properties runtime | engines_test_expects bool true
+	cat revert_runtime_properties_memory.json | engines service email properties set runtime | engines_test_expects bool true
 	engines service email wait_for start 25 | engines_test_expects bool true
 	
 properties_env:
 	engines service email stop | engines_test_expects bool true
 	engines service email wait_for stop 25 | engines_test_expects bool true
-	cat runtime_properties_env.json | engines service email properties runtime | engines_test_expects bool true
+	cat runtime_properties_env.json | engines service email properties set runtime | engines_test_expects bool true
 	echo -n " Checking:"
 	engines service email state  | engines_test_expects text is running
 	echo -n " Checking:"
@@ -120,3 +122,9 @@ create:
 	echo -n " Checking:"
 	engines service email wait_for start 240 | engines_test_expects bool true
 	engines service imap wait_for start 140 | engines_test_expects bool true
+	
+_configurations:
+	cd configurations ; make -s tests ; cd ..
+	
+	
+	
