@@ -24,7 +24,7 @@ rescue Errno::EHOSTUNREACH
   core.fix_registry_problem
   retry
 rescue StandardError => e
-  raise EnginesException.new(error_hash('Failed to open base url to registry ' + e.to_s, base_url.to_s))
+  raise EnginesException.new(error_hash('Failed to open connection to registry ' + e.to_s, "#{base_url}\n #{params}"))
 end
 
 def close_connection
@@ -56,7 +56,7 @@ rescue Excon::Error::Socket => e
   retry if cnt < 5
 rescue StandardError => e
   close_connection
-  raise EnginesException.new(error_hash('reg exception ' + e.to_s, base_url.to_s))
+  raise EnginesException.new(error_hash("reg get exception #{e}", "#{base_url}\n #{params}"))
 end
 
 def time_out
@@ -80,7 +80,7 @@ def post(path, params = nil, lheaders = nil)
     STDERR.puts('path ' + path.to_s)
     STDERR.puts('exception ' + e.to_s)
     close_connection
-    raise EnginesException.new(error_hash('reg exception ' + path.to_s + "\n" + e.to_s, base_url.to_s))
+raise EnginesException.new(error_hash("reg Post exception #{path} \n\#params} \n#{e}", "#{base_url}"))
   end
 end
 
@@ -94,7 +94,7 @@ rescue Excon::Error::Socket => e
   retry if cnt < 5
 rescue StandardError => e
   close_connection
-  raise EnginesException.new(error_hash('reg exception ' + e.to_s, base_url.to_s))
+  raise EnginesException.new(error_hash("reg Put exception #{e}", "#{base_url}\n #{params}"))
 end
 
 def query_hash(params)
@@ -118,7 +118,7 @@ rescue Excon::Error::Socket => e
   cnt += 1
   retry if cnt < 5
 rescue StandardError => e
-  raise EnginesException.new(error_hash('reg exception ' + e.to_s, base_url.to_s))
+  raise EnginesException.new(error_hash('reg exception ' + e.to_s, "#{base_url}\n #{params}"))
 ensure
   close_connection
 end
@@ -126,7 +126,7 @@ end
 private
 
 def parse_xcon_response(resp)
-  raise RegistryException.new({status: 500, error_mesg: 'Server Error', exception: :exception})  if resp.nil?
+  raise RegistryException.new({status: 400, error_mesg: 'Server Error', exception: :exception}) if resp.nil?
   error_result_exception(resp) if resp.status > 399
   r = resp.body
   unless r.nil?

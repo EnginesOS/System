@@ -4,16 +4,16 @@ TESTS=state stop start pause unpause  template mem_stat net_stat\
 	 create dependacies properties_net properties_run\
 	 _services _consumers _configurations _configurations\
 	 destroy create  recreate \
-	 actions destroy
+	 _actions destroy
 
 tests:
 	echo -n "\033[0;34m Service tests \033[0;30m\n"
 	@$(foreach test,$(TESTS), echo -n $(test):; make -s $(test);)
 
-actions:
+_actions:
 	cd _actions ; make -s tests ; cd ..
 
-services:	
+_services:	
 	cd _services ; make -s tests ; cd ..
 	
 consumers:
@@ -124,8 +124,7 @@ create:
 	engines service imap wait_for start 140 | engines_test_expects bool true
 	
 _configurations:
-	cd configurations
-	make tests
+	cd configurations ; make -s tests ; cd ..
 	
 	
 	
