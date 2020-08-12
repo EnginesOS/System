@@ -49,12 +49,14 @@ class MemoryStatistics
 
   def self.container_memory_stats(container)
     unless container.is_active?
+      STDERR.puts("Readingf for #{container.container_name} inactive")
       self.empty_container_result(container)
     else
       if container.container_id.nil? == false && container.container_id != '-1'
+        STDERR.puts("Readingf for #{container.container_id}")
         path = SystemUtils.cgroup_mem_dir(container.container_id)
-        if Dir.exist?("#{path}")
-          STDERR.puts("Readingf from #{path}")
+        STDERR.puts("Readingf from #{path}")
+        if Dir.exist?("#{path}")        
           ret_val = {
             maximum: File.read("#{path}/memory.max_usage_in_bytes").to_i,
             current: File.read("#{path}/memory.usage_in_bytes").to_i,
