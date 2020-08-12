@@ -54,6 +54,7 @@ class MemoryStatistics
       if container.container_id.nil? == false && container.container_id != '-1'
         path = SystemUtils.cgroup_mem_dir(container.container_id)
         if Dir.exist?("#{path}")
+          STDERR.puts("Readingf from #{path}")
           ret_val = {
             maximum: File.read("#{path}/memory.max_usage_in_bytes").to_i,
             current: File.read("#{path}/memory.usage_in_bytes").to_i,
