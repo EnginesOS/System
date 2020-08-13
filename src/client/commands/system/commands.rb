@@ -56,5 +56,11 @@ when 'uadmin'
 
 when 'fixes'
   require_relative 'fixes.rb'
+when 'system_services'
+  require_relative 'system_services.rb'
+
+when 'system_service'
+  require_relative 'system_services.rb'
+  
 end
 perform_get
