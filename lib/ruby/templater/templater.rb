@@ -121,7 +121,7 @@ class Templater
   end
 
   def process_templated_string(template)
-      template = apply_system_variables(template)
+    template = apply_system_variables(template)
     unless @builder_public.nil? || @builder_public == false
       template = apply_build_variables(template)
       if @builder_public.respond_to?('blueprint')\
@@ -207,7 +207,7 @@ class Templater
   def proccess_templated_service_hash(service_hash)
     fill_in_dynamic_vars(service_hash)
   end
-  
+
   protected
 
   def system_access
