@@ -56,7 +56,7 @@ def clone_repo
   else
     log_build_output('Clone Blueprint Repository ' + @build_params[:repository_url])
     #SystemDebug.debug(SystemDebug.builder, "get_blueprint_from_repo",@build_params[:repository_url], @build_name, SystemConfig.DeploymentDir)
-    BlueprintApi.clone_repo(@build_params[:repository_url], @build_name, :path => SystemConfig.DeploymentDir)
+    BlueprintApi.clone_repo(@build_params[:repository_url], @build_name, SystemConfig.DeploymentDir)
     #    SystemDebug.debug(SystemDebug.builder, 'GIT GOT ' + g.to_s)
   end
 end

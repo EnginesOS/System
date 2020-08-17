@@ -1,6 +1,6 @@
 class PublicApi 
-  def list_service_actionators(ca)
-    system_api.load_service_actionators(ca)
+  def list_service_actionators(c)
+    system_api.load_service_actionators(c)
   end
 
   def get_service_actionator(service, action)

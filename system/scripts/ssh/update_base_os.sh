@@ -11,7 +11,7 @@ if test $? -ne 0
  then
  	/opt/engines/bin/restart_docker_and_engines.sh
  fi
-/opt/engines/bin/engines  containers  check_and_act
+/opt/engines/bin/engines  containers check_and_act
 if test -f /var/run/reboot-required
  then
   touch /opt/engines/run/system/flags/reboot_required

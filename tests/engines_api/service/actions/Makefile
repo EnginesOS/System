@@ -7,7 +7,7 @@ tests:
 
 	
 actions:
-	engines service email actions | engines_test_expects json list_addresses
+	engines service email actions/ | engines_test_expects json list_addresses
 	
 action:
 	engines  service email action list_addresses  | engines_test_expects json name list_addresses
