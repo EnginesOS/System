@@ -154,6 +154,7 @@ class SystemRegistryClient
       rescue
         r = {}
       end
+      STDERR.puts("RRRRR #{r}")
       r[:status] = resp.status
       r[:status] = 403 if r[:status].nil?
       raise RegistryException.new(
