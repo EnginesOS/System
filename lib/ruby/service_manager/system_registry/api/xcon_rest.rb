@@ -140,6 +140,7 @@ class SystemRegistryClient
   end
 
   def error_result_exception(resp)
+    r = {}
     body = resp.body unless resp.nil?
     if resp.headers.nil? || resp.headers['Content-Type'] != 'application/json'
       raise RegistryException.new(
@@ -155,7 +156,7 @@ class SystemRegistryClient
         r = {}
       end
       STDERR.puts("RRRRR #{r}")
-      r[:status] = resp.status
+      r[:status] = resp.status unless resp.nil?
       r[:status] = 403 if r[:status].nil?
       raise RegistryException.new(
       {status: r[:status],
