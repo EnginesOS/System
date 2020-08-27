@@ -59,7 +59,7 @@ class ServiceManager
       begin
         remove_from_managed_service(service_hash) ## continue if
       rescue StandardError => e
-        raise e unless service_query.key?(:force) || service_query.key?(:lost)
+        raise e unless service_query.key?(:force) || service_query.key?(:lost) || service_query[:persistent] == false
       end
       begin
         system_registry_client.remove_from_services_registry(service_hash)
