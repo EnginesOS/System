@@ -91,11 +91,8 @@ class EnginesCore < ErrorsApi
     true if $PROGRAM_NAME.end_with?('system_service.rb')
   end
 
-  unless $PROGRAM_NAME.end_with?('system_service.rb')
-    require_relative 'user_auth.rb'
-   # include UserAuth
-  end
-
+  require_relative 'user_auth.rb' unless $PROGRAM_NAME.end_with?('system_service.rb')
+   
   require_relative 'fixes/cont_id_fix.rb'
  # include ContFsIdFix
 
@@ -118,7 +115,7 @@ class EnginesCore < ErrorsApi
   protected
   def service_manager
     @service_manager ||= ServiceManager.instance
-  end
+    end
 
   def system_api
     @system_api ||= SystemApi.instance
@@ -127,4 +124,6 @@ class EnginesCore < ErrorsApi
   def docker_api
     @docker_api ||= DockerApi.instance
   end
+  
+ 
 end
