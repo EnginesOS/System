@@ -78,6 +78,7 @@ class EnginesCore
       error_mesg: 'token missmatch') if token != rws[0][0]
       query = "UPDATE systemaccess SET password = '#{password}', #{authtoken} ='#{authtoken}' where username = '#{user}' and authtoken = '#{token}';"
        SystemDebug.debug(SystemDebug.first_run,:applyin, query)
+       STDERR.puts("UPDATE PASSWORD #{query} ")
       auth_database.execute(query)
       update_local_token(authtoken) if user == 'admin'
     end
