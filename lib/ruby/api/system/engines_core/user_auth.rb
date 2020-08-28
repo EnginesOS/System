@@ -1,6 +1,7 @@
 class EnginesCore
   require "sqlite3"
-
+  require 'securerandom'
+  
   def user_login(params)
     if params[:user_name].to_s == 'admin'
       admin_user_login(params)
