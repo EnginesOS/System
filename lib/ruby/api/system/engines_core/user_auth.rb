@@ -54,13 +54,16 @@ class EnginesCore
 
   def set_system_user_password(password, token, current_password = nil)
     user = 'admin'
+    STDERR.puts(" set_system_user_password(#{new_password},  #{token}, #{current_password}) ")
     authtoken = SecureRandom.hex(64)
+    STDERR.puts(" new aut #{authtoken}" )
     SystemDebug.debug(SystemDebug.first_run,:applyin,  query, [user, password, token, 0])
     if current_password.nil?
       q = "Select authtoken from systemaccess where username = '#{user}';"
     else
       q = "Select authtoken from systemaccess where username = '#{user}' and password = '#{current_password}';"
     end
+STDERR.puts("check authtoken #{q} ")
     rws = auth_database.execute(q)
 
     if rws.nil? || rws.count == 0
