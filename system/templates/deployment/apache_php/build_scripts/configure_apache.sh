@@ -27,8 +27,8 @@ done
 echo  ServerName $fqdn > /tmp/apache2.conf
 cat /etc/apache2/apache2.conf >> /tmp/apache2.conf
 mv /tmp/apache2.conf /etc/apache2/apache2.conf 
-tz=`ls -la /etc/localtime | sed "s/.*zoneinfo\///"`
-echo date.timezone $tz >  /etc/php/$PHP_VERSION/cli/conf.d/001-timezone.ini
+tz=`ls -la /etc/localtime | sed "s/SystemV\///" | sed "s/.*zoneinfo\///"`
+echo date.timezone = $tz >  /etc/php/$PHP_VERSION/cli/conf.d/001-timezone.ini
 ln -s /etc/php/$PHP_VERSION/cli/conf.d/001-timezone.ini /etc/php/$PHP_VERSION/apache2/conf.d/
 
 	if [ -f /home/engines/configs/php/01-custom.ini ] 

@@ -54,8 +54,8 @@ class EnginesCore
   end
 
   def set_system_user_password(password, token, current_password = nil)
-    user = 'admin'
     STDERR.puts(" set_system_user_password(#{new_password},  #{token}, #{current_password}) ")
+    user = 'admin'
     authtoken = SecureRandom.hex(64)
     STDERR.puts(" new aut #{authtoken}" )
     SystemDebug.debug(SystemDebug.first_run,:applyin,  query, [user, password, token, 0])
