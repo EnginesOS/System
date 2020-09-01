@@ -1,7 +1,6 @@
 USER 0
 
-RUN	chmod -R g+r /home/app;\
- 	for dir in  `find /home/app -type d | sed "/ /s/+_+//g"` ;\
+RUN for dir in  `find /home/app -type d | sed "/ /s/+_+//g"` ;\
 	  do\
 		if test `echo $dir |grep _+_ |wc -l ` -lt 1 ;\
 			then \
