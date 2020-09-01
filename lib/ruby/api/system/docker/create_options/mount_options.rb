@@ -184,6 +184,8 @@ end
 
 def timezone_mount
   tz_file = File.realdirpath('/etc/localtime')
+  STDERR.puts("TIME ZONE \n" * 5)
+  STDERR.puts( "#{tz_file}:/etc/localtime:ro" )
   "#{tz_file}:/etc/localtime:ro" 
 end
 
