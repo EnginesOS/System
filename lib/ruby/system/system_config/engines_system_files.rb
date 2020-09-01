@@ -2,7 +2,7 @@ class SystemConfig
   @@ReleaseFile = '/opt/engines/release'
   @@FlavorFile = '/opt/engines/flavor'
   @@DomainsFile = '/opt/engines/etc/domains/domains'
-  @@timeZone_fileMapping = ' -v /etc/localtime:/etc/localtime:ro '
+
   @@NoRemoteExceptionLoggingFlagFile = '/opt/engines/run/system/flags/no_remote_exception_log'
 
   @@EnginesInternalCA = '/var/lib/engines/services/certs/store/public/ca/certs/system_CA.pem'
@@ -66,7 +66,4 @@ class SystemConfig
     @@DomainsFile
   end
 
-  def SystemConfig.timeZone_fileMapping
-    @@timeZone_fileMapping
-  end
 end
