@@ -25,7 +25,7 @@ mv /tmp/apache2.conf /etc/apache2/apache2.conf
 
 	if [ -f /home/engines/configs/php/01-custom.ini ] 
 		then		
-			cp /home/engines/configs/php/01-custom.ini /etc/php/7.*/apache2/conf.d/
+			cp /home/engines/configs/php/01-custom.ini /etc/php/${PHP_VERSION}/apache2/conf.d/
 	fi
 	if [ -f /home/engines/configs/apache2/extra.conf ] 
 		then 
