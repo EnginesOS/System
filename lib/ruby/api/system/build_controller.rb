@@ -44,7 +44,7 @@ class BuildController
     build_complete(@build_params)
     @engine
   rescue StandardError =>e
-    STDERR.puts ("Got #{e} \n #{e.backtrace}")
+    STDERR.puts("Got #{e} \n #{e.backtrace}")
   end
 
   def reinstall_engine(engine)

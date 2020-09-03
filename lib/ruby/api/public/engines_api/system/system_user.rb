@@ -7,9 +7,12 @@ class PublicApi
   end
 
   def set_system_user_password(params)
+    STDERR.puts(" set_system_user_password(#{params[:new_password]},  #{params[:token]}, #{params[:current_password]}) ")
     core.set_system_user_password(params[:new_password],  params[:token], params[:current_password] )
-  end
-
+    STDERR.puts("Sinished set_system_user_password(#{params[:new_password]},  #{params[:token]}, #{params[:current_password]}) ") 
+  true
+end
+    
   def get_system_user_info(cparams)
     core.get_system_user_info(cparams[:user_name])
   end

@@ -1,13 +1,14 @@
 class EnginesCore
   require "sqlite3"
-
+  require 'securerandom'
+  
   def user_login(params)
     if params[:user_name].to_s == 'admin'
       admin_user_login(params)
     else
       ldap_user_login(params)
     end
-   
+
   end
 
   def get_system_user_info(user_name)
@@ -53,20 +54,24 @@ class EnginesCore
   end
 
   def set_system_user_password(password, token, current_password = nil)
+    STDERR.puts(" set_system_user_password(#{new_password},  #{token}, #{current_password}) ")
     user = 'admin'
-    SystemDebug.debug(SystemDebug.first_run,:applyin,  query, [user, password, authtoken, 0])
-    if current_password.nil?
-      rws = auth_database.execute("Select authtoken from systemaccess where username = '#{user}';")
-    else
-      rws = auth_database.execute("Select authtoken from systemaccess where username = '#{user}' and password = '#{current_password}';")
-    end
     authtoken = SecureRandom.hex(64)
+    STDERR.puts(" new aut #{authtoken}" )
+    SystemDebug.debug(SystemDebug.first_run,:applyin,  query, [user, password, token, 0])
+    if current_password.nil?
+      q = "Select authtoken from systemaccess where username = '#{user}';"
+    else
+      q = "Select authtoken from systemaccess where username = '#{user}' and password = '#{current_password}';"
+    end
+STDERR.puts("check authtoken #{q} ")
+    rws = auth_database.execute(q)
+
     if rws.nil? || rws.count == 0
-      query = 'INSERT INTO systemaccess (username, password,  authtoken, uid)
+      q = 'INSERT INTO systemaccess (username, password,  authtoken, uid)
                   VALUES (?, ?, ?, ?, ?)'
-        SystemDebug.debug(SystemDebug.first_run,:applyin,  query, [user, password, authtoken, 0])
-      auth_database.execute(query, [user, password, authtoken, 0])
-      update_local_token(authtoken) if user == 'admin'
+      auth_database.execute(q, [user, password, authtoken, 0])
+      SystemDebug.debug(SystemDebug.first_run,:applyin,  q, [user, password, authtoken, 0])
     else
       token = rws[0][0] if token.nil? # FIXMe should be if first run?
       raise EnginesException.new(
@@ -76,13 +81,16 @@ class EnginesCore
       status: nil,
       system: 'user auth',
       error_mesg: 'token missmatch') if token != rws[0][0]
-      query = "UPDATE systemaccess SET password = '#{password}', #{authtoken} ='#{authtoken}' where username = '#{user}' and authtoken = '#{token}';"
-       SystemDebug.debug(SystemDebug.first_run,:applyin, query)
-      auth_database.execute(query)
-      update_local_token(authtoken) if user == 'admin'
+
+      q = "UPDATE systemaccess SET password = '#{password}', #{authtoken} ='#{authtoken}' where username = '#{user}' and authtoken = '#{token}';"
+      SystemDebug.debug(SystemDebug.first_run,:applyin, q)
+      auth_database.execute(q) #, [user, password, authtoken, 0])
     end
 
+STDERR.puts("sqk PASSWORD #{q} ")
+    update_local_token(authtoken) if user == 'admin'
     authtoken
+
   rescue StandardError => e
     #   SystemDebug.debug(SystemDebug.first_run,"Exception ", e)
     log_error_mesg(e.to_s)
@@ -144,7 +152,7 @@ class EnginesCore
   end
 
   def is_user_token_valid?(token, ip = nil)
- STDERR.puts("Is use token #{token} valid ")
+    STDERR.puts("Is use token #{token} valid ")
     unless token.nil?
       if is_admin_token_valid?(token, ip)
         access = true
@@ -179,7 +187,7 @@ class EnginesCore
     set_system_user_password(password,  token)
     # SystemDebug.debug(SystemDebug.first_run, :applied, password)
   end
-  
+
   private
 
   def ldap_user_logout(tok)

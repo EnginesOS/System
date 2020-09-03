@@ -3,8 +3,3 @@
   remotepath: /home/engines/etc/ssl/CA/
   localpath: /var/lib/engines/services/certs/store/public/ca/certs/
   permissions: "ro"
- tz_map: 
-  name: tz_map
-  remotepath: /etc/localtime
-  localpath: /etc/localtime
-  permissions: "ro"  

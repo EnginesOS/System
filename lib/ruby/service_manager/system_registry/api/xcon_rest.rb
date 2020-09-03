@@ -156,6 +156,10 @@ class SystemRegistryClient
         r = {}
       end
       STDERR.puts("RRRRR #{r}")
+      unless r.is_a?(Hash)
+        body = r
+        r = {}
+      end
       r[:status] = resp.status unless resp.nil?
       r[:status] = 403 if r[:status].nil?
       raise RegistryException.new(
