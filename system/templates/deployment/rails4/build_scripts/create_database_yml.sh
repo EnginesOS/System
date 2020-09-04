@@ -15,6 +15,7 @@ production:
  host: $dbhost
  username: $dbuser
  password: $dbpasswd
+ ssl_mode: disabled
 " > $config_dir/database.yml 	
 
 echo wrote  $config_dir/database.yml	
