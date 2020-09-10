@@ -105,10 +105,7 @@ class ServiceBuilder < ErrorsApi
   end
 
   def process_existing(service_hash, use_existing)
-    STDERR.puts(" Process Existings " * 10)
-    STDERR.puts("#{service_hash}\n #{use_existing}")
     existing = match_service_to_existing(service_hash, use_existing)
-    STDERR.puts("#{existing}")
     if existing.is_a?(Hash)
       fresh_build(service_hash, false)
       share_service_to_engine(service_hash, existing) if existing[:shared] == true
