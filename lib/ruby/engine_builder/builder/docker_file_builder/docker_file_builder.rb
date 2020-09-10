@@ -39,7 +39,7 @@ class DockerFileBuilder
     write_app_templates
     write_permissions
     chown_home_app
-    set_user('$ContUser')
+    set_user('$data_uid')
     write_database_seed
     write_sed_strings
     insert_framework_frag_in_dockerfile('builder.mid.tmpl')

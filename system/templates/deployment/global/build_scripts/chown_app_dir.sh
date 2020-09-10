@@ -8,7 +8,7 @@ if [ ! -d /home/app ]
   fi
   
 mkdir -p /home/fs ; mkdir -p /home/fs/local 
-chown $ContUser /home/app /home/fs /home/fs/local   
+chown $data_uid -R /home/app /home/fs /home/fs/local   
 
 
  set_permissions()
