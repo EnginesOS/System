@@ -22,6 +22,6 @@ templates=`find /home/engines/templates/ -type f |grep -v keep_me`
         fi
      echo Install template $file into `pwd`/$dest_file
     ls $dest_dir
-     cp /home/engines/templates/$file $dest_file
+     cp $file $dest_file
    done
 fi
