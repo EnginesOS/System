@@ -13,8 +13,8 @@ templates=`find /home/engines/templates/ -type f |grep -v keep_me`
         echo $dest_file in $dest_dir      
         ls -l  $dest_file
         echo t
-        ls -l $dest_dir 
       mkdir -p $dest_dir
+        ls -l $dest_dir 
        # If soft link copy to destination  
         if test -h $dest_file
          then
@@ -22,6 +22,6 @@ templates=`find /home/engines/templates/ -type f |grep -v keep_me`
         fi
      echo Install template $file into `pwd`/$dest_file
     ls $dest_dir
-     cp $file $dest_file
+     cp /home/engines/templates/$file $dest_file
    done
 fi
