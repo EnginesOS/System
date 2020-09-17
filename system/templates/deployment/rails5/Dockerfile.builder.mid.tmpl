@@ -6,7 +6,7 @@ ENV DATABASE_URL $rails_flavor://$dbuser:$dbpasswd@$dbhost/$dbname
 
 RUN /build_scripts/configure_nginx.sh &&\
 	/build_scripts/create_database_yml.sh &&\
-	mkdir -P /home/app/.bundle/ ;\
+	mkdir -p /home/app/.bundle/ ;\
 	chown -R $ContUser /home/app/.bundle/
 	
 USER $ContUser

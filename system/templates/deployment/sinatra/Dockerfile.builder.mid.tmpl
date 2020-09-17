@@ -25,7 +25,7 @@ RUN	if test -d config ;\
 	echo "  database: $dbname ">> $config_dir/database.yml;\ 
 	echo "  <<: *login" >> $config_dir/database.yml ;\
 	fi ;\
-	mkdir -P /home/app/.bundle/ ;\
+	mkdir -p /home/app/.bundle/ ;\
 	chown -R $ContUser /home/app/.bundle/
 	
 
