@@ -11,7 +11,10 @@ templates=`find /home/engines/templates/ -type f |grep -v keep_me`
      dest_file=`echo $file | sed "/^.*templates\//s///"`
       dest_dir=`dirname $dest_file`
         echo $dest_file in $dest_dir      
+        ls -l  $dest_file
+        echo t
       mkdir -p $dest_dir
+        ls -l $dest_dir 
        # If soft link copy to destination  
         if test -h $dest_file
          then
