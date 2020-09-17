@@ -20,6 +20,7 @@ module Container
     require_relative 'container/engines_api_access.rb'
   #  include EnginesApiAccess
     def self.from_yaml(yaml)
+      STDERR.puts("Loading #{yaml}")
       container = YAML::load(yaml)
       raise EnginesException.new(error_hash('Failed to Load yaml_' + @container_name.to_s + '_ nil', yaml[0..256])) if container.nil?
       raise EnginesException.new(error_hash('Failed to Load yaml_' + @container_name.to_s + '_ false', yaml[0..256])) if container.is_a?(FalseClass)
