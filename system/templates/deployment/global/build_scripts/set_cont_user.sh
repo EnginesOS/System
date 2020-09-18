@@ -7,7 +7,7 @@ user=`cat /home/engines/etc/user/name`
 getent passwd $user | grep $user
  if test $? -eq 0
   then
-	/usr/sbin/usermod -u $cont_uid $user
+	/usr/sbin/usermod -d /home/home_dir/ -u $cont_uid $user
  else
    /usr/sbin/useradd -u $cont_uid -d /home/home_dir/ $user 
  fi 	
