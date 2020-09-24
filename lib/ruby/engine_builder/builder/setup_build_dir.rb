@@ -182,6 +182,8 @@ class EngineBuilder < ErrorsApi
   end
 
   def read_web_port
+    unless @blueprint_reader.framework == 'docker'
+     begin
     log_build_output('Setting Web port')
     stef = File.open(basedir + '/home/engines/etc/stack.env', 'r')
     begin
@@ -192,9 +194,11 @@ class EngineBuilder < ErrorsApi
           SystemDebug.debug(SystemDebug.builder, :web_port_line, line)
         end
       end
+    end
     ensure
       stef.close
     end
+  end
   end
 
   def setup_default_files
