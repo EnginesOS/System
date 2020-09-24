@@ -152,6 +152,7 @@ class EngineBuilder < ErrorsApi
   end
 
   def read_framework_user
+    STDERR.puts("Frame work #{@blueprint_reader.framework}")
     if @blueprint_reader.framework == 'docker'
       @web_user = @blueprint_reader.cont_user
       @cont_user_id =  @blueprint_reader.cont_user #fix me and add id
