@@ -5,6 +5,7 @@ COPY engines /home/engines
 
 ENV CONTFSVolHome /home/fs/
 USER 0
-RUN  apt-get update -y ;\
-	mkdir  /opt;\
+RUN  /build_scripts/set_cont_user.sh &&\
+    apt-get update -y ;\
+	mkdir -p /opt;\
 	chown $ContUser /opt
