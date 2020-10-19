@@ -304,7 +304,11 @@ class BluePrintReader
     @capabilities = [] if @capabilities.nil?
     @capabilities.push(capability)
   end
-
+  
+  def read_capabilities()
+    @capabilities =  @blueprint[:software][:capabilities][:selected] unless @blueprint[:software][:capabilities].nil?
+  end
+  
   def read_write_permissions_recursive
     log_build_output('Read Recursive Write Permissions')
     @recursive_chmods = []

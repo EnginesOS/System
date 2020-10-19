@@ -15,7 +15,7 @@ class SystemConfig
   @@InfoTreeDir = '/opt/engines/run/public/services'
 
   @@DomainsFile = '/opt/engines/etc/domains/domains'
-  @@timeZone_fileMapping = ' -v /etc/localtime:/etc/localtime:ro '
+
   @@NoRemoteExceptionLoggingFlagFile = '/opt/engines/run/system/flags/no_remote_exception_log'
   @@SSHStore = '/opt/engines/etc/ssh/keys'
 

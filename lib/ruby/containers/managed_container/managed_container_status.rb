@@ -28,7 +28,11 @@ module ManagedContainerStatus
   end
 
   def is_privileged?
-    false
+    if @privileged == true
+          true
+        else
+          false
+        end
   end
 
   # raw=true means dont check state for error

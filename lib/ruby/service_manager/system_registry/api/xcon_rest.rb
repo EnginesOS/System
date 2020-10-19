@@ -24,7 +24,7 @@ class SystemRegistryClient
     core.fix_registry_problem
     retry
   rescue StandardError => e
-    raise EnginesException.new(error_hash('Failed to open connection to registry ' + e.to_s, "#{base_url}\n #{params}"))
+    raise EnginesException.new(error_hash("Failed to open connection to registry  #{e}\n#{e.backtrace}\n #{base_url}\n #{params}" , params))
   end
 
   def close_connection
@@ -56,7 +56,7 @@ class SystemRegistryClient
     retry if cnt < 5
   rescue StandardError => e
     close_connection
-    raise EnginesException.new(error_hash("reg get exception #{e}", "#{base_url}\n #{params}"))
+  raise EnginesException.new(error_hash("reg get exception  #{e.to_s}\n #{e.backtrace}\n #{base_url}\n #{params}" , params))
   end
 
   def time_out
@@ -80,7 +80,7 @@ class SystemRegistryClient
       STDERR.puts('path ' + path.to_s)
       STDERR.puts('exception ' + e.to_s)
       close_connection
-      raise EnginesException.new(error_hash("reg Post exception #{path} \n\#params} \n#{e}", "#{base_url}"))
+    raise EnginesException.new(error_hash("reg Post exception  #{e}\n#{e.backtrace}\n #{base_url}\n #{params}" , params))
     end
   end
 
@@ -94,7 +94,7 @@ class SystemRegistryClient
     retry if cnt < 5
   rescue StandardError => e
     close_connection
-    raise EnginesException.new(error_hash("reg Put exception #{e}", "#{base_url}\n #{params}"))
+    raise EnginesException.new(error_hash("reg put exception  #{e}\n#{e.backtrace}\n #{base_url}\n #{params}" , params))
   end
 
   def query_hash(params)
@@ -118,7 +118,7 @@ class SystemRegistryClient
     cnt += 1
     retry if cnt < 5
   rescue StandardError => e
-    raise EnginesException.new(error_hash('reg exception ' + e.to_s, "#{base_url}\n #{params}"))
+    raise EnginesException.new(error_hash("reg delete exception  #{e}\n#{e.backtrace}\n #{base_url}\n #{params}" , params))
   ensure
     close_connection
   end
@@ -140,6 +140,7 @@ class SystemRegistryClient
   end
 
   def error_result_exception(resp)
+    r = {}
     body = resp.body unless resp.nil?
     if resp.headers.nil? || resp.headers['Content-Type'] != 'application/json'
       raise RegistryException.new(
@@ -154,7 +155,12 @@ class SystemRegistryClient
       rescue
         r = {}
       end
-      r[:status] = resp.status
+      STDERR.puts("RRRRR #{r}")
+      unless r.is_a?(Hash)
+        body = r
+        r = {}
+      end
+      r[:status] = resp.status unless resp.nil?
       r[:status] = 403 if r[:status].nil?
       raise RegistryException.new(
       {status: r[:status],

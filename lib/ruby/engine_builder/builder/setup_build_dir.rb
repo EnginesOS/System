@@ -152,6 +152,7 @@ class EngineBuilder < ErrorsApi
   end
 
   def read_framework_user
+    STDERR.puts("Frame work #{@blueprint_reader.framework}")
     if @blueprint_reader.framework == 'docker'
       @web_user = @blueprint_reader.cont_user
       @cont_user_id =  @blueprint_reader.cont_user #fix me and add id
@@ -181,6 +182,8 @@ class EngineBuilder < ErrorsApi
   end
 
   def read_web_port
+    unless @blueprint_reader.framework == 'docker'
+     begin
     log_build_output('Setting Web port')
     stef = File.open(basedir + '/home/engines/etc/stack.env', 'r')
     begin
@@ -191,9 +194,11 @@ class EngineBuilder < ErrorsApi
           SystemDebug.debug(SystemDebug.builder, :web_port_line, line)
         end
       end
+    end
     ensure
       stef.close
     end
+  end
   end
 
   def setup_default_files

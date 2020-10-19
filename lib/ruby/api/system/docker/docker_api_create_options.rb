@@ -32,6 +32,8 @@ class DockerApi < ErrorsApi
 
   def container_capabilities(container)
     unless container.capabilities.nil?
+    STDERR.puts("Container Capabilities #{container.capabilities}")  
+    
       add_capabilities(container.capabilities)
     else
       []

@@ -24,7 +24,9 @@ RUN	if test -d config ;\
 	echo "production:">> $config_dir/database.yml;\ 
 	echo "  database: $dbname ">> $config_dir/database.yml;\ 
 	echo "  <<: *login" >> $config_dir/database.yml ;\
-	fi 
+	fi ;\
+	mkdir -p /home/app/.bundle/ /home/app/bundle ;\
+	chown -R $ContUser /home/app/.bundle/ /home/app/bundle
 	
 
 ENV DATABASE_URL $rails_flavor://$dbuser:$dbpasswd@$dbhost/$dbname

@@ -8,6 +8,7 @@ getent passwd $user | grep $user
  if test $? -eq 0
   then
 	/usr/sbin/usermod -u $cont_uid $user
+	/usr/sbin/usermod -u -d /home/home_dir $user
  else
    /usr/sbin/useradd -u $cont_uid -d /home/home_dir/ $user 
  fi 	

@@ -15,7 +15,9 @@ class SystemRegistryClient
   end
 
   def error_hash(mesg, params = nil)
-    {error_mesg: mesg,
+    STDERR.puts("Error hase #{mesg} #{params}")
+    {
+      error_mesg: mesg,
       system: :registry,
       params: params }
   end

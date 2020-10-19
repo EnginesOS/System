@@ -182,6 +182,13 @@ def homes_mounts(container)
   mounts
 end
 
+def timezone_mount
+  tz_file = File.realdirpath('/etc/localtime')
+  STDERR.puts("TIME ZONE \n" * 5)
+  STDERR.puts( "#{tz_file}:/etc/localtime:ro" )
+  "#{tz_file}:/etc/localtime:ro" 
+end
+
 def secrets_mounts(container)
   mounts = []
   unless container.ctype == 'system_service'
@@ -222,6 +229,7 @@ def system_mounts(container)
   cm = cert_mounts(container.store_address) unless container.no_cert_map == true
   mounts.push(kerberos_mount(container.store_address)) if container.kerberos == true
   mounts.concat(cm) unless cm.nil?
+  mounts.push(timezone_mount)
   mounts
 end
 

@@ -9,5 +9,5 @@ when 'mem_stats'
 else
   @route += '/' + ARGV[2]
 end
-
+@route += '/' + ARGV[3] if ARGV.count > 3
 perform_get
